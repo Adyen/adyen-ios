@@ -1,0 +1,19 @@
+PODS:
+  - Adyen (1.1.0):
+    - AdyenCSE (~> 1.0.4)
+  - AdyenCSE (1.0.4)
+
+DEPENDENCIES:
+  - Adyen (from `../../`)
+
+EXTERNAL SOURCES:
+  Adyen:
+    :path: ../../
+
+SPEC CHECKSUMS:
+  Adyen: 0091fa46ecf79757eb8b150ef5820e814bddea20
+  AdyenCSE: 1efa6551b20efb37323911cb0cb4584dec876c44
+
+PODFILE CHECKSUM: e605b49631e2492cdd819d8498318486942e07a3
+
+COCOAPODS: 1.2.1
