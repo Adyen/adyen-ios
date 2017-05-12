@@ -148,7 +148,7 @@ SWIFT_CLASS("_TtC5Adyen22CheckoutViewController")
 /// :nodoc:
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 /// :nodoc:
-- (void)viewWillAppear:(BOOL)animated;
+- (void)viewDidLoad;
 @end
 
 
