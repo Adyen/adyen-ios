@@ -18,7 +18,7 @@ To give you as much flexibility as possible, our iOS SDK can be integrated in tw
 
 
 ## Quick integration
-The Quick integration of the SDK provides the complete UI flow for payment method selection, entering payment details (credit card entry form, iDEAL issuer selection, and so on).. To get started, initiate `CheckoutViewController` and present it in your app:
+The Quick integration of the SDK provides the complete UI flow for payment method selection and entering payment details (credit card entry form, iDEAL issuer selection, and so on). To get started, initiate `CheckoutViewController` and present it in your app:
 
 ```swift
 let viewController = CheckoutViewController(delegate: self)
