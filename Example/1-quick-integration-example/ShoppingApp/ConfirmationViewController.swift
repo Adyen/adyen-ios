@@ -9,7 +9,6 @@ import UIKit
 class ConfirmationViewController: UIViewController {
     
     @IBAction func tapButton(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
-
 }

@@ -18,7 +18,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -44,8 +44,8 @@ extension ViewController: PaymentRequestDelegate {
             "platform": "ios",
             "appUrlScheme": "example-shopping-app://",
             
-            "sdkToken": token,
-            ]
+            "sdkToken": token
+        ]
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -66,7 +66,7 @@ extension ViewController: PaymentRequestDelegate {
     
     func paymentRequest(_ request: PaymentRequest, didFinishWith result: PaymentRequestResult) {
         switch result {
-        case .payment(let payment):
+        case let .payment(payment):
             statusLabel.text = payment.status.rawValue
         default:
             statusLabel.text = "Error"
@@ -79,11 +79,9 @@ extension ViewController: PaymentRequestDelegate {
         
         //  Get cards method
         var cardsMethod: PaymentMethod?
-        for method in availableMethods {
-            if method.type == "card" {
-                cardsMethod = method
-                break
-            }
+        for method in availableMethods where method.type == "card" {
+            cardsMethod = method
+            break
         }
         
         guard let method = cardsMethod else {
@@ -95,9 +93,7 @@ extension ViewController: PaymentRequestDelegate {
         completion(method)
     }
     
-    func paymentRequest(_ request: PaymentRequest, requiresReturnURLFrom url: URL, completion: @escaping URLCompletion) {
-        
-    }
+    func paymentRequest(_ request: PaymentRequest, requiresReturnURLFrom url: URL, completion: @escaping URLCompletion) {}
     
     func paymentRequest(_ request: PaymentRequest, requiresPaymentDetails details: PaymentDetails, completion: @escaping PaymentDetailsCompletion) {
         //  Fill in requested details for the selected payment method
@@ -128,7 +124,7 @@ extension ViewController {
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
         dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-
+        
         let generationDate = dateFormatter.date(from: generationTime)
         
         let card = ADYCard()
@@ -138,7 +134,7 @@ extension ViewController {
         card.expiryMonth = "08"
         card.expiryYear = "2018"
         card.cvc = "737"
-
+        
         return card.encode()
     }
 }

@@ -1,0 +1,6 @@
+{
+  "paymentMethodData" : "methodData",
+  "name" : "PayPal",
+  "type" : "paypal",
+  "emailAddress" : "email@email.com"
+}

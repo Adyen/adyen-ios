@@ -1,0 +1,19 @@
+language: objective-c
+
+osx_image: xcode8.3
+
+env:
+  global:
+    - WORKSPACE="Example/1-quick-integration-example/ShoppingApp.xcworkspace"
+    - SCHEME="ShoppingApp"
+    - DESTINATION="platform=iOS Simulator,name=iPhone 7,OS=10.3"
+
+before_install:
+  - gem install cocoapods
+  - pod repo update
+  - (cd Example/1-quick-integration-example && pod install)
+
+script:
+  - (cd Example/1-quick-integration-example && ./Pods/SwiftLint/swiftlint)
+  - pod lib lint
+  - xcodebuild test -workspace "${WORKSPACE}" -scheme "${SCHEME}" -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO -destination "${DESTINATION}" |  xcpretty -s && exit ${PIPESTATUS[0]}

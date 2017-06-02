@@ -1,0 +1,18 @@
+disabled_rules:
+  - cyclomatic_complexity
+  - line_length
+  - trailing_whitespace
+  - operator_whitespace
+  - unused_closure_parameter
+  - todo
+
+  #Review:
+  - large_tuple
+  - function_body_length
+  - file_length
+included:
+  - ../../Adyen
+  - ../../Example
+  - ../../UnitTests
+excluded:
+  - Pods

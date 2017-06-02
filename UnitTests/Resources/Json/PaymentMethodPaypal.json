@@ -1,0 +1,5 @@
+{
+  "paymentMethodData" : "methodData",
+  "name" : "PayPal",
+  "type" : "paypal"
+}

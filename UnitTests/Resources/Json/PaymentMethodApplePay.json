@@ -1,0 +1,14 @@
+{
+  "paymentMethodData" : "methodData",
+  "name" : "Apple Pay",
+  "type" : "applepay",
+  "configuration" : {
+    "merchantIdentifier" : "merchant.com.test"
+  },
+  "inputDetails" : [
+    {
+      "key" : "additionalData.applepay.token",
+      "type" : "applePayToken"
+    }
+  ]
+}

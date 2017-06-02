@@ -1,0 +1,15 @@
+{
+  "paymentMethodData" : "methodData",
+  "name" : "SEPA Direct Debit",
+  "type" : "sepadirectdebit",
+  "inputDetails" : [
+    {
+      "key" : "sepa.ownerName",
+      "type" : "text"
+    },
+    {
+      "key" : "sepa.ibanNumber",
+      "type" : "text"
+    }
+  ]
+}

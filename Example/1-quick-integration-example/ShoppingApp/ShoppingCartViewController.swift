@@ -9,12 +9,12 @@ import Adyen
 
 class ShoppingCartViewController: UIViewController {
     let url = URL(string: "https://checkoutshopper-test.adyen.com/checkoutshopper/demo/easy-integration/merchantserver/setup")!
-    let appId = YOUR_APP_ID // Set your App ID
-    let appSecretKey = YOUR_APP_SECRET_KEY // Set provided App Secret Key
+    let appId = YOU_APP_ID // provide your app id
+    let appSecretKey = YOUR_APP_SECRET_KEY // provide your app secret key (to use with Adyen Test Merchant Server)
     
     var appUrlCompletion: URLCompletion?
     var checkoutViewController: CheckoutViewController?
-
+    
     @IBAction func checkout(_ sender: Any) {
         checkoutViewController = CheckoutViewController(delegate: self)
         
@@ -45,8 +45,8 @@ extension ShoppingCartViewController: CheckoutViewControllerDelegate {
             "platform": "ios",
             "appUrlScheme": "example-shopping-app://",
             
-            "sdkToken": token,
-            ]
+            "sdkToken": token
+        ]
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -64,24 +64,24 @@ extension ShoppingCartViewController: CheckoutViewControllerDelegate {
             }
         }.resume()
     }
-
+    
     func checkoutViewController(_ controller: CheckoutViewController, requiresReturnURL completion: @escaping URLCompletion) {
         appUrlCompletion = completion
     }
     
     func checkoutViewController(_ controller: CheckoutViewController, didFinishWith result: PaymentRequestResult) {
-        self.dismiss(animated: true)
+        dismiss(animated: true)
         
         var success: Bool = false
         
         switch result {
             
-        case .payment(let payment):
+        case let .payment(payment):
             if payment.status == .authorised {
                 success = true
             }
             
-        case .error(let error):
+        case let .error(error):
             switch error {
             case .canceled:
                 return
@@ -109,7 +109,6 @@ extension ShoppingCartViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: identifier)
         
-        self.present(viewController, animated: true, completion: nil)
+        present(viewController, animated: true, completion: nil)
     }
-
 }

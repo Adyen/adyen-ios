@@ -6,6 +6,7 @@ target 'Advanced' do
   use_frameworks!
 
   # Pods for Advanced
-  pod 'Adyen', :path => '../../'
+  pod 'Adyen/Core', :path => '../../'
+  pod 'Adyen/Cards', :path => '../../'
 
 end

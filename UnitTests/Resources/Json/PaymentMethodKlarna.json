@@ -1,0 +1,5 @@
+{
+  "paymentMethodData" : "methodData",
+  "name" : "Klarna Factuur",
+  "type" : "klarna"
+}

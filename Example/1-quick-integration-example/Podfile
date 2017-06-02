@@ -6,4 +6,12 @@ target 'ShoppingApp' do
   use_frameworks!
 
   pod 'Adyen', :path => '../../'
+  pod 'Adyen/ApplePay', :path => '../../'
+
+  pod 'SwiftFormat/CLI', '~> 0.28.5'
+  pod 'SwiftLint', '~> 0.18.1'
+  
+  target 'UnitTests' do
+    inherit! :search_paths
+  end
 end
