@@ -4,4 +4,4 @@ author_url: https://adyen.com
 github_url: https://github.com/Adyen
 skip_undocumented: false
 hide_documentation_coverage: true
-theme: apple
+theme: fullwidth

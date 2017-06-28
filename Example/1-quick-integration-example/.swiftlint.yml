@@ -16,3 +16,4 @@ included:
   - ../../UnitTests
 excluded:
   - Pods
+  - ../../Adyen/Core/Config.swift

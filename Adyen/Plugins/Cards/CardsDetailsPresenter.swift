@@ -27,44 +27,64 @@ class CardsDetailsPresenter: PaymentMethodDetailsPresenter {
         }
     }
     
+    // MARK: One-Click Flow
+    
     private func setupOneClickFlow() {
-        let alert = CardsAlertController(
-            title: NSLocalizedString("Verify your card", comment: ""),
-            message: "Please enter the CVC code for\n\(paymentRequest!.paymentMethod!.name)",
-            preferredStyle: .alert
-        )
+        rootViewController = oneClickAlertController
+    }
+    
+    private lazy var oneClickAlertController: UIAlertController = {
+        let paymentRequest = self.paymentRequest!
         
-        alert.addTextField(configurationHandler: { textField in
+        let title = "Verify your card"
+        let message = "Please enter the CVC code for \(paymentRequest.paymentMethod!.name)"
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.addTextField(configurationHandler: { textField in
             textField.placeholder = "123"
             textField.textAlignment = .center
             textField.keyboardType = .numberPad
         })
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        alert.addAction(cancelAction)
+        alertController.addAction(cancelAction)
         
-        let formattedAmount = Currency.formatted(amount: paymentRequest!.amount!, currency: paymentRequest!.currency!)
-        let okTittle = "Pay \(formattedAmount ?? "")"
-        
-        let okAction = UIAlertAction(title: okTittle, style: .default) { _ in
-            if let textField = alert.textFields?.first {
-                alert.detailsHandler?([
-                    "cardDetails.cvc": textField.text ?? ""
-                ])
-            }
+        let formattedAmount = Currency.formatted(amount: paymentRequest.amount!, currency: paymentRequest.currency!) ?? ""
+        let confirmAction = UIAlertAction(title: "Pay \(formattedAmount)", style: .default) { [unowned self] _ in
+            self.didSelectOneClickAlertControllerConfirmAction()
         }
-        alert.addAction(okAction)
+        alertController.addAction(confirmAction)
         
-        alert.detailsHandler = { info in
-            if let cvc = info["cardDetails.cvc"] as? String {
-                self.requiredPaymentDetails?.fillCard(cvc: cvc)
-            }
+        return alertController
+    }()
+    
+    private func didSelectOneClickAlertControllerConfirmAction() {
+        // Verify that a non-empty CVC has been entered. If not, present an alert.
+        guard
+            let textField = oneClickAlertController.textFields?.first,
+            let cvc = textField.text, cvc.characters.count > 0 else {
+            presentInvalidCVCAlertController()
             
-            self.finalCompletion?(self.requiredPaymentDetails!)
+            return
         }
         
-        rootViewController = alert
+        let requiredPaymentDetails = self.requiredPaymentDetails!
+        requiredPaymentDetails.fillCard(cvc: cvc)
+        finalCompletion?(requiredPaymentDetails)
     }
+    
+    private func presentInvalidCVCAlertController() {
+        let alertController = UIAlertController(title: "Invalid CVC", message: "Please enter a valid CVC to continue.", preferredStyle: .alert)
+        
+        let dismissAction = UIAlertAction(title: "OK", style: .default) { [unowned self] _ in
+            self.present() // Restart the flow.
+        }
+        alertController.addAction(dismissAction)
+        
+        hostViewController?.present(alertController, animated: false)
+    }
+    
+    // MARK: Form Flow
     
     private func setupCardFormFlow(paymentDetails: PaymentDetails) {
         if let request = paymentRequest {
@@ -103,6 +123,8 @@ class CardsDetailsPresenter: PaymentMethodDetailsPresenter {
             rootViewController = cardsFormController
         }
     }
+    
+    // MARK: Presentation & Dismissal
     
     func present() {
         guard

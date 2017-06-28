@@ -76,13 +76,22 @@ class InputDetailsTests: XCTestCase {
         XCTAssertEqual(detail?.items?[1].imageURL, URL(string: "https://image2.url"))
     }
     
-    func testInitWithOptionalValue() {
-        let info = ["type": "boolean", "key": "someKey", "optional": true] as [String: Any]
+    func testInitWithOptionalValueTrue() {
+        let info = ["type": "boolean", "key": "someKey", "optional": "true"] as [String: Any]
         let detail = InputDetail(info: info)
         
         XCTAssertEqual(detail?.type, InputType.boolean)
         XCTAssertEqual(detail?.key, "someKey")
         XCTAssertEqual(detail?.optional, true)
+    }
+    
+    func testInitWithOptionalValueFalse() {
+        let info = ["type": "boolean", "key": "someKey", "optional": "false"] as [String: Any]
+        let detail = InputDetail(info: info)
+        
+        XCTAssertEqual(detail?.type, InputType.boolean)
+        XCTAssertEqual(detail?.key, "someKey")
+        XCTAssertEqual(detail?.optional, false)
     }
     
     func testSetStringShouldSetValue() {

@@ -53,6 +53,10 @@ public final class PaymentRequest {
     
     private let paymentServer = PaymentServer()
     
+    private var preferredMethods: [PaymentMethod]?
+    
+    private var availableMethods: [PaymentMethod]?
+    
     /**
      Creates a `PaymentRequest` object and initialises it with a provided delegate.
      
@@ -68,7 +72,8 @@ public final class PaymentRequest {
         let fingerprintInfo = [
             "deviceFingerprintVersion": deviceFingerprintVersion,
             "sdkVersion": sdkVersion,
-            "deviceIdentifier": UIDevice.current.identifierForVendor?.uuidString ?? ""
+            "deviceIdentifier": UIDevice.current.identifierForVendor?.uuidString ?? "",
+            "apiVersion": "2"
         ]
         
         guard let data = try? JSONSerialization.data(withJSONObject: fingerprintInfo, options: []) else {
@@ -82,7 +87,7 @@ public final class PaymentRequest {
     public func start() {
         let token = paymentToken()
         
-        delegate?.paymentRequest(self, requiresPaymentDataForToken: token) { data in
+        requiresPaymentData(forToken: token) { data in
             guard let internalRequest = InternalPaymentRequest(data: data) else {
                 self.processorFailed(with: .unexpectedData)
                 return
@@ -102,11 +107,61 @@ public final class PaymentRequest {
         }
     }
     
+    /// Permanently deletes payment method from shopper's preferred payment options.
+    func deletePreferred(paymentMethod: PaymentMethod, completion: @escaping (Bool, Error?) -> Void) {
+        paymentMethod.plugin?.paymentRequest = paymentRequest
+        
+        guard
+            let preferredMethods = preferredMethods,
+            let paymentRequest = paymentRequest,
+            let url = paymentRequest.deletePreferredURL,
+            let requestInfo = paymentMethod.plugin?.deleteRequestInfo()
+        else {
+            // Call completion with error.
+            completion(false, .unexpectedError)
+            return
+        }
+        
+        if preferredMethods.contains(paymentMethod) == false {
+            completion(false, .unexpectedError)
+            return
+        }
+        
+        paymentServer.post(url: url, info: requestInfo) { responseInfo, error in
+            completion(false, nil)
+            
+            guard let responseInfo = responseInfo else {
+                completion(false, .unexpectedError)
+                return
+            }
+            
+            guard
+                let resultCode = responseInfo["resultCode"] as? String,
+                resultCode == "Success"
+            else {
+                completion(false, .unexpectedError)
+                return
+            }
+            
+            //  Remove payment method from the list if deletion succeeded.
+            if let index = preferredMethods.index(of: paymentMethod) {
+                self.preferredMethods?.remove(at: index)
+            }
+            
+            DispatchQueue.main.async {
+                completion(true, error)
+            }
+            
+            //  Update list on completion.
+            self.requiresPaymentMethod(fromPreferred: self.preferredMethods, available: self.availableMethods ?? [], completion: { method in
+                self.continueProcess(with: method)
+            })
+        }
+    }
+    
     /// Cancels the payment request.
     public func cancel() {
-        DispatchQueue.main.async {
-            self.delegate?.paymentRequest(self, didFinishWith: .error(.canceled))
-        }
+        didFinish(with: .error(.canceled))
     }
     
     func process(_ paymentRequest: InternalPaymentRequest) {
@@ -121,12 +176,12 @@ public final class PaymentRequest {
         fetchPaymentMethodsFor(paymentRequest) { preferred, available, error in
             
             if let error = error {
-                self.delegate?.paymentRequest(self, didFinishWith: .error(error))
+                self.didFinish(with: .error(error))
                 return
             }
             
             guard let available = available else {
-                self.delegate?.paymentRequest(self, didFinishWith: .error(.unexpectedData))
+                self.didFinish(with: .error(.unexpectedData))
                 return
             }
             
@@ -134,8 +189,11 @@ public final class PaymentRequest {
                 method.isAvailableOnDevice()
             })
             
+            self.preferredMethods = preferred
+            self.availableMethods = availableMethods
+            
             //  Suggest payment methods available.
-            self.delegate?.paymentRequest(self, requiresPaymentMethodFrom: preferred, available: availableMethods) { selectedMethod in
+            self.requiresPaymentMethod(fromPreferred: preferred, available: availableMethods) { selectedMethod in
                 //  Next Step. Selected payment method.
                 //  Continue with Payment Data / Authorize URL.
                 self.continueProcess(with: selectedMethod)
@@ -184,7 +242,7 @@ public final class PaymentRequest {
             if flowType == "redirect" {
                 if let redirectUrl = responseInfo["url"] as? String {
                     let url = URL(string: redirectUrl)!
-                    self.delegate?.paymentRequest(self, requiresReturnURLFrom: url) { url in
+                    self.requiresReturnURL(from: url) { url in
                         self.continueRedirectPaymentFlow(with: url)
                     }
                     return
@@ -197,7 +255,7 @@ public final class PaymentRequest {
             } else if flowType == "error" {
                 var error: Error = .unexpectedError
                 if let errorMessage = responseInfo["errorMessage"] as? String {
-                    error = .message(errorMessage)
+                    error = .serverError(errorMessage)
                 }
                 
                 self.processorFailed(with: error)
@@ -210,11 +268,12 @@ public final class PaymentRequest {
     
     func continuePaymentFlowRequiresPaymentData() {
         guard paymentRequest != nil, let inputDetails = paymentMethod?.inputDetails else {
-            processorFailed(with: nil)
+            processorFailed(with: .unexpectedError)
             return
         }
         
-        delegate?.paymentRequest(self, requiresPaymentDetails: PaymentDetails(details: inputDetails), completion: { fullfilledDetails in
+        let initialDetails = PaymentDetails(details: inputDetails)
+        requiresPaymentDetails(initialDetails) { fullfilledDetails in
             //  Convert `details` to providedPaymentData
             var pairs = [String: Any]()
             for detail in fullfilledDetails.list {
@@ -228,7 +287,7 @@ public final class PaymentRequest {
             if let method = self.paymentRequest?.paymentMethod {
                 self.continueProcess(with: method)
             }
-        })
+        }
     }
     
     func fetchPaymentMethodsFor(_ payment: InternalPaymentRequest, completion: @escaping PaymentMethodsCompletion) {
@@ -237,7 +296,7 @@ public final class PaymentRequest {
             let info = json as? [String: Any],
             let methodsInfo = info["paymentMethods"] as? [[String: Any]]
         else {
-            completion(nil, nil, .unexpectedError)
+            completion(nil, nil, .unexpectedData)
             return
         }
         
@@ -279,10 +338,7 @@ internal extension PaymentRequest {
     func processorFailedStep2(with error: Error?) {
         //  Report to delegate
         let finalError = error ?? .unexpectedError
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-            self.delegate?.paymentRequest(self, didFinishWith: .error(finalError))
-        }
+        didFinish(with: .error(finalError))
     }
     
     func processorFinished(with result: Payment) {
@@ -297,9 +353,7 @@ internal extension PaymentRequest {
     }
     
     func finishRequest(with payment: Payment) {
-        DispatchQueue.main.async {
-            self.delegate?.paymentRequest(self, didFinishWith: .payment(payment))
-        }
+        didFinish(with: .payment(payment))
     }
 }
 
@@ -340,7 +394,7 @@ internal extension PaymentRequest {
             let payload = info?["payload"] as? String,
             let paymentRequest = paymentRequest
         else {
-            processorFailed(with: nil)
+            processorFailed(with: .unexpectedData)
             return
         }
         
@@ -350,5 +404,44 @@ internal extension PaymentRequest {
     
     func completePaymentFlow(with appUrl: URL) {
         completePaymentFlow(using: appUrl.queryParameters())
+    }
+}
+
+// MARK: Delegate Helpers
+
+fileprivate extension PaymentRequest {
+    
+    private var delegateQueue: DispatchQueue {
+        return DispatchQueue.main
+    }
+    
+    func requiresPaymentData(forToken token: String, completion: @escaping DataCompletion) {
+        delegateQueue.async {
+            self.delegate?.paymentRequest(self, requiresPaymentDataForToken: token, completion: completion)
+        }
+    }
+    
+    func requiresPaymentMethod(fromPreferred preferredMethods: [PaymentMethod]?, available availableMethods: [PaymentMethod], completion: @escaping MethodCompletion) {
+        delegateQueue.async {
+            self.delegate?.paymentRequest(self, requiresPaymentMethodFrom: preferredMethods, available: availableMethods, completion: completion)
+        }
+    }
+    
+    func requiresReturnURL(from url: URL, completion: @escaping URLCompletion) {
+        delegateQueue.async {
+            self.delegate?.paymentRequest(self, requiresReturnURLFrom: url, completion: completion)
+        }
+    }
+    
+    func requiresPaymentDetails(_ details: PaymentDetails, completion: @escaping PaymentDetailsCompletion) {
+        delegateQueue.async {
+            self.delegate?.paymentRequest(self, requiresPaymentDetails: details, completion: completion)
+        }
+    }
+    
+    func didFinish(with result: PaymentRequestResult) {
+        delegateQueue.async {
+            self.delegate?.paymentRequest(self, didFinishWith: result)
+        }
     }
 }

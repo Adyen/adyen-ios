@@ -9,18 +9,17 @@ import UIKit
 class PaymentPickerViewController: LoadingTableViewController {
     fileprivate var preferredMethods = [PaymentMethod]()
     fileprivate var availableMethods = [PaymentMethod]()
-    fileprivate var justSelected = false
-    fileprivate var selectedIndexPath: IndexPath?
     
-    var didSelectMethodCompletion: ((PaymentMethod) -> Void)?
-    var didCancel: (() -> Void)?
+    weak var delegate: PaymentPickerViewControllerDelegate?
     
-    init() {
+    init(delegate: PaymentPickerViewControllerDelegate) {
+        self.delegate = delegate
+        
         super.init(style: .grouped)
     }
     
     required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
@@ -53,7 +52,7 @@ class PaymentPickerViewController: LoadingTableViewController {
             image: UIImage.bundleImage("close"),
             style: .plain,
             target: self,
-            action: #selector(cancelPayment)
+            action: #selector(didSelect(cancelButtonItem:))
         )
         
         navigationItem.backBarButtonItem = UIBarButtonItem(
@@ -69,6 +68,7 @@ class PaymentPickerViewController: LoadingTableViewController {
         tableView.separatorInset = UIEdgeInsets.zero
         tableView.layoutMargins = UIEdgeInsets.zero
         tableView.sectionHeaderHeight = 30
+        tableView.allowsMultipleSelectionDuringEditing = false
         
         tableView.register(PaymentMethodTableViewCell.classForCoder(), forCellReuseIdentifier: "cell")
         tableView.register(CheckoutHeaderView.classForCoder(), forHeaderFooterViewReuseIdentifier: "header")
@@ -80,16 +80,14 @@ class PaymentPickerViewController: LoadingTableViewController {
     }
     
     func reset() {
-        if let indexPath = selectedIndexPath,
-            let cell = tableView.cellForRow(at: indexPath) as? PaymentMethodTableViewCell {
-            justSelected = false
-            selectedIndexPath = nil
-            cell.stopLoadingAnimation()
-        }
+        selectedCell?.stopLoadingAnimation()
+        selectedIndexPath = nil
+        
+        view.isUserInteractionEnabled = true
     }
     
-    func cancelPayment() {
-        didCancel?()
+    func didSelect(cancelButtonItem: Any) {
+        delegate?.paymentPickerViewControllerDidCancel(self)
     }
     
     func displayMethods(preferred: [PaymentMethod]?, available: [PaymentMethod]) {
@@ -98,6 +96,26 @@ class PaymentPickerViewController: LoadingTableViewController {
         
         loading = false
         tableView.reloadData()
+    }
+    
+    /// Displays an activity indicator next to the selected payment method, and disable user interaction.
+    /// To hide the activity indicator and reenable user interaction, call reset().
+    func displayPaymentMethodActivityIndicator() {
+        selectedCell?.startLoadingAnimation()
+        
+        view.isUserInteractionEnabled = false
+    }
+    
+    // MARK: Cell Selection
+    
+    fileprivate var selectedIndexPath: IndexPath?
+    
+    private var selectedCell: PaymentMethodTableViewCell? {
+        guard let indexPath = selectedIndexPath else {
+            return nil
+        }
+        
+        return tableView.cellForRow(at: indexPath) as? PaymentMethodTableViewCell
     }
 }
 
@@ -171,33 +189,44 @@ extension PaymentPickerViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        if justSelected {
-            return
-        }
-        
-        justSelected = true
         selectedIndexPath = indexPath
         
-        let method = paymentMethod(at: indexPath)
-        
-        let cell = tableView.cellForRow(at: indexPath) as? LoadingTableViewCell
-        if let isRedirectType = method.plugin?.isRedirectType, isRedirectType == true {
-            cell?.startLoadingAnimation()
-        } else {
-            reset()
+        delegate?.paymentPickerViewController(self, didSelectPaymentMethod: paymentMethod(at: indexPath))
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        //  Allow editing in the `Preferred` section only.
+        if tableView.numberOfSections == 2 && indexPath.section == 0 {
+            return true
         }
         
-        didSelectMethodCompletion?(method)
+        return false
     }
-}
-
-extension PaymentPickerViewController {
     
-    func showAlert(title: String?, message: String?) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            //  Deletion is allowed only for preferred methods (section == 0).
+            if indexPath.section != 0 {
+                return
+            }
+            
+            let methodIndex = indexPath.row
+            if methodIndex >= preferredMethods.count {
+                return
+            }
+            
+            //  Request to delete selected payment method.
+            let method = preferredMethods[methodIndex]
+            delegate?.paymentPickerViewController(self, didSelectDeletePaymentMethod: method)
+            
+            preferredMethods.remove(at: methodIndex)
+            
+            let containsSingleItem = tableView.numberOfRows(inSection: indexPath.section) == 1
+            if containsSingleItem {
+                tableView.deleteSections(IndexSet(integer: indexPath.section), with: .automatic)
+            } else {
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+            }
         }
     }
 }

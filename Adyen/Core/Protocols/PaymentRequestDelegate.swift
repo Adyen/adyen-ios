@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-/// The payment request delegate. Used for Custom integration comunication.
+/// The payment request delegate. Used for Custom integration comunication. All delegate methods are invoked on the main thread.
 public protocol PaymentRequestDelegate: class {
     
     /// Given the `PaymentRequest` that started the payment flow and `token`, waits for data from merchant server to be passed via `completion`.

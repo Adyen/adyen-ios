@@ -63,7 +63,8 @@ public class InputDetail {
         }
         
         //  Optional
-        let optional = info["optional"] as? Bool ?? false
+        let optionalString = info["optional"] as? String
+        let optional = optionalString?.boolValue() ?? false
         
         //  Select Items
         var items = [InputSelectItem]()

@@ -16,11 +16,17 @@ It is very easy to enable your app accepting all payment methods offered by Adye
 For quick integration, initiate `CheckoutViewController` and present it in your app:
 
 ```swift
-let viewController = CheckoutViewController(delegate: self)
-present(viewController, animated: true, completion: nil)
+var viewController: CheckoutViewController?
+
+// ...
+
+func presentCheckoutViewController() {
+    viewController = CheckoutViewController(delegate: self)
+    present(viewController!, animated: true, completion: nil)
+}
 ```
 
-After you implement the `CheckoutViewControllerDelegate` protocol, all UI interactions will be handled by SDK.
+After you implement the `CheckoutViewControllerDelegate` protocol, all UI interactions will be handled by SDK. Keeping a reference to the `CheckoutViewController` instance will ensure that delegate callbacks are received.
 
 
 ##### - checkoutViewController:requiresPaymentDataForToken:completion:
@@ -40,7 +46,7 @@ func checkoutViewController(_ controller: CheckoutViewController, requiresPaymen
       "sdkToken": token   // Pass the `token` received from SDK.
    ]
 
-   // For your convenience, we offer a test merchant server. Always use your own implementation when testing before going Live.
+   // For your convenience, we offer a test merchant server. Always use your own implementation when testing before going live.
    let url = URL(string: "https://shopper-test.adyen.com/demo/easy-integration/merchantserver/setup")!
 
    var request = URLRequest(url: url)

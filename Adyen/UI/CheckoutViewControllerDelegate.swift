@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-/// Protocol used for Quick integration comunication.
+/// Protocol used for Quick integration comunication. All delegate methods are invoked on the main thread.
 public protocol CheckoutViewControllerDelegate: class {
     
     /// Given the controller that started the payment flow and `token`, waits for data from merchant server to be passed via `completion`.

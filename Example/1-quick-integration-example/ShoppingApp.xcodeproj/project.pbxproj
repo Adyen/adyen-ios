@@ -15,6 +15,7 @@
 		7CAC59EB1E364F6500CAE0C9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CAC59E91E364F6500CAE0C9 /* LaunchScreen.storyboard */; };
 		7CAC59F41E3659D200CAE0C9 /* ShoppingCartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CAC59F21E3659D200CAE0C9 /* ShoppingCartViewController.swift */; };
 		7CAC59F51E3659D200CAE0C9 /* ConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CAC59F31E3659D200CAE0C9 /* ConfirmationViewController.swift */; };
+		E97DE19F1EEEA80600ED3333 /* PaymentMethodPaypalRecurring.json in Resources */ = {isa = PBXBuildFile; fileRef = E97DE19E1EEEA80600ED3333 /* PaymentMethodPaypalRecurring.json */; };
 		E9C250721ED85D72002D3B8E /* CardValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C250591ED85D72002D3B8E /* CardValidatorTests.swift */; };
 		E9C250731ED85D72002D3B8E /* ArrayExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C2505B1ED85D72002D3B8E /* ArrayExtensionTests.swift */; };
 		E9C250741ED85D72002D3B8E /* BoolExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C2505C1ED85D72002D3B8E /* BoolExtensionsTests.swift */; };
@@ -27,7 +28,6 @@
 		E9C2507B1ED85D72002D3B8E /* StringExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C250631ED85D72002D3B8E /* StringExtensionsTests.swift */; };
 		E9C2507C1ED85D72002D3B8E /* URLExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C250641ED85D72002D3B8E /* URLExtensionsTests.swift */; };
 		E9C2507D1ED85D72002D3B8E /* UIColorExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C250661ED85D72002D3B8E /* UIColorExtensionsTests.swift */; };
-		E9C2507E1ED85D72002D3B8E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E9C250671ED85D72002D3B8E /* Info.plist */; };
 		E9C2507F1ED85D72002D3B8E /* JsonReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C250681ED85D72002D3B8E /* JsonReader.swift */; };
 		E9C250801ED85D72002D3B8E /* PaymentMethodApplePay.json in Resources */ = {isa = PBXBuildFile; fileRef = E9C2506B1ED85D72002D3B8E /* PaymentMethodApplePay.json */; };
 		E9C250811ED85D72002D3B8E /* PaymentMethodCard.json in Resources */ = {isa = PBXBuildFile; fileRef = E9C2506C1ED85D72002D3B8E /* PaymentMethodCard.json */; };
@@ -76,6 +76,7 @@
 		7CAC59F31E3659D200CAE0C9 /* ConfirmationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmationViewController.swift; sourceTree = "<group>"; };
 		81A51A66751D4275B9DAEC27 /* Pods-ShoppingApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShoppingApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-ShoppingApp/Pods-ShoppingApp.release.xcconfig"; sourceTree = "<group>"; };
 		91B6B59168E978035AD7F41C /* Pods-ShoppingApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShoppingApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ShoppingApp/Pods-ShoppingApp.debug.xcconfig"; sourceTree = "<group>"; };
+		E97DE19E1EEEA80600ED3333 /* PaymentMethodPaypalRecurring.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PaymentMethodPaypalRecurring.json; sourceTree = "<group>"; };
 		E9C2501D1ED85BF6002D3B8E /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9C250591ED85D72002D3B8E /* CardValidatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardValidatorTests.swift; sourceTree = "<group>"; };
 		E9C2505B1ED85D72002D3B8E /* ArrayExtensionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayExtensionTests.swift; sourceTree = "<group>"; };
@@ -232,6 +233,7 @@
 		E9C2506A1ED85D72002D3B8E /* Json */ = {
 			isa = PBXGroup;
 			children = (
+				E97DE19E1EEEA80600ED3333 /* PaymentMethodPaypalRecurring.json */,
 				E9C2506B1ED85D72002D3B8E /* PaymentMethodApplePay.json */,
 				E9C2506C1ED85D72002D3B8E /* PaymentMethodCard.json */,
 				E9C2506D1ED85D72002D3B8E /* PaymentMethodCardCvc.json */,
@@ -296,7 +298,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = Adyen;
 				TargetAttributes = {
 					7CAC59DC1E364F6500CAE0C9 = {
@@ -346,8 +348,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E97DE19F1EEEA80600ED3333 /* PaymentMethodPaypalRecurring.json in Resources */,
 				E9C250841ED85D72002D3B8E /* PaymentMethodKlarna.json in Resources */,
-				E9C2507E1ED85D72002D3B8E /* Info.plist in Resources */,
 				E9C250801ED85D72002D3B8E /* PaymentMethodApplePay.json in Resources */,
 				E9C250821ED85D72002D3B8E /* PaymentMethodCardCvc.json in Resources */,
 				E9C250831ED85D72002D3B8E /* PaymentMethodIdeal.json in Resources */,

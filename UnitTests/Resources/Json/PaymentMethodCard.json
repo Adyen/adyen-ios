@@ -14,7 +14,7 @@
     },
     {
       "key" : "storeDetails",
-      "optional" : true,
+      "optional" : "true",
       "type" : "boolean"
     }
   ]

@@ -18,6 +18,7 @@ class InternalPaymentRequest {
     let generationTime: String
     let logoBaseURL: String
     let initiationURL: URL
+    let deletePreferredURL: URL?
     
     var shopperReference: String?
     var oneClick = true
@@ -58,5 +59,8 @@ class InternalPaymentRequest {
         shopperReference = paymentInfo["shopperReference"] as? String
         publicKey = requestInfo["publicKey"] as? String
         shopperLocale = requestInfo["shopperLocale"] as? String
+        
+        let deleteURLString = requestInfo["disableRecurringDetailUrl"] as? String
+        deletePreferredURL = URL(string: deleteURLString ?? "")
     }
 }

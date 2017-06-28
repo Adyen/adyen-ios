@@ -157,3 +157,11 @@ internal extension PaymentMethod {
         paymentMethodData = method.group!.data
     }
 }
+
+extension PaymentMethod: Equatable {
+    
+    /// :nodoc:
+    public static func ==(lhs: PaymentMethod, rhs: PaymentMethod) -> Bool {
+        return lhs.name == rhs.name && lhs.type == rhs.type
+    }
+}

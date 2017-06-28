@@ -59,6 +59,22 @@ class BasePlugin: NSObject {
         return prefilledFields
     }
     
+    func deleteRequestInfo() -> [String: Any] {
+        var info = [String: Any]()
+        
+        if let request = self.paymentRequest {
+            info["paymentData"] = request.paymentData
+            
+            if let paymentMethod = method,
+                let paymentMethodData = paymentMethod.paymentMethodData {
+                //  Use group data if available
+                info["paymentMethodData"] = paymentMethodData
+            }
+        }
+        
+        return info
+    }
+    
     public func fullfilledFields() -> [String: Any]? {
         return providedPaymentData
     }
