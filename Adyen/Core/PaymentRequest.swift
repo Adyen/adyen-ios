@@ -108,7 +108,7 @@ public final class PaymentRequest {
     }
     
     /// Permanently deletes payment method from shopper's preferred payment options.
-    func deletePreferred(paymentMethod: PaymentMethod, completion: @escaping (Bool, Error?) -> Void) {
+    public func deletePreferred(paymentMethod: PaymentMethod, completion: @escaping (Bool, Error?) -> Void) {
         paymentMethod.plugin?.paymentRequest = paymentRequest
         
         guard
