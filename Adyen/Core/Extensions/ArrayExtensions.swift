@@ -37,3 +37,17 @@ internal extension Array {
         return groups
     }
 }
+
+internal extension Optional where Wrapped: Collection {
+    
+    /// Returns a boolean value indicating whether the wrapped collection is either nil or empty.
+    internal var isNilOrEmpty: Bool {
+        switch self {
+        case let .some(array):
+            return array.isEmpty
+        case .none:
+            return true
+        }
+    }
+    
+}

@@ -21,7 +21,7 @@ class InternalPaymentRequest {
     let deletePreferredURL: URL?
     
     var shopperReference: String?
-    var oneClick = true
+    var isOneClick = true
     var paymentMethod: PaymentMethod?
     var publicKey: String?
     var paymentData: String
@@ -54,7 +54,7 @@ class InternalPaymentRequest {
         self.paymentData = paymentData
         self.generationTime = generationTime
         
-        oneClick = (shopperReference != nil)
+        isOneClick = (shopperReference != nil)
         paymentRequestData = data
         shopperReference = paymentInfo["shopperReference"] as? String
         publicKey = requestInfo["publicKey"] as? String

@@ -1,6 +1,8 @@
+version = `agvtool vers -terse`
+
 Pod::Spec.new do |s|
   s.name = 'Adyen'
-  s.version = File.read('VERSION')
+  s.version = version
   s.summary = "Adyen SDK for iOS"
   s.description = <<-DESC
     With Adyen SDK you can dynamically list all relevant payment methods for a specific transaction, so your shoppers can always pay with the method of their choice. The methods are listed based on the shopper's country, the transaction currency and amount.
@@ -14,11 +16,10 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '9.0'
   s.frameworks = 'Foundation'
 
-  s.default_subspecs = 'Core', 'Cards', 'Ideal', 'UI'
+  s.default_subspecs = 'Core', 'Cards', 'Ideal', 'SEPADirectDebit', 'UI'
 
   s.subspec 'Core' do |plugin|
     plugin.source_files = 'Adyen/Core/**/*'
-    plugin.resources = ['VERSION']
   end
 
   # Payment Methods
@@ -46,6 +47,17 @@ Pod::Spec.new do |s|
     plugin.dependency 'Adyen/Core'
   end
 
+  s.subspec 'SEPADirectDebit' do |plugin|
+    plugin.source_files = 'Adyen/Plugins/SEPADirectDebit/**/*'
+    plugin.dependency 'Adyen/Core'
+    plugin.dependency 'Adyen/CoreUI'
+    plugin.resource_bundles = {
+        'SEPADirectDebit' => [
+            'Adyen/Plugins/SEPADirectDebit/**/*.xib'
+        ]
+    }
+  end
+
   # Internals
   s.subspec 'UI' do |plugin|
     plugin.source_files = 'Adyen/UI/**/*'
@@ -55,7 +67,12 @@ Pod::Spec.new do |s|
 
   s.subspec 'CoreUI' do |plugin|
     plugin.source_files = 'Adyen/CoreUI/**/*.swift'
-    plugin.resources = ['Adyen/CoreUI/Assets/Media.xcassets']
+    plugin.resource_bundles = {
+        'CoreUI' => [
+            'Adyen/CoreUI/Assets/Media.xcassets',
+            'Adyen/CoreUI/Assets/*.lproj/*.strings'
+        ]
+    }
     plugin.dependency 'Adyen/Core'
   end
 end

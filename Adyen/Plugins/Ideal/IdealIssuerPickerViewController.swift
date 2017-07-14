@@ -20,9 +20,8 @@ class IdealIssuerPickerViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = NSLocalizedString("iDEAL", comment: "")
         
-        tableView.backgroundColor = UIColor.checkoutBackground()
+        tableView.backgroundColor = UIColor.checkoutBackground
         tableView.cellLayoutMarginsFollowReadableWidth = false
         tableView.separatorInset = UIEdgeInsets.zero
         tableView.layoutMargins = UIEdgeInsets.zero

@@ -7,45 +7,21 @@
 import UIKit
 import QuartzCore
 
-class CardFormViewController: UIViewController {
-    //  Interface Builder
-    @IBOutlet weak var lockImageView: UIImageView!
+class CardFormViewController: UIViewController, CheckoutPaymentFieldDelegate {
     
-    //  Card Number Field
-    @IBOutlet weak var cardNumberLabel: UILabel!
-    @IBOutlet weak var cardNumberLogoImageView: UIImageView!
-    @IBOutlet weak var cardNumberUnderlineView: UIView!
-    @IBOutlet weak var cardNumberTextField: CardNumberField!
+    // MARK: - Object Lifecycle
     
-    //  Expiry Date Field
-    @IBOutlet weak var expiryDateLabel: UILabel!
-    @IBOutlet weak var expiryDateUnderlineView: UIView!
-    @IBOutlet weak var expiryDateTextField: CardExpirationField!
+    init(appearanceConfiguration: AppearanceConfiguration) {
+        self.appearanceConfiguration = appearanceConfiguration
+        
+        super.init(nibName: "CardFormViewController", bundle: Bundle(for: CardFormViewController.self))
+    }
     
-    //  CVC Field
-    @IBOutlet weak var cvcLabel: UILabel!
-    @IBOutlet weak var cvcUnderlineView: UIView!
-    @IBOutlet weak var cvcTextField: CardCvcField!
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
-    //  Store Details
-    @IBOutlet weak var storeDetailsLabel: UILabel!
-    @IBOutlet weak var storeDetailsButton: UIButton!
-    
-    @IBOutlet weak var payButton: CheckoutButton!
-    @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var keyboardTopLineBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var formHeightConstraint: NSLayoutConstraint!
-    
-    fileprivate let inactiveColor = UIColor(hexString: "D8D8D8")
-    fileprivate let activeColor = UIColor(hexString: "757575")
-    
-    fileprivate var cardFieldManager: CardPaymentFieldManager?
-    fileprivate var detectedCardType = CardType.unknown
-    
-    var cardDetailsHandler: (([String: Any], @escaping ((Bool) -> Void)) -> Void)?
-    var formattedAmount: String?
-    var paymentMethod: PaymentMethod?
-    var shouldHideStoreDetails = false
+    // MARK: - UIViewController
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,17 +32,78 @@ class CardFormViewController: UIViewController {
         cardFieldManager?.delegate = self
     }
     
+    // MARK: - CheckoutPaymentFieldDelegate
+    
+    func paymentFieldChangedValidity(_ valid: Bool) {
+        payButton.isEnabled = valid
+    }
+    
+    func paymentFieldDidDetectCard(type: CardType) {
+        updateCardLogoWith(type: type)
+        updateCvcRequirementWith(type: type)
+    }
+    
+    func paymentFieldDidUpdateActive(field: UITextField) {
+        updateFieldsPresentationWith(field: field)
+    }
+    
+    // MARK: - Public
+    
+    var cardDetailsHandler: (([String: Any], @escaping ((Bool) -> Void)) -> Void)?
+    var formattedAmount: String?
+    var paymentMethod: PaymentMethod?
+    var shouldHideStoreDetails = false
+    
+    // MARK: - Private
+    
+    //  Interface Builder
+    @IBOutlet private weak var lockImageView: UIImageView!
+    
+    //  Card Number Field
+    @IBOutlet private weak var cardNumberLabel: UILabel!
+    @IBOutlet private weak var cardNumberLogoImageView: UIImageView!
+    @IBOutlet private weak var cardNumberUnderlineView: UIView!
+    @IBOutlet private weak var cardNumberTextField: CardNumberField!
+    
+    //  Expiry Date Field
+    @IBOutlet private weak var expiryDateLabel: UILabel!
+    @IBOutlet private weak var expiryDateUnderlineView: UIView!
+    @IBOutlet private weak var expiryDateTextField: CardExpirationField!
+    
+    //  CVC Field
+    @IBOutlet private weak var cvcLabel: UILabel!
+    @IBOutlet private weak var cvcUnderlineView: UIView!
+    @IBOutlet private weak var cvcTextField: CardCvcField!
+    
+    //  Store Details
+    @IBOutlet private weak var storeDetailsLabel: UILabel!
+    @IBOutlet private weak var storeDetailsButton: UIButton!
+    
+    @IBOutlet private weak var payButton: CheckoutButton!
+    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private weak var keyboardTopLineBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var formHeightConstraint: NSLayoutConstraint!
+    
+    private let inactiveColor = #colorLiteral(red: 0.8470588235, green: 0.8470588235, blue: 0.8470588235, alpha: 1)
+    private let activeColor = #colorLiteral(red: 0.4588235294, green: 0.4588235294, blue: 0.4588235294, alpha: 1)
+    
+    private var cardFieldManager: CardPaymentFieldManager?
+    private var detectedCardType: CardType?
+    
+    private let appearanceConfiguration: AppearanceConfiguration
+    
     private func applyStyling() {
-        title = "Card Details"
+        title = ADYLocalizedString("creditCard.title")
         
         cardNumberLogoImageView.image = UIImage.bundleImage("credit_card_icon")
         lockImageView.image = UIImage.bundleImage("lock")
         storeDetailsButton.setImage(UIImage.bundleImage("checkbox_inactive"), for: .normal)
         storeDetailsButton.setImage(UIImage.bundleImage("checkbox_active"), for: .selected)
+        storeDetailsButton.tintColor = appearanceConfiguration.tintColor
         
         payButton.isEnabled = false
-        payButton.layer.cornerRadius = 4
-        payButton.setTitle("Pay \(formattedAmount ?? "")", for: .normal)
+        payButton.title = ADYLocalizedString("payButton.title.formatted", formattedAmount ?? "")
+        payButton.appearanceConfiguration = appearanceConfiguration
         
         if shouldHideStoreDetails {
             hideStoreDetails()
@@ -83,7 +120,7 @@ class CardFormViewController: UIViewController {
         formHeightConstraint.constant -= 40
     }
     
-    fileprivate func updateFieldsPresentationWith(field: UITextField) {
+    private func updateFieldsPresentationWith(field: UITextField) {
         cardNumberUnderlineView.backgroundColor = inactiveColor
         expiryDateUnderlineView.backgroundColor = inactiveColor
         cvcUnderlineView.backgroundColor = inactiveColor
@@ -125,14 +162,14 @@ class CardFormViewController: UIViewController {
         }
     }
     
-    fileprivate func updateCardLogoWith(type: CardType) {
-        if detectedCardType == type {
+    private func updateCardLogoWith(type: CardType?) {
+        guard detectedCardType != type else {
             return
         }
         
         detectedCardType = type
         
-        if detectedCardType == .unknown {
+        guard detectedCardType != nil else {
             cardNumberLogoImageView.image = UIImage.bundleImage("credit_card_icon")
             return
         }
@@ -141,7 +178,7 @@ class CardFormViewController: UIViewController {
             return
         }
         
-        for member in members where member.type == detectedCardType.rawValue {
+        for member in members where member.type == detectedCardType!.rawValue {
             if let url = member.logoURL {
                 cardNumberLogoImageView.downloadedFrom(url: url)
                 cardNumberLogoImageView.contentMode = .scaleAspectFit
@@ -157,10 +194,12 @@ class CardFormViewController: UIViewController {
         //  change to unknown if couldn't find anything
         cardNumberLogoImageView.image = UIImage.bundleImage("credit_card_icon")
     }
-}
-
-extension CardFormViewController {
-    @IBAction func pay(_ sender: Any) {
+    
+    private func updateCvcRequirementWith(type: CardType?) {
+        // TODO: update
+    }
+    
+    @IBAction private func pay(_ sender: Any) {
         // start animation
         guard
             let number = cardNumberTextField.text,
@@ -186,31 +225,19 @@ extension CardFormViewController {
             "storeDetails": storeDetailsButton.isSelected
         ]
         
+        resignFirstResponder()
+        
         cardNumberTextField.resignFirstResponder()
         expiryDateTextField.resignFirstResponder()
         cvcTextField.resignFirstResponder()
         
-        payButton.startLoading()
+        payButton.isLoading = true
         
         cardDetailsHandler?(info) { success in }
     }
     
-    @IBAction func storeDetailsToggle(_ sender: Any) {
+    @IBAction private func storeDetailsToggle(_ sender: Any) {
         storeDetailsButton.isSelected = !storeDetailsButton.isSelected
     }
-}
-
-extension CardFormViewController: CheckoutPaymentFieldDelegate {
     
-    func paymentFieldChangedValidity(_ valid: Bool) {
-        payButton.isEnabled = valid
-    }
-    
-    func paymentFieldDidDetectCard(type: CardType) {
-        updateCardLogoWith(type: type)
-    }
-    
-    func paymentFieldDidUpdateActive(field: UITextField) {
-        updateFieldsPresentationWith(field: field)
-    }
 }

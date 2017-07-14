@@ -7,11 +7,10 @@
 import Foundation
 
 var sdkVersion: String {
-    if let file = Bundle(for: PaymentRequest.self).path(forResource: "VERSION", ofType: ""),
-        let lines = try? String(contentsOfFile: file).components(separatedBy: .newlines),
-        let version = lines.first {
-        return version
+    let bundle = Bundle(for: PaymentRequest.self)
+    guard let version = bundle.infoDictionary?["CFBundleShortVersionString"] as? String else {
+        fatalError("Failed to read version number from Info.plist.")
     }
     
-    fatalError("Could not read VERSION file")
+    return version
 }

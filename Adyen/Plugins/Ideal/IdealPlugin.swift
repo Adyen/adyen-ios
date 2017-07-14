@@ -9,10 +9,6 @@ import Foundation
 class IdealPlugin: BasePlugin {
     var presenter: IdealDetailsPresenter?
     
-    override func linnearFlow() -> Bool {
-        return true
-    }
-    
     override func reset() {
         super.reset()
         presenter?.issuerPickerViewController?.reset()

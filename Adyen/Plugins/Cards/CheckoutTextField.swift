@@ -14,9 +14,11 @@ class CardNumberField: CheckoutTextField {
     
     var cardTypeDetected: ((CardType) -> Void)?
     
-    var card = CardType.unknown {
+    var card: CardType? {
         didSet {
-            self.cardTypeDetected?(card)
+            if let card = card {
+                self.cardTypeDetected?(card)
+            }
         }
     }
     

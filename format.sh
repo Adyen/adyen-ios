@@ -2,8 +2,8 @@
 
 echo "Formatting..."
 
-./Example/1-quick-integration-example/Pods/SwiftFormat/CommandLineTool/swiftformat Adyen/ Example/ \
-    --disable blankLinesAtEndOfScope,unusedArguments \
+./Pods/SwiftFormat/CommandLineTool/swiftformat ./ \
+    --disable blankLinesAtEndOfScope,unusedArguments,redundantSelf \
     --comments ignore \
     --commas inline \
     --ranges nospace \

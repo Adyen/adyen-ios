@@ -32,7 +32,7 @@ class ApplePayDetailsPresenter: NSObject, PaymentMethodDetailsPresenter {
         return request
     }
     
-    func setup(with hostViewController: UIViewController, paymentRequest: PaymentRequest, paymentDetails: PaymentDetails, completion: @escaping (PaymentDetails) -> Void) {
+    func setup(with hostViewController: UIViewController, paymentRequest: PaymentRequest, paymentDetails: PaymentDetails, appearanceConfiguration: AppearanceConfiguration, completion: @escaping (PaymentDetails) -> Void) {
         self.hostViewController = hostViewController
         requiredPaymentDetails = paymentDetails
         detailsCompletion = completion

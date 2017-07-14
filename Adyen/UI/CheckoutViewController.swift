@@ -7,46 +7,58 @@
 import UIKit
 import SafariServices
 
-/// Starting point for [Quick integration](https://docs.adyen.com/developers/payments/accepting-payments/in-app-integration). Intialize with `CheckoutViewContollerDelegate` and present this ViewController in your app to start the payment flow.
+/// The starting point for [Quick integration](https://docs.adyen.com/developers/payments/accepting-payments/in-app-integration). Initialize with `CheckoutViewContollerDelegate` and present this view controller in your app to start the payment flow. If you don't embed the `CheckoutViewController` in an existing `UINavigationController`, a new one will be created automatically.
 public final class CheckoutViewController: UIViewController {
     
-    /// Delegate for Quick integration.
-    internal(set) public weak var delegate: CheckoutViewControllerDelegate?
+    /// The delegate for Quick integration.
+    public internal(set) weak var delegate: CheckoutViewControllerDelegate?
     
-    var paymentRequest: PaymentRequest?
-    var methodCompletion: MethodCompletion?
-    var currentPresenter: PaymentMethodDetailsPresenter?
+    /// The appearance configuration that was used to initialize the view controller.
+    fileprivate let appearanceConfiguration: AppearanceConfiguration
     
-    /// Initialise the ViewController with `CheckoutViewControllerDelegate`.
-    public init(delegate: CheckoutViewControllerDelegate) {
-        self.init()
-        
+    /// Initializes the checkout view controller.
+    ///
+    /// - Parameters:
+    ///   - delegate: The delegate to receive the checkout view controller's events.
+    ///   - appearanceConfiguration: The configuration to use for customizing the checkout view controller's appearance.
+    public init(delegate: CheckoutViewControllerDelegate, appearanceConfiguration: AppearanceConfiguration = .default) {
         self.delegate = delegate
+        self.appearanceConfiguration = appearanceConfiguration.copied
         
-        addChildViewController(rootViewController)
+        super.init(nibName: nil, bundle: nil)
         
         modalPresentationStyle = .formSheet
     }
     
     /// :nodoc:
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    }
-    
-    /// :nodoc:
     public required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: Child View Controllers
     
-    fileprivate lazy var rootViewController: UIViewController = {
-        UINavigationController(rootViewController: self.paymentPickerViewController)
+    fileprivate var rootViewController: UIViewController? {
+        willSet {
+            rootViewController?.removeFromParentViewController()
+            rootViewController?.viewIfLoaded?.removeFromSuperview()
+        }
+        
+        didSet {
+            guard let rootViewController = rootViewController else { return }
+            
+            addChildViewController(rootViewController)
+            viewIfLoaded?.addSubview(rootViewController.view)
+        }
+    }
+    
+    fileprivate lazy var paymentMethodPickerViewController: PaymentMethodPickerViewController = {
+        PaymentMethodPickerViewController(delegate: self, appearanceConfiguration: self.appearanceConfiguration)
     }()
     
-    fileprivate lazy var paymentPickerViewController: PaymentPickerViewController = {
-        PaymentPickerViewController(delegate: self)
-    }()
+    /// :nodoc:
+    public override var navigationItem: UINavigationItem {
+        return paymentMethodPickerViewController.navigationItem
+    }
     
     // MARK: View
     
@@ -54,20 +66,49 @@ public final class CheckoutViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.addSubview(rootViewController.view)
+        if let rootView = rootViewController?.view {
+            view.addSubview(rootView)
+        }
         
-        startPaymentRequest()
+        paymentRequest.start()
     }
-}
-
-// MARK: Payment Request
-
-extension CheckoutViewController {
     
-    func startPaymentRequest() {
-        paymentRequest = PaymentRequest(delegate: self)
-        paymentRequest?.start()
+    /// :nodoc:
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // If we're being presented inside a UINavigationController, skip the use of our own navigation controller.
+        if parent is UINavigationController {
+            rootViewController = paymentMethodPickerViewController
+        } else {
+            rootViewController = NavigationController(rootViewController: paymentMethodPickerViewController, appearanceConfiguration: appearanceConfiguration)
+        }
     }
+    
+    /// :nodoc:
+    public override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        rootViewController?.view.frame = view.bounds
+    }
+    
+    // MARK: Status Bar
+    
+    /// :nodoc:
+    public override var preferredStatusBarStyle: UIStatusBarStyle {
+        return appearanceConfiguration.preferredStatusBarStyle
+    }
+    
+    // MARK: Payment Request
+    
+    fileprivate lazy var paymentRequest: PaymentRequest = {
+        PaymentRequest(delegate: self)
+    }()
+    
+    fileprivate var paymentMethodCompletion: MethodCompletion?
+    
+    fileprivate var currentPaymentDetailsPresenter: PaymentMethodDetailsPresenter?
+    
 }
 
 // MARK: PaymentRequestDelegate
@@ -81,9 +122,9 @@ extension CheckoutViewController: PaymentRequestDelegate {
     
     /// :nodoc:
     public func paymentRequest(_ request: PaymentRequest, requiresPaymentMethodFrom preferredMethods: [PaymentMethod]?, available availableMethods: [PaymentMethod], completion: @escaping MethodCompletion) {
-        methodCompletion = completion
+        paymentMethodCompletion = completion
         
-        paymentPickerViewController.displayMethods(preferred: preferredMethods, available: availableMethods)
+        paymentMethodPickerViewController.displayMethods(preferred: preferredMethods, available: availableMethods)
     }
     
     /// :nodoc:
@@ -99,17 +140,19 @@ extension CheckoutViewController: PaymentRequestDelegate {
     
     /// :nodoc:
     public func paymentRequest(_ request: PaymentRequest, requiresPaymentDetails details: PaymentDetails, completion: @escaping PaymentDetailsCompletion) {
-        guard let method = request.paymentMethod,
+        guard
+            let method = request.paymentMethod,
             let plugin = method.plugin as? UIPresentable,
             let presenter = plugin.detailsPresenter() else {
             completion(details)
             return
         }
         
-        currentPresenter = presenter
+        currentPaymentDetailsPresenter = presenter
         
-        presenter.setup(with: rootViewController, paymentRequest: request, paymentDetails: details) { completeDetails in
-            self.paymentPickerViewController.displayPaymentMethodActivityIndicator()
+        let rootViewController = paymentMethodPickerViewController.navigationController ?? paymentMethodPickerViewController
+        presenter.setup(with: rootViewController, paymentRequest: request, paymentDetails: details, appearanceConfiguration: appearanceConfiguration) { completeDetails in
+            self.paymentMethodPickerViewController.displayPaymentMethodActivityIndicator()
             
             completion(details)
         }
@@ -119,33 +162,38 @@ extension CheckoutViewController: PaymentRequestDelegate {
     
     /// :nodoc:
     public func paymentRequest(_ request: PaymentRequest, didFinishWith result: PaymentRequestResult) {
-        paymentPickerViewController.reset()
+        paymentMethodPickerViewController.reset()
         
         delegate?.checkoutViewController(self, didFinishWith: result)
     }
+    
 }
 
-// MARK: PaymentPickerViewControllerDelegate
+// MARK: PaymentMethodPickerViewControllerDelegate
 
-extension CheckoutViewController: PaymentPickerViewControllerDelegate {
+extension CheckoutViewController: PaymentMethodPickerViewControllerDelegate {
     
-    func paymentPickerViewController(_ paymentPickerViewController: PaymentPickerViewController, didSelectPaymentMethod paymentMethod: PaymentMethod) {
-        methodCompletion?(paymentMethod)
+    /// :nodoc:
+    func paymentMethodPickerViewController(_ paymentMethodPickerViewController: PaymentMethodPickerViewController, didSelectPaymentMethod paymentMethod: PaymentMethod) {
+        paymentMethodCompletion?(paymentMethod)
         
-        if paymentMethod.inputDetails.isEmpty {
-            paymentPickerViewController.displayPaymentMethodActivityIndicator()
+        if paymentMethod.inputDetails.isNilOrEmpty {
+            paymentMethodPickerViewController.displayPaymentMethodActivityIndicator()
         }
     }
     
-    func paymentPickerViewController(_ paymentPickerViewController: PaymentPickerViewController, didSelectDeletePaymentMethod paymentMethod: PaymentMethod) {
-        paymentRequest?.deletePreferred(paymentMethod: paymentMethod) { _ in
+    /// :nodoc:
+    func paymentMethodPickerViewController(_ paymentMethodPickerViewController: PaymentMethodPickerViewController, didSelectDeletePaymentMethod paymentMethod: PaymentMethod) {
+        paymentRequest.deletePreferred(paymentMethod: paymentMethod) { _ in
             
         }
     }
     
-    func paymentPickerViewControllerDidCancel(_ paymentPickerViewController: PaymentPickerViewController) {
+    /// :nodoc:
+    func paymentMethodPickerViewControllerDidCancel(_ paymentMethodPickerViewController: PaymentMethodPickerViewController) {
         delegate?.checkoutViewController(self, didFinishWith: .error(.canceled))
     }
+    
 }
 
 // MARK: SFSafariViewControllerDelegate
@@ -154,8 +202,9 @@ extension CheckoutViewController: SFSafariViewControllerDelegate {
     
     /// :nodoc:
     public func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
-        paymentPickerViewController.reset()
+        paymentMethodPickerViewController.reset()
         
-        paymentRequest?.paymentMethod?.plugin?.reset()
+        paymentRequest.paymentMethod?.plugin?.reset()
     }
+    
 }

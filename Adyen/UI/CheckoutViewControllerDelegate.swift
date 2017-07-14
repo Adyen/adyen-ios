@@ -4,15 +4,29 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-/// Protocol used for Quick integration comunication. All delegate methods are invoked on the main thread.
+/// The `CheckoutViewControllerDelegate` protocol defines the methods that a delegate of `CheckoutViewController` should implement to provide payment data and be informed of the payment flow progress.
 public protocol CheckoutViewControllerDelegate: class {
     
-    /// Given the controller that started the payment flow and `token`, waits for data from merchant server to be passed via `completion`.
+    /// Invoked when the payment flow has started and payment data is requested from the merchant server.
+    ///
+    /// - Parameters:
+    ///   - controller: The checkout view controller that has started the payment flow.
+    ///   - token: The token assigned to the payment flow.
+    ///   - completion: The completion handler to invoke when the payment data is retrieved from the merchant server.
     func checkoutViewController(_ controller: CheckoutViewController, requiresPaymentDataForToken token: String, completion: @escaping DataCompletion)
     
-    /// This method is called when a URL redirection was made. When the browser process is completed, the `completion` for the given URL must be called.
+    /// Invoked when the redirection to a URL has been made. The given completion handler should be invoked when the user returns to the application through a URL.
+    ///
+    /// - Parameters:
+    ///   - controller: The checkout view controller which requested the return from a URL redirection.
+    ///   - completion: The completion handler to invoke when the user returns to the application through a URL.
     func checkoutViewController(_ controller: CheckoutViewController, requiresReturnURL completion: @escaping URLCompletion)
     
-    /// This method is called when the payment flow is finished.
+    /// Invoked when the payment flow has finished.
+    ///
+    /// - Parameters:
+    ///   - controller: The checkout view controller that finished the payment flow.
+    ///   - result: The payment result.
     func checkoutViewController(_ controller: CheckoutViewController, didFinishWith result: PaymentRequestResult)
+    
 }

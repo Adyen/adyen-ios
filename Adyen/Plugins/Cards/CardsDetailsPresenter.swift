@@ -15,14 +15,16 @@ class CardsDetailsPresenter: PaymentMethodDetailsPresenter {
     var finalCompletion: ((PaymentDetails) -> Void)?
     var requiredPaymentDetails: PaymentDetails?
     var paymentRequest: PaymentRequest?
+    var appearanceConfiguration: AppearanceConfiguration!
     
-    func setup(with hostViewController: UIViewController, paymentRequest: PaymentRequest, paymentDetails: PaymentDetails, completion: @escaping (PaymentDetails) -> Void) {
+    func setup(with hostViewController: UIViewController, paymentRequest: PaymentRequest, paymentDetails: PaymentDetails, appearanceConfiguration: AppearanceConfiguration, completion: @escaping (PaymentDetails) -> Void) {
         self.hostViewController = hostViewController
         self.paymentRequest = paymentRequest
         requiredPaymentDetails = paymentDetails
         finalCompletion = completion
+        self.appearanceConfiguration = appearanceConfiguration
         
-        if let oneClick = paymentRequest.paymentMethod?.oneClick {
+        if let oneClick = paymentRequest.paymentMethod?.isOneClick {
             oneClick ? setupOneClickFlow() : setupCardFormFlow(paymentDetails: paymentDetails)
         }
     }
@@ -36,21 +38,24 @@ class CardsDetailsPresenter: PaymentMethodDetailsPresenter {
     private lazy var oneClickAlertController: UIAlertController = {
         let paymentRequest = self.paymentRequest!
         
-        let title = "Verify your card"
-        let message = "Please enter the CVC code for \(paymentRequest.paymentMethod!.name)"
+        let title = ADYLocalizedString("creditCard.oneClickVerification.title")
+        let message = ADYLocalizedString("creditCard.oneClickVerification.message", paymentRequest.paymentMethod!.name)
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addTextField(configurationHandler: { textField in
-            textField.placeholder = "123"
             textField.textAlignment = .center
             textField.keyboardType = .numberPad
+            textField.placeholder = ADYLocalizedString("creditCard.cvcField.placeholder")
+            textField.accessibilityLabel = ADYLocalizedString("creditCard.cvcField.title")
         })
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let cancelActionTitle = ADYLocalizedString("cancelButton.title")
+        let cancelAction = UIAlertAction(title: cancelActionTitle, style: .cancel, handler: nil)
         alertController.addAction(cancelAction)
         
         let formattedAmount = Currency.formatted(amount: paymentRequest.amount!, currency: paymentRequest.currency!) ?? ""
-        let confirmAction = UIAlertAction(title: "Pay \(formattedAmount)", style: .default) { [unowned self] _ in
+        let confirmActionTitle = ADYLocalizedString("payButton.title.formatted", formattedAmount)
+        let confirmAction = UIAlertAction(title: confirmActionTitle, style: .default) { [unowned self] _ in
             self.didSelectOneClickAlertControllerConfirmAction()
         }
         alertController.addAction(confirmAction)
@@ -74,9 +79,12 @@ class CardsDetailsPresenter: PaymentMethodDetailsPresenter {
     }
     
     private func presentInvalidCVCAlertController() {
-        let alertController = UIAlertController(title: "Invalid CVC", message: "Please enter a valid CVC to continue.", preferredStyle: .alert)
+        let alertController = UIAlertController(title: ADYLocalizedString("creditCard.oneClickVerification.invalidInput.title"),
+                                                message: ADYLocalizedString("creditCard.oneClickVerification.invalidInput.message"),
+                                                preferredStyle: .alert)
         
-        let dismissAction = UIAlertAction(title: "OK", style: .default) { [unowned self] _ in
+        let dismissActionTitle = ADYLocalizedString("dismissButton.title")
+        let dismissAction = UIAlertAction(title: dismissActionTitle, style: .default) { [unowned self] _ in
             self.present() // Restart the flow.
         }
         alertController.addAction(dismissAction)
@@ -89,7 +97,7 @@ class CardsDetailsPresenter: PaymentMethodDetailsPresenter {
     private func setupCardFormFlow(paymentDetails: PaymentDetails) {
         if let request = paymentRequest {
             
-            let cardsFormController = CardFormViewController(nibName: "CardFormViewController", bundle: Bundle(for: CardsDetailsPresenter.self))
+            let cardsFormController = CardFormViewController(appearanceConfiguration: appearanceConfiguration)
             
             cardsFormController.formattedAmount = Currency.formatted(amount: request.amount!, currency: request.currency!)
             cardsFormController.paymentMethod = request.paymentMethod
@@ -133,7 +141,7 @@ class CardsDetailsPresenter: PaymentMethodDetailsPresenter {
             return
         }
         
-        if method.oneClick {
+        if method.isOneClick {
             hostViewController?.present(rootViewController, animated: true, completion: nil)
         } else {
             if let navController = hostViewController as? UINavigationController {
@@ -148,7 +156,7 @@ class CardsDetailsPresenter: PaymentMethodDetailsPresenter {
             return
         }
         
-        if method.oneClick {
+        if method.isOneClick {
             rootViewController?.dismiss(animated: true, completion: nil)
         } else {
             rootViewController?.navigationController?.popViewController(animated: true)

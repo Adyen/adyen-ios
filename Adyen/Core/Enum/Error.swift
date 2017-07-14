@@ -25,6 +25,7 @@ public enum Error: Swift.Error {
     
     /// Payment was canceled.
     case canceled
+    
 }
 
 extension Error: LocalizedError {

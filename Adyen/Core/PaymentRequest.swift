@@ -18,34 +18,34 @@ public typealias PaymentDetailsCompletion = (PaymentDetails) -> Void
 public final class PaymentRequest {
     
     /// Delegate for controlling the payment flow. See `PaymentRequestDelegate`.
-    internal(set) public weak var delegate: PaymentRequestDelegate?
+    public internal(set) weak var delegate: PaymentRequestDelegate?
     
     /// The selected payment method.
-    private(set) public var paymentMethod: PaymentMethod?
+    public private(set) var paymentMethod: PaymentMethod?
     
     /// Amount to be charged.
-    private(set) public var amount: Int?
+    public private(set) var amount: Int?
     
     /// Payment currency.
-    private(set) public var currency: String?
+    public private(set) var currency: String?
     
     /// Payment reference.
-    private(set) public var reference: String?
+    public private(set) var reference: String?
     
     /// Payment country code.
-    private(set) public var countryCode: String?
+    public private(set) var countryCode: String?
     
     /// Shopper locale.
-    private(set) public var shopperLocale: String?
+    public private(set) var shopperLocale: String?
     
     /// Shopper reference.
-    private(set) public var shopperReference: String?
+    public private(set) var shopperReference: String?
     
     /// Generation time. Used for generating a token for card payments.
-    private(set) public var generationTime: String?
+    public private(set) var generationTime: String?
     
     /// Public key. Used for generating a token for card payments.
-    private(set) public var publicKey: String?
+    public private(set) var publicKey: String?
     
     var paymentRequest: InternalPaymentRequest?
     
@@ -300,21 +300,21 @@ public final class PaymentRequest {
             return
         }
         
-        let available = methodsInfo.flatMap({ PaymentMethod(info: $0, logoBaseURL: payment.logoBaseURL) })
+        let available = methodsInfo.flatMap { PaymentMethod(info: $0, logoBaseURL: payment.logoBaseURL, isOneClick: false) }
         
         //  Group available PM's
         let groupped = available.groupBy { element in
             return element.group?.type ?? UUID().uuidString
         }
         
-        let availableGroupped = groupped.flatMap { group -> PaymentMethod? in
-            return group.count == 1 ? group[0] : PaymentMethod(group: group)
+        let availableGroupped = groupped.flatMap { members -> PaymentMethod? in
+            return members.count == 1 ? members[0] : PaymentMethod(members: members)
         }
         
         //  Parse one-click methods
         var preferredMethods = [PaymentMethod]()
         if let recurringDetails = info["recurringDetails"] as? [[String: Any]] {
-            preferredMethods = recurringDetails.flatMap({ PaymentMethod(info: $0, logoBaseURL: payment.logoBaseURL, oneClick: true) })
+            preferredMethods = recurringDetails.flatMap({ PaymentMethod(info: $0, logoBaseURL: payment.logoBaseURL, isOneClick: true) })
         }
         
         completion(preferredMethods, availableGroupped, nil)
@@ -398,7 +398,10 @@ internal extension PaymentRequest {
             return
         }
         
-        let result = Payment(payment: paymentRequest, status: status, payload: payload)
+        let result = Payment(status: status,
+                             method: paymentMethod!,
+                             payload: payload,
+                             internalRequest: paymentRequest)
         processorFinished(with: result)
     }
     

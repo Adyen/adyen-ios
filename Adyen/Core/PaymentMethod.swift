@@ -6,30 +6,32 @@
 
 import UIKit
 
-/// Payment method information.
+/// Represents a locale payment method that can be used to complete a payment.
 public final class PaymentMethod {
     
-    /// Payment method name.
+    /// The name of the payment method.
     public let name: String
     
-    /// Payment method type.
+    /// The payment method type.
     public let type: String
     
-    /// Indicates if the payment method is One-Click.
-    internal(set) public var oneClick: Bool = false
+    /// A Boolean value indicating whether the payment method is a one-click payment method, which means that it can be easily completed by the user.
+    public let isOneClick: Bool
     
-    /// Logo URL.
-    internal(set) public var logoURL: URL?
+    /// A URL to the logo of the payment method.
+    public let logoURL: URL?
     
-    /// Input details required for the payment method.
-    var inputDetails = [InputDetail]()
+    /// The input details that should be filled in to complete the payment method.
+    public let inputDetails: [InputDetail]?
     
-    /// Members of the payment method.
-    internal(set) public var members: [PaymentMethod]?
+    /// Members of the payment method (only applicable when the receiver is a group).
+    public let members: [PaymentMethod]?
+    
+    /// The group to which this payment method belongs.
+    internal let group: Group?
     
     var txVariant: PaymentMethodType
     var logoBaseURL: String?
-    var group: PaymentMethodGroup?
     var paymentMethodData: String?
     var additionalRequiredFields: [String: Any]?
     var providedAdditionalRequiredFields: [String: Any]?
@@ -48,13 +50,15 @@ public final class PaymentMethod {
         return URL(string: baseURL + groupType + ".png")
     }()
     
-    init(name: String, displayName: String, type: String, oneClick: Bool = false) {
-        self.name = displayName
+    internal init(name: String, type: String, isOneClick: Bool, logoURL: URL?, inputDetails: [InputDetail]?, members: [PaymentMethod]?, group: Group?) {
+        self.name = name
         self.type = type
-        self.oneClick = oneClick
-        txVariant = PaymentMethodType(rawValue: type) ?? .other
-        
-        members = nil
+        self.isOneClick = isOneClick
+        self.logoURL = logoURL
+        self.inputDetails = inputDetails
+        self.members = members
+        self.group = group
+        self.txVariant = PaymentMethodType(rawValue: type) ?? .other
     }
     
     func isAvailableOnDevice() -> Bool {
@@ -85,15 +89,7 @@ public final class PaymentMethod {
     }
     
     func requiresPaymentData() -> Bool {
-        return !inputDetails.isEmpty && plugin?.fullfilledFields() == nil
-    }
-    
-    func canProvideUI() -> Bool {
-        guard (plugin as? UIPresentable) != nil else {
-            return false
-        }
-        
-        return true
+        return inputDetails?.isEmpty == false && plugin?.fullfilledFields() == nil
     }
     
     func requiresURLAuth() -> Bool {
@@ -107,7 +103,7 @@ public final class PaymentMethod {
 
 internal extension PaymentMethod {
     
-    convenience init?(info: [String: Any], logoBaseURL: String, oneClick: Bool = false) {
+    convenience init?(info: [String: Any], logoBaseURL: String, isOneClick: Bool) {
         guard
             let type = info["type"] as? String,
             let data = info["paymentMethodData"] as? String,
@@ -117,7 +113,6 @@ internal extension PaymentMethod {
         }
         
         var displayName = name
-        
         if let cardInfo = info["card"] as? [String: Any],
             let digits = cardInfo["number"] as? String {
             displayName = "•••• \(digits)"
@@ -125,37 +120,59 @@ internal extension PaymentMethod {
             displayName = emailInfo
         }
         
-        self.init(name: name, displayName: displayName, type: type, oneClick: oneClick)
+        let logoURL = URL(string: logoBaseURL + type + UIScreen.retinaExtension() + ".png")
+        let inputDetails = (info["inputDetails"] as? [[String: Any]])?.flatMap { InputDetail(info: $0) }
+        
+        var group: Group?
+        if let groupInfo = info["group"] as? [String: Any] {
+            group = Group(info: groupInfo)
+        }
+        
+        self.init(name: displayName, type: type, isOneClick: isOneClick, logoURL: logoURL, inputDetails: inputDetails, members: nil, group: group)
         
         paymentMethodData = data
         configuration = info["configuration"] as? [String: Any]
         
         self.logoBaseURL = logoBaseURL
-        logoURL = URL(string: logoBaseURL + type + UIScreen.retinaExtension() + ".png")
-        
-        if let inputDetails = info["inputDetails"] as? [[String: Any]] {
-            self.inputDetails = inputDetails.flatMap({ InputDetail(info: $0) })
-        }
-        
-        if let groupInfo = info["group"] as? [String: Any] {
-            group = PaymentMethodGroup(info: groupInfo)
-        }
     }
     
-    convenience init?(group: [PaymentMethod]) {
-        guard group.count > 0 else {
+    convenience init?(members: [PaymentMethod]) {
+        guard members.count > 0 else {
             return nil
         }
         
-        let method = group[0]
+        let method = members[0]
+        let group = method.group!
         
-        self.init(name: method.group!.name, displayName: method.group!.name, type: method.group!.type)
+        self.init(name: group.name, type: group.type, isOneClick: false, logoURL: method.groupLogoURL, inputDetails: method.inputDetails, members: members, group: nil)
         
-        members = group
-        logoURL = method.groupLogoURL
-        inputDetails = method.inputDetails
         paymentMethodData = method.group!.data
     }
+    
+    internal struct Group {
+        
+        internal let type: String
+        
+        internal let name: String
+        
+        internal let data: String
+        
+        internal init?(info: [String: Any]) {
+            guard
+                let type = info["type"] as? String,
+                let name = info["name"] as? String,
+                let data = info["paymentMethodData"] as? String
+            else {
+                return nil
+            }
+            
+            self.type = type
+            self.name = name
+            self.data = data
+        }
+        
+    }
+    
 }
 
 extension PaymentMethod: Equatable {
@@ -164,4 +181,16 @@ extension PaymentMethod: Equatable {
     public static func ==(lhs: PaymentMethod, rhs: PaymentMethod) -> Bool {
         return lhs.name == rhs.name && lhs.type == rhs.type
     }
+}
+
+// MARK: - Deprecated
+
+public extension PaymentMethod {
+    
+    /// A Boolean value indicating whether the payment method is a one-click payment method, which means that it can be easily completed by the user.
+    @available(*, deprecated, message: "Use isOneClick instead.")
+    public var oneClick: Bool {
+        return isOneClick
+    }
+    
 }

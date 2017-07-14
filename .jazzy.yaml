@@ -1,7 +1,41 @@
-clean: true
+module: Adyen
 author: Adyen
 author_url: https://adyen.com
-github_url: https://github.com/Adyen
+github_url: https://github.com/Adyen/adyen-ios
+
+output: Docs
+
+theme: fullwidth
 skip_undocumented: false
 hide_documentation_coverage: true
-theme: fullwidth
+
+custom_categories:
+  - name: UI
+    children:
+    - CheckoutViewController
+    - CheckoutViewControllerDelegate
+    - AppearanceConfiguration
+  - name: Payment
+    children:
+    - Payment
+    - PaymentStatus
+  - name: Payment Request
+    children:
+    - PaymentRequest
+    - PaymentRequestDelegate
+    - PaymentRequestResult
+    - Error
+  - name: Payment Method
+    children:
+    - PaymentMethod
+    - PaymentDetails
+    - InputDetail
+    - InputType
+    - InputSelectItem
+  - name: Utilities
+    children:
+    - CardType
+    - CardValidator
+    - IBANSpecification
+    - IBANValidator
+    - IBANTextField

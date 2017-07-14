@@ -38,7 +38,7 @@ extension CheckoutHeaderView {
     
     func applyStyling() {
         titleLabel.font = UIFont.systemFont(ofSize: 13)
-        titleLabel.textColor = UIColor.checkoutLightDark()
+        titleLabel.textColor = UIColor.checkoutGray
         
         textLabel?.isHidden = true
     }

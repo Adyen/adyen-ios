@@ -13,14 +13,9 @@ protocol CheckoutPaymentFieldDelegate: class {
     func paymentFieldDidUpdateActive(field: UITextField)
 }
 
-class CardPaymentFieldManager: NSObject {
-    weak var delegate: CheckoutPaymentFieldDelegate?
-    var valid = false
+class CardPaymentFieldManager: NSObject, UITextFieldDelegate {
     
-    fileprivate var numberField: CardNumberField
-    fileprivate var expirationField: CardExpirationField
-    fileprivate var cvcField: CardCvcField
-    fileprivate var acceptedCards: [CardType]
+    // MARK: - Object Lifecycle
     
     init(numberField: CardNumberField, expirationField: CardExpirationField, cvcField: CardCvcField, acceptedCards: [CardType]) {
         self.numberField = numberField
@@ -38,25 +33,30 @@ class CardPaymentFieldManager: NSObject {
             self.delegate?.paymentFieldDidDetectCard(type: type)
         }
     }
-}
-
-extension CardPaymentFieldManager: UITextFieldDelegate {
+    
+    // MARK: - UITextFieldDelegate
+    
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField == numberField {
-            textField.textColor = UIColor.darkText
-        }
-        
+        textField.textColor = UIColor.darkText
         delegate?.paymentFieldDidUpdateActive(field: textField)
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField == numberField && textField.text != nil {
-            let (_, _, valid) = CardValidator.validate(card: textField.text!, acceptedCards: acceptedCards)
-            textField.textColor = valid ? UIColor.darkText : UIColor.red
-        } else if textField == expirationField && textField.text != nil {
-            let (_, valid, _, _) = CardValidator.validate(expiryDate: textField.text!, split: true)
-            textField.textColor = valid ? UIColor.darkText : UIColor.red
+        guard let text = textField.text, text.characters.count > 0 else {
+            return
         }
+        
+        var valid = false
+        
+        if textField == numberField {
+            valid = CardValidator.validate(cardNumber: text, acceptedCardTypes: acceptedCards).isValid
+        } else if textField == expirationField {
+            valid = CardValidator.validate(expiryDate: text).isValid
+        } else if textField == cvcField {
+            valid = CardValidator.validate(cvc: text).isValid || !isCvcRequired
+        }
+        
+        textField.textColor = valid ? validTextColor : invalidTextColor
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -69,14 +69,45 @@ extension CardPaymentFieldManager: UITextFieldDelegate {
         } else if textField == expirationField {
             didUpdateExpirationFieldCharacters(string: string, newString: newString, numbers: numberOnly, isDeleting: isDeleting)
         } else if textField == cvcField {
-            didUpdateCvcFieldCharacters(string: string, newString: newString, numbers: numberOnly)
+            didUpdateCvcFieldCharacters(string: string, numbers: numberOnly)
         }
         
-        valid = (numberField.valid && expirationField.valid && cvcField.valid)
-        delegate?.paymentFieldChangedValidity(valid)
+        updateFieldValidity()
         
         return false
     }
+    
+    // MARK: - Public
+    
+    weak var delegate: CheckoutPaymentFieldDelegate?
+    var isCvcRequired = true {
+        didSet {
+            if isCvcRequired != oldValue {
+                let valid: Bool
+                if isCvcRequired {
+                    if let text = cvcField.text {
+                        valid = CardValidator.validate(cvc: text).isValid
+                    } else {
+                        valid = false
+                    }
+                } else {
+                    valid = true
+                }
+                cvcField.valid = valid
+                cvcField.textColor = valid ? validTextColor : invalidTextColor
+                updateFieldValidity()
+            }
+        }
+    }
+    
+    // MARK: - Private
+    
+    private var numberField: CardNumberField
+    private var expirationField: CardExpirationField
+    private var cvcField: CardCvcField
+    private var acceptedCards: [CardType]
+    private let validTextColor = UIColor.darkText
+    private let invalidTextColor = UIColor.red
     
     private func didUpdateNumberFieldCharacters(string: String, numbers: String) {
         // Since all cards in CardType Enum i.e Amex, Visa, MasterCard, Diners, Discover, JCB, Elo, Hipercard, UnionPay are not having numbers more than max length of 19 characters. 19 charachters + 4 spaces = 23 :)
@@ -84,9 +115,9 @@ extension CardPaymentFieldManager: UITextFieldDelegate {
             return
         }
         
-        let (type, formatted, valid) = CardValidator.validate(card: numbers, acceptedCards: acceptedCards)
+        let (valid, type, formatted) = CardValidator.validate(cardNumber: numbers, acceptedCardTypes: acceptedCards)
         
-        numberField.valid = valid && type != .unknown
+        numberField.valid = valid && type != nil
         numberField.card = type
         numberField.text = formatted
     }
@@ -97,7 +128,7 @@ extension CardPaymentFieldManager: UITextFieldDelegate {
             return
         }
         
-        let (formatted, valid, _, _) = CardValidator.validate(expiryDate: newString, split: !isDeleting)
+        let (valid, formatted) = CardValidator.validate(expiryDate: newString, separator: isDeleting ? nil : "/")
         
         expirationField.valid = valid
         
@@ -111,15 +142,21 @@ extension CardPaymentFieldManager: UITextFieldDelegate {
         }
     }
     
-    private func didUpdateCvcFieldCharacters(string: String, newString: String, numbers: String) {
-        cvcField.valid = (numbers.characters.count >= 3)
+    private func didUpdateCvcFieldCharacters(string: String, numbers: String) {
+        cvcField.valid = !isCvcRequired || CardValidator.validate(cvc: numbers).isValid
         
-        if newString.characters.count <= 4 {
-            cvcField.text = newString
+        if numbers.characters.count <= 4 {
+            cvcField.text = numbers
             
             if string.characters.count != 0 && cvcField.text?.characters.count == 4 {
                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
             }
         }
     }
+    
+    private func updateFieldValidity() {
+        let valid = (numberField.valid && expirationField.valid && cvcField.valid)
+        delegate?.paymentFieldChangedValidity(valid)
+    }
+    
 }

@@ -10,17 +10,6 @@ import AdyenCSE
 
 class CardsPlugin: BasePlugin {
     
-    override func linnearFlow() -> Bool {
-        guard let method = self.method else {
-            return super.linnearFlow()
-        }
-        
-        if method.oneClick {
-            return false
-        }
-        
-        return true
-    }
 }
 
 extension CardsPlugin: UIPresentable {

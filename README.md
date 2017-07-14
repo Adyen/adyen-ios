@@ -1,9 +1,16 @@
 # Adyen SDK for iOS
 
-With Adyen SDK you can dynamically list all relevant payment methods for a specific transaction, so your shoppers can always pay with the method of their choice. The methods are listed based on the shopper's country, transaction currency, and amount.
+With Adyen SDK you can help your shoppers pay with a payment method of their choice, selected from a dynamically generated list of available payment methods. Method availability is based on shoppers’ location, transaction currency, and transaction amount. 
+
+You can integrate the SDK in two ways: either make use of the default UI components and flows preconfigured by Adyen (Quick integration), or implement your own UI and checkout experience (Custom integration).
+
+
+![Alt text](https://docs.adyen.com/developers/files/28871718/28871719/1/1496836138365/iOS+SDK.png)
+
 
 ## Installation
-Adyen SDK can be integrated into your project using CocoaPods. For this, add the following line to your Podfile and run `pod install`.
+
+Use CocoaPods to integrate the Adyen SDK into your project. For this, add the following line to your Podfile and run `pod install`.
 
 ```
 pod 'Adyen'
@@ -11,197 +18,58 @@ pod 'Adyen'
 
 ## Quick integration
 
-It is very easy to enable your app accepting all payment methods offered by Adyen. SDK provides UI components for payment method selection, entering payment details (credit card entry form, iDEAL issuer selection, and so on).
+If you want to quickly integrate with Adyen, use the default UI elements that we provide for selecting payment methods, entering payment details, and completing a payment.
 
-For quick integration, initiate `CheckoutViewController` and present it in your app:
+For this, instantiate `CheckoutViewController`, present it in your app, and implement the `CheckoutViewControllerDelegate` protocol for callbacks. All UI interactions are handled by Adyen.
 
 ```swift
-var viewController: CheckoutViewController?
-
-// ...
-
-func presentCheckoutViewController() {
-    viewController = CheckoutViewController(delegate: self)
-    present(viewController!, animated: true, completion: nil)
-}
+let viewController = CheckoutViewController(delegate: self)
+present(viewController!, animated: true)
 ```
 
-After you implement the `CheckoutViewControllerDelegate` protocol, all UI interactions will be handled by SDK. Keeping a reference to the `CheckoutViewController` instance will ensure that delegate callbacks are received.
-
+The following `CheckoutViewControllerDelegate` methods should be implemented:
 
 ##### - checkoutViewController:requiresPaymentDataForToken:completion:
 
+This method requires you to fetch payment data from your server and pass it to the `completion` handler. Upon receiving valid payment data, the SDK will present a list of available payment methods. 
 
-This method will be called first. It indicates that your app should obtain payment data from your server using the provided SDK `token`. Your server should make an API call to Adyen to initiate a payment request. The response from Adyen should be passed to SDK. For your convenience, we offer a test merchant server. Always use your own implementation when testing before going live.
-
-Pass received payment data to SDK using `completion`. SDK will present the list of payment methods after you provide payment data.
-
-```swift
-func checkoutViewController(_ controller: CheckoutViewController, requiresPaymentDataForToken token: String, completion: @escaping DataCompletion) {
-
-   let paymentDetails: [String: Any] = [
-      "basketId": "#237867422",
-      "customerId": "user349857934",
-      "appUrl": "my-shopping-app://", // Your App URI Scheme.
-      "sdkToken": token   // Pass the `token` received from SDK.
-   ]
-
-   // For your convenience, we offer a test merchant server. Always use your own implementation when testing before going live.
-   let url = URL(string: "https://shopper-test.adyen.com/demo/easy-integration/merchantserver/setup")!
-
-   var request = URLRequest(url: url)
-   request.httpMethod = "POST"
-   request.httpBody = try? JSONSerialization.data(withJSONObject: paymentDetails, options: [])
-   request.allHTTPHeaderFields = [
-      "X-MerchantServer-App-Id": "my-shopping-app",
-     "X-MerchantServer-App-SecretKey": "06000100304F8D207D33F280549E06CDAE006BA186050F8E8CA79598A5C9558100027B7D",
-     "Content-Type": "application/json"
-   ]
-
-   let session = URLSession(configuration: .default)
-   session.dataTask(with: request) { data, response, error in
-      if let data = data {
-         completion(data)
-      }
-   }.resume()
-}
-```
+For your convenience, we provide a [test merchant server](https://checkoutshopper-test.adyen.com/checkoutshopper/demo/easy-integration/merchantserver/). You can find information on setting up your own server [here](https://docs.adyen.com/developers/in-app-integration#checkoutapiimplementyourserver).
 
 
 ##### - checkoutViewController:requiresReturnURL:
 
 
-This method will be called if a selected payment method requires user authentication outside of your app environment (for example, in a web browser or native payment method app). After a user completes authorisation, your app will be opened using App URI Scheme. Use `completion` to provide SDK with the URL that was used to open your app.
-
-```swift
-func checkoutViewController(_ controller: CheckoutViewController, requiresReturnURL completion: @escaping URLCompletion) {
-   // Call `completion` when you receive the app's `openURL`.
-   let openURL =   //  Get the app's `openURL`.
-   completion(openURL)
-}
-```
+This method will be called if a selected payment method requires user authentication outside of your app environment (in a web browser, native banking app, etc.). Upon payment authorisation, your app will be reopened using the `application(_:open:options:)` callback of `UIApplicationDelegate`. The URL used to open your app should be passed to the completion handler.
 
 
 ##### - checkoutViewController:didFinishWith:
 
 
-Finally, you need to handle `result` for your payment request. You will get a payment object with the status (`authorised`, `refused`, etc.). Use this object to verify integrity of the payment with your server. Present the confirmation screen to the user to confirm the purchase.
+This method will provide you with the result of the completed payment request (authorised, refused, etc.).
 
-```swift
-func checkoutViewController(_ controller: CheckoutViewController, didFinishWith result: PaymentRequestResult) {
-   // Handle the result.
-   // ...
-}
-```
+
+For implementation details, refer to the [Quick integration guide](https://docs.adyen.com/developers/in-app-integration?platform=inapp-ios).
 
 
 ## Custom integration
 
-It is possible to have more control over the payment flow — presenting your own UI for specific payment methods, filtering a list of payment methods, or implementing your own unique checkout experience.
+With custom integration you will have full control over the payment flow and will be able to implement your own unique checkout experience. 
 
-For more control, start a payment request and implement the `PaymentRequestDelegate` protocol to get notified when your payment is authorized.
+This approach requires instantiating and starting a `PaymentRequest` and implementing the `PaymentRequestDelegate` protocol for callbacks. The `PaymentRequestDelegate` callbacks will provide you with a list of available payment methods, the URL for payment methods that require an external flow, and the result of payment processing.
 
-```swift
-let request = PaymentRequest(delegate: self)
-request.start()
-```
-
-After you implement the `PaymentRequestDelegate` protocol, you will have full control over the payment flow.
-
-##### - paymentRequest:requiresPaymentDataForToken:completion:
-
-This method will be called first. It indicates that your app should obtain payment data from your server using the provided SDK `token`. Your server should make an API call to Adyen to initiate a payment request. The response from Adyen should be passed to SDK. For your convenience, we offer a test merchant server. Always use your own implementation when testing before going live.
-
-Pass received payment data to SDK using `completion`. In the next delegate call, SDK will provide the list of available payment methods for your payment request.
-
-```swift
-func paymentRequest(_ request: PaymentRequest, requiresPaymentDataForToken token: String, completion: @escaping DataCompletion) {
-
-   let paymentDetails: [String: Any] = [
-      "basketId": "#237867422",
-      "customerId": "user349857934",
-      "appUrl": "my-shopping-app://", // Your App URI Scheme.
-      "sdkToken": token   // Pass the `token` received from SDK.
-   ]
-
-   // For your convenience, we offer a test merchant server. Always use your own implementation when testing before going live.
-   let url = URL(string: "https://checkoutshopper-test.adyen.com/checkoutshopper/demo/easy-integration/merchantserver/setup")!
-
-   var request = URLRequest(url: url)
-   request.httpMethod = "POST"
-   request.httpBody = try? JSONSerialization.data(withJSONObject: paymentDetails, options: [])
-   request.allHTTPHeaderFields = [
-      "X-MerchantServer-App-Id": "my-shopping-app",
-     "X-MerchantServer-App-SecretKey": "06000100304F8D207D33F280549E06CDAE006BA186050F8E8CA79598A5C9558100027B7D",
-     "Content-Type": "application/json"
-   ]
-
-   let session = URLSession(configuration: .default)
-   session.dataTask(with: request) { data, response, error in
-      if let data = data {
-         completion(data)
-      }
-   }.resume()
-}
-```
-
-##### paymentRequest:requiresPaymentMethodFrom:availableMethods:completion:
-
-This method will give you two lists of payment methods available for your payment request. `prefferedMethods` will contain `One-Click` enabled payment methods. Other payment options will be in the `availableMethods` list. 
-
-Call `completion` with the selected payment method to indicate a shopper's choice.
-
-```swift
-
-func paymentRequest(_ request: PaymentRequest, requiresPaymentMethodFrom preferredMethods: [PaymentMethod]?, available availableMethods: [PaymentMethod], completion: @escaping MethodCompletion) {
-   // Present the list of payment methods and call `completion` with a user's choice.
-   // ...
-}
-```
+For implementation details, refer to the [Custom integration guide](https://docs.adyen.com/developers/in-app-integration/custom-integration).
 
 
-##### paymentRequest:requiresReturnURLFrom:completion:
+## Examples
 
-This method will be called if a selected payment method requires user authorisation outside of your app environment (for example, in a web browser or native payment method app). Use the provided `url` to start authorisation process. After a user completes authorisation, your app will be opened using App URI Scheme. Use `completion` to provide SDK with the URL that was used to open your app.
-
-```swift
-func paymentRequest(_ request: PaymentRequest, requiresReturnURLFrom url: URL, completion: @escaping URLCompletion) {
-   // Open redirect URL (for example in `SFViewController`).
-   // ...
-
-   // Call `completion` when you receive the app's `openURL`.
-   let openURL =   //  Get the app's `openURL`.
-   completion(openURL)
-}
-```
+You can find examples of both quick and custom integrations in the Examples folder of this repository.
 
 
-##### paymentRequest:requiresPaymentDetails:completion:
+## See also
 
-This method will be called when additional payment details input is required for the specific payment method. SDK will give you a list of parameters required to provide. Get requested parameters from the user by presenting your own UI and pass them to SDK using `completion`.
+ * [Complete Documentation](https://docs.adyen.com/developers/in-app-integration?platform=inapp-ios)
 
-```swift
-func paymentRequest(_ request: PaymentRequest, requiresPaymentDetails details: PaymentDetails, completion: @escaping PaymentDetailsCompletion) {
-   // Present payment details entry screen to the user.
-   // ...
-
-   // Pass received payment details to SDK.
-   details.fill... // Get the user's input.
-   completion(details)
-}
-```
-
-
-##### - paymentRequest:didFinishWith:
-
-Finally, you need to handle `result` for your payment request. You will get a payment object with the status (`authorized`, `refused`, etc.). Use this object to verify integrity of the payment with your server. Present confirmation screen to the user to confirm the purchase.
-
-```swift
-func paymentRequest(_ request: PaymentRequest, didFinishWith result: PaymentRequestResult) {
-   // Handle the result.
-   // ...
-}
-```
+ * [SDK Reference](https://adyen.github.io/adyen-ios/Docs/index.html)
 
 
 ## License

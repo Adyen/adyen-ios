@@ -8,8 +8,6 @@ import Foundation
 
 internal extension UIImage {
     class func bundleImage(_ name: String) -> UIImage? {
-        let bundle = Bundle(for: PaymentRequest.self)
-        let image = UIImage(named: name, in: bundle, compatibleWith: nil)
-        return image
+        return UIImage(named: name, in: .resources, compatibleWith: nil)
     }
 }

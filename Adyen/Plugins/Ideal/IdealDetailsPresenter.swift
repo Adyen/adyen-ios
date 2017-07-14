@@ -16,13 +16,14 @@ class IdealDetailsPresenter: PaymentMethodDetailsPresenter {
         self.items = items
     }
     
-    func setup(with hostViewController: UIViewController, paymentRequest: PaymentRequest, paymentDetails: PaymentDetails, completion: @escaping (PaymentDetails) -> Void) {
+    func setup(with hostViewController: UIViewController, paymentRequest: PaymentRequest, paymentDetails: PaymentDetails, appearanceConfiguration: AppearanceConfiguration, completion: @escaping (PaymentDetails) -> Void) {
         self.hostViewController = hostViewController as? UINavigationController
         
         issuerPickerViewController = IdealIssuerPickerViewController(items: items) { item in
             paymentDetails.fillIdeal(issuerIdentifier: item.identifier)
             completion(paymentDetails)
         }
+        issuerPickerViewController?.title = paymentRequest.paymentMethod?.name
     }
     
     func present() {

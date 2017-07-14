@@ -9,36 +9,20 @@ import UIKit
 
 internal extension UIColor {
     
-    convenience init(hexString: String, alpha: Double = 1.0) {
-        
-        let hex = hexString.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
-        var int = UInt32()
-        Scanner(string: hex).scanHexInt32(&int)
-        let r, g, b: UInt32
-        switch hex.characters.count {
-        case 3: // RGB (12-bit)
-            (r, g, b) = ((int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
-        case 6: // RGB (24-bit)
-            (r, g, b) = (int >> 16, int >> 8 & 0xFF, int & 0xFF)
-        default:
-            (r, g, b) = (1, 1, 0)
-        }
-        
-        self.init(red: CGFloat(r) / 255, green: CGFloat(g) / 255, blue: CGFloat(b) / 255, alpha: CGFloat(255 * alpha) / 255)
-    }
-}
-
-internal extension UIColor {
-    
-    class func checkoutDark() -> UIColor {
-        return UIColor(hexString: "353535")
+    internal static var checkoutLightGray: UIColor {
+        return #colorLiteral(red: 0.9764705882, green: 0.9764705882, blue: 0.9764705882, alpha: 1)
     }
     
-    class func checkoutBackground() -> UIColor {
-        return UIColor(hexString: "F9F9F9")
+    internal static var checkoutGray: UIColor {
+        return #colorLiteral(red: 0.4431372549, green: 0.4431372549, blue: 0.4431372549, alpha: 1)
     }
     
-    class func checkoutLightDark() -> UIColor {
-        return UIColor(hexString: "717171")
+    internal static var checkoutDarkGray: UIColor {
+        return #colorLiteral(red: 0.2078431373, green: 0.2078431373, blue: 0.2078431373, alpha: 1)
     }
+    
+    internal static var checkoutBackground: UIColor {
+        return checkoutLightGray
+    }
+    
 }

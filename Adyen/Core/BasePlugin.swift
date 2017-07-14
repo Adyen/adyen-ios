@@ -19,15 +19,6 @@ class BasePlugin: NSObject {
         return UIApplication.shared.keyWindow?.rootViewController
     }
     
-    var isRedirectType: Bool {
-        //  Groupped methods are not redirects.
-        guard let method = self.method, method.members != nil else {
-            return false
-        }
-        
-        return method.inputDetails.count == 0
-    }
-    
     public required override init() {
         super.init()
     }
@@ -77,10 +68,6 @@ class BasePlugin: NSObject {
     
     public func fullfilledFields() -> [String: Any]? {
         return providedPaymentData
-    }
-    
-    func linnearFlow() -> Bool {
-        return false
     }
     
     func reset() {

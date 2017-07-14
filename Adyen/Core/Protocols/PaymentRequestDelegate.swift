@@ -21,4 +21,5 @@ public protocol PaymentRequestDelegate: class {
     
     /// This method is called when the payment flow is finished.
     func paymentRequest(_ request: PaymentRequest, didFinishWith result: PaymentRequestResult)
+    
 }

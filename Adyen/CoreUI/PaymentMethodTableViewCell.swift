@@ -7,147 +7,132 @@
 import UIKit
 
 class PaymentMethodTableViewCell: LoadingTableViewCell {
-    fileprivate let nameLabel = UILabel()
-    fileprivate let logoImageView = UIImageView()
-    
-    var name: String? {
-        didSet {
-            nameLabel.text = name
-        }
-    }
-    
-    var logoURL: URL? {
-        didSet {
-            guard let url = logoURL else {
-                logoImageView.image = nil
-                return
-            }
-            
-            logoImageView.downloadedFrom(url: url)
-            logoImageView.contentMode = .scaleAspectFit
-            logoImageView.layer.cornerRadius = 4
-            logoImageView.layer.borderWidth = 1 / UIScreen.main.nativeScale
-            logoImageView.layer.borderColor = UIColor.black.withAlphaComponent(0.2).cgColor
-            logoImageView.clipsToBounds = true
-        }
-    }
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupViews()
+        
+        commonInit()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setupViews()
+        
+        commonInit()
     }
-}
-
-// MARK: Subviews Stack
-
-extension PaymentMethodTableViewCell {
     
-    func setupViews() {
+    private func commonInit() {
+        contentView.addSubview(logoView)
+        contentView.addSubview(nameLabel)
+        
+        accessibilityTraits |= UIAccessibilityTraitButton
+        
+        configureConstraints()
+    }
+    
+    override func stopLoadingAnimation() {
+        super.stopLoadingAnimation()
+        
+        // Reset the disclosure indicator, in case it was visible before the loading animation was shown.
+        let showsDisclosureIndicator = self.showsDisclosureIndicator
+        self.showsDisclosureIndicator = showsDisclosureIndicator
+    }
+    
+    // MARK: Layout
+    
+    private func configureConstraints() {
+        let marginsGuide = contentView.layoutMarginsGuide
+        
+        let constraints = [
+            logoView.leadingAnchor.constraint(equalTo: marginsGuide.leadingAnchor),
+            logoView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            logoView.widthAnchor.constraint(equalToConstant: 40.0),
+            logoView.heightAnchor.constraint(equalToConstant: 26.0),
+            nameLabel.leadingAnchor.constraint(equalTo: logoView.trailingAnchor, constant: 20.0),
+            nameLabel.trailingAnchor.constraint(lessThanOrEqualTo: marginsGuide.trailingAnchor),
+            nameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+        ]
+        
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    // MARK: Logo Image View
+    
+    var logoURL: URL? {
+        didSet {
+            guard let url = logoURL else {
+                logoView.image = nil
+                return
+            }
+            
+            logoView.downloadedFrom(url: url)
+            logoView.contentMode = .scaleAspectFit
+            logoView.layer.cornerRadius = 4
+            logoView.layer.borderWidth = 1 / UIScreen.main.nativeScale
+            logoView.layer.borderColor = UIColor.black.withAlphaComponent(0.2).cgColor
+            logoView.clipsToBounds = true
+        }
+    }
+    
+    fileprivate lazy var logoView: UIImageView = {
+        let logoView = UIImageView()
+        logoView.contentMode = .scaleAspectFit
+        logoView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return logoView
+    }()
+    
+    // MARK: Name Label
+    
+    var name: String? {
+        didSet {
+            nameLabel.text = name
+            
+            accessibilityLabel = name
+        }
+    }
+    
+    fileprivate lazy var nameLabel: UILabel = {
+        let nameLabel = UILabel()
+        nameLabel.font = UIFont.systemFont(ofSize: 16.0)
+        nameLabel.textColor = UIColor.checkoutDarkGray
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        nameLabel.isAccessibilityElement = false
         
-        addSubview(nameLabel)
-        addSubview(logoImageView)
-        
-        applyLogoConstraints()
-        applyNameConstraints()
-        applyStyling()
+        return nameLabel
+    }()
+    
+    // MARK: Disclosure Indicator
+    
+    /// Boolean value indicating whether the detail indicator should be shown as an accessory.
+    internal var showsDisclosureIndicator: Bool = false {
+        didSet {
+            if showsDisclosureIndicator {
+                accessoryView = UIImageView(image: UIImage.bundleImage("cell_disclosure_indicator"))
+            } else {
+                accessoryView = nil
+            }
+        }
     }
     
-    func applyLogoConstraints() {
-        self.addConstraint(NSLayoutConstraint(
-            item: logoImageView,
-            attribute: .width,
-            relatedBy: .equal,
-            toItem: nil,
-            attribute: .notAnAttribute,
-            multiplier: 1,
-            constant: 40
-        ))
-        self.addConstraint(NSLayoutConstraint(
-            item: logoImageView,
-            attribute: .height,
-            relatedBy: .equal,
-            toItem: nil,
-            attribute: .notAnAttribute,
-            multiplier: 1,
-            constant: 26
-        ))
-        self.addConstraint(NSLayoutConstraint(
-            item: logoImageView,
-            attribute: .centerY,
-            relatedBy: .equal,
-            toItem: self,
-            attribute: .centerY,
-            multiplier: 1,
-            constant: 0
-        ))
-        self.addConstraint(NSLayoutConstraint(
-            item: logoImageView,
-            attribute: .leading,
-            relatedBy: .equal,
-            toItem: self,
-            attribute: .leading,
-            multiplier: 1,
-            constant: 20
-        ))
-    }
-    
-    func applyNameConstraints() {
-        self.addConstraint(NSLayoutConstraint(
-            item: nameLabel,
-            attribute: .centerY,
-            relatedBy: .equal,
-            toItem: self,
-            attribute: .centerY,
-            multiplier: 1,
-            constant: 0
-        ))
-        self.addConstraint(NSLayoutConstraint(
-            item: nameLabel,
-            attribute: .leading,
-            relatedBy: .equal,
-            toItem: logoImageView,
-            attribute: .trailing,
-            multiplier: 1,
-            constant: 20
-        ))
-        self.addConstraint(NSLayoutConstraint(
-            item: nameLabel,
-            attribute: .trailing,
-            relatedBy: .lessThanOrEqual,
-            toItem: self,
-            attribute: .trailing,
-            multiplier: 1,
-            constant: -35
-        ))
-    }
-    
-    func applyStyling() {
-        logoImageView.contentMode = .scaleAspectFit
-        
-        nameLabel.font = UIFont.systemFont(ofSize: 16)
-        nameLabel.textColor = UIColor.checkoutDark()
-        
-        self.accessoryView = UIImageView(image: UIImage.bundleImage("cell_disclosure_indicator"))
-    }
 }
 
-// MARK: Configuration
+// MARK: PaymentMethod Configuration
 
 extension PaymentMethodTableViewCell {
     
     func configure(with method: PaymentMethod) {
-        self.name = method.name
-        self.logoURL = method.logoURL
-        
-        if let linnearFlow = method.plugin?.linnearFlow(), linnearFlow == false {
-            self.accessoryView = nil
+        name = method.name
+        logoURL = method.logoURL
+        showsDisclosureIndicator = shouldShowDisclosureIndicator(for: method)
+    }
+    
+    fileprivate func shouldShowDisclosureIndicator(for method: PaymentMethod) -> Bool {
+        switch method.txVariant {
+        case .ideal, .card, .sepadirectdebit:
+            return true
+        default:
+            return false
         }
     }
+    
 }

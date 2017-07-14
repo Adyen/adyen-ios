@@ -38,4 +38,24 @@ extension String {
         let lowerBound = range.lowerBound < 0 ? 0 : range.lowerBound
         return substring(with: lowerIndex..<(index(lowerIndex, offsetBy: range.upperBound - lowerBound + 1, limitedBy: endIndex) ?? endIndex))
     }
+    
+    /// Separates the string into groups of the given length.
+    ///
+    /// - Parameters:
+    ///   - length: The maximum length of the groups the string should be separated in.
+    ///   - separator: The separator to use inbetween the groups.
+    /// - Returns: A grouped string.
+    internal func grouped(length: Int, separator: String = " ") -> String {
+        let groups = stride(from: 0, to: characters.count, by: length).map { index -> String in
+            let startIndex = self.index(self.startIndex, offsetBy: index)
+            
+            let offset = min(length, self.distance(from: startIndex, to: self.endIndex))
+            let endIndex = self.index(startIndex, offsetBy: offset)
+            
+            return self.substring(with: startIndex..<endIndex)
+        }
+        
+        return groups.joined(separator: " ")
+    }
+    
 }
