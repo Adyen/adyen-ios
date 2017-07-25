@@ -61,16 +61,27 @@ extension ApplePayDetailsPresenter: PKPaymentAuthorizationViewControllerDelegate
     func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
         controller.dismiss(animated: true, completion: nil)
     }
-    
+
     func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController, didAuthorizePayment payment: PKPayment, completion: @escaping (PKPaymentAuthorizationStatus) -> Void) {
+        authorize(payment: payment, completion: completion)
+    }
+
+    @available(iOS 11.0, *)
+    func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController, didAuthorizePayment payment: PKPayment, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
+        authorize(payment: payment) { status in
+            completion(PKPaymentAuthorizationResult(status: status, errors: nil))
+        }
+    }
+
+    private func authorize(payment: PKPayment, completion: @escaping (PKPaymentAuthorizationStatus) -> Void) {
         if let token = String(data: payment.token.paymentData, encoding: .utf8) {
             requiredPaymentDetails?.fillApplePay(token: token)
         }
-        
+
         if let details = requiredPaymentDetails {
             detailsCompletion?(details)
         }
-        
+
         applePayCompletion = completion
     }
 }
