@@ -184,7 +184,7 @@ extension CheckoutViewController: PaymentMethodPickerViewControllerDelegate {
     
     /// :nodoc:
     func paymentMethodPickerViewController(_ paymentMethodPickerViewController: PaymentMethodPickerViewController, didSelectDeletePaymentMethod paymentMethod: PaymentMethod) {
-        paymentRequest.deletePreferred(paymentMethod: paymentMethod) { _ in
+        paymentRequest.deletePreferred(paymentMethod: paymentMethod) { _, _ in
             
         }
     }
