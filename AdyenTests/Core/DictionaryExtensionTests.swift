@@ -20,4 +20,15 @@ class DictionaryExtensionsTests: XCTestCase {
         XCTAssertEqual(dictionary["third"], "3")
         XCTAssertEqual(dictionary["fourth"], "4")
     }
+
+    func testConvertingDictionaryNSAttributedStringKeyNSObjectToStringAny() {
+        let dictionary: [NSAttributedStringKey: NSObject] = [
+            NSAttributedStringKey.font: UIFont.systemFont(ofSize: 18)
+        ]
+
+        let expectation: [String: Any] = [NSAttributedStringKey.font.rawValue: UIFont.systemFont(ofSize: 18)]
+
+        XCTAssertEqual(dictionary.stringAny.description, expectation.description)
+    }
+
 }
