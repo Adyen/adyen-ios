@@ -23,7 +23,7 @@ public final class AppearanceConfiguration {
     // MARK: Navigation Bar
     
     /// The attributes used for the navigation bar's title.
-    public var navigationBarTitleTextAttributes: [String: Any]?
+    public var navigationBarTitleTextAttributes: [NSAttributedStringKey: Any]?
     
     /// The navigation bar's tint color.
     public var navigationBarTintColor: UIColor?
@@ -61,7 +61,7 @@ public final class AppearanceConfiguration {
         appearanceConfiguration.navigationBarTitleTextAttributes = [
             NSAttributedStringKey.font: UIFont.systemFont(ofSize: 18.0),
             NSAttributedStringKey.foregroundColor: UIColor.checkoutDarkGray
-        ].stringAny
+        ]
         appearanceConfiguration.navigationBarTintColor = UIColor.checkoutDarkGray
         appearanceConfiguration.navigationBarBackgroundColor = UIColor.white
         appearanceConfiguration.isNavigationBarTranslucent = false
