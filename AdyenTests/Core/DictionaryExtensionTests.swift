@@ -20,4 +20,5 @@ class DictionaryExtensionsTests: XCTestCase {
         XCTAssertEqual(dictionary["third"], "3")
         XCTAssertEqual(dictionary["fourth"], "4")
     }
+
 }

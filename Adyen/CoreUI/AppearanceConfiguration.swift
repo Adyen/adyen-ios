@@ -23,7 +23,7 @@ public final class AppearanceConfiguration {
     // MARK: Navigation Bar
     
     /// The attributes used for the navigation bar's title.
-    public var navigationBarTitleTextAttributes: [String: Any]?
+    public var navigationBarTitleTextAttributes: [NSAttributedStringKey: Any]?
     
     /// The navigation bar's tint color.
     public var navigationBarTintColor: UIColor?
@@ -40,8 +40,8 @@ public final class AppearanceConfiguration {
     // MARK: Checkout Button
     
     /// The attributes used for the checkout button's title.
-    public var checkoutButtonTitleTextAttributes: [String: Any]?
-    
+    public var checkoutButtonTitleTextAttributes: [NSAttributedStringKey: Any]?
+
     /// The insets from the edges of the checkout button to the title.
     public var checkoutButtonTitleEdgeInsets: UIEdgeInsets?
     
@@ -59,8 +59,8 @@ public final class AppearanceConfiguration {
     public static var `default`: AppearanceConfiguration = {
         let appearanceConfiguration = AppearanceConfiguration()
         appearanceConfiguration.navigationBarTitleTextAttributes = [
-            NSFontAttributeName: UIFont.systemFont(ofSize: 18.0),
-            NSForegroundColorAttributeName: UIColor.checkoutDarkGray
+            NSAttributedStringKey.font: UIFont.systemFont(ofSize: 18.0),
+            NSAttributedStringKey.foregroundColor: UIColor.checkoutDarkGray
         ]
         appearanceConfiguration.navigationBarTintColor = UIColor.checkoutDarkGray
         appearanceConfiguration.navigationBarBackgroundColor = UIColor.white
@@ -68,8 +68,8 @@ public final class AppearanceConfiguration {
         appearanceConfiguration.navigationBarCancelButtonImage = UIImage.bundleImage("close")
         
         appearanceConfiguration.checkoutButtonTitleTextAttributes = [
-            NSFontAttributeName: UIFont.systemFont(ofSize: 18.0),
-            NSForegroundColorAttributeName: UIColor.white
+            NSAttributedStringKey.font: UIFont.systemFont(ofSize: 18.0),
+            NSAttributedStringKey.foregroundColor: UIColor.white
         ]
         appearanceConfiguration.checkoutButtonTitleEdgeInsets = UIEdgeInsets(top: 16.0, left: 0.0, bottom: 16.0, right: 0.0)
         appearanceConfiguration.checkoutButtonCornerRadius = 4.0
