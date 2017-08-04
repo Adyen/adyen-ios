@@ -7,15 +7,14 @@
 import UIKit
 import Adyen
 
-class ViewController: UITableViewController {
+class ViewController: UITableViewController, CheckoutViewControllerDelegate, CheckoutViewControllerCardScanDelegate {
     
     // MARK: - UIViewController
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let isConfigured = !(Configuration.appIdentifier.characters.isEmpty || Configuration.appIdentifier.characters.isEmpty)
-        assert(isConfigured, "Fill in an app identifier and secret key in the Configuration.swift file.")
+        assert(Configuration.isFilledIn, "Fill in a secret key in the Configuration.swift file.")
     }
     
     // MARK: - UITableViewController
@@ -32,6 +31,7 @@ class ViewController: UITableViewController {
     
     private func presentCheckoutViewController() {
         let checkoutViewController = CheckoutViewController(delegate: self)
+        checkoutViewController.cardScanDelegate = self
         present(checkoutViewController, animated: true)
     }
     
@@ -60,22 +60,23 @@ class ViewController: UITableViewController {
         urlCompletion = nil
     }
     
-}
-
-extension ViewController: CheckoutViewControllerDelegate {
+    // MARK: - CheckoutViewControllerDelegate
     
     func checkoutViewController(_ controller: CheckoutViewController, requiresPaymentDataForToken token: String, completion: @escaping DataCompletion) {
-        let url = URL(string: "https://checkoutshopper-test.adyen.com/checkoutshopper/demo/easy-integration/merchantserver/setup")!
+        let url = URL(string: "https://checkoutshopper-test.adyen.com/checkoutshopper/demoserver/setup")!
         
         let paymentDetails: [String: Any] = [
-            "quantity": 17408,
-            "currency": "EUR",
-            "basketId": "iOS & M+M Black dress & accessories",
-            "customerCountry": "NL",
-            "customerId": shopperReferenceField.text!,
-            "platform": "ios",
-            "appUrlScheme": "ui-host://",
-            "sdkToken": token
+            "amount": [
+                "value": 17408,
+                "currency": "EUR"
+            ],
+            "reference": "iOS & M+M Black dress & accessories",
+            "countryCode": "NL",
+            "shopperLocale": "nl_NL",
+            "shopperReference": shopperReferenceField.text!,
+            "returnUrl": "ui-host://",
+            "channel": "ios",
+            "token": token
         ]
         
         var request = URLRequest(url: url)
@@ -83,8 +84,7 @@ extension ViewController: CheckoutViewControllerDelegate {
         request.httpBody = try? JSONSerialization.data(withJSONObject: paymentDetails, options: [])
         request.allHTTPHeaderFields = [
             "Content-Type": "application/json",
-            "X-MerchantServer-App-Id": Configuration.appIdentifier,
-            "X-MerchantServer-App-SecretKey": Configuration.appSecretKey
+            "x-demo-server-api-key": Configuration.appSecretKey
         ]
         
         let session = URLSession(configuration: .default)
@@ -122,7 +122,24 @@ extension ViewController: CheckoutViewControllerDelegate {
                 self.presentFailureAlertController()
             }
         }
-        
+    }
+    
+    // MARK: - CheckoutViewControllerCardScanDelegate
+    
+    func shouldShowCardScanButton(for checkoutViewController: CheckoutViewController) -> Bool {
+        return true
+    }
+    
+    func scanCard(for checkoutViewController: CheckoutViewController, completion: @escaping CardScanCompletion) {
+        let alertController = UIAlertController(title: "Scan Card", message: "This is the entry point for integrating your card scanning SDK.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { _ in
+            let number = "5555444433331111"
+            let expiryDate = "12/18"
+            let cvc = "123"
+            
+            completion((number: number, expiryDate: expiryDate, cvc: cvc))
+        }))
+        checkoutViewController.present(alertController, animated: true)
     }
     
 }

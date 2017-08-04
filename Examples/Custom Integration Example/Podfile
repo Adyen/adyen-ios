@@ -1,0 +1,7 @@
+platform :ios, '9.0'
+
+target 'Custom Integration Example' do
+  use_frameworks!
+
+	pod 'Adyen', :path => '../../'
+end

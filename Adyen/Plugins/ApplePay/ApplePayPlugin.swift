@@ -7,35 +7,49 @@
 import Foundation
 import PassKit
 
-let applePayMerchantIdentifierKey = "merchantIdentifier"
-
-class ApplePayPlugin: BasePlugin {
-    fileprivate var presenter: ApplePayDetailsPresenter?
-}
-
-extension ApplePayPlugin: UIPresentable {
+internal class ApplePayPlugin: Plugin {
     
-    func detailsPresenter() -> PaymentMethodDetailsPresenter? {
-        presenter = ApplePayDetailsPresenter()
-        return presenter
+    internal let configuration: PluginConfiguration
+    
+    internal required init(configuration: PluginConfiguration) {
+        self.configuration = configuration
     }
+    
+    fileprivate var detailsPresenter: ApplePayDetailsPresenter?
+    
 }
 
-extension ApplePayPlugin: DeviceDependable {
+// MARK: - PluginPresentsPaymentDetails
+
+extension ApplePayPlugin: PluginPresentsPaymentDetails {
     
-    func isDeviceSupported() -> Bool {
+    func newPaymentDetailsPresenter(hostViewController: UINavigationController, appearanceConfiguration: AppearanceConfiguration) -> PaymentDetailsPresenter {
+        let detailsPresenter = ApplePayDetailsPresenter(hostViewController: hostViewController, pluginConfiguration: configuration)
+        self.detailsPresenter = detailsPresenter
+        
+        return detailsPresenter
+    }
+    
+}
+
+// MARK: - PluginRequiresFinalState
+
+extension ApplePayPlugin: PluginRequiresFinalState {
+    
+    func finish(with paymentStatus: PaymentStatus, completion: @escaping () -> Void) {
+        detailsPresenter?.finish(with: paymentStatus, completion: completion)
+    }
+    
+}
+
+// MARK: - DeviceDependablePlugin
+
+extension ApplePayPlugin: DeviceDependablePlugin {
+    
+    var isDeviceSupported: Bool {
         let networks: [PKPaymentNetwork] = [.visa, .masterCard, .amex]
+        
         return PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: networks)
     }
-}
-
-extension ApplePayPlugin: RequiresFinalState {
     
-    func finishWith(state: PaymentStatus, completion: (() -> Void)?) {
-        presenter?.finishWith(state: state)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            completion?()
-        }
-    }
 }

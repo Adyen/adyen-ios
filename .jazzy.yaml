@@ -14,6 +14,7 @@ custom_categories:
     children:
     - CheckoutViewController
     - CheckoutViewControllerDelegate
+    - CheckoutViewControllerCardScanDelegate
     - AppearanceConfiguration
   - name: Payment
     children:
@@ -32,6 +33,9 @@ custom_categories:
     - InputDetail
     - InputType
     - InputSelectItem
+    - OneClickInfo
+    - CardOneClickInfo
+    - PayPalOneClickInfo
   - name: Utilities
     children:
     - CardType

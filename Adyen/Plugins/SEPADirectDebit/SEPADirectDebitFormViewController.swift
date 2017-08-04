@@ -6,12 +6,14 @@
 
 import UIKit
 
-class SEPADirectDebitFormViewController: UIViewController {
+internal class SEPADirectDebitFormViewController: FormViewController {
+    
+    private let appearanceConfiguration: AppearanceConfiguration
     
     internal init(appearanceConfiguration: AppearanceConfiguration) {
         self.appearanceConfiguration = appearanceConfiguration
         
-        super.init(nibName: "SEPADirectDebitFormViewController", bundle: Bundle(for: SEPADirectDebitFormViewController.self))
+        super.init()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -20,130 +22,105 @@ class SEPADirectDebitFormViewController: UIViewController {
     
     internal weak var delegate: SEPADirectDebitFormViewControllerDelegate?
     
-    internal var formattedAmount = ""
+    internal var formattedAmount: String? {
+        didSet {
+            if let formattedAmount = formattedAmount {
+                payButton.title = ADYLocalizedString("payButton.formatted", formattedAmount)
+            } else {
+                payButton.title = nil
+            }
+        }
+    }
     
-    private let appearanceConfiguration: AppearanceConfiguration
-    
-    // MARK: View
-    
-    @IBOutlet private weak var scrollView: UIScrollView!
-    
-    @IBOutlet private weak var lockView: UIImageView!
+    // MARK: - View
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        lockView.image = UIImage.bundleImage("lock")
-        checkmarkButton.setImage(UIImage.bundleImage("checkbox_inactive"), for: .normal)
-        checkmarkButton.setImage(UIImage.bundleImage("checkbox_active"), for: .selected)
-        checkmarkButton.tintColor = appearanceConfiguration.tintColor
+        formView.addArrangedSubview(ibanField)
+        formView.addArrangedSubview(nameField)
+        formView.addArrangedSubview(consentButton)
+        footerView = payButton
+    }
+    
+    private lazy var ibanField: FormTextField = {
+        let ibanField = FormTextField(textFieldClass: IBANTextField.self)
+        ibanField.title = ADYLocalizedString("sepaDirectDebit.ibanField.title")
+        ibanField.placeholder = ADYLocalizedString("sepaDirectDebit.ibanField.placeholder")
+        ibanField.autocapitalizationType = .allCharacters
+        ibanField.autocorrectionType = .no
+        ibanField.accessibilityIdentifier = "iban-field"
+        ibanField.addTarget(self, action: #selector(revalidate), for: .editingChanged)
         
-        payButton.title = ADYLocalizedString("payButton.title.formatted", formattedAmount)
-        payButton.appearanceConfiguration = appearanceConfiguration
+        return ibanField
+    }()
+    
+    private lazy var nameField: FormTextField = {
+        let nameField = FormTextField()
+        nameField.title = ADYLocalizedString("sepaDirectDebit.nameField.title")
+        nameField.placeholder = ADYLocalizedString("sepaDirectDebit.nameField.placeholder")
+        nameField.autocapitalizationType = .words
+        nameField.autocorrectionType = .no
+        nameField.accessibilityIdentifier = "name-field"
+        nameField.addTarget(self, action: #selector(revalidate), for: .editingChanged)
+        
+        return nameField
+    }()
+    
+    private lazy var consentButton: FormCheckmarkButton = {
+        let consentButton = FormCheckmarkButton()
+        consentButton.title = ADYLocalizedString("sepaDirectDebit.consentButton")
+        consentButton.accessibilityIdentifier = "consent-button"
+        consentButton.tintColor = self.appearanceConfiguration.tintColor
+        consentButton.addTarget(self, action: #selector(revalidate), for: .touchUpInside)
+        
+        return consentButton
+    }()
+    
+    private lazy var payButton: CheckoutButton = {
+        let payButton = CheckoutButton()
         payButton.isEnabled = false
+        payButton.tintColor = self.appearanceConfiguration.tintColor
+        payButton.accessibilityIdentifier = "pay-button"
+        payButton.addTarget(self, action: #selector(didSelect(payButton:)), for: .touchUpInside)
         
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: .UIKeyboardWillChangeFrame, object: nil)
-    }
+        return payButton
+    }()
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        if isEditing == false {
-            ibanField.becomeFirstResponder()
-        }
-    }
-    
-    // MARK: Text Fields
-    
-    @IBOutlet private weak var ibanField: IBANTextField!
-    
-    @IBOutlet private weak var ibanUnderlineView: UIView!
-    
-    private var name: String {
-        return nameField.text ?? ""
-    }
-    
-    @IBOutlet private weak var nameField: UITextField!
-    
-    @IBOutlet private weak var nameUnderlineView: UIView!
-    
-    @IBAction private func textFieldDidChange() {
-        revalidate()
-    }
-    
-    @IBAction private func textFieldDidBeginEditing(_ textField: UITextField) {
-        underlineView(for: textField)?.backgroundColor = #colorLiteral(red: 0.4588235294, green: 0.4588235294, blue: 0.4588235294, alpha: 1)
-    }
-    
-    @IBAction private func textFieldDidEndEditing(_ textField: UITextField) {
-        underlineView(for: textField)?.backgroundColor = #colorLiteral(red: 0.8470588235, green: 0.8470588235, blue: 0.8470588235, alpha: 1)
-    }
-    
-    @objc private func keyboardWillChangeFrame(_ notification: NSNotification) {
-        guard let bounds = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect else {
-            return
-        }
-        
-        scrollView.contentInset.bottom = bounds.height
-        scrollView.scrollIndicatorInsets.bottom = bounds.height
-    }
-    
-    private func underlineView(for textField: UITextField) -> UIView? {
-        if textField === ibanField {
-            return ibanUnderlineView
-        } else if textField === nameField {
-            return nameUnderlineView
-        }
-        
-        return nil
-    }
-    
-    // MARK: Checkmark Button
-    
-    @IBOutlet private weak var checkmarkButton: UIButton!
-    
-    @IBAction private func didSelect(checkmarkButton: UIButton) {
-        checkmarkButton.isSelected = !checkmarkButton.isSelected
-        
-        revalidate()
-    }
-    
-    // MARK: Pay Button
-    
-    @IBOutlet private weak var payButton: CheckoutButton!
-    
-    @IBAction private func didSelect(payButton: CheckoutButton) {
-        guard let iban = ibanField.iban else {
+    @objc private func didSelect(payButton: CheckoutButton) {
+        guard
+            let iban = ibanField.text,
+            let name = nameField.text
+        else {
             return
         }
         
         delegate?.formViewController(self, didSubmitWithIBAN: iban, name: name)
     }
     
-    // MARK: Validation
+    // MARK: - Validation
     
     private var isValid: Bool {
-        guard checkmarkButton.isSelected else {
+        guard consentButton.isSelected else {
             return false
         }
         
-        guard ibanField.iban != nil else {
+        guard let iban = ibanField.text, IBANValidator.isValid(iban) else {
             return false
         }
         
-        guard name.characters.count > 0 else {
+        guard let name = nameField.text, name.characters.count > 0 else {
             return false
         }
         
         return true
     }
     
-    fileprivate func revalidate() {
+    @objc private func revalidate() {
         payButton.isEnabled = isValid
     }
     
-    // MARK: Loading
+    // MARK: - Loading
     
     internal var isLoading = false {
         didSet {

@@ -9,11 +9,11 @@ import UIKit
 
 protocol CheckoutPaymentFieldDelegate: class {
     func paymentFieldChangedValidity(_ valid: Bool)
-    func paymentFieldDidDetectCard(type: CardType)
+    func paymentFieldDidDetectCard(type: CardType?)
     func paymentFieldDidUpdateActive(field: UITextField)
 }
 
-class CardPaymentFieldManager: NSObject, UITextFieldDelegate {
+class CardPaymentFieldManager: NSObject, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     // MARK: - Object Lifecycle
     
@@ -42,7 +42,7 @@ class CardPaymentFieldManager: NSObject, UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        guard let text = textField.text, text.characters.count > 0 else {
+        guard let text = textField.text, text.characters.count > 0, textField != installmentTextField else {
             return
         }
         
@@ -60,6 +60,10 @@ class CardPaymentFieldManager: NSObject, UITextFieldDelegate {
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard textField != installmentTextField else {
+            return false
+        }
+        
         let newString = (textField.text! as NSString).replacingCharacters(in: range, with: string)
         let numberOnly = newString.numberOnly()
         let isDeleting = (string.characters.count == 0 && range.length == 1)
@@ -75,6 +79,24 @@ class CardPaymentFieldManager: NSObject, UITextFieldDelegate {
         updateFieldValidity()
         
         return false
+    }
+    
+    // MARK: - UIPickerViewDelegate
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return installmentValues.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return installmentValues[row].name
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        installmentTextField?.text = installmentValues[row].name
     }
     
     // MARK: - Public
@@ -100,6 +122,26 @@ class CardPaymentFieldManager: NSObject, UITextFieldDelegate {
         }
     }
     
+    func enableInstalments(textField: CardInstallmentField, values: [InputSelectItem]) {
+        installmentTextField = textField
+        installmentValues = values
+        installmentTextField?.text = installmentValues[0].name
+    }
+    
+    /// This method should be used in place of directly setting the text on the textfield.
+    /// It makes sure to call the UITextField delegate methods, so the fields are sanitized and validated.
+    func set(text: String?, inField textField: UITextField?) {
+        guard let textField = textField else {
+            return
+        }
+        
+        textField.text = nil
+        let replacementString = text ?? ""
+        let range = NSRange()
+        _ = self.textField(textField, shouldChangeCharactersIn: range, replacementString: replacementString)
+        textFieldDidEndEditing(textField)
+    }
+    
     // MARK: - Private
     
     private var numberField: CardNumberField
@@ -108,6 +150,16 @@ class CardPaymentFieldManager: NSObject, UITextFieldDelegate {
     private var acceptedCards: [CardType]
     private let validTextColor = UIColor.darkText
     private let invalidTextColor = UIColor.red
+    private var installmentValues: [InputSelectItem] = []
+    
+    private var installmentTextField: CardInstallmentField? {
+        didSet {
+            let pickerView = UIPickerView()
+            pickerView.delegate = self
+            installmentTextField?.delegate = self
+            installmentTextField?.inputView = pickerView
+        }
+    }
     
     private func didUpdateNumberFieldCharacters(string: String, numbers: String) {
         // Since all cards in CardType Enum i.e Amex, Visa, MasterCard, Diners, Discover, JCB, Elo, Hipercard, UnionPay are not having numbers more than max length of 19 characters. 19 charachters + 4 spaces = 23 :)

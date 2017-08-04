@@ -51,11 +51,6 @@ Pod::Spec.new do |s|
     plugin.source_files = 'Adyen/Plugins/SEPADirectDebit/**/*'
     plugin.dependency 'Adyen/Core'
     plugin.dependency 'Adyen/CoreUI'
-    plugin.resource_bundles = {
-        'SEPADirectDebit' => [
-            'Adyen/Plugins/SEPADirectDebit/**/*.xib'
-        ]
-    }
   end
 
   # Internals

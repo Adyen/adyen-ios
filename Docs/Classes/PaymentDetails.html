@@ -60,6 +60,9 @@
                 <a class="nav-group-task-link" href="../Protocols/CheckoutViewControllerDelegate.html">CheckoutViewControllerDelegate</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/CheckoutViewControllerCardScanDelegate.html">CheckoutViewControllerCardScanDelegate</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/AppearanceConfiguration.html">AppearanceConfiguration</a>
               </li>
             </ul>
@@ -102,6 +105,9 @@
                 <a class="nav-group-task-link" href="../Classes/PaymentDetails.html">PaymentDetails</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/PaymentDetails/Address.html">– Address</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/InputDetail.html">InputDetail</a>
               </li>
               <li class="nav-group-task">
@@ -109,6 +115,15 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/InputSelectItem.html">InputSelectItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Payment Method.html#/s:P5Adyen12OneClickInfo">OneClickInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/CardOneClickInfo.html">CardOneClickInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PayPalOneClickInfo.html">PayPalOneClickInfo</a>
               </li>
             </ul>
           </li>
@@ -145,7 +160,7 @@
 
                 </div>
               </div>
-            <p>Holds the list of <code><a href="../Classes/InputDetail.html">InputDetail</a></code> needed for the transaction.</p>
+            <p>Holds the list of <code><a href="../Classes/InputDetail.html">InputDetail</a></code> items required for a transaction.</p>
 
           </div>
         </section>
@@ -283,7 +298,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Fill details for the Card transaction with a token.</p>
+                        <p>Fill details for the card transaction with a token.</p>
 
                       </div>
                       <div class="declaration">
@@ -310,7 +325,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Fill details for the Card transaction with CVC.</p>
+                        <p>Fill details for the card transaction with CVC.</p>
 
                       </div>
                       <div class="declaration">
@@ -318,6 +333,33 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">fillCard</span><span class="p">(</span><span class="nv">cvc</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC5Adyen14PaymentDetails8fillCardFT25installmentPlanIdentifierSS_T_"></a>
+                    <a name="//apple_ref/swift/Method/fillCard(installmentPlanIdentifier:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC5Adyen14PaymentDetails8fillCardFT25installmentPlanIdentifierSS_T_">fillCard(installmentPlanIdentifier:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Fill installments selection for the card transaction.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">fillCard</span><span class="p">(</span><span class="nv">installmentPlanIdentifier</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -388,13 +430,91 @@
                 </li>
               </ul>
             </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:VC5Adyen14PaymentDetails7Address"></a>
+                    <a name="//apple_ref/swift/Struct/Address" class="dashAnchor"></a>
+                    <a class="token" href="#/s:VC5Adyen14PaymentDetails7Address">Address</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Represents an address requested in PaymentDetails.</p>
+
+                        <a href="../Classes/PaymentDetails/Address.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Address</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC5Adyen14PaymentDetails18fillBillingAddressFVS0_7AddressT_"></a>
+                    <a name="//apple_ref/swift/Method/fillBillingAddress(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC5Adyen14PaymentDetails18fillBillingAddressFVS0_7AddressT_">fillBillingAddress(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Fills the billing address for a transaction that requires AVS.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">fillBillingAddress</span><span class="p">(</span><span class="n">_</span> <span class="nv">address</span><span class="p">:</span> <span class="kt"><a href="../Classes/PaymentDetails/Address.html">Address</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>address</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The address to fill.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         </section>
 
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2017 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2017-07-10)</p>
+      <p>&copy; 2017 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2017-08-04)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

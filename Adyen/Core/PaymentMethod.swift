@@ -6,8 +6,75 @@
 
 import UIKit
 
-/// Represents a locale payment method that can be used to complete a payment.
-public final class PaymentMethod {
+/// Represents a local payment method that can be used to complete a payment.
+public final class PaymentMethod: Equatable {
+    
+    // MARK: - Object Lifecycle
+    
+    internal init(name: String, type: String, isOneClick: Bool, oneClickInfo: OneClickInfo?, logoURL: URL?, inputDetails: [InputDetail]?, members: [PaymentMethod]?, group: Group?, paymentMethodData: String) {
+        self.name = name
+        self.type = type
+        self.isOneClick = isOneClick
+        self.oneClickInfo = oneClickInfo
+        self.logoURL = logoURL
+        self.inputDetails = inputDetails
+        self.members = members
+        self.group = group
+        self.paymentMethodData = paymentMethodData
+        self.txVariant = PaymentMethodType(rawValue: type) ?? .other
+    }
+    
+    internal convenience init?(info: [String: Any], logoBaseURL: String, isOneClick: Bool) {
+        guard
+            let type = info["type"] as? String,
+            let data = info["paymentMethodData"] as? String,
+            let name = info["name"] as? String
+        else {
+            return nil
+        }
+        
+        var oneClickInfo: OneClickInfo?
+        if let cardInfo = info["card"] as? [String: Any] {
+            oneClickInfo = CardOneClickInfo(dictionary: cardInfo)
+        } else if let emailAddress = info["emailAddress"] as? String, type == "paypal" {
+            oneClickInfo = PayPalOneClickInfo(emailAddress: emailAddress)
+        }
+        
+        let logoURL = URL(string: logoBaseURL + type + UIScreen.retinaExtension() + ".png")
+        let inputDetailDescriptions = info["inputDetails"] as? [[String: Any]]
+        let inputDetails = inputDetailDescriptions?.flatMap { InputDetail(info: $0) }
+        
+        var group: Group?
+        if let groupInfo = info["group"] as? [String: Any] {
+            group = Group(info: groupInfo)
+        }
+        
+        self.init(name: name, type: type, isOneClick: isOneClick, oneClickInfo: oneClickInfo, logoURL: logoURL, inputDetails: inputDetails, members: nil, group: group, paymentMethodData: data)
+        
+        configuration = info["configuration"] as? [String: Any]
+        
+        self.logoBaseURL = logoBaseURL
+    }
+    
+    internal convenience init?(members: [PaymentMethod]) {
+        guard members.count > 0 else {
+            return nil
+        }
+        
+        let method = members[0]
+        let group = method.group!
+        
+        self.init(name: group.name, type: group.type, isOneClick: false, oneClickInfo: nil, logoURL: method.groupLogoURL, inputDetails: method.inputDetails, members: members, group: nil, paymentMethodData: group.data)
+    }
+    
+    // MARK: - Equatable
+    
+    /// :nodoc:
+    public static func ==(lhs: PaymentMethod, rhs: PaymentMethod) -> Bool {
+        return lhs.name == rhs.name && lhs.type == rhs.type
+    }
+    
+    // MARK: - Public
     
     /// The name of the payment method.
     public let name: String
@@ -18,136 +85,17 @@ public final class PaymentMethod {
     /// A Boolean value indicating whether the payment method is a one-click payment method, which means that it can be easily completed by the user.
     public let isOneClick: Bool
     
+    /// The information that was stored for this payment payment method, or `nil` if this is not a one-click payment method.
+    public let oneClickInfo: OneClickInfo?
+    
     /// A URL to the logo of the payment method.
     public let logoURL: URL?
     
-    /// The input details that should be filled in to complete the payment method.
+    /// The input details that should be filled in to complete the payment.
     public let inputDetails: [InputDetail]?
     
     /// Members of the payment method (only applicable when the receiver is a group).
     public let members: [PaymentMethod]?
-    
-    /// The group to which this payment method belongs.
-    internal let group: Group?
-    
-    var txVariant: PaymentMethodType
-    var logoBaseURL: String?
-    var paymentMethodData: String?
-    var additionalRequiredFields: [String: Any]?
-    var providedAdditionalRequiredFields: [String: Any]?
-    var configuration: [String: Any]?
-    
-    lazy var plugin: BasePlugin? = PluginLoader().plugin(for: self)
-    
-    lazy var groupLogoURL: URL? = {
-        guard
-            let baseURL = self.logoBaseURL,
-            let groupType = self.group?.type
-        else {
-            return nil
-        }
-        
-        return URL(string: baseURL + groupType + ".png")
-    }()
-    
-    internal init(name: String, type: String, isOneClick: Bool, logoURL: URL?, inputDetails: [InputDetail]?, members: [PaymentMethod]?, group: Group?) {
-        self.name = name
-        self.type = type
-        self.isOneClick = isOneClick
-        self.logoURL = logoURL
-        self.inputDetails = inputDetails
-        self.members = members
-        self.group = group
-        self.txVariant = PaymentMethodType(rawValue: type) ?? .other
-    }
-    
-    func isAvailableOnDevice() -> Bool {
-        if requiresPlugin() && plugin == nil {
-            return false
-        }
-        
-        var available = false
-        
-        switch name {
-        case "Android Pay", "androidpay":
-            available = false
-        case "Samsung Pay", "samsungpay":
-            available = false
-        default:
-            available = true
-        }
-        
-        if let plugin = plugin as? DeviceDependable {
-            available = plugin.isDeviceSupported()
-        }
-        
-        return available
-    }
-    
-    func requiresPlugin() -> Bool {
-        return MethodRequiresPlugin(rawValue: txVariant.rawValue) != nil ? true : false
-    }
-    
-    func requiresPaymentData() -> Bool {
-        return inputDetails?.isEmpty == false && plugin?.fullfilledFields() == nil
-    }
-    
-    func requiresURLAuth() -> Bool {
-        if name == PaymentMethodType.applepay.rawValue {
-            return false
-        }
-        
-        return true
-    }
-}
-
-internal extension PaymentMethod {
-    
-    convenience init?(info: [String: Any], logoBaseURL: String, isOneClick: Bool) {
-        guard
-            let type = info["type"] as? String,
-            let data = info["paymentMethodData"] as? String,
-            let name = info["name"] as? String
-        else {
-            return nil
-        }
-        
-        var displayName = name
-        if let cardInfo = info["card"] as? [String: Any],
-            let digits = cardInfo["number"] as? String {
-            displayName = "•••• \(digits)"
-        } else if let emailInfo = info["emailAddress"] as? String {
-            displayName = emailInfo
-        }
-        
-        let logoURL = URL(string: logoBaseURL + type + UIScreen.retinaExtension() + ".png")
-        let inputDetails = (info["inputDetails"] as? [[String: Any]])?.flatMap { InputDetail(info: $0) }
-        
-        var group: Group?
-        if let groupInfo = info["group"] as? [String: Any] {
-            group = Group(info: groupInfo)
-        }
-        
-        self.init(name: displayName, type: type, isOneClick: isOneClick, logoURL: logoURL, inputDetails: inputDetails, members: nil, group: group)
-        
-        paymentMethodData = data
-        configuration = info["configuration"] as? [String: Any]
-        
-        self.logoBaseURL = logoBaseURL
-    }
-    
-    convenience init?(members: [PaymentMethod]) {
-        guard members.count > 0 else {
-            return nil
-        }
-        
-        let method = members[0]
-        let group = method.group!
-        
-        self.init(name: group.name, type: group.type, isOneClick: false, logoURL: method.groupLogoURL, inputDetails: method.inputDetails, members: members, group: nil)
-        
-        paymentMethodData = method.group!.data
-    }
     
     internal struct Group {
         
@@ -173,14 +121,40 @@ internal extension PaymentMethod {
         
     }
     
-}
-
-extension PaymentMethod: Equatable {
+    /// The group to which this payment method belongs.
+    internal let group: Group?
     
-    /// :nodoc:
-    public static func ==(lhs: PaymentMethod, rhs: PaymentMethod) -> Bool {
-        return lhs.name == rhs.name && lhs.type == rhs.type
+    internal let paymentMethodData: String
+    
+    internal var txVariant: PaymentMethodType
+    internal var additionalRequiredFields: [String: Any]?
+    internal var providedAdditionalRequiredFields: [String: Any]?
+    internal var configuration: [String: Any]?
+    internal var fulfilledPaymentDetails: PaymentDetails?
+    
+    internal func requiresPaymentData() -> Bool {
+        return inputDetails?.isEmpty == false && fulfilledPaymentDetails == nil
     }
+    
+    internal var requiresPlugin: Bool {
+        return MethodRequiresPlugin(rawValue: txVariant.rawValue) != nil
+    }
+    
+    // MARK: - Private
+    
+    private var logoBaseURL: String?
+    
+    private lazy var groupLogoURL: URL? = {
+        guard
+            let baseURL = self.logoBaseURL,
+            let groupType = self.group?.type
+        else {
+            return nil
+        }
+        
+        return URL(string: baseURL + groupType + ".png")
+    }()
+    
 }
 
 // MARK: - Deprecated

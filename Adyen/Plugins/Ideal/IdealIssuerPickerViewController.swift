@@ -22,10 +22,14 @@ class IdealIssuerPickerViewController: UITableViewController {
         super.viewDidLoad()
         
         tableView.backgroundColor = UIColor.checkoutBackground
-        tableView.cellLayoutMarginsFollowReadableWidth = false
         tableView.separatorInset = UIEdgeInsets.zero
-        tableView.layoutMargins = UIEdgeInsets.zero
         tableView.register(PaymentMethodTableViewCell.classForCoder(), forCellReuseIdentifier: "cell")
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        reset()
     }
     
     func reset() {

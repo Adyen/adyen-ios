@@ -14,13 +14,22 @@ class PaymentDetailsTests: XCTestCase {
     override func setUp() {
         super.setUp()
         paymentDetails.list = [
-            InputDetail(type: .cardToken, key: "additionalData.card.encrypted.json"),
+            InputDetail(type: .cardToken(cvcOptional: false), key: "additionalData.card.encrypted.json"),
             InputDetail(type: .applePayToken, key: "additionalData.applepay.token"),
             InputDetail(type: .boolean, key: "storeDetails"),
             InputDetail(type: .select, key: "idealIssuer"),
             InputDetail(type: .text, key: "sepa.ownerName"),
             InputDetail(type: .text, key: "sepa.ibanNumber"),
-            InputDetail(type: .cvc, key: "cardDetails.cvc")
+            InputDetail(type: .cvc, key: "cardDetails.cvc"),
+            InputDetail(type: .select, key: "installments"),
+            InputDetail(type: .address, key: "billingAddress", inputDetails: [
+                InputDetail(type: .text, key: "street"),
+                InputDetail(type: .text, key: "houseNumberOrName"),
+                InputDetail(type: .text, key: "city"),
+                InputDetail(type: .text, key: "postalCode"),
+                InputDetail(type: .text, key: "stateOrProvince"),
+                InputDetail(type: .text, key: "country")
+            ])
         ]
     }
     
@@ -67,6 +76,14 @@ class PaymentDetailsTests: XCTestCase {
         XCTAssertEqual(paymentDetails.list[6].value, cvc)
     }
     
+    func testCardPaymentDetailFillInstallments() {
+        let installments = "2"
+        
+        paymentDetails.fillCard(installmentPlanIdentifier: installments)
+        
+        XCTAssertEqual(paymentDetails.list[7].value, installments)
+    }
+    
     func testIdealPaymentDetailFill() {
         let issuerId = "1234"
         
@@ -83,5 +100,23 @@ class PaymentDetailsTests: XCTestCase {
         
         XCTAssertEqual(paymentDetails.list[4].value, name)
         XCTAssertEqual(paymentDetails.list[5].value, iban)
+    }
+    
+    func testBillingAddressDetailFill() {
+        let address = PaymentDetails.Address(street: "Simon Carmiggeltstraat",
+                                             houseNumberOrName: "6-50",
+                                             postalCode: "1011 DJ",
+                                             city: "Amsterdam",
+                                             stateOrProvince: "Noord Holland",
+                                             countryCode: "NL")
+        paymentDetails.fillBillingAddress(address)
+        
+        let inputDetails = paymentDetails.list[8].inputDetails!
+        XCTAssertEqual(inputDetails["street"]?.value, address.street)
+        XCTAssertEqual(inputDetails["houseNumberOrName"]?.value, address.houseNumberOrName)
+        XCTAssertEqual(inputDetails["postalCode"]?.value, address.postalCode)
+        XCTAssertEqual(inputDetails["city"]?.value, address.city)
+        XCTAssertEqual(inputDetails["stateOrProvince"]?.value, address.stateOrProvince)
+        XCTAssertEqual(inputDetails["country"]?.value, address.countryCode)
     }
 }

@@ -37,7 +37,7 @@ class InputDetailsTests: XCTestCase {
         let info = ["type": "cardToken", "key": "encryptedToken"]
         let detail = InputDetail(info: info)
         
-        XCTAssertEqual(detail?.type, InputType.cardToken)
+        XCTAssertEqual(detail?.type, InputType.cardToken(cvcOptional: false))
         XCTAssertEqual(detail?.key, "encryptedToken")
     }
     

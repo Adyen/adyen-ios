@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13122.19" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.16"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -13,20 +12,25 @@
             <connections>
                 <outlet property="cardNumberLabel" destination="VJy-LX-EtD" id="rvs-Sj-2HB"/>
                 <outlet property="cardNumberLogoImageView" destination="HAa-cR-ero" id="MEv-Wj-Bqj"/>
+                <outlet property="cardNumberScanButton" destination="GeL-z1-Xuv" id="PFB-QB-ZPo"/>
                 <outlet property="cardNumberTextField" destination="7Z4-ok-sdb" id="34c-bp-PAE"/>
                 <outlet property="cardNumberUnderlineView" destination="y75-jO-jE0" id="cgh-df-Qlh"/>
+                <outlet property="cardNumberWidthConstraint" destination="ftq-YO-wVG" id="vIR-n7-Lhz"/>
                 <outlet property="cvcLabel" destination="53s-L6-3Ot" id="IFn-QB-Bdz"/>
                 <outlet property="cvcTextField" destination="GOT-nC-YyR" id="ryJ-fE-Y9i"/>
                 <outlet property="cvcUnderlineView" destination="DdM-5m-a0l" id="Gbr-4C-g4J"/>
                 <outlet property="expiryDateLabel" destination="ma2-sR-S0K" id="oVs-MN-onB"/>
                 <outlet property="expiryDateTextField" destination="XBa-JS-Lok" id="pPF-bg-VwU"/>
                 <outlet property="expiryDateUnderlineView" destination="gSJ-Ma-VkV" id="lUK-mE-BQK"/>
+                <outlet property="installmentTextField" destination="aDW-aH-tFw" id="Vin-uQ-VVJ"/>
+                <outlet property="installmentUnderlineView" destination="ns7-60-5hC" id="Yad-YX-LIT"/>
+                <outlet property="installmentsView" destination="Bho-gk-Hhe" id="URH-JJ-hbU"/>
                 <outlet property="keyboardTopLineBottomConstraint" destination="c03-VA-JMi" id="9uu-ZE-cnx"/>
-                <outlet property="lockImageView" destination="xbG-EL-6MT" id="Fif-tV-1yF"/>
                 <outlet property="payButton" destination="yFf-Gv-J8s" id="gN6-Ao-lxJ"/>
                 <outlet property="scrollView" destination="AX1-bC-owh" id="T2y-t0-qqs"/>
                 <outlet property="storeDetailsButton" destination="u8P-Qu-n78" id="y7g-lf-nBF"/>
                 <outlet property="storeDetailsLabel" destination="Dug-er-7SQ" id="NfU-1q-D2O"/>
+                <outlet property="storeDetailsView" destination="gx2-WJ-0s8" id="zdH-lm-gzz"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -39,234 +43,332 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="41S-pR-hlw" userLabel="Content View">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="308"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="368.5"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mBB-S0-fdq" userLabel="Form View">
-                                    <rect key="frame" x="0.0" y="20" width="375" height="193"/>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="O2c-il-bea">
+                                    <rect key="frame" x="0.0" y="20" width="375" height="253.5"/>
                                     <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LpG-E3-gUw" userLabel="Top Line">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="0.5"/>
+                                            <color key="backgroundColor" red="0.84705882349999995" green="0.84705882349999995" blue="0.84705882349999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="0.5" id="9et-YW-Uq0"/>
+                                            </constraints>
+                                        </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X5i-Kz-kd2" userLabel="Card View">
+                                            <rect key="frame" x="0.0" y="0.5" width="375" height="70"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Card Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VJy-LX-EtD">
+                                                    <rect key="frame" x="20" y="20" width="81" height="16"/>
+                                                    <accessibility key="accessibilityConfiguration">
+                                                        <bool key="isElement" value="NO"/>
+                                                    </accessibility>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="81" id="2k0-zA-qpR"/>
+                                                        <constraint firstAttribute="height" constant="16" id="ALp-zc-TyI"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <color key="textColor" red="0.44313725490196076" green="0.44313725490196076" blue="0.44313725490196076" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="localizedTextKey" value="creditCard.numberField.title"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="credit_card_icon" translatesAutoresizingMaskIntoConstraints="NO" id="HAa-cR-ero">
+                                                    <rect key="frame" x="20" y="42" width="29" height="19"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="29" id="LDn-Ye-iwP"/>
+                                                        <constraint firstAttribute="height" constant="19" id="tRt-Y8-KPm"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="1234 5678 9012 3456" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7Z4-ok-sdb" customClass="CardNumberField" customModule="Adyen">
+                                                    <rect key="frame" x="59" y="40" width="256" height="22"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="number-field"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="22" id="Qp7-je-XGP"/>
+                                                    </constraints>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="18"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="localizedPlaceholderKey" value="creditCard.numberField.placeholder"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="localizedAccessibilityLabelKey" value="creditCard.numberField.title"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="-1" id="3MU-uM-eXf"/>
+                                                    </connections>
+                                                </textField>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y75-jO-jE0" userLabel="Card Line">
+                                                    <rect key="frame" x="20" y="69" width="335" height="1"/>
+                                                    <color key="backgroundColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="0.5" id="CNA-6n-LPt"/>
+                                                    </constraints>
+                                                </view>
+                                                <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GeL-z1-Xuv">
+                                                    <rect key="frame" x="315" y="34" width="40" height="35"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="store-details-button"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="35" id="TdY-1b-lmf"/>
+                                                        <constraint firstAttribute="width" constant="60" id="ftq-YO-wVG"/>
+                                                    </constraints>
+                                                    <state key="normal" image="camera_icon"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="localizedAccessibilityLabelKey" value="creditCard.cardNumberScanButton"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="scanCardClicked:" destination="-1" eventType="touchUpInside" id="kyZ-Of-XAb"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstItem="y75-jO-jE0" firstAttribute="leading" secondItem="X5i-Kz-kd2" secondAttribute="leading" constant="20" id="6bJ-Eh-EMd"/>
+                                                <constraint firstAttribute="height" constant="70" id="EY6-3a-rn3"/>
+                                                <constraint firstItem="GeL-z1-Xuv" firstAttribute="centerY" secondItem="HAa-cR-ero" secondAttribute="centerY" id="Hlv-FN-o5z"/>
+                                                <constraint firstItem="VJy-LX-EtD" firstAttribute="leading" secondItem="X5i-Kz-kd2" secondAttribute="leading" constant="20" id="IJ6-4s-Wyg"/>
+                                                <constraint firstItem="7Z4-ok-sdb" firstAttribute="leading" secondItem="HAa-cR-ero" secondAttribute="trailing" constant="10" id="K7O-rL-AOt"/>
+                                                <constraint firstItem="HAa-cR-ero" firstAttribute="leading" secondItem="X5i-Kz-kd2" secondAttribute="leading" constant="20" id="Lp2-3E-seF"/>
+                                                <constraint firstAttribute="bottom" secondItem="y75-jO-jE0" secondAttribute="bottom" id="Pmh-CQ-x0Y"/>
+                                                <constraint firstItem="HAa-cR-ero" firstAttribute="top" secondItem="VJy-LX-EtD" secondAttribute="bottom" constant="6" id="S8H-ey-wwv"/>
+                                                <constraint firstAttribute="trailing" secondItem="y75-jO-jE0" secondAttribute="trailing" constant="20" id="TJx-hX-2bj"/>
+                                                <constraint firstItem="7Z4-ok-sdb" firstAttribute="trailing" secondItem="GeL-z1-Xuv" secondAttribute="leading" id="Yd1-Pr-Imn"/>
+                                                <constraint firstItem="VJy-LX-EtD" firstAttribute="top" secondItem="X5i-Kz-kd2" secondAttribute="top" constant="20" id="eMq-UR-gi3"/>
+                                                <constraint firstAttribute="trailing" secondItem="GeL-z1-Xuv" secondAttribute="trailing" id="wwl-vw-Cwe"/>
+                                                <constraint firstItem="7Z4-ok-sdb" firstAttribute="top" secondItem="VJy-LX-EtD" secondAttribute="bottom" constant="4" id="yK2-BQ-g2V"/>
+                                            </constraints>
+                                        </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h0E-yp-zyf" userLabel="Card Info View">
+                                            <rect key="frame" x="0.0" y="70.5" width="375" height="70"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="60" translatesAutoresizingMaskIntoConstraints="NO" id="MkA-eu-hIi">
+                                                    <rect key="frame" x="20" y="22" width="335" height="48"/>
+                                                    <subviews>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qMC-IG-VAo" userLabel="Expiry View">
+                                                            <rect key="frame" x="0.0" y="0.0" width="137.5" height="48"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Expiry Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ma2-sR-S0K">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="69.5" height="16"/>
+                                                                    <accessibility key="accessibilityConfiguration">
+                                                                        <bool key="isElement" value="NO"/>
+                                                                    </accessibility>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                                    <color key="textColor" red="0.4431372549" green="0.4431372549" blue="0.4431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="localizedTextKey" value="creditCard.expiryDateField.title"/>
+                                                                    </userDefinedRuntimeAttributes>
+                                                                </label>
+                                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="MM/YY" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XBa-JS-Lok" customClass="CardExpirationField" customModule="Adyen">
+                                                                    <rect key="frame" x="0.0" y="20" width="137.5" height="22"/>
+                                                                    <accessibility key="accessibilityConfiguration" identifier="expiry-field"/>
+                                                                    <nil key="textColor"/>
+                                                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="18"/>
+                                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="localizedPlaceholderKey" value="creditCard.expiryDateField.placeholder"/>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="localizedAccessibilityLabelKey" value="creditCard.expiryDateField.title"/>
+                                                                    </userDefinedRuntimeAttributes>
+                                                                    <connections>
+                                                                        <outlet property="delegate" destination="-1" id="NgQ-8f-bGm"/>
+                                                                    </connections>
+                                                                </textField>
+                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gSJ-Ma-VkV" userLabel="Card Line">
+                                                                    <rect key="frame" x="0.0" y="48" width="137.5" height="0.0"/>
+                                                                    <color key="backgroundColor" red="0.84705882352941175" green="0.84705882352941175" blue="0.84705882352941175" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="0.5" id="P6t-SZ-Zga"/>
+                                                                    </constraints>
+                                                                </view>
+                                                            </subviews>
+                                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <constraints>
+                                                                <constraint firstItem="XBa-JS-Lok" firstAttribute="leading" secondItem="qMC-IG-VAo" secondAttribute="leading" id="GmC-Z4-3cO"/>
+                                                                <constraint firstItem="ma2-sR-S0K" firstAttribute="top" secondItem="qMC-IG-VAo" secondAttribute="top" id="Roh-yu-2mi"/>
+                                                                <constraint firstAttribute="trailing" secondItem="XBa-JS-Lok" secondAttribute="trailing" id="fxx-wI-PIU"/>
+                                                                <constraint firstAttribute="bottom" secondItem="gSJ-Ma-VkV" secondAttribute="bottom" id="hAM-rl-895"/>
+                                                                <constraint firstItem="gSJ-Ma-VkV" firstAttribute="leading" secondItem="qMC-IG-VAo" secondAttribute="leading" id="ivG-VR-ICd"/>
+                                                                <constraint firstItem="XBa-JS-Lok" firstAttribute="top" secondItem="ma2-sR-S0K" secondAttribute="bottom" constant="4" id="lSM-tn-xPv"/>
+                                                                <constraint firstAttribute="trailing" secondItem="gSJ-Ma-VkV" secondAttribute="trailing" id="lV8-hp-0NO"/>
+                                                                <constraint firstItem="ma2-sR-S0K" firstAttribute="leading" secondItem="qMC-IG-VAo" secondAttribute="leading" id="mkH-Mf-PpM"/>
+                                                            </constraints>
+                                                        </view>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7BH-3l-xk9" userLabel="CVC View">
+                                                            <rect key="frame" x="197.5" y="0.0" width="137.5" height="48"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CVC / CVV" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="53s-L6-3Ot">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="65.5" height="16"/>
+                                                                    <accessibility key="accessibilityConfiguration">
+                                                                        <bool key="isElement" value="NO"/>
+                                                                    </accessibility>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                                    <color key="textColor" red="0.4431372549" green="0.4431372549" blue="0.4431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="localizedTextKey" value="creditCard.cvcField.title"/>
+                                                                    </userDefinedRuntimeAttributes>
+                                                                </label>
+                                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="123" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GOT-nC-YyR" customClass="CardCvcField" customModule="Adyen">
+                                                                    <rect key="frame" x="0.0" y="20" width="137.5" height="22"/>
+                                                                    <accessibility key="accessibilityConfiguration" identifier="cvc-field"/>
+                                                                    <nil key="textColor"/>
+                                                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="18"/>
+                                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="localizedPlaceholderKey" value="creditCard.cvcField.placeholder"/>
+                                                                        <userDefinedRuntimeAttribute type="string" keyPath="localizedAccessibilityLabelKey" value="creditCard.cvcField.title"/>
+                                                                    </userDefinedRuntimeAttributes>
+                                                                    <connections>
+                                                                        <outlet property="delegate" destination="-1" id="vmv-Qt-kz9"/>
+                                                                    </connections>
+                                                                </textField>
+                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DdM-5m-a0l" userLabel="Card Line">
+                                                                    <rect key="frame" x="0.0" y="47" width="137.5" height="1"/>
+                                                                    <color key="backgroundColor" red="0.84705882349999995" green="0.84705882349999995" blue="0.84705882349999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="0.5" id="v0q-8A-sjd"/>
+                                                                    </constraints>
+                                                                </view>
+                                                            </subviews>
+                                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <constraints>
+                                                                <constraint firstItem="GOT-nC-YyR" firstAttribute="leading" secondItem="7BH-3l-xk9" secondAttribute="leading" id="12Z-Xb-vHD"/>
+                                                                <constraint firstItem="53s-L6-3Ot" firstAttribute="leading" secondItem="7BH-3l-xk9" secondAttribute="leading" id="3OS-wg-MAa"/>
+                                                                <constraint firstAttribute="trailing" secondItem="GOT-nC-YyR" secondAttribute="trailing" id="8Dr-CR-0lS"/>
+                                                                <constraint firstItem="GOT-nC-YyR" firstAttribute="top" secondItem="53s-L6-3Ot" secondAttribute="bottom" constant="4" id="BMV-Je-F4P"/>
+                                                                <constraint firstAttribute="bottom" secondItem="DdM-5m-a0l" secondAttribute="bottom" id="IAk-5a-Kef"/>
+                                                                <constraint firstAttribute="trailing" secondItem="DdM-5m-a0l" secondAttribute="trailing" id="ZB6-6s-YmT"/>
+                                                                <constraint firstItem="DdM-5m-a0l" firstAttribute="leading" secondItem="7BH-3l-xk9" secondAttribute="leading" id="k7G-IR-yta"/>
+                                                                <constraint firstItem="53s-L6-3Ot" firstAttribute="top" secondItem="7BH-3l-xk9" secondAttribute="top" id="pxK-Eu-VR6"/>
+                                                            </constraints>
+                                                        </view>
+                                                    </subviews>
+                                                    <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="48" id="IEh-fu-VoK"/>
+                                                    </constraints>
+                                                </stackView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="70" id="Ftv-Z6-kUQ"/>
+                                                <constraint firstItem="MkA-eu-hIi" firstAttribute="leading" secondItem="h0E-yp-zyf" secondAttribute="leading" constant="20" id="I6K-ER-ZKA"/>
+                                                <constraint firstAttribute="trailing" secondItem="MkA-eu-hIi" secondAttribute="trailing" constant="20" id="hvK-yF-Wl3"/>
+                                                <constraint firstItem="MkA-eu-hIi" firstAttribute="top" secondItem="h0E-yp-zyf" secondAttribute="top" constant="22" id="ynC-66-l3k"/>
+                                            </constraints>
+                                        </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bho-gk-Hhe" userLabel="Instalments View">
+                                            <rect key="frame" x="0.0" y="140.5" width="375" height="52"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Number of instalments" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QRu-RY-VvZ">
+                                                    <rect key="frame" x="20" y="20" width="137.5" height="22"/>
+                                                    <accessibility key="accessibilityConfiguration">
+                                                        <bool key="isElement" value="NO"/>
+                                                    </accessibility>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="22" id="13x-7i-nnp"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="137" id="3oe-IW-W4U"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <color key="textColor" red="0.4431372549" green="0.4431372549" blue="0.4431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="localizedTextKey" value="creditCard.installmentsField"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </label>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="1 x 0.00" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aDW-aH-tFw" customClass="CardInstallmentField" customModule="Adyen">
+                                                    <rect key="frame" x="177.5" y="20" width="177.5" height="22"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="22" id="f1K-YS-koC"/>
+                                                    </constraints>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="18"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="localizedAccessibilityLabelKey" value="creditCard.installmentsField"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </textField>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ns7-60-5hC" userLabel="Instalment Line">
+                                                    <rect key="frame" x="20" y="51" width="335" height="1"/>
+                                                    <color key="backgroundColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="0.5" id="31J-1z-CEF"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="ns7-60-5hC" secondAttribute="bottom" id="5IE-ba-1DB"/>
+                                                <constraint firstItem="QRu-RY-VvZ" firstAttribute="leading" secondItem="Bho-gk-Hhe" secondAttribute="leading" constant="20" id="6Xa-7X-6vR"/>
+                                                <constraint firstItem="ns7-60-5hC" firstAttribute="leading" secondItem="Bho-gk-Hhe" secondAttribute="leading" constant="20" id="MGq-64-KW7"/>
+                                                <constraint firstItem="aDW-aH-tFw" firstAttribute="top" secondItem="Bho-gk-Hhe" secondAttribute="top" constant="20" id="PJu-x3-OBj"/>
+                                                <constraint firstAttribute="height" priority="999" constant="52" id="WrC-op-272"/>
+                                                <constraint firstAttribute="trailing" secondItem="ns7-60-5hC" secondAttribute="trailing" constant="20" id="bNp-7N-yLN"/>
+                                                <constraint firstAttribute="trailing" secondItem="aDW-aH-tFw" secondAttribute="trailing" constant="20" id="hmk-9a-Oru"/>
+                                                <constraint firstItem="aDW-aH-tFw" firstAttribute="leading" secondItem="QRu-RY-VvZ" secondAttribute="trailing" constant="20" id="l1F-cF-SgF"/>
+                                                <constraint firstItem="QRu-RY-VvZ" firstAttribute="top" secondItem="Bho-gk-Hhe" secondAttribute="top" constant="20" id="tXv-se-PDb"/>
+                                            </constraints>
+                                        </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gx2-WJ-0s8" userLabel="Store Details View">
+                                            <rect key="frame" x="0.0" y="192.5" width="375" height="60"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remember this card for my next payment" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="Dug-er-7SQ">
+                                                    <rect key="frame" x="20" y="23" width="295" height="16"/>
+                                                    <accessibility key="accessibilityConfiguration">
+                                                        <bool key="isElement" value="NO"/>
+                                                    </accessibility>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="16" id="Qo1-97-RD0"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <color key="textColor" red="0.4431372549" green="0.4431372549" blue="0.4431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="localizedTextKey" value="creditCard.storeDetailsButton"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u8P-Qu-n78">
+                                                    <rect key="frame" x="315" y="0.0" width="40" height="59"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="store-details-button"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="60" id="7by-5O-M8V"/>
+                                                        <constraint firstAttribute="height" constant="59" id="pN4-J6-WyO"/>
+                                                    </constraints>
+                                                    <state key="normal" image="checkbox_inactive"/>
+                                                    <state key="selected" image="checkbox_active"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="localizedAccessibilityLabelKey" value="creditCard.storeDetailsButton"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="storeDetailsToggle:" destination="-1" eventType="touchUpInside" id="KUm-lj-pZg"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstItem="Dug-er-7SQ" firstAttribute="trailing" secondItem="u8P-Qu-n78" secondAttribute="leading" id="FVT-bv-KzE"/>
+                                                <constraint firstAttribute="height" priority="999" constant="60" id="P02-0m-RgY"/>
+                                                <constraint firstAttribute="trailing" secondItem="u8P-Qu-n78" secondAttribute="trailing" id="PEW-XC-Stf"/>
+                                                <constraint firstItem="u8P-Qu-n78" firstAttribute="top" secondItem="gx2-WJ-0s8" secondAttribute="top" id="cki-Az-kHU"/>
+                                                <constraint firstItem="Dug-er-7SQ" firstAttribute="leading" secondItem="gx2-WJ-0s8" secondAttribute="leading" constant="20" id="gnH-u7-vIk"/>
+                                                <constraint firstItem="Dug-er-7SQ" firstAttribute="top" secondItem="gx2-WJ-0s8" secondAttribute="top" constant="23" id="mit-oe-dXr"/>
+                                            </constraints>
+                                        </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qG3-FO-bl5" userLabel="Bottom Line">
-                                            <rect key="frame" x="0.0" y="192" width="375" height="1"/>
+                                            <rect key="frame" x="0.0" y="252.5" width="375" height="1"/>
                                             <color key="backgroundColor" red="0.84705882352941175" green="0.84705882352941175" blue="0.84705882352941175" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="0.5" id="mRU-ES-Fjz"/>
                                             </constraints>
                                         </view>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2QT-FA-Mwh" userLabel="Top Line">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
-                                            <color key="backgroundColor" red="0.84705882349999995" green="0.84705882349999995" blue="0.84705882349999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="0.5" id="80o-li-vNp"/>
-                                            </constraints>
-                                        </view>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Card Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VJy-LX-EtD">
-                                            <rect key="frame" x="20" y="22" width="81" height="16"/>
-                                            <accessibility key="accessibilityConfiguration">
-                                                <bool key="isElement" value="NO"/>
-                                            </accessibility>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                            <color key="textColor" red="0.44313725490196076" green="0.44313725490196076" blue="0.44313725490196076" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <nil key="highlightedColor"/>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="string" keyPath="localizedTextKey" value="creditCard.numberField.title"/>
-                                            </userDefinedRuntimeAttributes>
-                                        </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="credit_card_icon" translatesAutoresizingMaskIntoConstraints="NO" id="HAa-cR-ero">
-                                            <rect key="frame" x="20" y="44" width="29" height="19"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="29" id="LDn-Ye-iwP"/>
-                                                <constraint firstAttribute="height" constant="19" id="tRt-Y8-KPm"/>
-                                            </constraints>
-                                        </imageView>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="1234 5678 9012 3456" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7Z4-ok-sdb" customClass="CardNumberField" customModule="Adyen">
-                                            <rect key="frame" x="60" y="42" width="295" height="22"/>
-                                            <accessibility key="accessibilityConfiguration" identifier="number-field"/>
-                                            <nil key="textColor"/>
-                                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="18"/>
-                                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="string" keyPath="localizedPlaceholderKey" value="creditCard.numberField.placeholder"/>
-                                                <userDefinedRuntimeAttribute type="string" keyPath="localizedAccessibilityLabelKey" value="creditCard.numberField.title"/>
-                                            </userDefinedRuntimeAttributes>
-                                            <connections>
-                                                <outlet property="delegate" destination="-1" id="3MU-uM-eXf"/>
-                                            </connections>
-                                        </textField>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y75-jO-jE0" userLabel="Card Line">
-                                            <rect key="frame" x="20" y="72" width="335" height="1"/>
-                                            <color key="backgroundColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="0.5" id="CNA-6n-LPt"/>
-                                            </constraints>
-                                        </view>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lock" translatesAutoresizingMaskIntoConstraints="NO" id="xbG-EL-6MT">
-                                            <rect key="frame" x="344" y="32" width="10" height="13"/>
-                                        </imageView>
-                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="60" translatesAutoresizingMaskIntoConstraints="NO" id="MkA-eu-hIi">
-                                            <rect key="frame" x="20" y="95" width="335" height="46"/>
-                                            <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qMC-IG-VAo" userLabel="Expiry View">
-                                                    <rect key="frame" x="0.0" y="0.0" width="137.5" height="46"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Expiry Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ma2-sR-S0K">
-                                                            <rect key="frame" x="0.0" y="0.0" width="69.5" height="16"/>
-                                                            <accessibility key="accessibilityConfiguration">
-                                                                <bool key="isElement" value="NO"/>
-                                                            </accessibility>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                            <color key="textColor" red="0.4431372549" green="0.4431372549" blue="0.4431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="localizedTextKey" value="creditCard.expiryDateField.title"/>
-                                                            </userDefinedRuntimeAttributes>
-                                                        </label>
-                                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="MM/YY" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XBa-JS-Lok" customClass="CardExpirationField" customModule="Adyen">
-                                                            <rect key="frame" x="0.0" y="20" width="137.5" height="22"/>
-                                                            <accessibility key="accessibilityConfiguration" identifier="expiry-field"/>
-                                                            <nil key="textColor"/>
-                                                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="18"/>
-                                                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="localizedPlaceholderKey" value="creditCard.expiryDateField.placeholder"/>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="localizedAccessibilityLabelKey" value="creditCard.expiryDateField.title"/>
-                                                            </userDefinedRuntimeAttributes>
-                                                            <connections>
-                                                                <outlet property="delegate" destination="-1" id="NgQ-8f-bGm"/>
-                                                            </connections>
-                                                        </textField>
-                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gSJ-Ma-VkV" userLabel="Card Line">
-                                                            <rect key="frame" x="0.0" y="46" width="137.5" height="0.0"/>
-                                                            <color key="backgroundColor" red="0.84705882352941175" green="0.84705882352941175" blue="0.84705882352941175" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="0.5" id="P6t-SZ-Zga"/>
-                                                            </constraints>
-                                                        </view>
-                                                    </subviews>
-                                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <constraints>
-                                                        <constraint firstItem="XBa-JS-Lok" firstAttribute="leading" secondItem="qMC-IG-VAo" secondAttribute="leading" id="GmC-Z4-3cO"/>
-                                                        <constraint firstItem="ma2-sR-S0K" firstAttribute="top" secondItem="qMC-IG-VAo" secondAttribute="top" id="Roh-yu-2mi"/>
-                                                        <constraint firstAttribute="trailing" secondItem="XBa-JS-Lok" secondAttribute="trailing" id="fxx-wI-PIU"/>
-                                                        <constraint firstAttribute="bottom" secondItem="gSJ-Ma-VkV" secondAttribute="bottom" id="hAM-rl-895"/>
-                                                        <constraint firstItem="gSJ-Ma-VkV" firstAttribute="leading" secondItem="qMC-IG-VAo" secondAttribute="leading" id="ivG-VR-ICd"/>
-                                                        <constraint firstItem="XBa-JS-Lok" firstAttribute="top" secondItem="ma2-sR-S0K" secondAttribute="bottom" constant="4" id="lSM-tn-xPv"/>
-                                                        <constraint firstAttribute="trailing" secondItem="gSJ-Ma-VkV" secondAttribute="trailing" id="lV8-hp-0NO"/>
-                                                        <constraint firstItem="ma2-sR-S0K" firstAttribute="leading" secondItem="qMC-IG-VAo" secondAttribute="leading" id="mkH-Mf-PpM"/>
-                                                    </constraints>
-                                                </view>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7BH-3l-xk9" userLabel="CVC View">
-                                                    <rect key="frame" x="197.5" y="0.0" width="137.5" height="46"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CVC / CVV" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="53s-L6-3Ot">
-                                                            <rect key="frame" x="0.0" y="0.0" width="65" height="16"/>
-                                                            <accessibility key="accessibilityConfiguration">
-                                                                <bool key="isElement" value="NO"/>
-                                                            </accessibility>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                            <color key="textColor" red="0.4431372549" green="0.4431372549" blue="0.4431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="localizedTextKey" value="creditCard.cvcField.title"/>
-                                                            </userDefinedRuntimeAttributes>
-                                                        </label>
-                                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="123" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GOT-nC-YyR" customClass="CardCvcField" customModule="Adyen">
-                                                            <rect key="frame" x="0.0" y="20" width="137.5" height="22"/>
-                                                            <accessibility key="accessibilityConfiguration" identifier="cvc-field"/>
-                                                            <nil key="textColor"/>
-                                                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="18"/>
-                                                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="localizedPlaceholderKey" value="creditCard.cvcField.placeholder"/>
-                                                                <userDefinedRuntimeAttribute type="string" keyPath="localizedAccessibilityLabelKey" value="creditCard.cvcField.title"/>
-                                                            </userDefinedRuntimeAttributes>
-                                                            <connections>
-                                                                <outlet property="delegate" destination="-1" id="vmv-Qt-kz9"/>
-                                                            </connections>
-                                                        </textField>
-                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DdM-5m-a0l" userLabel="Card Line">
-                                                            <rect key="frame" x="0.0" y="45" width="137.5" height="1"/>
-                                                            <color key="backgroundColor" red="0.84705882349999995" green="0.84705882349999995" blue="0.84705882349999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="0.5" id="v0q-8A-sjd"/>
-                                                            </constraints>
-                                                        </view>
-                                                    </subviews>
-                                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <constraints>
-                                                        <constraint firstItem="GOT-nC-YyR" firstAttribute="leading" secondItem="7BH-3l-xk9" secondAttribute="leading" id="12Z-Xb-vHD"/>
-                                                        <constraint firstItem="53s-L6-3Ot" firstAttribute="leading" secondItem="7BH-3l-xk9" secondAttribute="leading" id="3OS-wg-MAa"/>
-                                                        <constraint firstAttribute="trailing" secondItem="GOT-nC-YyR" secondAttribute="trailing" id="8Dr-CR-0lS"/>
-                                                        <constraint firstItem="GOT-nC-YyR" firstAttribute="top" secondItem="53s-L6-3Ot" secondAttribute="bottom" constant="4" id="BMV-Je-F4P"/>
-                                                        <constraint firstAttribute="bottom" secondItem="DdM-5m-a0l" secondAttribute="bottom" id="IAk-5a-Kef"/>
-                                                        <constraint firstAttribute="trailing" secondItem="DdM-5m-a0l" secondAttribute="trailing" id="ZB6-6s-YmT"/>
-                                                        <constraint firstItem="DdM-5m-a0l" firstAttribute="leading" secondItem="7BH-3l-xk9" secondAttribute="leading" id="k7G-IR-yta"/>
-                                                        <constraint firstItem="53s-L6-3Ot" firstAttribute="top" secondItem="7BH-3l-xk9" secondAttribute="top" id="pxK-Eu-VR6"/>
-                                                    </constraints>
-                                                </view>
-                                            </subviews>
-                                            <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="46" id="IEh-fu-VoK"/>
-                                            </constraints>
-                                        </stackView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remember this card for my next payment" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dug-er-7SQ">
-                                            <rect key="frame" x="20" y="159" width="249.5" height="16"/>
-                                            <accessibility key="accessibilityConfiguration">
-                                                <bool key="isElement" value="NO"/>
-                                            </accessibility>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                            <color key="textColor" red="0.4431372549" green="0.4431372549" blue="0.4431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <nil key="highlightedColor"/>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="string" keyPath="localizedTextKey" value="creditCard.storeDetailsButton.title"/>
-                                            </userDefinedRuntimeAttributes>
-                                        </label>
-                                        <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u8P-Qu-n78">
-                                            <rect key="frame" x="335" y="156" width="20" height="22"/>
-                                            <accessibility key="accessibilityConfiguration" identifier="store-details-button"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="20" id="7by-5O-M8V"/>
-                                                <constraint firstAttribute="height" constant="22" id="pN4-J6-WyO"/>
-                                            </constraints>
-                                            <state key="normal" image="checkbox_inactive"/>
-                                            <state key="selected" image="checkbox_active"/>
-                                            <connections>
-                                                <action selector="storeDetailsToggle:" destination="-1" eventType="touchUpInside" id="KUm-lj-pZg"/>
-                                            </connections>
-                                        </button>
                                     </subviews>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstItem="qG3-FO-bl5" firstAttribute="leading" secondItem="mBB-S0-fdq" secondAttribute="leading" id="10X-GJ-2in"/>
-                                        <constraint firstItem="VJy-LX-EtD" firstAttribute="top" secondItem="mBB-S0-fdq" secondAttribute="top" constant="22" id="12Z-KX-qGo"/>
-                                        <constraint firstItem="u8P-Qu-n78" firstAttribute="centerY" secondItem="Dug-er-7SQ" secondAttribute="centerY" id="1Qj-MH-rS3"/>
-                                        <constraint firstAttribute="trailing" secondItem="xbG-EL-6MT" secondAttribute="trailing" constant="21" id="1ZD-zn-vsU"/>
-                                        <constraint firstItem="y75-jO-jE0" firstAttribute="top" secondItem="7Z4-ok-sdb" secondAttribute="bottom" constant="8" id="3EV-gW-nd3"/>
-                                        <constraint firstAttribute="trailing" secondItem="u8P-Qu-n78" secondAttribute="trailing" constant="20" id="7Sa-Om-Pt6"/>
-                                        <constraint firstItem="Dug-er-7SQ" firstAttribute="leading" secondItem="mBB-S0-fdq" secondAttribute="leading" constant="20" id="Fjh-at-xbR"/>
-                                        <constraint firstItem="2QT-FA-Mwh" firstAttribute="top" secondItem="mBB-S0-fdq" secondAttribute="top" id="GSv-HE-xl3"/>
-                                        <constraint firstAttribute="trailing" secondItem="y75-jO-jE0" secondAttribute="trailing" constant="20" id="Gnq-9e-lOj"/>
-                                        <constraint firstItem="HAa-cR-ero" firstAttribute="leading" secondItem="mBB-S0-fdq" secondAttribute="leading" constant="20" id="IWa-1c-bek"/>
-                                        <constraint firstItem="7Z4-ok-sdb" firstAttribute="top" secondItem="VJy-LX-EtD" secondAttribute="bottom" constant="4" id="IYy-FT-5Cc"/>
-                                        <constraint firstAttribute="trailing" secondItem="2QT-FA-Mwh" secondAttribute="trailing" id="Q6b-uD-iW5"/>
-                                        <constraint firstItem="HAa-cR-ero" firstAttribute="top" secondItem="VJy-LX-EtD" secondAttribute="bottom" constant="6" id="Qwh-WB-XgT"/>
-                                        <constraint firstItem="7Z4-ok-sdb" firstAttribute="leading" secondItem="HAa-cR-ero" secondAttribute="trailing" constant="11" id="R7s-w2-eA3"/>
-                                        <constraint firstAttribute="bottom" secondItem="Dug-er-7SQ" secondAttribute="bottom" constant="18" id="Uyn-0v-MQh"/>
-                                        <constraint firstAttribute="trailing" secondItem="MkA-eu-hIi" secondAttribute="trailing" constant="20" id="VGL-1G-jPr"/>
-                                        <constraint firstItem="Dug-er-7SQ" firstAttribute="top" secondItem="MkA-eu-hIi" secondAttribute="bottom" constant="18" id="Vcn-SY-rlw"/>
-                                        <constraint firstItem="xbG-EL-6MT" firstAttribute="top" secondItem="mBB-S0-fdq" secondAttribute="top" constant="32" id="XiU-qJ-ESb"/>
-                                        <constraint firstAttribute="bottom" secondItem="qG3-FO-bl5" secondAttribute="bottom" id="cpp-Pt-kQ0"/>
-                                        <constraint firstAttribute="trailing" secondItem="7Z4-ok-sdb" secondAttribute="trailing" constant="20" id="d4G-7O-yDU"/>
-                                        <constraint firstItem="u8P-Qu-n78" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Dug-er-7SQ" secondAttribute="trailing" constant="20" id="est-dU-oRq"/>
-                                        <constraint firstItem="VJy-LX-EtD" firstAttribute="leading" secondItem="mBB-S0-fdq" secondAttribute="leading" constant="20" id="gUv-pS-t82"/>
-                                        <constraint firstAttribute="trailing" secondItem="qG3-FO-bl5" secondAttribute="trailing" id="n5E-gH-S57"/>
-                                        <constraint firstItem="MkA-eu-hIi" firstAttribute="top" secondItem="y75-jO-jE0" secondAttribute="bottom" constant="22" id="nsF-BU-tjl"/>
-                                        <constraint firstItem="y75-jO-jE0" firstAttribute="leading" secondItem="mBB-S0-fdq" secondAttribute="leading" constant="20" id="pvU-Ct-nl4"/>
-                                        <constraint firstItem="2QT-FA-Mwh" firstAttribute="leading" secondItem="mBB-S0-fdq" secondAttribute="leading" id="scT-7g-lUr"/>
-                                        <constraint firstItem="MkA-eu-hIi" firstAttribute="leading" secondItem="mBB-S0-fdq" secondAttribute="leading" constant="20" id="x5R-bM-oXr"/>
+                                        <constraint firstAttribute="trailing" secondItem="X5i-Kz-kd2" secondAttribute="trailing" id="KW3-So-YDF"/>
+                                        <constraint firstItem="X5i-Kz-kd2" firstAttribute="leading" secondItem="O2c-il-bea" secondAttribute="leading" id="REh-PY-uvG"/>
                                     </constraints>
-                                </view>
+                                </stackView>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yFf-Gv-J8s" userLabel="Pay Button" customClass="CheckoutButton" customModule="Adyen" customModuleProvider="target">
-                                    <rect key="frame" x="20" y="233" width="335" height="55"/>
+                                    <rect key="frame" x="20" y="293.5" width="335" height="55"/>
                                     <accessibility key="accessibilityConfiguration" identifier="checkout-button"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="55" placeholder="YES" id="HYe-nk-Jer"/>
@@ -280,13 +382,13 @@
                                 </view>
                             </subviews>
                             <constraints>
-                                <constraint firstItem="mBB-S0-fdq" firstAttribute="top" secondItem="41S-pR-hlw" secondAttribute="top" constant="20" id="7MK-AB-JkD"/>
                                 <constraint firstAttribute="bottom" secondItem="yFf-Gv-J8s" secondAttribute="bottom" constant="20" id="A0I-Qc-nnH"/>
+                                <constraint firstItem="O2c-il-bea" firstAttribute="leading" secondItem="41S-pR-hlw" secondAttribute="leading" id="CBd-Ia-hsC"/>
                                 <constraint firstAttribute="trailing" secondItem="yFf-Gv-J8s" secondAttribute="trailing" constant="20" id="Dt5-LS-aTq"/>
-                                <constraint firstAttribute="trailing" secondItem="mBB-S0-fdq" secondAttribute="trailing" id="Y7r-oG-5hH"/>
-                                <constraint firstItem="mBB-S0-fdq" firstAttribute="leading" secondItem="41S-pR-hlw" secondAttribute="leading" id="ZcQ-77-cIv"/>
+                                <constraint firstItem="O2c-il-bea" firstAttribute="top" secondItem="41S-pR-hlw" secondAttribute="top" constant="20" id="Mc2-CG-SS5"/>
+                                <constraint firstItem="yFf-Gv-J8s" firstAttribute="top" secondItem="O2c-il-bea" secondAttribute="bottom" constant="20" id="dXr-Pg-hQd"/>
                                 <constraint firstItem="yFf-Gv-J8s" firstAttribute="leading" secondItem="41S-pR-hlw" secondAttribute="leading" constant="20" id="gvV-kN-OX8"/>
-                                <constraint firstItem="yFf-Gv-J8s" firstAttribute="top" secondItem="mBB-S0-fdq" secondAttribute="bottom" constant="20" id="kmZ-dm-uSz"/>
+                                <constraint firstAttribute="trailing" secondItem="O2c-il-bea" secondAttribute="trailing" id="lHX-Z5-XZF"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -320,9 +422,9 @@
         </view>
     </objects>
     <resources>
+        <image name="camera_icon" width="20" height="17"/>
         <image name="checkbox_active" width="20" height="20"/>
         <image name="checkbox_inactive" width="20" height="20"/>
         <image name="credit_card_icon" width="29" height="19"/>
-        <image name="lock" width="10" height="13"/>
     </resources>
 </document>

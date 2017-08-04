@@ -12,7 +12,8 @@ disabled_rules:
   - file_length
 included:
   - Adyen
-  - Examples
   - AdyenTests
+  - AdyenUITests
+  - AdyenUIHost
 excluded:
   - Pods

@@ -7,50 +7,33 @@
 import UIKit
 import Adyen
 
-class ShoppingCartViewController: UIViewController {
-    let url = URL(string: "https://checkoutshopper-test.adyen.com/checkoutshopper/demo/easy-integration/merchantserver/setup")!
+class ShoppingCartViewController: UIViewController, CheckoutViewControllerDelegate, CheckoutViewControllerCardScanDelegate, CardIOPaymentViewControllerDelegate {
     
-    var appUrlCompletion: URLCompletion?
+    // MARK: - UIViewController
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        guard
-            Configuration.appIdentifier.characters.isEmpty == false,
-            Configuration.appSecretKey.characters.isEmpty == false
-        else {
-            fatalError("Please fill in your app ID and secret key in the Configuration.swift file.")
+        guard Configuration.appSecretKey.characters.isEmpty == false else {
+            fatalError("Please fill in a secret key in the Configuration.swift file.")
         }
     }
     
-    @IBAction func checkout(_ sender: Any) {
-        let checkoutViewController = CheckoutViewController(delegate: self)
-        present(checkoutViewController, animated: true)
-    }
-    
-    func presentSuccessScreen() {
-        presentScreen(withIdentifier: "SuccessScreen")
-    }
-    
-    func presentFailureScreen() {
-        presentScreen(withIdentifier: "FailureScreen")
-    }
-}
-
-extension ShoppingCartViewController: CheckoutViewControllerDelegate {
+    // MARK: - CheckoutViewControllerDelegate
     
     func checkoutViewController(_ controller: CheckoutViewController, requiresPaymentDataForToken token: String, completion: @escaping DataCompletion) {
         let paymentDetails: [String: Any] = [
-            "quantity": 17408,
-            "currency": "EUR",
-            "basketId": "iOS & M+M Black dress & accessories",
-            "customerCountry": "NL",
-            "customerId": "shopper@company.com",
-            
-            "platform": "ios",
-            "appUrlScheme": "example-shopping-app://",
-            
-            "sdkToken": token
+            "amount": [
+                "value": 17408,
+                "currency": "EUR"
+            ],
+            "reference": "iOS & M+M Black dress & accessories",
+            "countryCode": "NL",
+            "shopperLocale": "nl_NL",
+            "shopperReference": "shopper@company.com",
+            "returnUrl": "example-shopping-app://",
+            "channel": "ios",
+            "token": token
         ]
         
         var request = URLRequest(url: url)
@@ -58,8 +41,7 @@ extension ShoppingCartViewController: CheckoutViewControllerDelegate {
         request.httpBody = try? JSONSerialization.data(withJSONObject: paymentDetails, options: [])
         request.allHTTPHeaderFields = [
             "Content-Type": "application/json",
-            "X-MerchantServer-App-Id": Configuration.appIdentifier,
-            "X-MerchantServer-App-SecretKey": Configuration.appSecretKey
+            "x-demo-server-api-key": Configuration.appSecretKey
         ]
         
         let session = URLSession(configuration: .default)
@@ -98,19 +80,81 @@ extension ShoppingCartViewController: CheckoutViewControllerDelegate {
             presentFailureScreen()
         }
     }
-}
-
-extension ShoppingCartViewController {
+    
+    // MARK: - CheckoutViewControllerCardScanDelegate
+    
+    func shouldShowCardScanButton(for checkoutViewController: CheckoutViewController) -> Bool {
+        return true
+    }
+    
+    func scanCard(for checkoutViewController: CheckoutViewController, completion: @escaping CardScanCompletion) {
+        if let scanViewController = CardIOPaymentViewController(paymentDelegate: self),
+            let presented = presentedViewController {
+            scanViewController.suppressScanConfirmation = true
+            cardScanCompletion = completion
+            presented.present(scanViewController, animated: true)
+        } else {
+            completion((number: nil, expiryDate: nil, cvc: nil))
+        }
+    }
+    
+    // MARK: - CardIOPaymentViewControllerDelegate
+    
+    func userDidCancel(_ paymentViewController: CardIOPaymentViewController!) {
+        if let presented = presentedViewController {
+            presented.dismiss(animated: true)
+        }
+        
+        cardScanCompletion?((number: nil, expiryDate: nil, cvc: nil))
+        cardScanCompletion = nil
+    }
+    
+    func userDidProvide(_ cardInfo: CardIOCreditCardInfo!, in paymentViewController: CardIOPaymentViewController!) {
+        if let presented = presentedViewController {
+            presented.dismiss(animated: true)
+        }
+        
+        let number = cardInfo.cardNumber
+        let month = String(format: "%02d", cardInfo.expiryMonth)
+        let year = String(format: "%02d", cardInfo.expiryYear % 100)
+        let expiryDate = "\(month)\(year)"
+        let cvc = cardInfo.cvv
+        cardScanCompletion?((number: number, expiryDate: expiryDate, cvc: cvc))
+        cardScanCompletion = nil
+    }
+    
+    // MARK: - Public
     
     func applicationDidReceive(_ url: URL) {
-        
         appUrlCompletion?(url)
     }
     
-    func presentScreen(withIdentifier identifier: String) {
+    // MARK: - Private
+    
+    private let url = URL(string: "https://checkoutshopper-test.adyen.com/checkoutshopper/demoserver/setup")!
+    
+    private var appUrlCompletion: URLCompletion?
+    private var cardScanCompletion: CardScanCompletion?
+    
+    @IBAction private func checkout(_ sender: Any) {
+        let checkoutViewController = CheckoutViewController(delegate: self)
+        checkoutViewController.cardScanDelegate = self
+        present(checkoutViewController, animated: true)
+    }
+    
+    private func presentScreen(withIdentifier identifier: String) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: identifier)
         
         present(viewController, animated: true, completion: nil)
     }
+    
+    private func presentSuccessScreen() {
+        presentScreen(withIdentifier: "SuccessScreen")
+    }
+    
+    private func presentFailureScreen() {
+        presentScreen(withIdentifier: "FailureScreen")
+    }
+    
 }

@@ -39,7 +39,7 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(method?.inputDetails?.count, 2)
         XCTAssertEqual(method?.inputDetails?[0].optional, false)
         XCTAssertEqual(method?.inputDetails?[0].key, "additionalData.card.encrypted.json")
-        XCTAssertEqual(method?.inputDetails?[0].type, InputType.cardToken)
+        XCTAssertEqual(method?.inputDetails?[0].type, InputType.cardToken(cvcOptional: false))
         XCTAssertEqual(method?.inputDetails?[1].optional, true)
         XCTAssertEqual(method?.inputDetails?[1].key, "storeDetails")
         XCTAssertEqual(method?.inputDetails?[1].type, InputType.boolean)
@@ -51,26 +51,56 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertNil(method?.configuration)
     }
     
+    func testInitWithCardBillingAddressInfo() {
+        let info = JsonReader.read(file: "PaymentMethodCardBillingAddress")!
+        let method = PaymentMethod(info: info, logoBaseURL: "", isOneClick: false)!
+        
+        XCTAssertEqual(method.name, "MasterCard")
+        XCTAssertEqual(method.type, "mc")
+        XCTAssertEqual(method.txVariant, .other)
+        XCTAssertEqual(method.isOneClick, false)
+        XCTAssertEqual(method.paymentMethodData, "methodData")
+        
+        XCTAssertNotNil(method.inputDetails?["additionalData.card.encrypted.json"])
+        XCTAssertNotNil(method.inputDetails?["storeDetails"])
+        
+        let billingAddressInputDetail = method.inputDetails!["billingAddress"]!
+        let billingAddressInputDetails = billingAddressInputDetail.inputDetails!
+        XCTAssertEqual(billingAddressInputDetails.count, 5)
+        XCTAssertEqual(billingAddressInputDetails["street"]?.value, "Leidscheplein")
+        XCTAssertEqual(billingAddressInputDetails["houseNumberOrName"]?.value, "1")
+        XCTAssertEqual(billingAddressInputDetails["city"]?.value, "Amsterdam")
+        XCTAssertEqual(billingAddressInputDetails["stateOrProvince"]?.value, nil)
+        XCTAssertEqual(billingAddressInputDetails["country"]?.value, "NL")
+        
+    }
+    
     func testInitWithCardCvcInfo() {
         let info = JsonReader.read(file: "PaymentMethodCardCvc")!
-        let method = PaymentMethod(info: info, logoBaseURL: "", isOneClick: false)
+        let method = PaymentMethod(info: info, logoBaseURL: "", isOneClick: false)!
         
-        XCTAssertEqual(method?.name, "•••• 0000")
-        XCTAssertEqual(method?.type, "maestro")
-        XCTAssertEqual(method?.txVariant, PaymentMethodType.other)
-        XCTAssertEqual(method?.isOneClick, false)
-        XCTAssertEqual(method?.paymentMethodData, "methodData")
+        XCTAssertEqual(method.name, "Maestro")
+        XCTAssertEqual(method.type, "maestro")
+        XCTAssertEqual(method.txVariant, PaymentMethodType.other)
+        XCTAssertEqual(method.isOneClick, false)
+        XCTAssertEqual(method.paymentMethodData, "methodData")
         
-        XCTAssertEqual(method?.inputDetails?.count, 1)
-        XCTAssertEqual(method?.inputDetails?[0].optional, false)
-        XCTAssertEqual(method?.inputDetails?[0].key, "cardDetails.cvc")
-        XCTAssertEqual(method?.inputDetails?[0].type, InputType.cvc)
+        let cardOneClickInfo = method.oneClickInfo as! CardOneClickInfo // swiftlint:disable:this force_cast
+        XCTAssertEqual(cardOneClickInfo.number, "0000")
+        XCTAssertEqual(cardOneClickInfo.holderName, "Shopper")
+        XCTAssertEqual(cardOneClickInfo.expiryMonth, 8)
+        XCTAssertEqual(cardOneClickInfo.expiryYear, 2018)
         
-        XCTAssertEqual(method?.group?.name, "Credit Card")
-        XCTAssertEqual(method?.group?.type, "card")
-        XCTAssertEqual(method?.group?.data, "groupMethodData")
+        XCTAssertEqual(method.inputDetails?.count, 1)
+        XCTAssertEqual(method.inputDetails?[0].optional, false)
+        XCTAssertEqual(method.inputDetails?[0].key, "cardDetails.cvc")
+        XCTAssertEqual(method.inputDetails?[0].type, InputType.cvc)
         
-        XCTAssertNil(method?.configuration)
+        XCTAssertEqual(method.group?.name, "Credit Card")
+        XCTAssertEqual(method.group?.type, "card")
+        XCTAssertEqual(method.group?.data, "groupMethodData")
+        
+        XCTAssertNil(method.configuration)
     }
     
     func testInitWithIdealInfo() {
@@ -131,7 +161,7 @@ class PaymentMethodTests: XCTestCase {
         let info = JsonReader.read(file: "PaymentMethodPaypalRecurring")!
         let method = PaymentMethod(info: info, logoBaseURL: "", isOneClick: false)
         
-        XCTAssertEqual(method?.name, "email@email.com")
+        XCTAssertEqual(method?.name, "PayPal")
         XCTAssertEqual(method?.type, "paypal")
         XCTAssertEqual(method?.txVariant, PaymentMethodType.other)
         XCTAssertEqual(method?.isOneClick, false)

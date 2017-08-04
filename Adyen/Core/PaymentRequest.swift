@@ -8,54 +8,82 @@ import Foundation
 
 let deviceFingerprintVersion = sdkVersion
 
-public typealias PaymentMethodsCompletion = (_ preferredMethods: [PaymentMethod]?, _ availableMethods: [PaymentMethod]?, _ error: Error?) -> Void
 public typealias DataCompletion = (Data) -> Void
 public typealias MethodCompletion = (PaymentMethod) -> Void
 public typealias URLCompletion = (URL) -> Void
+public typealias CardScanCompletion = ((number: String?, expiryDate: String?, cvc: String?)) -> Void
 public typealias PaymentDetailsCompletion = (PaymentDetails) -> Void
 
 /// This class is the starting point for [Custom Integration](https://docs.adyen.com/developers/payments/accepting-payments/in-app-integration).
 public final class PaymentRequest {
     
     /// Delegate for controlling the payment flow. See `PaymentRequestDelegate`.
-    public internal(set) weak var delegate: PaymentRequestDelegate?
+    internal(set) public weak var delegate: PaymentRequestDelegate?
     
     /// The selected payment method.
-    public private(set) var paymentMethod: PaymentMethod?
+    private(set) public var paymentMethod: PaymentMethod?
     
     /// Amount to be charged.
-    public private(set) var amount: Int?
+    private(set) public var amount: Int?
     
     /// Payment currency.
-    public private(set) var currency: String?
+    private(set) public var currency: String?
     
     /// Payment reference.
-    public private(set) var reference: String?
+    private(set) public var reference: String?
     
     /// Payment country code.
-    public private(set) var countryCode: String?
+    private(set) public var countryCode: String?
     
     /// Shopper locale.
-    public private(set) var shopperLocale: String?
+    private(set) public var shopperLocale: String?
     
     /// Shopper reference.
-    public private(set) var shopperReference: String?
+    private(set) public var shopperReference: String?
     
     /// Generation time. Used for generating a token for card payments.
-    public private(set) var generationTime: String?
+    private(set) public var generationTime: String?
     
     /// Public key. Used for generating a token for card payments.
-    public private(set) var publicKey: String?
+    private(set) public var publicKey: String?
     
-    var paymentRequest: InternalPaymentRequest?
-    
-    var paymentMethodPlugin: BasePlugin!
-    
-    private let paymentServer = PaymentServer()
+    private(set) internal var paymentSetup: PaymentSetup?
     
     private var preferredMethods: [PaymentMethod]?
     
     private var availableMethods: [PaymentMethod]?
+    
+    private lazy var paymentServer: PaymentServer? = {
+        guard let paymentSetup = self.paymentSetup else {
+            return nil
+        }
+        
+        return PaymentServer(paymentSetup: paymentSetup)
+    }()
+    
+    private(set) internal lazy var pluginManager: PluginManager? = {
+        guard let paymentSetup = self.paymentSetup else {
+            return nil
+        }
+        
+        return PluginManager(paymentSetup: paymentSetup)
+    }()
+    
+    private func isPaymentMethodAvailable(_ paymentMethod: PaymentMethod) -> Bool {
+        guard paymentMethod.requiresPlugin else {
+            return true
+        }
+        
+        guard let plugin = pluginManager?.plugin(for: paymentMethod) else {
+            return false
+        }
+        
+        guard let deviceDependablePlugin = plugin as? DeviceDependablePlugin else {
+            return true
+        }
+        
+        return deviceDependablePlugin.isDeviceSupported
+    }
     
     /**
      Creates a `PaymentRequest` object and initialises it with a provided delegate.
@@ -73,7 +101,7 @@ public final class PaymentRequest {
             "deviceFingerprintVersion": deviceFingerprintVersion,
             "sdkVersion": sdkVersion,
             "deviceIdentifier": UIDevice.current.identifierForVendor?.uuidString ?? "",
-            "apiVersion": "2"
+            "apiVersion": "3"
         ]
         
         guard let data = try? JSONSerialization.data(withJSONObject: fingerprintInfo, options: []) else {
@@ -88,46 +116,37 @@ public final class PaymentRequest {
         let token = paymentToken()
         
         requiresPaymentData(forToken: token) { data in
-            guard let internalRequest = InternalPaymentRequest(data: data) else {
+            guard let paymentSetup = PaymentSetup(data: data) else {
                 self.processorFailed(with: .unexpectedData)
                 return
             }
             
             //  Public properties
-            self.amount = internalRequest.amount
-            self.currency = internalRequest.currency
-            self.reference = internalRequest.merchantReference
-            self.countryCode = internalRequest.country
-            self.shopperLocale = internalRequest.shopperLocale
-            self.shopperReference = internalRequest.shopperReference
-            self.publicKey = internalRequest.publicKey
-            self.generationTime = internalRequest.generationTime
+            self.amount = paymentSetup.amount
+            self.currency = paymentSetup.currencyCode
+            self.reference = paymentSetup.merchantReference
+            self.countryCode = paymentSetup.countryCode
+            self.shopperLocale = paymentSetup.shopperLocaleIdentifier
+            self.shopperReference = paymentSetup.shopperReference
+            self.publicKey = paymentSetup.publicKey
+            self.generationTime = paymentSetup.generationDateString
             
-            self.process(internalRequest)
+            self.process(paymentSetup)
         }
     }
     
     /// Permanently deletes payment method from shopper's preferred payment options.
     public func deletePreferred(paymentMethod: PaymentMethod, completion: @escaping (Bool, Error?) -> Void) {
-        paymentMethod.plugin?.paymentRequest = paymentRequest
-        
         guard
-            let preferredMethods = preferredMethods,
-            let paymentRequest = paymentRequest,
-            let url = paymentRequest.deletePreferredURL,
-            let requestInfo = paymentMethod.plugin?.deleteRequestInfo()
+            let paymentServer = paymentServer,
+            let preferredMethods = preferredMethods, preferredMethods.contains(paymentMethod)
         else {
-            // Call completion with error.
             completion(false, .unexpectedError)
+            
             return
         }
         
-        if preferredMethods.contains(paymentMethod) == false {
-            completion(false, .unexpectedError)
-            return
-        }
-        
-        paymentServer.post(url: url, info: requestInfo) { responseInfo, error in
+        paymentServer.deletePreferredPaymentMethod(paymentMethod) { responseInfo, error in
             completion(false, nil)
             
             guard let responseInfo = responseInfo else {
@@ -164,51 +183,26 @@ public final class PaymentRequest {
         didFinish(with: .error(.canceled))
     }
     
-    func process(_ paymentRequest: InternalPaymentRequest) {
-        self.paymentRequest = paymentRequest
+    func process(_ paymentSetup: PaymentSetup) {
+        self.paymentSetup = paymentSetup
         
-        if let method = paymentRequest.paymentMethod {
-            continueProcess(with: method)
+        let preferredMethods = paymentSetup.preferredPaymentMethods.filter(isPaymentMethodAvailable(_:))
+        self.preferredMethods = preferredMethods
+        
+        let availableMethods = paymentSetup.availablePaymentMethods.filter(isPaymentMethodAvailable(_:))
+        self.availableMethods = availableMethods
+        
+        //  Suggest payment methods available.
+        self.requiresPaymentMethod(fromPreferred: preferredMethods, available: availableMethods) { selectedMethod in
+            //  Next Step. Selected payment method.
+            //  Continue with Payment Data / Authorize URL.
+            self.continueProcess(with: selectedMethod)
             return
-        }
-        
-        //  No payment method set. Fetch payment methods.
-        fetchPaymentMethodsFor(paymentRequest) { preferred, available, error in
-            
-            if let error = error {
-                self.didFinish(with: .error(error))
-                return
-            }
-            
-            guard let available = available else {
-                self.didFinish(with: .error(.unexpectedData))
-                return
-            }
-            
-            let availableMethods = available.filter({ (method) -> Bool in
-                method.isAvailableOnDevice()
-            })
-            
-            self.preferredMethods = preferred
-            self.availableMethods = availableMethods
-            
-            //  Suggest payment methods available.
-            self.requiresPaymentMethod(fromPreferred: preferred, available: availableMethods) { selectedMethod in
-                //  Next Step. Selected payment method.
-                //  Continue with Payment Data / Authorize URL.
-                self.continueProcess(with: selectedMethod)
-                return
-            }
         }
     }
     
     func continueProcess(with method: PaymentMethod) {
         paymentMethod = method
-        paymentRequest?.paymentMethod = method
-        
-        if let plugin = paymentRequest?.paymentMethod?.plugin {
-            plugin.paymentRequest = paymentRequest
-        }
         
         if method.requiresPaymentData() {
             continuePaymentFlowRequiresPaymentData()
@@ -218,143 +212,101 @@ public final class PaymentRequest {
     }
     
     func continueOfferFlow() {
-        //  Make offer request
         guard
-            let offerUrl = paymentRequest?.initiationURL,
-            let offerInfo = paymentRequest?.paymentMethod?.plugin?.offerRequestInfo()
+            let paymentServer = paymentServer,
+            let paymentMethod = paymentMethod
         else {
             processorFailed(with: .unexpectedError)
+            
             return
         }
         
-        paymentServer.post(url: offerUrl, info: offerInfo) { responseInfo, error in
+        paymentServer.initiatePayment(for: paymentMethod) { paymentInitiation, error in
             guard
-                let responseInfo = responseInfo,
-                let flowType = responseInfo["type"] as? String,
+                let paymentInitiation = paymentInitiation,
                 error == nil
             else {
                 self.processorFailed(with: error)
-                return
-            }
-            
-            self.paymentRequest?.paymentMethod?.additionalRequiredFields = responseInfo["requiredFields"] as? [String: Any]
-            
-            if flowType == "redirect" {
-                if let redirectUrl = responseInfo["url"] as? String {
-                    let url = URL(string: redirectUrl)!
-                    self.requiresReturnURL(from: url) { url in
-                        self.continueRedirectPaymentFlow(with: url)
-                    }
-                    return
-                }
-            } else if flowType == "complete" {
-                if (responseInfo["payload"] as? String) != nil {
-                    self.completePaymentFlow(using: responseInfo)
-                    return
-                }
-            } else if flowType == "error" {
-                var error: Error = .unexpectedError
-                if let errorMessage = responseInfo["errorMessage"] as? String {
-                    error = .serverError(errorMessage)
-                }
                 
-                self.processorFailed(with: error)
                 return
             }
             
-            self.processorFailed(with: error)
+            switch paymentInitiation.state {
+            case let .redirect(url):
+                self.requiresReturnURL(from: url) { url in
+                    self.continueRedirectPaymentFlow(with: url)
+                }
+            case let .completed(status, payload):
+                self.completePaymentFlow(using: [
+                    "resultCode": status.rawValue,
+                    "payload": payload
+                ])
+            case let .error(error):
+                self.processorFailed(with: error)
+            }
         }
     }
     
     func continuePaymentFlowRequiresPaymentData() {
-        guard paymentRequest != nil, let inputDetails = paymentMethod?.inputDetails else {
+        guard
+            let paymentMethod = paymentMethod,
+            let inputDetails = paymentMethod.inputDetails,
+            paymentSetup != nil
+        else {
             processorFailed(with: .unexpectedError)
+            
             return
         }
         
         let initialDetails = PaymentDetails(details: inputDetails)
         requiresPaymentDetails(initialDetails) { fullfilledDetails in
-            //  Convert `details` to providedPaymentData
-            var pairs = [String: Any]()
-            for detail in fullfilledDetails.list {
-                if let value = detail.value {
-                    pairs[detail.key] = value
-                }
-            }
+            paymentMethod.fulfilledPaymentDetails = fullfilledDetails
             
-            self.paymentRequest?.paymentMethod?.plugin?.providedPaymentData = pairs
-            
-            if let method = self.paymentRequest?.paymentMethod {
-                self.continueProcess(with: method)
-            }
+            self.continueProcess(with: paymentMethod)
         }
     }
     
-    func fetchPaymentMethodsFor(_ payment: InternalPaymentRequest, completion: @escaping PaymentMethodsCompletion) {
-        guard
-            let json = try? JSONSerialization.jsonObject(with: payment.paymentRequestData, options: []),
-            let info = json as? [String: Any],
-            let methodsInfo = info["paymentMethods"] as? [[String: Any]]
-        else {
-            completion(nil, nil, .unexpectedData)
-            return
-        }
-        
-        let available = methodsInfo.flatMap { PaymentMethod(info: $0, logoBaseURL: payment.logoBaseURL, isOneClick: false) }
-        
-        //  Group available PM's
-        let groupped = available.groupBy { element in
-            return element.group?.type ?? UUID().uuidString
-        }
-        
-        let availableGroupped = groupped.flatMap { members -> PaymentMethod? in
-            return members.count == 1 ? members[0] : PaymentMethod(members: members)
-        }
-        
-        //  Parse one-click methods
-        var preferredMethods = [PaymentMethod]()
-        if let recurringDetails = info["recurringDetails"] as? [[String: Any]] {
-            preferredMethods = recurringDetails.flatMap({ PaymentMethod(info: $0, logoBaseURL: payment.logoBaseURL, isOneClick: true) })
-        }
-        
-        completion(preferredMethods, availableGroupped, nil)
-    }
 }
 
 internal extension PaymentRequest {
     
+    private var finalStatePlugin: PluginRequiresFinalState? {
+        guard let paymentMethod = paymentMethod else {
+            return nil
+        }
+        
+        return pluginManager?.plugin(for: paymentMethod) as? PluginRequiresFinalState
+    }
+    
     func processorFailed(with error: Error?) {
-        //  Update Payment Method plugin if required
-        if let plugin = paymentRequest?.paymentMethod?.plugin as? RequiresFinalState {
-            plugin.finishWith(state: .error) {
-                self.processorFailedStep2(with: error)
-            }
-            return
+        func finish() {
+            let finalError = error ?? .unexpectedError
+            didFinish(with: .error(finalError))
         }
         
-        processorFailedStep2(with: error)
+        if let plugin = finalStatePlugin {
+            plugin.finish(with: .error, completion: {
+                finish()
+            })
+        } else {
+            finish()
+        }
     }
     
-    func processorFailedStep2(with error: Error?) {
-        //  Report to delegate
-        let finalError = error ?? .unexpectedError
-        didFinish(with: .error(finalError))
-    }
-    
-    func processorFinished(with result: Payment) {
-        if let plugin = paymentRequest?.paymentMethod?.plugin as? RequiresFinalState {
-            plugin.finishWith(state: result.status) {
-                self.finishRequest(with: result)
-            }
-            return
+    func processorFinished(with payment: Payment) {
+        func finish() {
+            didFinish(with: .payment(payment))
         }
         
-        finishRequest(with: result)
+        if let plugin = finalStatePlugin {
+            plugin.finish(with: payment.status, completion: {
+                finish()
+            })
+        } else {
+            finish()
+        }
     }
     
-    func finishRequest(with payment: Payment) {
-        didFinish(with: .payment(payment))
-    }
 }
 
 // MARK: Payment Flow 'Redirect'
@@ -362,7 +314,7 @@ internal extension PaymentRequest {
 internal extension PaymentRequest {
     
     func continueRedirectPaymentFlow(with appUrl: URL) {
-        if paymentRequest?.paymentMethod?.additionalRequiredFields != nil {
+        if paymentMethod?.additionalRequiredFields != nil {
             //  Different flow, reinitiate
             reinitiateWithData(from: appUrl)
             return
@@ -372,7 +324,7 @@ internal extension PaymentRequest {
     }
     
     func reinitiateWithData(from url: URL) {
-        paymentRequest?.paymentMethod?.providedAdditionalRequiredFields = url.queryParameters()
+        paymentMethod?.providedAdditionalRequiredFields = url.queryParameters()
         
         //call offer flow
         continueOfferFlow()
@@ -392,7 +344,7 @@ internal extension PaymentRequest {
             let resultCode = info?["resultCode"] as? String,
             let status = PaymentStatus(rawValue: resultCode),
             let payload = info?["payload"] as? String,
-            let paymentRequest = paymentRequest
+            let paymentSetup = paymentSetup
         else {
             processorFailed(with: .unexpectedData)
             return
@@ -401,7 +353,7 @@ internal extension PaymentRequest {
         let result = Payment(status: status,
                              method: paymentMethod!,
                              payload: payload,
-                             internalRequest: paymentRequest)
+                             paymentSetup: paymentSetup)
         processorFinished(with: result)
     }
     

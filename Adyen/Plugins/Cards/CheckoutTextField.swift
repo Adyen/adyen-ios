@@ -12,13 +12,11 @@ class CheckoutTextField: UITextField {
 
 class CardNumberField: CheckoutTextField {
     
-    var cardTypeDetected: ((CardType) -> Void)?
+    var cardTypeDetected: ((CardType?) -> Void)?
     
     var card: CardType? {
         didSet {
-            if let card = card {
-                self.cardTypeDetected?(card)
-            }
+            self.cardTypeDetected?(card)
         }
     }
     
@@ -47,3 +45,9 @@ class CardExpirationField: CheckoutTextField {
 }
 
 class CardCvcField: CheckoutTextField {}
+
+class CardInstallmentField: UITextField {
+    override func caretRect(for position: UITextPosition) -> CGRect {
+        return CGRect.zero
+    }
+}

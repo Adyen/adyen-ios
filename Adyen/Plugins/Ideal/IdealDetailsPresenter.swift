@@ -6,33 +6,35 @@
 
 import Foundation
 
-class IdealDetailsPresenter: PaymentMethodDetailsPresenter {
-    private var hostViewController: UINavigationController?
-    private var items: [InputSelectItem]
+internal class IdealDetailsPresenter: PaymentDetailsPresenter {
     
-    var issuerPickerViewController: IdealIssuerPickerViewController?
+    private let hostViewController: UINavigationController
     
-    init(items: [InputSelectItem]) {
-        self.items = items
+    private let pluginConfiguration: PluginConfiguration
+    
+    internal weak var delegate: PaymentDetailsPresenterDelegate?
+    
+    internal init(hostViewController: UINavigationController, pluginConfiguration: PluginConfiguration) {
+        self.hostViewController = hostViewController
+        self.pluginConfiguration = pluginConfiguration
     }
     
-    func setup(with hostViewController: UIViewController, paymentRequest: PaymentRequest, paymentDetails: PaymentDetails, appearanceConfiguration: AppearanceConfiguration, completion: @escaping (PaymentDetails) -> Void) {
-        self.hostViewController = hostViewController as? UINavigationController
+    internal func start() {
+        let paymentMethod = pluginConfiguration.paymentMethod
+        let issuerInputDetail = paymentMethod.inputDetails?.first { $0.type == .select }
+        let issuerItems = issuerInputDetail?.items ?? []
         
-        issuerPickerViewController = IdealIssuerPickerViewController(items: items) { item in
-            paymentDetails.fillIdeal(issuerIdentifier: item.identifier)
-            completion(paymentDetails)
+        let issuerPickerViewController = IdealIssuerPickerViewController(items: issuerItems) { selectedItem in
+            self.submit(issuerIdentifier: selectedItem.identifier)
         }
-        issuerPickerViewController?.title = paymentRequest.paymentMethod?.name
+        issuerPickerViewController.title = paymentMethod.name
+        hostViewController.pushViewController(issuerPickerViewController, animated: true)
     }
     
-    func present() {
-        if let viewController = issuerPickerViewController {
-            hostViewController?.pushViewController(viewController, animated: true)
-        }
+    private func submit(issuerIdentifier: String) {
+        let paymentDetails = PaymentDetails(details: pluginConfiguration.paymentMethod.inputDetails ?? [])
+        paymentDetails.fillIdeal(issuerIdentifier: issuerIdentifier)
+        delegate?.paymentDetailsPresenter(self, didSubmit: paymentDetails)
     }
     
-    func dismiss(animated: Bool, completion: @escaping () -> Void) {
-        hostViewController?.popViewController(animated: true)
-    }
 }

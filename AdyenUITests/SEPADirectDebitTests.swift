@@ -12,30 +12,30 @@ class SEPADirectDebitTests: TestCase {
         let table = app.tables.first
         table.buttons["SEPA Direct Debit"].tap()
         
-        // Find the checkout button and ensure it's disabled.
-        XCTAssertFalse(checkoutButton.isEnabled)
+        // Find the pay button and ensure it's disabled.
+        XCTAssertFalse(payButton.isEnabled)
         
         // Enter the IBAN.
         ibanField.typeText("nl13test0123456789")
         
-        // The checkout button should be disabled while waiting for the user to complete input.
-        XCTAssertFalse(checkoutButton.isEnabled)
+        // The pay button should be disabled while waiting for the user to complete input.
+        XCTAssertFalse(payButton.isEnabled)
         
         // Enter the name.
         nameField.tap()
         nameField.typeText("A. Klaassen")
         
-        // The checkout button should still be disabled while waiting for the user to complete input.
-        XCTAssertFalse(checkoutButton.isEnabled)
+        // The pay button should still be disabled while waiting for the user to complete input.
+        XCTAssertFalse(payButton.isEnabled)
         
         // Agree to the direct debit.
-        agreeButton.tap()
+        consentButton.tap()
         
-        // After selecting the agree button, the checkout button should be enabled.
-        XCTAssertTrue(checkoutButton.isEnabled)
+        // After selecting the consent button, the pay button should be enabled.
+        XCTAssertTrue(payButton.isEnabled)
         
-        // Tap the checkout button.
-        checkoutButton.tap()
+        // Tap the pay button.
+        payButton.tap()
         
         dismissSuccessAlert()
     }
@@ -54,12 +54,12 @@ class SEPADirectDebitTests: TestCase {
         return contentView.textFields["name-field"]
     }
     
-    private var agreeButton: XCUIElement {
-        return contentView.buttons["agree-button"]
+    private var consentButton: XCUIElement {
+        return contentView.buttons["consent-button"]
     }
     
-    private var checkoutButton: XCUIElement {
-        return contentView.buttons["checkout-button"]
+    private var payButton: XCUIElement {
+        return contentView.buttons["pay-button"]
     }
     
 }

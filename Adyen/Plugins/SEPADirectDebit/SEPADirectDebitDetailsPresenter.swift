@@ -6,56 +6,47 @@
 
 import Foundation
 
-class SEPADirectDebitDetailsPresenter: PaymentMethodDetailsPresenter {
+internal class SEPADirectDebitDetailsPresenter: PaymentDetailsPresenter {
     
-    private var hostViewController: UIViewController!
+    private let hostViewController: UINavigationController
     
-    private var paymentRequest: PaymentRequest!
+    private let pluginConfiguration: PluginConfiguration
     
-    private var paymentDetails: PaymentDetails!
+    private let appearanceConfiguration: AppearanceConfiguration
     
-    private var paymentDetailsCompletion: PaymentDetailsCompletion!
+    internal weak var delegate: PaymentDetailsPresenterDelegate?
     
-    private var appearanceConfiguration: AppearanceConfiguration!
-    
-    func setup(with hostViewController: UIViewController, paymentRequest: PaymentRequest, paymentDetails: PaymentDetails, appearanceConfiguration: AppearanceConfiguration, completion: @escaping (PaymentDetails) -> Void) {
+    internal init(hostViewController: UINavigationController, pluginConfiguration: PluginConfiguration, appearanceConfiguration: AppearanceConfiguration) {
         self.hostViewController = hostViewController
-        self.paymentRequest = paymentRequest
-        self.paymentDetails = paymentDetails
-        paymentDetailsCompletion = completion
+        self.pluginConfiguration = pluginConfiguration
         self.appearanceConfiguration = appearanceConfiguration
     }
     
-    func present() {
-        let formattedAmount = Currency.formatted(amount: paymentRequest.amount!, currency: paymentRequest.currency!)!
+    func start() {
+        let paymentSetup = pluginConfiguration.paymentSetup
+        let formattedAmount = CurrencyFormatter.format(paymentSetup.amount, currencyCode: paymentSetup.currencyCode)
         
         let formViewController = SEPADirectDebitFormViewController(appearanceConfiguration: appearanceConfiguration)
-        formViewController.title = paymentRequest.paymentMethod?.name
-        formViewController.delegate = self
+        formViewController.title = pluginConfiguration.paymentMethod.name
         formViewController.formattedAmount = formattedAmount
-        
-        let navigationController = hostViewController as? UINavigationController
-        navigationController?.pushViewController(formViewController, animated: true)
+        formViewController.delegate = self
+        hostViewController.pushViewController(formViewController, animated: true)
     }
     
-    func dismiss(animated: Bool, completion: @escaping () -> Void) {
-        let navigationController = hostViewController as? UINavigationController
-        navigationController?.popViewController(animated: true)
-    }
-    
-    fileprivate func finish(withIBAN iban: String, name: String) {
+    fileprivate func submit(iban: String, name: String) {
+        let paymentDetails = PaymentDetails(details: pluginConfiguration.paymentMethod.inputDetails ?? [])
         paymentDetails.fillSepa(name: name, iban: iban)
-        paymentDetailsCompletion(paymentDetails)
+        delegate?.paymentDetailsPresenter(self, didSubmit: paymentDetails)
     }
     
 }
 
+// MARK: - SEPADirectDebitFormViewControllerDelegate
+
 extension SEPADirectDebitDetailsPresenter: SEPADirectDebitFormViewControllerDelegate {
     
     func formViewController(_ formViewController: SEPADirectDebitFormViewController, didSubmitWithIBAN iban: String, name: String) {
-        formViewController.isLoading = true
-        
-        finish(withIBAN: iban, name: name)
+        submit(iban: iban, name: name)
     }
     
 }

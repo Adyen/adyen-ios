@@ -6,14 +6,22 @@
 
 import Foundation
 
-class SEPADirectDebitPlugin: BasePlugin {
+internal class SEPADirectDebitPlugin: Plugin {
+    
+    internal let configuration: PluginConfiguration
+    
+    internal required init(configuration: PluginConfiguration) {
+        self.configuration = configuration
+    }
     
 }
 
-extension SEPADirectDebitPlugin: UIPresentable {
+// MARK: - PluginPresentsPaymentDetails
+
+extension SEPADirectDebitPlugin: PluginPresentsPaymentDetails {
     
-    func detailsPresenter() -> PaymentMethodDetailsPresenter? {
-        return SEPADirectDebitDetailsPresenter()
+    func newPaymentDetailsPresenter(hostViewController: UINavigationController, appearanceConfiguration: AppearanceConfiguration) -> PaymentDetailsPresenter {
+        return SEPADirectDebitDetailsPresenter(hostViewController: hostViewController, pluginConfiguration: configuration, appearanceConfiguration: appearanceConfiguration)
     }
     
 }

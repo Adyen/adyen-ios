@@ -36,15 +36,15 @@ public final class Payment {
     /// The locale identifier of the shopper.
     public let shopperLocaleIdentifier: String?
     
-    internal init(status: PaymentStatus, method: PaymentMethod, payload: String, internalRequest: InternalPaymentRequest) {
+    internal init(status: PaymentStatus, method: PaymentMethod, payload: String, paymentSetup: PaymentSetup) {
         self.status = status
         self.method = method
         self.payload = payload
-        self.amount = internalRequest.amount
-        self.currencyCode = internalRequest.currency
-        self.merchantReference = internalRequest.merchantReference
-        self.shopperReference = internalRequest.shopperReference
-        self.shopperCountryCode = internalRequest.country
-        self.shopperLocaleIdentifier = internalRequest.shopperLocale
+        self.amount = paymentSetup.amount
+        self.currencyCode = paymentSetup.currencyCode
+        self.merchantReference = paymentSetup.merchantReference
+        self.shopperReference = paymentSetup.shopperReference
+        self.shopperCountryCode = paymentSetup.countryCode
+        self.shopperLocaleIdentifier = paymentSetup.shopperLocaleIdentifier
     }
 }

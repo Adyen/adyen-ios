@@ -7,70 +7,104 @@
 import Foundation
 import PassKit
 
-class ApplePayDetailsPresenter: NSObject, PaymentMethodDetailsPresenter {
-    fileprivate var detailsCompletion: ((PaymentDetails) -> Void)?
-    fileprivate var requiredPaymentDetails: PaymentDetails?
-    fileprivate var applePayCompletion: ((PKPaymentAuthorizationStatus) -> Void)?
+internal class ApplePayDetailsPresenter: NSObject, PaymentDetailsPresenter {
     
-    private var applePayViewController: PKPaymentAuthorizationViewController?
-    private var hostViewController: UIViewController?
+    private let hostViewController: UINavigationController
     
-    func applePayRequest(for paymentRequest: PaymentRequest) -> PKPaymentRequest {
-        let request = PKPaymentRequest()
-        request.countryCode = paymentRequest.countryCode!
-        request.currencyCode = paymentRequest.currency!
-        request.supportedNetworks = [.masterCard, .visa, .amex]
-        request.merchantCapabilities = .capability3DS
-        
-        let merchantIdentifier = paymentRequest.paymentMethod?.configuration?[applePayMerchantIdentifierKey] as? String
-        request.merchantIdentifier = merchantIdentifier ?? ""
-        
-        let totalAmount = NSDecimalNumber(decimal: Decimal(Double(paymentRequest.amount!) / 100.0))
-        let totalItem = PKPaymentSummaryItem(label: paymentRequest.reference!, amount: totalAmount)
-        request.paymentSummaryItems = [totalItem]
-        
-        return request
-    }
+    private let pluginConfiguration: PluginConfiguration
     
-    func setup(with hostViewController: UIViewController, paymentRequest: PaymentRequest, paymentDetails: PaymentDetails, appearanceConfiguration: AppearanceConfiguration, completion: @escaping (PaymentDetails) -> Void) {
+    internal weak var delegate: PaymentDetailsPresenterDelegate?
+    
+    required init(hostViewController: UINavigationController, pluginConfiguration: PluginConfiguration) {
         self.hostViewController = hostViewController
-        requiredPaymentDetails = paymentDetails
-        detailsCompletion = completion
+        self.pluginConfiguration = pluginConfiguration
+    }
+    
+    internal func start() {
+        hostViewController.present(paymentAuthorizationViewController, animated: true)
+    }
+    
+    fileprivate func submit(token: String?, completion: @escaping (PKPaymentAuthorizationStatus) -> Void) {
+        paymentAuthorizationViewControllerCompletion = completion
         
-        applePayViewController = PKPaymentAuthorizationViewController(paymentRequest: applePayRequest(for: paymentRequest))
-        applePayViewController?.delegate = self
-    }
-    
-    func present() {
-        if let applePayViewController = applePayViewController {
-            hostViewController?.present(applePayViewController, animated: true, completion: nil)
+        let paymentDetails = PaymentDetails(details: pluginConfiguration.paymentMethod.inputDetails ?? [])
+        if let token = token {
+            paymentDetails.fillApplePay(token: token)
         }
+        
+        delegate?.paymentDetailsPresenter(self, didSubmit: paymentDetails)
     }
     
-    func dismiss(animated: Bool, completion: @escaping () -> Void) {
-        hostViewController?.dismiss(animated: true, completion: completion)
+    internal func finish(with paymentStatus: PaymentStatus, completion: @escaping () -> Void) {
+        let authorizationStatus = paymentStatus.paymentAuthorizationStatus
+        paymentAuthorizationViewControllerCompletion?(authorizationStatus)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: completion)
     }
     
-    func finishWith(state: PaymentStatus) {
-        let result: PKPaymentAuthorizationStatus = (state == .authorised || state == .received) ? .success : .failure
-        applePayCompletion?(result)
-    }
+    // MARK: - Payment Authorization Controller
+    
+    private lazy var paymentAuthorizationViewController: PKPaymentAuthorizationViewController = {
+        let pluginConfiguration = self.pluginConfiguration
+        let paymentRequest = PKPaymentRequest(paymentMethod: pluginConfiguration.paymentMethod,
+                                              paymentSetup: pluginConfiguration.paymentSetup)
+        
+        let paymentAuthorizationViewController = PKPaymentAuthorizationViewController(paymentRequest: paymentRequest)
+        paymentAuthorizationViewController.delegate = self
+        
+        return paymentAuthorizationViewController
+    }()
+    
+    private var paymentAuthorizationViewControllerCompletion: ((PKPaymentAuthorizationStatus) -> Void)? // swiftlint:disable:this identifier_name
+    
 }
 
+// MARK: - PKPaymentAuthorizationViewControllerDelegate
+
 extension ApplePayDetailsPresenter: PKPaymentAuthorizationViewControllerDelegate {
+    
     func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
-        controller.dismiss(animated: true, completion: nil)
+        controller.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
     func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController, didAuthorizePayment payment: PKPayment, completion: @escaping (PKPaymentAuthorizationStatus) -> Void) {
-        if let token = String(data: payment.token.paymentData, encoding: .utf8) {
-            requiredPaymentDetails?.fillApplePay(token: token)
-        }
-        
-        if let details = requiredPaymentDetails {
-            detailsCompletion?(details)
-        }
-        
-        applePayCompletion = completion
+        let token = String(data: payment.token.paymentData, encoding: .utf8)
+        submit(token: token, completion: completion)
     }
+    
+}
+
+// MARK: - PKPaymentRequest
+
+fileprivate extension PKPaymentRequest {
+    
+    fileprivate convenience init(paymentMethod: PaymentMethod, paymentSetup: PaymentSetup) {
+        self.init()
+        
+        countryCode = paymentSetup.countryCode
+        currencyCode = paymentSetup.currencyCode
+        supportedNetworks = [.masterCard, .visa, .amex]
+        merchantCapabilities = .capability3DS
+        merchantIdentifier = paymentMethod.configuration?["merchantIdentifier"] as? String ?? ""
+        
+        let amount = NSDecimalNumber(value: paymentSetup.amount).dividing(by: NSDecimalNumber(value: 100.0))
+        let summaryItem = PKPaymentSummaryItem(label: paymentSetup.merchantReference, amount: amount)
+        paymentSummaryItems = [summaryItem]
+    }
+    
+}
+
+// MARK: - PaymentStatus
+
+fileprivate extension PaymentStatus {
+    
+    fileprivate var paymentAuthorizationStatus: PKPaymentAuthorizationStatus {
+        switch self {
+        case .authorised, .received:
+            return .success
+        default:
+            return .failure
+        }
+    }
+    
 }

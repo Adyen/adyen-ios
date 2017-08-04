@@ -6,35 +6,22 @@
 
 import Foundation
 
-class IdealPlugin: BasePlugin {
-    var presenter: IdealDetailsPresenter?
+internal class IdealPlugin: Plugin {
     
-    override func reset() {
-        super.reset()
-        presenter?.issuerPickerViewController?.reset()
+    internal let configuration: PluginConfiguration
+    
+    internal required init(configuration: PluginConfiguration) {
+        self.configuration = configuration
     }
+    
 }
 
-extension IdealPlugin: UIPresentable {
+// MARK: - PluginPresentsPaymentDetails
+
+extension IdealPlugin: PluginPresentsPaymentDetails {
     
-    func detailsPresenter() -> PaymentMethodDetailsPresenter? {
-        guard
-            let details = paymentRequest?.paymentMethod?.inputDetails,
-            let items = issuersDetail(from: details)?.items
-        else {
-            fail(with: nil)
-            return nil
-        }
-        
-        presenter = IdealDetailsPresenter(items: items)
-        return presenter
+    func newPaymentDetailsPresenter(hostViewController: UINavigationController, appearanceConfiguration: AppearanceConfiguration) -> PaymentDetailsPresenter {
+        return IdealDetailsPresenter(hostViewController: hostViewController, pluginConfiguration: configuration)
     }
     
-    func issuersDetail(from details: [InputDetail]) -> InputDetail? {
-        return details.filter({ $0.type == .select }).first
-    }
-    
-    func fail(with error: Error?) {
-        completion?(nil, error) { _ in }
-    }
 }

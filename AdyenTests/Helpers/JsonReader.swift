@@ -7,6 +7,18 @@
 import Foundation
 
 class JsonReader {
+    class func readData(fileName: String) -> Data {
+        guard let url = Bundle(for: JsonReader.self).url(forResource: fileName, withExtension: "json") else {
+            fatalError("Could not find file named '\(fileName)'")
+        }
+        
+        do {
+            return try Data(contentsOf: url)
+        } catch {
+            fatalError("Failed to read file named '\(fileName)' (error: \(error))")
+        }
+    }
+    
     class func read(file: String) -> [String: Any]? {
         do {
             if let file = Bundle(for: JsonReader.self).url(forResource: file, withExtension: "json") {

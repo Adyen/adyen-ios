@@ -28,6 +28,31 @@ public enum Error: Swift.Error {
     
 }
 
+// MARK: - Equatable
+
+extension Error: Equatable {
+    
+    public static func ==(lhs: Error, rhs: Error) -> Bool {
+        switch (lhs, rhs) {
+        case let (.message(message1), .message(message2)):
+            return message1 == message2
+        case let (.serverError(serverError1), .serverError(serverError2)):
+            return serverError1 == serverError2
+        case (.unexpectedData, .unexpectedData):
+            return true
+        case (.unexpectedError, .unexpectedError):
+            return true
+        case (.canceled, .canceled):
+            return true
+        default:
+            return false
+        }
+    }
+    
+}
+
+// MARK: - LocalizedError
+
 extension Error: LocalizedError {
     public var errorDescription: String? {
         switch self {
