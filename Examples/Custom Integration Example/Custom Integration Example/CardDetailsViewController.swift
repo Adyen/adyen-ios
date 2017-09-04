@@ -28,14 +28,10 @@ class CardDetailsViewController: PaymentDetailsViewController, UITextFieldDelega
     
     override func submit() {
         // For the purpose of this demo, do not perform validation
-        if let name = nameTextField.text,
-            name.characters.count > 0,
-            let number = cardNumberTextField.text,
-            number.characters.count > 0,
-            let expiryDate = expiryTextField.text,
-            expiryDate.characters.count == 5,
-            let cvc = cvcTextField.text,
-            cvc.characters.count > 0 {
+        if let name = validatedName(nameTextField.text),
+            let number = validatedCardNumber(cardNumberTextField.text),
+            let expiryDate = validatedExpiry(expiryTextField.text),
+            let cvc = validatedCvc(cvcTextField.text) {
             PaymentRequestManager.shared.setCardDetailsForCurrentRequest(name: name, number: number, expiryDate: expiryDate, cvc: cvc, shouldSave: saveSwitch.isOn)
             let confirmation = PaymentConfirmationViewController(withPaymentMethod: paymentMethod)
             navigationController?.pushViewController(confirmation, animated: false)
@@ -105,6 +101,40 @@ class CardDetailsViewController: PaymentDetailsViewController, UITextFieldDelega
     private let expiryTextField = UITextField(frame: .zero)
     private let cvcTextField = UITextField(frame: .zero)
     private let saveSwitch = UISwitch(frame: .zero)
+    
+    private func validatedName(_ name: String?) -> String? {
+        guard let name = name else {
+            return nil
+        }
+        
+        return name.characters.count > 0 ? name : nil
+    }
+    
+    private func validatedCardNumber(_ number: String?) -> String? {
+        guard let number = number else {
+            return nil
+        }
+        let (valid, _, formattedNumber) = CardValidator.validate(cardNumber: number)
+        return valid ? formattedNumber : nil
+    }
+    
+    private func validatedExpiry(_ expiry: String?) -> String? {
+        guard let expiry = expiry else {
+            return nil
+        }
+        
+        let (valid, formattedExpiry) = CardValidator.validate(expiryDate: expiry)
+        return valid ? formattedExpiry : nil
+    }
+    
+    private func validatedCvc(_ cvc: String?) -> String? {
+        guard let cvc = cvc else {
+            return nil
+        }
+        
+        let (valid, formattedCvc) = CardValidator.validate(cvc: cvc)
+        return valid ? formattedCvc : nil
+    }
     
     private lazy var nameTextFieldContainer: UIView = {
         self.nameTextField.placeholder = "Enter name"

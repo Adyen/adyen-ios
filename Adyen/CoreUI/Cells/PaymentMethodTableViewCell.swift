@@ -121,19 +121,9 @@ class PaymentMethodTableViewCell: LoadingTableViewCell {
 extension PaymentMethodTableViewCell {
     
     func configure(with method: PaymentMethod) {
-        name = displayName(for: method)
+        name = method.displayName
         logoURL = method.logoURL
         showsDisclosureIndicator = shouldShowDisclosureIndicator(for: method)
-    }
-    
-    fileprivate func displayName(for method: PaymentMethod) -> String {
-        if let cardInfo = method.oneClickInfo as? CardOneClickInfo {
-            return "•••• " + cardInfo.number
-        } else if let payPalInfo = method.oneClickInfo as? PayPalOneClickInfo {
-            return payPalInfo.emailAddress
-        }
-        
-        return method.name
     }
     
     fileprivate func shouldShowDisclosureIndicator(for method: PaymentMethod) -> Bool {

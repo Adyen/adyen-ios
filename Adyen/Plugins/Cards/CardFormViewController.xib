@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -19,6 +19,7 @@
                 <outlet property="cvcLabel" destination="53s-L6-3Ot" id="IFn-QB-Bdz"/>
                 <outlet property="cvcTextField" destination="GOT-nC-YyR" id="ryJ-fE-Y9i"/>
                 <outlet property="cvcUnderlineView" destination="DdM-5m-a0l" id="Gbr-4C-g4J"/>
+                <outlet property="cvcView" destination="7BH-3l-xk9" id="8ab-xY-cAh"/>
                 <outlet property="expiryDateLabel" destination="ma2-sR-S0K" id="oVs-MN-onB"/>
                 <outlet property="expiryDateTextField" destination="XBa-JS-Lok" id="pPF-bg-VwU"/>
                 <outlet property="expiryDateUnderlineView" destination="gSJ-Ma-VkV" id="lUK-mE-BQK"/>
@@ -106,7 +107,7 @@
                                                     </constraints>
                                                 </view>
                                                 <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GeL-z1-Xuv">
-                                                    <rect key="frame" x="315" y="34" width="40" height="35"/>
+                                                    <rect key="frame" x="315" y="34" width="60" height="35"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="store-details-button"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="35" id="TdY-1b-lmf"/>
@@ -328,7 +329,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u8P-Qu-n78">
-                                                    <rect key="frame" x="315" y="0.0" width="40" height="59"/>
+                                                    <rect key="frame" x="315" y="0.0" width="60" height="59"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="store-details-button"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="60" id="7by-5O-M8V"/>

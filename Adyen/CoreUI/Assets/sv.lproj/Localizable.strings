@@ -30,3 +30,4 @@
 "sepaDirectDebit.consentButton"                        = "Jag håller med om att beloppet nedan debiteras från mitt bankkonto.";
 "giropay.searchField.placeholder"                      = "Bankname / BIC / Bankleitzahl";
 "giropay.minimumLength"                                = "Minst 3 tecken";
+"oneClick.confirmationAlert.title"                     = "Confirm %@ payment";

@@ -31,6 +31,8 @@ internal class CardFormDetailsPresenter: PaymentDetailsPresenter {
         formViewController.paymentMethod = paymentMethod
         formViewController.shouldHideStoreDetails = inputDetails?.filter({ $0.key == "storeDetails" }).count == 0
         formViewController.shouldHideInstallments = inputDetails?.filter({ $0.key == "installments" }).count == 0
+        formViewController.shouldHideCVC = !paymentMethod.isCVCRequested
+        
         formViewController.cardScanButtonHandler = cardScanButtonHandler
         formViewController.cardDetailsHandler = { cardInputData in
             self.submit(cardInputData: cardInputData)

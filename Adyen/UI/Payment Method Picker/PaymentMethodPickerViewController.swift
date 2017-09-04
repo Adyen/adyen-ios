@@ -187,9 +187,12 @@ extension PaymentMethodPickerViewController {
     public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
+        let selected = paymentMethod(at: indexPath)
+        selected.fulfilledPaymentDetails = nil
+        
         selectedIndexPath = indexPath
         
-        delegate?.paymentMethodPickerViewController(self, didSelectPaymentMethod: paymentMethod(at: indexPath))
+        delegate?.paymentMethodPickerViewController(self, didSelectPaymentMethod: selected)
     }
     
     /// :nodoc:

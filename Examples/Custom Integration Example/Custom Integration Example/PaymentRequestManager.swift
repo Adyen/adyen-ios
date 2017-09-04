@@ -95,7 +95,7 @@ class PaymentRequestManager: PaymentRequestDelegate {
             }
         case let .error(error):
             switch error {
-            case .canceled:
+            case .cancelled:
                 requestStatus = .cancelled
             default:
                 requestStatus = .failure

@@ -54,7 +54,7 @@
         case PaymentManagerResultStatusRefused:
             return @"Payment refused";
         case PaymentManagerResultStatusCancelled:
-            return @"Payment canceled";
+            return @"Payment cancelled";
         case PaymentManagerResultStatusError:
             return [NSString stringWithFormat:@"Payment failed with error (%@)", [result error]];
     }

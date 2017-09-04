@@ -30,3 +30,4 @@
 "sepaDirectDebit.consentButton"                        = "Accetto che l'importo indicato sia addebitato sul mio conto corrente.";
 "giropay.searchField.placeholder"                      = "Bankname / BIC / Bankleitzahl";
 "giropay.minimumLength"                                = "Mínimo 3 caracteres";
+"oneClick.confirmationAlert.title"                     = "Confirm %@ payment";

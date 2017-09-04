@@ -6,8 +6,10 @@
 
 import Foundation
 
-/// Provides a text field designed for the entry of an IBAN value. This field formats and validates the IBAN in real time.
+/// A text field object designed for the entry of an IBAN value. This field formats and validates the IBAN in real time.
 public class IBANTextField: UITextField {
+    
+    // MARK: - Initializing
     
     /// :nodoc:
     public override init(frame: CGRect) {
@@ -23,6 +25,8 @@ public class IBANTextField: UITextField {
         configure()
     }
     
+    // MARK: - Accessing Validated Input
+    
     /// The IBAN entered in the text field, or `nil` if no valid IBAN has been entered.
     public var iban: String? {
         guard let text = text else {
@@ -36,7 +40,7 @@ public class IBANTextField: UITextField {
         return text
     }
     
-    // MARK: Configuration
+    // MARK: - Private
     
     private func configure() {
         autocapitalizationType = .allCharacters
@@ -61,8 +65,6 @@ public class IBANTextField: UITextField {
         placeholder = exampleIBAN.grouped(length: 4)
     }
     
-    // MARK: Events
-    
     @objc private func editingDidBegin() {
         updateTextColor()
     }
@@ -75,14 +77,10 @@ public class IBANTextField: UITextField {
         formatText()
     }
     
-    // MARK: Formatting
-    
     private func formatText() {
         let text = IBANValidator.canonicalize(self.text ?? "")
         self.text = text.grouped(length: 4)
     }
-    
-    // MARK: Text Color
     
     private func updateTextColor() {
         if isEditing {

@@ -1,6 +1,26 @@
 {
   "warnings": [
-
+    {
+      "file": "/Users/joostv/Repositories/adyen-checkout-ios/Adyen/Core/Enum/InputType.swift",
+      "line": 27,
+      "symbol": "InputType.CvcRequirement.required",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/joostv/Repositories/adyen-checkout-ios/Adyen/Core/Enum/InputType.swift",
+      "line": 28,
+      "symbol": "InputType.CvcRequirement.optional",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/joostv/Repositories/adyen-checkout-ios/Adyen/Core/Enum/InputType.swift",
+      "line": 29,
+      "symbol": "InputType.CvcRequirement.noCvc",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    }
   ],
   "source_directory": "/Users/joostv/Repositories/adyen-checkout-ios"
 }

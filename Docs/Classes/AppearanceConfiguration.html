@@ -20,8 +20,8 @@
 
     <header class="header">
       <p class="header-col header-col--primary">
-        <a class="header-link" href="../index.html">
-          Adyen Docs
+        <a href="../index.html" title="Adyen Docs">
+          <img src="../img/adyen-logo.png" class="header__logo">
         </a>
         
       </p>
@@ -160,7 +160,7 @@
 
                 </div>
               </div>
-            <p>Provides properties to customize the appearance of the UI components provided by this library.
+            <p>An object used to customize the appearance of the UI components provided by this SDK.
 Note that <code>AppearanceConfiguration</code> is only used when the <code><a href="../Classes/CheckoutViewController.html">CheckoutViewController</a></code> is first initialized. Changes to this object after it has been created are ignored.</p>
 
           </div>
@@ -169,6 +169,13 @@ Note that <code>AppearanceConfiguration</code> is only used when the <code><a hr
         <section class="section">
           <div class="section-content">
             <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Initializing"></a>
+                <a name="//apple_ref/swift/Section/Initializing" class="dashAnchor"></a>
+                <a href="#/Initializing">
+                  <h3 class="section-name">Initializing</h3>
+                </a>
+              </div>
               <ul class="item-container">
                 <li class="item">
                   <div>
@@ -201,10 +208,10 @@ Note that <code>AppearanceConfiguration</code> is only used when the <code><a hr
             </div>
             <div class="task-group">
               <div class="task-name-container">
-                <a name="/Status%20Bar"></a>
-                <a name="//apple_ref/swift/Section/Status Bar" class="dashAnchor"></a>
-                <a href="#/Status%20Bar">
-                  <h3 class="section-name">Status Bar</h3>
+                <a name="/Configuring%20the%20Status%20Bar"></a>
+                <a name="//apple_ref/swift/Section/Configuring the Status Bar" class="dashAnchor"></a>
+                <a href="#/Configuring%20the%20Status%20Bar">
+                  <h3 class="section-name">Configuring the Status Bar</h3>
                 </a>
               </div>
               <ul class="item-container">
@@ -239,10 +246,10 @@ Note that <code>AppearanceConfiguration</code> is only used when the <code><a hr
             </div>
             <div class="task-group">
               <div class="task-name-container">
-                <a name="/Navigation%20Bar"></a>
-                <a name="//apple_ref/swift/Section/Navigation Bar" class="dashAnchor"></a>
-                <a href="#/Navigation%20Bar">
-                  <h3 class="section-name">Navigation Bar</h3>
+                <a name="/Configuring%20the%20Navigation%20Bar"></a>
+                <a name="//apple_ref/swift/Section/Configuring the Navigation Bar" class="dashAnchor"></a>
+                <a href="#/Configuring%20the%20Navigation%20Bar">
+                  <h3 class="section-name">Configuring the Navigation Bar</h3>
                 </a>
               </div>
               <ul class="item-container">
@@ -385,10 +392,10 @@ Note that <code>AppearanceConfiguration</code> is only used when the <code><a hr
             </div>
             <div class="task-group">
               <div class="task-name-container">
-                <a name="/Checkout%20Button"></a>
-                <a name="//apple_ref/swift/Section/Checkout Button" class="dashAnchor"></a>
-                <a href="#/Checkout%20Button">
-                  <h3 class="section-name">Checkout Button</h3>
+                <a name="/Configuring%20the%20Checkout%20Button"></a>
+                <a name="//apple_ref/swift/Section/Configuring the Checkout Button" class="dashAnchor"></a>
+                <a href="#/Configuring%20the%20Checkout%20Button">
+                  <h3 class="section-name">Configuring the Checkout Button</h3>
                 </a>
               </div>
               <ul class="item-container">
@@ -477,10 +484,10 @@ Note that <code>AppearanceConfiguration</code> is only used when the <code><a hr
             </div>
             <div class="task-group">
               <div class="task-name-container">
-                <a name="/Other"></a>
-                <a name="//apple_ref/swift/Section/Other" class="dashAnchor"></a>
-                <a href="#/Other">
-                  <h3 class="section-name">Other</h3>
+                <a name="/Configuring%20Other%20Display%20Properties"></a>
+                <a name="//apple_ref/swift/Section/Configuring Other Display Properties" class="dashAnchor"></a>
+                <a href="#/Configuring%20Other%20Display%20Properties">
+                  <h3 class="section-name">Configuring Other Display Properties</h3>
                 </a>
               </div>
               <ul class="item-container">
@@ -497,7 +504,7 @@ Note that <code>AppearanceConfiguration</code> is only used when the <code><a hr
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The tint color of most buttons and actionable elements.</p>
+                        <p>The tint color for most buttons and actionable elements.</p>
 
                       </div>
                       <div class="declaration">
@@ -515,10 +522,10 @@ Note that <code>AppearanceConfiguration</code> is only used when the <code><a hr
             </div>
             <div class="task-group">
               <div class="task-name-container">
-                <a name="/Default%20Configuration"></a>
-                <a name="//apple_ref/swift/Section/Default Configuration" class="dashAnchor"></a>
-                <a href="#/Default%20Configuration">
-                  <h3 class="section-name">Default Configuration</h3>
+                <a name="/Getting%20the%20Default%20Appearance%20Configuration"></a>
+                <a name="//apple_ref/swift/Section/Getting the Default Appearance Configuration" class="dashAnchor"></a>
+                <a href="#/Getting%20the%20Default%20Appearance%20Configuration">
+                  <h3 class="section-name">Getting the Default Appearance Configuration</h3>
                 </a>
               </div>
               <ul class="item-container">
@@ -535,7 +542,7 @@ Note that <code>AppearanceConfiguration</code> is only used when the <code><a hr
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The default appearance configuration.</p>
+                        <p>Returns an instance of the default appearance configuration.</p>
 
                       </div>
                       <div class="declaration">
@@ -557,9 +564,8 @@ Note that <code>AppearanceConfiguration</code> is only used when the <code><a hr
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2017 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2017-08-04)</p>
+      <p>&copy; 2017 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2017-09-04)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
-</div>
 </html>

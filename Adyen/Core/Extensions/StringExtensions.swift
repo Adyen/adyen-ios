@@ -18,10 +18,6 @@ extension String {
         }
     }
     
-    func numberOnly() -> String {
-        return replacingOccurrences(of: "[^0-9]", with: "", options: .regularExpression)
-    }
-    
     subscript(position: Int) -> String {
         guard position >= 0 && position < characters.count else { return "" }
         return String(self[index(startIndex, offsetBy: position)])

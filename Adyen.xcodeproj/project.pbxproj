@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		53C0FEFC4B5CD9400E89E4CA /* Pods_AdyenTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3BE1722DC859E029DDBCF09 /* Pods_AdyenTests.framework */; };
+		7C62EBEC1F3C793700C9D67E /* PaymentMethodExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C62EBEB1F3C793700C9D67E /* PaymentMethodExtensions.swift */; };
 		7D7AD12FB4E950056731EEB6 /* Pods_Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7AEC312DF920BCC1C4BC1C0 /* Pods_Adyen.framework */; };
 		C3A02E02B25D9A9E913FA639 /* Pods_AdyenUIHost.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36FCC0F6EB491A052CC61D81 /* Pods_AdyenUIHost.framework */; };
 		E20AD01A1EFAB0310065B70E /* Adyen.h in Headers */ = {isa = PBXBuildFile; fileRef = E20AD00C1EFAB0310065B70E /* Adyen.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -54,6 +55,8 @@
 		E20AD0CF1EFAB1950065B70E /* PaymentMethodPaypalRecurring.json in Resources */ = {isa = PBXBuildFile; fileRef = E20AD0BB1EFAB1950065B70E /* PaymentMethodPaypalRecurring.json */; };
 		E20AD0D01EFAB1950065B70E /* PaymentMethodSepa.json in Resources */ = {isa = PBXBuildFile; fileRef = E20AD0BC1EFAB1950065B70E /* PaymentMethodSepa.json */; };
 		E20AD0D31EFAB1BF0065B70E /* JsonReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20AD0D21EFAB1BF0065B70E /* JsonReader.swift */; };
+		E2131CC91F5D7A44006F8886 /* PaymentMethod+CardPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2131CC81F5D7A44006F8886 /* PaymentMethod+CardPlugin.swift */; };
+		E2131CCC1F5D8225006F8886 /* PaymentMethodCardPluginTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2131CCB1F5D8225006F8886 /* PaymentMethodCardPluginTests.swift */; };
 		E21DC5DF1F27332600472C41 /* PaymentInitiation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21DC5DE1F27332600472C41 /* PaymentInitiation.swift */; };
 		E21DC5E11F27426600472C41 /* PaymentInitiationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21DC5E01F27426600472C41 /* PaymentInitiationTests.swift */; };
 		E2360CFD1F15FDB40011CC19 /* OneClickInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2360CFC1F15FDB40011CC19 /* OneClickInfo.swift */; };
@@ -172,6 +175,7 @@
 		39B692648B2F9A2E64860876 /* Pods-Adyen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Adyen.release.xcconfig"; path = "Pods/Target Support Files/Pods-Adyen/Pods-Adyen.release.xcconfig"; sourceTree = "<group>"; };
 		4D2C0B04986E87ADFBF3FD11 /* Pods-AdyenUIHost.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdyenUIHost.release.xcconfig"; path = "Pods/Target Support Files/Pods-AdyenUIHost/Pods-AdyenUIHost.release.xcconfig"; sourceTree = "<group>"; };
 		7370242B72CA01D6FB771E34 /* Pods-AdyenTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdyenTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AdyenTests/Pods-AdyenTests.debug.xcconfig"; sourceTree = "<group>"; };
+		7C62EBEB1F3C793700C9D67E /* PaymentMethodExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentMethodExtensions.swift; sourceTree = "<group>"; };
 		9D45EFB0559159A56AFB2ED0 /* Pods-AdyenUIHost.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdyenUIHost.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AdyenUIHost/Pods-AdyenUIHost.debug.xcconfig"; sourceTree = "<group>"; };
 		B7AEC312DF920BCC1C4BC1C0 /* Pods_Adyen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Adyen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3BE1722DC859E029DDBCF09 /* Pods_AdyenTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AdyenTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -224,6 +228,8 @@
 		E20AD0BC1EFAB1950065B70E /* PaymentMethodSepa.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PaymentMethodSepa.json; sourceTree = "<group>"; };
 		E20AD0D21EFAB1BF0065B70E /* JsonReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonReader.swift; sourceTree = "<group>"; };
 		E20AD1E81EFBE7630065B70E /* AdyenCSE.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdyenCSE.framework; path = Carthage/Build/iOS/AdyenCSE.framework; sourceTree = "<group>"; };
+		E2131CC81F5D7A44006F8886 /* PaymentMethod+CardPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PaymentMethod+CardPlugin.swift"; sourceTree = "<group>"; };
+		E2131CCB1F5D8225006F8886 /* PaymentMethodCardPluginTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentMethodCardPluginTests.swift; sourceTree = "<group>"; };
 		E21DC5DE1F27332600472C41 /* PaymentInitiation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentInitiation.swift; sourceTree = "<group>"; };
 		E21DC5E01F27426600472C41 /* PaymentInitiationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentInitiationTests.swift; sourceTree = "<group>"; };
 		E2360CFC1F15FDB40011CC19 /* OneClickInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneClickInfo.swift; sourceTree = "<group>"; };
@@ -399,7 +405,6 @@
 			children = (
 				E20AD0A41EFAB1950065B70E /* Cards */,
 				E20AD0A61EFAB1950065B70E /* Core */,
-				E20AD0B11EFAB1950065B70E /* CoreUI */,
 				E2EE2E481F0141C3008DC96D /* Plugins */,
 				E20AD0B31EFAB1950065B70E /* Resources */,
 				E20AD0D11EFAB1BF0065B70E /* Helpers */,
@@ -530,13 +535,6 @@
 			path = Core;
 			sourceTree = "<group>";
 		};
-		E20AD0B11EFAB1950065B70E /* CoreUI */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = CoreUI;
-			sourceTree = "<group>";
-		};
 		E20AD0B31EFAB1950065B70E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -581,6 +579,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		E2131CCA1F5D821B006F8886 /* Cards */ = {
+			isa = PBXGroup;
+			children = (
+				E2131CCB1F5D8225006F8886 /* PaymentMethodCardPluginTests.swift */,
+			);
+			path = Cards;
+			sourceTree = "<group>";
+		};
 		E25038121F1751D200DCFD38 /* Cards */ = {
 			isa = PBXGroup;
 			children = (
@@ -593,6 +599,7 @@
 				E25038421F17641700DCFD38 /* CardInputData.swift */,
 				E25038431F17641700DCFD38 /* CardPaymentFieldManager.swift */,
 				E25038441F17641700DCFD38 /* CheckoutTextField.swift */,
+				E2131CC81F5D7A44006F8886 /* PaymentMethod+CardPlugin.swift */,
 			);
 			path = Cards;
 			sourceTree = "<group>";
@@ -724,6 +731,7 @@
 				E27DA5681F28D48B008487D5 /* UIColorExtensions.swift */,
 				E27DA5691F28D48B008487D5 /* UIImageExtensions.swift */,
 				E27DA56A1F28D48C008487D5 /* UIImageViewExtensions.swift */,
+				7C62EBEB1F3C793700C9D67E /* PaymentMethodExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -804,6 +812,7 @@
 		E2EE2E481F0141C3008DC96D /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
+				E2131CCA1F5D821B006F8886 /* Cards */,
 				E2EE2E491F0141C3008DC96D /* SEPADirectDebit */,
 			);
 			path = Plugins;
@@ -1185,6 +1194,7 @@
 				E29C11461F1CA288005F321C /* Plugin.swift in Sources */,
 				E20AD0771EFAB0E00065B70E /* URLExtensions.swift in Sources */,
 				E27DA5781F28D48C008487D5 /* UIImageViewExtensions.swift in Sources */,
+				E2131CC91F5D7A44006F8886 /* PaymentMethod+CardPlugin.swift in Sources */,
 				E20AD0801EFAB0E00065B70E /* PaymentServer.swift in Sources */,
 				E27DA54E1F28D0DA008487D5 /* PaymentMethodPickerViewControllerDelegate.swift in Sources */,
 				E27DA5771F28D48C008487D5 /* UIImageExtensions.swift in Sources */,
@@ -1222,6 +1232,7 @@
 				E25038471F17641700DCFD38 /* CardInputData.swift in Sources */,
 				E25038361F17604600DCFD38 /* IdealIssuerPickerViewController.swift in Sources */,
 				E27DA5761F28D48C008487D5 /* UIColorExtensions.swift in Sources */,
+				7C62EBEC1F3C793700C9D67E /* PaymentMethodExtensions.swift in Sources */,
 				E20AD0741EFAB0E00065B70E /* DictionaryExtensions.swift in Sources */,
 				E20AD0781EFAB0E00065B70E /* InputDetail.swift in Sources */,
 				E250384B1F17642600DCFD38 /* CardValidator.swift in Sources */,
@@ -1240,6 +1251,7 @@
 			files = (
 				E21DC5E11F27426600472C41 /* PaymentInitiationTests.swift in Sources */,
 				E20AD0C21EFAB1950065B70E /* InputDetailsTests.swift in Sources */,
+				E2131CCC1F5D8225006F8886 /* PaymentMethodCardPluginTests.swift in Sources */,
 				E20AD0BD1EFAB1950065B70E /* CardValidatorTests.swift in Sources */,
 				E20AD0D31EFAB1BF0065B70E /* JsonReader.swift in Sources */,
 				E20AD0C61EFAB1950065B70E /* StringExtensionsTests.swift in Sources */,
@@ -1343,7 +1355,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.5.0;
+				CURRENT_PROJECT_VERSION = 1.7.0;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -1361,7 +1373,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1398,7 +1410,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.5.0;
+				CURRENT_PROJECT_VERSION = 1.7.0;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1410,7 +1422,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -1428,7 +1440,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1.5.0;
+				DYLIB_CURRENT_VERSION = 1.7.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Adyen/Info.plist;
@@ -1448,7 +1460,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1.5.0;
+				DYLIB_CURRENT_VERSION = 1.7.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Adyen/Info.plist;

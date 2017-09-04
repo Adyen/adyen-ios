@@ -28,6 +28,7 @@ class ViewController: UITableViewController, CheckoutViewControllerDelegate, Che
     // MARK: - Private
     
     @IBOutlet fileprivate var shopperReferenceField: UITextField!
+    @IBOutlet fileprivate var shopperCountryField: UITextField!
     
     private func presentCheckoutViewController() {
         let checkoutViewController = CheckoutViewController(delegate: self)
@@ -67,16 +68,16 @@ class ViewController: UITableViewController, CheckoutViewControllerDelegate, Che
         
         let paymentDetails: [String: Any] = [
             "amount": [
-                "value": 17408,
-                "currency": "EUR"
+                "currency": "EUR",
+                "value": 17408
             ],
-            "reference": "iOS & M+M Black dress & accessories",
-            "countryCode": "NL",
-            "shopperLocale": "nl_NL",
-            "shopperReference": shopperReferenceField.text!,
-            "returnUrl": "ui-host://",
             "channel": "ios",
-            "token": token
+            "reference": "iOS & M+M Black dress & accessories",
+            "token": token,
+            "returnUrl": "ui-host://",
+            "countryCode": shopperCountryField.text!,
+            "shopperReference": shopperReferenceField.text!,
+            "shopperLocale": "nl_NL"
         ]
         
         var request = URLRequest(url: url)
@@ -108,7 +109,7 @@ class ViewController: UITableViewController, CheckoutViewControllerDelegate, Che
             isSuccess = (payment.status == .received || payment.status == .authorised)
         case let .error(error):
             switch error {
-            case .canceled:
+            case .cancelled:
                 isCancelled = true
             default:
                 break

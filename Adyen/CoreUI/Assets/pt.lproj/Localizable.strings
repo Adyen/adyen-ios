@@ -30,3 +30,4 @@
 "sepaDirectDebit.consentButton"                        = "Concordo que o seguinte valor será deduzido da minha conta bancária.";
 "giropay.searchField.placeholder"                      = "Bankname / BIC / Bankleitzahl";
 "giropay.minimumLength"                                = "Mínimo de 3 caracteres";
+"oneClick.confirmationAlert.title"                     = "Confirm %@ payment";

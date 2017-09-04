@@ -6,17 +6,10 @@
 
 import Foundation
 
-/// Represents a selectable item used in `InputDetail` with `select` type.
+/// An object representing a selectable item used in `InputDetail` with `select` type.
 public final class InputSelectItem {
     
-    /// Identifier of an item. Should be used to indicate selection of a particular item in `InputDetail` object. Assign `identifier` to the `value` property of the `InputDetail` object.
-    public let identifier: String
-    
-    /// Display name of an item.
-    public let name: String
-    
-    /// Contains a URL to image representation of an item, when applicable.
-    public let imageURL: URL?
+    // MARK: - Initializing
     
     init(identifier: String, name: String, imageURL: URL? = nil) {
         self.identifier = identifier
@@ -45,4 +38,17 @@ public final class InputSelectItem {
         
         self.init(identifier: identifier, name: name, imageURL: editedUrl)
     }
+    
+    // MARK: - Accessing Identifying Info
+    
+    /// Identifier of an item. Upon selection, the value of this property should be assigned to the `value` property of the `InputDetail` object.
+    public let identifier: String
+    
+    // MARK: - Accessing Display Info
+    
+    /// Display name of an item.
+    public let name: String
+    
+    /// Optional URL for the icon of an item.
+    public let imageURL: URL?
 }

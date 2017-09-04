@@ -278,7 +278,9 @@ class PaymentConfirmationViewController: CheckoutViewController, SFSafariViewCon
     @objc private func didRequestToShowExternalPaymentDetailsFlow(_ notification: NSNotification) {
         if let url = notification.userInfo?[PaymentRequestManager.externalPaymentCompletionURLKey] as? URL {
             let external = SFSafariViewController(url: url)
-            external.preferredControlTintColor = Theme.primaryColor
+            if #available(iOS 10.0, *) {
+                external.preferredControlTintColor = Theme.primaryColor
+            }
             external.modalPresentationStyle = .custom
             external.modalPresentationCapturesStatusBarAppearance = true
             external.delegate = self

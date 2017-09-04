@@ -93,10 +93,8 @@ public enum InputType: RawRepresentable, Equatable {
             return true
         case (.cvc, .cvc):
             return true
-        case (.cardToken(true), .cardToken(true)):
-            return true
-        case (.cardToken(false), .cardToken(false)):
-            return true
+        case let (.cardToken(a), .cardToken(b)):
+            return a == b
         case (.applePayToken, .applePayToken):
             return true
         case (.address, .address):

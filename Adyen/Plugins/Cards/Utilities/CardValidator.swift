@@ -6,12 +6,12 @@
 
 import Foundation
 
-/// The CardValidator class provides static methods to validate and format card numbers and expiry dates, and to detect card types.
+/// An object that provides static methods for validating and formatting card numbers, expiry dates, and cvc values, and detecting card types.
 public final class CardValidator {
     
-    // MARK: - Public
+    // MARK: - Validating
     
-    /// Validates and formats the given card number, and detects its card type.
+    /// Validates and formats the given card number, and detects the corresponding card type.
     ///
     /// - Parameters:
     ///   - cardNumber: The card number to validate and format. The card number is sanitized before validating and formatting, to filter out non-numerical characters.
@@ -100,7 +100,7 @@ public final class CardValidator {
     /// - Returns: A tuple containing a boolean value indicating whether the cvc is valid, and the formatted cvc string.
     public static func validate(cvc: String) -> (isValid: Bool, formattedCvc: String) {
         let sanitizedCvc = sanitize(cvc)
-        let isValid = sanitizedCvc.characters.count >= 3
+        let isValid = sanitizedCvc.characters.count >= 3 && sanitizedCvc.characters.count <= 4
         return (isValid, sanitizedCvc)
     }
     

@@ -20,8 +20,8 @@
 
     <header class="header">
       <p class="header-col header-col--primary">
-        <a class="header-link" href="../index.html">
-          Adyen Docs
+        <a href="../index.html" title="Adyen Docs">
+          <img src="../img/adyen-logo.png" class="header__logo">
         </a>
         
       </p>
@@ -160,7 +160,7 @@
 
                 </div>
               </div>
-            <p>Represents a local payment method that can be used to complete a payment.</p>
+            <p>An object representing a payment method used to complete a payment.</p>
 
           </div>
         </section>
@@ -169,10 +169,10 @@
           <div class="section-content">
             <div class="task-group">
               <div class="task-name-container">
-                <a name="/Public"></a>
-                <a name="//apple_ref/swift/Section/Public" class="dashAnchor"></a>
-                <a href="#/Public">
-                  <h3 class="section-name">Public</h3>
+                <a name="/Accessing%20Payment%20Method%20Information"></a>
+                <a name="//apple_ref/swift/Section/Accessing Payment Method Information" class="dashAnchor"></a>
+                <a href="#/Accessing%20Payment%20Method%20Information">
+                  <h3 class="section-name">Accessing Payment Method Information</h3>
                 </a>
               </div>
               <ul class="item-container">
@@ -233,6 +233,82 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:vC5Adyen13PaymentMethod7logoURLGSqV10Foundation3URL_"></a>
+                    <a name="//apple_ref/swift/Property/logoURL" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC5Adyen13PaymentMethod7logoURLGSqV10Foundation3URL_">logoURL</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A URL to the logo of the payment method.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">logoURL</span><span class="p">:</span> <span class="kt">URL</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Handling%20Grouped%20Payment%20Methods"></a>
+                <a name="//apple_ref/swift/Section/Handling Grouped Payment Methods" class="dashAnchor"></a>
+                <a href="#/Handling%20Grouped%20Payment%20Methods">
+                  <h3 class="section-name">Handling Grouped Payment Methods</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC5Adyen13PaymentMethod7membersGSqGSaS0___"></a>
+                    <a name="//apple_ref/swift/Property/members" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC5Adyen13PaymentMethod7membersGSqGSaS0___">members</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Members of the payment method (only applicable when the receiver is a group).</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">members</span><span class="p">:</span> <span class="p">[</span><span class="kt">PaymentMethod</span><span class="p">]?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Handling%20Pre-Stored%20Information"></a>
+                <a name="//apple_ref/swift/Section/Handling Pre-Stored Information" class="dashAnchor"></a>
+                <a href="#/Handling%20Pre-Stored%20Information">
+                  <h3 class="section-name">Handling Pre-Stored Information</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:vC5Adyen13PaymentMethod10isOneClickSb"></a>
                     <a name="//apple_ref/swift/Property/isOneClick" class="dashAnchor"></a>
                     <a class="token" href="#/s:vC5Adyen13PaymentMethod10isOneClickSb">isOneClick</a>
@@ -284,33 +360,17 @@
                     </section>
                   </div>
                 </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:vC5Adyen13PaymentMethod7logoURLGSqV10Foundation3URL_"></a>
-                    <a name="//apple_ref/swift/Property/logoURL" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC5Adyen13PaymentMethod7logoURLGSqV10Foundation3URL_">logoURL</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A URL to the logo of the payment method.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">logoURL</span><span class="p">:</span> <span class="kt">URL</span><span class="p">?</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Managing%20Required%20Details"></a>
+                <a name="//apple_ref/swift/Section/Managing Required Details" class="dashAnchor"></a>
+                <a href="#/Managing%20Required%20Details">
+                  <h3 class="section-name">Managing Required Details</h3>
+                </a>
+              </div>
+              <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
@@ -338,36 +398,16 @@
                     </section>
                   </div>
                 </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:vC5Adyen13PaymentMethod7membersGSqGSaS0___"></a>
-                    <a name="//apple_ref/swift/Property/members" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC5Adyen13PaymentMethod7membersGSqGSaS0___">members</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Members of the payment method (only applicable when the receiver is a group).</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">members</span><span class="p">:</span> <span class="p">[</span><span class="kt">PaymentMethod</span><span class="p">]?</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
               </ul>
             </div>
             <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Deprecated"></a>
+                <a name="//apple_ref/swift/Section/Deprecated" class="dashAnchor"></a>
+                <a href="#/Deprecated">
+                  <h3 class="section-name">Deprecated</h3>
+                </a>
+              </div>
               <ul class="item-container">
                 <li class="item">
                   <div>
@@ -404,9 +444,8 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2017 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2017-08-04)</p>
+      <p>&copy; 2017 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2017-09-04)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
-</div>
 </html>

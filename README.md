@@ -4,9 +4,7 @@ With Adyen SDK you can help your shoppers pay with a payment method of their cho
 
 You can integrate the SDK in two ways: either make use of the default UI components and flows preconfigured by Adyen (Quick integration), or implement your own UI and checkout experience (Custom integration).
 
-
 ![Alt text](https://docs.adyen.com/developers/files/28871718/28871719/1/1496836138365/iOS+SDK.png)
-
 
 ## Installation
 
@@ -24,32 +22,32 @@ For this, instantiate `CheckoutViewController`, present it in your app, and impl
 
 ```swift
 let viewController = CheckoutViewController(delegate: self)
-present(viewController!, animated: true)
+present(viewController, animated: true)
 ```
 
 The following `CheckoutViewControllerDelegate` methods should be implemented:
 
-##### - checkoutViewController:requiresPaymentDataForToken:completion:
+```swift
+- checkoutViewController:requiresPaymentDataForToken:completion:
+```
 
 This method requires you to fetch payment data from your server and pass it to the `completion` handler. Upon receiving valid payment data, the SDK will present a list of available payment methods. 
 
 For your convenience, we provide a [test merchant server](https://checkoutshopper-test.adyen.com/checkoutshopper/demo/easy-integration/merchantserver/). You can find information on setting up your own server [here](https://docs.adyen.com/developers/in-app-integration#checkoutapiimplementyourserver).
 
-
-##### - checkoutViewController:requiresReturnURL:
-
+```swift
+- checkoutViewController:requiresReturnURL:
+```
 
 This method will be called if a selected payment method requires user authentication outside of your app environment (in a web browser, native banking app, etc.). Upon payment authorisation, your app will be reopened using the `application(_:open:options:)` callback of `UIApplicationDelegate`. The URL used to open your app should be passed to the completion handler.
 
-
-##### - checkoutViewController:didFinishWith:
-
+```swift
+- checkoutViewController:didFinishWith:
+```
 
 This method will provide you with the result of the completed payment request (authorised, refused, etc.).
 
-
 For implementation details, refer to the [Quick integration guide](https://docs.adyen.com/developers/in-app-integration?platform=inapp-ios).
-
 
 ## Custom integration
 
@@ -59,17 +57,17 @@ This approach requires instantiating and starting a `PaymentRequest` and impleme
 
 For implementation details, refer to the [Custom integration guide](https://docs.adyen.com/developers/in-app-integration/custom-integration).
 
-
 ## Examples
 
 You can find examples of both quick and custom integrations in the Examples folder of this repository.
-
 
 ## See also
 
  * [Complete Documentation](https://docs.adyen.com/developers/in-app-integration?platform=inapp-ios)
 
  * [SDK Reference](https://adyen.github.io/adyen-ios/Docs/index.html)
+
+ * [Migration Notes](https://github.com/Adyen/adyen-ios/blob/master/MIGRATION.md)
 
 
 ## License

@@ -67,7 +67,7 @@ class ShoppingCartViewController: UIViewController, CheckoutViewControllerDelega
             success = (payment.status == .received || payment.status == .authorised)
         case let .error(error):
             switch error {
-            case .canceled:
+            case .cancelled:
                 return
             default:
                 break

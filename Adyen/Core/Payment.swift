@@ -6,11 +6,29 @@
 
 import Foundation
 
-/// Represents a payment that has been completed by the user. The result of the payment can be retrieved via the `status` property.
+/// An object that represents a payment that has been completed by the user. The result of the payment can be retrieved via the `status` property.
 public final class Payment {
+    
+    // MARK: - Initializing
+    
+    internal init(status: PaymentStatus, method: PaymentMethod, payload: String, paymentSetup: PaymentSetup) {
+        self.status = status
+        self.method = method
+        self.payload = payload
+        self.amount = paymentSetup.amount
+        self.currencyCode = paymentSetup.currencyCode
+        self.merchantReference = paymentSetup.merchantReference
+        self.shopperReference = paymentSetup.shopperReference
+        self.shopperCountryCode = paymentSetup.countryCode
+        self.shopperLocaleIdentifier = paymentSetup.shopperLocaleIdentifier
+    }
+    
+    // MARK: - Accessing the Status of Completed Payment
     
     /// The status of the payment.
     public let status: PaymentStatus
+    
+    // MARK: - Accessing the Info Used to Complete Payment
     
     /// The method that was used to complete the payment.
     public let method: PaymentMethod
@@ -35,16 +53,4 @@ public final class Payment {
     
     /// The locale identifier of the shopper.
     public let shopperLocaleIdentifier: String?
-    
-    internal init(status: PaymentStatus, method: PaymentMethod, payload: String, paymentSetup: PaymentSetup) {
-        self.status = status
-        self.method = method
-        self.payload = payload
-        self.amount = paymentSetup.amount
-        self.currencyCode = paymentSetup.currencyCode
-        self.merchantReference = paymentSetup.merchantReference
-        self.shopperReference = paymentSetup.shopperReference
-        self.shopperCountryCode = paymentSetup.countryCode
-        self.shopperLocaleIdentifier = paymentSetup.shopperLocaleIdentifier
-    }
 }

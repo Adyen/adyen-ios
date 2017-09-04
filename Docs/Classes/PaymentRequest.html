@@ -20,8 +20,8 @@
 
     <header class="header">
       <p class="header-col header-col--primary">
-        <a class="header-link" href="../index.html">
-          Adyen Docs
+        <a href="../index.html" title="Adyen Docs">
+          <img src="../img/adyen-logo.png" class="header__logo">
         </a>
         
       </p>
@@ -160,7 +160,7 @@
 
                 </div>
               </div>
-            <p>This class is the starting point for <a href="https://docs.adyen.com/developers/payments/accepting-payments/in-app-integration">Custom Integration</a>.</p>
+            <p>The starting point for <a href="https://docs.adyen.com/developers/payments/accepting-payments/in-app-integration">Custom Integration</a>.</p>
 
           </div>
         </section>
@@ -168,6 +168,74 @@
         <section class="section">
           <div class="section-content">
             <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Initializing"></a>
+                <a name="//apple_ref/swift/Section/Initializing" class="dashAnchor"></a>
+                <a href="#/Initializing">
+                  <h3 class="section-name">Initializing</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC5Adyen14PaymentRequestcFT8delegatePS_22PaymentRequestDelegate__S0_"></a>
+                    <a name="//apple_ref/swift/Method/init(delegate:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC5Adyen14PaymentRequestcFT8delegatePS_22PaymentRequestDelegate__S0_">init(delegate:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a <code>PaymentRequest</code> object and initialises it with a provided delegate.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">delegate</span><span class="p">:</span> <span class="kt"><a href="../Protocols/PaymentRequestDelegate.html">PaymentRequestDelegate</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>delegate</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An object that implements <code>PaymentRequestDelegate</code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An initialised instance of the payment request.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Accessing%20Delegate"></a>
+                <a name="//apple_ref/swift/Section/Accessing Delegate" class="dashAnchor"></a>
+                <a href="#/Accessing%20Delegate">
+                  <h3 class="section-name">Accessing Delegate</h3>
+                </a>
+              </div>
               <ul class="item-container">
                 <li class="item">
                   <div>
@@ -196,6 +264,17 @@
                     </section>
                   </div>
                 </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Accessing%20Payment%20Information"></a>
+                <a name="//apple_ref/swift/Section/Accessing Payment Information" class="dashAnchor"></a>
+                <a href="#/Accessing%20Payment%20Information">
+                  <h3 class="section-name">Accessing Payment Information</h3>
+                </a>
+              </div>
+              <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
@@ -439,56 +518,17 @@
                     </section>
                   </div>
                 </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:FC5Adyen14PaymentRequestcFT8delegatePS_22PaymentRequestDelegate__S0_"></a>
-                    <a name="//apple_ref/swift/Method/init(delegate:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC5Adyen14PaymentRequestcFT8delegatePS_22PaymentRequestDelegate__S0_">init(delegate:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Creates a <code>PaymentRequest</code> object and initialises it with a provided delegate.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">delegate</span><span class="p">:</span> <span class="kt"><a href="../Protocols/PaymentRequestDelegate.html">PaymentRequestDelegate</a></span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>delegate</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>An object that implements <code>PaymentRequestDelegate</code>.</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>An initialised instance of the payment request.</p>
-                      </div>
-                    </section>
-                  </div>
-                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Performing%20Payment%20Request%20Actions"></a>
+                <a name="//apple_ref/swift/Section/Performing Payment Request Actions" class="dashAnchor"></a>
+                <a href="#/Performing%20Payment%20Request%20Actions">
+                  <h3 class="section-name">Performing Payment Request Actions</h3>
+                </a>
+              </div>
+              <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
@@ -578,9 +618,8 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2017 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2017-08-04)</p>
+      <p>&copy; 2017 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2017-09-04)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
-</div>
 </html>

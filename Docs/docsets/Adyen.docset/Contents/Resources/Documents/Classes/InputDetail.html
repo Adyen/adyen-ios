@@ -20,8 +20,8 @@
 
     <header class="header">
       <p class="header-col header-col--primary">
-        <a class="header-link" href="../index.html">
-          Adyen Docs
+        <a href="../index.html" title="Adyen Docs">
+          <img src="../img/adyen-logo.png" class="header__logo">
         </a>
         
       </p>
@@ -160,9 +160,8 @@
 
                 </div>
               </div>
-            <p>The payment detail required for the transaction.
-The detail has a <code>type</code> (<code><a href="../Enums/InputType.html">InputType</a></code>). If <code>type</code> is <code>.select</code>, a list of <code><a href="../Classes/InputSelectItem.html">InputSelectItem</a></code> will be available for selection in the <code>items</code> variable.
-The detail might be <code>optional</code>.
+            <p>An object describing a payment detail required to process the transaction.
+The detail has a <code>type</code> (<code><a href="../Enums/InputType.html">InputType</a></code>). If <code>type</code> is <code>.select</code>, selection should be made from list of <code><a href="../Classes/InputSelectItem.html">InputSelectItem</a></code>.
 The detail value can be set as a string (<code>stringValue</code>) or a bool value (<code>boolValue</code>).</p>
 
           </div>
@@ -171,6 +170,13 @@ The detail value can be set as a string (<code>stringValue</code>) or a bool val
         <section class="section">
           <div class="section-content">
             <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Accessing%20Detail%20Information"></a>
+                <a name="//apple_ref/swift/Section/Accessing Detail Information" class="dashAnchor"></a>
+                <a href="#/Accessing%20Detail%20Information">
+                  <h3 class="section-name">Accessing Detail Information</h3>
+                </a>
+              </div>
               <ul class="item-container">
                 <li class="item">
                   <div>
@@ -185,7 +191,7 @@ The detail value can be set as a string (<code>stringValue</code>) or a bool val
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The detail type. Check <code><a href="../Enums/InputType.html">InputType</a></code>.</p>
+                        <p>The detail type. See <code><a href="../Enums/InputType.html">InputType</a></code>.</p>
 
                       </div>
                       <div class="declaration">
@@ -212,7 +218,7 @@ The detail value can be set as a string (<code>stringValue</code>) or a bool val
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Whether the detail is optional.</p>
+                        <p>Whether or not the detail is optional.</p>
 
                       </div>
                       <div class="declaration">
@@ -226,6 +232,17 @@ The detail value can be set as a string (<code>stringValue</code>) or a bool val
                     </section>
                   </div>
                 </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Accessing%20List%20of%20Selectable%20Items"></a>
+                <a name="//apple_ref/swift/Section/Accessing List of Selectable Items" class="dashAnchor"></a>
+                <a href="#/Accessing%20List%20of%20Selectable%20Items">
+                  <h3 class="section-name">Accessing List of Selectable Items</h3>
+                </a>
+              </div>
+              <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
@@ -239,7 +256,7 @@ The detail value can be set as a string (<code>stringValue</code>) or a bool val
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Array of <code><a href="../Classes/InputSelectItem.html">InputSelectItem</a></code>. Will only be available if <code><a href="../Classes/InputDetail.html#/s:vC5Adyen11InputDetail4typeOS_9InputType">type</a></code> is <code>.select</code>.</p>
+                        <p>An array of <code><a href="../Classes/InputSelectItem.html">InputSelectItem</a></code>. Only be available if <code><a href="../Classes/InputDetail.html#/s:vC5Adyen11InputDetail4typeOS_9InputType">type</a></code> is <code>.select</code>.</p>
 
                       </div>
                       <div class="declaration">
@@ -253,6 +270,17 @@ The detail value can be set as a string (<code>stringValue</code>) or a bool val
                     </section>
                   </div>
                 </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Accessing%20Nested%20Details"></a>
+                <a name="//apple_ref/swift/Section/Accessing Nested Details" class="dashAnchor"></a>
+                <a href="#/Accessing%20Nested%20Details">
+                  <h3 class="section-name">Accessing Nested Details</h3>
+                </a>
+              </div>
+              <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
@@ -280,6 +308,17 @@ The detail value can be set as a string (<code>stringValue</code>) or a bool val
                     </section>
                   </div>
                 </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Managing%20Input%20Values"></a>
+                <a name="//apple_ref/swift/Section/Managing Input Values" class="dashAnchor"></a>
+                <a href="#/Managing%20Input%20Values">
+                  <h3 class="section-name">Managing Input Values</h3>
+                </a>
+              </div>
+              <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
@@ -342,9 +381,8 @@ The detail value can be set as a string (<code>stringValue</code>) or a bool val
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2017 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2017-08-04)</p>
+      <p>&copy; 2017 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2017-09-04)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
-</div>
 </html>

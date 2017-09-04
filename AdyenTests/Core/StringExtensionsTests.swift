@@ -65,9 +65,4 @@ class StringExtensionsTests: XCTestCase {
         XCTAssertEqual(string[3...7], "def")
     }
     
-    func testNumbersOnly() {
-        XCTAssertEqual("a1b2c3d4".numberOnly(), "1234")
-        XCTAssertEqual("abcde".numberOnly(), "")
-        XCTAssertEqual("12345".numberOnly(), "12345")
-    }
 }

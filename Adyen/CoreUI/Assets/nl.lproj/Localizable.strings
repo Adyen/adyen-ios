@@ -30,3 +30,4 @@
 "sepaDirectDebit.consentButton"                        = "Ik ga akkoord met een eenmalige afschrijving van het onderstaande bedrag.";
 "giropay.searchField.placeholder"                      = "Banknaam / BIC / Bankleitzahl";
 "giropay.minimumLength"                                = "Min. 3 karakters";
+"oneClick.confirmationAlert.title"                     = "Confirm %@ payment";

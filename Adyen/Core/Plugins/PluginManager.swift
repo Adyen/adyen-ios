@@ -8,8 +8,7 @@ import Foundation
 
 internal class PluginManager {
     
-    /// The payment setup for which the plugins are managed.
-    internal let paymentSetup: PaymentSetup
+    // MARK: - Object Lifecycle
     
     /// Initializes the plugin manager.
     ///
@@ -17,6 +16,11 @@ internal class PluginManager {
     internal init(paymentSetup: PaymentSetup) {
         self.paymentSetup = paymentSetup
     }
+    
+    // MARK: - Public
+    
+    /// The payment setup for which the plugins are managed.
+    internal let paymentSetup: PaymentSetup
     
     /// Returns a plugin for the given payment method.
     ///
@@ -27,11 +31,8 @@ internal class PluginManager {
             return plugin
         }
         
-        guard let className = PluginManager.className(for: paymentMethod) else {
-            return nil
-        }
-        
-        guard let pluginClass = NSClassFromString(className) as? Plugin.Type else {
+        guard let className = PluginManager.className(for: paymentMethod),
+            let pluginClass = NSClassFromString(className) as? Plugin.Type else {
             return nil
         }
         
@@ -42,6 +43,8 @@ internal class PluginManager {
         
         return plugin
     }
+    
+    // MARK: - Private
     
     private var plugins: [String: Plugin] = [:]
     
@@ -58,7 +61,7 @@ internal class PluginManager {
             className = "ApplePayPlugin"
         case "ideal":
             className = "IdealPlugin"
-        case "card":
+        case "card", "bcmc":
             className = "CardPlugin"
         case "sepadirectdebit":
             className = "SEPADirectDebitPlugin"

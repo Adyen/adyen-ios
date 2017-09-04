@@ -27,7 +27,19 @@ class CardFormViewController: UIViewController, CheckoutPaymentFieldDelegate {
         super.viewDidLoad()
         applyStyling()
         
-        let acceptedCards = paymentMethod?.members?.flatMap({ CardType(rawValue: $0.type) }) ?? []
+        var acceptedCards: [CardType] = []
+        
+        if let paymentMethod = paymentMethod {
+            // If the payment method represents a group of cards,
+            // then acceptedCards should include all card types of its members.
+            if let members = paymentMethod.members {
+                acceptedCards = members.flatMap({ CardType(rawValue: $0.type) })
+            } else if let cardType = CardType(rawValue: paymentMethod.type) {
+                // Otherwise, we would expect only the card type associated with the payment method.
+                acceptedCards = [cardType]
+            }
+        }
+        
         cardFieldManager = CardPaymentFieldManager(numberField: cardNumberTextField, expirationField: expiryDateTextField, cvcField: cvcTextField, acceptedCards: acceptedCards)
         cardFieldManager?.delegate = self
         
@@ -35,6 +47,8 @@ class CardFormViewController: UIViewController, CheckoutPaymentFieldDelegate {
             installmentItems = installments
             cardFieldManager?.enableInstalments(textField: installmentTextField, values: installments)
         }
+        
+        updateCvcRequirementAndVisibility()
     }
     
     // MARK: - CheckoutPaymentFieldDelegate
@@ -59,6 +73,7 @@ class CardFormViewController: UIViewController, CheckoutPaymentFieldDelegate {
     var paymentMethod: PaymentMethod?
     var shouldHideStoreDetails = false
     var shouldHideInstallments = false
+    var shouldHideCVC: Bool = false
     
     // MARK: - Private
     
@@ -79,6 +94,7 @@ class CardFormViewController: UIViewController, CheckoutPaymentFieldDelegate {
     @IBOutlet private weak var cvcLabel: UILabel!
     @IBOutlet private weak var cvcUnderlineView: UIView!
     @IBOutlet private weak var cvcTextField: CardCvcField!
+    @IBOutlet private weak var cvcView: UIView!
     
     //  Store Details
     @IBOutlet private weak var storeDetailsView: UIView!
@@ -104,9 +120,31 @@ class CardFormViewController: UIViewController, CheckoutPaymentFieldDelegate {
         didSet {
             if detectedCardType != oldValue {
                 updateCardLogo()
-                updateCvcRequirement()
+                updateCvcRequirementAndVisibility()
             }
         }
+    }
+    
+    private var paymentMethodForDetectedCardType: PaymentMethod? {
+        guard let detectedCardType = detectedCardType else {
+            return nil
+        }
+        
+        // First check if the type matches the payment method.
+        if paymentMethod?.type == detectedCardType.rawValue {
+            return paymentMethod
+        }
+        
+        guard let members = paymentMethod?.members else {
+            return nil
+        }
+        
+        // Then check if the type matches one of the members.
+        for member in members where member.type == detectedCardType.rawValue {
+            return member
+        }
+        
+        return nil
     }
     
     private func applyStyling() {
@@ -167,49 +205,43 @@ class CardFormViewController: UIViewController, CheckoutPaymentFieldDelegate {
     }
     
     private func updateCardLogo() {
-        guard let detectedCardType = detectedCardType, let members = paymentMethod?.members else {
+        guard let detected = paymentMethodForDetectedCardType else {
             cardNumberLogoImageView.image = UIImage.bundleImage("credit_card_icon")
             return
         }
         
-        for member in members where member.type == detectedCardType.rawValue {
-            if let url = member.logoURL {
-                cardNumberLogoImageView.downloadImage(from: url)
-                cardNumberLogoImageView.contentMode = .scaleAspectFit
-                cardNumberLogoImageView.layer.cornerRadius = 3
-                cardNumberLogoImageView.clipsToBounds = true
-                cardNumberLogoImageView.layer.borderWidth = 1 / UIScreen.main.nativeScale
-                cardNumberLogoImageView.layer.borderColor = UIColor.black.withAlphaComponent(0.2).cgColor
-            }
-            
-            return
+        if let url = detected.logoURL {
+            cardNumberLogoImageView.downloadImage(from: url)
+            cardNumberLogoImageView.contentMode = .scaleAspectFit
+            cardNumberLogoImageView.layer.cornerRadius = 3
+            cardNumberLogoImageView.clipsToBounds = true
+            cardNumberLogoImageView.layer.borderWidth = 1 / UIScreen.main.nativeScale
+            cardNumberLogoImageView.layer.borderColor = UIColor.black.withAlphaComponent(0.2).cgColor
+        } else {
+            // Change to unknown if couldn't find anything.
+            cardNumberLogoImageView.image = UIImage.bundleImage("credit_card_icon")
         }
-        
-        // Change to unknown if couldn't find anything.
-        cardNumberLogoImageView.image = UIImage.bundleImage("credit_card_icon")
     }
     
-    private func updateCvcRequirement() {
-        guard let detectedCardType = detectedCardType, let members = paymentMethod?.members else {
-            cardFieldManager?.isCvcRequired = true
+    private func updateCvcRequirementAndVisibility() {
+        // If CVC should always be hidden, don't bother with any CVC-specific logic.
+        guard !shouldHideCVC else {
+            cardFieldManager?.isCvcRequired = false
+            cvcView.isHidden = true
             return
         }
         
-        for member in members where member.type == detectedCardType.rawValue {
-            if let details = member.inputDetails {
-                for detail in details {
-                    switch detail.type {
-                    case let .cardToken(cvcOptional):
-                        cardFieldManager?.isCvcRequired = !cvcOptional
-                        return
-                    default:
-                        break
-                    }
-                }
-            }
+        guard let detectedPaymentMethod = paymentMethodForDetectedCardType else {
+            cardFieldManager?.isCvcRequired = true
+            cvcView.isHidden = false
+            return
         }
         
-        cardFieldManager?.isCvcRequired = true
+        let isCVCOptional = detectedPaymentMethod.isCVCOptional
+        let isCVCRequested = detectedPaymentMethod.isCVCRequested
+        
+        cardFieldManager?.isCvcRequired = !isCVCOptional
+        cvcView.isHidden = !isCVCRequested
     }
     
     @IBAction private func pay(_ sender: Any) {

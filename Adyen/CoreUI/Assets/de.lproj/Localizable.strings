@@ -30,3 +30,4 @@
 "sepaDirectDebit.consentButton"                        = "Ich bin damit einverstanden, dass der folgende genannten Betrage von meinem Konto abgebucht wird.";
 "giropay.searchField.placeholder"                      = "Bankname / BIC / Bankleitzahl";
 "giropay.minimumLength"                                = "Mindestens drei Zeichen";
+"oneClick.confirmationAlert.title"                     = "Confirm %@ payment";

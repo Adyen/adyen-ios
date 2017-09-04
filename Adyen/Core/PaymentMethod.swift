@@ -6,10 +6,10 @@
 
 import UIKit
 
-/// Represents a local payment method that can be used to complete a payment.
+/// An object representing a payment method used to complete a payment.
 public final class PaymentMethod: Equatable {
     
-    // MARK: - Object Lifecycle
+    // MARK: - Initializing
     
     internal init(name: String, type: String, isOneClick: Bool, oneClickInfo: OneClickInfo?, logoURL: URL?, inputDetails: [InputDetail]?, members: [PaymentMethod]?, group: Group?, paymentMethodData: String) {
         self.name = name
@@ -74,7 +74,7 @@ public final class PaymentMethod: Equatable {
         return lhs.name == rhs.name && lhs.type == rhs.type
     }
     
-    // MARK: - Public
+    // MARK: - Accessing Payment Method Information
     
     /// The name of the payment method.
     public let name: String
@@ -82,20 +82,28 @@ public final class PaymentMethod: Equatable {
     /// The payment method type.
     public let type: String
     
+    /// A URL to the logo of the payment method.
+    public let logoURL: URL?
+    
+    // MARK: - Handling Grouped Payment Methods
+    
+    /// Members of the payment method (only applicable when the receiver is a group).
+    public let members: [PaymentMethod]?
+    
+    // MARK: - Handling Pre-Stored Information
+    
     /// A Boolean value indicating whether the payment method is a one-click payment method, which means that it can be easily completed by the user.
     public let isOneClick: Bool
     
     /// The information that was stored for this payment payment method, or `nil` if this is not a one-click payment method.
     public let oneClickInfo: OneClickInfo?
     
-    /// A URL to the logo of the payment method.
-    public let logoURL: URL?
+    // MARK: - Managing Required Details
     
     /// The input details that should be filled in to complete the payment.
     public let inputDetails: [InputDetail]?
     
-    /// Members of the payment method (only applicable when the receiver is a group).
-    public let members: [PaymentMethod]?
+    // MARK: - Internal
     
     internal struct Group {
         
@@ -121,7 +129,6 @@ public final class PaymentMethod: Equatable {
         
     }
     
-    /// The group to which this payment method belongs.
     internal let group: Group?
     
     internal let paymentMethodData: String
@@ -132,7 +139,7 @@ public final class PaymentMethod: Equatable {
     internal var configuration: [String: Any]?
     internal var fulfilledPaymentDetails: PaymentDetails?
     
-    internal func requiresPaymentData() -> Bool {
+    internal func requiresPaymentDetails() -> Bool {
         return inputDetails?.isEmpty == false && fulfilledPaymentDetails == nil
     }
     
@@ -157,9 +164,9 @@ public final class PaymentMethod: Equatable {
     
 }
 
-// MARK: - Deprecated
-
 public extension PaymentMethod {
+    
+    // MARK: - Deprecated
     
     /// A Boolean value indicating whether the payment method is a one-click payment method, which means that it can be easily completed by the user.
     @available(*, deprecated, message: "Use isOneClick instead.")

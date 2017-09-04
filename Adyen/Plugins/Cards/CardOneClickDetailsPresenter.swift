@@ -36,13 +36,8 @@ internal class CardOneClickDetailsPresenter: PaymentDetailsPresenter {
         let paymentMethod = self.pluginConfiguration.paymentMethod
         let paymentSetup = self.pluginConfiguration.paymentSetup
         
-        var cardDisplayName = paymentMethod.name
-        if let cardNumber = (paymentMethod.oneClickInfo as? CardOneClickInfo)?.number {
-            cardDisplayName = "••••\u{00a0}" + cardNumber // \u{00a0} is used for a non-breaking space character.
-        }
-        
         let title = ADYLocalizedString("creditCard.oneClickVerification.title")
-        let message = ADYLocalizedString("creditCard.oneClickVerification.message", cardDisplayName)
+        let message = ADYLocalizedString("creditCard.oneClickVerification.message", paymentMethod.displayName)
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addTextField(configurationHandler: { textField in

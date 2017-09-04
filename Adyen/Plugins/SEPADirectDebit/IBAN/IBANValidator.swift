@@ -6,12 +6,14 @@
 
 import Foundation
 
-/// Provides a static method to validate an IBAN value.
+/// An object that provides a static method to validate IBAN values.
 public class IBANValidator {
+    
+    // MARK: - Validating
     
     /// Checks if the given string is a valid IBAN value.
     ///
-    /// - Parameter string: The string to check.
+    /// - Parameter string: The IBAN value to check for validity.
     /// - Returns: A Boolean value indicating whether the given string is a valid IBAN.
     public static func isValid(_ string: String) -> Bool {
         // Canonicalize the string for processing.
@@ -46,6 +48,8 @@ public class IBANValidator {
         // The IBAN is valid of the mod97 operation returns 1.
         return modulus == 1
     }
+    
+    // MARK: - Internal
     
     /// Prepares the given string for IBAN validation. Removes all invalid characters and converts lowercase letters to uppercase letters.
     ///

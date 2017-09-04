@@ -6,21 +6,23 @@
 
 import Foundation
 
-/// Provides properties to customize the appearance of the UI components provided by this library.
+/// An object used to customize the appearance of the UI components provided by this SDK.
 /// Note that `AppearanceConfiguration` is only used when the `CheckoutViewController` is first initialized. Changes to this object after it has been created are ignored.
 public final class AppearanceConfiguration {
+    
+    // MARK: - Initializing
     
     /// Initializes the appearance configuration.
     public init() {
         
     }
     
-    // MARK: Status Bar
+    // MARK: - Configuring the Status Bar
     
     /// The preferred status bar style.
     public var preferredStatusBarStyle = UIStatusBarStyle.default
     
-    // MARK: Navigation Bar
+    // MARK: - Configuring the Navigation Bar
     
     /// The attributes used for the navigation bar's title.
     public var navigationBarTitleTextAttributes: [String: Any]?
@@ -37,7 +39,7 @@ public final class AppearanceConfiguration {
     /// The image of the cancel button in the navigation bar, or `nil` if a title should be used instead.
     public var navigationBarCancelButtonImage: UIImage?
     
-    // MARK: Checkout Button
+    // MARK: - Configuring the Checkout Button
     
     /// The attributes used for the checkout button's title.
     public var checkoutButtonTitleTextAttributes: [String: Any]?
@@ -48,14 +50,14 @@ public final class AppearanceConfiguration {
     /// The corner radius of the checkout button.
     public var checkoutButtonCornerRadius: CGFloat = 0.0
     
-    // MARK: Other
+    // MARK: - Configuring Other Display Properties
     
-    /// The tint color of most buttons and actionable elements.
+    /// The tint color for most buttons and actionable elements.
     public var tintColor: UIColor?
     
-    // MARK: Default Configuration
+    // MARK: - Getting the Default Appearance Configuration
     
-    /// The default appearance configuration.
+    /// Returns an instance of the default appearance configuration.
     public static var `default`: AppearanceConfiguration = {
         let appearanceConfiguration = AppearanceConfiguration()
         appearanceConfiguration.navigationBarTitleTextAttributes = [
