@@ -73,7 +73,7 @@
                                                 </label>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="NL" textAlignment="right" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Jni-D8-fjP">
                                                     <rect key="frame" x="154" y="7" width="206" height="30"/>
-                                                    <accessibility key="accessibilityConfiguration" identifier="shopper-reference-field"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="shopper-country-field"/>
                                                     <color key="textColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
