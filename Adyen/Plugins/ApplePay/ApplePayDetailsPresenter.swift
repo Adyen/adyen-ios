@@ -49,7 +49,9 @@ internal class ApplePayDetailsPresenter: NSObject, PaymentDetailsPresenter {
         let paymentRequest = PKPaymentRequest(paymentMethod: pluginConfiguration.paymentMethod,
                                               paymentSetup: pluginConfiguration.paymentSetup)
         
-        let paymentAuthorizationViewController = PKPaymentAuthorizationViewController(paymentRequest: paymentRequest)
+        guard let paymentAuthorizationViewController = PKPaymentAuthorizationViewController(paymentRequest: paymentRequest) else {
+            fatalError("Failed to instantiate PKPaymentAuthorizationViewController.")
+        }
         paymentAuthorizationViewController.delegate = self
         
         return paymentAuthorizationViewController

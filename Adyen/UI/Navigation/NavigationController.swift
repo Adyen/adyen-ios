@@ -44,6 +44,11 @@ internal class NavigationController: UINavigationController {
         navigationBar.tintColor = appearanceConfiguration.navigationBarTintColor
         navigationBar.barTintColor = appearanceConfiguration.navigationBarBackgroundColor
         navigationBar.isTranslucent = appearanceConfiguration.isNavigationBarTranslucent
+        
+        if #available(iOS 11, *) {
+            navigationBar.prefersLargeTitles = appearanceConfiguration.navigationBarLargeTitleDisplayMode != .never
+            navigationBar.largeTitleTextAttributes = appearanceConfiguration.navigationBarLargeTitleTextAttributes
+        }
     }
     
 }
@@ -53,11 +58,24 @@ internal class NavigationController: UINavigationController {
 extension NavigationController: UINavigationControllerDelegate {
     
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        let isRootViewController = viewController == navigationController.viewControllers.first
+        let navigationItem = viewController.navigationItem
+        
         // Hide the back button title for all view controllers in the navigation stack.
         viewController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "",
                                                                           style: .plain,
                                                                           target: nil,
                                                                           action: nil)
+        
+        // Configure large title display mode.
+        let largeTitleDisplayMode = appearanceConfiguration.navigationBarLargeTitleDisplayMode
+        if #available(iOS 11, *) {
+            if isRootViewController || largeTitleDisplayMode == .always {
+                navigationItem.largeTitleDisplayMode = .always
+            } else {
+                navigationItem.largeTitleDisplayMode = .never
+            }
+        }
     }
     
 }

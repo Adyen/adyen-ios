@@ -10,29 +10,37 @@ internal class TestCase: XCTestCase {
     
     internal let app = XCUIApplication()
     
+    private static var didSetUp = false
+    
     override func setUp() {
         super.setUp()
         
         continueAfterFailure = false
         
-        app.launch()
+        app.activate()
         
         let table = app.tables.first
         
-        let shopperReferenceField = table.textFields["shopper-reference-field"]
-        shopperReferenceField.tap()
-        shopperReferenceField.typeText("uitests@uitests.ui")
+        if !TestCase.didSetUp {
+            let shopperReferenceField = table.textFields["shopper-reference-field"]
+            shopperReferenceField.tap()
+            shopperReferenceField.typeText("uitests@uitests.ui")
+        }
         
         table.buttons["start-button"].tap()
+        
+        TestCase.didSetUp = true
     }
     
     internal func dismissSuccessAlert() {
         let alert = app.alerts["Payment successful"]
+        waitForElementToAppear(alert)
         alert.buttons.first.tap()
     }
     
     internal func dismissFailureAlert() {
         let alert = app.alerts["Payment failed"]
+        waitForElementToAppear(alert)
         alert.buttons.first.tap()
     }
     

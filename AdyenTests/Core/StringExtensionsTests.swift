@@ -41,28 +41,12 @@ class StringExtensionsTests: XCTestCase {
         XCTAssertEqual(string[3..<6], "def")
     }
     
-    func testSubscriptWithInvalidRange() {
-        let string = "abcdef"
-        
-        XCTAssertEqual(string[-2..<0], "")
-        XCTAssertEqual(string[-2..<2], "ab")
-        XCTAssertEqual(string[3..<7], "def")
-    }
-    
     func testSubscriptWithValidClosedRange() {
         let string = "abcdef"
         
         XCTAssertEqual(string[0...1], "ab")
         XCTAssertEqual(string[2...3], "cd")
         XCTAssertEqual(string[3...5], "def")
-    }
-    
-    func testSubscriptWithInvalidClosedRange() {
-        let string = "abcdef"
-        
-        XCTAssertEqual(string[-2...(-1)], "")
-        XCTAssertEqual(string[-2...1], "ab")
-        XCTAssertEqual(string[3...7], "def")
     }
     
 }

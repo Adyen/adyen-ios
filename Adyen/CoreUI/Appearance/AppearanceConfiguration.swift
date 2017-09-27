@@ -22,10 +22,31 @@ public final class AppearanceConfiguration {
     /// The preferred status bar style.
     public var preferredStatusBarStyle = UIStatusBarStyle.default
     
-    // MARK: - Configuring the Navigation Bar
+    // MARK: - Configuring the Navigation Bar Title Text Appearance
     
     /// The attributes used for the navigation bar's title.
-    public var navigationBarTitleTextAttributes: [String: Any]?
+    public var navigationBarTitleTextAttributes: [NSAttributedStringKey: Any]?
+    
+    /// The attributes used for the navigation bar's large title. Only has an effect on iOS 11 and higher.
+    public var navigationBarLargeTitleTextAttributes: [NSAttributedStringKey: Any]?
+    
+    /// Display modes for the large title in a navigation bar.
+    public enum NavigationBarLargeTitleDisplayMode {
+        
+        /// Always display a large title.
+        case always
+        
+        /// Only display a large title for the root view controller.
+        case root
+        
+        /// Never display a large title.
+        case never
+    }
+    
+    /// The display mode for the large title in the navigation bar. Only has an effect on iOS 11 and higher.
+    public var navigationBarLargeTitleDisplayMode = NavigationBarLargeTitleDisplayMode.root
+    
+    // MARK: - Configuring the Navigation Bar Appearance
     
     /// The navigation bar's tint color.
     public var navigationBarTintColor: UIColor?
@@ -42,7 +63,7 @@ public final class AppearanceConfiguration {
     // MARK: - Configuring the Checkout Button
     
     /// The attributes used for the checkout button's title.
-    public var checkoutButtonTitleTextAttributes: [String: Any]?
+    public var checkoutButtonTitleTextAttributes: [NSAttributedStringKey: Any]?
     
     /// The insets from the edges of the checkout button to the title.
     public var checkoutButtonTitleEdgeInsets: UIEdgeInsets?
@@ -61,17 +82,15 @@ public final class AppearanceConfiguration {
     public static var `default`: AppearanceConfiguration = {
         let appearanceConfiguration = AppearanceConfiguration()
         appearanceConfiguration.navigationBarTitleTextAttributes = [
-            NSFontAttributeName: UIFont.systemFont(ofSize: 18.0),
-            NSForegroundColorAttributeName: UIColor.checkoutDarkGray
+            .foregroundColor: UIColor.checkoutDarkGray
         ]
         appearanceConfiguration.navigationBarTintColor = UIColor.checkoutDarkGray
         appearanceConfiguration.navigationBarBackgroundColor = UIColor.white
-        appearanceConfiguration.isNavigationBarTranslucent = false
         appearanceConfiguration.navigationBarCancelButtonImage = UIImage.bundleImage("close")
         
         appearanceConfiguration.checkoutButtonTitleTextAttributes = [
-            NSFontAttributeName: UIFont.systemFont(ofSize: 18.0),
-            NSForegroundColorAttributeName: UIColor.white
+            .font: UIFont.systemFont(ofSize: 18.0),
+            .foregroundColor: UIColor.white
         ]
         appearanceConfiguration.checkoutButtonTitleEdgeInsets = UIEdgeInsets(top: 16.0, left: 0.0, bottom: 16.0, right: 0.0)
         appearanceConfiguration.checkoutButtonCornerRadius = 4.0
@@ -83,6 +102,8 @@ public final class AppearanceConfiguration {
     
 }
 
+// MARK: - NSCopying
+
 extension AppearanceConfiguration: NSCopying {
     
     /// :nodoc:
@@ -90,6 +111,8 @@ extension AppearanceConfiguration: NSCopying {
         let appearanceConfiguration = AppearanceConfiguration()
         appearanceConfiguration.preferredStatusBarStyle = preferredStatusBarStyle
         appearanceConfiguration.navigationBarTitleTextAttributes = navigationBarTitleTextAttributes
+        appearanceConfiguration.navigationBarLargeTitleTextAttributes = navigationBarLargeTitleTextAttributes
+        appearanceConfiguration.navigationBarLargeTitleDisplayMode = navigationBarLargeTitleDisplayMode
         appearanceConfiguration.navigationBarTintColor = navigationBarTintColor
         appearanceConfiguration.navigationBarBackgroundColor = navigationBarBackgroundColor
         appearanceConfiguration.isNavigationBarTranslucent = isNavigationBarTranslucent

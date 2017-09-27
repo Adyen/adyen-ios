@@ -10,7 +10,7 @@ class CardsTests: TestCase {
     
     func testSuccessfulPayment() {
         let table = app.tables.first
-        table.buttons["Credit Card"].tap()
+        table.cells["Credit Card"].tap()
         
         // Find the checkout button and ensure it's disabled.
         XCTAssertFalse(checkoutButton.isEnabled)

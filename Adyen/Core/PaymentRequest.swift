@@ -329,24 +329,26 @@ public final class PaymentRequest {
     }
     
     private func requestRedirectURL(from url: URL, completion: @escaping URLCompletion) {
-        delegateQueue.async {
-            if let paymentMethod = self.paymentMethod,
-                let plugin = self.pluginManager?.plugin(for: paymentMethod) as? UniversalLinksPlugin,
-                plugin.supportsUniversalLinks {
+        if let paymentMethod = self.paymentMethod,
+            let plugin = self.pluginManager?.plugin(for: paymentMethod) as? UniversalLinksPlugin,
+            plugin.supportsUniversalLinks {
+            
+            let session = URLSession(configuration: .default)
+            session.dataTask(with: url, completionHandler: { [weak self] data, response, error in
+                guard let strongSelf = self else {
+                    return
+                }
                 
-                let session = URLSession(configuration: .default)
-                session.dataTask(with: url, completionHandler: { [weak self] data, response, error in
-                    guard let strongSelf = self else {
-                        return
-                    }
-                    
+                strongSelf.delegateQueue.async {
                     if let universalLink = response?.url {
                         strongSelf.delegate?.paymentRequest(strongSelf, requiresReturnURLFrom: universalLink, completion: completion)
                     } else {
                         strongSelf.delegate?.paymentRequest(strongSelf, requiresReturnURLFrom: url, completion: completion)
                     }
-                }).resume()
-            } else {
+                }
+            }).resume()
+        } else {
+            delegateQueue.async {
                 self.delegate?.paymentRequest(self, requiresReturnURLFrom: url, completion: completion)
             }
         }

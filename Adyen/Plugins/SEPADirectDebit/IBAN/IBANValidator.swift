@@ -88,7 +88,7 @@ public class IBANValidator {
         let upperBound = string.index(lowerBound, offsetBy: 2)
         let range = lowerBound..<upperBound
         
-        let countryCode = string.substring(with: range)
+        let countryCode = String(string[range])
         
         // Verify that the country code only contains uppercase letters.
         guard countryCode.rangeOfCharacter(from: CharacterSet.uppercaseLetters.inverted) == nil else {
@@ -106,10 +106,10 @@ public class IBANValidator {
     /// - Returns: A rearranged string.
     internal static func rearrange(_ string: String) -> String {
         let index = string.index(string.startIndex, offsetBy: 4)
-        let lowerSubstring = string.substring(to: index)
-        let upperSubstring = string.substring(from: index)
+        let lowerSubstring = string[..<index]
+        let upperSubstring = string[index...]
         
-        return upperSubstring + lowerSubstring
+        return String(upperSubstring + lowerSubstring)
     }
     
     /// Converts every letter in a string to a number, where A is 10, B is 11, Z is 35.
@@ -150,8 +150,8 @@ public class IBANValidator {
         
         guard string.characters.count < 9 else {
             let splitIndex = string.index(string.startIndex, offsetBy: 9)
-            let lowerSubstring = string.substring(to: splitIndex)
-            let upperSubstring = string.substring(from: splitIndex)
+            let lowerSubstring = String(string[..<splitIndex])
+            let upperSubstring = String(string[splitIndex...])
             
             guard let lowerSubstringModulus = modulo(lowerSubstring) else {
                 return nil

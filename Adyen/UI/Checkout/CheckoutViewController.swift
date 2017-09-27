@@ -91,6 +91,20 @@ public final class CheckoutViewController: UIViewController, PaymentRequestDeleg
         return appearanceConfiguration.preferredStatusBarStyle
     }
     
+    /// :nodoc:
+    public override var shouldAutorotate: Bool {
+        return traitCollection.userInterfaceIdiom == .pad
+    }
+    
+    /// :nodoc:
+    public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        guard shouldAutorotate else {
+            return .portrait
+        }
+        
+        return .all
+    }
+    
     // MARK: - PaymentRequestDelegate
     
     /// :nodoc:
@@ -192,7 +206,7 @@ public final class CheckoutViewController: UIViewController, PaymentRequestDeleg
     
     /// :nodoc:
     func paymentMethodPickerViewController(_ paymentMethodPickerViewController: PaymentMethodPickerViewController, didSelectDeletePaymentMethod paymentMethod: PaymentMethod) {
-        paymentRequest.deletePreferred(paymentMethod: paymentMethod) { _ in
+        paymentRequest.deletePreferred(paymentMethod: paymentMethod) { _, _ in
             
         }
     }
@@ -284,6 +298,11 @@ public final class CheckoutViewController: UIViewController, PaymentRequestDeleg
         let safariViewController = SFSafariViewController(url: url)
         safariViewController.delegate = self
         safariViewController.modalPresentationStyle = .formSheet
+        
+        if #available(iOS 11, *) {
+            safariViewController.dismissButtonStyle = .cancel
+        }
+        
         present(safariViewController, animated: true)
     }
     

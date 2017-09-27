@@ -34,10 +34,10 @@ class IdealTests: TestCase {
     
     private func testPayment(withIssuer issuer: String) {
         let table = app.tables.first
-        table.buttons["iDEAL"].tap()
+        table.cells["iDEAL"].tap()
         
         // Select the issuer.
-        table.buttons[issuer].tap()
+        table.cells[issuer].tap()
         
         // Wait for the continue button to appear in the web view, then select it.
         let continueButton = app.webViews.buttons["Continue"]

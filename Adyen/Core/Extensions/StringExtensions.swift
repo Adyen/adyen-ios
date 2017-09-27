@@ -7,6 +7,9 @@
 import Foundation
 
 extension String {
+    
+    // MARK: - Describing a String
+    
     func boolValue() -> Bool? {
         switch lowercased() {
         case "true":
@@ -18,22 +21,29 @@ extension String {
         }
     }
     
-    subscript(position: Int) -> String {
+    // MARK: - Getting Substrings
+    
+    internal subscript(position: Int) -> String {
         guard position >= 0 && position < characters.count else { return "" }
+        
         return String(self[index(startIndex, offsetBy: position)])
     }
     
-    subscript(range: Range<Int>) -> String {
-        let lowerIndex = index(startIndex, offsetBy: max(0, range.lowerBound), limitedBy: endIndex) ?? endIndex
-        let lowerBound = range.lowerBound < 0 ? 0 : range.lowerBound
-        return substring(with: lowerIndex..<(index(lowerIndex, offsetBy: range.upperBound - lowerBound, limitedBy: endIndex) ?? endIndex))
+    internal subscript(range: Range<Int>) -> String {
+        let lowerBound = index(startIndex, offsetBy: range.lowerBound)
+        let upperBound = index(lowerBound, offsetBy: range.upperBound - range.lowerBound)
+        
+        return String(self[lowerBound..<upperBound])
     }
     
-    subscript(range: ClosedRange<Int>) -> String {
-        let lowerIndex = index(startIndex, offsetBy: max(0, range.lowerBound), limitedBy: endIndex) ?? endIndex
-        let lowerBound = range.lowerBound < 0 ? 0 : range.lowerBound
-        return substring(with: lowerIndex..<(index(lowerIndex, offsetBy: range.upperBound - lowerBound + 1, limitedBy: endIndex) ?? endIndex))
+    internal subscript(range: ClosedRange<Int>) -> String {
+        let lowerBound = index(startIndex, offsetBy: range.lowerBound)
+        let upperBound = index(lowerBound, offsetBy: range.upperBound - range.lowerBound)
+        
+        return String(self[lowerBound...upperBound])
     }
+    
+    // MARK: - Grouping
     
     /// Separates the string into groups of the given length.
     ///
@@ -48,7 +58,7 @@ extension String {
             let offset = min(length, self.distance(from: startIndex, to: self.endIndex))
             let endIndex = self.index(startIndex, offsetBy: offset)
             
-            return self.substring(with: startIndex..<endIndex)
+            return String(self[startIndex..<endIndex])
         }
         
         return groups.joined(separator: " ")

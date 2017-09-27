@@ -23,7 +23,7 @@ struct CardInputData {
         self.expiryYear = year
         self.cvc = cvc
         self.storeDetails = storeDetails
-        self.holderName = "Checkout Shopper"
+        self.holderName = "Checkout Shopper Placeholder"
         self.installments = installments
     }
 }

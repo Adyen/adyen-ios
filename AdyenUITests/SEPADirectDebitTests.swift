@@ -10,7 +10,7 @@ class SEPADirectDebitTests: TestCase {
     
     func testSuccessfulPayment() {
         let table = app.tables.first
-        table.buttons["SEPA Direct Debit"].tap()
+        table.cells["SEPA Direct Debit"].tap()
         
         // Find the pay button and ensure it's disabled.
         XCTAssertFalse(payButton.isEnabled)
