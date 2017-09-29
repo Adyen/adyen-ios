@@ -47,7 +47,6 @@ public final class CardValidator {
         case 0: break
         case 1:
             month = Int(sanitizedString)!
-            
             if month > 1 {
                 formattedDate = "0" + sanitizedString + separator
             }
@@ -65,7 +64,7 @@ public final class CardValidator {
             break
         }
         
-        let isMonthValid = (month >= 1 && month <= 12)
+        let isMonthValid = (month >= 1 && month <= 12) || sanitizedString.characters.count < 2
         if !isMonthValid {
             formattedDate = ""
         }

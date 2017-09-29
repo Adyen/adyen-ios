@@ -30,7 +30,7 @@ internal class CurrencyFormatter {
         
         return currencyFormatter.string(from: number)
     }
-
+    
     // MARK: - Private
     
     private static let currencyFormatter: NumberFormatter = {
