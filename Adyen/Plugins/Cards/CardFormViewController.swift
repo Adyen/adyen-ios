@@ -107,7 +107,6 @@ class CardFormViewController: UIViewController, CheckoutPaymentFieldDelegate {
     
     @IBOutlet private weak var payButton: CheckoutButton!
     @IBOutlet private weak var scrollView: UIScrollView!
-    @IBOutlet private weak var keyboardTopLineBottomConstraint: NSLayoutConstraint!
     
     private let inactiveColor = #colorLiteral(red: 0.8470588235, green: 0.8470588235, blue: 0.8470588235, alpha: 1)
     private let activeColor = #colorLiteral(red: 0.4588235294, green: 0.4588235294, blue: 0.4588235294, alpha: 1)
@@ -198,8 +197,9 @@ class CardFormViewController: UIViewController, CheckoutPaymentFieldDelegate {
     private func setupKeyboard() {
         _ = NotificationCenter.default.addObserver(forName: .UIKeyboardWillShow, object: nil, queue: OperationQueue.main) { notification in
             if let bounds = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect {
-                self.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: bounds.size.height, right: 0)
-                self.keyboardTopLineBottomConstraint.constant = bounds.size.height
+                var inset = self.scrollView.contentInset
+                inset.bottom = bounds.size.height
+                self.scrollView.contentInset = inset
             }
         }
     }

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -26,7 +27,6 @@
                 <outlet property="installmentTextField" destination="aDW-aH-tFw" id="Vin-uQ-VVJ"/>
                 <outlet property="installmentUnderlineView" destination="ns7-60-5hC" id="Yad-YX-LIT"/>
                 <outlet property="installmentsView" destination="Bho-gk-Hhe" id="URH-JJ-hbU"/>
-                <outlet property="keyboardTopLineBottomConstraint" destination="c03-VA-JMi" id="9uu-ZE-cnx"/>
                 <outlet property="payButton" destination="yFf-Gv-J8s" id="gN6-Ao-lxJ"/>
                 <outlet property="scrollView" destination="AX1-bC-owh" id="T2y-t0-qqs"/>
                 <outlet property="storeDetailsButton" destination="u8P-Qu-n78" id="y7g-lf-nBF"/>
@@ -198,7 +198,7 @@
                                                             <rect key="frame" x="197.5" y="0.0" width="137.5" height="48"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CVC / CVV" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="53s-L6-3Ot">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="65.5" height="16"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="65" height="16"/>
                                                                     <accessibility key="accessibilityConfiguration">
                                                                         <bool key="isElement" value="NO"/>
                                                                     </accessibility>
@@ -401,22 +401,12 @@
                         <constraint firstAttribute="trailing" secondItem="41S-pR-hlw" secondAttribute="trailing" id="yqi-lp-ALW"/>
                     </constraints>
                 </scrollView>
-                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zP9-7a-Wk6" userLabel="Keyboard Top Line">
-                    <rect key="frame" x="0.0" y="667" width="375" height="0.0"/>
-                    <color key="backgroundColor" red="0.54908633232116699" green="0.54907399415969849" blue="0.5490763783454895" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="0.5" id="ucC-Ph-lX7"/>
-                    </constraints>
-                </view>
             </subviews>
             <color key="backgroundColor" red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="zP9-7a-Wk6" secondAttribute="trailing" id="3ai-0V-hnv"/>
                 <constraint firstItem="AX1-bC-owh" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="8dK-4R-GSK"/>
                 <constraint firstItem="AX1-bC-owh" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Kbw-OM-iBT"/>
                 <constraint firstAttribute="trailing" secondItem="AX1-bC-owh" secondAttribute="trailing" id="VBv-aE-Gan"/>
-                <constraint firstAttribute="bottom" secondItem="zP9-7a-Wk6" secondAttribute="bottom" id="c03-VA-JMi"/>
-                <constraint firstItem="zP9-7a-Wk6" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="g7B-KQ-k1C"/>
                 <constraint firstAttribute="bottom" secondItem="AX1-bC-owh" secondAttribute="bottom" id="naA-rJ-TIv"/>
             </constraints>
             <point key="canvasLocation" x="85.5" y="53.5"/>

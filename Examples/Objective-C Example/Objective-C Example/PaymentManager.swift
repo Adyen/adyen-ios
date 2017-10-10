@@ -12,8 +12,10 @@ import Adyen
         static let appSecretKey = ""
     }
     
+    @objc
     public weak var delegate: PaymentManagerDelegate?
     
+    @objc
     public func beginPayment(hostViewController: UIViewController) {
         let checkoutViewController = CheckoutViewController(delegate: self)
         hostViewController.present(checkoutViewController, animated: true)

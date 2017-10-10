@@ -58,7 +58,6 @@ internal class NavigationController: UINavigationController {
 extension NavigationController: UINavigationControllerDelegate {
     
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-        let isRootViewController = viewController == navigationController.viewControllers.first
         let navigationItem = viewController.navigationItem
         
         // Hide the back button title for all view controllers in the navigation stack.
@@ -67,13 +66,16 @@ extension NavigationController: UINavigationControllerDelegate {
                                                                           target: nil,
                                                                           action: nil)
         
-        // Configure large title display mode.
-        let largeTitleDisplayMode = appearanceConfiguration.navigationBarLargeTitleDisplayMode
         if #available(iOS 11, *) {
-            if isRootViewController || largeTitleDisplayMode == .always {
+            // Configure large title display mode.
+            switch appearanceConfiguration.navigationBarLargeTitleDisplayMode {
+            case .always:
                 navigationItem.largeTitleDisplayMode = .always
-            } else {
+            case .never:
                 navigationItem.largeTitleDisplayMode = .never
+            case .root:
+                let isRootViewController = viewController == navigationController.viewControllers.first
+                navigationItem.largeTitleDisplayMode = isRootViewController ? .always : .never
             }
         }
     }

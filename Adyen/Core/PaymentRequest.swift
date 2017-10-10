@@ -333,7 +333,7 @@ public final class PaymentRequest {
             let plugin = self.pluginManager?.plugin(for: paymentMethod) as? UniversalLinksPlugin,
             plugin.supportsUniversalLinks {
             
-            let session = URLSession(configuration: .default)
+            let session = URLSession(configuration: PaymentServer.redirectSessionConfiguration)
             session.dataTask(with: url, completionHandler: { [weak self] data, response, error in
                 guard let strongSelf = self else {
                     return

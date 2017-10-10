@@ -41,6 +41,12 @@ internal class PaymentMethodPickerViewController: UITableViewController {
     internal override func viewDidLoad() {
         super.viewDidLoad()
         
+        // This is needed so that the content extends under the navigation bar at all times,
+        // thereby fixing any animation issues when transitioning between screens.
+        // i.e. on iOS 11 transitioning from a screen with large title in navigation bar to a small,
+        // results in a black bar below the navigation bar if this is removed.
+        extendedLayoutIncludesOpaqueBars = true
+        
         showsActivityIndicatorView = true
         
         tableView.backgroundColor = UIColor.checkoutBackground

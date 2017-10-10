@@ -9,35 +9,35 @@ import UIKit
 struct Theme {
     
     static var primaryColor: UIColor {
-        return UIColor(colorLiteralRed: 104.0 / 255, green: 207.0 / 255, blue: 184.0 / 255, alpha: 1.0)
+        return #colorLiteral(red: 0.4078431373, green: 0.8117647059, blue: 0.7215686275, alpha: 1)
     }
     
     static var secondaryColor: UIColor {
-        return UIColor(colorLiteralRed: 129.0 / 255, green: 129.0 / 255, blue: 129.0 / 255, alpha: 1.0)
+        return #colorLiteral(red: 0.5058823529, green: 0.5058823529, blue: 0.5058823529, alpha: 1)
     }
     
     static var errorColor: UIColor {
-        return UIColor(colorLiteralRed: 243.0 / 255, green: 165.0 / 255, blue: 54.0 / 255, alpha: 1.0)
+        return #colorLiteral(red: 0.9529411765, green: 0.6470588235, blue: 0.2117647059, alpha: 1)
     }
     
     static var headerFooterBackgroundColor: UIColor {
-        return UIColor(colorLiteralRed: 246.0 / 255, green: 246.0 / 255, blue: 247.0 / 255, alpha: 1.0)
+        return #colorLiteral(red: 0.9647058824, green: 0.9647058824, blue: 0.968627451, alpha: 1)
     }
     
     static var standardTextColor: UIColor {
-        return UIColor(colorLiteralRed: 98.0 / 255, green: 98.0 / 255, blue: 98.0 / 255, alpha: 1.0)
+        return #colorLiteral(red: 0.3843137255, green: 0.3843137255, blue: 0.3843137255, alpha: 1)
     }
     
     static var standardFontRegular: UIFont? {
-        return UIFont.systemFont(ofSize: 19.0, weight: UIFontWeightLight)
+        return UIFont.systemFont(ofSize: 19.0, weight: .light)
     }
     
     static var standardFontSmall: UIFont? {
-        return UIFont.systemFont(ofSize: 14.0, weight: UIFontWeightLight)
+        return UIFont.systemFont(ofSize: 14.0, weight: .light)
     }
     
     static var textFieldFont: UIFont? {
-        return UIFont.systemFont(ofSize: 16.0, weight: UIFontWeightLight)
+        return UIFont.systemFont(ofSize: 16.0, weight: .light)
     }
     
     static var headerFooterHeight: CGFloat {

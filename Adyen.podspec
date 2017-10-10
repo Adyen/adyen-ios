@@ -32,7 +32,7 @@ Pod::Spec.new do |s|
   s.subspec 'Cards' do |plugin|
     plugin.dependency 'Adyen/Core'
     plugin.dependency 'Adyen/CoreUI'
-    plugin.dependency 'AdyenCSE'
+    plugin.dependency 'AdyenCSE', '~> 1.1'
     plugin.source_files = 'Adyen/Plugins/Cards/**/*'
     plugin.resource_bundles = {
         'Cards' => [

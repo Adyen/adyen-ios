@@ -9,8 +9,10 @@ import Adyen
 
 @objc class PaymentManagerResult: NSObject {
     
+    @objc
     public let status: PaymentManagerResultStatus
     
+    @objc
     public let error: Swift.Error?
     
     public init(result: PaymentRequestResult) {

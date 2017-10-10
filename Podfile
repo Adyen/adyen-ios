@@ -3,7 +3,7 @@ platform :ios, '9.0'
 use_frameworks!
 
 def shared_pods
-  pod 'AdyenCSE', '~> 1.0.4'
+  pod 'AdyenCSE', '~> 1.1'
 end
 
 target 'Adyen' do

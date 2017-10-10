@@ -9,13 +9,41 @@ import Foundation
 /// Used for requests made to the CheckoutShopper API.
 internal class PaymentServer {
     
+    // MARK: - Internal
+    
     internal let paymentSetup: PaymentSetup
     
     internal init(paymentSetup: PaymentSetup) {
         self.paymentSetup = paymentSetup
     }
     
-    // MARK: - Requests
+    internal static let redirectSessionConfiguration: URLSessionConfiguration = {
+        // This is necessary because some payment method providers, i.e. Rabobank,
+        // only expect the redirect URL to come from a browser, otherwise they redirect to desktop site.
+        // In the browser the user agent corresponds to Safari, whereas the default user agent corresponds to the app.
+        
+        let configuration = URLSessionConfiguration.default
+        
+        let semaphore = DispatchSemaphore(value: 0)
+        var safariUserAgent: String?
+        
+        DispatchQueue.main.async {
+            // Web view can only be created on main thread. Otherwise app crashes.
+            let webView = UIWebView()
+            safariUserAgent = webView.stringByEvaluatingJavaScript(from: "navigator.userAgent")
+            semaphore.signal()
+        }
+        
+        semaphore.wait()
+        
+        if let safariUserAgent = safariUserAgent {
+            configuration.httpAdditionalHeaders = [
+                "User-Agent": safariUserAgent
+            ]
+        }
+        
+        return configuration
+    }()
     
     internal func initiatePayment(for paymentMethod: PaymentMethod, completion: @escaping Completion<PaymentInitiation>) {
         var parameters: [String: Any] = [
@@ -54,7 +82,7 @@ internal class PaymentServer {
     
     internal typealias Completion<ResponseType> = (_ response: ResponseType?, _ error: Error?) -> Void
     
-    // MARK: - URL Session
+    // MARK: - Private
     
     private let session = URLSession(configuration: .default)
     
