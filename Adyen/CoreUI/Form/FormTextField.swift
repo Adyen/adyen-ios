@@ -137,7 +137,7 @@ internal extension FormTextField {
                 .font: UIFont.systemFont(ofSize: 18.0),
                 .foregroundColor: UIColor.black
             ]
-            textField.attributedPlaceholder = NSAttributedString(string: newValue ?? "", attributes: attributes)
+            textField.attributedText = NSAttributedString(string: newValue ?? "", attributes: attributes)
         }
     }
     
@@ -187,7 +187,7 @@ internal extension FormTextField {
     
     override var accessibilityIdentifier: String? {
         get {
-            return nil
+            return textField.accessibilityIdentifier
         }
         
         set {

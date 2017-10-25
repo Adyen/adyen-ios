@@ -9,6 +9,10 @@ import UIKit
 class LoadingTableViewCell: UITableViewCell {
     private let loadingIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     
+    var isShowingLoadingIndicator: Bool {
+        return loadingIndicator.isAnimating
+    }
+    
     func startLoadingAnimation() {
         DispatchQueue.main.async {
             self.accessoryView = self.loadingIndicator
@@ -18,9 +22,7 @@ class LoadingTableViewCell: UITableViewCell {
     
     func stopLoadingAnimation() {
         DispatchQueue.main.async {
-            if let indicator = self.accessoryView as? UIActivityIndicatorView {
-                indicator.stopAnimating()
-            }
+            self.loadingIndicator.stopAnimating()
         }
     }
 }

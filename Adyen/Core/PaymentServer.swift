@@ -51,11 +51,14 @@ internal class PaymentServer {
             "paymentMethodData": paymentMethod.paymentMethodData
         ]
         
-        if var serializedPaymentDetails = paymentMethod.fulfilledPaymentDetails?.serialized {
-            if let providedAdditionalRequiredFields = paymentMethod.providedAdditionalRequiredFields {
-                serializedPaymentDetails.formUnion(providedAdditionalRequiredFields)
-            }
-            
+        var serializedPaymentDetails: [String: Any] = [:]
+        if let fulfilled = paymentMethod.fulfilledPaymentDetails?.serialized {
+            serializedPaymentDetails = fulfilled
+        }
+        if let additional = paymentMethod.providedAdditionalRequiredFields {
+            serializedPaymentDetails.formUnion(additional)
+        }
+        if !serializedPaymentDetails.isEmpty {
             parameters["paymentDetails"] = serializedPaymentDetails
         }
         

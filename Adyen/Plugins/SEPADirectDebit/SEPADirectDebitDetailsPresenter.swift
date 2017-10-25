@@ -12,21 +12,18 @@ internal class SEPADirectDebitDetailsPresenter: PaymentDetailsPresenter {
     
     private let pluginConfiguration: PluginConfiguration
     
-    private let appearanceConfiguration: AppearanceConfiguration
-    
     internal weak var delegate: PaymentDetailsPresenterDelegate?
     
-    internal init(hostViewController: UINavigationController, pluginConfiguration: PluginConfiguration, appearanceConfiguration: AppearanceConfiguration) {
+    internal init(hostViewController: UINavigationController, pluginConfiguration: PluginConfiguration) {
         self.hostViewController = hostViewController
         self.pluginConfiguration = pluginConfiguration
-        self.appearanceConfiguration = appearanceConfiguration
     }
     
     func start() {
         let paymentSetup = pluginConfiguration.paymentSetup
         let formattedAmount = CurrencyFormatter.format(paymentSetup.amount, currencyCode: paymentSetup.currencyCode)
         
-        let formViewController = SEPADirectDebitFormViewController(appearanceConfiguration: appearanceConfiguration)
+        let formViewController = SEPADirectDebitFormViewController()
         formViewController.title = pluginConfiguration.paymentMethod.name
         formViewController.formattedAmount = formattedAmount
         formViewController.delegate = self
@@ -46,6 +43,8 @@ internal class SEPADirectDebitDetailsPresenter: PaymentDetailsPresenter {
 extension SEPADirectDebitDetailsPresenter: SEPADirectDebitFormViewControllerDelegate {
     
     func formViewController(_ formViewController: SEPADirectDebitFormViewController, didSubmitWithIBAN iban: String, name: String) {
+        formViewController.isLoading = true
+        
         submit(iban: iban, name: name)
     }
     

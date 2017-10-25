@@ -12,22 +12,17 @@ internal class PaymentMethodPickerViewController: UITableViewController {
     /// The delegate of the payment method picker view controller.
     private(set) internal weak var delegate: PaymentMethodPickerViewControllerDelegate?
     
-    /// The appearance configuration used to customize the payment method picker's appearance.
-    private let appearanceConfiguration: AppearanceConfiguration
-    
     /// Initializes the payment method picker view controller.
     ///
     /// - Parameters:
     ///   - delegate: The delegate to inform when a payment method has been selected.
-    ///   - appearanceConfiguration: The appearance configuration to use for customizing the payment method picker's appearance.
-    internal init(delegate: PaymentMethodPickerViewControllerDelegate, appearanceConfiguration: AppearanceConfiguration = .default) {
+    internal init(delegate: PaymentMethodPickerViewControllerDelegate) {
         self.delegate = delegate
-        self.appearanceConfiguration = appearanceConfiguration.copied
         
         super.init(style: .grouped)
         
         navigationItem.title = ADYLocalizedString("paymentMethods.title")
-        navigationItem.leftBarButtonItem = appearanceConfiguration.cancelButtonItem(target: self, selector: #selector(didSelect(cancelButtonItem:)))
+        navigationItem.leftBarButtonItem = AppearanceConfiguration.shared.cancelButtonItem(target: self, selector: #selector(didSelect(cancelButtonItem:)))
     }
     
     /// :nodoc:
@@ -49,13 +44,8 @@ internal class PaymentMethodPickerViewController: UITableViewController {
         
         showsActivityIndicatorView = true
         
-        tableView.backgroundColor = UIColor.checkoutBackground
-        tableView.separatorInset = UIEdgeInsets.zero
-        tableView.sectionHeaderHeight = 30
         tableView.allowsMultipleSelectionDuringEditing = false
-        
         tableView.register(PaymentMethodTableViewCell.classForCoder(), forCellReuseIdentifier: "cell")
-        tableView.register(CheckoutHeaderView.classForCoder(), forHeaderFooterViewReuseIdentifier: "header")
     }
     
     @objc private func didSelect(cancelButtonItem: Any) {
@@ -86,16 +76,12 @@ internal class PaymentMethodPickerViewController: UITableViewController {
     /// To hide the activity indicator and reenable user interaction, call reset().
     internal func displayPaymentMethodActivityIndicator() {
         selectedCell?.startLoadingAnimation()
-        
-        view.isUserInteractionEnabled = false
     }
     
     /// Resets the payment method picker's cell selection and loading state.
     internal func reset() {
         selectedCell?.stopLoadingAnimation()
         selectedIndexPath = nil
-        
-        view.isUserInteractionEnabled = true
     }
     
     // MARK: Cell Selection
@@ -103,11 +89,11 @@ internal class PaymentMethodPickerViewController: UITableViewController {
     fileprivate var selectedIndexPath: IndexPath?
     
     private var selectedCell: PaymentMethodTableViewCell? {
-        guard let indexPath = selectedIndexPath else {
+        guard let selectedIndexPath = selectedIndexPath else {
             return nil
         }
         
-        return tableView.cellForRow(at: indexPath) as? PaymentMethodTableViewCell
+        return tableView.cellForRow(at: selectedIndexPath) as? PaymentMethodTableViewCell
     }
 }
 
@@ -120,14 +106,6 @@ extension PaymentMethodPickerViewController {
         return isPreferredMethodsSection(indexPath.section) ? preferredMethods[indexPath.row] : availableMethods[indexPath.row]
     }
     
-    private func titleFor(section: Int) -> String {
-        if isPreferredMethodsSection(section) {
-            return ADYLocalizedString("paymentMethods.storedMethods")
-        } else {
-            return ADYLocalizedString("paymentMethods.otherMethods")
-        }
-    }
-    
     /// :nodoc:
     public override func numberOfSections(in tableView: UITableView) -> Int {
         var count = preferredMethods.isEmpty ? 0 : 1
@@ -136,29 +114,16 @@ extension PaymentMethodPickerViewController {
     }
     
     /// :nodoc:
-    public override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return tableView.numberOfSections > 1 ? 50 : 30
-    }
-    
-    /// :nodoc:
-    public override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return section == tableView.numberOfSections - 1 ? 30 : 1
-    }
-    
-    /// :nodoc:
     public override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return titleFor(section: section)
-    }
-    
-    /// :nodoc:
-    public override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as? CheckoutHeaderView
-        
-        if preferredMethods.count > 0 {
-            headerView?.title = titleFor(section: section)
+        guard !preferredMethods.isEmpty else {
+            return nil
         }
         
-        return headerView
+        if isPreferredMethodsSection(section) {
+            return ADYLocalizedString("paymentMethods.storedMethods")
+        } else {
+            return ADYLocalizedString("paymentMethods.otherMethods")
+        }
     }
     
     /// :nodoc:
@@ -192,6 +157,10 @@ extension PaymentMethodPickerViewController {
     /// :nodoc:
     public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        guard selectedCell?.isShowingLoadingIndicator != true else {
+            return
+        }
         
         let selected = paymentMethod(at: indexPath)
         selected.fulfilledPaymentDetails = nil

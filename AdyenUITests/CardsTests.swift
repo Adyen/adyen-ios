@@ -80,7 +80,7 @@ class CardsTests: TestCase {
     }
     
     private var checkoutButton: XCUIElement {
-        return contentView.buttons["checkout-button"]
+        return contentView.buttons["pay-button"]
     }
     
     private var oneClickVerificationAlert: XCUIElement {

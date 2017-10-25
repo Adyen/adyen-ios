@@ -52,6 +52,7 @@ public final class PaymentMethod: Equatable {
         self.init(name: name, type: type, isOneClick: isOneClick, oneClickInfo: oneClickInfo, logoURL: logoURL, inputDetails: inputDetails, members: nil, group: group, paymentMethodData: data)
         
         configuration = info["configuration"] as? [String: Any]
+        supportsPolling = (configuration?["supportsPolling"] as? String)?.boolValue() ?? false
         
         self.logoBaseURL = logoBaseURL
     }
@@ -133,11 +134,14 @@ public final class PaymentMethod: Equatable {
     
     internal let paymentMethodData: String
     
+    /// paymentMethodReturnData returned during original initiate call. Fallback on this if no new data is retrieved.
+    /// This can happen if user followed a redirect URL, but came back without the return URL.
+    internal var fallbackReturnData: String?
     internal var txVariant: PaymentMethodType
-    internal var additionalRequiredFields: [String: Any]?
     internal var providedAdditionalRequiredFields: [String: Any]?
     internal var configuration: [String: Any]?
     internal var fulfilledPaymentDetails: PaymentDetails?
+    internal var supportsPolling = false
     
     internal func requiresPaymentDetails() -> Bool {
         return inputDetails?.isEmpty == false && fulfilledPaymentDetails == nil

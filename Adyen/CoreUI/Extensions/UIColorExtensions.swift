@@ -21,8 +21,4 @@ internal extension UIColor {
         return #colorLiteral(red: 0.2078431373, green: 0.2078431373, blue: 0.2078431373, alpha: 1)
     }
     
-    internal static var checkoutBackground: UIColor {
-        return checkoutLightGray
-    }
-    
 }

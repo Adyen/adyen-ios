@@ -12,8 +12,7 @@ internal protocol PluginPresentsPaymentDetails: Plugin {
     ///
     /// - Parameters:
     ///   - hostViewController: The view controller to host the details presenter's interface.
-    ///   - appearanceConfiguration: The configuration of the appearance.
     /// - Returns: A details presenter for the user to enter payment details.
-    func newPaymentDetailsPresenter(hostViewController: UINavigationController, appearanceConfiguration: AppearanceConfiguration) -> PaymentDetailsPresenter
+    func newPaymentDetailsPresenter(hostViewController: UINavigationController) -> PaymentDetailsPresenter
     
 }

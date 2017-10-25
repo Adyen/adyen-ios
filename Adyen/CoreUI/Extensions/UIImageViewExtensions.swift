@@ -9,6 +9,8 @@ import Foundation
 internal extension UIImageView {
     
     internal func downloadImage(from url: URL) {
+        image = nil
+        
         let session = URLSession.shared
         let task = session.dataTask(with: url) { data, response, error in
             guard

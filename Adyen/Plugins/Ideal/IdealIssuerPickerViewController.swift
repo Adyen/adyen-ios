@@ -21,8 +21,6 @@ class IdealIssuerPickerViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.backgroundColor = UIColor.checkoutBackground
-        tableView.separatorInset = UIEdgeInsets.zero
         tableView.register(PaymentMethodTableViewCell.classForCoder(), forCellReuseIdentifier: "cell")
     }
     

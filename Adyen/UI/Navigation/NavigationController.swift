@@ -10,17 +10,11 @@ import Foundation
 /// It customizes its appearance based on the given appearance configuration on initialization.
 internal class NavigationController: UINavigationController {
     
-    /// The appearance configuration used to customize the navigation controller's appearance.
-    private let appearanceConfiguration: AppearanceConfiguration
-    
     /// Initializes the navigation controller.
     ///
     /// - Parameters:
     ///   - rootViewController: The view controller that resides at the bottom of the navigation stack.
-    ///   - appearanceConfiguration: The appearance configuration used to customize the navigation controller's appearance.
-    internal init(rootViewController: UIViewController, appearanceConfiguration: AppearanceConfiguration) {
-        self.appearanceConfiguration = appearanceConfiguration
-        
+    override init(rootViewController: UIViewController) {
         super.init(nibName: nil, bundle: nil)
         
         delegate = self
@@ -40,6 +34,8 @@ internal class NavigationController: UINavigationController {
     }
     
     private func configureNavigationBar() {
+        let appearanceConfiguration = AppearanceConfiguration.shared
+        
         navigationBar.titleTextAttributes = appearanceConfiguration.navigationBarTitleTextAttributes
         navigationBar.tintColor = appearanceConfiguration.navigationBarTintColor
         navigationBar.barTintColor = appearanceConfiguration.navigationBarBackgroundColor
@@ -58,13 +54,16 @@ internal class NavigationController: UINavigationController {
 extension NavigationController: UINavigationControllerDelegate {
     
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        let appearanceConfiguration = AppearanceConfiguration.shared
+        viewController.view.backgroundColor = appearanceConfiguration.backgroundColor
+        
         let navigationItem = viewController.navigationItem
         
         // Hide the back button title for all view controllers in the navigation stack.
-        viewController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "",
-                                                                          style: .plain,
-                                                                          target: nil,
-                                                                          action: nil)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "",
+                                                           style: .plain,
+                                                           target: nil,
+                                                           action: nil)
         
         if #available(iOS 11, *) {
             // Configure large title display mode.

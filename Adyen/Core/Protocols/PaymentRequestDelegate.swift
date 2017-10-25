@@ -13,7 +13,10 @@ public protocol PaymentRequestDelegate: class {
     /// Given a list of `PaymentMethod` (available and preferred) waits for the selection via `completion`.
     func paymentRequest(_ request: PaymentRequest, requiresPaymentMethodFrom preferredMethods: [PaymentMethod]?, available availableMethods: [PaymentMethod], completion: @escaping MethodCompletion)
     
-    /// This method is called when a URL redirection needs to be executed. Use the `url` to continue payment flow in Safari or `SFSafariViewController`. After the process is completed, the `completion` for the given URL must be called.
+    /// This method is called when a URL redirection needs to be executed.
+    /// `url` can be a universal link, an app URL, or a standard URL that is to be opened in Safari or `SFSafariViewController`
+    /// Care should be taken when handling an app URL, as this type of URL will not have the http/https scheme, and will cause a crash if opened in `SFSafariViewController`.
+    /// After the process is completed, the `completion` for the given URL must be called.
     func paymentRequest(_ request: PaymentRequest, requiresReturnURLFrom url: URL, completion: @escaping URLCompletion)
     
     /// This method is called when input is needed for completing the transation. The filled `PaymentDetails` should be sent via `completion`.

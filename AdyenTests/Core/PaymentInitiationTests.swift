@@ -16,7 +16,7 @@ class PaymentInitiationTests: XCTestCase {
         ]
         
         let paymentInitiation = PaymentInitiation(dictionary: dictionary)!
-        XCTAssertEqual(paymentInitiation.state, .redirect(URL(string: "https://adyen.com")!))
+        XCTAssertEqual(paymentInitiation.state, .redirect(url: URL(string: "https://adyen.com")!, shouldSubmitRedirectData: false))
     }
     
     func testDecodingCompletedState() {
@@ -27,7 +27,7 @@ class PaymentInitiationTests: XCTestCase {
         ]
         
         let paymentInitiation = PaymentInitiation(dictionary: dictionary)!
-        XCTAssertEqual(paymentInitiation.state, .completed(.authorised, "payload123"))
+        XCTAssertEqual(paymentInitiation.state, .completed(status: .authorised, payload: "payload123"))
     }
     
     func testDecodingErrorState() {

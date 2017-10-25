@@ -13,10 +13,9 @@ internal class CardFormDetailsPresenter: PaymentDetailsPresenter {
     
     internal weak var delegate: PaymentDetailsPresenterDelegate?
     
-    internal init(hostViewController: UINavigationController, pluginConfiguration: PluginConfiguration, appearanceConfiguration: AppearanceConfiguration, cardScanButtonHandler: ((@escaping CardScanCompletion) -> Void)?) {
+    internal init(hostViewController: UINavigationController, pluginConfiguration: PluginConfiguration, cardScanButtonHandler: ((@escaping CardScanCompletion) -> Void)?) {
         self.hostViewController = hostViewController
         self.pluginConfiguration = pluginConfiguration
-        self.appearanceConfiguration = appearanceConfiguration
         self.cardScanButtonHandler = cardScanButtonHandler
     }
     
@@ -26,7 +25,8 @@ internal class CardFormDetailsPresenter: PaymentDetailsPresenter {
         let formattedAmount = CurrencyFormatter.format(paymentSetup.amount, currencyCode: paymentSetup.currencyCode)
         let inputDetails = paymentMethod.inputDetails
         
-        let formViewController = CardFormViewController(appearanceConfiguration: appearanceConfiguration)
+        let formViewController = CardFormViewController()
+        formViewController.title = paymentMethod.name
         formViewController.formattedAmount = formattedAmount
         formViewController.paymentMethod = paymentMethod
         formViewController.shouldHideStoreDetails = inputDetails?.filter({ $0.key == "storeDetails" }).count == 0
@@ -44,7 +44,6 @@ internal class CardFormDetailsPresenter: PaymentDetailsPresenter {
     
     private let hostViewController: UINavigationController
     private let pluginConfiguration: PluginConfiguration
-    private let appearanceConfiguration: AppearanceConfiguration
     private let cardScanButtonHandler: ((@escaping CardScanCompletion) -> Void)?
     
     private func submit(cardInputData: CardInputData) {

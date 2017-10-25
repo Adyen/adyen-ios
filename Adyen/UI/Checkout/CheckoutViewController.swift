@@ -23,11 +23,12 @@ public final class CheckoutViewController: UIViewController, PaymentRequestDeleg
     /// - Parameters:
     ///   - delegate: The delegate to receive the checkout view controller's events.
     ///   - appearanceConfiguration: The configuration for customizing the checkout view controller's appearance.
-    public init(delegate: CheckoutViewControllerDelegate, appearanceConfiguration: AppearanceConfiguration = .default) {
+    public init(delegate: CheckoutViewControllerDelegate, appearanceConfiguration: AppearanceConfiguration = AppearanceConfiguration.default) {
         self.delegate = delegate
-        self.appearanceConfiguration = appearanceConfiguration.copied
         
         super.init(nibName: nil, bundle: nil)
+        
+        AppearanceConfiguration.shared = appearanceConfiguration
         
         modalPresentationStyle = .formSheet
     }
@@ -70,7 +71,7 @@ public final class CheckoutViewController: UIViewController, PaymentRequestDeleg
         if parent is UINavigationController {
             rootViewController = paymentMethodPickerViewController
         } else {
-            rootViewController = NavigationController(rootViewController: paymentMethodPickerViewController, appearanceConfiguration: appearanceConfiguration)
+            rootViewController = NavigationController(rootViewController: paymentMethodPickerViewController)
         }
     }
     
@@ -88,7 +89,7 @@ public final class CheckoutViewController: UIViewController, PaymentRequestDeleg
     
     /// :nodoc:
     public override var preferredStatusBarStyle: UIStatusBarStyle {
-        return appearanceConfiguration.preferredStatusBarStyle
+        return AppearanceConfiguration.shared.preferredStatusBarStyle
     }
     
     /// :nodoc:
@@ -121,24 +122,48 @@ public final class CheckoutViewController: UIViewController, PaymentRequestDeleg
     
     /// :nodoc:
     public func paymentRequest(_ request: PaymentRequest, requiresReturnURLFrom url: URL, completion: @escaping URLCompletion) {
-        // Notify the delegate to listen to the return URL.
-        delegate?.checkoutViewController(self, requiresReturnURL: completion)
-        
-        // Try to open the URL as a universal link.
-        if #available(iOS 10.0, *) {
-            UIApplication.shared.open(url, options: [UIApplicationOpenURLOptionUniversalLinksOnly: true]) { [weak self] success in
-                guard let strongSelf = self else {
-                    return
+        // If the url scheme is not http/https, we can assume it's an app URL.
+        let urlIsAppUrl = url.scheme != "http" && url.scheme != "https"
+        if urlIsAppUrl {
+            // Try to open as an app url.
+            if #available(iOS 10.0, *) {
+                UIApplication.shared.open(url) { [weak self] success in
+                    guard let strongSelf = self else {
+                        return
+                    }
+                    
+                    if success {
+                        // Notify the delegate to listen to the return URL.
+                        strongSelf.delegate?.checkoutViewController(strongSelf, requiresReturnURL: completion)
+                    } else {
+                        strongSelf.presentOpenAppErrorMessage()
+                    }
                 }
-                
-                // If opening the URL as a universal link was not possible, open it as a website instead.
-                if !success {
-                    strongSelf.presentWebPage(with: url)
+            } else {
+                // Fallback on earlier versions
+                if UIApplication.shared.openURL(url) {
+                    // Notify the delegate to listen to the return URL.
+                    delegate?.checkoutViewController(self, requiresReturnURL: completion)
+                } else {
+                    presentOpenAppErrorMessage()
                 }
             }
         } else {
-            // Fallback on earlier versions.
-            presentWebPage(with: url)
+            // Notify the delegate to listen to the return URL.
+            delegate?.checkoutViewController(self, requiresReturnURL: completion)
+            
+            if #available(iOS 10.0, *) {
+                // Try to open the URL as a universal link.
+                UIApplication.shared.open(url, options: [UIApplicationOpenURLOptionUniversalLinksOnly: true]) { [weak self] success in
+                    // If opening the URL as a universal link was not possible, open it as a website instead.
+                    if !success {
+                        self?.presentWebPage(with: url)
+                    }
+                }
+            } else {
+                // Fallback on earlier versions.
+                presentWebPage(with: url)
+            }
         }
     }
     
@@ -163,7 +188,7 @@ public final class CheckoutViewController: UIViewController, PaymentRequestDeleg
             }
         }
         
-        let detailsPresenter = plugin.newPaymentDetailsPresenter(hostViewController: hostViewController, appearanceConfiguration: appearanceConfiguration)
+        let detailsPresenter = plugin.newPaymentDetailsPresenter(hostViewController: hostViewController)
         detailsPresenter.delegate = self
         detailsPresenter.start()
         
@@ -236,9 +261,6 @@ public final class CheckoutViewController: UIViewController, PaymentRequestDeleg
     
     // MARK: - Private
     
-    /// The appearance configuration that was used to initialize the view controller.
-    private let appearanceConfiguration: AppearanceConfiguration
-    
     private var rootViewController: UIViewController? {
         willSet {
             rootViewController?.removeFromParentViewController()
@@ -254,7 +276,7 @@ public final class CheckoutViewController: UIViewController, PaymentRequestDeleg
     }
     
     private lazy var paymentMethodPickerViewController: PaymentMethodPickerViewController = {
-        PaymentMethodPickerViewController(delegate: self, appearanceConfiguration: self.appearanceConfiguration)
+        PaymentMethodPickerViewController(delegate: self)
     }()
     
     private lazy var paymentRequest: PaymentRequest = {
@@ -296,6 +318,13 @@ public final class CheckoutViewController: UIViewController, PaymentRequestDeleg
     
     private func presentWebPage(with url: URL) {
         let safariViewController = SFSafariViewController(url: url)
+        
+        if #available(iOS 10, *) {
+            let appearanceConfiguration = AppearanceConfiguration.shared
+            safariViewController.preferredBarTintColor = appearanceConfiguration.safariBarTintColor
+            safariViewController.preferredControlTintColor = appearanceConfiguration.safariControlTintColor
+        }
+        
         safariViewController.delegate = self
         safariViewController.modalPresentationStyle = .formSheet
         
@@ -304,6 +333,18 @@ public final class CheckoutViewController: UIViewController, PaymentRequestDeleg
         }
         
         present(safariViewController, animated: true)
+    }
+    
+    private func presentOpenAppErrorMessage() {
+        self.paymentMethodPickerViewController.reset()
+        
+        let alertTitle = ADYLocalizedString("redirect.cannotOpenApp.title")
+        let alertMessage = ADYLocalizedString("redirect.cannotOpenApp.appNotInstalledMessage")
+        
+        let alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: ADYLocalizedString("dismissButton"), style: .cancel))
+        
+        present(alertController, animated: true)
     }
     
 }

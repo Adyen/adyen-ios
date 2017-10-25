@@ -4,7 +4,11 @@ With Adyen SDK you can help your shoppers pay with a payment method of their cho
 
 You can integrate the SDK in two ways: either make use of the default UI components and flows preconfigured by Adyen (Quick integration), or implement your own UI and checkout experience (Custom integration).
 
-![Alt text](https://docs.adyen.com/developers/files/28871718/34111550/1/1507627477611/iOSCheckoutDemo.png)
+![Credit Card](https://user-images.githubusercontent.com/8394738/31934915-b7a1805e-b8ad-11e7-9459-c29a0566e50b.gif)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+![One-Click](https://user-images.githubusercontent.com/8394738/31934916-b90bcf44-b8ad-11e7-842a-a29c39b1eb12.gif)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+![Apple Pay](https://user-images.githubusercontent.com/8394738/31934918-bb0007fc-b8ad-11e7-8e8c-84078b6b3221.gif)
 
 ## Installation
 

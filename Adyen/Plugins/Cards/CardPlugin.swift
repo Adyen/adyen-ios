@@ -18,11 +18,11 @@ internal class CardPlugin: Plugin, PluginPresentsPaymentDetails, CardScanPlugin 
     
     // MARK: - PluginPresentsPaymentDetails
     
-    func newPaymentDetailsPresenter(hostViewController: UINavigationController, appearanceConfiguration: AppearanceConfiguration) -> PaymentDetailsPresenter {
+    func newPaymentDetailsPresenter(hostViewController: UINavigationController) -> PaymentDetailsPresenter {
         if configuration.paymentMethod.isOneClick {
             return CardOneClickDetailsPresenter(hostViewController: hostViewController, pluginConfiguration: configuration)
         } else {
-            return CardFormDetailsPresenter(hostViewController: hostViewController, pluginConfiguration: configuration, appearanceConfiguration: appearanceConfiguration, cardScanButtonHandler: cardScanButtonHandler)
+            return CardFormDetailsPresenter(hostViewController: hostViewController, pluginConfiguration: configuration, cardScanButtonHandler: cardScanButtonHandler)
         }
     }
     

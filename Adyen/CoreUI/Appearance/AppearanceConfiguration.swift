@@ -8,7 +8,7 @@ import Foundation
 
 /// An object used to customize the appearance of the UI components provided by this SDK.
 /// Note that `AppearanceConfiguration` is only used when the `CheckoutViewController` is first initialized. Changes to this object after it has been created are ignored.
-public final class AppearanceConfiguration {
+public struct AppearanceConfiguration {
     
     // MARK: - Initializing
     
@@ -62,25 +62,32 @@ public final class AppearanceConfiguration {
     
     // MARK: - Configuring the Checkout Button
     
-    /// The attributes used for the checkout button's title.
-    public var checkoutButtonTitleTextAttributes: [NSAttributedStringKey: Any]?
+    /// The class to use for the checkout button.
+    /// The button's title and enabled/disabled state will be managed by Adyen SDK.
+    /// When no type is specified, a default button is used.
+    public var checkoutButtonType: UIButton.Type = UIButton.self
     
-    /// The insets from the edges of the checkout button to the title.
-    public var checkoutButtonTitleEdgeInsets: UIEdgeInsets?
+    // MARK: - Configuring Safari View Controller
     
-    /// The corner radius of the checkout button.
-    public var checkoutButtonCornerRadius: CGFloat = 0.0
+    /// The color to tint the background of the Safari View Controller navigation bar and toolbar. Only has an effect on iOS 11 and higher.
+    public var safariBarTintColor: UIColor?
     
-    // MARK: - Configuring Other Display Properties
+    /// The color to tint the the control buttons on Safari View Controller the navigation bar and the toolbar. Only has an effect on iOS 11 and higher.
+    public var safariControlTintColor: UIColor?
+    
+    // MARK: - Configuring General Display Properties
     
     /// The tint color for most buttons and actionable elements.
     public var tintColor: UIColor?
     
+    /// The background color of all view controllers.
+    public var backgroundColor: UIColor = #colorLiteral(red: 0.9764705882, green: 0.9764705882, blue: 0.9764705882, alpha: 1)
+    
     // MARK: - Getting the Default Appearance Configuration
     
     /// Returns an instance of the default appearance configuration.
-    public static var `default`: AppearanceConfiguration = {
-        let appearanceConfiguration = AppearanceConfiguration()
+    public static let `default`: AppearanceConfiguration = {
+        var appearanceConfiguration = AppearanceConfiguration()
         appearanceConfiguration.navigationBarTitleTextAttributes = [
             .foregroundColor: UIColor.checkoutDarkGray
         ]
@@ -88,51 +95,77 @@ public final class AppearanceConfiguration {
         appearanceConfiguration.navigationBarBackgroundColor = UIColor.white
         appearanceConfiguration.navigationBarCancelButtonImage = UIImage.bundleImage("close")
         
-        appearanceConfiguration.checkoutButtonTitleTextAttributes = [
+        appearanceConfiguration.checkoutButtonType = CheckoutButton.self
+        appearanceConfiguration.internalCheckoutButtonTitleTextAttributes = [
             .font: UIFont.systemFont(ofSize: 18.0),
             .foregroundColor: UIColor.white
         ]
-        appearanceConfiguration.checkoutButtonTitleEdgeInsets = UIEdgeInsets(top: 16.0, left: 0.0, bottom: 16.0, right: 0.0)
-        appearanceConfiguration.checkoutButtonCornerRadius = 4.0
+        appearanceConfiguration.internalCheckoutButtonTitleEdgeInsets = UIEdgeInsets(top: 16.0, left: 0.0, bottom: 16.0, right: 0.0)
+        appearanceConfiguration.internalCheckoutButtonCornerRadius = 4.0
         
         appearanceConfiguration.tintColor = #colorLiteral(red: 0.03921568627, green: 0.7490196078, blue: 0.3254901961, alpha: 1)
         
         return appearanceConfiguration
     }()
     
+    // MARK: - Internal
+    
+    internal var internalCheckoutButtonTitleTextAttributes: [NSAttributedStringKey: Any]? // swiftlint:disable:this identifier_name
+    
+    internal var internalCheckoutButtonTitleEdgeInsets: UIEdgeInsets?
+    
+    internal var internalCheckoutButtonCornerRadius: CGFloat = 0.0
+    
 }
 
-// MARK: - NSCopying
-
-extension AppearanceConfiguration: NSCopying {
+public extension AppearanceConfiguration {
     
-    /// :nodoc:
-    public func copy(with zone: NSZone? = nil) -> Any {
-        let appearanceConfiguration = AppearanceConfiguration()
-        appearanceConfiguration.preferredStatusBarStyle = preferredStatusBarStyle
-        appearanceConfiguration.navigationBarTitleTextAttributes = navigationBarTitleTextAttributes
-        appearanceConfiguration.navigationBarLargeTitleTextAttributes = navigationBarLargeTitleTextAttributes
-        appearanceConfiguration.navigationBarLargeTitleDisplayMode = navigationBarLargeTitleDisplayMode
-        appearanceConfiguration.navigationBarTintColor = navigationBarTintColor
-        appearanceConfiguration.navigationBarBackgroundColor = navigationBarBackgroundColor
-        appearanceConfiguration.isNavigationBarTranslucent = isNavigationBarTranslucent
-        appearanceConfiguration.navigationBarCancelButtonImage = navigationBarCancelButtonImage
-        appearanceConfiguration.checkoutButtonTitleTextAttributes = checkoutButtonTitleTextAttributes
-        appearanceConfiguration.checkoutButtonTitleEdgeInsets = checkoutButtonTitleEdgeInsets
-        appearanceConfiguration.checkoutButtonCornerRadius = checkoutButtonCornerRadius
-        appearanceConfiguration.tintColor = tintColor
+    // MARK: - Deprecated
+    
+    /// The attributes used for the checkout button's title. Only used when `checkoutButtonType` is the default.
+    @available(*, deprecated, message: "Provide a custom button via checkoutButtonType instead.")
+    public var checkoutButtonTitleTextAttributes: [NSAttributedStringKey: Any]? {
+        get {
+            return internalCheckoutButtonTitleTextAttributes
+        }
         
-        return appearanceConfiguration
+        set {
+            internalCheckoutButtonTitleTextAttributes = newValue
+        }
     }
     
-    /// Creates and returns a copied version of the receiver.
-    internal var copied: AppearanceConfiguration {
-        return copy() as! AppearanceConfiguration // swiftlint:disable:this force_cast
+    /// The insets from the edges of the checkout button to the title. Only used when `checkoutButtonType` the default.
+    @available(*, deprecated, message: "Provide a custom button via checkoutButtonType instead.")
+    public var checkoutButtonTitleEdgeInsets: UIEdgeInsets? {
+        get {
+            return internalCheckoutButtonTitleEdgeInsets
+        }
+        
+        set {
+            internalCheckoutButtonTitleEdgeInsets = newValue
+        }
+    }
+    
+    /// The corner radius of the checkout button. Only used when `checkoutButtonType` the default.
+    @available(*, deprecated, message: "Provide a custom button via checkoutButtonType instead.")
+    public var checkoutButtonCornerRadius: CGFloat {
+        get {
+            return internalCheckoutButtonCornerRadius
+        }
+        
+        set {
+            internalCheckoutButtonCornerRadius = newValue
+        }
     }
     
 }
+
+// MARK: - Helpers
 
 internal extension AppearanceConfiguration {
+    
+    /// The globally shared appearance configuration.
+    internal static var shared = AppearanceConfiguration.default
     
     internal func cancelButtonItem(target: Any, selector: Selector) -> UIBarButtonItem {
         var cancelButtonItem: UIBarButtonItem!

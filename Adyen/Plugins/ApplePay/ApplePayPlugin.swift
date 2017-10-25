@@ -23,7 +23,7 @@ internal class ApplePayPlugin: Plugin {
 
 extension ApplePayPlugin: PluginPresentsPaymentDetails {
     
-    func newPaymentDetailsPresenter(hostViewController: UINavigationController, appearanceConfiguration: AppearanceConfiguration) -> PaymentDetailsPresenter {
+    func newPaymentDetailsPresenter(hostViewController: UINavigationController) -> PaymentDetailsPresenter {
         let detailsPresenter = ApplePayDetailsPresenter(hostViewController: hostViewController, pluginConfiguration: configuration)
         self.detailsPresenter = detailsPresenter
         

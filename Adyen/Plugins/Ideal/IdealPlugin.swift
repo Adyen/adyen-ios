@@ -6,7 +6,7 @@
 
 import Foundation
 
-internal class IdealPlugin: Plugin, PluginPresentsPaymentDetails, UniversalLinksPlugin {
+internal class IdealPlugin: Plugin, PluginPresentsPaymentDetails {
     
     // MARK: - Object Lifecycle
     
@@ -16,19 +16,8 @@ internal class IdealPlugin: Plugin, PluginPresentsPaymentDetails, UniversalLinks
     
     // MARK: - PluginPresentsPaymentDetails
     
-    func newPaymentDetailsPresenter(hostViewController: UINavigationController, appearanceConfiguration: AppearanceConfiguration) -> PaymentDetailsPresenter {
+    func newPaymentDetailsPresenter(hostViewController: UINavigationController) -> PaymentDetailsPresenter {
         return IdealDetailsPresenter(hostViewController: hostViewController, pluginConfiguration: configuration)
-    }
-    
-    // MARK: - UniversalLinksPlugin
-    
-    var supportsUniversalLinks: Bool {
-        guard let paymentMethodConfiguration = configuration.paymentMethod.configuration,
-            let canIgnoreCookies = paymentMethodConfiguration["canIgnoreCookies"] as? String else {
-            return false
-        }
-        
-        return canIgnoreCookies == "true"
     }
     
     // MARK: - Public

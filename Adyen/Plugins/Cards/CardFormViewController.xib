@@ -17,6 +17,7 @@
                 <outlet property="cardNumberTextField" destination="7Z4-ok-sdb" id="34c-bp-PAE"/>
                 <outlet property="cardNumberUnderlineView" destination="y75-jO-jE0" id="cgh-df-Qlh"/>
                 <outlet property="cardNumberWidthConstraint" destination="ftq-YO-wVG" id="vIR-n7-Lhz"/>
+                <outlet property="contentView" destination="41S-pR-hlw" id="HY6-9u-yo9"/>
                 <outlet property="cvcLabel" destination="53s-L6-3Ot" id="IFn-QB-Bdz"/>
                 <outlet property="cvcTextField" destination="GOT-nC-YyR" id="ryJ-fE-Y9i"/>
                 <outlet property="cvcUnderlineView" destination="DdM-5m-a0l" id="Gbr-4C-g4J"/>
@@ -27,8 +28,8 @@
                 <outlet property="installmentTextField" destination="aDW-aH-tFw" id="Vin-uQ-VVJ"/>
                 <outlet property="installmentUnderlineView" destination="ns7-60-5hC" id="Yad-YX-LIT"/>
                 <outlet property="installmentsView" destination="Bho-gk-Hhe" id="URH-JJ-hbU"/>
-                <outlet property="payButton" destination="yFf-Gv-J8s" id="gN6-Ao-lxJ"/>
                 <outlet property="scrollView" destination="AX1-bC-owh" id="T2y-t0-qqs"/>
+                <outlet property="stackView" destination="O2c-il-bea" id="rVG-kv-L3U"/>
                 <outlet property="storeDetailsButton" destination="u8P-Qu-n78" id="y7g-lf-nBF"/>
                 <outlet property="storeDetailsLabel" destination="Dug-er-7SQ" id="NfU-1q-D2O"/>
                 <outlet property="storeDetailsView" destination="gx2-WJ-0s8" id="zdH-lm-gzz"/>
@@ -44,7 +45,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="41S-pR-hlw" userLabel="Content View">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="368.5"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="293.5"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="O2c-il-bea">
                                     <rect key="frame" x="0.0" y="20" width="375" height="253.5"/>
@@ -368,27 +369,11 @@
                                         <constraint firstItem="X5i-Kz-kd2" firstAttribute="leading" secondItem="O2c-il-bea" secondAttribute="leading" id="REh-PY-uvG"/>
                                     </constraints>
                                 </stackView>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yFf-Gv-J8s" userLabel="Pay Button" customClass="CheckoutButton" customModule="Adyen" customModuleProvider="target">
-                                    <rect key="frame" x="20" y="293.5" width="335" height="55"/>
-                                    <accessibility key="accessibilityConfiguration" identifier="checkout-button"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="55" placeholder="YES" id="HYe-nk-Jer"/>
-                                    </constraints>
-                                    <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="string" keyPath="title" value="Pay"/>
-                                    </userDefinedRuntimeAttributes>
-                                    <connections>
-                                        <action selector="pay:" destination="-1" eventType="touchUpInside" id="SnK-9W-2uD"/>
-                                    </connections>
-                                </view>
                             </subviews>
                             <constraints>
-                                <constraint firstAttribute="bottom" secondItem="yFf-Gv-J8s" secondAttribute="bottom" constant="20" id="A0I-Qc-nnH"/>
+                                <constraint firstAttribute="bottom" secondItem="O2c-il-bea" secondAttribute="bottom" constant="20" placeholder="YES" id="4LR-fu-5Ok"/>
                                 <constraint firstItem="O2c-il-bea" firstAttribute="leading" secondItem="41S-pR-hlw" secondAttribute="leading" id="CBd-Ia-hsC"/>
-                                <constraint firstAttribute="trailing" secondItem="yFf-Gv-J8s" secondAttribute="trailing" constant="20" id="Dt5-LS-aTq"/>
                                 <constraint firstItem="O2c-il-bea" firstAttribute="top" secondItem="41S-pR-hlw" secondAttribute="top" constant="20" id="Mc2-CG-SS5"/>
-                                <constraint firstItem="yFf-Gv-J8s" firstAttribute="top" secondItem="O2c-il-bea" secondAttribute="bottom" constant="20" id="dXr-Pg-hQd"/>
-                                <constraint firstItem="yFf-Gv-J8s" firstAttribute="leading" secondItem="41S-pR-hlw" secondAttribute="leading" constant="20" id="gvV-kN-OX8"/>
                                 <constraint firstAttribute="trailing" secondItem="O2c-il-bea" secondAttribute="trailing" id="lHX-Z5-XZF"/>
                             </constraints>
                         </view>

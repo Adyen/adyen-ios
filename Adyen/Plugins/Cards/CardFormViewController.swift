@@ -11,9 +11,7 @@ class CardFormViewController: UIViewController, CheckoutPaymentFieldDelegate {
     
     // MARK: - Object Lifecycle
     
-    init(appearanceConfiguration: AppearanceConfiguration) {
-        self.appearanceConfiguration = appearanceConfiguration
-        
+    init() {
         super.init(nibName: "CardFormViewController", bundle: Bundle(for: CardFormViewController.self))
     }
     
@@ -105,12 +103,12 @@ class CardFormViewController: UIViewController, CheckoutPaymentFieldDelegate {
     @IBOutlet weak var installmentsView: UIView!
     @IBOutlet weak var installmentTextField: CardInstallmentField!
     
-    @IBOutlet private weak var payButton: CheckoutButton!
+    @IBOutlet private weak var stackView: UIStackView!
+    @IBOutlet private weak var contentView: UIView!
     @IBOutlet private weak var scrollView: UIScrollView!
     
     private let inactiveColor = #colorLiteral(red: 0.8470588235, green: 0.8470588235, blue: 0.8470588235, alpha: 1)
     private let activeColor = #colorLiteral(red: 0.4588235294, green: 0.4588235294, blue: 0.4588235294, alpha: 1)
-    private let appearanceConfiguration: AppearanceConfiguration
     
     private var cardFieldManager: CardPaymentFieldManager?
     private var installmentItems: [InputSelectItem]?
@@ -147,8 +145,6 @@ class CardFormViewController: UIViewController, CheckoutPaymentFieldDelegate {
     }
     
     private func applyStyling() {
-        title = ADYLocalizedString("creditCard.title")
-        
         if cardScanButtonHandler == nil {
             cardNumberWidthConstraint.constant = 0
         }
@@ -157,11 +153,11 @@ class CardFormViewController: UIViewController, CheckoutPaymentFieldDelegate {
         cardNumberLogoImageView.image = UIImage.bundleImage("credit_card_icon")
         storeDetailsButton.setImage(UIImage.bundleImage("checkbox_inactive"), for: .normal)
         storeDetailsButton.setImage(UIImage.bundleImage("checkbox_active"), for: .selected)
-        storeDetailsButton.tintColor = appearanceConfiguration.tintColor
+        storeDetailsButton.tintColor = AppearanceConfiguration.shared.tintColor
         
-        payButton.isEnabled = false
-        payButton.title = ADYLocalizedString("payButton.formatted", formattedAmount ?? "")
-        payButton.appearanceConfiguration = appearanceConfiguration
+        payButton.setTitle(ADYLocalizedString("payButton.formatted", formattedAmount ?? ""), for: .normal)
+        contentView.addSubview(payButton)
+        configurePayButtonLayout()
         
         storeDetailsView.isHidden = shouldHideStoreDetails
         installmentsView.isHidden = shouldHideInstallments
@@ -169,6 +165,17 @@ class CardFormViewController: UIViewController, CheckoutPaymentFieldDelegate {
         cardNumberTextField.becomeFirstResponder()
         setupKeyboard()
         updateFieldsPresentationWith(field: cardNumberTextField)
+    }
+    
+    private func configurePayButtonLayout() {
+        let constraints = [
+            payButton.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 20.0),
+            payButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20.0),
+            payButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20.0),
+            payButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20.0)
+        ]
+        
+        NSLayoutConstraint.activate(constraints)
     }
     
     private func updateFieldsPresentationWith(field: UITextField) {
@@ -244,6 +251,19 @@ class CardFormViewController: UIViewController, CheckoutPaymentFieldDelegate {
         cvcView.isHidden = !isCVCRequested
     }
     
+    private lazy var payButton: UIButton = {
+        let payButtonType = AppearanceConfiguration.shared.checkoutButtonType
+        
+        let payButton = payButtonType.init()
+        payButton.isEnabled = false
+        payButton.tintColor = AppearanceConfiguration.shared.tintColor
+        payButton.accessibilityIdentifier = "pay-button"
+        payButton.translatesAutoresizingMaskIntoConstraints = false
+        payButton.addTarget(self, action: #selector(pay(_:)), for: .touchUpInside)
+        
+        return payButton
+    }()
+    
     @IBAction private func pay(_ sender: Any) {
         // start animation
         guard
@@ -269,7 +289,7 @@ class CardFormViewController: UIViewController, CheckoutPaymentFieldDelegate {
         expiryDateTextField.resignFirstResponder()
         cvcTextField.resignFirstResponder()
         
-        payButton.isLoading = true
+        payButton.showsActivityIndicator = true
         
         cardDetailsHandler?(cardData)
     }

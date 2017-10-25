@@ -9,6 +9,9 @@ import Adyen
 
 class ShoppingCartViewController: UIViewController, CheckoutViewControllerDelegate, CheckoutViewControllerCardScanDelegate, CardIOPaymentViewControllerDelegate {
     
+    @IBOutlet weak var contentImageView: UIImageView!
+    @IBOutlet weak var actionButton: UIButton!
+    
     // MARK: - UIViewController
     
     override func viewDidLoad() {
@@ -137,24 +140,41 @@ class ShoppingCartViewController: UIViewController, CheckoutViewControllerDelega
     private var cardScanCompletion: CardScanCompletion?
     
     @IBAction private func checkout(_ sender: Any) {
-        let checkoutViewController = CheckoutViewController(delegate: self)
+        // Customize appearance of SDK.
+        var appearance = AppearanceConfiguration.default
+        appearance.tintColor = #colorLiteral(red: 0.4107530117, green: 0.8106812239, blue: 0.7224243283, alpha: 1)
+        appearance.checkoutButtonType = CustomButton.self
+        
+        let checkoutViewController = CheckoutViewController(delegate: self, appearanceConfiguration: appearance)
         checkoutViewController.cardScanDelegate = self
         present(checkoutViewController, animated: true)
     }
     
-    private func presentScreen(withIdentifier identifier: String) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let viewController = storyboard.instantiateViewController(withIdentifier: identifier)
-        
-        present(viewController, animated: true, completion: nil)
+    @objc
+    private func presentInitialScreen() {
+        UIView.transition(
+            with: contentImageView,
+            duration: 0.3,
+            options: .transitionCrossDissolve,
+            animations: { self.contentImageView.image = #imageLiteral(resourceName: "Checkout window") }
+        )
+        actionButton.setImage(#imageLiteral(resourceName: "Btn_cta"), for: .normal)
+        actionButton.removeTarget(self, action: #selector(presentInitialScreen), for: .touchUpInside)
+        actionButton.addTarget(self, action: #selector(checkout(_:)), for: .touchUpInside)
     }
     
     private func presentSuccessScreen() {
-        presentScreen(withIdentifier: "SuccessScreen")
+        contentImageView.image = #imageLiteral(resourceName: "Success")
+        actionButton.setImage(#imageLiteral(resourceName: "back-to-shop"), for: .normal)
+        actionButton.removeTarget(self, action: #selector(checkout(_:)), for: .touchUpInside)
+        actionButton.addTarget(self, action: #selector(presentInitialScreen), for: .touchUpInside)
     }
     
     private func presentFailureScreen() {
-        presentScreen(withIdentifier: "FailureScreen")
+        contentImageView.image = #imageLiteral(resourceName: "Failure")
+        actionButton.setImage(#imageLiteral(resourceName: "try-again"), for: .normal)
+        actionButton.removeTarget(self, action: #selector(checkout(_:)), for: .touchUpInside)
+        actionButton.addTarget(self, action: #selector(presentInitialScreen), for: .touchUpInside)
     }
     
 }

@@ -11,11 +11,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        Configuration.readApiKeyFromUserDefinedBuildSettings()
+        return true
+    }
+    
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {
         let navigationController = window?.rootViewController as? UINavigationController
         let viewController = navigationController?.viewControllers.first as? ViewController
         viewController?.didReceive(url)
-        
         return true
     }
 }

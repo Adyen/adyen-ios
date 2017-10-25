@@ -49,7 +49,6 @@ internal class FormCheckmarkButton: UIControl {
     internal var title: String? {
         didSet {
             titleLabel.text = title
-            
             accessibilityLabel = title
         }
     }

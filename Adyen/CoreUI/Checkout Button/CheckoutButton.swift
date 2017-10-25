@@ -6,9 +6,7 @@
 
 import UIKit
 
-/// The CheckoutButton class provides a large, tinted button to complete a checkout.
-@IBDesignable
-internal class CheckoutButton: UIControl {
+internal class CheckoutButton: UIButton {
     
     internal override init(frame: CGRect) {
         super.init(frame: frame)
@@ -23,141 +21,66 @@ internal class CheckoutButton: UIControl {
     }
     
     private func commonInit() {
-        layer.cornerRadius = 4.0
+        contentEdgeInsets = appearanceConfiguration.internalCheckoutButtonTitleEdgeInsets ?? .zero
         
-        accessibilityTraits = UIAccessibilityTraitButton
-        
-        addSubview(titleLabel)
-        addSubview(activityIndicatorView)
-        
-        configureConstraints()
-        updateAppearance()
-        
-        isAccessibilityElement = true
-        accessibilityTraits = UIAccessibilityTraitButton
-    }
-    
-    override func tintColorDidChange() {
-        super.tintColorDidChange()
-        
-        backgroundColor = tintColor
-    }
-    
-    // MARK: Layout
-    
-    private func configureConstraints() {
-        let constraints = [
-            titleLabelTopAnchorConstraint,
-            titleLabelBottomAnchorConstraint,
-            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            activityIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            activityIndicatorView.centerYAnchor.constraint(equalTo: centerYAnchor)
-        ]
-        
-        NSLayoutConstraint.activate(constraints)
-    }
-    
-    private lazy var titleLabelTopAnchorConstraint: NSLayoutConstraint = {
-        self.titleLabel.topAnchor.constraint(equalTo: self.topAnchor)
-    }()
-    
-    private lazy var titleLabelBottomAnchorConstraint: NSLayoutConstraint = {
-        self.titleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
-    }()
-    
-    // MARK: Appearance Configuration
-    
-    internal var appearanceConfiguration: AppearanceConfiguration = .default {
-        didSet {
-            updateAppearance()
-        }
-    }
-    
-    private func updateAppearance() {
         tintColor = appearanceConfiguration.tintColor
         
-        let cornerRadius = appearanceConfiguration.checkoutButtonCornerRadius
+        let cornerRadius = appearanceConfiguration.internalCheckoutButtonCornerRadius
         clipsToBounds = cornerRadius > 0.0
         layer.cornerRadius = cornerRadius
         
-        let titleLabelEdgeInsets = appearanceConfiguration.checkoutButtonTitleEdgeInsets ?? .zero
-        titleLabelTopAnchorConstraint.constant = titleLabelEdgeInsets.top
-        titleLabelBottomAnchorConstraint.constant = -titleLabelEdgeInsets.bottom
+        updateBackgroundColor()
+    }
+    
+    // MARK: - Title
+    
+    internal override func setTitle(_ title: String?, for state: UIControlState) {
+        guard let title = title else {
+            setAttributedTitle(nil, for: state)
+            
+            return
+        }
         
-        updateTitle()
+        let attributedTitle = NSAttributedString(string: title,
+                                                 attributes: appearanceConfiguration.internalCheckoutButtonTitleTextAttributes)
+        setAttributedTitle(attributedTitle, for: state)
     }
     
-    // MARK: Title Label
+    // MARK: - Background Color
     
-    private lazy var titleLabel: UILabel = {
-        let titleLabel = UILabel()
-        titleLabel.isUserInteractionEnabled = false
-        titleLabel.isAccessibilityElement = false
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+    private func updateBackgroundColor() {
+        switch (isEnabled, isHighlighted) {
+        case (false, _):
+            backgroundColor = tintColor.withAlphaComponent(0.5)
+        case (true, false):
+            backgroundColor = tintColor
+        case (true, true):
+            backgroundColor = tintColor.withAlphaComponent(0.75)
+        }
+    }
+    
+    internal override func tintColorDidChange() {
+        super.tintColorDidChange()
         
-        return titleLabel
-    }()
+        updateBackgroundColor()
+    }
     
-    @IBInspectable
-    internal var title: String? {
+    internal override var isHighlighted: Bool {
         didSet {
-            updateTitle()
-            
-            accessibilityLabel = title
+            updateBackgroundColor()
         }
     }
     
-    private func updateTitle() {
-        let attributedTitle = NSAttributedString(string: title ?? "",
-                                                 attributes: appearanceConfiguration.checkoutButtonTitleTextAttributes)
-        titleLabel.attributedText = attributedTitle
-    }
-    
-    // MARK: Enabled State
-    
-    override var isEnabled: Bool {
+    internal override var isEnabled: Bool {
         didSet {
-            alpha = isEnabled ? 1.0 : 0.5
-            
-            if isEnabled {
-                accessibilityTraits = UIAccessibilityTraitButton
-            } else {
-                accessibilityTraits = UIAccessibilityTraitButton | UIAccessibilityTraitNotEnabled
-            }
+            updateBackgroundColor()
         }
     }
     
-    // MARK: Highlighted State
+    // MARK: Appearance Configuration
     
-    override var isHighlighted: Bool {
-        didSet {
-            alpha = isHighlighted ? 0.75 : 1.0
-        }
+    private var appearanceConfiguration: AppearanceConfiguration {
+        return AppearanceConfiguration.shared
     }
-    
-    // MARK: Loading State
-    
-    /// Boolean value indicating whether the button should display an activity indicator.
-    internal var isLoading: Bool = false {
-        didSet {
-            titleLabel.isHidden = isLoading
-            
-            if isLoading {
-                activityIndicatorView.startAnimating()
-            } else {
-                activityIndicatorView.stopAnimating()
-            }
-            
-            isUserInteractionEnabled = !isLoading
-        }
-    }
-    
-    private lazy var activityIndicatorView: UIActivityIndicatorView = {
-        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .white)
-        activityIndicatorView.isUserInteractionEnabled = false
-        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-        
-        return activityIndicatorView
-    }()
     
 }

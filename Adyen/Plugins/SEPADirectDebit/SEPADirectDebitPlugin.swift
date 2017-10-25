@@ -20,8 +20,8 @@ internal class SEPADirectDebitPlugin: Plugin {
 
 extension SEPADirectDebitPlugin: PluginPresentsPaymentDetails {
     
-    func newPaymentDetailsPresenter(hostViewController: UINavigationController, appearanceConfiguration: AppearanceConfiguration) -> PaymentDetailsPresenter {
-        return SEPADirectDebitDetailsPresenter(hostViewController: hostViewController, pluginConfiguration: configuration, appearanceConfiguration: appearanceConfiguration)
+    func newPaymentDetailsPresenter(hostViewController: UINavigationController) -> PaymentDetailsPresenter {
+        return SEPADirectDebitDetailsPresenter(hostViewController: hostViewController, pluginConfiguration: configuration)
     }
     
 }

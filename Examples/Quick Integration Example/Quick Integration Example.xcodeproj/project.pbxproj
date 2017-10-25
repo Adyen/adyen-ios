@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7C2153881F9906B5006EC276 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2153871F9906B5006EC276 /* CustomButton.swift */; };
 		C27E7952356F601029D68D5F /* Pods_Quick_Integration_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 891136C5E42625688BDF48CE /* Pods_Quick_Integration_Example.framework */; };
 		E20AD22C1EFBEE7D0065B70E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20AD2271EFBEE7D0065B70E /* AppDelegate.swift */; };
 		E20AD22D1EFBEE7D0065B70E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E20AD2281EFBEE7D0065B70E /* Assets.xcassets */; };
@@ -20,6 +21,7 @@
 
 /* Begin PBXFileReference section */
 		2A6421BAC3A94A53A8AC8C15 /* Pods-Quick Integration Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quick Integration Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Quick Integration Example/Pods-Quick Integration Example.debug.xcconfig"; sourceTree = "<group>"; };
+		7C2153871F9906B5006EC276 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		891136C5E42625688BDF48CE /* Pods_Quick_Integration_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Quick_Integration_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A917D5EBCCD77052E5B7E65 /* Pods-Quick Integration Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quick Integration Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Quick Integration Example/Pods-Quick Integration Example.release.xcconfig"; sourceTree = "<group>"; };
 		E20AD2121EFBEE4A0065B70E /* Quick Integration Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Quick Integration Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,6 +99,7 @@
 				E20AD22A1EFBEE7D0065B70E /* Info.plist */,
 				E9C943871F1FA64200846E09 /* BridgingHeader.h */,
 				E9C943881F1FB94B00846E09 /* Settings.bundle */,
+				7C2153871F9906B5006EC276 /* CustomButton.swift */,
 			);
 			path = "Quick Integration Example";
 			sourceTree = "<group>";
@@ -250,6 +253,7 @@
 				E20AD22C1EFBEE7D0065B70E /* AppDelegate.swift in Sources */,
 				E22312011F0D255E00FD0677 /* Configuration.swift in Sources */,
 				E20AD2301EFBEE7D0065B70E /* ShoppingCartViewController.swift in Sources */,
+				7C2153881F9906B5006EC276 /* CustomButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

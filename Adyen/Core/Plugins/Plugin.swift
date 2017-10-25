@@ -44,11 +44,6 @@ internal protocol CardScanPlugin: Plugin {
     
 }
 
-internal protocol UniversalLinksPlugin: Plugin {
-    
-    var supportsUniversalLinks: Bool { get }
-}
-
 /// Structure containing the configuration of a plugin.
 internal struct PluginConfiguration {
     

@@ -8,27 +8,16 @@ import UIKit
 
 internal class SEPADirectDebitFormViewController: FormViewController {
     
-    private let appearanceConfiguration: AppearanceConfiguration
-    
-    internal init(appearanceConfiguration: AppearanceConfiguration) {
-        self.appearanceConfiguration = appearanceConfiguration
-        
-        super.init()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     internal weak var delegate: SEPADirectDebitFormViewControllerDelegate?
     
     internal var formattedAmount: String? {
         didSet {
+            var title = ""
             if let formattedAmount = formattedAmount {
-                payButton.title = ADYLocalizedString("payButton.formatted", formattedAmount)
-            } else {
-                payButton.title = nil
+                title = ADYLocalizedString("payButton.formatted", formattedAmount)
             }
+            
+            payButton.setTitle(title, for: .normal)
         }
     }
     
@@ -50,7 +39,7 @@ internal class SEPADirectDebitFormViewController: FormViewController {
         ibanField.autocapitalizationType = .allCharacters
         ibanField.autocorrectionType = .no
         ibanField.accessibilityIdentifier = "iban-field"
-        ibanField.addTarget(self, action: #selector(revalidate), for: .editingChanged)
+        ibanField.addTarget(self, action: #selector(updateValidity), for: .editingChanged)
         
         return ibanField
     }()
@@ -62,7 +51,7 @@ internal class SEPADirectDebitFormViewController: FormViewController {
         nameField.autocapitalizationType = .words
         nameField.autocorrectionType = .no
         nameField.accessibilityIdentifier = "name-field"
-        nameField.addTarget(self, action: #selector(revalidate), for: .editingChanged)
+        nameField.addTarget(self, action: #selector(updateValidity), for: .editingChanged)
         
         return nameField
     }()
@@ -71,23 +60,25 @@ internal class SEPADirectDebitFormViewController: FormViewController {
         let consentButton = FormCheckmarkButton()
         consentButton.title = ADYLocalizedString("sepaDirectDebit.consentButton")
         consentButton.accessibilityIdentifier = "consent-button"
-        consentButton.tintColor = self.appearanceConfiguration.tintColor
-        consentButton.addTarget(self, action: #selector(revalidate), for: .touchUpInside)
+        consentButton.tintColor = AppearanceConfiguration.shared.tintColor
+        consentButton.addTarget(self, action: #selector(updateValidity), for: .touchUpInside)
         
         return consentButton
     }()
     
-    private lazy var payButton: CheckoutButton = {
-        let payButton = CheckoutButton()
+    private lazy var payButton: UIButton = {
+        let payButtonType = AppearanceConfiguration.shared.checkoutButtonType
+        
+        let payButton = payButtonType.init()
         payButton.isEnabled = false
-        payButton.tintColor = self.appearanceConfiguration.tintColor
+        payButton.tintColor = AppearanceConfiguration.shared.tintColor
         payButton.accessibilityIdentifier = "pay-button"
         payButton.addTarget(self, action: #selector(didSelect(payButton:)), for: .touchUpInside)
         
         return payButton
     }()
     
-    @objc private func didSelect(payButton: CheckoutButton) {
+    @objc private func didSelect(payButton: UIControl) {
         guard
             let iban = ibanField.text,
             let name = nameField.text
@@ -116,7 +107,7 @@ internal class SEPADirectDebitFormViewController: FormViewController {
         return true
     }
     
-    @objc private func revalidate() {
+    @objc private func updateValidity() {
         payButton.isEnabled = isValid
     }
     
@@ -128,7 +119,7 @@ internal class SEPADirectDebitFormViewController: FormViewController {
                 setEditing(false, animated: true)
             }
             
-            payButton.isLoading = isLoading
+            payButton.showsActivityIndicator = isLoading
         }
     }
     

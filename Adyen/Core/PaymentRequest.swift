@@ -26,6 +26,14 @@ public final class PaymentRequest {
      */
     public init(delegate: PaymentRequestDelegate) {
         self.delegate = delegate
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+    }
+    
+    /// :nodoc:
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Accessing Delegate
@@ -66,26 +74,22 @@ public final class PaymentRequest {
     
     /// Starts the payment request.
     public func start() {
-        let token = paymentToken
+        let fingerprintInfo = [
+            "deviceFingerprintVersion": deviceFingerprintVersion,
+            "platform": "ios",
+            "osVersion": UIDevice.current.systemVersion,
+            "sdkVersion": sdkVersion,
+            "locale": NSLocale.current.identifier,
+            "deviceIdentifier": UIDevice.current.identifierForVendor?.uuidString ?? "",
+            "apiVersion": "4"
+        ]
         
-        requestPaymentData(forToken: token) { data in
-            guard let paymentSetup = PaymentSetup(data: data) else {
-                self.paymentProcessingFailed(with: .unexpectedData)
-                return
-            }
-            
-            //  Public properties
-            self.amount = paymentSetup.amount
-            self.currency = paymentSetup.currencyCode
-            self.reference = paymentSetup.merchantReference
-            self.countryCode = paymentSetup.countryCode
-            self.shopperLocale = paymentSetup.shopperLocaleIdentifier
-            self.shopperReference = paymentSetup.shopperReference
-            self.publicKey = paymentSetup.publicKey
-            self.generationTime = paymentSetup.generationDateString
-            
-            self.process(paymentSetup)
+        var token = ""
+        if let data = try? JSONSerialization.data(withJSONObject: fingerprintInfo, options: []) {
+            token = data.base64EncodedString()
         }
+        
+        requestPaymentData(forToken: token)
     }
     
     /// Permanently deletes payment method from shopper's preferred payment options.
@@ -114,9 +118,7 @@ public final class PaymentRequest {
             }
             
             //  Update list on completion.
-            self?.requestPaymentMethodSelection(fromPreferred: self?.preferredMethods, available: self?.availableMethods ?? [], completion: { method in
-                self?.processPayment(with: method)
-            })
+            self?.requestPaymentMethodSelection(fromPreferred: self?.preferredMethods, available: self?.availableMethods ?? [])
         }
     }
     
@@ -126,24 +128,6 @@ public final class PaymentRequest {
     }
     
     // MARK: - Private
-    
-    private var paymentToken: String {
-        let fingerprintInfo = [
-            "deviceFingerprintVersion": deviceFingerprintVersion,
-            "platform": "ios",
-            "osVersion": UIDevice.current.systemVersion,
-            "sdkVersion": sdkVersion,
-            "locale": NSLocale.current.identifier,
-            "deviceIdentifier": UIDevice.current.identifierForVendor?.uuidString ?? "",
-            "apiVersion": "4"
-        ]
-        
-        if let data = try? JSONSerialization.data(withJSONObject: fingerprintInfo, options: []) {
-            return data.base64EncodedString()
-        } else {
-            return ""
-        }
-    }
     
     private(set) internal var paymentSetup: PaymentSetup?
     private var preferredMethods: [PaymentMethod]?
@@ -173,27 +157,95 @@ public final class PaymentRequest {
         return pluginManager?.plugin(for: paymentMethod) as? PluginRequiresFinalState
     }
     
-    private var delegateQueue: DispatchQueue {
-        return DispatchQueue.main
-    }
+    private var isWaitingForRedirectURL = false
+    private var didHandleRedirect = false
+    private var isBackgrounded = false
+    private var shouldPoll = false
+    private var pollingQueue: DispatchQueue = DispatchQueue(label: "pollingQueue")
     
-    private func isPaymentMethodAvailable(_ paymentMethod: PaymentMethod) -> Bool {
-        guard paymentMethod.requiresPlugin else {
-            return true
+    @objc private func didBecomeActive() {
+        // Don't care if we are active again, unless we have actually been backgrounded.
+        guard isBackgrounded else {
+            return
         }
         
-        guard let plugin = pluginManager?.plugin(for: paymentMethod) else {
+        isBackgrounded = false
+        
+        // Here we check if we were actually waiting for a redirect URL.
+        // Used to handle the case when the app was foregrounded instead of coming back from a URL.
+        // We have to check on didBecomeActive instead of on willEnterForeground because the latter is
+        // called before application(open:, options:), so we could still get a valid redirect URL.
+        
+        // Wait for 1 second in case we get a redirect URL slightly late
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [weak self] in
+            guard let strongSelf = self, strongSelf.isWaitingForRedirectURL, !strongSelf.didHandleRedirect,
+                let paymentMethod = strongSelf.paymentMethod else {
+                return
+            }
+            
+            strongSelf.didHandleRedirect = true
+            strongSelf.processPaymentWithFallbackReturnData()
+            
+            if paymentMethod.supportsPolling {
+                strongSelf.shouldPoll = true
+                strongSelf.numberOfPollingAttempts += 1
+            }
+        }
+    }
+    
+    @objc private func didEnterBackground() {
+        isBackgrounded = true
+        didHandleRedirect = false
+        shouldPoll = false
+        numberOfPollingAttempts = 0
+    }
+    
+    private let maxNumberOfPollingAttempts = 4
+    private var numberOfPollingAttempts = 0
+    
+    /// Returns true or false to indicate whether or not a polling attempt was scheduled successfully.
+    private func scheduleNextPollingAttempt() -> Bool {
+        guard shouldPoll, numberOfPollingAttempts != maxNumberOfPollingAttempts else {
             return false
         }
         
-        guard let deviceDependablePlugin = plugin as? DeviceDependablePlugin else {
-            return true
+        let pollingInterval = 3 // in seconds
+        let dispatchTime: DispatchTime = .now() + .seconds(pollingInterval * numberOfPollingAttempts)
+        pollingQueue.asyncAfter(deadline: dispatchTime, execute: { [weak self] in
+            self?.processPaymentWithFallbackReturnData()
+        })
+        
+        numberOfPollingAttempts += 1
+        
+        return true
+    }
+    
+    private func processPaymentWithFallbackReturnData() {
+        guard let paymentMethod = paymentMethod, let returnData = paymentMethod.fallbackReturnData else {
+            // If there was no fallbackReturnData provided, do nothing.
+            // This will be the case for payment methods like iDeal, PayPal, etc.
+            return
         }
         
-        return deviceDependablePlugin.isDeviceSupported
+        let additionalRequiredFields = ["paymentMethodReturnData": returnData]
+        processPayment(with: paymentMethod, additionalRequiredFields: additionalRequiredFields)
     }
     
     private func process(_ paymentSetup: PaymentSetup) {
+        func isPaymentMethodAvailable(_ paymentMethod: PaymentMethod) -> Bool {
+            if paymentMethod.requiresPlugin {
+                guard let plugin = pluginManager?.plugin(for: paymentMethod) else {
+                    return false
+                }
+                
+                if let deviceDependablePlugin = plugin as? DeviceDependablePlugin {
+                    return deviceDependablePlugin.isDeviceSupported
+                }
+            }
+            
+            return true
+        }
+        
         self.paymentSetup = paymentSetup
         
         let preferredMethods = paymentSetup.preferredPaymentMethods.filter(isPaymentMethodAvailable(_:))
@@ -202,46 +254,48 @@ public final class PaymentRequest {
         let availableMethods = paymentSetup.availablePaymentMethods.filter(isPaymentMethodAvailable(_:))
         self.availableMethods = availableMethods
         
-        //  Suggest available payment methods.
-        self.requestPaymentMethodSelection(fromPreferred: preferredMethods, available: availableMethods) { [weak self] selectedMethod in
-            //  Next Step. Selected payment method.
-            //  Continue with Payment Data / Authorize URL.
-            self?.processPayment(with: selectedMethod)
-        }
+        // Suggest available payment methods.
+        self.requestPaymentMethodSelection(fromPreferred: preferredMethods, available: availableMethods)
     }
     
-    private func processPayment(with method: PaymentMethod) {
+    private func processPayment(with method: PaymentMethod, additionalRequiredFields: [String: Any]? = nil) {
+        if let additionalRequiredFields = additionalRequiredFields {
+            method.providedAdditionalRequiredFields = additionalRequiredFields
+        }
+        
         paymentMethod = method
         
-        if method.requiresPaymentDetails() {
+        guard !method.requiresPaymentDetails() else {
             requestPaymentDetails()
-        } else {
-            continuePaymentFlow()
+            return
         }
-    }
-    
-    private func continuePaymentFlow() {
-        guard let paymentServer = paymentServer, let paymentMethod = paymentMethod else {
+        
+        guard let paymentServer = paymentServer else {
             paymentProcessingFailed(with: .unexpectedError)
             return
         }
         
-        paymentServer.initiatePayment(for: paymentMethod) { [weak self] paymentInitiation, error in
+        paymentServer.initiatePayment(for: method) { [weak self] paymentInitiation, error in
             guard let paymentInitiation = paymentInitiation, error == nil else {
                 self?.paymentProcessingFailed(with: error)
                 return
             }
             
+            // If we've received fresh fallback return data from the initiate call, then set it.
+            // Otherwise leave it as is, so not to nullify existing data.
+            if let initialReturnData = paymentInitiation.initialReturnData {
+                method.fallbackReturnData = initialReturnData
+            }
+            
             switch paymentInitiation.state {
-            case let .redirect(url):
-                self?.requestRedirectURL(from: url) { url in
-                    self?.continueRedirectPaymentFlow(with: url)
+            case let .redirect(url, shouldSubmitRedirectData):
+                self?.requestRedirectURL(from: url, submitRedirectData: shouldSubmitRedirectData)
+            case let .completedWithUnknownStatus(payload):
+                if self?.scheduleNextPollingAttempt() != true {
+                    self?.completePaymentFlow(using: ["resultCode": PaymentStatus.received, "payload": payload])
                 }
             case let .completed(status, payload):
-                self?.completePaymentFlow(using: [
-                    "resultCode": status.rawValue,
-                    "payload": payload
-                ])
+                self?.completePaymentFlow(using: ["resultCode": status.rawValue, "payload": payload])
             case let .error(error):
                 self?.paymentProcessingFailed(with: error)
             }
@@ -255,7 +309,7 @@ public final class PaymentRequest {
         }
         
         let paymentDetails = PaymentDetails(details: inputDetails)
-        delegateQueue.async {
+        DispatchQueue.main.async {
             self.delegate?.paymentRequest(self, requiresPaymentDetails: paymentDetails, completion: { [weak self] fulfilledDetails in
                 paymentMethod.fulfilledPaymentDetails = fulfilledDetails
                 self?.processPayment(with: paymentMethod)
@@ -292,18 +346,18 @@ public final class PaymentRequest {
         }
     }
     
-    private func continueRedirectPaymentFlow(with appUrl: URL) {
-        guard paymentMethod?.additionalRequiredFields == nil else {
-            // Different flow, reinitiate with new query parameters.
-            paymentMethod?.providedAdditionalRequiredFields = appUrl.queryParameters()
-            continuePaymentFlow()
-            return
+    private func continueRedirectPaymentFlow(with appUrl: URL, submitRedirectData: Bool) {
+        if submitRedirectData, let query = appUrl.query, let paymentMethod = paymentMethod {
+            let additionalRequiredFields = ["paymentMethodReturnData": query]
+            processPayment(with: paymentMethod, additionalRequiredFields: additionalRequiredFields)
+        } else {
+            completePaymentFlow(using: appUrl.queryParameters())
         }
-        
-        completePaymentFlow(using: appUrl.queryParameters())
     }
     
     private func completePaymentFlow(using info: [String: Any]?) {
+        shouldPoll = false
+        
         guard let resultCode = info?["resultCode"] as? String,
             let status = PaymentStatus(rawValue: resultCode),
             let payload = info?["payload"] as? String,
@@ -316,46 +370,55 @@ public final class PaymentRequest {
         paymentProcessingFinished(with: result)
     }
     
-    private func requestPaymentData(forToken token: String, completion: @escaping DataCompletion) {
-        delegateQueue.async {
-            self.delegate?.paymentRequest(self, requiresPaymentDataForToken: token, completion: completion)
-        }
-    }
-    
-    private func requestPaymentMethodSelection(fromPreferred preferredMethods: [PaymentMethod]?, available availableMethods: [PaymentMethod], completion: @escaping MethodCompletion) {
-        delegateQueue.async {
-            self.delegate?.paymentRequest(self, requiresPaymentMethodFrom: preferredMethods, available: availableMethods, completion: completion)
-        }
-    }
-    
-    private func requestRedirectURL(from url: URL, completion: @escaping URLCompletion) {
-        if let paymentMethod = self.paymentMethod,
-            let plugin = self.pluginManager?.plugin(for: paymentMethod) as? UniversalLinksPlugin,
-            plugin.supportsUniversalLinks {
-            
-            let session = URLSession(configuration: PaymentServer.redirectSessionConfiguration)
-            session.dataTask(with: url, completionHandler: { [weak self] data, response, error in
-                guard let strongSelf = self else {
+    private func requestPaymentData(forToken token: String) {
+        DispatchQueue.main.async {
+            self.delegate?.paymentRequest(self, requiresPaymentDataForToken: token, completion: { [weak self] data in
+                guard let paymentSetup = PaymentSetup(data: data) else {
+                    self?.paymentProcessingFailed(with: .unexpectedData)
                     return
                 }
                 
-                strongSelf.delegateQueue.async {
-                    if let universalLink = response?.url {
-                        strongSelf.delegate?.paymentRequest(strongSelf, requiresReturnURLFrom: universalLink, completion: completion)
-                    } else {
-                        strongSelf.delegate?.paymentRequest(strongSelf, requiresReturnURLFrom: url, completion: completion)
-                    }
+                //  Public properties
+                self?.amount = paymentSetup.amount
+                self?.currency = paymentSetup.currencyCode
+                self?.reference = paymentSetup.merchantReference
+                self?.countryCode = paymentSetup.countryCode
+                self?.shopperLocale = paymentSetup.shopperLocaleIdentifier
+                self?.shopperReference = paymentSetup.shopperReference
+                self?.publicKey = paymentSetup.publicKey
+                self?.generationTime = paymentSetup.generationDateString
+                
+                self?.process(paymentSetup)
+            })
+        }
+    }
+    
+    private func requestPaymentMethodSelection(fromPreferred preferredMethods: [PaymentMethod]?, available availableMethods: [PaymentMethod]) {
+        DispatchQueue.main.async {
+            self.delegate?.paymentRequest(self, requiresPaymentMethodFrom: preferredMethods, available: availableMethods, completion: { [weak self] method in
+                self?.isWaitingForRedirectURL = false
+                self?.didHandleRedirect = false
+                self?.processPayment(with: method)
+            })
+        }
+    }
+    
+    private func requestRedirectURL(from url: URL, submitRedirectData: Bool) {
+        isWaitingForRedirectURL = true
+        DispatchQueue.main.async {
+            self.delegate?.paymentRequest(self, requiresReturnURLFrom: url, completion: { [weak self] url in
+                // If we are no longer waiting for the redirect URL, that means it must have been handled another way.
+                // i.e. by receiving UIApplicationDidBecomeActive notification.
+                if self?.isWaitingForRedirectURL == true, self?.didHandleRedirect == false {
+                    self?.didHandleRedirect = true
+                    self?.continueRedirectPaymentFlow(with: url, submitRedirectData: submitRedirectData)
                 }
-            }).resume()
-        } else {
-            delegateQueue.async {
-                self.delegate?.paymentRequest(self, requiresReturnURLFrom: url, completion: completion)
-            }
+            })
         }
     }
     
     private func finish(with result: PaymentRequestResult) {
-        delegateQueue.async {
+        DispatchQueue.main.async {
             self.delegate?.paymentRequest(self, didFinishWith: result)
         }
     }
