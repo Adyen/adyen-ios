@@ -65,7 +65,7 @@ internal class CardOneClickDetailsPresenter: PaymentDetailsPresenter {
         // Verify that a non-empty CVC has been entered. If not, present an alert.
         guard
             let textField = alertController.textFields?.first,
-            let cvc = textField.text, cvc.characters.count > 0
+            let cvc = textField.text, cvc.count > 0
         else {
             presentInvalidCVCAlertController()
             

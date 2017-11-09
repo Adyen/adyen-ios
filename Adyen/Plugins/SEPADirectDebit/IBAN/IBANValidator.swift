@@ -30,7 +30,7 @@ public class IBANValidator {
         }
         
         // Check if the string matches the length of a valid IBAN according to the country's specification.
-        guard canonicalizedString.characters.count == specification.length else {
+        guard canonicalizedString.count == specification.length else {
             return false
         }
         
@@ -80,7 +80,7 @@ public class IBANValidator {
     /// - Parameter string: The string to retrieve the country code from.
     /// - Returns: The country code in the string, or `nil` if the country code couldn't be found.
     internal static func countryCode(in string: String) -> String? {
-        guard string.characters.count >= 2 else {
+        guard string.count >= 2 else {
             return nil
         }
         
@@ -148,7 +148,7 @@ public class IBANValidator {
             return integer % 97
         }
         
-        guard string.characters.count < 9 else {
+        guard string.count < 9 else {
             let splitIndex = string.index(string.startIndex, offsetBy: 9)
             let lowerSubstring = String(string[..<splitIndex])
             let upperSubstring = String(string[splitIndex...])

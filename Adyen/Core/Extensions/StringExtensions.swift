@@ -24,7 +24,7 @@ extension String {
     // MARK: - Getting Substrings
     
     internal subscript(position: Int) -> String {
-        guard position >= 0 && position < characters.count else { return "" }
+        guard position >= 0 && position < count else { return "" }
         
         return String(self[index(startIndex, offsetBy: position)])
     }
@@ -52,7 +52,7 @@ extension String {
     ///   - separator: The separator to use inbetween the groups.
     /// - Returns: A grouped string.
     internal func grouped(length: Int, separator: String = " ") -> String {
-        let groups = stride(from: 0, to: characters.count, by: length).map { index -> String in
+        let groups = stride(from: 0, to: count, by: length).map { index -> String in
             let startIndex = self.index(self.startIndex, offsetBy: index)
             
             let offset = min(length, self.distance(from: startIndex, to: self.endIndex))

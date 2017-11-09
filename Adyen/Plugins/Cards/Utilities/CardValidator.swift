@@ -22,7 +22,7 @@ public final class CardValidator {
         
         let cardType = acceptedCardTypes.first { $0.matches(cardNumber: sanitizedCardNumber) }
         let formattedCardNumber = sanitizedCardNumber.grouped(length: 4)
-        let isValid = sanitizedCardNumber.characters.count >= minimumValidCardLength && luhnCheck(sanitizedCardNumber)
+        let isValid = sanitizedCardNumber.count >= minimumValidCardLength && luhnCheck(sanitizedCardNumber)
         
         return (isValid, cardType, formattedCardNumber)
     }
@@ -43,7 +43,7 @@ public final class CardValidator {
         var month = 0
         var year = 0
         
-        switch sanitizedString.characters.count {
+        switch sanitizedString.count {
         case 0: break
         case 1:
             month = Int(sanitizedString)!
@@ -64,7 +64,7 @@ public final class CardValidator {
             break
         }
         
-        let isMonthValid = (month >= 1 && month <= 12) || sanitizedString.characters.count < 2
+        let isMonthValid = (month >= 1 && month <= 12) || sanitizedString.count < 2
         if !isMonthValid {
             formattedDate = ""
         }
@@ -99,7 +99,7 @@ public final class CardValidator {
     /// - Returns: A tuple containing a boolean value indicating whether the cvc is valid, and the formatted cvc string.
     public static func validate(cvc: String) -> (isValid: Bool, formattedCvc: String) {
         let sanitizedCvc = sanitize(cvc)
-        let isValid = sanitizedCvc.characters.count >= 3 && sanitizedCvc.characters.count <= 4
+        let isValid = sanitizedCvc.count >= 3 && sanitizedCvc.count <= 4
         return (isValid, sanitizedCvc)
     }
     
@@ -119,7 +119,7 @@ public final class CardValidator {
     }
     
     private static func luhnCheck(_ cardNumber: String) -> Bool {
-        let reversedCardNumberDigits = cardNumber.characters.reversed().flatMap { Int(String($0)) }
+        let reversedCardNumberDigits = cardNumber.reversed().flatMap { Int(String($0)) }
         
         var sum = 0
         for (index, digit) in reversedCardNumberDigits.enumerated() {
@@ -149,7 +149,7 @@ fileprivate extension CardType {
         
         do {
             let regularExpression = try NSRegularExpression(pattern: pattern, options: [])
-            let range = NSRange(location: 0, length: cardNumber.characters.count)
+            let range = NSRange(location: 0, length: cardNumber.count)
             
             return regularExpression.firstMatch(in: cardNumber, options: [], range: range) != nil
         } catch {

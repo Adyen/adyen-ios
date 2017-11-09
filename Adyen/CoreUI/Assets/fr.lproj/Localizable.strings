@@ -1,5 +1,5 @@
 "paymentMethods.title"                                 = "Méthodes de paiement";
-"paymentMethods.storedMethods"                         = "Votre méthodes the paiement";
+"paymentMethods.storedMethods"                         = "Vos moyens de paiements";
 "paymentMethods.otherMethods"                          = "Autre méthode de paiement";
 "paymentMethods.moreMethodsButton"                     = "";
 "payButton"                                            = "Valider";
@@ -16,10 +16,10 @@
 "creditCard.expiryDateField.placeholder"               = "MM/AA";
 "creditCard.cvcField.title"                            = "CVC / CVV";
 "creditCard.cvcField.placeholder"                      = "123";
-"creditCard.storeDetailsButton"                        = "Se souvenir de ma carte";
+"creditCard.storeDetailsButton"                        = "Sauvegarder ma carte";
 "creditCard.installmentsField"                         = "Number of installments";
-"creditCard.oneClickVerification.title"                = "Vérifiez votre carte";
-"creditCard.oneClickVerification.message"              = "Entrez votre CVC code pour %@ s'il vous plaît.";
+"creditCard.oneClickVerification.title"                = "Vérifier votre carte";
+"creditCard.oneClickVerification.message"              = "Entrer votre CVC pour %@ s'il vous plaît.";
 "creditCard.oneClickVerification.invalidInput.title"   = "Code de vérification invalide";
 "creditCard.oneClickVerification.invalidInput.message" = "S'il vous plaît entrer un code de vérification valide.";
 "sepaDirectDebit.ibanField.title"                      = "Numéro de compte (IBAN)";

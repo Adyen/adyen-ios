@@ -17,7 +17,7 @@ class ShoppingCartViewController: UIViewController, CheckoutViewControllerDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        guard Configuration.appSecretKey.characters.isEmpty == false else {
+        guard Configuration.appSecretKey.isEmpty == false else {
             fatalError("Please fill in a secret key in the Configuration.swift file.")
         }
     }

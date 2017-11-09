@@ -10,7 +10,7 @@ import XCTest
 class ArrayExtensionsTests: XCTestCase {
     func testGroupByWithString() {
         let array = ["a1", "b1", "a2", "c1", "a3", "c2"]
-        let grouped = array.groupBy { $0.characters.first! }
+        let grouped = array.groupBy { $0.first! }
         
         XCTAssertEqual(grouped[0].count, 3)
         XCTAssertEqual(grouped[0][0], "a1")

@@ -42,7 +42,7 @@ class CardPaymentFieldManager: NSObject, UITextFieldDelegate, UIPickerViewDelega
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        guard let text = textField.text, text.characters.count > 0, textField != installmentTextField else {
+        guard let text = textField.text, text.count > 0, textField != installmentTextField else {
             return
         }
         
@@ -74,7 +74,7 @@ class CardPaymentFieldManager: NSObject, UITextFieldDelegate, UIPickerViewDelega
         if textField == numberField {
             updateCardNumberText(newString)
         } else if textField == expirationField {
-            let isDeleting = (string.characters.count == 0 && range.length == 1)
+            let isDeleting = (string.count == 0 && range.length == 1)
             updateExpirationText(newString, isDeleting: isDeleting)
         } else if textField == cvcField {
             updateCvcFieldText(newString)
@@ -169,7 +169,7 @@ class CardPaymentFieldManager: NSObject, UITextFieldDelegate, UIPickerViewDelega
         let maximumNumberOfCharacters = 23
         let (valid, type, formatted) = CardValidator.validate(cardNumber: newText, acceptedCardTypes: acceptedCards)
         
-        guard formatted.characters.count <= maximumNumberOfCharacters else {
+        guard formatted.count <= maximumNumberOfCharacters else {
             return
         }
         
@@ -178,7 +178,7 @@ class CardPaymentFieldManager: NSObject, UITextFieldDelegate, UIPickerViewDelega
         numberField.text = formatted
         
         // If we have reached full length, make expiry first responder.
-        if numberField.text?.characters.count == maximumNumberOfCharacters {
+        if numberField.text?.count == maximumNumberOfCharacters {
             expirationField.becomeFirstResponder()
         }
     }
@@ -187,7 +187,7 @@ class CardPaymentFieldManager: NSObject, UITextFieldDelegate, UIPickerViewDelega
         let maximumNumberOfCharacters = 5
         let (valid, formatted) = CardValidator.validate(expiryDate: newText, separator: isDeleting ? nil : "/")
         
-        guard formatted.characters.count <= maximumNumberOfCharacters else {
+        guard formatted.count <= maximumNumberOfCharacters else {
             return
         }
         
@@ -195,7 +195,7 @@ class CardPaymentFieldManager: NSObject, UITextFieldDelegate, UIPickerViewDelega
         expirationField.text = formatted
         
         // If we have reached full length, make CVC first responder.
-        if expirationField.text?.characters.count == maximumNumberOfCharacters {
+        if expirationField.text?.count == maximumNumberOfCharacters {
             cvcField.becomeFirstResponder()
         }
     }
@@ -204,7 +204,7 @@ class CardPaymentFieldManager: NSObject, UITextFieldDelegate, UIPickerViewDelega
         let maximumNumberOfCharacters = 4
         let (valid, formatted) = CardValidator.validate(cvc: newText)
         
-        guard formatted.characters.count <= maximumNumberOfCharacters else {
+        guard formatted.count <= maximumNumberOfCharacters else {
             return
         }
         
@@ -212,7 +212,7 @@ class CardPaymentFieldManager: NSObject, UITextFieldDelegate, UIPickerViewDelega
         cvcField.text = formatted
         
         // If we have reached full length, dismiss keyboard.
-        if cvcField.text?.characters.count == maximumNumberOfCharacters {
+        if cvcField.text?.count == maximumNumberOfCharacters {
             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         }
     }

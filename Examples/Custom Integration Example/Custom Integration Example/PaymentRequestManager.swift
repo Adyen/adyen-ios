@@ -167,7 +167,7 @@ class PaymentRequestManager: PaymentRequestDelegate {
      *      - cvc: cvc as String
      */
     func setCardDetailsForCurrentRequest(name: String, number: String, expiryDate: String, cvc: String, shouldSave: Bool) {
-        guard expiryDate.characters.count == 5 else {
+        guard expiryDate.count == 5 else {
             // Do nothing if expiry date is in invalid format.
             return
         }
@@ -186,14 +186,14 @@ class PaymentRequestManager: PaymentRequestDelegate {
             return nil
         }
         
-        var cardNumber = cardDetails.number
+        let cardNumber = cardDetails.number
         
-        guard cardNumber.characters.count > 4 else {
+        guard cardNumber.count > 4 else {
             return cardNumber
         }
         
         var replacementString = ""
-        let numberOfCharactersToReplace = cardNumber.characters.count - 4
+        let numberOfCharactersToReplace = cardNumber.count - 4
         for _ in 0..<numberOfCharactersToReplace {
             replacementString = "\(replacementString)*"
         }

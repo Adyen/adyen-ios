@@ -100,7 +100,7 @@ internal class SEPADirectDebitFormViewController: FormViewController {
             return false
         }
         
-        guard let name = nameField.text, name.characters.count > 0 else {
+        guard let name = nameField.text, name.count > 0 else {
             return false
         }
         

@@ -66,24 +66,24 @@ class CardDetailsViewController: PaymentDetailsViewController, UITextFieldDelega
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let currentString = (textField.text ?? "") as NSString
-        var newString = currentString.replacingCharacters(in: range, with: string)
+        let newString = currentString.replacingCharacters(in: range, with: string)
         
         if textField == self.cvcTextField {
-            if newString.characters.count > 4 {
+            if newString.count > 4 {
                 return false
             }
         } else if textField == self.cardNumberTextField {
-            if newString.characters.count > 19 {
+            if newString.count > 19 {
                 return false
             }
         } else if textField == self.expiryTextField {
-            if newString.characters.count > 5 {
+            if newString.count > 5 {
                 return false
             }
             
-            if currentString.length == 2 && newString.characters.count == 3 {
+            if currentString.length == 2 && newString.count == 3 {
                 textField.text = (currentString as String) + "/"
-            } else if newString.characters.count == 3 && currentString.length == 4 {
+            } else if newString.count == 3 && currentString.length == 4 {
                 textField.text = currentString.replacingOccurrences(of: "/", with: "")
             }
         }
@@ -107,7 +107,7 @@ class CardDetailsViewController: PaymentDetailsViewController, UITextFieldDelega
             return nil
         }
         
-        return name.characters.count > 0 ? name : nil
+        return name.count > 0 ? name : nil
     }
     
     private func validatedCardNumber(_ number: String?) -> String? {
