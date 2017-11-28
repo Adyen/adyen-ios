@@ -280,7 +280,10 @@ public final class CheckoutViewController: UIViewController, PaymentRequestDeleg
     }()
     
     private lazy var paymentRequest: PaymentRequest = {
-        PaymentRequest(delegate: self)
+        let paymentRequest = PaymentRequest(delegate: self)
+        paymentRequest.token.integrationType = .quick
+        
+        return paymentRequest
     }()
     
     private var paymentMethodCompletion: MethodCompletion?

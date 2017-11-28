@@ -89,12 +89,28 @@ internal class PaymentServer {
     
     private let session = URLSession(configuration: .default)
     
+    private let userAgent: String = {
+        if let info = Bundle.main.infoDictionary {
+            let executable = info[kCFBundleExecutableKey as String] as? String ?? "Unknown"
+            let bundle = info[kCFBundleIdentifierKey as String] as? String ?? "Unknown"
+            let appVersion = info["CFBundleShortVersionString"] as? String ?? "Unknown"
+            let appBuild = info[kCFBundleVersionKey as String] as? String ?? "Unknown"
+            let osNameVersion = "\(UIDevice.current.systemName) \(UIDevice.current.systemVersion)"
+            let adyenVersion = "Adyen/\(Adyen.sdkVersion)"
+            
+            return "\(executable)/\(appVersion) (\(bundle); build:\(appBuild); \(UIDevice.current.model); \(osNameVersion); \(UIDevice.current.modelIdentifier)) \(adyenVersion)"
+        }
+        
+        return "Unknown"
+    }()
+    
     private func post(_ url: URL, parameters: [String: Any], completion: @escaping (_ info: [String: Any]?, _ error: Error?) -> Void) {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
         request.allHTTPHeaderFields = [
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "User-Agent": userAgent
         ]
         
         _ = session.dataTask(with: request) { data, response, error in

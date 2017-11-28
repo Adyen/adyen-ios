@@ -6,8 +6,6 @@
 
 import Foundation
 
-let deviceFingerprintVersion = "1.0"
-
 public typealias DataCompletion = (Data) -> Void
 public typealias MethodCompletion = (PaymentMethod) -> Void
 public typealias URLCompletion = (URL) -> Void
@@ -72,24 +70,12 @@ public final class PaymentRequest {
     
     // MARK: - Performing Payment Request Actions
     
+    /// The token that is sent with a setup request.
+    internal var token = PaymentRequestToken()
+    
     /// Starts the payment request.
     public func start() {
-        let fingerprintInfo = [
-            "deviceFingerprintVersion": deviceFingerprintVersion,
-            "platform": "ios",
-            "osVersion": UIDevice.current.systemVersion,
-            "sdkVersion": sdkVersion,
-            "locale": NSLocale.current.identifier,
-            "deviceIdentifier": UIDevice.current.identifierForVendor?.uuidString ?? "",
-            "apiVersion": "4"
-        ]
-        
-        var token = ""
-        if let data = try? JSONSerialization.data(withJSONObject: fingerprintInfo, options: []) {
-            token = data.base64EncodedString()
-        }
-        
-        requestPaymentData(forToken: token)
+        requestPaymentData(forToken: token.encoded)
     }
     
     /// Permanently deletes payment method from shopper's preferred payment options.
