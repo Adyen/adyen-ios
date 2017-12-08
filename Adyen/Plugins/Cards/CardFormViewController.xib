@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -32,6 +32,7 @@
                 <outlet property="stackView" destination="O2c-il-bea" id="rVG-kv-L3U"/>
                 <outlet property="storeDetailsButton" destination="u8P-Qu-n78" id="y7g-lf-nBF"/>
                 <outlet property="storeDetailsLabel" destination="Dug-er-7SQ" id="NfU-1q-D2O"/>
+                <outlet property="storeDetailsPlaceholderView" destination="JzO-nS-hHw" id="ZyZ-UJ-1gd"/>
                 <outlet property="storeDetailsView" destination="gx2-WJ-0s8" id="zdH-lm-gzz"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -354,6 +355,13 @@
                                                 <constraint firstItem="u8P-Qu-n78" firstAttribute="top" secondItem="gx2-WJ-0s8" secondAttribute="top" id="cki-Az-kHU"/>
                                                 <constraint firstItem="Dug-er-7SQ" firstAttribute="leading" secondItem="gx2-WJ-0s8" secondAttribute="leading" constant="20" id="gnH-u7-vIk"/>
                                                 <constraint firstItem="Dug-er-7SQ" firstAttribute="top" secondItem="gx2-WJ-0s8" secondAttribute="top" constant="23" id="mit-oe-dXr"/>
+                                            </constraints>
+                                        </view>
+                                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JzO-nS-hHw" userLabel="Store Details Placeholder View">
+                                            <rect key="frame" x="0.0" y="252.5" width="375" height="20"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="20" id="c38-1P-gpv"/>
                                             </constraints>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qG3-FO-bl5" userLabel="Bottom Line">

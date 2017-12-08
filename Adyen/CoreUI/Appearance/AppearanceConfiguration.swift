@@ -8,7 +8,7 @@ import Foundation
 
 /// An object used to customize the appearance of the UI components provided by this SDK.
 /// Note that `AppearanceConfiguration` is only used when the `CheckoutViewController` is first initialized. Changes to this object after it has been created are ignored.
-public struct AppearanceConfiguration {
+public final class AppearanceConfiguration {
     
     // MARK: - Initializing
     
@@ -86,8 +86,8 @@ public struct AppearanceConfiguration {
     // MARK: - Getting the Default Appearance Configuration
     
     /// Returns an instance of the default appearance configuration.
-    public static let `default`: AppearanceConfiguration = {
-        var appearanceConfiguration = AppearanceConfiguration()
+    public static var `default`: AppearanceConfiguration {
+        let appearanceConfiguration = AppearanceConfiguration()
         appearanceConfiguration.navigationBarTitleTextAttributes = [
             .foregroundColor: UIColor.checkoutDarkGray
         ]
@@ -106,7 +106,7 @@ public struct AppearanceConfiguration {
         appearanceConfiguration.tintColor = #colorLiteral(red: 0.03921568627, green: 0.7490196078, blue: 0.3254901961, alpha: 1)
         
         return appearanceConfiguration
-    }()
+    }
     
     // MARK: - Internal
     
@@ -118,9 +118,44 @@ public struct AppearanceConfiguration {
     
 }
 
-public extension AppearanceConfiguration {
+// MARK: - NSCopying
+
+extension AppearanceConfiguration: NSCopying {
     
-    // MARK: - Deprecated
+    /// :nodoc:
+    public func copy(with zone: NSZone? = nil) -> Any {
+        let appearanceConfiguration = AppearanceConfiguration()
+        appearanceConfiguration.preferredStatusBarStyle = preferredStatusBarStyle
+        appearanceConfiguration.navigationBarTitleTextAttributes = navigationBarTitleTextAttributes
+        appearanceConfiguration.navigationBarLargeTitleTextAttributes = navigationBarLargeTitleTextAttributes
+        appearanceConfiguration.navigationBarLargeTitleDisplayMode = navigationBarLargeTitleDisplayMode
+        appearanceConfiguration.navigationBarTintColor = navigationBarTintColor
+        appearanceConfiguration.navigationBarBackgroundColor = navigationBarBackgroundColor
+        appearanceConfiguration.isNavigationBarTranslucent = isNavigationBarTranslucent
+        appearanceConfiguration.navigationBarCancelButtonImage = navigationBarCancelButtonImage
+        appearanceConfiguration.checkoutButtonType = checkoutButtonType
+        appearanceConfiguration.safariBarTintColor = safariBarTintColor
+        appearanceConfiguration.safariControlTintColor = safariControlTintColor
+        appearanceConfiguration.tintColor = tintColor
+        appearanceConfiguration.backgroundColor = backgroundColor
+        
+        appearanceConfiguration.internalCheckoutButtonTitleTextAttributes = internalCheckoutButtonTitleTextAttributes
+        appearanceConfiguration.internalCheckoutButtonTitleEdgeInsets = internalCheckoutButtonTitleEdgeInsets
+        appearanceConfiguration.internalCheckoutButtonCornerRadius = internalCheckoutButtonCornerRadius
+        
+        return appearanceConfiguration
+    }
+    
+    /// Creates and returns a copied version of the receiver.
+    internal var copied: AppearanceConfiguration {
+        return copy() as! AppearanceConfiguration // swiftlint:disable:this force_cast
+    }
+    
+}
+
+// MARK: - Deprecated
+
+public extension AppearanceConfiguration {
     
     /// The attributes used for the checkout button's title. Only used when `checkoutButtonType` is the default.
     @available(*, deprecated, message: "Provide a custom button via checkoutButtonType instead.")
@@ -165,7 +200,17 @@ public extension AppearanceConfiguration {
 internal extension AppearanceConfiguration {
     
     /// The globally shared appearance configuration.
-    internal static var shared = AppearanceConfiguration.default
+    internal static var shared: AppearanceConfiguration {
+        set {
+            _shared = newValue.copied
+        }
+        
+        get {
+            return _shared
+        }
+    }
+    
+    private static var _shared = AppearanceConfiguration.default
     
     internal func cancelButtonItem(target: Any, selector: Selector) -> UIBarButtonItem {
         var cancelButtonItem: UIBarButtonItem!

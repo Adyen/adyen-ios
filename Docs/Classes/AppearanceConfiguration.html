@@ -507,9 +507,9 @@ Note that <code>AppearanceConfiguration</code> is only used when the <code><a hr
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:5Adyen23AppearanceConfigurationC33checkoutButtonTitleTextAttributess10DictionaryVySC21NSAttributedStringKeyVypGSgv"></a>
-                    <a name="//apple_ref/swift/Property/checkoutButtonTitleTextAttributes" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen23AppearanceConfigurationC33checkoutButtonTitleTextAttributess10DictionaryVySC21NSAttributedStringKeyVypGSgv">checkoutButtonTitleTextAttributes</a>
+                    <a name="/s:5Adyen23AppearanceConfigurationC18checkoutButtonTypeSo8UIButtonCmv"></a>
+                    <a name="//apple_ref/swift/Property/checkoutButtonType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen23AppearanceConfigurationC18checkoutButtonTypeSo8UIButtonCmv">checkoutButtonType</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -517,68 +517,16 @@ Note that <code>AppearanceConfiguration</code> is only used when the <code><a hr
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The attributes used for the checkout button&rsquo;s title.</p>
+                        <p>The class to use for the checkout button.
+The button&rsquo;s title and enabled/disabled state will be managed by Adyen SDK.
+When no type is specified, a default button is used.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">checkoutButtonTitleTextAttributes</span><span class="p">:</span> <span class="p">[</span><span class="kt">NSAttributedStringKey</span><span class="p">:</span> <span class="kt">Any</span><span class="p">]?</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:5Adyen23AppearanceConfigurationC29checkoutButtonTitleEdgeInsetsSC06UIEdgeH0VSgv"></a>
-                    <a name="//apple_ref/swift/Property/checkoutButtonTitleEdgeInsets" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen23AppearanceConfigurationC29checkoutButtonTitleEdgeInsetsSC06UIEdgeH0VSgv">checkoutButtonTitleEdgeInsets</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The insets from the edges of the checkout button to the title.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">checkoutButtonTitleEdgeInsets</span><span class="p">:</span> <span class="kt">UIEdgeInsets</span><span class="p">?</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:5Adyen23AppearanceConfigurationC26checkoutButtonCornerRadius12CoreGraphics7CGFloatVv"></a>
-                    <a name="//apple_ref/swift/Property/checkoutButtonCornerRadius" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen23AppearanceConfigurationC26checkoutButtonCornerRadius12CoreGraphics7CGFloatVv">checkoutButtonCornerRadius</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The corner radius of the checkout button.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">checkoutButtonCornerRadius</span><span class="p">:</span> <span class="kt">CGFloat</span> <span class="o">=</span> <span class="mf">0.0</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">checkoutButtonType</span><span class="p">:</span> <span class="kt">UIButton</span><span class="o">.</span><span class="k">Type</span> <span class="o">=</span> <span class="kt">UIButton</span><span class="o">.</span><span class="k">self</span></code></pre>
 
                         </div>
                       </div>
@@ -589,10 +537,75 @@ Note that <code>AppearanceConfiguration</code> is only used when the <code><a hr
             </div>
             <div class="task-group">
               <div class="task-name-container">
-                <a name="/Configuring%20Other%20Display%20Properties"></a>
-                <a name="//apple_ref/swift/Section/Configuring Other Display Properties" class="dashAnchor"></a>
-                <a href="#/Configuring%20Other%20Display%20Properties">
-                  <h3 class="section-name">Configuring Other Display Properties</h3>
+                <a name="/Configuring%20Safari%20View%20Controller"></a>
+                <a name="//apple_ref/swift/Section/Configuring Safari View Controller" class="dashAnchor"></a>
+                <a href="#/Configuring%20Safari%20View%20Controller">
+                  <h3 class="section-name">Configuring Safari View Controller</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen23AppearanceConfigurationC18safariBarTintColorSo7UIColorCSgv"></a>
+                    <a name="//apple_ref/swift/Property/safariBarTintColor" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen23AppearanceConfigurationC18safariBarTintColorSo7UIColorCSgv">safariBarTintColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The color to tint the background of the Safari View Controller navigation bar and toolbar. Only has an effect on iOS 11 and higher.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">safariBarTintColor</span><span class="p">:</span> <span class="kt">UIColor</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen23AppearanceConfigurationC22safariControlTintColorSo7UIColorCSgv"></a>
+                    <a name="//apple_ref/swift/Property/safariControlTintColor" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen23AppearanceConfigurationC22safariControlTintColorSo7UIColorCSgv">safariControlTintColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The color to tint the the control buttons on Safari View Controller the navigation bar and the toolbar. Only has an effect on iOS 11 and higher.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">safariControlTintColor</span><span class="p">:</span> <span class="kt">UIColor</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Configuring%20General%20Display%20Properties"></a>
+                <a name="//apple_ref/swift/Section/Configuring General Display Properties" class="dashAnchor"></a>
+                <a href="#/Configuring%20General%20Display%20Properties">
+                  <h3 class="section-name">Configuring General Display Properties</h3>
                 </a>
               </div>
               <ul class="item-container">
@@ -617,6 +630,33 @@ Note that <code>AppearanceConfiguration</code> is only used when the <code><a hr
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">tintColor</span><span class="p">:</span> <span class="kt">UIColor</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen23AppearanceConfigurationC15backgroundColorSo7UIColorCv"></a>
+                    <a name="//apple_ref/swift/Property/backgroundColor" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen23AppearanceConfigurationC15backgroundColorSo7UIColorCv">backgroundColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The background color of all view controllers.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">backgroundColor</span><span class="p">:</span> <span class="kt">UIColor</span> <span class="o">=</span> <span class="err">#</span><span class="nf">colorLiteral</span><span class="p">(</span><span class="nv">red</span><span class="p">:</span> <span class="mf">0.9764705882</span><span class="p">,</span> <span class="nv">green</span><span class="p">:</span> <span class="mf">0.9764705882</span><span class="p">,</span> <span class="nv">blue</span><span class="p">:</span> <span class="mf">0.9764705882</span><span class="p">,</span> <span class="nv">alpha</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -654,7 +694,92 @@ Note that <code>AppearanceConfiguration</code> is only used when the <code><a hr
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">var</span> <span class="err">`</span><span class="k">default</span><span class="err">`</span><span class="p">:</span> <span class="kt">AppearanceConfiguration</span> <span class="o">=</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">var</span> <span class="err">`</span><span class="k">default</span><span class="err">`</span><span class="p">:</span> <span class="kt">AppearanceConfiguration</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen23AppearanceConfigurationC33checkoutButtonTitleTextAttributess10DictionaryVySC21NSAttributedStringKeyVypGSgv"></a>
+                    <a name="//apple_ref/swift/Property/checkoutButtonTitleTextAttributes" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen23AppearanceConfigurationC33checkoutButtonTitleTextAttributess10DictionaryVySC21NSAttributedStringKeyVypGSgv">checkoutButtonTitleTextAttributes</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The attributes used for the checkout button&rsquo;s title. Only used when <code><a href="../Classes/AppearanceConfiguration.html#/s:5Adyen23AppearanceConfigurationC18checkoutButtonTypeSo8UIButtonCmv">checkoutButtonType</a></code> is the default.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">checkoutButtonTitleTextAttributes</span><span class="p">:</span> <span class="p">[</span><span class="kt">NSAttributedStringKey</span><span class="p">:</span> <span class="kt">Any</span><span class="p">]?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen23AppearanceConfigurationC29checkoutButtonTitleEdgeInsetsSC06UIEdgeH0VSgv"></a>
+                    <a name="//apple_ref/swift/Property/checkoutButtonTitleEdgeInsets" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen23AppearanceConfigurationC29checkoutButtonTitleEdgeInsetsSC06UIEdgeH0VSgv">checkoutButtonTitleEdgeInsets</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The insets from the edges of the checkout button to the title. Only used when <code><a href="../Classes/AppearanceConfiguration.html#/s:5Adyen23AppearanceConfigurationC18checkoutButtonTypeSo8UIButtonCmv">checkoutButtonType</a></code> the default.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">checkoutButtonTitleEdgeInsets</span><span class="p">:</span> <span class="kt">UIEdgeInsets</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen23AppearanceConfigurationC26checkoutButtonCornerRadius12CoreGraphics7CGFloatVv"></a>
+                    <a name="//apple_ref/swift/Property/checkoutButtonCornerRadius" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen23AppearanceConfigurationC26checkoutButtonCornerRadius12CoreGraphics7CGFloatVv">checkoutButtonCornerRadius</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The corner radius of the checkout button. Only used when <code><a href="../Classes/AppearanceConfiguration.html#/s:5Adyen23AppearanceConfigurationC18checkoutButtonTypeSo8UIButtonCmv">checkoutButtonType</a></code> the default.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">checkoutButtonCornerRadius</span><span class="p">:</span> <span class="kt">CGFloat</span></code></pre>
 
                         </div>
                       </div>
@@ -669,7 +794,7 @@ Note that <code>AppearanceConfiguration</code> is only used when the <code><a hr
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2017 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2017-10-16)</p>
+      <p>&copy; 2017 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2017-12-05)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.3</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

@@ -98,6 +98,7 @@ class CardFormViewController: UIViewController, CheckoutPaymentFieldDelegate {
     @IBOutlet private weak var storeDetailsView: UIView!
     @IBOutlet private weak var storeDetailsLabel: UILabel!
     @IBOutlet private weak var storeDetailsButton: UIButton!
+    @IBOutlet private weak var storeDetailsPlaceholderView: UIView!
     
     @IBOutlet weak var installmentUnderlineView: UIView!
     @IBOutlet weak var installmentsView: UIView!
@@ -160,6 +161,7 @@ class CardFormViewController: UIViewController, CheckoutPaymentFieldDelegate {
         configurePayButtonLayout()
         
         storeDetailsView.isHidden = shouldHideStoreDetails
+        storeDetailsPlaceholderView.isHidden = !shouldHideStoreDetails
         installmentsView.isHidden = shouldHideInstallments
         
         cardNumberTextField.becomeFirstResponder()
