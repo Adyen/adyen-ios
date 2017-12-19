@@ -12,7 +12,7 @@ class CardFormViewController: UIViewController, CheckoutPaymentFieldDelegate {
     // MARK: - Object Lifecycle
     
     init() {
-        super.init(nibName: "CardFormViewController", bundle: Bundle(for: CardFormViewController.self))
+        super.init(nibName: "CardFormViewController", bundle: .subspec("Cards"))
     }
     
     required init?(coder aDecoder: NSCoder) {

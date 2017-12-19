@@ -84,6 +84,8 @@ internal class PaymentMethodPickerViewController: UITableViewController {
         selectedIndexPath = nil
     }
     
+    internal var pluginManager: PluginManager?
+    
     // MARK: Cell Selection
     
     fileprivate var selectedIndexPath: IndexPath?
@@ -145,13 +147,19 @@ extension PaymentMethodPickerViewController {
     
     /// :nodoc:
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let reusableCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        
-        if let cell = reusableCell as? PaymentMethodTableViewCell {
-            cell.configure(with: paymentMethod(at: indexPath))
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? PaymentMethodTableViewCell else {
+            fatalError("Incorrect cell dequeued.")
         }
         
-        return reusableCell
+        let paymentMethod = self.paymentMethod(at: indexPath)
+        cell.name = paymentMethod.displayName
+        cell.logoURL = paymentMethod.logoURL
+        
+        if let plugin = pluginManager?.plugin(for: paymentMethod) as? PluginPresentsPaymentDetails {
+            cell.showsDisclosureIndicator = plugin.showsDisclosureIndicator
+        }
+        
+        return cell
     }
     
     /// :nodoc:

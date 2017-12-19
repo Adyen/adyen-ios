@@ -26,6 +26,10 @@ internal class CardPlugin: Plugin, PluginPresentsPaymentDetails, CardScanPlugin 
         }
     }
     
+    var showsDisclosureIndicator: Bool {
+        return !configuration.paymentMethod.isOneClick
+    }
+    
     // MARK: - CardScanPlugin
     
     var cardScanButtonHandler: ((@escaping CardScanCompletion) -> Void)?

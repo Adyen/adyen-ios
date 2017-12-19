@@ -19,12 +19,12 @@ Pod::Spec.new do |s|
   s.default_subspecs = 'Core', 'Cards', 'Ideal', 'SEPADirectDebit', 'UI'
 
   s.subspec 'Core' do |plugin|
-    plugin.source_files = 'Adyen/Core/**/*'
+    plugin.source_files = 'Adyen/Core/**/*.swift'
   end
 
   # Payment Methods
   s.subspec 'ApplePay' do |plugin|
-    plugin.source_files = 'Adyen/Plugins/ApplePay/**/*'
+    plugin.source_files = 'Adyen/Plugins/ApplePay/**/*.swift'
     plugin.dependency 'Adyen/Core'
     plugin.dependency 'Adyen/CoreUI'
   end
@@ -33,7 +33,7 @@ Pod::Spec.new do |s|
     plugin.dependency 'Adyen/Core'
     plugin.dependency 'Adyen/CoreUI'
     plugin.dependency 'AdyenCSE', '~> 1.1'
-    plugin.source_files = 'Adyen/Plugins/Cards/**/*'
+    plugin.source_files = 'Adyen/Plugins/Cards/**/*.swift'
     plugin.resource_bundles = {
         'Cards' => [
             'Adyen/Plugins/Cards/**/*.xib'
@@ -42,20 +42,26 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'Ideal' do |plugin|
-    plugin.source_files = 'Adyen/Plugins/Ideal/**/*'
+    plugin.source_files = 'Adyen/Plugins/Ideal/**/*.swift'
     plugin.dependency 'Adyen/CoreUI'
     plugin.dependency 'Adyen/Core'
   end
 
   s.subspec 'SEPADirectDebit' do |plugin|
-    plugin.source_files = 'Adyen/Plugins/SEPADirectDebit/**/*'
+    plugin.source_files = 'Adyen/Plugins/SEPADirectDebit/**/*.swift'
+    plugin.dependency 'Adyen/Core'
+    plugin.dependency 'Adyen/CoreUI'
+  end
+
+  s.subspec 'MOLPay' do |plugin|
+    plugin.source_files = 'Adyen/Plugins/MOLPay/**/*.swift'
     plugin.dependency 'Adyen/Core'
     plugin.dependency 'Adyen/CoreUI'
   end
 
   # Internals
   s.subspec 'UI' do |plugin|
-    plugin.source_files = 'Adyen/UI/**/*'
+    plugin.source_files = 'Adyen/UI/**/*.swift'
     plugin.dependency 'Adyen/Core'
     plugin.dependency 'Adyen/CoreUI'
   end

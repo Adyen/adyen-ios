@@ -20,6 +20,10 @@ internal class IdealPlugin: Plugin, PluginPresentsPaymentDetails {
         return IdealDetailsPresenter(hostViewController: hostViewController, pluginConfiguration: configuration)
     }
     
+    var showsDisclosureIndicator: Bool {
+        return true
+    }
+    
     // MARK: - Public
     
     internal let configuration: PluginConfiguration

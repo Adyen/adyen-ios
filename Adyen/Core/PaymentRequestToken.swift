@@ -18,7 +18,7 @@ internal struct PaymentRequestToken: Encodable {
     internal var sdkVersion = Adyen.sdkVersion
     
     /// The API version to use.
-    internal var apiVersion = "4"
+    internal var apiVersion = "6"
     
     /// The integration type used to integrate the SDK.
     internal var integrationType = IntegrationType.custom

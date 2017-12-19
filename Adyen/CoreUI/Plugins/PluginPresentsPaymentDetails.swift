@@ -15,4 +15,15 @@ internal protocol PluginPresentsPaymentDetails: Plugin {
     /// - Returns: A details presenter for the user to enter payment details.
     func newPaymentDetailsPresenter(hostViewController: UINavigationController) -> PaymentDetailsPresenter
     
+    /// Boolean value indicating whether a disclosure indicator should be shown for the payment method of the plugin.
+    var showsDisclosureIndicator: Bool { get }
+    
+}
+
+extension PluginPresentsPaymentDetails {
+    
+    var showsDisclosureIndicator: Bool {
+        return false
+    }
+    
 }

@@ -117,6 +117,7 @@ public final class CheckoutViewController: UIViewController, PaymentRequestDeleg
     public func paymentRequest(_ request: PaymentRequest, requiresPaymentMethodFrom preferredMethods: [PaymentMethod]?, available availableMethods: [PaymentMethod], completion: @escaping MethodCompletion) {
         paymentMethodCompletion = completion
         
+        paymentMethodPickerViewController.pluginManager = request.pluginManager
         paymentMethodPickerViewController.displayMethods(preferred: preferredMethods, available: availableMethods)
     }
     

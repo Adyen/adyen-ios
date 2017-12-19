@@ -93,7 +93,7 @@ internal extension PaymentInitiation {
             } else {
                 fallthrough
             }
-        case "error":
+        case "error", "validation":
             var error = Error.unexpectedError
             
             if let errorMessage = dictionary["errorMessage"] as? String {

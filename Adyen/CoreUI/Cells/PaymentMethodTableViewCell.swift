@@ -78,12 +78,6 @@ class PaymentMethodTableViewCell: LoadingTableViewCell {
         }
     }
     
-    func configure(with method: PaymentMethod) {
-        name = method.displayName
-        logoURL = method.logoURL
-        showsDisclosureIndicator = shouldShowDisclosureIndicator(for: method)
-    }
-    
     // MARK: - Private
     
     private lazy var logoView: UIImageView = {
@@ -127,15 +121,6 @@ class PaymentMethodTableViewCell: LoadingTableViewCell {
         ]
         
         NSLayoutConstraint.activate(constraints)
-    }
-    
-    private func shouldShowDisclosureIndicator(for method: PaymentMethod) -> Bool {
-        switch method.txVariant {
-        case .ideal, .card, .sepadirectdebit:
-            return true
-        default:
-            return false
-        }
     }
     
 }

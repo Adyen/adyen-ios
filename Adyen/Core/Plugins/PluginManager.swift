@@ -65,6 +65,8 @@ internal class PluginManager {
             className = "CardPlugin"
         case "sepadirectdebit":
             className = "SEPADirectDebitPlugin"
+        case "molpay_ebanking_fpx_MY":
+            className = "MOLPayPlugin"
         default:
             break
         }

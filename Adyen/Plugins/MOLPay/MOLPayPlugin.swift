@@ -6,7 +6,7 @@
 
 import Foundation
 
-internal class SEPADirectDebitPlugin: Plugin {
+internal class MOLPayPlugin: PluginPresentsPaymentDetails {
     
     internal let configuration: PluginConfiguration
     
@@ -14,14 +14,8 @@ internal class SEPADirectDebitPlugin: Plugin {
         self.configuration = configuration
     }
     
-}
-
-// MARK: - PluginPresentsPaymentDetails
-
-extension SEPADirectDebitPlugin: PluginPresentsPaymentDetails {
-    
-    func newPaymentDetailsPresenter(hostViewController: UINavigationController) -> PaymentDetailsPresenter {
-        return SEPADirectDebitDetailsPresenter(hostViewController: hostViewController, pluginConfiguration: configuration)
+    internal func newPaymentDetailsPresenter(hostViewController: UINavigationController) -> PaymentDetailsPresenter {
+        return MOLPayDetailsPresenter(hostViewController: hostViewController, pluginConfiguration: configuration)
     }
     
     var showsDisclosureIndicator: Bool {

@@ -6,7 +6,7 @@
 
 import Foundation
 
-internal class IdealDetailsPresenter: PaymentDetailsPresenter {
+internal class MOLPayDetailsPresenter: PaymentDetailsPresenter {
     
     private let hostViewController: UINavigationController
     
@@ -29,7 +29,7 @@ internal class IdealDetailsPresenter: PaymentDetailsPresenter {
     
     private func submit(issuerIdentifier: String) {
         let paymentDetails = PaymentDetails(details: pluginConfiguration.paymentMethod.inputDetails ?? [])
-        paymentDetails.fillIdeal(issuerIdentifier: issuerIdentifier)
+        paymentDetails.setDetail(value: issuerIdentifier, forKey: "issuer")
         delegate?.paymentDetailsPresenter(self, didSubmit: paymentDetails)
     }
     
@@ -42,7 +42,7 @@ internal class IdealDetailsPresenter: PaymentDetailsPresenter {
     
 }
 
-extension IdealDetailsPresenter: PickerViewControllerDelegate {
+extension MOLPayDetailsPresenter: PickerViewControllerDelegate {
     
     func didSelect(_ pickerItem: PickerItem, in pickerViewController: PickerViewController) {
         guard let index = pickerViewController.items.index(of: pickerItem) else { return }
