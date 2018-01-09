@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2017 Adyen B.V.
+// Copyright (c) 2018 Adyen B.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -27,8 +27,12 @@ class ViewController: UITableViewController, CheckoutViewControllerDelegate, Che
     
     // MARK: - Private
     
+    @IBOutlet fileprivate var amountField: UITextField!
+    @IBOutlet fileprivate var currencyField: UITextField!
+    @IBOutlet fileprivate var countryField: UITextField!
+    @IBOutlet fileprivate var referenceField: UITextField!
+    @IBOutlet fileprivate var shopperLocaleField: UITextField!
     @IBOutlet fileprivate var shopperReferenceField: UITextField!
-    @IBOutlet fileprivate var shopperCountryField: UITextField!
     
     private func presentCheckoutViewController() {
         let checkoutViewController = CheckoutViewController(delegate: self)
@@ -68,16 +72,16 @@ class ViewController: UITableViewController, CheckoutViewControllerDelegate, Che
         
         let paymentDetails: [String: Any] = [
             "amount": [
-                "currency": "EUR",
-                "value": 17408
+                "currency": currencyField.text!,
+                "value": Int(amountField.text!)!
             ],
             "channel": "ios",
-            "reference": "iOS & M+M Black dress & accessories",
+            "reference": referenceField.text!,
             "token": token,
             "returnUrl": "ui-host://",
-            "countryCode": shopperCountryField.text!,
+            "countryCode": countryField.text!,
             "shopperReference": shopperReferenceField.text!,
-            "shopperLocale": "nl_NL"
+            "shopperLocale": shopperLocaleField.text!
         ]
         
         var request = URLRequest(url: url)

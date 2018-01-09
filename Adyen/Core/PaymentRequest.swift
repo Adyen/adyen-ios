@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2017 Adyen B.V.
+// Copyright (c) 2018 Adyen B.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -24,14 +24,6 @@ public final class PaymentRequest {
      */
     public init(delegate: PaymentRequestDelegate) {
         self.delegate = delegate
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
-    }
-    
-    /// :nodoc:
-    deinit {
-        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Accessing Delegate
@@ -143,80 +135,6 @@ public final class PaymentRequest {
         return pluginManager?.plugin(for: paymentMethod) as? PluginRequiresFinalState
     }
     
-    private var isWaitingForRedirectURL = false
-    private var didHandleRedirect = false
-    private var isBackgrounded = false
-    private var shouldPoll = false
-    private var pollingQueue: DispatchQueue = DispatchQueue(label: "pollingQueue")
-    
-    @objc private func didBecomeActive() {
-        // Don't care if we are active again, unless we have actually been backgrounded.
-        guard isBackgrounded else {
-            return
-        }
-        
-        isBackgrounded = false
-        
-        // Here we check if we were actually waiting for a redirect URL.
-        // Used to handle the case when the app was foregrounded instead of coming back from a URL.
-        // We have to check on didBecomeActive instead of on willEnterForeground because the latter is
-        // called before application(open:, options:), so we could still get a valid redirect URL.
-        
-        // Wait for 1 second in case we get a redirect URL slightly late
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [weak self] in
-            guard let strongSelf = self, strongSelf.isWaitingForRedirectURL, !strongSelf.didHandleRedirect,
-                let paymentMethod = strongSelf.paymentMethod else {
-                return
-            }
-            
-            strongSelf.didHandleRedirect = true
-            strongSelf.processPaymentWithFallbackReturnData()
-            
-            if paymentMethod.supportsPolling {
-                strongSelf.shouldPoll = true
-                strongSelf.numberOfPollingAttempts += 1
-            }
-        }
-    }
-    
-    @objc private func didEnterBackground() {
-        isBackgrounded = true
-        didHandleRedirect = false
-        shouldPoll = false
-        numberOfPollingAttempts = 0
-    }
-    
-    private let maxNumberOfPollingAttempts = 4
-    private var numberOfPollingAttempts = 0
-    
-    /// Returns true or false to indicate whether or not a polling attempt was scheduled successfully.
-    private func scheduleNextPollingAttempt() -> Bool {
-        guard shouldPoll, numberOfPollingAttempts != maxNumberOfPollingAttempts else {
-            return false
-        }
-        
-        let pollingInterval = 3 // in seconds
-        let dispatchTime: DispatchTime = .now() + .seconds(pollingInterval * numberOfPollingAttempts)
-        pollingQueue.asyncAfter(deadline: dispatchTime, execute: { [weak self] in
-            self?.processPaymentWithFallbackReturnData()
-        })
-        
-        numberOfPollingAttempts += 1
-        
-        return true
-    }
-    
-    private func processPaymentWithFallbackReturnData() {
-        guard let paymentMethod = paymentMethod, let returnData = paymentMethod.fallbackReturnData else {
-            // If there was no fallbackReturnData provided, do nothing.
-            // This will be the case for payment methods like iDeal, PayPal, etc.
-            return
-        }
-        
-        let additionalRequiredFields = ["paymentMethodReturnData": returnData]
-        processPayment(with: paymentMethod, additionalRequiredFields: additionalRequiredFields)
-    }
-    
     private func process(_ paymentSetup: PaymentSetup) {
         func isPaymentMethodAvailable(_ paymentMethod: PaymentMethod) -> Bool {
             if paymentMethod.requiresPlugin {
@@ -276,10 +194,6 @@ public final class PaymentRequest {
             switch paymentInitiation.state {
             case let .redirect(url, shouldSubmitRedirectData):
                 self?.requestRedirectURL(from: url, submitRedirectData: shouldSubmitRedirectData)
-            case let .completedWithUnknownStatus(payload):
-                if self?.scheduleNextPollingAttempt() != true {
-                    self?.completePaymentFlow(using: ["resultCode": PaymentStatus.received, "payload": payload])
-                }
             case let .completed(status, payload):
                 self?.completePaymentFlow(using: ["resultCode": status.rawValue, "payload": payload])
             case let .error(error):
@@ -342,8 +256,6 @@ public final class PaymentRequest {
     }
     
     private func completePaymentFlow(using info: [String: Any]?) {
-        shouldPoll = false
-        
         guard let resultCode = info?["resultCode"] as? String,
             let status = PaymentStatus(rawValue: resultCode),
             let payload = info?["payload"] as? String,
@@ -382,23 +294,15 @@ public final class PaymentRequest {
     private func requestPaymentMethodSelection(fromPreferred preferredMethods: [PaymentMethod]?, available availableMethods: [PaymentMethod]) {
         DispatchQueue.main.async {
             self.delegate?.paymentRequest(self, requiresPaymentMethodFrom: preferredMethods, available: availableMethods, completion: { [weak self] method in
-                self?.isWaitingForRedirectURL = false
-                self?.didHandleRedirect = false
                 self?.processPayment(with: method)
             })
         }
     }
     
     private func requestRedirectURL(from url: URL, submitRedirectData: Bool) {
-        isWaitingForRedirectURL = true
         DispatchQueue.main.async {
             self.delegate?.paymentRequest(self, requiresReturnURLFrom: url, completion: { [weak self] url in
-                // If we are no longer waiting for the redirect URL, that means it must have been handled another way.
-                // i.e. by receiving UIApplicationDidBecomeActive notification.
-                if self?.isWaitingForRedirectURL == true, self?.didHandleRedirect == false {
-                    self?.didHandleRedirect = true
-                    self?.continueRedirectPaymentFlow(with: url, submitRedirectData: submitRedirectData)
-                }
+                self?.continueRedirectPaymentFlow(with: url, submitRedirectData: submitRedirectData)
             })
         }
     }

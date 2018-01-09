@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2017 Adyen B.V.
+// Copyright (c) 2018 Adyen B.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -26,8 +26,6 @@ internal extension PaymentInitiation {
         
         /// Indicates that a redirect is required to complete the payment. Includes the URL to redirect to.
         case redirect(url: URL, shouldSubmitRedirectData: Bool)
-        
-        case completedWithUnknownStatus(payload: String)
         
         /// Indicates that the payment has been completed. Includes the payment status and payload.
         case completed(status: PaymentStatus, payload: String)
@@ -81,18 +79,13 @@ internal extension PaymentInitiation {
         case "complete":
             guard
                 let statusRawValue = dictionary["resultCode"] as? String,
+                let status = PaymentStatus(rawValue: statusRawValue),
                 let payload = dictionary["payload"] as? String
             else {
                 fallthrough
             }
             
-            if let status = PaymentStatus(rawValue: statusRawValue) {
-                state = .completed(status: status, payload: payload)
-            } else if statusRawValue == "unknown" {
-                state = .completedWithUnknownStatus(payload: payload)
-            } else {
-                fallthrough
-            }
+            state = .completed(status: status, payload: payload)
         case "error", "validation":
             var error = Error.unexpectedError
             

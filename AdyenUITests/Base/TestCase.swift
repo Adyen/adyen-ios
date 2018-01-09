@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2017 Adyen B.V.
+// Copyright (c) 2018 Adyen B.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -22,7 +22,7 @@ internal class TestCase: XCTestCase {
         let table = app.tables.first
         
         if !TestCase.didSetUp {
-            let shopperReferenceField = table.textFields["shopper-reference-field"]
+            let shopperReferenceField = table.textFields["reference-field"]
             shopperReferenceField.tap()
             shopperReferenceField.typeText("uitests@uitests.ui")
         }
