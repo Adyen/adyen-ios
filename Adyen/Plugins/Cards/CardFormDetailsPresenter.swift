@@ -22,7 +22,7 @@ internal class CardFormDetailsPresenter: PaymentDetailsPresenter {
     internal func start() {
         let paymentMethod = pluginConfiguration.paymentMethod
         let paymentSetup = pluginConfiguration.paymentSetup
-        let formattedAmount = CurrencyFormatter.format(paymentSetup.amount, currencyCode: paymentSetup.currencyCode)
+        let formattedAmount = CurrencyFormatter.formatted(amount: paymentSetup.amount, currencyCode: paymentSetup.currencyCode)
         let inputDetails = paymentMethod.inputDetails
         
         let formViewController = CardFormViewController()

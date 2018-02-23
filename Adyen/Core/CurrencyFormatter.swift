@@ -17,28 +17,29 @@ internal class CurrencyFormatter {
     
     // MARK: - Internal
     
-    internal static func format(_ amount: Int, currencyCode: String) -> String? {
-        currencyFormatter.currencyCode = currencyCode
-        
+    internal static func formatted(amount: Int, currencyCode: String) -> String? {
+        let decimalAmount = CurrencyFormatter.decimalAmount(amount, currencyCode: currencyCode)
+        return defaultFormatter(currencyCode: currencyCode).string(from: decimalAmount)
+    }
+    
+    internal static func decimalAmount(_ amount: Int, currencyCode: String) -> NSDecimalNumber {
+        let defaultFormatter = CurrencyFormatter.defaultFormatter(currencyCode: currencyCode)
         let maximumFractionDigits = CurrencyFormatter.maximumFractionDigits(for: currencyCode)
-        currencyFormatter.maximumFractionDigits = maximumFractionDigits
+        defaultFormatter.maximumFractionDigits = maximumFractionDigits
         
         let decimalMinorAmount = NSDecimalNumber(value: amount)
         let convertedAmount = decimalMinorAmount.multiplying(byPowerOf10: Int16(-maximumFractionDigits)).doubleValue
-        
-        let number = NSNumber(value: convertedAmount)
-        
-        return currencyFormatter.string(from: number)
+        return NSDecimalNumber(value: convertedAmount)
     }
     
     // MARK: - Private
     
-    private static let currencyFormatter: NumberFormatter = {
-        let currencyFormatter = NumberFormatter()
-        currencyFormatter.numberStyle = .currency
-        
-        return currencyFormatter
-    }()
+    private static func defaultFormatter(currencyCode: String) -> NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencyCode = currencyCode
+        return formatter
+    }
     
     private static func maximumFractionDigits(for currencyCode: String) -> Int {
         // For some currency codes iOS returns the wrong number of minor units.
@@ -62,10 +63,8 @@ internal class CurrencyFormatter {
             // iOS returns 2 instead.
             return 0
         default:
-            let currencyFormatter = NumberFormatter()
-            currencyFormatter.numberStyle = .currency
-            currencyFormatter.currencyCode = currencyCode
-            return currencyFormatter.maximumFractionDigits
+            let formatter = defaultFormatter(currencyCode: currencyCode)
+            return formatter.maximumFractionDigits
         }
     }
     

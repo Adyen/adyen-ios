@@ -66,6 +66,35 @@ internal struct PaymentSetup {
         }.flatMap {
             return $0.count == 1 ? $0.first : PaymentMethod(members: $0)
         }
+        
+        if let lineItemDictionaries = dictionary["lineItems"] as? [[String: Any]] {
+            lineItems = lineItemDictionaries.flatMap({ item in
+                let itemId = item["itemId"] as? String
+                let description = item["description"] as? String
+                let amountExcludingTax = item["amountExcludingTax"] as? Int
+                let amountIncludingTax = item["amountIncludingTax"] as? Int
+                let taxAmount = item["taxAmount"] as? Int
+                let taxPercentage = item["taxPercentage"] as? Int
+                let numberOfItems = item["numberOfItems"] as? Int
+                let taxCategory = item["taxCategory"] as? String
+                let lineItem = LineItem(itemId: itemId, description: description, amountExcludingTax: amountExcludingTax, taxAmount: taxAmount, amountIncludingTax: amountIncludingTax, taxPercentage: taxPercentage, numberOfItems: numberOfItems, taxCategory: taxCategory)
+                return lineItem
+            })
+        } else {
+            lineItems = nil
+        }
+        
+        if let companyInfo = dictionary["company"] as? [String: Any] {
+            let name = companyInfo["name"] as? String
+            let registrationNumber = companyInfo["registrationNumber"] as? String
+            let taxId = companyInfo["taxId"] as? String
+            let registryLocation = companyInfo["registryLocation"] as? String
+            let type = companyInfo["type"] as? String
+            let homepage = companyInfo["homepage"] as? String
+            companyDetails = CompanyDetails(name: name, registrationNumber: registrationNumber, taxId: taxId, registryLocation: registryLocation, type: type, homepage: homepage)
+        } else {
+            companyDetails = nil
+        }
     }
     
     // MARK: - Public
@@ -114,5 +143,29 @@ internal struct PaymentSetup {
     
     /// The payment data.
     internal let paymentData: String
+    
+    internal struct LineItem {
+        let itemId: String?
+        let description: String?
+        let amountExcludingTax: Int?
+        let taxAmount: Int?
+        let amountIncludingTax: Int?
+        let taxPercentage: Int?
+        let numberOfItems: Int?
+        let taxCategory: String?
+    }
+    
+    internal let lineItems: [LineItem]?
+    
+    internal struct CompanyDetails {
+        var name: String?
+        var registrationNumber: String?
+        var taxId: String?
+        var registryLocation: String?
+        var type: String?
+        var homepage: String?
+    }
+    
+    internal let companyDetails: CompanyDetails?
     
 }

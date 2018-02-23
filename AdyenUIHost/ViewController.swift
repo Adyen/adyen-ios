@@ -70,10 +70,12 @@ class ViewController: UITableViewController, CheckoutViewControllerDelegate, Che
     func checkoutViewController(_ controller: CheckoutViewController, requiresPaymentDataForToken token: String, completion: @escaping DataCompletion) {
         let url = URL(string: "https://checkoutshopper-test.adyen.com/checkoutshopper/demoserver/setup")!
         
-        let paymentDetails: [String: Any] = [
+        let value = Int(amountField.text!)!
+        
+        var paymentDetails: [String: Any] = [
             "amount": [
                 "currency": currencyField.text!,
-                "value": Int(amountField.text!)!
+                "value": value
             ],
             "channel": "ios",
             "reference": referenceField.text!,
@@ -81,8 +83,49 @@ class ViewController: UITableViewController, CheckoutViewControllerDelegate, Che
             "returnUrl": "ui-host://",
             "countryCode": countryField.text!,
             "shopperReference": shopperReferenceField.text!,
-            "shopperLocale": shopperLocaleField.text!
+            "shopperLocale": shopperLocaleField.text!,
+            "company": [
+                "name": "Test Company",
+                "registrationNumber": "9501412121",
+                "taxId": "94-2404110",
+                "registryLocation": "California",
+                "type": "Computer",
+                "homepage": "http://www.google.com"
+            ]
         ]
+        
+        // Mock line item values
+        let lineItem1AmountIncludingTax = value / 2
+        let lineItem1TaxAmount = lineItem1AmountIncludingTax / 4
+        let lineItem1AmountExcludingTax = lineItem1AmountIncludingTax - lineItem1TaxAmount
+        let lineItem2AmountIncludingTax = value - lineItem1AmountIncludingTax
+        let lineItem2TaxAmount = lineItem2AmountIncludingTax / 4
+        let lineItem2AmountExcludingTax = lineItem2AmountIncludingTax - lineItem2TaxAmount
+        
+        if lineItem1AmountExcludingTax > 0 && lineItem2AmountExcludingTax > 0 {
+            paymentDetails["lineItems"] = [
+                [
+                    "id": "1",
+                    "description": "Test Item 1",
+                    "amountExcludingTax": lineItem1AmountExcludingTax,
+                    "amountIncludingTax": lineItem1AmountIncludingTax,
+                    "taxAmount": (lineItem1TaxAmount / lineItem1AmountExcludingTax) * 100,
+                    "taxPercentage": 1800,
+                    "quantity": 1,
+                    "taxCategory": "High"
+                ],
+                [
+                    "id": "2",
+                    "description": "Test Item 2",
+                    "amountExcludingTax": lineItem2AmountExcludingTax,
+                    "amountIncludingTax": lineItem2AmountIncludingTax,
+                    "taxAmount": lineItem2TaxAmount,
+                    "taxPercentage": (lineItem2TaxAmount / lineItem2AmountExcludingTax) * 100,
+                    "quantity": 5,
+                    "taxCategory": "Low"
+                ]
+            ]
+        }
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"

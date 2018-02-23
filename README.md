@@ -37,7 +37,7 @@ The following `CheckoutViewControllerDelegate` methods should be implemented:
 
 This method requires you to fetch payment data from your server and pass it to the `completion` handler. Upon receiving valid payment data, the SDK will present a list of available payment methods. 
 
-For your convenience, we provide a [test merchant server](https://checkoutshopper-test.adyen.com/checkoutshopper/demo/easy-integration/merchantserver/). You can find information on setting up your own server [here](https://docs.adyen.com/developers/in-app-integration#checkoutapiimplementyourserver).
+For your convenience, we provide a [demo server](https://checkoutshopper-test.adyen.com/checkoutshopper/demoserver/). You can find information on setting up your own server [here](https://docs.adyen.com/developers/checkout/implement-your-server).
 
 ```swift
 - checkoutViewController:requiresReturnURL:
@@ -51,7 +51,7 @@ This method will be called if a selected payment method requires user authentica
 
 This method will provide you with the result of the completed payment request (authorised, refused, etc.).
 
-For implementation details, refer to the [Quick integration guide](https://docs.adyen.com/developers/in-app-integration?platform=inapp-ios).
+For implementation details, refer to the [Quick integration guide](https://docs.adyen.com/developers/checkout/ios/quick-integration-ios).
 
 ## Custom integration
 
@@ -59,7 +59,7 @@ With custom integration you will have full control over the payment flow and wil
 
 This approach requires instantiating and starting a `PaymentRequest` and implementing the `PaymentRequestDelegate` protocol for callbacks. The `PaymentRequestDelegate` callbacks will provide you with a list of available payment methods, the URL for payment methods that require an external flow, and the result of payment processing.
 
-For implementation details, refer to the [Custom integration guide](https://docs.adyen.com/developers/in-app-integration/custom-integration).
+For implementation details, refer to the [Custom integration guide](https://docs.adyen.com/developers/checkout/ios/custom-integration-ios).
 
 ## Examples
 
@@ -67,7 +67,7 @@ You can find examples of both quick and custom integrations in the Examples fold
 
 ## See also
 
- * [Complete Documentation](https://docs.adyen.com/developers/in-app-integration?platform=inapp-ios)
+ * [Complete Documentation](https://docs.adyen.com/developers/checkout/ios)
 
  * [SDK Reference](https://adyen.github.io/adyen-ios/Docs/index.html)
 

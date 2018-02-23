@@ -88,10 +88,69 @@ fileprivate extension PKPaymentRequest {
         supportedNetworks = [.masterCard, .visa, .amex]
         merchantCapabilities = .capability3DS
         merchantIdentifier = paymentMethod.configuration?["merchantIdentifier"] as? String ?? ""
+        paymentSummaryItems = PKPaymentRequest.paymentSummaryItems(paymentSetup)
+    }
+    
+    private static func paymentSummaryItems(_ paymentSetup: PaymentSetup) -> [PKPaymentSummaryItem] {
+        let lineItems = PKPaymentRequest.lineItems(paymentSetup)
+        let summaryItem = PKPaymentRequest.paymentSummaryLineItem(paymentSetup)
+        let paymentSummaryItems = lineItems + [summaryItem]
+        return paymentSummaryItems
+    }
+    
+    private static func lineItems(_ paymentSetup: PaymentSetup) -> [PKPaymentSummaryItem] {
+        guard let lineItems = paymentSetup.lineItems, lineItems.count > 0 else {
+            return []
+        }
         
-        let amount = NSDecimalNumber(value: paymentSetup.amount).dividing(by: NSDecimalNumber(value: 100.0))
-        let summaryItem = PKPaymentSummaryItem(label: paymentSetup.merchantReference, amount: amount)
-        paymentSummaryItems = [summaryItem]
+        // Make sure all items have a description, otherwise we won't have anything to display.
+        let itemDescriptions = lineItems.flatMap({ $0.description })
+        guard itemDescriptions.count == lineItems.count else {
+            return []
+        }
+        
+        var items: [PKPaymentSummaryItem] = []
+        
+        let totalIncludingTax = lineItems.flatMap({ $0.amountIncludingTax }).reduce(0, +)
+        let totalWithTaxExplicitlyAdded = lineItems.flatMap({
+            ($0.amountExcludingTax ?? 0) + ($0.taxAmount ?? 0)
+        }).reduce(0, +)
+        
+        if totalIncludingTax == paymentSetup.amount {
+            // Show each item on its own line, without a new line for tax.
+            for item in lineItems {
+                let amount = item.amountIncludingTax ?? 0
+                let formattedAmount = CurrencyFormatter.decimalAmount(amount, currencyCode: paymentSetup.currencyCode)
+                let description = item.description ?? ""
+                let lineItem = PKPaymentSummaryItem(label: description, amount: formattedAmount)
+                items.append(lineItem)
+            }
+        } else if totalWithTaxExplicitlyAdded == paymentSetup.amount {
+            // Show each item on its own line, with a new line for tax.
+            for item in lineItems {
+                let amount = item.amountExcludingTax ?? 0
+                let formattedAmount = CurrencyFormatter.decimalAmount(amount, currencyCode: paymentSetup.currencyCode)
+                let description = item.description ?? ""
+                let lineItem = PKPaymentSummaryItem(label: description, amount: formattedAmount)
+                items.append(lineItem)
+            }
+            
+            let taxLabel = ADYLocalizedString("applepay.taxLabel")
+            let taxAmount = lineItems.flatMap({ $0.taxAmount }).reduce(0, +)
+            let formattedTaxAmount = CurrencyFormatter.decimalAmount(taxAmount, currencyCode: paymentSetup.currencyCode)
+            let taxLineItem = PKPaymentSummaryItem(label: taxLabel, amount: formattedTaxAmount)
+            
+            items.append(taxLineItem)
+        }
+        
+        return items
+    }
+    
+    private static func paymentSummaryLineItem(_ paymentSetup: PaymentSetup) -> PKPaymentSummaryItem {
+        let companyName = paymentSetup.companyDetails?.name ?? paymentSetup.merchantReference
+        let amount = CurrencyFormatter.decimalAmount(paymentSetup.amount, currencyCode: paymentSetup.currencyCode)
+        let summaryItem = PKPaymentSummaryItem(label: companyName, amount: amount)
+        return summaryItem
     }
     
 }
