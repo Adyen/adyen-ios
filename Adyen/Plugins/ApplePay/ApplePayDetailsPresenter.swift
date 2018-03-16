@@ -135,7 +135,7 @@ fileprivate extension PKPaymentRequest {
                 items.append(lineItem)
             }
             
-            let taxLabel = ADYLocalizedString("applepay.taxLabel")
+            let taxLabel = ADYLocalizedString("taxLabel")
             let taxAmount = lineItems.flatMap({ $0.taxAmount }).reduce(0, +)
             let formattedTaxAmount = CurrencyFormatter.decimalAmount(taxAmount, currencyCode: paymentSetup.currencyCode)
             let taxLineItem = PKPaymentSummaryItem(label: taxLabel, amount: formattedTaxAmount)
