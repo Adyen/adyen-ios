@@ -42,7 +42,10 @@ public final class CheckoutViewController: UIViewController, PaymentRequestDeleg
     
     /// The delegate for payment processing.
     internal(set) public weak var delegate: CheckoutViewControllerDelegate?
-    
+
+    /// The delegate for payment method.
+    public weak var paymentMethodDelegate: PreferredPaymentMethodDelegate?
+
     /// The delegate for card scanning functionality for card payments.
     public weak var cardScanDelegate: CheckoutViewControllerCardScanDelegate?
     
@@ -115,6 +118,11 @@ public final class CheckoutViewController: UIViewController, PaymentRequestDeleg
     
     /// :nodoc:
     public func paymentRequest(_ request: PaymentRequest, requiresPaymentMethodFrom preferredMethods: [PaymentMethod]?, available availableMethods: [PaymentMethod], completion: @escaping MethodCompletion) {
+
+        if let preferredMethod = paymentMethodDelegate?.preferredMethod(self, available: availableMethods) {
+            completion(preferredMethod)
+        }
+
         paymentMethodCompletion = completion
         
         paymentMethodPickerViewController.pluginManager = request.pluginManager
