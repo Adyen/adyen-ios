@@ -119,7 +119,7 @@ public final class CardValidator {
     }
     
     private static func luhnCheck(_ cardNumber: String) -> Bool {
-        let reversedCardNumberDigits = cardNumber.reversed().flatMap { Int(String($0)) }
+        let reversedCardNumberDigits = cardNumber.reversed().compactMap { Int(String($0)) }
         
         var sum = 0
         for (index, digit) in reversedCardNumberDigits.enumerated() {

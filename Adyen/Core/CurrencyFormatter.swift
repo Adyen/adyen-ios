@@ -6,25 +6,27 @@
 
 import Foundation
 
-/// Convenience class to format a number with a given currency.
-internal class CurrencyFormatter {
+/// Convenience class to format a payment amount for display.
+public final class AmountFormatter {
     
-    // MARK: - Initialization
+    // MARK: - Public
     
-    private init() {
-        
+    /// Formats a string based on the provided amount and currency code.
+    ///
+    /// - Parameters:
+    ///   - amount: Amount in minor units, i.e. 2000.
+    ///   - currencyCode: The currency code, i.e. "USD".
+    /// - Returns: A formatted string, i.e. "$20.00".
+    public static func formatted(amount: Int, currencyCode: String) -> String? {
+        let decimalAmount = AmountFormatter.decimalAmount(amount, currencyCode: currencyCode)
+        return defaultFormatter(currencyCode: currencyCode).string(from: decimalAmount)
     }
     
     // MARK: - Internal
     
-    internal static func formatted(amount: Int, currencyCode: String) -> String? {
-        let decimalAmount = CurrencyFormatter.decimalAmount(amount, currencyCode: currencyCode)
-        return defaultFormatter(currencyCode: currencyCode).string(from: decimalAmount)
-    }
-    
     internal static func decimalAmount(_ amount: Int, currencyCode: String) -> NSDecimalNumber {
-        let defaultFormatter = CurrencyFormatter.defaultFormatter(currencyCode: currencyCode)
-        let maximumFractionDigits = CurrencyFormatter.maximumFractionDigits(for: currencyCode)
+        let defaultFormatter = AmountFormatter.defaultFormatter(currencyCode: currencyCode)
+        let maximumFractionDigits = AmountFormatter.maximumFractionDigits(for: currencyCode)
         defaultFormatter.maximumFractionDigits = maximumFractionDigits
         
         let decimalMinorAmount = NSDecimalNumber(value: amount)

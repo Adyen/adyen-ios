@@ -104,7 +104,7 @@ internal class ContainerView: UIScrollView {
     
 }
 
-fileprivate class ContainerContentBackgroundView: UIView {
+private class ContainerContentBackgroundView: UIView {
     
     override func draw(_ rect: CGRect) {
         // Draw background color.

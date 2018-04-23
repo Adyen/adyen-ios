@@ -65,7 +65,7 @@ public class InputDetail {
         let selectItems: [InputSelectItem]? = items.count > 0 ? items : nil
         
         // Embedded Input Details
-        let inputDetails = (info["inputDetails"] as? [[String: Any]])?.flatMap { InputDetail(info: $0) }
+        let inputDetails = (info["inputDetails"] as? [[String: Any]])?.compactMap { InputDetail(info: $0) }
         
         self.init(type: type, key: key, value: value, optional: optional, items: selectItems, inputDetails: inputDetails, configuration: configuration)
     }

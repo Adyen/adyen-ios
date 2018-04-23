@@ -54,21 +54,21 @@ internal struct PaymentSetup {
         self.paymentData = paymentData
         
         let preferredPaymentMethodDictionaries = dictionary["recurringDetails"] as? [[String: Any]] ?? []
-        self.preferredPaymentMethods = preferredPaymentMethodDictionaries.flatMap {
+        self.preferredPaymentMethods = preferredPaymentMethodDictionaries.compactMap {
             return PaymentMethod(info: $0, logoBaseURL: logoBaseURL.absoluteString, isOneClick: true)
         }
         
         let availablePaymentMethodsDictionaries = dictionary["paymentMethods"] as? [[String: Any]] ?? []
-        self.availablePaymentMethods = availablePaymentMethodsDictionaries.flatMap {
+        self.availablePaymentMethods = availablePaymentMethodsDictionaries.compactMap {
             return PaymentMethod(info: $0, logoBaseURL: logoBaseURL.absoluteString, isOneClick: false)
         }.groupBy {
             return $0.group?.type ?? UUID().uuidString
-        }.flatMap {
+        }.compactMap {
             return $0.count == 1 ? $0.first : PaymentMethod(members: $0)
         }
         
         if let lineItemDictionaries = dictionary["lineItems"] as? [[String: Any]] {
-            lineItems = lineItemDictionaries.flatMap({ item in
+            lineItems = lineItemDictionaries.compactMap({ item in
                 let itemId = item["itemId"] as? String
                 let description = item["description"] as? String
                 let amountExcludingTax = item["amountExcludingTax"] as? Int

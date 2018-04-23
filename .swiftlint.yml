@@ -5,6 +5,7 @@ disabled_rules:
   - operator_whitespace
   - unused_closure_parameter
   - todo
+  - fallthrough
 
   #Review:
   - large_tuple

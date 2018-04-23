@@ -10,7 +10,7 @@ import Foundation
 internal protocol PaymentDetailsPresenter: class {
     
     /// The delegate of the details presenter.
-    weak var delegate: PaymentDetailsPresenterDelegate? { get set }
+    var delegate: PaymentDetailsPresenterDelegate? { get set }
     
     /// Requests the user to enter the payment details.
     func start()

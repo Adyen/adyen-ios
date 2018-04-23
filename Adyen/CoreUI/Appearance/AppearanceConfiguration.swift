@@ -67,6 +67,10 @@ public final class AppearanceConfiguration {
     /// When no type is specified, a default button is used.
     public var checkoutButtonType: UIButton.Type = UIButton.self
     
+    /// The title of the checkout button.
+    /// If none provided, the amount in the format "Pay $x.xx" will be used.
+    public var checkoutButtonTitle: String?
+    
     // MARK: - Configuring Safari View Controller
     
     /// The color to tint the background of the Safari View Controller navigation bar and toolbar. Only has an effect on iOS 11 and higher.
@@ -138,6 +142,7 @@ extension AppearanceConfiguration: NSCopying {
         appearanceConfiguration.safariControlTintColor = safariControlTintColor
         appearanceConfiguration.tintColor = tintColor
         appearanceConfiguration.backgroundColor = backgroundColor
+        appearanceConfiguration.checkoutButtonTitle = checkoutButtonTitle
         
         appearanceConfiguration.internalCheckoutButtonTitleTextAttributes = internalCheckoutButtonTitleTextAttributes
         appearanceConfiguration.internalCheckoutButtonTitleEdgeInsets = internalCheckoutButtonTitleEdgeInsets
@@ -211,6 +216,20 @@ internal extension AppearanceConfiguration {
     }
     
     private static var _shared = AppearanceConfiguration.default
+    
+    internal func payActionTitle(forAmount amount: Int?, currencyCode: String?) -> String {
+        let payActionTitle: String
+        if let buttonTitle = checkoutButtonTitle {
+            payActionTitle = buttonTitle
+        } else if let amount = amount, let currencyCode = currencyCode {
+            let formattedAmount = AmountFormatter.formatted(amount: amount, currencyCode: currencyCode) ?? ""
+            payActionTitle = ADYLocalizedString("payButton.formatted", formattedAmount)
+        } else {
+            payActionTitle = ADYLocalizedString("payButton.formatted")
+        }
+        
+        return payActionTitle
+    }
     
     internal func cancelButtonItem(target: Any, selector: Selector) -> UIBarButtonItem {
         var cancelButtonItem: UIBarButtonItem!

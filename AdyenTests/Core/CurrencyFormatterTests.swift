@@ -7,39 +7,39 @@
 import XCTest
 @testable import Adyen
 
-class CurrencyFormatterTests: XCTestCase {
+class AmountFormatterTests: XCTestCase {
     
-    func testCurrencyFormatWithEUR() {
+    func testAmountFormatWithEUR() {
         let expected = "€103.47"
-        let formatted = CurrencyFormatter.formatted(amount: 10347, currencyCode: "EUR")
+        let formatted = AmountFormatter.formatted(amount: 10347, currencyCode: "EUR")
         
         XCTAssertEqual(formatted, expected)
     }
     
-    func testCurrencyFormatWithEURAndLargeAmount() {
+    func testAmountFormatWithEURAndLargeAmount() {
         let expected = "€90,331.47"
-        let formatted = CurrencyFormatter.formatted(amount: 9033147, currencyCode: "EUR")
+        let formatted = AmountFormatter.formatted(amount: 9033147, currencyCode: "EUR")
         
         XCTAssertEqual(formatted, expected)
     }
     
-    func testCurrencyFormatWithUSD() {
+    func testAmountFormatWithUSD() {
         let expected = "$103.47"
-        let formatted = CurrencyFormatter.formatted(amount: 10347, currencyCode: "USD")
+        let formatted = AmountFormatter.formatted(amount: 10347, currencyCode: "USD")
         
         XCTAssertEqual(formatted, expected)
     }
     
-    func testCurrencyFormatWithUSDAndLargeAmount() {
+    func testAmountFormatWithUSDAndLargeAmount() {
         let expected = "$90,331.47"
-        let formatted = CurrencyFormatter.formatted(amount: 9033147, currencyCode: "USD")
+        let formatted = AmountFormatter.formatted(amount: 9033147, currencyCode: "USD")
         
         XCTAssertEqual(formatted, expected)
     }
     
-    func testCurrencyFormatWithBRLAndLargeAmount() {
+    func testAmountFormatWithBRLAndLargeAmount() {
         let expected = "R$90,331.47"
-        let formatted = CurrencyFormatter.formatted(amount: 9033147, currencyCode: "BRL")
+        let formatted = AmountFormatter.formatted(amount: 9033147, currencyCode: "BRL")
         
         XCTAssertEqual(formatted, expected)
     }

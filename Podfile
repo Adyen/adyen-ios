@@ -10,7 +10,7 @@ target 'Adyen' do
 
   shared_pods
 
-  pod 'SwiftLint', '~> 0.20.0'
+  pod 'SwiftLint', '~> 0.25.0'
   pod 'SwiftFormat/CLI', '~> 0.28.6'
 
   target 'AdyenTests' do

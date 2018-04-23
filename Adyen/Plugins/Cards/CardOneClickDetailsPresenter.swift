@@ -51,8 +51,7 @@ internal class CardOneClickDetailsPresenter: PaymentDetailsPresenter {
         let cancelAction = UIAlertAction(title: cancelActionTitle, style: .cancel, handler: nil)
         alertController.addAction(cancelAction)
         
-        let formattedAmount = CurrencyFormatter.formatted(amount: paymentSetup.amount, currencyCode: paymentSetup.currencyCode) ?? ""
-        let confirmActionTitle = ADYLocalizedString("payButton.formatted", formattedAmount)
+        var confirmActionTitle = AppearanceConfiguration.shared.payActionTitle(forAmount: paymentSetup.amount, currencyCode: paymentSetup.currencyCode)
         let confirmAction = UIAlertAction(title: confirmActionTitle, style: .default) { [unowned self] _ in
             self.didSelectOneClickAlertControllerConfirmAction()
         }

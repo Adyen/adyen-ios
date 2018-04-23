@@ -10,14 +10,9 @@ internal class SEPADirectDebitFormViewController: FormViewController {
     
     internal weak var delegate: SEPADirectDebitFormViewControllerDelegate?
     
-    internal var formattedAmount: String? {
+    internal var payButtonTitle: String = "" {
         didSet {
-            var title = ""
-            if let formattedAmount = formattedAmount {
-                title = ADYLocalizedString("payButton.formatted", formattedAmount)
-            }
-            
-            payButton.setTitle(title, for: .normal)
+            payButton.setTitle(payButtonTitle, for: .normal)
         }
     }
     

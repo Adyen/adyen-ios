@@ -59,7 +59,7 @@ public class IBANValidator {
         let alphanumerics = CharacterSet.alphanumerics
         let lowercaseLetters = CharacterSet.lowercaseLetters
         
-        let components = string.unicodeScalars.flatMap { unicodeScalar -> String? in
+        let components = string.unicodeScalars.compactMap { unicodeScalar -> String? in
             guard alphanumerics.contains(unicodeScalar) else {
                 return nil
             }

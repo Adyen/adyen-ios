@@ -22,12 +22,12 @@ internal class CardFormDetailsPresenter: PaymentDetailsPresenter {
     internal func start() {
         let paymentMethod = pluginConfiguration.paymentMethod
         let paymentSetup = pluginConfiguration.paymentSetup
-        let formattedAmount = CurrencyFormatter.formatted(amount: paymentSetup.amount, currencyCode: paymentSetup.currencyCode)
+        
         let inputDetails = paymentMethod.inputDetails
         
         let formViewController = CardFormViewController()
         formViewController.title = paymentMethod.name
-        formViewController.formattedAmount = formattedAmount
+        formViewController.payButtonTitle = AppearanceConfiguration.shared.payActionTitle(forAmount: paymentSetup.amount, currencyCode: paymentSetup.currencyCode)
         formViewController.paymentMethod = paymentMethod
         formViewController.shouldHideStoreDetails = inputDetails?.filter({ $0.key == "storeDetails" }).count == 0
         formViewController.shouldHideInstallments = inputDetails?.filter({ $0.key == "installments" }).count == 0

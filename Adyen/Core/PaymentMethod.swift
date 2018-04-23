@@ -42,7 +42,7 @@ public final class PaymentMethod: Equatable {
         
         let logoURL = URL(string: logoBaseURL + type + UIScreen.retinaExtension() + ".png")
         let inputDetailDescriptions = info["inputDetails"] as? [[String: Any]]
-        let inputDetails = inputDetailDescriptions?.flatMap { InputDetail(info: $0) }
+        let inputDetails = inputDetailDescriptions?.compactMap { InputDetail(info: $0) }
         
         var group: Group?
         if let groupInfo = info["group"] as? [String: Any] {

@@ -104,15 +104,15 @@ fileprivate extension PKPaymentRequest {
         }
         
         // Make sure all items have a description, otherwise we won't have anything to display.
-        let itemDescriptions = lineItems.flatMap({ $0.description })
+        let itemDescriptions = lineItems.compactMap({ $0.description })
         guard itemDescriptions.count == lineItems.count else {
             return []
         }
         
         var items: [PKPaymentSummaryItem] = []
         
-        let totalIncludingTax = lineItems.flatMap({ $0.amountIncludingTax }).reduce(0, +)
-        let totalWithTaxExplicitlyAdded = lineItems.flatMap({
+        let totalIncludingTax = lineItems.compactMap({ $0.amountIncludingTax }).reduce(0, +)
+        let totalWithTaxExplicitlyAdded = lineItems.compactMap({
             ($0.amountExcludingTax ?? 0) + ($0.taxAmount ?? 0)
         }).reduce(0, +)
         
@@ -120,7 +120,7 @@ fileprivate extension PKPaymentRequest {
             // Show each item on its own line, without a new line for tax.
             for item in lineItems {
                 let amount = item.amountIncludingTax ?? 0
-                let formattedAmount = CurrencyFormatter.decimalAmount(amount, currencyCode: paymentSetup.currencyCode)
+                let formattedAmount = AmountFormatter.decimalAmount(amount, currencyCode: paymentSetup.currencyCode)
                 let description = item.description ?? ""
                 let lineItem = PKPaymentSummaryItem(label: description, amount: formattedAmount)
                 items.append(lineItem)
@@ -129,15 +129,15 @@ fileprivate extension PKPaymentRequest {
             // Show each item on its own line, with a new line for tax.
             for item in lineItems {
                 let amount = item.amountExcludingTax ?? 0
-                let formattedAmount = CurrencyFormatter.decimalAmount(amount, currencyCode: paymentSetup.currencyCode)
+                let formattedAmount = AmountFormatter.decimalAmount(amount, currencyCode: paymentSetup.currencyCode)
                 let description = item.description ?? ""
                 let lineItem = PKPaymentSummaryItem(label: description, amount: formattedAmount)
                 items.append(lineItem)
             }
             
             let taxLabel = ADYLocalizedString("taxLabel")
-            let taxAmount = lineItems.flatMap({ $0.taxAmount }).reduce(0, +)
-            let formattedTaxAmount = CurrencyFormatter.decimalAmount(taxAmount, currencyCode: paymentSetup.currencyCode)
+            let taxAmount = lineItems.compactMap({ $0.taxAmount }).reduce(0, +)
+            let formattedTaxAmount = AmountFormatter.decimalAmount(taxAmount, currencyCode: paymentSetup.currencyCode)
             let taxLineItem = PKPaymentSummaryItem(label: taxLabel, amount: formattedTaxAmount)
             
             items.append(taxLineItem)
@@ -148,7 +148,7 @@ fileprivate extension PKPaymentRequest {
     
     private static func paymentSummaryLineItem(_ paymentSetup: PaymentSetup) -> PKPaymentSummaryItem {
         let companyName = paymentSetup.companyDetails?.name ?? paymentSetup.merchantReference
-        let amount = CurrencyFormatter.decimalAmount(paymentSetup.amount, currencyCode: paymentSetup.currencyCode)
+        let amount = AmountFormatter.decimalAmount(paymentSetup.amount, currencyCode: paymentSetup.currencyCode)
         let summaryItem = PKPaymentSummaryItem(label: companyName, amount: amount)
         return summaryItem
     }

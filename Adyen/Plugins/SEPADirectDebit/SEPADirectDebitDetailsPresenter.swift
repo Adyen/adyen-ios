@@ -21,11 +21,10 @@ internal class SEPADirectDebitDetailsPresenter: PaymentDetailsPresenter {
     
     func start() {
         let paymentSetup = pluginConfiguration.paymentSetup
-        let formattedAmount = CurrencyFormatter.formatted(amount: paymentSetup.amount, currencyCode: paymentSetup.currencyCode)
         
         let formViewController = SEPADirectDebitFormViewController()
         formViewController.title = pluginConfiguration.paymentMethod.name
-        formViewController.formattedAmount = formattedAmount
+        formViewController.payButtonTitle = AppearanceConfiguration.shared.payActionTitle(forAmount: paymentSetup.amount, currencyCode: paymentSetup.currencyCode)
         formViewController.delegate = self
         hostViewController.pushViewController(formViewController, animated: true)
     }

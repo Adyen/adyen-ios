@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Adyen  Reference</title>
+    <title>Other Classes  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset="utf-8">
@@ -23,8 +23,9 @@
   </head>
   <body>
 
+    <a name="//apple_ref/swift/Section/Other Classes" class="dashAnchor"></a>
 
-    <a title="Adyen  Reference"></a>
+    <a title="Other Classes  Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -52,7 +53,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="index.html">Adyen Reference</a>
       <img class="carat" src="img/carat.png" />
-      Adyen  Reference
+      Other Classes  Reference
     </p>
 
     <div class="content-wrapper">
@@ -192,73 +193,48 @@
 
         <section class="section">
           <div class="section-content">
-            
-            <h1 id='adyen-sdk-for-ios' class='heading'>Adyen SDK for iOS</h1>
-
-<p>With Adyen SDK you can help your shoppers pay with a payment method of their choice, selected from a dynamically generated list of available payment methods. Method availability is based on shoppers’ location, transaction currency, and transaction amount. </p>
-
-<p>You can integrate the SDK in two ways: either make use of the default UI components and flows preconfigured by Adyen (Quick integration), or implement your own UI and checkout experience (Custom integration).</p>
-
-<p><img src="https://user-images.githubusercontent.com/8394738/31934915-b7a1805e-b8ad-11e7-9459-c29a0566e50b.gif" alt="Credit Card">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="https://user-images.githubusercontent.com/8394738/31934916-b90bcf44-b8ad-11e7-842a-a29c39b1eb12.gif" alt="One-Click">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="https://user-images.githubusercontent.com/8394738/31934918-bb0007fc-b8ad-11e7-8e8c-84078b6b3221.gif" alt="Apple Pay"></p>
-<h2 id='installation' class='heading'>Installation</h2>
-
-<p>Use CocoaPods to integrate the Adyen SDK into your project. For this, add the following line to your Podfile and run <code>pod install</code>.</p>
-<pre class="highlight plaintext"><code>pod 'Adyen'
-</code></pre>
-<h2 id='quick-integration' class='heading'>Quick integration</h2>
-
-<p>If you want to quickly integrate with Adyen, use the default UI elements that we provide for selecting payment methods, entering payment details, and completing a payment.</p>
-
-<p>For this, instantiate <code><a href="Classes/CheckoutViewController.html">CheckoutViewController</a></code>, present it in your app, and implement the <code><a href="Protocols/CheckoutViewControllerDelegate.html">CheckoutViewControllerDelegate</a></code> protocol for callbacks. All UI interactions are handled by Adyen.</p>
-<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">viewController</span> <span class="o">=</span> <span class="kt">CheckoutViewController</span><span class="p">(</span><span class="nv">delegate</span><span class="p">:</span> <span class="k">self</span><span class="p">)</span>
-<span class="nf">present</span><span class="p">(</span><span class="n">viewController</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span>
-</code></pre>
-
-<p>The following <code><a href="Protocols/CheckoutViewControllerDelegate.html">CheckoutViewControllerDelegate</a></code> methods should be implemented:</p>
-<pre class="highlight swift"><code><span class="o">-</span> <span class="nv">checkoutViewController</span><span class="p">:</span><span class="nv">requiresPaymentDataForToken</span><span class="p">:</span><span class="nv">completion</span><span class="p">:</span>
-</code></pre>
-
-<p>This method requires you to fetch payment data from your server and pass it to the <code>completion</code> handler. Upon receiving valid payment data, the SDK will present a list of available payment methods. </p>
-
-<p>For your convenience, we provide a <a href="https://checkoutshopper-test.adyen.com/checkoutshopper/demoserver/">demo server</a>. You can find information on setting up your own server <a href="https://docs.adyen.com/developers/checkout/implement-your-server">here</a>.</p>
-<pre class="highlight swift"><code><span class="o">-</span> <span class="nv">checkoutViewController</span><span class="p">:</span><span class="nv">requiresReturnURL</span><span class="p">:</span>
-</code></pre>
-
-<p>This method will be called if a selected payment method requires user authentication outside of your app environment (in a web browser, native banking app, etc.). Upon payment authorisation, your app will be reopened using the <code>application(_:open:options:)</code> callback of <code>UIApplicationDelegate</code>. The URL used to open your app should be passed to the completion handler.</p>
-<pre class="highlight swift"><code><span class="o">-</span> <span class="nv">checkoutViewController</span><span class="p">:</span><span class="nv">didFinishWith</span><span class="p">:</span>
-</code></pre>
-
-<p>This method will provide you with the result of the completed payment request (authorised, refused, etc.).</p>
-
-<p>For implementation details, refer to the <a href="https://docs.adyen.com/developers/checkout/ios/quick-integration-ios">Quick integration guide</a>.</p>
-<h2 id='custom-integration' class='heading'>Custom integration</h2>
-
-<p>With custom integration you will have full control over the payment flow and will be able to implement your own unique checkout experience. </p>
-
-<p>This approach requires instantiating and starting a <code><a href="Classes/PaymentRequest.html">PaymentRequest</a></code> and implementing the <code><a href="Protocols/PaymentRequestDelegate.html">PaymentRequestDelegate</a></code> protocol for callbacks. The <code><a href="Protocols/PaymentRequestDelegate.html">PaymentRequestDelegate</a></code> callbacks will provide you with a list of available payment methods, the URL for payment methods that require an external flow, and the result of payment processing.</p>
-
-<p>For implementation details, refer to the <a href="https://docs.adyen.com/developers/checkout/ios/custom-integration-ios">Custom integration guide</a>.</p>
-<h2 id='examples' class='heading'>Examples</h2>
-
-<p>You can find examples of both quick and custom integrations in the Examples folder of this repository.</p>
-<h2 id='see-also' class='heading'>See also</h2>
-
-<ul>
-<li><p><a href="https://docs.adyen.com/developers/checkout/ios">Complete Documentation</a></p></li>
-<li><p><a href="https://adyen.github.io/adyen-ios/Docs/index.html">SDK Reference</a></p></li>
-<li><p><a href="https://github.com/Adyen/adyen-ios/blob/master/MIGRATION.md">Migration Notes</a></p></li>
-</ul>
-<h2 id='license' class='heading'>License</h2>
-
-<p>This repository is open source and available under the MIT license. For more information, see the LICENSE file.</p>
+            <h1>Other Classes</h1>
+            <p>The following classes are available globally.</p>
 
           </div>
         </section>
 
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen15AmountFormatterC"></a>
+                    <a name="//apple_ref/swift/Class/AmountFormatter" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen15AmountFormatterC">AmountFormatter</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Convenience class to format a payment amount for display.</p>
+
+                        <a href="Classes/AmountFormatter.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">AmountFormatter</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
 
       </article>
     </div>

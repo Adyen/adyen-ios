@@ -31,8 +31,12 @@ internal struct PaymentRequestToken: Encodable {
     /// The version of the device's system.
     internal var systemVersion = UIDevice.current.systemVersion
     
-    /// The identifier of the device's locale.
-    internal var localeIdentifier = NSLocale.current.identifier
+    /// The identifier of the device's locale in the format aa_BB, where "aa" is language code and "BB" is region code.
+    internal var localeIdentifier: String = {
+        let languageCode = NSLocale.current.languageCode ?? ""
+        let regionCode = NSLocale.current.regionCode ?? ""
+        return "\(languageCode)_\(regionCode)"
+    }()
     
     /// A string identifying the device.
     internal var deviceIdentifier = UIDevice.current.identifierForVendor?.uuidString ?? ""

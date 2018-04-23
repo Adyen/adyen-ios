@@ -31,7 +31,7 @@ class CardFormViewController: UIViewController, CheckoutPaymentFieldDelegate {
             // If the payment method represents a group of cards,
             // then acceptedCards should include all card types of its members.
             if let members = paymentMethod.members {
-                acceptedCards = members.flatMap({ CardType(rawValue: $0.type) })
+                acceptedCards = members.compactMap({ CardType(rawValue: $0.type) })
             } else if let cardType = CardType(rawValue: paymentMethod.type) {
                 // Otherwise, we would expect only the card type associated with the payment method.
                 acceptedCards = [cardType]
@@ -67,7 +67,7 @@ class CardFormViewController: UIViewController, CheckoutPaymentFieldDelegate {
     
     var cardDetailsHandler: ((CardInputData) -> Void)?
     var cardScanButtonHandler: ((@escaping CardScanCompletion) -> Void)?
-    var formattedAmount: String?
+    var payButtonTitle = ""
     var paymentMethod: PaymentMethod?
     var shouldHideStoreDetails = false
     var shouldHideInstallments = false
@@ -156,7 +156,7 @@ class CardFormViewController: UIViewController, CheckoutPaymentFieldDelegate {
         storeDetailsButton.setImage(UIImage.bundleImage("checkbox_active"), for: .selected)
         storeDetailsButton.tintColor = AppearanceConfiguration.shared.tintColor
         
-        payButton.setTitle(ADYLocalizedString("payButton.formatted", formattedAmount ?? ""), for: .normal)
+        payButton.setTitle(payButtonTitle, for: .normal)
         contentView.addSubview(payButton)
         configurePayButtonLayout()
         

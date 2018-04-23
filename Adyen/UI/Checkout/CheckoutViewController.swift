@@ -298,13 +298,7 @@ public final class CheckoutViewController: UIViewController, PaymentRequestDeleg
         let alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
         
         //  Confirm alert action
-        let confirmActionTitle: String
-        if let amount = request.amount, let currencyCode = request.currency {
-            let formattedAmount = CurrencyFormatter.formatted(amount: amount, currencyCode: currencyCode) ?? ""
-            confirmActionTitle = ADYLocalizedString("payButton.formatted", formattedAmount)
-        } else {
-            confirmActionTitle = ADYLocalizedString("payButton.formatted")
-        }
+        let confirmActionTitle = AppearanceConfiguration.shared.payActionTitle(forAmount: request.amount, currencyCode: request.currency)
         let confirmAction = UIAlertAction(title: confirmActionTitle, style: .default) { action in
             completion(true)
         }
