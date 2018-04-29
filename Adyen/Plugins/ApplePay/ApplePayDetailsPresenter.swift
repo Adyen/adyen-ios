@@ -8,6 +8,9 @@ import Foundation
 import PassKit
 
 internal class ApplePayDetailsPresenter: NSObject, PaymentDetailsPresenter {
+
+    /// Ignored in this presenter.
+    var navigationMode: NavigationMode = .present
     
     private let hostViewController: UINavigationController
     

@@ -7,7 +7,9 @@
 import Foundation
 
 internal class MOLPayDetailsPresenter: PaymentDetailsPresenter {
-    
+
+    var navigationMode: NavigationMode = .push
+
     private let hostViewController: UINavigationController
     
     private let pluginConfiguration: PluginConfiguration
@@ -24,7 +26,18 @@ internal class MOLPayDetailsPresenter: PaymentDetailsPresenter {
         let pickerViewController = PickerViewController(items: pickerItems)
         pickerViewController.title = pluginConfiguration.paymentMethod.name
         pickerViewController.delegate = self
-        hostViewController.pushViewController(pickerViewController, animated: true)
+        present(pickerViewController)
+    }
+
+    private func present(_ viewController: UIViewController) {
+        switch navigationMode {
+        case .present:
+            hostViewController.viewControllers = [viewController]
+            viewController.navigationItem.hidesBackButton = true
+            viewController.navigationItem.leftBarButtonItem = AppearanceConfiguration.shared.cancelButtonItem(target: self, selector: #selector(didSelect(cancelButtonItem:)))
+        case .push:
+            hostViewController.pushViewController(viewController, animated: true)
+        }
     }
     
     private func submit(issuerIdentifier: String) {

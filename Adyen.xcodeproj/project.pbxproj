@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A64D0B32094C71600448864 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A64D0B12094C71600448864 /* LoadingViewController.swift */; };
+		1A64D0B42094C71600448864 /* PreferredPaymentMethodDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A64D0B22094C71600448864 /* PreferredPaymentMethodDelegate.swift */; };
 		53C0FEFC4B5CD9400E89E4CA /* Pods_AdyenTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3BE1722DC859E029DDBCF09 /* Pods_AdyenTests.framework */; };
 		7C62EBEC1F3C793700C9D67E /* PaymentMethodExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C62EBEB1F3C793700C9D67E /* PaymentMethodExtensions.swift */; };
 		7D7AD12FB4E950056731EEB6 /* Pods_Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7AEC312DF920BCC1C4BC1C0 /* Pods_Adyen.framework */; };
@@ -176,6 +178,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1A64D0B12094C71600448864 /* LoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
+		1A64D0B22094C71600448864 /* PreferredPaymentMethodDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferredPaymentMethodDelegate.swift; sourceTree = "<group>"; };
 		20191199750F47C401152B90 /* Pods-Adyen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Adyen.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Adyen/Pods-Adyen.debug.xcconfig"; sourceTree = "<group>"; };
 		36FCC0F6EB491A052CC61D81 /* Pods_AdyenUIHost.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AdyenUIHost.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		39B692648B2F9A2E64860876 /* Pods-Adyen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Adyen.release.xcconfig"; path = "Pods/Target Support Files/Pods-Adyen/Pods-Adyen.release.xcconfig"; sourceTree = "<group>"; };
@@ -673,6 +677,8 @@
 		E27DA5331F28D0DA008487D5 /* Checkout */ = {
 			isa = PBXGroup;
 			children = (
+				1A64D0B12094C71600448864 /* LoadingViewController.swift */,
+				1A64D0B22094C71600448864 /* PreferredPaymentMethodDelegate.swift */,
 				E27DA5351F28D0DA008487D5 /* CheckoutViewController.swift */,
 				E27DA5361F28D0DA008487D5 /* CheckoutViewControllerDelegate.swift */,
 			);
@@ -1194,6 +1200,7 @@
 				E25038271F175A1300DCFD38 /* SEPADirectDebitFormViewController.swift in Sources */,
 				E20AD0701EFAB0E00065B70E /* PaymentRequestResult.swift in Sources */,
 				E25038481F17641700DCFD38 /* CardPaymentFieldManager.swift in Sources */,
+				1A64D0B42094C71600448864 /* PreferredPaymentMethodDelegate.swift in Sources */,
 				E27DA5481F28D0DA008487D5 /* UITableViewControllerExtensions.swift in Sources */,
 				E27DA5791F28D48C008487D5 /* PaymentDetailsPresenter.swift in Sources */,
 				E275BB301FC2C54D00C7719E /* PaymentRequestToken.swift in Sources */,
@@ -1224,6 +1231,7 @@
 				E27DA5871F28D4BE008487D5 /* FormView.swift in Sources */,
 				E250381E1F1759B100DCFD38 /* IBANSpecification.swift in Sources */,
 				E23AE02D1F98BF6100FF10AD /* CheckoutButton.swift in Sources */,
+				1A64D0B32094C71600448864 /* LoadingViewController.swift in Sources */,
 				E250382F1F175D0800DCFD38 /* ApplePayDetailsPresenter.swift in Sources */,
 				E2BA22391FD96CEB00AC982E /* PickerViewCell.swift in Sources */,
 				E27DA5461F28D0DA008487D5 /* CheckoutViewControllerDelegate.swift in Sources */,

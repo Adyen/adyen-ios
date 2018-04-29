@@ -8,7 +8,9 @@ import Foundation
 import AdyenCSE
 
 internal class CardFormDetailsPresenter: PaymentDetailsPresenter {
-    
+
+    var navigationMode: NavigationMode = .push
+
     // MARK: - Public
     
     internal weak var delegate: PaymentDetailsPresenterDelegate?
@@ -37,9 +39,25 @@ internal class CardFormDetailsPresenter: PaymentDetailsPresenter {
         formViewController.cardDetailsHandler = { cardInputData in
             self.submit(cardInputData: cardInputData)
         }
-        hostViewController.pushViewController(formViewController, animated: true)
+        
+        present(formViewController)
     }
-    
+
+    private func present(_ viewController: UIViewController) {
+        switch navigationMode {
+        case .present:
+            hostViewController.viewControllers = [viewController]
+            viewController.navigationItem.hidesBackButton = true
+            viewController.navigationItem.leftBarButtonItem = AppearanceConfiguration.shared.cancelButtonItem(target: self, selector: #selector(didSelect(cancelButtonItem:)))
+        case .push:
+            hostViewController.pushViewController(viewController, animated: true)
+        }
+    }
+
+    @objc private func didSelect(cancelButtonItem: Any) {
+        hostViewController.dismiss(animated: true, completion: nil)
+    }
+
     // MARK: - Private
     
     private let hostViewController: UINavigationController
