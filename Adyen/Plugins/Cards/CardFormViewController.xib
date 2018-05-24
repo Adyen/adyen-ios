@@ -329,7 +329,7 @@
                                                         <userDefinedRuntimeAttribute type="string" keyPath="localizedTextKey" value="creditCard.storeDetailsButton"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u8P-Qu-n78">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u8P-Qu-n78">
                                                     <rect key="frame" x="315" y="0.0" width="60" height="59"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="store-details-button"/>
                                                     <constraints>
