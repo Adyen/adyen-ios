@@ -6,9 +6,22 @@
 
 import Foundation
 
+/// How to present payment details.
+internal enum NavigationMode {
+
+    /// Push
+    case push
+
+    /// Present modally (including in current view)
+    case present
+}
+
 /// Instances of conforming types present an interface to fill in payment details.
 internal protocol PaymentDetailsPresenter: class {
-    
+
+    /// How to present payment detals.
+    var navigationMode: NavigationMode { get set }
+
     /// The delegate of the details presenter.
     var delegate: PaymentDetailsPresenterDelegate? { get set }
     

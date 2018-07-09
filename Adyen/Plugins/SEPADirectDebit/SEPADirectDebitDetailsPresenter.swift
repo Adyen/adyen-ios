@@ -7,7 +7,9 @@
 import Foundation
 
 internal class SEPADirectDebitDetailsPresenter: PaymentDetailsPresenter {
-    
+
+    var navigationMode: NavigationMode = .push
+
     private let hostViewController: UINavigationController
     
     private let pluginConfiguration: PluginConfiguration
@@ -26,7 +28,22 @@ internal class SEPADirectDebitDetailsPresenter: PaymentDetailsPresenter {
         formViewController.title = pluginConfiguration.paymentMethod.name
         formViewController.payButtonTitle = AppearanceConfiguration.shared.payActionTitle(forAmount: paymentSetup.amount, currencyCode: paymentSetup.currencyCode)
         formViewController.delegate = self
-        hostViewController.pushViewController(formViewController, animated: true)
+        present(formViewController)
+    }
+
+    private func present(_ viewController: UIViewController) {
+        switch navigationMode {
+        case .present:
+            hostViewController.viewControllers = [viewController]
+            viewController.navigationItem.hidesBackButton = true
+            viewController.navigationItem.leftBarButtonItem = AppearanceConfiguration.shared.cancelButtonItem(target: self, selector: #selector(didSelect(cancelButtonItem:)))
+        case .push:
+            hostViewController.pushViewController(viewController, animated: true)
+        }
+    }
+
+    @objc private func didSelect(cancelButtonItem: Any) {
+        hostViewController.dismiss(animated: true, completion: nil)
     }
     
     fileprivate func submit(iban: String, name: String) {

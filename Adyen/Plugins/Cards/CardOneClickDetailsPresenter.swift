@@ -7,7 +7,9 @@
 import Foundation
 
 internal class CardOneClickDetailsPresenter: PaymentDetailsPresenter {
-    
+
+    var navigationMode: NavigationMode = .present
+
     private let hostViewController: UINavigationController
     
     private let pluginConfiguration: PluginConfiguration

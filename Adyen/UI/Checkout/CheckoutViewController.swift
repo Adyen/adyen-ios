@@ -42,7 +42,10 @@ public final class CheckoutViewController: UIViewController, PaymentRequestDeleg
     
     /// The delegate for payment processing.
     internal(set) public weak var delegate: CheckoutViewControllerDelegate?
-    
+
+    /// The delegate for payment method.
+    public weak var paymentMethodDelegate: PreferredPaymentMethodDelegate?
+
     /// The delegate for card scanning functionality for card payments.
     public weak var cardScanDelegate: CheckoutViewControllerCardScanDelegate?
     
@@ -58,6 +61,10 @@ public final class CheckoutViewController: UIViewController, PaymentRequestDeleg
         
         paymentRequest.start()
     }
+
+    fileprivate var hasPrefferedMethod: Bool {
+        return paymentMethodDelegate != nil
+    }
     
     /// :nodoc:
     public override func viewWillAppear(_ animated: Bool) {
@@ -66,12 +73,14 @@ public final class CheckoutViewController: UIViewController, PaymentRequestDeleg
         guard rootViewController == nil else {
             return
         }
-        
+
+        let initialViewController = hasPrefferedMethod ? loadingViewController : paymentMethodPickerViewController
+
         // If we're being presented inside a UINavigationController, skip the use of our own navigation controller.
         if parent is UINavigationController {
-            rootViewController = paymentMethodPickerViewController
+            rootViewController = initialViewController
         } else {
-            rootViewController = NavigationController(rootViewController: paymentMethodPickerViewController)
+            rootViewController = NavigationController(rootViewController: initialViewController)
         }
     }
     
@@ -115,10 +124,15 @@ public final class CheckoutViewController: UIViewController, PaymentRequestDeleg
     
     /// :nodoc:
     public func paymentRequest(_ request: PaymentRequest, requiresPaymentMethodFrom preferredMethods: [PaymentMethod]?, available availableMethods: [PaymentMethod], completion: @escaping MethodCompletion) {
+
         paymentMethodCompletion = completion
         
         paymentMethodPickerViewController.pluginManager = request.pluginManager
         paymentMethodPickerViewController.displayMethods(preferred: preferredMethods, available: availableMethods)
+
+        if let preferredMethod = paymentMethodDelegate?.preferredMethod(self, available: availableMethods) {
+            paymentMethodPickerViewController(paymentMethodPickerViewController, didSelectPaymentMethod: preferredMethod)
+        }
     }
     
     /// :nodoc:
@@ -171,7 +185,7 @@ public final class CheckoutViewController: UIViewController, PaymentRequestDeleg
     /// :nodoc:
     public func paymentRequest(_ request: PaymentRequest, requiresPaymentDetails details: PaymentDetails, completion: @escaping PaymentDetailsCompletion) {
         guard
-            let hostViewController = navigationController ?? paymentMethodPickerViewController.navigationController,
+            let hostViewController = navigationController ?? paymentMethodPickerViewController.navigationController ?? loadingViewController.navigationController,
             let paymentMethod = request.paymentMethod,
             let plugin = request.pluginManager?.plugin(for: paymentMethod) as? PluginPresentsPaymentDetails
         else {
@@ -190,9 +204,10 @@ public final class CheckoutViewController: UIViewController, PaymentRequestDeleg
         }
         
         let detailsPresenter = plugin.newPaymentDetailsPresenter(hostViewController: hostViewController)
+        detailsPresenter.navigationMode = hasPrefferedMethod ? .present : .push
         detailsPresenter.delegate = self
         detailsPresenter.start()
-        
+
         paymentDetailsCompletion = completion
         paymentDetailsPresenter = detailsPresenter
     }
@@ -256,6 +271,10 @@ public final class CheckoutViewController: UIViewController, PaymentRequestDeleg
     
     /// :nodoc:
     public func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        if hasPrefferedMethod {
+            delegate?.checkoutViewController(self, didFinishWith: .error(.cancelled))
+            return
+        }
         paymentMethodPickerViewController.reset()
         paymentDetailsPresenter?.delegate = self
     }
@@ -275,6 +294,15 @@ public final class CheckoutViewController: UIViewController, PaymentRequestDeleg
             viewIfLoaded?.addSubview(rootViewController.view)
         }
     }
+
+    private lazy var loadingViewController: LoadingViewController = {
+        let loadingViewController = LoadingViewController()
+        loadingViewController.didCancelClosure = { [weak self] in
+            guard let `self` = self else { return }
+            self.delegate?.checkoutViewController(self, didFinishWith: .error(.cancelled))
+        }
+        return loadingViewController
+    }()
     
     private lazy var paymentMethodPickerViewController: PaymentMethodPickerViewController = {
         PaymentMethodPickerViewController(delegate: self)
