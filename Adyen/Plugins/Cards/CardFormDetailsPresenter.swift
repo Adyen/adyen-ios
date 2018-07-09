@@ -10,6 +10,7 @@ import AdyenCSE
 internal class CardFormDetailsPresenter: PaymentDetailsPresenter {
 
     var navigationMode: NavigationMode = .push
+    var forceHidingStoreDetails: Bool = true
 
     // MARK: - Public
     
@@ -31,7 +32,7 @@ internal class CardFormDetailsPresenter: PaymentDetailsPresenter {
         formViewController.title = paymentMethod.name
         formViewController.payButtonTitle = AppearanceConfiguration.shared.payActionTitle(forAmount: paymentSetup.amount, currencyCode: paymentSetup.currencyCode)
         formViewController.paymentMethod = paymentMethod
-        formViewController.shouldHideStoreDetails = inputDetails?.filter({ $0.key == "storeDetails" }).count == 0
+        formViewController.shouldHideStoreDetails = forceHidingStoreDetails || inputDetails?.filter({ $0.key == "storeDetails" }).count == 0
         formViewController.shouldHideInstallments = inputDetails?.filter({ $0.key == "installments" }).count == 0
         formViewController.shouldHideCVC = !paymentMethod.isCVCRequested
         
