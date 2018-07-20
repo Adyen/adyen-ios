@@ -59,12 +59,15 @@ internal struct PaymentSetup {
         }
         
         let availablePaymentMethodsDictionaries = dictionary["paymentMethods"] as? [[String: Any]] ?? []
-        self.availablePaymentMethods = availablePaymentMethodsDictionaries.compactMap {
-            return PaymentMethod(info: $0, logoBaseURL: logoBaseURL.absoluteString, isOneClick: false)
-        }.groupBy {
-            return $0.group?.type ?? UUID().uuidString
-        }.compactMap {
-            return $0.count == 1 ? $0.first : PaymentMethod(members: $0)
+        self.availablePaymentMethods = availablePaymentMethodsDictionaries
+            .compactMap { (info: [String: Any]) -> PaymentMethod? in
+                return PaymentMethod(info: info, logoBaseURL: logoBaseURL.absoluteString, isOneClick: false)
+            }
+            .groupBy { (paymentMethod: PaymentMethod) -> String in
+                return paymentMethod.group?.type ?? UUID().uuidString
+            }
+            .compactMap { (paymentMethods: [PaymentMethod]) -> PaymentMethod? in
+                return paymentMethods.count == 1 ? paymentMethods.first : PaymentMethod(members: paymentMethods)
         }
         
         if let lineItemDictionaries = dictionary["lineItems"] as? [[String: Any]] {
