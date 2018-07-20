@@ -7,7 +7,11 @@
 import UIKit
 
 class LoadingTableViewCell: UITableViewCell {
+    #if swift(>=4.2)
+    private let loadingIndicator = UIActivityIndicatorView(style: .gray)
+    #else
     private let loadingIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    #endif
     
     var isShowingLoadingIndicator: Bool {
         return loadingIndicator.isAnimating

@@ -18,7 +18,12 @@ internal class FormCheckmarkButton: UIControl {
         configureConstraints()
         
         isAccessibilityElement = true
+        
+        #if swift(>=4.2)
+        accessibilityTraits = UIAccessibilityTraits.button
+        #else
         accessibilityTraits = UIAccessibilityTraitButton
+        #endif
     }
     
     required init(coder: NSCoder) {
@@ -90,11 +95,19 @@ internal class FormCheckmarkButton: UIControl {
         didSet {
             imageView.image = isSelected ? selectedImage : image
             
+            #if swift(>=4.2)
+            if isSelected {
+                accessibilityTraits = [.button, .selected]
+            } else {
+                accessibilityTraits = .button
+            }
+            #else
             if isSelected {
                 accessibilityTraits = UIAccessibilityTraitButton | UIAccessibilityTraitSelected
             } else {
                 accessibilityTraits = UIAccessibilityTraitButton
             }
+            #endif
         }
     }
     

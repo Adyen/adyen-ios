@@ -7,8 +7,13 @@
 import UIKit
 
 internal final class PickerViewCell: UITableViewCell {
+    #if swift(>=4.2)
+    typealias Style = UITableViewCell.CellStyle
+    #else
+    typealias Style = UITableViewCellStyle
+    #endif
     
-    internal override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    internal override init(style: Style, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         contentView.addSubview(customImageView)
@@ -107,6 +112,10 @@ internal final class PickerViewCell: UITableViewCell {
         }
     }
     
+    #if swift(>=4.2)
+    private lazy var activityIndicatorView = UIActivityIndicatorView(style: .gray)
+    #else
     private lazy var activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    #endif
     
 }

@@ -133,10 +133,18 @@ internal extension FormTextField {
         }
         
         set {
+            #if swift(>=4.2)
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 18.0),
+                .foregroundColor: UIColor.black
+            ]
+            #else
             let attributes: [NSAttributedStringKey: Any] = [
                 .font: UIFont.systemFont(ofSize: 18.0),
                 .foregroundColor: UIColor.black
             ]
+            #endif
+            
             textField.attributedText = NSAttributedString(string: newValue ?? "", attributes: attributes)
         }
     }
@@ -147,10 +155,17 @@ internal extension FormTextField {
         }
         
         set {
+            #if swift(>=4.2)
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 18.0),
+                .foregroundColor: #colorLiteral(red: 0.7450980392, green: 0.7450980392, blue: 0.7450980392, alpha: 1)
+            ]
+            #else
             let attributes: [NSAttributedStringKey: Any] = [
                 .font: UIFont.systemFont(ofSize: 18.0),
                 .foregroundColor: #colorLiteral(red: 0.7450980392, green: 0.7450980392, blue: 0.7450980392, alpha: 1)
             ]
+            #endif
             textField.attributedPlaceholder = NSAttributedString(string: newValue ?? "", attributes: attributes)
         }
     }
