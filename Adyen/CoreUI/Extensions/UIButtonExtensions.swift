@@ -40,7 +40,11 @@ internal extension UIButton {
             return activityIndicatorView
         }
         
+        #if swift(>=4.2)
+        let activityIndicatorView = UIActivityIndicatorView(style: .white)
+        #else
         let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .white)
+        #endif
         activityIndicatorView.color = activityIndicatorViewColor
         activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         objc_setAssociatedObject(self, &AssociatedObjectKeys.activityIndicatorView, activityIndicatorView, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)

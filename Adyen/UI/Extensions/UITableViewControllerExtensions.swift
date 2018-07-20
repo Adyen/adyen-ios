@@ -33,7 +33,11 @@ internal extension UITableViewController {
             return activityIndicatorView
         }
         
+        #if swift(>=4.2)
+        let activityIndicatorView = UIActivityIndicatorView(style: .gray)
+        #else
         let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        #endif
         activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         objc_setAssociatedObject(self, &AssociatedObjectKeys.activityIndicatorView, activityIndicatorView, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         

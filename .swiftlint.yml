@@ -6,6 +6,7 @@ disabled_rules:
   - unused_closure_parameter
   - todo
   - fallthrough
+  - identifier_name
 
   #Review:
   - large_tuple

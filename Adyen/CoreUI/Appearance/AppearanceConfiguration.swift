@@ -25,10 +25,18 @@ public final class AppearanceConfiguration {
     // MARK: - Configuring the Navigation Bar Title Text Appearance
     
     /// The attributes used for the navigation bar's title.
+    #if swift(>=4.2)
+    public var navigationBarTitleTextAttributes: [NSAttributedString.Key: Any]?
+    #else
     public var navigationBarTitleTextAttributes: [NSAttributedStringKey: Any]?
+    #endif
     
     /// The attributes used for the navigation bar's large title. Only has an effect on iOS 11 and higher.
+    #if swift(>=4.2)
+    public var navigationBarLargeTitleTextAttributes: [NSAttributedString.Key: Any]?
+    #else
     public var navigationBarLargeTitleTextAttributes: [NSAttributedStringKey: Any]?
+    #endif
     
     /// Display modes for the large title in a navigation bar.
     public enum NavigationBarLargeTitleDisplayMode {
@@ -114,7 +122,11 @@ public final class AppearanceConfiguration {
     
     // MARK: - Internal
     
+    #if swift(>=4.2)
+    internal var internalCheckoutButtonTitleTextAttributes: [NSAttributedString.Key: Any]? // swiftlint:disable:this identifier_name
+    #else
     internal var internalCheckoutButtonTitleTextAttributes: [NSAttributedStringKey: Any]? // swiftlint:disable:this identifier_name
+    #endif
     
     internal var internalCheckoutButtonTitleEdgeInsets: UIEdgeInsets?
     
@@ -163,8 +175,9 @@ extension AppearanceConfiguration: NSCopying {
 public extension AppearanceConfiguration {
     
     /// The attributes used for the checkout button's title. Only used when `checkoutButtonType` is the default.
+    #if swift(>=4.2)
     @available(*, deprecated, message: "Provide a custom button via checkoutButtonType instead.")
-    public var checkoutButtonTitleTextAttributes: [NSAttributedStringKey: Any]? {
+    public var checkoutButtonTitleTextAttributes: [NSAttributedString.Key: Any]? {
         get {
             return internalCheckoutButtonTitleTextAttributes
         }
@@ -173,6 +186,18 @@ public extension AppearanceConfiguration {
             internalCheckoutButtonTitleTextAttributes = newValue
         }
     }
+    #else
+    @available(*, deprecated, message: "Provide a custom button via checkoutButtonType instead.")
+    public var checkoutButtonTitleTextAttributes: [NSAttributedStringKey: Any]? {
+        get {
+            return internalCheckoutButtonTitleTextAttributes
+        }
+    
+        set {
+            internalCheckoutButtonTitleTextAttributes = newValue
+        }
+    }
+    #endif
     
     /// The insets from the edges of the checkout button to the title. Only used when `checkoutButtonType` the default.
     @available(*, deprecated, message: "Provide a custom button via checkoutButtonType instead.")

@@ -33,8 +33,13 @@ internal class CheckoutButton: UIButton {
     }
     
     // MARK: - Title
+    #if swift(>=4.2)
+    typealias ControlState = UIControl.State
+    #else
+    typealias ControlState = UIControlState
+    #endif
     
-    internal override func setTitle(_ title: String?, for state: UIControlState) {
+    internal override func setTitle(_ title: String?, for state: ControlState) {
         guard let title = title else {
             setAttributedTitle(nil, for: state)
             

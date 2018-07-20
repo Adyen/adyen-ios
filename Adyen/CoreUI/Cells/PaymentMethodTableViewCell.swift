@@ -9,8 +9,13 @@ import UIKit
 class PaymentMethodTableViewCell: LoadingTableViewCell {
     
     // MARK: - Initializing
+    #if swift(>=4.2)
+    typealias Style = UITableViewCell.CellStyle
+    #else
+    typealias Style = UITableViewCellStyle
+    #endif
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: Style, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         commonInit()
@@ -102,7 +107,11 @@ class PaymentMethodTableViewCell: LoadingTableViewCell {
         contentView.addSubview(logoView)
         contentView.addSubview(nameLabel)
         
+        #if swift(>=4.2)
+        accessibilityTraits.insert(.button)
+        #else
         accessibilityTraits |= UIAccessibilityTraitButton
+        #endif
         
         configureConstraints()
     }
