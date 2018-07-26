@@ -4,13 +4,13 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import UIKit
 import Adyen
+import UIKit
 
 class PaymentDetailsViewController: CheckoutViewController {
-    
-    init(withPaymentMethod method: PaymentMethod) {
+    init(withPaymentMethod method: PaymentMethod, paymentController: PaymentController) {
         paymentMethod = method
+        self.paymentController = paymentController
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -41,6 +41,7 @@ class PaymentDetailsViewController: CheckoutViewController {
     // MARK: - Public
     
     let paymentMethod: PaymentMethod
+    let paymentController: PaymentController
     
     let formScrollView = UIScrollView(frame: .zero)
     let submitButton = UIButton(type: .custom)

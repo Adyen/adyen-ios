@@ -16,7 +16,7 @@ struct Configuration {
     
     // Checks if SecretKey was defined in compile time via SECRET_KEY user defined build setting.
     static func readApiKeyFromUserDefinedBuildSettings() {
-        if let apiKey = Bundle.init(for: AppDelegate.self).object(forInfoDictionaryKey: "SecretKey") as? String,
+        if let apiKey = Bundle(for: AppDelegate.self).object(forInfoDictionaryKey: "SecretKey") as? String,
             apiKey.isEmpty == false {
             Configuration.appSecretKey = apiKey
         }

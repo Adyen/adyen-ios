@@ -13,67 +13,32 @@ Pod::Spec.new do |s|
   s.author = { 'Adyen' => 'support@adyen.com' }
   s.source = { :git => 'https://github.com/Adyen/adyen-ios.git', :tag => "#{s.version}" }
   s.platform = :ios
-  s.ios.deployment_target = '9.0'
+  s.ios.deployment_target = '10.0'
   s.frameworks = 'Foundation'
-
-  s.default_subspecs = 'Core', 'Cards', 'Ideal', 'SEPADirectDebit', 'UI'
+  s.default_subspecs = 'Core', 'Card', 'SEPA'
 
   s.subspec 'Core' do |plugin|
-    plugin.source_files = 'Adyen/Core/**/*.swift'
+    plugin.source_files = 'Adyen/**/*.swift'
+    plugin.dependency 'AdyenInternal', version
   end
 
   # Payment Methods
   s.subspec 'ApplePay' do |plugin|
-    plugin.source_files = 'Adyen/Plugins/ApplePay/**/*.swift'
-    plugin.dependency 'Adyen/Core'
-    plugin.dependency 'Adyen/CoreUI'
-  end
-
-  s.subspec 'Cards' do |plugin|
-    plugin.dependency 'Adyen/Core'
-    plugin.dependency 'Adyen/CoreUI'
-    plugin.dependency 'AdyenCSE', '~> 1.1'
-    plugin.source_files = 'Adyen/Plugins/Cards/**/*.swift'
-    plugin.resource_bundles = {
-        'Cards' => [
-            'Adyen/Plugins/Cards/**/*.xib'
-        ]
-    }
-  end
-
-  s.subspec 'Ideal' do |plugin|
-    plugin.source_files = 'Adyen/Plugins/Ideal/**/*.swift'
-    plugin.dependency 'Adyen/CoreUI'
+    plugin.source_files = 'AdyenApplePay/**/*.swift'
     plugin.dependency 'Adyen/Core'
   end
 
-  s.subspec 'SEPADirectDebit' do |plugin|
-    plugin.source_files = 'Adyen/Plugins/SEPADirectDebit/**/*.swift'
+  s.subspec 'Card' do |plugin|
+    plugin.xcconfig = { 'SWIFT_INCLUDE_PATHS' => '${PODS_TARGET_SRCROOT}/AdyenCard/AdyenCSE' }
+    plugin.preserve_paths = 'AdyenCard/AdyenCSE/module.modulemap'
     plugin.dependency 'Adyen/Core'
-    plugin.dependency 'Adyen/CoreUI'
+    plugin.source_files = 'AdyenCard/**/*.swift', 'AdyenCard/AdyenCSE/*.{h,m}'
+    plugin.private_header_files = 'AdyenCard/AdyenCSE/*.h'
   end
 
-  s.subspec 'MOLPay' do |plugin|
-    plugin.source_files = 'Adyen/Plugins/MOLPay/**/*.swift'
+  s.subspec 'SEPA' do |plugin|
+    plugin.source_files = 'AdyenSEPA/**/*.swift'
     plugin.dependency 'Adyen/Core'
-    plugin.dependency 'Adyen/CoreUI'
   end
 
-  # Internals
-  s.subspec 'UI' do |plugin|
-    plugin.source_files = 'Adyen/UI/**/*.swift'
-    plugin.dependency 'Adyen/Core'
-    plugin.dependency 'Adyen/CoreUI'
-  end
-
-  s.subspec 'CoreUI' do |plugin|
-    plugin.source_files = 'Adyen/CoreUI/**/*.swift'
-    plugin.resource_bundles = {
-        'CoreUI' => [
-            'Adyen/CoreUI/Assets/Media.xcassets',
-            'Adyen/CoreUI/Assets/*.lproj/*.strings'
-        ]
-    }
-    plugin.dependency 'Adyen/Core'
-  end
 end

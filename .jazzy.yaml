@@ -3,6 +3,8 @@ author: Adyen
 author_url: https://adyen.com
 github_url: https://github.com/Adyen/adyen-ios
 
+readme: README.md
+
 output: Docs
 
 theme: Docs/theme
@@ -12,34 +14,35 @@ hide_documentation_coverage: true
 custom_categories:
   - name: UI
     children:
-    - CheckoutViewController
-    - CheckoutViewControllerDelegate
-    - CheckoutViewControllerCardScanDelegate
-    - AppearanceConfiguration
+    - CheckoutController
+    - CheckoutControllerDelegate
+  - name: Appearance
+    children:
+    - Appearance
+  - name: Redirect
+    children:
+    - applicationDidOpen(_:)
   - name: Payment
     children:
-    - Payment
-    - PaymentStatus
-  - name: Payment Request
-    children:
-    - PaymentRequest
-    - PaymentRequestDelegate
-    - PaymentRequestResult
-    - Error
+    - PaymentController
+    - PaymentControllerDelegate
+    - PaymentSession
+    - PaymentResult
   - name: Payment Method
     children:
+    - SectionedPaymentMethods
     - PaymentMethod
-    - PaymentDetails
-    - InputDetail
-    - InputType
-    - InputSelectItem
-    - OneClickInfo
-    - CardOneClickInfo
-    - PayPalOneClickInfo
-  - name: Utilities
+    - PaymentDetail
+    - StoredPaymentDetails
+    - StoredCardPaymentDetails
+    - StoredPayPalPaymentDetails
+  - name: Other
     children:
-    - CardType
-    - CardValidator
-    - IBANSpecification
-    - IBANValidator
-    - IBANTextField
+    - Completion
+    - Result
+    - Array
+  - name: Card Module
+    children:
+    - CardEncryptor
+    - CardScanDelegate
+    - CardScanCompletion

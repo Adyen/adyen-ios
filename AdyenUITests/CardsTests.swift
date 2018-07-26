@@ -7,23 +7,29 @@
 import XCTest
 
 class CardsTests: TestCase {
-    
     func testSuccessfulPayment() {
-        let table = app.tables.first
-        table.cells["Credit Card"].tap()
+        selectPaymentMethod("Credit Card")
         
         // Find the checkout button and ensure it's disabled.
         XCTAssertFalse(checkoutButton.isEnabled)
         
+        // Enter the holder name.
+        holderNameField.tap()
+        holderNameField.typeText("Checkout Shopper")
+        
+        // The checkout button should be disabled while waiting for the user to complete input.
+        XCTAssertFalse(checkoutButton.isEnabled)
+        
         // Enter the credit card number.
+        numberField.tap()
         numberField.typeText("5555444433331111")
         
         // The checkout button should be disabled while waiting for the user to complete input.
         XCTAssertFalse(checkoutButton.isEnabled)
         
         // Enter the expiration date.
-        expiryField.tap()
-        expiryField.typeText("0818")
+        expiryDateField.tap()
+        expiryDateField.typeText("0818")
         
         // The checkout button should still be disabled while waiting for the user to complete input.
         XCTAssertFalse(checkoutButton.isEnabled)
@@ -32,7 +38,7 @@ class CardsTests: TestCase {
         cvcField.tap()
         cvcField.typeText("737")
         
-        // After selecting the agree button, the checkout button should be enabled.
+        // After completing the input, the checkout button should be enabled.
         XCTAssertTrue(checkoutButton.isEnabled)
         
         // Tap the checkout button.
@@ -42,7 +48,9 @@ class CardsTests: TestCase {
     }
     
     func testSuccessfulOneClickPayment() {
-        app.cells.first.tap()
+        selectPaymentMethod()
+        
+        app.tables.last.cells.first.tap()
         
         // Enter a valid CVC and submit.
         oneClickVerificationAlert.textFields.first.typeText("737")
@@ -52,7 +60,9 @@ class CardsTests: TestCase {
     }
     
     func testOneClickPaymentWithInvalidCVC() {
-        app.cells.first.tap()
+        selectPaymentMethod()
+        
+        app.tables.last.cells.first.tap()
         
         // Enter an invalid CVC and submit.
         oneClickVerificationAlert.textFields.first.typeText("123")
@@ -67,12 +77,16 @@ class CardsTests: TestCase {
         return app.scrollViews.first
     }
     
+    private var holderNameField: XCUIElement {
+        return contentView.textFields["holder-name-field"]
+    }
+    
     private var numberField: XCUIElement {
         return contentView.textFields["number-field"]
     }
     
-    private var expiryField: XCUIElement {
-        return contentView.textFields["expiry-field"]
+    private var expiryDateField: XCUIElement {
+        return contentView.textFields["expiry-date-field"]
     }
     
     private var cvcField: XCUIElement {

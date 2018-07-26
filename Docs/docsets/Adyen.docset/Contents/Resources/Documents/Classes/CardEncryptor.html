@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CardEncryptor Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+
+    <!– Global Site Tag (gtag.js) - Google Analytics –>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-3072609-16"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments) };
+    gtag('js', new Date());
+    gtag('config', 'UA-3072609-16', { 'anonymize_ip': true });
+    </script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/CardEncryptor" class="dashAnchor"></a>
+
+    <a title="CardEncryptor Class Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a href="../index.html" title="Adyen Docs">
+          <img src="../img/adyen-logo.png" class="header__logo">
+        </a>
+        
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/Adyen/adyen-ios">
+            <img class="header-icon" src="../img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">Adyen Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      CardEncryptor Class Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../UI.html">UI</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CheckoutController.html">CheckoutController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/CheckoutControllerDelegate.html">CheckoutControllerDelegate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Appearance.html">Appearance</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Appearance.html">Appearance</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Appearance/NavigationBarAttributes.html">– NavigationBarAttributes</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Appearance/SafariViewControllerAttributes.html">– SafariViewControllerAttributes</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Appearance/CheckoutButtonAttributes.html">– CheckoutButtonAttributes</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Appearance/ListAttributes.html">– ListAttributes</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Appearance/FormAttributes.html">– FormAttributes</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Redirect.html">Redirect</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Redirect.html#/s:5Adyen18applicationDidOpenSb10Foundation3URLVF">applicationDidOpen(_:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Payment.html">Payment</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/PaymentController.html">PaymentController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/PaymentController/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/PaymentControllerDelegate.html">PaymentControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PaymentSession.html">PaymentSession</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PaymentSession/Payment.html">– Payment</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PaymentSession/Company.html">– Company</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PaymentSession/LineItem.html">– LineItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PaymentResult.html">PaymentResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PaymentResult/Status.html">– Status</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Payment Method.html">Payment Method</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SectionedPaymentMethods.html">SectionedPaymentMethods</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PaymentMethod.html">PaymentMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PaymentDetail.html">PaymentDetail</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PaymentDetail/InputType.html">– InputType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PaymentDetail/SelectItem.html">– SelectItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Payment Method.html#/s:5Adyen20StoredPaymentDetailsP">StoredPaymentDetails</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/StoredCardPaymentDetails.html">StoredCardPaymentDetails</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/StoredPayPalPaymentDetails.html">StoredPayPalPaymentDetails</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other.html">Other</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other.html#/s:5Adyen10Completiona">Completion</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/Result.html">Result</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Array.html">Array</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Card Module.html">Card Module</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CardEncryptor.html">CardEncryptor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CardEncryptor/Card.html">– Card</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CardEncryptor/EncryptedCard.html">– EncryptedCard</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CardEncryptor/Environment.html">– Environment</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/CardScanDelegate.html">CardScanDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Card Module.html#/s:5Adyen18CardScanCompletiona">CardScanCompletion</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>CardEncryptor</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">CardEncryptor</span></code></pre>
+
+                </div>
+              </div>
+            <p>An object that provides static methods for encrypting card information and retrieving public keys from the server.</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen13CardEncryptorC0B0V"></a>
+                    <a name="//apple_ref/swift/Struct/Card" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen13CardEncryptorC0B0V">Card</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Contains the information of a card that is yet to be encrypted.</p>
+
+                        <a href="../Classes/CardEncryptor/Card.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Card</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen13CardEncryptorC09EncryptedB0V"></a>
+                    <a name="//apple_ref/swift/Struct/EncryptedCard" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen13CardEncryptorC09EncryptedB0V">EncryptedCard</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Contains encrypted card information.</p>
+
+                        <a href="../Classes/CardEncryptor/EncryptedCard.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">EncryptedCard</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen13CardEncryptorC09encryptedB0AC09EncryptedB0VAC0B0V3for_SS9publicKey10Foundation4DateV010generationJ0tFZ"></a>
+                    <a name="//apple_ref/swift/Method/encryptedCard(for:publicKey:generationDate:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen13CardEncryptorC09encryptedB0AC09EncryptedB0VAC0B0V3for_SS9publicKey10Foundation4DateV010generationJ0tFZ">encryptedCard(for:publicKey:generationDate:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Encrypts Card information with AES-CBC using generated AES256 session key and IV (12)
+Encrypts the session key with RSA using public key (using Keychain)</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">encryptedCard</span><span class="p">(</span><span class="k">for</span> <span class="nv">card</span><span class="p">:</span> <span class="kt"><a href="../Classes/CardEncryptor/Card.html">Card</a></span><span class="p">,</span> <span class="nv">publicKey</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">generationDate</span><span class="p">:</span> <span class="kt">Date</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/CardEncryptor/EncryptedCard.html">EncryptedCard</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>card</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Card containing data to be encrypted.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>publicKey</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Public key in Hex with format <q>Exponent|Modulus</q>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>generationDate</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>card object generation date.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Object with individually encrypted fields.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen13CardEncryptorC14encryptedTokenSSAC0B0V3for_SSSg10holderNameSS9publicKey10Foundation4DateV010generationL0tKFZ"></a>
+                    <a name="//apple_ref/swift/Method/encryptedToken(for:holderName:publicKey:generationDate:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen13CardEncryptorC14encryptedTokenSSAC0B0V3for_SSSg10holderNameSS9publicKey10Foundation4DateV010generationL0tKFZ">encryptedToken(for:holderName:publicKey:generationDate:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Encrypts Card information with AES-CBC using generated AES256 session key and IV (12)
+Encrypts the session key with RSA using public key (using Keychain)</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">encryptedToken</span><span class="p">(</span><span class="k">for</span> <span class="nv">card</span><span class="p">:</span> <span class="kt"><a href="../Classes/CardEncryptor/Card.html">Card</a></span><span class="p">,</span> <span class="nv">holderName</span><span class="p">:</span> <span class="kt">String</span><span class="p">?,</span> <span class="nv">publicKey</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">generationDate</span><span class="p">:</span> <span class="kt">Date</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>card</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Card containing data to be encrypted.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>holderName</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Card holder name if any provided.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>publicKey</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Public key in Hex with format <q>Exponent|Modulus</q>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>generationDate</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>card object generation date.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>String with encrypted token or throws in case of error.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen13CardEncryptorC16requestPublicKeyySS8forToken_AC11EnvironmentO11environmentyAA6ResultOySSGc10completiontFZ"></a>
+                    <a name="//apple_ref/swift/Method/requestPublicKey(forToken:environment:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen13CardEncryptorC16requestPublicKeyySS8forToken_AC11EnvironmentO11environmentyAA6ResultOySSGc10completiontFZ">requestPublicKey(forToken:environment:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Fetches the Public encryption key from Adyen backend.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">requestPublicKey</span><span class="p">(</span><span class="n">forToken</span> <span class="nv">token</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">environment</span><span class="p">:</span> <span class="kt"><a href="../Classes/CardEncryptor/Environment.html">Environment</a></span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Other.html#/s:5Adyen10Completiona">Completion</a></span><span class="o">&lt;</span><span class="kt"><a href="../Enums/Result.html">Result</a></span><span class="o">&lt;</span><span class="kt">String</span><span class="o">&gt;&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>token</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>your token.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>environment</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>environment for public key fetch.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>closure for handling fetched key or failure.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen13CardEncryptorC09encryptedB0yAC0B0V3for_SS14publicKeyToken10Foundation4DateV010generationJ0AC11EnvironmentO11environmentyAA6ResultOyAC09EncryptedB0VGc10completiontFZ"></a>
+                    <a name="//apple_ref/swift/Method/encryptedCard(for:publicKeyToken:generationDate:environment:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen13CardEncryptorC09encryptedB0yAC0B0V3for_SS14publicKeyToken10Foundation4DateV010generationJ0AC11EnvironmentO11environmentyAA6ResultOyAC09EncryptedB0VGc10completiontFZ">encryptedCard(for:publicKeyToken:generationDate:environment:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Encrypts Card information after requesting public key from token.
+This methods encapsulates calls to <code>requestPublicKey(forToken token: environment: completion:)</code> and <code>encryptedCard(for card: publicKey: generationDate:)</code></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">encryptedCard</span><span class="p">(</span><span class="k">for</span> <span class="nv">card</span><span class="p">:</span> <span class="kt"><a href="../Classes/CardEncryptor/Card.html">Card</a></span><span class="p">,</span> <span class="nv">publicKeyToken</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">generationDate</span><span class="p">:</span> <span class="kt">Date</span><span class="p">,</span> <span class="nv">environment</span><span class="p">:</span> <span class="kt"><a href="../Classes/CardEncryptor/Environment.html">Environment</a></span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Other.html#/s:5Adyen10Completiona">Completion</a></span><span class="o">&lt;</span><span class="kt"><a href="../Enums/Result.html">Result</a></span><span class="o">&lt;</span><span class="kt"><a href="../Classes/CardEncryptor/EncryptedCard.html">EncryptedCard</a></span><span class="o">&gt;&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>card</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Card containing data to be encrypted.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>publicKeyToken</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>your token.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>generationDate</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>card object generation date.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>environment</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>environment for public key fetch.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>closure for handling encrypted card or failure.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen13CardEncryptorC14encryptedTokenyAC0B0V3for_SSSg10holderNameSS09publicKeyE010Foundation4DateV010generationL0AC11EnvironmentO11environmentyAA6ResultOySSGc10completiontFZ"></a>
+                    <a name="//apple_ref/swift/Method/encryptedToken(for:holderName:publicKeyToken:generationDate:environment:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen13CardEncryptorC14encryptedTokenyAC0B0V3for_SSSg10holderNameSS09publicKeyE010Foundation4DateV010generationL0AC11EnvironmentO11environmentyAA6ResultOySSGc10completiontFZ">encryptedToken(for:holderName:publicKeyToken:generationDate:environment:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Encrypts Card information after requesting public key from token.
+This methods encapsulates calls to <code>requestPublicKey(forToken token: environment: completion:)</code> and <code>encrypt(_ card: publicKey: generationDate:)</code></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">encryptedToken</span><span class="p">(</span><span class="k">for</span> <span class="nv">card</span><span class="p">:</span> <span class="kt"><a href="../Classes/CardEncryptor/Card.html">Card</a></span><span class="p">,</span> <span class="nv">holderName</span><span class="p">:</span> <span class="kt">String</span><span class="p">?,</span> <span class="nv">publicKeyToken</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">generationDate</span><span class="p">:</span> <span class="kt">Date</span><span class="p">,</span> <span class="nv">environment</span><span class="p">:</span> <span class="kt"><a href="../Classes/CardEncryptor/Environment.html">Environment</a></span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Other.html#/s:5Adyen10Completiona">Completion</a></span><span class="o">&lt;</span><span class="kt"><a href="../Enums/Result.html">Result</a></span><span class="o">&lt;</span><span class="kt">String</span><span class="o">&gt;&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>card</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Card containing data to be encrypted.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>holderName</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Card holder name if any provided.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>publicKeyToken</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>your token.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>generationDate</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>card object generation date.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>environment</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>environment for public key fetch.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>closure for handling encrypted card token or failure.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen13CardEncryptorC11EnvironmentO"></a>
+                    <a name="//apple_ref/swift/Enum/Environment" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen13CardEncryptorC11EnvironmentO">Environment</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Enum specifying the environments for which a public key can be retrieved.</p>
+
+                        <a href="../Classes/CardEncryptor/Environment.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">Environment</span> <span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="kt">Decodable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2018 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2018-07-24)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</html>

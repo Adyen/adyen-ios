@@ -4,108 +4,14 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import UIKit
 import Adyen
-import AdyenCSE
+import UIKit
 
-class PaymentRequestManager: PaymentRequestDelegate {
-    
+class PaymentRequestManager {
+
     // MARK: - Object Lifecycle
     
     static let shared = PaymentRequestManager()
-    
-    // MARK: - PaymentRequestDelegate
-    
-    func paymentRequest(_ request: PaymentRequest, requiresPaymentDataForToken token: String, completion: @escaping DataCompletion) {
-        let paymentDetails: [String: Any] = [
-            "amount": [
-                "value": 17408,
-                "currency": "USD"
-            ],
-            "reference": "#237867422",
-            "countryCode": "NL",
-            "shopperLocale": "nl_NL",
-            "shopperReference": "user349857934",
-            "returnUrl": "adyenCustomIntegrationExample://",
-            "channel": "ios",
-            "token": token
-        ]
-        
-        // For your convenience, we offer a test merchant server. Always use your own implementation when testing before going live.
-        let url = URL(string: "https://checkoutshopper-test.adyen.com/checkoutshopper/demoserver/setup")!
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.httpBody = try? JSONSerialization.data(withJSONObject: paymentDetails, options: [])
-        request.allHTTPHeaderFields = [
-            "x-demo-server-api-key": secretKey,
-            "Content-Type": "application/json"
-        ]
-        
-        let session = URLSession(configuration: .default)
-        session.dataTask(with: request) { data, response, error in
-            if let data = data {
-                completion(data)
-            }
-        }.resume()
-    }
-    
-    func paymentRequest(_ request: PaymentRequest, requiresPaymentMethodFrom preferredMethods: [PaymentMethod]?, available availableMethods: [PaymentMethod], completion: @escaping MethodCompletion) {
-        // Ignore preferred payment methods for this demo.
-        
-        paymentMethods = availableMethods
-        paymentMethodCompletion = completion
-        postMainThreadNotification(PaymentRequestManager.didUpdatePaymentMethodsNotification)
-    }
-    
-    func paymentRequest(_ request: PaymentRequest, requiresReturnURLFrom url: URL, completion: @escaping URLCompletion) {
-        urlCompletion = completion
-        let userInfo = [PaymentRequestManager.externalPaymentCompletionURLKey: url]
-        postMainThreadNotification(PaymentRequestManager.didRequestExternalPaymentCompletionNotification, userInfo: userInfo)
-    }
-    
-    func paymentRequest(_ request: PaymentRequest, requiresPaymentDetails details: PaymentDetails, completion: @escaping PaymentDetailsCompletion) {
-        if let method = request.paymentMethod, method.type == "card" {
-            if let cardDetails = cardDetails,
-                let cardData = cardDetails.cardData(forRequest: request),
-                let publicKey = request.publicKey,
-                let encryptedToken = ADYEncrypter.encrypt(cardData, publicKeyInHex: publicKey) {
-                details.fillCard(token: encryptedToken, storeDetails: cardDetails.shouldStoreDetails)
-                completion(details)
-            } else {
-                // This should be an edge case, so just fail gracefully.
-                // If this becomes a common case, better handling needs to be implemented.
-                request.cancel()
-            }
-        } else {
-            // Do nothing. For now only handle cards.
-        }
-    }
-    
-    func paymentRequest(_ request: PaymentRequest, didFinishWith result: PaymentRequestResult) {
-        switch result {
-        case let .payment(payment):
-            switch payment.status {
-            case .received, .authorised:
-                requestStatus = .success
-            case .error, .refused:
-                requestStatus = .failure
-            case .cancelled:
-                requestStatus = .cancelled
-            }
-        case let .error(error):
-            switch error {
-            case .cancelled:
-                requestStatus = .cancelled
-            default:
-                requestStatus = .failure
-            }
-        }
-        
-        let userInfo = [PaymentRequestManager.finishedRequestStatusKey: requestStatus]
-        postMainThreadNotification(PaymentRequestManager.didFinishRequestNotification, userInfo: userInfo)
-        clearStoredRequestData()
-    }
     
     // MARK: - Public
     
@@ -117,7 +23,7 @@ class PaymentRequestManager: PaymentRequestDelegate {
     static let didFinishRequestNotification = Notification.Name("didFinishRequest")
     static let finishedRequestStatusKey = "finishedRequestStatus"
     
-    var paymentMethods: [PaymentMethod]?
+    var paymentMethods: SectionedPaymentMethods?
     
     // This is hardcoded for demo purposes.
     var paymentAmountString: String = "$174.08"
@@ -140,23 +46,41 @@ class PaymentRequestManager: PaymentRequestDelegate {
             return false
         }
         
-        request = PaymentRequest(delegate: self)
-        request?.start()
+        paymentController = PaymentController(delegate: self)
+        paymentController?.start()
         requestStatus = .inProgress
         
         return true
     }
     
     func cancelRequest() {
-        request?.cancel()
+        paymentController?.cancel()
     }
     
     func select(paymentMethod: PaymentMethod) {
-        paymentMethodCompletion?(paymentMethod)
-    }
-    
-    func processExternalPayment(withURL url: URL) {
-        urlCompletion?(url)
+        guard
+            let publicKey = paymentController?.paymentSession?.publicKey,
+            let generationDate = paymentController?.paymentSession?.generationDate else {
+            return
+        }
+        
+        let card = CardEncryptor.Card(
+            number: cardDetails?.number,
+            securityCode: cardDetails?.cvc,
+            expiryMonth: cardDetails?.expiryMonth,
+            expiryYear: cardDetails?.expiryYear
+        )
+        
+        let encryptedCard = CardEncryptor.encryptedCard(for: card, publicKey: publicKey, generationDate: generationDate)
+        
+        var method = paymentMethod
+        method.details.cardholderName?.value = cardDetails?.name
+        method.details.encryptedCardNumber?.value = encryptedCard.number
+        method.details.encryptedSecurityCode?.value = encryptedCard.securityCode
+        method.details.encryptedExpiryMonth?.value = encryptedCard.expiryMonth
+        method.details.encryptedExpiryYear?.value = encryptedCard.expiryYear
+        
+        paymentMethodCompletion?(method)
     }
     
     /**
@@ -212,33 +136,10 @@ class PaymentRequestManager: PaymentRequestDelegate {
         let expiryYear: String
         let cvc: String
         let shouldStoreDetails: Bool
-        
-        func cardData(forRequest request: PaymentRequest) -> Data? {
-            guard let generationTime = request.generationTime else {
-                return nil
-            }
-            
-            let dateFormatter = DateFormatter()
-            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
-            dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-            
-            let generationDate = dateFormatter.date(from: generationTime)
-            
-            let card = ADYCard()
-            card.generationtime = generationDate
-            card.holderName = name
-            card.number = number
-            card.expiryMonth = expiryMonth
-            card.expiryYear = expiryYear
-            card.cvc = cvc
-            return card.encode()
-        }
     }
     
-    private var request: PaymentRequest?
-    private var paymentMethodCompletion: MethodCompletion?
-    private var urlCompletion: URLCompletion?
+    internal var paymentController: PaymentController?
+    private var paymentMethodCompletion: Completion<PaymentMethod>?
     private var cardDetails: CardDetails?
     private var requestStatus: RequestStatus = .none
     
@@ -251,13 +152,95 @@ class PaymentRequestManager: PaymentRequestDelegate {
     }
     
     private func clearStoredRequestData() {
-        request = nil
+        paymentController = nil
         paymentMethodCompletion = nil
-        urlCompletion = nil
         cardDetails = nil
         paymentMethods = nil
         requestStatus = .none
         PaymentMethodImageCache.shared.removeAllObjects()
+    }
+    
+}
+
+extension PaymentRequestManager: PaymentControllerDelegate {
+    func requestPaymentSession(withToken token: String, for paymentController: PaymentController, responseHandler: @escaping (String) -> Void) {
+        let paymentDetails: [String: Any] = [
+            "amount": [
+                "value": 17408,
+                "currency": "USD"
+            ],
+            "reference": "#237867422",
+            "countryCode": "NL",
+            "shopperLocale": "nl_NL",
+            "shopperReference": "user349857934",
+            "returnUrl": "adyenCustomIntegrationExample://",
+            "token": token
+        ]
+        
+        // For your convenience, we offer a test merchant server. Always use your own implementation when testing before going live.
+        let url = URL(string: "https://checkoutshopper-test.adyen.com/checkoutshopper/demoserver/paymentSession")!
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = try? JSONSerialization.data(withJSONObject: paymentDetails, options: [])
+        request.allHTTPHeaderFields = [
+            "x-demo-server-api-key": secretKey,
+            "Content-Type": "application/json"
+        ]
+        
+        let session = URLSession(configuration: .default)
+        let task = session.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print(error)
+                paymentController.cancel()
+            } else if let data = data {
+                do {
+                    guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else { fatalError() }
+                    guard let paymentSession = json["paymentSession"] as? String else { fatalError() }
+                    
+                    responseHandler(paymentSession)
+                } catch {
+                    fatalError("Failed to parse payment session response: \(error)")
+                }
+            }
+        }
+        task.resume()
+    }
+    
+    func selectPaymentMethod(from paymentMethods: SectionedPaymentMethods, for paymentController: PaymentController, selectionHandler: @escaping (PaymentMethod) -> Void) {
+        self.paymentMethods = paymentMethods
+        self.paymentMethodCompletion = selectionHandler
+        postMainThreadNotification(PaymentRequestManager.didUpdatePaymentMethodsNotification)
+    }
+    
+    func redirect(to url: URL, for paymentController: PaymentController) {
+        let userInfo = [PaymentRequestManager.externalPaymentCompletionURLKey: url]
+        postMainThreadNotification(PaymentRequestManager.didRequestExternalPaymentCompletionNotification, userInfo: userInfo)
+    }
+    
+    func didFinish(with result: Result<PaymentResult>, for paymentController: PaymentController) {
+        switch result {
+        case let .success(payment):
+            switch payment.status {
+            case .received, .authorised, .pending:
+                requestStatus = .success
+            case .error, .refused:
+                requestStatus = .failure
+            case .cancelled:
+                requestStatus = .cancelled
+            }
+        case let .failure(error):
+            switch error {
+            case PaymentController.Error.cancelled:
+                requestStatus = .cancelled
+            default:
+                requestStatus = .failure
+            }
+        }
+        
+        let userInfo = [PaymentRequestManager.finishedRequestStatusKey: requestStatus]
+        postMainThreadNotification(PaymentRequestManager.didFinishRequestNotification, userInfo: userInfo)
+        clearStoredRequestData()
     }
     
 }

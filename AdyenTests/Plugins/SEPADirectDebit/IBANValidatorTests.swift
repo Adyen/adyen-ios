@@ -4,11 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+@testable import AdyenSEPA
 import XCTest
-@testable import Adyen
 
 class IBANValidatorTests: XCTestCase {
-    
     func testValidation() {
         for iban in validIBANs {
             XCTAssertTrue(IBANValidator.isValid(iban), "\(iban) is not valid.")

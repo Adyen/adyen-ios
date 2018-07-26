@@ -1,0 +1,68 @@
+{
+  "configuration": {
+    "canIgnoreCookies": "true"
+  },
+  "name": "iDEAL",
+  "paymentMethodData": "Hee57361f99ddcf4!ZW5jcnlwdGVkPUJRQUJBZ0FkMDkxS08yQW5CN3U0MyUyQkZLQ1lDSGhUdFo3MXNuTkk4Uk5TdnMlMkZzc0tTMzA0WFFkTlJPWCUyQjd4a2dxRXFkYkY1NkdTRUlVZW9NRlJwc1c1MFp4cmdkdjRWWUlzRlclMkJTZkYzNzR5OERCR2N2JTJGajZOYjJmcSUyRk9OaFVLQzlqYXN5eSUyQm45TWVjRm8xaWd0d3RtUW5BRWxzSGN5a0JVOWdoZDQzM0hnR3NKTDg4ckUxZHVwNDdyYSUyQmtabDJobHpxMzhVbGFTd0ZoNnMzNDZaOEdDTzlFJTJGVjcwR0tMVFdORHZ6Tlk1SlMwQUl5VEUlMkZDJTJCMW1MSUZjTCUyRndrR1NiOHFOSSUyQmFvNGtMbnRoZGNpZmFpbFJ4YWNyMHY5MWZGNHVzYXQwVll2YTV3eUxOT0dxdDI3T2VZSDdvVlZqQlRueWszclhNTU5GZXQ3byUyRjV2TnJESVl2TVA2M1l3JTJCYmxpOVpUVWFMN0pyMlBZWmt6QTN4M2JpalNzdDh4ckdmQXV1a1A4MEhNOTVYcTVTSWJMeWY3T1klMkZuMWNBaHJ1YjZncWlwJTJGT0RRb1RsYURBSFltNDRGUGZoaUxnR2tMJTJGcWE1bXN5cGxVQmwlMkZtZ0UzTHlqV0Qzb1l2Y1RqYk8wYTVidmZWTFlTVUFVTmZBbGpWS3lBeFdNQ0hsaDA5ZjUzN0I1eWtXYTlMWUtoZiUyRlBmcWhBcHRTNFNEcmJOZFdUaFl3dHRUaE4lMkJkemVxRll6N0glMkZPS0Vqc3hGWE14ZWdlcHdOdzFiNmtBdmFjdWsySnh6YjB3QSUyRnVqdUVZc1haR0lXUWtNQm1lT2pGSlloRlkzTWNocm1PaEFKS2dFSklnalJDVktMbnRwaEpMRkxpJTJGcU5tVCUyRk82YWN1WHolMkZ5RnUxdzBvem1ZSFRvcmIzUTVLVmJHZVJEblZ6TnFvS0h2NTNTQVAlMkJ6YW1hSENBRXA3SW10bGVTSTZJa0ZHTUVGQlFURXdNME5CTlRNM1JVRkZSRGczUXpJMFJFUTFNemt3T1VJNE1FRTNPRUU1TWpORk16Z3lNMFEyT0VSQlEwTTVORUk1UmtZNE16QTFSRU1pZmUyT2xTWkJ3bm9DSmgzZU1WU3JEU05pbWkwYVE5bm1sRWRPUGF5ZE81USUzRCZ2ZXJzaW9uPTI=",
+  "type": "ideal",
+  "details": [
+    {
+      "items": [
+        {
+          "id": "1121",
+          "name": "Test Issuer"
+        },
+        {
+          "id": "1154",
+          "name": "Test Issuer 5"
+        },
+        {
+          "id": "1153",
+          "name": "Test Issuer 4"
+        },
+        {
+          "id": "1152",
+          "name": "Test Issuer 3"
+        },
+        {
+          "id": "1151",
+          "name": "Test Issuer 2"
+        },
+        {
+          "id": "1162",
+          "name": "Test Issuer Cancelled"
+        },
+        {
+          "id": "1161",
+          "name": "Test Issuer Pending"
+        },
+        {
+          "id": "1160",
+          "name": "Test Issuer Refused"
+        },
+        {
+          "id": "1159",
+          "name": "Test Issuer 10"
+        },
+        {
+          "id": "1158",
+          "name": "Test Issuer 9"
+        },
+        {
+          "id": "1157",
+          "name": "Test Issuer 8"
+        },
+        {
+          "id": "1156",
+          "name": "Test Issuer 7"
+        },
+        {
+          "id": "1155",
+          "name": "Test Issuer 6"
+        }
+      ],
+      "key": "idealIssuer",
+      "type": "select"
+    }
+  ]
+}

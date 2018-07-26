@@ -7,11 +7,13 @@
 import XCTest
 
 class SEPADirectDebitTests: TestCase {
+    override func setUp() {
+        super.setUp()
+        
+        selectPaymentMethod("SEPA Direct Debit")
+    }
     
     func testSuccessfulPayment() {
-        let table = app.tables.first
-        table.cells["SEPA Direct Debit"].tap()
-        
         // Find the pay button and ensure it's disabled.
         XCTAssertFalse(payButton.isEnabled)
         
@@ -25,13 +27,7 @@ class SEPADirectDebitTests: TestCase {
         nameField.tap()
         nameField.typeText("A. Klaassen")
         
-        // The pay button should still be disabled while waiting for the user to complete input.
-        XCTAssertFalse(payButton.isEnabled)
-        
-        // Agree to the direct debit.
-        consentButton.tap()
-        
-        // After selecting the consent button, the pay button should be enabled.
+        // After completing the input, the pay button should be enabled.
         XCTAssertTrue(payButton.isEnabled)
         
         // Tap the pay button.
@@ -52,10 +48,6 @@ class SEPADirectDebitTests: TestCase {
     
     private var nameField: XCUIElement {
         return contentView.textFields["name-field"]
-    }
-    
-    private var consentButton: XCUIElement {
-        return contentView.buttons["consent-button"]
     }
     
     private var payButton: XCUIElement {

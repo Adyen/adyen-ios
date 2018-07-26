@@ -1,12 +1,12 @@
 language: objective-c
 
-osx_image: xcode8.3
+osx_image: xcode9.3
 
 env:
   global:
     - WORKSPACE="Adyen.xcworkspace"
-    - SCHEME="Adyen"
-    - DESTINATION="platform=iOS Simulator,name=iPhone 7,OS=10.3"
+    - SCHEME="AdyenUIHost"
+    - DESTINATION="platform=iOS Simulator,name=iPhone 8,OS=11.3"
 
 before_install:
   - gem install cocoapods
@@ -15,5 +15,4 @@ before_install:
 
 script:
   - ./Pods/SwiftLint/swiftlint
-  - pod lib lint
   - xcodebuild test -workspace "${WORKSPACE}" -scheme "${SCHEME}" -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO -destination "${DESTINATION}" |  xcpretty -s && exit ${PIPESTATUS[0]}

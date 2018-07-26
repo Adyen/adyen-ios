@@ -7,7 +7,7 @@
 import UIKit
 
 class HomeViewController: UIViewController, CheckoutStartDelegate, UIViewControllerTransitioningDelegate {
-    
+
     // MARK: - Object Lifecycle
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -100,7 +100,6 @@ class HomeViewController: UIViewController, CheckoutStartDelegate, UIViewControl
 }
 
 class PartialSizePresentationController: UIPresentationController {
-    
     override func presentationTransitionWillBegin() {
         guard let containerView = containerView,
             let presentingViewController = presentingViewController as? HomeViewController else {

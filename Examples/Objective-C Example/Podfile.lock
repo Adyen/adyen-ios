@@ -1,0 +1,33 @@
+PODS:
+  - Adyen (2.0.0):
+    - Adyen/Card (= 2.0.0)
+    - Adyen/Core (= 2.0.0)
+    - Adyen/SEPA (= 2.0.0)
+  - Adyen/ApplePay (2.0.0):
+    - Adyen/Core
+  - Adyen/Card (2.0.0):
+    - Adyen/Core
+  - Adyen/Core (2.0.0):
+    - AdyenInternal (= 2.0.0)
+  - Adyen/SEPA (2.0.0):
+    - Adyen/Core
+  - AdyenInternal (2.0.0)
+
+DEPENDENCIES:
+  - Adyen (from `../../`)
+  - Adyen/ApplePay (from `../../`)
+  - AdyenInternal (from `../../`)
+
+EXTERNAL SOURCES:
+  Adyen:
+    :path: "../../"
+  AdyenInternal:
+    :path: "../../"
+
+SPEC CHECKSUMS:
+  Adyen: c21ae363e1a05498bf63876fffb41616b0d8a684
+  AdyenInternal: 567b6f769daa87615fb6dc59ab3eab078f949504
+
+PODFILE CHECKSUM: 868a8cdc41ebd56691139c2542b3691cd1711b58
+
+COCOAPODS: 1.5.3

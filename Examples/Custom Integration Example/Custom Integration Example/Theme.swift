@@ -7,7 +7,6 @@
 import UIKit
 
 struct Theme {
-    
     static var primaryColor: UIColor {
         return #colorLiteral(red: 0.4078431373, green: 0.8117647059, blue: 0.7215686275, alpha: 1)
     }

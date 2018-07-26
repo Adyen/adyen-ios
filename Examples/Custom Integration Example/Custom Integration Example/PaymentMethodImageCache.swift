@@ -7,7 +7,7 @@
 import UIKit
 
 class PaymentMethodImageCache: NSCache<AnyObject, AnyObject> {
-    
+
     // MARK: - Public
     
     static let shared = PaymentMethodImageCache()

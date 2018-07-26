@@ -1,47 +1,6 @@
 {
   "warnings": [
-    {
-      "file": "/Users/janina/Desktop/adyen-checkout-ios/Adyen/Core/PaymentRequest.swift",
-      "line": 9,
-      "symbol": "DataCompletion",
-      "symbol_kind": "source.lang.swift.decl.typealias",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/janina/Desktop/adyen-checkout-ios/Adyen/Core/PaymentRequest.swift",
-      "line": 10,
-      "symbol": "MethodCompletion",
-      "symbol_kind": "source.lang.swift.decl.typealias",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/janina/Desktop/adyen-checkout-ios/Adyen/Core/PaymentRequest.swift",
-      "line": 11,
-      "symbol": "URLCompletion",
-      "symbol_kind": "source.lang.swift.decl.typealias",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/janina/Desktop/adyen-checkout-ios/Adyen/Core/PaymentRequest.swift",
-      "line": 12,
-      "symbol": "CardScanCompletion",
-      "symbol_kind": "source.lang.swift.decl.typealias",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/janina/Desktop/adyen-checkout-ios/Adyen/Core/PaymentRequest.swift",
-      "line": 13,
-      "symbol": "PaymentDetailsCompletion",
-      "symbol_kind": "source.lang.swift.decl.typealias",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/janina/Desktop/adyen-checkout-ios/Adyen/Plugins/ApplePay/ApplePayPlugin.swift",
-      "line": null,
-      "symbol": "ApplePayPlugin",
-      "symbol_kind": "source.lang.swift.decl.extension",
-      "warning": "undocumented"
-    }
+
   ],
-  "source_directory": "/Users/janina/Desktop/adyen-checkout-ios"
+  "source_directory": "/Users/joostv/Repositories/adyen-checkout-ios/Examples/Quick Integration Example/Pods"
 }

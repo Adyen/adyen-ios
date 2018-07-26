@@ -1,18 +1,17 @@
 disabled_rules:
-  - cyclomatic_complexity
-  - line_length
-  - trailing_whitespace
-  - operator_whitespace
-  - unused_closure_parameter
-  - todo
   - fallthrough
-
-  #Review:
-  - large_tuple
-  - function_body_length
-  - file_length
+  - function_parameter_count
+  - line_length
+  - nesting
+  - operator_whitespace
+  - todo
+  - trailing_whitespace
 included:
   - Adyen
+  - AdyenCard
+  - AdyenInternal
+  - AdyenSEPA
+  - AdyenApplePay
   - AdyenTests
   - AdyenUITests
   - AdyenUIHost

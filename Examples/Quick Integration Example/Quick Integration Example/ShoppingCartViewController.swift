@@ -4,15 +4,22 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import UIKit
 import Adyen
+import UIKit
 
-class ShoppingCartViewController: UIViewController, CheckoutViewControllerDelegate, CheckoutViewControllerCardScanDelegate, CardIOPaymentViewControllerDelegate {
+class ShoppingCartViewController: UIViewController {
+    @IBOutlet var contentImageView: UIImageView!
+    @IBOutlet var actionButton: UIButton!
     
-    @IBOutlet weak var contentImageView: UIImageView!
-    @IBOutlet weak var actionButton: UIButton!
+    let demoServerURL = URL(string: "https://checkoutshopper-test.adyen.com/checkoutshopper/demoserver/paymentSession")!
     
-    // MARK: - UIViewController
+    lazy var appearance: Appearance = {
+        var appearance = Appearance()
+        appearance.tintColor = #colorLiteral(red: 0.4107530117, green: 0.8106812239, blue: 0.7224243283, alpha: 1)
+        return appearance
+    }()
+    
+    lazy var checkoutController = CheckoutController(presentingViewController: self, delegate: self, appearance: appearance)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,132 +29,8 @@ class ShoppingCartViewController: UIViewController, CheckoutViewControllerDelega
         }
     }
     
-    // MARK: - CheckoutViewControllerDelegate
-    
-    func checkoutViewController(_ controller: CheckoutViewController, requiresPaymentDataForToken token: String, completion: @escaping DataCompletion) {
-        let paymentDetails: [String: Any] = [
-            "amount": [
-                "value": 17408,
-                "currency": "EUR"
-            ],
-            "reference": "iOS & M+M Black dress & accessories",
-            "countryCode": "NL",
-            "shopperLocale": "nl_NL",
-            "shopperReference": "shopper@company.com",
-            "returnUrl": "example-shopping-app://",
-            "channel": "ios",
-            "token": token
-        ]
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.httpBody = try? JSONSerialization.data(withJSONObject: paymentDetails, options: [])
-        request.allHTTPHeaderFields = [
-            "Content-Type": "application/json",
-            "x-demo-server-api-key": Configuration.appSecretKey
-        ]
-        
-        let session = URLSession(configuration: .default)
-        session.dataTask(with: request) { data, response, error in
-            if let data = data {
-                completion(data)
-            }
-        }.resume()
-    }
-    
-    func checkoutViewController(_ controller: CheckoutViewController, requiresReturnURL completion: @escaping URLCompletion) {
-        appUrlCompletion = completion
-    }
-    
-    func checkoutViewController(_ controller: CheckoutViewController, didFinishWith result: PaymentRequestResult) {
-        dismiss(animated: true)
-        
-        var success: Bool = false
-        
-        switch result {
-            
-        case let .payment(payment):
-            success = (payment.status == .received || payment.status == .authorised)
-        case let .error(error):
-            switch error {
-            case .cancelled:
-                return
-            default:
-                break
-            }
-        }
-        
-        if success {
-            presentSuccessScreen()
-        } else {
-            presentFailureScreen()
-        }
-    }
-    
-    // MARK: - CheckoutViewControllerCardScanDelegate
-    
-    func shouldShowCardScanButton(for checkoutViewController: CheckoutViewController) -> Bool {
-        return true
-    }
-    
-    func scanCard(for checkoutViewController: CheckoutViewController, completion: @escaping CardScanCompletion) {
-        if let scanViewController = CardIOPaymentViewController(paymentDelegate: self),
-            let presented = presentedViewController {
-            scanViewController.suppressScanConfirmation = true
-            cardScanCompletion = completion
-            presented.present(scanViewController, animated: true)
-        } else {
-            completion((number: nil, expiryDate: nil, cvc: nil))
-        }
-    }
-    
-    // MARK: - CardIOPaymentViewControllerDelegate
-    
-    func userDidCancel(_ paymentViewController: CardIOPaymentViewController!) {
-        if let presented = presentedViewController {
-            presented.dismiss(animated: true)
-        }
-        
-        cardScanCompletion?((number: nil, expiryDate: nil, cvc: nil))
-        cardScanCompletion = nil
-    }
-    
-    func userDidProvide(_ cardInfo: CardIOCreditCardInfo!, in paymentViewController: CardIOPaymentViewController!) {
-        if let presented = presentedViewController {
-            presented.dismiss(animated: true)
-        }
-        
-        let number = cardInfo.cardNumber
-        let month = String(format: "%02d", cardInfo.expiryMonth)
-        let year = String(format: "%02d", cardInfo.expiryYear % 100)
-        let expiryDate = "\(month)\(year)"
-        let cvc = cardInfo.cvv
-        cardScanCompletion?((number: number, expiryDate: expiryDate, cvc: cvc))
-        cardScanCompletion = nil
-    }
-    
-    // MARK: - Public
-    
-    func applicationDidReceive(_ url: URL) {
-        appUrlCompletion?(url)
-    }
-    
-    // MARK: - Private
-    
-    private let url = URL(string: "https://checkoutshopper-test.adyen.com/checkoutshopper/demoserver/setup")!
-    
-    private var appUrlCompletion: URLCompletion?
-    private var cardScanCompletion: CardScanCompletion?
-    
     @IBAction private func checkout(_ sender: Any) {
-        // Customize appearance of SDK.
-        var appearance = AppearanceConfiguration.default
-        appearance.tintColor = #colorLiteral(red: 0.4107530117, green: 0.8106812239, blue: 0.7224243283, alpha: 1)
-        appearance.checkoutButtonType = CustomButton.self
-        
-        let checkoutViewController = CheckoutViewController(delegate: self, appearanceConfiguration: appearance)
-        checkoutViewController.cardScanDelegate = self
-        present(checkoutViewController, animated: true)
+        checkoutController.start()
     }
     
     @objc
@@ -163,6 +46,7 @@ class ShoppingCartViewController: UIViewController, CheckoutViewControllerDelega
         actionButton.addTarget(self, action: #selector(checkout(_:)), for: .touchUpInside)
     }
     
+    @objc
     private func presentSuccessScreen() {
         contentImageView.image = #imageLiteral(resourceName: "Success")
         actionButton.setImage(#imageLiteral(resourceName: "back-to-shop"), for: .normal)
@@ -170,11 +54,79 @@ class ShoppingCartViewController: UIViewController, CheckoutViewControllerDelega
         actionButton.addTarget(self, action: #selector(presentInitialScreen), for: .touchUpInside)
     }
     
+    @objc
     private func presentFailureScreen() {
         contentImageView.image = #imageLiteral(resourceName: "Failure")
         actionButton.setImage(#imageLiteral(resourceName: "try-again"), for: .normal)
         actionButton.removeTarget(self, action: #selector(checkout(_:)), for: .touchUpInside)
         actionButton.addTarget(self, action: #selector(presentInitialScreen), for: .touchUpInside)
+    }
+    
+}
+
+extension ShoppingCartViewController: CheckoutControllerDelegate {
+    func requestPaymentSession(withToken token: String, for checkoutController: CheckoutController, responseHandler: @escaping (String) -> Void) {
+        let paymentDetails: [String: Any] = [
+            "amount": [
+                "value": 17408,
+                "currency": "EUR"
+            ],
+            "reference": "iOS & M+M Black dress & accessories",
+            "countryCode": "NL",
+            "shopperLocale": "nl_NL",
+            "shopperReference": "shopper@company.com",
+            "returnUrl": "example-shopping-app://",
+            "token": token
+        ]
+        
+        var request = URLRequest(url: demoServerURL)
+        request.httpMethod = "POST"
+        request.httpBody = try? JSONSerialization.data(withJSONObject: paymentDetails, options: [])
+        request.allHTTPHeaderFields = [
+            "Content-Type": "application/json",
+            "X-Demo-Server-API-Key": Configuration.appSecretKey
+        ]
+        
+        let session = URLSession(configuration: .default)
+        let task = session.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print(error)
+                checkoutController.cancel()
+            } else if let data = data {
+                do {
+                    guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else { fatalError() }
+                    guard let paymentSession = json["paymentSession"] as? String else { fatalError() }
+                    
+                    responseHandler(paymentSession)
+                } catch {
+                    fatalError("Failed to parse payment session response: \(error)")
+                }
+            }
+        }
+        task.resume()
+    }
+    
+    func didFinish(with result: Result<PaymentResult>, for checkoutController: CheckoutController) {
+        var isSuccess = false
+        var isCancelled = false
+        
+        switch result {
+        case let .success(paymentResult):
+            isSuccess = (paymentResult.status == .received || paymentResult.status == .authorised)
+        case let .failure(error):
+            switch error {
+            case PaymentController.Error.cancelled:
+                isCancelled = true
+            default:
+                break
+            }
+        }
+        
+        if isSuccess {
+            presentSuccessScreen()
+        } else if !isCancelled {
+            presentFailureScreen()
+        }
     }
     
 }

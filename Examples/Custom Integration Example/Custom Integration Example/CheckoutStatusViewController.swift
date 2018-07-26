@@ -7,7 +7,7 @@
 import UIKit
 
 class CheckoutStatusViewController: UIViewController {
-    
+
     // MARK: - UIViewController
     
     override func viewDidLoad() {

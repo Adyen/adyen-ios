@@ -7,7 +7,7 @@
 import UIKit
 
 class LoadingIndicatorView: UIView {
-    
+
     // MARK: - UIView
     
     override var frame: CGRect {

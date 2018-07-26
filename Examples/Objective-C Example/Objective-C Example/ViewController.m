@@ -39,6 +39,11 @@
 }
 
 - (void)paymentManager:(PaymentManager *)paymentManager didFinishWithResult:(PaymentManagerResult *)result {
+    if ([result status] == PaymentManagerResultStatusCancelled && [result error] != nil) {
+        // User cancelled in the checkout interface.
+        return;
+    }
+    
     NSString *alertTitle = [self alertTitleForPaymentManagerResult:result];
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:alertTitle message:nil preferredStyle:UIAlertControllerStyleAlert];
     [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
@@ -48,15 +53,17 @@
 - (NSString *)alertTitleForPaymentManagerResult:(PaymentManagerResult *)result {
     switch ([result status]) {
         case PaymentManagerResultStatusReceived:
-            return @"Payment received";
+            return @"Payment Received";
         case PaymentManagerResultStatusAuthorised:
-            return @"Payment authorised";
+            return @"Payment Authorised";
         case PaymentManagerResultStatusRefused:
-            return @"Payment refused";
+            return @"Payment Refused";
         case PaymentManagerResultStatusCancelled:
-            return @"Payment cancelled";
+            return @"Payment Cancelled";
         case PaymentManagerResultStatusError:
             return [NSString stringWithFormat:@"Payment failed with error (%@)", [result error]];
+        case PaymentManagerResultStatusPending:
+            return @"Payment Pending";
     }
 }
 

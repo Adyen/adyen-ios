@@ -7,7 +7,6 @@
 import XCTest
 
 internal extension XCUIElementQuery {
-    
     internal var first: XCUIElement {
         return element(boundBy: 0)
     }

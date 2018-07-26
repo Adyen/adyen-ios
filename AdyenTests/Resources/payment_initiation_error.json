@@ -1,0 +1,8 @@
+{
+  "paymentMethod": {
+    "type": "ideal"
+  },
+  "type": "error",
+  "errorMessage": "Error message",
+  "errorCode": "PI002"
+}

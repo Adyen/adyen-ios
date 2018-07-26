@@ -11,7 +11,7 @@ import UIKit
  *  It is to be added directly to the view by each view controller in the flow
  */
 class CheckoutFlowNavigationBar: UIView {
-    
+
     // MARK: - Object Lifecycle
     
     override init(frame: CGRect) {
@@ -99,7 +99,7 @@ class CheckoutFlowNavigationBar: UIView {
 }
 
 class CheckoutFlowNavigationController: UINavigationController {
-    
+
     // MARK: - UIViewController
     
     override func viewDidLoad() {

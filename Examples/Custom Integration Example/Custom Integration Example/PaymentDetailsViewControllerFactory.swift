@@ -7,10 +7,9 @@
 import Adyen
 
 struct PaymentDetailsViewControllerFactory {
-    
-    static func viewController(forPaymentMethod method: PaymentMethod) -> UIViewController? {
+    static func viewController(forPaymentMethod method: PaymentMethod, paymentController: PaymentController) -> UIViewController? {
         if method.type == "card" {
-            return CardDetailsViewController(withPaymentMethod: method)
+            return CardDetailsViewController(withPaymentMethod: method, paymentController: paymentController)
         }
         
         return nil

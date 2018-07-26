@@ -4,15 +4,14 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        
         self.window = UIWindow(frame: UIScreen.main.bounds)
         
         let viewController = HomeViewController()
@@ -24,8 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {
-        PaymentRequestManager.shared.processExternalPayment(withURL: url)
-        return true
+        return Adyen.applicationDidOpen(url)
     }
     
     func applicationWillResignActive(_ application: UIApplication) {

@@ -7,7 +7,6 @@
 import Adyen
 
 @objc class PaymentManager: NSObject {
-    
     struct Configuration {
         static let appSecretKey = ""
     }
@@ -15,33 +14,30 @@ import Adyen
     @objc
     public weak var delegate: PaymentManagerDelegate?
     
+    private var checkoutController: CheckoutController?
+    
     @objc
     public func beginPayment(hostViewController: UIViewController) {
-        let checkoutViewController = CheckoutViewController(delegate: self)
-        hostViewController.present(checkoutViewController, animated: true)
+        checkoutController = CheckoutController(presentingViewController: hostViewController, delegate: self)
+        checkoutController?.start()
     }
-    
-    // MARK: URL Handling
-    
-    fileprivate var urlCompletion: URLCompletion?
     
     @objc(applicationDidOpenURL:)
     public func applicationDidOpen(_ url: URL) {
-        urlCompletion?(url)
+        Adyen.applicationDidOpen(url)
     }
     
 }
 
-extension PaymentManager: CheckoutViewControllerDelegate {
-    
-    func checkoutViewController(_ controller: CheckoutViewController, requiresPaymentDataForToken token: String, completion: @escaping DataCompletion) {
+extension PaymentManager: CheckoutControllerDelegate {
+    func requestPaymentSession(withToken token: String, for checkoutController: CheckoutController, responseHandler: @escaping (String) -> Void) {
         let appSecretKey = Configuration.appSecretKey
         
-        guard appSecretKey.characters.isEmpty == false else {
+        guard appSecretKey.isEmpty == false else {
             fatalError("Fill in a secret key in PaymentManager.swift.")
         }
         
-        let url = URL(string: "https://checkoutshopper-test.adyen.com/checkoutshopper/demoserver/setup")!
+        let url = URL(string: "https://checkoutshopper-test.adyen.com/checkoutshopper/demoserver/paymentSession")!
         
         let paymentDetails: [String: Any] = [
             "amount": [
@@ -53,7 +49,6 @@ extension PaymentManager: CheckoutViewControllerDelegate {
             "shopperLocale": "nl_NL",
             "shopperReference": "shopper@company.com",
             "returnUrl": "objective-c-example://",
-            "channel": "ios",
             "token": token
         ]
         
@@ -66,21 +61,22 @@ extension PaymentManager: CheckoutViewControllerDelegate {
         ]
         
         let session = URLSession(configuration: .default)
-        session.dataTask(with: request) { data, response, error in
-            if let data = data {
-                completion(data)
+        let task = session.dataTask(with: request) { data, response, error in
+            do {
+                guard let data = data, let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else { fatalError() }
+                guard let paymentSession = json["paymentSession"] as? String else { fatalError() }
+                
+                responseHandler(paymentSession)
+            } catch {
+                fatalError("Failed to parse payment session response: \(error)")
             }
-        }.resume()
+        }
+        task.resume()
+        
     }
     
-    func checkoutViewController(_ controller: CheckoutViewController, requiresReturnURL completion: @escaping URLCompletion) {
-        urlCompletion = completion
-    }
-    
-    func checkoutViewController(_ controller: CheckoutViewController, didFinishWith result: PaymentRequestResult) {
-        controller.presentingViewController?.dismiss(animated: true, completion: {
-            self.delegate?.paymentManager(self, didFinishWithResult: PaymentManagerResult(result: result))
-        })
+    func didFinish(with result: Result<PaymentResult>, for checkoutController: CheckoutController) {
+        self.delegate?.paymentManager(self, didFinishWithResult: PaymentManagerResult(result: result))
     }
     
 }

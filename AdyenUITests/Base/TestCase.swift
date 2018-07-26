@@ -7,7 +7,6 @@
 import XCTest
 
 internal class TestCase: XCTestCase {
-    
     internal let app = XCUIApplication()
     
     private static var didSetUp = false
@@ -22,14 +21,24 @@ internal class TestCase: XCTestCase {
         let table = app.tables.first
         
         if !TestCase.didSetUp {
-            let shopperReferenceField = table.textFields["reference-field"]
+            let shopperReferenceField = table.textFields["shopper-reference-field"]
             shopperReferenceField.tap()
+            table.buttons["Clear text"].tap()
             shopperReferenceField.typeText("uitests@uitests.ui")
         }
         
         table.buttons["start-button"].tap()
         
         TestCase.didSetUp = true
+    }
+    
+    internal func selectPaymentMethod(_ name: String? = nil) {
+        app.buttons["change-payment-method-button"].tap()
+        
+        if let name = name {
+            let table = app.tables.last
+            table.cells[name].tap()
+        }
     }
     
     internal func dismissSuccessAlert() {

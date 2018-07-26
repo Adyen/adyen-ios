@@ -6,7 +6,7 @@
 
 import Foundation
 
-// Fill in your app identifier and secret key here.
+// Fill in your secret key here.
 struct Configuration {
     static let appSecretKey = ""
 }

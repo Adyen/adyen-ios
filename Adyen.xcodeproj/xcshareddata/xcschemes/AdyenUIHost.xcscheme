@@ -29,12 +29,22 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
          <TestableReference
-            skipped = "NO">
+            skipped = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E2BF6CC01F03952C0065E574"
                BuildableName = "AdyenUITests.xctest"
                BlueprintName = "AdyenUITests"
+               ReferencedContainer = "container:Adyen.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E20AD0111EFAB0310065B70E"
+               BuildableName = "AdyenTests.xctest"
+               BlueprintName = "AdyenTests"
                ReferencedContainer = "container:Adyen.xcodeproj">
             </BuildableReference>
          </TestableReference>

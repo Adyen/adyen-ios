@@ -6,51 +6,35 @@
 
 import Foundation
 
-/// Instances of conforming types provide additional logic for a payment method, such as an interface to enter payment details.
-internal protocol Plugin {
-    
-    /// The configuration of the plugin.
-    var configuration: PluginConfiguration { get }
-    
-    /// Initializes the plugin.
-    ///
-    /// - Parameter configuration: The configuration of the plugin.
-    init(configuration: PluginConfiguration)
-    
-}
+/// Instances conforming to the Plugin protocol provide native logic for payment methods.
+/// :nodoc:
+open class Plugin: NSObject {
 
-internal protocol PluginRequiresFinalState: Plugin {
+    // MARK: - Internal
     
-    /// Provides an opportunity for a plugin to execute asynchronous logic based on the result of a completed payment.
-    ///
-    /// - Parameters:
-    ///   - paymentStatus: The status of the completed payment.
-    ///   - completion: The completion handler to invoke when the plugin is done executing.
-    func finish(with paymentStatus: PaymentStatus, completion: @escaping () -> Void)
+    public required init(paymentMethod: PaymentMethod, paymentSession: PaymentSession, appearance: Appearance) {
+        self.paymentMethod = paymentMethod
+        self.paymentSession = paymentSession
+        self.appearance = appearance
+    }
     
-}
-
-internal protocol DeviceDependablePlugin: Plugin {
+    open let paymentMethod: PaymentMethod
+    open let paymentSession: PaymentSession
+    open let appearance: Appearance
     
-    /// Boolean value indicating whether the current device is supported.
-    var isDeviceSupported: Bool { get }
+    open var showsDisclosureIndicator: Bool {
+        return false
+    }
     
-}
-
-internal protocol CardScanPlugin: Plugin {
+    open var isDeviceSupported: Bool {
+        return true
+    }
     
-    /// Handler for card scan button.
-    var cardScanButtonHandler: ((@escaping CardScanCompletion) -> Void)? { get set }
+    open func present(using navigationController: UINavigationController, completion: @escaping Completion<[PaymentDetail]>) {
+    }
     
-}
-
-/// Structure containing the configuration of a plugin.
-internal struct PluginConfiguration {
-    
-    /// The payment method for which the plugin is used.
-    internal let paymentMethod: PaymentMethod
-    
-    /// The payment setup.
-    internal let paymentSetup: PaymentSetup
+    open func finish(with result: Result<PaymentResult>, completion: @escaping () -> Void) {
+        completion()
+    }
     
 }

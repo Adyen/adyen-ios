@@ -1,10 +1,11 @@
-platform :ios, '9.0'
+platform :ios, '10.0'
 
 use_frameworks!
 
 target 'Objective-C Example' do
-  
+
   pod 'Adyen', :path => '../../'
+  pod 'AdyenInternal', :path => '../../'
   pod 'Adyen/ApplePay', :path => '../../'
 
 end

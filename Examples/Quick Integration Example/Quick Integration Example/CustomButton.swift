@@ -7,7 +7,6 @@
 import UIKit
 
 class CustomButton: UIButton {
-    
     private let color = #colorLiteral(red: 0.4107530117, green: 0.8106812239, blue: 0.7224243283, alpha: 1)
     private let colorDisabled = #colorLiteral(red: 0.8374213576, green: 0.8374213576, blue: 0.8374213576, alpha: 1)
     private let colorHighlighted = #colorLiteral(red: 0.4672650099, green: 0.923529923, blue: 0.823000133, alpha: 1)

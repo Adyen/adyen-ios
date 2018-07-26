@@ -4,16 +4,18 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import UIKit
 import Adyen
 import SafariServices
+import UIKit
 
 class PaymentConfirmationViewController: CheckoutViewController, SFSafariViewControllerDelegate {
-    
+
     // MARK: - Object Lifecycle
     
-    init(withPaymentMethod method: PaymentMethod) {
+    init(withPaymentMethod method: PaymentMethod, paymentController: PaymentController) {
         paymentMethod = method
+        self.paymentController = paymentController
+        
         super.init(nibName: nil, bundle: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(didRequestToShowExternalPaymentDetailsFlow), name: PaymentRequestManager.didRequestExternalPaymentCompletionNotification, object: nil)
@@ -71,6 +73,7 @@ class PaymentConfirmationViewController: CheckoutViewController, SFSafariViewCon
     // MARK: - Private
     
     private var paymentMethod: PaymentMethod
+    private var paymentController: PaymentController
     
     private lazy var subheaderLabel: UILabel = {
         var frame = self.view.bounds
@@ -103,7 +106,7 @@ class PaymentConfirmationViewController: CheckoutViewController, SFSafariViewCon
         frame = CGRect.zero
         let margin: CGFloat = 26.0
         
-        if let url = self.paymentMethod.logoURL, let icon = PaymentMethodImageCache.shared.confirmationIcon(from: url) {
+        if let logoURL = paymentMethod.logoURL, let icon = PaymentMethodImageCache.shared.confirmationIcon(from: logoURL) {
             let iconImageView = UIImageView(image: icon)
             iconImageView.contentMode = .center
             iconImageView.sizeToFit()

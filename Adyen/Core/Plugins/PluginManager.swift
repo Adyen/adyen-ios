@@ -6,21 +6,19 @@
 
 import Foundation
 
-internal class PluginManager {
-    
-    // MARK: - Object Lifecycle
+/// Manages plugins for payment methods in a payment session.
+internal final class PluginManager {
+    /// The payment session for which the plugins are managed.
+    internal let paymentSession: PaymentSession
     
     /// Initializes the plugin manager.
     ///
-    /// - Parameter paymentSetup: The payment setup for which the plugins are managed.
-    internal init(paymentSetup: PaymentSetup) {
-        self.paymentSetup = paymentSetup
+    /// - Parameter paymentSession: The payment session for which the plugins are managed.
+    internal init(paymentSession: PaymentSession) {
+        self.paymentSession = paymentSession
     }
     
-    // MARK: - Public
-    
-    /// The payment setup for which the plugins are managed.
-    internal let paymentSetup: PaymentSetup
+    // MARK: - Retrieving Plugins
     
     /// Returns a plugin for the given payment method.
     ///
@@ -31,47 +29,49 @@ internal class PluginManager {
             return plugin
         }
         
-        guard let className = PluginManager.className(for: paymentMethod),
-            let pluginClass = NSClassFromString(className) as? Plugin.Type else {
+        guard let pluginClass = PluginManager.className(for: paymentMethod).compactMap({ NSClassFromString($0) as? Plugin.Type }).first else {
             return nil
         }
         
-        let configuration = PluginConfiguration(paymentMethod: paymentMethod, paymentSetup: paymentSetup)
-        let plugin = pluginClass.init(configuration: configuration)
+        let plugin = pluginClass.init(paymentMethod: paymentMethod, paymentSession: paymentSession, appearance: Appearance.shared)
         
         plugins[paymentMethod.paymentMethodData] = plugin
         
         return plugin
     }
     
-    // MARK: - Private
-    
     private var plugins: [String: Plugin] = [:]
     
-    private static func className(for paymentMethod: PaymentMethod) -> String? {
-        guard let namespace = NSStringFromClass(self).components(separatedBy: ".").first else {
-            return nil
-        }
-        
+    private static func className(for paymentMethod: PaymentMethod) -> [String] {
         let type = paymentMethod.group?.type ?? paymentMethod.type
         
-        var className = ""
-        switch type {
-        case "applepay":
-            className = "ApplePayPlugin"
-        case "ideal":
-            className = "IdealPlugin"
-        case "card", "bcmc":
-            className = "CardPlugin"
-        case "sepadirectdebit":
-            className = "SEPADirectDebitPlugin"
-        case "molpay_ebanking_fpx_MY":
-            className = "MOLPayPlugin"
-        default:
-            break
+        var classNames: [String] = []
+        
+        if paymentMethod.storedDetails != nil {
+            switch type {
+            case "card":
+                classNames = ["AdyenCard.StoredCardPlugin", "Adyen.StoredCardPlugin"]
+            default:
+                classNames = ["Adyen.StoredPlugin"]
+            }
+        } else {
+            switch type {
+            case "applepay":
+                classNames = ["AdyenApplePay.ApplePayPlugin", "Adyen.ApplePayPlugin"]
+            case "card":
+                classNames = ["AdyenCard.CardPlugin", "Adyen.CardPlugin"]
+            case "bcmc":
+                classNames = ["AdyenCard.CardPlugin", "Adyen.CardPlugin"]
+            case "sepadirectdebit":
+                classNames = ["AdyenSEPA.SEPADirectDebitPlugin", "Adyen.SEPADirectDebitPlugin"]
+            default:
+                if paymentMethod.requiresIssuerSelection {
+                    classNames = ["Adyen.IssuerSelectionPlugin"]
+                }
+            }
         }
         
-        return "\(namespace).\(className)"
+        return classNames
     }
     
 }

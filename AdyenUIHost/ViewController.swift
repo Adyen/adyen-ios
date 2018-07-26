@@ -4,11 +4,12 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import UIKit
 import Adyen
+import AdyenCard
+import UIKit
 
-class ViewController: UITableViewController, CheckoutViewControllerDelegate, CheckoutViewControllerCardScanDelegate {
-    
+class ViewController: UITableViewController {
+
     // MARK: - UIViewController
     
     override func viewDidLoad() {
@@ -20,8 +21,9 @@ class ViewController: UITableViewController, CheckoutViewControllerDelegate, Che
     // MARK: - UITableViewController
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.section == 1 {
-            presentCheckoutViewController()
+            checkoutController.start()
         }
     }
     
@@ -34,13 +36,13 @@ class ViewController: UITableViewController, CheckoutViewControllerDelegate, Che
     @IBOutlet fileprivate var shopperLocaleField: UITextField!
     @IBOutlet fileprivate var shopperReferenceField: UITextField!
     
-    private func presentCheckoutViewController() {
-        let checkoutViewController = CheckoutViewController(delegate: self)
-        checkoutViewController.cardScanDelegate = self
-        present(checkoutViewController, animated: true)
-    }
+    private lazy var checkoutController: CheckoutController = {
+        let checkoutController = CheckoutController(presentingViewController: self, delegate: self)
+        checkoutController.cardScanDelegate = self
+        return checkoutController
+    }()
     
-    fileprivate func presentSuccessAlertController() {
+    private func presentSuccessAlertController() {
         let alertController = UIAlertController(title: "Payment successful", message: nil, preferredStyle: .alert)
         
         let dismissAction = UIAlertAction(title: "OK", style: .default, handler: nil)
@@ -49,7 +51,7 @@ class ViewController: UITableViewController, CheckoutViewControllerDelegate, Che
         present(alertController, animated: true, completion: nil)
     }
     
-    fileprivate func presentFailureAlertController() {
+    private func presentFailureAlertController() {
         let alertController = UIAlertController(title: "Payment failed", message: nil, preferredStyle: .alert)
         
         let dismissAction = UIAlertAction(title: "OK", style: .default, handler: nil)
@@ -58,17 +60,11 @@ class ViewController: UITableViewController, CheckoutViewControllerDelegate, Che
         present(alertController, animated: true, completion: nil)
     }
     
-    fileprivate var urlCompletion: URLCompletion?
-    
-    internal func didReceive(_ url: URL) {
-        urlCompletion?(url)
-        urlCompletion = nil
-    }
-    
-    // MARK: - CheckoutViewControllerDelegate
-    
-    func checkoutViewController(_ controller: CheckoutViewController, requiresPaymentDataForToken token: String, completion: @escaping DataCompletion) {
-        let url = URL(string: "https://checkoutshopper-test.adyen.com/checkoutshopper/demoserver/setup")!
+}
+
+extension ViewController: CheckoutControllerDelegate {
+    func requestPaymentSession(withToken token: String, for checkoutController: CheckoutController, responseHandler: @escaping (String) -> Void) {
+        let url = URL(string: "https://checkoutshopper-test.adyen.com/checkoutshopper/demoserver/paymentSession")!
         
         let value = Int(amountField.text!)!
         
@@ -80,6 +76,9 @@ class ViewController: UITableViewController, CheckoutViewControllerDelegate, Che
             "channel": "ios",
             "reference": referenceField.text!,
             "token": token,
+            "configuration": [
+                "cardHolderName": "required"
+            ],
             "returnUrl": "ui-host://",
             "countryCode": countryField.text!,
             "shopperReference": shopperReferenceField.text!,
@@ -136,58 +135,66 @@ class ViewController: UITableViewController, CheckoutViewControllerDelegate, Che
         ]
         
         let session = URLSession(configuration: .default)
-        session.dataTask(with: request) { data, response, error in
-            if let data = data {
-                completion(data)
+        session.dataTask(with: request) { data, _, error in
+            if let error = error {
+                fatalError("Failed to retrieve payment session: \(error)")
+            } else if let data = data {
+                do {
+                    guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else { fatalError() }
+                    guard let paymentSession = json["paymentSession"] as? String else { fatalError() }
+                    
+                    responseHandler(paymentSession)
+                } catch {
+                    fatalError("Failed to parse payment session response: \(error)")
+                }
             }
         }.resume()
     }
     
-    func checkoutViewController(_ controller: CheckoutViewController, requiresReturnURL completion: @escaping URLCompletion) {
-        urlCompletion = completion
-    }
-    
-    func checkoutViewController(_ controller: CheckoutViewController, didFinishWith result: PaymentRequestResult) {
+    func didFinish(with result: Result<PaymentResult>, for checkoutController: CheckoutController) {
         var isSuccess = false
         var isCancelled = false
         
         switch result {
-        case let .payment(payment):
-            isSuccess = (payment.status == .received || payment.status == .authorised)
-        case let .error(error):
+        case let .success(paymentResult):
+            isSuccess = (paymentResult.status == .received || paymentResult.status == .authorised)
+        case let .failure(error):
             switch error {
-            case .cancelled:
+            case PaymentController.Error.cancelled:
                 isCancelled = true
             default:
                 break
             }
         }
         
-        dismiss(animated: true) {
-            if isSuccess {
-                self.presentSuccessAlertController()
-            } else if !isCancelled {
-                self.presentFailureAlertController()
-            }
+        if isSuccess {
+            self.presentSuccessAlertController()
+        } else if !isCancelled {
+            self.presentFailureAlertController()
         }
     }
-    
-    // MARK: - CheckoutViewControllerCardScanDelegate
-    
-    func shouldShowCardScanButton(for checkoutViewController: CheckoutViewController) -> Bool {
+}
+
+extension ViewController: CardScanDelegate {
+    func isCardScanEnabled(for paymentMethod: PaymentMethod) -> Bool {
         return true
     }
     
-    func scanCard(for checkoutViewController: CheckoutViewController, completion: @escaping CardScanCompletion) {
+    func scanCard(for paymentMethod: PaymentMethod, completion: @escaping CardScanCompletion) {
         let alertController = UIAlertController(title: "Scan Card", message: "This is the entry point for integrating your card scanning SDK.", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { _ in
-            let number = "5555444433331111"
-            let expiryDate = "12/18"
-            let cvc = "123"
+            let holderName = "John S."
+            let number = "4111111111111111"
+            let expiryDate = "08/18"
+            let securityCode = "737"
             
-            completion((number: number, expiryDate: expiryDate, cvc: cvc))
+            completion((holderName: holderName, number: number, expiryDate: expiryDate, securityCode: securityCode))
         }))
-        checkoutViewController.present(alertController, animated: true)
+        
+        if let presented = self.presentedViewController {
+            presented.present(alertController, animated: true)
+        } else {
+            present(alertController, animated: true)
+        }
     }
-    
 }

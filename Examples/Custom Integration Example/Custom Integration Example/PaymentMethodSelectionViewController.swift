@@ -4,11 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import UIKit
 import Adyen
+import UIKit
 
 class PaymentMethodSelectionViewController: CheckoutViewController, UITableViewDelegate, UITableViewDataSource {
-    
+
     // MARK: - Object Lifecycle
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -72,13 +72,17 @@ class PaymentMethodSelectionViewController: CheckoutViewController, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let controller = request else {
+            return
+        }
+        
         let selected = paymentMethods[indexPath.row]
-        if let extraDetails = PaymentDetailsViewControllerFactory.viewController(forPaymentMethod: selected) {
+        if let extraDetails = PaymentDetailsViewControllerFactory.viewController(forPaymentMethod: selected, paymentController: controller) {
             navigationController?.pushViewController(extraDetails, animated: false)
         } else {
             // For now, we only support PayPal
             if selected.type == "paypal" {
-                let confirmation = PaymentConfirmationViewController(withPaymentMethod: selected)
+                let confirmation = PaymentConfirmationViewController(withPaymentMethod: selected, paymentController: controller)
                 navigationController?.pushViewController(confirmation, animated: false)
             } else {
                 let alert = UIAlertController(title: "Oops", message: "Sorry, this payment method is not supported by this demo application.", preferredStyle: .alert)
@@ -157,6 +161,7 @@ class PaymentMethodSelectionViewController: CheckoutViewController, UITableViewD
     }()
     
     private var tableView = UITableView(frame: .zero)
+    private var request: PaymentController?
     private var paymentMethods: [PaymentMethod] = []
     private let rowHeight: CGFloat = 70.0
     
@@ -174,7 +179,8 @@ class PaymentMethodSelectionViewController: CheckoutViewController, UITableViewD
     @objc private func didUpdatePaymentMethods() {
         // Delay is put in so that the loading indicator does not flash.
         DispatchQueue.main.asyncAfter(deadline: (DispatchTime.now() + DispatchTimeInterval.seconds(1))) {
-            self.paymentMethods = PaymentRequestManager.shared.paymentMethods ?? []
+            self.paymentMethods = PaymentRequestManager.shared.paymentMethods?.other ?? []
+            self.request = PaymentRequestManager.shared.paymentController
             self.loadingIndicatorContainer.isHidden = true
             self.tableView.isHidden = false
             self.tableView.reloadData()

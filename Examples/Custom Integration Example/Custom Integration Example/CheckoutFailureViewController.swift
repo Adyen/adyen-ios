@@ -7,7 +7,7 @@
 import UIKit
 
 class CheckoutFailureViewController: CheckoutStatusViewController {
-    
+
     // MARK: - CheckoutStatusViewController
     
     override func buttonClicked() {

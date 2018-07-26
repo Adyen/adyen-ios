@@ -7,55 +7,58 @@
 import UIKit
 
 internal class CheckoutButton: UIButton {
-    
     internal override init(frame: CGRect) {
         super.init(frame: frame)
         
-        commonInit()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        clipsToBounds = true
         
-        commonInit()
-    }
-    
-    private func commonInit() {
-        contentEdgeInsets = appearanceConfiguration.internalCheckoutButtonTitleEdgeInsets ?? .zero
-        
-        tintColor = appearanceConfiguration.tintColor
-        
-        let cornerRadius = appearanceConfiguration.internalCheckoutButtonCornerRadius
-        clipsToBounds = cornerRadius > 0.0
-        layer.cornerRadius = cornerRadius
-        
+        layer.cornerRadius = Appearance.shared.checkoutButtonAttributes.cornerRadius
         updateBackgroundColor()
     }
     
-    // MARK: - Title
-    
-    internal override func setTitle(_ title: String?, for state: UIControlState) {
-        guard let title = title else {
-            setAttributedTitle(nil, for: state)
-            
-            return
-        }
-        
-        let attributedTitle = NSAttributedString(string: title,
-                                                 attributes: appearanceConfiguration.internalCheckoutButtonTitleTextAttributes)
-        setAttributedTitle(attributedTitle, for: state)
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Background Color
+    // MARK: - UIButton
     
-    private func updateBackgroundColor() {
-        switch (isEnabled, isHighlighted) {
-        case (false, _):
-            backgroundColor = tintColor.withAlphaComponent(0.5)
-        case (true, false):
-            backgroundColor = tintColor
-        case (true, true):
-            backgroundColor = tintColor.withAlphaComponent(0.75)
+    override func setTitle(_ title: String?, for state: UIControlState) {
+        if let title = title {
+            let attributes = Appearance.shared.checkoutButtonAttributes.titleAttributes
+            let attributedTitle = NSAttributedString(string: title, attributes: attributes)
+            setAttributedTitle(attributedTitle, for: state)
+        } else {
+            super.setTitle(title, for: state)
+        }
+    }
+    
+    // MARK: - UIControl
+    
+    internal override var isHighlighted: Bool {
+        didSet {
+            updateBackground()
+        }
+    }
+    
+    internal override var isEnabled: Bool {
+        didSet {
+            updateBackground()
+        }
+    }
+    
+    // MARK: - UIView
+    
+    internal override var intrinsicContentSize: CGSize {
+        return CGSize(width: super.intrinsicContentSize.width, height: preferredHeight)
+    }
+    
+    override func sizeThatFits(_ size: CGSize) -> CGSize {
+        return CGSize(width: super.sizeThatFits(size).width, height: preferredHeight)
+    }
+    
+    internal override var frame: CGRect {
+        didSet {
+            highlightedLayer.frame = bounds
         }
     }
     
@@ -65,22 +68,39 @@ internal class CheckoutButton: UIButton {
         updateBackgroundColor()
     }
     
-    internal override var isHighlighted: Bool {
-        didSet {
-            updateBackgroundColor()
+    // MARK: - Private
+    
+    private let preferredHeight: CGFloat = 50
+    
+    private lazy var highlightedLayer: CALayer = {
+        let highlightedLayer = CALayer()
+        highlightedLayer.frame = self.bounds
+        highlightedLayer.backgroundColor = UIColor.black.cgColor
+        highlightedLayer.opacity = 0.0
+        highlightedLayer.zPosition = 100
+        layer.addSublayer(highlightedLayer)
+        return highlightedLayer
+    }()
+    
+    private func updateBackgroundColor() {
+        if let buttonBackgroundColor = Appearance.shared.checkoutButtonAttributes.backgroundColor {
+            backgroundColor = buttonBackgroundColor
+        } else {
+            backgroundColor = tintColor
         }
     }
     
-    internal override var isEnabled: Bool {
-        didSet {
-            updateBackgroundColor()
+    private func updateBackground() {
+        switch (isEnabled, isHighlighted) {
+        case (false, _):
+            alpha = 0.5
+            highlightedLayer.opacity = 0.0
+        case (true, false):
+            alpha = 1.0
+            highlightedLayer.opacity = 0.0
+        case (true, true):
+            alpha = 1.0
+            highlightedLayer.opacity = 0.4
         }
     }
-    
-    // MARK: Appearance Configuration
-    
-    private var appearanceConfiguration: AppearanceConfiguration {
-        return AppearanceConfiguration.shared
-    }
-    
 }
