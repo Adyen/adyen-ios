@@ -38,6 +38,7 @@
 		E22BD4B820FDE011003332FC /* AdyenCard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9D4FF0820D7B7E6003AA167 /* AdyenCard.framework */; };
 		E22BD4B920FDE011003332FC /* AdyenInternal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9D4FEF720D7B77C003AA167 /* AdyenInternal.framework */; };
 		E22BD4BA20FDE011003332FC /* AdyenSEPA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9D4FF1920D7B803003AA167 /* AdyenSEPA.framework */; };
+		E22E06CF21143879002F564B /* PaymentSessionDecoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22E06CE21143879002F564B /* PaymentSessionDecoding.swift */; };
 		E23872E2209B4BA100BCF366 /* ListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23872E1209B4BA100BCF366 /* ListItem.swift */; };
 		E23872E4209B4C3800BCF366 /* ListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23872E3209B4C3800BCF366 /* ListItemView.swift */; };
 		E23AE02D1F98BF6100FF10AD /* CheckoutButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23AE02C1F98BF6100FF10AD /* CheckoutButton.swift */; };
@@ -326,6 +327,7 @@
 		E221566E206BDA4700C91595 /* PaymentSessionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentSessionTests.swift; sourceTree = "<group>"; };
 		E221566F206BDA4700C91595 /* PaymentDetailTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentDetailTests.swift; sourceTree = "<group>"; };
 		E227F114209C3F2A00E3BA28 /* CheckoutControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutControllerDelegate.swift; sourceTree = "<group>"; };
+		E22E06CE21143879002F564B /* PaymentSessionDecoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSessionDecoding.swift; sourceTree = "<group>"; };
 		E235094E1F99EDAE00EBB802 /* UIButtonExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonExtensions.swift; sourceTree = "<group>"; };
 		E23872E1209B4BA100BCF366 /* ListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItem.swift; sourceTree = "<group>"; };
 		E23872E3209B4C3800BCF366 /* ListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemView.swift; sourceTree = "<group>"; };
@@ -596,6 +598,7 @@
 				E209923D209097C300BCBE75 /* PaymentResult.swift */,
 				E209923F209097C300BCBE75 /* PaymentMethod.swift */,
 				E2099240209097C300BCBE75 /* PaymentSession.swift */,
+				E22E06CE21143879002F564B /* PaymentSessionDecoding.swift */,
 				E209923E209097C300BCBE75 /* PaymentDetail.swift */,
 				E25842C820A1D81C00369E7E /* SectionedPaymentMethods.swift */,
 				E2099241209097C300BCBE75 /* PaymentSessionToken.swift */,
@@ -1497,6 +1500,7 @@
 				E9BCE22720E0D30B0091F793 /* FormConsentView.swift in Sources */,
 				E209924C209097D400BCBE75 /* Result.swift in Sources */,
 				E9D4FF4820D7DD2C003AA167 /* FormPicker.swift in Sources */,
+				E22E06CF21143879002F564B /* PaymentSessionDecoding.swift in Sources */,
 				E209922F208F331300BCBE75 /* DynamicHeightNavigationController.swift in Sources */,
 				E23872E2209B4BA100BCF366 /* ListItem.swift in Sources */,
 				E2099243209097C300BCBE75 /* PaymentDetail.swift in Sources */,
@@ -1750,7 +1754,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 2.0.0;
+				CURRENT_PROJECT_VERSION = 2.0.1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -1812,7 +1816,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 2.0.0;
+				CURRENT_PROJECT_VERSION = 2.0.1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1843,7 +1847,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.0.0;
+				DYLIB_CURRENT_VERSION = 2.0.1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1868,7 +1872,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.0.0;
+				DYLIB_CURRENT_VERSION = 2.0.1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1985,11 +1989,11 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.0.0;
+				CURRENT_PROJECT_VERSION = 2.0.1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.0.0;
+				DYLIB_CURRENT_VERSION = 2.0.1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenApplePay/Info.plist;
@@ -2014,11 +2018,11 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.0.0;
+				CURRENT_PROJECT_VERSION = 2.0.1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.0.0;
+				DYLIB_CURRENT_VERSION = 2.0.1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenApplePay/Info.plist;
@@ -2042,11 +2046,11 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.0.0;
+				CURRENT_PROJECT_VERSION = 2.0.1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.0.0;
+				DYLIB_CURRENT_VERSION = 2.0.1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenInternal/Info.plist;
@@ -2070,11 +2074,11 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.0.0;
+				CURRENT_PROJECT_VERSION = 2.0.1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.0.0;
+				DYLIB_CURRENT_VERSION = 2.0.1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenInternal/Info.plist;
@@ -2099,11 +2103,11 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.0.0;
+				CURRENT_PROJECT_VERSION = 2.0.1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 2.0.1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2134,11 +2138,11 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.0.0;
+				CURRENT_PROJECT_VERSION = 2.0.1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 2.0.1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2169,11 +2173,11 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.0.0;
+				CURRENT_PROJECT_VERSION = 2.0.1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.0.0;
+				DYLIB_CURRENT_VERSION = 2.0.1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenSEPA/Info.plist;
@@ -2198,11 +2202,11 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.0.0;
+				CURRENT_PROJECT_VERSION = 2.0.1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.0.0;
+				DYLIB_CURRENT_VERSION = 2.0.1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenSEPA/Info.plist;

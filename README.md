@@ -27,8 +27,12 @@ If you want to quickly integrate with Adyen, use the default UI elements that we
 
 For this, instantiate a `CheckoutController` with your view controller, and call `start()` to present the checkout UI.
 ```swift
-let checkoutController = CheckoutController(presentingViewController: self, delegate: self)
-checkoutController.start()
+var checkoutController: CheckoutController?
+
+func startCheckout() {
+    checkoutController = CheckoutController(presentingViewController: self, delegate: self)
+    checkoutController?.start()
+}
 ```
 
 ### CheckoutControllerDelegate

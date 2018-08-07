@@ -8,7 +8,7 @@ import AdyenInternal
 import Foundation
 
 /// A structure representing the current payment session.
-public struct PaymentSession: Decodable {
+public struct PaymentSession {
 
     // MARK: - Accessing Payment Information
     
@@ -28,8 +28,7 @@ public struct PaymentSession: Decodable {
     
     internal let initiationURL: URL
     internal let deleteStoredPaymentMethodURL: URL
-    
-    private let checkoutShopperBaseURL: URL
+    internal let checkoutShopperBaseURL: URL
     
     // MARK: - Working with Card Encryption
     
@@ -38,74 +37,6 @@ public struct PaymentSession: Decodable {
     
     /// The generation date to use for encrypting card data.
     public let generationDate: Date?
-    
-    // MARK: - Decoding
-    
-    /// :nodoc:
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        self.payment = try container.decode(Payment.self, forKey: .payment)
-        self.initiationURL = try container.decode(URL.self, forKey: .initiationURL)
-        self.checkoutShopperBaseURL = try container.decode(URL.self, forKey: .checkoutShopperBaseURL)
-        self.deleteStoredPaymentMethodURL = try container.decode(URL.self, forKey: .deleteStoredPaymentMethodURL)
-        self.publicKey = try container.decodeIfPresent(String.self, forKey: .publicKey)
-        self.generationDate = try container.decodeIfPresent(Date.self, forKey: .generationDate)
-        self.paymentData = try container.decode(String.self, forKey: .paymentData)
-        self.company = try container.decodeIfPresent(Company.self, forKey: .company)
-        self.lineItems = try container.decodeIfPresent([LineItem].self, forKey: .lineItems)
-        
-        self.paymentMethods = try SectionedPaymentMethods(from: decoder)
-        
-        fillInLogoURLs()
-    }
-    
-    private enum CodingKeys: String, CodingKey {
-        case payment
-        case paymentMethods
-        case storedPaymentMethods = "oneClickPaymentMethods"
-        case environment
-        case initiationURL = "initiationUrl"
-        case checkoutShopperBaseURL = "checkoutshopperBaseUrl"
-        case deleteStoredPaymentMethodURL = "disableRecurringDetailUrl"
-        case publicKey
-        case generationDate = "generationtime"
-        case paymentData
-        case lineItems
-        case company
-    }
-    
-    // MARK: - Private
-    
-    private mutating func fillInLogoURLs() {
-        paymentMethods.preferred = paymentMethodsWithLogoURLs(paymentMethods.preferred)
-        paymentMethods.other = paymentMethodsWithLogoURLs(paymentMethods.other)
-    }
-    
-    func paymentMethodsWithLogoURLs(_ paymentMethods: [PaymentMethod]) -> [PaymentMethod] {
-        var mutatedPaymentMethods: [PaymentMethod] = []
-        
-        for var paymentMethod in paymentMethods {
-            let logoURL = LogoURLProvider.logoURL(for: paymentMethod, baseURL: checkoutShopperBaseURL)
-            paymentMethod.logoURL = logoURL
-            
-            if let issuerDetail = paymentMethod.details.issuer, case let .select(issuers) = issuerDetail.inputType {
-                let issuersWithLogoURLs = issuers.map { issuer -> PaymentDetail.SelectItem in
-                    var issuerWithLogoURL = issuer
-                    issuerWithLogoURL.logoURL = LogoURLProvider.logoURL(for: paymentMethod, selectItem: issuer, baseURL: checkoutShopperBaseURL)
-                    
-                    return issuerWithLogoURL
-                }
-                
-                paymentMethod.details.issuer?.inputType = .select(issuersWithLogoURLs)
-            }
-            
-            paymentMethod.children = paymentMethodsWithLogoURLs(paymentMethod.children)
-            mutatedPaymentMethods.append(paymentMethod)
-        }
-        
-        return mutatedPaymentMethods
-    }
     
 }
 
@@ -154,6 +85,7 @@ public extension PaymentSession {
             case shopperReference
             case shopperLocaleIdentifier = "shopperLocale"
         }
+        
     }
 }
 

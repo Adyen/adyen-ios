@@ -21,7 +21,7 @@ public final class PaymentController {
     }
     
     deinit {
-        assert(!isPaymentSessionActive, "PaymentController was allocated during an active payment session.")
+        assert(!isPaymentSessionActive, "PaymentController was deallocated during an active payment session.")
     }
     
     // MARK: - Accessing the Delegate
@@ -82,26 +82,16 @@ public final class PaymentController {
     var isPaymentSessionActive = false
     
     internal func start(with token: PaymentSessionToken) {
-        delegateProxy.requestPaymentSession(withToken: token.encoded, for: self) { paymentSessionBase64 in
-            self.decode(paymentSessionBase64: paymentSessionBase64)
+        delegateProxy.requestPaymentSession(withToken: token.encoded, for: self) { paymentSessionResponse in
+            self.decode(paymentSessionResponse: paymentSessionResponse)
         }
     }
     
     // MARK: - Private
     
-    private func decode(paymentSessionBase64: String) {
-        // Base64-decode the payment session.
-        guard let paymentSessionData = Data(base64Encoded: paymentSessionBase64) else {
-            let context = DecodingError.Context(codingPath: [], debugDescription: "The given string is not a valid Base64 encoded string.")
-            let error = DecodingError.dataCorrupted(context)
-            finish(with: error)
-            
-            return
-        }
-        
-        // Decode the payment session.
+    private func decode(paymentSessionResponse: String) {
         do {
-            paymentSession = try Coder.decode(paymentSessionData) as PaymentSession
+            paymentSession = try PaymentSession.decode(from: paymentSessionResponse)
             filterUnavailablePaymentMethods()
             requestPaymentMethodSelection()
         } catch {

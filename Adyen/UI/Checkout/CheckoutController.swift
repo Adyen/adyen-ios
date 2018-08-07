@@ -30,7 +30,7 @@ public final class CheckoutController {
             return
         }
         
-        assert(!paymentController.isPaymentSessionActive, "CheckoutController was allocated during an active payment session.")
+        assert(!paymentController.isPaymentSessionActive, "CheckoutController was deallocated during an active payment session.")
     }
     
     // MARK: - Accessing the Delegate
