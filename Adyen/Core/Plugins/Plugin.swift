@@ -5,11 +5,12 @@
 //
 
 import Foundation
+import UIKit
 
 /// Instances conforming to the Plugin protocol provide native logic for payment methods.
 /// :nodoc:
 open class Plugin: NSObject {
-
+    
     // MARK: - Internal
     
     public required init(paymentMethod: PaymentMethod, paymentSession: PaymentSession, appearance: Appearance) {
@@ -21,6 +22,7 @@ open class Plugin: NSObject {
     open let paymentMethod: PaymentMethod
     open let paymentSession: PaymentSession
     open let appearance: Appearance
+    open var additionalPaymentDetails: AdditionalPaymentDetails?
     
     open var showsDisclosureIndicator: Bool {
         return false

@@ -80,6 +80,8 @@
 		E91F486D20D9441000D4F58C /* ApplePayPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E250382C1F175C8C00DCFD38 /* ApplePayPlugin.swift */; };
 		E91F486E20D9457200D4F58C /* AmountFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20AD0251EFAB0E00065B70E /* AmountFormatter.swift */; };
 		E925CA05206CF9A9003141D9 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E925CA04206CF9A9003141D9 /* ListViewController.swift */; };
+		E94219D1211B091A006C9D8B /* UIFontExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94219D0211B091A006C9D8B /* UIFontExtensions.swift */; };
+		E94219D3211B30C6006C9D8B /* DynamicTypeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94219D2211B30C6006C9D8B /* DynamicTypeController.swift */; };
 		E9553B4620F4CDA200C5EB3C /* StoredPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9553B4520F4CDA200C5EB3C /* StoredPlugin.swift */; };
 		E967686820877F07001FBDC6 /* CheckoutPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E967686720877F07001FBDC6 /* CheckoutPresenter.swift */; };
 		E975965720FCD35700EF8D3F /* CardPaymentDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E975965620FCD35700EF8D3F /* CardPaymentDetails.swift */; };
@@ -94,6 +96,12 @@
 		E97C04D5205019A00065A89A /* CheckoutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97C04D4205019A00065A89A /* CheckoutController.swift */; };
 		E97C04D7205036300065A89A /* PreselectedPaymentMethodManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97C04D6205036300065A89A /* PreselectedPaymentMethodManager.swift */; };
 		E97C04DB2057FB170065A89A /* RedirectPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97C04DA2057FB170065A89A /* RedirectPresenter.swift */; };
+		E98415FB210F3FF6009DEE7E /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E98415FA210F3FF6009DEE7E /* libstdc++.tbd */; };
+		E98415FD210F3FFF009DEE7E /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E98415FC210F3FFF009DEE7E /* libz.tbd */; };
+		E98415FF210F4009009DEE7E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E98415FE210F4009009DEE7E /* SystemConfiguration.framework */; };
+		E9841601210F4011009DEE7E /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9841600210F4011009DEE7E /* CoreTelephony.framework */; };
+		E9841603210F4019009DEE7E /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E9841602210F4019009DEE7E /* libsqlite3.0.tbd */; };
+		E985FAB9210F3EFB0008F869 /* libWeChatSDK.a in CopyFiles */ = {isa = PBXBuildFile; fileRef = E9EB7F08210F3A9E00FC7ADA /* libWeChatSDK.a */; };
 		E9A3322820F6024D002560F1 /* ADYAESCCMCryptor.h in Headers */ = {isa = PBXBuildFile; fileRef = E9A3321520F6024C002560F1 /* ADYAESCCMCryptor.h */; };
 		E9A3322920F6024D002560F1 /* ADYAESCCMCryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = E9A3321620F6024C002560F1 /* ADYAESCCMCryptor.m */; };
 		E9A3322A20F6024D002560F1 /* ADYCard.h in Headers */ = {isa = PBXBuildFile; fileRef = E9A3321720F6024C002560F1 /* ADYCard.h */; };
@@ -105,7 +113,6 @@
 		E9A3323020F6024D002560F1 /* ADYRSACryptor.h in Headers */ = {isa = PBXBuildFile; fileRef = E9A3321D20F6024C002560F1 /* ADYRSACryptor.h */; };
 		E9A3323120F6024D002560F1 /* ADYRSACryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = E9A3321E20F6024C002560F1 /* ADYRSACryptor.m */; };
 		E9A3323220F6024D002560F1 /* AdyenCSE.h in Headers */ = {isa = PBXBuildFile; fileRef = E9A3321F20F6024C002560F1 /* AdyenCSE.h */; };
-		E9A3323320F6024D002560F1 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E9A3322020F6024C002560F1 /* Info.plist */; };
 		E9A3323420F6024D002560F1 /* NSDictionary+AdyenUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = E9A3322120F6024C002560F1 /* NSDictionary+AdyenUtil.h */; };
 		E9A3323520F6024D002560F1 /* NSDictionary+AdyenUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = E9A3322220F6024C002560F1 /* NSDictionary+AdyenUtil.m */; };
 		E9A3323620F6024D002560F1 /* NSString+AdyenURLEncoding.h in Headers */ = {isa = PBXBuildFile; fileRef = E9A3322320F6024C002560F1 /* NSString+AdyenURLEncoding.h */; };
@@ -116,6 +123,10 @@
 		E9A4ABB220F3801400D3938D /* CardFormFieldConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A4ABB120F3801400D3938D /* CardFormFieldConfiguration.swift */; };
 		E9B4E97320D923970059202D /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B4E97220D923970059202D /* Appearance.swift */; };
 		E9BCE22720E0D30B0091F793 /* FormConsentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9BCE22620E0D30B0091F793 /* FormConsentView.swift */; };
+		E9D4072D2111CF4F001583E1 /* AdditionalPaymentDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D4072C2111CF4F001583E1 /* AdditionalPaymentDetails.swift */; };
+		E9D4072F211321D5001583E1 /* RedirectListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D4072E211321D5001583E1 /* RedirectListener.swift */; };
+		E9D4073121134522001583E1 /* WeChatPaymentDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D4073021134522001583E1 /* WeChatPaymentDetails.swift */; };
+		E9D4073321134570001583E1 /* WeChatRedirectData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D4073221134570001583E1 /* WeChatRedirectData.swift */; };
 		E9D4FEFB20D7B77D003AA167 /* AdyenInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = E9D4FEF920D7B77D003AA167 /* AdyenInternal.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E9D4FEFE20D7B77D003AA167 /* AdyenInternal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9D4FEF720D7B77C003AA167 /* AdyenInternal.framework */; };
 		E9D4FEFF20D7B77D003AA167 /* AdyenInternal.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E9D4FEF720D7B77C003AA167 /* AdyenInternal.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -166,6 +177,17 @@
 		E9E0012920D93EA500DCE468 /* Coder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2099226208F267100BCBE75 /* Coder.swift */; };
 		E9E0012A20D93FF300DCE468 /* UIImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27DA5691F28D48B008487D5 /* UIImageExtensions.swift */; };
 		E9E0012B20D9418600DCE468 /* UIImageViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27DA56A1F28D48C008487D5 /* UIImageViewExtensions.swift */; };
+		E9EB7EF9210F38BE00FC7ADA /* AdyenWeChatPay.h in Headers */ = {isa = PBXBuildFile; fileRef = E9EB7EF7210F38BE00FC7ADA /* AdyenWeChatPay.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E9EB7EFC210F38BE00FC7ADA /* AdyenWeChatPay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9EB7EF5210F38BE00FC7ADA /* AdyenWeChatPay.framework */; };
+		E9EB7EFD210F38BE00FC7ADA /* AdyenWeChatPay.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E9EB7EF5210F38BE00FC7ADA /* AdyenWeChatPay.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E9EB7F01210F390400FC7ADA /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E20AD0091EFAB0310065B70E /* Adyen.framework */; };
+		E9EB7F02210F390400FC7ADA /* AdyenInternal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9D4FEF720D7B77C003AA167 /* AdyenInternal.framework */; };
+		E9EB7F0A210F3A9E00FC7ADA /* WXApi.h in Headers */ = {isa = PBXBuildFile; fileRef = E9EB7F05210F3A9E00FC7ADA /* WXApi.h */; };
+		E9EB7F0B210F3A9E00FC7ADA /* WXApiObject.h in Headers */ = {isa = PBXBuildFile; fileRef = E9EB7F06210F3A9E00FC7ADA /* WXApiObject.h */; };
+		E9EB7F0C210F3A9E00FC7ADA /* WechatAuthSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = E9EB7F07210F3A9E00FC7ADA /* WechatAuthSDK.h */; };
+		E9EB7F0D210F3A9E00FC7ADA /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E9EB7F08210F3A9E00FC7ADA /* libWeChatSDK.a */; };
+		E9EB7F10210F3C0500FC7ADA /* WeChatPayPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9EB7F0F210F3C0500FC7ADA /* WeChatPayPlugin.swift */; };
+		E9EBE02F2119B9940001757A /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = E9EBE02E2119B9930001757A /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -253,6 +275,13 @@
 			remoteGlobalIDString = E9D4FF1820D7B803003AA167;
 			remoteInfo = AdyenSEPA;
 		};
+		E9EB7EFA210F38BE00FC7ADA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E20AD0001EFAB0310065B70E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E9EB7EF4210F38BE00FC7ADA;
+			remoteInfo = AdyenWeChatPay;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -265,18 +294,20 @@
 				E91F486720D943DC00D4F58C /* AdyenApplePay.framework in Embed Frameworks */,
 				E9D4FF1020D7B7E6003AA167 /* AdyenCard.framework in Embed Frameworks */,
 				E9D4FF2120D7B803003AA167 /* AdyenSEPA.framework in Embed Frameworks */,
+				E9EB7EFD210F38BE00FC7ADA /* AdyenWeChatPay.framework in Embed Frameworks */,
 				E250E1401F0E606000BFFF2F /* Adyen.framework in Embed Frameworks */,
 				E9D4FEFF20D7B77D003AA167 /* AdyenInternal.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E9E0012420D93B1900DCE468 /* CopyFiles */ = {
+		E985FAB8210F3EEB0008F869 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				E985FAB9210F3EFB0008F869 /* libWeChatSDK.a in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,6 +433,8 @@
 		E91F486220D943DC00D4F58C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E925CA04206CF9A9003141D9 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		E93D11A7209C87C000FB4868 /* LogoURLProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoURLProvider.swift; sourceTree = "<group>"; };
+		E94219D0211B091A006C9D8B /* UIFontExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontExtensions.swift; sourceTree = "<group>"; };
+		E94219D2211B30C6006C9D8B /* DynamicTypeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicTypeController.swift; sourceTree = "<group>"; };
 		E94D3EC3206BAB0100F95A7D /* FormPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPicker.swift; sourceTree = "<group>"; };
 		E94F5756200F82B500A545F9 /* CardEncryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardEncryptor.swift; sourceTree = "<group>"; };
 		E9553B4520F4CDA200C5EB3C /* StoredPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredPlugin.swift; sourceTree = "<group>"; };
@@ -418,6 +451,11 @@
 		E97C04D4205019A00065A89A /* CheckoutController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutController.swift; sourceTree = "<group>"; };
 		E97C04D6205036300065A89A /* PreselectedPaymentMethodManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreselectedPaymentMethodManager.swift; sourceTree = "<group>"; };
 		E97C04DA2057FB170065A89A /* RedirectPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedirectPresenter.swift; sourceTree = "<group>"; };
+		E98415FA210F3FF6009DEE7E /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
+		E98415FC210F3FFF009DEE7E /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		E98415FE210F4009009DEE7E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		E9841600210F4011009DEE7E /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		E9841602210F4019009DEE7E /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		E9A3321520F6024C002560F1 /* ADYAESCCMCryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADYAESCCMCryptor.h; sourceTree = "<group>"; };
 		E9A3321620F6024C002560F1 /* ADYAESCCMCryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADYAESCCMCryptor.m; sourceTree = "<group>"; };
 		E9A3321720F6024C002560F1 /* ADYCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADYCard.h; sourceTree = "<group>"; };
@@ -442,6 +480,10 @@
 		E9B4E97220D923970059202D /* Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
 		E9BCE22620E0D30B0091F793 /* FormConsentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormConsentView.swift; sourceTree = "<group>"; };
 		E9BE1281203AE0A4007286B0 /* CardEncryptorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardEncryptorExtensions.swift; sourceTree = "<group>"; };
+		E9D4072C2111CF4F001583E1 /* AdditionalPaymentDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalPaymentDetails.swift; sourceTree = "<group>"; };
+		E9D4072E211321D5001583E1 /* RedirectListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedirectListener.swift; sourceTree = "<group>"; };
+		E9D4073021134522001583E1 /* WeChatPaymentDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeChatPaymentDetails.swift; sourceTree = "<group>"; };
+		E9D4073221134570001583E1 /* WeChatRedirectData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeChatRedirectData.swift; sourceTree = "<group>"; };
 		E9D4FEF720D7B77C003AA167 /* AdyenInternal.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdyenInternal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9D4FEF920D7B77D003AA167 /* AdyenInternal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdyenInternal.h; sourceTree = "<group>"; };
 		E9D4FEFA20D7B77D003AA167 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -453,6 +495,17 @@
 		E9D4FF1C20D7B803003AA167 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E9E0010F20D9316000DCE468 /* BoolExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoolExtensions.swift; sourceTree = "<group>"; };
 		E9E0011220D9316000DCE468 /* URLExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLExtensions.swift; sourceTree = "<group>"; };
+		E9EB7EF5210F38BE00FC7ADA /* AdyenWeChatPay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdyenWeChatPay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9EB7EF7210F38BE00FC7ADA /* AdyenWeChatPay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdyenWeChatPay.h; sourceTree = "<group>"; };
+		E9EB7EF8210F38BE00FC7ADA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E9EB7F05210F3A9E00FC7ADA /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
+		E9EB7F06210F3A9E00FC7ADA /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
+		E9EB7F07210F3A9E00FC7ADA /* WechatAuthSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WechatAuthSDK.h; sourceTree = "<group>"; };
+		E9EB7F08210F3A9E00FC7ADA /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
+		E9EB7F0E210F3B7900FC7ADA /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
+		E9EB7F0F210F3C0500FC7ADA /* WeChatPayPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeChatPayPlugin.swift; sourceTree = "<group>"; };
+		E9EBE02B21188F8A0001757A /* AdyenUIHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AdyenUIHost.entitlements; sourceTree = "<group>"; };
+		E9EBE02E2119B9930001757A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		EEDFC6FAA3826763FD1E99D3 /* Pods-AdyenTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdyenTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AdyenTests/Pods-AdyenTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -491,6 +544,7 @@
 			files = (
 				E250E13F1F0E606000BFFF2F /* Adyen.framework in Frameworks */,
 				E9D4FEFE20D7B77D003AA167 /* AdyenInternal.framework in Frameworks */,
+				E9EB7EFC210F38BE00FC7ADA /* AdyenWeChatPay.framework in Frameworks */,
 				E9D4FF0F20D7B7E6003AA167 /* AdyenCard.framework in Frameworks */,
 				E9D4FF2020D7B803003AA167 /* AdyenSEPA.framework in Frameworks */,
 				E91F486620D943DC00D4F58C /* AdyenApplePay.framework in Frameworks */,
@@ -532,6 +586,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E9EB7EF1210F38BE00FC7ADA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E9841603210F4019009DEE7E /* libsqlite3.0.tbd in Frameworks */,
+				E9841601210F4011009DEE7E /* CoreTelephony.framework in Frameworks */,
+				E98415FF210F4009009DEE7E /* SystemConfiguration.framework in Frameworks */,
+				E98415FD210F3FFF009DEE7E /* libz.tbd in Frameworks */,
+				E98415FB210F3FF6009DEE7E /* libstdc++.tbd in Frameworks */,
+				E9EB7F01210F390400FC7ADA /* Adyen.framework in Frameworks */,
+				E9EB7F02210F390400FC7ADA /* AdyenInternal.framework in Frameworks */,
+				E9EB7F0D210F3A9E00FC7ADA /* libWeChatSDK.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -558,6 +627,9 @@
 				E2A1F41C1FE7D3FC00AF44C0 /* BundleExtensions.swift */,
 				E20AD0321EFAB0E00065B70E /* StringExtensions.swift */,
 				E2F60F7D209753DE0018285D /* CollectionExtensions.swift */,
+				E9D4072E211321D5001583E1 /* RedirectListener.swift */,
+				E94219D0211B091A006C9D8B /* UIFontExtensions.swift */,
+				E94219D2211B30C6006C9D8B /* DynamicTypeController.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -584,6 +656,8 @@
 		E2099234208F684000BCBE75 /* Checkout */ = {
 			isa = PBXGroup;
 			children = (
+				E97C04DA2057FB170065A89A /* RedirectPresenter.swift */,
+				E23AE02C1F98BF6100FF10AD /* CheckoutButton.swift */,
 				E97C04D4205019A00065A89A /* CheckoutController.swift */,
 				E227F114209C3F2A00E3BA28 /* CheckoutControllerDelegate.swift */,
 				E967686720877F07001FBDC6 /* CheckoutPresenter.swift */,
@@ -603,6 +677,7 @@
 				E25842C820A1D81C00369E7E /* SectionedPaymentMethods.swift */,
 				E2099241209097C300BCBE75 /* PaymentSessionToken.swift */,
 				E2A42273209AFC9000BBC1CD /* StoredPaymentDetails.swift */,
+				E9D4072C2111CF4F001583E1 /* AdditionalPaymentDetails.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -662,6 +737,7 @@
 				E91F486020D943DC00D4F58C /* AdyenApplePay */,
 				E9D4FF0920D7B7E6003AA167 /* AdyenCard */,
 				E9D4FF1A20D7B803003AA167 /* AdyenSEPA */,
+				E9EB7EF6210F38BE00FC7ADA /* AdyenWeChatPay */,
 				E20AD0161EFAB0310065B70E /* AdyenTests */,
 				E2BF6CC21F03952C0065E574 /* AdyenUITests */,
 				E2E9D01C1F0389C80056E0AC /* AdyenUIHost */,
@@ -682,6 +758,7 @@
 				E9D4FF0820D7B7E6003AA167 /* AdyenCard.framework */,
 				E9D4FF1920D7B803003AA167 /* AdyenSEPA.framework */,
 				E91F485F20D943DC00D4F58C /* AdyenApplePay.framework */,
+				E9EB7EF5210F38BE00FC7ADA /* AdyenWeChatPay.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -690,7 +767,6 @@
 			isa = PBXGroup;
 			children = (
 				E20AD0231EFAB0E00065B70E /* Core */,
-				E20AD0461EFAB0E00065B70E /* CoreUI */,
 				E20AD0621EFAB0E00065B70E /* UI */,
 				E20AD0501EFAB0E00065B70E /* Plugins */,
 				E20AD00C1EFAB0310065B70E /* Adyen.h */,
@@ -714,7 +790,6 @@
 		E20AD0231EFAB0E00065B70E /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				E97C04DA2057FB170065A89A /* RedirectPresenter.swift */,
 				E2099262209203F300BCBE75 /* Networking */,
 				E209923C209097C300BCBE75 /* Models */,
 				E209924E2090980500BCBE75 /* Payment Controller */,
@@ -723,17 +798,6 @@
 				E2099247209097D400BCBE75 /* Other */,
 			);
 			path = Core;
-			sourceTree = "<group>";
-		};
-		E20AD0461EFAB0E00065B70E /* CoreUI */ = {
-			isa = PBXGroup;
-			children = (
-				E9B4E97420D9239C0059202D /* Appearance */,
-				E27DA5801F28D4BE008487D5 /* Form */,
-				E27DA5641F28D48B008487D5 /* Checkout Button */,
-				E23872E0209B4A5000BCF366 /* List */,
-			);
-			path = CoreUI;
 			sourceTree = "<group>";
 		};
 		E20AD0501EFAB0E00065B70E /* Plugins */ = {
@@ -747,6 +811,9 @@
 		E20AD0621EFAB0E00065B70E /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				E9B4E97420D9239C0059202D /* Appearance */,
+				E27DA5801F28D4BE008487D5 /* Form */,
+				E23872E0209B4A5000BCF366 /* List */,
 				E2099234208F684000BCBE75 /* Checkout */,
 				E2F60F7820971D300018285D /* Loading */,
 				E219A48D20A06B9900C35ADD /* Preselected Payment Method */,
@@ -799,6 +866,11 @@
 		E20AD1E71EFBE7630065B70E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E9841602210F4019009DEE7E /* libsqlite3.0.tbd */,
+				E9841600210F4011009DEE7E /* CoreTelephony.framework */,
+				E98415FE210F4009009DEE7E /* SystemConfiguration.framework */,
+				E98415FC210F3FFF009DEE7E /* libz.tbd */,
+				E98415FA210F3FF6009DEE7E /* libstdc++.tbd */,
 				B7AEC312DF920BCC1C4BC1C0 /* Pods_Adyen.framework */,
 				D3BE1722DC859E029DDBCF09 /* Pods_AdyenTests.framework */,
 				36FCC0F6EB491A052CC61D81 /* Pods_AdyenUIHost.framework */,
@@ -847,14 +919,6 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		E27DA5641F28D48B008487D5 /* Checkout Button */ = {
-			isa = PBXGroup;
-			children = (
-				E23AE02C1F98BF6100FF10AD /* CheckoutButton.swift */,
-			);
-			path = "Checkout Button";
-			sourceTree = "<group>";
-		};
 		E27DA5801F28D4BE008487D5 /* Form */ = {
 			isa = PBXGroup;
 			children = (
@@ -891,6 +955,7 @@
 		E2E9D01C1F0389C80056E0AC /* AdyenUIHost */ = {
 			isa = PBXGroup;
 			children = (
+				E9EBE02B21188F8A0001757A /* AdyenUIHost.entitlements */,
 				E2A167C21F0E643A00A27E4A /* Configuration.swift */,
 				E2E9D01D1F0389C80056E0AC /* AppDelegate.swift */,
 				E2E9D01F1F0389C80056E0AC /* ViewController.swift */,
@@ -1045,6 +1110,32 @@
 			path = Assets;
 			sourceTree = "<group>";
 		};
+		E9EB7EF6210F38BE00FC7ADA /* AdyenWeChatPay */ = {
+			isa = PBXGroup;
+			children = (
+				E9EBE02E2119B9930001757A /* README.md */,
+				E9EB7F03210F3A9E00FC7ADA /* WeChatSDK */,
+				E9EB7EF7210F38BE00FC7ADA /* AdyenWeChatPay.h */,
+				E9EB7EF8210F38BE00FC7ADA /* Info.plist */,
+				E9EB7F0F210F3C0500FC7ADA /* WeChatPayPlugin.swift */,
+				E9D4073021134522001583E1 /* WeChatPaymentDetails.swift */,
+				E9D4073221134570001583E1 /* WeChatRedirectData.swift */,
+			);
+			path = AdyenWeChatPay;
+			sourceTree = "<group>";
+		};
+		E9EB7F03210F3A9E00FC7ADA /* WeChatSDK */ = {
+			isa = PBXGroup;
+			children = (
+				E9EB7F0E210F3B7900FC7ADA /* module.modulemap */,
+				E9EB7F05210F3A9E00FC7ADA /* WXApi.h */,
+				E9EB7F06210F3A9E00FC7ADA /* WXApiObject.h */,
+				E9EB7F07210F3A9E00FC7ADA /* WechatAuthSDK.h */,
+				E9EB7F08210F3A9E00FC7ADA /* libWeChatSDK.a */,
+			);
+			path = WeChatSDK;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1094,6 +1185,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				E9D4FF1D20D7B803003AA167 /* AdyenSEPA.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E9EB7EF2210F38BE00FC7ADA /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E9EB7F0A210F3A9E00FC7ADA /* WXApi.h in Headers */,
+				E9EB7F0C210F3A9E00FC7ADA /* WechatAuthSDK.h in Headers */,
+				E9EB7F0B210F3A9E00FC7ADA /* WXApiObject.h in Headers */,
+				E9EB7EF9210F38BE00FC7ADA /* AdyenWeChatPay.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1179,6 +1281,7 @@
 				E9D4FF0E20D7B7E6003AA167 /* PBXTargetDependency */,
 				E9D4FF1F20D7B803003AA167 /* PBXTargetDependency */,
 				E91F486520D943DC00D4F58C /* PBXTargetDependency */,
+				E9EB7EFB210F38BE00FC7ADA /* PBXTargetDependency */,
 			);
 			name = AdyenUIHost;
 			productName = AdyenUIHost;
@@ -1229,7 +1332,6 @@
 				E9D4FF0420D7B7E6003AA167 /* Frameworks */,
 				E9D4FF0520D7B7E6003AA167 /* Headers */,
 				E9D4FF0620D7B7E6003AA167 /* Resources */,
-				E9E0012420D93B1900DCE468 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -1258,6 +1360,25 @@
 			productReference = E9D4FF1920D7B803003AA167 /* AdyenSEPA.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		E9EB7EF4210F38BE00FC7ADA /* AdyenWeChatPay */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E9EB7F00210F38BE00FC7ADA /* Build configuration list for PBXNativeTarget "AdyenWeChatPay" */;
+			buildPhases = (
+				E9EB7EF0210F38BE00FC7ADA /* Sources */,
+				E9EB7EF1210F38BE00FC7ADA /* Frameworks */,
+				E9EB7EF2210F38BE00FC7ADA /* Headers */,
+				E9EB7EF3210F38BE00FC7ADA /* Resources */,
+				E985FAB8210F3EEB0008F869 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AdyenWeChatPay;
+			productName = AdyenWeChatPay;
+			productReference = E9EB7EF5210F38BE00FC7ADA /* AdyenWeChatPay.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1265,7 +1386,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = Adyen;
 				TargetAttributes = {
 					E20AD0081EFAB0310065B70E = {
@@ -1282,12 +1403,14 @@
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = B2NYSS5932;
 						LastSwiftMigration = 0900;
+						ProvisioningStyle = Manual;
 						TestTargetID = E2E9D01A1F0389C80056E0AC;
 					};
 					E2E9D01A1F0389C80056E0AC = {
 						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = B2NYSS5932;
 						LastSwiftMigration = 0900;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 					E91F485E20D943DC00D4F58C = {
 						CreatedOnToolsVersion = 9.3;
@@ -1304,6 +1427,11 @@
 					E9D4FF1820D7B803003AA167 = {
 						CreatedOnToolsVersion = 9.4;
 						ProvisioningStyle = Manual;
+					};
+					E9EB7EF4210F38BE00FC7ADA = {
+						CreatedOnToolsVersion = 9.4;
+						LastSwiftMigration = 0940;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -1336,6 +1464,7 @@
 				E91F485E20D943DC00D4F58C /* AdyenApplePay */,
 				E9D4FF0720D7B7E6003AA167 /* AdyenCard */,
 				E9D4FF1820D7B803003AA167 /* AdyenSEPA */,
+				E9EB7EF4210F38BE00FC7ADA /* AdyenWeChatPay */,
 				E20AD0111EFAB0310065B70E /* AdyenTests */,
 				E2BF6CC01F03952C0065E574 /* AdyenUITests */,
 				E2E9D01A1F0389C80056E0AC /* AdyenUIHost */,
@@ -1401,7 +1530,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E9A3323320F6024D002560F1 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1409,6 +1537,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E9EB7EF3210F38BE00FC7ADA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E9EBE02F2119B9940001757A /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1478,6 +1614,7 @@
 				E9B4E97320D923970059202D /* Appearance.swift in Sources */,
 				E97C04D7205036300065A89A /* PreselectedPaymentMethodManager.swift in Sources */,
 				E23872E4209B4C3800BCF366 /* ListItemView.swift in Sources */,
+				E9D4072D2111CF4F001583E1 /* AdditionalPaymentDetails.swift in Sources */,
 				E97C04D2204ED1670065A89A /* PreselectedPaymentMethodViewController.swift in Sources */,
 				E2F60F7720971C910018285D /* PaymentControllerError.swift in Sources */,
 				E20992512090980500BCBE75 /* PaymentController.swift in Sources */,
@@ -1580,13 +1717,16 @@
 			files = (
 				E91F486E20D9457200D4F58C /* AmountFormatter.swift in Sources */,
 				E9E0012A20D93FF300DCE468 /* UIImageExtensions.swift in Sources */,
+				E94219D1211B091A006C9D8B /* UIFontExtensions.swift in Sources */,
 				E9D4FF4920D7DEFB003AA167 /* StringExtensions.swift in Sources */,
 				E9D4FF4C20D7E0D9003AA167 /* Localization.swift in Sources */,
+				E94219D3211B30C6006C9D8B /* DynamicTypeController.swift in Sources */,
 				E9D4FF2C20D7C30E003AA167 /* CollectionExtensions.swift in Sources */,
 				E9E0012920D93EA500DCE468 /* Coder.swift in Sources */,
 				E9D4FF4B20D7E00A003AA167 /* BundleExtensions.swift in Sources */,
 				E9793BA62102101B0075F555 /* URLSessionExtensions.swift in Sources */,
 				E9E0012820D93DC100DCE468 /* BoolExtensions.swift in Sources */,
+				E9D4072F211321D5001583E1 /* RedirectListener.swift in Sources */,
 				E9E0012B20D9418600DCE468 /* UIImageViewExtensions.swift in Sources */,
 				E9D4FF4F20D7E3F5003AA167 /* UIButtonExtensions.swift in Sources */,
 			);
@@ -1630,6 +1770,16 @@
 				E9D4FF3A20D7D9E9003AA167 /* IBANSpecification.swift in Sources */,
 				E9D4FF3820D7D9DC003AA167 /* SEPADirectDebitFormViewController.swift in Sources */,
 				E9D4FF3920D7D9E5003AA167 /* IBANValidator.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E9EB7EF0210F38BE00FC7ADA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E9EB7F10210F3C0500FC7ADA /* WeChatPayPlugin.swift in Sources */,
+				E9D4073121134522001583E1 /* WeChatPaymentDetails.swift in Sources */,
+				E9D4073321134570001583E1 /* WeChatRedirectData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1696,6 +1846,11 @@
 			target = E9D4FF1820D7B803003AA167 /* AdyenSEPA */;
 			targetProxy = E9D4FF1E20D7B803003AA167 /* PBXContainerItemProxy */;
 		};
+		E9EB7EFB210F38BE00FC7ADA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E9EB7EF4210F38BE00FC7ADA /* AdyenWeChatPay */;
+			targetProxy = E9EB7EFA210F38BE00FC7ADA /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -1753,8 +1908,9 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 2.0.1;
+				CURRENT_PROJECT_VERSION = 2.1.0;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -1772,7 +1928,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1815,8 +1971,9 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 2.0.1;
+				CURRENT_PROJECT_VERSION = 2.1.0;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1828,7 +1985,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -1842,12 +1999,12 @@
 		E20AD01E1EFAB0310065B70E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.0.1;
+				DYLIB_CURRENT_VERSION = 2.1.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1867,12 +2024,12 @@
 		E20AD01F1EFAB0310065B70E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.0.1;
+				DYLIB_CURRENT_VERSION = 2.1.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1916,7 +2073,6 @@
 		E2BF6CC91F03952D0065E574 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEVELOPMENT_TEAM = B2NYSS5932;
 				INFOPLIST_FILE = AdyenUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenUITests;
@@ -1929,7 +2085,6 @@
 		E2BF6CCA1F03952D0065E574 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEVELOPMENT_TEAM = B2NYSS5932;
 				INFOPLIST_FILE = AdyenUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenUITests;
@@ -1945,10 +2100,11 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = AdyenUIHost/AdyenUIHost.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = B2NYSS5932;
 				INFOPLIST_FILE = AdyenUIHost/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenUIHost;
@@ -1966,10 +2122,11 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = AdyenUIHost/AdyenUIHost.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = B2NYSS5932;
 				INFOPLIST_FILE = AdyenUIHost/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenUIHost;
@@ -1986,19 +2143,19 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.0.1;
+				CURRENT_PROJECT_VERSION = 2.1.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.0.1;
+				DYLIB_CURRENT_VERSION = 2.1.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenApplePay/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenApplePay;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -2015,19 +2172,19 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.0.1;
+				CURRENT_PROJECT_VERSION = 2.1.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.0.1;
+				DYLIB_CURRENT_VERSION = 2.1.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenApplePay/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenApplePay;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -2044,18 +2201,18 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.0.1;
+				CURRENT_PROJECT_VERSION = 2.1.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.0.1;
+				DYLIB_CURRENT_VERSION = 2.1.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenInternal/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenInternal;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -2072,18 +2229,18 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.0.1;
+				CURRENT_PROJECT_VERSION = 2.1.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.0.1;
+				DYLIB_CURRENT_VERSION = 2.1.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenInternal/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenInternal;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -2100,14 +2257,14 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.0.1;
+				CURRENT_PROJECT_VERSION = 2.1.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.0.1;
+				DYLIB_CURRENT_VERSION = 2.1.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2116,7 +2273,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenCard/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenCard;
@@ -2135,14 +2292,14 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.0.1;
+				CURRENT_PROJECT_VERSION = 2.1.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.0.1;
+				DYLIB_CURRENT_VERSION = 2.1.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2151,7 +2308,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenCard/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenCard;
@@ -2170,19 +2327,19 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.0.1;
+				CURRENT_PROJECT_VERSION = 2.1.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.0.1;
+				DYLIB_CURRENT_VERSION = 2.1.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenSEPA/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenSEPA;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -2199,24 +2356,93 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.0.1;
+				CURRENT_PROJECT_VERSION = 2.1.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.0.1;
+				DYLIB_CURRENT_VERSION = 2.1.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenSEPA/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenSEPA;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		E9EB7EFE210F38BE00FC7ADA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2.1.0;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 2.1.0;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = AdyenWeChatPay/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/AdyenWeChatPay/WeChatSDK",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenWeChatPay;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/AdyenWeChatPay/WeChatSDK";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E9EB7EFF210F38BE00FC7ADA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2.1.0;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 2.1.0;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = AdyenWeChatPay/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/AdyenWeChatPay/WeChatSDK",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenWeChatPay;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/AdyenWeChatPay/WeChatSDK";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2302,6 +2528,15 @@
 			buildConfigurations = (
 				E9D4FF2320D7B803003AA167 /* Debug */,
 				E9D4FF2420D7B803003AA167 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E9EB7F00210F38BE00FC7ADA /* Build configuration list for PBXNativeTarget "AdyenWeChatPay" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E9EB7EFE210F38BE00FC7ADA /* Debug */,
+				E9EB7EFF210F38BE00FC7ADA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

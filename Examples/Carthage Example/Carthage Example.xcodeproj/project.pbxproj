@@ -18,6 +18,7 @@
 		7CD251AA20D97686005B0010 /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD251A520D97686005B0010 /* Adyen.framework */; };
 		7CD251AB20D97686005B0010 /* AdyenInternal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CD251A620D97686005B0010 /* AdyenInternal.framework */; };
 		7CD251AE20D983EC005B0010 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD251AD20D983EC005B0010 /* Configuration.swift */; };
+		E9365ECA2121B28F006CF1D4 /* AdyenWeChatPay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9365EC92121B28F006CF1D4 /* AdyenWeChatPay.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		7CD251A520D97686005B0010 /* Adyen.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Adyen.framework; path = Carthage/Build/iOS/Adyen.framework; sourceTree = "<group>"; };
 		7CD251A620D97686005B0010 /* AdyenInternal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdyenInternal.framework; path = Carthage/Build/iOS/AdyenInternal.framework; sourceTree = "<group>"; };
 		7CD251AD20D983EC005B0010 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Configuration.swift; path = ../../../AdyenUIHost/Configuration.swift; sourceTree = "<group>"; };
+		E9365EC92121B28F006CF1D4 /* AdyenWeChatPay.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdyenWeChatPay.framework; path = Carthage/Build/iOS/AdyenWeChatPay.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9365ECA2121B28F006CF1D4 /* AdyenWeChatPay.framework in Frameworks */,
 				7CD251A720D97686005B0010 /* AdyenApplePay.framework in Frameworks */,
 				7CD251A820D97686005B0010 /* AdyenSEPA.framework in Frameworks */,
 				7CD251A920D97686005B0010 /* AdyenCard.framework in Frameworks */,
@@ -86,6 +89,7 @@
 		7CD251A120D97685005B0010 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E9365EC92121B28F006CF1D4 /* AdyenWeChatPay.framework */,
 				7CD251A520D97686005B0010 /* Adyen.framework */,
 				7CD251A220D97686005B0010 /* AdyenApplePay.framework */,
 				7CD251A420D97686005B0010 /* AdyenCard.framework */,
@@ -174,6 +178,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/AdyenApplePay.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/AdyenCard.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/AdyenSEPA.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/AdyenWeChatPay.framework",
 			);
 			name = Carthage;
 			outputPaths = (

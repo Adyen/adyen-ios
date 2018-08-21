@@ -8,7 +8,7 @@ import Foundation
 
 /// A plugin that provides an input form for SEPA Direct Debit.
 internal final class SEPADirectDebitPlugin: Plugin {
-
+    
     // MARK: - Plugin
     
     internal override var showsDisclosureIndicator: Bool {

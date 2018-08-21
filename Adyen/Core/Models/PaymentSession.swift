@@ -9,7 +9,7 @@ import Foundation
 
 /// A structure representing the current payment session.
 public struct PaymentSession {
-
+    
     // MARK: - Accessing Payment Information
     
     /// Information of the payment in the current session.

@@ -8,7 +8,7 @@ import Adyen
 import UIKit
 
 class PaymentMethodSelectionViewController: CheckoutViewController, UITableViewDelegate, UITableViewDataSource {
-
+    
     // MARK: - Object Lifecycle
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {

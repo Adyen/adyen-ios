@@ -8,7 +8,7 @@ import AdyenInternal
 import UIKit
 
 internal final class StoredCardPlugin: Plugin {
-
+    
     // MARK: - Plugin
     
     override var showsDisclosureIndicator: Bool {

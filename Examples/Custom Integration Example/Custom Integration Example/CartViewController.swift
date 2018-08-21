@@ -12,7 +12,7 @@ protocol CheckoutStartDelegate: class {
 }
 
 class CartViewController: CheckoutStatusViewController {
-
+    
     // MARK: - CheckoutStatusViewController
     
     override func buttonClicked() {

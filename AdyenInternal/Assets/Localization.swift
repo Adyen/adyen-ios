@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Returns a localized string for the given key, and optionally uses it as a template in which the remaining argument values are substituted.
 ///

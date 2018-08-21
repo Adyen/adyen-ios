@@ -8,7 +8,7 @@ import AdyenInternal
 import Foundation
 
 internal final class CardPlugin: Plugin {
-
+    
     // MARK: - Plugin
     
     internal weak static var cardScanDelegate: CardScanDelegate?
@@ -29,8 +29,10 @@ internal final class CardPlugin: Plugin {
     private var detailsViewController: UIViewController {
         let payment = paymentSession.payment
         
+        let paymentAmount = paymentSession.payment.amount
         let formViewController = CardFormViewController(appearance: appearance)
         formViewController.title = paymentMethod.name
+        formViewController.payActionTitle = appearance.checkoutButtonAttributes.title(forAmount: paymentAmount.value, currencyCode: paymentAmount.currencyCode)
         formViewController.formattedAmount = payment.amount.formatted
         formViewController.paymentMethod = paymentMethod
         formViewController.paymentSession = paymentSession

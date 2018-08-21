@@ -10,6 +10,22 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>da-DK</string>
+		<string>de-DE</string>
+		<string>en-US</string>
+		<string>es-ES</string>
+		<string>fr-FR</string>
+		<string>it-IT</string>
+		<string>nl-NL</string>
+		<string>pl-PL</string>
+		<string>pt-BR</string>
+		<string>ru-RU</string>
+		<string>sv-SE</string>
+		<string>zh-CN</string>
+		<string>zh-TW</string>
+	</array>
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundlePackageType</key>
@@ -28,9 +44,21 @@
 				<string>carthage-example-app</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>weixin</string>
+			<key>CFBundleURLSchemes</key>
+			<array/>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>weixin</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -54,21 +82,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-    <key>CFBundleLocalizations</key>
-    <array>
-        <string>da-DK</string>
-        <string>de-DE</string>
-        <string>en-US</string>
-        <string>es-ES</string>
-        <string>fr-FR</string>
-        <string>it-IT</string>
-        <string>nl-NL</string>
-        <string>pl-PL</string>
-        <string>pt-BR</string>
-        <string>ru-RU</string>
-        <string>sv-SE</string>
-        <string>zh-CN</string>
-        <string>zh-TW</string>
-			</array>>
 </dict>
 </plist>

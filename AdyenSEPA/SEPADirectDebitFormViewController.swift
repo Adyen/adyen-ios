@@ -20,6 +20,8 @@ internal class SEPADirectDebitFormViewController: FormViewController {
         formView.addFooterElement(consentLabel)
         
         formView.payButton.addTarget(self, action: #selector(didSelect(payButton:)), for: .touchUpInside)
+        
+        dynamicTypeController.observeDynamicType(for: consentLabel, withTextAttributes: appearance.formAttributes.footerTitleAttributes, textStyle: .body)
     }
     
     private lazy var ibanField: FormField = {
@@ -61,6 +63,8 @@ internal class SEPADirectDebitFormViewController: FormViewController {
         label.backgroundColor = UIColor.clear
         return label
     }()
+    
+    private let dynamicTypeController = DynamicTypeController()
     
     @objc private func didSelect(payButton: UIControl) {
         guard

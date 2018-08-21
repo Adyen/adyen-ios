@@ -4,6 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Foundation
+import UIKit
+
 internal struct LogoURLProvider {
     internal static func logoURL(for paymentMethod: PaymentMethod, selectItem: PaymentDetail.SelectItem? = nil, baseURL: URL) -> URL? {
         let componentsString = "\(baseURL.absoluteString)images/logos/"

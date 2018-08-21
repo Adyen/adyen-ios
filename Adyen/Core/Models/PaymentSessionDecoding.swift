@@ -1,13 +1,11 @@
 //
-//  PaymentSessionDecoding.swift
-//  Adyen
+// Copyright (c) 2018 Adyen B.V.
 //
-//  Created by Joost van Dijk on 03/08/2018.
-//  Copyright © 2018 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
 import AdyenInternal
+import Foundation
 
 extension PaymentSession: Decodable {
     

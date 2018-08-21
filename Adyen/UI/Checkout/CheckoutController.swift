@@ -8,7 +8,7 @@ import UIKit
 
 /// Presents the default checkout UI. This provides the starting point for the quick integration.
 public final class CheckoutController {
-
+    
     // MARK: - Initializing the Checkout Controller
     
     /// Initializes the checkout controller.
@@ -118,6 +118,24 @@ extension CheckoutController: PaymentControllerDelegate {
     }
     
     /// :nodoc:
+    public func provideAdditionalDetails(_ additionalDetails: AdditionalPaymentDetails, for paymentMethod: PaymentMethod, detailsHandler: @escaping ([PaymentDetail]) -> Void) {
+        guard let plugin = pluginManager?.plugin(for: paymentMethod) else {
+            selectedMethodPlugin = nil
+            presenter.showPaymentProcessing(true)
+            detailsHandler(additionalDetails.details)
+            return
+        }
+        
+        plugin.additionalPaymentDetails = additionalDetails
+        selectedMethodPlugin = plugin
+        
+        presenter.showPaymentDetails(for: plugin) { [weak self] details in
+            self?.presenter.showPaymentProcessing(true)
+            detailsHandler(details)
+        }
+    }
+    
+    /// :nodoc:
     public func didFinish(with result: Result<PaymentResult>, for paymentController: PaymentController) {
         presenter.showPaymentProcessing(false)
         
@@ -155,7 +173,7 @@ extension CheckoutController: CheckoutPresenterDelegate {
     }
     
     func didSelect(_ paymentMethod: PaymentMethod, in checkoutPresenter: CheckoutPresenter) {
-        guard let plugin = pluginManager?.plugin(for: paymentMethod) else {
+        guard let plugin = pluginManager?.plugin(for: paymentMethod), paymentMethod.details.isEmpty == false else {
             selectedMethodPlugin = nil
             checkoutPresenter.showPaymentProcessing(true)
             methodSelectionCompletion?(paymentMethod)
@@ -163,12 +181,12 @@ extension CheckoutController: CheckoutPresenterDelegate {
         }
         
         selectedMethodPlugin = plugin
-        checkoutPresenter.showPaymentDetails(for: plugin) { details in
+        checkoutPresenter.showPaymentDetails(for: plugin) { [weak self] details in
             checkoutPresenter.showPaymentProcessing(true)
             
             var filledPaymentMethod = paymentMethod
             filledPaymentMethod.details = details
-            self.methodSelectionCompletion?(filledPaymentMethod)
+            self?.methodSelectionCompletion?(filledPaymentMethod)
         }
     }
     

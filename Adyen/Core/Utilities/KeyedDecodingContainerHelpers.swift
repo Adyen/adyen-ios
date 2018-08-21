@@ -7,7 +7,7 @@
 import Foundation
 
 internal extension KeyedDecodingContainer {
-
+    
     // MARK: - Dictionary
     
     /// Decodes a value of the given type for the given key.

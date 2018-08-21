@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 public extension UIImage {
     public class func bundleImage(_ name: String) -> UIImage? {

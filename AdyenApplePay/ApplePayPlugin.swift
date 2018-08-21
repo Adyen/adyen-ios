@@ -9,7 +9,7 @@ import Foundation
 import PassKit
 
 internal final class ApplePayPlugin: Plugin {
-
+    
     // MARK: - Plugin
     
     override var isDeviceSupported: Bool {

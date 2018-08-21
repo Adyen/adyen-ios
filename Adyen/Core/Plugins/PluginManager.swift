@@ -64,6 +64,8 @@ internal final class PluginManager {
                 classNames = ["AdyenCard.CardPlugin", "Adyen.CardPlugin"]
             case "sepadirectdebit":
                 classNames = ["AdyenSEPA.SEPADirectDebitPlugin", "Adyen.SEPADirectDebitPlugin"]
+            case "wechatpaySDK":
+                classNames = ["AdyenWeChatPay.WeChatPayPlugin", "Adyen.WeChatPayPlugin"]
             default:
                 if paymentMethod.requiresIssuerSelection {
                     classNames = ["Adyen.IssuerSelectionPlugin"]

@@ -17,6 +17,9 @@ internal struct PaymentInitiationRequest: Request {
     /// The payment method for which to initiate a payment.
     internal var paymentMethod: PaymentMethod
     
+    /// The payment details.
+    internal var paymentDetails: [PaymentDetail]
+    
     /// The URL to which the request should be made.
     internal var url: URL {
         return paymentSession.initiationURL
@@ -29,7 +32,7 @@ internal struct PaymentInitiationRequest: Request {
         
         try container.encode(paymentSession.paymentData, forKey: .paymentData)
         try container.encode(paymentMethod.paymentMethodData, forKey: .paymentMethodData)
-        try container.encode(paymentMethod.details.serialized, forKey: .paymentDetails)
+        try container.encode(paymentDetails.serialized, forKey: .paymentDetails)
     }
     
     private enum CodingKeys: String, CodingKey {

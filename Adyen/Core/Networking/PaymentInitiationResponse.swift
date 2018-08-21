@@ -14,6 +14,9 @@ internal enum PaymentInitiationResponse: Response {
     /// Indicates a redirect is required to complete the payment.
     case redirect(Redirect)
     
+    /// Indicates extra details are required to complete the payment.
+    case details(Details)
+    
     /// Indicates an error occurred during initiation of the payment.
     case error(Error)
     
@@ -28,6 +31,8 @@ internal enum PaymentInitiationResponse: Response {
             self = .complete(try PaymentResult(from: decoder))
         case "redirect":
             self = .redirect(try Redirect(from: decoder))
+        case "details":
+            self = .details(try Details(from: decoder))
         case "error", "validation":
             self = .error(try Error(from: decoder))
         default:
@@ -92,6 +97,51 @@ internal extension PaymentInitiationResponse {
         private enum CodingKeys: String, CodingKey {
             case code = "errorCode"
             case message = "errorMessage"
+        }
+        
+    }
+    
+}
+
+// MARK: - PaymentInitiationResponse.Details
+
+internal extension PaymentInitiationResponse {
+    
+    /// Extra details needed to perform the transaction.
+    internal struct Details: Decodable {
+        /// The payment method type that need extra details.
+        internal let paymentMethodType: String
+        
+        /// The extra details needed.
+        internal let paymentDetails: [PaymentDetail]
+        
+        /// A boolean value indicating if the return URL query should be resubmitted.
+        internal let shouldSubmitReturnURLQuery: Bool
+        
+        /// The data to be used on the redirect.
+        internal let redirectData: [String: String]
+        
+        /// Data that needs to be submitted on following initiation.
+        internal let returnData: String
+        
+        // MARK: - Decoding
+        
+        internal init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            
+            self.paymentMethodType = try container.decode([String: String].self, forKey: .paymentMethod)["type"] ?? ""
+            self.paymentDetails = try container.decode([PaymentDetail].self, forKey: .paymentDetails)
+            self.shouldSubmitReturnURLQuery = try container.decodeBooleanStringIfPresent(forKey: .shouldSubmitReturnURLQuery) ?? false
+            self.redirectData = try container.decode([String: String].self, forKey: .redirectData)
+            self.returnData = try container.decode(String.self, forKey: .returnData)
+        }
+        
+        private enum CodingKeys: String, CodingKey {
+            case paymentMethod
+            case paymentDetails = "responseDetails"
+            case shouldSubmitReturnURLQuery = "submitPaymentMethodReturnData"
+            case redirectData
+            case returnData = "paymentMethodReturnData"
         }
         
     }

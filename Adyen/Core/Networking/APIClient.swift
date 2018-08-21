@@ -9,7 +9,7 @@ import Foundation
 
 /// Performs requests to the API.
 internal final class APIClient {
-
+    
     // MARK: - Networking
     
     /// Performs a request.

@@ -8,7 +8,7 @@ import AdyenInternal
 import UIKit
 
 internal class PreselectedPaymentMethodViewController: ShortViewController {
-
+    
     // MARK: - Lifecycle
     
     init(paymentMethod: PaymentMethod) {

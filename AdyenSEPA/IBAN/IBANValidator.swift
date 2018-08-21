@@ -8,7 +8,7 @@ import Foundation
 
 /// An object that provides a static method to validate IBAN values.
 internal class IBANValidator {
-
+    
     // MARK: - Validating
     
     /// Checks if the given string is a valid IBAN value.

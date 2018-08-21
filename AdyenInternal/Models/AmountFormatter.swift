@@ -8,7 +8,7 @@ import Foundation
 
 /// Convenience class to format a number with a given currency.
 public class AmountFormatter {
-
+    
     // MARK: - Initialization
     
     private init() {

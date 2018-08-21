@@ -8,7 +8,7 @@ import Foundation
 
 /// A completed payment.
 public struct PaymentResult: Decodable {
-
+    
     // MARK: - Accessing Payment Result
     
     /// The status of the payment.

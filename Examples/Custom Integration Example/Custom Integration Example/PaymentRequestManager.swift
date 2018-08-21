@@ -8,7 +8,7 @@ import Adyen
 import UIKit
 
 class PaymentRequestManager {
-
+    
     // MARK: - Object Lifecycle
     
     static let shared = PaymentRequestManager()

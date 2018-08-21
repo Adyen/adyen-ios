@@ -10,7 +10,7 @@ import Foundation
 /// The payment controller controls the flow of a payment from start to finish.
 /// This is the entry point for a custom integration, and provides you with access to all payment related information required to build your own UI.
 public final class PaymentController {
-
+    
     // MARK: - Initializing a Payment Controller
     
     /// Initializes the payment controller.
@@ -66,10 +66,10 @@ public final class PaymentController {
         }
         
         let request = StoredPaymentMethodDeletionRequest(paymentSession: paymentSession, paymentMethod: paymentMethod)
-        apiClient.perform(request) { response in
+        apiClient.perform(request) { [weak self] response in
             switch response {
             case .success:
-                self.paymentSession?.paymentMethods.preferred.remove(at: index)
+                self?.paymentSession?.paymentMethods.preferred.remove(at: index)
                 completion(.success(()))
             case let .failure(error):
                 completion(.failure(error))
@@ -82,8 +82,8 @@ public final class PaymentController {
     var isPaymentSessionActive = false
     
     internal func start(with token: PaymentSessionToken) {
-        delegateProxy.requestPaymentSession(withToken: token.encoded, for: self) { paymentSessionResponse in
-            self.decode(paymentSessionResponse: paymentSessionResponse)
+        delegateProxy.requestPaymentSession(withToken: token.encoded, for: self) { [weak self] paymentSessionResponse in
+            self?.decode(paymentSessionResponse: paymentSessionResponse)
         }
     }
     
@@ -106,18 +106,18 @@ public final class PaymentController {
         }
         
         delegateProxy.selectPaymentMethod(from: paymentSession.paymentMethods, for: self) { [weak self] selectedPaymentMethod in
-            let request = PaymentInitiationRequest(paymentSession: paymentSession, paymentMethod: selectedPaymentMethod)
+            let request = PaymentInitiationRequest(paymentSession: paymentSession, paymentMethod: selectedPaymentMethod, paymentDetails: selectedPaymentMethod.details)
             self?.initiatePayment(with: request)
         }
     }
     
     private func initiatePayment(with request: PaymentInitiationRequest) {
-        apiClient.perform(request) { result in
+        apiClient.perform(request) { [weak self] result in
             switch result {
             case let .success(response):
-                self.processPaymentInitiation(response: response, request: request)
+                self?.processPaymentInitiation(response: response, request: request)
             case let .failure(error):
-                self.finish(with: error)
+                self?.finish(with: error)
             }
         }
     }
@@ -128,8 +128,27 @@ public final class PaymentController {
             finish(with: payment)
         case let .redirect(redirect):
             performRedirect(redirect, for: request)
+        case let .details(details):
+            requestAdditionalDetails(details, for: request)
         case let .error(error):
             finish(with: error)
+        }
+    }
+    
+    private func requestAdditionalDetails(_ details: PaymentInitiationResponse.Details, for request: PaymentInitiationRequest) {
+        let returnDataDetailsKey = "paymentMethodReturnData"
+        let filteredDetails = details.paymentDetails.filter({ $0.key != returnDataDetailsKey })
+        let additionalDetails = AdditionalPaymentDetails(details: filteredDetails, redirectData: details.redirectData)
+        
+        delegateProxy.provideAdditionalDetails(additionalDetails, for: request.paymentMethod) { [weak self] filledDetails in
+            var additionalDetailsRequest = request
+            additionalDetailsRequest.paymentDetails = filledDetails
+            
+            if details.shouldSubmitReturnURLQuery {
+                additionalDetailsRequest.paymentDetails.append(PaymentDetail(key: returnDataDetailsKey, value: details.returnData))
+            }
+            
+            self?.initiatePayment(with: additionalDetailsRequest)
         }
     }
     

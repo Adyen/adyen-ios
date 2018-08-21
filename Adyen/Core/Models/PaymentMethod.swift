@@ -9,7 +9,7 @@ import Foundation
 
 /// A structure representing a payment method that can be used to complete a payment.
 public struct PaymentMethod: Decodable {
-
+    
     // MARK: - Accessing Payment Method Information
     
     /// A string identifying the type of payment method, such as `"card"`, `"ideal"`, `"applepay"`.
@@ -179,6 +179,8 @@ public extension PaymentMethod {
         switch storedDetails {
         case let storedDetails as StoredCardPaymentDetails:
             return ADYLocalizedString("creditCard.stored.accessibilityLabel", name, storedDetails.number)
+        case let storedDetails as StoredPayPalPaymentDetails:
+            return "\(name) \(storedDetails.emailAddress)"
         default:
             return name
         }
@@ -201,7 +203,7 @@ internal extension Collection where Element == PaymentMethod {
     /// Returns an array of payment methods grouped by each payment method's group (if present).
     internal var grouped: [PaymentMethod] {
         return grouped { paymentMethod in
-            paymentMethod.group?.type ?? UUID().uuidString
+            paymentMethod.group?.type
         }.compactMap { paymentMethods in
             guard paymentMethods.count != 1 else {
                 return paymentMethods.first

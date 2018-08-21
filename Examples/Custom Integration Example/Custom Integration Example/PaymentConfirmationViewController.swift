@@ -9,7 +9,7 @@ import SafariServices
 import UIKit
 
 class PaymentConfirmationViewController: CheckoutViewController, SFSafariViewControllerDelegate {
-
+    
     // MARK: - Object Lifecycle
     
     init(withPaymentMethod method: PaymentMethod, paymentController: PaymentController) {

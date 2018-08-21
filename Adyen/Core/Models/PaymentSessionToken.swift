@@ -6,10 +6,11 @@
 
 import AdyenInternal
 import Foundation
+import UIKit
 
 /// Represents a token that is sent with a session request.
 internal struct PaymentSessionToken: Encodable {
-
+    
     // MARK: - SDK Information
     
     /// The version of the token data representation.

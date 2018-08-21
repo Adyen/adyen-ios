@@ -7,7 +7,7 @@
 import Foundation
 
 public extension String {
-
+    
     // MARK: - Getting Substrings
     
     public subscript(position: Int) -> String {

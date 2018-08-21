@@ -13,7 +13,7 @@ protocol CheckoutPaymentFieldDelegate: AnyObject {
 }
 
 class CardPaymentFieldManager: NSObject, UITextFieldDelegate {
-
+    
     // MARK: - Object Lifecycle
     
     init(holderNameField: CardHolderNameField, numberField: CardNumberField, expirationField: CardExpirationField, cvcField: CardCvcField, acceptedCards: [CardType]) {
@@ -60,8 +60,10 @@ class CardPaymentFieldManager: NSObject, UITextFieldDelegate {
         
         textField.textColor = valid ? validTextColor : invalidTextColor
         if !valid {
-            let generator = UINotificationFeedbackGenerator()
-            generator.notificationOccurred(.warning)
+            if #available(iOS 10.0, *) {
+                let generator = UINotificationFeedbackGenerator()
+                generator.notificationOccurred(.warning)
+            }
         }
     }
     
@@ -81,6 +83,13 @@ class CardPaymentFieldManager: NSObject, UITextFieldDelegate {
         checkFieldValidity()
         
         return false
+    }
+    
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        if textField == numberField {
+            numberField.card = nil
+        }
+        return true
     }
     
     // MARK: - Public

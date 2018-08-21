@@ -152,6 +152,9 @@
                 <a class="nav-group-task-link" href="../Structs/PaymentDetail/SelectItem.html">– SelectItem</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/AdditionalPaymentDetails.html">AdditionalPaymentDetails</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Payment Method.html#/s:5Adyen20StoredPaymentDetailsP">StoredPaymentDetails</a>
               </li>
               <li class="nav-group-task">
@@ -487,6 +490,83 @@ It&rsquo;s recommended to use either <code>SFSafariViewController</code> or <cod
                     </section>
                   </div>
                 </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen25PaymentControllerDelegateP24provideAdditionalDetailsyAA0fbG0V_AA0B6MethodV3forySayAA0B6DetailVGc14detailsHandlertF"></a>
+                    <a name="//apple_ref/swift/Method/provideAdditionalDetails(_:for:detailsHandler:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen25PaymentControllerDelegateP24provideAdditionalDetailsyAA0fbG0V_AA0B6MethodV3forySayAA0B6DetailVGc14detailsHandlertF">provideAdditionalDetails(_:for:detailsHandler:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Invoked when additional payment details are needed.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">provideAdditionalDetails</span><span class="p">(</span><span class="n">_</span> <span class="nv">additionalDetails</span><span class="p">:</span> <span class="kt"><a href="../Structs/AdditionalPaymentDetails.html">AdditionalPaymentDetails</a></span><span class="p">,</span> <span class="k">for</span> <span class="nv">paymentMethod</span><span class="p">:</span> <span class="kt"><a href="../Structs/PaymentMethod.html">PaymentMethod</a></span><span class="p">,</span> <span class="nv">detailsHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Other.html#/s:5Adyen10Completiona">Completion</a></span><span class="o">&lt;</span><span class="p">[</span><span class="kt"><a href="../Structs/PaymentDetail.html">PaymentDetail</a></span><span class="p">]</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>additionalDetails</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Structure containing the details that need to be filled and additional redirect data.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>paymentMethod</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The payment method that is requesting additional details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>detailsHandler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The closure to invoke when details are filled.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
               </ul>
             </div>
           </div>
@@ -495,7 +575,7 @@ It&rsquo;s recommended to use either <code>SFSafariViewController</code> or <cod
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2018-07-24)</p>
+      <p>&copy; 2018 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2018-08-21)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// A UINavigationController subclass for presenting content with dynamic height.
 internal class DynamicHeightNavigationController: UINavigationController {
@@ -28,16 +29,21 @@ internal class DynamicHeightNavigationController: UINavigationController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Status Bar
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        if preferredContentSize == CGSize.zero,
-            let preferred = Appearance.shared.preferredStatusBarStyle {
-            return preferred
+        guard isFullScreen else {
+            return presentingViewController?.preferredStatusBarStyle ?? .default
         }
         
-        return super.preferredStatusBarStyle
+        return Appearance.shared.preferredStatusBarStyle ?? .default
     }
     
     // MARK: - Private
+    
+    private var isFullScreen: Bool {
+        return preferredContentSize == CGSize.zero
+    }
     
     private var shouldPresentAsFormSheet: Bool {
         let size = UIApplication.shared.keyWindow?.bounds.size ?? .zero

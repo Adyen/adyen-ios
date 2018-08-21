@@ -116,13 +116,17 @@ internal final class CheckoutPresenter: NSObject {
             item.imageURL = paymentMethod.logoURL
             item.accessibilityLabel = paymentMethod.accessibilityLabel
             item.showsDisclosureIndicator = plugin?.showsDisclosureIndicator ?? false
-            item.selectionHandler = {
-                self.delegate?.didSelect(paymentMethod, in: self)
+            item.selectionHandler = { [weak self] in
+                if let strongSelf = self {
+                    strongSelf.delegate?.didSelect(paymentMethod, in: strongSelf)
+                }
             }
             
             if paymentMethods.preferred.contains(paymentMethod) {
-                item.deletionHandler = {
-                    self.delegate?.didDelete(paymentMethod, in: self)
+                item.deletionHandler = { [weak self] in
+                    if let strongSelf = self {
+                        strongSelf.delegate?.didDelete(paymentMethod, in: strongSelf)
+                    }
                 }
             }
             

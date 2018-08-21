@@ -48,4 +48,17 @@ public protocol PaymentControllerDelegate: AnyObject {
     ///   - paymentController: The payment controller that finished the payment.
     func didFinish(with result: Result<PaymentResult>, for paymentController: PaymentController)
     
+    /// Invoked when additional payment details are needed.
+    ///
+    /// - Parameters:
+    ///   - additionalDetails: Structure containing the details that need to be filled and additional redirect data.
+    ///   - paymentMethod: The payment method that is requesting additional details.
+    ///   - detailsHandler: The closure to invoke when details are filled.
+    func provideAdditionalDetails(_ additionalDetails: AdditionalPaymentDetails, for paymentMethod: PaymentMethod, detailsHandler: @escaping Completion<[PaymentDetail]>)
+}
+
+extension PaymentControllerDelegate {
+    public func provideAdditionalDetails(_ additionalDetails: AdditionalPaymentDetails, for paymentMethod: PaymentMethod, detailsHandler: @escaping Completion<[PaymentDetail]>) {
+        print("Payment method requires additional details but `provideAdditionalDetails(_:for:detailsHandler)` delegate was not implemented.")
+    }
 }

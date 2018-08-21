@@ -7,7 +7,7 @@
 import UIKit
 
 class HomeViewController: UIViewController, CheckoutStartDelegate, UIViewControllerTransitioningDelegate {
-
+    
     // MARK: - Object Lifecycle
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {

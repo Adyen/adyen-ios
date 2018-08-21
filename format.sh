@@ -3,7 +3,7 @@
 echo "Formatting..."
 
 ./Pods/SwiftFormat/CommandLineTool/swiftformat ./ \
-    --disable blankLinesAtEndOfScope,unusedArguments,redundantSelf \
+    --disable blankLinesAtStartOfScope,blankLinesAtEndOfScope,unusedArguments,redundantSelf \
     --comments ignore \
     --commas inline \
     --ranges nospace \

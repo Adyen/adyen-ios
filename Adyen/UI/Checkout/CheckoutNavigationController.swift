@@ -6,10 +6,11 @@
 
 import AdyenInternal
 import Foundation
+import UIKit
 
 /// A navigation controller that applies styling.
 internal final class CheckoutNavigationController: DynamicHeightNavigationController {
-
+    
     // MARK: - UINavigationController
     
     override func popViewController(animated: Bool) -> UIViewController? {

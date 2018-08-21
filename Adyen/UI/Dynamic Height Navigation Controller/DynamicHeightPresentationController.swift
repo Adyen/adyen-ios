@@ -5,10 +5,11 @@
 //
 
 import Foundation
+import UIKit
 
 /// A custom presentation controller that presents a view controller with a dynamic height.
 internal final class DynamicHeightPresentationController: UIPresentationController {
-
+    
     // MARK: - UIPresentationController
     
     override func presentationTransitionWillBegin() {

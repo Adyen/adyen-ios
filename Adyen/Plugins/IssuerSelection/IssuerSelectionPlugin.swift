@@ -5,10 +5,11 @@
 //
 
 import Foundation
+import UIKit
 
 /// A universal plugin for payment methods that require issuer selection, such as iDEAL and MOLPay.
 internal final class IssuerSelectionPlugin: Plugin {
-
+    
     // MARK: - Plugin
     
     override var showsDisclosureIndicator: Bool {

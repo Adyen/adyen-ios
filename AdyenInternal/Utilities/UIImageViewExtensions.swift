@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 public extension UIImageView {
     public func downloadImage(from url: URL?) {

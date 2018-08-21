@@ -44,6 +44,12 @@ internal class PaymentControllerDelegateProxy: PaymentControllerDelegate {
         }
     }
     
+    func provideAdditionalDetails(_ additionalDetails: AdditionalPaymentDetails, for paymentMethod: PaymentMethod, detailsHandler: @escaping Completion<[PaymentDetail]>) {
+        dispatch {
+            self.delegate?.provideAdditionalDetails(additionalDetails, for: paymentMethod, detailsHandler: detailsHandler)
+        }
+    }
+    
     // MARK: - Private
     
     private func dispatch(_ closure: @escaping () -> Void) {

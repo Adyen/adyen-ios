@@ -9,7 +9,7 @@ import QuartzCore
 import UIKit
 
 class CardFormViewController: FormViewController, CheckoutPaymentFieldDelegate {
-
+    
     // MARK: - UIViewController
     
     override func viewDidLoad() {
@@ -46,7 +46,6 @@ class CardFormViewController: FormViewController, CheckoutPaymentFieldDelegate {
             installmentItems = installments
         }
         
-        formView.payButton.setTitle(ADYLocalizedString("payButton.formatted", formattedAmount ?? ""), for: .normal)
         formView.payButton.addTarget(self, action: #selector(pay), for: .touchUpInside)
         
         applyStyling()
@@ -296,12 +295,7 @@ class CardFormViewController: FormViewController, CheckoutPaymentFieldDelegate {
     
     private lazy var cardImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage.bundleImage("credit_card_icon"))
-        let constraints = [
-            imageView.widthAnchor.constraint(equalToConstant: 38.0),
-            imageView.heightAnchor.constraint(equalToConstant: 24.0)
-        ]
-        NSLayoutConstraint.activate(constraints)
-        
+        imageView.frame = CGRect(x: 0, y: 0, width: 38, height: 24)
         return imageView
     }()
     

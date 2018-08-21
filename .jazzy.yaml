@@ -33,6 +33,7 @@ custom_categories:
     - SectionedPaymentMethods
     - PaymentMethod
     - PaymentDetail
+    - AdditionalPaymentDetails
     - StoredPaymentDetails
     - StoredCardPaymentDetails
     - StoredPayPalPaymentDetails

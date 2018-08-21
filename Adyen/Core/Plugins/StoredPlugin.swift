@@ -8,7 +8,7 @@ import AdyenInternal
 import UIKit
 
 internal final class StoredPlugin: Plugin {
-
+    
     // MARK: - Plugin
     
     override func present(using navigationController: UINavigationController, completion: @escaping Completion<[PaymentDetail]>) {

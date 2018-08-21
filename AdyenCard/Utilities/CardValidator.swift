@@ -9,7 +9,7 @@ import Foundation
 
 /// An object that provides static methods for validating and formatting card numbers, expiry dates, and cvc values, and detecting card types.
 final class CardValidator {
-
+    
     // MARK: - Validating
     
     /// Validates and formats the given card number, and detects the corresponding card type.

@@ -8,7 +8,7 @@ import UIKit
 
 /// A view controller that displays an activity indicator to indicate a loading state.
 internal final class LoadingViewController: ShortViewController {
-
+    
     // MARK: - UIViewController
     
     override func viewDidLoad() {
