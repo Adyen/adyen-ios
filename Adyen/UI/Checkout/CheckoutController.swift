@@ -46,6 +46,9 @@ public final class CheckoutController {
     /// Determines whether the preselected payment method should be shown when available. Default value is `true`.
     public var showsPreselectedPaymentMethod = true
     
+    /// Determines whether the presenter should automatically dismiss when the didFinish method is called
+    public var shouldDismissOnDidFinish = true
+    
     /// Starts the checkout process and presents the checkout UI on the provided presentingViewController.
     public func start() {
         paymentController = PaymentController(delegate: self)
@@ -60,6 +63,23 @@ public final class CheckoutController {
     /// Cancels the checkout process and dismisses the checkout UI.
     public func cancel() {
         paymentController?.cancel()
+    }
+    
+    /// Publicly exposes dismiss(with result: Result<PaymentResult>?)
+    public func dismiss() {
+        dismiss(with: nil)
+    }
+    
+    /// Dismisses the presenting viewController. When the Dismisal is complete the CheckoutController resets and if a result is present calls the delegate method didFinish
+    ///
+    /// - Parameter result: PaymentResult
+    private func dismiss(with result: Result<PaymentResult>?) {
+        self.presenter.dismiss {
+            self.reset()
+            if let result = result {
+                self.delegate?.didFinish(with: result, for: self)
+            }
+        }
     }
     
     // MARK: - Private
@@ -140,8 +160,9 @@ extension CheckoutController: PaymentControllerDelegate {
         presenter.showPaymentProcessing(false)
         
         let completion = {
-            self.presenter.dismiss {
-                self.reset()
+            if self.shouldDismissOnDidFinish {
+                self.dismiss(with: result)
+            } else {
                 self.delegate?.didFinish(with: result, for: self)
             }
         }
