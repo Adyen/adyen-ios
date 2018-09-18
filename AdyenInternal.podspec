@@ -14,6 +14,7 @@ Pod::Spec.new do |s|
   s.source = { :git => 'https://github.com/Adyen/adyen-ios.git', :tag => "#{s.version}" }
   s.platform = :ios
   s.ios.deployment_target = '10.0'
+  s.swift_version = '4.0'
   s.frameworks = 'Foundation'
   s.source_files = 'AdyenInternal/**/*.swift'
   s.resource_bundles = {
