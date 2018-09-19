@@ -18,18 +18,6 @@ class CardNumberField: CheckoutTextField {
             self.cardTypeDetected?(card)
         }
     }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-    
-    public required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
 }
 
 class CardExpirationField: CheckoutTextField {

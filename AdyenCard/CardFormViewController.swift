@@ -89,25 +89,13 @@ class CardFormViewController: FormViewController, CheckoutPaymentFieldDelegate {
     }
     
     private var paymentMethodForDetectedCardType: PaymentMethod? {
-        guard let detectedCardType = detectedCardType else {
+        guard let detectedCardType = detectedCardType, let paymentMethod = paymentMethod else {
             return nil
         }
         
-        // First check if the type matches the payment method.
-        if paymentMethod?.type == detectedCardType.rawValue {
-            return paymentMethod
-        }
-        
-        guard let children = paymentMethod?.children else {
-            return nil
-        }
-        
-        // Then check if the type matches one of the members.
-        for child in children where child.type == detectedCardType.rawValue {
-            return child
-        }
-        
-        return nil
+        // Check the payment method and all its children for a match
+        let allPaymentMethods = [paymentMethod] + paymentMethod.children
+        return allPaymentMethods.first(where: { $0.type == detectedCardType.rawValue })
     }
     
     private func applyStyling() {
@@ -133,18 +121,13 @@ class CardFormViewController: FormViewController, CheckoutPaymentFieldDelegate {
     }
     
     private func updateCardLogo() {
-        guard let detected = paymentMethodForDetectedCardType else {
+        guard let url = paymentMethodForDetectedCardType?.logoURL else {
             cardImageView.image = UIImage.bundleImage("credit_card_icon")
             cardImageView.layer.borderColor = UIColor.clear.cgColor
             return
         }
         
-        let url = detected.logoURL
         cardImageView.downloadImage(from: url)
-        cardImageView.contentMode = .scaleAspectFit
-        cardImageView.layer.cornerRadius = 3
-        cardImageView.clipsToBounds = true
-        cardImageView.layer.borderWidth = 1 / UIScreen.main.nativeScale
         cardImageView.layer.borderColor = UIColor.black.withAlphaComponent(0.2).cgColor
     }
     
@@ -296,6 +279,11 @@ class CardFormViewController: FormViewController, CheckoutPaymentFieldDelegate {
     private lazy var cardImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage.bundleImage("credit_card_icon"))
         imageView.frame = CGRect(x: 0, y: 0, width: 38, height: 24)
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 3
+        imageView.clipsToBounds = true
+        imageView.layer.borderWidth = 1 / UIScreen.main.nativeScale
+        imageView.layer.borderColor = UIColor.clear.cgColor
         return imageView
     }()
     

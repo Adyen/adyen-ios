@@ -13,7 +13,8 @@ Pod::Spec.new do |s|
   s.author = { 'Adyen' => 'support@adyen.com' }
   s.source = { :git => 'https://github.com/Adyen/adyen-ios.git', :tag => "#{s.version}" }
   s.platform = :ios
-  s.ios.deployment_target = '10.0'
+  s.ios.deployment_target = '9.3'
+  s.swift_version = '4.1'
   s.frameworks = 'Foundation'
   s.default_subspecs = 'Core', 'Card', 'SEPA'
 

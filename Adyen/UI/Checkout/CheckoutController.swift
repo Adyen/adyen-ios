@@ -137,24 +137,38 @@ extension CheckoutController: PaymentControllerDelegate {
     
     /// :nodoc:
     public func didFinish(with result: Result<PaymentResult>, for paymentController: PaymentController) {
-        presenter.showPaymentProcessing(false)
-        
-        let completion = {
-            self.presenter.dismiss {
-                self.reset()
-                self.delegate?.didFinish(with: result, for: self)
-            }
+        guard let selectedMethodPlugin = selectedMethodPlugin else {
+            finish(with: result)
+            return
         }
         
-        if let selectedMethodPlugin = selectedMethodPlugin {
-            if case let .success(paymentResult) = result, paymentResult.status == .authorised || paymentResult.status == .received {
-                PreselectedPaymentMethodManager.saveSelectedPaymentMethod(selectedMethodPlugin.paymentMethod)
-            }
-            
-            selectedMethodPlugin.finish(with: result, completion: completion)
-        } else {
-            completion()
+        if case let .success(paymentResult) = result, paymentResult.status == .authorised || paymentResult.status == .received {
+            PreselectedPaymentMethodManager.saveSelectedPaymentMethod(selectedMethodPlugin.paymentMethod)
         }
+        
+        selectedMethodPlugin.finish(with: result) { [weak self] in
+            self?.finish(with: result)
+        }
+    }
+    
+    private func finish(with result: Result<PaymentResult>) {
+        presenter.allowUserInteraction = false
+        // Dismiss any of the topmost screens that have been presented, i.e. safari view controller.
+        presenter.dismiss(topOnly: true, completion: {
+            self.delegate?.willFinish(with: result, for: self, completionHandler: { [weak self] in
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                strongSelf.presenter.allowUserInteraction = true
+                strongSelf.presenter.showPaymentProcessing(false)
+                // Now dismiss the entire flow.
+                strongSelf.presenter.dismiss(topOnly: false, completion: {
+                    strongSelf.reset()
+                    strongSelf.delegate?.didFinish(with: result, for: strongSelf)
+                })
+            })
+        })
     }
 }
 

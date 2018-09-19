@@ -202,6 +202,10 @@ extension ListViewController: PaymentProcessingElement {
         
         tableView.isUserInteractionEnabled = false
         lastSelectedCell.showLoadingIndicator(true)
+        
+        for case let cell as ListCell in tableView.visibleCells where cell.item != lastSelectedItem {
+            cell.isEnabled = false
+        }
     }
     
     func stopProcessing() {
@@ -212,5 +216,9 @@ extension ListViewController: PaymentProcessingElement {
         tableView.isUserInteractionEnabled = true
         lastSelectedCell.showLoadingIndicator(false)
         lastSelectedItem = nil
+        
+        for case let cell as ListCell in tableView.visibleCells {
+            cell.isEnabled = true
+        }
     }
 }

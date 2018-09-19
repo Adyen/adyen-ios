@@ -35,6 +35,13 @@ internal final class ListCell: UITableViewCell {
         }
     }
     
+    internal var isEnabled = true {
+        didSet {
+            let opacity: Float = isEnabled ? 1.0 : 0.3
+            layer.opacity = opacity
+        }
+    }
+    
     internal var activityIndicatorColor: UIColor?
     
     internal var disclosureIndicatorColor: UIColor? {

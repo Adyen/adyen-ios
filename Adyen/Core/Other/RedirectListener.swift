@@ -5,6 +5,7 @@
 //
 
 import AdyenInternal
+import Foundation
 
 /// This function should be invoked from the application's delegate when the application is opened through a URL.
 ///

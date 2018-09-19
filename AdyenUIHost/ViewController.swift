@@ -151,6 +151,13 @@ extension ViewController: CheckoutControllerDelegate {
         }.resume()
     }
     
+    func willFinish(with result: Result<PaymentResult>, for checkoutController: CheckoutController, completionHandler: @escaping (() -> Void)) {
+        let deadline: DispatchTime = .now()// + 4      // uncomment to simulate a delay for verification
+        DispatchQueue.main.asyncAfter(deadline: deadline) {
+            completionHandler()
+        }
+    }
+    
     func didFinish(with result: Result<PaymentResult>, for checkoutController: CheckoutController) {
         var isSuccess = false
         var isCancelled = false

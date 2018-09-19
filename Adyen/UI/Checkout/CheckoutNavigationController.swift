@@ -55,11 +55,9 @@ internal final class CheckoutNavigationController: DynamicHeightNavigationContro
         
         viewController.view.backgroundColor = view.backgroundColor
         
-        let navigationItem = viewController.navigationItem
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: ADYLocalizedString("backButton"), style: .plain, target: nil, action: nil)
-        
+        showBackButton(viewController)
         if viewController == navigationController.viewControllers.first {
-            navigationItem.leftBarButtonItem = Appearance.shared.cancelButtonItem(target: self, selector: #selector(didSelect(cancelButtonItem:)))
+            showCancelButton(viewController)
         }
     }
     
@@ -74,4 +72,52 @@ internal final class CheckoutNavigationController: DynamicHeightNavigationContro
         cancelButtonHandler?()
     }
     
+    internal func enableAllActionItems(_ enable: Bool) {
+        guard let topViewController = topViewController else {
+            return
+        }
+        
+        topViewController.navigationItem.rightBarButtonItem?.isEnabled = enable
+        topViewController.navigationItem.leftBarButtonItem?.isEnabled = enable
+        topViewController.navigationItem.backBarButtonItem?.isEnabled = enable
+    }
+    
+    // MARK: - Private
+    
+    private func showCancelButton(_ viewController: UIViewController) {
+        let leftBarButton = Appearance.shared.cancelButtonItem(target: self, selector: #selector(didSelect(cancelButtonItem:)))
+        viewController.navigationItem.leftBarButtonItem = leftBarButton
+    }
+    
+    private func showBackButton(_ viewController: UIViewController) {
+        let backBarButton = UIBarButtonItem(title: ADYLocalizedString("backButton"), style: .plain, target: nil, action: nil)
+        viewController.navigationItem.backBarButtonItem = backBarButton
+    }
+    
+    private var shouldShowBackButtonAfterProcessing: Bool = false
+    
+}
+
+extension CheckoutNavigationController: PaymentProcessingElement {
+    
+    func startProcessing() {
+        guard let topViewController = topViewController else {
+            return
+        }
+        
+        shouldShowBackButtonAfterProcessing = topViewController.navigationItem.leftBarButtonItem == nil
+        // During processing, only allow for cancel, not back.
+        showCancelButton(topViewController)
+    }
+    
+    func stopProcessing() {
+        guard let topViewController = topViewController else {
+            return
+        }
+        
+        // Put the back button back if needed.
+        if shouldShowBackButtonAfterProcessing {
+            topViewController.navigationItem.leftBarButtonItem = nil
+        }
+    }
 }

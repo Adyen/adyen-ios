@@ -23,6 +23,12 @@ internal final class CheckoutPresenter: NSObject {
     /// The delegate of the presentation controller.
     internal weak var delegate: CheckoutPresenterDelegate?
     
+    internal var allowUserInteraction: Bool = true {
+        didSet {
+            navigationController?.enableAllActionItems(allowUserInteraction)
+        }
+    }
+    
     /// Initializes the presentation controller.
     ///
     /// - Parameter presentingViewController: The view controller that will present the checkout UI.
@@ -42,8 +48,16 @@ internal final class CheckoutPresenter: NSObject {
         presentingViewController.present(navigationController!, animated: true)
     }
     
-    internal func dismiss(completion: @escaping () -> Void) {
-        presentingViewController.dismiss(animated: true, completion: completion)
+    internal func dismiss(topOnly: Bool, completion: @escaping () -> Void) {
+        if topOnly {
+            if navigationController?.presentedViewController != nil {
+                navigationController?.dismiss(animated: true, completion: completion)
+            } else {
+                completion()
+            }
+        } else {
+            presentingViewController.dismiss(animated: true, completion: completion)
+        }
     }
     
     /// Shows the confirmation screen for a single payment method.
@@ -93,15 +107,13 @@ internal final class CheckoutPresenter: NSObject {
     }
     
     internal func showPaymentProcessing(_ show: Bool) {
+        show ? navigationController?.startProcessing() : navigationController?.stopProcessing()
+        
         guard let viewController = navigationController?.topViewController as? PaymentProcessingElement else {
             return
         }
         
-        if show {
-            viewController.startProcessing()
-        } else {
-            viewController.stopProcessing()
-        }
+        show ? viewController.startProcessing() : viewController.stopProcessing()
     }
     
     // MARK: - Private
