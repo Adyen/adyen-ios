@@ -7,5 +7,4 @@
 import Foundation
 
 /// The response to a stored payment method deletion request.
-internal struct StoredPaymentMethodDeletionResponse: Response {
-}
+internal struct StoredPaymentMethodDeletionResponse: Response {}

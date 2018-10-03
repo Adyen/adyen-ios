@@ -58,10 +58,10 @@ public class FormView: UIScrollView {
         formStackView.addArrangedSubview(stackView)
         
         func containsFormField(_ view: UIView) -> Bool {
-            if view is FormField || view is FormPicker {
+            if view is FormTextField || view is FormPickerField {
                 return true
             } else {
-                for subview in view.subviews where subview is FormField || subview is FormPicker {
+                for subview in view.subviews where subview is FormTextField || subview is FormPickerField {
                     return true
                 }
             }

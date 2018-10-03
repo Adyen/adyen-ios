@@ -48,7 +48,7 @@ internal struct RedirectPresenter {
         let urlIsAppUrl = RedirectPresenter.isAppURL(url)
         
         if #available(iOS 10.0, *) {
-            let options: [String: Any] = urlIsAppUrl ? [:] : [UIApplicationOpenURLOptionUniversalLinksOnly: true]
+            let options: [UIApplication.OpenExternalURLOptionsKey: Any] = urlIsAppUrl ? [:] : [.universalLinksOnly: true]
             UIApplication.shared.open(url, options: options) { success in
                 if !success {
                     if !urlIsAppUrl {

@@ -9,7 +9,7 @@ import UIKit
 
 public extension UIFont {
     
-    public func scaledFont(forTextStyle textStyle: UIFontTextStyle) -> UIFont? {
+    public func scaledFont(forTextStyle textStyle: UIFont.TextStyle) -> UIFont? {
         if #available(iOS 11.0, *) {
             return UIFontMetrics.default.scaledFont(for: self)
         } else if #available(iOS 10.0, *) {

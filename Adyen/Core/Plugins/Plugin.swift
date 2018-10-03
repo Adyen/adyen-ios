@@ -19,9 +19,9 @@ open class Plugin: NSObject {
         self.appearance = appearance
     }
     
-    open let paymentMethod: PaymentMethod
-    open let paymentSession: PaymentSession
-    open let appearance: Appearance
+    public let paymentMethod: PaymentMethod
+    public let paymentSession: PaymentSession
+    public let appearance: Appearance
     open var additionalPaymentDetails: AdditionalPaymentDetails?
     
     open var showsDisclosureIndicator: Bool {
@@ -32,8 +32,7 @@ open class Plugin: NSObject {
         return true
     }
     
-    open func present(using navigationController: UINavigationController, completion: @escaping Completion<[PaymentDetail]>) {
-    }
+    open func present(using navigationController: UINavigationController, completion: @escaping Completion<[PaymentDetail]>) {}
     
     open func finish(with result: Result<PaymentResult>, completion: @escaping () -> Void) {
         completion()

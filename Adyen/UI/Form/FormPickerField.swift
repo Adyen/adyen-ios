@@ -9,10 +9,10 @@ import Foundation
 import UIKit
 
 /// :nodoc:
-public class FormPicker: UIControl {
+public class FormPickerField: UIControl {
     
-    public init(values: [String]) {
-        self.values = values
+    public init(customInputView: UIView) {
+        self.customInputView = customInputView
         super.init(frame: .zero)
         
         addSubview(titleLabel)
@@ -23,7 +23,7 @@ public class FormPicker: UIControl {
         configureConstraints()
         
         isAccessibilityElement = true
-        accessibilityTraits = UIAccessibilityTraitButton
+        accessibilityTraits = UIAccessibilityTraits.button
     }
     
     public required init(coder: NSCoder) {
@@ -40,8 +40,14 @@ public class FormPicker: UIControl {
     
     // MARK: - Public
     
-    public var selectedValue: String? {
-        return textField.text
+    public internal(set) var selectedValue: String? {
+        get {
+            return textField.text
+        }
+        
+        set {
+            textField.text = newValue
+        }
     }
     
     public var title: String? {
@@ -59,7 +65,7 @@ public class FormPicker: UIControl {
     
     // MARK: - Private
     
-    private var values: [String]
+    private let customInputView: UIView
     
     private let dynamicTypeController = DynamicTypeController()
     
@@ -75,15 +81,11 @@ public class FormPicker: UIControl {
     
     private lazy var textField: FormPickerTextField = {
         let textField = FormPickerTextField()
-        textField.defaultTextAttributes = Appearance.shared.textAttributes.reduce(into: [:], { $0[$1.key.rawValue] = $1.value })
+        textField.defaultTextAttributes = Appearance.shared.textAttributes
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.text = values.first
         textField.delegate = self
         textField.textAlignment = .right
-        
-        let pickerView = UIPickerView()
-        pickerView.delegate = self
-        textField.inputView = pickerView
+        textField.inputView = customInputView
         
         return textField
     }()
@@ -105,26 +107,7 @@ public class FormPicker: UIControl {
 }
 
 /// :nodoc:
-extension FormPicker: UIPickerViewDelegate, UIPickerViewDataSource {
-    public func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return values.count
-    }
-    
-    public func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return values[row]
-    }
-    
-    public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        textField.text = values[row]
-    }
-}
-
-/// :nodoc:
-extension FormPicker: UITextFieldDelegate {
+extension FormPickerField: UITextFieldDelegate {
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         return false
     }

@@ -7,8 +7,7 @@
 import Foundation
 
 /// Conforming instances provide access to payment details from previously used payment methods.
-public protocol StoredPaymentDetails: Decodable {
-}
+public protocol StoredPaymentDetails: Decodable {}
 
 /// Contains payment details from a previously used card.
 public struct StoredCardPaymentDetails: StoredPaymentDetails {

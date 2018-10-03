@@ -36,10 +36,6 @@ internal final class CardPlugin: Plugin {
         formViewController.formattedAmount = payment.amount.formatted
         formViewController.paymentMethod = paymentMethod
         formViewController.paymentSession = paymentSession
-        formViewController.storeDetailsConfiguration = CardFormFieldConfiguration.from(paymentDetail: paymentMethod.details.storeDetails)
-        formViewController.installmentsConfiguration = CardFormFieldConfiguration.from(paymentDetail: paymentMethod.details.installments)
-        formViewController.cvcConfiguration = CardFormFieldConfiguration.from(paymentDetail: paymentMethod.details.encryptedSecurityCode)
-        formViewController.holderNameConfiguration = CardFormFieldConfiguration.from(paymentDetail: paymentMethod.details.cardholderName)
         
         if let delegate = CardPlugin.cardScanDelegate, delegate.isCardScanEnabled(for: paymentMethod) {
             formViewController.cardScanButtonHandler = { completion in

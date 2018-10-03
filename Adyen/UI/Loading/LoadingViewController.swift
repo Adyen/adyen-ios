@@ -35,7 +35,7 @@ internal final class LoadingViewController: ShortViewController {
     // MARK: - Private
     
     private lazy var activityIndicator: UIActivityIndicatorView = {
-        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        let activityIndicatorView = UIActivityIndicatorView(style: .whiteLarge)
         activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         activityIndicatorView.color = UIColor.lightGray
         return activityIndicatorView

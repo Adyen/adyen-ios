@@ -9,7 +9,7 @@ import UIKit
 public class DynamicTypeController {
     
     public init() {
-        NotificationCenter.default.addObserver(self, selector: #selector(updateFonts), name: .UIContentSizeCategoryDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateFonts), name: UIContentSizeCategory.didChangeNotification, object: nil)
     }
     
     deinit {
@@ -18,7 +18,7 @@ public class DynamicTypeController {
     
     // MARK: - Public
     
-    public func observeDynamicType(for label: UILabel, withTextAttributes attributes: [NSAttributedStringKey: Any], textStyle: UIFontTextStyle) {
+    public func observeDynamicType(for label: UILabel, withTextAttributes attributes: [NSAttributedString.Key: Any], textStyle: UIFont.TextStyle) {
         guard let font = attributes[.font] as? UIFont else {
             return
         }
@@ -31,7 +31,7 @@ public class DynamicTypeController {
         }
     }
     
-    public func observeDynamicType(for textField: UITextField, withTextAttributes attributes: [NSAttributedStringKey: Any], textStyle: UIFontTextStyle) {
+    public func observeDynamicType(for textField: UITextField, withTextAttributes attributes: [NSAttributedString.Key: Any], textStyle: UIFont.TextStyle) {
         guard let font = attributes[.font] as? UIFont else {
             return
         }
@@ -45,7 +45,7 @@ public class DynamicTypeController {
     }
     
     /// Do not call from setAttributedTitle: method on UIButton.
-    public func observeDynamicType(for button: UIButton, withTextAttributes attributes: [NSAttributedStringKey: Any], textStyle: UIFontTextStyle) {
+    public func observeDynamicType(for button: UIButton, withTextAttributes attributes: [NSAttributedString.Key: Any], textStyle: UIFont.TextStyle) {
         guard let font = attributes[.font] as? UIFont else {
             return
         }
@@ -64,12 +64,12 @@ public class DynamicTypeController {
     private struct DynamicTypeObserver {
         var view: UIView
         var preferredFont: UIFont
-        var textStyle: UIFontTextStyle
+        var textStyle: UIFont.TextStyle
     }
     
     private var observers: [DynamicTypeObserver] = []
     
-    private func addObserver(_ view: UIView, preferredFont: UIFont, textStyle: UIFontTextStyle) {
+    private func addObserver(_ view: UIView, preferredFont: UIFont, textStyle: UIFont.TextStyle) {
         if var existing = observerFor(view: view) {
             existing.preferredFont = preferredFont
             existing.textStyle = textStyle

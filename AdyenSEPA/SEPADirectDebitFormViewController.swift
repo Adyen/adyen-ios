@@ -8,9 +8,21 @@ import AdyenInternal
 import UIKit
 
 internal class SEPADirectDebitFormViewController: FormViewController {
-    internal var completion: Completion<Input>?
     
-    // MARK: - View
+    // MARK: - FormViewController
+    
+    override func pay() {
+        guard let iban = ibanField.validatedValue, let name = nameField.validatedValue else {
+            return
+        }
+        
+        super.pay()
+        
+        let input = Input(name: name, iban: iban)
+        completion?(input)
+    }
+    
+    // MARK: - UIViewController
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,35 +31,39 @@ internal class SEPADirectDebitFormViewController: FormViewController {
         formView.addFormElement(nameField)
         formView.addFooterElement(consentLabel)
         
-        formView.payButton.addTarget(self, action: #selector(didSelect(payButton:)), for: .touchUpInside)
-        
         dynamicTypeController.observeDynamicType(for: consentLabel, withTextAttributes: appearance.formAttributes.footerTitleAttributes, textStyle: .body)
     }
     
-    private lazy var ibanField: FormField = {
-        let ibanField = FormField(textFieldClass: IBANTextField.self)
+    // MARK: - Internal
+    
+    internal struct Input {
+        internal let name: String
+        internal let iban: String
+    }
+    
+    internal var completion: Completion<Input>?
+    
+    // MARK: - Private
+    
+    private lazy var ibanField: FormTextField = {
+        let ibanField = FormTextField()
+        ibanField.delegate = self
+        ibanField.autocapitalizationType = .allCharacters
         ibanField.title = ADYLocalizedString("sepaDirectDebit.ibanField.title")
         ibanField.placeholder = ADYLocalizedString("sepaDirectDebit.ibanField.placeholder")
         ibanField.accessibilityIdentifier = "iban-field"
-        ibanField.addTarget(self, action: #selector(updateValidity), for: .editingChanged)
-        
-        if let ibanTextField = ibanField.textField as? IBANTextField {
-            ibanTextField.validTextColor = appearance.textAttributes[.foregroundColor] as? UIColor
-            ibanTextField.invalidTextColor = appearance.formAttributes.invalidTextColor
-        }
-        
+        ibanField.nextResponderInChain = nameField
+        ibanField.validator = IBANValidator()
         return ibanField
     }()
     
-    private lazy var nameField: FormField = {
-        let nameField = FormField()
+    private lazy var nameField: FormTextField = {
+        let nameField = FormTextField()
+        nameField.delegate = self
         nameField.title = ADYLocalizedString("sepaDirectDebit.nameField.title")
         nameField.placeholder = ADYLocalizedString("sepaDirectDebit.nameField.placeholder")
-        nameField.textField.autocapitalizationType = .words
-        nameField.textField.autocorrectionType = .no
+        nameField.autocapitalizationType = .words
         nameField.accessibilityIdentifier = "name-field"
-        nameField.addTarget(self, action: #selector(updateValidity), for: .editingChanged)
-        
         return nameField
     }()
     
@@ -66,56 +82,20 @@ internal class SEPADirectDebitFormViewController: FormViewController {
     
     private let dynamicTypeController = DynamicTypeController()
     
-    @objc private func didSelect(payButton: UIControl) {
-        guard
-            let iban = ibanField.text,
-            let name = nameField.text
-        else {
-            return
-        }
-        
-        let input = Input(name: name, iban: iban)
-        completion?(input)
-    }
-    
-    // MARK: - Validation
-    
-    private var isValid: Bool {
-        guard let iban = ibanField.text, IBANValidator.isValid(iban) else {
-            return false
-        }
-        
-        guard let name = nameField.text, name.count > 0 else {
-            return false
-        }
-        
-        return true
-    }
-    
-    @objc private func updateValidity() {
-        formView.payButton.isEnabled = isValid
-    }
-    
-    // MARK: - Loading
-    
-    internal var isLoading = false {
-        didSet {
-            if isLoading {
-                setEditing(false, animated: true)
-            }
-            
-            formView.payButton.showsActivityIndicator = isLoading
+    private func updateValidity() {
+        if let name = nameField.validatedValue, name.count > 0, ibanField.validatedValue != nil {
+            isValid = true
+        } else {
+            isValid = false
         }
     }
     
 }
 
-internal extension SEPADirectDebitFormViewController {
-    internal struct Input {
-        internal let name: String
-        
-        internal let iban: String
-        
+extension SEPADirectDebitFormViewController: FormTextFieldDelegate {
+    
+    func valueChanged(_ formTextField: FormTextField) {
+        updateValidity()
     }
     
 }

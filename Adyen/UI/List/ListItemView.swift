@@ -30,7 +30,7 @@ internal final class ListItemView: UIView {
         }
     }
     
-    internal var titleAttributes: [NSAttributedStringKey: Any]? {
+    internal var titleAttributes: [NSAttributedString.Key: Any]? {
         didSet {
             updateTitle()
         }
@@ -86,7 +86,8 @@ internal final class ListItemView: UIView {
     
     private func updateTitle() {
         if let titleAttributes = titleAttributes {
-            let attributedTitle = NSAttributedString(string: title, attributes: titleAttributes)
+            let attributedTitle = NSMutableAttributedString(string: title, attributes: titleAttributes)
+            
             titleLabel.attributedText = attributedTitle
             
             dynamicTypeController.observeDynamicType(for: titleLabel, withTextAttributes: titleAttributes, textStyle: .body)

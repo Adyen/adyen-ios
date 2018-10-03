@@ -9,6 +9,7 @@ import UIKit
 
 /// :nodoc:
 open class FormViewController: UIViewController {
+    
     public init(appearance: Appearance) {
         self.appearance = appearance
         super.init(nibName: nil, bundle: nil)
@@ -36,12 +37,14 @@ open class FormViewController: UIViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
         
+        formView.payButton.addTarget(self, action: #selector(pay), for: .touchUpInside)
+        
         // Forms need to have a navigation bar that matches the background of the view.
         navigationController?.navigationBar.barTintColor = navigationController?.view.backgroundColor
         navigationController?.navigationBar.isTranslucent = false
         
         let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: .UIKeyboardWillChangeFrame, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     
     open override func viewWillAppear(_ animated: Bool) {
@@ -60,6 +63,19 @@ open class FormViewController: UIViewController {
         didSet {
             formView.payButton.setTitle(payActionTitle, for: .normal)
         }
+    }
+    
+    public var isValid: Bool = false {
+        didSet {
+            formView.payButton.isEnabled = isValid
+        }
+    }
+    
+    @objc open func pay() {
+        // Payment logic implemented by the subclasses
+        
+        view.endEditing(true)
+        formView.payButton.showsActivityIndicator = true
     }
     
     // MARK: - Private
@@ -84,7 +100,7 @@ open class FormViewController: UIViewController {
     private var didAssignInitialFirstResponder = false
     
     @objc private func keyboardWillChangeFrame(_ notification: NSNotification) {
-        guard let bounds = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect else {
+        guard let bounds = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
             return
         }
         

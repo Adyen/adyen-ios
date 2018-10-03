@@ -152,7 +152,7 @@ extension ViewController: CheckoutControllerDelegate {
     }
     
     func willFinish(with result: Result<PaymentResult>, for checkoutController: CheckoutController, completionHandler: @escaping (() -> Void)) {
-        let deadline: DispatchTime = .now()// + 4      // uncomment to simulate a delay for verification
+        let deadline: DispatchTime = .now() // + 4      // uncomment to simulate a delay for verification
         DispatchQueue.main.asyncAfter(deadline: deadline) {
             completionHandler()
         }

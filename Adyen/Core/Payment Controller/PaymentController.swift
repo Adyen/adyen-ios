@@ -170,7 +170,7 @@ public final class PaymentController {
         let returnURLQueryDetail = PaymentDetail(key: "returnUrlQueryString", value: returnURL.query)
         
         var request = request
-        request.paymentMethod.details.append(returnURLQueryDetail)
+        request.paymentDetails.append(returnURLQueryDetail)
         initiatePayment(with: request)
     }
     

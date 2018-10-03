@@ -18,7 +18,7 @@ public class FormConsentView: UIView {
         configureConstraints()
         
         isAccessibilityElement = true
-        accessibilityTraits = UIAccessibilityTraitButton
+        accessibilityTraits = UIAccessibilityTraits.button
     }
     
     public required init(coder: NSCoder) {

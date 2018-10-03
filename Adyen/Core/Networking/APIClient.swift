@@ -63,5 +63,4 @@ internal protocol Request: Encodable {
 }
 
 /// The response to a request sent using an APIClient.
-internal protocol Response: Decodable {
-}
+internal protocol Response: Decodable {}

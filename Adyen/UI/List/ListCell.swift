@@ -7,7 +7,7 @@
 import UIKit
 
 internal final class ListCell: UITableViewCell {
-    internal override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    internal override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         configureConstraints()
@@ -29,7 +29,7 @@ internal final class ListCell: UITableViewCell {
         }
     }
     
-    internal var titleAttributes: [NSAttributedStringKey: Any]? {
+    internal var titleAttributes: [NSAttributedString.Key: Any]? {
         didSet {
             itemView.titleAttributes = titleAttributes
         }
@@ -48,7 +48,7 @@ internal final class ListCell: UITableViewCell {
         didSet {
             disclosureImageView.tintColor = disclosureIndicatorColor
             
-            let renderingMode: UIImageRenderingMode = disclosureIndicatorColor == nil ? .alwaysOriginal : .alwaysTemplate
+            let renderingMode: UIImage.RenderingMode = disclosureIndicatorColor == nil ? .alwaysOriginal : .alwaysTemplate
             // If the color is nil, then use the original image, which is grey, rather than applying a color.
             // If the mode is left as .alwaysTemplate, it will pick up cell's tint colour.
             if disclosureImageView.image?.renderingMode != renderingMode {
@@ -61,7 +61,7 @@ internal final class ListCell: UITableViewCell {
     internal func showLoadingIndicator(_ show: Bool) {
         DispatchQueue.main.async {
             if show {
-                let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+                let activityIndicator = UIActivityIndicatorView(style: .gray)
                 if let activityIndicatorColor = self.activityIndicatorColor {
                     activityIndicator.color = activityIndicatorColor
                 }

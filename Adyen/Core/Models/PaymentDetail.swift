@@ -20,6 +20,9 @@ public struct PaymentDetail: Decodable {
     /// A boolean value indicating whether filling this payment detail is optional.
     public let isOptional: Bool
     
+    /// Configuration specific to this payment detail.
+    public let configuration: Configuration
+    
     /// Creates a new instance by decoding from the given decoder.
     ///
     /// This initializer throws an error if reading from the decoder fails, or if the data read is corrupted or otherwise invalid.
@@ -33,6 +36,7 @@ public struct PaymentDetail: Decodable {
         self.key = try container.decode(String.self, forKey: .key)
         self.value = try container.decodeIfPresent(String.self, forKey: .value)
         self.isOptional = try container.decodeIfPresent(Bool.self, forKey: .isOptional) ?? false
+        self.configuration = try container.decodeIfPresent(Configuration.self, forKey: .configuration) ?? Configuration()
         
         do {
             self.inputType = try InputType(from: decoder)
@@ -48,12 +52,13 @@ public struct PaymentDetail: Decodable {
     ///   - value: The current value of the payment detail.
     ///   - inputType: The type of input requested.
     ///   - isOptional: A boolean value indicating whether filling this payment detail is optional.
-    ///   - selectItems: An array of possible values to choose from. Present when inputType is select.
-    internal init(key: String, value: String? = nil, inputType: InputType = .text, isOptional: Bool = false) {
+    ///   - configuration: Configuration for this payment detail.
+    internal init(key: String, value: String? = nil, inputType: InputType = .text, isOptional: Bool = false, configuration: Configuration = Configuration()) {
         self.key = key
         self.value = value
         self.inputType = inputType
         self.isOptional = isOptional
+        self.configuration = configuration
     }
     
     // MARK: - Coding Keys
@@ -61,6 +66,7 @@ public struct PaymentDetail: Decodable {
     private enum CodingKeys: String, CodingKey {
         case key
         case value
+        case configuration
         case isOptional = "optional"
     }
     
@@ -90,7 +96,19 @@ public extension PaymentDetail {
         case applePayToken
         
         /// Address input type.
-        case address
+        case address([PaymentDetail])
+        
+        /// Email address input type.
+        case emailAddress
+        
+        /// Phone number input type.
+        case phone
+        
+        /// Date input type.
+        case date
+        
+        /// Details input type.
+        case fieldSet([PaymentDetail])
         
         /// :nodoc:
         public init(from decoder: Decoder) throws {
@@ -101,7 +119,7 @@ public extension PaymentDetail {
                 self = .text
             case "boolean":
                 self = .boolean
-            case "select":
+            case "select", "radio":
                 let selectItems = try container.decode([SelectItem].self, forKey: .selectItems)
                 
                 self = .select(selectItems)
@@ -112,7 +130,19 @@ public extension PaymentDetail {
             case "applePayToken":
                 self = .applePayToken
             case "address":
-                self = .address
+                let details = try container.decode([PaymentDetail].self, forKey: .details)
+                
+                self = .address(details)
+            case "emailAddress":
+                self = .emailAddress
+            case "tel":
+                self = .phone
+            case "date":
+                self = .date
+            case "fieldSet":
+                let details = try container.decode([PaymentDetail].self, forKey: .details)
+                
+                self = .fieldSet(details)
             default:
                 let context = DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown value (\(type)) for input type.")
                 
@@ -125,6 +155,7 @@ public extension PaymentDetail {
         private enum CodingKeys: String, CodingKey {
             case inputType = "type"
             case selectItems = "items"
+            case details
         }
         
         // MARK: - Equatable
@@ -174,6 +205,44 @@ public extension PaymentDetail {
             case name
         }
         
+    }
+    
+}
+
+// MARK: - PaymentDetail.Configuration
+
+public extension PaymentDetail {
+    /// A structure representing configuration for payment details with type `fieldset`.
+    public struct Configuration: Decodable, Equatable {
+        
+        /// Enum specifying the visibility of a field.
+        public enum FieldVisibility: String {
+            case editable, hidden, readOnly
+        }
+        
+        /// A string representing the visibility of given payment detail.
+        public let fieldVisibility: FieldVisibility
+        
+        /// :nodoc:
+        public init() {
+            fieldVisibility = .editable
+        }
+        
+        /// :nodoc:
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            let rawFieldVisibility = try container.decodeIfPresent(String.self, forKey: .fieldVisibility)
+            
+            if let rawFieldVisibility = rawFieldVisibility, let visibility = FieldVisibility(rawValue: rawFieldVisibility) {
+                self.fieldVisibility = visibility
+            } else {
+                self.fieldVisibility = .editable
+            }
+        }
+        
+        private enum CodingKeys: String, CodingKey {
+            case fieldVisibility
+        }
     }
     
 }

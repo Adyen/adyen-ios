@@ -9,12 +9,18 @@ import Foundation
 import UIKit
 
 /// :nodoc:
-public class FormField: UIControl {
+public protocol FormTextFieldDelegate: class {
+    func valueChanged(_ formTextField: FormTextField)
+}
+
+/// :nodoc:
+open class FormTextField: UIView {
     
-    public init(textFieldClass: UITextField.Type = UITextField.self) {
-        self.textFieldClass = textFieldClass
+    public init() {
         
         super.init(frame: .zero)
+        
+        textField.delegate = self
         
         backgroundColor = UIColor.clear
         
@@ -31,7 +37,25 @@ public class FormField: UIControl {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Open
+    
+    open override var accessibilityIdentifier: String? {
+        get {
+            return textField.accessibilityIdentifier
+        }
+        
+        set {
+            textField.accessibilityIdentifier = newValue
+        }
+    }
+    
+    open override func becomeFirstResponder() -> Bool {
+        return textField.becomeFirstResponder()
+    }
+    
     // MARK: - Public
+    
+    public weak var delegate: FormTextFieldDelegate?
     
     /// The title to display above the text field.
     public var title: String? {
@@ -45,19 +69,6 @@ public class FormField: UIControl {
             textField.accessibilityLabel = title
         }
     }
-    
-    public lazy var textField: UITextField = {
-        let textField = self.textFieldClass.init()
-        textField.defaultTextAttributes = Appearance.shared.textAttributes.reduce(into: [:], { $0[$1.key.rawValue] = $1.value })
-        textField.clearButtonMode = .whileEditing
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        
-        textField.addTarget(self, action: #selector(textFieldDidBeginEditing), for: .editingDidBegin)
-        textField.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
-        textField.addTarget(self, action: #selector(textFieldTextDidChange), for: .editingChanged)
-        
-        return textField
-    }()
     
     public var accessoryView: UIView? {
         didSet {
@@ -82,13 +93,29 @@ public class FormField: UIControl {
         }
     }
     
+    public var validatedValue: String? {
+        guard let text = text else {
+            return nil
+        }
+        
+        if let validator = validator {
+            return validator.isValid(text) ? text : nil
+        }
+        
+        return text
+    }
+    
+    public var validator: Validator?
+    public var nextResponderInChain: UIResponder?
+    
     // MARK: - Private
     
     private let dynamicTypeController = DynamicTypeController()
     
-    private let textFieldClass: UITextField.Type
-    
     private var accessoryWidthConstraint: NSLayoutConstraint?
+    
+    private let invalidTextColor: UIColor? = Appearance.shared.formAttributes.invalidTextColor
+    private let validTextColor: UIColor? = Appearance.shared.textAttributes[.foregroundColor] as? UIColor
     
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
@@ -100,9 +127,19 @@ public class FormField: UIControl {
     
     private lazy var accessoryContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.red
+        view.backgroundColor = UIColor.clear
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
+    }()
+    
+    private lazy var textField: UITextField = {
+        let textField = UITextField()
+        textField.defaultTextAttributes = Appearance.shared.textAttributes
+        textField.clearButtonMode = .whileEditing
+        textField.autocorrectionType = .no
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        
+        return textField
     }()
     
     private func configureConstraints() {
@@ -126,16 +163,12 @@ public class FormField: UIControl {
         NSLayoutConstraint.activate(constraints)
     }
     
-    @objc private func textFieldDidBeginEditing() {
-        sendActions(for: .editingDidBegin)
-    }
-    
-    @objc private func textFieldDidEndEditing() {
-        sendActions(for: .editingDidEnd)
-    }
-    
-    @objc private func textFieldTextDidChange() {
-        sendActions(for: .editingChanged)
+    private func updateTextColor() {
+        if textField.isEditing {
+            textField.textColor = validTextColor
+        } else {
+            textField.textColor = (validatedValue != nil) ? validTextColor : invalidTextColor
+        }
     }
     
 }
@@ -143,7 +176,7 @@ public class FormField: UIControl {
 // MARK: - UITextField Properties
 
 /// :nodoc:
-public extension FormField {
+public extension FormTextField {
     public var text: String? {
         get {
             return textField.text
@@ -169,14 +202,82 @@ public extension FormField {
         }
     }
     
-    public override var accessibilityIdentifier: String? {
+    public var autocapitalizationType: UITextAutocapitalizationType {
         get {
-            return textField.accessibilityIdentifier
+            return textField.autocapitalizationType
+        }
+        set {
+            textField.autocapitalizationType = autocapitalizationType
+        }
+    }
+    
+    public var keyboardType: UIKeyboardType {
+        get {
+            return textField.keyboardType
+        }
+        set {
+            textField.keyboardType = keyboardType
+        }
+    }
+    
+}
+
+extension FormTextField: UITextFieldDelegate {
+    
+    public func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.textColor = validTextColor
+    }
+    
+    public func textFieldDidEndEditing(_ textField: UITextField) {
+        guard let text = textField.text, let validator = validator else {
+            return
         }
         
-        set {
-            textField.accessibilityIdentifier = newValue
+        let valid = validator.isValid(text)
+        textField.textColor = valid ? validTextColor : invalidTextColor
+        
+        if !valid {
+            if #available(iOS 10.0, *) {
+                let generator = UINotificationFeedbackGenerator()
+                generator.notificationOccurred(.warning)
+            }
         }
+    }
+    
+    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let text = textField.text else {
+            textField.text = ""
+            delegate?.valueChanged(self)
+            return false
+        }
+        
+        let newText = (text as NSString).replacingCharacters(in: range, with: string)
+        let isDeleting = (string.count == 0 && range.length == 1)
+        guard let validator = validator, !isDeleting else {
+            textField.text = newText
+            delegate?.valueChanged(self)
+            return false
+        }
+        
+        if validator.isMaxLength(text) {
+            return false
+        }
+        
+        let formatted = validator.format(newText)
+        textField.text = formatted
+        delegate?.valueChanged(self)
+        
+        if validator.isMaxLength(newText) {
+            nextResponderInChain?.becomeFirstResponder()
+        }
+        
+        return false
+    }
+    
+    public func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        textField.text = ""
+        delegate?.valueChanged(self)
+        return false
     }
     
 }

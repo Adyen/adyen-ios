@@ -193,5 +193,22 @@ internal extension CardType {
             return nil
         }
     }
+}
+
+internal extension CardType {
+    func matches(cardNumber: String) -> Bool {
+        guard let pattern = regex else {
+            return false
+        }
+        
+        do {
+            let regularExpression = try NSRegularExpression(pattern: pattern, options: [])
+            let range = NSRange(location: 0, length: cardNumber.count)
+            
+            return regularExpression.firstMatch(in: cardNumber, options: [], range: range) != nil
+        } catch {
+            return false
+        }
+    }
     
 }

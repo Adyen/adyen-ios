@@ -11,8 +11,7 @@ public class AmountFormatter {
     
     // MARK: - Initialization
     
-    private init() {
-    }
+    private init() {}
     
     // MARK: - Internal
     

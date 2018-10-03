@@ -24,7 +24,7 @@ internal class CheckoutButton: UIButton {
     
     // MARK: - UIButton
     
-    override func setTitle(_ title: String?, for state: UIControlState) {
+    override func setTitle(_ title: String?, for state: UIControl.State) {
         if let title = title {
             let attributes = Appearance.shared.checkoutButtonAttributes.titleAttributes
             let attributedTitle = NSAttributedString(string: title, attributes: attributes)

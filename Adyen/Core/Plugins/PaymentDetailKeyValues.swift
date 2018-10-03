@@ -10,9 +10,15 @@ public extension Array where Element == PaymentDetail {
     /// Returns a dictionary of the filled payment details.
     internal var serialized: [String: Any] {
         let elements = compactMap { paymentDetail -> (String, Any)? in
-            guard let value = paymentDetail.value else { return nil }
-            
-            return (paymentDetail.key, value)
+            switch paymentDetail.inputType {
+                
+            case let .fieldSet(details), let .address(details):
+                return (paymentDetail.key, details.serialized)
+                
+            default:
+                guard let value = paymentDetail.value else { return nil }
+                return (paymentDetail.key, value)
+            }
         }
         
         return Dictionary(uniqueKeysWithValues: elements)

@@ -21,9 +21,7 @@ internal final class SEPADirectDebitPlugin: Plugin {
         
         let paymentAmount = paymentSession.payment.amount
         formViewController.payActionTitle = appearance.checkoutButtonAttributes.title(forAmount: paymentAmount.value, currencyCode: paymentAmount.currencyCode)
-        formViewController.completion = { [unowned formViewController] input in
-            formViewController.isLoading = true
-            
+        formViewController.completion = { input in
             var details = self.paymentMethod.details
             details.sepaName?.value = input.name
             details.sepaIBAN?.value = input.iban
