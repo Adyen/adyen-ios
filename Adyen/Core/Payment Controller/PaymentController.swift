@@ -91,8 +91,15 @@ public final class PaymentController {
     
     private func decode(paymentSessionResponse: String) {
         do {
-            paymentSession = try PaymentSession.decode(from: paymentSessionResponse)
-            filterUnavailablePaymentMethods()
+            var paymentSession = try PaymentSession.decode(from: paymentSessionResponse)
+            
+            let pluginManager = PluginManager(paymentSession: paymentSession)
+            self.pluginManager = pluginManager
+            
+            let availablePaymentMethods = pluginManager.availablePaymentMethods(for: paymentSession.paymentMethods)
+            paymentSession.paymentMethods = availablePaymentMethods
+            self.paymentSession = paymentSession
+            
             requestPaymentMethodSelection()
         } catch {
             finish(with: error)
@@ -193,26 +200,9 @@ public final class PaymentController {
         PaymentControllerDelegateProxy(delegate: self.delegate)
     }()
     
-    private func filterUnavailablePaymentMethods() {
-        guard var paymentSession = paymentSession else {
-            return
-        }
-        
-        let pluginManager = PluginManager(paymentSession: paymentSession)
-        
-        func isPaymentMethodAvailable(_ paymentMethod: PaymentMethod) -> Bool {
-            guard let plugin = pluginManager.plugin(for: paymentMethod) else {
-                return true
-            }
-            
-            return plugin.isDeviceSupported
-        }
-        
-        var paymentMethods = paymentSession.paymentMethods
-        paymentMethods.preferred = paymentMethods.preferred.filter(isPaymentMethodAvailable(_:))
-        paymentMethods.other = paymentMethods.other.filter(isPaymentMethodAvailable(_:))
-        
-        self.paymentSession?.paymentMethods = paymentMethods
-    }
+    // MARK: - Plugin Manager
+    
+    /// The plugin manager used for the payment. Available after the payment session has been loaded.
+    internal var pluginManager: PluginManager?
     
 }

@@ -8,7 +8,10 @@ import AdyenInternal
 import Foundation
 
 /// Performs requests to the API.
-internal final class APIClient {
+/// :nodoc:
+public final class APIClient {
+    
+    public init() {}
     
     // MARK: - Networking
     
@@ -17,7 +20,7 @@ internal final class APIClient {
     /// - Parameters:
     ///   - request: The request to perform.
     ///   - completion: The completion handler to invoke when a response has been received.
-    internal func perform<R: Request>(_ request: R, completion: @escaping Completion<Result<R.ResponseType>>) {
+    public func perform<R: Request>(_ request: R, completion: @escaping Completion<Result<R.ResponseType>>) {
         var urlRequest = URLRequest(url: request.url)
         urlRequest.httpMethod = "POST"
         urlRequest.allHTTPHeaderFields = [
@@ -53,9 +56,16 @@ internal final class APIClient {
 }
 
 /// A request that can be sent using an APIClient.
-internal protocol Request: Encodable {
+/// :nodoc:
+public protocol Request: Encodable {
     /// The type of response expected from the request.
     associatedtype ResponseType: Response
+    
+    /// The payment session.
+    var paymentSession: PaymentSession { get }
+    
+    /// The payment method for which to initiate a payment.
+    var paymentMethod: PaymentMethod { get }
     
     /// The URL to which the request should be made.
     var url: URL { get }
@@ -63,4 +73,25 @@ internal protocol Request: Encodable {
 }
 
 /// The response to a request sent using an APIClient.
-internal protocol Response: Decodable {}
+/// :nodoc:
+public protocol Response: Decodable {}
+
+/// :nodoc:
+public extension Request {
+    
+    /// Encodes the payment data for the request.
+    ///
+    /// - Parameter encoder: The encoder to encode the payment data with.
+    public func encodePaymentData(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(paymentSession.paymentData, forKey: .paymentData)
+        try container.encode(paymentMethod.paymentMethodData, forKey: .paymentMethodData)
+    }
+    
+}
+
+private enum CodingKeys: String, CodingKey {
+    case paymentData
+    case paymentMethodData
+}

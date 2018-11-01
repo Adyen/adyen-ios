@@ -194,11 +194,8 @@ public extension FormTextField {
         }
         
         set {
-            if let attributes = Appearance.shared.formAttributes.placeholderAttributes {
-                textField.attributedPlaceholder = NSAttributedString(string: newValue ?? "", attributes: attributes)
-            } else {
-                textField.placeholder = newValue
-            }
+            let attributes = Appearance.shared.formAttributes.placeholderAttributes
+            textField.attributedPlaceholder = NSAttributedString(string: newValue ?? "", attributes: attributes)
         }
     }
     
@@ -207,7 +204,7 @@ public extension FormTextField {
             return textField.autocapitalizationType
         }
         set {
-            textField.autocapitalizationType = autocapitalizationType
+            textField.autocapitalizationType = newValue
         }
     }
     
@@ -216,12 +213,22 @@ public extension FormTextField {
             return textField.keyboardType
         }
         set {
-            textField.keyboardType = keyboardType
+            textField.keyboardType = newValue
+        }
+    }
+    
+    public var clearButtonMode: UITextField.ViewMode {
+        get {
+            return textField.clearButtonMode
+        }
+        set {
+            textField.clearButtonMode = newValue
         }
     }
     
 }
 
+/// :nodoc:
 extension FormTextField: UITextFieldDelegate {
     
     public func textFieldDidBeginEditing(_ textField: UITextField) {

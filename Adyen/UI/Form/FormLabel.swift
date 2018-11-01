@@ -9,21 +9,35 @@ import Foundation
 import UIKit
 
 /// :nodoc:
-public class FormLabel: UIView {
+public class FormLabel: UIStackView {
     
-    public override init(frame: CGRect) {
-        super.init(frame: frame)
+    public init() {
+        super.init(frame: CGRect.zero)
         
-        addSubview(label)
-        
-        configureConstraints()
+        addArrangedSubview(label)
+        layoutMargins = UIEdgeInsets(top: margin, left: 0, bottom: margin, right: 0)
+        isLayoutMarginsRelativeArrangement = true
     }
     
-    public required init?(coder aDecoder: NSCoder) {
+    required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Public
+    
+    public var attributedTitle: NSAttributedString? {
+        didSet {
+            guard let attributedTitle = attributedTitle else {
+                return
+            }
+            
+            let mutableAttributedString = NSMutableAttributedString(attributedString: attributedTitle)
+            mutableAttributedString.addAttributes(Appearance.shared.textAttributes, range: NSRange(location: 0, length: mutableAttributedString.length))
+            label.attributedText = mutableAttributedString
+            dynamicTypeController.observeDynamicType(for: label, withTextAttributes: Appearance.shared.textAttributes, textStyle: .body)
+            accessibilityLabel = attributedTitle.string
+        }
+    }
     
     public var text: String? {
         didSet {
@@ -38,26 +52,27 @@ public class FormLabel: UIView {
         }
     }
     
+    public var onLabelTap: (() -> Void)?
+    
     // MARK: - Private
     
     private let dynamicTypeController = DynamicTypeController()
+    private let margin: CGFloat = 16.0
     
     private lazy var label: UILabel = {
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapLabel))
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(tap)
+        
         return label
     }()
     
-    private func configureConstraints() {
-        let constraints = [
-            label.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            label.bottomAnchor.constraint(equalTo: bottomAnchor),
-            label.leadingAnchor.constraint(equalTo: leadingAnchor),
-            label.trailingAnchor.constraint(equalTo: trailingAnchor)
-        ]
-        
-        NSLayoutConstraint.activate(constraints)
+    @objc private func didTapLabel() {
+        onLabelTap?()
     }
 }

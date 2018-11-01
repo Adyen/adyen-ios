@@ -8,7 +8,7 @@ import Foundation
 
 public extension Array where Element == PaymentDetail {
     /// The payment detail for WeChat result code
-    public var weChatResulCode: PaymentDetail? {
+    public var weChatResultCode: PaymentDetail? {
         get {
             return self[weChatResultCodeKey]
         }

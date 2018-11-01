@@ -179,8 +179,8 @@ extension Appearance {
         
         /// The attributes used for a form's field titles.
         public var fieldTitleAttributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.black,
-            .font: UIFont.systemFont(ofSize: 13, weight: .bold)
+            .foregroundColor: UIColor.darkGray,
+            .font: UIFont.systemFont(ofSize: 13, weight: .regular)
         ]
         
         /// The attributes used for a form's footer title.
@@ -192,14 +192,17 @@ extension Appearance {
         /// The attributes used for a form's section titles.
         public var sectionTitleAttributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.black,
-            .font: UIFont.systemFont(ofSize: 16, weight: .semibold)
+            .font: UIFont.systemFont(ofSize: 17, weight: .semibold)
         ]
         
         /// The color of a field's text when it's invalid.
         public var invalidTextColor = UIColor.red
         
         /// The attributes used for a field's placeholder.
-        public var placeholderAttributes: [NSAttributedString.Key: Any]?
+        public var placeholderAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.lightGray,
+            .font: UIFont.systemFont(ofSize: 17)
+        ]
         
         /// The color of the separator inbetween a form's fields.
         public var separatorColor: UIColor = #colorLiteral(red: 0.8470588235, green: 0.8470588235, blue: 0.8470588235, alpha: 1)

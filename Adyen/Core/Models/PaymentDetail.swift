@@ -15,7 +15,7 @@ public struct PaymentDetail: Decodable {
     public var value: String?
     
     /// The type of input requested.
-    public internal(set) var inputType: InputType
+    public var inputType: InputType
     
     /// A boolean value indicating whether filling this payment detail is optional.
     public let isOptional: Bool

@@ -48,7 +48,7 @@ public extension String {
             return String(self[startIndex..<endIndex])
         }
         
-        return groups.joined(separator: " ")
+        return groups.joined(separator: separator)
     }
     
 }

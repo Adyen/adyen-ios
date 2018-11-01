@@ -25,15 +25,7 @@ internal struct StoredPaymentMethodDeletionRequest: Request {
     // MARK: - Encoding
     
     internal func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        
-        try container.encode(paymentSession.paymentData, forKey: .paymentData)
-        try container.encode(paymentMethod.paymentMethodData, forKey: .paymentMethodData)
-    }
-    
-    private enum CodingKeys: String, CodingKey {
-        case paymentData
-        case paymentMethodData
+        try encodePaymentData(to: encoder)
     }
     
 }

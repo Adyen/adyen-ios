@@ -10,22 +10,34 @@ import UIKit
 /// A universal plugin for payment methods that require issuer selection, such as iDEAL and MOLPay.
 internal final class IssuerSelectionPlugin: Plugin {
     
-    // MARK: - Plugin
+    internal let paymentSession: PaymentSession
+    internal let paymentMethod: PaymentMethod
     
-    override var showsDisclosureIndicator: Bool {
+    internal init(paymentSession: PaymentSession, paymentMethod: PaymentMethod) {
+        self.paymentSession = paymentSession
+        self.paymentMethod = paymentMethod
+    }
+    
+}
+
+// MARK: - PaymentDetailsPlugin
+
+extension IssuerSelectionPlugin: PaymentDetailsPlugin {
+    
+    internal var showsDisclosureIndicator: Bool {
         return true
     }
     
-    override func present(using navigationController: UINavigationController, completion: @escaping Completion<[PaymentDetail]>) {
-        guard var detail = paymentMethod.details.issuer else { return }
-        guard case let .select(selectItems) = detail.inputType else { return }
+    internal func present(_ details: [PaymentDetail], using navigationController: UINavigationController, appearance: Appearance, completion: @escaping Completion<[PaymentDetail]>) {
+        guard var issuerDetail = details.issuer else { return }
+        guard case let .select(selectItems) = issuerDetail.inputType else { return }
         
         let items = selectItems.map { issuer -> ListItem in
             var item = ListItem(title: issuer.name)
             item.imageURL = issuer.logoURL
             item.selectionHandler = {
-                detail.value = issuer.identifier
-                completion([detail])
+                issuerDetail.value = issuer.identifier
+                completion([issuerDetail])
             }
             
             return item

@@ -9,13 +9,25 @@ import Foundation
 /// A plugin that provides an input form for SEPA Direct Debit.
 internal final class SEPADirectDebitPlugin: Plugin {
     
-    // MARK: - Plugin
+    internal let paymentSession: PaymentSession
+    internal let paymentMethod: PaymentMethod
     
-    internal override var showsDisclosureIndicator: Bool {
+    internal init(paymentSession: PaymentSession, paymentMethod: PaymentMethod) {
+        self.paymentSession = paymentSession
+        self.paymentMethod = paymentMethod
+    }
+    
+}
+
+// MARK: - PaymentDetailsPlugin
+
+extension SEPADirectDebitPlugin: PaymentDetailsPlugin {
+    
+    internal var showsDisclosureIndicator: Bool {
         return true
     }
     
-    internal override func present(using navigationController: UINavigationController, completion: @escaping Completion<[PaymentDetail]>) {
+    internal func present(_ details: [PaymentDetail], using navigationController: UINavigationController, appearance: Appearance, completion: @escaping Completion<[PaymentDetail]>) {
         let formViewController = SEPADirectDebitFormViewController(appearance: appearance)
         formViewController.title = paymentMethod.name
         

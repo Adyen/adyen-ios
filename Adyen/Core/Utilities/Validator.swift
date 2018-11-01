@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+/// :nodoc:
 public protocol Validator {
     func isValid(_ string: String) -> Bool
     func isMaxLength(_ string: String) -> Bool
@@ -11,6 +12,7 @@ public protocol Validator {
     func sanitize(_ string: String) -> String
 }
 
+/// :nodoc:
 public extension Validator {
     func isValid(_ string: String) -> Bool {
         return true
@@ -29,8 +31,10 @@ public extension Validator {
     }
 }
 
+/// :nodoc:
 public protocol NumericValidator: Validator {}
 
+/// :nodoc:
 public extension NumericValidator {
     func sanitize(_ string: String) -> String {
         let allowedCharacters = CharacterSet.decimalDigits

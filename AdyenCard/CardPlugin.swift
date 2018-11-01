@@ -9,24 +9,27 @@ import Foundation
 
 internal final class CardPlugin: Plugin {
     
-    // MARK: - Plugin
+    internal let paymentSession: PaymentSession
+    internal let paymentMethod: PaymentMethod
     
     internal weak static var cardScanDelegate: CardScanDelegate?
     
-    internal override var showsDisclosureIndicator: Bool {
-        return paymentMethod.storedDetails == nil
+    internal init(paymentSession: PaymentSession, paymentMethod: PaymentMethod) {
+        self.paymentSession = paymentSession
+        self.paymentMethod = paymentMethod
     }
     
-    override func present(using navigationController: UINavigationController, completion: @escaping Completion<[PaymentDetail]>) {
-        completionHandler = completion
-        navigationController.pushViewController(detailsViewController, animated: true)
+}
+
+// MARK: - PaymentDetailsPlugin
+
+extension CardPlugin: PaymentDetailsPlugin {
+    
+    internal var showsDisclosureIndicator: Bool {
+        return true
     }
     
-    // MARK: - Private
-    
-    private var completionHandler: Completion<[PaymentDetail]>?
-    
-    private var detailsViewController: UIViewController {
+    internal func present(_ details: [PaymentDetail], using navigationController: UINavigationController, appearance: Appearance, completion: @escaping Completion<[PaymentDetail]>) {
         let payment = paymentSession.payment
         
         let paymentAmount = paymentSession.payment.amount
@@ -44,23 +47,19 @@ internal final class CardPlugin: Plugin {
         }
         
         formViewController.cardDetailsHandler = { cardInputData in
-            self.submit(cardInputData: cardInputData)
+            var details = details
+            details.encryptedCardNumber?.value = cardInputData.encryptedCard.number
+            details.encryptedSecurityCode?.value = cardInputData.encryptedCard.securityCode
+            details.encryptedExpiryYear?.value = cardInputData.encryptedCard.expiryYear
+            details.encryptedExpiryMonth?.value = cardInputData.encryptedCard.expiryMonth
+            details.installments?.value = cardInputData.installments
+            details.storeDetails?.value = cardInputData.storeDetails.stringValue()
+            details.cardholderName?.value = cardInputData.holderName
+            
+            completion(details)
         }
         
-        return formViewController
+        navigationController.pushViewController(formViewController, animated: true)
     }
     
-    private func submit(cardInputData: CardInputData) {
-        var details = paymentMethod.details
-        
-        details.encryptedCardNumber?.value = cardInputData.encryptedCard.number
-        details.encryptedSecurityCode?.value = cardInputData.encryptedCard.securityCode
-        details.encryptedExpiryYear?.value = cardInputData.encryptedCard.expiryYear
-        details.encryptedExpiryMonth?.value = cardInputData.encryptedCard.expiryMonth
-        details.installments?.value = cardInputData.installments
-        details.storeDetails?.value = cardInputData.storeDetails.stringValue()
-        details.cardholderName?.value = cardInputData.holderName
-        
-        completionHandler?(details)
-    }
 }

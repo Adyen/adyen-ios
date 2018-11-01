@@ -76,11 +76,12 @@ public final class CheckoutController {
     
     private var paymentController: PaymentController?
     
-    private var pluginManager: PluginManager?
+    private var pluginManager: PluginManager? {
+        return paymentController?.pluginManager
+    }
     
     private func reset() {
         paymentController = nil
-        pluginManager = nil
         methodSelectionCompletion = nil
         selectedMethodPlugin = nil
     }
@@ -94,12 +95,12 @@ extension CheckoutController: PaymentControllerDelegate {
     
     /// :nodoc:
     public func selectPaymentMethod(from paymentMethods: SectionedPaymentMethods, for paymentController: PaymentController, selectionHandler: @escaping (PaymentMethod) -> Void) {
-        guard let paymentSession = paymentController.paymentSession else {
+        guard
+            let paymentSession = paymentController.paymentSession,
+            let pluginManager = pluginManager
+        else {
             return
         }
-        
-        let pluginManager = PluginManager(paymentSession: paymentSession)
-        self.pluginManager = pluginManager
         
         methodSelectionCompletion = selectionHandler
         
@@ -119,17 +120,16 @@ extension CheckoutController: PaymentControllerDelegate {
     
     /// :nodoc:
     public func provideAdditionalDetails(_ additionalDetails: AdditionalPaymentDetails, for paymentMethod: PaymentMethod, detailsHandler: @escaping ([PaymentDetail]) -> Void) {
-        guard let plugin = pluginManager?.plugin(for: paymentMethod) else {
+        guard let plugin = pluginManager?.plugin(for: paymentMethod) as? AdditionalPaymentDetailsPlugin else {
             selectedMethodPlugin = nil
             presenter.showPaymentProcessing(true)
             detailsHandler(additionalDetails.details)
             return
         }
         
-        plugin.additionalPaymentDetails = additionalDetails
         selectedMethodPlugin = plugin
         
-        presenter.showPaymentDetails(for: plugin) { [weak self] details in
+        presenter.show(additionalDetails, using: plugin) { [weak self] details in
             self?.presenter.showPaymentProcessing(true)
             detailsHandler(details)
         }
@@ -137,7 +137,7 @@ extension CheckoutController: PaymentControllerDelegate {
     
     /// :nodoc:
     public func didFinish(with result: Result<PaymentResult>, for paymentController: PaymentController) {
-        guard let selectedMethodPlugin = selectedMethodPlugin else {
+        guard let selectedMethodPlugin = selectedMethodPlugin as? PaymentDetailsPlugin else {
             finish(with: result)
             return
         }
@@ -187,7 +187,7 @@ extension CheckoutController: CheckoutPresenterDelegate {
     }
     
     func didSelect(_ paymentMethod: PaymentMethod, in checkoutPresenter: CheckoutPresenter) {
-        guard let plugin = pluginManager?.plugin(for: paymentMethod), paymentMethod.details.isEmpty == false else {
+        guard let plugin = pluginManager?.plugin(for: paymentMethod) as? PaymentDetailsPlugin, paymentMethod.details.isEmpty == false else {
             selectedMethodPlugin = nil
             checkoutPresenter.showPaymentProcessing(true)
             methodSelectionCompletion?(paymentMethod)
@@ -195,7 +195,7 @@ extension CheckoutController: CheckoutPresenterDelegate {
         }
         
         selectedMethodPlugin = plugin
-        checkoutPresenter.showPaymentDetails(for: plugin) { [weak self] details in
+        checkoutPresenter.show(paymentMethod.details, using: plugin) { [weak self] details in
             checkoutPresenter.showPaymentProcessing(true)
             
             var filledPaymentMethod = paymentMethod

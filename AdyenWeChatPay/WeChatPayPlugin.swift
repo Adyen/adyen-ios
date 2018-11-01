@@ -9,9 +9,19 @@ import AdyenWeChatPayInternal
 import Foundation
 
 /// A plugin that handles WeChatPay SDK communication.
-internal final class WeChatPayPlugin: Plugin {
+internal final class WeChatPayPlugin: NSObject, AdditionalPaymentDetailsPlugin {
     
-    override var isDeviceSupported: Bool {
+    // MARK: - Plugin
+    
+    internal let paymentSession: PaymentSession
+    internal let paymentMethod: PaymentMethod
+    
+    internal init(paymentSession: PaymentSession, paymentMethod: PaymentMethod) {
+        self.paymentSession = paymentSession
+        self.paymentMethod = paymentMethod
+    }
+    
+    internal var isDeviceSupported: Bool {
         var isSupported = false
         
         DispatchQueue.main.sync {
@@ -22,49 +32,53 @@ internal final class WeChatPayPlugin: Plugin {
         return isSupported
     }
     
-    internal var completionHandler: Completion<[PaymentDetail]>?
+    // MARK: - AdditionalPaymentDetailsPlugin
     
-    internal lazy var redirectData: WeChatRedirectData = {
-        WeChatRedirectData(dictionary: additionalPaymentDetails?.redirectData)
-    }()
-    
-    override func present(using navigationController: UINavigationController, completion: @escaping ([PaymentDetail]) -> Void) {
+    internal func present(_ details: AdditionalPaymentDetails, using navigationController: UINavigationController, appearance: Appearance, completion: @escaping (Array<PaymentDetail>) -> Void) {
+        additionalPaymentDetails = details
         completionHandler = completion
         
         RedirectListener.registerForURL { [weak self] url in
             WXApi.handleOpen(url, delegate: self)
         }
         
+        let redirectData = WeChatRedirectData(dictionary: details.redirectData)
         WXApi.registerApp(redirectData.appIdentifier)
-        WXApi.send(payRequest(for: redirectData))
+        WXApi.send(PayReq(redirectData: redirectData))
     }
     
-    // MARK: - Private
+    private var additionalPaymentDetails: AdditionalPaymentDetails?
+    private var completionHandler: Completion<[PaymentDetail]>?
     
-    private func payRequest(for redirectData: WeChatRedirectData) -> PayReq {
-        let request = PayReq()
-        
-        request.openID = redirectData.appIdentifier
-        request.partnerId = redirectData.partnerIdentifier
-        request.prepayId = redirectData.prepayIdentifier
-        request.timeStamp = redirectData.timestamp
-        request.package = redirectData.package
-        request.nonceStr = redirectData.nonce
-        request.sign = redirectData.signature
-        
-        return request
-    }
 }
 
 extension WeChatPayPlugin: WXApiDelegate {
+    
     func onResp(_ resp: BaseResp!) {
         guard var details = additionalPaymentDetails?.details else {
             completionHandler?([])
             return
         }
         
-        details.weChatResulCode?.value = String(resp.errCode)
+        details.weChatResultCode?.value = String(resp.errCode)
         
         completionHandler?(details)
     }
+    
+}
+
+fileprivate extension PayReq {
+    
+    fileprivate convenience init(redirectData: WeChatRedirectData) {
+        self.init()
+        
+        openID = redirectData.appIdentifier
+        partnerId = redirectData.partnerIdentifier
+        prepayId = redirectData.prepayIdentifier
+        timeStamp = redirectData.timestamp
+        package = redirectData.package
+        nonceStr = redirectData.nonce
+        sign = redirectData.signature
+    }
+    
 }

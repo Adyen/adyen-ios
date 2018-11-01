@@ -8,15 +8,21 @@ import AdyenInternal
 import Foundation
 import PassKit
 
-internal final class ApplePayPlugin: Plugin {
+internal final class ApplePayPlugin: NSObject, PaymentDetailsPlugin {
     
-    // MARK: - Plugin
+    internal let paymentSession: PaymentSession
+    internal let paymentMethod: PaymentMethod
     
-    override var isDeviceSupported: Bool {
+    internal init(paymentSession: PaymentSession, paymentMethod: PaymentMethod) {
+        self.paymentSession = paymentSession
+        self.paymentMethod = paymentMethod
+    }
+    
+    internal var isDeviceSupported: Bool {
         return PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: ApplePayPlugin.supportedNetworks)
     }
     
-    override func present(using navigationController: UINavigationController, completion: @escaping Completion<[PaymentDetail]>) {
+    internal func present(_ details: [PaymentDetail], using navigationController: UINavigationController, appearance: Appearance, completion: @escaping Completion<[PaymentDetail]>) {
         paymentDetailCompletion = completion
         if let newPaymentAuthorizationViewController = newPaymentAuthorizationViewController() {
             paymentAuthorizationViewController = newPaymentAuthorizationViewController
@@ -24,7 +30,7 @@ internal final class ApplePayPlugin: Plugin {
         }
     }
     
-    override func finish(with result: Result<PaymentResult>, completion: @escaping () -> Void) {
+    internal func finish(with result: Result<PaymentResult>, completion: @escaping () -> Void) {
         let authorizationStatus: PKPaymentAuthorizationStatus
         
         switch result {

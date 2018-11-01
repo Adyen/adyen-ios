@@ -53,4 +53,9 @@ Pod::Spec.new do |s|
     plugin.frameworks = 'SystemConfiguration', 'CoreTelephony'
   end
 
+  s.subspec 'OpenInvoice' do |plugin|
+    plugin.source_files = 'AdyenOpenInvoice/**/*.swift'
+    plugin.dependency 'Adyen/Core'
+  end
+
 end

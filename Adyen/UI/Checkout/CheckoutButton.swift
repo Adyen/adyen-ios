@@ -46,6 +46,7 @@ internal class CheckoutButton: UIButton {
     
     internal override var isEnabled: Bool {
         didSet {
+            updateBackgroundColor()
             updateBackground()
         }
     }
@@ -75,8 +76,10 @@ internal class CheckoutButton: UIButton {
     // MARK: - Private
     
     private let dynamicTypeController = DynamicTypeController()
-    
+    private let disabledTintColor = UIColor(red: 0.56, green: 0.56, blue: 0.58, alpha: 0.25)
     private let preferredHeight: CGFloat = 50
+    
+    private lazy var preferredTintColor = Appearance.shared.tintColor
     
     private lazy var highlightedLayer: CALayer = {
         let highlightedLayer = CALayer()
@@ -89,10 +92,16 @@ internal class CheckoutButton: UIButton {
     }()
     
     private func updateBackgroundColor() {
+        guard isEnabled else {
+            preferredTintColor = tintColor
+            backgroundColor = disabledTintColor
+            return
+        }
+        
         if let buttonBackgroundColor = Appearance.shared.checkoutButtonAttributes.backgroundColor {
             backgroundColor = buttonBackgroundColor
         } else {
-            backgroundColor = tintColor
+            backgroundColor = preferredTintColor
         }
     }
     

@@ -33,7 +33,7 @@ internal final class PluginManager {
             return nil
         }
         
-        let plugin = pluginClass.init(paymentMethod: paymentMethod, paymentSession: paymentSession, appearance: Appearance.shared)
+        let plugin = pluginClass.init(paymentSession: paymentSession, paymentMethod: paymentMethod)
         
         plugins[paymentMethod.paymentMethodData] = plugin
         
@@ -60,6 +60,8 @@ internal final class PluginManager {
                 classNames = ["AdyenApplePay.ApplePayPlugin", "Adyen.ApplePayPlugin"]
             case "card":
                 classNames = ["AdyenCard.CardPlugin", "Adyen.CardPlugin"]
+            case "klarna", "afterpay_default":
+                classNames = ["AdyenOpenInvoice.OpenInvoicePlugin", "Adyen.OpenInvoicePlugin"]
             case "bcmc":
                 classNames = ["AdyenCard.CardPlugin", "Adyen.CardPlugin"]
             case "sepadirectdebit":
@@ -74,6 +76,28 @@ internal final class PluginManager {
         }
         
         return classNames
+    }
+    
+    // MARK: - Filtering Payment Methods
+    
+    /// Returns the available payment methods for a collection of payment methods.
+    ///
+    /// - Parameter paymentMethods: The payment methods to filter for available payment methods.
+    /// - Returns: A subset of the given payment methods, containing only available payment methods.
+    internal func availablePaymentMethods(for paymentMethods: SectionedPaymentMethods) -> SectionedPaymentMethods {
+        func isPaymentMethodAvailable(_ paymentMethod: PaymentMethod) -> Bool {
+            guard let plugin = self.plugin(for: paymentMethod) else {
+                return true
+            }
+            
+            return plugin.isDeviceSupported
+        }
+        
+        var paymentMethods = paymentMethods
+        paymentMethods.preferred = paymentMethods.preferred.filter(isPaymentMethodAvailable(_:))
+        paymentMethods.other = paymentMethods.other.filter(isPaymentMethodAvailable(_:))
+        
+        return paymentMethods
     }
     
 }

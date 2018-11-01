@@ -9,33 +9,22 @@ import UIKit
 
 /// Instances conforming to the Plugin protocol provide native logic for payment methods.
 /// :nodoc:
-open class Plugin: NSObject {
+public protocol Plugin: AnyObject {
     
-    // MARK: - Internal
+    var paymentSession: PaymentSession { get }
+    var paymentMethod: PaymentMethod { get }
     
-    public required init(paymentMethod: PaymentMethod, paymentSession: PaymentSession, appearance: Appearance) {
-        self.paymentMethod = paymentMethod
-        self.paymentSession = paymentSession
-        self.appearance = appearance
-    }
+    init(paymentSession: PaymentSession, paymentMethod: PaymentMethod)
     
-    public let paymentMethod: PaymentMethod
-    public let paymentSession: PaymentSession
-    public let appearance: Appearance
-    open var additionalPaymentDetails: AdditionalPaymentDetails?
+    var isDeviceSupported: Bool { get }
     
-    open var showsDisclosureIndicator: Bool {
-        return false
-    }
+}
+
+/// :nodoc:
+public extension Plugin {
     
-    open var isDeviceSupported: Bool {
+    public var isDeviceSupported: Bool {
         return true
-    }
-    
-    open func present(using navigationController: UINavigationController, completion: @escaping Completion<[PaymentDetail]>) {}
-    
-    open func finish(with result: Result<PaymentResult>, completion: @escaping () -> Void) {
-        completion()
     }
     
 }

@@ -12,13 +12,13 @@ internal struct PaymentInitiationRequest: Request {
     typealias ResponseType = PaymentInitiationResponse
     
     /// The payment session.
-    internal var paymentSession: PaymentSession
+    var paymentSession: PaymentSession
     
     /// The payment method for which to initiate a payment.
-    internal var paymentMethod: PaymentMethod
+    var paymentMethod: PaymentMethod
     
     /// The payment details.
-    internal var paymentDetails: [PaymentDetail]
+    internal var paymentDetails: [PaymentDetail] = []
     
     /// The URL to which the request should be made.
     internal var url: URL {
@@ -27,17 +27,14 @@ internal struct PaymentInitiationRequest: Request {
     
     // MARK: - Encoding
     
-    internal func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
+    func encode(to encoder: Encoder) throws {
+        try encodePaymentData(to: encoder)
         
-        try container.encode(paymentSession.paymentData, forKey: .paymentData)
-        try container.encode(paymentMethod.paymentMethodData, forKey: .paymentMethodData)
+        var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(paymentDetails.serialized, forKey: .paymentDetails)
     }
     
     private enum CodingKeys: String, CodingKey {
-        case paymentData
-        case paymentMethodData
         case paymentDetails
     }
     

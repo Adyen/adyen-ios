@@ -40,7 +40,7 @@ public class FormPickerField: UIControl {
     
     // MARK: - Public
     
-    public internal(set) var selectedValue: String? {
+    public var selectedValue: String? {
         get {
             return textField.text
         }
@@ -84,7 +84,7 @@ public class FormPickerField: UIControl {
         textField.defaultTextAttributes = Appearance.shared.textAttributes
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.delegate = self
-        textField.textAlignment = .right
+        textField.textAlignment = .left
         textField.inputView = customInputView
         
         return textField
@@ -93,12 +93,14 @@ public class FormPickerField: UIControl {
     private func configureConstraints() {
         let constraints = [
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 17),
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 7),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
             
-            textField.leadingAnchor.constraint(greaterThanOrEqualTo: titleLabel.trailingAnchor, constant: 20.0),
+            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
+            textField.leadingAnchor.constraint(equalTo: leadingAnchor),
             textField.trailingAnchor.constraint(equalTo: trailingAnchor),
-            textField.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            textField.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -15)
+            
+            bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: 9)
         ]
         
         NSLayoutConstraint.activate(constraints)

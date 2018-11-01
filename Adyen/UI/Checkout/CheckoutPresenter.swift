@@ -89,12 +89,20 @@ internal final class CheckoutPresenter: NSObject {
         navigationController?.viewControllers = [viewController]
     }
     
-    internal func showPaymentDetails(for plugin: Plugin, completion: @escaping Completion<[PaymentDetail]>) {
+    internal func show(_ details: [PaymentDetail], using plugin: PaymentDetailsPlugin, completion: @escaping Completion<[PaymentDetail]>) {
         guard let navigationController = navigationController else {
             return
         }
         
-        plugin.present(using: navigationController, completion: completion)
+        plugin.present(details, using: navigationController, appearance: Appearance.shared, completion: completion)
+    }
+    
+    internal func show(_ details: AdditionalPaymentDetails, using plugin: AdditionalPaymentDetailsPlugin, completion: @escaping Completion<[PaymentDetail]>) {
+        guard let navigationController = navigationController else {
+            return
+        }
+        
+        plugin.present(details, using: navigationController, appearance: Appearance.shared, completion: completion)
     }
     
     /// Redirects to the given URL.
@@ -122,7 +130,7 @@ internal final class CheckoutPresenter: NSObject {
     
     private func listSections(for paymentMethods: SectionedPaymentMethods, pluginManager: PluginManager) -> [ListSection] {
         func paymentMethodMap(_ paymentMethod: PaymentMethod) -> ListItem {
-            let plugin = pluginManager.plugin(for: paymentMethod)
+            let plugin = pluginManager.plugin(for: paymentMethod) as? PaymentDetailsPlugin
             
             var item = ListItem(title: paymentMethod.displayName)
             item.imageURL = paymentMethod.logoURL

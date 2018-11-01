@@ -49,6 +49,8 @@ public class FormConsentView: UIView {
         }
     }
     
+    public var onValueChanged: ((Bool) -> Void)?
+    
     // MARK: - Private
     
     private let dynamicTypeController = DynamicTypeController()
@@ -57,11 +59,12 @@ public class FormConsentView: UIView {
         let constraints = [
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 16),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
             
             consentSwitch.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor, constant: 20.0),
             consentSwitch.trailingAnchor.constraint(equalTo: trailingAnchor),
-            consentSwitch.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor)
+            consentSwitch.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
+            
+            bottomAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16)
         ]
         
         NSLayoutConstraint.activate(constraints)
@@ -73,7 +76,6 @@ public class FormConsentView: UIView {
         titleLabel.isAccessibilityElement = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        
         return titleLabel
     }()
     
@@ -84,7 +86,12 @@ public class FormConsentView: UIView {
         consentSwitch.thumbTintColor = Appearance.shared.formAttributes.switchThumbColor
         consentSwitch.tintColor = Appearance.shared.formAttributes.separatorColor
         consentSwitch.translatesAutoresizingMaskIntoConstraints = false
+        consentSwitch.addTarget(self, action: #selector(consentSwitchValueChanged), for: .valueChanged)
         return consentSwitch
     }()
+    
+    @objc private func consentSwitchValueChanged() {
+        onValueChanged?(consentSwitch.isOn)
+    }
     
 }

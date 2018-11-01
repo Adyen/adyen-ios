@@ -48,6 +48,12 @@ public class FormView: UIScrollView {
     }
     
     public func addFormElement(_ element: UIView) {
+        // Form Section should handle it's own margins
+        if element is FormSection {
+            formStackView.addArrangedSubview(element)
+            return
+        }
+        
         element.backgroundColor = UIColor.clear
         
         // Embed in a stack view so that we can set margins.
@@ -102,17 +108,10 @@ public class FormView: UIScrollView {
     
     private let dynamicTypeController = DynamicTypeController()
     
-    private lazy var wrapperView: UIView = {
-        let view = UIView(frame: .zero)
-        view.backgroundColor = UIColor.clear
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
     private lazy var titleLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.adjustsFontSizeToFitWidth = true
+        label.lineBreakMode = .byTruncatingTail
         label.textAlignment = .center
         return label
     }()
@@ -142,10 +141,10 @@ public class FormView: UIScrollView {
         var constraints: [NSLayoutConstraint] = []
         
         let titleLabelConstraints = [
-            titleLabel.topAnchor.constraint(equalTo: topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-            titleLabel.widthAnchor.constraint(equalTo: widthAnchor)
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: margin),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: margin),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -margin),
+            titleLabel.widthAnchor.constraint(equalTo: widthAnchor, constant: -2 * margin)
         ]
         constraints.append(contentsOf: titleLabelConstraints)
         

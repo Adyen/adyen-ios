@@ -68,7 +68,7 @@ internal class SEPADirectDebitFormViewController: FormViewController {
     }()
     
     private lazy var consentLabel: UILabel = {
-        let text = ADYLocalizedString("sepaDirectDebit.consentButton")
+        let text = ADYLocalizedString("sepaDirectDebit.consentLabel")
         let attributes = appearance.formAttributes.footerTitleAttributes
         
         let label = UILabel(frame: .zero)
