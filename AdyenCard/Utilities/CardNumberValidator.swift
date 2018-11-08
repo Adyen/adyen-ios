@@ -6,9 +6,11 @@
 
 import UIKit
 
-class CardNumberValidator: NumericValidator {
+public class CardNumberValidator: NumericValidator {
     
-    func isValid(_ string: String) -> Bool {
+    public init() {}
+    
+    public func isValid(_ string: String) -> Bool {
         let sanitizedCardNumber = sanitize(string)
         let minimumValidCardLength = 12
         let isValid = sanitizedCardNumber.count >= minimumValidCardLength && luhnCheck(sanitizedCardNumber)
@@ -16,11 +18,11 @@ class CardNumberValidator: NumericValidator {
         return isValid
     }
     
-    func isMaxLength(_ string: String) -> Bool {
+    public func isMaxLength(_ string: String) -> Bool {
         return string.count >= 23
     }
     
-    func format(_ string: String) -> String {
+    public func format(_ string: String) -> String {
         let sanitizedCardNumber = sanitize(string)
         let formattedCardNumber = sanitizedCardNumber.grouped(length: 4)
         return formattedCardNumber

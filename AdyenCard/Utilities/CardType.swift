@@ -7,7 +7,7 @@
 import Foundation
 
 /// Enum containing most known types of credit and debit cards.
-internal enum CardType: String {
+public enum CardType: String {
     /// Accel
     case accel
     
@@ -195,7 +195,7 @@ internal extension CardType {
     }
 }
 
-internal extension CardType {
+public extension CardType {
     func matches(cardNumber: String) -> Bool {
         guard let pattern = regex else {
             return false

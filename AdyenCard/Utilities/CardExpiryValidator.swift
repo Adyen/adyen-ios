@@ -4,13 +4,15 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-class CardExpiryValidator: NumericValidator {
+public class CardExpiryValidator: NumericValidator {
     
-    func isMaxLength(_ string: String) -> Bool {
+    public init() {}
+    
+    public func isMaxLength(_ string: String) -> Bool {
         return sanitize(string).count >= maxLength
     }
     
-    func isValid(_ string: String) -> Bool {
+    public func isValid(_ string: String) -> Bool {
         let sanitizedString = sanitize(string)
         
         guard sanitizedString.count == maxLength else {
@@ -46,7 +48,7 @@ class CardExpiryValidator: NumericValidator {
         return isValid
     }
     
-    func format(_ string: String) -> String {
+    public func format(_ string: String) -> String {
         let separator = "/"
         
         let sanitizedString = sanitize(string)
