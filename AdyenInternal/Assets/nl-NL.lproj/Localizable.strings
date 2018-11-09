@@ -58,3 +58,5 @@
 "openInvoice.moreInformationButton.title" = "Meer informatie";
 "klarna.consentCheckbox" = "Ik geef Klarna toestemming om mijn gegevens te verwerken voor het vaststellen van mijn identiteit, het beoordelen van mijn kredietwaardigheid en het afwikkelen van de aankoop. Ik heb de mogelijkheid om mijn %@ in te trekken voor het verwerken van mijn gegevens en voor de doeleinden waarvoor dit wettelijk is toegestaan. De algemene voorwaarden van de winkelier zijn van toepassing.";
 "klarna.consent" = "toestemming";
+"openInvoice.gender.male" = "Man";
+"openInvoice.gender.female" = "Vrouw";

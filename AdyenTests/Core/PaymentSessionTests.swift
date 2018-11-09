@@ -11,8 +11,8 @@ import XCTest
 class PaymentSessionTests: XCTestCase {
     func testDecodingFromJSON() throws {
         let paymentSession = try Coder.decode(resourceNamed: "payment_session") as PaymentSession
-        XCTAssertEqual(paymentSession.payment.amount.value, 17408)
-        XCTAssertEqual(paymentSession.payment.amount.currencyCode, "EUR")
+        XCTAssertEqual(paymentSession.payment.amount().value, 17408)
+        XCTAssertEqual(paymentSession.payment.amount().currencyCode, "EUR")
         XCTAssertEqual(paymentSession.payment.merchantReference, "Your order number")
         XCTAssertEqual(paymentSession.payment.countryCode, "NL")
         XCTAssertEqual(paymentSession.payment.shopperReference, "ashopper")

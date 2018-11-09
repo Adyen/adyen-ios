@@ -11,6 +11,9 @@ internal struct ListItem {
     /// The title of the list item.
     internal var title: String
     
+    /// The subtitle of the list item.
+    internal var subtitle: String?
+    
     /// A URL to an image to optionally display in the list item.
     internal var imageURL: URL?
     
@@ -26,8 +29,9 @@ internal struct ListItem {
     /// The handler to invoke when the item is deleted.
     internal var deletionHandler: (() -> Void)?
     
-    internal init(title: String, imageURL: URL? = nil, accessibilityLabel: String? = nil, showsDisclosureIndicator: Bool = false, selectionHandler: (() -> Void)? = nil, deletionHandler: (() -> Void)? = nil) {
+    internal init(title: String, subtitle: String? = nil, imageURL: URL? = nil, accessibilityLabel: String? = nil, showsDisclosureIndicator: Bool = false, selectionHandler: (() -> Void)? = nil, deletionHandler: (() -> Void)? = nil) {
         self.title = title
+        self.subtitle = subtitle
         self.imageURL = imageURL
         self.accessibilityLabel = accessibilityLabel
         self.showsDisclosureIndicator = showsDisclosureIndicator

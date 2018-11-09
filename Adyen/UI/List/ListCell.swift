@@ -22,6 +22,7 @@ internal final class ListCell: UITableViewCell {
     internal var item: ListItem? {
         didSet {
             itemView.title = item?.title ?? ""
+            itemView.subtitle = item?.subtitle ?? ""
             itemView.imageURL = item?.imageURL
             resetAccessoryView()
             

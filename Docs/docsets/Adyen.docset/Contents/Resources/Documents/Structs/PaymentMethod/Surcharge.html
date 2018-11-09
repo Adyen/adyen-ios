@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Configuration Structure Reference</title>
+    <title>Surcharge Structure Reference</title>
     <link rel="stylesheet" type="text/css" href="../../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../../css/highlight.css" />
     <meta charset="utf-8">
@@ -23,9 +23,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Struct/Configuration" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Struct/Surcharge" class="dashAnchor"></a>
 
-    <a title="Configuration Structure Reference"></a>
+    <a title="Surcharge Structure Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -53,7 +53,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../../index.html">Adyen Reference</a>
       <img class="carat" src="../../img/carat.png" />
-      Configuration Structure Reference
+      Surcharge Structure Reference
     </p>
 
     <div class="content-wrapper">
@@ -214,14 +214,14 @@
 
         <section class="section">
           <div class="section-content">
-            <h1>Configuration</h1>
+            <h1>Surcharge</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Configuration</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">Equatable</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Surcharge</span></code></pre>
 
                 </div>
               </div>
-            <p>A structure representing configuration for payment details with type <code>fieldset</code>.</p>
+            <p>A struct that holds the payment method surchage information</p>
 
           </div>
         </section>
@@ -233,9 +233,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:5Adyen13PaymentDetailV13ConfigurationV15FieldVisibilityO"></a>
-                    <a name="//apple_ref/swift/Enum/FieldVisibility" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen13PaymentDetailV13ConfigurationV15FieldVisibilityO">FieldVisibility</a>
+                    <a name="/s:5Adyen13PaymentMethodV9SurchargeV5totalSivp"></a>
+                    <a name="//apple_ref/swift/Property/total" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen13PaymentMethodV9SurchargeV5totalSivp">total</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -243,15 +243,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Enum specifying the visibility of a field.</p>
+                        <p>Surcharge total cost in minor units on original request currency.</p>
 
-                        <a href="../../Structs/PaymentDetail/Configuration/FieldVisibility.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">FieldVisibility</span> <span class="p">:</span> <span class="kt">String</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">total</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
 
                         </div>
                       </div>
@@ -261,9 +260,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:5Adyen13PaymentDetailV13ConfigurationV15fieldVisibilityAE05FieldF0Ovp"></a>
-                    <a name="//apple_ref/swift/Property/fieldVisibility" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen13PaymentDetailV13ConfigurationV15fieldVisibilityAE05FieldF0Ovp">fieldVisibility</a>
+                    <a name="/s:5Adyen13PaymentMethodV9SurchargeV9formattedSSvp"></a>
+                    <a name="//apple_ref/swift/Property/formatted" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen13PaymentMethodV9SurchargeV9formattedSSvp">formatted</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -271,14 +270,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A string representing the visibility of given payment detail.</p>
+                        <p>Formatted surcharge total cost.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">fieldVisibility</span><span class="p">:</span> <span class="kt"><a href="../../Structs/PaymentDetail/Configuration/FieldVisibility.html">FieldVisibility</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">formatted</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>

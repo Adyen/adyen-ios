@@ -58,3 +58,5 @@
 "openInvoice.moreInformationButton.title" = "Weitere Informationen";
 "klarna.consentCheckbox" = "Mit der Übermittlung der für die Abwicklung des Rechnungskaufes und einer Identitäts- und Bonitätsprüfung erforderlichen Daten an Klarna bin ich einverstanden. Meine %@ kann ich jederzeit mit Wirkung für die Zukunft widerrufen.";
 "klarna.consent" = "Einwilligung";
+"openInvoice.gender.male" = "Männlich";
+"openInvoice.gender.female" = "Weiblich";

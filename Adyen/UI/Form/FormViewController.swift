@@ -65,6 +65,13 @@ open class FormViewController: UIViewController {
         }
     }
     
+    public var payActionSubtitle: String? {
+        didSet {
+            let attributes = appearance.formAttributes.footerTitleAttributes
+            formView.payButtonSubtitle.attributedText = NSAttributedString(string: payActionSubtitle ?? "", attributes: attributes)
+        }
+    }
+    
     public var isValid: Bool = false {
         didSet {
             formView.payButton.isEnabled = isValid

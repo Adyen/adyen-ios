@@ -58,3 +58,5 @@
 "openInvoice.moreInformationButton.title" = "Maggiori informazioni";
 "klarna.consentCheckbox" = "Autorizzo Klarna a elaborare i miei dati per effettuare verifiche relative a identità e affidabilità finanziaria e alla liquidazione dell'acquisto. Sono autorizzato a revocare il mio %@ per l'elaborazione dei dati, ai sensi di quanto stabilito dalla legge. Vengono applicati i termini e le condizioni dell'esercente.";
 "klarna.consent" = "consenso";
+"openInvoice.gender.male" = "Uomo";
+"openInvoice.gender.female" = "Donna";

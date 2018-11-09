@@ -15,6 +15,7 @@ public class FormView: UIScrollView {
         
         addSubview(titleLabel)
         footerStackView.addArrangedSubview(payButton)
+        footerStackView.addArrangedSubview(payButtonSubtitle)
         addSubview(footerStackView)
         addSubview(formStackView)
         
@@ -32,6 +33,13 @@ public class FormView: UIScrollView {
         payButton.isEnabled = false
         payButton.translatesAutoresizingMaskIntoConstraints = false
         return payButton
+    }()
+    
+    public private(set) lazy var payButtonSubtitle: UILabel = {
+        let label = UILabel(frame: CGRect.zero)
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        return label
     }()
     
     public var title: String? {

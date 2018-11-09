@@ -104,21 +104,21 @@ fileprivate extension PKPaymentRequest {
         self.init()
         
         countryCode = paymentSession.payment.countryCode ?? ""
-        currencyCode = paymentSession.payment.amount.currencyCode
+        currencyCode = paymentSession.payment.amount().currencyCode
         supportedNetworks = ApplePayPlugin.supportedNetworks
         merchantCapabilities = .capability3DS
         merchantIdentifier = paymentMethod.configuration?["merchantIdentifier"] as? String ?? ""
-        paymentSummaryItems = PKPaymentRequest.paymentSummaryItems(paymentSession)
+        paymentSummaryItems = PKPaymentRequest.paymentSummaryItems(paymentSession, paymentMethod: paymentMethod)
     }
     
-    private static func paymentSummaryItems(_ paymentSession: PaymentSession) -> [PKPaymentSummaryItem] {
-        let lineItems = PKPaymentRequest.lineItems(paymentSession)
-        let summaryItem = PKPaymentRequest.paymentSummaryLineItem(paymentSession)
+    private static func paymentSummaryItems(_ paymentSession: PaymentSession, paymentMethod: PaymentMethod) -> [PKPaymentSummaryItem] {
+        let lineItems = PKPaymentRequest.lineItems(paymentSession, paymentMethod: paymentMethod)
+        let summaryItem = PKPaymentRequest.paymentSummaryLineItem(paymentSession, paymentMethod: paymentMethod)
         let paymentSummaryItems = lineItems + [summaryItem]
         return paymentSummaryItems
     }
     
-    private static func lineItems(_ paymentSession: PaymentSession) -> [PKPaymentSummaryItem] {
+    private static func lineItems(_ paymentSession: PaymentSession, paymentMethod: PaymentMethod) -> [PKPaymentSummaryItem] {
         guard let lineItems = paymentSession.lineItems, lineItems.count > 0 else {
             return []
         }
@@ -130,15 +130,17 @@ fileprivate extension PKPaymentRequest {
         }
         
         var items: [PKPaymentSummaryItem] = []
+        let surchargeTotal = paymentMethod.surcharge?.total ?? 0
         
-        let totalIncludingTax = lineItems.compactMap({ $0.amountIncludingTax }).reduce(0, +)
-        let totalWithTaxExplicitlyAdded = lineItems.compactMap({
+        let totalIncludingTaxAndSurcharge = lineItems.compactMap({ $0.amountIncludingTax }).reduce(0, +) + surchargeTotal
+        
+        let totalWithTaxExplicitlyAddedAndSurcharge = lineItems.compactMap({
             ($0.amountExcludingTax ?? 0) + ($0.taxAmount ?? 0)
-        }).reduce(0, +)
+        }).reduce(0, +) + surchargeTotal
         
-        let paymentAmount = paymentSession.payment.amount
+        let paymentAmount = paymentSession.payment.amount(for: paymentMethod)
         let paymentValue = paymentAmount.value
-        if totalIncludingTax == paymentValue {
+        if totalIncludingTaxAndSurcharge == paymentValue {
             // Show each item on its own line, without a new line for tax.
             for item in lineItems {
                 let amount = item.amountIncludingTax ?? 0
@@ -147,7 +149,7 @@ fileprivate extension PKPaymentRequest {
                 let lineItem = PKPaymentSummaryItem(label: description, amount: formattedAmount)
                 items.append(lineItem)
             }
-        } else if totalWithTaxExplicitlyAdded == paymentValue {
+        } else if totalWithTaxExplicitlyAddedAndSurcharge == paymentValue {
             // Show each item on its own line, with a new line for tax.
             for item in lineItems {
                 let amount = item.amountExcludingTax ?? 0
@@ -165,12 +167,20 @@ fileprivate extension PKPaymentRequest {
             items.append(taxLineItem)
         }
         
+        // Add surcharge information if any.
+        if let surcharge = paymentMethod.surcharge {
+            let formattedAmount = AmountFormatter.decimalAmount(surcharge.total, currencyCode: paymentAmount.currencyCode)
+            let surchargeItem = PKPaymentSummaryItem(label: surcharge.formatted, amount: formattedAmount)
+            
+            items.append(surchargeItem)
+        }
+        
         return items
     }
     
-    private static func paymentSummaryLineItem(_ paymentSession: PaymentSession) -> PKPaymentSummaryItem {
+    private static func paymentSummaryLineItem(_ paymentSession: PaymentSession, paymentMethod: PaymentMethod) -> PKPaymentSummaryItem {
         let companyName = paymentSession.company?.name ?? paymentSession.payment.merchantReference
-        let paymentAmount = paymentSession.payment.amount
+        let paymentAmount = paymentSession.payment.amount(for: paymentMethod)
         let amount = AmountFormatter.decimalAmount(paymentAmount.value, currencyCode: paymentAmount.currencyCode)
         let summaryItem = PKPaymentSummaryItem(label: companyName, amount: amount)
         return summaryItem

@@ -30,15 +30,17 @@ extension CardPlugin: PaymentDetailsPlugin {
     }
     
     internal func present(_ details: [PaymentDetail], using navigationController: UINavigationController, appearance: Appearance, completion: @escaping Completion<[PaymentDetail]>) {
-        let payment = paymentSession.payment
+        let amount = paymentSession.payment.amount(for: paymentMethod)
         
-        let paymentAmount = paymentSession.payment.amount
         let formViewController = CardFormViewController(appearance: appearance)
         formViewController.title = paymentMethod.name
-        formViewController.payActionTitle = appearance.checkoutButtonAttributes.title(forAmount: paymentAmount.value, currencyCode: paymentAmount.currencyCode)
-        formViewController.formattedAmount = payment.amount.formatted
         formViewController.paymentMethod = paymentMethod
         formViewController.paymentSession = paymentSession
+        formViewController.payActionTitle = appearance.checkoutButtonAttributes.title(for: amount)
+        
+        if let surcharge = paymentMethod.surcharge, let amountString = AmountFormatter.formatted(amount: surcharge.total, currencyCode: amount.currencyCode) {
+            formViewController.payActionSubtitle = ADYLocalizedString("surcharge.formatted", amountString)
+        }
         
         if let delegate = CardPlugin.cardScanDelegate, delegate.isCardScanEnabled(for: paymentMethod) {
             formViewController.cardScanButtonHandler = { completion in

@@ -104,9 +104,10 @@ extension CheckoutController: PaymentControllerDelegate {
         
         methodSelectionCompletion = selectionHandler
         
-        let amount = paymentSession.payment.amount
+        
         if showsPreselectedPaymentMethod,
             let preselectedPaymentMethod = PreselectedPaymentMethodManager.preselectedPaymentMethod(for: paymentSession) {
+            let amount = paymentSession.payment.amount(for: preselectedPaymentMethod)
             presenter.show(preselectedPaymentMethod, amount: amount)
         } else {
             presenter.show(paymentMethods, pluginManager: pluginManager)

@@ -140,6 +140,16 @@ internal class OpenInvoiceFormViewController: FormViewController {
         return paymentMethod?.details.separateDeliveryAddress != nil
     }
     
+    private var shouldShowSSNField: Bool {
+        if case let .fieldSet(details)? = paymentMethod?.details.personalDetails?.inputType {
+            // TODO: Remove countries when ssn field visibility comes from payment method
+            let isCountryWithSSN = ["FI", "NO", "DK", "SE"].contains(paymentSession?.payment.countryCode)
+            return details.socialSecurityNumber != nil && isSSNLookupAvailable == false && isCountryWithSSN
+        }
+        
+        return false
+    }
+    
     private lazy var separateDeliveryAddressView: FormConsentView = {
         let view = FormConsentView()
         view.title = ADYLocalizedString("openInvoice.separateDeliveryAddressField.title")
@@ -197,7 +207,7 @@ internal class OpenInvoiceFormViewController: FormViewController {
         switch personalDetailsVisibility {
         case .editable:
             formView.addFormElement(personalDetailsSection)
-            personalDetailsSection.setupNormalFlow()
+            personalDetailsSection.setupNormalFlow(shouldShowSSNField: shouldShowSSNField)
         default: break
         }
     }
@@ -236,7 +246,7 @@ internal class OpenInvoiceFormViewController: FormViewController {
     }
     
     private func setupSSNExtraInformationFlow(with ssn: String, response: KlarnaSSNLookupResponse) {
-        self.billingAddress = response.address
+        billingAddressSection.address = response.address
         
         personalDetailsSection.personalDetails?.firstName = response.name?.firstName
         personalDetailsSection.personalDetails?.lastName = response.name?.lastName

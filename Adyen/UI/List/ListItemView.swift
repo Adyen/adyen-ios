@@ -14,6 +14,7 @@ internal final class ListItemView: UIView {
         
         addSubview(customImageView)
         addSubview(titleLabel)
+        addSubview(subtitleLabel)
         
         configureConstraints()
     }
@@ -27,6 +28,12 @@ internal final class ListItemView: UIView {
     internal var title: String = "" {
         didSet {
             updateTitle()
+        }
+    }
+    
+    internal var subtitle: String = "" {
+        didSet {
+            updateSubtitle()
         }
     }
     
@@ -66,20 +73,34 @@ internal final class ListItemView: UIView {
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.isAccessibilityElement = false
-        
         return titleLabel
     }()
     
+    private lazy var subtitleLabel: UILabel = {
+        let subtitleLabel = UILabel()
+        subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        subtitleLabel.isAccessibilityElement = false
+        return subtitleLabel
+    }()
+    
     private func configureConstraints() {
+        
         let constraints = [
             customImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
             customImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
             customImageView.widthAnchor.constraint(equalToConstant: 40.0),
             customImageView.heightAnchor.constraint(equalToConstant: 26.0),
+            
             titleLabel.leadingAnchor.constraint(equalTo: customImageView.trailingAnchor, constant: 20.0),
-            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: subtitleLabel.leadingAnchor, constant: -8.0),
+            
+            subtitleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            subtitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor)
         ]
+        
+        titleLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        titleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         
         NSLayoutConstraint.activate(constraints)
     }
@@ -96,6 +117,13 @@ internal final class ListItemView: UIView {
             dynamicTypeController.observeDynamicType(for: titleLabel, withTextAttributes: [.font: preferredLabelFont], textStyle: .body)
             titleLabel.text = title
         }
+    }
+    
+    private func updateSubtitle() {
+        let attributes = Appearance.shared.listAttributes.cellSubtitleAttributes
+        let attributedSubtitle = NSMutableAttributedString(string: subtitle, attributes: attributes)
+        subtitleLabel.attributedText = attributedSubtitle
+        dynamicTypeController.observeDynamicType(for: subtitleLabel, withTextAttributes: attributes, textStyle: .body)
     }
     
 }

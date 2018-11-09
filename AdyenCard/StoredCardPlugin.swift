@@ -80,8 +80,8 @@ extension StoredCardPlugin {
         }()
         
         private lazy var payAction: UIAlertAction = {
-            let amount = paymentSession.payment.amount
-            let actionTitle = appearance.checkoutButtonAttributes.title(forAmount: amount.value, currencyCode: amount.currencyCode)
+            let amount = paymentSession.payment.amount(for: paymentMethod)
+            let actionTitle = appearance.checkoutButtonAttributes.title(for: amount)
             let action = UIAlertAction(title: actionTitle, style: .default) { [unowned self] _ in
                 self.submit()
             }

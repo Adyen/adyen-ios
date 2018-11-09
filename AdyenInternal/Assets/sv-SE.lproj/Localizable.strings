@@ -56,5 +56,7 @@
 "openInvoice.postalCodeField.placeholder" = "Postnummer";
 "openInvoice.countryField.title" = "Land";
 "openInvoice.moreInformationButton.title" = "Mer information";
-"klarna.consentCheckbox" = "Jag samtycker till att Klarna bearbetar mina data för identifiering, kreditprövning och köpeavtal. Jag kan återkalla mitt %@ för bearbetning av data och för syften där detta möjliggörs av lagen. Allmänna villkor för handlaren tillämpas.";
+"klarna.consentCheckbox" = "Jag samtycker till att Klarna bearbetar mina data för identifiering, kreditprövning och köpeavtal. Jag kan återkalla mitt %@ för bearbetning av data och för syften där detta möjliggörs av lagen. Allmänna regler och villkor för handlaren tillämpas.";
 "klarna.consent" = "samtycke";
+"openInvoice.gender.male" = "Man";
+"openInvoice.gender.female" = "Kvinna";

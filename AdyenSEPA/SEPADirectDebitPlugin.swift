@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import AdyenInternal
 import Foundation
 
 /// A plugin that provides an input form for SEPA Direct Debit.
@@ -31,8 +32,13 @@ extension SEPADirectDebitPlugin: PaymentDetailsPlugin {
         let formViewController = SEPADirectDebitFormViewController(appearance: appearance)
         formViewController.title = paymentMethod.name
         
-        let paymentAmount = paymentSession.payment.amount
-        formViewController.payActionTitle = appearance.checkoutButtonAttributes.title(forAmount: paymentAmount.value, currencyCode: paymentAmount.currencyCode)
+        let amount = paymentSession.payment.amount(for: paymentMethod)
+        
+        if let surcharge = paymentMethod.surcharge, let amountString = AmountFormatter.formatted(amount: surcharge.total, currencyCode: amount.currencyCode) {
+            formViewController.payActionSubtitle = ADYLocalizedString("surcharge.formatted", amountString)
+        }
+        
+        formViewController.payActionTitle = appearance.checkoutButtonAttributes.title(for: amount)
         formViewController.completion = { input in
             var details = self.paymentMethod.details
             details.sepaName?.value = input.name

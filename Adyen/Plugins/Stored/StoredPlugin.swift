@@ -31,8 +31,8 @@ extension StoredPlugin: PaymentDetailsPlugin {
         let cancelAction = UIAlertAction(title: cancelActionTitle, style: .cancel, handler: nil)
         alertController.addAction(cancelAction)
         
-        let amount = paymentSession.payment.amount
-        let payActionTitle = appearance.checkoutButtonAttributes.title(forAmount: amount.value, currencyCode: amount.currencyCode)
+        let amount = paymentSession.payment.amount(for: paymentMethod)
+        let payActionTitle = appearance.checkoutButtonAttributes.title(for: amount)
         let payAction = UIAlertAction(title: payActionTitle, style: .default) { _ in
             completion(details)
         }

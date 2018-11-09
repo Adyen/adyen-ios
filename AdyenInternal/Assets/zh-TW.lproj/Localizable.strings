@@ -58,3 +58,5 @@
 "openInvoice.moreInformationButton.title" = "更多資訊";
 "klarna.consentCheckbox" = "我同意 Klarna 因身份、信用評估和購物結帳用途而處理我的資料。我可能撤銷對處理資料和法律允許處理資料用途的%@。商家的一般條款及細則適用。";
 "klarna.consent" = "同意";
+"openInvoice.gender.male" = "男";
+"openInvoice.gender.female" = "女";

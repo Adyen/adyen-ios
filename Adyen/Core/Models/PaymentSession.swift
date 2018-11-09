@@ -47,25 +47,39 @@ public extension PaymentSession {
     public struct Payment: Decodable {
         /// Describes the amount of a payment.
         public struct Amount: Decodable {
+            
+            /// Initializes an Amount.
+            ///
+            /// - Parameters:
+            ///   - value: The value in minor units.
+            ///   - currencyCode: The code of the currency.
+            init(value: Int, currencyCode: String) {
+                self.value = value
+                self.currencyCode = currencyCode
+            }
+            
             /// The value of the amount in minor units.
             public var value: Int
             
             /// The code of the currency in which the amount's value is specified.
             public var currencyCode: String
             
-            private enum CodingKeys: String, CodingKey {
-                case value
-                case currencyCode = "currency"
-            }
-            
             /// A formatted representation of the amount.
             public var formatted: String {
                 return AmountFormatter.formatted(amount: value, currencyCode: currencyCode) ?? String(value) + " " + currencyCode
             }
+            
+            private enum CodingKeys: String, CodingKey {
+                case value
+                case currencyCode = "currency"
+            }
         }
         
         /// The payment amount.
-        public let amount: Amount
+        @available(*, deprecated, renamed: "amount(for:)")
+        public var amount: Amount {
+            return originalAmount
+        }
         
         /// The code of the country in which the payment is made.
         public let countryCode: String?
@@ -73,12 +87,28 @@ public extension PaymentSession {
         /// A merchant specified reference relating to the payment.
         public let merchantReference: String
         
+        /// Returns the amount taking in consideration the selected payment method surcharges,
+        /// or the original amount if no payment method is provided.
+        ///
+        /// - Parameters:
+        ///   - paymentMethod: The selected payment method or empty for original amount.
+        /// - Returns: The amount.
+        public func amount(for paymentMethod: PaymentMethod? = nil) -> Amount {
+            guard let surcharge = paymentMethod?.surcharge else {
+                return originalAmount
+            }
+            
+            return Amount(value: surcharge.finalAmount, currencyCode: originalAmount.currencyCode)
+        }
+        
         internal let shopperReference: String?
         internal let shopperLocaleIdentifier: String?
         internal let expirationDate: Date
         
+        private let originalAmount: Amount
+        
         private enum CodingKeys: String, CodingKey {
-            case amount
+            case originalAmount = "amount"
             case countryCode
             case merchantReference = "reference"
             case expirationDate = "sessionValidity"

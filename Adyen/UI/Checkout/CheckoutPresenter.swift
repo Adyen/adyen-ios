@@ -75,7 +75,7 @@ internal final class CheckoutPresenter: NSObject {
             }
         }
         viewController.logoURL = paymentMethod.logoURL
-        viewController.payButtonTitle = Appearance.shared.checkoutButtonAttributes.title(forAmount: amount.value, currencyCode: amount.currencyCode)
+        viewController.payButtonTitle = Appearance.shared.checkoutButtonAttributes.title(for: amount)
         
         navigationController?.viewControllers = [viewController]
     }
@@ -131,8 +131,9 @@ internal final class CheckoutPresenter: NSObject {
     private func listSections(for paymentMethods: SectionedPaymentMethods, pluginManager: PluginManager) -> [ListSection] {
         func paymentMethodMap(_ paymentMethod: PaymentMethod) -> ListItem {
             let plugin = pluginManager.plugin(for: paymentMethod) as? PaymentDetailsPlugin
+            let subtitle = paymentMethod.surcharge.flatMap { "(" + $0.formatted + ")" }
             
-            var item = ListItem(title: paymentMethod.displayName)
+            var item = ListItem(title: paymentMethod.displayName, subtitle: subtitle)
             item.imageURL = paymentMethod.logoURL
             item.accessibilityLabel = paymentMethod.accessibilityLabel
             item.showsDisclosureIndicator = plugin?.showsDisclosureIndicator ?? false

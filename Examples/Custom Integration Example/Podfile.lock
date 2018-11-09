@@ -1,15 +1,15 @@
 PODS:
-  - Adyen (2.2.0):
-    - Adyen/Card (= 2.2.0)
-    - Adyen/Core (= 2.2.0)
-    - Adyen/SEPA (= 2.2.0)
-  - Adyen/Card (2.2.0):
+  - Adyen (2.3.0):
+    - Adyen/Card (= 2.3.0)
+    - Adyen/Core (= 2.3.0)
+    - Adyen/SEPA (= 2.3.0)
+  - Adyen/Card (2.3.0):
     - Adyen/Core
-  - Adyen/Core (2.2.0):
-    - AdyenInternal (= 2.2.0)
-  - Adyen/SEPA (2.2.0):
+  - Adyen/Core (2.3.0):
+    - AdyenInternal (= 2.3.0)
+  - Adyen/SEPA (2.3.0):
     - Adyen/Core
-  - AdyenInternal (2.2.0)
+  - AdyenInternal (2.3.0)
 
 DEPENDENCIES:
   - Adyen (from `../../`)

@@ -79,7 +79,7 @@ internal class CheckoutButton: UIButton {
     private let disabledTintColor = UIColor(red: 0.56, green: 0.56, blue: 0.58, alpha: 0.25)
     private let preferredHeight: CGFloat = 50
     
-    private lazy var preferredTintColor = Appearance.shared.tintColor
+    private lazy var preferredTintColor = Appearance.shared.tintColor ?? tintColor
     
     private lazy var highlightedLayer: CALayer = {
         let highlightedLayer = CALayer()

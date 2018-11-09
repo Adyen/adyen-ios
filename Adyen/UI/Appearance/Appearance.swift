@@ -121,13 +121,27 @@ extension Appearance {
         ///   - amount: The amount of the current payment.
         ///   - currencyCode: The currency code of the amount of the current payment.
         /// - Returns: The checkout button title.
+        @available(*, deprecated, renamed: "title(for:)")
         public func title(forAmount amount: Int?, currencyCode: String?) -> String {
+            guard let amount = amount, let currencyCode = currencyCode else {
+                return title(for: nil)
+            }
+            
+            return title(for: PaymentSession.Payment.Amount(value: amount, currencyCode: currencyCode))
+        }
+        
+        /// Returns the title for the checkout button.
+        ///
+        /// - Parameters:
+        ///   - amount: The amount of the current payment.
+        /// - Returns: The checkout button title.
+        public func title(for amount: PaymentSession.Payment.Amount?) -> String {
             let payActionTitle: String
             
             if let buttonTitle = title {
                 payActionTitle = buttonTitle
-            } else if let amount = amount, let currencyCode = currencyCode {
-                let formattedAmount = AmountFormatter.formatted(amount: amount, currencyCode: currencyCode) ?? ""
+            } else if let amount = amount {
+                let formattedAmount = AmountFormatter.formatted(amount: amount.value, currencyCode: amount.currencyCode) ?? ""
                 payActionTitle = ADYLocalizedString("payButton.formatted", formattedAmount)
             } else {
                 payActionTitle = ADYLocalizedString("payButton")
@@ -159,6 +173,12 @@ extension Appearance {
         public var sectionTitleAttributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.black,
             .font: UIFont.systemFont(ofSize: 17, weight: .semibold)
+        ]
+        
+        /// The attributes used for a list's cell subtitles.
+        public var cellSubtitleAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor(red: 0.42, green: 0.42, blue: 0.44, alpha: 1),
+            .font: UIFont.systemFont(ofSize: 13)
         ]
     }
 }

@@ -73,7 +73,6 @@ class CardFormViewController: FormViewController {
     
     var cardDetailsHandler: ((CardInputData) -> Void)?
     var cardScanButtonHandler: ((@escaping CardScanCompletion) -> Void)?
-    var formattedAmount: String?
     var paymentSession: PaymentSession?
     var paymentMethod: PaymentMethod? {
         didSet {

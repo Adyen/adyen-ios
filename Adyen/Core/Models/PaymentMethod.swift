@@ -120,6 +120,78 @@ public struct PaymentMethod: Decodable {
     
 }
 
+// MARK: - PaymentMethod.Surcharge
+
+public extension PaymentMethod {
+    
+    /// A struct that holds the payment method surchage information
+    public struct Surcharge {
+        
+        /// Surcharge fixed cost in minor units.
+        var fixedCost: Int?
+        
+        /// The code of the currency in which the fixed cost is specified.
+        var currencyCode: String
+        
+        /// Variable cost percentage in minor units.
+        var variableCost: Int?
+        
+        /// Final amount with surchage in minor units included on original request currency.
+        var finalAmount: Int
+        
+        /// Surcharge total cost in minor units on original request currency.
+        public var total: Int
+        
+        /// Formatted surcharge total cost.
+        public var formatted: String {
+            var formattedFixedCost = ""
+            var formattedVariableCost = ""
+            
+            if let fixed = fixedCost {
+                let formattedAmount = AmountFormatter.formatted(amount: fixed, currencyCode: currencyCode) ?? String(fixed) + " " + currencyCode
+                formattedFixedCost = "+\(formattedAmount)"
+            }
+            
+            if let variable = variableCost {
+                formattedVariableCost = "+\(Double(variable) / 100)%"
+            }
+            
+            let separator = formattedFixedCost.isEmpty || formattedVariableCost.isEmpty ? "" : ", "
+            return formattedFixedCost + separator + formattedVariableCost
+        }
+    }
+    
+    /// The surcharge for the payment method if available, or nil if no surcharge is added.
+    public var surcharge: Surcharge? {
+        guard let totalString = configuration?[PaymentMethod.totalKey] as? String, let total = Int(totalString),
+            let finalAmountString = configuration?[PaymentMethod.finalAmountKey] as? String, let finalAmount = Int(finalAmountString),
+            let currencyCode = configuration?[PaymentMethod.currencyCodeKey] as? String else {
+            return nil
+        }
+        
+        var variableCost: Int?
+        var fixedCost: Int?
+        
+        if let variableCostString = configuration?[PaymentMethod.variableCostKey] as? String {
+            variableCost = Int(variableCostString)
+        }
+        
+        if let fixedCostString = configuration?[PaymentMethod.fixedCostKey] as? String {
+            fixedCost = Int(fixedCostString)
+        }
+        
+        return Surcharge(fixedCost: fixedCost, currencyCode: currencyCode, variableCost: variableCost, finalAmount: finalAmount, total: total)
+    }
+    
+    // MARK: - Configuration Keys for Surcharge
+    
+    private static let variableCostKey = "surchargeVariableCost"
+    private static let fixedCostKey = "surchargeFixedCost"
+    private static let totalKey = "surchargeTotalCost"
+    private static let currencyCodeKey = "surchargeCurrencyCode"
+    private static let finalAmountKey = "surchargeFinalAmount"
+}
+
 // MARK: - PaymentMethod.Group
 
 internal extension PaymentMethod {
@@ -133,7 +205,6 @@ internal extension PaymentMethod {
         /// The payment method data.
         internal let paymentMethodData: String
     }
-    
 }
 
 // MARK: - Hashable & Equatable

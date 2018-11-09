@@ -192,7 +192,7 @@ extension ViewController: CardScanDelegate {
         alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { _ in
             let holderName = "John S."
             let number = "4111111111111111"
-            let expiryDate = "08/18"
+            let expiryDate = "08/20"
             let securityCode = "737"
             
             completion((holderName: holderName, number: number, expiryDate: expiryDate, securityCode: securityCode))

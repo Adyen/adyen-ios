@@ -19,6 +19,9 @@ class PersonalDetailsSection: OpenInvoiceFormSection {
         self.genderSelectItems = genderSelectItems
         super.init()
         
+        let values = genderSelectItems?.map({ $0.name })
+        localizedGenderValues = values?.map({ ADYLocalizedString("openInvoice.gender.\($0.lowercased())", $0) })
+        
         title = ADYLocalizedString("openInvoice.personalDetailsSection.title")
     }
     
@@ -37,7 +40,7 @@ class PersonalDetailsSection: OpenInvoiceFormSection {
         emailField.text = personalDetails?.shopperEmail
     }
     
-    func setupNormalFlow() {
+    func setupNormalFlow(shouldShowSSNField: Bool) {
         addFormElement(firstNameField)
         addFormElement(lastNameField)
         
@@ -47,21 +50,32 @@ class PersonalDetailsSection: OpenInvoiceFormSection {
         
         addFormElement(dateOfBirthField)
         addFormElement(telephoneField)
+        addFormElement(emailField)
+        
+        if shouldShowSSNField {
+            addFormElement(socialSecurityNumberField)
+        }
+        
+        telephoneField.text = personalDetails?.telephoneNumber
+        emailField.text = personalDetails?.shopperEmail
     }
     
     func filledPersonalDetails() -> OpenInvoicePersonalDetails? {
         personalDetails?.telephoneNumber = telephoneField.text
+        personalDetails?.shopperEmail = emailField.text
         
-        if isSSNFlow {
-            personalDetails?.shopperEmail = emailField.text
-        } else {
+        if isSSNFlow == false {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "YYYY-MM-dd"
             
+            personalDetails?.socialSecurityNumber = socialSecurityNumberField.text
             personalDetails?.firstName = firstNameField.text
             personalDetails?.lastName = lastNameField.text
-            personalDetails?.gender = genderSelectItems?.filter({ $0.name == genderField.selectedValue }).first?.identifier
             personalDetails?.dateOfBirth = dateFormatter.string(from: dateOfBirthField.date)
+            
+            if let selected = genderField.selectedValue, let index = localizedGenderValues?.firstIndex(of: selected) {
+                personalDetails?.gender = genderSelectItems?[index].identifier
+            }
         }
         
         return personalDetails
@@ -73,8 +87,21 @@ class PersonalDetailsSection: OpenInvoiceFormSection {
     
     private var genderSelectItems: [PaymentDetail.SelectItem]?
     private var isSSNFlow = false
+    private var localizedGenderValues: [String]?
     
     private lazy var staticPersonalDetails = FormLabel()
+    
+    private lazy var socialSecurityNumberField: FormTextField = {
+        let ssnField = FormTextField()
+        ssnField.validator = OpenInvoiceNameValidator()
+        ssnField.title = ADYLocalizedString("openInvoice.ssnSection.title")
+        ssnField.placeholder = ADYLocalizedString("openInvoice.ssnSection.title")
+        ssnField.accessibilityIdentifier = "social-security-number-field"
+        ssnField.keyboardType = .numberPad
+        ssnField.delegate = textFieldDelegate
+        ssnField.clearButtonMode = .never
+        return ssnField
+    }()
     
     private lazy var firstNameField: FormTextField = {
         let nameField = FormTextField()
@@ -103,8 +130,7 @@ class PersonalDetailsSection: OpenInvoiceFormSection {
     }()
     
     private lazy var genderField: FormSelectField = {
-        let values = genderSelectItems?.map({ $0.name })
-        let selectField = FormSelectField(values: values ?? [])
+        let selectField = FormSelectField(values: localizedGenderValues ?? [])
         selectField.title = ADYLocalizedString("openInvoice.genderField")
         
         return selectField
