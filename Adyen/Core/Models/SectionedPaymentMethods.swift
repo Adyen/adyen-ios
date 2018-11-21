@@ -14,6 +14,11 @@ public struct SectionedPaymentMethods: Decodable {
     /// The other types of payment methods.
     public var other: [PaymentMethod]
     
+    /// The total number of available payment methods.
+    public var count: Int {
+        return preferred.count + other.count
+    }
+    
     // MARK: - Decoding
     
     /// :nodoc:

@@ -15,6 +15,8 @@ The Adyen SDK is available through either [CocoaPods](http://cocoapods.org) or [
 1. Add `pod 'Adyen'` to your `Podfile`.
 2. Run `pod install`.
 
+_If you're not using `use_frameworks!` in your `Podfile`, refer to [our wiki](https://github.com/Adyen/adyen-ios/wiki/Using-Adyen-as-a-static-framework) to prevent issues when using Adyen as a static framework._
+
 ### Carthage
 
 1. Add `github "adyen/adyen-ios"` to your `Cartfile`.

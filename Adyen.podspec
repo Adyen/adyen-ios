@@ -1,8 +1,6 @@
-version = `agvtool vers -terse`
-
 Pod::Spec.new do |s|
   s.name = 'Adyen'
-  s.version = version
+  s.version = '2.4.0'
   s.summary = "Adyen SDK for iOS"
   s.description = <<-DESC
     With Adyen SDK you can dynamically list all relevant payment methods for a specific transaction, so your shoppers can always pay with the method of their choice. The methods are listed based on the shopper's country, the transaction currency and amount.
@@ -20,7 +18,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'Core' do |plugin|
     plugin.source_files = 'Adyen/**/*.swift'
-    plugin.dependency 'AdyenInternal', version
+    plugin.dependency 'AdyenInternal', "#{s.version}"
   end
 
   # Payment Methods

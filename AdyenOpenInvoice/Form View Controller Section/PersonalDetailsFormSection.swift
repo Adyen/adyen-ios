@@ -132,6 +132,7 @@ class PersonalDetailsSection: OpenInvoiceFormSection {
     private lazy var genderField: FormSelectField = {
         let selectField = FormSelectField(values: localizedGenderValues ?? [])
         selectField.title = ADYLocalizedString("openInvoice.genderField")
+        selectField.accessibilityIdentifier = "gender-field"
         
         return selectField
     }()
@@ -139,6 +140,7 @@ class PersonalDetailsSection: OpenInvoiceFormSection {
     private lazy var dateOfBirthField: FormDateField = {
         let dateField = FormDateField()
         dateField.title = ADYLocalizedString("openInvoice.dateOfBirthField")
+        dateField.accessibilityIdentifier = "date-field"
         
         return dateField
     }()

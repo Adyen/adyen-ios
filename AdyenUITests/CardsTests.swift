@@ -7,6 +7,12 @@
 import XCTest
 
 class CardsTests: TestCase {
+    
+    override func setUp() {
+        super.setUp()
+        startCheckout()
+    }
+    
     func testSuccessfulPayment() {
         selectPaymentMethod("Credit Card")
         
@@ -29,7 +35,7 @@ class CardsTests: TestCase {
         
         // Enter the expiration date.
         expiryDateField.tap()
-        expiryDateField.typeText("0818")
+        expiryDateField.typeText("1020")
         
         // The checkout button should still be disabled while waiting for the user to complete input.
         XCTAssertFalse(checkoutButton.isEnabled)

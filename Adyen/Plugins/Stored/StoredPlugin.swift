@@ -21,7 +21,11 @@ internal final class StoredPlugin: Plugin {
 
 extension StoredPlugin: PaymentDetailsPlugin {
     
-    internal func present(_ details: [PaymentDetail], using navigationController: UINavigationController, appearance: Appearance, completion: @escaping Completion<[PaymentDetail]>) {
+    internal var preferredPresentationMode: PaymentDetailsPluginPresentationMode {
+        return .present
+    }
+    
+    internal func viewController(for details: [PaymentDetail], appearance: Appearance, completion: @escaping Completion<[PaymentDetail]>) -> UIViewController {
         let title = ADYLocalizedString("oneClick.confirmationAlert.title", paymentMethod.name)
         let message = paymentMethod.displayName
         
@@ -38,6 +42,7 @@ extension StoredPlugin: PaymentDetailsPlugin {
         }
         alertController.addAction(payAction)
         
+        return alertController
     }
     
 }

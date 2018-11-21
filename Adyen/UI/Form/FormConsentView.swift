@@ -16,9 +16,6 @@ public class FormConsentView: UIView {
         addSubview(consentSwitch)
         
         configureConstraints()
-        
-        isAccessibilityElement = true
-        accessibilityTraits = UIAccessibilityTraits.button
     }
     
     public required init(coder: NSCoder) {

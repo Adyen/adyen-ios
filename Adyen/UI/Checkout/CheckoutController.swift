@@ -80,11 +80,33 @@ public final class CheckoutController {
         return paymentController?.pluginManager
     }
     
+    private func select(_ paymentMethod: PaymentMethod, asRoot: Bool = false) {
+        guard let selectionHandler = methodSelectionCompletion else { return }
+        
+        let plugin = pluginManager?.plugin(for: paymentMethod) as? PaymentDetailsPlugin
+        
+        if let plugin = plugin, !paymentMethod.details.isEmpty {
+            selectedMethodPlugin = plugin
+            
+            presenter.show(paymentMethod.details, using: plugin, asRoot: asRoot) { filledDetails in
+                var paymentMethod = paymentMethod
+                paymentMethod.details = filledDetails
+                selectionHandler(paymentMethod)
+            }
+        } else {
+            selectedMethodPlugin = nil
+            
+            presenter.showPaymentProcessing(true)
+            selectionHandler(paymentMethod)
+        }
+    }
+    
     private func reset() {
         paymentController = nil
         methodSelectionCompletion = nil
         selectedMethodPlugin = nil
     }
+    
 }
 
 extension CheckoutController: PaymentControllerDelegate {
@@ -104,14 +126,30 @@ extension CheckoutController: PaymentControllerDelegate {
         
         methodSelectionCompletion = selectionHandler
         
-        
-        if showsPreselectedPaymentMethod,
-            let preselectedPaymentMethod = PreselectedPaymentMethodManager.preselectedPaymentMethod(for: paymentSession) {
-            let amount = paymentSession.payment.amount(for: preselectedPaymentMethod)
-            presenter.show(preselectedPaymentMethod, amount: amount)
-        } else {
-            presenter.show(paymentMethods, pluginManager: pluginManager)
+        // Show a preselected payment method when available.
+        if showsPreselectedPaymentMethod, let paymentMethod = PreselectedPaymentMethodManager.preselectedPaymentMethod(for: paymentSession) {
+            let amount = paymentSession.payment.amount(for: paymentMethod)
+            presenter.show(paymentMethod, amount: amount, shouldShowChangeButton: paymentMethods.count > 1)
+            
+            return
         }
+        
+        // If there's only one payment method available, gather details directly or show a confirmation screen.
+        if paymentMethods.other.count == 1 {
+            let paymentMethod = paymentMethods.other[0]
+            let plugin = pluginManager.plugin(for: paymentMethod) as? PaymentDetailsPlugin
+            
+            if let plugin = plugin, plugin.canSkipPaymentMethodSelection {
+                select(paymentMethod, asRoot: true)
+            } else {
+                let amount = paymentSession.payment.amount(for: paymentMethod)
+                presenter.show(paymentMethod, amount: amount, shouldShowChangeButton: false)
+            }
+            
+            return
+        }
+        
+        presenter.show(paymentMethods, pluginManager: pluginManager)
     }
     
     /// :nodoc:
@@ -188,21 +226,7 @@ extension CheckoutController: CheckoutPresenterDelegate {
     }
     
     func didSelect(_ paymentMethod: PaymentMethod, in checkoutPresenter: CheckoutPresenter) {
-        guard let plugin = pluginManager?.plugin(for: paymentMethod) as? PaymentDetailsPlugin, paymentMethod.details.isEmpty == false else {
-            selectedMethodPlugin = nil
-            checkoutPresenter.showPaymentProcessing(true)
-            methodSelectionCompletion?(paymentMethod)
-            return
-        }
-        
-        selectedMethodPlugin = plugin
-        checkoutPresenter.show(paymentMethod.details, using: plugin) { [weak self] details in
-            checkoutPresenter.showPaymentProcessing(true)
-            
-            var filledPaymentMethod = paymentMethod
-            filledPaymentMethod.details = details
-            self?.methodSelectionCompletion?(filledPaymentMethod)
-        }
+        select(paymentMethod)
     }
     
     func didDelete(_ paymentMethod: PaymentMethod, in checkoutPresenter: CheckoutPresenter) {

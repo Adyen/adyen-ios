@@ -24,20 +24,22 @@ internal final class IssuerSelectionPlugin: Plugin {
 
 extension IssuerSelectionPlugin: PaymentDetailsPlugin {
     
-    internal var showsDisclosureIndicator: Bool {
+    internal var canSkipPaymentMethodSelection: Bool {
         return true
     }
     
-    internal func present(_ details: [PaymentDetail], using navigationController: UINavigationController, appearance: Appearance, completion: @escaping Completion<[PaymentDetail]>) {
-        guard var issuerDetail = details.issuer else { return }
-        guard case let .select(selectItems) = issuerDetail.inputType else { return }
-        
-        let items = selectItems.map { issuer -> ListItem in
+    internal var preferredPresentationMode: PaymentDetailsPluginPresentationMode {
+        return .push
+    }
+    
+    internal func viewController(for details: [PaymentDetail], appearance: Appearance, completion: @escaping Completion<[PaymentDetail]>) -> UIViewController {
+        let items = issuerSelectItems(for: details).map { issuer -> ListItem in
             var item = ListItem(title: issuer.name)
             item.imageURL = issuer.logoURL
             item.selectionHandler = {
-                issuerDetail.value = issuer.identifier
-                completion([issuerDetail])
+                var details = details
+                details.issuer?.value = issuer.identifier
+                completion(details)
             }
             
             return item
@@ -46,8 +48,14 @@ extension IssuerSelectionPlugin: PaymentDetailsPlugin {
         let listViewController = ListViewController()
         listViewController.title = paymentMethod.name
         listViewController.sections = [ListSection(items: items)]
+        return listViewController
+    }
+    
+    private func issuerSelectItems(for details: [PaymentDetail]) -> [PaymentDetail.SelectItem] {
+        guard let issuerDetail = details.issuer else { return [] }
+        guard case let .select(selectItems) = issuerDetail.inputType else { return [] }
         
-        navigationController.pushViewController(listViewController, animated: true)
+        return selectItems
     }
     
 }

@@ -43,6 +43,9 @@ internal struct PaymentSessionToken: Encodable {
     /// The device's model.
     internal var deviceModel = UIDevice.current.modelIdentifier
     
+    /// The date the token was generated.
+    internal var date = Date()
+    
     private enum CodingKeys: String, CodingKey {
         case tokenVersion = "deviceFingerprintVersion"
         case sdkVersion
@@ -52,6 +55,7 @@ internal struct PaymentSessionToken: Encodable {
         case localeIdentifier = "locale"
         case deviceIdentifier
         case deviceModel
+        case date = "generationTime"
     }
     
     // MARK: - Encoding

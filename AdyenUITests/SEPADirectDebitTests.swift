@@ -10,6 +10,7 @@ class SEPADirectDebitTests: TestCase {
     override func setUp() {
         super.setUp()
         
+        startCheckout()
         selectPaymentMethod("SEPA Direct Debit")
     }
     

@@ -21,11 +21,11 @@ internal final class OpenInvoicePlugin: PaymentDetailsPlugin {
     
     // MARK: - Plugin
     
-    internal var showsDisclosureIndicator: Bool {
-        return true
+    internal var preferredPresentationMode: PaymentDetailsPluginPresentationMode {
+        return .push
     }
     
-    internal func present(_ details: [PaymentDetail], using navigationController: UINavigationController, appearance: Appearance, completion: @escaping Completion<[PaymentDetail]>) {
+    internal func viewController(for details: [PaymentDetail], appearance: Appearance, completion: @escaping Completion<[PaymentDetail]>) -> UIViewController {
         var details = details
         let amount = paymentSession.payment.amount(for: paymentMethod)
         
@@ -57,7 +57,7 @@ internal final class OpenInvoicePlugin: PaymentDetailsPlugin {
             }
         }
         
-        navigationController.pushViewController(formViewController, animated: true)
+        return formViewController
     }
     
     // MARK: - Private

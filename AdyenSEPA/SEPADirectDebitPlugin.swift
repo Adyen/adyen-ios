@@ -24,11 +24,15 @@ internal final class SEPADirectDebitPlugin: Plugin {
 
 extension SEPADirectDebitPlugin: PaymentDetailsPlugin {
     
-    internal var showsDisclosureIndicator: Bool {
+    internal var canSkipPaymentMethodSelection: Bool {
         return true
     }
     
-    internal func present(_ details: [PaymentDetail], using navigationController: UINavigationController, appearance: Appearance, completion: @escaping Completion<[PaymentDetail]>) {
+    internal var preferredPresentationMode: PaymentDetailsPluginPresentationMode {
+        return .push
+    }
+    
+    internal func viewController(for details: [PaymentDetail], appearance: Appearance, completion: @escaping Completion<[PaymentDetail]>) -> UIViewController {
         let formViewController = SEPADirectDebitFormViewController(appearance: appearance)
         formViewController.title = paymentMethod.name
         
@@ -40,12 +44,13 @@ extension SEPADirectDebitPlugin: PaymentDetailsPlugin {
         
         formViewController.payActionTitle = appearance.checkoutButtonAttributes.title(for: amount)
         formViewController.completion = { input in
-            var details = self.paymentMethod.details
+            var details = details
             details.sepaName?.value = input.name
             details.sepaIBAN?.value = input.iban
             completion(details)
         }
-        navigationController.pushViewController(formViewController, animated: true)
+        
+        return formViewController
     }
     
 }

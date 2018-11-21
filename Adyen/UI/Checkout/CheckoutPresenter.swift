@@ -61,14 +61,9 @@ internal final class CheckoutPresenter: NSObject {
     }
     
     /// Shows the confirmation screen for a single payment method.
-    internal func show(_ paymentMethod: PaymentMethod, amount: PaymentSession.Payment.Amount) {
+    internal func show(_ paymentMethod: PaymentMethod, amount: PaymentSession.Payment.Amount, shouldShowChangeButton: Bool) {
         let viewController = PreselectedPaymentMethodViewController(paymentMethod: paymentMethod)
         viewController.title = ADYLocalizedString("checkoutTitle")
-        viewController.changeButtonHandler = { [weak self] in
-            if let strongSelf = self {
-                strongSelf.delegate?.didSelectChange(in: strongSelf)
-            }
-        }
         viewController.payButtonHandler = { [weak self] in
             if let strongSelf = self {
                 strongSelf.delegate?.didSelect(paymentMethod, in: strongSelf)
@@ -76,6 +71,14 @@ internal final class CheckoutPresenter: NSObject {
         }
         viewController.logoURL = paymentMethod.logoURL
         viewController.payButtonTitle = Appearance.shared.checkoutButtonAttributes.title(for: amount)
+        
+        if shouldShowChangeButton {
+            viewController.changeButtonHandler = { [weak self] in
+                if let strongSelf = self {
+                    strongSelf.delegate?.didSelectChange(in: strongSelf)
+                }
+            }
+        }
         
         navigationController?.viewControllers = [viewController]
     }
@@ -89,12 +92,18 @@ internal final class CheckoutPresenter: NSObject {
         navigationController?.viewControllers = [viewController]
     }
     
-    internal func show(_ details: [PaymentDetail], using plugin: PaymentDetailsPlugin, completion: @escaping Completion<[PaymentDetail]>) {
-        guard let navigationController = navigationController else {
-            return
+    internal func show(_ details: [PaymentDetail], using plugin: PaymentDetailsPlugin, asRoot: Bool = false, completion: @escaping Completion<[PaymentDetail]>) {
+        let viewController = plugin.viewController(for: details, appearance: .shared, completion: completion)
+        switch plugin.preferredPresentationMode {
+        case .push:
+            if asRoot {
+                navigationController?.viewControllers = [viewController]
+            } else {
+                navigationController?.pushViewController(viewController, animated: true)
+            }
+        case .present:
+            navigationController?.present(viewController, animated: true)
         }
-        
-        plugin.present(details, using: navigationController, appearance: Appearance.shared, completion: completion)
     }
     
     internal func show(_ details: AdditionalPaymentDetails, using plugin: AdditionalPaymentDetailsPlugin, completion: @escaping Completion<[PaymentDetail]>) {

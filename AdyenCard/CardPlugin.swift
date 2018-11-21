@@ -25,11 +25,15 @@ internal final class CardPlugin: Plugin {
 
 extension CardPlugin: PaymentDetailsPlugin {
     
-    internal var showsDisclosureIndicator: Bool {
+    internal var canSkipPaymentMethodSelection: Bool {
         return true
     }
     
-    internal func present(_ details: [PaymentDetail], using navigationController: UINavigationController, appearance: Appearance, completion: @escaping Completion<[PaymentDetail]>) {
+    internal var preferredPresentationMode: PaymentDetailsPluginPresentationMode {
+        return .push
+    }
+    
+    internal func viewController(for details: [PaymentDetail], appearance: Appearance, completion: @escaping Completion<[PaymentDetail]>) -> UIViewController {
         let amount = paymentSession.payment.amount(for: paymentMethod)
         
         let formViewController = CardFormViewController(appearance: appearance)
@@ -61,7 +65,7 @@ extension CardPlugin: PaymentDetailsPlugin {
             completion(details)
         }
         
-        navigationController.pushViewController(formViewController, animated: true)
+        return formViewController
     }
     
 }

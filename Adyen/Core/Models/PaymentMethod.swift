@@ -147,7 +147,7 @@ public extension PaymentMethod {
             var formattedFixedCost = ""
             var formattedVariableCost = ""
             
-            if let fixed = fixedCost {
+            if let fixed = fixedCost, fixed != 0 {
                 let formattedAmount = AmountFormatter.formatted(amount: fixed, currencyCode: currencyCode) ?? String(fixed) + " " + currencyCode
                 formattedFixedCost = "+\(formattedAmount)"
             }

@@ -184,7 +184,14 @@ public extension FormTextField {
         
         set {
             let attributes = Appearance.shared.textAttributes
-            textField.attributedText = NSAttributedString(string: newValue ?? "", attributes: attributes)
+            
+            if let unwrappedNewValue = newValue, let formatted = validator?.format(unwrappedNewValue) {
+                textField.attributedText = NSAttributedString(string: formatted, attributes: attributes)
+            } else {
+                textField.attributedText = NSAttributedString(string: newValue ?? "", attributes: attributes)
+            }
+            
+            delegate?.valueChanged(self)
         }
     }
     

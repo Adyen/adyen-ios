@@ -27,9 +27,12 @@ internal class TestCase: XCTestCase {
             shopperReferenceField.typeText("uitests@uitests.ui")
         }
         
-        table.buttons["start-button"].tap()
-        
         TestCase.didSetUp = true
+    }
+    
+    internal func startCheckout() {
+        let table = app.tables.first
+        table.buttons["start-button"].tap()
     }
     
     internal func selectPaymentMethod(_ name: String? = nil) {

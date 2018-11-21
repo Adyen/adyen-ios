@@ -1,17 +1,17 @@
 PODS:
-  - Adyen (2.3.0):
-    - Adyen/Card (= 2.3.0)
-    - Adyen/Core (= 2.3.0)
-    - Adyen/SEPA (= 2.3.0)
-  - Adyen/ApplePay (2.3.0):
+  - Adyen (2.4.0):
+    - Adyen/Card (= 2.4.0)
+    - Adyen/Core (= 2.4.0)
+    - Adyen/SEPA (= 2.4.0)
+  - Adyen/ApplePay (2.4.0):
     - Adyen/Core
-  - Adyen/Card (2.3.0):
+  - Adyen/Card (2.4.0):
     - Adyen/Core
-  - Adyen/Core (2.3.0):
-    - AdyenInternal (= 2.3.0)
-  - Adyen/SEPA (2.3.0):
+  - Adyen/Core (2.4.0):
+    - AdyenInternal (= 2.4.0)
+  - Adyen/SEPA (2.4.0):
     - Adyen/Core
-  - AdyenInternal (2.3.0)
+  - AdyenInternal (2.4.0)
 
 DEPENDENCIES:
   - Adyen (from `../../`)
@@ -25,8 +25,8 @@ EXTERNAL SOURCES:
     :path: "../../"
 
 SPEC CHECKSUMS:
-  Adyen: 87a532bbf27c11a0429f3b4832f75321b3825bb1
-  AdyenInternal: 52a7aed192ff504ace4bad87f50f083cdba5a020
+  Adyen: eed0383800f6feb05ecee1185dbedce7e403ced5
+  AdyenInternal: a7eb258c938641b90100166cb5899221e659eb05
 
 PODFILE CHECKSUM: 84b3c3d2e1be6f473f15545192cb0dd3d1b3ed19
 

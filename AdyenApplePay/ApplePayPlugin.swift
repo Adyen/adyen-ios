@@ -22,11 +22,17 @@ internal final class ApplePayPlugin: NSObject, PaymentDetailsPlugin {
         return PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: ApplePayPlugin.supportedNetworks)
     }
     
-    internal func present(_ details: [PaymentDetail], using navigationController: UINavigationController, appearance: Appearance, completion: @escaping Completion<[PaymentDetail]>) {
+    internal var preferredPresentationMode: PaymentDetailsPluginPresentationMode {
+        return .present
+    }
+    
+    internal func viewController(for details: [PaymentDetail], appearance: Appearance, completion: @escaping Completion<[PaymentDetail]>) -> UIViewController {
         paymentDetailCompletion = completion
         if let newPaymentAuthorizationViewController = newPaymentAuthorizationViewController() {
             paymentAuthorizationViewController = newPaymentAuthorizationViewController
-            navigationController.present(newPaymentAuthorizationViewController, animated: true)
+            return newPaymentAuthorizationViewController
+        } else {
+            return UIViewController() // This code path is never reached, bails out because of isDeviceSupported.
         }
     }
     

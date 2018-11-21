@@ -7,6 +7,11 @@
 import XCTest
 
 class IdealTests: TestCase {
+    override func setUp() {
+        super.setUp()
+        startCheckout()
+    }
+    
     func testSuccessfulPayment() {
         testPayment(withIssuer: "Test Issuer")
         
@@ -29,7 +34,9 @@ class IdealTests: TestCase {
         selectPaymentMethod("iDEAL")
         
         // Select the issuer.
-        app.tables.last.cells[issuer].tap()
+        let issuerCell = app.cells[issuer]
+        waitForElementToAppear(issuerCell)
+        issuerCell.tap()
         
         // Wait for the continue button to appear in the web view, then select it.
         let continueButton = app.webViews.buttons["Continue"]

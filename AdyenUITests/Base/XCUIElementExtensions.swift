@@ -4,9 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
+import XCTest
 
-/// The current version of the SDK.
-internal let sdkVersion: String = {
-    return "2.4.0"
-}()
+internal extension XCUIElement {
+    func tapAndType(_ text: String) {
+        tap()
+        typeText(text)
+    }
+}
