@@ -24,7 +24,7 @@
 "sepaDirectDebit.ibanField.placeholder" = "NL53 ABNA 1925 1294 122";
 "sepaDirectDebit.nameField.title" = "Nome Intestatario Conto";
 "sepaDirectDebit.nameField.placeholder" = "A. Bianchi";
-"sepaDirectDebit.consentLabel" = "Premendo il pulsante sopra, accetti che l'importo specificato sia addebitato sul tuo conto bancario.";
+"sepaDirectDebit.consentLabel" = "Premendo il pulsante qui sopra accetti che l'importo specificato sia addebitato sul tuo conto bancario.";
 "oneClick.confirmationAlert.title" = "Conferma il pagamento di %@";
 "redirect.cannotOpenApp.title" = "Impossibile aprire l'app";
 "redirect.cannotOpenApp.appNotInstalledMessage" = "Non è possibile aprire l'app perché non è installata su questo dispositivo.";
@@ -60,3 +60,9 @@
 "klarna.consent" = "consenso";
 "openInvoice.gender.male" = "Uomo";
 "openInvoice.gender.female" = "Donna";
+"surcharge.formatted" = "L'importo totale include un sovrapprezzo di %@.";
+"openInvoice.termsAndConditionsSection.title" = "Termini e condizioni";
+"openInvoice.agreeToTermsAndConditionsLabel" = "Accetto i termini e le condizioni";
+"giropay.searchField.title" = "Nome della banca / BIC / codice bancario";
+"giropay.minimumLength" = "Min. 4 caratteri";
+"giropay.noResults" = "Nessun risultato di ricerca";

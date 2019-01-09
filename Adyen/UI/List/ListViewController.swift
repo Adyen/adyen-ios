@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2018 Adyen B.V.
+// Copyright (c) 2019 Adyen B.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -23,7 +23,11 @@ internal final class ListViewController: UITableViewController {
         super.viewDidLoad()
         
         tableView.allowsMultipleSelectionDuringEditing = false
-        tableView.rowHeight = 56.0
+        tableView.sectionHeaderHeight = UITableView.automaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.sectionFooterHeight = 0.0
+        tableView.estimatedSectionHeaderHeight = 44.0
+        tableView.estimatedRowHeight = 56.0
         tableView.register(ListCell.self, forCellReuseIdentifier: "Cell")
         
         tableView.separatorColor = UIColor.clear
@@ -35,56 +39,12 @@ internal final class ListViewController: UITableViewController {
         return sections.count
     }
     
-    internal override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if sections[section].title != nil {
-            return 40.0
-        }
-        
-        return CGFloat.leastNonzeroMagnitude
-    }
-    
-    internal override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return CGFloat.leastNonzeroMagnitude
-    }
-    
-    internal override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return UIView()
-    }
-    
     internal override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let title = sections[section].title else {
             return nil
         }
         
-        let headerView = UIView()
-        headerView.backgroundColor = view.backgroundColor
-        
-        let headerLabel = UILabel()
-        headerLabel.backgroundColor = UIColor.clear
-        
-        let attributedText = NSAttributedString(string: title, attributes: attributes.sectionTitleAttributes)
-        headerLabel.attributedText = attributedText
-        headerLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        dynamicTypeController.observeDynamicType(for: headerLabel, withTextAttributes: attributes.sectionTitleAttributes, textStyle: .body)
-        
-        headerLabel.sizeToFit()
-        
-        headerView.addSubview(headerLabel)
-        
-        let constraints = [
-            headerLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16.0),
-            headerLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
-            headerLabel.heightAnchor.constraint(equalToConstant: headerLabel.bounds.height),
-            headerLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor)
-        ]
-        
-        NSLayoutConstraint.activate(constraints)
-        return headerView
-    }
-    
-    public override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 56.0
+        return ListHeaderView(title: title.uppercased(), attributes: attributes.sectionTitleAttributes)
     }
     
     internal override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -169,8 +129,6 @@ internal final class ListViewController: UITableViewController {
     }
     
     // MARK: - Private
-    
-    private let dynamicTypeController = DynamicTypeController()
     
     private var attributes = Appearance.shared.listAttributes
     

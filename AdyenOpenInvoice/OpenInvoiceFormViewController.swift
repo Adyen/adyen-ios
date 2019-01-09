@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2018 Adyen B.V.
+// Copyright (c) 2019 Adyen B.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -227,7 +227,7 @@ internal class OpenInvoiceFormViewController: FormViewController {
     private func lookupSSN(ssn: String) {
         guard let paymentMethod = paymentMethod, let paymentSession = paymentSession else { return }
         
-        let request = KlarnaSNNLookupRequest(shopperSSN: ssn, paymentSession: paymentSession, paymentMethod: paymentMethod)
+        let request = KlarnaSSNLookupRequest(shopperSSN: ssn, paymentSession: paymentSession, paymentMethod: paymentMethod)
         
         socialSecurityNumberSection.activityIndicator.startAnimating()
         

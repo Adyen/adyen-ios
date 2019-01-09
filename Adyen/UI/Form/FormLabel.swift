@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2018 Adyen B.V.
+// Copyright (c) 2019 Adyen B.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -25,6 +25,8 @@ public class FormLabel: UIStackView {
     
     // MARK: - Public
     
+    public var textAttributes = Appearance.shared.textAttributes
+    
     public var attributedTitle: NSAttributedString? {
         didSet {
             guard let attributedTitle = attributedTitle else {
@@ -32,9 +34,9 @@ public class FormLabel: UIStackView {
             }
             
             let mutableAttributedString = NSMutableAttributedString(attributedString: attributedTitle)
-            mutableAttributedString.addAttributes(Appearance.shared.textAttributes, range: NSRange(location: 0, length: mutableAttributedString.length))
+            mutableAttributedString.addAttributes(textAttributes, range: NSRange(location: 0, length: mutableAttributedString.length))
             label.attributedText = mutableAttributedString
-            dynamicTypeController.observeDynamicType(for: label, withTextAttributes: Appearance.shared.textAttributes, textStyle: .body)
+            dynamicTypeController.observeDynamicType(for: label, withTextAttributes: textAttributes, textStyle: .body)
             accessibilityLabel = attributedTitle.string
         }
     }
@@ -45,9 +47,9 @@ public class FormLabel: UIStackView {
                 return
             }
             
-            let attributedTitle = NSAttributedString(string: text, attributes: Appearance.shared.textAttributes)
+            let attributedTitle = NSAttributedString(string: text, attributes: textAttributes)
             label.attributedText = attributedTitle
-            dynamicTypeController.observeDynamicType(for: label, withTextAttributes: Appearance.shared.textAttributes, textStyle: .body)
+            dynamicTypeController.observeDynamicType(for: label, withTextAttributes: textAttributes, textStyle: .body)
             accessibilityLabel = text
         }
     }

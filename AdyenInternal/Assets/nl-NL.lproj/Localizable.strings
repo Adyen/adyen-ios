@@ -24,7 +24,7 @@
 "sepaDirectDebit.ibanField.placeholder" = "NL99 BANK 0123 4567 89";
 "sepaDirectDebit.nameField.title" = "Ten name van";
 "sepaDirectDebit.nameField.placeholder" = "P. de Ridder";
-"sepaDirectDebit.consentLabel" = "Door op de bovenstaande knop te drukken, gaat u ermee akkoord dat het opgegeven bedrag van uw bankrekening wordt afgeschreven.";
+"sepaDirectDebit.consentLabel" = "Door op de knop hierboven te drukken, gaat u ermee akkoord dat het opgegeven bedrag van uw bankrekening wordt afgeschreven.";
 "oneClick.confirmationAlert.title" = "Bevestig %@ betaling";
 "redirect.cannotOpenApp.title" = "Kan de app niet openen";
 "redirect.cannotOpenApp.appNotInstalledMessage" = "Deze app kan niet worden geopend omdat de app niet is geïnstalleerd op dit apparaat.";
@@ -60,3 +60,9 @@
 "klarna.consent" = "toestemming";
 "openInvoice.gender.male" = "Man";
 "openInvoice.gender.female" = "Vrouw";
+"surcharge.formatted" = "Het totaalbedrag is inclusief een toeslag van %@.";
+"openInvoice.termsAndConditionsSection.title" = "Algemene voorwaarden";
+"openInvoice.agreeToTermsAndConditionsLabel" = "Ga akkoord met de algemene voorwaarden";
+"giropay.searchField.title" = "Banknaam / BIC / Bankleitzahl";
+"giropay.minimumLength" = "Min. 4 tekens";
+"giropay.noResults" = "Geen zoekresultaten";

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2018 Adyen B.V.
+// Copyright (c) 2019 Adyen B.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -171,8 +171,8 @@ extension Appearance {
         
         /// The attributes used for a list's section titles.
         public var sectionTitleAttributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.black,
-            .font: UIFont.systemFont(ofSize: 17, weight: .semibold)
+            .foregroundColor: UIColor.gray,
+            .font: UIFont.systemFont(ofSize: 13, weight: .medium)
         ]
         
         /// The attributes used for a list's cell subtitles.

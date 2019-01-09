@@ -24,6 +24,7 @@
 "sepaDirectDebit.ibanField.placeholder" = "NL53 ABNA 1925 1294 122";
 "sepaDirectDebit.nameField.title" = "口座名義";
 "sepaDirectDebit.nameField.placeholder" = "J. Smith";
+"sepaDirectDebit.consentLabel" = "上記のボタンを押して頂くと、銀行口座から特定の金額の引き落としに同意したとみなされます";
 "oneClick.confirmationAlert.title" = "%@のお支払いをご確認下さい";
 "redirect.cannotOpenApp.title" = "アプリを開くことができません";
 "redirect.cannotOpenApp.appNotInstalledMessage" = "インストールされていないため、アプリを開くことができませんでした。";
@@ -59,3 +60,9 @@
 "klarna.consent" = "同意";
 "openInvoice.gender.male" = "男性";
 "openInvoice.gender.female" = "女性";
+"surcharge.formatted" = "合計金額には、%@ の追加料金が含まれています。";
+"openInvoice.termsAndConditionsSection.title" = "利用規約";
+"openInvoice.agreeToTermsAndConditionsLabel" = "利用規約に同意したごとになります";
+"giropay.searchField.title" = "銀行名/ BIC / Bankleitzahl";
+"giropay.minimumLength" = "最低4桁以上";
+"giropay.noResults" = "検索結果がございません";

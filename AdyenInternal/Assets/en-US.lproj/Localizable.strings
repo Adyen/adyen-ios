@@ -56,10 +56,14 @@
 "openInvoice.postalCodeField.placeholder" = "Postal code";
 "openInvoice.countryField.title" = "Country";
 "openInvoice.moreInformationButton.title" = "More information";
-"openInvoice.termsAndConditionsSection.title" = "Terms & Conditions";
-"openInvoice.agreeToTermsAndConditionsLabel" = "Agree to the terms and conditions";
 "klarna.consentCheckbox" = "I consent to the processing of my data by Klarna for the purposes of identity- and credit assessment and the settlement of the purchase. I may revoke my %@ for the processing of data and for the purposes for which this is possible according to law. The general terms and conditions of the merchant apply.";
 "klarna.consent" = "consent";
 "openInvoice.gender.male" = "Male";
 "openInvoice.gender.female" = "Female";
-"surcharge.formatted" = "The total amount includes %@ of surcharge";
+"surcharge.formatted" = "The total amount includes %@ of surcharge.";
+"openInvoice.termsAndConditionsSection.title" = "Terms & Conditions";
+"openInvoice.agreeToTermsAndConditionsLabel" = "Agree to the terms and conditions";
+"giropay.searchField.title" = "Bankname / BIC / Bankleitzahl";
+"giropay.minimumLength" = "Min. 4 characters";
+"giropay.noResults" = "No search results";
+"giropay.continueToYourBank" = "Continue to your bank";

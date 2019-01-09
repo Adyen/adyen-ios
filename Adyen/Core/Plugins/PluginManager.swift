@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2018 Adyen B.V.
+// Copyright (c) 2019 Adyen B.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -58,16 +58,16 @@ internal final class PluginManager {
             switch type {
             case "applepay":
                 classNames = ["AdyenApplePay.ApplePayPlugin", "Adyen.ApplePayPlugin"]
-            case "card":
+            case "card", "bcmc":
                 classNames = ["AdyenCard.CardPlugin", "Adyen.CardPlugin"]
             case "klarna", "afterpay_default":
                 classNames = ["AdyenOpenInvoice.OpenInvoicePlugin", "Adyen.OpenInvoicePlugin"]
-            case "bcmc":
-                classNames = ["AdyenCard.CardPlugin", "Adyen.CardPlugin"]
             case "sepadirectdebit":
                 classNames = ["AdyenSEPA.SEPADirectDebitPlugin", "Adyen.SEPADirectDebitPlugin"]
             case "wechatpaySDK":
                 classNames = ["AdyenWeChatPay.WeChatPayPlugin", "Adyen.WeChatPayPlugin"]
+            case "giropay":
+                classNames = ["Adyen.GiroPayPlugin"]
             default:
                 if paymentMethod.requiresIssuerSelection {
                     classNames = ["Adyen.IssuerSelectionPlugin"]

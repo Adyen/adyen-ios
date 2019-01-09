@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2018 Adyen B.V.
+// Copyright (c) 2019 Adyen B.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,6 +9,8 @@ import UIKit
 internal final class ListCell: UITableViewCell {
     internal override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        contentView.addSubview(itemView)
         
         configureConstraints()
     }
@@ -79,7 +81,7 @@ internal final class ListCell: UITableViewCell {
     private lazy var itemView: ListItemView = {
         let itemView = ListItemView()
         itemView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(itemView)
+        
         return itemView
     }()
     
@@ -103,6 +105,10 @@ internal final class ListCell: UITableViewCell {
         ]
         
         NSLayoutConstraint.activate(constraints)
+        
+        let heightConstraint = itemView.heightAnchor.constraint(greaterThanOrEqualToConstant: 40.0)
+        heightConstraint.priority = .defaultLow // Silence autolayout warnings.
+        heightConstraint.isActive = true
     }
     
 }

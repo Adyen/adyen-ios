@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2018 Adyen B.V.
+// Copyright (c) 2019 Adyen B.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -12,7 +12,7 @@ internal final class ListItemView: UIView {
     internal init() {
         super.init(frame: .zero)
         
-        addSubview(customImageView)
+        addSubview(imageView)
         addSubview(titleLabel)
         addSubview(subtitleLabel)
         
@@ -46,9 +46,9 @@ internal final class ListItemView: UIView {
     internal var imageURL: URL? {
         didSet {
             if let imageURL = imageURL {
-                customImageView.downloadImage(from: imageURL)
+                imageView.downloadImage(from: imageURL)
             } else {
-                customImageView.image = nil
+                imageView.image = nil
             }
         }
     }
@@ -57,22 +57,23 @@ internal final class ListItemView: UIView {
     
     private let dynamicTypeController = DynamicTypeController()
     
-    private lazy var customImageView: UIImageView = {
-        let customImageView = UIImageView()
-        customImageView.contentMode = .scaleAspectFit
-        customImageView.clipsToBounds = true
-        customImageView.layer.cornerRadius = 4.0
-        customImageView.layer.borderWidth = 1.0 / UIScreen.main.nativeScale
-        customImageView.layer.borderColor = UIColor(white: 0.0, alpha: 0.2).cgColor
-        customImageView.translatesAutoresizingMaskIntoConstraints = false
+    private lazy var imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 4.0
+        imageView.layer.borderWidth = 1.0 / UIScreen.main.nativeScale
+        imageView.layer.borderColor = UIColor(white: 0.0, alpha: 0.2).cgColor
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         
-        return customImageView
+        return imageView
     }()
     
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.isAccessibilityElement = false
+        
         return titleLabel
     }()
     
@@ -80,27 +81,30 @@ internal final class ListItemView: UIView {
         let subtitleLabel = UILabel()
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.isAccessibilityElement = false
+        
         return subtitleLabel
     }()
     
     private func configureConstraints() {
-        
         let constraints = [
-            customImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            customImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            customImageView.widthAnchor.constraint(equalToConstant: 40.0),
-            customImageView.heightAnchor.constraint(equalToConstant: 26.0),
+            imageView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
+            imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            imageView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
+            imageView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            imageView.widthAnchor.constraint(equalToConstant: 40.0),
+            imageView.heightAnchor.constraint(equalToConstant: 26.0),
             
-            titleLabel.leadingAnchor.constraint(equalTo: customImageView.trailingAnchor, constant: 20.0),
+            titleLabel.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
             titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: subtitleLabel.leadingAnchor, constant: -8.0),
+            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 20.0),
             
+            subtitleLabel.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor, constant: 8.0),
             subtitleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             subtitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor)
         ]
         
-        titleLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        titleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        titleLabel.setContentHuggingPriority(.fittingSizeLevel, for: .horizontal)
         
         NSLayoutConstraint.activate(constraints)
     }

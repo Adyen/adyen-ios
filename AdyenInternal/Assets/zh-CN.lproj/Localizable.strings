@@ -24,7 +24,7 @@
 "sepaDirectDebit.ibanField.placeholder" = "NL53 ABNA 1925 1294 122";
 "sepaDirectDebit.nameField.title" = "持卡人姓名";
 "sepaDirectDebit.nameField.placeholder" = "J. Smith";
-"sepaDirectDebit.consentLabel" = "按上面的按钮即可, 您同意从您的银行账户扣除指定金额。";
+"sepaDirectDebit.consentLabel" = "按上面的按钮即表示您同意从您的银行账户扣除指定金额。";
 "oneClick.confirmationAlert.title" = "确认 %@ 支付";
 "redirect.cannotOpenApp.title" = "无法打开应用";
 "redirect.cannotOpenApp.appNotInstalledMessage" = "此设备未安装此应用，因此无法打开应用。";
@@ -60,3 +60,9 @@
 "klarna.consent" = "同意";
 "openInvoice.gender.male" = "男";
 "openInvoice.gender.female" = "女";
+"surcharge.formatted" = "总金额包括 %@ 的附加费。";
+"openInvoice.termsAndConditionsSection.title" = "条款和条件";
+"openInvoice.agreeToTermsAndConditionsLabel" = "同意条款和条件";
+"giropay.searchField.title" = "银行名称 / BIC（银行识别码） / 银行代码";
+"giropay.minimumLength" = "最少 4 个字符";
+"giropay.noResults" = "无搜索结果";

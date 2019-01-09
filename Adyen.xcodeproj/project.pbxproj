@@ -45,6 +45,7 @@
 		E250E1401F0E606000BFFF2F /* Adyen.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E20AD0091EFAB0310065B70E /* Adyen.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E25842C920A1D81C00369E7E /* SectionedPaymentMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25842C820A1D81C00369E7E /* SectionedPaymentMethods.swift */; };
 		E25842CB20A1E53500369E7E /* RedirectListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25842CA20A1E53500369E7E /* RedirectListener.swift */; };
+		E25DF09821DCF72A001A3995 /* ListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25DF09721DCF72A001A3995 /* ListHeaderView.swift */; };
 		E27DA5731F28D48C008487D5 /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27DA5631F28D48B008487D5 /* ListCell.swift */; };
 		E29C2F83209856EC00466623 /* payment_initiation_redirect.json in Resources */ = {isa = PBXBuildFile; fileRef = E29C2F81209856EB00466623 /* payment_initiation_redirect.json */; };
 		E29C2F84209856EC00466623 /* payment_initiation_authorised.json in Resources */ = {isa = PBXBuildFile; fileRef = E29C2F82209856EB00466623 /* payment_initiation_authorised.json */; };
@@ -86,6 +87,7 @@
 		E93410B921511E4B00CE96C0 /* CardExpiryValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93410B821511E4B00CE96C0 /* CardExpiryValidator.swift */; };
 		E94219D1211B091A006C9D8B /* UIFontExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94219D0211B091A006C9D8B /* UIFontExtensions.swift */; };
 		E94219D3211B30C6006C9D8B /* DynamicTypeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94219D2211B30C6006C9D8B /* DynamicTypeController.swift */; };
+		E9534B8B21BEA579004A4BAC /* GiroPayIssuerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9534B8A21BEA579004A4BAC /* GiroPayIssuerView.swift */; };
 		E9553B4620F4CDA200C5EB3C /* StoredPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9553B4520F4CDA200C5EB3C /* StoredPlugin.swift */; };
 		E95BAEE42139702A00D9C0F6 /* CardNameValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95BAEE32139702A00D9C0F6 /* CardNameValidator.swift */; };
 		E95BAEE6213EB7B700D9C0F6 /* CardNumberValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95BAEE5213EB7B600D9C0F6 /* CardNumberValidator.swift */; };
@@ -110,6 +112,14 @@
 		E985FAB9210F3EFB0008F869 /* libWeChatSDK.a in CopyFiles */ = {isa = PBXBuildFile; fileRef = E9EB7F08210F3A9E00FC7ADA /* libWeChatSDK.a */; };
 		E98D4DA92199BABF00F5E199 /* KlarnaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D4DA82199BABF00F5E199 /* KlarnaTests.swift */; };
 		E98D4DAB219C683700F5E199 /* XCUIElementExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D4DAA219C683700F5E199 /* XCUIElementExtensions.swift */; };
+		E98D4DAE21A5650E00F5E199 /* GiroPayPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D4DAD21A5650E00F5E199 /* GiroPayPlugin.swift */; };
+		E98D4DB021A5652500F5E199 /* GiroPayFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D4DAF21A5652500F5E199 /* GiroPayFormViewController.swift */; };
+		E98D4DB221A6F80300F5E199 /* GiroPayIssuersRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D4DB121A6F80300F5E199 /* GiroPayIssuersRequest.swift */; };
+		E98D4DB421A6F82800F5E199 /* GiroPayIssuersResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D4DB321A6F82800F5E199 /* GiroPayIssuersResponse.swift */; };
+		E98D4DB621A7FE2C00F5E199 /* GiroPayIssuer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D4DB521A7FE2C00F5E199 /* GiroPayIssuer.swift */; };
+		E98D4DB821A804A100F5E199 /* GiroPaySearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D4DB721A804A100F5E199 /* GiroPaySearchController.swift */; };
+		E9A0A9B621C004CA001D3B26 /* GiroPayPaymentDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A0A9B521C004CA001D3B26 /* GiroPayPaymentDetails.swift */; };
+		E9A0A9B821C00D57001D3B26 /* GiroPayIssuersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A0A9B721C00D57001D3B26 /* GiroPayIssuersViewController.swift */; };
 		E9A3322820F6024D002560F1 /* ADYAESCCMCryptor.h in Headers */ = {isa = PBXBuildFile; fileRef = E9A3321520F6024C002560F1 /* ADYAESCCMCryptor.h */; };
 		E9A3322920F6024D002560F1 /* ADYAESCCMCryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = E9A3321620F6024C002560F1 /* ADYAESCCMCryptor.m */; };
 		E9A3322A20F6024D002560F1 /* ADYCard.h in Headers */ = {isa = PBXBuildFile; fileRef = E9A3321720F6024C002560F1 /* ADYCard.h */; };
@@ -410,6 +420,7 @@
 		E25038421F17641700DCFD38 /* CardInputData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardInputData.swift; sourceTree = "<group>"; };
 		E25842C820A1D81C00369E7E /* SectionedPaymentMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionedPaymentMethods.swift; sourceTree = "<group>"; };
 		E25842CA20A1E53500369E7E /* RedirectListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedirectListener.swift; sourceTree = "<group>"; };
+		E25DF09721DCF72A001A3995 /* ListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListHeaderView.swift; sourceTree = "<group>"; };
 		E27DA5561F28D48B008487D5 /* Localization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
 		E27DA5571F28D48B008487D5 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		E27DA5631F28D48B008487D5 /* ListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
@@ -474,6 +485,7 @@
 		E94219D2211B30C6006C9D8B /* DynamicTypeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicTypeController.swift; sourceTree = "<group>"; };
 		E94D3EC3206BAB0100F95A7D /* FormPickerField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPickerField.swift; sourceTree = "<group>"; };
 		E94F5756200F82B500A545F9 /* CardEncryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardEncryptor.swift; sourceTree = "<group>"; };
+		E9534B8A21BEA579004A4BAC /* GiroPayIssuerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiroPayIssuerView.swift; sourceTree = "<group>"; };
 		E9553B4520F4CDA200C5EB3C /* StoredPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredPlugin.swift; sourceTree = "<group>"; };
 		E9573123215CFAF100AF4DF8 /* OpenInvoiceValidators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenInvoiceValidators.swift; sourceTree = "<group>"; };
 		E9573125215D0F9A00AF4DF8 /* SocialSecutiryNumberFormSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialSecutiryNumberFormSection.swift; sourceTree = "<group>"; };
@@ -501,6 +513,14 @@
 		E9841602210F4019009DEE7E /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		E98D4DA82199BABF00F5E199 /* KlarnaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KlarnaTests.swift; sourceTree = "<group>"; };
 		E98D4DAA219C683700F5E199 /* XCUIElementExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCUIElementExtensions.swift; sourceTree = "<group>"; };
+		E98D4DAD21A5650E00F5E199 /* GiroPayPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiroPayPlugin.swift; sourceTree = "<group>"; };
+		E98D4DAF21A5652500F5E199 /* GiroPayFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiroPayFormViewController.swift; sourceTree = "<group>"; };
+		E98D4DB121A6F80300F5E199 /* GiroPayIssuersRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiroPayIssuersRequest.swift; sourceTree = "<group>"; };
+		E98D4DB321A6F82800F5E199 /* GiroPayIssuersResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiroPayIssuersResponse.swift; sourceTree = "<group>"; };
+		E98D4DB521A7FE2C00F5E199 /* GiroPayIssuer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiroPayIssuer.swift; sourceTree = "<group>"; };
+		E98D4DB721A804A100F5E199 /* GiroPaySearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiroPaySearchController.swift; sourceTree = "<group>"; };
+		E9A0A9B521C004CA001D3B26 /* GiroPayPaymentDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiroPayPaymentDetails.swift; sourceTree = "<group>"; };
+		E9A0A9B721C00D57001D3B26 /* GiroPayIssuersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiroPayIssuersViewController.swift; sourceTree = "<group>"; };
 		E9A3321520F6024C002560F1 /* ADYAESCCMCryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADYAESCCMCryptor.h; sourceTree = "<group>"; };
 		E9A3321620F6024C002560F1 /* ADYAESCCMCryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADYAESCCMCryptor.m; sourceTree = "<group>"; };
 		E9A3321720F6024C002560F1 /* ADYCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADYCard.h; sourceTree = "<group>"; };
@@ -876,6 +896,7 @@
 		E20AD0501EFAB0E00065B70E /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
+				E98D4DAC21A564FC00F5E199 /* GiroPay */,
 				E2BAD499216F728A00B61F90 /* Stored */,
 				E2099232208F66F500BCBE75 /* IssuerSelection */,
 			);
@@ -959,6 +980,7 @@
 				E23872E1209B4BA100BCF366 /* ListItem.swift */,
 				E23872E3209B4C3800BCF366 /* ListItemView.swift */,
 				E925CA04206CF9A9003141D9 /* ListViewController.swift */,
+				E25DF09721DCF72A001A3995 /* ListHeaderView.swift */,
 				E27DA5631F28D48B008487D5 /* ListCell.swift */,
 			);
 			path = List;
@@ -1104,6 +1126,22 @@
 				E9C58F422178C2350047311D /* ConsentFormSection.swift */,
 			);
 			path = "Form View Controller Section";
+			sourceTree = "<group>";
+		};
+		E98D4DAC21A564FC00F5E199 /* GiroPay */ = {
+			isa = PBXGroup;
+			children = (
+				E98D4DAD21A5650E00F5E199 /* GiroPayPlugin.swift */,
+				E98D4DAF21A5652500F5E199 /* GiroPayFormViewController.swift */,
+				E98D4DB121A6F80300F5E199 /* GiroPayIssuersRequest.swift */,
+				E98D4DB321A6F82800F5E199 /* GiroPayIssuersResponse.swift */,
+				E98D4DB521A7FE2C00F5E199 /* GiroPayIssuer.swift */,
+				E98D4DB721A804A100F5E199 /* GiroPaySearchController.swift */,
+				E9534B8A21BEA579004A4BAC /* GiroPayIssuerView.swift */,
+				E9A0A9B521C004CA001D3B26 /* GiroPayPaymentDetails.swift */,
+				E9A0A9B721C00D57001D3B26 /* GiroPayIssuersViewController.swift */,
+			);
+			path = GiroPay;
 			sourceTree = "<group>";
 		};
 		E9A3321420F6024C002560F1 /* AdyenCSE */ = {
@@ -1803,10 +1841,14 @@
 				E9DF09CC2147EB6F00B43670 /* FormSelectField.swift in Sources */,
 				E9B4E97320D923970059202D /* Appearance.swift in Sources */,
 				E97C04D7205036300065A89A /* PreselectedPaymentMethodManager.swift in Sources */,
+				E98D4DB421A6F82800F5E199 /* GiroPayIssuersResponse.swift in Sources */,
 				E23872E4209B4C3800BCF366 /* ListItemView.swift in Sources */,
+				E98D4DB021A5652500F5E199 /* GiroPayFormViewController.swift in Sources */,
 				E9D4072D2111CF4F001583E1 /* AdditionalPaymentDetails.swift in Sources */,
 				E97C04D2204ED1670065A89A /* PreselectedPaymentMethodViewController.swift in Sources */,
 				E2F60F7720971C910018285D /* PaymentControllerError.swift in Sources */,
+				E98D4DB821A804A100F5E199 /* GiroPaySearchController.swift in Sources */,
+				E9A0A9B821C00D57001D3B26 /* GiroPayIssuersViewController.swift in Sources */,
 				E20992512090980500BCBE75 /* PaymentController.swift in Sources */,
 				E9D4FF2A20D7C2DC003AA167 /* PaymentSession.swift in Sources */,
 				E925CA05206CF9A9003141D9 /* ListViewController.swift in Sources */,
@@ -1831,13 +1873,16 @@
 				E22E06CF21143879002F564B /* PaymentSessionDecoding.swift in Sources */,
 				E209922F208F331300BCBE75 /* DynamicHeightNavigationController.swift in Sources */,
 				E23872E2209B4BA100BCF366 /* ListItem.swift in Sources */,
+				E9534B8B21BEA579004A4BAC /* GiroPayIssuerView.swift in Sources */,
 				E2099243209097C300BCBE75 /* PaymentDetail.swift in Sources */,
 				E9D4FF4620D7DD25003AA167 /* FormView.swift in Sources */,
 				E23AE02D1F98BF6100FF10AD /* CheckoutButton.swift in Sources */,
 				E975965D20FCD4F800EF8D3F /* IssuerPaymentDetails.swift in Sources */,
+				E9A0A9B621C004CA001D3B26 /* GiroPayPaymentDetails.swift in Sources */,
 				E25842CB20A1E53500369E7E /* RedirectListener.swift in Sources */,
 				E978236220B56C580039B7C0 /* PaymentDetailKeyValues.swift in Sources */,
 				E9DF09D0214802AE00B43670 /* FormLabel.swift in Sources */,
+				E98D4DAE21A5650E00F5E199 /* GiroPayPlugin.swift in Sources */,
 				E97C04DB2057FB170065A89A /* RedirectPresenter.swift in Sources */,
 				E9D4FF2920D7C2DC003AA167 /* PaymentMethod.swift in Sources */,
 				E2F60F7A20971D3D0018285D /* LoadingViewController.swift in Sources */,
@@ -1849,9 +1894,12 @@
 				E227F115209C3F2A00E3BA28 /* CheckoutControllerDelegate.swift in Sources */,
 				E9D4FF4520D7DD21003AA167 /* FormTextField.swift in Sources */,
 				E9E0011720D9316100DCE468 /* URLExtensions.swift in Sources */,
+				E98D4DB221A6F80300F5E199 /* GiroPayIssuersRequest.swift in Sources */,
 				E9D4FF5020D7EC2A003AA167 /* Version.swift in Sources */,
+				E98D4DB621A7FE2C00F5E199 /* GiroPayIssuer.swift in Sources */,
 				E967686820877F07001FBDC6 /* CheckoutPresenter.swift in Sources */,
 				E2099242209097C300BCBE75 /* PaymentResult.swift in Sources */,
+				E25DF09821DCF72A001A3995 /* ListHeaderView.swift in Sources */,
 				E2099231208F458D00BCBE75 /* DynamicHeightPresentationController.swift in Sources */,
 				E2099264209205B200BCBE75 /* PaymentInitiationRequest.swift in Sources */,
 				E9DF09CE2147ECD300B43670 /* FormDateField.swift in Sources */,
@@ -2133,7 +2181,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 2.4.0;
+				CURRENT_PROJECT_VERSION = 2.5.0;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -2196,7 +2244,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 2.4.0;
+				CURRENT_PROJECT_VERSION = 2.5.0;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2227,7 +2275,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.4.0;
+				DYLIB_CURRENT_VERSION = 2.5.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2252,7 +2300,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.4.0;
+				DYLIB_CURRENT_VERSION = 2.5.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2369,11 +2417,11 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.4.0;
+				CURRENT_PROJECT_VERSION = 2.5.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.4.0;
+				DYLIB_CURRENT_VERSION = 2.5.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenApplePay/Info.plist;
@@ -2398,11 +2446,11 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.4.0;
+				CURRENT_PROJECT_VERSION = 2.5.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.4.0;
+				DYLIB_CURRENT_VERSION = 2.5.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenApplePay/Info.plist;
@@ -2427,11 +2475,11 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.4.0;
+				CURRENT_PROJECT_VERSION = 2.5.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.4.0;
+				DYLIB_CURRENT_VERSION = 2.5.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenOpenInvoice/Info.plist;
@@ -2458,11 +2506,11 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.4.0;
+				CURRENT_PROJECT_VERSION = 2.5.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.4.0;
+				DYLIB_CURRENT_VERSION = 2.5.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenOpenInvoice/Info.plist;
@@ -2487,11 +2535,11 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.4.0;
+				CURRENT_PROJECT_VERSION = 2.5.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.4.0;
+				DYLIB_CURRENT_VERSION = 2.5.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenInternal/Info.plist;
@@ -2515,11 +2563,11 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.4.0;
+				CURRENT_PROJECT_VERSION = 2.5.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.4.0;
+				DYLIB_CURRENT_VERSION = 2.5.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenInternal/Info.plist;
@@ -2544,11 +2592,11 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.4.0;
+				CURRENT_PROJECT_VERSION = 2.5.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.4.0;
+				DYLIB_CURRENT_VERSION = 2.5.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2579,11 +2627,11 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.4.0;
+				CURRENT_PROJECT_VERSION = 2.5.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.4.0;
+				DYLIB_CURRENT_VERSION = 2.5.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2614,11 +2662,11 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.4.0;
+				CURRENT_PROJECT_VERSION = 2.5.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.4.0;
+				DYLIB_CURRENT_VERSION = 2.5.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenSEPA/Info.plist;
@@ -2643,11 +2691,11 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.4.0;
+				CURRENT_PROJECT_VERSION = 2.5.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.4.0;
+				DYLIB_CURRENT_VERSION = 2.5.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenSEPA/Info.plist;
@@ -2673,11 +2721,11 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2.4.0;
+				CURRENT_PROJECT_VERSION = 2.5.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.4.0;
+				DYLIB_CURRENT_VERSION = 2.5.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenWeChatPay/Info.plist;
@@ -2708,11 +2756,11 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2.4.0;
+				CURRENT_PROJECT_VERSION = 2.5.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.4.0;
+				DYLIB_CURRENT_VERSION = 2.5.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenWeChatPay/Info.plist;

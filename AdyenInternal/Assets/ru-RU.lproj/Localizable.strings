@@ -60,3 +60,9 @@
 "klarna.consent" = "согласие";
 "openInvoice.gender.male" = "Мужчина";
 "openInvoice.gender.female" = "Женщина";
+"surcharge.formatted" = "Общая сумма включает %@ дополнительного сбора.";
+"openInvoice.termsAndConditionsSection.title" = "Условия";
+"openInvoice.agreeToTermsAndConditionsLabel" = "Я соглашаюсь с условиями";
+"giropay.searchField.title" = "Bankname / BIC / Bankleitzahl";
+"giropay.minimumLength" = "Мин. 4 знака";
+"giropay.noResults" = "Ничего не найдено";

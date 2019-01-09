@@ -24,7 +24,7 @@
 "sepaDirectDebit.ibanField.placeholder" = "12 3456 7890 1234 5678 9012 3456";
 "sepaDirectDebit.nameField.title" = "Imię i nazwisko posiadacza karty";
 "sepaDirectDebit.nameField.placeholder" = "J. Kowalski";
-"sepaDirectDebit.consentLabel" = "Klikając powyższy przycisk, wyrażasz zgodę na pobranie określonej kwoty z Twojego rachunku bankowego.";
+"sepaDirectDebit.consentLabel" = "Naciskając powyższy przycisk, wyrażasz zgodę na pobranie określonej kwoty z Twojego rachunku bankowego.";
 "oneClick.confirmationAlert.title" = "Potwierdź płatność %@";
 "redirect.cannotOpenApp.title" = "Nie można otworzyć aplikacji";
 "redirect.cannotOpenApp.appNotInstalledMessage" = "Nie można otworzyć aplikacji, ponieważ nie jest ona zainstalowana na tym urządzeniu.";
@@ -60,3 +60,9 @@
 "klarna.consent" = "zgoda";
 "openInvoice.gender.male" = "Mężczyzna";
 "openInvoice.gender.female" = "Kobieta";
+"surcharge.formatted" = "Łączna kwota obejmuje %@ opłaty dodatkowej";
+"openInvoice.termsAndConditionsSection.title" = "Warunki świadczenia usług";
+"openInvoice.agreeToTermsAndConditionsLabel" = "Zgadzam się na warunki świadczenia usług";
+"giropay.searchField.title" = "Nazwa banku";
+"giropay.minimumLength" = "Co najmniej 4 znaki";
+"giropay.noResults" = "Brak wyników wyszukiwania";

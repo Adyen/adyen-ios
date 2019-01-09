@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2018 Adyen B.V.
+// Copyright (c) 2019 Adyen B.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -66,4 +66,17 @@ internal class TestCase: XCTestCase {
         waitForExpectations(timeout: 10.0, handler: nil)
     }
     
+    internal func setCountry(_ country: String, currency: String) {
+        let table = app.tables.first
+        
+        let countryField = table.textFields["country-field"]
+        countryField.tap()
+        table.buttons["Clear text"].tap()
+        countryField.typeText(country)
+        
+        let currencyField = table.textFields["currency-field"]
+        currencyField.tap()
+        table.buttons["Clear text"].tap()
+        currencyField.typeText(currency)
+    }
 }

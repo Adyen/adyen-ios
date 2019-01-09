@@ -24,7 +24,7 @@
 "sepaDirectDebit.ibanField.placeholder" = "DE00 1234 5678 9012 3456 78";
 "sepaDirectDebit.nameField.title" = "Name des Kontoinhabers";
 "sepaDirectDebit.nameField.placeholder" = "L. Schmidt";
-"sepaDirectDebit.consentLabel" = "Durch Drücken der obigen Schaltfläche, erklären Sie sich damit einverstanden, dass der angegebene Betrag von Ihrem Bankkonto abgebucht wird.";
+"sepaDirectDebit.consentLabel" = "Durch Drücken der obigen Schaltfläche erklären Sie sich damit einverstanden, dass der angegebene Betrag von Ihrem Bankkonto abgebucht wird.";
 "oneClick.confirmationAlert.title" = "Bestätige %@ Zahlung";
 "redirect.cannotOpenApp.title" = "App kann nicht geöffnet werden";
 "redirect.cannotOpenApp.appNotInstalledMessage" = "Die App konnte nicht geöffnet werden, da sie nicht auf diesem Gerät installiert ist.";
@@ -60,3 +60,10 @@
 "klarna.consent" = "Einwilligung";
 "openInvoice.gender.male" = "Männlich";
 "openInvoice.gender.female" = "Weiblich";
+"surcharge.formatted" = "Der Gesamtbetrag beinhaltet einen Zuschlag in Höhe von %@.";
+"openInvoice.termsAndConditionsSection.title" = "Allgemeine Geschäftsbedingungen";
+"openInvoice.agreeToTermsAndConditionsLabel" = "Ich stimme den allgemeinen Geschäftsbedingungen zu";
+"giropay.searchField.title" = "Bankname / BIC / Bankleitzahl";
+"giropay.minimumLength" = "Mindestens 4 Zeichen";
+"giropay.noResults" = "Keine Suchergebnisse";
+"giropay.continueToYourBank" = "Weiter zu Ihrer Bank";

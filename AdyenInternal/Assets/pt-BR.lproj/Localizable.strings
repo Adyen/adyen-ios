@@ -60,3 +60,9 @@
 "klarna.consent" = "consentimento";
 "openInvoice.gender.male" = "Masculino";
 "openInvoice.gender.female" = "Feminino";
+"surcharge.formatted" = "O total inclui %@ de sobretaxa.";
+"openInvoice.termsAndConditionsSection.title" = "Termos e condições";
+"openInvoice.agreeToTermsAndConditionsLabel" = "Eu concordo com os termos e condições";
+"giropay.searchField.title" = "Nome do banco / BIC / Bankleitzahl";
+"giropay.minimumLength" = "Mínimo de 4 caracteres";
+"giropay.noResults" = "Não há resultados de pesquisa";

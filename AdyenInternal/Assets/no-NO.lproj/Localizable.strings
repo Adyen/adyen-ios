@@ -24,7 +24,7 @@
 "sepaDirectDebit.ibanField.placeholder" = "NO93 8601 1117 947";
 "sepaDirectDebit.nameField.title" = "Kortholders navn";
 "sepaDirectDebit.nameField.placeholder" = "O. Nordmann";
-"sepaDirectDebit.consentButton" = "";
+"sepaDirectDebit.consentLabel" = "Ved å trykke på knappen over, godtar du at det spesifiserte beløpet vil bli trukket fra din bankkonto.";
 "oneClick.confirmationAlert.title" = "Bekreft betaling med %@";
 "redirect.cannotOpenApp.title" = "Kan ikke åpne app";
 "redirect.cannotOpenApp.appNotInstalledMessage" = "Denne appen kunne ikke åpnes fordi den ikke er installert på denne enheten.";
@@ -60,3 +60,9 @@
 "klarna.consent" = "samtykke";
 "openInvoice.gender.male" = "Mann";
 "openInvoice.gender.female" = "Kvinne";
+"surcharge.formatted" = "Totalbeløpet inkluderer %@ tilleggsavgift.";
+"openInvoice.termsAndConditionsSection.title" = "Vilkår og betingelser";
+"openInvoice.agreeToTermsAndConditionsLabel" = "Godta vilkårene og betingelsene";
+"giropay.searchField.title" = "Bank navn / BIC / Bankleitzahl";
+"giropay.minimumLength" = "Min. 4 tegn";
+"giropay.noResults" = "Ingen søkeresultater";

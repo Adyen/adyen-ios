@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2018 Adyen B.V.
+// Copyright (c) 2019 Adyen B.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,6 +10,7 @@ class CardsTests: TestCase {
     
     override func setUp() {
         super.setUp()
+        setCountry("NL", currency: "EUR")
         startCheckout()
     }
     
