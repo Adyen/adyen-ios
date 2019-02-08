@@ -109,7 +109,6 @@
 		E98415FF210F4009009DEE7E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E98415FE210F4009009DEE7E /* SystemConfiguration.framework */; };
 		E9841601210F4011009DEE7E /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9841600210F4011009DEE7E /* CoreTelephony.framework */; };
 		E9841603210F4019009DEE7E /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E9841602210F4019009DEE7E /* libsqlite3.0.tbd */; };
-		E985FAB9210F3EFB0008F869 /* libWeChatSDK.a in CopyFiles */ = {isa = PBXBuildFile; fileRef = E9EB7F08210F3A9E00FC7ADA /* libWeChatSDK.a */; };
 		E98D4DA92199BABF00F5E199 /* KlarnaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D4DA82199BABF00F5E199 /* KlarnaTests.swift */; };
 		E98D4DAB219C683700F5E199 /* XCUIElementExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D4DAA219C683700F5E199 /* XCUIElementExtensions.swift */; };
 		E98D4DAE21A5650E00F5E199 /* GiroPayPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D4DAD21A5650E00F5E199 /* GiroPayPlugin.swift */; };
@@ -353,7 +352,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				E985FAB9210F3EFB0008F869 /* libWeChatSDK.a in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
