@@ -158,7 +158,13 @@
                 <a class="nav-group-task-link" href="../Structs/PaymentDetail/Configuration.html">– Configuration</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Structs/AdditionalPaymentDetails.html">AdditionalPaymentDetails</a>
+                <a class="nav-group-task-link" href="../Protocols/AdditionalPaymentDetails.html">AdditionalPaymentDetails</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/IdentificationPaymentDetails.html">IdentificationPaymentDetails</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ChallengePaymentDetails.html">ChallengePaymentDetails</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Payment Method.html#/s:5Adyen20StoredPaymentDetailsP">StoredPaymentDetails</a>
@@ -188,6 +194,12 @@
           <li class="nav-group-name">
             <a class="nav-group-name-link" href="../Card Module.html">Card Module</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Card3DS2Authenticator.html">Card3DS2Authenticator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Card3DS2Authenticator/ChallengeResult.html">– ChallengeResult</a>
+              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/CardEncryptor.html">CardEncryptor</a>
               </li>
@@ -499,9 +511,9 @@ It&rsquo;s recommended to use either <code>SFSafariViewController</code> or <cod
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:5Adyen25PaymentControllerDelegateP24provideAdditionalDetails_3for14detailsHandleryAA0fbG0V_AA0B6MethodVySayAA0B6DetailVGctF"></a>
+                    <a name="/s:5Adyen25PaymentControllerDelegateP24provideAdditionalDetails_3for14detailsHandleryAA0fbG0_p_AA0B6MethodVySayAA0B6DetailVGctF"></a>
                     <a name="//apple_ref/swift/Method/provideAdditionalDetails(_:for:detailsHandler:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen25PaymentControllerDelegateP24provideAdditionalDetails_3for14detailsHandleryAA0fbG0V_AA0B6MethodVySayAA0B6DetailVGctF">provideAdditionalDetails(_:for:detailsHandler:)</a>
+                    <a class="token" href="#/s:5Adyen25PaymentControllerDelegateP24provideAdditionalDetails_3for14detailsHandleryAA0fbG0_p_AA0B6MethodVySayAA0B6DetailVGctF">provideAdditionalDetails(_:for:detailsHandler:)</a>
                     </code>
                       <span class="declaration-note">
                         Default implementation
@@ -523,7 +535,7 @@ It&rsquo;s recommended to use either <code>SFSafariViewController</code> or <cod
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">provideAdditionalDetails</span><span class="p">(</span><span class="n">_</span> <span class="nv">additionalDetails</span><span class="p">:</span> <span class="kt"><a href="../Structs/AdditionalPaymentDetails.html">AdditionalPaymentDetails</a></span><span class="p">,</span> <span class="k">for</span> <span class="nv">paymentMethod</span><span class="p">:</span> <span class="kt"><a href="../Structs/PaymentMethod.html">PaymentMethod</a></span><span class="p">,</span> <span class="nv">detailsHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Other.html#/s:5Adyen10Completiona">Completion</a></span><span class="o">&lt;</span><span class="p">[</span><span class="kt"><a href="../Structs/PaymentDetail.html">PaymentDetail</a></span><span class="p">]</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">provideAdditionalDetails</span><span class="p">(</span><span class="n">_</span> <span class="nv">additionalDetails</span><span class="p">:</span> <span class="kt"><a href="../Protocols/AdditionalPaymentDetails.html">AdditionalPaymentDetails</a></span><span class="p">,</span> <span class="k">for</span> <span class="nv">paymentMethod</span><span class="p">:</span> <span class="kt"><a href="../Structs/PaymentMethod.html">PaymentMethod</a></span><span class="p">,</span> <span class="nv">detailsHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Other.html#/s:5Adyen10Completiona">Completion</a></span><span class="o">&lt;</span><span class="p">[</span><span class="kt"><a href="../Structs/PaymentDetail.html">PaymentDetail</a></span><span class="p">]</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -581,7 +593,7 @@ It&rsquo;s recommended to use either <code>SFSafariViewController</code> or <cod
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2018-11-21)</p>
+      <p>&copy; 2019 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2019-02-25)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

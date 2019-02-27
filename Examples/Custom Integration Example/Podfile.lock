@@ -22,7 +22,7 @@ EXTERNAL SOURCES:
     :path: "../../"
 
 SPEC CHECKSUMS:
-  Adyen: 8ff7ebeec93f299966f483d2e093dee8e197add5
+  Adyen: 99c02ae77f0d5ccde09592d1222b72e5d24c9e28
   AdyenInternal: 1e93c15056f8707e4975f9f67530083e8abd026c
 
 PODFILE CHECKSUM: 6b5eabcd96da33f21a8b3c7f9edc91c92bbea93b

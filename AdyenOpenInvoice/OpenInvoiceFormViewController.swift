@@ -71,13 +71,20 @@ internal class OpenInvoiceFormViewController: FormViewController {
     lazy var personalDetailsSection: PersonalDetailsSection = {
         
         var genderSelectItems: [PaymentDetail.SelectItem]?
-        if case let .fieldSet(details)? = paymentMethod?.details.personalDetails?.inputType,
-            case let .select(items)? = details.gender?.inputType {
-            genderSelectItems = items
+        var requiresDateOfBirth = false
+        
+        if case let .fieldSet(details)? = paymentMethod?.details.personalDetails?.inputType {
+            
+            if case let .select(items)? = details.gender?.inputType {
+                genderSelectItems = items
+            }
+            
+            requiresDateOfBirth = details.dateOfBirth != nil
         }
         
         return PersonalDetailsSection(personalDetails: personalDetails,
                                       genderSelectItems: genderSelectItems,
+                                      requiresDateOfBirth: requiresDateOfBirth,
                                       textFieldDelegate: self)
     }()
     
@@ -103,7 +110,7 @@ internal class OpenInvoiceFormViewController: FormViewController {
         self?.lookupSSN(ssn: ssn)
     }
     
-    lazy var consentSection = ConsentFormSection { [weak self] in
+    lazy var consentSection = ConsentFormSection(paymentMethodType: paymentMethod?.type ?? "") { [weak self] in
         self?.updateValidity()
     }
     
@@ -173,7 +180,7 @@ internal class OpenInvoiceFormViewController: FormViewController {
     @objc private func didTouchMoreInformationButton() {
         let countryCode = paymentSession?.payment.countryCode == "DE" ? "de" : "en"
         if let url = URL(string: "https://cdn.klarna.com/1.0/shared/content/legal/terms/2/\(countryCode)_de/invoice?fee=0") {
-            UIApplication.shared.openURL(url)
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
     }
     

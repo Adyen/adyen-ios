@@ -13,10 +13,11 @@ class PersonalDetailsSection: OpenInvoiceFormSection {
     
     var personalDetails: OpenInvoicePersonalDetails?
     
-    init(personalDetails: OpenInvoicePersonalDetails?, genderSelectItems: [PaymentDetail.SelectItem]?, textFieldDelegate: FormTextFieldDelegate) {
+    init(personalDetails: OpenInvoicePersonalDetails?, genderSelectItems: [PaymentDetail.SelectItem]?, requiresDateOfBirth: Bool, textFieldDelegate: FormTextFieldDelegate) {
         self.personalDetails = personalDetails
         self.textFieldDelegate = textFieldDelegate
         self.genderSelectItems = genderSelectItems
+        self.requiresDateOfBirth = requiresDateOfBirth
         super.init()
         
         let values = genderSelectItems?.map({ $0.name })
@@ -48,7 +49,10 @@ class PersonalDetailsSection: OpenInvoiceFormSection {
             addFormElement(genderField)
         }
         
-        addFormElement(dateOfBirthField)
+        if requiresDateOfBirth {
+            addFormElement(dateOfBirthField)
+        }
+        
         addFormElement(telephoneField)
         addFormElement(emailField)
         
@@ -88,6 +92,7 @@ class PersonalDetailsSection: OpenInvoiceFormSection {
     private var genderSelectItems: [PaymentDetail.SelectItem]?
     private var isSSNFlow = false
     private var localizedGenderValues: [String]?
+    private var requiresDateOfBirth: Bool
     
     private lazy var staticPersonalDetails = FormLabel()
     

@@ -72,6 +72,46 @@ public extension Array where Element == PaymentDetail {
             self[cardInstallmentsKey] = newValue
         }
     }
+    
+    /// The payment detail for a 3D-Secure 2.0 fingerprint.
+    public var threeDS2Fingerprint: PaymentDetail? {
+        get {
+            return self[threeDS2FingerprintKey]
+        }
+        
+        set {
+            self[threeDS2FingerprintKey] = newValue
+        }
+    }
+    
+    /// The payment detail for a 3D-Secure 2.0 challenge result.
+    public var threeDS2ChallengeResult: PaymentDetail? {
+        get {
+            return self[threeDS2ChallengeResultKey]
+        }
+        
+        set {
+            self[threeDS2ChallengeResultKey] = newValue
+        }
+    }
+}
+
+public extension IdentificationPaymentDetails {
+    
+    /// The 3D-Secure 2.0 fingerprint token.
+    public var threeDS2FingerprintToken: String? {
+        return userInfo[threeDS2FingerprintTokenKey]
+    }
+    
+}
+
+public extension ChallengePaymentDetails {
+    
+    /// The 3D-Secure 2.0 challenge token.
+    public var threeDS2ChallengeToken: String? {
+        return userInfo[threeDS2ChallengeTokenKey]
+    }
+    
 }
 
 private let encryptedCardNumberKey = "encryptedCardNumber"
@@ -81,3 +121,7 @@ private let encryptedExpiryYearKey = "encryptedExpiryYear"
 private let cardCvcKey = "cardDetails.cvc"
 private let cardInstallmentsKey = "installments"
 private let cardholderNameKey = "holderName"
+private let threeDS2FingerprintTokenKey = "threeds2.fingerprintToken"
+private let threeDS2FingerprintKey = "threeds2.fingerprint"
+private let threeDS2ChallengeTokenKey = "threeds2.challengeToken"
+private let threeDS2ChallengeResultKey = "threeds2.challengeResult"

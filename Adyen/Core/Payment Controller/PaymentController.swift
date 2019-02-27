@@ -113,7 +113,8 @@ public final class PaymentController {
         }
         
         delegateProxy.selectPaymentMethod(from: paymentSession.paymentMethods, for: self) { [weak self] selectedPaymentMethod in
-            let request = PaymentInitiationRequest(paymentSession: paymentSession, paymentMethod: selectedPaymentMethod, paymentDetails: selectedPaymentMethod.details)
+            let request = PaymentInitiationRequest(paymentSession: paymentSession,
+                                                   paymentMethod: selectedPaymentMethod)
             self?.initiatePayment(with: request)
         }
     }
@@ -135,27 +136,12 @@ public final class PaymentController {
             finish(with: payment)
         case let .redirect(redirect):
             performRedirect(redirect, for: request)
-        case let .details(details):
-            requestAdditionalDetails(details, for: request)
+        case let .identify(details):
+            performIdentification(with: details, for: request)
+        case let .challenge(details):
+            performChallenge(with: details, for: request)
         case let .error(error):
             finish(with: error)
-        }
-    }
-    
-    private func requestAdditionalDetails(_ details: PaymentInitiationResponse.Details, for request: PaymentInitiationRequest) {
-        let returnDataDetailsKey = "paymentMethodReturnData"
-        let filteredDetails = details.paymentDetails.filter({ $0.key != returnDataDetailsKey })
-        let additionalDetails = AdditionalPaymentDetails(details: filteredDetails, redirectData: details.redirectData)
-        
-        delegateProxy.provideAdditionalDetails(additionalDetails, for: request.paymentMethod) { [weak self] filledDetails in
-            var additionalDetailsRequest = request
-            additionalDetailsRequest.paymentDetails = filledDetails
-            
-            if details.shouldSubmitReturnURLQuery {
-                additionalDetailsRequest.paymentDetails.append(PaymentDetail(key: returnDataDetailsKey, value: details.returnData))
-            }
-            
-            self?.initiatePayment(with: additionalDetailsRequest)
         }
     }
     
@@ -181,11 +167,43 @@ public final class PaymentController {
         initiatePayment(with: request)
     }
     
+    private func performIdentification(with details: PaymentInitiationResponse.Details, for request: PaymentInitiationRequest) {
+        let identificationDetails = IdentificationPaymentDetails(details: details.paymentDetails, userInfo: details.userInfo)
+        requestAdditionalDetails(identificationDetails, for: request, paymentData: details.paymentData, returnData: details.returnData)
+    }
+    
+    private func performChallenge(with details: PaymentInitiationResponse.Details, for request: PaymentInitiationRequest) {
+        let challengeDetails = ChallengePaymentDetails(details: details.paymentDetails, userInfo: details.userInfo)
+        requestAdditionalDetails(challengeDetails, for: request, paymentData: details.paymentData, returnData: details.returnData)
+    }
+    
+    private func requestAdditionalDetails(_ additionalDetails: AdditionalPaymentDetails, for request: PaymentInitiationRequest, paymentData: String?, returnData: String?) {
+        let returnDataDetailsKey = "paymentMethodReturnData"
+        var additionalDetails = additionalDetails
+        additionalDetails.details = additionalDetails.details.filter { $0.key != returnDataDetailsKey }
+        
+        delegateProxy.provideAdditionalDetails(additionalDetails, for: request.paymentMethod) { [weak self] filledDetails in
+            var filledDetails = filledDetails
+            
+            if let returnData = returnData {
+                let returnDataDetail = PaymentDetail(key: returnDataDetailsKey, value: returnData)
+                filledDetails.append(returnDataDetail)
+            }
+            
+            let paymentInitiationRequest = PaymentInitiationRequest(paymentSession: request.paymentSession,
+                                                                    paymentMethod: request.paymentMethod,
+                                                                    paymentDetails: filledDetails,
+                                                                    paymentData: paymentData)
+            
+            self?.initiatePayment(with: paymentInitiationRequest)
+        }
+    }
+    
     private func finish(with paymentResult: PaymentResult) {
         finish(with: .success(paymentResult))
     }
     
-    private func finish(with error: Swift.Error) {
+    internal func finish(with error: Swift.Error) {
         finish(with: .failure(error))
     }
     

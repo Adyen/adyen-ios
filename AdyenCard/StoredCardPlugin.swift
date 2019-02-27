@@ -7,25 +7,13 @@
 import AdyenInternal
 import UIKit
 
-internal final class StoredCardPlugin: NSObject, PaymentDetailsPlugin {
+internal final class StoredCardPlugin: CardPlugin {
     
-    // MARK: - Plugin
-    
-    internal let paymentSession: PaymentSession
-    internal let paymentMethod: PaymentMethod
-    
-    internal init(paymentSession: PaymentSession, paymentMethod: PaymentMethod) {
-        self.paymentSession = paymentSession
-        self.paymentMethod = paymentMethod
-    }
-    
-    // MARK: - PaymentDetailsPlugin
-    
-    internal var preferredPresentationMode: PaymentDetailsPluginPresentationMode {
+    internal override var preferredPresentationMode: PaymentDetailsPluginPresentationMode {
         return .present
     }
     
-    internal func viewController(for details: [PaymentDetail], appearance: Appearance, completion: @escaping Completion<[PaymentDetail]>) -> UIViewController {
+    internal override func viewController(for details: [PaymentDetail], appearance: Appearance, completion: @escaping Completion<[PaymentDetail]>) -> UIViewController {
         let alertManager = AlertManager(paymentSession: paymentSession, paymentMethod: paymentMethod, appearance: appearance)
         alertManager.completionHandler = completion
         self.alertManager = alertManager

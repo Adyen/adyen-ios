@@ -168,9 +168,15 @@ extension CheckoutController: PaymentControllerDelegate {
         
         selectedMethodPlugin = plugin
         
-        presenter.show(additionalDetails, using: plugin) { [weak self] details in
-            self?.presenter.showPaymentProcessing(true)
-            detailsHandler(details)
+        presenter.show(additionalDetails, using: plugin) { [weak self] result in
+            switch result {
+            case let .success(details):
+                self?.presenter.showPaymentProcessing(true)
+                
+                detailsHandler(details)
+            case let .failure(error):
+                self?.paymentController?.finish(with: error)
+            }
         }
     }
     

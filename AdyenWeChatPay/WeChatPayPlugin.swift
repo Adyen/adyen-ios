@@ -34,7 +34,7 @@ internal final class WeChatPayPlugin: NSObject, AdditionalPaymentDetailsPlugin {
     
     // MARK: - AdditionalPaymentDetailsPlugin
     
-    internal func present(_ details: AdditionalPaymentDetails, using navigationController: UINavigationController, appearance: Appearance, completion: @escaping (Array<PaymentDetail>) -> Void) {
+    internal func present(_ details: AdditionalPaymentDetails, using navigationController: UINavigationController, appearance: Appearance, completion: @escaping Completion<Result<[PaymentDetail]>>) {
         additionalPaymentDetails = details
         completionHandler = completion
         
@@ -42,27 +42,22 @@ internal final class WeChatPayPlugin: NSObject, AdditionalPaymentDetailsPlugin {
             WXApi.handleOpen(url, delegate: self)
         }
         
-        let redirectData = WeChatRedirectData(dictionary: details.redirectData)
+        let redirectData = WeChatRedirectData(dictionary: details.userInfo)
         WXApi.registerApp(redirectData.appIdentifier)
         WXApi.send(PayReq(redirectData: redirectData))
     }
     
     private var additionalPaymentDetails: AdditionalPaymentDetails?
-    private var completionHandler: Completion<[PaymentDetail]>?
+    private var completionHandler: Completion<Result<[PaymentDetail]>>?
     
 }
 
 extension WeChatPayPlugin: WXApiDelegate {
     
     func onResp(_ resp: BaseResp!) {
-        guard var details = additionalPaymentDetails?.details else {
-            completionHandler?([])
-            return
-        }
-        
+        var details = additionalPaymentDetails?.details ?? []
         details.weChatResultCode?.value = String(resp.errCode)
-        
-        completionHandler?(details)
+        completionHandler?(.success(details))
     }
     
 }

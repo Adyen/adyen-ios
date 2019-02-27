@@ -58,6 +58,8 @@
 "openInvoice.moreInformationButton.title" = "Plus d'informations";
 "klarna.consentCheckbox" = "J'accepte que Klarna traite mes données pour vérifier mon identité, connaître ma solvabilité et régler l'achat. J'ai le droit de retirer mon %@ concernant le traitement des données aux fins admises par la législation en vigueur. Les conditions générales du marchand s'appliquent.";
 "klarna.consent" = "accord";
+"afterPay.agreement" = "J'accepte les %@ de AfterPay";
+"afterPay.paymentConditions" = "conditions de paiement";
 "openInvoice.gender.male" = "Homme";
 "openInvoice.gender.female" = "Femme";
 "surcharge.formatted" = "Le montant total comprend une surcharge de %@.";

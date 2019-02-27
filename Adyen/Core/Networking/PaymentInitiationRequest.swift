@@ -8,17 +8,30 @@ import Foundation
 
 /// A request to initiate a payment.
 internal struct PaymentInitiationRequest: Request {
-    /// The type of response expected from the request.
-    typealias ResponseType = PaymentInitiationResponse
     
     /// The payment session.
-    var paymentSession: PaymentSession
+    internal var paymentSession: PaymentSession
     
     /// The payment method for which to initiate a payment.
-    var paymentMethod: PaymentMethod
+    internal var paymentMethod: PaymentMethod
     
     /// The payment details.
     internal var paymentDetails: [PaymentDetail] = []
+    
+    /// The payment data containing the state of the payment.
+    internal var paymentData: String
+    
+    internal init(paymentSession: PaymentSession, paymentMethod: PaymentMethod, paymentDetails: [PaymentDetail]? = nil, paymentData: String? = nil) {
+        self.paymentSession = paymentSession
+        self.paymentMethod = paymentMethod
+        self.paymentDetails = paymentDetails ?? paymentMethod.details
+        self.paymentData = paymentData ?? paymentSession.paymentData
+    }
+    
+    // MARK: - Request
+    
+    /// The type of response expected from the request.
+    typealias ResponseType = PaymentInitiationResponse
     
     /// The URL to which the request should be made.
     internal var url: URL {

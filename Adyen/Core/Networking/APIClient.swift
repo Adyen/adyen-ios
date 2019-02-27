@@ -67,6 +67,9 @@ public protocol Request: Encodable {
     /// The payment method for which to initiate a payment.
     var paymentMethod: PaymentMethod { get }
     
+    /// The payment data to submit with the request, containing the state of the session.
+    var paymentData: String { get }
+    
     /// The URL to which the request should be made.
     var url: URL { get }
     
@@ -79,13 +82,18 @@ public protocol Response: Decodable {}
 /// :nodoc:
 public extension Request {
     
+    /// The payment data to submit with the request, containing the state of the session.
+    public var paymentData: String {
+        return paymentSession.paymentData
+    }
+    
     /// Encodes the payment data for the request.
     ///
     /// - Parameter encoder: The encoder to encode the payment data with.
     public func encodePaymentData(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
-        try container.encode(paymentSession.paymentData, forKey: .paymentData)
+        try container.encode(paymentData, forKey: .paymentData)
         try container.encode(paymentMethod.paymentMethodData, forKey: .paymentMethodData)
     }
     

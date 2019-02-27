@@ -58,6 +58,8 @@
 "openInvoice.moreInformationButton.title" = "詳細情報";
 "klarna.consentCheckbox" = "私は身元確認、信用評価、購入の清算などの目的のためKlarnaが私の情報を使用する事に同意致します。法律に基づき、データ使用をするための%@を無効にする場合があります。利用規約が適用されます。私は、データの処理および法律によって許可されている目的に対する %@ を取り消すことができます。業者の一般的な利用規約が適用されます。";
 "klarna.consent" = "同意";
+"afterPay.agreement" = "AfterPayの%@で同意";
+"afterPay.paymentConditions" = "支払条件";
 "openInvoice.gender.male" = "男性";
 "openInvoice.gender.female" = "女性";
 "surcharge.formatted" = "合計金額には、%@ の追加料金が含まれています。";

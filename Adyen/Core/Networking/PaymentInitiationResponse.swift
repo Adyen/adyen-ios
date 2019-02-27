@@ -14,8 +14,11 @@ internal enum PaymentInitiationResponse: Response {
     /// Indicates a redirect is required to complete the payment.
     case redirect(Redirect)
     
-    /// Indicates extra details are required to complete the payment.
-    case details(Details)
+    /// Indicates the shopper needs to be identified before the payment can be completed.
+    case identify(Details)
+    
+    /// Indicates the shopper needs to be challenged before the payment can be completed.
+    case challenge(Details)
     
     /// Indicates an error occurred during initiation of the payment.
     case error(Error)
@@ -31,8 +34,10 @@ internal enum PaymentInitiationResponse: Response {
             self = .complete(try PaymentResult(from: decoder))
         case "redirect":
             self = .redirect(try Redirect(from: decoder))
-        case "details":
-            self = .details(try Details(from: decoder))
+        case "identifyShopper":
+            self = .identify(try Details(from: decoder))
+        case "challengeShopper", "details":
+            self = .challenge(try Details(from: decoder))
         case "error", "validation":
             self = .error(try Error(from: decoder))
         default:
@@ -115,14 +120,14 @@ internal extension PaymentInitiationResponse {
         /// The extra details needed.
         internal let paymentDetails: [PaymentDetail]
         
-        /// A boolean value indicating if the return URL query should be resubmitted.
-        internal let shouldSubmitReturnURLQuery: Bool
+        /// A collection of arbitrary values required to collect the additional details.
+        internal let userInfo: [String: String]
         
-        /// The data to be used on the redirect.
-        internal let redirectData: [String: String]
+        /// The updated state of the payment. If present, should be submitted on following initiation.
+        internal let paymentData: String?
         
-        /// Data that needs to be submitted on following initiation.
-        internal let returnData: String
+        /// The return data that when present, should be submitted on following initiation.
+        internal let returnData: String?
         
         // MARK: - Decoding
         
@@ -131,16 +136,27 @@ internal extension PaymentInitiationResponse {
             
             self.paymentMethodType = try container.decode([String: String].self, forKey: .paymentMethod)["type"] ?? ""
             self.paymentDetails = try container.decode([PaymentDetail].self, forKey: .paymentDetails)
-            self.shouldSubmitReturnURLQuery = try container.decodeBooleanStringIfPresent(forKey: .shouldSubmitReturnURLQuery) ?? false
-            self.redirectData = try container.decode([String: String].self, forKey: .redirectData)
-            self.returnData = try container.decode(String.self, forKey: .returnData)
+            self.paymentData = try container.decodeIfPresent(String.self, forKey: .paymentData)
+            self.returnData = try container.decodeIfPresent(String.self, forKey: .returnData)
+            
+            do {
+                self.userInfo = try container.decode([String: String].self, forKey: .authenticationData)
+            } catch {
+                let userInfoError = error
+                do {
+                    self.userInfo = try container.decode([String: String].self, forKey: .redirectData)
+                } catch {
+                    throw userInfoError
+                }
+            }
         }
         
         private enum CodingKeys: String, CodingKey {
             case paymentMethod
             case paymentDetails = "responseDetails"
-            case shouldSubmitReturnURLQuery = "submitPaymentMethodReturnData"
+            case authenticationData = "authentication"
             case redirectData
+            case paymentData
             case returnData = "paymentMethodReturnData"
         }
         

@@ -1,5 +1,10 @@
 # Migration Notes
 
+### 2.6.0
+
+- The deployment target has been raised to iOS 10.3.
+- `AdditionalPaymentDetails` has been changed from a struct to a protocol.
+
 ### 2.0.0
 - `CheckoutViewController` and `CheckoutViewControllerDelegate` have been replaced with `CheckoutController` and `CheckoutControllerDelegate`.
 - `CheckoutViewControllerCardScanDelegate` has been replaced with `CardScanDelegate`.

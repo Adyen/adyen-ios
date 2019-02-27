@@ -127,7 +127,7 @@ class AddressFormSection: OpenInvoiceFormSection {
         let selectField = FormSelectField(values: values)
         selectField.title = ADYLocalizedString("openInvoice.countryField.title")
         selectField.accessibilityIdentifier = "country-field"
-        selectField.isEnabled = type == .delivery
+        selectField.isEnabled = false
         
         return selectField
     }()

@@ -8,5 +8,5 @@ import Foundation
 
 /// The current version of the SDK.
 internal let sdkVersion: String = {
-    "2.5.0"
+    "2.6.0"
 }()

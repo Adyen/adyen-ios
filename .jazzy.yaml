@@ -34,6 +34,8 @@ custom_categories:
     - PaymentMethod
     - PaymentDetail
     - AdditionalPaymentDetails
+    - IdentificationPaymentDetails
+    - ChallengePaymentDetails
     - StoredPaymentDetails
     - StoredCardPaymentDetails
     - StoredPayPalPaymentDetails
@@ -44,6 +46,7 @@ custom_categories:
     - Array
   - name: Card Module
     children:
+    - Card3DS2Authenticator
     - CardEncryptor
     - CardScanDelegate
     - CardScanCompletion

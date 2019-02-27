@@ -106,7 +106,7 @@ internal final class CheckoutPresenter: NSObject {
         }
     }
     
-    internal func show(_ details: AdditionalPaymentDetails, using plugin: AdditionalPaymentDetailsPlugin, completion: @escaping Completion<[PaymentDetail]>) {
+    internal func show(_ details: AdditionalPaymentDetails, using plugin: AdditionalPaymentDetailsPlugin, completion: @escaping Completion<Result<[PaymentDetail]>>) {
         guard let navigationController = navigationController else {
             return
         }

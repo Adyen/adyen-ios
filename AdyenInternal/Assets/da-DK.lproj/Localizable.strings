@@ -58,6 +58,8 @@
 "openInvoice.moreInformationButton.title" = "Mere information";
 "klarna.consentCheckbox" = "Jeg giver mit samtykke til, at Klarna kan behandle mine data med henblik på bekræftelse af min identitet og kreditvurdering samt afregning af mit køb. Jeg kan tilbagekalde mit %@ til behandling af data og til formål, hvor dette er muligt i henhold til gældende lov. Sælgers generelle vilkår og betingelser gælder.";
 "klarna.consent" = "samtykke";
+"afterPay.agreement" = "Jeg accepterer AfterPays %@";
+"afterPay.paymentConditions" = "betalingsbetingelser";
 "openInvoice.gender.male" = "Mand";
 "openInvoice.gender.female" = "Kvinde";
 "surcharge.formatted" = "Det samlede beløb indeholder et tillægsgebyr på %@.";

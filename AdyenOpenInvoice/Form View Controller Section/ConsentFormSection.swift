@@ -11,7 +11,8 @@ class ConsentFormSection: OpenInvoiceFormSection {
     
     // MARK: - Internal
     
-    init(validityCallback: @escaping () -> Void) {
+    init(paymentMethodType: String, validityCallback: @escaping () -> Void) {
+        self.paymentMethodType = paymentMethodType
         self.validityCallback = validityCallback
         super.init()
         
@@ -32,15 +33,15 @@ class ConsentFormSection: OpenInvoiceFormSection {
     // MARK: - Private
     
     private var validityCallback: () -> Void
+    private var paymentMethodType: String
     
     private lazy var consentLabel: FormLabel = {
         let label = FormLabel()
         label.accessibilityIdentifier = "consent-label"
         
-        let consentString = ADYLocalizedString("klarna.consent")
-        let attributedTitle = NSMutableAttributedString(string: ADYLocalizedString("klarna.consentCheckbox", consentString))
+        let attributedTitle = NSMutableAttributedString(string: termsAndConditions)
         
-        attributedTitle.string.rangesOf(subString: consentString).forEach({ range in
+        attributedTitle.string.rangesOf(subString: underlinedString).forEach({ range in
             attributedTitle.addAttribute(NSAttributedString.Key.underlineStyle, value: 1.0, range: range)
         })
         
@@ -66,11 +67,55 @@ class ConsentFormSection: OpenInvoiceFormSection {
         return view
     }()
     
+    private lazy var termsAndConditions: String = {
+        switch paymentMethodType {
+        case "klarna":
+            return ADYLocalizedString("klarna.consentCheckbox", underlinedString)
+        case "afterpay_default":
+            return ADYLocalizedString("afterPay.agreement", underlinedString)
+        default:
+            return ""
+        }
+    }()
+    
+    private lazy var underlinedString: String = {
+        switch paymentMethodType {
+        case "klarna":
+            return ADYLocalizedString("klarna.consent")
+        case "afterpay_default":
+            return ADYLocalizedString("afterPay.paymentConditions")
+        default:
+            return ""
+        }
+    }()
+    
+    private lazy var klarnaConsentURLString: String = {
+        "https://cdn.klarna.com/1.0/shared/content/legal/terms/2/de_de/consent"
+    }()
+    
+    private lazy var afterPayConsentURLString: String = {
+        switch (NSLocale.current.languageCode, NSLocale.current.regionCode) {
+        case ("nl", "BE"):
+            return "https://www.afterpay.be/be/footer/betalen-met-afterpay/betalingsvoorwaarden"
+        case ("nl", _):
+            return "https://www.afterpay.nl/nl/algemeen/betalen-met-afterpay/betalingsvoorwaarden"
+        default:
+            return "https://www.afterpay.nl/en/algemeen/pay-with-afterpay/payment-conditions"
+        }
+    }()
+    
     private func didTouchConsentLabel() {
-        if let url = URL(string: "https://cdn.klarna.com/1.0/shared/content/legal/terms/2/de_de/consent") {
-            UIApplication.shared.openURL(url)
+        guard paymentMethodType == "klarna" || paymentMethodType == "afterpay_default" else {
+            return
+        }
+        
+        let urlString = paymentMethodType == "klarna" ? klarnaConsentURLString : afterPayConsentURLString
+        
+        if let url = URL(string: urlString) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
     }
+    
 }
 
 private extension String {

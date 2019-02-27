@@ -1,4 +1,4 @@
-platform :ios, '10.0'
+platform :ios, '10.3'
 
 use_frameworks!
 
@@ -6,6 +6,7 @@ target 'Quick Integration Example' do
 
   pod 'Adyen', :path => '../../'
   pod 'Adyen/ApplePay', :path => '../../'
+  pod 'Adyen/Card3DS2', :path => '../../'
   pod 'AdyenInternal', :path => '../../'
 
 end

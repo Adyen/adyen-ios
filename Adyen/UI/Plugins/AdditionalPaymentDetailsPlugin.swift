@@ -17,6 +17,6 @@ public protocol AdditionalPaymentDetailsPlugin: Plugin {
     ///   - navigationController: The navigation controller which can be used for presenting the additional details.
     ///   - appearance: The appearance which should be used to style the presented UI.
     ///   - completion: The completion to invoke when the additional details are filled.
-    func present(_ details: AdditionalPaymentDetails, using navigationController: UINavigationController, appearance: Appearance, completion: @escaping Completion<[PaymentDetail]>)
+    func present(_ details: AdditionalPaymentDetails, using navigationController: UINavigationController, appearance: Appearance, completion: @escaping Completion<Result<[PaymentDetail]>>)
     
 }
