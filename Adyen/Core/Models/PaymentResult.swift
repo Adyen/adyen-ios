@@ -48,7 +48,7 @@ public struct PaymentResult: Decodable {
 
 public extension PaymentResult {
     /// The result of a payment.
-    public enum Status: String, Decodable {
+    enum Status: String, Decodable {
         /// Indicates the payment has been received by Adyen and will be processed.
         case received
         

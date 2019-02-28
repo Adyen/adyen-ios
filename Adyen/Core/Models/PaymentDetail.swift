@@ -76,7 +76,7 @@ public struct PaymentDetail: Decodable {
 
 public extension PaymentDetail {
     /// Enum specifying the type of input requested.
-    public enum InputType: Decodable, Equatable {
+    enum InputType: Decodable, Equatable {
         /// Text input type.
         case text
         
@@ -190,7 +190,7 @@ public extension PaymentDetail {
 
 public extension PaymentDetail {
     /// A structure representing a selectable value for payment details with type `select`.
-    public struct SelectItem: Decodable, Equatable {
+    struct SelectItem: Decodable, Equatable {
         /// A string uniquely identifying the select item.
         public let identifier: String
         
@@ -213,7 +213,7 @@ public extension PaymentDetail {
 
 public extension PaymentDetail {
     /// A structure representing configuration for payment details with type `fieldset`.
-    public struct Configuration: Decodable, Equatable {
+    struct Configuration: Decodable, Equatable {
         
         /// Enum specifying the visibility of a field.
         public enum FieldVisibility: String {

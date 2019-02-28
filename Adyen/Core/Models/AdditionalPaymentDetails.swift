@@ -43,7 +43,7 @@ public extension AdditionalPaymentDetails {
     
     /// The data to be used on the redirect, if needed.
     @available(*, deprecated, renamed: "userInfo")
-    public var redirectData: [String: String] {
+    var redirectData: [String: String] {
         return userInfo
     }
     

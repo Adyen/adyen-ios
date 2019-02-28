@@ -9,7 +9,7 @@ import Foundation
 public extension Array where Element == PaymentDetail {
     
     /// The payment detail for personal details section
-    public var personalDetails: PaymentDetail? {
+    var personalDetails: PaymentDetail? {
         get {
             return self[openInvoicePersonalDetails]
         }
@@ -20,7 +20,7 @@ public extension Array where Element == PaymentDetail {
     }
     
     /// The payment detail for billing address section
-    public var billingAddress: PaymentDetail? {
+    var billingAddress: PaymentDetail? {
         get {
             return self[openInvoiceBillingAddress]
         }
@@ -31,7 +31,7 @@ public extension Array where Element == PaymentDetail {
     }
     
     /// The payment detail for delivery address section
-    public var deliveryAddress: PaymentDetail? {
+    var deliveryAddress: PaymentDetail? {
         get {
             return self[openInvoiceDeliveryAddress]
         }
@@ -42,7 +42,7 @@ public extension Array where Element == PaymentDetail {
     }
     
     /// The payment detail for separate delivery address flag
-    public var separateDeliveryAddress: PaymentDetail? {
+    var separateDeliveryAddress: PaymentDetail? {
         get {
             return self[openInvoiceSeparateDeliveryAddress]
         }
@@ -53,7 +53,7 @@ public extension Array where Element == PaymentDetail {
     }
     
     /// The payment detail for first name
-    public var firstName: PaymentDetail? {
+    var firstName: PaymentDetail? {
         get {
             return self[openInvoiceFirstName]
         }
@@ -64,7 +64,7 @@ public extension Array where Element == PaymentDetail {
     }
     
     /// The payment detail for last name
-    public var lastName: PaymentDetail? {
+    var lastName: PaymentDetail? {
         get {
             return self[openInvoiceLastName]
         }
@@ -75,7 +75,7 @@ public extension Array where Element == PaymentDetail {
     }
     
     /// The payment detail for gender
-    public var gender: PaymentDetail? {
+    var gender: PaymentDetail? {
         get {
             return self[openInvoiceGender]
         }
@@ -86,7 +86,7 @@ public extension Array where Element == PaymentDetail {
     }
     
     /// The payment detail for date of birth
-    public var dateOfBirth: PaymentDetail? {
+    var dateOfBirth: PaymentDetail? {
         get {
             return self[openInvoiceDateOfBirth]
         }
@@ -97,7 +97,7 @@ public extension Array where Element == PaymentDetail {
     }
     
     /// The payment detail for telephone number
-    public var telephoneNumber: PaymentDetail? {
+    var telephoneNumber: PaymentDetail? {
         get {
             return self[openInvoiceTelephoneNumber]
         }
@@ -108,7 +108,7 @@ public extension Array where Element == PaymentDetail {
     }
     
     /// The payment detail for shopper email
-    public var shopperEmail: PaymentDetail? {
+    var shopperEmail: PaymentDetail? {
         get {
             return self[openInvoiceShopperEmail]
         }
@@ -119,7 +119,7 @@ public extension Array where Element == PaymentDetail {
     }
     
     /// The payment detail for social security number
-    public var socialSecurityNumber: PaymentDetail? {
+    var socialSecurityNumber: PaymentDetail? {
         get {
             return self[klarnaSocialSecurityNumber]
         }
@@ -130,7 +130,7 @@ public extension Array where Element == PaymentDetail {
     }
     
     /// The payment detail for street
-    public var street: PaymentDetail? {
+    var street: PaymentDetail? {
         get {
             return self[openInvoiceStreet]
         }
@@ -141,7 +141,7 @@ public extension Array where Element == PaymentDetail {
     }
     
     /// The payment detail for house number
-    public var houseNumberOrName: PaymentDetail? {
+    var houseNumberOrName: PaymentDetail? {
         get {
             return self[openInvoiceHouseNumberOrName]
         }
@@ -152,7 +152,7 @@ public extension Array where Element == PaymentDetail {
     }
     
     /// The payment detail for city
-    public var city: PaymentDetail? {
+    var city: PaymentDetail? {
         get {
             return self[openInvoiceCity]
         }
@@ -163,7 +163,7 @@ public extension Array where Element == PaymentDetail {
     }
     
     /// The payment detail for postal code
-    public var postalCode: PaymentDetail? {
+    var postalCode: PaymentDetail? {
         get {
             return self[openInvoicePostalCode]
         }
@@ -174,7 +174,7 @@ public extension Array where Element == PaymentDetail {
     }
     
     /// The payment detail for country
-    public var country: PaymentDetail? {
+    var country: PaymentDetail? {
         get {
             return self[openInvoiceCountry]
         }
@@ -185,7 +185,7 @@ public extension Array where Element == PaymentDetail {
     }
     
     /// The payment detail for consent
-    public var consent: PaymentDetail? {
+    var consent: PaymentDetail? {
         get {
             return self[openInvoiceConsent]
         }

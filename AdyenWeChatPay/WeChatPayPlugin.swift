@@ -64,7 +64,7 @@ extension WeChatPayPlugin: WXApiDelegate {
 
 fileprivate extension PayReq {
     
-    fileprivate convenience init(redirectData: WeChatRedirectData) {
+    convenience init(redirectData: WeChatRedirectData) {
         self.init()
         
         openID = redirectData.appIdentifier

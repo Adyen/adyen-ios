@@ -8,7 +8,7 @@ import Foundation
 
 public extension Array where Element == PaymentDetail {
     /// The payment detail for an issuer.
-    public var issuer: PaymentDetail? {
+    var issuer: PaymentDetail? {
         get {
             return self[issuerKey]
         }

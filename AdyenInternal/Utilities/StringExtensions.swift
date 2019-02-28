@@ -10,20 +10,20 @@ public extension String {
     
     // MARK: - Getting Substrings
     
-    public subscript(position: Int) -> String {
+    subscript(position: Int) -> String {
         guard position >= 0 && position < count else { return "" }
         
         return String(self[index(startIndex, offsetBy: position)])
     }
     
-    public subscript(range: Range<Int>) -> String {
+    subscript(range: Range<Int>) -> String {
         let lowerBound = index(startIndex, offsetBy: range.lowerBound)
         let upperBound = index(lowerBound, offsetBy: range.upperBound - range.lowerBound)
         
         return String(self[lowerBound..<upperBound])
     }
     
-    public subscript(range: ClosedRange<Int>) -> String {
+    subscript(range: ClosedRange<Int>) -> String {
         let lowerBound = index(startIndex, offsetBy: range.lowerBound)
         let upperBound = index(lowerBound, offsetBy: range.upperBound - range.lowerBound)
         
@@ -38,7 +38,7 @@ public extension String {
     ///   - length: The maximum length of the groups the string should be separated in.
     ///   - separator: The separator to use inbetween the groups.
     /// - Returns: A grouped string.
-    public func grouped(length: Int, separator: String = " ") -> String {
+    func grouped(length: Int, separator: String = " ") -> String {
         let groups = stride(from: 0, to: count, by: length).map { index -> String in
             let startIndex = self.index(self.startIndex, offsetBy: index)
             

@@ -83,14 +83,14 @@ public protocol Response: Decodable {}
 public extension Request {
     
     /// The payment data to submit with the request, containing the state of the session.
-    public var paymentData: String {
+    var paymentData: String {
         return paymentSession.paymentData
     }
     
     /// Encodes the payment data for the request.
     ///
     /// - Parameter encoder: The encoder to encode the payment data with.
-    public func encodePaymentData(to encoder: Encoder) throws {
+    func encodePaymentData(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(paymentData, forKey: .paymentData)

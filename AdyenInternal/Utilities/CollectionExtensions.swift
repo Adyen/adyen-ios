@@ -11,7 +11,7 @@ public extension Collection {
     ///
     /// - Parameter closure: A closure that returns a grouping key for each element in the collection.
     /// - Returns: A collection grouped by the keys retrieved for each element.g
-    public func grouped<G: Hashable>(by closure: (Element) -> G?) -> [[Element]] {
+    func grouped<G: Hashable>(by closure: (Element) -> G?) -> [[Element]] {
         var groups = [[Element]]()
         
         for element in self {

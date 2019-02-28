@@ -7,7 +7,7 @@
 import Foundation
 
 public extension URLSession {
-    public func dataTask(with url: URL, completion: @escaping ((URLSessionResult) -> Void)) -> URLSessionDataTask {
+    func dataTask(with url: URL, completion: @escaping ((URLSessionResult) -> Void)) -> URLSessionDataTask {
         return dataTask(with: url, completionHandler: { data, _, error in
             if let error = error {
                 completion(.failure(error))
@@ -19,7 +19,7 @@ public extension URLSession {
         })
     }
     
-    public func dataTask(with urlRequest: URLRequest, completion: @escaping ((URLSessionResult) -> Void)) -> URLSessionDataTask {
+    func dataTask(with urlRequest: URLRequest, completion: @escaping ((URLSessionResult) -> Void)) -> URLSessionDataTask {
         return dataTask(with: urlRequest, completionHandler: { data, _, error in
             if let error = error {
                 completion(.failure(error))

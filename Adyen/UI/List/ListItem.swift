@@ -44,8 +44,9 @@ internal struct ListItem {
 // MARK: - Hashable & Equatable
 
 extension ListItem: Hashable {
-    internal var hashValue: Int {
-        return title.hashValue ^ (imageURL?.hashValue ?? 0)
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(title)
+        hasher.combine(imageURL)
     }
     
     internal static func == (lhs: ListItem, rhs: ListItem) -> Bool {

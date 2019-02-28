@@ -8,7 +8,7 @@ import Foundation
 
 public extension Array where Element == PaymentDetail {
     /// The payment detail for a SEPA Direct Debit owner name.
-    public var sepaName: PaymentDetail? {
+    var sepaName: PaymentDetail? {
         get {
             return self[sepaNameKey]
         }
@@ -19,7 +19,7 @@ public extension Array where Element == PaymentDetail {
     }
     
     /// The payment detail for SEPA Direct Debit IBAN.
-    public var sepaIBAN: PaymentDetail? {
+    var sepaIBAN: PaymentDetail? {
         get {
             return self[sepaIBANKey]
         }

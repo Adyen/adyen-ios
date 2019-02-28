@@ -23,7 +23,7 @@ public protocol Plugin: AnyObject {
 /// :nodoc:
 public extension Plugin {
     
-    public var isDeviceSupported: Bool {
+    var isDeviceSupported: Bool {
         return true
     }
     

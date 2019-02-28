@@ -7,7 +7,7 @@
 import Foundation
 
 public extension Bool {
-    public func stringValue() -> String? {
+    func stringValue() -> String? {
         return self ? "true" : "false"
     }
 }

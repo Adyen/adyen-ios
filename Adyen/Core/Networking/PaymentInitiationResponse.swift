@@ -55,7 +55,7 @@ internal enum PaymentInitiationResponse: Response {
 
 internal extension PaymentInitiationResponse {
     /// The information required to perform a redirect.
-    internal struct Redirect: Decodable {
+    struct Redirect: Decodable {
         /// The URL to redirect the shopper to.
         internal let url: URL
         
@@ -84,7 +84,7 @@ internal extension PaymentInitiationResponse {
 
 internal extension PaymentInitiationResponse {
     /// An error that occurred during the initiation of a payment.
-    internal struct Error: LocalizedError, Decodable {
+    struct Error: LocalizedError, Decodable {
         /// The error code.
         internal let code: String
         
@@ -113,7 +113,7 @@ internal extension PaymentInitiationResponse {
 internal extension PaymentInitiationResponse {
     
     /// Extra details needed to perform the transaction.
-    internal struct Details: Decodable {
+    struct Details: Decodable {
         /// The payment method type that need extra details.
         internal let paymentMethodType: String
         

@@ -53,17 +53,17 @@ public enum PaymentDetailsPluginPresentationMode {
 public extension PaymentDetailsPlugin {
     
     /// :nodoc:
-    public var canSkipPaymentMethodSelection: Bool {
+    var canSkipPaymentMethodSelection: Bool {
         return false
     }
     
     /// :nodoc:
-    public var showsDisclosureIndicator: Bool {
+    var showsDisclosureIndicator: Bool {
         return preferredPresentationMode == .push
     }
     
     /// :nodoc:
-    public func finish(with result: Result<PaymentResult>, completion: @escaping () -> Void) {
+    func finish(with result: Result<PaymentResult>, completion: @escaping () -> Void) {
         completion()
     }
     

@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 
 public extension UIImageView {
-    public func downloadImage(from url: URL?) {
+    func downloadImage(from url: URL?) {
         image = nil
         
         guard let url = url else {

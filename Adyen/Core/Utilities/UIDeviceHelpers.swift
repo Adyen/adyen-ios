@@ -8,7 +8,7 @@ import UIKit
 
 internal extension UIDevice {
     /// Returns the identifier of the device model, such as iPhone10,3 for iPhone X.
-    internal var modelIdentifier: String {
+    var modelIdentifier: String {
         var systemInfo = utsname()
         uname(&systemInfo)
         
