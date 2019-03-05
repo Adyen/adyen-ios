@@ -26,13 +26,7 @@ internal class PreselectedPaymentMethodViewController: ShortViewController {
     
     var payButtonTitle = "" {
         didSet {
-            payButton.setTitle(payButtonTitle, for: [])
-        }
-    }
-    
-    var logoURL: URL? {
-        didSet {
-            paymentMethodView.imageURL = logoURL
+            preselectedPaymentMethodView.payButton.setTitle(payButtonTitle, for: [])
         }
     }
     
@@ -46,47 +40,25 @@ internal class PreselectedPaymentMethodViewController: ShortViewController {
     
     // MARK: - UIViewController
     
+    private var preselectedPaymentMethodView: PreselectedPaymentMethodView {
+        return view as! PreselectedPaymentMethodView // swiftlint:disable:this force_cast
+    }
+    
+    override func loadView() {
+        view = PreselectedPaymentMethodView()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        edgesForExtendedLayout = []
-        
-        configureChangeButton()
-        
-        let margin: CGFloat = 16.0
-        
-        paymentMethodView.title = paymentMethod.displayName
-        paymentMethodView.frame = CGRect(x: margin, y: 0, width: view.bounds.width - 2 * margin, height: 90)
-        paymentMethodView.autoresizingMask = [.flexibleWidth]
-        
-        view.addSubview(paymentMethodView)
-        
-        payButton.sizeToFit()
-        var frame = payButton.frame
-        frame.origin = CGPoint(x: margin, y: paymentMethodView.frame.maxY)
-        frame.size.width = view.bounds.width - 2 * margin
-        payButton.frame = frame
-        payButton.autoresizingMask = [.flexibleWidth]
-        view.addSubview(payButton)
+        let view = preselectedPaymentMethodView
+        view.paymentMethodView.imageURL = paymentMethod.logoURL
+        view.paymentMethodView.title = paymentMethod.displayName
+        view.paymentMethodView.accessibilityLabel = ADYLocalizedString("preselectedPaymentMethod.accessibilityLabel", paymentMethod.accessibilityLabel)
+        view.payButton.addTarget(self, action: #selector(didSelectPay), for: .touchUpInside)
     }
     
     // MARK: - Private
-    
-    private lazy var paymentMethodView: ListItemView = {
-        let listItemView = ListItemView()
-        listItemView.titleAttributes = Appearance.shared.textAttributes
-        listItemView.isAccessibilityElement = true
-        listItemView.accessibilityLabel = ADYLocalizedString("preselectedPaymentMethod.accessibilityLabel", paymentMethod.accessibilityLabel)
-        
-        return listItemView
-    }()
-    
-    private lazy var payButton: UIButton = {
-        let payButton = Appearance.shared.payButton
-        payButton.addTarget(self, action: #selector(didSelectPay), for: .touchUpInside)
-        
-        return payButton
-    }()
     
     private func configureChangeButton() {
         if changeButtonHandler == nil {
@@ -114,10 +86,10 @@ internal class PreselectedPaymentMethodViewController: ShortViewController {
 
 extension PreselectedPaymentMethodViewController: PaymentProcessingElement {
     func startProcessing() {
-        payButton.showsActivityIndicator = true
+        preselectedPaymentMethodView.payButton.showsActivityIndicator = true
     }
     
     func stopProcessing() {
-        payButton.showsActivityIndicator = false
+        preselectedPaymentMethodView.payButton.showsActivityIndicator = false
     }
 }

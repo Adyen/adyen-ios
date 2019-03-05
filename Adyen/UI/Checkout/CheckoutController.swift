@@ -237,7 +237,7 @@ extension CheckoutController: CheckoutPresenterDelegate {
     
     func didDelete(_ paymentMethod: PaymentMethod, in checkoutPresenter: CheckoutPresenter) {
         paymentController?.deleteStoredPaymentMethod(paymentMethod) { _ in
-            // TODO: Consider doing something meaningful with the result.
+            
         }
     }
 }

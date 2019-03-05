@@ -192,7 +192,7 @@ public final class CardEncryptor {
 
 public extension CardEncryptor {
     /// Enum specifying the environments for which a public key can be retrieved.
-    public enum Environment: String, Decodable {
+    enum Environment: String, Decodable {
         /// Indicates a live environment.
         case live
         

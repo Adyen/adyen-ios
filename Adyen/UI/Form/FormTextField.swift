@@ -177,7 +177,7 @@ open class FormTextField: UIView {
 
 /// :nodoc:
 public extension FormTextField {
-    public var text: String? {
+    var text: String? {
         get {
             return textField.text
         }
@@ -195,7 +195,7 @@ public extension FormTextField {
         }
     }
     
-    public var placeholder: String? {
+    var placeholder: String? {
         get {
             return textField.placeholder
         }
@@ -206,7 +206,7 @@ public extension FormTextField {
         }
     }
     
-    public var autocapitalizationType: UITextAutocapitalizationType {
+    var autocapitalizationType: UITextAutocapitalizationType {
         get {
             return textField.autocapitalizationType
         }
@@ -215,7 +215,7 @@ public extension FormTextField {
         }
     }
     
-    public var keyboardType: UIKeyboardType {
+    var keyboardType: UIKeyboardType {
         get {
             return textField.keyboardType
         }
@@ -224,7 +224,7 @@ public extension FormTextField {
         }
     }
     
-    public var clearButtonMode: UITextField.ViewMode {
+    var clearButtonMode: UITextField.ViewMode {
         get {
             return textField.clearButtonMode
         }

@@ -143,7 +143,7 @@ class PaymentRequestManager {
     private var cardDetails: CardDetails?
     private var requestStatus: RequestStatus = .none
     
-    private let secretKey = ""
+    private let secretKey = "0101408667EE5CD5932B441CFA248497772C84EB96588A4314DE5E5D76428B4CAE8D72669BD57518C76F1214690BF3F3CC998122A6BC05A182EF9B833E6E5C17C53F3710C15D5B0DBEE47CDCB5588C48224C6007"
     
     private func postMainThreadNotification(_ notificationName: Notification.Name, userInfo: [AnyHashable: Any]? = nil) {
         DispatchQueue.main.async {
@@ -157,8 +157,11 @@ class PaymentRequestManager {
         cardDetails = nil
         paymentMethods = nil
         requestStatus = .none
+        authenticator = nil
         PaymentMethodImageCache.shared.removeAllObjects()
     }
+    
+    private var authenticator: Card3DS2Authenticator?
     
 }
 
@@ -241,6 +244,55 @@ extension PaymentRequestManager: PaymentControllerDelegate {
         let userInfo = [PaymentRequestManager.finishedRequestStatusKey: requestStatus]
         postMainThreadNotification(PaymentRequestManager.didFinishRequestNotification, userInfo: userInfo)
         clearStoredRequestData()
+    }
+    
+    func provideAdditionalDetails(_ additionalDetails: AdditionalPaymentDetails, for paymentMethod: PaymentMethod, detailsHandler: @escaping Completion<[PaymentDetail]>) {
+        guard paymentMethod.type == "card" else {
+            detailsHandler([])
+            return
+        }
+        
+        if let identificationDetails = additionalDetails as? IdentificationPaymentDetails {
+            handle3DS2Fingerprint(identificationDetails, detailsHandler: detailsHandler)
+        } else if let challengeDetails = additionalDetails as? ChallengePaymentDetails {
+            handle3DS2Challenge(challengeDetails, detailsHandler: detailsHandler)
+        }
+    }
+    
+    private func handle3DS2Fingerprint(_ identificationDetails: IdentificationPaymentDetails, detailsHandler: @escaping Completion<[PaymentDetail]>) {
+        guard let fingerprintToken = identificationDetails.threeDS2FingerprintToken else { return }
+        
+        let authenticator = Card3DS2Authenticator()
+        authenticator.createFingerprint(usingToken: fingerprintToken) { result in
+            switch result {
+            case let .success(fingerprint):
+                var details = identificationDetails.details
+                details.threeDS2Fingerprint?.value = fingerprint
+                detailsHandler(details)
+            case let .failure(error):
+                print("An error occurred: \(error)")
+                
+                detailsHandler([])
+            }
+        }
+        self.authenticator = authenticator
+    }
+    
+    private func handle3DS2Challenge(_ challengeDetails: ChallengePaymentDetails, detailsHandler: @escaping Completion<[PaymentDetail]>) {
+        guard let challengeToken = challengeDetails.threeDS2ChallengeToken else { return }
+        
+        authenticator?.presentChallenge(usingToken: challengeToken) { result in
+            switch result {
+            case let .success(challengeResult):
+                var details = challengeDetails.details
+                details.threeDS2ChallengeResult?.value = challengeResult.payload
+                detailsHandler(details)
+            case let .failure(error):
+                print("An error occurred: \(error)")
+                
+                detailsHandler([])
+            }
+        }
     }
     
 }

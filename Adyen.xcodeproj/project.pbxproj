@@ -58,6 +58,7 @@
 		E2A42274209AFC9000BBC1CD /* StoredPaymentDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A42273209AFC9000BBC1CD /* StoredPaymentDetails.swift */; };
 		E2A42276209B118800BBC1CD /* StoredPaymentMethodDeletionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A42275209B118800BBC1CD /* StoredPaymentMethodDeletionRequest.swift */; };
 		E2A42278209B11CC00BBC1CD /* StoredPaymentMethodDeletionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A42277209B11CC00BBC1CD /* StoredPaymentMethodDeletionResponse.swift */; };
+		E2ACBAF4222E6F6700397D38 /* PreselectedPaymentMethodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2ACBAF3222E6F6700397D38 /* PreselectedPaymentMethodView.swift */; };
 		E2B6207D1F0E5EA5001D4C27 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2B6207C1F0E5EA5001D4C27 /* Main.storyboard */; };
 		E2B6207F1F0E5F0F001D4C27 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2B6207E1F0E5F0F001D4C27 /* LaunchScreen.storyboard */; };
 		E2BAD498216F6A3000B61F90 /* PaymentDetailsPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BAD497216F6A3000B61F90 /* PaymentDetailsPlugin.swift */; };
@@ -444,6 +445,7 @@
 		E2A42273209AFC9000BBC1CD /* StoredPaymentDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredPaymentDetails.swift; sourceTree = "<group>"; };
 		E2A42275209B118800BBC1CD /* StoredPaymentMethodDeletionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredPaymentMethodDeletionRequest.swift; sourceTree = "<group>"; };
 		E2A42277209B11CC00BBC1CD /* StoredPaymentMethodDeletionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredPaymentMethodDeletionResponse.swift; sourceTree = "<group>"; };
+		E2ACBAF3222E6F6700397D38 /* PreselectedPaymentMethodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreselectedPaymentMethodView.swift; sourceTree = "<group>"; };
 		E2B6207C1F0E5EA5001D4C27 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		E2B6207E1F0E5F0F001D4C27 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E2BAD497216F6A3000B61F90 /* PaymentDetailsPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentDetailsPlugin.swift; sourceTree = "<group>"; };
@@ -988,6 +990,7 @@
 			children = (
 				E97C04D6205036300065A89A /* PreselectedPaymentMethodManager.swift */,
 				E97C04D1204ED1670065A89A /* PreselectedPaymentMethodViewController.swift */,
+				E2ACBAF3222E6F6700397D38 /* PreselectedPaymentMethodView.swift */,
 			);
 			path = "Preselected Payment Method";
 			sourceTree = "<group>";
@@ -1622,54 +1625,55 @@
 				TargetAttributes = {
 					E20AD0081EFAB0310065B70E = {
 						CreatedOnToolsVersion = 8.3.3;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Manual;
 					};
 					E20AD0111EFAB0310065B70E = {
 						CreatedOnToolsVersion = 8.3.3;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Manual;
 					};
 					E2BF6CC01F03952C0065E574 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = B2NYSS5932;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Manual;
 						TestTargetID = E2E9D01A1F0389C80056E0AC;
 					};
 					E2E9D01A1F0389C80056E0AC = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = B2NYSS5932;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
 					E91F485E20D943DC00D4F58C = {
 						CreatedOnToolsVersion = 9.3;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Manual;
 					};
 					E9CD42A82180908600C30D2A = {
 						CreatedOnToolsVersion = 10.0;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Manual;
 					};
 					E9D4FEF620D7B77C003AA167 = {
 						CreatedOnToolsVersion = 9.4;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Manual;
 					};
 					E9D4FF0720D7B7E6003AA167 = {
 						CreatedOnToolsVersion = 9.4;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Manual;
 					};
 					E9D4FF1820D7B803003AA167 = {
 						CreatedOnToolsVersion = 9.4;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Manual;
 					};
 					E9EB7EF4210F38BE00FC7ADA = {
 						CreatedOnToolsVersion = 9.4;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1900,6 +1904,7 @@
 				E9D4FF4620D7DD25003AA167 /* FormView.swift in Sources */,
 				E23AE02D1F98BF6100FF10AD /* CheckoutButton.swift in Sources */,
 				E975965D20FCD4F800EF8D3F /* IssuerPaymentDetails.swift in Sources */,
+				E2ACBAF4222E6F6700397D38 /* PreselectedPaymentMethodView.swift in Sources */,
 				E9A0A9B621C004CA001D3B26 /* GiroPayPaymentDetails.swift in Sources */,
 				E25842CB20A1E53500369E7E /* RedirectListener.swift in Sources */,
 				E978236220B56C580039B7C0 /* PaymentDetailKeyValues.swift in Sources */,
@@ -2205,7 +2210,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 2.6.0;
+				CURRENT_PROJECT_VERSION = 2.7.0;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -2267,7 +2272,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 2.6.0;
+				CURRENT_PROJECT_VERSION = 2.7.0;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2297,7 +2302,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.6.0;
+				DYLIB_CURRENT_VERSION = 2.7.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2322,7 +2327,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.6.0;
+				DYLIB_CURRENT_VERSION = 2.7.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2439,11 +2444,11 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.6.0;
+				CURRENT_PROJECT_VERSION = 2.7.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.6.0;
+				DYLIB_CURRENT_VERSION = 2.7.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenApplePay/Info.plist;
@@ -2466,11 +2471,11 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.6.0;
+				CURRENT_PROJECT_VERSION = 2.7.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.6.0;
+				DYLIB_CURRENT_VERSION = 2.7.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenApplePay/Info.plist;
@@ -2493,11 +2498,11 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.6.0;
+				CURRENT_PROJECT_VERSION = 2.7.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.6.0;
+				DYLIB_CURRENT_VERSION = 2.7.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenOpenInvoice/Info.plist;
@@ -2522,11 +2527,11 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.6.0;
+				CURRENT_PROJECT_VERSION = 2.7.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.6.0;
+				DYLIB_CURRENT_VERSION = 2.7.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenOpenInvoice/Info.plist;
@@ -2549,11 +2554,11 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.6.0;
+				CURRENT_PROJECT_VERSION = 2.7.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.6.0;
+				DYLIB_CURRENT_VERSION = 2.7.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenInternal/Info.plist;
@@ -2575,11 +2580,11 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.6.0;
+				CURRENT_PROJECT_VERSION = 2.7.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.6.0;
+				DYLIB_CURRENT_VERSION = 2.7.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenInternal/Info.plist;
@@ -2602,11 +2607,11 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.6.0;
+				CURRENT_PROJECT_VERSION = 2.7.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.6.0;
+				DYLIB_CURRENT_VERSION = 2.7.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2635,11 +2640,11 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.6.0;
+				CURRENT_PROJECT_VERSION = 2.7.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.6.0;
+				DYLIB_CURRENT_VERSION = 2.7.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2668,11 +2673,11 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.6.0;
+				CURRENT_PROJECT_VERSION = 2.7.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.6.0;
+				DYLIB_CURRENT_VERSION = 2.7.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenSEPA/Info.plist;
@@ -2695,11 +2700,11 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.6.0;
+				CURRENT_PROJECT_VERSION = 2.7.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.6.0;
+				DYLIB_CURRENT_VERSION = 2.7.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenSEPA/Info.plist;
@@ -2723,11 +2728,11 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2.6.0;
+				CURRENT_PROJECT_VERSION = 2.7.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.6.0;
+				DYLIB_CURRENT_VERSION = 2.7.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenWeChatPay/Info.plist;
@@ -2756,11 +2761,11 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2.6.0;
+				CURRENT_PROJECT_VERSION = 2.7.0;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2.6.0;
+				DYLIB_CURRENT_VERSION = 2.7.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = AdyenWeChatPay/Info.plist;

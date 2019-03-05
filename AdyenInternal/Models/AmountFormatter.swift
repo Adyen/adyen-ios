@@ -45,8 +45,7 @@ public class AmountFormatter {
         
         switch currencyCode {
         case "ISK", "CLP":
-            // iOS returns 0, which is in accordance with ISO-4217, but conflicts with our backend.
-            // TODO: remove this override once backend is fixed.
+            // iOS returns 0, which is in accordance with ISO-4217, but conflicts with the Adyen backend.
             return 2
         case "MRO":
             // iOS returns 0 instead.

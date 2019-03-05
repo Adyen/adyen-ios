@@ -8,7 +8,7 @@ import Foundation
 
 public extension Array where Element == PaymentDetail {
     /// The payment detail for Encrypted Card Number
-    public var encryptedCardNumber: PaymentDetail? {
+    var encryptedCardNumber: PaymentDetail? {
         get {
             return self[encryptedCardNumberKey]
         }
@@ -19,7 +19,7 @@ public extension Array where Element == PaymentDetail {
     }
     
     /// The payment detail for Encrypted Security Code
-    public var encryptedSecurityCode: PaymentDetail? {
+    var encryptedSecurityCode: PaymentDetail? {
         get {
             return self[encryptedSecurityCodeKey]
         }
@@ -30,7 +30,7 @@ public extension Array where Element == PaymentDetail {
     }
     
     /// The payment detail for Encrypted Expiry Month
-    public var encryptedExpiryMonth: PaymentDetail? {
+    var encryptedExpiryMonth: PaymentDetail? {
         get {
             return self[encryptedExpiryMonthKey]
         }
@@ -41,7 +41,7 @@ public extension Array where Element == PaymentDetail {
     }
     
     /// The payment detail for Encrypted Expiry Year
-    public var encryptedExpiryYear: PaymentDetail? {
+    var encryptedExpiryYear: PaymentDetail? {
         get {
             return self[encryptedExpiryYearKey]
         }
@@ -52,7 +52,7 @@ public extension Array where Element == PaymentDetail {
     }
     
     /// The payment detail for Cardholder Name
-    public var cardholderName: PaymentDetail? {
+    var cardholderName: PaymentDetail? {
         get {
             return self[cardholderNameKey]
         }
@@ -63,7 +63,7 @@ public extension Array where Element == PaymentDetail {
     }
     
     /// The payment detail for Installments
-    public var installments: PaymentDetail? {
+    var installments: PaymentDetail? {
         get {
             return self[cardInstallmentsKey]
         }
@@ -74,7 +74,7 @@ public extension Array where Element == PaymentDetail {
     }
     
     /// The payment detail for a 3D-Secure 2.0 fingerprint.
-    public var threeDS2Fingerprint: PaymentDetail? {
+    var threeDS2Fingerprint: PaymentDetail? {
         get {
             return self[threeDS2FingerprintKey]
         }
@@ -85,7 +85,7 @@ public extension Array where Element == PaymentDetail {
     }
     
     /// The payment detail for a 3D-Secure 2.0 challenge result.
-    public var threeDS2ChallengeResult: PaymentDetail? {
+    var threeDS2ChallengeResult: PaymentDetail? {
         get {
             return self[threeDS2ChallengeResultKey]
         }
@@ -99,7 +99,7 @@ public extension Array where Element == PaymentDetail {
 public extension IdentificationPaymentDetails {
     
     /// The 3D-Secure 2.0 fingerprint token.
-    public var threeDS2FingerprintToken: String? {
+    var threeDS2FingerprintToken: String? {
         return userInfo[threeDS2FingerprintTokenKey]
     }
     
@@ -108,7 +108,7 @@ public extension IdentificationPaymentDetails {
 public extension ChallengePaymentDetails {
     
     /// The 3D-Secure 2.0 challenge token.
-    public var threeDS2ChallengeToken: String? {
+    var threeDS2ChallengeToken: String? {
         return userInfo[threeDS2ChallengeTokenKey]
     }
     

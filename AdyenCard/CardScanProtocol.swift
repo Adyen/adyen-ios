@@ -27,7 +27,7 @@ public typealias CardScanCompletion = Completion<(holderName: String?, number: S
 
 public extension CheckoutController {
     /// Entry point to configure card scanning functionality.
-    public var cardScanDelegate: CardScanDelegate? {
+    var cardScanDelegate: CardScanDelegate? {
         get {
             return CardPlugin.cardScanDelegate
         }

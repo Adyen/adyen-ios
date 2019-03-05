@@ -106,7 +106,7 @@ extension ApplePayPlugin: PKPaymentAuthorizationViewControllerDelegate {
 // MARK: - PKPaymentRequest
 
 fileprivate extension PKPaymentRequest {
-    fileprivate convenience init(paymentMethod: PaymentMethod, paymentSession: PaymentSession) {
+    convenience init(paymentMethod: PaymentMethod, paymentSession: PaymentSession) {
         self.init()
         
         countryCode = paymentSession.payment.countryCode ?? ""

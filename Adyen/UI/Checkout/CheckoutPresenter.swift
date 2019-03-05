@@ -69,7 +69,6 @@ internal final class CheckoutPresenter: NSObject {
                 strongSelf.delegate?.didSelect(paymentMethod, in: strongSelf)
             }
         }
-        viewController.logoURL = paymentMethod.logoURL
         viewController.payButtonTitle = Appearance.shared.checkoutButtonAttributes.title(for: amount)
         
         if shouldShowChangeButton {

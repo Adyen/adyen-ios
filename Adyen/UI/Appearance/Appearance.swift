@@ -241,14 +241,14 @@ internal extension Appearance {
 }
 
 internal extension Appearance {
-    internal var payButton: UIButton {
+    func payButton() -> UIButton {
         let payButton = checkoutButtonAttributes.type.init()
         payButton.tintColor = tintColor
         payButton.accessibilityIdentifier = "pay-button"
         return payButton
     }
     
-    internal func cancelButtonItem(target: Any, selector: Selector) -> UIBarButtonItem {
+    func cancelButtonItem(target: Any, selector: Selector) -> UIBarButtonItem {
         var cancelButtonItem: UIBarButtonItem
         
         if let cancelButtonImage = navigationBarAttributes.cancelButtonImage {

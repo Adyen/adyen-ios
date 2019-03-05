@@ -1,5 +1,9 @@
 # Migration Notes
 
+### 2.7.0
+
+- `provideAdditionalDetails(_:for:detailsHandler:)` in `PaymentControllerDelegate` is now required to be implemented. This is the entry-point for 3D-Secure 2.0 (and WeChat Pay). If you don't do 3D-Secure 2.0 or WeChat Pay, you can leave the implementation empty.
+
 ### 2.6.0
 
 - The deployment target has been raised to iOS 10.3.

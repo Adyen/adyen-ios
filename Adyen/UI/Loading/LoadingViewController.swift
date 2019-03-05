@@ -11,6 +11,10 @@ internal final class LoadingViewController: ShortViewController {
     
     // MARK: - UIViewController
     
+    override func loadView() {
+        view = UIView()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

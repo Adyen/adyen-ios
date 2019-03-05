@@ -18,7 +18,7 @@ internal extension KeyedDecodingContainer {
     /// - throws: `DecodingError.typeMismatch` if the encountered encoded value is not convertible to the requested type.
     /// - throws: `DecodingError.keyNotFound` if `self` does not have an entry for the given key.
     /// - throws: `DecodingError.valueNotFound` if `self` has a null entry for the given key.
-    internal func decode(_ type: Dictionary<String, Any>.Type, forKey key: K) throws -> [String: Any] {
+    func decode(_ type: Dictionary<String, Any>.Type, forKey key: K) throws -> [String: Any] {
         let container = try nestedContainer(keyedBy: JSONCodingKeys.self, forKey: key)
         
         return try container.decode(type)
@@ -32,7 +32,7 @@ internal extension KeyedDecodingContainer {
     /// - parameter key: The key that the decoded value is associated with.
     /// - returns: A decoded value of the requested type, or `nil` if the `Decoder` does not have an entry associated with the given key, or if the value is a null value.
     /// - throws: `DecodingError.typeMismatch` if the encountered encoded value is not convertible to the requested type.
-    internal func decodeIfPresent(_ type: Dictionary<String, Any>.Type, forKey key: K) throws -> [String: Any]? {
+    func decodeIfPresent(_ type: Dictionary<String, Any>.Type, forKey key: K) throws -> [String: Any]? {
         guard contains(key) else {
             return nil
         }
@@ -50,7 +50,7 @@ internal extension KeyedDecodingContainer {
     /// - throws: `DecodingError.typeMismatch` if the encountered encoded value is not convertible to the requested type.
     /// - throws: `DecodingError.keyNotFound` if `self` does not have an entry for the given key.
     /// - throws: `DecodingError.valueNotFound` if `self` has a null entry for the given key.
-    internal func decode(_ type: Array<Any>.Type, forKey key: K) throws -> [Any] {
+    func decode(_ type: Array<Any>.Type, forKey key: K) throws -> [Any] {
         var container = try nestedUnkeyedContainer(forKey: key)
         
         return try container.decode(type)
@@ -64,7 +64,7 @@ internal extension KeyedDecodingContainer {
     /// - parameter key: The key that the decoded value is associated with.
     /// - returns: A decoded value of the requested type, or `nil` if the `Decoder` does not have an entry associated with the given key, or if the value is a null value.
     /// - throws: `DecodingError.typeMismatch` if the encountered encoded value is not convertible to the requested type.
-    internal func decodeIfPresent(_ type: Array<Any>.Type, forKey key: K) throws -> [Any]? {
+    func decodeIfPresent(_ type: Array<Any>.Type, forKey key: K) throws -> [Any]? {
         guard contains(key) else {
             return nil
         }
@@ -81,7 +81,7 @@ internal extension KeyedDecodingContainer {
     /// - throws: `DecodingError.typeMismatch` if the encountered encoded value is not convertible to the requested type.
     /// - throws: `DecodingError.keyNotFound` if `self` does not have an entry for the given key.
     /// - throws: `DecodingError.valueNotFound` if `self` has a null entry for the given key.
-    internal func decodeBooleanString(forKey key: K) throws -> Bool {
+    func decodeBooleanString(forKey key: K) throws -> Bool {
         let stringValue = try decode(String.self, forKey: key)
         
         return stringValue == "true"
@@ -94,7 +94,7 @@ internal extension KeyedDecodingContainer {
     /// - parameter key: The key that the decoded value is associated with.
     /// - returns: A decoded value of the requested type, or `nil` if the `Decoder` does not have an entry associated with the given key, or if the value is a null value.
     /// - throws: `DecodingError.typeMismatch` if the encountered encoded value is not convertible to the requested type.
-    internal func decodeBooleanStringIfPresent(forKey key: K) throws -> Bool? {
+    func decodeBooleanStringIfPresent(forKey key: K) throws -> Bool? {
         guard contains(key) else {
             return nil
         }
@@ -111,7 +111,7 @@ internal extension KeyedDecodingContainer {
     /// - throws: `DecodingError.typeMismatch` if the encountered encoded value is not convertible to the requested type.
     /// - throws: `DecodingError.keyNotFound` if `self` does not have an entry for the given key.
     /// - throws: `DecodingError.valueNotFound` if `self` has a null entry for the given key.
-    internal func decodeIntString(forKey key: K) throws -> Int {
+    func decodeIntString(forKey key: K) throws -> Int {
         let stringValue = try decode(String.self, forKey: key)
         guard let intValue = Int(stringValue) else {
             throw DecodingError.dataCorruptedError(forKey: key, in: self, debugDescription: "String was not convertable to an integer.")
@@ -127,7 +127,7 @@ internal extension KeyedDecodingContainer {
     /// - parameter key: The key that the decoded value is associated with.
     /// - returns: A decoded value of the requested type, or `nil` if the `Decoder` does not have an entry associated with the given key, or if the value is a null value.
     /// - throws: `DecodingError.typeMismatch` if the encountered encoded value is not convertible to the requested type.
-    internal func decodeIntStringIfPresent(forKey key: K) throws -> Int? {
+    func decodeIntStringIfPresent(forKey key: K) throws -> Int? {
         guard contains(key) else {
             return nil
         }
@@ -168,7 +168,7 @@ internal extension KeyedEncodingContainer {
     /// - parameter key: The key to associate the value with.
     /// - throws: `EncodingError.invalidValue` if the given value is invalid in
     ///   the current context for this format.
-    internal mutating func encode(_ value: [String: Any], forKey key: KeyedEncodingContainer.Key) throws {
+    mutating func encode(_ value: [String: Any], forKey key: KeyedEncodingContainer.Key) throws {
         var container = nestedContainer(keyedBy: JSONCodingKeys.self, forKey: key)
         
         try value.forEach { (key: String, value: Any) in
@@ -196,7 +196,7 @@ internal extension KeyedEncodingContainer {
 }
 
 fileprivate extension UnkeyedDecodingContainer {
-    fileprivate mutating func decode(_ type: Array<Any>.Type) throws -> [Any] {
+    mutating func decode(_ type: Array<Any>.Type) throws -> [Any] {
         var array: [Any] = []
         
         while isAtEnd == false {

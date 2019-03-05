@@ -9,7 +9,7 @@ import Foundation
 public extension Array where Element == PaymentDetail {
     
     /// The payment detail for a Giro Pay BIC.
-    public var giroPayBic: PaymentDetail? {
+    var giroPayBic: PaymentDetail? {
         get {
             return self[bicKey]
         }

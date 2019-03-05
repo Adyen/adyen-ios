@@ -131,7 +131,7 @@ internal enum CardType: String {
 }
 
 internal extension CardType {
-    internal var regex: String? {
+    var regex: String? {
         switch self {
         case .americanExpress:
             return "^3[47][0-9]{0,13}$"

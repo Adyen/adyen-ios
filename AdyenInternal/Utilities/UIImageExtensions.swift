@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 
 public extension UIImage {
-    public class func bundleImage(_ name: String) -> UIImage? {
+    class func bundleImage(_ name: String) -> UIImage? {
         return UIImage(named: name, in: .resources, compatibleWith: nil)
     }
 }

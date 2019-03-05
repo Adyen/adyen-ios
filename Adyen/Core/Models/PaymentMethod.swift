@@ -125,7 +125,7 @@ public struct PaymentMethod: Decodable {
 public extension PaymentMethod {
     
     /// A struct that holds the payment method surchage information
-    public struct Surcharge {
+    struct Surcharge {
         
         /// Surcharge fixed cost in minor units.
         var fixedCost: Int?
@@ -162,7 +162,7 @@ public extension PaymentMethod {
     }
     
     /// The surcharge for the payment method if available, or nil if no surcharge is added.
-    public var surcharge: Surcharge? {
+    var surcharge: Surcharge? {
         guard let totalString = configuration?[PaymentMethod.totalKey] as? String, let total = Int(totalString),
             let finalAmountString = configuration?[PaymentMethod.finalAmountKey] as? String, let finalAmount = Int(finalAmountString),
             let currencyCode = configuration?[PaymentMethod.currencyCodeKey] as? String else {
@@ -195,7 +195,7 @@ public extension PaymentMethod {
 // MARK: - PaymentMethod.Group
 
 internal extension PaymentMethod {
-    internal struct Group: Decodable {
+    struct Group: Decodable {
         /// A string uniquely identifying the payment method group.
         let type: String
         
@@ -215,6 +215,12 @@ extension PaymentMethod: Hashable {
         return type.hashValue ^ name.hashValue ^ paymentMethodData.hashValue
     }
     
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(type)
+        hasher.combine(name)
+        hasher.combine(paymentMethodData)
+    }
+    
     /// :nodoc:
     public static func == (lhs: PaymentMethod, rhs: PaymentMethod) -> Bool {
         return lhs.hashValue == rhs.hashValue
@@ -226,7 +232,7 @@ extension PaymentMethod: Hashable {
 
 public extension PaymentMethod {
     /// The display name of the payment method, taking into account stored payment details.
-    public var displayName: String {
+    var displayName: String {
         guard let storedDetails = storedDetails else {
             return name
         }
@@ -242,7 +248,7 @@ public extension PaymentMethod {
     }
     
     /// An accessible variant of the payment method's display name.
-    public var accessibilityLabel: String {
+    var accessibilityLabel: String {
         guard let storedDetails = storedDetails else {
             return displayName
         }
@@ -272,7 +278,7 @@ public extension PaymentMethod {
 
 internal extension Collection where Element == PaymentMethod {
     /// Returns an array of payment methods grouped by each payment method's group (if present).
-    internal var grouped: [PaymentMethod] {
+    var grouped: [PaymentMethod] {
         return grouped { paymentMethod in
             paymentMethod.group?.type
         }.compactMap { paymentMethods in

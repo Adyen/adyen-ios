@@ -60,7 +60,13 @@ public final class PaymentController {
             return
         }
         
-        guard let index = paymentSession.paymentMethods.preferred.index(of: paymentMethod) else {
+        #if swift(>=5.0)
+            let paymentMethodIndex = paymentSession.paymentMethods.preferred.firstIndex(of: paymentMethod)
+        #else
+            let paymentMethodIndex = paymentSession.paymentMethods.preferred.index(of: paymentMethod)
+        #endif
+        
+        guard let index = paymentMethodIndex else {
             print("Cannot delete payment method. Payment method should be a stored payment method from the current payment session.")
             return
         }
@@ -149,7 +155,7 @@ public final class PaymentController {
         RedirectListener.registerForURL { [weak self] url in
             if redirect.shouldSubmitReturnURLQuery {
                 self?.submit(returnURL: url, for: request)
-            } else if let paymentResult = PaymentResult(url: url) {
+            } else if let paymentResult = PaymentResult(url: url, paymentMethodType: request.paymentMethod.type) {
                 self?.finish(with: paymentResult)
             } else {
                 self?.finish(with: Error.invalidReturnURL)

@@ -8,7 +8,7 @@ import Foundation
 
 public extension PaymentController {
     /// An error that occurred inside PaymentController.
-    public enum Error: Swift.Error {
+    enum Error: Swift.Error {
         /// Indicates the payment was cancelled by the user.
         case cancelled
         

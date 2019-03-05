@@ -27,13 +27,19 @@ public extension Array where Element == PaymentDetail {
     /// Returns the payment detail for the given key.
     ///
     /// - Parameter key: The key to retrieve the payment detail for.
-    public subscript(key: String) -> PaymentDetail? {
+    subscript(key: String) -> PaymentDetail? {
         get {
             return first { $0.key == key }
         }
         
         set {
-            if let existingIndex = index(where: { $0.key == key }) {
+            #if swift(>=5.0)
+                let detailIndex = firstIndex(where: { $0.key == key })
+            #else
+                let detailIndex = index(where: { $0.key == key })
+            #endif
+            
+            if let existingIndex = detailIndex {
                 if let newValue = newValue {
                     self[existingIndex] = newValue
                 } else {
@@ -48,7 +54,7 @@ public extension Array where Element == PaymentDetail {
 
 public extension Array where Element == PaymentDetail {
     /// The payment detail for Store Details
-    public var storeDetails: PaymentDetail? {
+    var storeDetails: PaymentDetail? {
         get {
             return self[storeDetailsKey]
         }

@@ -115,7 +115,7 @@ public final class Card3DS2Authenticator {
 public extension Card3DS2Authenticator {
     
     /// Contains the result of a challenge.
-    public struct ChallengeResult {
+    struct ChallengeResult {
         
         /// A boolean value indicating whether the shopper was authenticated.
         public let isAuthenticated: Bool
@@ -139,7 +139,7 @@ public extension Card3DS2Authenticator {
 
 fileprivate extension Card3DS2Authenticator {
     
-    fileprivate struct Fingerprint: Encodable {
+    struct Fingerprint: Encodable {
         
         fileprivate let deviceInformation: String
         fileprivate let sdkEphemeralPublicKey: EphemeralPublicKey
@@ -174,7 +174,7 @@ fileprivate extension Card3DS2Authenticator {
 
 fileprivate extension Card3DS2Authenticator {
     
-    fileprivate struct EphemeralPublicKey: Codable {
+    struct EphemeralPublicKey: Codable {
         
         fileprivate let keyType: String
         fileprivate let curve: String
@@ -196,7 +196,7 @@ fileprivate extension Card3DS2Authenticator {
 
 fileprivate extension Card3DS2Authenticator {
     
-    fileprivate enum Error: Swift.Error {
+    enum Error: Swift.Error {
         case missingTransaction
     }
     
@@ -206,7 +206,7 @@ fileprivate extension Card3DS2Authenticator {
 
 fileprivate extension Card3DS2Authenticator {
     
-    fileprivate enum Base64Coder {
+    enum Base64Coder {
         
         fileprivate static func decode<T: Decodable>(_ type: T.Type, from string: String) throws -> T {
             guard let data = Data(base64Encoded: string) else {

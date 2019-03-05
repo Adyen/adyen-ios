@@ -11,7 +11,7 @@ import Foundation
 
 internal extension Card3DS2Authenticator {
     
-    internal struct FingerprintToken: Decodable {
+    struct FingerprintToken: Decodable {
         
         internal let directoryServerIdentifier: String
         internal let directoryServerPublicKey: String
@@ -28,7 +28,7 @@ internal extension Card3DS2Authenticator {
 
 internal extension Card3DS2Authenticator {
     
-    internal struct ChallengeToken: Decodable {
+    struct ChallengeToken: Decodable {
         
         internal let acsReferenceNumber: String
         internal let acsSignedContent: String
@@ -52,7 +52,7 @@ internal extension Card3DS2Authenticator {
 
 internal extension ADYChallengeParameters {
     
-    internal convenience init(from challengeToken: Card3DS2Authenticator.ChallengeToken) {
+    convenience init(from challengeToken: Card3DS2Authenticator.ChallengeToken) {
         self.init(serverTransactionIdentifier: challengeToken.serverTransactionIdentifier,
                   acsTransactionIdentifier: challengeToken.acsTransactionIdentifier,
                   acsReferenceNumber: challengeToken.acsReferenceNumber,

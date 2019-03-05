@@ -44,7 +44,7 @@ public struct PaymentSession {
 
 public extension PaymentSession {
     /// Information related to the payment in a payment session.
-    public struct Payment: Decodable {
+    struct Payment: Decodable {
         /// Describes the amount of a payment.
         public struct Amount: Decodable {
             
@@ -123,7 +123,7 @@ public extension PaymentSession {
 
 public extension PaymentSession {
     /// A structure containing information of the company requesting the payment.
-    public struct Company: Decodable {
+    struct Company: Decodable {
         /// The name of the company.
         public let name: String?
         
@@ -139,7 +139,7 @@ public extension PaymentSession {
 
 public extension PaymentSession {
     /// A line item describing the payment.
-    public struct LineItem: Decodable {
+    struct LineItem: Decodable {
         /// A unique identifier of the line item.
         public let identifier: String?
         

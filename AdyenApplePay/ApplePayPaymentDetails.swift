@@ -8,7 +8,7 @@ import Foundation
 
 public extension Array where Element == PaymentDetail {
     /// The payment detail for Apple Pay Token
-    public var applePayToken: PaymentDetail? {
+    var applePayToken: PaymentDetail? {
         get {
             return self[applePayTokenKey]
         }

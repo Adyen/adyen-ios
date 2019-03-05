@@ -17,12 +17,17 @@ public struct PaymentResult: Decodable {
     /// The payload usable to verify the integrity of the payment.
     public let payload: String
     
+    /// The type of payment method that was used.
+    public let paymentMethodType: String
+    
     // MARK: - Decoding
     
     /// Initializes the payment result by decoding a return URL.
     ///
-    /// - Parameter url: The return URL to decode the payment result from.
-    internal init?(url: URL) {
+    /// - Parameters:
+    ///   - url: The return URL to decode the payment result from.
+    ///   - paymentMethodType: The type of payment method that was used.
+    internal init?(url: URL, paymentMethodType: String) {
         let queryParameters = url.queryParameters()
         
         guard
@@ -35,11 +40,24 @@ public struct PaymentResult: Decodable {
         
         self.status = status
         self.payload = payload
+        self.paymentMethodType = paymentMethodType
+    }
+    
+    /// :nodoc:
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.status = try container.decode(Status.self, forKey: .status)
+        self.payload = try container.decode(String.self, forKey: .payload)
+        
+        let paymentMethodContainer = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .paymentMethod)
+        self.paymentMethodType = try paymentMethodContainer.decode(String.self, forKey: .paymentMethodType)
     }
     
     private enum CodingKeys: String, CodingKey {
         case status = "resultCode"
         case payload
+        case paymentMethod
+        case paymentMethodType = "type"
     }
     
 }
@@ -48,7 +66,7 @@ public struct PaymentResult: Decodable {
 
 public extension PaymentResult {
     /// The result of a payment.
-    public enum Status: String, Decodable {
+    enum Status: String, Decodable {
         /// Indicates the payment has been received by Adyen and will be processed.
         case received
         

@@ -48,6 +48,11 @@ extension ListItem: Hashable {
         return title.hashValue ^ (imageURL?.hashValue ?? 0)
     }
     
+    internal func hash(into hasher: inout Hasher) {
+        hasher.combine(title)
+        hasher.combine(imageURL)
+    }
+    
     internal static func == (lhs: ListItem, rhs: ListItem) -> Bool {
         return lhs.title == rhs.title && lhs.imageURL == rhs.imageURL
     }

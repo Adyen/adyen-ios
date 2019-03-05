@@ -13,7 +13,7 @@ public extension Bundle {
     }()
     
     /// The bundle in which the framework's resources are located.
-    public static let resources: Bundle = {
+    static let resources: Bundle = {
         let url = core.url(forResource: "AdyenInternal", withExtension: "bundle")
         let bundle = url.flatMap { Bundle(url: $0) }
         return bundle ?? core

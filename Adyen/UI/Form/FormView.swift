@@ -29,7 +29,7 @@ public class FormView: UIScrollView {
     // MARK: - Public
     
     public private(set) lazy var payButton: UIButton = {
-        let payButton = Appearance.shared.payButton
+        let payButton = Appearance.shared.payButton()
         payButton.isEnabled = false
         payButton.translatesAutoresizingMaskIntoConstraints = false
         return payButton

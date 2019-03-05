@@ -149,7 +149,6 @@ internal class OpenInvoiceFormViewController: FormViewController {
     
     private var shouldShowSSNField: Bool {
         if case let .fieldSet(details)? = paymentMethod?.details.personalDetails?.inputType {
-            // TODO: Remove countries when ssn field visibility comes from payment method
             let isCountryWithSSN = ["FI", "NO", "DK", "SE"].contains(paymentSession?.payment.countryCode)
             return details.socialSecurityNumber != nil && isSSNLookupAvailable == false && isCountryWithSSN
         }

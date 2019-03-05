@@ -77,7 +77,7 @@ internal struct PaymentSessionToken: Encodable {
 
 internal extension PaymentSessionToken {
     /// The type of integration used to integrate the SDK.
-    internal enum IntegrationType: String, Encodable {
+    enum IntegrationType: String, Encodable {
         /// Indicates a Quick Integration.
         case quick
         

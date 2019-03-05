@@ -6,7 +6,6 @@ target 'Quick Integration Example' do
 
   pod 'Adyen', :path => '../../'
   pod 'Adyen/ApplePay', :path => '../../'
-  pod 'Adyen/Card3DS2', :path => '../../'
   pod 'AdyenInternal', :path => '../../'
 
 end

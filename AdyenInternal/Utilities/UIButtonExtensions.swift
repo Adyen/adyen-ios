@@ -8,7 +8,7 @@ import UIKit
 
 public extension UIButton {
     /// Boolean value indicating whether an activity indicator should be shown.
-    public var showsActivityIndicator: Bool {
+    var showsActivityIndicator: Bool {
         get {
             return activityIndicatorView.superview != nil
         }
