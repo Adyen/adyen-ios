@@ -44,7 +44,7 @@ internal struct RedirectPresenter {
         return urlIsAppUrl
     }
     
-    static func open(url: URL, from presenter: UIViewController, safariDelegate: SFSafariViewControllerDelegate) {
+    static func open(url: URL, from presenter: UIViewController, safariDelegate: SFSafariViewControllerDelegate, completion: @escaping ((Bool) -> Void)) {
         let urlIsAppUrl = RedirectPresenter.isAppURL(url)
         
         if #available(iOS 10.0, *) {
@@ -53,13 +53,16 @@ internal struct RedirectPresenter {
                 if !success {
                     if !urlIsAppUrl {
                         RedirectPresenter.presentWebPage(with: url, from: presenter, safariDelegate: safariDelegate)
+                        completion(true)
                     } else {
                         RedirectPresenter.presentOpenAppErrorMessage(from: presenter)
+                        completion(false)
                     }
                 }
             }
         } else {
             RedirectPresenter.presentWebPage(with: url, from: presenter, safariDelegate: safariDelegate)
+            completion(true)
         }
     }
     

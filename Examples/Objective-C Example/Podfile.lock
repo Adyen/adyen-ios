@@ -1,22 +1,28 @@
 PODS:
-  - Adyen (2.5.0):
-    - Adyen/Card (= 2.5.0)
-    - Adyen/Core (= 2.5.0)
-    - Adyen/SEPA (= 2.5.0)
-  - Adyen/ApplePay (2.5.0):
+  - Adyen (2.7.1):
+    - Adyen/Card (= 2.7.1)
+    - Adyen/Core (= 2.7.1)
+    - Adyen/SEPA (= 2.7.1)
+  - Adyen/ApplePay (2.7.1):
     - Adyen/Core
-  - Adyen/Card (2.5.0):
+  - Adyen/Card (2.7.1):
     - Adyen/Core
-  - Adyen/Core (2.5.0):
-    - AdyenInternal (= 2.5.0)
-  - Adyen/SEPA (2.5.0):
+    - Adyen3DS2
+  - Adyen/Core (2.7.1):
+    - AdyenInternal (= 2.7.1)
+  - Adyen/SEPA (2.7.1):
     - Adyen/Core
-  - AdyenInternal (2.5.0)
+  - Adyen3DS2 (0.9.5)
+  - AdyenInternal (2.7.1)
 
 DEPENDENCIES:
   - Adyen (from `../../`)
   - Adyen/ApplePay (from `../../`)
   - AdyenInternal (from `../../`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Adyen3DS2
 
 EXTERNAL SOURCES:
   Adyen:
@@ -25,9 +31,10 @@ EXTERNAL SOURCES:
     :path: "../../"
 
 SPEC CHECKSUMS:
-  Adyen: 99c02ae77f0d5ccde09592d1222b72e5d24c9e28
-  AdyenInternal: 1e93c15056f8707e4975f9f67530083e8abd026c
+  Adyen: 620533903b04f6d26bcd3c9e07ca82d6f0a1f30b
+  Adyen3DS2: c92eca0c3ad2944ef4504328eb05980d9795b9f3
+  AdyenInternal: 4aff3fc6d1ed80a2a65bfd395dc7993835d0cbff
 
-PODFILE CHECKSUM: 868a8cdc41ebd56691139c2542b3691cd1711b58
+PODFILE CHECKSUM: 7b408d1214d4743476d39e789ded1b437f5a402b
 
 COCOAPODS: 1.5.3

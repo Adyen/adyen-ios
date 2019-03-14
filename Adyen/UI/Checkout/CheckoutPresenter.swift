@@ -119,7 +119,11 @@ internal final class CheckoutPresenter: NSObject {
             return
         }
         
-        RedirectPresenter.open(url: url, from: navigationController, safariDelegate: self)
+        RedirectPresenter.open(url: url, from: navigationController, safariDelegate: self) { [weak self] success in
+            if success == false {
+                self?.showPaymentProcessing(false)
+            }
+        }
     }
     
     internal func showPaymentProcessing(_ show: Bool) {
