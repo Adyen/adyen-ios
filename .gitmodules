@@ -1,0 +1,3 @@
+[submodule "AdyenCard/adyen-3ds2-ios"]
+	path = AdyenCard/adyen-3ds2-ios
+	url = https://github.com/Adyen/adyen-3ds2-ios.git
