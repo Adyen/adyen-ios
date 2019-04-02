@@ -45,20 +45,17 @@ public final class Card3DS2Authenticator {
         serviceParameters.directoryServerIdentifier = directoryServerIdentifier
         serviceParameters.directoryServerPublicKey = directoryServerPublicKey
         
-        ADYService.transaction(with: serviceParameters, appearanceConfiguration: appearanceConfiguration) { transaction, _, error in
-            if let error = error {
-                completion(.failure(error))
-            } else if let transaction = transaction {
+        ADYService.service(with: serviceParameters, appearanceConfiguration: appearanceConfiguration) { service in
+            do {
+                let transaction = try service.transaction(withMessageVersion: nil)
                 self.transaction = transaction
                 
-                do {
-                    let fingerprint = try Fingerprint(authenticationRequestParameters: transaction.authenticationRequestParameters)
-                    let encodedFingerprint = try Base64Coder.encode(fingerprint)
-                    
-                    completion(.success(encodedFingerprint))
-                } catch {
-                    completion(.failure(error))
-                }
+                let fingerprint = try Fingerprint(authenticationRequestParameters: transaction.authenticationRequestParameters)
+                let encodedFingerprint = try Base64Coder.encode(fingerprint)
+                
+                completion(.success(encodedFingerprint))
+            } catch {
+                completion(.failure(error))
             }
         }
     }
