@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'AdyenInternal'
-  s.version = '2.7.3'
+  s.version = '2.8.0'
   s.summary = "Adyen Internal SDK"
   s.description = <<-DESC
     Support methods for Adyen SDK

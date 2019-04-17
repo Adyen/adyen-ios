@@ -212,7 +212,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Quick Integration Example/Pods-Quick Integration Example-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Quick Integration Example/Pods-Quick Integration Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Adyen/Adyen.framework",
 				"${PODS_ROOT}/Adyen3DS2/Dynamic/Adyen3DS2.framework",
 				"${BUILT_PRODUCTS_DIR}/AdyenInternal/AdyenInternal.framework",
@@ -225,7 +225,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Quick Integration Example/Pods-Quick Integration Example-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Quick Integration Example/Pods-Quick Integration Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

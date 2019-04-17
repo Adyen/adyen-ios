@@ -39,10 +39,6 @@ open class FormViewController: UIViewController {
         
         formView.payButton.addTarget(self, action: #selector(pay), for: .touchUpInside)
         
-        // Forms need to have a navigation bar that matches the background of the view.
-        navigationController?.navigationBar.barTintColor = navigationController?.view.backgroundColor
-        navigationController?.navigationBar.isTranslucent = false
-        
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
