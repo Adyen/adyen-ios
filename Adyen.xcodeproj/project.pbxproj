@@ -354,6 +354,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		303B7B24226CBC1B0066AB1B /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/Localizable.strings; sourceTree = "<group>"; };
 		36FCC0F6EB491A052CC61D81 /* Pods_AdyenUIHost.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AdyenUIHost.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D2C0B04986E87ADFBF3FD11 /* Pods-AdyenUIHost.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdyenUIHost.release.xcconfig"; path = "Pods/Target Support Files/Pods-AdyenUIHost/Pods-AdyenUIHost.release.xcconfig"; sourceTree = "<group>"; };
 		7370242B72CA01D6FB771E34 /* Pods-AdyenTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdyenTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AdyenTests/Pods-AdyenTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1684,6 +1685,7 @@
 				"nl-NL",
 				"sv-SE",
 				"pt-BR",
+				th,
 			);
 			mainGroup = E20ACFFF1EFAB0310065B70E;
 			productRefGroup = E20AD00A1EFAB0310065B70E /* Products */;
@@ -2158,6 +2160,7 @@
 				E91D757A210725CB003622D6 /* nl-NL */,
 				E91D757B210725CB003622D6 /* sv-SE */,
 				E91D757C210725CB003622D6 /* pt-BR */,
+				303B7B24226CBC1B0066AB1B /* th */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
