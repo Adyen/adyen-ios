@@ -26,7 +26,7 @@ class CardExpiryValidator: NumericValidator {
         var isValid = false
         if year > 0 {
             let date = Date()
-            let calendar = Calendar.current
+            let calendar = Calendar(identifier: .gregorian)
             let components = calendar.dateComponents([.month, .year], from: date)
             let currentMonth = components.month!
             let currentYear = components.year!

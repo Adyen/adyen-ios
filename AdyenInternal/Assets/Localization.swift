@@ -8,8 +8,8 @@ import Foundation
 import UIKit
 
 /// Returns a localized string for the given key, and optionally uses it as a template in which the remaining argument values are substituted.
-/// This method will try first to get the string from main bundle.
-/// If no localization is available on main bundle, it'll return from internal one.
+/// This method will try first to get the string from main application bundle.
+/// If no localization is available on main application bundle, it'll return from internal one.
 ///
 /// - Parameters:
 ///   - key: The key used to identify the localized string.
