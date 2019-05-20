@@ -131,7 +131,7 @@ extension ViewController: CheckoutControllerDelegate {
         request.httpBody = try? JSONSerialization.data(withJSONObject: paymentDetails, options: [])
         request.allHTTPHeaderFields = [
             "Content-Type": "application/json",
-            "x-demo-server-api-key": Configuration.appSecretKey
+            "x-demo-server-api-key": Configuration.apiKey
         ]
         
         let session = URLSession(configuration: .default)
