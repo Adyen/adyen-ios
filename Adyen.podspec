@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'Adyen'
-  s.version = '2.8.2'
+  s.version = '2.8.3'
   s.summary = "Adyen SDK for iOS"
   s.description = <<-DESC
     With Adyen SDK you can dynamically list all relevant payment methods for a specific transaction, so your shoppers can always pay with the method of their choice. The methods are listed based on the shopper's country, the transaction currency and amount.
@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.source = { :git => 'https://github.com/Adyen/adyen-ios.git', :tag => "#{s.version}" }
   s.platform = :ios
   s.ios.deployment_target = '10.3'
-  s.swift_version = '4.2'
+  s.swift_version = '5.0'
   s.frameworks = 'Foundation'
   s.default_subspecs = 'Core', 'Card', 'SEPA'
 
@@ -31,7 +31,7 @@ Pod::Spec.new do |s|
     plugin.xcconfig = { 'SWIFT_INCLUDE_PATHS' => '${PODS_TARGET_SRCROOT}/AdyenCard/AdyenCSE' }
     plugin.preserve_paths = 'AdyenCard/AdyenCSE/module.modulemap'
     plugin.dependency 'Adyen/Core'
-    plugin.dependency 'Adyen3DS2'
+    plugin.dependency 'Adyen3DS2', '2.1.0-rc.1'
     plugin.source_files = 'AdyenCard/**/*.swift', 'AdyenCard/AdyenCSE/*.{h,m}'
     plugin.private_header_files = 'AdyenCard/AdyenCSE/*.h'
   end
