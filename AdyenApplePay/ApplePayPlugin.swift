@@ -60,7 +60,13 @@ internal final class ApplePayPlugin: NSObject, PaymentDetailsPlugin {
     // MARK: - Private
     
     fileprivate static var supportedNetworks: [PKPaymentNetwork] {
-        return [.visa, .masterCard, .amex, .discover]
+        var networks: [PKPaymentNetwork] = [.visa, .masterCard, .amex, .discover]
+        
+        if #available(iOS 12.0, *) {
+            networks.append(.maestro)
+        }
+        
+        return networks
     }
     
     private var paymentAuthorizationViewController: PKPaymentAuthorizationViewController?
