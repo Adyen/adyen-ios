@@ -1,8 +1,0 @@
-{
-  "paymentMethod": {
-    "type": "ideal"
-  },
-  "submitPaymentMethodReturnData": "true",
-  "type": "redirect",
-  "url": "https://test.adyen.com/hpp/ideal/IssuerPage?ret=ui-host%3A%2F%2F%3FpspEchoData%3D8515250906720597%253A17408%253A1153%253A536%253AbHih4%252Bsqhme0epdsFvmbszNPMio%253D%26trxid%3D115321_JvdF9lsni%26ec%3D8515250906720597&amount=174.08&currency=EUR"
-}

@@ -6,8 +6,12 @@
 
 import UIKit
 
-internal final class ListCell: UITableViewCell {
-    internal override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+/// A cell in a ListViewController.
+/// :nodoc:
+public final class ListCell: UITableViewCell {
+    
+    /// :nodoc:
+    public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         contentView.addSubview(itemView)
@@ -15,68 +19,55 @@ internal final class ListCell: UITableViewCell {
         configureConstraints()
     }
     
-    internal required init?(coder aDecoder: NSCoder) {
+    /// :nodoc:
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    /// :nodoc:
+    public override func prepareForReuse() {
+        item = nil
+    }
+    
+    // MARK: - Item
+    
+    /// The item displayed in the cell cell.
+    public var item: ListItem? {
+        didSet {
+            itemView.item = item
+            resetAccessoryView()
+        }
     }
     
     // MARK: - Internal
     
-    internal var item: ListItem? {
-        didSet {
-            itemView.title = item?.title ?? ""
-            itemView.subtitle = item?.subtitle ?? ""
-            itemView.imageURL = item?.imageURL
-            resetAccessoryView()
-            
-            accessibilityLabel = item?.accessibilityLabel ?? item?.title
-        }
-    }
-    
-    internal var titleAttributes: [NSAttributedString.Key: Any]? {
-        didSet {
-            itemView.titleAttributes = titleAttributes
-        }
-    }
-    
     internal var isEnabled = true {
         didSet {
             let opacity: Float = isEnabled ? 1.0 : 0.3
-            layer.opacity = opacity
-        }
-    }
-    
-    internal var activityIndicatorColor: UIColor?
-    
-    internal var disclosureIndicatorColor: UIColor? {
-        didSet {
-            disclosureImageView.tintColor = disclosureIndicatorColor
-            
-            let renderingMode: UIImage.RenderingMode = disclosureIndicatorColor == nil ? .alwaysOriginal : .alwaysTemplate
-            // If the color is nil, then use the original image, which is grey, rather than applying a color.
-            // If the mode is left as .alwaysTemplate, it will pick up cell's tint colour.
-            if disclosureImageView.image?.renderingMode != renderingMode {
-                let disclosure = disclosureImageView.image?.withRenderingMode(renderingMode)
-                disclosureImageView.image = disclosure
+            UIView.animate(withDuration: 0.2) { [weak self] in
+                self?.layer.opacity = opacity
             }
         }
     }
     
     internal func showLoadingIndicator(_ show: Bool) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
             if show {
                 let activityIndicator = UIActivityIndicatorView(style: .gray)
-                if let activityIndicatorColor = self.activityIndicatorColor {
-                    activityIndicator.color = activityIndicatorColor
-                }
                 activityIndicator.startAnimating()
-                self.accessoryView = activityIndicator
+                self?.accessoryView = activityIndicator
             } else {
-                self.resetAccessoryView()
+                self?.resetAccessoryView()
             }
         }
     }
     
-    // MARK: - Private
+    internal func resetAccessoryView() {
+        accessoryView = nil
+        accessoryType = item?.showsDisclosureIndicator == true ? .disclosureIndicator : .none
+    }
+    
+    // MARK: - Item View
     
     private lazy var itemView: ListItemView = {
         let itemView = ListItemView()
@@ -85,23 +76,16 @@ internal final class ListCell: UITableViewCell {
         return itemView
     }()
     
-    private lazy var disclosureImageView: UIImageView = {
-        let disclosure = UIImage.bundleImage("cell_disclosure_indicator")
-        return UIImageView(image: disclosure)
-    }()
-    
-    private func resetAccessoryView() {
-        accessoryView = item?.showsDisclosureIndicator == true ? disclosureImageView : nil
-    }
+    // MARK: - Layout
     
     private func configureConstraints() {
-        let marginsGuide = contentView.layoutMarginsGuide
+        let layoutGuide = contentView.layoutMarginsGuide
         
         let constraints = [
-            itemView.topAnchor.constraint(equalTo: marginsGuide.topAnchor),
-            itemView.leadingAnchor.constraint(equalTo: marginsGuide.leadingAnchor),
-            itemView.trailingAnchor.constraint(equalTo: marginsGuide.trailingAnchor),
-            itemView.bottomAnchor.constraint(equalTo: marginsGuide.bottomAnchor)
+            itemView.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
+            itemView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
+            itemView.trailingAnchor.constraint(lessThanOrEqualTo: layoutGuide.trailingAnchor),
+            itemView.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor)
         ]
         
         NSLayoutConstraint.activate(constraints)

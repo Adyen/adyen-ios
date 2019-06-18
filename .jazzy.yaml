@@ -6,47 +6,92 @@ github_url: https://github.com/Adyen/adyen-ios
 readme: README.md
 
 output: Docs
-
-theme: Docs/theme
+theme: fullwidth
 skip_undocumented: false
 hide_documentation_coverage: true
 
 custom_categories:
-  - name: UI
+  - name: Drop In Component
     children:
-    - CheckoutController
-    - CheckoutControllerDelegate
-  - name: Appearance
+      - DropInComponent
+      - DropInComponentDelegate
+  - name: Card Component
     children:
-    - Appearance
-  - name: Redirect
+      - CardComponent
+      - CardDetails
+      - CardEncryptor
+      - CardType
+      - CardTypeDetector
+      - CardExpiryDateFormatter
+      - CardExpiryDateValidator
+      - CardSecurityCodeFormatter
+      - CardSecurityCodeValidator
+      - CardNumberFormatter
+      - CardNumberValidator
+  - name: 3D Secure 2 Component
     children:
-    - applicationDidOpen(_:)
-  - name: Payment
+      - ThreeDS2Component
+      - ThreeDS2Details
+  - name: SEPA Direct Debit Component
     children:
-    - PaymentController
-    - PaymentControllerDelegate
-    - PaymentSession
-    - PaymentResult
-  - name: Payment Method
+      - SEPADirectDebitComponent
+      - SEPADirectDebitDetails
+      - IBANFormatter
+      - IBANValidator
+  - name: Issuer List Component
     children:
-    - SectionedPaymentMethods
-    - PaymentMethod
-    - PaymentDetail
-    - AdditionalPaymentDetails
-    - IdentificationPaymentDetails
-    - ChallengePaymentDetails
-    - StoredPaymentDetails
-    - StoredCardPaymentDetails
-    - StoredPayPalPaymentDetails
+      - IssuerListComponent
+      - IssuerListDetails
+      - IdealComponent
+      - IdealDetails
+      - MOLPayComponent
+      - MOLPayDetails
+      - DotpayComponent
+      - DotpayDetails
+      - EPSComponent
+      - EPSDetails
+      - EntercashComponent
+      - EntercashDetails
+      - OpenBankingComponent
+      - OpenBankingDetails
+  - name: Redirect Component
+    children:
+      - RedirectComponent
+      - RedirectDetails
+  - name: Base Component
+    children:
+      - Component
+      - PaymentComponent
+      - PaymentComponentData
+      - PaymentComponentDelegate
+      - ActionComponent
+      - ActionComponentData
+      - ActionComponentDelegate
+      - PresentableComponent
+      - Details
+      - PaymentMethodDetails
+      - AdditionalDetails
+      - ComponentError
+  - name: Models
+    children:
+      - PaymentMethods
+      - PaymentMethod
+      - StoredPaymentMethod
+      - StoredCardPaymentMethod
+      - StoredPayPalPaymentMethod
+      - CardPaymentMethod
+      - IssuerListPaymentMethod
+      - SEPADirectDebitPaymentMethod
+      - ShopperInteraction
+      - Payment
+      - Action
+      - RedirectAction
+      - ThreeDS2FingerprintAction
+      - ThreeDS2ChallengeAction
   - name: Other
     children:
-    - Completion
-    - Result
-    - Array
-  - name: Card Module
-    children:
-    - Card3DS2Authenticator
-    - CardEncryptor
-    - CardScanDelegate
-    - CardScanCompletion
+      - Formatter
+      - Validator
+      - LengthValidator
+      - Environment
+      - LogoURLProvider

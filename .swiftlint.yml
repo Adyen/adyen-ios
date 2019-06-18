@@ -1,19 +1,18 @@
 disabled_rules:
-  - fallthrough
-  - function_parameter_count
-  - line_length
-  - nesting
-  - operator_whitespace
-  - todo
   - trailing_whitespace
-included:
-  - Adyen
-  - AdyenCard
-  - AdyenInternal
-  - AdyenSEPA
-  - AdyenApplePay
+  - nesting
+  - todo
+
+opt_in_rules:
+  - explicit_acl
+
+excluded:
   - AdyenTests
   - AdyenUITests
-  - AdyenUIHost
-excluded:
-  - Pods
+  - Examples
+  - Internal
+
+line_length:
+  ignores_function_declarations: true
+  ignores_urls: true
+  warning: 140

@@ -1,13 +1,12 @@
 //
-// Copyright (c) 2017 Adyen B.V.
+//  Adyen.h
+//  Adyen
 //
-// This file is open source and available under the MIT license. See the LICENSE file for more info.
+//  Created by Joost van Dijk on 05/02/2019.
+//  Copyright © 2019 Adyen. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-//! Project version number for Adyen.
 FOUNDATION_EXPORT double AdyenVersionNumber;
-
-//! Project version string for Adyen.
 FOUNDATION_EXPORT const unsigned char AdyenVersionString[];

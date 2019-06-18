@@ -7,7 +7,7 @@
 import Foundation
 
 /// Enum containing most known types of credit and debit cards.
-internal enum CardType: String {
+public enum CardType: String, CaseIterable {
     /// Accel
     case accel
     
@@ -125,20 +125,19 @@ internal enum CardType: String {
     /// The Warehouse
     case warehouse
     
-    /// Array containing all card types in this enum.
-    public static let all = [masterCard, americanExpress, visa, diners, discover, jcb, elo, hipercard, unionPay, bijenkorfCard, maestroUK, solo, bcmc, dankort, uatp, chinaUnionPay, codensa, alphaBankBonusVISA, dankortVISA, alphaBankBonusMasterCard, hiper, oasis, karenMillen, warehouse, mir, maestro, carteBancaire, kcp, cabal, accel, pulse, star, nyce, creditUnion24, argencard, netplus, shopping, cencosud, chequeDejeneur]
-    
 }
 
 internal extension CardType {
-    var regex: String? {
+    
+    // swiftlint:disable:next explicit_acl
+    var pattern: String? {
         switch self {
         case .americanExpress:
-            return "^3[47][0-9]{0,13}$"
+            return "^3([47][0-9]{0,13})?$"
         case .visa:
             return "^4[0-9]{0,16}$"
         case .masterCard:
-            return "^(5[1-5][0-9]{0,14}|2[2-7][0-9]{0,14})$"
+            return "^(5([1-5][0-9]{0,14})?|2([2-7][0-9]{0,14})?)$"
         case .diners:
             return "^(36)[0-9]{0,12}$"
         case .discover:
@@ -196,8 +195,9 @@ internal extension CardType {
 }
 
 internal extension CardType {
-    func matches(cardNumber: String) -> Bool {
-        guard let pattern = regex else {
+    
+    func matches(cardNumber: String) -> Bool { // swiftlint:disable:this explicit_acl
+        guard let pattern = pattern else {
             return false
         }
         
@@ -210,5 +210,4 @@ internal extension CardType {
             return false
         }
     }
-    
 }

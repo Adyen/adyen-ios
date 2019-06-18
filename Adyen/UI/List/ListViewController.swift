@@ -4,179 +4,133 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import AdyenInternal
 import UIKit
 
-/// Displays a list of items.
-internal final class ListViewController: UITableViewController {
-    internal init() {
+/// Displays a list from which items can be selected.
+/// :nodoc:
+public final class ListViewController: UITableViewController {
+    
+    /// Initializes the list view controller.
+    public init() {
         super.init(style: .grouped)
     }
     
-    internal required init?(coder aDecoder: NSCoder) {
+    /// :nodoc:
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UIViewController
+    // MARK: - Items
     
-    internal override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        tableView.allowsMultipleSelectionDuringEditing = false
-        tableView.sectionHeaderHeight = UITableView.automaticDimension
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.sectionFooterHeight = 0.0
-        tableView.estimatedSectionHeaderHeight = 44.0
-        tableView.estimatedRowHeight = 56.0
-        tableView.register(ListCell.self, forCellReuseIdentifier: "Cell")
-        
-        tableView.separatorColor = UIColor.clear
-    }
-    
-    // MARK: - UITableViewDelegate/UITableViewDataSource
-    
-    internal override func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
-    }
-    
-    internal override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let title = sections[section].title else {
-            return nil
-        }
-        
-        return ListHeaderView(title: title.uppercased(), attributes: attributes.sectionTitleAttributes)
-    }
-    
-    internal override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].items.count
-    }
-    
-    internal override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? ListCell else {
-            fatalError("Incorrect cell dequeued.")
-        }
-        
-        cell.item = sections[indexPath.section].items[indexPath.item]
-        cell.backgroundColor = view.backgroundColor
-        cell.contentView.backgroundColor = view.backgroundColor
-        cell.titleAttributes = Appearance.shared.textAttributes
-        
-        cell.disclosureIndicatorColor = attributes.disclosureIndicatorColor
-        cell.activityIndicatorColor = attributes.activityIndicatorColor ?? Appearance.shared.activityIndicatorColor ?? attributes.disclosureIndicatorColor
-        
-        if let selectionColor = attributes.selectionColor {
-            let backgroundView = UIView()
-            backgroundView.backgroundColor = selectionColor
-            cell.selectedBackgroundView = backgroundView
-        } else {
-            cell.selectedBackgroundView = nil
-        }
-        
-        return cell
-    }
-    
-    internal override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        let item = sections[indexPath.section].items[indexPath.item]
-        lastSelectedItem = item
-        item.selectionHandler?()
-    }
-    
-    internal override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        let item = sections[indexPath.section].items[indexPath.item]
-        return item.deletionHandler != nil
-    }
-    
-    internal override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        guard editingStyle == .delete else {
-            return
-        }
-        
-        let section = sections[indexPath.section]
-        let item = section.items[indexPath.item]
-        let containsSingleItemBeforeDeletion = section.items.count == 1
-        
-        guard let deletionHandler = item.deletionHandler else {
-            return
-        }
-        
-        reloadDataOnSectionUpdate = false
-        if containsSingleItemBeforeDeletion {
-            sections.remove(at: indexPath.section)
-            tableView.deleteSections(IndexSet(integer: indexPath.section), with: .automatic)
-        } else {
-            sections[indexPath.section].items.remove(at: indexPath.item)
-            tableView.deleteRows(at: [indexPath], with: .automatic)
-        }
-        
-        reloadDataOnSectionUpdate = true
-        deletionHandler()
-    }
-    
-    // MARK: - Internal
-    
-    internal var sections: [ListSection] = [] {
+    /// The items displayed in the list.
+    public var sections: [ListSection] = [] {
         didSet {
             // Filter out empty sections.
-            let filteredSections = sections.filter({ $0.items.count > 0 })
+            let filteredSections = sections.filter { $0.items.count > 0 }
             if filteredSections.count != sections.count {
                 sections = filteredSections
-            } else if reloadDataOnSectionUpdate {
+            } else if isViewLoaded {
                 tableView.reloadData()
             }
         }
     }
     
-    // MARK: - Private
+    // MARK: - Cell Loading state
     
-    private var attributes = Appearance.shared.listAttributes
+    /// Starts loading animation on a given ListItem.
+    ///
+    /// - Parameter item: The item to be shown as loading.
+    public func startLoading(item: ListItem) {
+        if let cell = cell(for: item) {
+            cell.showLoadingIndicator(true)
+        }
+        
+        tableView.isUserInteractionEnabled = false
+        
+        for case let visibleCell as ListCell in tableView.visibleCells where visibleCell.item != item {
+            visibleCell.isEnabled = false
+        }
+    }
     
-    // Used to determine if table should be reloaded when sections are reset
-    // or if the reload is handled elsewhere, i.e. through deletion.
-    private var reloadDataOnSectionUpdate = true
+    /// Stops all loading animations.
+    public func stopLoading() {
+        tableView.isUserInteractionEnabled = true
+        
+        for case let visibleCell as ListCell in tableView.visibleCells {
+            visibleCell.isEnabled = true
+            visibleCell.showLoadingIndicator(false)
+        }
+    }
     
-    private var lastSelectedItem: ListItem?
+    // MARK: - View
     
-    private var lastSelectedCell: ListCell? {
-        guard let lastSelectedItem = lastSelectedItem else {
+    /// :nodoc:
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.backgroundColor = .white
+        
+        tableView.separatorColor = .clear
+        tableView.sectionHeaderHeight = UITableView.automaticDimension
+        tableView.sectionFooterHeight = 0.0
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 56.0
+        tableView.register(ListCell.self, forCellReuseIdentifier: cellReuseIdentifier)
+    }
+    
+    // MARK: - UITableView
+    
+    private let cellReuseIdentifier = "Cell"
+    
+    /// :nodoc:
+    public override func numberOfSections(in tableView: UITableView) -> Int {
+        return sections.count
+    }
+    
+    /// :nodoc:
+    public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return sections[section].items.count
+    }
+    
+    /// :nodoc:
+    public override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let title = sections[section].title else {
             return nil
         }
         
-        for case let cell as ListCell in tableView.visibleCells where cell.item == lastSelectedItem {
+        return ListHeaderView(title: title)
+    }
+    
+    /// :nodoc:
+    public override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return sections[section].title == nil ? 0 : 44.0
+    }
+    
+    /// :nodoc:
+    public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as? ListCell else {
+            fatalError("Failed to dequeue cell.")
+        }
+        
+        cell.item = sections[indexPath.section].items[indexPath.row]
+        
+        return cell
+    }
+    
+    public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let item = sections[indexPath.section].items[indexPath.item]
+        item.selectionHandler?()
+    }
+    
+    // MARK: Private
+    
+    private func cell(for item: ListItem) -> ListCell? {
+        for case let cell as ListCell in tableView.visibleCells where cell.item == item {
             return cell
         }
         
         return nil
-    }
-    
-}
-
-extension ListViewController: PaymentProcessingElement {
-    func startProcessing() {
-        guard let lastSelectedCell = lastSelectedCell else {
-            return
-        }
-        
-        tableView.isUserInteractionEnabled = false
-        lastSelectedCell.showLoadingIndicator(true)
-        
-        for case let cell as ListCell in tableView.visibleCells where cell.item != lastSelectedItem {
-            cell.isEnabled = false
-        }
-    }
-    
-    func stopProcessing() {
-        guard let lastSelectedCell = lastSelectedCell else {
-            return
-        }
-        
-        tableView.isUserInteractionEnabled = true
-        lastSelectedCell.showLoadingIndicator(false)
-        lastSelectedItem = nil
-        
-        for case let cell as ListCell in tableView.visibleCells {
-            cell.isEnabled = true
-        }
     }
 }

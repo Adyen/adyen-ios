@@ -7,35 +7,35 @@
 import AdyenCardInternal
 
 internal extension CardEncryptor.Card {
-    func encryptedNumber(publicKey: String, date: Date) -> String? {
+    func encryptedNumber(publicKey: String, date: Date) -> String? { // swiftlint:disable:this explicit_acl
         let card = ADYCard()
         card.number = number
         
         return encrypted(card: card, publicKey: publicKey, date: date)
     }
     
-    func encryptedSecurityCode(publicKey: String, date: Date) -> String? {
+    func encryptedSecurityCode(publicKey: String, date: Date) -> String? { // swiftlint:disable:this explicit_acl
         let card = ADYCard()
         card.cvc = securityCode
         
         return encrypted(card: card, publicKey: publicKey, date: date)
     }
     
-    func encryptedExpiryMoth(publicKey: String, date: Date) -> String? {
+    func encryptedExpiryMoth(publicKey: String, date: Date) -> String? { // swiftlint:disable:this explicit_acl
         let card = ADYCard()
         card.expiryMonth = expiryMonth
         
         return encrypted(card: card, publicKey: publicKey, date: date)
     }
     
-    func encryptedExpiryYear(publicKey: String, date: Date) -> String? {
+    func encryptedExpiryYear(publicKey: String, date: Date) -> String? { // swiftlint:disable:this explicit_acl
         let card = ADYCard()
         card.expiryYear = expiryYear
         
         return encrypted(card: card, publicKey: publicKey, date: date)
     }
     
-    func encryptedToToken(publicKey: String, holderName: String?, date: Date) -> String? {
+    func encryptedToToken(publicKey: String, holderName: String?) -> String? { // swiftlint:disable:this explicit_acl
         let card = ADYCard()
         card.number = number
         card.cvc = securityCode
@@ -43,7 +43,7 @@ internal extension CardEncryptor.Card {
         card.expiryYear = expiryYear
         card.expiryMonth = expiryMonth
         
-        return encrypted(card: card, publicKey: publicKey, date: date)
+        return encrypted(card: card, publicKey: publicKey, date: Date())
     }
     
     fileprivate func encrypted(card: ADYCard, publicKey: String, date: Date) -> String? {

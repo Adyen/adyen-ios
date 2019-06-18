@@ -4,18 +4,16 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import AdyenInternal
 import UIKit
 
 internal final class ListHeaderView: UIView {
     
-    internal init(title: String, attributes: [NSAttributedString.Key: Any]) {
+    internal init(title: String) {
+        self.title = title
+        
         super.init(frame: .zero)
         
-        titleLabel.attributedText = NSAttributedString(string: title, attributes: attributes)
         addSubview(titleLabel)
-        
-        dynamicTypeController.observeDynamicType(for: titleLabel, withTextAttributes: attributes, textStyle: .headline)
         
         configureConstraints()
     }
@@ -41,15 +39,16 @@ internal final class ListHeaderView: UIView {
     
     // MARK: - Title Label
     
+    private let title: String
+    
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
+        titleLabel.text = title.uppercased()
+        titleLabel.textColor = .gray
+        titleLabel.font = .systemFont(ofSize: 13.0, weight: .medium)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         return titleLabel
     }()
-    
-    // MARK: - Other
-    
-    private lazy var dynamicTypeController = DynamicTypeController()
     
 }

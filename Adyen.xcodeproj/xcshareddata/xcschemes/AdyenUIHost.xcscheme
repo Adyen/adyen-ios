@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1000"
+   LastUpgradeVersion = "1020"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E2E9D01A1F0389C80056E0AC"
+               BlueprintIdentifier = "E2C0E07C220B0399008616F6"
                BuildableName = "AdyenUIHost.app"
                BlueprintName = "AdyenUIHost"
                ReferencedContainer = "container:Adyen.xcodeproj">
@@ -29,20 +29,10 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
          <TestableReference
-            skipped = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E2BF6CC01F03952C0065E574"
-               BuildableName = "AdyenUITests.xctest"
-               BlueprintName = "AdyenUITests"
-               ReferencedContainer = "container:Adyen.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E20AD0111EFAB0310065B70E"
+               BlueprintIdentifier = "E2C0E03B22097917008616F6"
                BuildableName = "AdyenTests.xctest"
                BlueprintName = "AdyenTests"
                ReferencedContainer = "container:Adyen.xcodeproj">
@@ -52,7 +42,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E2E9D01A1F0389C80056E0AC"
+            BlueprintIdentifier = "E2C0E07C220B0399008616F6"
             BuildableName = "AdyenUIHost.app"
             BlueprintName = "AdyenUIHost"
             ReferencedContainer = "container:Adyen.xcodeproj">
@@ -75,7 +65,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E2E9D01A1F0389C80056E0AC"
+            BlueprintIdentifier = "E2C0E07C220B0399008616F6"
             BuildableName = "AdyenUIHost.app"
             BlueprintName = "AdyenUIHost"
             ReferencedContainer = "container:Adyen.xcodeproj">
@@ -94,7 +84,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E2E9D01A1F0389C80056E0AC"
+            BlueprintIdentifier = "E2C0E07C220B0399008616F6"
             BuildableName = "AdyenUIHost.app"
             BlueprintName = "AdyenUIHost"
             ReferencedContainer = "container:Adyen.xcodeproj">

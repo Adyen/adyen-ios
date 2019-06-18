@@ -2,8 +2,8 @@
 //  AdyenCard.h
 //  AdyenCard
 //
-//  Created by Diego Marcon on 18/06/2018.
-//  Copyright © 2018 Adyen. All rights reserved.
+//  Created by Joost van Dijk on 05/02/2019.
+//  Copyright © 2019 Adyen. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
