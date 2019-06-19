@@ -45,6 +45,10 @@ public final class CheckoutController {
     
     /// Determines whether the preselected payment method should be shown when available. Default value is `true`.
     public var showsPreselectedPaymentMethod = true
+
+    public var paymentMethodsCount: Int {
+        return paymentController?.paymentSession?.paymentMethods.count ?? 0
+    }
     
     /// Starts the checkout process and presents the checkout UI on the provided presentingViewController.
     public func start() {
@@ -55,6 +59,10 @@ public final class CheckoutController {
         paymentController?.start(with: token)
         
         presenter.showLoadingScreen()
+    }
+
+    public func showPaymentsMethod() {
+        didSelectChange(in: presenter)
     }
     
     /// Cancels the checkout process and dismisses the checkout UI.
