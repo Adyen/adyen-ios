@@ -172,7 +172,7 @@ class PaymentMethodTests: XCTestCase {
         "type": "paypal",
         "id": "9314881977134903",
         "name": "PayPal",
-        "shopperEmail": "joost.vandijk@adyen.com",
+        "shopperEmail": "example@shopper.com",
         "supportedShopperInteractions": [
             "Ecommerce",
             "ContAuth"
@@ -184,7 +184,7 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.type, "paypal")
         XCTAssertEqual(paymentMethod.identifier, "9314881977134903")
         XCTAssertEqual(paymentMethod.name, "PayPal")
-        XCTAssertEqual(paymentMethod.emailAddress, "joost.vandijk@adyen.com")
+        XCTAssertEqual(paymentMethod.emailAddress, "example@shopper.com")
         XCTAssertEqual(paymentMethod.supportedShopperInteractions, [.shopperPresent, .shopperNotPresent])
     }
     

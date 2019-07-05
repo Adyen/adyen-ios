@@ -14,11 +14,11 @@ public struct Environment {
                                          cardPublicKeyBaseURL: URL(string: "https://test.adyen.com/")!)
     
     /// Adyen's default live environment.
-    public static let live = Environment.liveEurope
+    public static let live = Environment(baseURL: Environment.defaultLiveBaseURL,
+                                         cardPublicKeyBaseURL: Environment.defaultLiveCardPublicKeyBaseURL)
     
     /// Adyen's European live environment.
-    public static let liveEurope = Environment(baseURL: URL(string: "https://checkoutshopper-live.adyen.com/")!,
-                                               cardPublicKeyBaseURL: URL(string: "https://live.adyen.com/")!)
+    public static let liveEurope = Environment.live
     
     /// Adyen's Australian live environment.
     public static let liveAustralia = Environment(baseURL: URL(string: "https://checkoutshopper-live-au.adyen.com/")!,
@@ -35,8 +35,12 @@ public struct Environment {
     public var cardPublicKeyBaseURL: URL
     
     public init(baseURL: URL? = nil, cardPublicKeyBaseURL: URL? = nil) {
-        self.baseURL = baseURL ?? Environment.live.baseURL
-        self.cardPublicKeyBaseURL = cardPublicKeyBaseURL ?? Environment.live.cardPublicKeyBaseURL
+        self.baseURL = baseURL ?? Environment.defaultLiveBaseURL
+        self.cardPublicKeyBaseURL = cardPublicKeyBaseURL ?? Environment.defaultLiveCardPublicKeyBaseURL
     }
     
+    // MARK: - Private
+    
+    private static let defaultLiveBaseURL = URL(string: "https://checkoutshopper-live.adyen.com/")!
+    private static let defaultLiveCardPublicKeyBaseURL = URL(string: "https://live.adyen.com/")!
 }

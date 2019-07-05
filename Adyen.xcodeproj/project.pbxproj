@@ -124,6 +124,12 @@
 		E97B972122B0F3F500505476 /* ActionComponentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97B972022B0F3F500505476 /* ActionComponentData.swift */; };
 		E97B972322B238C400505476 /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97B972222B238C400505476 /* Analytics.swift */; };
 		E9909FB422B7C816008DE50C /* PaymentMethods.json in Resources */ = {isa = PBXBuildFile; fileRef = E9909FB322B7C815008DE50C /* PaymentMethods.json */; };
+		E9909FC822BCD9F1008DE50C /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9909FC222BCD9F1008DE50C /* Request.swift */; };
+		E9909FC922BCD9F1008DE50C /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9909FC322BCD9F1008DE50C /* Environment.swift */; };
+		E9909FCA22BCD9F1008DE50C /* PaymentDetailsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9909FC422BCD9F1008DE50C /* PaymentDetailsRequest.swift */; };
+		E9909FCB22BCD9F1008DE50C /* PaymentsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9909FC522BCD9F1008DE50C /* PaymentsRequest.swift */; };
+		E9909FCC22BCD9F1008DE50C /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9909FC622BCD9F1008DE50C /* APIClient.swift */; };
+		E9909FCD22BCD9F1008DE50C /* PaymentMethodsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9909FC722BCD9F1008DE50C /* PaymentMethodsRequest.swift */; };
 		E9AFF87A224A4C9C005A0D8D /* PaymentComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AFF879224A4C9C005A0D8D /* PaymentComponent.swift */; };
 		E9AFF87C224B7E9E005A0D8D /* SEPADirectDebitDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AFF87B224B7E9E005A0D8D /* SEPADirectDebitDetails.swift */; };
 		E9AFF87E224BB149005A0D8D /* IssuerListDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AFF87D224BB149005A0D8D /* IssuerListDetails.swift */; };
@@ -382,6 +388,12 @@
 		E97B972022B0F3F500505476 /* ActionComponentData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionComponentData.swift; sourceTree = "<group>"; };
 		E97B972222B238C400505476 /* Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
 		E9909FB322B7C815008DE50C /* PaymentMethods.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PaymentMethods.json; sourceTree = "<group>"; };
+		E9909FC222BCD9F1008DE50C /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		E9909FC322BCD9F1008DE50C /* Environment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
+		E9909FC422BCD9F1008DE50C /* PaymentDetailsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentDetailsRequest.swift; sourceTree = "<group>"; };
+		E9909FC522BCD9F1008DE50C /* PaymentsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentsRequest.swift; sourceTree = "<group>"; };
+		E9909FC622BCD9F1008DE50C /* APIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		E9909FC722BCD9F1008DE50C /* PaymentMethodsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentMethodsRequest.swift; sourceTree = "<group>"; };
 		E9AFF879224A4C9C005A0D8D /* PaymentComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponent.swift; sourceTree = "<group>"; };
 		E9AFF87B224B7E9E005A0D8D /* SEPADirectDebitDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEPADirectDebitDetails.swift; sourceTree = "<group>"; };
 		E9AFF87D224BB149005A0D8D /* IssuerListDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuerListDetails.swift; sourceTree = "<group>"; };
@@ -784,6 +796,7 @@
 		E2C0E07E220B0399008616F6 /* AdyenUIHost */ = {
 			isa = PBXGroup;
 			children = (
+				E9909FC122BCD9F1008DE50C /* Networking */,
 				E2C0E08F220B0417008616F6 /* Application */,
 				E9B36CCB22451E4800EAA368 /* Domains */,
 				E24FECF8226EFABD00A65122 /* UI */,
@@ -961,6 +974,19 @@
 				E262128C22A8FE6700F2B133 /* PaymentMethodTests.swift */,
 			);
 			path = Core;
+			sourceTree = "<group>";
+		};
+		E9909FC122BCD9F1008DE50C /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				E9909FC222BCD9F1008DE50C /* Request.swift */,
+				E9909FC322BCD9F1008DE50C /* Environment.swift */,
+				E9909FC422BCD9F1008DE50C /* PaymentDetailsRequest.swift */,
+				E9909FC522BCD9F1008DE50C /* PaymentsRequest.swift */,
+				E9909FC622BCD9F1008DE50C /* APIClient.swift */,
+				E9909FC722BCD9F1008DE50C /* PaymentMethodsRequest.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 		E9AFF87F224BC3AA005A0D8D /* Redirect */ = {
@@ -1563,13 +1589,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				E2C0E080220B0399008616F6 /* AppDelegate.swift in Sources */,
+				E9909FCD22BCD9F1008DE50C /* PaymentMethodsRequest.swift in Sources */,
 				E24FECFC226EFD3C00A65122 /* ComponentsItem.swift in Sources */,
 				E24FED0D2270915A00A65122 /* CodingHelpers.swift in Sources */,
 				E24FECF5226EF9AB00A65122 /* ComponentsViewController.swift in Sources */,
+				E9909FCA22BCD9F1008DE50C /* PaymentDetailsRequest.swift in Sources */,
 				E24FECFE226EFDCA00A65122 /* ComponentsItemCell.swift in Sources */,
 				E24FED04226F25E700A65122 /* Configuration.swift in Sources */,
 				E24FECFA226EFAC800A65122 /* NavigationController.swift in Sources */,
+				E9909FC822BCD9F1008DE50C /* Request.swift in Sources */,
+				E9909FCC22BCD9F1008DE50C /* APIClient.swift in Sources */,
 				E24FECF7226EF9D800A65122 /* ComponentsView.swift in Sources */,
+				E9909FCB22BCD9F1008DE50C /* PaymentsRequest.swift in Sources */,
+				E9909FC922BCD9F1008DE50C /* Environment.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1694,7 +1726,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 3.0.0;
+				CURRENT_PROJECT_VERSION = 3.0.1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -1758,7 +1790,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 3.0.0;
+				CURRENT_PROJECT_VERSION = 3.0.1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1789,7 +1821,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 3.0.0;
+				DYLIB_CURRENT_VERSION = 3.0.1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = Adyen/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1811,7 +1843,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 3.0.0;
+				DYLIB_CURRENT_VERSION = 3.0.1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = Adyen/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1869,7 +1901,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 3.0.0;
+				DYLIB_CURRENT_VERSION = 3.0.1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = AdyenCard/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1890,7 +1922,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 3.0.0;
+				DYLIB_CURRENT_VERSION = 3.0.1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = AdyenCard/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1948,7 +1980,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 3.0.0;
+				DYLIB_CURRENT_VERSION = 3.0.1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = AdyenDropIn/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1970,7 +2002,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 3.0.0;
+				DYLIB_CURRENT_VERSION = 3.0.1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = AdyenDropIn/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

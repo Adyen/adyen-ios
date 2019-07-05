@@ -39,11 +39,7 @@ internal final class ComponentsViewController: UIViewController {
             ComponentsItem(title: "SEPA Direct Debit", selectionHandler: presentSEPADirectDebitComponent)
         ]
         
-        // Load payment methods from json file. This should be requested to /paymentMethods endpoint via merchant backend
-        if let path = Bundle.main.path(forResource: "PaymentMethods", ofType: "json"),
-            let data = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-            self.paymentMethods = try? Coder.decode(data) as PaymentMethods
-        }
+        requestPaymentMethods()
     }
     
     // MARK: - Components
@@ -55,7 +51,7 @@ internal final class ComponentsViewController: UIViewController {
     
     private func present(_ component: PresentableComponent) {
         component.environment = .test
-        component.payment = Payment(amount: amount)
+        component.payment = Payment(amount: Configuration.amount)
         
         if let paymentComponent = component as? PaymentComponent {
             paymentComponent.delegate = self
@@ -73,7 +69,7 @@ internal final class ComponentsViewController: UIViewController {
     private func presentDropInComponent() {
         guard let paymentMethods = paymentMethods else { return }
         let configuration = DropInComponent.PaymentMethodsConfiguration()
-        configuration.card.publicKey = cardPublicKey
+        configuration.card.publicKey = Configuration.cardPublicKey
         
         let component = DropInComponent(paymentMethods: paymentMethods,
                                         paymentMethodsConfiguration: configuration)
@@ -83,7 +79,7 @@ internal final class ComponentsViewController: UIViewController {
     
     private func presentCardComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: CardPaymentMethod.self) else { return }
-        let component = CardComponent(paymentMethod: paymentMethod, publicKey: cardPublicKey)
+        let component = CardComponent(paymentMethod: paymentMethod, publicKey: Configuration.cardPublicKey)
         present(component)
     }
     
@@ -98,6 +94,45 @@ internal final class ComponentsViewController: UIViewController {
         let component = SEPADirectDebitComponent(paymentMethod: paymentMethod)
         component.delegate = self
         present(component)
+    }
+    
+    // MARK: - Networking
+    
+    private lazy var apiClient = APIClient(environment: Configuration.environment)
+    
+    private func requestPaymentMethods() {
+        let request = PaymentMethodsRequest()
+        apiClient.perform(request) { result in
+            switch result {
+            case let .success(response):
+                self.paymentMethods = response.paymentMethods
+            case let .failure(error):
+                self.presentAlert(with: error, retryHandler: self.requestPaymentMethods)
+            }
+        }
+    }
+    
+    private func performPayment(with data: PaymentComponentData) {
+        let request = PaymentsRequest(data: data)
+        apiClient.perform(request, completionHandler: paymentResponseHandler)
+    }
+    
+    private func performPaymentDetails(with data: ActionComponentData) {
+        let request = PaymentDetailsRequest(details: data.details, paymentData: data.paymentData)
+        apiClient.perform(request, completionHandler: paymentResponseHandler)
+    }
+    
+    private func paymentResponseHandler(result: Result<PaymentsResponse, Error>) {
+        switch result {
+        case let .success(response):
+            if let action = response.action {
+                handle(action)
+            } else {
+                finish(with: response.resultCode)
+            }
+        case let .failure(error):
+            presentAlert(with: error)
+        }
     }
     
     private func handle(_ action: Action) {
@@ -138,9 +173,9 @@ internal final class ComponentsViewController: UIViewController {
         threeDS2Component.handle(action)
     }
     
-    private func finish() {
+    private func finish(with resultCode: PaymentsResponse.ResultCode) {
         dismiss(animated: true) {
-            self.presentAlert(withTitle: "Finished")
+            self.presentAlert(withTitle: resultCode.rawValue)
         }
         
         redirectComponent = nil
@@ -185,13 +220,11 @@ internal final class ComponentsViewController: UIViewController {
 extension ComponentsViewController: DropInComponentDelegate {
     
     internal func didSubmit(_ data: PaymentComponentData, from component: DropInComponent) {
-        // Should call /payment via merchant backend
-        finish()
+        performPayment(with: data)
     }
     
     internal func didProvide(_ data: ActionComponentData, from component: DropInComponent) {
-        // Should call /payment/details via merchant backend
-        finish()
+        performPaymentDetails(with: data)
     }
     
     internal func didFail(with error: Error, from component: DropInComponent) {
@@ -203,8 +236,7 @@ extension ComponentsViewController: DropInComponentDelegate {
 extension ComponentsViewController: PaymentComponentDelegate {
     
     internal func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
-        // Should call /payment via merchant backend
-        finish()
+        performPayment(with: data)
     }
     
     internal func didFail(with error: Error, from component: PaymentComponent) {
@@ -220,7 +252,6 @@ extension ComponentsViewController: ActionComponentDelegate {
     }
     
     internal func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
-        // Should call /payment/details via merchant backend
-        finish()
+        performPaymentDetails(with: data)
     }
 }

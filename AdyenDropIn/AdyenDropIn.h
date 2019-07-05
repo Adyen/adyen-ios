@@ -1,9 +1,7 @@
 //
-//  AdyenDropIn.h
-//  AdyenDropIn
+// Copyright (c) 2019 Adyen B.V.
 //
-//  Created by Diego Marcon on 21/03/2019.
-//  Copyright © 2019 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 #import <UIKit/UIKit.h>

@@ -1,9 +1,7 @@
 //
-//  AdyenCard.h
-//  AdyenCard
+// Copyright (c) 2019 Adyen B.V.
 //
-//  Created by Joost van Dijk on 05/02/2019.
-//  Copyright © 2019 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 #import <UIKit/UIKit.h>

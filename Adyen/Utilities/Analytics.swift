@@ -28,7 +28,7 @@ public class Analytics {
     
     // MARK: - Private
     
-    private static let libraryVersion = "3.0.0"
+    private static let libraryVersion = Bundle(for: Analytics.self).infoDictionary?["CFBundleShortVersionString"] as? String
     private static let payloadVersion = "1"
     private static let platform = "ios"
     
@@ -45,6 +45,16 @@ public class Analytics {
         return URLSession(configuration: configuration)
     }()
     
+    private static let deviceModel: String = {
+        var systemInfo = utsname()
+        uname(&systemInfo)
+        let machineMirror = Mirror(reflecting: systemInfo.machine)
+        return machineMirror.children.reduce("") { identifier, element in
+            guard let value = element.value as? Int8, value != 0 else { return identifier }
+            return identifier + String(UnicodeScalar(UInt8(value)))
+        }
+    }()
+    
     private static func urlFor(component: String, flavor: Flavor, environment: Environment) -> URL? {
         var components = URLComponents(url: environment.baseURL, resolvingAgainstBaseURL: true)
         components?.path = "/checkoutshopper/images/analytics.png"
@@ -55,7 +65,10 @@ public class Analytics {
             URLQueryItem(name: "platform", value: platform),
             URLQueryItem(name: "locale", value: localeIdentifier),
             URLQueryItem(name: "component", value: component),
-            URLQueryItem(name: "flavor", value: flavor.rawValue)
+            URLQueryItem(name: "flavor", value: flavor.rawValue),
+            URLQueryItem(name: "system_version", value: UIDevice.current.systemVersion),
+            URLQueryItem(name: "device_model", value: deviceModel),
+            URLQueryItem(name: "referer", value: Bundle.main.bundleIdentifier)
         ]
         
         return components?.url
