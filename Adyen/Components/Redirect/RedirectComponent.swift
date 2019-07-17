@@ -67,6 +67,11 @@ public final class RedirectComponent: NSObject, PresentableComponent, ActionComp
         return safariViewController
     }()
     
+    /// :nodoc:
+    public var preferredPresentationMode: PresentableComponentPresentationMode {
+        return .present
+    }
+    
     // MARK: - Private
     
     private let componentName = "redirect"

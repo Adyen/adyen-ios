@@ -33,7 +33,7 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent {
         return ComponentViewController(rootViewController: listViewController, cancelButtonHandler: didSelectCancelButton)
     }()
     
-    public func stopLoading() {
+    public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
         listViewController.stopLoading()
     }
     
@@ -55,7 +55,7 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent {
                 let details = IssuerListDetails(type: self.paymentMethod.type,
                                                 issuer: issuer.identifier)
                 self.delegate?.didSubmit(PaymentComponentData(paymentMethodDetails: details), from: self)
-                listViewController.startLoading(item: listItem)
+                listViewController.startLoading(for: listItem)
             }
             
             return listItem

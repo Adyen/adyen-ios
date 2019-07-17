@@ -13,6 +13,9 @@ public struct ListItem {
     /// The title of the item.
     public var title: String
     
+    /// The subtitle of the item.
+    public var subtitle: String?
+    
     /// A URL to an image to display.
     public var imageURL: URL?
     

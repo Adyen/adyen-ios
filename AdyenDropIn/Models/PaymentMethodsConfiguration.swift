@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import PassKit
 
 extension DropInComponent {
     
@@ -13,6 +14,8 @@ extension DropInComponent {
         
         /// Card component related configuration.
         public var card = CardConfiguration()
+        
+        public var applePay = ApplePayConfiguration()
         
         /// Initializes the drop in configuration.
         public init() {}
@@ -25,6 +28,16 @@ extension DropInComponent {
             
             /// Indicates if the holder name should be collected in the card form.
             public var showsHolderName = false
+            
+        }
+        
+        public final class ApplePayConfiguration {
+            
+            /// The public key used for encrypting card details.
+            public var summaryItems: [PKPaymentSummaryItem]?
+            
+            /// The merchant identifier for apple pay.
+            public var merchantIdentifier: String?
             
         }
     }

@@ -40,7 +40,11 @@ public final class FormViewController: UIViewController {
     ///
     /// - Returns: Whether the form is valid or not.
     public func validate() -> Bool {
-        let textItems = itemManager.items.compactMap { $0 as? FormTextItem }
+        var textItems = itemManager.items.compactMap { $0 as? FormTextItem }
+        
+        // Append items from FormSplitTextItem.
+        // TODO: Consider having a childItems property in the protocol.
+        itemManager.items.compactMap { $0 as? FormSplitTextItem }.forEach { textItems += [$0.leftItem, $0.rightItem] }
         
         let failureMessages: [String] = textItems.compactMap { textItem in
             guard let validator = textItem.validator else { return nil }

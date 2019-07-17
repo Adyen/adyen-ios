@@ -42,6 +42,8 @@ internal final class ComponentManager {
             return IssuerListComponent(paymentMethod: paymentMethod)
         case let paymentMethod as SEPADirectDebitPaymentMethod:
             return SEPADirectDebitComponent(paymentMethod: paymentMethod)
+        case let paymentMethod as ApplePayPaymentMethod:
+            return createApplePayComponent(with: paymentMethod)
         default:
             return EmptyPaymentComponent(paymentMethod: paymentMethod)
         }
@@ -65,6 +67,14 @@ internal final class ComponentManager {
         cardComponent.showsHolderName = cardConfiguration.showsHolderName
         
         return cardComponent
+    }
+    
+    private func createApplePayComponent(with paymentMethod: PaymentMethod) -> PaymentComponent? {
+        guard let summaryItems = configuration.applePay.summaryItems, let identfier = configuration.applePay.merchantIdentifier else {
+            return nil
+        }
+        
+        return ApplePayComponent(paymentMethod: paymentMethod, merchantIdentifier: identfier, summaryItems: summaryItems)
     }
     
 }

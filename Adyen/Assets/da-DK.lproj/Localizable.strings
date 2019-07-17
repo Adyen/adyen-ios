@@ -2,6 +2,8 @@
 "adyen.submitButton.formatted" = "Betal %@";
 "adyen.cancelButton" = "Annuller";
 "adyen.dismissButton" = "OK";
+"adyen.error.title" = "Fejl";
+"adyen.error.unknown" = "Der opstod en ukendt fejl";
 "adyen.validationAlert.title" = "Ugyldig indtastning";
 "adyen.paymentMethods.otherMethods" = "Vælg anden måde";
 "adyen.paymentMethods.title" = "Betalingsmåder";
@@ -17,7 +19,7 @@
 "adyen.card.nameItem.invalid" = "Ugyldigt kortholdernavn";
 "adyen.card.numberItem.title" = "Kortnummer";
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
-"adyen.card.invalidNumber" = "Ugyldigt kortnummer";
+"adyen.card.numberItem.invalid" = "Ugyldigt kortnummer";
 "adyen.card.expiryItem.title" = "Udløbsdato";
 "adyen.card.expiryItem.placeholder" = "MM/ÅÅ";
 "adyen.card.expiryItem.invalid" = "Ugyldig udløbsdato";
@@ -26,4 +28,5 @@
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "Kontrollér dit kort";
 "adyen.card.stored.message" = "Du skal indtaste CVC-koden for %@";
+"adyen.card.stored.expires" = "Udløber %@";
 "adyen.dropIn.stored.title" = "Bekræft %@-betaling";

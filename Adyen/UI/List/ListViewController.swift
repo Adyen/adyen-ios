@@ -37,10 +37,10 @@ public final class ListViewController: UITableViewController {
     
     // MARK: - Cell Loading state
     
-    /// Starts loading animation on a given ListItem.
+    /// Starts a loading animation for a given ListItem.
     ///
     /// - Parameter item: The item to be shown as loading.
-    public func startLoading(item: ListItem) {
+    public func startLoading(for item: ListItem) {
         if let cell = cell(for: item) {
             cell.showLoadingIndicator(true)
         }

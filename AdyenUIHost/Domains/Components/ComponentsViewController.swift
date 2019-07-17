@@ -45,13 +45,14 @@ internal final class ComponentsViewController: UIViewController {
     // MARK: - Components
     
     private var paymentMethods: PaymentMethods?
-    private var currentComponent: Component?
+    private var currentComponent: PresentableComponent?
     private var redirectComponent: RedirectComponent?
     private var threeDS2Component: ThreeDS2Component?
     
     private func present(_ component: PresentableComponent) {
         component.environment = .test
         component.payment = Payment(amount: Configuration.amount)
+        component.payment?.countryCode = "NL"
         
         if let paymentComponent = component as? PaymentComponent {
             paymentComponent.delegate = self
@@ -70,6 +71,8 @@ internal final class ComponentsViewController: UIViewController {
         guard let paymentMethods = paymentMethods else { return }
         let configuration = DropInComponent.PaymentMethodsConfiguration()
         configuration.card.publicKey = Configuration.cardPublicKey
+        configuration.applePay.merchantIdentifier = Configuration.applePayMerchantIdentifier
+        configuration.applePay.summaryItems = Configuration.applePaySummaryItems
         
         let component = DropInComponent(paymentMethods: paymentMethods,
                                         paymentMethodsConfiguration: configuration)
@@ -131,7 +134,9 @@ internal final class ComponentsViewController: UIViewController {
                 finish(with: response.resultCode)
             }
         case let .failure(error):
-            presentAlert(with: error)
+            currentComponent?.stopLoading(withSuccess: false) { [weak self] in
+                self?.presentAlert(with: error)
+            }
         }
     }
     
@@ -174,8 +179,12 @@ internal final class ComponentsViewController: UIViewController {
     }
     
     private func finish(with resultCode: PaymentsResponse.ResultCode) {
-        dismiss(animated: true) {
-            self.presentAlert(withTitle: resultCode.rawValue)
+        let success = resultCode == .authorised || resultCode == .received || resultCode == .pending
+        
+        currentComponent?.stopLoading(withSuccess: success) { [weak self] in
+            self?.dismiss(animated: true) {
+                self?.presentAlert(withTitle: resultCode.rawValue)
+            }
         }
         
         redirectComponent = nil

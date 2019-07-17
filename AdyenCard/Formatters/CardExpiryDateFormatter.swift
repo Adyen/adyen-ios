@@ -24,11 +24,18 @@ public final class CardExpiryDateFormatter: NumericFormatter {
         case 1:
             month = Int(sanitizedString)!
             if month > 1 {
-                formattedDate = "0" + sanitizedString
+                formattedDate = "0" + sanitizedString + separator
             }
         case 2:
             month = Int(sanitizedString)!
             formattedDate = sanitizedString
+            
+            // Only add the separator when the input value is 2 characters,
+            // or if the input value already had the separator appended.
+            // This is to allow for deleting the separator (going from "09 / 2" to "09").
+            if value.count == 2 || value.contains(separator) {
+                formattedDate += separator
+            }
         case 3:
             month = Int(sanitizedString[0...1])!
             formattedDate = sanitizedString[0...1] + separator + sanitizedString[2]

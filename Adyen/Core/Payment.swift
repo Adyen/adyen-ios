@@ -32,6 +32,9 @@ public struct Payment {
     /// The amount for this payment.
     public var amount: Amount
     
+    /// The code of the country in which the payment is made.
+    public var countryCode: String?
+    
     /// Initializes a payment.
     ///
     /// - Parameters:

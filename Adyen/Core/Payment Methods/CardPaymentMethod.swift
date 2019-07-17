@@ -16,8 +16,8 @@ public struct CardPaymentMethod: PaymentMethod {
     public let name: String
     
     /// :nodoc:
-    public var logoName: String {
-        return "card"
+    public var displayInformation: DisplayInformation {
+        return DisplayInformation(title: name, subtitle: nil, logoName: "card")
     }
     
     /// An array containing the supported brands, such as `"mc"`, `"visa"`, `"amex"`.
@@ -54,13 +54,12 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod {
     public let name: String
     
     /// :nodoc:
-    public var displayName: String {
-        return "••••\u{00a0}" + lastFour
-    }
-    
-    /// :nodoc:
-    public var logoName: String {
-        return brand
+    public var displayInformation: DisplayInformation {
+        let expireDate = expiryMonth + "/" + expiryYear
+        
+        return DisplayInformation(title: "••••\u{00a0}" + lastFour,
+                                  subtitle: ADYLocalizedString("adyen.card.stored.expires", expireDate),
+                                  logoName: brand)
     }
     
     /// :nodoc:

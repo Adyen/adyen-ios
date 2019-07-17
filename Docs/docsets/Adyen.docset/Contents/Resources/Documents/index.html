@@ -200,7 +200,7 @@
             <a class="nav-group-name-link" href="Base Component.html">Base Component</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Base Component.html#/s:5Adyen9ComponentP">Component</a>
+                <a class="nav-group-task-link" href="Protocols/Component.html">Component</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/PaymentComponent.html">PaymentComponent</a>
@@ -310,6 +310,36 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/ApplePayComponent.html">ApplePayComponent</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Enums.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/PresentableComponentPresentationMode.html">PresentableComponentPresentationMode</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Structs.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ApplePayDetails.html">ApplePayDetails</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other Structs.html#/s:5Adyen21ApplePayPaymentMethodV">ApplePayPaymentMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/DisplayInformation.html">DisplayInformation</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -317,7 +347,109 @@
         <section class="section">
           <div class="section-content">
             
-            <h1 id='adyen-sdk-for-ios' class='heading'>Adyen SDK for iOS</h1>
+            <h1 id='adyen-components-for-ios' class='heading'>Adyen Components for iOS</h1>
+
+<p>Adyen Components for iOS allows you to accept in-app payments by providing you with the building blocks you need to create a checkout experience.</p>
+<h2 id='installation' class='heading'>Installation</h2>
+
+<p>Adyen Components for iOS are available through either <a href="http://cocoapods.org">CocoaPods</a> or <a href="https://github.com/Carthage/Carthage">Carthage</a>.</p>
+<h3 id='cocoapods' class='heading'>CocoaPods</h3>
+
+<ol>
+<li>Add <code>pod &#39;Adyen&#39;</code> to your <code>Podfile</code>.</li>
+<li>Run <code>pod install</code>.</li>
+</ol>
+<h3 id='carthage' class='heading'>Carthage</h3>
+
+<ol>
+<li>Add <code>github &quot;adyen/adyen-ios&quot;</code> to your <code>Cartfile</code>.</li>
+<li>Run <code>carthage update</code>.</li>
+<li>Link the framework with your target as described in <a href="https://github.com/Carthage/Carthage#adding-frameworks-to-an-application">Carthage Readme</a>.</li>
+</ol>
+<h2 id='drop-in' class='heading'>Drop-in</h2>
+
+<p>The <a href="https://adyen.github.io/adyen-ios/Docs/Classes/DropInComponent.html">Drop-in</a> handles the presentation of available payment methods and the subsequent entry of a customer&rsquo;s payment details. It is initialized with the response of <a href="https://docs.adyen.com/api-explorer/#/PaymentSetupAndVerificationService/v46/paymentMethods"><code>/paymentMethods</code></a>, and provides everything you need to make an API call to <a href="https://docs.adyen.com/api-explorer/#/PaymentSetupAndVerificationService/v46/payments"><code>/payments</code></a> and <a href="https://docs.adyen.com/api-explorer/#/PaymentSetupAndVerificationService/v46/paymentsDetails"><code>/payments/details</code></a>.</p>
+<h3 id='usage' class='heading'>Usage</h3>
+<h4 id='presenting-the-drop-in' class='heading'>Presenting the Drop-in</h4>
+
+<p>The Drop-in requires the response of the <code>/paymentMethods</code> endpoint to be initialized. To pass the response to Drop-in, decode the response to the <code><a href="Structs/PaymentMethods.html">PaymentMethods</a></code> structure:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">paymentMethods</span> <span class="o">=</span> <span class="k">try</span> <span class="kt">JSONDecoder</span><span class="p">()</span><span class="o">.</span><span class="nf">decode</span><span class="p">(</span><span class="kt">PaymentMethods</span><span class="o">.</span><span class="k">self</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="n">response</span><span class="p">)</span>
+</code></pre>
+
+<p>Some payment methods need additional configuration. For example, to enable the card form, the Drop-in needs a public key to use for encryption. These payment method specific configuration parameters can be set in an instance of <code>DropInComponent.PaymentmethodsConfiguration</code>:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">configuration</span> <span class="o">=</span> <span class="kt">DropInComponent</span><span class="o">.</span><span class="kt">PaymentMethodsConfiguration</span><span class="p">()</span>
+<span class="n">configuration</span><span class="o">.</span><span class="n">card</span><span class="o">.</span><span class="n">publicKey</span> <span class="o">=</span> <span class="s">"..."</span> <span class="c1">// Your public key, retrieved from the Customer Area.</span>
+</code></pre>
+
+<p>After serializing the payment methods and creating the configuration, the Drop-in is ready to be initialized. Assign a <code>delegate</code> and use the <code>viewController</code> property to present the Drop-in on the screen:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">dropInComponent</span> <span class="o">=</span> <span class="kt">DropInComponent</span><span class="p">(</span><span class="nv">paymentMethods</span><span class="p">:</span> <span class="n">paymentMethods</span><span class="p">,</span>
+<span class="nv">paymentMethodsConfiguration</span><span class="p">:</span> <span class="n">configuration</span><span class="p">)</span>
+<span class="n">dropInComponent</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="k">self</span>
+<span class="nf">present</span><span class="p">(</span><span class="n">dropInComponent</span><span class="o">.</span><span class="n">viewController</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span>
+</code></pre>
+<h4 id='implementing-dropincomponentdelegate' class='heading'>Implementing DropInComponentDelegate</h4>
+
+<p>To handle the results of the Drop-in, the following methods of <code><a href="Protocols/DropInComponentDelegate.html">DropInComponentDelegate</a></code> should be implemented:</p>
+
+<hr>
+<pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">didSubmit</span><span class="p">(</span><span class="n">_</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">PaymentComponentData</span><span class="p">,</span> <span class="n">from</span> <span class="nv">component</span><span class="p">:</span> <span class="kt">DropInComponent</span><span class="p">)</span>
+</code></pre>
+
+<p>This method is invoked when the customer has selected a payment method and entered its payment details. The payment details can be read from <code>data.paymentMethod</code> and can be submitted as-is to <code>/payments</code>.</p>
+
+<hr>
+<pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">didProvide</span><span class="p">(</span><span class="n">_</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">ActionComponentData</span><span class="p">,</span> <span class="n">from</span> <span class="nv">component</span><span class="p">:</span> <span class="kt">DropInComponent</span><span class="p">)</span>
+</code></pre>
+
+<p>This method is invoked when additional details are provided by the Drop-in after the first call to <code>/payments</code>. This happens, for example, during the 3D Secure 2 authentication flow or any redirect flow. The additional details can be retrieved from <code>data.details</code> and can be submitted to <code>/payments/details</code>.</p>
+
+<hr>
+<pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">didFail</span><span class="p">(</span><span class="n">with</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">,</span> <span class="n">from</span> <span class="nv">component</span><span class="p">:</span> <span class="kt">DropInComponent</span><span class="p">)</span>
+</code></pre>
+
+<p>This method is invoked when an error occurred during the use of the Drop-in. Dismiss the Drop-in&rsquo;s view controller and display an error message.</p>
+
+<hr>
+<h4 id='handling-an-action' class='heading'>Handling an action</h4>
+
+<p>When <code>/payments</code> or <code>/payments/details</code> responds with a non-final result and an <code>action</code>, you can use the Drop-in to handle the action:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">action</span> <span class="o">=</span> <span class="k">try</span> <span class="kt">JSONDecoder</span><span class="p">()</span><span class="o">.</span><span class="nf">decode</span><span class="p">(</span><span class="kt">Action</span><span class="o">.</span><span class="k">self</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="n">actionData</span><span class="p">)</span>
+<span class="n">dropInComponent</span><span class="o">.</span><span class="nf">handle</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+</code></pre>
+
+<p>In case the customer is redirected to an external URL, make sure to let the Drop-in know when the user returns to your app. Do this by implementing the following in your <code>UIApplicationDelegate</code>:</p>
+<pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">application</span><span class="p">(</span><span class="n">_</span> <span class="nv">app</span><span class="p">:</span> <span class="kt">UIApplication</span><span class="p">,</span> <span class="kd">open</span> <span class="nv">url</span><span class="p">:</span> <span class="kt">URL</span><span class="p">,</span> <span class="nv">options</span><span class="p">:</span> <span class="p">[</span><span class="kt">UIApplicationOpenURLOptionsKey</span><span class="p">:</span> <span class="kt">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[:])</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="p">{</span>
+    <span class="kt">Adyen</span><span class="o">.</span><span class="nf">applicationDidOpen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">true</span>
+<span class="p">}</span>
+</code></pre>
+<h2 id='components' class='heading'>Components</h2>
+
+<p>In order to have more flexibility over the checkout flow, you can use our Components to present each payment method individually. Implementation details of our Components can be found in our <a href="https://adyen.github.io/adyen-ios/Docs/index.html">Components API Reference</a>.</p>
+<h3 id='available-components' class='heading'>Available Components</h3>
+
+<ul>
+<li><a href="https://adyen.github.io/adyen-ios/Docs/Classes/CardComponent.html">Card Component</a></li>
+<li><a href="https://adyen.github.io/adyen-ios/Docs/Classes/ThreeDS2Component.html">3D Secure 2 Component</a></li>
+<li><a href="https://adyen.github.io/adyen-ios/Docs/Classes/IssuerListComponent.html">iDEAL Component</a></li>
+<li><a href="https://adyen.github.io/adyen-ios/Docs/Classes/SEPADirectDebitComponent.html">SEPA Direct Debit Component</a></li>
+<li><a href="https://adyen.github.io/adyen-ios/Docs/Classes/IssuerListComponent.html">MOLPay Component</a></li>
+<li><a href="https://adyen.github.io/adyen-ios/Docs/Classes/IssuerListComponent.html">Dotpay Component</a></li>
+<li><a href="https://adyen.github.io/adyen-ios/Docs/Classes/IssuerListComponent.html">EPS Component</a></li>
+<li><a href="https://adyen.github.io/adyen-ios/Docs/Classes/IssuerListComponent.html">Entercash Component</a></li>
+<li><a href="https://adyen.github.io/adyen-ios/Docs/Classes/IssuerListComponent.html">Open Banking Component</a></li>
+<li><a href="https://adyen.github.io/adyen-ios/Docs/Classes/RedirectComponent.html">Redirect Component</a></li>
+</ul>
+<h2 id='see-also' class='heading'>See also</h2>
+
+<ul>
+<li><p><a href="https://docs.adyen.com/developers/checkout/ios">Complete Documentation</a></p></li>
+<li><p><a href="https://adyen.github.io/adyen-ios/Docs/index.html">Components API Reference</a></p></li>
+</ul>
+<h2 id='license' class='heading'>License</h2>
+
+<p>This repository is open source and available under the MIT license. For more information, see the LICENSE file.</p>
 
           </div>
         </section>
@@ -326,7 +458,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2019 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2019-06-17)</p>
+      <p>&copy; 2019 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2019-07-17)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

@@ -31,8 +31,10 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     }()
     
     /// :nodoc:
-    public func stopLoading() {
+    public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
         footerItem.showsActivityIndicator.value = false
+        
+        completion?()
     }
     
     // MARK: - View Controller

@@ -15,3 +15,5 @@ FOUNDATION_EXPORT const unsigned char AdyenCardVersionString[];
 // In this header, you should import all the public headers of your framework using statements like #import <AdyenCard/PublicHeader.h>
 
 @import Adyen;
+
+#import "ObjC_CardEncryptor.h"

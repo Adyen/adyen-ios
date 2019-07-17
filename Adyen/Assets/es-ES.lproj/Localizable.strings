@@ -2,6 +2,8 @@
 "adyen.submitButton.formatted" = "Pagar %@";
 "adyen.cancelButton" = "Cancelar";
 "adyen.dismissButton" = "Okay";
+"adyen.error.title" = "Error";
+"adyen.error.unknown" = "Se ha producido un error desconocido";
 "adyen.validationAlert.title" = "Entrada no válida";
 "adyen.paymentMethods.otherMethods" = "Otros métodos de pago";
 "adyen.paymentMethods.title" = "Métodos de pago";
@@ -17,7 +19,7 @@
 "adyen.card.nameItem.invalid" = "Nombre del titular de tarjeta no válido";
 "adyen.card.numberItem.title" = "Número de tarjeta";
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
-"adyen.card.invalidNumber" = "Número de tarjeta no válido";
+"adyen.card.numberItem.invalid" = "Número de tarjeta no válido";
 "adyen.card.expiryItem.title" = "Fecha de expiración";
 "adyen.card.expiryItem.placeholder" = "MM/AA";
 "adyen.card.expiryItem.invalid" = "Fecha de caducidad no válida";
@@ -26,4 +28,5 @@
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "Verifique su tarjeta";
 "adyen.card.stored.message" = "Introduzca el código de verificación de %@";
+"adyen.card.stored.expires" = "Expira el %@";
 "adyen.dropIn.stored.title" = "Confirmar pago de %@";

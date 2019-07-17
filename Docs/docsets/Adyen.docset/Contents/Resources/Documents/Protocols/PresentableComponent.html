@@ -201,7 +201,7 @@
             <a class="nav-group-name-link" href="../Base Component.html">Base Component</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Base Component.html#/s:5Adyen9ComponentP">Component</a>
+                <a class="nav-group-task-link" href="../Protocols/Component.html">Component</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/PaymentComponent.html">PaymentComponent</a>
@@ -311,6 +311,36 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ApplePayComponent.html">ApplePayComponent</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Enums.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/PresentableComponentPresentationMode.html">PresentableComponentPresentationMode</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Structs.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ApplePayDetails.html">ApplePayDetails</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other Structs.html#/s:5Adyen21ApplePayPaymentMethodV">ApplePayPaymentMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/DisplayInformation.html">DisplayInformation</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -320,7 +350,7 @@
             <h1>PresentableComponent</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">PresentableComponent</span> <span class="p">:</span> <span class="kt"><a href="../Base Component.html#/s:5Adyen9ComponentP">Component</a></span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">PresentableComponent</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/Component.html">Component</a></span></code></pre>
 
                 </div>
               </div>
@@ -363,33 +393,6 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:5Adyen20PresentableComponentP11environmentAA11EnvironmentVvp"></a>
-                    <a name="//apple_ref/swift/Property/environment" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen20PresentableComponentP11environmentAA11EnvironmentVvp">environment</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Defines the environment used to make networking requests.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">environment</span><span class="p">:</span> <span class="kt"><a href="../Structs/Environment.html">Environment</a></span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
                     <a name="/s:5Adyen20PresentableComponentP14viewControllerSo06UIViewE0Cvp"></a>
                     <a name="//apple_ref/swift/Property/viewController" class="dashAnchor"></a>
                     <a class="token" href="#/s:5Adyen20PresentableComponentP14viewControllerSo06UIViewE0Cvp">viewController</a>
@@ -417,10 +420,110 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:5Adyen20PresentableComponentP11stopLoadingyyF"></a>
-                    <a name="//apple_ref/swift/Method/stopLoading()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen20PresentableComponentP11stopLoadingyyF">stopLoading()</a>
+                    <a name="/s:5Adyen20PresentableComponentP25preferredPresentationModeAA0bceF0Ovp"></a>
+                    <a name="//apple_ref/swift/Property/preferredPresentationMode" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen20PresentableComponentP25preferredPresentationModeAA0bceF0Ovp">preferredPresentationMode</a>
                     </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The preferred way of presenting this component.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">preferredPresentationMode</span><span class="p">:</span> <span class="kt"><a href="../Enums/PresentableComponentPresentationMode.html">PresentableComponentPresentationMode</a></span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen20PresentableComponentP11stopLoading11withSuccess10completionySb_yycSgtF"></a>
+                    <a name="//apple_ref/swift/Method/stopLoading(withSuccess:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen20PresentableComponentP11stopLoading11withSuccess10completionySb_yycSgtF">stopLoading(withSuccess:completion:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Stops any processing animation that the view controller is running.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        <p>Stops any processing animation that the view controller is running.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">stopLoading</span><span class="p">(</span><span class="n">withSuccess</span> <span class="nv">success</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">(()</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>success</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Boolean indicating the component should go to a success or failure state.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Completion block to be called when animations are finished.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen20PresentableComponentPAAE11stopLoadingyyF"></a>
+                    <a name="//apple_ref/swift/Method/stopLoading()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen20PresentableComponentPAAE11stopLoadingyyF">stopLoading()</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
                   </div>
                   <div class="height-container">
                     <div class="pointer-container"></div>
@@ -441,6 +544,55 @@
                     </section>
                   </div>
                 </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen20PresentableComponentPAAE11stopLoading11withSuccessySb_tF"></a>
+                    <a name="//apple_ref/swift/Method/stopLoading(withSuccess:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen20PresentableComponentPAAE11stopLoading11withSuccessySb_tF">stopLoading(withSuccess:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Stops any processing animation that the view controller is running.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">stopLoading</span><span class="p">(</span><span class="n">withSuccess</span> <span class="nv">success</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>success</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Boolean indicating the component should go to a success or failure state.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
               </ul>
             </div>
           </div>
@@ -449,7 +601,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2019 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2019-06-17)</p>
+      <p>&copy; 2019 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2019-07-17)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

@@ -25,7 +25,7 @@ internal final class StoredPaymentMethodComponent: PaymentComponent, Presentable
         Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
         
         let alertController = UIAlertController(title: ADYLocalizedString("adyen.dropIn.stored.title", paymentMethod.name),
-                                                message: paymentMethod.displayName,
+                                                message: paymentMethod.displayInformation.title,
                                                 preferredStyle: .alert)
         
         let cancelAction = UIAlertAction(title: ADYLocalizedString("adyen.cancelButton"), style: .cancel) { _ in

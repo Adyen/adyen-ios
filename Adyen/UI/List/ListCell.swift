@@ -91,7 +91,6 @@ public final class ListCell: UITableViewCell {
         NSLayoutConstraint.activate(constraints)
         
         let heightConstraint = itemView.heightAnchor.constraint(greaterThanOrEqualToConstant: 40.0)
-        heightConstraint.priority = .defaultLow // Silence autolayout warnings.
         heightConstraint.isActive = true
     }
     

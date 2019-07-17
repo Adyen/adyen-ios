@@ -24,7 +24,7 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate {
     
     internal private(set) lazy var alertController: UIAlertController = {
         let title = ADYLocalizedString("adyen.card.stored.title")
-        let message = ADYLocalizedString("adyen.card.stored.message", paymentMethod.displayName)
+        let message = ADYLocalizedString("adyen.card.stored.message", paymentMethod.displayInformation.title)
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addTextField(configurationHandler: { textField in

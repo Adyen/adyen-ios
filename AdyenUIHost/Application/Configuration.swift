@@ -6,6 +6,7 @@
 
 import Adyen
 import Foundation
+import PassKit
 
 internal struct Configuration {
     static let environment = DemoServerEnvironment.test
@@ -24,8 +25,14 @@ internal struct Configuration {
     
     static let additionalData = ["allow3DS2": true]
     
-    static let cardPublicKey = "{YOUR_CARD_PUBLIC_URL}"
+    static let cardPublicKey = "{YOUR_CARD_PUBLIC_KEY}"
     
     static let demoServerAPIKey = "{YOUR_DEMO_SERVER_API_KEY}"
+    
+    static let applePayMerchantIdentifier = "{YOUR_APPLE_PAY_MERCHANT_IDENTIFIER}"
+    
+    static let applePaySummaryItems = [
+        PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)
+    ]
     
 }

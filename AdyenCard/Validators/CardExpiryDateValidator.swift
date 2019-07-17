@@ -13,7 +13,7 @@ public final class CardExpiryDateValidator: Validator {
     
     /// :nodoc:
     public func isValid(_ string: String) -> Bool {
-        guard string.count >= minimumLength, string.count <= maximumLength(for: string) else {
+        guard string.count == maximumLength(for: string) else {
             return false
         }
         
@@ -50,7 +50,5 @@ public final class CardExpiryDateValidator: Validator {
     public func maximumLength(for value: String) -> Int {
         return 4
     }
-    
-    private let minimumLength = 3
     
 }

@@ -15,28 +15,33 @@ public protocol PaymentMethod: Decodable {
     /// The name of the payment method, such as `"Credit Card"`, `"iDEAL"`, `"Apple Pay"`.
     var name: String { get }
     
-    /// The name of the payment method, adapted for displaying in a list.
+    /// Display information for the payment method, adapted for displaying in a list.
+    var displayInformation: DisplayInformation { get }
+}
+
+public struct DisplayInformation {
+    
+    /// The title for the payment method, adapted for displaying in a list.
     /// In the case of stored payment methods, this will include information identifying the stored payment method.
     /// For example, this could be the last 4 digits of the card number, or the used email address.
-    var displayName: String { get }
+    public var title: String
+    
+    /// The subtitle for the payment method, adapted for displaying in a list.
+    /// This property represents optional data that can help identify a payment method.
+    /// For example, this could be the expiration date of a stored credit card.
+    public var subtitle: String?
     
     /// The name of the logo resource.
     /// :nodoc:
-    var logoName: String { get }
-    
+    public var logoName: String
 }
 
 /// :nodoc:
 public extension PaymentMethod {
     
     /// :nodoc:
-    var displayName: String {
-        return name
-    }
-    
-    /// :nodoc:
-    var logoName: String {
-        return type
+    var displayInformation: DisplayInformation {
+        return DisplayInformation(title: name, subtitle: nil, logoName: type)
     }
     
 }

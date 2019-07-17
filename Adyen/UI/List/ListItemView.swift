@@ -15,7 +15,7 @@ public final class ListItemView: UIView {
         super.init(frame: .zero)
         
         addSubview(imageView)
-        addSubview(titleLabel)
+        addSubview(textStackView)
         
         configureConstraints()
     }
@@ -31,6 +31,8 @@ public final class ListItemView: UIView {
     public var item: ListItem? {
         didSet {
             titleLabel.text = item?.title
+            subtitleLabel.text = item?.subtitle
+            subtitleLabel.isHidden = item?.subtitle?.isEmpty ?? true
             imageView.imageURL = item?.imageURL
         }
     }
@@ -56,8 +58,29 @@ public final class ListItemView: UIView {
         titleLabel.font = .systemFont(ofSize: 17.0)
         titleLabel.textColor = .black
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        
         return titleLabel
+    }()
+    
+    // MARK: - Subtitle Label
+    
+    private lazy var subtitleLabel: UILabel = {
+        let subtitleLabel = UILabel()
+        subtitleLabel.font = .systemFont(ofSize: 14.0)
+        subtitleLabel.textColor = .gray
+        subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        subtitleLabel.isHidden = true
+        
+        return subtitleLabel
+    }()
+    
+    // MARK: - Text StackView
+    
+    private lazy var textStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, subtitleLabel])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        
+        return stackView
     }()
     
     // MARK: - Layout
@@ -71,11 +94,11 @@ public final class ListItemView: UIView {
             imageView.widthAnchor.constraint(equalToConstant: 40.0),
             imageView.heightAnchor.constraint(equalToConstant: 26.0),
             
-            titleLabel.topAnchor.constraint(greaterThanOrEqualTo: layoutMarginsGuide.topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 16.0),
-            titleLabel.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.bottomAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: layoutMarginsGuide.centerYAnchor)
+            textStackView.topAnchor.constraint(equalTo: topAnchor),
+            textStackView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 16.0),
+            textStackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
+            textStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            textStackView.centerYAnchor.constraint(equalTo: layoutMarginsGuide.centerYAnchor)
         ]
         
         NSLayoutConstraint.activate(constraints)

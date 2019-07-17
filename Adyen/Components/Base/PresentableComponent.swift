@@ -15,8 +15,15 @@ public protocol PresentableComponent: Component {
     /// Returns a view controller that presents the payment details for the shopper to fill.
     var viewController: UIViewController { get }
     
+    /// The preferred way of presenting this component.
+    var preferredPresentationMode: PresentableComponentPresentationMode { get }
+    
     /// Stops any processing animation that the view controller is running.
-    func stopLoading()
+    ///
+    /// - Parameters:
+    ///   - success: Boolean indicating the component should go to a success or failure state.
+    ///   - completion: Completion block to be called when animations are finished.
+    func stopLoading(withSuccess success: Bool, completion: (() -> Void)?)
 }
 
 public extension PresentableComponent {
@@ -32,7 +39,42 @@ public extension PresentableComponent {
     }
     
     /// :nodoc:
-    func stopLoading() {}
+    var preferredPresentationMode: PresentableComponentPresentationMode {
+        return .push
+    }
+    
+    /// Stops any processing animation that the view controller is running.
+    func stopLoading() {
+        stopLoading(withSuccess: true, completion: nil)
+    }
+    
+    /// Stops any processing animation that the view controller is running.
+    ///
+    /// - Parameters:
+    ///   - success: Boolean indicating the component should go to a success or failure state.
+    func stopLoading(withSuccess success: Bool) {
+        stopLoading(withSuccess: success, completion: nil)
+    }
+    
+    /// Stops any processing animation that the view controller is running.
+    ///
+    /// - Parameters:
+    ///   - success: Boolean indicating the component should go to a success or failure state.
+    ///   - completion: Completion block to be called when animations are finished.
+    func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
+        completion?()
+    }
+    
+}
+
+/// Indicates the way a presentable component should be presented.
+public enum PresentableComponentPresentationMode {
+    
+    /// Indicates the component should be pushed onto a navigation stack.
+    case push
+    
+    /// Indicates the component should be presented modally.
+    case present
     
 }
 

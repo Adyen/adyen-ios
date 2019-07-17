@@ -56,8 +56,19 @@ public final class CardComponent: PaymentComponent, PresentableComponent {
     }()
     
     /// :nodoc:
-    public func stopLoading() {
+    public var preferredPresentationMode: PresentableComponentPresentationMode {
+        if storedCardAlertManager != nil {
+            return .present
+        } else {
+            return .push
+        }
+    }
+    
+    /// :nodoc:
+    public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
         footerItem.showsActivityIndicator.value = false
+        
+        completion?()
     }
     
     // MARK: - Private

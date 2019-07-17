@@ -2,6 +2,8 @@
 "adyen.submitButton.formatted" = "Заплатить %@";
 "adyen.cancelButton" = "Отменить";
 "adyen.dismissButton" = "ОК";
+"adyen.error.title" = "Ошибка";
+"adyen.error.unknown" = "Возникла неизвестная ошибка";
 "adyen.validationAlert.title" = "Неверные данные";
 "adyen.paymentMethods.otherMethods" = "Выбрать другой способ";
 "adyen.paymentMethods.title" = "Способы оплаты";
@@ -17,7 +19,7 @@
 "adyen.card.nameItem.invalid" = "Неверное имя владельца карты";
 "adyen.card.numberItem.title" = "Номер карты";
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
-"adyen.card.invalidNumber" = "Недействительный номер карты";
+"adyen.card.numberItem.invalid" = "Недействительный номер карты";
 "adyen.card.expiryItem.title" = "Срок действия";
 "adyen.card.expiryItem.placeholder" = "ММ/ГГ";
 "adyen.card.expiryItem.invalid" = "Недействительный срок действия";
@@ -26,4 +28,5 @@
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "Подтвердить карту";
 "adyen.card.stored.message" = "Введите код CVC карты %@";
+"adyen.card.stored.expires" = "Действительно до %@";
 "adyen.dropIn.stored.title" = "Подтвердить оплату %@";

@@ -2,6 +2,8 @@
 "adyen.submitButton.formatted" = "Pay %@";
 "adyen.cancelButton" = "Cancel";
 "adyen.dismissButton" = "OK";
+"adyen.error.title" = "Error";
+"adyen.error.unknown" = "An unknown error occurred";
 "adyen.validationAlert.title" = "Invalid Input";
 "adyen.paymentMethods.otherMethods" = "Select other method";
 "adyen.paymentMethods.title" = "Payment Methods";
@@ -17,7 +19,7 @@
 "adyen.card.nameItem.invalid" = "Invalid cardholder name";
 "adyen.card.numberItem.title" = "Card number";
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
-"adyen.card.invalidNumber" = "Invalid card number";
+"adyen.card.numberItem.invalid" = "Invalid card number";
 "adyen.card.expiryItem.title" = "Expiry date";
 "adyen.card.expiryItem.placeholder" = "MM/YY";
 "adyen.card.expiryItem.invalid" = "Invalid expiration date";
@@ -26,4 +28,5 @@
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "Verify your card";
 "adyen.card.stored.message" = "Please enter the CVC code for %@";
+"adyen.card.stored.expires" = "Expires %@";
 "adyen.dropIn.stored.title" = "Confirm %@ payment";

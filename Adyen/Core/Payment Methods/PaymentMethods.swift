@@ -63,6 +63,7 @@ private enum AnyPaymentMethod: Decodable {
     case issuerList(IssuerListPaymentMethod)
     case sepaDirectDebit(SEPADirectDebitPaymentMethod)
     case redirect(RedirectPaymentMethod)
+    case applePay(ApplePayPaymentMethod)
     
     case none
     
@@ -81,6 +82,8 @@ private enum AnyPaymentMethod: Decodable {
         case let .sepaDirectDebit(paymentMethod):
             return paymentMethod
         case let .redirect(paymentMethod):
+            return paymentMethod
+        case let .applePay(paymentMethod):
             return paymentMethod
         case .none:
             return nil
@@ -103,10 +106,12 @@ private enum AnyPaymentMethod: Decodable {
                 } else {
                     self = .card(try CardPaymentMethod(from: decoder))
                 }
-            case "ideal", "entercash", "eps", "openbanking_UK", "molpay_ebanking_fpx_MY", "molpay_ebanking_TH", "molpay_ebanking_VN":
+            case "ideal", "entercash", "eps", "dotpay", "openbanking_UK", "molpay_ebanking_fpx_MY", "molpay_ebanking_TH", "molpay_ebanking_VN":
                 self = .issuerList(try IssuerListPaymentMethod(from: decoder))
             case "sepadirectdebit":
                 self = .sepaDirectDebit(try SEPADirectDebitPaymentMethod(from: decoder))
+            case "applepay":
+                self = .applePay(try ApplePayPaymentMethod(from: decoder))
             case "paypal":
                 if isStored {
                     self = .storedPayPal(try StoredPayPalPaymentMethod(from: decoder))

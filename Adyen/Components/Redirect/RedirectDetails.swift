@@ -24,14 +24,17 @@ public struct RedirectDetails: AdditionalDetails {
     
     /// :nodoc:
     public func encode(to encoder: Encoder) throws {
-        guard let (codingKey, value) = extractResultFromURL() else {
-            let context = EncodingError.Context(codingPath: [CodingKeys.payload, CodingKeys.redirectResult],
-                                                debugDescription: "Did not find payload or redirectResult keys")
+        guard let codingKeysValuesPairs = extractKeyValuesFromURL() else {
+            let context = EncodingError.Context(codingPath: [CodingKeys.payload, .redirectResult, .md, .paymentResponse],
+                                                debugDescription: "Did not find payload, redirectResult or PaRes/md keys")
             throw EncodingError.invalidValue(encoder, context)
         }
         
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(value, forKey: codingKey)
+        
+        try codingKeysValuesPairs.forEach { codingKey, value in
+            try container.encode(value, forKey: codingKey)
+        }
     }
     
     // MARK: - Internal
@@ -39,15 +42,19 @@ public struct RedirectDetails: AdditionalDetails {
     internal enum CodingKeys: String, CodingKey {
         case payload
         case redirectResult
+        case paymentResponse = "PaRes"
+        case md = "MD"
     }
     
-    internal func extractResultFromURL() -> (CodingKeys, String)? {
+    internal func extractKeyValuesFromURL() -> [(CodingKeys, String)]? {
         let queryParameters = returnURL.queryParameters
         
         if let redirectResult = queryParameters["redirectResult"]?.removingPercentEncoding {
-            return (.redirectResult, redirectResult)
+            return [(.redirectResult, redirectResult)]
         } else if let payload = queryParameters["payload"]?.removingPercentEncoding {
-            return (.payload, payload)
+            return [(.payload, payload)]
+        } else if let paymentResponse = queryParameters["PaRes"]?.removingPercentEncoding, let md = queryParameters["MD"]?.removingPercentEncoding {
+            return [(.paymentResponse, paymentResponse), (.md, md)]
         }
         
         return nil

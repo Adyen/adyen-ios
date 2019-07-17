@@ -22,8 +22,8 @@ public struct StoredPayPalPaymentMethod: StoredPaymentMethod {
     public let supportedShopperInteractions: [ShopperInteraction]
     
     /// :nodoc:
-    public var displayName: String {
-        return emailAddress
+    public var displayInformation: DisplayInformation {
+        return DisplayInformation(title: emailAddress, subtitle: nil, logoName: type)
     }
     
     /// The email address of the PayPal account.

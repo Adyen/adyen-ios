@@ -1,5 +1,0 @@
-module AdyenCardInternal {
-  header "AdyenCSE.h"
-
-  export *
-}
