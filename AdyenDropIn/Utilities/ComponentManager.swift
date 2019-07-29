@@ -64,7 +64,8 @@ internal final class ComponentManager {
             return nil
         }
         
-        cardComponent.showsHolderName = cardConfiguration.showsHolderName
+        cardComponent.showsHolderNameField = cardConfiguration.showsHolderNameField
+        cardComponent.showsStorePaymentMethodField = cardConfiguration.showsStorePaymentMethodField
         
         return cardComponent
     }

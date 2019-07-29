@@ -28,7 +28,7 @@ internal struct PaymentsRequest: Request {
         try container.encode("iOS", forKey: .channel)
         try container.encode(amount, forKey: .amount)
         try container.encode(Configuration.reference, forKey: .reference)
-        try container.encode(Configuration.countryCode, forKey: .country)
+        try container.encode(Configuration.countryCode, forKey: .countryCode)
         try container.encode(Configuration.returnUrl, forKey: .returnUrl)
         try container.encode(Configuration.shopperReference, forKey: .shopperReference)
         try container.encode(Configuration.shopperEmail, forKey: .shopperEmail)
@@ -41,7 +41,7 @@ internal struct PaymentsRequest: Request {
         case amount
         case reference
         case channel
-        case country
+        case countryCode
         case returnUrl
         case shopperReference
         case shopperEmail

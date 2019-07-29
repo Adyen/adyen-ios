@@ -18,8 +18,11 @@ public final class CardComponent: PaymentComponent, PresentableComponent {
     /// The supported card types.
     public var supportedCardTypes: [CardType]
     
-    /// Indicates if the holder name should be collected in the card form.
-    public var showsHolderName = false
+    /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
+    public var showsHolderNameField = false
+    
+    /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
+    public var showsStorePaymentMethodField = true
     
     /// Initializes the card component.
     ///
@@ -95,7 +98,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent {
                                   holderName: holderNameItem?.value)
         
         let data = PaymentComponentData(paymentMethodDetails: details,
-                                        storePaymentMethod: storeDetailsItem.value)
+                                        storePaymentMethod: storeDetailsItem?.value ?? false)
         
         delegate?.didSubmit(data, from: self)
     }
@@ -145,7 +148,10 @@ public final class CardComponent: PaymentComponent, PresentableComponent {
             formViewController.append(holderNameItem)
         }
         
-        formViewController.append(storeDetailsItem)
+        if let storeDetailsItem = storeDetailsItem {
+            formViewController.append(storeDetailsItem)
+        }
+        
         formViewController.append(footerItem)
         
         return formViewController
@@ -180,7 +186,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent {
     }()
     
     private lazy var holderNameItem: FormTextItem? = {
-        guard showsHolderName else { return nil }
+        guard showsHolderNameField else { return nil }
         
         let holderNameItem = FormTextItem()
         holderNameItem.title = ADYLocalizedString("adyen.card.nameItem.title")
@@ -192,7 +198,9 @@ public final class CardComponent: PaymentComponent, PresentableComponent {
         return holderNameItem
     }()
     
-    private lazy var storeDetailsItem: FormSwitchItem = {
+    private lazy var storeDetailsItem: FormSwitchItem? = {
+        guard showsStorePaymentMethodField else { return nil }
+        
         let storeDetailsItem = FormSwitchItem()
         storeDetailsItem.title = ADYLocalizedString("adyen.card.storeDetailsButton")
         
@@ -208,4 +216,18 @@ public final class CardComponent: PaymentComponent, PresentableComponent {
         return footerItem
     }()
     
+}
+
+public extension CardComponent {
+    
+    /// :nodoc:
+    @available(*, deprecated, renamed: "showsHolderNameField")
+    var showsHolderName: Bool {
+        set {
+            showsHolderNameField = newValue
+        }
+        get {
+            return showsHolderNameField
+        }
+    }
 }

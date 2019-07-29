@@ -26,8 +26,11 @@ extension DropInComponent {
             /// The public key used for encrypting card details.
             public var publicKey: String?
             
-            /// Indicates if the holder name should be collected in the card form.
-            public var showsHolderName = false
+            /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
+            public var showsHolderNameField = false
+            
+            /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
+            public var showsStorePaymentMethodField = true
             
         }
         
@@ -39,6 +42,20 @@ extension DropInComponent {
             /// The merchant identifier for apple pay.
             public var merchantIdentifier: String?
             
+        }
+    }
+}
+
+public extension DropInComponent.PaymentMethodsConfiguration.CardConfiguration {
+    
+    /// :nodoc:
+    @available(*, deprecated, renamed: "showsHolderNameField")
+    var showsHolderName: Bool {
+        set {
+            showsHolderNameField = newValue
+        }
+        get {
+            return showsHolderNameField
         }
     }
 }

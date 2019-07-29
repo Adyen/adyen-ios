@@ -16,7 +16,7 @@ public extension ThreeDS2Component {
         public let isAuthenticated: Bool
         
         /// The payload to submit to verify the authentication.
-        internal let payload: String
+        public let payload: String
         
         internal init(from challengeResult: ADYChallengeResult) throws {
             let payloadData = try JSONSerialization.data(withJSONObject: ["transStatus": challengeResult.transactionStatus],

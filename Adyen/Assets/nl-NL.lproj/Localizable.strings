@@ -17,7 +17,7 @@
 "adyen.card.nameItem.title" = "Naam op kaart";
 "adyen.card.nameItem.placeholder" = "J. Janssen";
 "adyen.card.nameItem.invalid" = "Ongeldige naam kaarthouder";
-"adyen.card.numberItem.title" = "kaartnummer";
+"adyen.card.numberItem.title" = "Kaartnummer";
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "Ongeldig kaartnummer";
 "adyen.card.expiryItem.title" = "Vervaldatum";

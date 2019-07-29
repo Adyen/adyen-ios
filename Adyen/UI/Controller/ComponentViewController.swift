@@ -30,6 +30,11 @@ public final class ComponentViewController: UIViewController {
     // MARK: - UIViewController
     
     /// :nodoc:
+    public override func loadView() {
+        view = UIView()
+    }
+    
+    /// :nodoc:
     public override func viewDidLoad() {
         super.viewDidLoad()
         
