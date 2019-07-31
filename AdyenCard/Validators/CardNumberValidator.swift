@@ -9,6 +9,9 @@ import Foundation
 /// Validates a card's number.
 /// The input is expected to be sanitized.
 public final class CardNumberValidator: Validator {
+
+    /// :nodoc:
+    public init() {}
     
     /// :nodoc:
     public func isValid(_ value: String) -> Bool {

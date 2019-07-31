@@ -10,6 +10,9 @@ import Foundation
 /// The input is expected to be sanitized as "MMYY".
 /// Validation will fail when the format is invalid or the date is in the past.
 public final class CardExpiryDateValidator: Validator {
+
+    /// :nodoc:
+    public init() {}
     
     /// :nodoc:
     public func isValid(_ string: String) -> Bool {
