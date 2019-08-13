@@ -14,4 +14,11 @@ public struct RedirectAction: Decodable {
     
     /// The server-generated payment data that should be submitted to the `/payments/details` endpoint.
     public let paymentData: String
+
+    // MARK: init
+
+    public init(url: URL, paymentData: String) {
+      self.url = url
+      self.paymentData = paymentData
+    }
 }

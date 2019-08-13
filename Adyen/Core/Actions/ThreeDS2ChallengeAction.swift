@@ -14,4 +14,11 @@ public struct ThreeDS2ChallengeAction: Decodable {
     
     /// The server-generated payment data that should be submitted to the `/payments/details` endpoint.
     public let paymentData: String
+
+    // MARK: init
+
+    public init(token: String, paymentData: String) {
+      self.token = token
+      self.paymentData = paymentData
+    }
 }
