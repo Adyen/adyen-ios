@@ -11,5 +11,8 @@ public enum ComponentError: Error {
     
     /// Indicates the component was cancelled by the user.
     case cancelled
+
+    /// Indicates the component failed to perform the intended action.
+    case failed
     
 }
