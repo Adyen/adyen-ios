@@ -64,7 +64,7 @@ public final class ThreeDS2Component: ActionComponent {
     /// - Parameter action: The challenge action as received from the Checkout API.
     public func handle(_ action: ThreeDS2ChallengeAction) {
         guard let transaction = transaction else {
-            didFail(with: ComponentError.failed)
+            didFail(with: ComponentError.noActiveTransaction)
             return
         }
         
