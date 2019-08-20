@@ -47,13 +47,6 @@ public final class ComponentViewController: UIViewController {
     }
     
     /// :nodoc:
-    public override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        
-        children.first?.view.frame = view.bounds
-    }
-    
-    /// :nodoc:
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -76,6 +69,13 @@ public final class ComponentViewController: UIViewController {
         
         addChild(viewController)
         view.addSubview(viewController.view)
+        viewController.view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+          viewController.view.topAnchor.constraint(equalTo: view.topAnchor),
+          viewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+          viewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+          viewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+          ])
         viewController.didMove(toParent: self)
     }
 }
