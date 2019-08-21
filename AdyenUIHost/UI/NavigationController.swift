@@ -31,6 +31,7 @@ internal final class NavigationController: UINavigationController {
         
         navigationBar.isTranslucent = false
         navigationBar.shadowImage = UIImage()
+        navigationBar.setBackgroundImage(UIImage(), for: .default)
         
         if #available(iOS 11.0, *) {
             navigationBar.prefersLargeTitles = true

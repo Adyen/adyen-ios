@@ -15,4 +15,14 @@ public struct ThreeDS2FingerprintAction: Decodable {
     /// The server-generated payment data that should be submitted to the `/payments/details` endpoint.
     public let paymentData: String
     
+    /// Initializes a 3D Secure fingerprint action.
+    ///
+    /// - Parameters:
+    ///   - token: The 3D Secure fingerprint token.
+    ///   - paymentData: The server-generated payment data that should be submitted to the `/payments/details` endpoint.
+    public init(token: String, paymentData: String) {
+        self.token = token
+        self.paymentData = paymentData
+    }
+    
 }

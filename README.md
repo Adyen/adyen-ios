@@ -104,6 +104,7 @@ In order to have more flexibility over the checkout flow, you can use our Compon
 
 - [Card Component][reference.cardComponent]
 - [3D Secure 2 Component][reference.threeDS2Component]
+- [Apple Pay Component][reference.applePayComponent]
 - [iDEAL Component][reference.issuerListComponent]
 - [SEPA Direct Debit Component][reference.sepaDirectDebitComponent]
 - [MOLPay Component][reference.issuerListComponent]

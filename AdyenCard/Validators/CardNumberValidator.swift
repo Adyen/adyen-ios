@@ -11,6 +11,9 @@ import Foundation
 public final class CardNumberValidator: Validator {
     
     /// :nodoc:
+    public init() {}
+    
+    /// :nodoc:
     public func isValid(_ value: String) -> Bool {
         let minimumValidCardLength = 12
         let isValid = value.count >= minimumValidCardLength && luhnCheck(value)

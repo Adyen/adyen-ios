@@ -10,6 +10,9 @@ import Foundation
 public class NumericFormatter: Adyen.Formatter {
     
     /// :nodoc:
+    public init() {}
+    
+    /// :nodoc:
     public func formattedValue(for value: String) -> String {
         return sanitizedValue(for: value)
     }

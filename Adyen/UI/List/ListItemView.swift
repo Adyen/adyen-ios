@@ -58,6 +58,7 @@ public final class ListItemView: UIView {
         titleLabel.font = .systemFont(ofSize: 17.0)
         titleLabel.textColor = .black
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         return titleLabel
     }()
     
@@ -73,12 +74,14 @@ public final class ListItemView: UIView {
         return subtitleLabel
     }()
     
-    // MARK: - Text StackView
+    // MARK: - Text Stack View
     
     private lazy var textStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [titleLabel, subtitleLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
+        stackView.alignment = .leading
+        stackView.distribution = .fillProportionally
         
         return stackView
     }()

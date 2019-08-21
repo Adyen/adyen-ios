@@ -12,6 +12,9 @@ import Foundation
 public final class CardExpiryDateValidator: Validator {
     
     /// :nodoc:
+    public init() {}
+    
+    /// :nodoc:
     public func isValid(_ string: String) -> Bool {
         guard string.count == maximumLength(for: string) else {
             return false

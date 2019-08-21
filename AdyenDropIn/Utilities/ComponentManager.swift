@@ -70,7 +70,7 @@ internal final class ComponentManager {
         return cardComponent
     }
     
-    private func createApplePayComponent(with paymentMethod: PaymentMethod) -> PaymentComponent? {
+    private func createApplePayComponent(with paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
         guard let summaryItems = configuration.applePay.summaryItems, let identfier = configuration.applePay.merchantIdentifier else {
             return nil
         }

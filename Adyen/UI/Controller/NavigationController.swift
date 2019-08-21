@@ -30,6 +30,7 @@ public final class NavigationController: UINavigationController, UINavigationCon
         super.viewDidLoad()
         
         navigationBar.isTranslucent = false
+        navigationBar.setBackgroundImage(UIImage(), for: .default) // Hide separator on iOS 10.
         navigationBar.shadowImage = UIImage()
     }
     

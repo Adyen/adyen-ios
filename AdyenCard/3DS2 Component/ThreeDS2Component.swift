@@ -7,6 +7,16 @@
 import Adyen3DS2
 import Foundation
 
+/// An error that occurred during the use of the 3D Secure 2 component.
+public enum ThreeDS2ComponentError: Error {
+    
+    /// Indicates that the challenge action was provided while no 3D Secure transaction was active.
+    /// This is likely the result of calling handle(_:) with a challenge action after the challenge was already completed,
+    /// or before a fingerprint action was provided.
+    case missingTransaction
+    
+}
+
 /// Handles the 3D Secure 2 fingerprint and challenge.
 public final class ThreeDS2Component: ActionComponent {
     
@@ -63,7 +73,11 @@ public final class ThreeDS2Component: ActionComponent {
     ///
     /// - Parameter action: The challenge action as received from the Checkout API.
     public func handle(_ action: ThreeDS2ChallengeAction) {
-        guard let transaction = transaction else { return }
+        guard let transaction = transaction else {
+            didFail(with: ThreeDS2ComponentError.missingTransaction)
+            
+            return
+        }
         
         Analytics.sendEvent(component: challengeEventName, flavor: _isDropIn ? .dropin : .components, environment: environment)
         

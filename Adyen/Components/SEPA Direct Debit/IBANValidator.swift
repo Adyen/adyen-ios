@@ -11,6 +11,9 @@ import Foundation
 public final class IBANValidator: Validator {
     
     /// :nodoc:
+    public init() {}
+    
+    /// :nodoc:
     public func isValid(_ value: String) -> Bool {
         guard value.count <= maximumLength(for: value) else {
             return false

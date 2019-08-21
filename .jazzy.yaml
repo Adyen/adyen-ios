@@ -31,7 +31,12 @@ custom_categories:
   - name: 3D Secure 2 Component
     children:
       - ThreeDS2Component
+      - ThreeDS2ComponentError
       - ThreeDS2Details
+  - name: Apple Pay Component
+    children:
+      - ApplePayComponent
+      - ApplePayDetails
   - name: SEPA Direct Debit Component
     children:
       - SEPADirectDebitComponent
@@ -68,6 +73,7 @@ custom_categories:
       - ActionComponentData
       - ActionComponentDelegate
       - PresentableComponent
+      - PresentableComponentPresentationMode
       - Details
       - PaymentMethodDetails
       - AdditionalDetails
@@ -81,8 +87,10 @@ custom_categories:
       - StoredPayPalPaymentMethod
       - CardPaymentMethod
       - IssuerListPaymentMethod
+      - ApplePayPaymentMethod
       - SEPADirectDebitPaymentMethod
       - ShopperInteraction
+      - DisplayInformation
       - Payment
       - Action
       - RedirectAction

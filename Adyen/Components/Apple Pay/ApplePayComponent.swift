@@ -7,13 +7,13 @@
 import Foundation
 import PassKit
 
-/// A component that wraps ApplePay payments.
+/// A component that handles Apple Pay payments.
 public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent {
     
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
     
-    /// The apple pay payment method.
+    /// The Apple Pay payment method.
     public let paymentMethod: PaymentMethod
     
     /// The line items for this payment.
@@ -21,10 +21,10 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     
     /// Initializes the component.
     ///
-    /// - Parameter paymentMethod: The apple pay payment method.
+    /// - Parameter paymentMethod: The Apple Pay payment method.
     /// - Parameter merchantIdentifier: The merchant identifier..
     /// - Parameter summaryItems: The line items for this payment.
-    public init?(paymentMethod: PaymentMethod, merchantIdentifier: String, summaryItems: [PKPaymentSummaryItem]) {
+    public init?(paymentMethod: ApplePayPaymentMethod, merchantIdentifier: String, summaryItems: [PKPaymentSummaryItem]) {
         guard PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: ApplePayComponent.supportedNetworks) else {
             print("Failed to instantiate ApplePayComponent. PKPaymentAuthorizationViewController.canMakePayments returned false.")
             return nil
