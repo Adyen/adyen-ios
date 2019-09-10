@@ -16,7 +16,7 @@ public struct RedirectDetails: AdditionalDetails {
     ///
     /// - Parameter:
     ///   - returnURL: The URL through which the user returned to the app after a redirect.
-    internal init(returnURL: URL) {
+    public init(returnURL: URL) {
         self.returnURL = returnURL
     }
     
