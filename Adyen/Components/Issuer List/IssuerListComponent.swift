@@ -35,6 +35,8 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent {
     
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
         listViewController.stopLoading()
+
+        completion?()
     }
     
     // MARK: - Private
