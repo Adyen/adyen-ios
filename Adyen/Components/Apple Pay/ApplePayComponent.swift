@@ -21,19 +21,47 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     
     /// Initializes the component.
     ///
+    /// - Warning: `stopLoading()` must be called before dismissing this component.
+    ///
+    /// - Parameter paymentMethod: The Apple Pay payment method.
+    /// - Parameter payment: A description of the payment. Must include an amount and country code.
+    /// - Parameter merchantIdentifier: The merchant identifier..
+    /// - Parameter summaryItems: The line items for this payment.
+    public init?(paymentMethod: ApplePayPaymentMethod, payment: Payment, merchantIdentifier: String, summaryItems: [PKPaymentSummaryItem]) {
+        guard PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: ApplePayComponent.supportedNetworks) else {
+            print("Failed to instantiate ApplePayComponent. PKPaymentAuthorizationViewController.canMakePayments returned false.")
+            return nil
+        }
+        
+        self.paymentMethod = paymentMethod
+        self.applePayPaymentMethod = paymentMethod
+        self.merchantIdentifier = merchantIdentifier
+        self.summaryItems = summaryItems
+        
+        super.init()
+        
+        self.payment = payment
+    }
+    
+    /// Initializes the component.
+    ///
     /// - Parameter paymentMethod: The Apple Pay payment method.
     /// - Parameter merchantIdentifier: The merchant identifier..
     /// - Parameter summaryItems: The line items for this payment.
+    @available(*, deprecated, message: "Use init(paymentMethod:payment:merchantIdentifier:summaryItems:) instead.")
     public init?(paymentMethod: ApplePayPaymentMethod, merchantIdentifier: String, summaryItems: [PKPaymentSummaryItem]) {
         guard PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: ApplePayComponent.supportedNetworks) else {
             print("Failed to instantiate ApplePayComponent. PKPaymentAuthorizationViewController.canMakePayments returned false.")
             return nil
         }
         
-        self.merchantIdentifier = merchantIdentifier
         self.paymentMethod = paymentMethod
+        self.applePayPaymentMethod = paymentMethod
+        self.merchantIdentifier = merchantIdentifier
         self.summaryItems = summaryItems
     }
+    
+    private let applePayPaymentMethod: ApplePayPaymentMethod
     
     // MARK: - Presentable Component Protocol
     
@@ -111,7 +139,7 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
         paymentAuthorizationCompletion = completion
         
         let token = String(data: payment.token.paymentData, encoding: .utf8) ?? ""
-        let details = ApplePayDetails(type: paymentMethod.type, token: token)
+        let details = ApplePayDetails(paymentMethod: applePayPaymentMethod, token: token)
         
         self.delegate?.didSubmit(PaymentComponentData(paymentMethodDetails: details), from: self)
     }

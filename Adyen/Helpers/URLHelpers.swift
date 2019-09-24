@@ -12,7 +12,7 @@ internal extension URL {
         let queryItems = components?.queryItems ?? []
         
         return Dictionary(uniqueKeysWithValues: queryItems.map {
-            ($0.name, $0.value ?? "")
+            ($0.name, $0.value?.removingPercentEncoding ?? "")
         })
     }
 }

@@ -159,7 +159,7 @@ private extension SubmitButton {
             var backgroundColor = tintColor
             
             if isHighlighted {
-                backgroundColor = #colorLiteral(red: 0.0595491334, green: 0.3775981565, blue: 0.7622919933, alpha: 1) // TODO: Dynamically calculate darker background color.
+                backgroundColor = tintColor.withBrightnessMultiple(0.75)
             }
             
             self.backgroundColor = backgroundColor

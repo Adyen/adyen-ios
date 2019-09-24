@@ -21,6 +21,10 @@ internal final class StoredPaymentMethodComponent: PaymentComponent, Presentable
     
     // MARK: - PresentableComponent
     
+    internal var preferredPresentationMode: PresentableComponentPresentationMode {
+        return .present
+    }
+    
     internal lazy var viewController: UIViewController = {
         Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
         

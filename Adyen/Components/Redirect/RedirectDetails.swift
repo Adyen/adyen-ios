@@ -14,9 +14,11 @@ public struct RedirectDetails: AdditionalDetails {
     
     /// Initializes the redirect payment details.
     ///
+    /// :nodoc:
+    ///
     /// - Parameter:
     ///   - returnURL: The URL through which the user returned to the app after a redirect.
-    internal init(returnURL: URL) {
+    public init(returnURL: URL) {
         self.returnURL = returnURL
     }
     

@@ -35,6 +35,8 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent {
     
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
         listViewController.stopLoading()
+        
+        completion?()
     }
     
     // MARK: - Private
@@ -52,7 +54,7 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent {
             listItem.selectionHandler = { [weak self] in
                 guard let self = self else { return }
                 
-                let details = IssuerListDetails(type: self.paymentMethod.type,
+                let details = IssuerListDetails(paymentMethod: self.issuerListPaymentMethod,
                                                 issuer: issuer.identifier)
                 self.delegate?.didSubmit(PaymentComponentData(paymentMethodDetails: details), from: self)
                 listViewController.startLoading(for: listItem)

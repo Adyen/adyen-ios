@@ -72,7 +72,7 @@ public final class DropInComponent: PresentableComponent {
     private var threeDS2Component: ThreeDS2Component?
     private var selectedPaymentComponent: PaymentComponent?
     
-    private lazy var componentManager = ComponentManager(paymentMethods: paymentMethods, configuration: configuration)
+    private lazy var componentManager = ComponentManager(paymentMethods: paymentMethods, payment: payment, configuration: configuration)
     private lazy var components = componentManager.components
     
     private lazy var paymentMethodListComponent: PaymentMethodListComponent = {

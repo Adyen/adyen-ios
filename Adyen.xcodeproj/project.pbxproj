@@ -72,6 +72,7 @@
 		E2B317A72265D7B700C1BB30 /* FormCardNumberItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B317A62265D7B700C1BB30 /* FormCardNumberItemView.swift */; };
 		E2B317A92265EBD200C1BB30 /* EventPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B317A82265EBD200C1BB30 /* EventPublisher.swift */; };
 		E2B317AC22660FB600C1BB30 /* FormCardNumberItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B317AB22660FB600C1BB30 /* FormCardNumberItemTests.swift */; };
+		E2B3C216233507030067891D /* UIColorHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B3C215233507030067891D /* UIColorHelpers.swift */; };
 		E2C0B55022A6AA0700D3367B /* AmountFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C0B54F22A6AA0600D3367B /* AmountFormatter.swift */; };
 		E2C0E03D22097917008616F6 /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
 		E2C0E04422097917008616F6 /* Adyen.h in Headers */ = {isa = PBXBuildFile; fileRef = E2C0E03622097917008616F6 /* Adyen.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -88,7 +89,7 @@
 		E2C0E0BC220B2976008616F6 /* FormItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C0E0BB220B2976008616F6 /* FormItemView.swift */; };
 		E2C0E0C1220D7E5E008616F6 /* SubmitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C0E0C0220D7E5E008616F6 /* SubmitButton.swift */; };
 		E2D05BF02285B92500EC279A /* EmptyPaymentComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D05BEF2285B92500EC279A /* EmptyPaymentComponent.swift */; };
-		E2D05BF22285B98900EC279A /* StoredPaymentComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D05BF12285B98900EC279A /* StoredPaymentComponent.swift */; };
+		E2D05BF22285B98900EC279A /* StoredPaymentMethodComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D05BF12285B98900EC279A /* StoredPaymentMethodComponent.swift */; };
 		E2D12BEF221D560800EF682F /* FormValueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D12BEE221D560800EF682F /* FormValueItem.swift */; };
 		E2D12BF1221D561600EF682F /* FormValueItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D12BF0221D561600EF682F /* FormValueItemView.swift */; };
 		E2D12BF4221D571B00EF682F /* FormHeaderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D12BF3221D571B00EF682F /* FormHeaderItem.swift */; };
@@ -329,6 +330,7 @@
 		E2B317A62265D7B700C1BB30 /* FormCardNumberItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardNumberItemView.swift; sourceTree = "<group>"; };
 		E2B317A82265EBD200C1BB30 /* EventPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventPublisher.swift; sourceTree = "<group>"; };
 		E2B317AB22660FB600C1BB30 /* FormCardNumberItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardNumberItemTests.swift; sourceTree = "<group>"; };
+		E2B3C215233507030067891D /* UIColorHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorHelpers.swift; sourceTree = "<group>"; };
 		E2C0B54F22A6AA0600D3367B /* AmountFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AmountFormatter.swift; sourceTree = "<group>"; };
 		E2C0E03322097917008616F6 /* Adyen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Adyen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2C0E03622097917008616F6 /* Adyen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Adyen.h; sourceTree = "<group>"; };
@@ -348,7 +350,7 @@
 		E2C0E0BB220B2976008616F6 /* FormItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormItemView.swift; sourceTree = "<group>"; };
 		E2C0E0C0220D7E5E008616F6 /* SubmitButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitButton.swift; sourceTree = "<group>"; };
 		E2D05BEF2285B92500EC279A /* EmptyPaymentComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyPaymentComponent.swift; sourceTree = "<group>"; };
-		E2D05BF12285B98900EC279A /* StoredPaymentComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredPaymentComponent.swift; sourceTree = "<group>"; };
+		E2D05BF12285B98900EC279A /* StoredPaymentMethodComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredPaymentMethodComponent.swift; sourceTree = "<group>"; };
 		E2D12BEE221D560800EF682F /* FormValueItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormValueItem.swift; sourceTree = "<group>"; };
 		E2D12BF0221D561600EF682F /* FormValueItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormValueItemView.swift; sourceTree = "<group>"; };
 		E2D12BF3221D571B00EF682F /* FormHeaderItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormHeaderItem.swift; sourceTree = "<group>"; };
@@ -873,7 +875,7 @@
 			children = (
 				E2D1783F22D8763400B6883E /* PaymentMethodListComponent.swift */,
 				E2D05BEF2285B92500EC279A /* EmptyPaymentComponent.swift */,
-				E2D05BF12285B98900EC279A /* StoredPaymentComponent.swift */,
+				E2D05BF12285B98900EC279A /* StoredPaymentMethodComponent.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -913,6 +915,7 @@
 				E9021DED225CC46D009CF7F4 /* URLHelpers.swift */,
 				E9021E012264C4C5009CF7F4 /* KeyedDecodingContainerHelpers.swift */,
 				E24FED052270427700A65122 /* UIBarButtonItemHelpers.swift */,
+				E2B3C215233507030067891D /* UIColorHelpers.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1473,6 +1476,7 @@
 				E216D3BE221AAB710013CBCF /* FormTextItem.swift in Sources */,
 				E9021DEE225CC46D009CF7F4 /* URLHelpers.swift in Sources */,
 				E216D3C3221AEDBE0013CBCF /* Formatter.swift in Sources */,
+				E2B3C216233507030067891D /* UIColorHelpers.swift in Sources */,
 				E2C0E0BA220B2966008616F6 /* FormTextItemView.swift in Sources */,
 				E97B972322B238C400505476 /* Analytics.swift in Sources */,
 				E9021E022264C4C5009CF7F4 /* KeyedDecodingContainerHelpers.swift in Sources */,
@@ -1637,7 +1641,7 @@
 				E9021DFC2260D626009CF7F4 /* SectionedComponents.swift in Sources */,
 				E9B36CC722451C8300EAA368 /* PaymentMethodsConfiguration.swift in Sources */,
 				E2D1784022D8763400B6883E /* PaymentMethodListComponent.swift in Sources */,
-				E2D05BF22285B98900EC279A /* StoredPaymentComponent.swift in Sources */,
+				E2D05BF22285B98900EC279A /* StoredPaymentMethodComponent.swift in Sources */,
 				E9B36CB82243B38A00EAA368 /* DropInComponent.swift in Sources */,
 				E9B36CC522451C7100EAA368 /* ComponentManager.swift in Sources */,
 				E226F54B229803130013A463 /* DropInComponentDelegate.swift in Sources */,
@@ -1752,7 +1756,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 3.1.2;
+				CURRENT_PROJECT_VERSION = 3.1.3;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -1816,7 +1820,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 3.1.2;
+				CURRENT_PROJECT_VERSION = 3.1.3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1847,7 +1851,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 3.1.2;
+				DYLIB_CURRENT_VERSION = 3.1.3;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = Adyen/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1869,7 +1873,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 3.1.2;
+				DYLIB_CURRENT_VERSION = 3.1.3;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = Adyen/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1927,7 +1931,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 3.1.2;
+				DYLIB_CURRENT_VERSION = 3.1.3;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = AdyenCard/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1948,7 +1952,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 3.1.2;
+				DYLIB_CURRENT_VERSION = 3.1.3;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = AdyenCard/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2006,7 +2010,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 3.1.2;
+				DYLIB_CURRENT_VERSION = 3.1.3;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = AdyenDropIn/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2028,7 +2032,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 3.1.2;
+				DYLIB_CURRENT_VERSION = 3.1.3;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = AdyenDropIn/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

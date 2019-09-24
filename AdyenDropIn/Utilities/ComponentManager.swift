@@ -8,8 +8,9 @@ import Foundation
 
 internal final class ComponentManager {
     
-    internal init(paymentMethods: PaymentMethods, configuration: DropInComponent.PaymentMethodsConfiguration) {
+    internal init(paymentMethods: PaymentMethods, payment: Payment?, configuration: DropInComponent.PaymentMethodsConfiguration) {
         self.paymentMethods = paymentMethods
+        self.payment = payment
         self.configuration = configuration
     }
     
@@ -28,6 +29,7 @@ internal final class ComponentManager {
     // MARK: - Private
     
     private let paymentMethods: PaymentMethods
+    private let payment: Payment?
     private let configuration: DropInComponent.PaymentMethodsConfiguration
     
     private func component(for paymentMethod: PaymentMethod) -> PaymentComponent? {
@@ -71,11 +73,14 @@ internal final class ComponentManager {
     }
     
     private func createApplePayComponent(with paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
-        guard let summaryItems = configuration.applePay.summaryItems, let identfier = configuration.applePay.merchantIdentifier else {
+        guard
+            let summaryItems = configuration.applePay.summaryItems,
+            let identfier = configuration.applePay.merchantIdentifier,
+            let payment = payment else {
             return nil
         }
         
-        return ApplePayComponent(paymentMethod: paymentMethod, merchantIdentifier: identfier, summaryItems: summaryItems)
+        return ApplePayComponent(paymentMethod: paymentMethod, payment: payment, merchantIdentifier: identfier, summaryItems: summaryItems)
     }
     
 }

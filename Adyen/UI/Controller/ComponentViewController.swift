@@ -19,7 +19,12 @@ public final class ComponentViewController: UIViewController {
     public init(rootViewController: UIViewController, cancelButtonHandler: (() -> Void)? = nil) {
         self.cancelButtonHandler = cancelButtonHandler
         self.rootViewController = rootViewController
+        
         super.init(nibName: nil, bundle: nil)
+        
+        if #available(iOS 13.0, *) {
+            isModalInPresentation = true
+        }
     }
     
     /// :nodoc:

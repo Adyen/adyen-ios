@@ -20,7 +20,10 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     /// - Parameter paymentMethod: The SEPA Direct Debit payment method.
     public init(paymentMethod: SEPADirectDebitPaymentMethod) {
         self.paymentMethod = paymentMethod
+        self.sepaDirectDebitPaymentMethod = paymentMethod
     }
+    
+    private let sepaDirectDebitPaymentMethod: SEPADirectDebitPaymentMethod
     
     // MARK: - Presentable Component Protocol
     
@@ -60,7 +63,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
             return
         }
         
-        let details = SEPADirectDebitDetails(type: paymentMethod.type,
+        let details = SEPADirectDebitDetails(paymentMethod: sepaDirectDebitPaymentMethod,
                                              iban: ibanItem.value,
                                              ownerName: nameItem.value)
         footerItem.showsActivityIndicator.value = true
