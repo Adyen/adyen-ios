@@ -15,10 +15,11 @@ public final class IBANValidator: Validator {
     
     /// :nodoc:
     public func isValid(_ value: String) -> Bool {
-        guard value.count <= maximumLength(for: value) else {
+        let minimumValidLength = 4
+        guard minimumValidLength...maximumLength(for: value) ~= value.count else {
             return false
         }
-        
+
         let rearrangedValue = rearrange(value)
         let numerifiedValue = numerify(rearrangedValue)
         
