@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -65,14 +65,12 @@ open class FormValueItemView<ItemType: FormValueItem>: FormItemView<ItemType>, A
     
     private lazy var separatorView: UIView = {
         let separatorView = UIView()
-        separatorView.backgroundColor = separatorColor
+        separatorView.backgroundColor = .componentSeparator
         separatorView.isUserInteractionEnabled = false
         separatorView.translatesAutoresizingMaskIntoConstraints = false
         
         return separatorView
     }()
-    
-    private let separatorColor = #colorLiteral(red: 0.8980392157, green: 0.8980392157, blue: 0.9176470588, alpha: 1)
     
     private func highlightSeparatorView() {
         let transitionView = UIView()
@@ -96,7 +94,7 @@ open class FormValueItemView<ItemType: FormValueItem>: FormItemView<ItemType>, A
         transitionView.frame = separatorView.frame
         addSubview(transitionView)
         
-        separatorView.backgroundColor = separatorColor
+        separatorView.backgroundColor = .componentSeparator
         
         UIView.animate(withDuration: 0.25, delay: 0.0, options: [.curveEaseInOut], animations: {
             transitionView.frame.size.width = 0.0

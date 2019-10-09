@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -39,8 +39,10 @@ public struct Payment {
     ///
     /// - Parameters:
     ///   - amount: The amount for this payment.
-    public init(amount: Amount) {
+    ///   - countryCode: The code of the country in which the payment is made.
+    public init(amount: Amount, countryCode: String? = nil) {
         self.amount = amount
+        self.countryCode = countryCode
     }
 }
 

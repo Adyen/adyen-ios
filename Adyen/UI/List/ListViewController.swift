@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -35,14 +35,14 @@ public final class ListViewController: UITableViewController {
         }
     }
     
-    // MARK: - Cell Loading state
+    // MARK: - Item Loading state
     
     /// Starts a loading animation for a given ListItem.
     ///
     /// - Parameter item: The item to be shown as loading.
     public func startLoading(for item: ListItem) {
         if let cell = cell(for: item) {
-            cell.showLoadingIndicator(true)
+            cell.showsActivityIndicator = true
         }
         
         tableView.isUserInteractionEnabled = false
@@ -58,7 +58,7 @@ public final class ListViewController: UITableViewController {
         
         for case let visibleCell as ListCell in tableView.visibleCells {
             visibleCell.isEnabled = true
-            visibleCell.showLoadingIndicator(false)
+            visibleCell.showsActivityIndicator = false
         }
     }
     
@@ -68,7 +68,7 @@ public final class ListViewController: UITableViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .white
+        view.backgroundColor = .componentBackground
         
         tableView.separatorColor = .clear
         tableView.sectionHeaderHeight = UITableView.automaticDimension

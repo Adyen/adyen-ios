@@ -114,6 +114,12 @@ In order to have more flexibility over the checkout flow, you can use our Compon
 - [Open Banking Component][reference.issuerListComponent]
 - [Redirect Component][reference.redirectComponent]
 
+## Requirements
+
+- iOS 10.0+
+- Xcode 10.2+
+- Swift 5
+
 ## See also
 
 * [Complete Documentation](https://docs.adyen.com/developers/checkout/ios)

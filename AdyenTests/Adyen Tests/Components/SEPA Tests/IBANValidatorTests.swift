@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -91,6 +91,9 @@ class IBANValidatorTests: XCTestCase {
     ]
     
     let invalidIBANs = [
+        "",
+        "AD1",
+        "AD12",
         "AD1200014030200359100100",
         "AE0703312341267890123456",
         "AL47212110040000000235698741",

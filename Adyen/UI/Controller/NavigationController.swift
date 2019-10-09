@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -30,8 +30,9 @@ public final class NavigationController: UINavigationController, UINavigationCon
         super.viewDidLoad()
         
         navigationBar.isTranslucent = false
-        navigationBar.setBackgroundImage(UIImage(), for: .default) // Hide separator on iOS 10.
+        navigationBar.barTintColor = .componentBackground
         navigationBar.shadowImage = UIImage()
+        navigationBar.setBackgroundImage(UIImage(), for: .default) // Hide separator on iOS 10.
     }
     
     // MARK: - UINavigationControllerDelegate

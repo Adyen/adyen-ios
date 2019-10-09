@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -31,7 +31,7 @@ internal final class FormHeaderItemView: FormItemView<FormHeaderItem> {
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.font = .systemFont(ofSize: 32.0, weight: .bold)
-        titleLabel.textColor = .black
+        titleLabel.textColor = .componentLabel
         titleLabel.textAlignment = .center
         titleLabel.text = item.title
         titleLabel.numberOfLines = 0

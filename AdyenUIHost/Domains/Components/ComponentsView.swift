@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -11,7 +11,7 @@ internal final class ComponentsView: UIView {
     internal init() {
         super.init(frame: .zero)
         
-        addSubview(collectionView)
+        addSubview(tableView)
         
         configureConstraints()
     }
@@ -24,34 +24,33 @@ internal final class ComponentsView: UIView {
     
     internal var items = [ComponentsItem]()
     
-    // MARK: - Collection View
+    // MARK: - Table View
     
-    private lazy var collectionView: UICollectionView = {
-        let spacing: CGFloat = 16.0
+    private lazy var tableView: UITableView = {
+        var tableViewStyle = UITableView.Style.grouped
+        if #available(iOS 13.0, *) {
+            tableViewStyle = .insetGrouped
+        }
         
-        let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = spacing
-        layout.sectionInset = UIEdgeInsets(top: spacing, left: spacing, bottom: spacing, right: spacing)
+        let tableView = UITableView(frame: .zero, style: tableViewStyle)
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.rowHeight = 56.0
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .white
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         
-        collectionView.register(ComponentsItemCell.self, forCellWithReuseIdentifier: "Cell")
-        
-        return collectionView
+        return tableView
     }()
     
     // MARK: - Layout
     
     private func configureConstraints() {
         let constraints = [
-            collectionView.topAnchor.constraint(equalTo: topAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            tableView.topAnchor.constraint(equalTo: topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ]
         
         NSLayoutConstraint.activate(constraints)
@@ -59,46 +58,32 @@ internal final class ComponentsView: UIView {
     
 }
 
-extension ComponentsView: UICollectionViewDataSource {
+extension ComponentsView: UITableViewDataSource {
     
-    internal func numberOfSections(in collectionView: UICollectionView) -> Int {
+    internal func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    internal func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    internal func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
     
-    internal func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as? ComponentsItemCell else {
-            fatalError("Failed to dequeue cell.")
-        }
-        
-        cell.item = items[indexPath.item]
+    internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        cell.textLabel?.font = .systemFont(ofSize: 17.0, weight: .semibold)
+        cell.textLabel?.text = items[indexPath.item].title
         
         return cell
     }
     
 }
 
-extension ComponentsView: UICollectionViewDelegate {
+extension ComponentsView: UITableViewDelegate {
     
-    internal func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    internal func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         items[indexPath.item].selectionHandler?()
         
-        collectionView.deselectItem(at: indexPath, animated: true)
-    }
-    
-}
-
-extension ComponentsView: UICollectionViewDelegateFlowLayout {
-    
-    internal func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard let layout = collectionViewLayout as? UICollectionViewFlowLayout else { return .zero }
-        let horizontalInset = layout.sectionInset.left + layout.sectionInset.right
-        
-        return CGSize(width: collectionView.bounds.width - horizontalInset,
-                      height: 56.0)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
 }

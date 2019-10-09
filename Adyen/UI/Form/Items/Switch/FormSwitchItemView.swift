@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -17,6 +17,11 @@ open class FormSwitchItemView: FormValueItemView<FormSwitchItem> {
         super.init(item: item)
         
         showsSeparator = false
+        
+        isAccessibilityElement = true
+        accessibilityLabel = item.title
+        accessibilityTraits = switchControl.accessibilityTraits
+        accessibilityValue = switchControl.accessibilityValue
         
         addSubview(stackView)
         
@@ -37,9 +42,10 @@ open class FormSwitchItemView: FormValueItemView<FormSwitchItem> {
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.font = .systemFont(ofSize: 17.0)
-        titleLabel.textColor = .black
+        titleLabel.textColor = .componentLabel
         titleLabel.text = item.title
         titleLabel.numberOfLines = 0
+        titleLabel.isAccessibilityElement = false
         
         return titleLabel
     }()
@@ -49,6 +55,7 @@ open class FormSwitchItemView: FormValueItemView<FormSwitchItem> {
     private lazy var switchControl: UISwitch = {
         let switchControl = UISwitch()
         switchControl.isOn = item.value
+        switchControl.isAccessibilityElement = false
         switchControl.addTarget(self, action: #selector(switchControlValueChanged), for: .valueChanged)
         switchControl.setContentHuggingPriority(.required, for: .horizontal)
         
@@ -56,9 +63,18 @@ open class FormSwitchItemView: FormValueItemView<FormSwitchItem> {
     }()
     
     @objc private func switchControlValueChanged() {
+        accessibilityValue = switchControl.accessibilityValue
         item.value = switchControl.isOn
         
         switchDelegate?.didChangeValue(in: self)
+    }
+    
+    /// :nodoc:
+    open override func accessibilityActivate() -> Bool {
+        switchControl.isOn = !switchControl.isOn
+        switchControlValueChanged()
+        
+        return true
     }
     
     // MARK: - Stack View

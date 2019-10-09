@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -67,23 +67,25 @@ open class FormTextItemView: FormValueItemView<FormTextItem>, UITextFieldDelegat
         titleLabel.font = .systemFont(ofSize: 13.0)
         titleLabel.textColor = defaultTitleLabelTextColor
         titleLabel.text = item.title
+        titleLabel.isAccessibilityElement = false
         
         return titleLabel
     }()
     
-    private let defaultTitleLabelTextColor = UIColor.darkGray
+    private let defaultTitleLabelTextColor = UIColor.componentSecondaryLabel
     
     // MARK: - Text Field
     
     private lazy var textField: UITextField = {
         let textField = UITextField()
         textField.font = .systemFont(ofSize: 17.0)
-        textField.textColor = .black
+        textField.textColor = .componentLabel
         textField.placeholder = item.placeholder
         textField.autocorrectionType = item.autocorrectionType
         textField.autocapitalizationType = item.autocapitalizationType
         textField.keyboardType = item.keyboardType
         textField.returnKeyType = .next
+        textField.accessibilityLabel = item.title
         textField.delegate = self
         
         return textField

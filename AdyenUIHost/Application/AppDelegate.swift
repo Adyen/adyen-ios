@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -14,7 +14,11 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     
     internal func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let componentsViewController = ComponentsViewController()
-        let navigationController = NavigationController(rootViewController: componentsViewController)
+        
+        let navigationController = UINavigationController(rootViewController: componentsViewController)
+        if #available(iOS 11.0, *) {
+            navigationController.navigationBar.prefersLargeTitles = true
+        }
         
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = navigationController

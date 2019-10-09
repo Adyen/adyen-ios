@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -13,6 +13,7 @@ internal final class ListHeaderView: UIView {
         
         super.init(frame: .zero)
         
+        backgroundColor = .componentBackground
         addSubview(titleLabel)
         
         configureConstraints()
@@ -44,8 +45,9 @@ internal final class ListHeaderView: UIView {
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.text = title.uppercased()
-        titleLabel.textColor = .gray
+        titleLabel.textColor = .componentSecondaryLabel
         titleLabel.font = .systemFont(ofSize: 13.0, weight: .medium)
+        titleLabel.accessibilityTraits = .header
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         return titleLabel

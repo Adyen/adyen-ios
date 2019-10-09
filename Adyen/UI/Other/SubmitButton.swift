@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -14,6 +14,7 @@ public final class SubmitButton: UIControl {
     public init() {
         super.init(frame: .zero)
         
+        isAccessibilityElement = true
         accessibilityTraits = .button
         
         addSubview(backgroundView)
@@ -43,6 +44,7 @@ public final class SubmitButton: UIControl {
     public var title: String? {
         didSet {
             titleLabel.text = title
+            accessibilityLabel = title
         }
     }
     
@@ -50,6 +52,7 @@ public final class SubmitButton: UIControl {
         let titleLabel = UILabel()
         titleLabel.font = .systemFont(ofSize: 17.0, weight: .semibold)
         titleLabel.textColor = .white
+        titleLabel.isAccessibilityElement = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         return titleLabel

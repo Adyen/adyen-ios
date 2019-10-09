@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -45,7 +45,7 @@ public final class ListItemView: UIView {
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 4.0
         imageView.layer.borderWidth = 1.0 / UIScreen.main.nativeScale
-        imageView.layer.borderColor = UIColor(white: 0.0, alpha: 0.2).cgColor
+        imageView.layer.borderColor = UIColor.componentSeparator.cgColor
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
         return imageView
@@ -56,7 +56,7 @@ public final class ListItemView: UIView {
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.font = .systemFont(ofSize: 17.0)
-        titleLabel.textColor = .black
+        titleLabel.textColor = .componentLabel
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         return titleLabel
@@ -67,7 +67,7 @@ public final class ListItemView: UIView {
     private lazy var subtitleLabel: UILabel = {
         let subtitleLabel = UILabel()
         subtitleLabel.font = .systemFont(ofSize: 14.0)
-        subtitleLabel.textColor = .gray
+        subtitleLabel.textColor = .componentSecondaryLabel
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.isHidden = true
         
@@ -105,6 +105,15 @@ public final class ListItemView: UIView {
         ]
         
         NSLayoutConstraint.activate(constraints)
+    }
+    
+    // MARK: - Trait Collection
+    
+    /// :nodoc:
+    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        imageView.layer.borderColor = UIColor.componentSeparator.cgColor
     }
     
 }

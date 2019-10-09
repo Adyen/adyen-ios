@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -138,7 +138,8 @@ public final class DropInComponent: PresentableComponent {
     }
     
     private func present(_ viewController: UIViewController) {
-        paymentMethodListComponent.viewController.present(viewController, animated: true)
+        guard let navigationController = paymentMethodListComponent.viewController.navigationController else { return }
+        navigationController.present(viewController, animated: true)
     }
     
     private func push(_ viewController: UIViewController) {
@@ -183,8 +184,8 @@ extension DropInComponent: ActionComponentDelegate {
     
     /// :nodoc:
     public func didFail(with error: Error, from component: ActionComponent) {
-        if case ComponentError.cancelled = error, let presentableComponent = selectedPaymentComponent as? PresentableComponent {
-            presentableComponent.stopLoading()
+        if case ComponentError.cancelled = error {
+            stopLoading(withSuccess: false)
         } else {
             delegate?.didFail(with: error, from: self)
         }
