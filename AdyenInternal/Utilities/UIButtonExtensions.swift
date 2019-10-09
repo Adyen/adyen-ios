@@ -29,6 +29,8 @@ public extension UIButton {
                 
                 titleLabel?.alpha = 1.0 // Use alpha to hide, since isHidden does not work.
             }
+            
+            isUserInteractionEnabled = !newValue
         }
     }
     

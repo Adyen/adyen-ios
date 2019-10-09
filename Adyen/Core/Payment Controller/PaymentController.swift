@@ -60,13 +60,7 @@ public final class PaymentController {
             return
         }
         
-        #if swift(>=5.0)
-            let paymentMethodIndex = paymentSession.paymentMethods.preferred.firstIndex(of: paymentMethod)
-        #else
-            let paymentMethodIndex = paymentSession.paymentMethods.preferred.index(of: paymentMethod)
-        #endif
-        
-        guard let index = paymentMethodIndex else {
+        guard paymentSession.paymentMethods.preferred.contains(paymentMethod) else {
             print("Cannot delete payment method. Payment method should be a stored payment method from the current payment session.")
             return
         }
@@ -75,7 +69,16 @@ public final class PaymentController {
         apiClient.perform(request) { [weak self] response in
             switch response {
             case .success:
-                self?.paymentSession?.paymentMethods.preferred.remove(at: index)
+                #if swift(>=5.0)
+                let paymentMethodIndex = self?.paymentSession?.paymentMethods.preferred.firstIndex(of: paymentMethod)
+                #else
+                let paymentMethodIndex = self?.paymentSession?.paymentMethods.preferred.index(of: paymentMethod)
+                #endif
+                
+                if let paymentMethodIndex = paymentMethodIndex {
+                    self?.paymentSession?.paymentMethods.preferred.remove(at: paymentMethodIndex)
+                }
+                
                 completion(.success(()))
             case let .failure(error):
                 completion(.failure(error))
