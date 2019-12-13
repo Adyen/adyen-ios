@@ -10,6 +10,9 @@ import Foundation
 /// :nodoc:
 open class FormSwitchItem: FormValueItem {
     
+    /// :nodoc:
+    public var identifier: String?
+    
     /// The type of value entered in the item.
     public typealias ValueType = Bool
     

@@ -32,6 +32,9 @@ internal final class FormFooterItemView: FormItemView<FormFooterItem>, Observer 
     
     private lazy var submitButton: SubmitButton = {
         let submitButton = SubmitButton()
+        submitButton.accessibilityIdentifier = item.identifier.map {
+            ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "submitButton")
+        }
         submitButton.title = item.submitButtonTitle
         submitButton.addTarget(self, action: #selector(didSelectSubmitButton), for: .touchUpInside)
         

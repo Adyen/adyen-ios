@@ -26,6 +26,9 @@ open class FormTextItem: FormValueItem {
         }
     }
     
+    /// :nodoc:
+    public var identifier: String?
+    
     /// The formatter to use for formatting the text in the text field.
     public var formatter: Formatter?
     

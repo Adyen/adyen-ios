@@ -7,7 +7,7 @@
 import Foundation
 
 /// A component that provides a form for SEPA Direct Debit payments.
-public final class SEPADirectDebitComponent: PaymentComponent, PresentableComponent {
+public final class SEPADirectDebitComponent: PaymentComponent, PresentableComponent, Localizable {
     
     /// The SEPA Direct Debit payment method.
     public let paymentMethod: PaymentMethod
@@ -34,6 +34,9 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     }()
     
     /// :nodoc:
+    public var localizationTable: String?
+    
+    /// :nodoc:
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
         footerItem.showsActivityIndicator.value = false
         
@@ -44,6 +47,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController()
+        formViewController.localizationTable = localizationTable
         
         let headerItem = FormHeaderItem()
         headerItem.title = paymentMethod.name
@@ -79,18 +83,18 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     
     // MARK: - Form Items
     
-    private lazy var nameItem: FormTextItem = {
+    internal lazy var nameItem: FormTextItem = {
         let nameItem = FormTextItem()
-        nameItem.title = ADYLocalizedString("adyen.sepa.nameItem.title")
-        nameItem.placeholder = ADYLocalizedString("adyen.sepa.nameItem.placeholder")
+        nameItem.title = ADYLocalizedString("adyen.sepa.nameItem.title", localizationTable)
+        nameItem.placeholder = ADYLocalizedString("adyen.sepa.nameItem.placeholder", localizationTable)
         nameItem.validator = LengthValidator(minimumLength: 2)
-        nameItem.validationFailureMessage = ADYLocalizedString("adyen.sepa.nameItem.invalid")
+        nameItem.validationFailureMessage = ADYLocalizedString("adyen.sepa.nameItem.invalid", localizationTable)
         nameItem.autocapitalizationType = .words
         
         return nameItem
     }()
     
-    private lazy var ibanItem: FormTextItem = {
+    internal lazy var ibanItem: FormTextItem = {
         func localizedPlaceholder() -> String {
             let countryCode = Locale.current.regionCode
             let specification = countryCode.flatMap(IBANSpecification.init(forCountryCode:))
@@ -100,20 +104,20 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
         }
         
         let ibanItem = FormTextItem()
-        ibanItem.title = ADYLocalizedString("adyen.sepa.ibanItem.title")
+        ibanItem.title = ADYLocalizedString("adyen.sepa.ibanItem.title", localizationTable)
         ibanItem.placeholder = localizedPlaceholder()
         ibanItem.formatter = IBANFormatter()
         ibanItem.validator = IBANValidator()
-        ibanItem.validationFailureMessage = ADYLocalizedString("adyen.sepa.ibanItem.invalid")
+        ibanItem.validationFailureMessage = ADYLocalizedString("adyen.sepa.ibanItem.invalid", localizationTable)
         ibanItem.autocapitalizationType = .allCharacters
         
         return ibanItem
     }()
     
-    private lazy var footerItem: FormFooterItem = {
+    internal lazy var footerItem: FormFooterItem = {
         let footerItem = FormFooterItem()
-        footerItem.title = ADYLocalizedString("adyen.sepa.consentLabel")
-        footerItem.submitButtonTitle = ADYLocalizedSubmitButtonTitle(with: payment?.amount)
+        footerItem.title = ADYLocalizedString("adyen.sepa.consentLabel", localizationTable)
+        footerItem.submitButtonTitle = ADYLocalizedSubmitButtonTitle(with: payment?.amount, localizationTable)
         footerItem.submitButtonSelectionHandler = { [weak self] in
             self?.didSelectSubmitButton()
         }

@@ -10,6 +10,9 @@ import Foundation
 /// :nodoc:
 public final class FormSplitTextItem: FormItem {
     
+    /// :nodoc:
+    public var identifier: String?
+    
     /// The text item displayed on the left side.
     public var leftItem: FormTextItem
     

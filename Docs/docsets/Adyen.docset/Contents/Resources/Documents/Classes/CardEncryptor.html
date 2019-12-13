@@ -83,6 +83,9 @@
                 <a class="nav-group-task-link" href="../Classes/CardEncryptor/EncryptedCard.html">– EncryptedCard</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CardEncryptor/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/CardType.html">CardType</a>
               </li>
               <li class="nav-group-task">
@@ -132,7 +135,18 @@
                 <a class="nav-group-task-link" href="../Classes/ApplePayComponent.html">ApplePayComponent</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ApplePayComponent/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/ApplePayDetails.html">ApplePayDetails</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../BCMC Component.html">BCMC Component</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BCMCComponent.html">BCMCComponent</a>
               </li>
             </ul>
           </li>
@@ -271,7 +285,13 @@
                 <a class="nav-group-task-link" href="../Structs/StoredCardPaymentMethod.html">StoredCardPaymentMethod</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/StoredBCMCPaymentMethod.html">StoredBCMCPaymentMethod</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/StoredPayPalPaymentMethod.html">StoredPayPalPaymentMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/AnyCardPaymentMethod.html">AnyCardPaymentMethod</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/CardPaymentMethod.html">CardPaymentMethod</a>
@@ -284,6 +304,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Models.html#/s:5Adyen21ApplePayPaymentMethodV">ApplePayPaymentMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BCMCPaymentMethod.html">BCMCPaymentMethod</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Models.html#/s:5Adyen28SEPADirectDebitPaymentMethodV">SEPADirectDebitPaymentMethod</a>
@@ -331,6 +354,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/LogoURLProvider.html">LogoURLProvider</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Localizable.html">Localizable</a>
               </li>
             </ul>
           </li>
@@ -415,9 +441,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:5Adyen13CardEncryptorC09encryptedB03for9publicKeyAC09EncryptedB0VAC0B0V_SStFZ"></a>
+                    <a name="/s:5Adyen13CardEncryptorC09encryptedB03for9publicKeyAC09EncryptedB0VAC0B0V_SStKFZ"></a>
                     <a name="//apple_ref/swift/Method/encryptedCard(for:publicKey:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen13CardEncryptorC09encryptedB03for9publicKeyAC09EncryptedB0VAC0B0V_SStFZ">encryptedCard(for:publicKey:)</a>
+                    <a class="token" href="#/s:5Adyen13CardEncryptorC09encryptedB03for9publicKeyAC09EncryptedB0VAC0B0V_SStKFZ">encryptedCard(for:publicKey:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -426,13 +452,25 @@
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Encrypts a card.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <code><a href="../Classes/CardEncryptor/Error.html#/s:5Adyen13CardEncryptorC5ErrorO16encryptionFailedyA2EmF">CardEncryptor.Error.encryptionFailed</a></code> if the encryption failed,
+maybe because the card public key is an invalid one, or for any other reason.
+
+</div>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <code><a href="../Classes/CardEncryptor/Error.html#/s:5Adyen13CardEncryptorC5ErrorO26invalidEncryptionArgumentsyA2EmF">CardEncryptor.Error.invalidEncryptionArguments</a></code> when trying to encrypt a card with  card number, securityCode,
+expiryMonth, and expiryYear, all of them are nil.
+
+</div>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">encryptedCard</span><span class="p">(</span><span class="k">for</span> <span class="nv">card</span><span class="p">:</span> <span class="kt"><a href="../Classes/CardEncryptor/Card.html">Card</a></span><span class="p">,</span> <span class="nv">publicKey</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/CardEncryptor/EncryptedCard.html">EncryptedCard</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">encryptedCard</span><span class="p">(</span><span class="k">for</span> <span class="nv">card</span><span class="p">:</span> <span class="kt"><a href="../Classes/CardEncryptor/Card.html">Card</a></span><span class="p">,</span> <span class="nv">publicKey</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/CardEncryptor/EncryptedCard.html">EncryptedCard</a></span></code></pre>
 
                         </div>
                       </div>
@@ -488,6 +526,23 @@
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Encrypts a card.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <code><a href="../Classes/CardEncryptor/Error.html#/s:5Adyen13CardEncryptorC5ErrorO16encryptionFailedyA2EmF">CardEncryptor.Error.encryptionFailed</a></code> if the encryption failed,
+maybe because the card public key is an invalid one, or for any other reason.
+
+</div>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <code><a href="../Classes/CardEncryptor/Error.html#/s:5Adyen13CardEncryptorC5ErrorO26invalidEncryptionArgumentsyA2EmF">CardEncryptor.Error.invalidEncryptionArguments</a></code> when trying to encrypt a card with  card number, securityCode,
+expiryMonth, expiryYear, and holderName, all of them are nil.
+
+</div>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <code><a href="../Classes/CardEncryptor/Error.html#/s:5Adyen13CardEncryptorC5ErrorO7unknownyA2EmF">CardEncryptor.Error.unknown</a></code> if encryption failed for an unknown reason.
+
+</div>
 
                       </div>
                       <div class="declaration">
@@ -568,7 +623,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">requestPublicKey</span><span class="p">(</span><span class="n">forToken</span> <span class="nv">token</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">environment</span><span class="p">:</span> <span class="kt"><a href="../Structs/Environment.html">Environment</a></span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt">Completion</span><span class="o">&lt;</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">String</span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;&gt;</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">requestPublicKey</span><span class="p">(</span><span class="n">forToken</span> <span class="nv">token</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">environment</span><span class="p">:</span> <span class="kt"><a href="../Structs/Environment.html">Environment</a></span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt">Completion</span><span class="o">&lt;</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">String</span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt"><a href="../Classes/CardEncryptor/Error.html">Error</a></span><span class="o">&gt;&gt;</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -633,14 +688,14 @@
                       <div class="abstract">
                         <p>Encrypts a card.
 This methods encapsulates calls to <code><a href="../Classes/CardEncryptor.html#/s:5Adyen13CardEncryptorC16requestPublicKey8forToken11environment10completionySS_AA11EnvironmentVys6ResultOySSs5Error_pGctFZ">requestPublicKey(forToken:environment:completion:)</a></code>
-and <code><a href="../Classes/CardEncryptor.html#/s:5Adyen13CardEncryptorC09encryptedB03for9publicKeyAC09EncryptedB0VAC0B0V_SStFZ">encryptedCard(for:publicKey:)</a></code></p>
+and <code><a href="../Classes/CardEncryptor.html#/s:5Adyen13CardEncryptorC09encryptedB03for9publicKeyAC09EncryptedB0VAC0B0V_SStKFZ">encryptedCard(for:publicKey:)</a></code></p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">encryptedCard</span><span class="p">(</span><span class="k">for</span> <span class="nv">card</span><span class="p">:</span> <span class="kt"><a href="../Classes/CardEncryptor/Card.html">Card</a></span><span class="p">,</span> <span class="nv">publicKeyToken</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">environment</span><span class="p">:</span> <span class="kt"><a href="../Structs/Environment.html">Environment</a></span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt">Completion</span><span class="o">&lt;</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Classes/CardEncryptor/EncryptedCard.html">EncryptedCard</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;&gt;</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">encryptedCard</span><span class="p">(</span><span class="k">for</span> <span class="nv">card</span><span class="p">:</span> <span class="kt"><a href="../Classes/CardEncryptor/Card.html">Card</a></span><span class="p">,</span> <span class="nv">publicKeyToken</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">environment</span><span class="p">:</span> <span class="kt"><a href="../Structs/Environment.html">Environment</a></span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt">Completion</span><span class="o">&lt;</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Classes/CardEncryptor/EncryptedCard.html">EncryptedCard</a></span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt"><a href="../Classes/CardEncryptor/Error.html">Error</a></span><span class="o">&gt;&gt;</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -724,7 +779,7 @@ and <code>encrypt(_:publicKey:)</code></p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">encryptedToken</span><span class="p">(</span><span class="k">for</span> <span class="nv">card</span><span class="p">:</span> <span class="kt"><a href="../Classes/CardEncryptor/Card.html">Card</a></span><span class="p">,</span> <span class="nv">holderName</span><span class="p">:</span> <span class="kt">String</span><span class="p">?,</span> <span class="nv">publicKeyToken</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">environment</span><span class="p">:</span> <span class="kt"><a href="../Structs/Environment.html">Environment</a></span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt">Completion</span><span class="o">&lt;</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">String</span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="o">&gt;&gt;</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">encryptedToken</span><span class="p">(</span><span class="k">for</span> <span class="nv">card</span><span class="p">:</span> <span class="kt"><a href="../Classes/CardEncryptor/Card.html">Card</a></span><span class="p">,</span> <span class="nv">holderName</span><span class="p">:</span> <span class="kt">String</span><span class="p">?,</span> <span class="nv">publicKeyToken</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">environment</span><span class="p">:</span> <span class="kt"><a href="../Structs/Environment.html">Environment</a></span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt">Completion</span><span class="o">&lt;</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">String</span><span class="p">,</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt"><a href="../Classes/CardEncryptor/Error.html">Error</a></span><span class="o">&gt;&gt;</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -800,13 +855,52 @@ and <code>encrypt(_:publicKey:)</code></p>
                 </li>
               </ul>
             </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Error"></a>
+                <a name="//apple_ref/swift/Section/Error" class="dashAnchor"></a>
+                <a href="#/Error">
+                  <h3 class="section-name">Error</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen13CardEncryptorC5ErrorO"></a>
+                    <a name="//apple_ref/swift/Enum/Error" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen13CardEncryptorC5ErrorO">Error</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Describes the error that can occur during card encryption and public key fetching.</p>
+
+                        <a href="../Classes/CardEncryptor/Error.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">Error</span> <span class="p">:</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="p">,</span> <span class="kt">LocalizedError</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         </section>
 
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2019 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2019-10-09)</p>
+      <p>&copy; 2019 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2019-12-10)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

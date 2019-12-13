@@ -39,7 +39,7 @@ class RedirectDetailsTests: XCTestCase {
         XCTAssertEqual(keyValues[0].0, RedirectDetails.CodingKeys.paymentResponse)
         XCTAssertEqual(keyValues[0].1, "some")
         // MD
-        XCTAssertEqual(keyValues[1].0, RedirectDetails.CodingKeys.md)
+        XCTAssertEqual(keyValues[1].0, RedirectDetails.CodingKeys.merchantData)
         XCTAssertEqual(keyValues[1].1, "lorem")
     }
     

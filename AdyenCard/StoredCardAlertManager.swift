@@ -6,9 +6,11 @@
 
 import UIKit
 
-internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate {
+internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Localizable {
     
     internal var completionHandler: Completion<Result<CardDetails, Error>>?
+    
+    internal var localizationTable: String?
     
     internal init(paymentMethod: StoredCardPaymentMethod, publicKey: String, amount: Payment.Amount?) {
         self.paymentMethod = paymentMethod
@@ -23,19 +25,20 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate {
     // MARK: - Alert Controller
     
     internal private(set) lazy var alertController: UIAlertController = {
-        let title = ADYLocalizedString("adyen.card.stored.title")
-        let message = ADYLocalizedString("adyen.card.stored.message", paymentMethod.displayInformation.title)
+        let title = ADYLocalizedString("adyen.card.stored.title", localizationTable)
+        let displayInformation = paymentMethod.localizedDisplayInformation(usingTableName: localizationTable)
+        let message = ADYLocalizedString("adyen.card.stored.message", localizationTable, displayInformation.title)
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alertController.addTextField(configurationHandler: { textField in
+        alertController.addTextField(configurationHandler: { [weak self] textField in
             textField.textAlignment = .center
             textField.keyboardType = .numberPad
-            textField.placeholder = ADYLocalizedString("adyen.card.cvcItem.placeholder")
-            textField.accessibilityLabel = ADYLocalizedString("adyen.card.cvcItem.title")
+            textField.placeholder = ADYLocalizedString("adyen.card.cvcItem.placeholder", self?.localizationTable)
+            textField.accessibilityLabel = ADYLocalizedString("adyen.card.cvcItem.title", self?.localizationTable)
             textField.delegate = self
         })
         
-        let cancelActionTitle = ADYLocalizedString("adyen.cancelButton")
+        let cancelActionTitle = ADYLocalizedString("adyen.cancelButton", localizationTable)
         let cancelAction = UIAlertAction(title: cancelActionTitle, style: .cancel) { _ in
             self.completionHandler?(.failure(ComponentError.cancelled))
         }
@@ -47,7 +50,7 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate {
     }()
     
     private lazy var submitAction: UIAlertAction = {
-        let actionTitle = ADYLocalizedSubmitButtonTitle(with: amount)
+        let actionTitle = ADYLocalizedSubmitButtonTitle(with: amount, localizationTable)
         let action = UIAlertAction(title: actionTitle, style: .default) { [unowned self] _ in
             self.submit()
         }
@@ -64,10 +67,14 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate {
     }
     
     private func submit(securityCode: String) {
-        let card = CardEncryptor.Card(number: nil, securityCode: securityCode, expiryMonth: nil, expiryYear: nil)
-        let encryptedCard = CardEncryptor.encryptedCard(for: card, publicKey: publicKey)
-        let details = CardDetails(paymentMethod: paymentMethod, encryptedSecurityCode: encryptedCard.securityCode ?? "")
-        completionHandler?(.success(details))
+        do {
+            let card = CardEncryptor.Card(number: nil, securityCode: securityCode, expiryMonth: nil, expiryYear: nil)
+            let encryptedCard = try CardEncryptor.encryptedCard(for: card, publicKey: publicKey)
+            let details = CardDetails(paymentMethod: paymentMethod, encryptedSecurityCode: encryptedCard.securityCode ?? "")
+            completionHandler?(.success(details))
+        } catch {
+            completionHandler?(.failure(error))
+        }
     }
     
     // MARK: - UITextFieldDelegate

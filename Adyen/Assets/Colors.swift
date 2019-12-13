@@ -7,6 +7,7 @@
 import UIKit
 
 internal extension UIColor {
+    // swiftlint:disable explicit_acl
     
     static var componentBackground: UIColor {
         if #available(iOS 13.0, *) {
@@ -64,4 +65,5 @@ internal extension UIColor {
         }
     }
     
+    // swiftlint:enable explicit-acl
 }

@@ -7,7 +7,7 @@
 import Foundation
 
 /// A component that presents a list of items for each payment method with a component.
-internal final class PaymentMethodListComponent: PresentableComponent {
+internal final class PaymentMethodListComponent: PresentableComponent, Localizable {
     
     /// The components that are displayed in the list.
     internal let components: SectionedComponents
@@ -29,13 +29,14 @@ internal final class PaymentMethodListComponent: PresentableComponent {
         listViewController
     }()
     
-    private lazy var listViewController: ListViewController = {
+    internal lazy var listViewController: ListViewController = {
         func item(for component: PaymentComponent) -> ListItem {
             let showsDisclosureIndicator = (component as? PresentableComponent)?.preferredPresentationMode == .push
             
-            var listItem = ListItem(title: component.paymentMethod.displayInformation.title)
+            let displayInformation = component.paymentMethod.localizedDisplayInformation(usingTableName: localizationTable)
+            var listItem = ListItem(title: displayInformation.title)
             listItem.imageURL = LogoURLProvider.logoURL(for: component.paymentMethod, environment: environment)
-            listItem.subtitle = component.paymentMethod.displayInformation.subtitle
+            listItem.subtitle = displayInformation.subtitle
             listItem.showsDisclosureIndicator = showsDisclosureIndicator
             listItem.selectionHandler = { [unowned self, unowned component] in
                 self.delegate?.didSelect(component, in: self)
@@ -45,16 +46,22 @@ internal final class PaymentMethodListComponent: PresentableComponent {
         }
         
         let storedSection = ListSection(items: components.stored.map(item(for:)))
-        let regularSectionTitle = components.stored.isEmpty ? nil : ADYLocalizedString("adyen.paymentMethods.otherMethods")
+        let regularSectionTitle = components.stored.isEmpty ? nil : ADYLocalizedString("adyen.paymentMethods.otherMethods",
+                                                                                       localizationTable)
         let regularSection = ListSection(title: regularSectionTitle,
                                          items: components.regular.map(item(for:)))
         
         let listViewController = ListViewController()
-        listViewController.title = ADYLocalizedString("adyen.paymentMethods.title")
+        listViewController.title = ADYLocalizedString("adyen.paymentMethods.title", localizationTable)
         listViewController.sections = [storedSection, regularSection]
         
         return listViewController
     }()
+    
+    // MARK: - Localization
+    
+    /// :nodoc:
+    public var localizationTable: String?
     
     // MARK: - Loading
     

@@ -72,11 +72,14 @@ public final class DropInComponent: PresentableComponent {
     private var threeDS2Component: ThreeDS2Component?
     private var selectedPaymentComponent: PaymentComponent?
     
-    private lazy var componentManager = ComponentManager(paymentMethods: paymentMethods, payment: payment, configuration: configuration)
+    private lazy var componentManager = ComponentManager(paymentMethods: paymentMethods,
+                                                         payment: payment,
+                                                         configuration: configuration)
     private lazy var components = componentManager.components
     
     private lazy var paymentMethodListComponent: PaymentMethodListComponent = {
         let paymentMethodListComponent = PaymentMethodListComponent(components: components)
+        paymentMethodListComponent.localizationTable = configuration.localizationTable
         paymentMethodListComponent.delegate = self
         paymentMethodListComponent._isDropIn = true
         paymentMethodListComponent.environment = environment

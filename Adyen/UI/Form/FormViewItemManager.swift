@@ -82,6 +82,7 @@ internal final class FormViewItemManager {
         let itemView = itemViewType.init(item: item)
         itemView.delegate = itemViewDelegate
         itemView.childItemViews.forEach { $0.delegate = itemViewDelegate }
+        itemView.accessibilityIdentifier = item.identifier
         
         return itemView
     }

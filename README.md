@@ -105,6 +105,7 @@ In order to have more flexibility over the checkout flow, you can use our Compon
 - [Card Component][reference.cardComponent]
 - [3D Secure 2 Component][reference.threeDS2Component]
 - [Apple Pay Component][reference.applePayComponent]
+- [BCMC Component][reference.bcmcComponent]
 - [iDEAL Component][reference.issuerListComponent]
 - [SEPA Direct Debit Component][reference.sepaDirectDebitComponent]
 - [MOLPay Component][reference.issuerListComponent]
@@ -117,7 +118,7 @@ In order to have more flexibility over the checkout flow, you can use our Compon
 ## Requirements
 
 - iOS 10.0+
-- Xcode 10.2+
+- Xcode 11.0+
 - Swift 5
 
 ## See also
@@ -135,6 +136,7 @@ This repository is open source and available under the MIT license. For more inf
 [reference.cardComponent]: https://adyen.github.io/adyen-ios/Docs/Classes/CardComponent.html
 [reference.threeDS2Component]: https://adyen.github.io/adyen-ios/Docs/Classes/ThreeDS2Component.html
 [reference.applePayComponent]: https://adyen.github.io/adyen-ios/Docs/Classes/ApplePayComponent.html
+[reference.bcmcComponent]: https://adyen.github.io/adyen-ios/Docs/Classes/BCMCComponent.html
 [reference.issuerListComponent]: https://adyen.github.io/adyen-ios/Docs/Classes/IssuerListComponent.html
 [reference.sepaDirectDebitComponent]: https://adyen.github.io/adyen-ios/Docs/Classes/SEPADirectDebitComponent.html
 [reference.redirectComponent]: https://adyen.github.io/adyen-ios/Docs/Classes/RedirectComponent.html

@@ -17,6 +17,9 @@ extension DropInComponent {
         
         public var applePay = ApplePayConfiguration()
         
+        /// Indicates the localizable strings table name, leave it nil to use the default table name.
+        public var localizationTable: String?
+        
         /// Initializes the drop in configuration.
         public init() {}
         

@@ -13,20 +13,24 @@ internal final class FormCardNumberItem: FormTextItem {
     /// The card type logos displayed in the form item.
     internal let cardTypeLogos: [CardTypeLogo]
     
+    /// :nodoc:
+    private let localizationTable: String?
+    
     /// Initializes the form card number item.
-    internal init(supportedCardTypes: [CardType], environment: Environment) {
+    internal init(supportedCardTypes: [CardType], environment: Environment, localizationTable: String? = nil) {
         self.supportedCardTypes = supportedCardTypes
         
         let logoURLs = supportedCardTypes.map { LogoURLProvider.logoURL(withName: $0.rawValue, environment: environment) }
         self.cardTypeLogos = logoURLs.prefix(4).map(CardTypeLogo.init) // Limit to a maximum of 4 logos.
+        self.localizationTable = localizationTable
         
         super.init()
         
-        title = ADYLocalizedString("adyen.card.numberItem.title")
+        title = ADYLocalizedString("adyen.card.numberItem.title", localizationTable)
         validator = CardNumberValidator()
         formatter = cardNumberFormatter
-        placeholder = ADYLocalizedString("adyen.card.numberItem.placeholder")
-        validationFailureMessage = ADYLocalizedString("adyen.card.numberItem.invalid")
+        placeholder = ADYLocalizedString("adyen.card.numberItem.placeholder", localizationTable)
+        validationFailureMessage = ADYLocalizedString("adyen.card.numberItem.invalid", localizationTable)
         keyboardType = .numberPad
     }
     

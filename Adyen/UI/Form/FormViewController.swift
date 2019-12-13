@@ -8,7 +8,7 @@ import UIKit
 
 /// Displays a form for the user to enter details.
 /// :nodoc:
-public final class FormViewController: UIViewController {
+public final class FormViewController: UIViewController, Localizable {
     
     // MARK: - Items
     
@@ -34,6 +34,9 @@ public final class FormViewController: UIViewController {
     
     private lazy var itemManager = FormViewItemManager(itemViewDelegate: self)
     
+    /// :nodoc:
+    public var localizationTable: String?
+    
     // MARK: - Validity
     
     /// Validates the items in the form. If the form's contents are invalid, an alert is presented.
@@ -57,7 +60,7 @@ public final class FormViewController: UIViewController {
             return true
         }
         
-        let alertController = UIAlertController(title: ADYLocalizedString("adyen.validationAlert.title"),
+        let alertController = UIAlertController(title: ADYLocalizedString("adyen.validationAlert.title", localizationTable),
                                                 message: nil,
                                                 preferredStyle: .alert)
         
@@ -67,7 +70,7 @@ public final class FormViewController: UIViewController {
             alertController.message = failureMessages.map { "• " + $0 }.joined(separator: "\n")
         }
         
-        alertController.addAction(UIAlertAction(title: ADYLocalizedString("adyen.dismissButton"),
+        alertController.addAction(UIAlertAction(title: ADYLocalizedString("adyen.dismissButton", localizationTable),
                                                 style: .default,
                                                 handler: nil))
         present(alertController, animated: true, completion: nil)

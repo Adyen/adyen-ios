@@ -38,7 +38,7 @@ public struct CardDetails: PaymentMethodDetails {
     ///   - paymentMethod: The used card payment method.
     ///   - encryptedCard: The encrypted card to read the details from.
     ///   - holderName: The holder name if available.
-    public init(paymentMethod: CardPaymentMethod, encryptedCard: CardEncryptor.EncryptedCard, holderName: String? = nil) {
+    public init(paymentMethod: AnyCardPaymentMethod, encryptedCard: CardEncryptor.EncryptedCard, holderName: String? = nil) {
         self.type = paymentMethod.type
         self.encryptedCardNumber = encryptedCard.number
         self.encryptedExpiryMonth = encryptedCard.expiryMonth

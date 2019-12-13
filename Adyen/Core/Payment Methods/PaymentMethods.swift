@@ -47,19 +47,20 @@ public struct PaymentMethods: Decodable {
         }
     }
     
-    fileprivate enum CodingKeys: String, CodingKey {
+    internal enum CodingKeys: String, CodingKey {
         case regular = "paymentMethods"
         case stored = "storedPaymentMethods"
     }
     
 }
 
-private enum AnyPaymentMethod: Decodable {
+internal enum AnyPaymentMethod: Decodable {
     case storedCard(StoredCardPaymentMethod)
     case storedPayPal(StoredPayPalPaymentMethod)
+    case storedBCMC(StoredBCMCPaymentMethod)
     case storedRedirect(StoredRedirectPaymentMethod)
     
-    case card(CardPaymentMethod)
+    case card(AnyCardPaymentMethod)
     case issuerList(IssuerListPaymentMethod)
     case sepaDirectDebit(SEPADirectDebitPaymentMethod)
     case redirect(RedirectPaymentMethod)
@@ -72,6 +73,8 @@ private enum AnyPaymentMethod: Decodable {
         case let .storedCard(paymentMethod):
             return paymentMethod
         case let .storedPayPal(paymentMethod):
+            return paymentMethod
+        case let .storedBCMC(paymentMethod):
             return paymentMethod
         case let .storedRedirect(paymentMethod):
             return paymentMethod
@@ -92,48 +95,13 @@ private enum AnyPaymentMethod: Decodable {
     
     // MARK: - Decoding
     
-    fileprivate init(from decoder: Decoder) throws {
-        do {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            let type = try container.decode(String.self, forKey: .type)
-            let isStored = decoder.codingPath.contains { $0.stringValue == PaymentMethods.CodingKeys.stored.stringValue }
-            let requiresDetails = container.contains(.details)
-            
-            switch type {
-            case "card", "scheme":
-                if isStored {
-                    self = .storedCard(try StoredCardPaymentMethod(from: decoder))
-                } else {
-                    self = .card(try CardPaymentMethod(from: decoder))
-                }
-            case "ideal", "entercash", "eps", "dotpay", "openbanking_UK", "molpay_ebanking_fpx_MY", "molpay_ebanking_TH", "molpay_ebanking_VN":
-                self = .issuerList(try IssuerListPaymentMethod(from: decoder))
-            case "sepadirectdebit":
-                self = .sepaDirectDebit(try SEPADirectDebitPaymentMethod(from: decoder))
-            case "applepay":
-                self = .applePay(try ApplePayPaymentMethod(from: decoder))
-            case "paypal":
-                if isStored {
-                    self = .storedPayPal(try StoredPayPalPaymentMethod(from: decoder))
-                } else {
-                    fallthrough
-                }
-            default:
-                if isStored {
-                    self = .storedRedirect(try StoredRedirectPaymentMethod(from: decoder))
-                } else if !requiresDetails {
-                    self = .redirect(try RedirectPaymentMethod(from: decoder))
-                } else {
-                    self = .none
-                }
-            }
-        } catch {
-            self = .none
-        }
+    internal init(from decoder: Decoder) throws {
+        self = AnyPaymentMethodDecoder.decode(from: decoder)
     }
     
-    private enum CodingKeys: String, CodingKey {
+    internal enum CodingKeys: String, CodingKey {
         case type
         case details
+        case brand
     }
 }

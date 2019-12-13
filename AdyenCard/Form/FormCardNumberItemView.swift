@@ -31,6 +31,7 @@ internal final class FormCardNumberItemView: FormValueItemView<FormCardNumberIte
     private lazy var textItemView: FormTextItemView = {
         let textItemView = FormTextItemView(item: item)
         textItemView.showsSeparator = false
+        textItemView.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "textItem") }
         
         return textItemView
     }()

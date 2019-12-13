@@ -18,7 +18,7 @@ class CardSecurityCodeValidatorTests: XCTestCase {
     
     func testInvalidSecurityCodes() {
         let validator = CardSecurityCodeValidator()
-        
+
         XCTAssertFalse(validator.isValid(""))
         XCTAssertFalse(validator.isValid("1"))
         XCTAssertFalse(validator.isValid("12"))

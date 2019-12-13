@@ -17,6 +17,12 @@ public protocol PaymentMethod: Decodable {
     
     /// Display information for the payment method, adapted for displaying in a list.
     var displayInformation: DisplayInformation { get }
+    
+    /// Display information for the payment method, adapted for displaying in a list.
+    ///
+    /// - Parameters:
+    ///   - tableName: Indicates the localizable strings table name, pass nil to use the default table name.
+    func localizedDisplayInformation(usingTableName tableName: String?) -> DisplayInformation
 }
 
 public struct DisplayInformation {
@@ -36,11 +42,18 @@ public struct DisplayInformation {
     public var logoName: String
 }
 
+extension DisplayInformation: Equatable {}
+
 /// :nodoc:
 public extension PaymentMethod {
     
     /// :nodoc:
     var displayInformation: DisplayInformation {
+        return DisplayInformation(title: name, subtitle: nil, logoName: type)
+    }
+    
+    /// :nodoc:
+    func localizedDisplayInformation(usingTableName tableName: String?) -> DisplayInformation {
         return DisplayInformation(title: name, subtitle: nil, logoName: type)
     }
     

@@ -6,6 +6,13 @@
 
 import Foundation
 
+/// Describes any entity that is UI localizable.
+public protocol Localizable {
+
+    /// Indicates the localizable strings table name, leave it nil to use the default table name.
+    var localizationTable: String? { get set }
+}
+
 /// A component that provides a view controller for the shopper to fill payment details.
 public protocol PresentableComponent: Component {
     

@@ -185,7 +185,7 @@ internal extension CardType {
         case .mir:
             return "^(220)[0-9]{0,16}$"
         case .maestro:
-            return "^(5[6-8][0-9]{0,17}|6[0-9]{0,18})$"
+            return "^(5[0|6-8][0-9]{0,17}|6[0-9]{0,18})$"
         case .carteBancaire:
             return "^[4-6][0-9]{0,15}$"
         default:

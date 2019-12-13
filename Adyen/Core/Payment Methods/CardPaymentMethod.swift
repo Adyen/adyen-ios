@@ -7,7 +7,7 @@
 import Foundation
 
 /// A card payment method.
-public struct CardPaymentMethod: PaymentMethod {
+public struct CardPaymentMethod: AnyCardPaymentMethod {
     
     /// :nodoc:
     public let type: String
@@ -20,7 +20,7 @@ public struct CardPaymentMethod: PaymentMethod {
         return DisplayInformation(title: name, subtitle: nil, logoName: "card")
     }
     
-    /// An array containing the supported brands, such as `"mc"`, `"visa"`, `"amex"`.
+    /// An array containing the supported brands, such as `"mc"`, `"visa"`, `"amex"`, `"bcmc"`.
     public let brands: [String]
     
     // MARK: - Decoding
@@ -31,6 +31,12 @@ public struct CardPaymentMethod: PaymentMethod {
         self.type = try container.decode(String.self, forKey: .type)
         self.name = try container.decode(String.self, forKey: .name)
         self.brands = try container.decodeIfPresent([String].self, forKey: .brands) ?? []
+    }
+    
+    internal init(type: String, name: String, brands: [String]) {
+        self.type = type
+        self.name = name
+        self.brands = brands
     }
     
     private enum CodingKeys: String, CodingKey {
@@ -55,10 +61,15 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod {
     
     /// :nodoc:
     public var displayInformation: DisplayInformation {
+        return localizedDisplayInformation(usingTableName: nil)
+    }
+    
+    /// :nodoc:
+    public func localizedDisplayInformation(usingTableName tableName: String?) -> DisplayInformation {
         let expireDate = expiryMonth + "/" + expiryYear
         
         return DisplayInformation(title: "••••\u{00a0}" + lastFour,
-                                  subtitle: ADYLocalizedString("adyen.card.stored.expires", expireDate),
+                                  subtitle: ADYLocalizedString("adyen.card.stored.expires", tableName, expireDate),
                                   logoName: brand)
     }
     

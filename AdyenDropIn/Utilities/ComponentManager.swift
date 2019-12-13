@@ -33,22 +33,34 @@ internal final class ComponentManager {
     private let configuration: DropInComponent.PaymentMethodsConfiguration
     
     private func component(for paymentMethod: PaymentMethod) -> PaymentComponent? {
+        var paymentComponent: PaymentComponent?
+        
         switch paymentMethod {
         case let paymentMethod as StoredCardPaymentMethod:
-            return createCardComponent(with: paymentMethod)
+            paymentComponent = createCardComponent(with: paymentMethod)
         case let paymentMethod as StoredPaymentMethod:
-            return StoredPaymentMethodComponent(paymentMethod: paymentMethod)
+            paymentComponent = StoredPaymentMethodComponent(paymentMethod: paymentMethod)
+        case let paymentMethod as StoredBCMCPaymentMethod:
+            paymentComponent = StoredPaymentMethodComponent(paymentMethod: paymentMethod)
         case let paymentMethod as CardPaymentMethod:
-            return createCardComponent(with: paymentMethod)
+            paymentComponent = createCardComponent(with: paymentMethod)
+        case let paymentMethod as BCMCPaymentMethod:
+            paymentComponent = createBancontactComponent(with: paymentMethod)
         case let paymentMethod as IssuerListPaymentMethod:
-            return IssuerListComponent(paymentMethod: paymentMethod)
+            paymentComponent = IssuerListComponent(paymentMethod: paymentMethod)
         case let paymentMethod as SEPADirectDebitPaymentMethod:
-            return SEPADirectDebitComponent(paymentMethod: paymentMethod)
+            paymentComponent = SEPADirectDebitComponent(paymentMethod: paymentMethod)
         case let paymentMethod as ApplePayPaymentMethod:
-            return createApplePayComponent(with: paymentMethod)
+            paymentComponent = createApplePayComponent(with: paymentMethod)
         default:
-            return EmptyPaymentComponent(paymentMethod: paymentMethod)
+            paymentComponent = EmptyPaymentComponent(paymentMethod: paymentMethod)
         }
+        
+        if var paymentComponent = paymentComponent as? Localizable {
+            paymentComponent.localizationTable = configuration.localizationTable
+        }
+        
+        return paymentComponent
     }
     
     private func createCardComponent(with paymentMethod: PaymentMethod) -> PaymentComponent? {
@@ -72,6 +84,17 @@ internal final class ComponentManager {
         return cardComponent
     }
     
+    private func createBancontactComponent(with paymentMethod: BCMCPaymentMethod) -> PaymentComponent? {
+        let cardConfiguration = configuration.card
+        guard let publicKey = cardConfiguration.publicKey else { return nil }
+        
+        let component = BCMCComponent(paymentMethod: paymentMethod, publicKey: publicKey)
+        component.showsHolderNameField = cardConfiguration.showsHolderNameField
+        component.showsStorePaymentMethodField = cardConfiguration.showsStorePaymentMethodField
+        
+        return component
+    }
+    
     private func createApplePayComponent(with paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
         guard
             let summaryItems = configuration.applePay.summaryItems,
@@ -80,7 +103,15 @@ internal final class ComponentManager {
             return nil
         }
         
-        return ApplePayComponent(paymentMethod: paymentMethod, payment: payment, merchantIdentifier: identfier, summaryItems: summaryItems)
+        do {
+            return try ApplePayComponent(paymentMethod: paymentMethod,
+                                         payment: payment,
+                                         merchantIdentifier: identfier,
+                                         summaryItems: summaryItems)
+        } catch {
+            print("Failed to instantiate ApplePayComponent because of error: \(error.localizedDescription)")
+            return nil
+        }
     }
     
 }

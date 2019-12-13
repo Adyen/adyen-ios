@@ -10,6 +10,9 @@ import Foundation
 /// :nodoc:
 public final class FormHeaderItem: FormItem {
     
+    /// :nodoc:
+    public var identifier: String?
+    
     /// The title of the header.
     public var title: String?
     

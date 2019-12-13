@@ -73,7 +73,8 @@ internal final class ComponentsViewController: UIViewController {
         configuration.card.publicKey = Configuration.cardPublicKey
         configuration.applePay.merchantIdentifier = Configuration.applePayMerchantIdentifier
         configuration.applePay.summaryItems = Configuration.applePaySummaryItems
-        
+        configuration.localizationTable = nil
+
         let component = DropInComponent(paymentMethods: paymentMethods,
                                         paymentMethodsConfiguration: configuration)
         component.delegate = self

@@ -15,16 +15,18 @@ import Foundation
 ///
 /// - Parameters:
 ///   - key: The key used to identify the localized string.
+///   - tableName: The string table to search. If tableName is nil or is an empty string,
+///    the method attempts to use the table in Localizable.strings.
 ///   - arguments: The arguments to substitute in the templated localized string.
 /// - Returns: The localized string for the given key, or the key itself if the localized string could not be found.
-public func ADYLocalizedString(_ key: String, _ arguments: CVarArg...) -> String {
+public func ADYLocalizedString(_ key: String, _ tableName: String?, _ arguments: CVarArg...) -> String {
     
     // Check main application bundle first.
-    var localizedString = NSLocalizedString(key, tableName: nil, bundle: Bundle.main, comment: "")
+    var localizedString = NSLocalizedString(key, tableName: tableName, bundle: Bundle.main, comment: "")
     
     // If no string is available on main bundle, try internal one.
     if localizedString == key {
-        localizedString = NSLocalizedString(key, tableName: nil, bundle: Bundle.internalResources, comment: "")
+        localizedString = NSLocalizedString(key, tableName: tableName, bundle: Bundle.internalResources, comment: "")
     }
     
     guard arguments.isEmpty == false else {
@@ -39,12 +41,12 @@ public func ADYLocalizedString(_ key: String, _ arguments: CVarArg...) -> String
 /// :nodoc:
 ///
 /// - Parameter amount: The amount to include in the submit button title.
-public func ADYLocalizedSubmitButtonTitle(with amount: Payment.Amount?) -> String {
+public func ADYLocalizedSubmitButtonTitle(with amount: Payment.Amount?, _ tableName: String?) -> String {
     guard let formattedAmount = amount?.formatted else {
-        return ADYLocalizedString("adyen.submitButton")
+        return ADYLocalizedString("adyen.submitButton", tableName)
     }
     
-    return ADYLocalizedString("adyen.submitButton.formatted", formattedAmount)
+    return ADYLocalizedString("adyen.submitButton.formatted", tableName, formattedAmount)
 }
 
 private extension Bundle {

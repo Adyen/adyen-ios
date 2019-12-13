@@ -37,5 +37,14 @@ class FormCardNumberItemTests: XCTestCase {
         XCTAssertFalse(item.cardTypeLogos[0].isHidden.value)
         XCTAssertTrue(item.cardTypeLogos[1].isHidden.value)
     }
+
+
+    func testLocalization() {
+        let sut = FormCardNumberItem(supportedCardTypes: [.visa, .masterCard], environment: .test, localizationTable: "AdyenUIHost")
+
+        XCTAssertEqual(sut.title, ADYLocalizedString("adyen.card.numberItem.title", "AdyenUIHost"))
+        XCTAssertEqual(sut.placeholder, ADYLocalizedString("adyen.card.numberItem.placeholder", "AdyenUIHost"))
+        XCTAssertEqual(sut.validationFailureMessage, ADYLocalizedString("adyen.card.numberItem.invalid", "AdyenUIHost"))
+    }
     
 }

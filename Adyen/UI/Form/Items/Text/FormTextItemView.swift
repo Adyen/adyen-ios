@@ -76,8 +76,8 @@ open class FormTextItemView: FormValueItemView<FormTextItem>, UITextFieldDelegat
     
     // MARK: - Text Field
     
-    private lazy var textField: UITextField = {
-        let textField = UITextField()
+    internal lazy var textField: UITextField = {
+        let textField = TextField()
         textField.font = .systemFont(ofSize: 17.0)
         textField.textColor = .componentLabel
         textField.placeholder = item.placeholder
@@ -87,9 +87,29 @@ open class FormTextItemView: FormValueItemView<FormTextItem>, UITextFieldDelegat
         textField.returnKeyType = .next
         textField.accessibilityLabel = item.title
         textField.delegate = self
+        textField.addTarget(self, action: #selector(textDidChange(textField:)), for: .editingChanged)
         
         return textField
     }()
+    
+    @objc private func textDidChange(textField: UITextField) {
+        let newText = textField.text
+        var sanitizedText = newText.map { item.formatter?.sanitizedValue(for: $0) ?? $0 } ?? ""
+        let maximumLength = item.validator?.maximumLength(for: sanitizedText) ?? .max
+        sanitizedText = sanitizedText.truncate(to: maximumLength)
+        
+        item.value = sanitizedText
+        
+        textDelegate?.didChangeValue(in: self)
+        
+        if sanitizedText.count == maximumLength {
+            textDelegate?.didReachMaximumLength(in: self)
+        }
+        
+        if let formatter = item.formatter, let newText = newText {
+            textField.text = formatter.formattedValue(for: newText)
+        }
+    }
     
     // MARK: - Editing
     
@@ -162,30 +182,27 @@ open class FormTextItemView: FormValueItemView<FormTextItem>, UITextFieldDelegat
         return true
     }
     
-    /// :nodoc:
-    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString: String) -> Bool {
-        let text = textField.text ?? ""
-        let newText = (text as NSString).replacingCharacters(in: range, with: replacementString) as String
-        
-        var sanitizedText = item.formatter?.sanitizedValue(for: newText) ?? newText
-        let maximumLength = item.validator?.maximumLength(for: sanitizedText) ?? .max
-        sanitizedText = sanitizedText.truncate(to: maximumLength)
-        
-        item.value = sanitizedText
-        
-        textDelegate?.didChangeValue(in: self)
-        
-        if sanitizedText.count == maximumLength {
-            textDelegate?.didReachMaximumLength(in: self)
+}
+
+/// A UITextField subclass to override the default UITextField default Accessibility behaviour,
+/// specifically the voice over reading of the UITextField.placeholder.
+/// So in order to prevent this behaviour,
+/// accessibilityValue is overriden to return an empty string in case the text var is nil or empty string.
+private final class TextField: UITextField {
+    var disablePlaceHolderAccessibility: Bool = true
+    
+    override var accessibilityValue: String? {
+        get {
+            guard disablePlaceHolderAccessibility else { return super.accessibilityValue }
+            if let text = super.text, !text.isEmpty {
+                return super.accessibilityValue
+            } else {
+                return ""
+            }
         }
         
-        if let formatter = item.formatter {
-            textField.text = formatter.formattedValue(for: newText)
-            
-            return false
-        } else {
-            return true
+        set {
+            super.accessibilityValue = newValue
         }
     }
-    
 }

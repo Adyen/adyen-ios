@@ -37,6 +37,9 @@ custom_categories:
     children:
       - ApplePayComponent
       - ApplePayDetails
+  - name: BCMC Component
+    children:
+      - BCMCComponent
   - name: SEPA Direct Debit Component
     children:
       - SEPADirectDebitComponent
@@ -84,10 +87,13 @@ custom_categories:
       - PaymentMethod
       - StoredPaymentMethod
       - StoredCardPaymentMethod
+      - StoredBCMCPaymentMethod
       - StoredPayPalPaymentMethod
+      - AnyCardPaymentMethod
       - CardPaymentMethod
       - IssuerListPaymentMethod
       - ApplePayPaymentMethod
+      - BCMCPaymentMethod
       - SEPADirectDebitPaymentMethod
       - ShopperInteraction
       - DisplayInformation
@@ -103,3 +109,4 @@ custom_categories:
       - LengthValidator
       - Environment
       - LogoURLProvider
+      - Localizable
