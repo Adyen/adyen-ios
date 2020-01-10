@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,6 +9,21 @@ import UIKit
 /// Displays a form for the user to enter details.
 /// :nodoc:
 public final class FormViewController: UIViewController, Localizable {
+    
+    /// Indicates the `FormViewController` UI styling.
+    public let style: ViewStyle
+    
+    /// Initializes the FormViewController.
+    ///
+    /// - Parameter style: The `FormViewController` UI style.
+    public init(style: ViewStyle) {
+        self.style = style
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    internal required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - Items
     
@@ -35,7 +50,7 @@ public final class FormViewController: UIViewController, Localizable {
     private lazy var itemManager = FormViewItemManager(itemViewDelegate: self)
     
     /// :nodoc:
-    public var localizationTable: String?
+    public var localizationParameters: LocalizationParameters?
     
     // MARK: - Validity
     
@@ -60,7 +75,7 @@ public final class FormViewController: UIViewController, Localizable {
             return true
         }
         
-        let alertController = UIAlertController(title: ADYLocalizedString("adyen.validationAlert.title", localizationTable),
+        let alertController = UIAlertController(title: ADYLocalizedString("adyen.validationAlert.title", localizationParameters),
                                                 message: nil,
                                                 preferredStyle: .alert)
         
@@ -70,7 +85,7 @@ public final class FormViewController: UIViewController, Localizable {
             alertController.message = failureMessages.map { "• " + $0 }.joined(separator: "\n")
         }
         
-        alertController.addAction(UIAlertAction(title: ADYLocalizedString("adyen.dismissButton", localizationTable),
+        alertController.addAction(UIAlertAction(title: ADYLocalizedString("adyen.dismissButton", localizationParameters),
                                                 style: .default,
                                                 handler: nil))
         present(alertController, animated: true, completion: nil)
@@ -90,6 +105,10 @@ public final class FormViewController: UIViewController, Localizable {
         super.viewDidLoad()
         
         itemManager.itemViews.forEach(formView.appendItemView(_:))
+        
+        view.backgroundColor = style.backgroundColor
+        formView.scrollView.backgroundColor = style.backgroundColor
+        formView.backgroundColor = style.backgroundColor
         
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self,

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,8 +10,14 @@ import UIKit
 /// :nodoc:
 public final class SubmitButton: UIControl {
     
+    /// :nodoc:
+    private let style: ButtonStyle
+    
     /// Initializes the submit button.
-    public init() {
+    ///
+    /// - Parameter style: The `SubmitButton` UI style.
+    public init(style: ButtonStyle) {
+        self.style = style
         super.init(frame: .zero)
         
         isAccessibilityElement = true
@@ -20,6 +26,10 @@ public final class SubmitButton: UIControl {
         addSubview(backgroundView)
         addSubview(activityIndicatorView)
         addSubview(titleLabel)
+        
+        layer.cornerRadius = style.cornerRadius
+        
+        backgroundColor = style.backgroundColor
         
         configureConstraints()
     }
@@ -32,7 +42,8 @@ public final class SubmitButton: UIControl {
     // MARK: - Background View
     
     private lazy var backgroundView: BackgroundView = {
-        let backgroundView = BackgroundView()
+        let backgroundView = BackgroundView(cornerRadius: style.cornerRadius, color: style.backgroundColor)
+        backgroundView.backgroundColor = style.backgroundColor
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
         
         return backgroundView
@@ -50,13 +61,23 @@ public final class SubmitButton: UIControl {
     
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.font = .systemFont(ofSize: 17.0, weight: .semibold)
-        titleLabel.textColor = .white
+        titleLabel.font = style.title.font
+        titleLabel.textColor = style.title.color
+        titleLabel.backgroundColor = style.title.backgroundColor
+        titleLabel.textAlignment = style.title.textAlignment
         titleLabel.isAccessibilityElement = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         return titleLabel
     }()
+    
+    public override var accessibilityIdentifier: String? {
+        didSet {
+            titleLabel.accessibilityIdentifier = accessibilityIdentifier.map {
+                ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel")
+            }
+        }
+    }
     
     // MARK: - Activity Indicator View
     
@@ -82,6 +103,7 @@ public final class SubmitButton: UIControl {
     private lazy var activityIndicatorView: UIActivityIndicatorView = {
         let activityIndicatorView = UIActivityIndicatorView(style: .white)
         activityIndicatorView.color = titleLabel.textColor
+        activityIndicatorView.backgroundColor = .clear
         activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         activityIndicatorView.hidesWhenStopped = true
         return activityIndicatorView
@@ -126,13 +148,16 @@ private extension SubmitButton {
     
     class BackgroundView: UIView {
         
-        fileprivate init() {
+        private let color: UIColor
+        
+        fileprivate init(cornerRadius: CGFloat, color: UIColor) {
+            self.color = color
             super.init(frame: .zero)
             
-            backgroundColor = tintColor
+            backgroundColor = color
             isUserInteractionEnabled = false
             
-            layer.cornerRadius = 8.0
+            layer.cornerRadius = cornerRadius
             layer.masksToBounds = true
         }
         
@@ -141,12 +166,6 @@ private extension SubmitButton {
         }
         
         // MARK: - Background Color
-        
-        fileprivate override func tintColorDidChange() {
-            super.tintColorDidChange()
-            
-            backgroundColor = tintColor
-        }
         
         fileprivate var isHighlighted = false {
             didSet {
@@ -159,10 +178,10 @@ private extension SubmitButton {
         }
         
         private func updateBackgroundColor() {
-            var backgroundColor = tintColor
+            var backgroundColor = color
             
             if isHighlighted {
-                backgroundColor = tintColor.withBrightnessMultiple(0.75)
+                backgroundColor = color.withBrightnessMultiple(0.75)
             }
             
             self.backgroundColor = backgroundColor

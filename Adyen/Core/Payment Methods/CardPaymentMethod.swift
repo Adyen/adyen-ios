@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -61,15 +61,15 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod {
     
     /// :nodoc:
     public var displayInformation: DisplayInformation {
-        return localizedDisplayInformation(usingTableName: nil)
+        return localizedDisplayInformation(using: nil)
     }
     
     /// :nodoc:
-    public func localizedDisplayInformation(usingTableName tableName: String?) -> DisplayInformation {
+    public func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let expireDate = expiryMonth + "/" + expiryYear
         
         return DisplayInformation(title: "••••\u{00a0}" + lastFour,
-                                  subtitle: ADYLocalizedString("adyen.card.stored.expires", tableName, expireDate),
+                                  subtitle: ADYLocalizedString("adyen.card.stored.expires", parameters, expireDate),
                                   logoName: brand)
     }
     

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,10 +8,17 @@ import Foundation
 
 internal final class ComponentManager {
     
-    internal init(paymentMethods: PaymentMethods, payment: Payment?, configuration: DropInComponent.PaymentMethodsConfiguration) {
+    /// Indicates the UI configuration of the drop in component.
+    private var style: DropInComponent.Style
+    
+    internal init(paymentMethods: PaymentMethods,
+                  payment: Payment?,
+                  configuration: DropInComponent.PaymentMethodsConfiguration,
+                  style: DropInComponent.Style) {
         self.paymentMethods = paymentMethods
         self.payment = payment
         self.configuration = configuration
+        self.style = style
     }
     
     // MARK: - Internal
@@ -47,9 +54,13 @@ internal final class ComponentManager {
         case let paymentMethod as BCMCPaymentMethod:
             paymentComponent = createBancontactComponent(with: paymentMethod)
         case let paymentMethod as IssuerListPaymentMethod:
-            paymentComponent = IssuerListComponent(paymentMethod: paymentMethod)
+            paymentComponent = IssuerListComponent(paymentMethod: paymentMethod,
+                                                   style: style.listComponent,
+                                                   navigationStyle: style.navigation)
         case let paymentMethod as SEPADirectDebitPaymentMethod:
-            paymentComponent = SEPADirectDebitComponent(paymentMethod: paymentMethod)
+            paymentComponent = SEPADirectDebitComponent(paymentMethod: paymentMethod,
+                                                        style: style.formComponent,
+                                                        navigationStyle: style.navigation)
         case let paymentMethod as ApplePayPaymentMethod:
             paymentComponent = createApplePayComponent(with: paymentMethod)
         default:
@@ -57,7 +68,7 @@ internal final class ComponentManager {
         }
         
         if var paymentComponent = paymentComponent as? Localizable {
-            paymentComponent.localizationTable = configuration.localizationTable
+            paymentComponent.localizationParameters = configuration.localizationParameters
         }
         
         return paymentComponent
@@ -71,9 +82,15 @@ internal final class ComponentManager {
         
         let cardComponent: CardComponent
         if let cardPaymentMethod = paymentMethod as? CardPaymentMethod {
-            cardComponent = CardComponent(paymentMethod: cardPaymentMethod, publicKey: publicKey)
+            cardComponent = CardComponent(paymentMethod: cardPaymentMethod,
+                                          publicKey: publicKey,
+                                          style: style.formComponent,
+                                          navigationStyle: style.navigation)
         } else if let storedCardPaymentMethod = paymentMethod as? StoredCardPaymentMethod {
-            cardComponent = CardComponent(paymentMethod: storedCardPaymentMethod, publicKey: publicKey)
+            cardComponent = CardComponent(paymentMethod: storedCardPaymentMethod,
+                                          publicKey: publicKey,
+                                          style: style.formComponent,
+                                          navigationStyle: style.navigation)
         } else {
             return nil
         }
@@ -88,7 +105,10 @@ internal final class ComponentManager {
         let cardConfiguration = configuration.card
         guard let publicKey = cardConfiguration.publicKey else { return nil }
         
-        let component = BCMCComponent(paymentMethod: paymentMethod, publicKey: publicKey)
+        let component = BCMCComponent(paymentMethod: paymentMethod,
+                                      publicKey: publicKey,
+                                      style: style.formComponent,
+                                      navigationStyle: style.navigation)
         component.showsHolderNameField = cardConfiguration.showsHolderNameField
         component.showsStorePaymentMethodField = cardConfiguration.showsStorePaymentMethodField
         

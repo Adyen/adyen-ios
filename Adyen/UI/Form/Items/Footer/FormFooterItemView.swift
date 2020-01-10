@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,6 +19,8 @@ internal final class FormFooterItemView: FormItemView<FormFooterItem>, Observer 
         
         addSubview(stackView)
         
+        backgroundColor = item.style.backgroundColor
+        
         bind(item.showsActivityIndicator, to: submitButton, at: \.showsActivityIndicator)
         
         configureConstraints()
@@ -31,12 +33,15 @@ internal final class FormFooterItemView: FormItemView<FormFooterItem>, Observer 
     // MARK: - Submit Button
     
     private lazy var submitButton: SubmitButton = {
-        let submitButton = SubmitButton()
+        let submitButton = SubmitButton(style: item.style.button)
         submitButton.accessibilityIdentifier = item.identifier.map {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "submitButton")
         }
         submitButton.title = item.submitButtonTitle
         submitButton.addTarget(self, action: #selector(didSelectSubmitButton), for: .touchUpInside)
+        submitButton.accessibilityIdentifier = item.identifier.map {
+            ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "submitButton")
+        }
         
         return submitButton
     }()
@@ -53,11 +58,13 @@ internal final class FormFooterItemView: FormItemView<FormFooterItem>, Observer 
         }
         
         let titleLabel = UILabel()
-        titleLabel.font = .systemFont(ofSize: 13.0)
-        titleLabel.textAlignment = .center
-        titleLabel.textColor = .componentQuaternaryLabel
+        titleLabel.font = item.style.title.font
+        titleLabel.textAlignment = item.style.title.textAlignment
+        titleLabel.textColor = item.style.title.color
+        titleLabel.backgroundColor = item.style.title.backgroundColor
         titleLabel.text = title
         titleLabel.numberOfLines = 0
+        titleLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel") }
         
         return titleLabel
     }()
@@ -72,6 +79,7 @@ internal final class FormFooterItemView: FormItemView<FormFooterItem>, Observer 
         stackView.alignment = .fill
         stackView.spacing = 12.0
         stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.backgroundColor = item.style.backgroundColor
         stackView.preservesSuperviewLayoutMargins = true
         stackView.translatesAutoresizingMaskIntoConstraints = false
         

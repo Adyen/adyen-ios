@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -23,6 +23,8 @@ open class FormSwitchItemView: FormValueItemView<FormSwitchItem> {
         accessibilityTraits = switchControl.accessibilityTraits
         accessibilityValue = switchControl.accessibilityValue
         
+        backgroundColor = item.style.backgroundColor
+        
         addSubview(stackView)
         
         configureConstraints()
@@ -41,11 +43,14 @@ open class FormSwitchItemView: FormValueItemView<FormSwitchItem> {
     
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.font = .systemFont(ofSize: 17.0)
-        titleLabel.textColor = .componentLabel
+        titleLabel.font = item.style.title.font
+        titleLabel.textColor = item.style.title.color
+        titleLabel.textAlignment = item.style.title.textAlignment
+        titleLabel.backgroundColor = item.style.title.backgroundColor
         titleLabel.text = item.title
         titleLabel.numberOfLines = 0
         titleLabel.isAccessibilityElement = false
+        titleLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel") }
         
         return titleLabel
     }()

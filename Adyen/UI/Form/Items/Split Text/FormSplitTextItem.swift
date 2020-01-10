@@ -10,6 +10,9 @@ import Foundation
 /// :nodoc:
 public final class FormSplitTextItem: FormItem {
     
+    /// Indicates the `FormSplitTextItemView` UI styling.
+    public let style: ViewStyle
+    
     /// :nodoc:
     public var identifier: String?
     
@@ -22,10 +25,12 @@ public final class FormSplitTextItem: FormItem {
     /// Initializes the split text item.
     ///
     /// - Parameter items: The items displayed side-by-side. Must be two.
-    public init(items: [FormTextItem]) {
+    /// - Parameter style: The `FormSplitTextItemView` UI style.
+    public init(items: [FormTextItem], style: ViewStyle) {
         assert(items.count == 2)
-        leftItem = items[0]
-        rightItem = items[1]
+        self.leftItem = items[0]
+        self.rightItem = items[1]
+        self.style = style
     }
     
 }

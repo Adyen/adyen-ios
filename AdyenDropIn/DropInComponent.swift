@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -15,15 +15,21 @@ public final class DropInComponent: PresentableComponent {
     /// The delegate of the drop in component.
     public weak var delegate: DropInComponentDelegate?
     
+    /// Indicates the UI configuration of the drop in component.
+    public let style: Style
+    
     /// Initializes the drop in component.
     ///
     /// - Parameters:
     ///   - paymentMethods: The payment methods to display.
     ///   - paymentMethodsConfiguration: The payment method specific configuration.
+    ///   - style: The UI styles of the components.
     public init(paymentMethods: PaymentMethods,
-                paymentMethodsConfiguration: PaymentMethodsConfiguration) {
+                paymentMethodsConfiguration: PaymentMethodsConfiguration,
+                style: Style = Style()) {
         self.configuration = paymentMethodsConfiguration
         self.paymentMethods = paymentMethods
+        self.style = style
     }
     
     // MARK: - Handling Actions
@@ -49,6 +55,7 @@ public final class DropInComponent: PresentableComponent {
         Analytics.sendEvent(component: componentName, flavor: .dropin, environment: environment)
         
         return ComponentViewController(rootViewController: paymentMethodListComponent.viewController,
+                                       style: style.navigation,
                                        cancelButtonHandler: didSelectCancelButton)
     }()
     
@@ -74,12 +81,14 @@ public final class DropInComponent: PresentableComponent {
     
     private lazy var componentManager = ComponentManager(paymentMethods: paymentMethods,
                                                          payment: payment,
-                                                         configuration: configuration)
+                                                         configuration: configuration,
+                                                         style: style)
     private lazy var components = componentManager.components
     
     private lazy var paymentMethodListComponent: PaymentMethodListComponent = {
-        let paymentMethodListComponent = PaymentMethodListComponent(components: components)
-        paymentMethodListComponent.localizationTable = configuration.localizationTable
+        let paymentMethodListComponent = PaymentMethodListComponent(components: components,
+                                                                    style: style.listComponent)
+        paymentMethodListComponent.localizationParameters = configuration.localizationParameters
         paymentMethodListComponent.delegate = self
         paymentMethodListComponent._isDropIn = true
         paymentMethodListComponent.environment = environment
@@ -88,7 +97,7 @@ public final class DropInComponent: PresentableComponent {
     }()
     
     private func presentRedirectComponent(with action: RedirectAction) {
-        let redirectComponent = RedirectComponent(action: action)
+        let redirectComponent = RedirectComponent(action: action, style: style.redirectComponent)
         redirectComponent.delegate = self
         redirectComponent._isDropIn = true
         redirectComponent.environment = environment

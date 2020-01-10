@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -73,29 +73,39 @@ internal final class ComponentsViewController: UIViewController {
         configuration.card.publicKey = Configuration.cardPublicKey
         configuration.applePay.merchantIdentifier = Configuration.applePayMerchantIdentifier
         configuration.applePay.summaryItems = Configuration.applePaySummaryItems
-        configuration.localizationTable = nil
+        configuration.localizationParameters = nil
 
         let component = DropInComponent(paymentMethods: paymentMethods,
-                                        paymentMethodsConfiguration: configuration)
+                                        paymentMethodsConfiguration: configuration,
+                                        style: dropInComponentStyle)
         component.delegate = self
         present(component)
     }
     
+    private lazy var dropInComponentStyle: DropInComponent.Style = DropInComponent.Style()
+    
     private func presentCardComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: CardPaymentMethod.self) else { return }
-        let component = CardComponent(paymentMethod: paymentMethod, publicKey: Configuration.cardPublicKey)
+        let component = CardComponent(paymentMethod: paymentMethod,
+                                      publicKey: Configuration.cardPublicKey,
+                                      style: dropInComponentStyle.formComponent,
+                                      navigationStyle: dropInComponentStyle.navigation)
         present(component)
     }
     
     private func presentIdealComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: IssuerListPaymentMethod.self) else { return }
-        let component = IdealComponent(paymentMethod: paymentMethod)
+        let component = IdealComponent(paymentMethod: paymentMethod,
+                                       style: dropInComponentStyle.listComponent,
+                                       navigationStyle: dropInComponentStyle.navigation)
         present(component)
     }
     
     private func presentSEPADirectDebitComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: SEPADirectDebitPaymentMethod.self) else { return }
-        let component = SEPADirectDebitComponent(paymentMethod: paymentMethod)
+        let component = SEPADirectDebitComponent(paymentMethod: paymentMethod,
+                                                 style: dropInComponentStyle.formComponent,
+                                                 navigationStyle: dropInComponentStyle.navigation)
         component.delegate = self
         present(component)
     }
@@ -159,7 +169,7 @@ internal final class ComponentsViewController: UIViewController {
     }
     
     private func redirect(with action: RedirectAction) {
-        let redirectComponent = RedirectComponent(action: action)
+        let redirectComponent = RedirectComponent(action: action, style: dropInComponentStyle.redirectComponent)
         redirectComponent.delegate = self
         self.redirectComponent = redirectComponent
         

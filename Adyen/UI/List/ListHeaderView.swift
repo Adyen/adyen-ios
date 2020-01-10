@@ -1,19 +1,46 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import UIKit
 
+/// Indicates the `ListHeaderView` UI style.
+public struct ListHeaderViewStyle: ViewStyle {
+    
+    /// Indicates the title text UI style.
+    public var title: TextStyle = TextStyle(font: .systemFont(ofSize: 13.0, weight: .medium),
+                                            color: .componentSecondaryLabel,
+                                            textAlignment: .natural)
+    
+    /// :nodoc:
+    public var backgroundColor: UIColor = .componentBackground
+    
+    /// Initializes the list header style
+    ///
+    /// - Parameter title: The list header title text style.
+    public init(title: TextStyle) {
+        self.title = title
+    }
+    
+    /// Initializes the list header style with default style.
+    public init() {}
+    
+}
+
 internal final class ListHeaderView: UIView {
     
-    internal init(title: String) {
+    /// Indicates the `ListHeaderView` UI styling.
+    internal let style: ListHeaderViewStyle
+    
+    internal init(title: String, style: ListHeaderViewStyle) {
         self.title = title
+        self.style = style
         
         super.init(frame: .zero)
         
-        backgroundColor = .componentBackground
+        backgroundColor = style.backgroundColor
         addSubview(titleLabel)
         
         configureConstraints()
@@ -45,10 +72,14 @@ internal final class ListHeaderView: UIView {
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.text = title.uppercased()
-        titleLabel.textColor = .componentSecondaryLabel
-        titleLabel.font = .systemFont(ofSize: 13.0, weight: .medium)
+        titleLabel.textColor = style.title.color
+        titleLabel.font = style.title.font
+        titleLabel.textAlignment = style.title.textAlignment
+        titleLabel.backgroundColor = style.title.backgroundColor
         titleLabel.accessibilityTraits = .header
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "Adyen.ListHeaderView.\(title)",
+                                                                         postfix: "titleLabel")
         
         return titleLabel
     }()

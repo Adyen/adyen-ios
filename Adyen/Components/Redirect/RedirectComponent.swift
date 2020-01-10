@@ -14,13 +14,18 @@ public final class RedirectComponent: NSObject, PresentableComponent, ActionComp
     /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
     
+    /// Indicates the component's UI style.
+    private let style: RedirectComponentStyle?
+    
     /// Initializes the component.
     ///
     /// - Parameter url: The URL to where the user should be redirected.
     /// - Parameter paymentData: The payment data returned by the server.
-    public init(url: URL, paymentData: String) {
+    /// - Parameter style: The component's UI style.
+    public init(url: URL, paymentData: String, style: RedirectComponentStyle? = nil) {
         self.url = url
         self.paymentData = paymentData
+        self.style = style
         
         super.init()
     }
@@ -28,8 +33,9 @@ public final class RedirectComponent: NSObject, PresentableComponent, ActionComp
     /// Initializes the component.
     ///
     /// - Parameter action: The redirect action to perform.
-    public convenience init(action: RedirectAction) {
-        self.init(url: action.url, paymentData: action.paymentData)
+    /// - Parameter style: The component's UI style.
+    public convenience init(action: RedirectAction, style: RedirectComponentStyle? = nil) {
+        self.init(url: action.url, paymentData: action.paymentData, style: style)
     }
     
     // MARK: - Returning From a Redirect
@@ -52,6 +58,11 @@ public final class RedirectComponent: NSObject, PresentableComponent, ActionComp
         let safariViewController = SFSafariViewController(url: url)
         safariViewController.delegate = self
         safariViewController.modalPresentationStyle = .formSheet
+        
+        style.map {
+            safariViewController.preferredBarTintColor = $0.preferredBarTintColor
+            safariViewController.preferredControlTintColor = $0.preferredControlTintColor
+        }
         
         if #available(iOS 11, *) {
             safariViewController.dismissButtonStyle = .cancel

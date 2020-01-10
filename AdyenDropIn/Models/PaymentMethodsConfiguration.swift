@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -17,8 +17,8 @@ extension DropInComponent {
         
         public var applePay = ApplePayConfiguration()
         
-        /// Indicates the localizable strings table name, leave it nil to use the default table name.
-        public var localizationTable: String?
+        /// Indicates the localization parameters, leave it nil to use the default parameters.
+        public var localizationParameters: LocalizationParameters?
         
         /// Initializes the drop in configuration.
         public init() {}

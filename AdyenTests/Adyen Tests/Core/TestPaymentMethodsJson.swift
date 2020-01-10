@@ -99,3 +99,58 @@ let sepaDirectDebitDictionary = [
     "type": "sepadirectdebit",
     "name": "SEPA Direct Debit"
 ] as [String: Any]
+
+let giroPayDictionaryWithOptionalDetails = [
+    "details" : [
+        [
+            "key" : "bic",
+            "type" : "text",
+            "optional": true
+        ]
+    ],
+    "name" : "GiroPay",
+    "supportsRecurring": true,
+    "type" : "giropay"
+] as [String: Any]
+
+let giroPayDictionaryWithNonOptionalDetails = [
+    "details" : [
+        [
+            "key" : "bic",
+            "type" : "text"
+        ]
+    ],
+    "name" : "GiroPay with non optional details",
+    "supportsRecurring": true,
+    "type" : "giropay"
+] as [String: Any]
+
+let weChatMiniProgramDictionary = [
+  "name" : "WeChat Pay",
+  "supportsRecurring" : true,
+  "type" : "wechatpayMiniProgram"
+] as [String: Any]
+
+let weChatQRDictionary = [
+  "name" : "WeChat Pay",
+  "supportsRecurring" : true,
+  "type" : "wechatpayQR"
+] as [String: Any]
+
+let weChatSDKDictionary = [
+  "name" : "WeChat Pay",
+  "supportsRecurring" : true,
+  "type" : "wechatpaySDK"
+] as [String: Any]
+
+let weChatWebDictionary = [
+  "name" : "WeChat Pay",
+  "supportsRecurring" : true,
+  "type" : "wechatpayWeb"
+] as [String: Any]
+
+let bcmcMobileQR = [
+  "name" : "BCMC Mobile",
+  "supportsRecurring" : false,
+  "type" : "bcmc_mobile_QR"
+] as [String: Any]

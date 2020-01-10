@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -34,6 +34,8 @@ open class FormTextItemView: FormValueItemView<FormTextItem>, UITextFieldDelegat
         
         addSubview(stackView)
         
+        backgroundColor = item.style.backgroundColor
+        
         configureConstraints()
     }
     
@@ -53,6 +55,7 @@ open class FormTextItemView: FormValueItemView<FormTextItem>, UITextFieldDelegat
         stackView.axis = .vertical
         stackView.alignment = .fill
         stackView.spacing = 3.0
+        stackView.backgroundColor = item.style.backgroundColor
         stackView.preservesSuperviewLayoutMargins = true
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -64,23 +67,26 @@ open class FormTextItemView: FormValueItemView<FormTextItem>, UITextFieldDelegat
     
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.font = .systemFont(ofSize: 13.0)
-        titleLabel.textColor = defaultTitleLabelTextColor
+        titleLabel.font = item.style.title.font
+        titleLabel.textColor = item.style.title.color
+        titleLabel.textAlignment = item.style.title.textAlignment
+        titleLabel.backgroundColor = item.style.title.backgroundColor
         titleLabel.text = item.title
         titleLabel.isAccessibilityElement = false
+        titleLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel") }
         
         return titleLabel
     }()
-    
-    private let defaultTitleLabelTextColor = UIColor.componentSecondaryLabel
     
     // MARK: - Text Field
     
     internal lazy var textField: UITextField = {
         let textField = TextField()
-        textField.font = .systemFont(ofSize: 17.0)
-        textField.textColor = .componentLabel
-        textField.placeholder = item.placeholder
+        textField.font = item.style.text.font
+        textField.textColor = item.style.text.color
+        textField.textAlignment = item.style.text.textAlignment
+        textField.backgroundColor = item.style.backgroundColor
+        setPlaceHolderText(to: textField)
         textField.autocorrectionType = item.autocorrectionType
         textField.autocapitalizationType = item.autocapitalizationType
         textField.keyboardType = item.keyboardType
@@ -88,9 +94,38 @@ open class FormTextItemView: FormValueItemView<FormTextItem>, UITextFieldDelegat
         textField.accessibilityLabel = item.title
         textField.delegate = self
         textField.addTarget(self, action: #selector(textDidChange(textField:)), for: .editingChanged)
+        textField.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "textField") }
         
         return textField
     }()
+    
+    private func setPlaceHolderText(to textField: TextField) {
+        if let placeholderStyle = item.style.placeholderText, let placeholderText = item.placeholder {
+            apply(textStyle: placeholderStyle, to: textField, with: placeholderText)
+        } else {
+            textField.placeholder = item.placeholder
+        }
+    }
+    
+    private func apply(textStyle: TextStyle, to textField: TextField, with placeholderText: String) {
+        let attributes = stringAttributes(from: textStyle)
+        let attributedString = NSAttributedString(string: placeholderText, attributes: attributes)
+        textField.attributedPlaceholder = attributedString
+    }
+    
+    private func stringAttributes(from textStyle: TextStyle) -> [NSAttributedString.Key: Any] {
+        var attributes = [NSAttributedString.Key.foregroundColor: textStyle.color,
+                          NSAttributedString.Key.backgroundColor: textStyle.backgroundColor,
+                          NSAttributedString.Key.font: textStyle.font]
+        
+        let paragraphStyle = NSParagraphStyle.default.mutableCopy() as? NSMutableParagraphStyle
+        paragraphStyle?.alignment = item.style.placeholderText?.textAlignment ?? .natural
+        if let paragraphStyle = paragraphStyle {
+            attributes[NSAttributedString.Key.paragraphStyle] = paragraphStyle
+        }
+        
+        return attributes
+    }
     
     @objc private func textDidChange(textField: UITextField) {
         let newText = textField.text
@@ -116,7 +151,7 @@ open class FormTextItemView: FormValueItemView<FormTextItem>, UITextFieldDelegat
     /// :nodoc:
     public override var isEditing: Bool {
         didSet {
-            titleLabel.textColor = isEditing ? tintColor : defaultTitleLabelTextColor
+            titleLabel.textColor = isEditing ? tintColor : item.style.title.color
         }
     }
     

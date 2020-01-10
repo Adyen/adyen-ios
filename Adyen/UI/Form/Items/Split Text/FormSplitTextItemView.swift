@@ -18,6 +18,8 @@ internal final class FormSplitTextItemView: FormItemView<FormSplitTextItem> {
         addSubview(leftItemView)
         addSubview(rightItemView)
         
+        backgroundColor = item.style.backgroundColor
+        
         configureConstraints()
     }
     
@@ -33,6 +35,7 @@ internal final class FormSplitTextItemView: FormItemView<FormSplitTextItem> {
     
     private lazy var leftItemView: FormTextItemView = {
         let leftItemView = FormTextItemView(item: item.leftItem)
+        leftItemView.accessibilityIdentifier = item.leftItem.identifier
         leftItemView.preservesSuperviewLayoutMargins = true
         leftItemView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -41,6 +44,7 @@ internal final class FormSplitTextItemView: FormItemView<FormSplitTextItem> {
     
     private lazy var rightItemView: FormTextItemView = {
         let rightItemView = FormTextItemView(item: item.rightItem)
+        rightItemView.accessibilityIdentifier = item.rightItem.identifier
         rightItemView.layoutMargins.left = 0.0 // Remove the default, as the spacing is done with constraints.
         rightItemView.preservesSuperviewLayoutMargins = true
         rightItemView.translatesAutoresizingMaskIntoConstraints = false

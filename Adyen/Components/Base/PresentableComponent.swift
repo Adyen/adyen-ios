@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,9 +8,9 @@ import Foundation
 
 /// Describes any entity that is UI localizable.
 public protocol Localizable {
-
-    /// Indicates the localizable strings table name, leave it nil to use the default table name.
-    var localizationTable: String? { get set }
+    
+    /// Indicates the localization parameters, leave it nil to use the default parameters.
+    var localizationParameters: LocalizationParameters? { get set }
 }
 
 /// A component that provides a view controller for the shopper to fill payment details.

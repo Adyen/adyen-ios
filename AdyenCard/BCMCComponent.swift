@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -50,9 +50,17 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
     /// - Parameters:
     ///   - paymentMethod: The Bancontact payment method.
     ///   - publicKey: The key used for encrypting card data.
-    public init(paymentMethod: BCMCPaymentMethod, publicKey: String) {
+    ///   - style: The Component's UI style.
+    ///   - navigationStyle: The navigation level style.
+    public init(paymentMethod: BCMCPaymentMethod,
+                publicKey: String,
+                style: AnyFormComponentStyle = FormComponentStyle(),
+                navigationStyle: NavigationStyle = NavigationStyle()) {
         self.paymentMethod = paymentMethod
-        self.cardComponent = CardComponent(paymentMethod: paymentMethod, publicKey: publicKey)
+        self.cardComponent = CardComponent(paymentMethod: paymentMethod,
+                                           publicKey: publicKey,
+                                           style: style,
+                                           navigationStyle: navigationStyle)
         self.cardComponent.excludedCardTypes = []
         self.cardComponent.supportedCardTypes = [.bcmc]
         self.cardComponent.showsSecurityCodeField = false
@@ -87,13 +95,13 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
     public var preferredPresentationMode: PresentableComponentPresentationMode { cardComponent.preferredPresentationMode }
     
     /// :nodoc:
-    public var localizationTable: String? {
+    public var localizationParameters: LocalizationParameters? {
         get {
-            return cardComponent.localizationTable
+            return cardComponent.localizationParameters
         }
         
         set {
-            cardComponent.localizationTable = newValue
+            cardComponent.localizationParameters = newValue
         }
     }
     

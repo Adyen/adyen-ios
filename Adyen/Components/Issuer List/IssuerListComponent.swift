@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -16,12 +16,24 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent {
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
     
+    /// Describes the component's UI style.
+    public let style: AnyListComponentStyle
+    
+    /// Indicates the navigation level style.
+    public let navigationStyle: NavigationStyle
+    
     /// Initializes the component.
     ///
     /// - Parameter paymentMethod: The issuer list payment method.
-    public init(paymentMethod: IssuerListPaymentMethod) {
+    /// - Parameter style: The Component's UI style..
+    /// - Parameter navigationStyle: The navigation level style.
+    public init(paymentMethod: IssuerListPaymentMethod,
+                style: AnyListComponentStyle = ListComponentStyle(),
+                navigationStyle: NavigationStyle = NavigationStyle()) {
         self.paymentMethod = paymentMethod
         self.issuerListPaymentMethod = paymentMethod
+        self.style = style
+        self.navigationStyle = navigationStyle
     }
     
     private let issuerListPaymentMethod: IssuerListPaymentMethod
@@ -30,7 +42,9 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent {
     
     public lazy var viewController: UIViewController = {
         Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
-        return ComponentViewController(rootViewController: listViewController, cancelButtonHandler: didSelectCancelButton)
+        return ComponentViewController(rootViewController: listViewController,
+                                       style: navigationStyle,
+                                       cancelButtonHandler: didSelectCancelButton)
     }()
     
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
@@ -42,11 +56,12 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent {
     // MARK: - Private
     
     private lazy var listViewController: ListViewController = {
-        let listViewController = ListViewController()
+        let listViewController = ListViewController(style: style)
         
         let issuers = issuerListPaymentMethod.issuers
         let items = issuers.map { issuer -> ListItem in
-            var listItem = ListItem(title: issuer.name)
+            var listItem = ListItem(title: issuer.name, style: style.listItem)
+            listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
             listItem.imageURL = LogoURLProvider.logoURL(for: issuer,
                                                         paymentMethod: issuerListPaymentMethod,
                                                         environment: environment)

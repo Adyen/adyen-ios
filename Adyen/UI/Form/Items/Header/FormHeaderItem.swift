@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,6 +10,9 @@ import Foundation
 /// :nodoc:
 public final class FormHeaderItem: FormItem {
     
+    /// Indicates the `FormHeaderItemView` UI styling.
+    public let style: Style
+    
     /// :nodoc:
     public var identifier: String?
     
@@ -17,6 +20,10 @@ public final class FormHeaderItem: FormItem {
     public var title: String?
     
     /// Initializes the header item.
-    public init() {}
+    ///
+    /// - Parameter style: The `FormHeaderItemView` UI style.
+    public init(style: Style = Style()) {
+        self.style = style
+    }
     
 }

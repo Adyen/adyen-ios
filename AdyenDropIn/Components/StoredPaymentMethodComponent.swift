@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -28,18 +28,18 @@ internal final class StoredPaymentMethodComponent: PaymentComponent, Presentable
     internal lazy var viewController: UIViewController = {
         Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
         
-        let displayInformation = paymentMethod.localizedDisplayInformation(usingTableName: localizationTable)
+        let displayInformation = paymentMethod.localizedDisplayInformation(using: localizationParameters)
         let alertController = UIAlertController(title: ADYLocalizedString("adyen.dropIn.stored.title",
-                                                                          localizationTable, paymentMethod.name),
+                                                                          localizationParameters, paymentMethod.name),
                                                 message: displayInformation.title,
                                                 preferredStyle: .alert)
         
-        let cancelAction = UIAlertAction(title: ADYLocalizedString("adyen.cancelButton", localizationTable), style: .cancel) { _ in
+        let cancelAction = UIAlertAction(title: ADYLocalizedString("adyen.cancelButton", localizationParameters), style: .cancel) { _ in
             self.delegate?.didFail(with: ComponentError.cancelled, from: self)
         }
         alertController.addAction(cancelAction)
         
-        let submitActionTitle = ADYLocalizedSubmitButtonTitle(with: payment?.amount, localizationTable)
+        let submitActionTitle = ADYLocalizedSubmitButtonTitle(with: payment?.amount, localizationParameters)
         let submitAction = UIAlertAction(title: submitActionTitle, style: .default) { _ in
             let details = StoredPaymentDetails(paymentMethod: self.storedPaymentMethod)
             self.delegate?.didSubmit(PaymentComponentData(paymentMethodDetails: details), from: self)
@@ -50,7 +50,7 @@ internal final class StoredPaymentMethodComponent: PaymentComponent, Presentable
     }()
     
     /// :nodoc:
-    internal var localizationTable: String?
+    internal var localizationParameters: LocalizationParameters?
     
 }
 

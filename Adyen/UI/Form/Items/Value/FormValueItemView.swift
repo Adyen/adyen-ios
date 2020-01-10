@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -39,6 +39,11 @@ open class FormValueItemView<ItemType: FormValueItem>: FormItemView<ItemType>, A
     
     private var valueDelegate: FormValueItemViewDelegate? {
         return delegate as? FormValueItemViewDelegate
+    }
+    
+    open override func didAddSubview(_ subview: UIView) {
+        super.didAddSubview(subview)
+        bringSubviewToFront(separatorView)
     }
     
     // MARK: - Editing

@@ -21,7 +21,6 @@
 "adyen.card.numberItem.title" = "Test-Card number";
 "adyen.card.numberItem.placeholder" = "Test-1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "Test-Invalid card number";
-"adyen.card.expiryItem.title" = "Test-Expiry date";
 "adyen.card.expiryItem.placeholder" = "Test-MM/YY";
 "adyen.card.expiryItem.invalid" = "Test-Invalid expiration date";
 "adyen.card.cvcItem.invalid" = "Test-Invalid security code";

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,6 +9,9 @@ import Foundation
 /// An item in which a switch is toggled, producing a boolean value.
 /// :nodoc:
 open class FormSwitchItem: FormValueItem {
+    
+    /// Indicates the `FormSwitchItemView` UI styling.
+    public let style: Style
     
     /// :nodoc:
     public var identifier: String?
@@ -23,6 +26,10 @@ open class FormSwitchItem: FormValueItem {
     public var value = false
     
     /// Initializes the switch item.
-    public init() {}
+    ///
+    /// - Parameter style: The `FormSwitchItemView` UI style.
+    public init(style: Style = Style()) {
+        self.style = style
+    }
     
 }

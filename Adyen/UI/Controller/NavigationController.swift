@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -11,7 +11,11 @@ import UIKit
 public final class NavigationController: UINavigationController, UINavigationControllerDelegate {
     
     /// :nodoc:
-    public override init(rootViewController: UIViewController) {
+    private let style: NavigationStyle
+    
+    /// :nodoc:
+    public init(rootViewController: UIViewController, style: NavigationStyle = NavigationStyle()) {
+        self.style = style
         super.init(nibName: nil, bundle: nil)
         
         delegate = self
@@ -29,8 +33,16 @@ public final class NavigationController: UINavigationController, UINavigationCon
     public override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.tintColor = style.tintColor
+        view.backgroundColor = style.backgroundColor
+        
         navigationBar.isTranslucent = false
-        navigationBar.barTintColor = .componentBackground
+        navigationBar.barTintColor = style.barBackgroundColor
+        navigationBar.tintColor = style.barTintColor
+        navigationBar.backgroundColor = style.barBackgroundColor
+        navigationBar.titleTextAttributes = [NSAttributedString.Key.font: style.barTitle.font,
+                                             NSAttributedString.Key.foregroundColor: style.barTitle.color,
+                                             NSAttributedString.Key.backgroundColor: style.barTitle.backgroundColor]
         navigationBar.shadowImage = UIImage()
         navigationBar.setBackgroundImage(UIImage(), for: .default) // Hide separator on iOS 10.
     }

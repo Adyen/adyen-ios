@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -14,23 +14,26 @@ internal final class FormCardNumberItem: FormTextItem {
     internal let cardTypeLogos: [CardTypeLogo]
     
     /// :nodoc:
-    private let localizationTable: String?
+    private let localizationParameters: LocalizationParameters?
     
     /// Initializes the form card number item.
-    internal init(supportedCardTypes: [CardType], environment: Environment, localizationTable: String? = nil) {
+    internal init(supportedCardTypes: [CardType],
+                  environment: Environment,
+                  style: FormTextItem.Style = FormTextItem.Style(),
+                  localizationParameters: LocalizationParameters? = nil) {
         self.supportedCardTypes = supportedCardTypes
         
         let logoURLs = supportedCardTypes.map { LogoURLProvider.logoURL(withName: $0.rawValue, environment: environment) }
         self.cardTypeLogos = logoURLs.prefix(4).map(CardTypeLogo.init) // Limit to a maximum of 4 logos.
-        self.localizationTable = localizationTable
+        self.localizationParameters = localizationParameters
         
-        super.init()
+        super.init(style: style)
         
-        title = ADYLocalizedString("adyen.card.numberItem.title", localizationTable)
+        title = ADYLocalizedString("adyen.card.numberItem.title", localizationParameters)
         validator = CardNumberValidator()
         formatter = cardNumberFormatter
-        placeholder = ADYLocalizedString("adyen.card.numberItem.placeholder", localizationTable)
-        validationFailureMessage = ADYLocalizedString("adyen.card.numberItem.invalid", localizationTable)
+        placeholder = ADYLocalizedString("adyen.card.numberItem.placeholder", localizationParameters)
+        validationFailureMessage = ADYLocalizedString("adyen.card.numberItem.invalid", localizationParameters)
         keyboardType = .numberPad
     }
     

@@ -15,7 +15,6 @@ public final class ListCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         accessibilityTraits = .button
-        backgroundColor = .componentBackground
         contentView.addSubview(itemView)
         
         configureConstraints()
@@ -37,6 +36,8 @@ public final class ListCell: UITableViewCell {
     public var item: ListItem? {
         didSet {
             itemView.item = item
+            itemView.accessibilityIdentifier = item?.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "itemView") }
+            backgroundColor = item?.style.backgroundColor
             resetAccessoryView()
         }
     }

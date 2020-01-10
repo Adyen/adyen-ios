@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -28,9 +28,9 @@ public struct StoredBCMCPaymentMethod: StoredPaymentMethod {
     /// Display information for the payment method, adapted for displaying in a list.
     ///
     /// - Parameters:
-    ///   - tableName: Indicates the localizable strings table name, pass nil to use the default table name.
-    public func localizedDisplayInformation(usingTableName tableName: String?) -> DisplayInformation {
-        return storedCardPaymentMethod.localizedDisplayInformation(usingTableName: tableName)
+    ///   - parameters: The localization parameters.
+    public func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+        return storedCardPaymentMethod.localizedDisplayInformation(using: parameters)
     }
     
     /// :nodoc:

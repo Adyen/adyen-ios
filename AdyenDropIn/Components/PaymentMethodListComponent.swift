@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -15,11 +15,16 @@ internal final class PaymentMethodListComponent: PresentableComponent, Localizab
     /// The delegate of the payment method list component.
     internal weak var delegate: PaymentMethodListComponentDelegate?
     
+    /// Describes the component's UI style.
+    internal let style: AnyListComponentStyle
+    
     /// Initializes the list component.
     ///
     /// - Parameter components: The components to display in the list.
-    internal init(components: SectionedComponents) {
+    /// - Parameter style: The component's UI style.
+    internal init(components: SectionedComponents, style: AnyListComponentStyle = ListComponentStyle()) {
         self.components = components
+        self.style = style
     }
     
     // MARK: - View Controller
@@ -33,8 +38,9 @@ internal final class PaymentMethodListComponent: PresentableComponent, Localizab
         func item(for component: PaymentComponent) -> ListItem {
             let showsDisclosureIndicator = (component as? PresentableComponent)?.preferredPresentationMode == .push
             
-            let displayInformation = component.paymentMethod.localizedDisplayInformation(usingTableName: localizationTable)
-            var listItem = ListItem(title: displayInformation.title)
+            let displayInformation = component.paymentMethod.localizedDisplayInformation(using: localizationParameters)
+            var listItem = ListItem(title: displayInformation.title, style: style.listItem)
+            listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
             listItem.imageURL = LogoURLProvider.logoURL(for: component.paymentMethod, environment: environment)
             listItem.subtitle = displayInformation.subtitle
             listItem.showsDisclosureIndicator = showsDisclosureIndicator
@@ -47,12 +53,12 @@ internal final class PaymentMethodListComponent: PresentableComponent, Localizab
         
         let storedSection = ListSection(items: components.stored.map(item(for:)))
         let regularSectionTitle = components.stored.isEmpty ? nil : ADYLocalizedString("adyen.paymentMethods.otherMethods",
-                                                                                       localizationTable)
+                                                                                       localizationParameters)
         let regularSection = ListSection(title: regularSectionTitle,
                                          items: components.regular.map(item(for:)))
         
-        let listViewController = ListViewController()
-        listViewController.title = ADYLocalizedString("adyen.paymentMethods.title", localizationTable)
+        let listViewController = ListViewController(style: style)
+        listViewController.title = ADYLocalizedString("adyen.paymentMethods.title", localizationParameters)
         listViewController.sections = [storedSection, regularSection]
         
         return listViewController
@@ -61,7 +67,7 @@ internal final class PaymentMethodListComponent: PresentableComponent, Localizab
     // MARK: - Localization
     
     /// :nodoc:
-    public var localizationTable: String?
+    public var localizationParameters: LocalizationParameters?
     
     // MARK: - Loading
     

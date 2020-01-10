@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -14,6 +14,8 @@ internal final class FormCardNumberItemView: FormValueItemView<FormCardNumberIte
         super.init(item: item)
         
         addSubview(stackView)
+        
+        backgroundColor = item.style.backgroundColor
         
         configureConstraints()
     }
@@ -39,12 +41,17 @@ internal final class FormCardNumberItemView: FormValueItemView<FormCardNumberIte
     // MARK: - Card Type Logos View
     
     private lazy var cardTypeLogosView: UIStackView = {
-        let arrangedSubviews = item.cardTypeLogos.map(CardTypeLogoView.init)
+        let arrangedSubviews: [CardTypeLogoView] = item.cardTypeLogos.map { logo in
+            let imageView = CardTypeLogoView(cardTypeLogo: logo, style: item.style.icon)
+            imageView.backgroundColor = item.style.backgroundColor
+            return imageView
+        }
         let cardTypeLogosView = UIStackView(arrangedSubviews: arrangedSubviews)
         cardTypeLogosView.axis = .horizontal
         cardTypeLogosView.spacing = 4.0
         cardTypeLogosView.preservesSuperviewLayoutMargins = true
         cardTypeLogosView.isLayoutMarginsRelativeArrangement = true
+        cardTypeLogosView.backgroundColor = item.style.backgroundColor
         
         return cardTypeLogosView
     }()
@@ -58,6 +65,7 @@ internal final class FormCardNumberItemView: FormValueItemView<FormCardNumberIte
         stackView.distribution = .fill
         stackView.preservesSuperviewLayoutMargins = true
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = item.style.backgroundColor
         
         return stackView
     }()
@@ -83,15 +91,16 @@ private extension FormCardNumberItemView {
     
     private class CardTypeLogoView: NetworkImageView, Observer {
         
-        internal init(cardTypeLogo: FormCardNumberItem.CardTypeLogo) {
+        internal init(cardTypeLogo: FormCardNumberItem.CardTypeLogo, style: ImageStyle) {
             super.init(frame: .zero)
             
             imageURL = cardTypeLogo.url
             
-            layer.masksToBounds = true
-            layer.cornerRadius = 3.0
-            layer.borderWidth = 1.0 / UIScreen.main.nativeScale
-            layer.borderColor = UIColor(white: 0.0, alpha: 0.2).cgColor
+            layer.masksToBounds = style.clipsToBounds
+            layer.cornerRadius = style.cornerRadius
+            layer.borderWidth = style.borderWidth
+            layer.borderColor = style.borderColor?.cgColor
+            backgroundColor = style.backgroundColor
             
             setContentHuggingPriority(.required, for: .horizontal)
             setContentHuggingPriority(.required, for: .vertical)

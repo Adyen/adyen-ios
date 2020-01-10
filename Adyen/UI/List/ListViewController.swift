@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,8 +10,14 @@ import UIKit
 /// :nodoc:
 public final class ListViewController: UITableViewController {
     
+    /// Indicates the list view controller UI style.
+    public let style: AnyListComponentStyle
+    
     /// Initializes the list view controller.
-    public init() {
+    ///
+    /// - Parameter style: The UI style.
+    public init(style: AnyListComponentStyle = ListComponentStyle()) {
+        self.style = style
         super.init(style: .grouped)
     }
     
@@ -68,7 +74,10 @@ public final class ListViewController: UITableViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .componentBackground
+        view.backgroundColor = style.backgroundColor
+        tableView.backgroundColor = style.backgroundColor
+        tableView.backgroundView?.backgroundColor = style.backgroundColor
+        tableView.isOpaque = false
         
         tableView.separatorColor = .clear
         tableView.sectionHeaderHeight = UITableView.automaticDimension
@@ -98,7 +107,11 @@ public final class ListViewController: UITableViewController {
             return nil
         }
         
-        return ListHeaderView(title: title)
+        let headerView = ListHeaderView(title: title, style: style.sectionHeader)
+        headerView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "Adyen.ListViewController",
+                                                                         postfix: "headerView.\(section)")
+        
+        return headerView
     }
     
     /// :nodoc:

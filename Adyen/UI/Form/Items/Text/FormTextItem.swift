@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,6 +9,9 @@ import Foundation
 /// An item in which text can be entered using a text field.
 /// :nodoc:
 open class FormTextItem: FormValueItem {
+    
+    /// Indicates the `FormTextItemView` UI styling.
+    public let style: Style
     
     /// The type of value entered in the item.
     public typealias ValueType = String
@@ -48,7 +51,11 @@ open class FormTextItem: FormValueItem {
     public var keyboardType = UIKeyboardType.default
     
     /// Initializes the text item.
-    public init() {}
+    ///
+    /// - Parameter style: The `FormTextItemView` UI style.
+    public init(style: Style = Style()) {
+        self.style = style
+    }
     
     /// An empty method that provides an opportunity for subclasses to know when the value changed.
     open func valueDidChange() {}

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -69,7 +69,7 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     ///
     /// - Parameter paymentMethod: The Apple Pay payment method.
     /// - Parameter payment: A description of the payment. Must include an amount and country code.
-    /// - Parameter merchantIdentifier: The merchant identifier..
+    /// - Parameter merchantIdentifier: The merchant identifier.
     /// - Parameter summaryItems: The line items for this payment.
     /// - Throws: `ApplePayComponent.Error.userCannotMakePayment`
     /// if user can't make payments on any of the payment request’s supported networks.
@@ -150,7 +150,7 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     }
     
     /// :nodoc:
-    public var localizationTable: String?
+    public var localizationParameters: LocalizationParameters?
     
     /// :nodoc:
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
@@ -167,10 +167,10 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     private let merchantIdentifier: String
     
     private lazy var errorAlertController: UIAlertController = {
-        let alertController = UIAlertController(title: ADYLocalizedString("adyen.error.title", localizationTable),
-                                                message: ADYLocalizedString("adyen.error.unknown", localizationTable),
+        let alertController = UIAlertController(title: ADYLocalizedString("adyen.error.title", localizationParameters),
+                                                message: ADYLocalizedString("adyen.error.unknown", localizationParameters),
                                                 preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: ADYLocalizedString("adyen.dismissButton", localizationTable),
+        let dismissAction = UIAlertAction(title: ADYLocalizedString("adyen.dismissButton", localizationParameters),
                                           style: .default) { [weak self] _ in
             self?.handle(
                 UnknownError(
