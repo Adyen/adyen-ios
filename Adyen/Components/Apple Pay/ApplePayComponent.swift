@@ -64,9 +64,11 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     public let summaryItems: [PKPaymentSummaryItem]
     
     /// A list of fields that you need for a billing contact in order to process the transaction.
+    /// Ignored on iOS 10.*.
     public let requiredBillingContactFields: Set<PKContactField>
 
     /// A list of fields that you need for a shipping contact in order to process the transaction.
+    /// Ignored on iOS 10.*.
     public let requiredShippingContactFields: Set<PKContactField>
 
     /// Initializes the component.
@@ -77,8 +79,8 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     /// - Parameter payment: A description of the payment. Must include an amount and country code.
     /// - Parameter merchantIdentifier: The merchant identifier.
     /// - Parameter summaryItems: The line items for this payment.
-    /// - Parameter requiredBillingContactFields: A list of fields that you need for a billing contact in order to process the transaction.
-    /// - Parameter requiredShippingContactFields: A list of fields that you need for a shipping contact in order to process the transaction.
+    /// - Parameter requiredBillingContactFields: A list of fields that you need for a billing contact in order to process the transaction. Ignored on iOS 10.*.
+    /// - Parameter requiredShippingContactFields: A list of fields that you need for a shipping contact in order to process the transaction. Ignored on iOS 10.*.
     /// - Throws: `ApplePayComponent.Error.userCannotMakePayment`
     /// if user can't make payments on any of the payment request’s supported networks.
     /// - Throws: `ApplePayComponent.Error.deviceDoesNotSupportApplyPay` if the current device's hardware doesn't support ApplePay.
@@ -87,7 +89,7 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     /// - Throws: `ApplePayComponent.Error.invalidSummaryItem` if at least one of the summary items has an invalid amount.
     /// - Throws: `ApplePayComponent.Error.invalidCountryCode` if the `payment.countryCode` is not a valid ISO country code.
     /// - Throws: `ApplePayComponent.Error.invalidCurrencyCode` if the `payment.amount.currencyCode` is not a valid ISO currency code.
-    public init(paymentMethod: ApplePayPaymentMethod, payment: Payment, merchantIdentifier: String, summaryItems: [PKPaymentSummaryItem], requiredBillingContactFields: Set<PKContactField>, requiredShippingContactFields: Set<PKContactField>) throws {
+    public init(paymentMethod: ApplePayPaymentMethod, payment: Payment, merchantIdentifier: String, summaryItems: [PKPaymentSummaryItem], requiredBillingContactFields: Set<PKContactField> = [], requiredShippingContactFields: Set<PKContactField> = []) throws {
         guard PKPaymentAuthorizationViewController.canMakePayments() else {
             throw Error.deviceDoesNotSupportApplyPay
         }
@@ -121,7 +123,7 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
         
         self.payment = payment
     }
-    
+
     /// Initializes the component.
     ///
     /// - Parameter paymentMethod: The Apple Pay payment method.
@@ -213,7 +215,11 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
         paymentRequest.supportedNetworks = ApplePayComponent.supportedNetworks
         paymentRequest.merchantCapabilities = .capability3DS
         paymentRequest.paymentSummaryItems = summaryItems
-        
+        if #available(iOS 11.0, *) {
+            paymentRequest.requiredBillingContactFields = requiredBillingContactFields
+            paymentRequest.requiredShippingContactFields = requiredShippingContactFields
+        }
+
         return paymentRequest
     }()
     

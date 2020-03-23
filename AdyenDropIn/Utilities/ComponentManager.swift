@@ -114,7 +114,7 @@ internal final class ComponentManager {
         
         return component
     }
-    
+
     private func createApplePayComponent(with paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
         guard
             let summaryItems = configuration.applePay.summaryItems,
@@ -122,16 +122,21 @@ internal final class ComponentManager {
             let payment = payment else {
             return nil
         }
-        
+
+        let requiredBillingContactFields = configuration.applePay.requiredBillingContactFields
+        let requiredShippingContactFields = configuration.applePay.requiredShippingContactFields
+
         do {
             return try ApplePayComponent(paymentMethod: paymentMethod,
                                          payment: payment,
                                          merchantIdentifier: identfier,
-                                         summaryItems: summaryItems)
+                                         summaryItems: summaryItems,
+                                         requiredBillingContactFields: requiredBillingContactFields,
+                                         requiredShippingContactFields: requiredShippingContactFields)
         } catch {
             print("Failed to instantiate ApplePayComponent because of error: \(error.localizedDescription)")
             return nil
         }
     }
-    
+
 }

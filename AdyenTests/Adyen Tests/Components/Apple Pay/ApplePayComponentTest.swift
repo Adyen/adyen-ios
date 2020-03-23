@@ -87,13 +87,22 @@ class ApplePayComponentTest: XCTestCase {
         let amount = Payment.Amount(value: 2, currencyCode: getRandomCurrencyCode())
         let payment = Payment(amount: amount, countryCode: countryCode)
         let expectedSummaryItems = createTestSummaryItems()
-        let sut = try? ApplePayComponent(paymentMethod: paymentMethod, payment: payment, merchantIdentifier: "test_id", summaryItems: expectedSummaryItems)
+        let expectedRequiredBillingFields = getRandomContactFieldSet()
+        let expectedRequiredShippingFields = getRandomContactFieldSet()
+        let sut = try? ApplePayComponent(paymentMethod: paymentMethod, payment: payment, merchantIdentifier: "test_id", summaryItems: expectedSummaryItems, requiredBillingContactFields: expectedRequiredBillingFields, requiredShippingContactFields: expectedRequiredShippingFields)
         XCTAssertEqual(sut?.paymentRequest.paymentSummaryItems, expectedSummaryItems)
         XCTAssertEqual(sut?.paymentRequest.merchantCapabilities, PKMerchantCapability.capability3DS)
         XCTAssertEqual(sut?.paymentRequest.supportedNetworks, self.supportedNetworks)
         XCTAssertEqual(sut?.paymentRequest.currencyCode, amount.currencyCode)
         XCTAssertEqual(sut?.paymentRequest.merchantIdentifier, "test_id")
         XCTAssertEqual(sut?.paymentRequest.countryCode, countryCode)
+        if #available(iOS 11.0, *) {
+            XCTAssertEqual(sut?.paymentRequest.requiredBillingContactFields, expectedRequiredBillingFields)
+            XCTAssertEqual(sut?.paymentRequest.requiredShippingContactFields, expectedRequiredShippingFields)
+        } else {
+            XCTAssertEqual(sut?.paymentRequest.requiredBillingAddressFields, nil)
+            XCTAssertEqual(sut?.paymentRequest.requiredShippingAddressFields, nil)
+        }
     }
 
     private func getRandomCurrencyCode() -> String {
@@ -104,6 +113,15 @@ class ApplePayComponentTest: XCTestCase {
         NSLocale.isoCountryCodes.randomElement() ?? "DE"
     }
     
+    private func getRandomContactFieldSet() -> Set<PKContactField> {
+        if #available(iOS 11.0, *) {
+            let contactFieldsPool: [PKContactField] = [.emailAddress, .name, .phoneNumber, .postalAddress, .phoneticName]
+            return contactFieldsPool.randomElement().map { [$0] } ?? []
+        } else {
+            return []
+        }
+    }
+
     private func createTestSummaryItems() -> [PKPaymentSummaryItem] {
         var amounts = (0...3).map { _ in
             NSDecimalNumber(mantissa: UInt64.random(in: 1...20), exponent: 1, isNegative: Bool.random())

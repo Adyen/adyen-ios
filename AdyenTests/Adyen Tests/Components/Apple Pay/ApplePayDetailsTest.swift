@@ -11,7 +11,7 @@ class ApplePayDetailsTest: XCTestCase {
     
     func testSerialisation() {
         let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name")
-        let sut = ApplePayDetails(paymentMethod: paymentMethod, token: "test_token", network: "test_network")
+        let sut = ApplePayDetails(paymentMethod: paymentMethod, token: "test_token", network: "test_network", billingContact: nil, shippingContact: nil)
         
         let expectedJson = [
             "applepay.token": "test_token",
@@ -22,5 +22,4 @@ class ApplePayDetailsTest: XCTestCase {
         XCTAssertEqual(expectedJson["applePayCardNetwork"], sut.dictionaryRepresentation["applePayCardNetwork"] as? String)
         XCTAssertEqual(expectedJson["type"], sut.dictionaryRepresentation["type"] as? String)
     }
-    
 }
