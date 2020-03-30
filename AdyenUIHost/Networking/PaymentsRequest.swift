@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -15,15 +15,14 @@ internal struct PaymentsRequest: Request {
     
     internal let data: PaymentComponentData
     
+    internal var counter: Int = 0
+    
     internal func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
-        let amount: [String: Any] = [
-            "currency": Configuration.amount.currencyCode,
-            "value": Configuration.amount.value
-        ]
+        let amount = Payment.Amount(value: Configuration.amount.value, currencyCode: Configuration.amount.currencyCode)
         
-        try container.encode(data.paymentMethod.dictionaryRepresentation, forKey: .details)
+        try container.encode(data.paymentMethod.encodable, forKey: .details)
         try container.encode(data.storePaymentMethod, forKey: .storePaymentMethod)
         try container.encode("iOS", forKey: .channel)
         try container.encode(amount, forKey: .amount)

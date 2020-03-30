@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,10 +7,11 @@
 import Foundation
 
 /// A typealias for a closure that handles a URL through which the application was opened.
-internal typealias URLHandler = (URL) -> Void
+public typealias URLHandler = (URL) -> Void
 
 /// Listens for the return of the shopper after a redirect.
-internal final class RedirectListener {
+/// :nodoc:
+public final class RedirectListener {
     
     // MARK: - Registering for URLs
     
@@ -18,7 +19,7 @@ internal final class RedirectListener {
     /// The handler will only be invoked once. Only one handler can be registered at the same time.
     ///
     /// - Parameter handler: The handler to invoke when the application is opened.
-    internal static func registerForURL(using handler: @escaping URLHandler) {
+    public static func registerForURL(using handler: @escaping URLHandler) {
         urlHandler = handler
     }
     

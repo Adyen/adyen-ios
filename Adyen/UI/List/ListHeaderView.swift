@@ -6,35 +6,12 @@
 
 import UIKit
 
-/// Indicates the `ListHeaderView` UI style.
-public struct ListHeaderViewStyle: ViewStyle {
-    
-    /// Indicates the title text UI style.
-    public var title: TextStyle = TextStyle(font: .systemFont(ofSize: 13.0, weight: .medium),
-                                            color: .componentSecondaryLabel,
-                                            textAlignment: .natural)
-    
-    /// :nodoc:
-    public var backgroundColor: UIColor = .componentBackground
-    
-    /// Initializes the list header style
-    ///
-    /// - Parameter title: The list header title text style.
-    public init(title: TextStyle) {
-        self.title = title
-    }
-    
-    /// Initializes the list header style with default style.
-    public init() {}
-    
-}
-
 internal final class ListHeaderView: UIView {
     
-    /// Indicates the `ListHeaderView` UI styling.
-    internal let style: ListHeaderViewStyle
+    /// The list section header style.
+    internal let style: ListSectionHeaderStyle
     
-    internal init(title: String, style: ListHeaderViewStyle) {
+    internal init(title: String, style: ListSectionHeaderStyle) {
         self.title = title
         self.style = style
         

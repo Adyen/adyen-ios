@@ -49,7 +49,7 @@ public final class ListItemView: UIView {
         titleLabel.text = item?.title
         
         titleLabel.font = item?.style.title.font ?? .systemFont(ofSize: 17.0)
-        titleLabel.textColor = item?.style.title.color ?? .componentLabel
+        titleLabel.textColor = item?.style.title.color ?? UIColor.AdyenCore.componentLabel
         titleLabel.backgroundColor = item?.style.title.backgroundColor
         titleLabel.textAlignment = item?.style.title.textAlignment ?? .natural
         titleLabel.accessibilityIdentifier = item?.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel") }
@@ -60,7 +60,7 @@ public final class ListItemView: UIView {
         subtitleLabel.isHidden = item?.subtitle?.isEmpty ?? true
         
         subtitleLabel.font = item?.style.subtitle.font ?? .systemFont(ofSize: 14.0)
-        subtitleLabel.textColor = item?.style.subtitle.color ?? .componentSecondaryLabel
+        subtitleLabel.textColor = item?.style.subtitle.color ?? UIColor.AdyenCore.componentSecondaryLabel
         subtitleLabel.backgroundColor = item?.style.subtitle.backgroundColor
         subtitleLabel.textAlignment = item?.style.subtitle.textAlignment ?? .natural
         subtitleLabel.accessibilityIdentifier = item?.identifier.map {
@@ -74,7 +74,7 @@ public final class ListItemView: UIView {
         imageView.clipsToBounds = item?.style.image.clipsToBounds ?? true
         imageView.layer.cornerRadius = item?.style.image.cornerRadius ?? 4.0
         imageView.layer.borderWidth = item?.style.image.borderWidth ?? 1.0 / UIScreen.main.nativeScale
-        imageView.layer.borderColor = item?.style.image.borderColor?.cgColor ?? UIColor.componentSeparator.cgColor
+        imageView.layer.borderColor = item?.style.image.borderColor?.cgColor ?? UIColor.AdyenCore.componentSeparator.cgColor
     }
     
     // MARK: - Image View
@@ -112,8 +112,7 @@ public final class ListItemView: UIView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.alignment = .leading
-        stackView.distribution = .fillProportionally
-        
+        stackView.distribution = .fill
         return stackView
     }()
     
@@ -144,7 +143,7 @@ public final class ListItemView: UIView {
     public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         
-        imageView.layer.borderColor = item?.style.image.borderColor?.cgColor ?? UIColor.componentSeparator.cgColor
+        imageView.layer.borderColor = item?.style.image.borderColor?.cgColor ?? UIColor.AdyenCore.componentSeparator.cgColor
     }
     
 }

@@ -11,13 +11,13 @@ internal extension UIView {
         if self.accessibilityIdentifier == accessibilityIdentifier {
             return self as? T
         }
-
+        
         for subview in subviews {
             if let v = subview.findView(with: accessibilityIdentifier) {
                 return v as? T
             }
         }
-
+        
         return nil
     }
 }

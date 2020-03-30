@@ -7,13 +7,17 @@
 import Adyen
 
 struct StoredPaymentMethodMock: StoredPaymentMethod {
-
+    
     var identifier: String
-
+    
     var supportedShopperInteractions: [ShopperInteraction]
-
+    
     var type: String
-
+    
     var name: String
-
+    
+    func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
+        return builder.build(paymentMethod: self)
+    }
+    
 }

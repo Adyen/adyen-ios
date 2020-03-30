@@ -4,16 +4,16 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
 import Adyen
+import Foundation
 
 final class ValidatorMock: Validator {
-
+    
     var handleIsValid: ((_ value: String) -> Bool)?
     func isValid(_ value: String) -> Bool {
         return handleIsValid?(value) ?? true
     }
-
+    
     var handleMaximumLength: ((_ value: String) -> Int)?
     func maximumLength(for value: String) -> Int {
         return handleMaximumLength?(value) ?? .max

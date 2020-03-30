@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -18,9 +18,11 @@ internal struct PaymentDetailsRequest: Request {
     
     internal let paymentData: String
     
+    internal var counter: Int = 0
+    
     internal func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(details.dictionaryRepresentation, forKey: .details)
+        try container.encode(details.encodable, forKey: .details)
         try container.encode(paymentData, forKey: .paymentData)
     }
     

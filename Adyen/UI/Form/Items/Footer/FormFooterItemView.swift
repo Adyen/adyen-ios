@@ -16,6 +16,7 @@ internal final class FormFooterItemView: FormItemView<FormFooterItem>, Observer 
         super.init(item: item)
         
         layoutMargins.top = 24.0
+        layoutMargins.bottom = 24.0
         
         addSubview(stackView)
         

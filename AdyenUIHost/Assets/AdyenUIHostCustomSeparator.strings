@@ -30,3 +30,7 @@
 "adyen_card_stored_message" = "Test-Please enter the CVC code for %@";
 "adyen_card_stored_expires" = "Test-Expires %@";
 "adyen_dropIn_stored_title" = "Test-Confirm %@ payment";
+"adyen_phoneNumber_title" = "Phone Number";
+"adyen_phoneNumber_placeholder" = "Test 123 456 789";
+"adyen_phoneNumber_invalid" = "Test Invalid phone number.";
+"adyen_continueTo" = "Continue to %@";

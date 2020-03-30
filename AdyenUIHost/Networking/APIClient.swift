@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,52 @@
 import Adyen
 import Foundation
 
-internal final class APIClient {
+internal protocol APIClientProtocol {
+    
+    typealias CompletionHandler<T> = (Result<T, Error>) -> Void
+    
+    func perform<R: Request>(_ request: R, completionHandler: @escaping CompletionHandler<R.ResponseType>)
+    
+}
+
+internal final class RetryAPIClient: APIClientProtocol {
+    
+    private let apiClient: APIClientProtocol
+    
+    private let maximumRetryCount: Int = 2
+    
+    internal init(apiClient: APIClientProtocol) {
+        self.apiClient = apiClient
+    }
+    
+    internal func perform<R>(_ request: R, completionHandler: @escaping CompletionHandler<R.ResponseType>) where R: Request {
+        apiClient.perform(request) { [weak self] result in
+            var request = request
+            request.counter += 1
+            self?.handle(result: result, for: request, completionHandler: completionHandler)
+        }
+    }
+    
+    internal func handle<R>(result: Result<R.ResponseType, Error>, for request: R, completionHandler: @escaping CompletionHandler<R.ResponseType>) where R: Request {
+        switch result {
+        case .success:
+            completionHandler(result)
+        case let .failure(error):
+            if (error as NSError).code == -1005, request.counter < maximumRetryCount {
+                /// Error code -1005 is caused by an http connection kept alive beyond its expiration time,
+                /// while it was droped by the server.
+                /// so all we have to do is retry to force creating a new connection.
+                /// https://stackoverflow.com/questions/25372318/error-domain-nsurlerrordomain-code-1005-the-network-connection-was-lost
+                perform(request, completionHandler: completionHandler)
+            } else {
+                completionHandler(.failure(error))
+            }
+        }
+    }
+    
+}
+
+internal final class APIClient: APIClientProtocol {
     
     internal typealias CompletionHandler<T> = (Result<T, Error>) -> Void
     
@@ -42,7 +87,10 @@ internal final class APIClient {
         
         requestCounter += 1
         
-        urlSession.dataTask(with: urlRequest) { result in
+        urlSession.dataTask(with: urlRequest) { [weak self] result in
+            
+            self?.requestCounter -= 1
+            
             switch result {
             case let .success(data):
                 print(" ---- Response (/\(request.path)) ----")
@@ -58,7 +106,6 @@ internal final class APIClient {
                 completionHandler(.failure(error))
             }
             
-            self.requestCounter -= 1
         }.resume()
     }
     

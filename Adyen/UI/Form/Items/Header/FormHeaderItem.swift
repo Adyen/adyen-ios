@@ -10,8 +10,8 @@ import Foundation
 /// :nodoc:
 public final class FormHeaderItem: FormItem {
     
-    /// Indicates the `FormHeaderItemView` UI styling.
-    public let style: Style
+    /// The form header style.
+    public let style: FormHeaderStyle
     
     /// :nodoc:
     public var identifier: String?
@@ -21,9 +21,13 @@ public final class FormHeaderItem: FormItem {
     
     /// Initializes the header item.
     ///
-    /// - Parameter style: The `FormHeaderItemView` UI style.
-    public init(style: Style = Style()) {
+    /// - Parameter style: The form header style.
+    public init(style: FormHeaderStyle = FormHeaderStyle()) {
         self.style = style
+    }
+    
+    public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+        builder.build(with: self)
     }
     
 }

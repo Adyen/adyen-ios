@@ -30,3 +30,8 @@
 "adyen.card.stored.message" = "请输入 %@ 的 CVC 码";
 "adyen.card.stored.expires" = "%@过期";
 "adyen.dropIn.stored.title" = "确认 %@ 支付";
+"adyen.dropIn.preselected.openAll.title" = "更改支付方式";
+"adyen.continueTo" = "继续至%@";
+"adyen.phoneNumber.title" = "电话号码";
+"adyen.phoneNumber.invalid" = "无效的电话号码";
+"adyen.phoneNumber.placeholder" = "123–456–789";

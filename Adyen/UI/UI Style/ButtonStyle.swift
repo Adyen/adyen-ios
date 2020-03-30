@@ -6,25 +6,36 @@
 
 import Foundation
 
-/// Indicates any "Button" UI style.
+/// Contains the styling customization options for any buttons.
 public struct ButtonStyle: ViewStyle {
     
-    /// Indicates title text style of the button.
+    /// The title style.
     public var title: TextStyle
     
-    /// Indicates the corner radius of the button.
+    /// The corner radius of the button.
     public var cornerRadius: CGFloat
     
     /// :nodoc:
-    public var backgroundColor: UIColor = .defaultBlue
+    public var backgroundColor: UIColor = UIColor.AdyenCore.defaultBlue
     
-    /// Initializes the button style
+    /// Initializes the button style.
     ///
-    /// - Parameter title: The button title text style.
-    /// - Parameter cornerRadius: The button corner radius.
+    /// - Parameter title: The title style.
+    /// - Parameter cornerRadius: The corner radius of the button.
     public init(title: TextStyle, cornerRadius: CGFloat) {
         self.title = title
         self.cornerRadius = cornerRadius
+    }
+    
+    /// Initializes the button style.
+    ///
+    /// - Parameter title: The button title text style.
+    /// - Parameter cornerRadius: The button corner radius.
+    /// - Parameter background: Color to fill button's background.
+    public init(title: TextStyle, cornerRadius: CGFloat, background: UIColor) {
+        self.title = title
+        self.cornerRadius = cornerRadius
+        self.backgroundColor = background
     }
     
 }

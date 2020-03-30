@@ -1,39 +1,39 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import UIKit
 
-/// Indicates any image UI style.
+/// Contains the styling customization options for any images.
 public struct ImageStyle: ViewStyle {
     
-    /// Indicates the image border color.
+    /// The color of the image's border.
     public var borderColor: UIColor?
     
-    /// Indicates the image border width.
+    /// The width of the image's border.
     public var borderWidth: CGFloat
     
-    /// Indicates the corner radius of the image.
+    /// The image's corner radius.
     public var cornerRadius: CGFloat
     
-    /// Indicates whether to clip to the image bounds or not.
+    /// A boolean value that determines whether the image is confined to the bounds of the view.
     public var clipsToBounds: Bool
     
-    /// Indicates the image content mode.
+    /// A flag used to determine how to lay out the image in its bounds.
     public var contentMode: UIView.ContentMode
     
     /// :nodoc:
-    public var backgroundColor: UIColor = .componentBackground
+    public var backgroundColor: UIColor = UIColor.AdyenCore.componentBackground
     
-    /// Initializes the image style
+    /// Initializes the image style.
     ///
-    /// - Parameter borderColor: The image border color.
-    /// - Parameter borderWidth: The image border width.
-    /// - Parameter cornerRadius: The image corner radius.
-    /// - Parameter clipsToBounds: whether to clip the image to its bounds.
-    /// - Parameter contentMode: The image content mode.
+    /// - Parameter borderColor: The color of the image's border.
+    /// - Parameter borderWidth: The width of the image's border.
+    /// - Parameter cornerRadius: The image's corner radius.
+    /// - Parameter clipsToBounds: A boolean value that determines whether the image is confined to the bounds of the view.
+    /// - Parameter contentMode: A flag used to determine how to lay out the image in its bounds.
     public init(borderColor: UIColor?,
                 borderWidth: CGFloat,
                 cornerRadius: CGFloat,

@@ -13,6 +13,8 @@ internal struct Configuration {
     
     static let environment = DemoServerEnvironment.test
     
+    static let appName = "Adyen Demo"
+    
     static let amount = Payment.Amount(value: 17408, currencyCode: "EUR")
     
     static let reference = "Test Order Reference - iOS UIHost"

@@ -30,3 +30,8 @@
 "adyen.card.stored.message" = "Vennligst oppgi CVC-koden for %@";
 "adyen.card.stored.expires" = "Utløper %@";
 "adyen.dropIn.stored.title" = "Bekreft betaling med %@";
+"adyen.dropIn.preselected.openAll.title" = "Endre betalingsmetode";
+"adyen.continueTo" = "Fortsett til %@";
+"adyen.phoneNumber.title" = "Telefonnummer";
+"adyen.phoneNumber.invalid" = "Ugyldig telefonnummer";
+"adyen.phoneNumber.placeholder" = "987 65 432";

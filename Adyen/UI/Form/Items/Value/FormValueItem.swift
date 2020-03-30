@@ -16,4 +16,12 @@ public protocol FormValueItem: FormItem {
     /// The value entered in the item.
     var value: ValueType { get set }
     
+    /// An empty method that provides an opportunity for subclasses to know when the value changed.
+    func valueDidChange()
+    
+}
+
+extension FormValueItem {
+    /// :nodoc:
+    public func valueDidChange() {}
 }

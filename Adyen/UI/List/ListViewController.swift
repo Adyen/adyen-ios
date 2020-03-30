@@ -11,19 +11,35 @@ import UIKit
 public final class ListViewController: UITableViewController {
     
     /// Indicates the list view controller UI style.
-    public let style: AnyListComponentStyle
+    public let style: ListComponentStyle
     
     /// Initializes the list view controller.
     ///
     /// - Parameter style: The UI style.
-    public init(style: AnyListComponentStyle = ListComponentStyle()) {
+    public init(style: ListComponentStyle = ListComponentStyle()) {
         self.style = style
-        super.init(style: .grouped)
+        if #available(iOS 11.0, *) {
+            super.init(style: .grouped)
+        } else {
+            super.init(style: .plain)
+        }
     }
     
     /// :nodoc:
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    /// :nodoc:
+    public override var preferredContentSize: CGSize {
+        get { tableView.contentSize }
+        
+        // swiftlint:disable:next unused_setter_value
+        set { assertionFailure("""
+        PreferredContentSize is overridden for this view controller.
+        getter - returns content size of scroll view.
+        setter - no implemented.
+        """) }
     }
     
     // MARK: - Items
@@ -130,6 +146,7 @@ public final class ListViewController: UITableViewController {
         return cell
     }
     
+    /// :nodoc:
     public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         

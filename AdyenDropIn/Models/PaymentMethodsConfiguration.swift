@@ -45,6 +45,14 @@ extension DropInComponent {
             /// The merchant identifier for apple pay.
             public var merchantIdentifier: String?
             
+            /// A list of fields that you need for a billing contact in order to process the transaction.
+            /// Ignored on iOS 10.*.
+            public var requiredBillingContactFields: Set<PKContactField> = []
+            
+            /// A list of fields that you need for a shipping contact in order to process the transaction.
+            /// Ignored on iOS 10.*.
+            public var requiredShippingContactFields: Set<PKContactField> = []
+            
         }
     }
 }

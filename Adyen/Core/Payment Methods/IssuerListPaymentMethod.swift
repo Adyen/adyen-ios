@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -20,7 +20,7 @@ public struct IssuerListPaymentMethod: PaymentMethod {
     
     // MARK: - Issuer
     
-    /// An issuer (typically a bank) in an issuer list payment method
+    /// An issuer (typically a bank) in an issuer list payment method.
     public struct Issuer: Decodable {
         
         /// The unique identifier of the issuer.
@@ -58,6 +58,11 @@ public struct IssuerListPaymentMethod: PaymentMethod {
         }
         
         self.issuers = issuers ?? []
+    }
+    
+    /// :nodoc:
+    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
+        return builder.build(paymentMethod: self)
     }
     
     private enum CodingKeys: String, CodingKey {

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,6 +19,10 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         if #available(iOS 11.0, *) {
             navigationController.navigationBar.prefersLargeTitles = true
         }
+        
+        #if DEBUG
+            AdyenLogging.isEnabled = true
+        #endif
         
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = navigationController

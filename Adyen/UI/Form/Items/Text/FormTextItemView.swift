@@ -13,26 +13,26 @@ public protocol FormTextItemViewDelegate: FormValueItemViewDelegate {
     /// Invoked when the text entered in the item view's text field has reached the maximum length.
     ///
     /// - Parameter itemView: The item view in which the maximum length was reached.
-    func didReachMaximumLength(in itemView: FormTextItemView)
+    func didReachMaximumLength<T: FormTextItem>(in itemView: FormTextItemView<T>)
     
     /// Invoked when the return key in the item view's text field is selected.
     ///
     /// - Parameter itemView: The item view in which the return key was selected.
-    func didSelectReturnKey(in itemView: FormTextItemView)
+    func didSelectReturnKey<T: FormTextItem>(in itemView: FormTextItemView<T>)
     
 }
 
-/// A view representing a text item.
+/// A view representing a basic logic of text item.
 /// :nodoc:
-open class FormTextItemView: FormValueItemView<FormTextItem>, UITextFieldDelegate {
+open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldDelegate where T.ValueType == String {
     
     /// Initializes the text item view.
     ///
     /// - Parameter item: The item represented by the view.
-    public required init(item: FormTextItem) {
+    public required init(item: T) {
         super.init(item: item)
         
-        addSubview(stackView)
+        addSubview(textStackView)
         
         backgroundColor = item.style.backgroundColor
         
@@ -50,11 +50,23 @@ open class FormTextItemView: FormValueItemView<FormTextItem>, UITextFieldDelegat
     
     // MARK: - Stack View
     
-    private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, textField])
+    private lazy var textStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, accessoryStackView])
         stackView.axis = .vertical
         stackView.alignment = .fill
         stackView.spacing = 3.0
+        stackView.backgroundColor = item.style.backgroundColor
+        stackView.preservesSuperviewLayoutMargins = true
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return stackView
+    }()
+    
+    private lazy var accessoryStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [textField])
+        stackView.axis = .horizontal
+        stackView.alignment = .lastBaseline
         stackView.backgroundColor = item.style.backgroundColor
         stackView.preservesSuperviewLayoutMargins = true
         stackView.isLayoutMarginsRelativeArrangement = true
@@ -80,7 +92,7 @@ open class FormTextItemView: FormValueItemView<FormTextItem>, UITextFieldDelegat
     
     // MARK: - Text Field
     
-    internal lazy var textField: UITextField = {
+    public lazy var textField: UITextField = {
         let textField = TextField()
         textField.font = item.style.text.font
         textField.textColor = item.style.text.color
@@ -93,11 +105,47 @@ open class FormTextItemView: FormValueItemView<FormTextItem>, UITextFieldDelegat
         textField.returnKeyType = .next
         textField.accessibilityLabel = item.title
         textField.delegate = self
+        
         textField.addTarget(self, action: #selector(textDidChange(textField:)), for: .editingChanged)
         textField.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "textField") }
+        textField.onDidBecomeFirstResponder = { [weak self] in
+            self?.isEditing = true
+        }
+        
+        textField.onDidResignFirstResponder = { [weak self] in
+            self?.isEditing = false
+        }
         
         return textField
     }()
+    
+    // MARK: - Accessory view
+    
+    /// Apply state to a Text entry field.
+    ///
+    /// - Parameter state: state to apply.
+    public func setState(_ state: State) {
+        if accessoryStackView.arrangedSubviews.count > 1, let last = accessoryStackView.arrangedSubviews.last {
+            accessoryStackView.removeArrangedSubview(last)
+        }
+        
+        switch state {
+        case .invalid:
+            let image = UIImage(named: "verification_false", in: Bundle.internalResources, compatibleWith: nil)
+            accessoryStackView.addArrangedSubview(UIImageView(image: image))
+        case .valid:
+            let image = UIImage(named: "verification_true", in: Bundle.internalResources, compatibleWith: nil)
+            accessoryStackView.addArrangedSubview(UIImageView(image: image))
+        case .none:
+            break
+        case let .customLogo(logo):
+            accessoryStackView.addArrangedSubview(UIImageView(image: logo))
+        case let .customView(view):
+            accessoryStackView.addArrangedSubview(view)
+        }
+    }
+    
+    // MARK: - Private
     
     private func setPlaceHolderText(to textField: TextField) {
         if let placeholderStyle = item.style.placeholderText, let placeholderText = item.placeholder {
@@ -148,21 +196,19 @@ open class FormTextItemView: FormValueItemView<FormTextItem>, UITextFieldDelegat
     
     // MARK: - Editing
     
-    /// :nodoc:
-    public override var isEditing: Bool {
-        didSet {
-            titleLabel.textColor = isEditing ? tintColor : item.style.title.color
-        }
+    internal override func didChangeEditingStatus() {
+        super.didChangeEditingStatus()
+        titleLabel.textColor = isEditing ? tintColor : item.style.title.color
     }
     
     // MARK: - Layout
     
     private func configureConstraints() {
         let constraints = [
-            stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            textStackView.topAnchor.constraint(equalTo: topAnchor),
+            textStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            textStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            textStackView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ]
         
         NSLayoutConstraint.activate(constraints)
@@ -191,24 +237,7 @@ open class FormTextItemView: FormValueItemView<FormTextItem>, UITextFieldDelegat
         return textField.resignFirstResponder()
     }
     
-    /// :nodoc:
-    open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesEnded(touches, with: event)
-        
-        _ = becomeFirstResponder()
-    }
-    
     // MARK: - UITextFieldDelegate
-    
-    /// :nodoc:
-    public func textFieldDidBeginEditing(_ textField: UITextField) {
-        isEditing = true
-    }
-    
-    /// :nodoc:
-    public func textFieldDidEndEditing(_ textField: UITextField) {
-        isEditing = false
-    }
     
     /// :nodoc:
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -219,12 +248,28 @@ open class FormTextItemView: FormValueItemView<FormTextItem>, UITextFieldDelegat
     
 }
 
+public extension FormTextItemView {
+    enum State {
+        case invalid
+        case valid
+        case customLogo(UIImage?)
+        case customView(UIView)
+        case none
+    }
+}
+
 /// A UITextField subclass to override the default UITextField default Accessibility behaviour,
 /// specifically the voice over reading of the UITextField.placeholder.
 /// So in order to prevent this behaviour,
 /// accessibilityValue is overriden to return an empty string in case the text var is nil or empty string.
 private final class TextField: UITextField {
     var disablePlaceHolderAccessibility: Bool = true
+    
+    /// Executed when the view resigns as first responder.
+    var onDidResignFirstResponder: (() -> Void)?
+    
+    /// Executed when the view becomes first responder.
+    var onDidBecomeFirstResponder: (() -> Void)?
     
     override var accessibilityValue: String? {
         get {
@@ -239,5 +284,17 @@ private final class TextField: UITextField {
         set {
             super.accessibilityValue = newValue
         }
+    }
+    
+    override func resignFirstResponder() -> Bool {
+        let result = super.resignFirstResponder()
+        onDidResignFirstResponder?()
+        return result
+    }
+    
+    override func becomeFirstResponder() -> Bool {
+        let result = super.becomeFirstResponder()
+        onDidBecomeFirstResponder?()
+        return result
     }
 }

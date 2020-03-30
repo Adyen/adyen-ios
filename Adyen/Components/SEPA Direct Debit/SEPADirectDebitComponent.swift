@@ -10,29 +10,28 @@ import Foundation
 public final class SEPADirectDebitComponent: PaymentComponent, PresentableComponent, Localizable {
     
     /// Describes the component's UI style.
-    public let style: AnyFormComponentStyle
-    
-    /// Indicates the navigation level style.
-    public let navigationStyle: NavigationStyle
+    public let style: FormComponentStyle
     
     /// The SEPA Direct Debit payment method.
-    public let paymentMethod: PaymentMethod
+    public var paymentMethod: PaymentMethod {
+        sepaDirectDebitPaymentMethod
+    }
+    
+    /// Indicates if form will show a large header title. True - show title; False - assign title to a view controller's title.
+    /// Defaults to true.
+    public var showsLargeTitle = true
     
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
     
-    /// Initializes the component.
+    /// Initializes the SEPA Direct Debit component.
     ///
     /// - Parameter paymentMethod: The SEPA Direct Debit payment method.
     /// - Parameter style: The Component's UI style.
-    /// - Parameter navigationStyle: The navigation level style.
     public init(paymentMethod: SEPADirectDebitPaymentMethod,
-                style: AnyFormComponentStyle = FormComponentStyle(),
-                navigationStyle: NavigationStyle = NavigationStyle()) {
-        self.paymentMethod = paymentMethod
+                style: FormComponentStyle = FormComponentStyle()) {
         self.style = style
         self.sepaDirectDebitPaymentMethod = paymentMethod
-        self.navigationStyle = navigationStyle
     }
     
     private let sepaDirectDebitPaymentMethod: SEPADirectDebitPaymentMethod
@@ -40,13 +39,12 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     // MARK: - Presentable Component Protocol
     
     /// :nodoc:
-    public lazy var viewController: UIViewController = {
-        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
-        
-        return ComponentViewController(rootViewController: formViewController,
-                                       style: navigationStyle,
-                                       cancelButtonHandler: didSelectCancelButton)
-    }()
+    public var viewController: UIViewController {
+        return formViewController
+    }
+    
+    /// :nodoc:
+    public var requiresModalPresentation: Bool = true
     
     /// :nodoc:
     public var localizationParameters: LocalizationParameters?
@@ -54,6 +52,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     /// :nodoc:
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
         footerItem.showsActivityIndicator.value = false
+        formViewController.view.isUserInteractionEnabled = true
         
         completion?()
     }
@@ -61,13 +60,19 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     // MARK: - View Controller
     
     private lazy var formViewController: FormViewController = {
+        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
+        
         let formViewController = FormViewController(style: style)
         formViewController.localizationParameters = localizationParameters
         
-        let headerItem = FormHeaderItem(style: style.header)
-        headerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: paymentMethod.name)
-        headerItem.title = paymentMethod.name
-        formViewController.append(headerItem)
+        if showsLargeTitle {
+            let headerItem = FormHeaderItem(style: style.header)
+            headerItem.title = paymentMethod.name
+            headerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: paymentMethod.name)
+            formViewController.append(headerItem)
+        } else {
+            formViewController.title = paymentMethod.name
+        }
         
         formViewController.append(nameItem)
         formViewController.append(ibanItem)
@@ -87,31 +92,25 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
                                              iban: ibanItem.value,
                                              ownerName: nameItem.value)
         footerItem.showsActivityIndicator.value = true
+        formViewController.view.isUserInteractionEnabled = false
         
         delegate?.didSubmit(PaymentComponentData(paymentMethodDetails: details), from: self)
     }
     
-    private lazy var didSelectCancelButton: (() -> Void) = { [weak self] in
-        guard let self = self else { return }
-        
-        self.delegate?.didFail(with: ComponentError.cancelled, from: self)
-    }
-    
     // MARK: - Form Items
     
-    internal lazy var nameItem: FormTextItem = {
-        let nameItem = FormTextItem(style: style.textField)
+    internal lazy var nameItem: FormTextInputItem = {
+        let nameItem = FormTextInputItem(style: style.textField)
         nameItem.title = ADYLocalizedString("adyen.sepa.nameItem.title", localizationParameters)
         nameItem.placeholder = ADYLocalizedString("adyen.sepa.nameItem.placeholder", localizationParameters)
         nameItem.validator = LengthValidator(minimumLength: 2)
         nameItem.validationFailureMessage = ADYLocalizedString("adyen.sepa.nameItem.invalid", localizationParameters)
         nameItem.autocapitalizationType = .words
         nameItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "nameItem")
-        
         return nameItem
     }()
     
-    internal lazy var ibanItem: FormTextItem = {
+    internal lazy var ibanItem: FormTextInputItem = {
         func localizedPlaceholder() -> String {
             let countryCode = Locale.current.regionCode
             let specification = countryCode.flatMap(IBANSpecification.init(forCountryCode:))
@@ -120,7 +119,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
             return IBANFormatter().formattedValue(for: example)
         }
         
-        let ibanItem = FormTextItem(style: style.textField)
+        let ibanItem = FormTextInputItem(style: style.textField)
         ibanItem.title = ADYLocalizedString("adyen.sepa.ibanItem.title", localizationParameters)
         ibanItem.placeholder = localizedPlaceholder()
         ibanItem.formatter = IBANFormatter()
@@ -128,7 +127,6 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
         ibanItem.validationFailureMessage = ADYLocalizedString("adyen.sepa.ibanItem.invalid", localizationParameters)
         ibanItem.autocapitalizationType = .allCharacters
         ibanItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "ibanItem")
-        
         return ibanItem
     }()
     
@@ -142,4 +140,5 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
         footerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "footerItem")
         return footerItem
     }()
+    
 }

@@ -8,10 +8,10 @@ import Foundation
 
 /// An item in which a switch is toggled, producing a boolean value.
 /// :nodoc:
-open class FormSwitchItem: FormValueItem {
+public final class FormSwitchItem: FormValueItem {
     
-    /// Indicates the `FormSwitchItemView` UI styling.
-    public let style: Style
+    /// The switch item style.
+    public let style: FormSwitchItemStyle
     
     /// :nodoc:
     public var identifier: String?
@@ -27,9 +27,14 @@ open class FormSwitchItem: FormValueItem {
     
     /// Initializes the switch item.
     ///
-    /// - Parameter style: The `FormSwitchItemView` UI style.
-    public init(style: Style = Style()) {
+    /// - Parameter style: The switch item style.
+    public init(style: FormSwitchItemStyle = FormSwitchItemStyle()) {
         self.style = style
+    }
+    
+    /// :nodoc:
+    public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+        builder.build(with: self)
     }
     
 }

@@ -8,6 +8,8 @@ import UIKit
 
 internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Localizable {
     
+    private let maxCharactersCount = 4
+    private let minCharactersCount = 3
     internal var completionHandler: Completion<Result<CardDetails, Error>>?
     
     internal var localizationParameters: LocalizationParameters?
@@ -85,24 +87,23 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Loca
         }
         
         let newString = (textFieldText as NSString).replacingCharacters(in: range, with: string)
-        let maxCharactersCount = 4
         if newString.count > maxCharactersCount {
             return false
         }
         
+        defer {
+            let isValidLenght = (minCharactersCount...maxCharactersCount).contains(newString.count)
+            submitAction.isEnabled = isValidLenght
+        }
+        
         let isDeleting = (string.count == 0 && range.length == 1)
         if isDeleting {
-            let shouldDisable = newString.count == 0
-            if shouldDisable {
-                submitAction.isEnabled = false
-            }
             return true
         }
         
         let newCharacters = CharacterSet(charactersIn: string)
         let isNumber = CharacterSet.decimalDigits.isSuperset(of: newCharacters)
         if isNumber {
-            submitAction.isEnabled = true
             return true
         }
         

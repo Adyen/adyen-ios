@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -33,8 +33,8 @@ internal final class FormSplitTextItemView: FormItemView<FormSplitTextItem> {
     
     // MARK: - Text Items
     
-    private lazy var leftItemView: FormTextItemView = {
-        let leftItemView = FormTextItemView(item: item.leftItem)
+    private lazy var leftItemView: AnyFormItemView = {
+        let leftItemView = item.leftItem.build(with: FormItemViewBuilder())
         leftItemView.accessibilityIdentifier = item.leftItem.identifier
         leftItemView.preservesSuperviewLayoutMargins = true
         leftItemView.translatesAutoresizingMaskIntoConstraints = false
@@ -42,8 +42,8 @@ internal final class FormSplitTextItemView: FormItemView<FormSplitTextItem> {
         return leftItemView
     }()
     
-    private lazy var rightItemView: FormTextItemView = {
-        let rightItemView = FormTextItemView(item: item.rightItem)
+    private lazy var rightItemView: AnyFormItemView = {
+        let rightItemView = item.rightItem.build(with: FormItemViewBuilder())
         rightItemView.accessibilityIdentifier = item.rightItem.identifier
         rightItemView.layoutMargins.left = 0.0 // Remove the default, as the spacing is done with constraints.
         rightItemView.preservesSuperviewLayoutMargins = true

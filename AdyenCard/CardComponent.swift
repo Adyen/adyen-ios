@@ -10,10 +10,7 @@ import Foundation
 public final class CardComponent: PaymentComponent, PresentableComponent, Localizable {
     
     /// Describes the component's UI style.
-    public let style: AnyFormComponentStyle
-    
-    /// Indicates the navigation level style.
-    public let navigationStyle: NavigationStyle
+    public let style: FormComponentStyle
     
     /// The card payment method.
     public let paymentMethod: PaymentMethod
@@ -22,7 +19,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     public weak var delegate: PaymentComponentDelegate?
     
     /// The supported card types.
-    /// The getter is O(n), since it filters out all the `excludedCardTypes` before returning
+    /// The getter is O(n), since it filters out all the `excludedCardTypes` before returning.
     public var supportedCardTypes: [CardType] {
         get {
             _supportedCardTypes.filter { !excludedCardTypes.contains($0) }
@@ -39,13 +36,9 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
     public var showsStorePaymentMethodField = true
     
-    /// Indicates whether to show the security code field at all.
-    internal var showsSecurityCodeField = true
-    
-    /// Indicates the card brands excluded from the supported brands.
-    internal var excludedCardTypes: Set<CardType> = [.bcmc]
-    
-    private var _supportedCardTypes: [CardType]
+    /// Indicates if form will show a large header title. True - show title; False - assign title to a view controller's title.
+    /// Defaults to true.
+    public var showsLargeTitle = true
     
     /// Initializes the card component.
     ///
@@ -53,65 +46,46 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     ///   - paymentMethod: The card payment method.
     ///   - publicKey: The key used for encrypting card data.
     ///   - style: The Component's UI style.
-    ///   - navigationStyle: The navigation level style.
     public init(paymentMethod: AnyCardPaymentMethod,
                 publicKey: String,
-                style: AnyFormComponentStyle = FormComponentStyle(),
-                navigationStyle: NavigationStyle = NavigationStyle()) {
+                style: FormComponentStyle = FormComponentStyle()) {
         self.paymentMethod = paymentMethod
         self.publicKey = publicKey
         self.style = style
         self._supportedCardTypes = paymentMethod.brands.compactMap(CardType.init)
-        self.navigationStyle = navigationStyle
         if !isPublicKeyValid(key: self.publicKey) {
             assertionFailure("Card Public key is invalid, please make sure it’s in the format: {EXPONENT}|{MODULUS}")
         }
     }
     
-    private func isPublicKeyValid(key: String) -> Bool {
-        let validator = CardPublicKeyValidator()
-        return validator.isValid(key)
-    }
-    
     /// Initializes the card component for stored cards.
     ///
     /// - Parameters:
-    ///   - paymentMethod: The stored card payment method.
-    ///   - publicKey: The key used for encrypting card data.
-    ///   - style: The Component's UI style.
-    ///   - navigationStyle: The navigation level style.
+    ///   -  paymentMethod: The stored card payment method.
+    ///   -  publicKey: The key used for encrypting card data.
+    ///   -  style: The Component's UI style.
     public init(paymentMethod: StoredCardPaymentMethod,
-                publicKey: String, style: AnyFormComponentStyle = FormComponentStyle(),
-                navigationStyle: NavigationStyle = NavigationStyle()) {
+                publicKey: String,
+                style: FormComponentStyle = FormComponentStyle()) {
         self.paymentMethod = paymentMethod
         self.publicKey = publicKey
         self._supportedCardTypes = []
         self.style = style
-        self.navigationStyle = navigationStyle
     }
     
     // MARK: - Presentable Component Protocol
     
     /// :nodoc:
-    public lazy var viewController: UIViewController = {
-        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
+    public var viewController: UIViewController {
         if let storedCardAlertManager = storedCardAlertManager {
             return storedCardAlertManager.alertController
-        } else {
-            return ComponentViewController(rootViewController: formViewController,
-                                           style: navigationStyle,
-                                           cancelButtonHandler: didSelectCancelButton)
         }
-    }()
+        
+        return formViewController
+    }
     
     /// :nodoc:
-    public var preferredPresentationMode: PresentableComponentPresentationMode {
-        if storedCardAlertManager != nil {
-            return .present
-        } else {
-            return .push
-        }
-    }
+    public var requiresModalPresentation: Bool { storedCardAlertManager == nil }
     
     /// :nodoc:
     public var localizationParameters: LocalizationParameters?
@@ -119,11 +93,26 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     /// :nodoc:
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
         footerItem.showsActivityIndicator.value = false
-        
+        formViewController.view.isUserInteractionEnabled = true
         completion?()
     }
     
+    // MARK: - Protected
+    
+    /// Indicates whether to show the security code field at all.
+    internal var showsSecurityCodeField = true
+    
+    /// Indicates the card brands excluded from the supported brands.
+    internal var excludedCardTypes: Set<CardType> = [.bcmc]
+    
     // MARK: - Private
+    
+    private var _supportedCardTypes: [CardType]
+    
+    private func isPublicKeyValid(key: String) -> Bool {
+        let validator = CardPublicKeyValidator()
+        return validator.isValid(key)
+    }
     
     private let publicKey: String
     
@@ -141,15 +130,16 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         }
         
         footerItem.showsActivityIndicator.value = true
+        formViewController.view.isUserInteractionEnabled = false
         
         do {
             let encryptedCard = try getEncryptedCard()
             let details = CardDetails(paymentMethod: paymentMethod as! AnyCardPaymentMethod, // swiftlint:disable:this force_cast
                                       encryptedCard: encryptedCard,
-                                      holderName: holderNameItem?.value)
+                                      holderName: showsHolderNameField ? holderNameItem.value : nil)
             
             let data = PaymentComponentData(paymentMethodDetails: details,
-                                            storePaymentMethod: storeDetailsItem?.value ?? false)
+                                            storePaymentMethod: showsStorePaymentMethodField ? storeDetailsItem.value : false)
             
             delegate?.didSubmit(data, from: self)
         } catch {
@@ -170,6 +160,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
             return nil
         }
         
+        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
         let manager = StoredCardAlertManager(paymentMethod: paymentMethod, publicKey: publicKey, amount: payment?.amount)
         manager.localizationParameters = localizationParameters
         manager.completionHandler = { [weak self] result in
@@ -189,14 +180,21 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     // MARK: - Form Items
     
     private lazy var formViewController: FormViewController = {
+        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
+        
         let formViewController = FormViewController(style: style)
         formViewController.localizationParameters = localizationParameters
         
-        let headerItem = FormHeaderItem(style: style.header)
-        headerItem.title = paymentMethod.name
-        headerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: paymentMethod.name)
-        formViewController.append(headerItem)
-        formViewController.append(numberItem, using: FormCardNumberItemView.self)
+        if showsLargeTitle {
+            let headerItem = FormHeaderItem(style: style.header)
+            headerItem.title = paymentMethod.name
+            headerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: paymentMethod.name)
+            formViewController.append(headerItem)
+        } else {
+            formViewController.title = paymentMethod.name
+        }
+        
+        formViewController.append(numberItem)
         
         if showsSecurityCodeField {
             let splitTextItem = FormSplitTextItem(items: [expiryDateItem, securityCodeItem], style: style.textField)
@@ -205,11 +203,11 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
             formViewController.append(expiryDateItem)
         }
         
-        if let holderNameItem = holderNameItem {
+        if showsHolderNameField {
             formViewController.append(holderNameItem)
         }
         
-        if let storeDetailsItem = storeDetailsItem {
+        if showsStorePaymentMethodField {
             formViewController.append(storeDetailsItem)
         }
         
@@ -218,7 +216,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         return formViewController
     }()
     
-    private lazy var numberItem: FormCardNumberItem = {
+    internal lazy var numberItem: FormCardNumberItem = {
         let item = FormCardNumberItem(supportedCardTypes: supportedCardTypes,
                                       environment: environment,
                                       style: style.textField,
@@ -227,8 +225,8 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         return item
     }()
     
-    internal lazy var expiryDateItem: FormTextItem = {
-        let expiryDateItem = FormTextItem(style: style.textField)
+    internal lazy var expiryDateItem: FormTextInputItem = {
+        let expiryDateItem = FormTextInputItem(style: style.textField)
         expiryDateItem.title = ADYLocalizedString("adyen.card.expiryItem.title", localizationParameters)
         expiryDateItem.placeholder = ADYLocalizedString("adyen.card.expiryItem.placeholder", localizationParameters)
         expiryDateItem.formatter = CardExpiryDateFormatter()
@@ -240,23 +238,17 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         return expiryDateItem
     }()
     
-    internal lazy var securityCodeItem: FormTextItem = {
-        let securityCodeItem = FormTextItem(style: style.textField)
-        securityCodeItem.title = ADYLocalizedString("adyen.card.cvcItem.title", localizationParameters)
-        securityCodeItem.placeholder = ADYLocalizedString("adyen.card.cvcItem.placeholder", localizationParameters)
-        securityCodeItem.formatter = CardSecurityCodeFormatter()
-        securityCodeItem.validator = CardSecurityCodeValidator()
-        securityCodeItem.validationFailureMessage = ADYLocalizedString("adyen.card.cvcItem.invalid", localizationParameters)
-        securityCodeItem.keyboardType = .numberPad
+    internal lazy var securityCodeItem: FormCardSecurityCodeItem = {
+        let securityCodeItem = FormCardSecurityCodeItem(environment: environment,
+                                                        style: style.textField,
+                                                        localizationParameters: localizationParameters)
         securityCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "securityCodeItem")
-        
+        numberItem.delegate = securityCodeItem
         return securityCodeItem
     }()
     
-    internal lazy var holderNameItem: FormTextItem? = {
-        guard showsHolderNameField else { return nil }
-        
-        let holderNameItem = FormTextItem(style: style.textField)
+    internal lazy var holderNameItem: FormTextInputItem = {
+        let holderNameItem = FormTextInputItem(style: style.textField)
         holderNameItem.title = ADYLocalizedString("adyen.card.nameItem.title", localizationParameters)
         holderNameItem.placeholder = ADYLocalizedString("adyen.card.nameItem.placeholder", localizationParameters)
         holderNameItem.validator = LengthValidator(minimumLength: 2)
@@ -267,9 +259,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         return holderNameItem
     }()
     
-    internal lazy var storeDetailsItem: FormSwitchItem? = {
-        guard showsStorePaymentMethodField else { return nil }
-        
+    internal lazy var storeDetailsItem: FormSwitchItem = {
         let storeDetailsItem = FormSwitchItem(style: style.switch)
         storeDetailsItem.title = ADYLocalizedString("adyen.card.storeDetailsButton", localizationParameters)
         storeDetailsItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "storeDetailsItem")

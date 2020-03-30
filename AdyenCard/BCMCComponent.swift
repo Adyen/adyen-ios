@@ -15,6 +15,18 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
     
+    /// Indicates if form will show a large header title. True - show title; False - assign title to a view controllers's title.
+    /// Defaults to true.
+    public var showsLargeTitle: Bool {
+        get {
+            return cardComponent.showsLargeTitle
+        }
+        
+        set {
+            cardComponent.showsLargeTitle = newValue
+        }
+    }
+    
     /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
     public var showsHolderNameField: Bool {
         get {
@@ -37,30 +49,19 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
         }
     }
     
-    /// :nodoc:
-    internal var excludedCardTypes: Set<CardType> { cardComponent.excludedCardTypes }
-    
-    /// :nodoc:
-    internal var supportedCardTypes: [CardType] { cardComponent.supportedCardTypes }
-    
-    private let cardComponent: CardComponent
-    
     /// Initializes the Bancontact component.
     ///
     /// - Parameters:
     ///   - paymentMethod: The Bancontact payment method.
     ///   - publicKey: The key used for encrypting card data.
     ///   - style: The Component's UI style.
-    ///   - navigationStyle: The navigation level style.
     public init(paymentMethod: BCMCPaymentMethod,
                 publicKey: String,
-                style: AnyFormComponentStyle = FormComponentStyle(),
-                navigationStyle: NavigationStyle = NavigationStyle()) {
+                style: FormComponentStyle = FormComponentStyle()) {
         self.paymentMethod = paymentMethod
         self.cardComponent = CardComponent(paymentMethod: paymentMethod,
                                            publicKey: publicKey,
-                                           style: style,
-                                           navigationStyle: navigationStyle)
+                                           style: style)
         self.cardComponent.excludedCardTypes = []
         self.cardComponent.supportedCardTypes = [.bcmc]
         self.cardComponent.showsSecurityCodeField = false
@@ -68,6 +69,11 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
     }
     
     // MARK: - Presentable Component Protocol
+    
+    /// :nodoc:
+    public var requiresModalPresentation: Bool {
+        return cardComponent.requiresModalPresentation
+    }
     
     /// The payment information.
     public var payment: Payment? {
@@ -82,17 +88,8 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
     
     /// Returns a view controller that presents the payment details for the shopper to fill.
     public var viewController: UIViewController {
-        get {
-            return cardComponent.viewController
-        }
-        
-        set {
-            cardComponent.viewController = newValue
-        }
+        return cardComponent.viewController
     }
-    
-    /// The preferred way of presenting this component.
-    public var preferredPresentationMode: PresentableComponentPresentationMode { cardComponent.preferredPresentationMode }
     
     /// :nodoc:
     public var localizationParameters: LocalizationParameters? {
@@ -113,6 +110,18 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
         cardComponent.stopLoading(withSuccess: success, completion: completion)
     }
+    
+    // MARK: - Protected
+    
+    /// :nodoc:
+    internal var excludedCardTypes: Set<CardType> { cardComponent.excludedCardTypes }
+    
+    /// :nodoc:
+    internal var supportedCardTypes: [CardType] { cardComponent.supportedCardTypes }
+    
+    // MARK: - Private
+    
+    private let cardComponent: CardComponent
 }
 
 /// :nodoc:

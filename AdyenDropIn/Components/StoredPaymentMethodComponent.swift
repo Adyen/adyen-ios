@@ -8,12 +8,11 @@ import Foundation
 
 internal final class StoredPaymentMethodComponent: PaymentComponent, PresentableComponent, Localizable {
     
-    internal let paymentMethod: PaymentMethod
+    internal var paymentMethod: PaymentMethod { storedPaymentMethod }
     
     internal weak var delegate: PaymentComponentDelegate?
     
     internal init(paymentMethod: StoredPaymentMethod) {
-        self.paymentMethod = paymentMethod
         self.storedPaymentMethod = paymentMethod
     }
     
@@ -21,16 +20,12 @@ internal final class StoredPaymentMethodComponent: PaymentComponent, Presentable
     
     // MARK: - PresentableComponent
     
-    internal var preferredPresentationMode: PresentableComponentPresentationMode {
-        return .present
-    }
-    
     internal lazy var viewController: UIViewController = {
-        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
+        Analytics.sendEvent(component: storedPaymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
         
-        let displayInformation = paymentMethod.localizedDisplayInformation(using: localizationParameters)
+        let displayInformation = storedPaymentMethod.localizedDisplayInformation(using: localizationParameters)
         let alertController = UIAlertController(title: ADYLocalizedString("adyen.dropIn.stored.title",
-                                                                          localizationParameters, paymentMethod.name),
+                                                                          localizationParameters, storedPaymentMethod.name),
                                                 message: displayInformation.title,
                                                 preferredStyle: .alert)
         

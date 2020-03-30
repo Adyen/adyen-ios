@@ -7,11 +7,11 @@
 import Adyen
 
 class PaymentComponentMock: PaymentComponent {
-
+    
     var paymentMethod: PaymentMethod
-
+    
     var delegate: PaymentComponentDelegate?
-
+    
     init(paymentMethod: PaymentMethod) {
         self.paymentMethod = paymentMethod
     }

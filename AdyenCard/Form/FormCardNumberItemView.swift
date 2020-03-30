@@ -5,87 +5,70 @@
 //
 
 /// A view representing a form card number item.
-internal final class FormCardNumberItemView: FormValueItemView<FormCardNumberItem> {
+internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem> {
+    
+    private static let cardSpacing: CGFloat = 4.0
+    private static let cardSize = CGSize(width: 24.0, height: 16.0)
     
     /// Initializes the form card number item view.
     ///
     /// - Parameter item: The item represented by the view.
     internal required init(item: FormCardNumberItem) {
         super.init(item: item)
-        
-        addSubview(stackView)
-        
-        backgroundColor = item.style.backgroundColor
-        
-        configureConstraints()
+        setState(.customView(cardTypeLogosView))
     }
     
     internal required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    internal override var childItemViews: [AnyFormItemView] {
-        return [textItemView]
-    }
-    
-    // MARK: - Text Item View
-    
-    private lazy var textItemView: FormTextItemView = {
-        let textItemView = FormTextItemView(item: item)
-        textItemView.showsSeparator = false
-        textItemView.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "textItem") }
-        
-        return textItemView
-    }()
-    
     // MARK: - Card Type Logos View
     
-    private lazy var cardTypeLogosView: UIStackView = {
-        let arrangedSubviews: [CardTypeLogoView] = item.cardTypeLogos.map { logo in
+    private lazy var cardTypeLogosView: UIView = {
+        let cardLogos: [CardTypeLogoView] = item.cardTypeLogos.map { logo in
             let imageView = CardTypeLogoView(cardTypeLogo: logo, style: item.style.icon)
             imageView.backgroundColor = item.style.backgroundColor
             return imageView
         }
-        let cardTypeLogosView = UIStackView(arrangedSubviews: arrangedSubviews)
-        cardTypeLogosView.axis = .horizontal
-        cardTypeLogosView.spacing = 4.0
-        cardTypeLogosView.preservesSuperviewLayoutMargins = true
-        cardTypeLogosView.isLayoutMarginsRelativeArrangement = true
+        
+        let cardTypeLogosView = CardTypeLogosView(logos: cardLogos)
+        cardTypeLogosView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cardTypeLogos")
         cardTypeLogosView.backgroundColor = item.style.backgroundColor
         
         return cardTypeLogosView
     }()
-    
-    // MARK: - Stack View
-    
-    private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [textItemView, cardTypeLogosView])
-        stackView.axis = .horizontal
-        stackView.alignment = .lastBaseline
-        stackView.distribution = .fill
-        stackView.preservesSuperviewLayoutMargins = true
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = item.style.backgroundColor
-        
-        return stackView
-    }()
-    
-    // MARK: - Layout
-    
-    private func configureConstraints() {
-        let constraints = [
-            stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ]
-        
-        NSLayoutConstraint.activate(constraints)
-    }
-    
 }
 
 // MARK: - FormCardNumberItemView.CardTypeLogoView
+
+private extension FormCardNumberItemView {
+    
+    private class CardTypeLogosView: UIStackView {
+        
+        init(logos: [CardTypeLogoView]) {
+            super.init(frame: .zero)
+            axis = .horizontal
+            spacing = FormCardNumberItemView.cardSpacing
+            logos.forEach(addArrangedSubview)
+        }
+        
+        required init(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+        
+        override func layoutSubviews() {
+            invalidateIntrinsicContentSize()
+            super.layoutSubviews()
+        }
+        
+        override var intrinsicContentSize: CGSize {
+            let cardsCount = CGFloat(arrangedSubviews.filter { !$0.isHidden }.count)
+            let width = FormCardNumberItemView.cardSize.width * cardsCount + FormCardNumberItemView.cardSpacing * max(cardsCount - 1, 0)
+            return .init(width: max(width, FormCardNumberItemView.cardSpacing), height: FormCardNumberItemView.cardSize.height)
+        }
+        
+    }
+}
 
 private extension FormCardNumberItemView {
     
@@ -102,11 +85,6 @@ private extension FormCardNumberItemView {
             layer.borderColor = style.borderColor?.cgColor
             backgroundColor = style.backgroundColor
             
-            setContentHuggingPriority(.required, for: .horizontal)
-            setContentHuggingPriority(.required, for: .vertical)
-            setContentCompressionResistancePriority(.required, for: .horizontal)
-            setContentCompressionResistancePriority(.required, for: .vertical)
-            
             bind(cardTypeLogo.isHidden, to: self, at: \.isHidden)
         }
         
@@ -115,7 +93,7 @@ private extension FormCardNumberItemView {
         }
         
         internal override var intrinsicContentSize: CGSize {
-            return CGSize(width: 24.0, height: 16.0)
+            return cardSize
         }
         
     }

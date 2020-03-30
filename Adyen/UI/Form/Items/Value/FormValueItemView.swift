@@ -41,6 +41,7 @@ open class FormValueItemView<ItemType: FormValueItem>: FormItemView<ItemType>, A
         return delegate as? FormValueItemViewDelegate
     }
     
+    /// :nodoc:
     open override func didAddSubview(_ subview: UIView) {
         super.didAddSubview(subview)
         bringSubviewToFront(separatorView)
@@ -49,14 +50,22 @@ open class FormValueItemView<ItemType: FormValueItem>: FormItemView<ItemType>, A
     // MARK: - Editing
     
     /// Indicates if the item is currently being edited.
-    public var isEditing = false {
+    open var isEditing = false {
         didSet {
             if let parentItemView = parentItemView as? AnyFormValueItemView {
                 parentItemView.isEditing = isEditing
-            } else if showsSeparator, isEditing != oldValue {
-                isEditing ? highlightSeparatorView() : unhighlightSeparatorView()
+            }
+            
+            if isEditing != oldValue {
+                FormPhoneNumberItemView.cancelPreviousPerformRequests(withTarget: self)
+                perform(#selector(didChangeEditingStatus), with: nil, afterDelay: 0.1)
             }
         }
+    }
+    
+    @objc internal func didChangeEditingStatus() {
+        guard showsSeparator else { return }
+        isEditing ? highlightSeparatorView() : unhighlightSeparatorView()
     }
     
     // MARK: - Separator View
@@ -70,7 +79,7 @@ open class FormValueItemView<ItemType: FormValueItem>: FormItemView<ItemType>, A
     
     private lazy var separatorView: UIView = {
         let separatorView = UIView()
-        separatorView.backgroundColor = .componentSeparator
+        separatorView.backgroundColor = UIColor.AdyenCore.componentSeparator
         separatorView.isUserInteractionEnabled = false
         separatorView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -99,7 +108,7 @@ open class FormValueItemView<ItemType: FormValueItem>: FormItemView<ItemType>, A
         transitionView.frame = separatorView.frame
         addSubview(transitionView)
         
-        separatorView.backgroundColor = .componentSeparator
+        separatorView.backgroundColor = UIColor.AdyenCore.componentSeparator
         
         UIView.animate(withDuration: 0.25, delay: 0.0, options: [.curveEaseInOut], animations: {
             transitionView.frame.size.width = 0.0

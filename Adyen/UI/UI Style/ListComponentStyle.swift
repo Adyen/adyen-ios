@@ -6,39 +6,28 @@
 
 import Foundation
 
-/// Indicates any list component UI style.
-public protocol AnyListComponentStyle: ViewStyle {
+/// Contains the styling customization options for any list-based component.
+public struct ListComponentStyle: ViewStyle {
     
-    /// Indicates the list item UI style.
-    var listItem: ListItem.Style { get set }
+    /// The style of any of the items in the list.
+    public var listItem: ListItemStyle = ListItemStyle()
     
-    /// Indicates the section header UI style.
-    var sectionHeader: ListHeaderViewStyle { get set }
-    
-}
-
-/// Indicates any list component UI style.
-public struct ListComponentStyle: AnyListComponentStyle {
-    
-    /// Indicates the list item UI style.
-    public var listItem: ListItem.Style = ListItem.Style()
-    
-    /// Indicates the section header UI style.
-    public var sectionHeader: ListHeaderViewStyle = ListHeaderViewStyle()
+    /// The style of any of the section headers in the list.
+    public var sectionHeader: ListSectionHeaderStyle = ListSectionHeaderStyle()
     
     /// :nodoc:
-    public var backgroundColor: UIColor = .componentBackground
+    public var backgroundColor: UIColor = UIColor.AdyenCore.componentBackground
     
-    /// Initializes the list view controller style.
+    /// Initializes the list component style.
     ///
-    /// - Parameter listItem: The individual list item UI style.
-    /// - Parameter sectionHeader: The list section header UI style.
-    public init(listItem: ListItem.Style,
-                sectionHeader: ListHeaderViewStyle) {
+    /// - Parameter listItem: The style of any of the items in the list.
+    /// - Parameter sectionHeader: The style of any of the section headers in the list.
+    public init(listItem: ListItemStyle,
+                sectionHeader: ListSectionHeaderStyle) {
         self.listItem = listItem
         self.sectionHeader = sectionHeader
     }
     
-    /// Initializes the list view controller style with default style.
+    /// Initializes the list component style with the default style.
     public init() {}
 }

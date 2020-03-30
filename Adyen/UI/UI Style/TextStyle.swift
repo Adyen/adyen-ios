@@ -1,21 +1,21 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
 
-/// Indicates any text UI style like UILabel's for example.
+/// Contains the styling customization options for any labels.
 public struct TextStyle: ViewStyle {
     
-    /// Indicates the text font.
+    /// The font used to display the text.
     public var font: UIFont
     
-    /// Indicates the text color.
+    /// The color of the text.
     public var color: UIColor
     
-    /// Indicates text alignment.
+    /// The technique to use for aligning the text.
     public var textAlignment: NSTextAlignment
     
     /// :nodoc:
@@ -23,9 +23,9 @@ public struct TextStyle: ViewStyle {
     
     /// Initializes the text style.
     ///
-    /// - Parameter font: text font.
-    /// - Parameter color: text color.
-    /// - Parameter textAlignment: text alignment.
+    /// - Parameter font: The font used to display the text.
+    /// - Parameter color: The color of the text.
+    /// - Parameter textAlignment: The technique to use for aligning the text.
     public init(font: UIFont, color: UIColor, textAlignment: NSTextAlignment) {
         self.font = font
         self.color = color

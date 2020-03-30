@@ -12,9 +12,6 @@ public protocol Component: AnyObject {
     /// Defines the environment used to make networking requests.
     var environment: Environment { get set }
     
-    /// :nodoc:
-    var _isDropIn: Bool { get set } // swiftlint:disable:this identifier_name
-    
 }
 
 public extension Component {

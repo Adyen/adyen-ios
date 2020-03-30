@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -22,7 +22,7 @@ internal final class ComponentsView: UIView {
     
     // MARK: - Items
     
-    internal var items = [ComponentsItem]()
+    internal var items = [[ComponentsItem]]()
     
     // MARK: - Table View
     
@@ -61,17 +61,17 @@ internal final class ComponentsView: UIView {
 extension ComponentsView: UITableViewDataSource {
     
     internal func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return items.count
     }
     
     internal func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        return items[section].count
     }
     
     internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         cell.textLabel?.font = .systemFont(ofSize: 17.0, weight: .semibold)
-        cell.textLabel?.text = items[indexPath.item].title
+        cell.textLabel?.text = items[indexPath.section][indexPath.item].title
         
         return cell
     }
@@ -81,7 +81,7 @@ extension ComponentsView: UITableViewDataSource {
 extension ComponentsView: UITableViewDelegate {
     
     internal func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        items[indexPath.item].selectionHandler?()
+        items[indexPath.section][indexPath.item].selectionHandler?()
         
         tableView.deselectRow(at: indexPath, animated: true)
     }

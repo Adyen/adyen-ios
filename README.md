@@ -2,6 +2,12 @@
 
 Adyen Components for iOS allows you to accept in-app payments by providing you with the building blocks you need to create a checkout experience.
 
+<br/>
+
+![DropIn preview](https://docs-admin.is.adyen.com/user/pages/docs/01.checkout/06.ios/01.drop-in/dropin-ios.jpg)
+
+<br/>
+
 ## Installation
 
 Adyen Components for iOS are available through either [CocoaPods](http://cocoapods.org) or [Carthage](https://github.com/Carthage/Carthage).
@@ -113,7 +119,40 @@ In order to have more flexibility over the checkout flow, you can use our Compon
 - [EPS Component][reference.issuerListComponent]
 - [Entercash Component][reference.issuerListComponent]
 - [Open Banking Component][reference.issuerListComponent]
+- [WeChat Pay Component][reference.weChatPaySDKActionComponent]
+- [Qiwi Wallet Component][reference.qiwiWalletComponent]
 - [Redirect Component][reference.redirectComponent]
+
+## Customization
+
+Both the Drop-in and the Components offer a number of customization options to allow you to match the appearance of your app.
+For example, to change the section header titles and form field titles in the Drop-in to red, and turn the submit button's background to blue:
+```swift
+var style = DropInComponent.Style()
+style.listComponent.sectionHeader.title.color = .red
+style.formComponent.textField.title.color = .red
+style.formComponent.footer.button.backgroundColor = .purple
+
+let dropInComponent = DropInComponent(paymentMethods: paymentMethods,
+                                      paymentMethodsConfiguration: configuration,
+                                      style: style)
+```
+
+Or, to create a black Card Component with white text:
+```swift
+var style = FormComponentStyle()
+style.backgroundColor = .black
+style.header.title.color = .white
+style.textField.title.color = .white
+style.textField.text.color = .white
+style.switch.title.color = .white
+
+let component = CardComponent(paymentMethod: paymentMethod,
+                              publicKey: Configuration.cardPublicKey,
+                              style: style)
+```
+
+A full list of customization options can be found in the [API Reference][reference.styles].
 
 ## Requirements
 
@@ -138,8 +177,11 @@ This repository is open source and available under the MIT license. For more inf
 [reference.applePayComponent]: https://adyen.github.io/adyen-ios/Docs/Classes/ApplePayComponent.html
 [reference.bcmcComponent]: https://adyen.github.io/adyen-ios/Docs/Classes/BCMCComponent.html
 [reference.issuerListComponent]: https://adyen.github.io/adyen-ios/Docs/Classes/IssuerListComponent.html
+[reference.weChatPaySDKActionComponent]: https://adyen.github.io/adyen-ios/Docs/Classes/WeChatPaySDKActionComponent.html
+[reference.qiwiWalletComponent]: https://adyen.github.io/adyen-ios/Docs/Classes/QiwiWalletComponent.html
 [reference.sepaDirectDebitComponent]: https://adyen.github.io/adyen-ios/Docs/Classes/SEPADirectDebitComponent.html
 [reference.redirectComponent]: https://adyen.github.io/adyen-ios/Docs/Classes/RedirectComponent.html
+[reference.styles]: https://adyen.github.io/adyen-ios/Docs/Styling.html
 [apiExplorer.paymentMethods]: https://docs.adyen.com/api-explorer/#/PaymentSetupAndVerificationService/v46/paymentMethods
 [apiExplorer.payments]: https://docs.adyen.com/api-explorer/#/PaymentSetupAndVerificationService/v46/payments
 [apiExplorer.paymentsDetails]: https://docs.adyen.com/api-explorer/#/PaymentSetupAndVerificationService/v46/paymentsDetails

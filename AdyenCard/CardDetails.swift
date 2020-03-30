@@ -54,7 +54,7 @@ public struct CardDetails: PaymentMethodDetails {
     ///
     /// - Parameters:
     ///   - paymentMethod: The used stored card payment method.
-    ///   - encryptedSecurityCode: The encrypted security code
+    ///   - encryptedSecurityCode: The encrypted security code.
     public init(paymentMethod: StoredCardPaymentMethod, encryptedSecurityCode: String) {
         self.type = paymentMethod.type
         self.encryptedSecurityCode = encryptedSecurityCode

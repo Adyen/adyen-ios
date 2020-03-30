@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -100,40 +100,6 @@ internal extension KeyedDecodingContainer {
         }
         
         return dictionary
-    }
-    
-}
-
-internal extension KeyedEncodingContainer {
-    /// Encodes the given value for the given key.
-    ///
-    /// - parameter value: The value to encode.
-    /// - parameter key: The key to associate the value with.
-    /// - throws: `EncodingError.invalidValue` if the given value is invalid in
-    ///   the current context for this format.
-    mutating func encode(_ value: [String: Any], forKey key: KeyedEncodingContainer.Key) throws { // swiftlint:disable:this explicit_acl
-        var container = nestedContainer(keyedBy: JSONCodingKeys.self, forKey: key)
-        
-        try value.forEach { (key: String, value: Any) in
-            let codingKey = JSONCodingKeys(value: key)
-            
-            switch value {
-            case let boolValue as Bool:
-                try container.encode(boolValue, forKey: codingKey)
-            case let stringValue as String:
-                try container.encode(stringValue, forKey: codingKey)
-            case let intValue as Int:
-                try container.encode(intValue, forKey: codingKey)
-            case let doubleValue as Double:
-                try container.encode(doubleValue, forKey: codingKey)
-            case let nestedDictionary as [String: Any]:
-                try container.encode(nestedDictionary, forKey: codingKey)
-            default:
-                let context = EncodingError.Context(codingPath: codingPath, debugDescription: "Failed to encode dictionary value.")
-                
-                throw EncodingError.invalidValue(value, context)
-            }
-        }
     }
     
 }

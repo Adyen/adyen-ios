@@ -35,37 +35,8 @@ internal final class ComponentManager {
     
     // MARK: - Private
     
-    private let paymentMethods: PaymentMethods
-    private let payment: Payment?
-    private let configuration: DropInComponent.PaymentMethodsConfiguration
-    
     private func component(for paymentMethod: PaymentMethod) -> PaymentComponent? {
-        var paymentComponent: PaymentComponent?
-        
-        switch paymentMethod {
-        case let paymentMethod as StoredCardPaymentMethod:
-            paymentComponent = createCardComponent(with: paymentMethod)
-        case let paymentMethod as StoredPaymentMethod:
-            paymentComponent = StoredPaymentMethodComponent(paymentMethod: paymentMethod)
-        case let paymentMethod as StoredBCMCPaymentMethod:
-            paymentComponent = StoredPaymentMethodComponent(paymentMethod: paymentMethod)
-        case let paymentMethod as CardPaymentMethod:
-            paymentComponent = createCardComponent(with: paymentMethod)
-        case let paymentMethod as BCMCPaymentMethod:
-            paymentComponent = createBancontactComponent(with: paymentMethod)
-        case let paymentMethod as IssuerListPaymentMethod:
-            paymentComponent = IssuerListComponent(paymentMethod: paymentMethod,
-                                                   style: style.listComponent,
-                                                   navigationStyle: style.navigation)
-        case let paymentMethod as SEPADirectDebitPaymentMethod:
-            paymentComponent = SEPADirectDebitComponent(paymentMethod: paymentMethod,
-                                                        style: style.formComponent,
-                                                        navigationStyle: style.navigation)
-        case let paymentMethod as ApplePayPaymentMethod:
-            paymentComponent = createApplePayComponent(with: paymentMethod)
-        default:
-            paymentComponent = EmptyPaymentComponent(paymentMethod: paymentMethod)
-        }
+        let paymentComponent: PaymentComponent? = paymentMethod.buildComponent(using: self)
         
         if var paymentComponent = paymentComponent as? Localizable {
             paymentComponent.localizationParameters = configuration.localizationParameters
@@ -74,6 +45,12 @@ internal final class ComponentManager {
         return paymentComponent
     }
     
+    // MARK: - Private
+    
+    private let paymentMethods: PaymentMethods
+    private let payment: Payment?
+    private let configuration: DropInComponent.PaymentMethodsConfiguration
+    
     private func createCardComponent(with paymentMethod: PaymentMethod) -> PaymentComponent? {
         let cardConfiguration = configuration.card
         guard let publicKey = cardConfiguration.publicKey else {
@@ -81,17 +58,17 @@ internal final class ComponentManager {
         }
         
         let cardComponent: CardComponent
-        if let cardPaymentMethod = paymentMethod as? CardPaymentMethod {
+        switch paymentMethod {
+        case let cardPaymentMethod as CardPaymentMethod:
             cardComponent = CardComponent(paymentMethod: cardPaymentMethod,
                                           publicKey: publicKey,
-                                          style: style.formComponent,
-                                          navigationStyle: style.navigation)
-        } else if let storedCardPaymentMethod = paymentMethod as? StoredCardPaymentMethod {
+                                          style: style.formComponent)
+            cardComponent.showsLargeTitle = false
+        case let storedCardPaymentMethod as StoredCardPaymentMethod:
             cardComponent = CardComponent(paymentMethod: storedCardPaymentMethod,
                                           publicKey: publicKey,
-                                          style: style.formComponent,
-                                          navigationStyle: style.navigation)
-        } else {
+                                          style: style.formComponent)
+        default:
             return nil
         }
         
@@ -107,8 +84,8 @@ internal final class ComponentManager {
         
         let component = BCMCComponent(paymentMethod: paymentMethod,
                                       publicKey: publicKey,
-                                      style: style.formComponent,
-                                      navigationStyle: style.navigation)
+                                      style: style.formComponent)
+        component.showsLargeTitle = false
         component.showsHolderNameField = cardConfiguration.showsHolderNameField
         component.showsStorePaymentMethodField = cardConfiguration.showsStorePaymentMethodField
         
@@ -123,15 +100,97 @@ internal final class ComponentManager {
             return nil
         }
         
+        let requiredBillingContactFields = configuration.applePay.requiredBillingContactFields
+        let requiredShippingContactFields = configuration.applePay.requiredShippingContactFields
+        
         do {
             return try ApplePayComponent(paymentMethod: paymentMethod,
                                          payment: payment,
                                          merchantIdentifier: identfier,
-                                         summaryItems: summaryItems)
+                                         summaryItems: summaryItems,
+                                         requiredBillingContactFields: requiredBillingContactFields,
+                                         requiredShippingContactFields: requiredShippingContactFields)
         } catch {
-            print("Failed to instantiate ApplePayComponent because of error: \(error.localizedDescription)")
+            adyenPrint("Failed to instantiate ApplePayComponent because of error: \(error.localizedDescription)")
             return nil
         }
+    }
+    
+    private func createSEPAComponent(_ paymentMethod: SEPADirectDebitPaymentMethod) -> SEPADirectDebitComponent {
+        let component = SEPADirectDebitComponent(paymentMethod: paymentMethod,
+                                                 style: style.formComponent)
+        component.showsLargeTitle = false
+        return component
+    }
+    
+    private func createQiwiWalletComponent(_ paymentMethod: QiwiWalletPaymentMethod) -> QiwiWalletComponent {
+        let component = QiwiWalletComponent(paymentMethod: paymentMethod, style: style.formComponent)
+        component.showsLargeTitle = false
+        return component
+    }
+    
+}
+
+// MARK: - PaymentComponentBuilder
+
+extension ComponentManager: PaymentComponentBuilder {
+    
+    /// :nodoc:
+    internal func build(paymentMethod: StoredCardPaymentMethod) -> PaymentComponent? {
+        createCardComponent(with: paymentMethod)
+    }
+    
+    /// :nodoc:
+    internal func build(paymentMethod: StoredPaymentMethod) -> PaymentComponent? {
+        StoredPaymentMethodComponent(paymentMethod: paymentMethod)
+    }
+    
+    /// :nodoc:
+    internal func build(paymentMethod: StoredBCMCPaymentMethod) -> PaymentComponent? {
+        StoredPaymentMethodComponent(paymentMethod: paymentMethod)
+    }
+    
+    /// :nodoc:
+    internal func build(paymentMethod: CardPaymentMethod) -> PaymentComponent? {
+        createCardComponent(with: paymentMethod)
+    }
+    
+    /// :nodoc:
+    internal func build(paymentMethod: BCMCPaymentMethod) -> PaymentComponent? {
+        createBancontactComponent(with: paymentMethod)
+    }
+    
+    /// :nodoc:
+    internal func build(paymentMethod: IssuerListPaymentMethod) -> PaymentComponent? {
+        IssuerListComponent(paymentMethod: paymentMethod,
+                            style: style.listComponent)
+    }
+    
+    /// :nodoc:
+    internal func build(paymentMethod: SEPADirectDebitPaymentMethod) -> PaymentComponent? {
+        return createSEPAComponent(paymentMethod)
+    }
+    
+    /// :nodoc:
+    internal func build(paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
+        createApplePayComponent(with: paymentMethod)
+    }
+    
+    /// :nodoc:
+    internal func build(paymentMethod: WeChatPayPaymentMethod) -> PaymentComponent? {
+        guard let classObject = loadTheConcreteWeChatPaySDKActionComponentClass() else { return nil }
+        guard classObject.isDeviceSupported() else { return nil }
+        return EmptyPaymentComponent(paymentMethod: paymentMethod)
+    }
+    
+    /// :nodoc:
+    internal func build(paymentMethod: QiwiWalletPaymentMethod) -> PaymentComponent? {
+        createQiwiWalletComponent(paymentMethod)
+    }
+    
+    /// :nodoc:
+    internal func build(paymentMethod: PaymentMethod) -> PaymentComponent? {
+        EmptyPaymentComponent(paymentMethod: paymentMethod)
     }
     
 }

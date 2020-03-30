@@ -6,28 +6,24 @@
 
 import Foundation
 
-public extension FormSwitchItem {
+/// Contains the styling customization options for a switch item in a form.
+public struct FormSwitchItemStyle: ViewStyle {
     
-    /// Indicates the `FormSwitchItemView` UI style.
-    struct Style: ViewStyle {
-        
-        /// Indicates the `FormSwitchItemView` title style.
-        public var title: TextStyle = TextStyle(font: .systemFont(ofSize: 17.0),
-                                                color: .componentLabel,
-                                                textAlignment: .natural)
-        
-        /// :nodoc:
-        public var backgroundColor: UIColor = .componentBackground
-        
-        /// Initializes the form switch style
-        ///
-        /// - Parameter title: The switch title text style.
-        public init(title: TextStyle) {
-            self.title = title
-        }
-        
-        /// Initializes the form switch style with default style.
-        public init() {}
+    /// The title style.
+    public var title: TextStyle = TextStyle(font: .systemFont(ofSize: 17.0),
+                                            color: UIColor.AdyenCore.componentLabel,
+                                            textAlignment: .natural)
+    
+    /// :nodoc:
+    public var backgroundColor: UIColor = .clear
+    
+    /// Initializes the form switch item style.
+    ///
+    /// - Parameter title: The title style.
+    public init(title: TextStyle) {
+        self.title = title
     }
     
+    /// Initializes the form switch item style with the default style.
+    public init() {}
 }

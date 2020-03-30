@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,15 +8,15 @@ import UIKit
 
 /// Displays a form for the user to enter details.
 /// :nodoc:
-internal final class FormView: UIView {
+internal final class FormView: UIScrollView {
     
     /// Initializes the form view.
     internal init() {
         super.init(frame: .zero)
         
-        backgroundColor = .componentBackground
-        
-        addSubview(scrollView)
+        preservesSuperviewLayoutMargins = true
+        addSubview(stackView)
+        clipsToBounds = false
         
         configureConstraints()
     }
@@ -24,6 +24,14 @@ internal final class FormView: UIView {
     /// :nodoc:
     internal required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    public var preferredContentSize: CGSize {
+        let targetSize = CGSize(width: self.superview?.bounds.width ?? UIScreen.main.bounds.width,
+                                height: UIView.layoutFittingCompressedSize.height)
+        return stackView.systemLayoutSizeFitting(targetSize,
+                                                 withHorizontalFittingPriority: .required,
+                                                 verticalFittingPriority: .fittingSizeLevel)
     }
     
     // MARK: - Item Views
@@ -35,17 +43,16 @@ internal final class FormView: UIView {
         stackView.addArrangedSubview(itemView)
     }
     
-    // MARK: - Scroll View
-    
-    /// The form view's scroll view.
-    internal private(set) lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.preservesSuperviewLayoutMargins = true
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.addSubview(stackView)
+    internal override var contentOffset: CGPoint {
+        get {
+            super.contentOffset
+        }
         
-        return scrollView
-    }()
+        set {
+            let noNeedToScroll = contentSize.height <= frame.size.height
+            super.contentOffset = noNeedToScroll ? .zero : newValue
+        }
+    }
     
     // MARK: - Stack View
     
@@ -55,7 +62,6 @@ internal final class FormView: UIView {
         stackView.alignment = .fill
         stackView.preservesSuperviewLayoutMargins = true
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        
         return stackView
     }()
     
@@ -63,16 +69,11 @@ internal final class FormView: UIView {
     
     private func configureConstraints() {
         let constraints = [
-            scrollView.topAnchor.constraint(equalTo: topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            
-            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+            stackView.topAnchor.constraint(equalTo: topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            stackView.widthAnchor.constraint(equalTo: widthAnchor)
         ]
         
         NSLayoutConstraint.activate(constraints)

@@ -30,3 +30,8 @@
 "adyen.card.stored.message" = "Введите код CVC карты %@";
 "adyen.card.stored.expires" = "Действительно до %@";
 "adyen.dropIn.stored.title" = "Подтвердить оплату %@";
+"adyen.dropIn.preselected.openAll.title" = "Изменить способ оплаты";
+"adyen.continueTo" = "Перейти к %@";
+"adyen.phoneNumber.title" = "Номер телефона";
+"adyen.phoneNumber.invalid" = "Недействительный номер телефона";
+"adyen.phoneNumber.placeholder" = "123–456–789";

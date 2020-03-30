@@ -30,3 +30,9 @@
 "adyen.card.stored.message" = "Test-Please enter the CVC code for %@";
 "adyen.card.stored.expires" = "Test-Expires %@";
 "adyen.dropIn.stored.title" = "Test-Confirm %@ payment";
+"adyen.phoneNumber.title" = "Test-Phone Number";
+"adyen.phoneNumber.placeholder" = "Test-123 456 789";
+"adyen.phoneNumber.invalid" = "Test-Invalid phone number.";
+"adyen.qiwiwallet.phoneExtension.placeholder" = "Test +123";
+"adyen.qiwiwallet.phoneExtension.invalid" = "Test Invalid phone extension.";
+"adyen.qiwiwallet.consentLabel" = "Test-By pressing the button above, you agree that the specified amount will be debited from your bank account.";

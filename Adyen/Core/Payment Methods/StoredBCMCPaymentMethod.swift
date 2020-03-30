@@ -53,6 +53,11 @@ public struct StoredBCMCPaymentMethod: StoredPaymentMethod {
     /// The name of the cardholder.
     public var holderName: String? { storedCardPaymentMethod.holderName }
     
+    /// :nodoc:
+    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
+        return builder.build(paymentMethod: self)
+    }
+    
     // MARK: - Decoding
     
     /// :nodoc:

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -12,6 +12,11 @@ internal struct RedirectPaymentMethod: PaymentMethod {
     
     internal let name: String
     
+    /// :nodoc:
+    internal func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
+        return builder.build(paymentMethod: self)
+    }
+    
 }
 
 internal struct StoredRedirectPaymentMethod: StoredPaymentMethod {
@@ -23,6 +28,11 @@ internal struct StoredRedirectPaymentMethod: StoredPaymentMethod {
     internal let identifier: String
     
     internal let supportedShopperInteractions: [ShopperInteraction]
+    
+    /// :nodoc:
+    internal func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
+        return builder.build(paymentMethod: self)
+    }
     
     // MARK: - Decoding
     

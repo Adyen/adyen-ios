@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,7 +10,15 @@ import Foundation
 public protocol Details: Encodable {
     
     /// An encoded representation of the details.
+    @available(*, deprecated, message: "Use `encodable` property instead.")
     var dictionaryRepresentation: [String: Any] { get }
+    
+}
+
+public extension Details {
+    
+    /// Provides a concrete encodable object to easily encode any `Details` conforming object.
+    var encodable: AnyEncodable { AnyEncodable(value: self) }
     
 }
 

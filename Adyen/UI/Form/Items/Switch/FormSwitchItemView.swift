@@ -8,7 +8,7 @@ import UIKit
 
 /// A view representing a switch item.
 /// :nodoc:
-open class FormSwitchItemView: FormValueItemView<FormSwitchItem> {
+public final class FormSwitchItemView: FormValueItemView<FormSwitchItem> {
     
     /// Initializes the switch item view.
     ///
@@ -75,7 +75,7 @@ open class FormSwitchItemView: FormValueItemView<FormSwitchItem> {
     }
     
     /// :nodoc:
-    open override func accessibilityActivate() -> Bool {
+    public override func accessibilityActivate() -> Bool {
         switchControl.isOn = !switchControl.isOn
         switchControlValueChanged()
         

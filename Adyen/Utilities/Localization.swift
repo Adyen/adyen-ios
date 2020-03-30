@@ -94,7 +94,8 @@ public func ADYLocalizedSubmitButtonTitle(with amount: Payment.Amount?, _ parame
     return ADYLocalizedString("adyen.submitButton.formatted", parameters, formattedAmount)
 }
 
-private extension Bundle {
+internal extension Bundle {
+    // swiftlint:disable explicit_acl
     
     /// The main bundle of the framework.
     static let core: Bundle = {
@@ -108,4 +109,5 @@ private extension Bundle {
         return bundle ?? core
     }()
     
+    // swiftlint:enable explicit_acl
 }

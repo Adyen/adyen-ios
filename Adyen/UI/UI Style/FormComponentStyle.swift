@@ -6,58 +6,41 @@
 
 import Foundation
 
-/// Describes any form component UI style.
-public protocol AnyFormComponentStyle: ViewStyle {
+/// Contains the styling customization options for any form-based component.
+public struct FormComponentStyle: ViewStyle {
     
-    /// Indicates the `FormHeaderItemView` UI style.
-    var header: FormHeaderItem.Style { get set }
+    /// The header style.
+    public var header: FormHeaderStyle = FormHeaderStyle()
     
-    /// Indicates any `FormTextItemView` UI style.
-    var textField: FormTextItem.Style { get set }
+    /// The text field style.
+    public var textField: FormTextItemStyle = FormTextItemStyle()
     
-    /// Indicates any `FormSwitchItemView` UI style.
-    var `switch`: FormSwitchItem.Style { get set }
+    /// The switch style.
+    public var `switch`: FormSwitchItemStyle = FormSwitchItemStyle()
     
-    /// Indicates the `FormFooterItemView` UI style.
-    var footer: FormFooterItem.Style { get set }
-    
-}
-
-/// Describes any form component UI style.
-public struct FormComponentStyle: AnyFormComponentStyle {
-    
-    /// Indicates the `FormHeaderItemView` UI style.
-    public var header: FormHeaderItem.Style = FormHeaderItem.Style()
-    
-    /// Indicates any `FormTextItemView` UI style.
-    public var textField: FormTextItem.Style = FormTextItem.Style()
-    
-    /// Indicates any `FormSwitchItemView` UI style.
-    public var `switch`: FormSwitchItem.Style = FormSwitchItem.Style()
-    
-    /// Indicates the `FormFooterItemView` UI style.
-    public var footer: FormFooterItem.Style = FormFooterItem.Style()
+    /// The footer style.
+    public var footer: FormFooterStyle = FormFooterStyle()
     
     /// :nodoc:
-    public var backgroundColor: UIColor = .componentBackground
+    public var backgroundColor: UIColor = UIColor.AdyenCore.componentBackground
     
     /// Initializes the Form UI style.
     ///
-    /// - Parameter header: The `FormHeaderItemView` UI style.
-    /// - Parameter textField: Any `FormTextItemView` UI style.
-    /// - Parameter switch: Any `FormSwitchItemView` UI style.
-    /// - Parameter footer: The `FormFooterItemView` UI style.
-    public init(header: FormHeaderItem.Style,
-                textField: FormTextItem.Style,
-                switch: FormSwitchItem.Style,
-                footer: FormFooterItem.Style) {
+    /// - Parameter header: The header style.
+    /// - Parameter textField: The text field style.
+    /// - Parameter switch: The switch style.
+    /// - Parameter footer: The footer style.
+    public init(header: FormHeaderStyle,
+                textField: FormTextItemStyle,
+                switch: FormSwitchItemStyle,
+                footer: FormFooterStyle) {
         self.header = header
         self.textField = textField
         self.switch = `switch`
         self.footer = footer
     }
     
-    /// Initializes the form style with default style.
+    /// Initializes the form style with the default style.
     public init() {}
     
 }

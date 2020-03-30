@@ -30,3 +30,8 @@
 "adyen.card.stored.message" = "Syötä CVC-koodisi %@ varten";
 "adyen.card.stored.expires" = "Vanhenee %@";
 "adyen.dropIn.stored.title" = "Vahvista %@ maksu";
+"adyen.dropIn.preselected.openAll.title" = "Muuta maksutapaa";
+"adyen.continueTo" = "Jatka kohteeseen %@";
+"adyen.phoneNumber.title" = "Puhelinnumero";
+"adyen.phoneNumber.invalid" = "Ei-kelvollinen puhelinnumero";
+"adyen.phoneNumber.placeholder" = "123–456–789";

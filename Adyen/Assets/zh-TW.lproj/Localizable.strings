@@ -30,3 +30,8 @@
 "adyen.card.stored.message" = "請輸入 %@ 的信用卡驗證碼";
 "adyen.card.stored.expires" = "%@ 到期";
 "adyen.dropIn.stored.title" = "確認 %@ 付款";
+"adyen.dropIn.preselected.openAll.title" = "變更付款方式";
+"adyen.continueTo" = "繼續前往%@";
+"adyen.phoneNumber.title" = "電話號碼";
+"adyen.phoneNumber.invalid" = "電話號碼無效";
+"adyen.phoneNumber.placeholder" = "123–456–789";

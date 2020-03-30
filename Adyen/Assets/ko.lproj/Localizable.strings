@@ -30,3 +30,8 @@
 "adyen.card.stored.message" = "%@에 대한 CVC 코드를 입력하세요.";
 "adyen.card.stored.expires" = "만료: %@";
 "adyen.dropIn.stored.title" = "%@ 결제 확인";
+"adyen.dropIn.preselected.openAll.title" = "결제 수단 변경";
+"adyen.continueTo" = "다음으로 계속:%@";
+"adyen.phoneNumber.title" = "전화번호";
+"adyen.phoneNumber.invalid" = "유효하지 않은 전화번호";
+"adyen.phoneNumber.placeholder" = "123–456–789";

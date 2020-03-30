@@ -44,20 +44,21 @@ class PaymentMethodTests: XCTestCase {
                 giroPayDictionaryWithOptionalDetails,
                 giroPayDictionaryWithNonOptionalDetails,
                 weChatQRDictionary,
-                weChatSDKDictionary,
                 weChatWebDictionary,
                 weChatMiniProgramDictionary,
-                bcmcMobileQR
+                bcmcMobileQR,
+                qiwiWallet,
+                weChatSDKDictionary
             ]
         ]
-
+        
         // Stored payment methods
         
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
         XCTAssertEqual(paymentMethods.stored.count, 5)
         XCTAssertTrue(paymentMethods.stored[0] is StoredCardPaymentMethod)
         XCTAssertTrue(paymentMethods.stored[1] is StoredCardPaymentMethod)
-
+        
         // Test StoredCardPaymentMethod localization
         let storedCardPaymentMethod = paymentMethods.stored[1] as! StoredCardPaymentMethod
         let expectedLocalizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
@@ -65,11 +66,11 @@ class PaymentMethodTests: XCTestCase {
                        expectedStoredCardPaymentMethodDisplayInfo(method: storedCardPaymentMethod, localizationParameters: nil))
         XCTAssertEqual(storedCardPaymentMethod.localizedDisplayInformation(using: expectedLocalizationParameters),
                        expectedStoredCardPaymentMethodDisplayInfo(method: storedCardPaymentMethod, localizationParameters: expectedLocalizationParameters))
-
+        
         XCTAssertTrue(paymentMethods.stored[2] is StoredPayPalPaymentMethod)
         XCTAssertTrue(paymentMethods.stored[3] is StoredRedirectPaymentMethod)
         XCTAssertTrue(paymentMethods.stored[4] is StoredBCMCPaymentMethod)
-
+        
         // Test StoredBCMCPaymentMethod localization
         let storedBCMCPaymentMethod = paymentMethods.stored[4] as! StoredBCMCPaymentMethod
         XCTAssertEqual(storedBCMCPaymentMethod.displayInformation,
@@ -79,7 +80,7 @@ class PaymentMethodTests: XCTestCase {
         
         XCTAssertEqual(paymentMethods.stored[3].type, "unknown")
         XCTAssertEqual(paymentMethods.stored[3].name, "Stored Redirect Payment Method")
-
+        
         let storedBancontact = paymentMethods.stored[4] as! StoredBCMCPaymentMethod
         XCTAssertEqual(storedBancontact.type, "bcmc")
         XCTAssertEqual(storedBancontact.brand, "bcmc")
@@ -90,34 +91,57 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(storedBancontact.holderName, "Checkout Shopper PlaceHolder")
         XCTAssertEqual(storedBancontact.supportedShopperInteractions, [.shopperPresent])
         XCTAssertEqual(storedBancontact.lastFour, "4449")
-
-
+        
         // Regular payment methods
         
-        XCTAssertEqual(paymentMethods.regular.count, 8)
+        XCTAssertEqual(paymentMethods.regular.count, 10)
         XCTAssertTrue(paymentMethods.regular[0] is CardPaymentMethod)
         XCTAssertTrue(paymentMethods.regular[1] is IssuerListPaymentMethod)
         XCTAssertTrue(paymentMethods.regular[2] is SEPADirectDebitPaymentMethod)
         XCTAssertTrue(paymentMethods.regular[3] is RedirectPaymentMethod)
         
+        // Uknown redirect
         XCTAssertEqual(paymentMethods.regular[3].type, "unknown")
         XCTAssertEqual(paymentMethods.regular[3].name, "Redirect Payment Method")
-
+        
+        // Bancontact
         XCTAssertTrue(paymentMethods.regular[4] is BCMCPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[4].type, "bcmc")
         XCTAssertEqual(paymentMethods.regular[4].name, "Bancontact card")
-
+        
+        // Apple Pay
         XCTAssertTrue(paymentMethods.regular[5] is ApplePayPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[5].type, "applepay")
         XCTAssertEqual(paymentMethods.regular[5].name, "Apple Pay")
-
+        
+        // PayPal
         XCTAssertTrue(paymentMethods.regular[6] is RedirectPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[6].type, "paypal")
         XCTAssertEqual(paymentMethods.regular[6].name, "PayPal")
-
+        
+        // GiroPay
         XCTAssertTrue(paymentMethods.regular[7] is RedirectPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[7].type, "giropay")
         XCTAssertEqual(paymentMethods.regular[7].name, "GiroPay")
+        
+        // Qiwi Wallet
+        XCTAssertTrue(paymentMethods.regular[8] is QiwiWalletPaymentMethod)
+        let qiwiMethod = paymentMethods.regular[8] as! QiwiWalletPaymentMethod
+        XCTAssertEqual(qiwiMethod.type, "qiwiwallet")
+        XCTAssertEqual(qiwiMethod.name, "Qiwi Wallet")
+        XCTAssertEqual(qiwiMethod.phoneExtensions.count, 3)
+        
+        XCTAssertEqual(qiwiMethod.phoneExtensions[0].value, "+7")
+        XCTAssertEqual(qiwiMethod.phoneExtensions[1].value, "+9955")
+        XCTAssertEqual(qiwiMethod.phoneExtensions[2].value, "+507")
+        
+        XCTAssertEqual(qiwiMethod.phoneExtensions[0].countryCode, "RU")
+        XCTAssertEqual(qiwiMethod.phoneExtensions[1].countryCode, "GE")
+        XCTAssertEqual(qiwiMethod.phoneExtensions[2].countryCode, "PA")
+        
+        XCTAssertTrue(paymentMethods.regular[9] is WeChatPayPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[9].type, "wechatpaySDK")
+        XCTAssertEqual(paymentMethods.regular[9].name, "WeChat Pay")
     }
     
     // MARK: - Card
@@ -128,7 +152,7 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.name, "Credit Card")
         XCTAssertEqual(paymentMethod.brands, ["mc", "visa", "amex"])
     }
-
+    
     func testDecodingBCMCCardPaymentMethod() throws {
         let paymentMethod = try Coder.decode(bcmcCardDictionary) as CardPaymentMethod
         XCTAssertEqual(paymentMethod.type, "bcmc")
@@ -160,10 +184,10 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.displayInformation, expectedStoredCardPaymentMethodDisplayInfo(method: paymentMethod, localizationParameters: nil))
         XCTAssertEqual(paymentMethod.localizedDisplayInformation(using: expectedLocalizationParameters), expectedStoredCardPaymentMethodDisplayInfo(method: paymentMethod, localizationParameters: expectedLocalizationParameters))
     }
-
+    
     public func expectedStoredCardPaymentMethodDisplayInfo(method: StoredCardPaymentMethod, localizationParameters: LocalizationParameters?) -> DisplayInformation {
         let expireDate = method.expiryMonth + "/" + method.expiryYear
-
+        
         return DisplayInformation(title: "••••\u{00a0}" + method.lastFour,
                                   subtitle: ADYLocalizedString("adyen.card.stored.expires", localizationParameters, expireDate),
                                   logoName: method.brand)
@@ -208,33 +232,33 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.emailAddress, "example@shopper.com")
         XCTAssertEqual(paymentMethod.supportedShopperInteractions, [.shopperPresent, .shopperNotPresent])
     }
-
+    
     // MARK: - Apple Pay
-
+    
     func testDecodingApplePayPaymentMethod() throws {
         let paymentMethod = try Coder.decode(applePayDictionary) as ApplePayPaymentMethod
         XCTAssertEqual(paymentMethod.type, "applepay")
         XCTAssertEqual(paymentMethod.name, "Apple Pay")
     }
-
+    
     // MARK: - Bancontact
-
+    
     func testDecodingBancontactPaymentMethod() throws {
         let paymentMethod = try Coder.decode(bcmcCardDictionary) as BCMCPaymentMethod
         XCTAssertEqual(paymentMethod.type, "bcmc")
         XCTAssertEqual(paymentMethod.name, "Bancontact card")
     }
-
+    
     // MARK: - GiroPay
-
+    
     func testDecodingGiropayPaymentMethod() throws {
         let paymentMethod = try Coder.decode(giroPayDictionaryWithOptionalDetails) as RedirectPaymentMethod
         XCTAssertEqual(paymentMethod.type, "giropay")
         XCTAssertEqual(paymentMethod.name, "GiroPay")
     }
-
+    
     // MARK: - Stored Bancontact
-
+    
     func testDecodingStoredBancontactPaymentMethod() throws {
         let paymentMethod = try Coder.decode(storedBcmcDictionary) as StoredBCMCPaymentMethod
         let expectedLocalizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
@@ -252,10 +276,10 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.localizedDisplayInformation(using: expectedLocalizationParameters),
                        expectedBancontactCardDisplayInfo(method: paymentMethod, localizationParameters: expectedLocalizationParameters))
     }
-
+    
     public func expectedBancontactCardDisplayInfo(method: StoredBCMCPaymentMethod, localizationParameters: LocalizationParameters?) -> DisplayInformation {
         let expireDate = method.expiryMonth + "/" + method.expiryYear
-
+        
         return DisplayInformation(title: "••••\u{00a0}" + method.lastFour,
                                   subtitle: ADYLocalizedString("adyen.card.stored.expires", localizationParameters, expireDate),
                                   logoName: method.brand)

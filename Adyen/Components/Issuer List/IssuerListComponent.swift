@@ -17,35 +17,26 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent {
     public weak var delegate: PaymentComponentDelegate?
     
     /// Describes the component's UI style.
-    public let style: AnyListComponentStyle
+    public let style: ListComponentStyle
     
-    /// Indicates the navigation level style.
-    public let navigationStyle: NavigationStyle
-    
-    /// Initializes the component.
+    /// Initializes the issuer list component.
     ///
     /// - Parameter paymentMethod: The issuer list payment method.
     /// - Parameter style: The Component's UI style..
-    /// - Parameter navigationStyle: The navigation level style.
     public init(paymentMethod: IssuerListPaymentMethod,
-                style: AnyListComponentStyle = ListComponentStyle(),
-                navigationStyle: NavigationStyle = NavigationStyle()) {
+                style: ListComponentStyle = ListComponentStyle()) {
         self.paymentMethod = paymentMethod
         self.issuerListPaymentMethod = paymentMethod
         self.style = style
-        self.navigationStyle = navigationStyle
     }
     
     private let issuerListPaymentMethod: IssuerListPaymentMethod
     
     // MARK: - Presentable Component Protocol
     
-    public lazy var viewController: UIViewController = {
-        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
-        return ComponentViewController(rootViewController: listViewController,
-                                       style: navigationStyle,
-                                       cancelButtonHandler: didSelectCancelButton)
-    }()
+    public var viewController: UIViewController {
+        return listViewController
+    }
     
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
         listViewController.stopLoading()
@@ -53,11 +44,14 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent {
         completion?()
     }
     
+    /// :nodoc:
+    public var requiresModalPresentation: Bool = true
+    
     // MARK: - Private
     
     private lazy var listViewController: ListViewController = {
+        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
         let listViewController = ListViewController(style: style)
-        
         let issuers = issuerListPaymentMethod.issuers
         let items = issuers.map { issuer -> ListItem in
             var listItem = ListItem(title: issuer.name, style: style.listItem)
@@ -78,7 +72,7 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent {
             return listItem
         }
         
-        listViewController.navigationItem.title = paymentMethod.name
+        listViewController.title = paymentMethod.name
         listViewController.sections = [ListSection(items: items)]
         
         return listViewController

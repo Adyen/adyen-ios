@@ -1,12 +1,12 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
 
-/// A collection of available payment methods
+/// A collection of available payment methods.
 public struct PaymentMethods: Decodable {
     
     /// The regular payment methods.
@@ -65,6 +65,8 @@ internal enum AnyPaymentMethod: Decodable {
     case sepaDirectDebit(SEPADirectDebitPaymentMethod)
     case redirect(RedirectPaymentMethod)
     case applePay(ApplePayPaymentMethod)
+    case qiwiWallet(QiwiWalletPaymentMethod)
+    case weChatPay(WeChatPayPaymentMethod)
     
     case none
     
@@ -87,6 +89,10 @@ internal enum AnyPaymentMethod: Decodable {
         case let .redirect(paymentMethod):
             return paymentMethod
         case let .applePay(paymentMethod):
+            return paymentMethod
+        case let .qiwiWallet(paymentMethod):
+            return paymentMethod
+        case let .weChatPay(paymentMethod):
             return paymentMethod
         case .none:
             return nil

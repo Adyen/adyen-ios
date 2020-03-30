@@ -27,7 +27,7 @@ open class FormItemView<ItemType: FormItem>: UIView, AnyFormItemView {
         self.item = item
         
         super.init(frame: .zero)
-        
+        accessibilityIdentifier = item.identifier
         preservesSuperviewLayoutMargins = true
     }
     

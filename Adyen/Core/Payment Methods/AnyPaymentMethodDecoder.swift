@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -30,8 +30,10 @@ internal enum PaymentMethodType: String {
     case bcmcMobileQR = "bcmc_mobile_QR"
     case weChatMiniProgram = "wechatpayMiniProgram"
     case weChatQR = "wechatpayQR"
-    case weChatWeb = "wechatpayWeb"
-    case weChatSDK = "wechatpaySDK"
+    case qiwiWallet = "qiwiwallet"
+    case weChatPayWeb = "wechatpayWeb"
+    case weChatPaySDK = "wechatpaySDK"
+    
 }
 
 private struct PaymentMethodField: Decodable {
@@ -68,11 +70,12 @@ internal enum AnyPaymentMethodDecoder {
         .applePay: ApplePayPaymentMethodDecoder(),
         .payPal: PayPalPaymentMethodDecoder(),
         .bcmc: BCMCCardPaymentMethodDecoder(),
+        .weChatPaySDK: WeChatPayPaymentMethodDecoder(),
         .bcmcMobileQR: BlacklistedPaymentMethodDecoder(),
         .weChatMiniProgram: BlacklistedPaymentMethodDecoder(),
         .weChatQR: BlacklistedPaymentMethodDecoder(),
-        .weChatWeb: BlacklistedPaymentMethodDecoder(),
-        .weChatSDK: BlacklistedPaymentMethodDecoder()
+        .weChatPayWeb: BlacklistedPaymentMethodDecoder(),
+        .qiwiWallet: QiwiWalletPaymentMethodDecoder()
     ]
     
     private static var defaultDecoder: PaymentMethodDecoder = RedirectPaymentMethodDecoder()
@@ -171,8 +174,20 @@ private struct RedirectPaymentMethodDecoder: PaymentMethodDecoder {
     }
 }
 
+private struct WeChatPayPaymentMethodDecoder: PaymentMethodDecoder {
+    func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
+        return .weChatPay(try WeChatPayPaymentMethod(from: decoder))
+    }
+}
+
 private struct BlacklistedPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
         return .none
+    }
+}
+
+private struct QiwiWalletPaymentMethodDecoder: PaymentMethodDecoder {
+    func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
+        return .qiwiWallet(try QiwiWalletPaymentMethod(from: decoder))
     }
 }

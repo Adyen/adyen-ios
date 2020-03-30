@@ -4,24 +4,24 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
 import Adyen
+import Foundation
 
 final class FormTextItemViewDelegateMock: FormTextItemViewDelegate {
-
+    
     var handleDidChangeValue: ((_ itemView: AnyFormValueItemView) -> Void)?
     func didChangeValue<T: FormValueItem>(in itemView: FormValueItemView<T>) {
         handleDidChangeValue?(itemView)
     }
-
-    var handleDidReachMaximumLength: ((_ itemView: FormTextItemView) -> Void)?
-    func didReachMaximumLength(in itemView: FormTextItemView) {
-        handleDidReachMaximumLength?(itemView)
+    
+    var handleDidReachMaximumLength: ((_ itemView: FormTextItemView<FormTextInputItem>) -> Void)?
+    func didReachMaximumLength<T: FormTextItem>(in itemView: FormTextItemView<T>) {
+        handleDidReachMaximumLength?(itemView as! FormTextItemView<FormTextInputItem>)
     }
-
-    var handleDidSelectReturnKey: ((_ itemView: FormTextItemView) -> Void)?
-    func didSelectReturnKey(in itemView: FormTextItemView) {
-        handleDidSelectReturnKey?(itemView)
+    
+    var handleDidSelectReturnKey: ((_ itemView: FormTextItemView<FormTextInputItem>) -> Void)?
+    func didSelectReturnKey<T: FormTextItem>(in itemView: FormTextItemView<T>) {
+        handleDidSelectReturnKey?(itemView as! FormTextItemView<FormTextInputItem>)
     }
     
 }

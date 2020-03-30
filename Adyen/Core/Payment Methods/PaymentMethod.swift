@@ -23,6 +23,9 @@ public protocol PaymentMethod: Decodable {
     /// - Parameters:
     ///   - using: The localization parameters.
     func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation
+    
+    /// :nodoc:
+    func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent?
 }
 
 public struct DisplayInformation {

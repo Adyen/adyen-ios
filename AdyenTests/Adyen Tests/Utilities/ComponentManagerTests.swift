@@ -4,12 +4,12 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import XCTest
 @testable import AdyenDropIn
 @testable import AdyenUIHost
+import XCTest
 
 class ComponentManagerTests: XCTestCase {
-
+    
     let dictionary = [
         "storedPaymentMethods": [
             storedCardDictionary,
@@ -45,14 +45,14 @@ class ComponentManagerTests: XCTestCase {
                                    payment: payment,
                                    configuration: config,
                                    style: DropInComponent.Style())
-
+        
         XCTAssertEqual(sut.components.stored.count, 4)
         XCTAssertEqual(sut.components.regular.count, 6)
-
+        
         XCTAssertEqual(sut.components.stored.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 4)
         XCTAssertEqual(sut.components.regular.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 4)
     }
-
+    
     func testLocalizationWithCustomKeySeparator() throws {
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
         let payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
@@ -65,12 +65,12 @@ class ComponentManagerTests: XCTestCase {
                                    payment: payment,
                                    configuration: config,
                                    style: DropInComponent.Style())
-
+        
         XCTAssertEqual(sut.components.stored.count, 4)
         XCTAssertEqual(sut.components.regular.count, 6)
-
+        
         XCTAssertEqual(sut.components.stored.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 4)
         XCTAssertEqual(sut.components.regular.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 4)
     }
-
+    
 }

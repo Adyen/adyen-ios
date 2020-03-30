@@ -11,7 +11,7 @@ import Foundation
 public final class FormFooterItem: FormItem {
     
     /// Indicates the `FormFooterItemView` UI styling.
-    public let style: Style
+    public let style: FormFooterStyle
     
     /// :nodoc:
     public var identifier: String?
@@ -31,8 +31,12 @@ public final class FormFooterItem: FormItem {
     /// Initializes the footer item.
     ///
     /// - Parameter style: The `FormFooterItemView` UI style.
-    public init(style: Style = Style()) {
+    public init(style: FormFooterStyle = FormFooterStyle()) {
         self.style = style
+    }
+    
+    public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+        builder.build(with: self)
     }
     
 }

@@ -7,9 +7,13 @@
 import Adyen
 
 struct PaymentMethodMock: PaymentMethod {
-
+    
     var type: String
-
+    
     var name: String
-
+    
+    func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
+        return builder.build(paymentMethod: self)
+    }
+    
 }
