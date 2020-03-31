@@ -129,9 +129,6 @@ public enum CardType: String, CaseIterable {
     /// Universal Air Travel Plan
     case uatp
     
-    /// UnionPay
-    case unionPay = "unionpay"
-    
     /// VISA
     case visa
     
@@ -209,8 +206,6 @@ internal extension CardType {
             return "^(97)(9)\\d*$"
         case .uatp:
             return "^1[0-9]{0,14}$"
-        case .unionPay:
-            return "^(62|88)[0-9]{5,17}$"
         case .visa:
             return "^4[0-9]{0,19}$"
         case .warehouse:

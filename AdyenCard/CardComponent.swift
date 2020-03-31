@@ -147,12 +147,6 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         }
     }
     
-    private lazy var didSelectCancelButton: (() -> Void) = { [weak self] in
-        guard let self = self else { return }
-        
-        self.delegate?.didFail(with: ComponentError.cancelled, from: self)
-    }
-    
     // MARK: - Stored Card
     
     private lazy var storedCardAlertManager: StoredCardAlertManager? = {

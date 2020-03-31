@@ -77,12 +77,6 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent {
         
         return listViewController
     }()
-    
-    private lazy var didSelectCancelButton: (() -> Void) = { [weak self] in
-        guard let self = self else { return }
-        
-        self.delegate?.didFail(with: ComponentError.cancelled, from: self)
-    }
 }
 
 /// Provides an issuer selection list for iDEAL payments.

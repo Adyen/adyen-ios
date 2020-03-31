@@ -53,10 +53,6 @@ class CardTypeDetectorTests: XCTestCase {
         assert(cardNumbers: CardNumbers.dankort, with: CardType.dankort)
     }
     
-    func testUnionPayType() {
-        assert(cardNumbers: CardNumbers.unionPay, with: CardType.unionPay)
-    }
-    
     func testUATPType() {
         assert(cardNumbers: CardNumbers.uatp, with: CardType.uatp)
     }

@@ -4,7 +4,7 @@ Adyen Components for iOS allows you to accept in-app payments by providing you w
 
 <br/>
 
-![DropIn preview](https://docs-admin.is.adyen.com/user/pages/docs/01.checkout/06.ios/01.drop-in/dropin-ios.jpg)
+![DropIn preview](./dropin-ios.jpg)
 
 <br/>
 

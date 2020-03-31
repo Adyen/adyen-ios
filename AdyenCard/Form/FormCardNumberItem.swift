@@ -32,7 +32,7 @@ internal final class FormCardNumberItem: FormTextItem {
         self.supportedCardTypes = supportedCardTypes
         
         let logoURLs = supportedCardTypes.map { LogoURLProvider.logoURL(withName: $0.rawValue, environment: environment) }
-        self.cardTypeLogos = logoURLs.prefix(4).map(CardTypeLogo.init) // Limit to a maximum of 4 logos.
+        self.cardTypeLogos = logoURLs.map(CardTypeLogo.init)
         self.localizationParameters = localizationParameters
         
         self.style = style
@@ -77,10 +77,10 @@ internal final class FormCardNumberItem: FormTextItem {
     
 }
 
-internal extension FormCardNumberItem {
+extension FormCardNumberItem {
     
     /// Describes a card type logo shown in the card number form item.
-    final class CardTypeLogo { // swiftlint:disable:this explicit_acl
+    internal final class CardTypeLogo {
         
         /// The URL of the card type logo.
         internal let url: URL

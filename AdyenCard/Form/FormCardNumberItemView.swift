@@ -25,13 +25,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     // MARK: - Card Type Logos View
     
     private lazy var cardTypeLogosView: UIView = {
-        let cardLogos: [CardTypeLogoView] = item.cardTypeLogos.map { logo in
-            let imageView = CardTypeLogoView(cardTypeLogo: logo, style: item.style.icon)
-            imageView.backgroundColor = item.style.backgroundColor
-            return imageView
-        }
-        
-        let cardTypeLogosView = CardTypeLogosView(logos: cardLogos)
+        let cardTypeLogosView = CardsView(logos: item.cardTypeLogos, style: item.style)
         cardTypeLogosView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cardTypeLogos")
         cardTypeLogosView.backgroundColor = item.style.backgroundColor
         
@@ -43,13 +37,28 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
 
 private extension FormCardNumberItemView {
     
-    private class CardTypeLogosView: UIStackView {
+    private class CardsView: UIStackView, Observer {
         
-        init(logos: [CardTypeLogoView]) {
+        private let maxCount: Int
+        private var cardLogos: [CardTypeLogoView] = []
+        
+        init(logos: [FormCardNumberItem.CardTypeLogo], style: FormTextItemStyle, max count: Int = 4) {
+            maxCount = count
             super.init(frame: .zero)
             axis = .horizontal
             spacing = FormCardNumberItemView.cardSpacing
-            logos.forEach(addArrangedSubview)
+            
+            logos.forEach { logo in
+                let imageView = CardTypeLogoView(cardTypeLogo: logo, style: style.icon)
+                imageView.backgroundColor = style.backgroundColor
+                cardLogos.append(imageView)
+                
+                observe(logo.isHidden) { [unowned imageView, weak self] isHidden in
+                    self?.set(view: imageView, hidden: isHidden)
+                }
+                
+                logo.isHidden.publish(false)
+            }
         }
         
         required init(coder: NSCoder) {
@@ -67,12 +76,21 @@ private extension FormCardNumberItemView {
             return .init(width: max(width, FormCardNumberItemView.cardSpacing), height: FormCardNumberItemView.cardSize.height)
         }
         
+        private func set(view: UIView, hidden: Bool) {
+            if hidden {
+                view.removeFromSuperview()
+            } else if arrangedSubviews.count < maxCount {
+                addArrangedSubview(view)
+            }
+        }
+        
     }
+    
 }
 
 private extension FormCardNumberItemView {
     
-    private class CardTypeLogoView: NetworkImageView, Observer {
+    private class CardTypeLogoView: NetworkImageView {
         
         internal init(cardTypeLogo: FormCardNumberItem.CardTypeLogo, style: ImageStyle) {
             super.init(frame: .zero)
@@ -84,8 +102,6 @@ private extension FormCardNumberItemView {
             layer.borderWidth = style.borderWidth
             layer.borderColor = style.borderColor?.cgColor
             backgroundColor = style.backgroundColor
-            
-            bind(cardTypeLogo.isHidden, to: self, at: \.isHidden)
         }
         
         internal required init?(coder aDecoder: NSCoder) {
