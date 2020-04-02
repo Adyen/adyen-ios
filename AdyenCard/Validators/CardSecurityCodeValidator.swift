@@ -7,25 +7,25 @@
 import Foundation
 
 /// Validates a card's security code.
-internal final class CardSecurityCodeValidator: Validator, Observer {
-    
-    /// Indicate is validating CVV belong to a Amex card
-    private var cardType: CardType?
-    private var expectedLength: Int { cardType == CardType.americanExpress ? 4 : 3 }
+public final class CardSecurityCodeValidator: NumericStringValidator, Observer {
     
     /// Initiate new instance of CardSecurityCodeValidator
-    /// - Parameter publisher: observer of a card type
+    /// - Parameter publisher: Observable of a card type
     public init(publisher: Observable<CardType?>? = nil) {
+        super.init(minimumLength: 3, maximumLength: 4)
         guard let publisher = publisher else { return }
         
-        bind(publisher, to: self, at: \.cardType)
+        updateExpectedLength(from: publisher.value)
+        
+        observe(publisher) { [weak self] cardType in
+            self?.updateExpectedLength(from: cardType)
+        }
     }
     
-    /// :nodoc:
-    public func isValid(_ string: String) -> Bool {
-        return string.count == expectedLength
+    private func updateExpectedLength(from cardType: CardType?) {
+        let length = cardType == .americanExpress ? 4 : 3
+        maximumLength = length
+        minimumLength = length
     }
     
-    /// :nodoc:
-    public func maximumLength(for value: String) -> Int { expectedLength }
 }

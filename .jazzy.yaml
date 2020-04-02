@@ -25,6 +25,8 @@ custom_categories:
       - CardTypeDetector
       - CardExpiryDateFormatter
       - CardExpiryDateValidator
+      - CardSecurityCodeFormatter
+      - CardSecurityCodeValidator
       - CardNumberFormatter
       - CardNumberValidator
   - name: Qiwi Wallet Component

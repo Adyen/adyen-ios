@@ -7,7 +7,7 @@
 import Foundation
 
 /// Validates a phone number.
-public final class NumericStringValidator: LengthValidator {
+open class NumericStringValidator: LengthValidator {
     
     /// :nodoc:
     public override func isValid(_ value: String) -> Bool {

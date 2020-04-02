@@ -99,7 +99,7 @@ class FormCardNumberItemTests: XCTestCase {
         XCTAssertEqual(amex.isHidden.value, false)
         XCTAssertEqual(cup.isHidden.value, true)
         XCTAssertEqual(maestro.isHidden.value, true)
-
+        
         // When typing common pattern, all matching cards should be visible.
         item.value = "62"
         XCTAssertEqual(visa.isHidden.value, true)

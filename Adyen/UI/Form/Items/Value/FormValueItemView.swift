@@ -57,7 +57,7 @@ open class FormValueItemView<ItemType: FormValueItem>: FormItemView<ItemType>, A
             }
             
             if isEditing != oldValue {
-                FormPhoneNumberItemView.cancelPreviousPerformRequests(withTarget: self)
+                Self.cancelPreviousPerformRequests(withTarget: self)
                 perform(#selector(didChangeEditingStatus), with: nil, afterDelay: 0.1)
             }
         }

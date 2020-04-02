@@ -263,6 +263,9 @@ public extension FormTextItemView {
 /// So in order to prevent this behaviour,
 /// accessibilityValue is overriden to return an empty string in case the text var is nil or empty string.
 private final class TextField: UITextField {
+    
+    private var heightConstraint: NSLayoutConstraint?
+    
     var disablePlaceHolderAccessibility: Bool = true
     
     /// Executed when the view resigns as first responder.
@@ -283,6 +286,17 @@ private final class TextField: UITextField {
         
         set {
             super.accessibilityValue = newValue
+        }
+    }
+    
+    override var font: UIFont? {
+        didSet {
+            heightConstraint = heightConstraint ?? heightAnchor.constraint(equalToConstant: 0)
+            let sizeToFit = sizeThatFits(CGSize(width: bounds.width,
+                                                height: UIView.layoutFittingExpandedSize.height))
+            heightConstraint?.constant = sizeToFit.height + 1
+            heightConstraint?.priority = .defaultHigh
+            heightConstraint?.isActive = true
         }
     }
     

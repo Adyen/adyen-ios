@@ -7,7 +7,7 @@
 import Foundation
 
 /// Formats a card's security code (CVC/CVV).
-internal final class CardSecurityCodeFormatter: NumericFormatter, Observer {
+public final class CardSecurityCodeFormatter: NumericFormatter, Observer {
     
     /// Indicate is validating CVV belong to a Amex card
     private var cardType: CardType?
@@ -24,7 +24,7 @@ internal final class CardSecurityCodeFormatter: NumericFormatter, Observer {
     
     /// :nodoc:
     public override func formattedValue(for value: String) -> String {
-        let value = sanitizedValue(for: value)
+        let value = super.formattedValue(for: value)
         
         if value.count > expectedLength {
             return String(value.prefix(expectedLength))
