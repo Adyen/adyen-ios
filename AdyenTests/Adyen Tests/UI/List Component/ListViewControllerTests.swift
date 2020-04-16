@@ -36,15 +36,15 @@ class ListViewControllerTests: XCTestCase {
         
         let sut = ListViewController(style: listComponentStyle)
         
-        var item11 = ListItem(title: "test title 11", style: listComponentStyle.listItem)
+        let item11 = ListItem(title: "test title 11", style: listComponentStyle.listItem)
         item11.identifier = "11"
-        var item12 = ListItem(title: "test title 12", style: listComponentStyle.listItem)
+        let item12 = ListItem(title: "test title 12", style: listComponentStyle.listItem)
         item12.identifier = "12"
         let section1 = ListSection(title: "section 1", items: [item11, item12])
         
-        var item21 = ListItem(title: "test title 21", style: listComponentStyle.listItem)
+        let item21 = ListItem(title: "test title 21", style: listComponentStyle.listItem)
         item21.identifier = "21"
-        var item22 = ListItem(title: "test title 22", style: listComponentStyle.listItem)
+        let item22 = ListItem(title: "test title 22", style: listComponentStyle.listItem)
         item22.identifier = "22"
         let section2 = ListSection(title: "section 2", items: [item21, item22])
         
@@ -85,10 +85,10 @@ class ListViewControllerTests: XCTestCase {
             XCTAssertEqual(listCell21?.backgroundColor, .magenta)
             XCTAssertEqual(listCell22?.backgroundColor, .magenta)
             
-            XCTAssertNil(listView11?.backgroundColor)
-            XCTAssertNil(listView12?.backgroundColor)
-            XCTAssertNil(listView21?.backgroundColor)
-            XCTAssertNil(listView22?.backgroundColor)
+            XCTAssertEqual(listView11?.backgroundColor, .magenta)
+            XCTAssertEqual(listView12?.backgroundColor, .magenta)
+            XCTAssertEqual(listView21?.backgroundColor, .magenta)
+            XCTAssertEqual(listView22?.backgroundColor, .magenta)
             
             XCTAssertEqual(listView11TitleLabel?.backgroundColor, .black)
             XCTAssertEqual(listView12TitleLabel?.backgroundColor, .black)

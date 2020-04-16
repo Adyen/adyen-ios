@@ -87,6 +87,8 @@ public final class ListCell: UITableViewCell {
     private lazy var itemView: ListItemView = {
         let itemView = ListItemView()
         itemView.translatesAutoresizingMaskIntoConstraints = false
+        itemView.preservesSuperviewLayoutMargins = false
+        itemView.layoutMargins = .zero
         
         return itemView
     }()
@@ -97,16 +99,16 @@ public final class ListCell: UITableViewCell {
         let layoutGuide = contentView.layoutMarginsGuide
         
         let constraints = [
-            itemView.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
+            itemView.topAnchor.constraint(equalTo: topAnchor),
             itemView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
             itemView.trailingAnchor.constraint(lessThanOrEqualTo: layoutGuide.trailingAnchor),
-            itemView.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor)
+            itemView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ]
         
         NSLayoutConstraint.activate(constraints)
         
-        let heightConstraint = itemView.heightAnchor.constraint(greaterThanOrEqualToConstant: 40.0)
-        heightConstraint.priority = .defaultHigh
+        let heightConstraint = contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 48.0)
+        heightConstraint.priority = .required
         heightConstraint.isActive = true
     }
     

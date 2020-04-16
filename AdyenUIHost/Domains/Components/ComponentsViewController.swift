@@ -210,21 +210,13 @@ internal final class ComponentsViewController: UIViewController {
             alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         }
         
-        topPresenter.present(alertController, animated: true)
+        adyen.topPresenter.present(alertController, animated: true)
     }
     
     private func presentAlert(withTitle title: String) {
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        topPresenter.present(alertController, animated: true)
-    }
-    
-    private var topPresenter: UIViewController {
-        var topController: UIViewController = self
-        while let presenter = topController.presentedViewController {
-            topController = presenter
-        }
-        return topController
+        adyen.topPresenter.present(alertController, animated: true)
     }
 }
 

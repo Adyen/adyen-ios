@@ -51,11 +51,10 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
     // MARK: - Stack View
     
     private lazy var textStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, accessoryStackView])
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, entryTextStackView, alertLabel])
         stackView.axis = .vertical
         stackView.alignment = .fill
-        stackView.spacing = 3.0
-        stackView.backgroundColor = item.style.backgroundColor
+        stackView.spacing = 8.0
         stackView.preservesSuperviewLayoutMargins = true
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -63,14 +62,21 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
         return stackView
     }()
     
-    private lazy var accessoryStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [textField])
+    private lazy var entryTextStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [textField, accessoryStackView])
         stackView.axis = .horizontal
-        stackView.alignment = .lastBaseline
-        stackView.backgroundColor = item.style.backgroundColor
+        stackView.alignment = .bottom
         stackView.preservesSuperviewLayoutMargins = true
+        
+        return stackView
+    }()
+    
+    private lazy var accessoryStackView: UIStackView = {
+        let stackView = UIStackView(frame: .zero)
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
         stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.layoutMargins.bottom = abs(item.style.text.font.descender)
         
         return stackView
     }()
@@ -108,41 +114,52 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
         
         textField.addTarget(self, action: #selector(textDidChange(textField:)), for: .editingChanged)
         textField.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "textField") }
-        textField.onDidBecomeFirstResponder = { [weak self] in
-            self?.isEditing = true
-        }
-        
-        textField.onDidResignFirstResponder = { [weak self] in
-            self?.isEditing = false
-        }
         
         return textField
     }()
     
+    // MARK: - Alert Label
+    
+    private lazy var alertLabel: UILabel = {
+        let alertLabel = UILabel()
+        alertLabel.font = item.style.title.font
+        alertLabel.textColor = item.style.errorColor
+        alertLabel.textAlignment = item.style.title.textAlignment
+        alertLabel.backgroundColor = item.style.title.backgroundColor
+        alertLabel.text = item.validationFailureMessage
+        alertLabel.isAccessibilityElement = false
+        alertLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "alertLabel") }
+        alertLabel.isHidden = true
+        
+        return alertLabel
+    }()
+    
     // MARK: - Accessory view
     
-    /// Apply state to a Text entry field.
-    ///
-    /// - Parameter state: state to apply.
-    public func setState(_ state: State) {
-        if accessoryStackView.arrangedSubviews.count > 1, let last = accessoryStackView.arrangedSubviews.last {
-            accessoryStackView.removeArrangedSubview(last)
+    /// Accessory of the entry text field.
+    public var accessory: AccessoryType = .none {
+        didSet {
+            guard accessory != oldValue else { return }
+            self.changeAssessories()
+        }
+    }
+    
+    private func changeAssessories() {
+        accessoryStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        
+        let accessoryView: UIView
+        switch accessory {
+        case .valid:
+            accessoryView = AccessoryLogo(success: true)
+        case .invalid:
+            accessoryView = AccessoryLogo(success: false)
+        case let .customView(view):
+            accessoryView = view
+        default:
+            return
         }
         
-        switch state {
-        case .invalid:
-            let image = UIImage(named: "verification_false", in: Bundle.internalResources, compatibleWith: nil)
-            accessoryStackView.addArrangedSubview(UIImageView(image: image))
-        case .valid:
-            let image = UIImage(named: "verification_true", in: Bundle.internalResources, compatibleWith: nil)
-            accessoryStackView.addArrangedSubview(UIImageView(image: image))
-        case .none:
-            break
-        case let .customLogo(logo):
-            accessoryStackView.addArrangedSubview(UIImageView(image: logo))
-        case let .customView(view):
-            accessoryStackView.addArrangedSubview(view)
-        }
+        accessoryStackView.addArrangedSubview(accessoryView)
     }
     
     // MARK: - Private
@@ -194,21 +211,41 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
         }
     }
     
+    // MARK: - Validation
+    
+    /// :nodoc:
+    public override func validate() {
+        updateValidationStatus(forced: true)
+    }
+    
     // MARK: - Editing
     
     internal override func didChangeEditingStatus() {
         super.didChangeEditingStatus()
-        titleLabel.textColor = isEditing ? tintColor : item.style.title.color
+        let customColor = (accessory == .invalid) ? item.style.errorColor : item.style.title.color
+        titleLabel.textColor = isEditing ? tintColor : customColor
     }
     
     // MARK: - Layout
+    
+    /// :nodoc:
+    open override func configureSeparatorView() {
+        let constraints = [
+            separatorView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
+            separatorView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            separatorView.heightAnchor.constraint(equalToConstant: 1.0)
+        ]
+        
+        NSLayoutConstraint.activate(constraints)
+    }
     
     private func configureConstraints() {
         let constraints = [
             textStackView.topAnchor.constraint(equalTo: topAnchor),
             textStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             textStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            textStackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            textStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            separatorView.bottomAnchor.constraint(equalTo: accessoryStackView.bottomAnchor, constant: 4)
         ]
         
         NSLayoutConstraint.activate(constraints)
@@ -237,78 +274,89 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
         return textField.resignFirstResponder()
     }
     
+    /// :nodoc:
+    open override var isFirstResponder: Bool {
+        return textField.isFirstResponder
+    }
+    
     // MARK: - UITextFieldDelegate
     
     /// :nodoc:
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textDelegate?.didSelectReturnKey(in: self)
-        
         return true
     }
     
+    /// This method updates UI according to a validity state.
+    /// Subclasses can override this method to stay notified when the text field resigns its first responder status.
+    /// :nodoc:
+    open func textFieldDidEndEditing(_ textField: UITextField) {
+        isEditing = false
+        updateValidationStatus()
+    }
+    
+    /// This method hides validation accessories icons.
+    /// Subclasses can override this method to stay notified when textField became the first responder.
+    /// :nodoc:
+    open func textFieldDidBeginEditing(_ textField: UITextField) {
+        isEditing = true
+        hideAlertLabel(true)
+        if accessory == .valid || accessory == .invalid {
+            accessory = .none
+        }
+    }
+    
+    private func updateValidationStatus(forced: Bool = false) {
+        if item.isValid() {
+            accessory = .valid
+        } else if forced || !(textField.text ?? "").isEmpty {
+            accessory = .invalid
+            hideAlertLabel(false)
+            highlightSeparatorView(color: item.style.errorColor)
+            titleLabel.textColor = item.style.errorColor
+        }
+    }
+    
+    private func hideAlertLabel(_ hidden: Bool) {
+        UIView.animateKeyframes(withDuration: 0.25,
+                                delay: 0,
+                                options: [.calculationModeLinear],
+                                animations: {
+                                    UIView.addKeyframe(withRelativeStartTime: hidden ? 0.5 : 0, relativeDuration: 0.5) {
+                                        self.alertLabel.isHidden = hidden
+                                    }
+                                    
+                                    UIView.addKeyframe(withRelativeStartTime: hidden ? 0 : 0.5, relativeDuration: 0.5) {
+                                        self.alertLabel.alpha = hidden ? 0 : 1
+                                    }
+                                }, completion: { _ in
+                                    self.alertLabel.isHidden = hidden
+        })
+    }
 }
 
 public extension FormTextItemView {
-    enum State {
+    
+    enum AccessoryType: Equatable {
         case invalid
         case valid
-        case customLogo(UIImage?)
         case customView(UIView)
         case none
     }
-}
-
-/// A UITextField subclass to override the default UITextField default Accessibility behaviour,
-/// specifically the voice over reading of the UITextField.placeholder.
-/// So in order to prevent this behaviour,
-/// accessibilityValue is overriden to return an empty string in case the text var is nil or empty string.
-private final class TextField: UITextField {
     
-    private var heightConstraint: NSLayoutConstraint?
-    
-    var disablePlaceHolderAccessibility: Bool = true
-    
-    /// Executed when the view resigns as first responder.
-    var onDidResignFirstResponder: (() -> Void)?
-    
-    /// Executed when the view becomes first responder.
-    var onDidBecomeFirstResponder: (() -> Void)?
-    
-    override var accessibilityValue: String? {
-        get {
-            guard disablePlaceHolderAccessibility else { return super.accessibilityValue }
-            if let text = super.text, !text.isEmpty {
-                return super.accessibilityValue
-            } else {
-                return ""
-            }
+    private final class AccessoryLogo: UIImageView {
+        init(success: Bool) {
+            let resource = "verification_" + success.description
+            let bundle = Bundle.internalResources
+            let image = UIImage(named: resource, in: bundle, compatibleWith: nil)
+            super.init(image: image)
+            
+            setContentHuggingPriority(.required, for: .horizontal)
+            setContentCompressionResistancePriority(.required, for: .horizontal)
         }
         
-        set {
-            super.accessibilityValue = newValue
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
         }
-    }
-    
-    override var font: UIFont? {
-        didSet {
-            heightConstraint = heightConstraint ?? heightAnchor.constraint(equalToConstant: 0)
-            let sizeToFit = sizeThatFits(CGSize(width: bounds.width,
-                                                height: UIView.layoutFittingExpandedSize.height))
-            heightConstraint?.constant = sizeToFit.height + 1
-            heightConstraint?.priority = .defaultHigh
-            heightConstraint?.isActive = true
-        }
-    }
-    
-    override func resignFirstResponder() -> Bool {
-        let result = super.resignFirstResponder()
-        onDidResignFirstResponder?()
-        return result
-    }
-    
-    override func becomeFirstResponder() -> Bool {
-        let result = super.becomeFirstResponder()
-        onDidBecomeFirstResponder?()
-        return result
     }
 }

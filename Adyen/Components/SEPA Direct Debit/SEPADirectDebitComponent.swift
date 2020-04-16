@@ -94,7 +94,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
         footerItem.showsActivityIndicator.value = true
         formViewController.view.isUserInteractionEnabled = false
         
-        delegate?.didSubmit(PaymentComponentData(paymentMethodDetails: details), from: self)
+        submit(data: PaymentComponentData(paymentMethodDetails: details))
     }
     
     // MARK: - Form Items

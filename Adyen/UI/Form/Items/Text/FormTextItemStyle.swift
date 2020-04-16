@@ -32,6 +32,9 @@ public struct FormTextItemStyle: ViewStyle {
     /// :nodoc:
     public var backgroundColor: UIColor = .clear
     
+    /// Accent color for warnings and error messages.
+    public var errorColor: UIColor = UIColor.AdyenCore.defaultRed
+    
     /// Initializes the form text item style.
     ///
     /// - Parameter title: The title style.

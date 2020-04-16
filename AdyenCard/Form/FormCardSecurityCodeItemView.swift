@@ -12,7 +12,7 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
     
     internal required init(item: FormCardSecurityCodeItem) {
         super.init(item: item)
-        setState(.customView(cardHintView))
+        accessory = .customView(cardHintView)
         textField.placeholder = FormCardSecurityCodeItemView.threeDigitHint
         observe(item.selectedCard, eventHandler: { [weak self] card in
             // TODO: replace with actual translated values
@@ -35,11 +35,17 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         return view
     }()
     
-    internal override var isEditing: Bool {
-        didSet {
-            cardHintView.setFocusState(to: isEditing)
-        }
+    internal override func textFieldDidBeginEditing(_ text: UITextField) {
+        super.textFieldDidBeginEditing(text)
+        accessory = .customView(cardHintView)
+        cardHintView.isHighlighted = true
     }
+    
+    internal override func textFieldDidEndEditing(_ text: UITextField) {
+        super.textFieldDidEndEditing(text)
+        cardHintView.isHighlighted = false
+    }
+    
 }
 
 extension FormCardSecurityCodeItemView {
@@ -73,12 +79,14 @@ extension FormCardSecurityCodeItemView {
         }
         
         /// Indicate when user focused on security code field
-        internal func setFocusState(to isFocused: Bool) {
-            if isFocused {
-                animateHint()
-            } else {
-                hintImage.alpha = 1
-                hintImage.layer.removeAllAnimations()
+        internal override var isHighlighted: Bool {
+            didSet {
+                if isHighlighted {
+                    animateHint()
+                } else {
+                    hintImage.alpha = 1
+                    hintImage.layer.removeAllAnimations()
+                }
             }
         }
         

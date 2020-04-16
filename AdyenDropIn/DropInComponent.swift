@@ -118,7 +118,8 @@ public final class DropInComponent: NSObject, PresentableComponent {
     private func preselectedPaymentMethodComponent(for storedPaymentComponent: PaymentComponent) -> PreselectedPaymentMethodComponent {
         let component = PreselectedPaymentMethodComponent(component: storedPaymentComponent,
                                                           title: self.title,
-                                                          style: self.style.preselectedPaymentMethod)
+                                                          style: self.style.formComponent,
+                                                          listItemStyle: self.style.listComponent.listItem)
         component.payment = payment
         component.localizationParameters = configuration.localizationParameters
         component.delegate = self

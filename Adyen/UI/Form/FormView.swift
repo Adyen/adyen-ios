@@ -16,7 +16,6 @@ internal final class FormView: UIScrollView {
         
         preservesSuperviewLayoutMargins = true
         addSubview(stackView)
-        clipsToBounds = false
         
         configureConstraints()
     }

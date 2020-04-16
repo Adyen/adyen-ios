@@ -214,10 +214,9 @@ class BCMCComponentTests: XCTestCase {
             
             // wait until the alert popup is shown
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-                let popupViewController = UIApplication.shared.keyWindow?.rootViewController?.presentedViewController
-                XCTAssertNotNil(popupViewController as? UIAlertController)
-                let uiAlertController = popupViewController as! UIAlertController
-                XCTAssertEqual(uiAlertController.actions.count, 1)
+                let alertLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem.alertLabel")
+                XCTAssertNotNil(alertLabel)
+                XCTAssertEqual(alertLabel?.text, cardNumberView?.item.validationFailureMessage)
                 expectation.fulfill()
             }
             

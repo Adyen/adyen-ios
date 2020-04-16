@@ -69,6 +69,8 @@ public extension UIColor {
         
         internal static let defaultBlue: UIColor = UIColor(hex: 0x007AFF)
         
+        internal static let defaultRed: UIColor = UIColor(hex: 0xFF3B30)
+        
     }
     
     internal convenience init(hex: UInt) {

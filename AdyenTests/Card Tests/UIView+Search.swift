@@ -20,4 +20,18 @@ internal extension UIView {
         
         return nil
     }
+    
+    func findView<T: UIView>(by lastAccessibilityIdentifierComponent: String) -> T? {
+        if self.accessibilityIdentifier?.hasSuffix(lastAccessibilityIdentifierComponent) == true {
+            return self as? T
+        }
+        
+        for subview in subviews {
+            if let v = subview.findView(by: lastAccessibilityIdentifierComponent) {
+                return v as? T
+            }
+        }
+        
+        return nil
+    }
 }

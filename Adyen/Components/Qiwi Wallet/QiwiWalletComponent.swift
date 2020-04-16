@@ -111,7 +111,7 @@ public final class QiwiWalletComponent: PaymentComponent, PresentableComponent, 
         footerItem.showsActivityIndicator.value = true
         formViewController.view.isUserInteractionEnabled = false
         
-        delegate?.didSubmit(PaymentComponentData(paymentMethodDetails: details), from: self)
+        submit(data: PaymentComponentData(paymentMethodDetails: details))
     }
     
 }

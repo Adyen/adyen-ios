@@ -72,30 +72,16 @@ public final class FormViewController: UIViewController, Localizable {
     /// - Returns: Whether the form is valid or not.
     public func validate() -> Bool {
         let validatableItems = getAllValidatableItems()
-        
-        let failureMessages: [String] = validatableItems.compactMap { item in
-            item.isValid() ? nil : item.validationFailureMessage
-        }
+        let isValid = validatableItems.allSatisfy { $0.isValid() }
         
         // Exit when all validations passed.
-        if failureMessages.isEmpty {
-            return true
-        }
+        guard !isValid else { return true }
         
-        let alertController = UIAlertController(title: ADYLocalizedString("adyen.validationAlert.title", localizationParameters),
-                                                message: nil,
-                                                preferredStyle: .alert)
+        itemManager.allItemViews
+            .compactMap { $0 as? AnyFormValueItemView }
+            .forEach { $0.validate() }
         
-        if failureMessages.count == 1 {
-            alertController.message = failureMessages.first
-        } else {
-            alertController.message = failureMessages.map { "• " + $0 }.joined(separator: "\n")
-        }
-        
-        alertController.addAction(UIAlertAction(title: ADYLocalizedString("adyen.dismissButton", localizationParameters),
-                                                style: .default,
-                                                handler: nil))
-        present(alertController, animated: true, completion: nil)
+        resignFirstResponder()
         
         return false
     }
@@ -158,8 +144,9 @@ public final class FormViewController: UIViewController, Localizable {
     
     // MARK: - Keyboard
     
+    @discardableResult
     public override func resignFirstResponder() -> Bool {
-        let textItemView = itemManager.itemViews.first(where: { $0.isFirstResponder })
+        let textItemView = itemManager.allItemViews.first(where: { $0.isFirstResponder })
         textItemView?.resignFirstResponder()
         
         return super.resignFirstResponder()

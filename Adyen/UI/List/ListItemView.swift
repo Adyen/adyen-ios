@@ -8,7 +8,13 @@ import Foundation
 
 /// Displays a list item.
 /// :nodoc:
-public final class ListItemView: UIView {
+public final class ListItemView: UIView, AnyFormItemView {
+    
+    /// :nodoc:
+    public weak var delegate: FormItemViewDelegate?
+    
+    /// :nodoc:
+    public var childItemViews: [AnyFormItemView] = []
     
     /// Initializes the list item view.
     public init() {
@@ -17,6 +23,7 @@ public final class ListItemView: UIView {
         addSubview(imageView)
         addSubview(textStackView)
         
+        preservesSuperviewLayoutMargins = true
         configureConstraints()
     }
     
@@ -35,14 +42,11 @@ public final class ListItemView: UIView {
     }
     
     private func updateItemView() {
-        updateTextStackView()
         updateTitleLabel()
         updateSubtitleLabel()
         updateImageView()
-    }
-    
-    private func updateTextStackView() {
-        textStackView.backgroundColor = item?.style.backgroundColor
+        backgroundColor = item?.style.backgroundColor
+        accessibilityIdentifier = item?.identifier
     }
     
     private func updateTitleLabel() {
@@ -82,6 +86,7 @@ public final class ListItemView: UIView {
     private lazy var imageView: NetworkImageView = {
         let imageView = NetworkImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.preservesSuperviewLayoutMargins = true
         
         return imageView
     }()
@@ -110,6 +115,7 @@ public final class ListItemView: UIView {
     private lazy var textStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [titleLabel, subtitleLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.setContentHuggingPriority(.required, for: .vertical)
         stackView.axis = .vertical
         stackView.alignment = .leading
         stackView.distribution = .fill
@@ -123,15 +129,15 @@ public final class ListItemView: UIView {
             imageView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
             imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
             imageView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
-            imageView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            imageView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             imageView.widthAnchor.constraint(equalToConstant: 40.0),
             imageView.heightAnchor.constraint(equalToConstant: 26.0),
             
-            textStackView.topAnchor.constraint(equalTo: topAnchor),
+            textStackView.topAnchor.constraint(greaterThanOrEqualTo: layoutMarginsGuide.topAnchor),
+            textStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
             textStackView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 16.0),
             textStackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            textStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            textStackView.centerYAnchor.constraint(equalTo: layoutMarginsGuide.centerYAnchor)
+            textStackView.bottomAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.bottomAnchor)
         ]
         
         NSLayoutConstraint.activate(constraints)

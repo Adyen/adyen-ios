@@ -162,7 +162,7 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     
     /// :nodoc:
     public var viewController: UIViewController {
-        return paymentAuthorizationViewController ?? errorAlertController
+        return getPaymentAuthorizationViewController() ?? errorAlertController
     }
     
     /// :nodoc:
@@ -172,6 +172,7 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
         paymentAuthorizationCompletion?(success ? .success : .failure)
         dismissCompletion = completion
+        paymentAuthorizationViewController = nil
     }
     
     // MARK: - Private
@@ -198,15 +199,24 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
         return alertController
     }()
     
-    private lazy var paymentAuthorizationViewController: PKPaymentAuthorizationViewController? = {
-        guard let paymentAuthorizationViewController = PKPaymentAuthorizationViewController(paymentRequest: paymentRequest) else {
+    private var paymentAuthorizationViewController: PKPaymentAuthorizationViewController?
+    
+    private func getPaymentAuthorizationViewController() -> PKPaymentAuthorizationViewController? {
+        if paymentAuthorizationViewController == nil {
+            paymentAuthorizationViewController = newPaymentAuthorizationViewController()
+        }
+        return paymentAuthorizationViewController
+    }
+    
+    private func newPaymentAuthorizationViewController() -> PKPaymentAuthorizationViewController? {
+        guard let paymentAuthorizationViewController = PKPaymentAuthorizationViewController(paymentRequest: self.paymentRequest) else {
             adyenPrint("Failed to instantiate PKPaymentAuthorizationViewController.")
             return nil
         }
         paymentAuthorizationViewController.delegate = self
         
         return paymentAuthorizationViewController
-    }()
+    }
     
     internal lazy var paymentRequest: PKPaymentRequest = {
         let paymentRequest = PKPaymentRequest()
@@ -247,6 +257,8 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     
     public func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
         controller.dismiss(animated: true, completion: dismissCompletion)
+        paymentAuthorizationViewController = nil
+        dismissCompletion = nil
     }
     
     public func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
@@ -264,6 +276,6 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
                                       billingContact: billingContact,
                                       shippingContact: shippingContact)
         
-        self.delegate?.didSubmit(PaymentComponentData(paymentMethodDetails: details), from: self)
+        submit(data: PaymentComponentData(paymentMethodDetails: details))
     }
 }

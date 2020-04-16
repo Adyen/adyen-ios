@@ -21,6 +21,6 @@ internal final class EmptyPaymentComponent: PaymentComponent {
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
     internal func initiatePayment() {
         let details = EmptyPaymentDetails(type: paymentMethod.type)
-        delegate?.didSubmit(PaymentComponentData(paymentMethodDetails: details), from: self)
+        submit(data: PaymentComponentData(paymentMethodDetails: details))
     }
 }

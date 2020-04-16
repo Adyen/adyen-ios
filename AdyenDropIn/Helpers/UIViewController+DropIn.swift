@@ -50,12 +50,4 @@ extension UIViewController {
         return frame
     }
     
-    internal var topPresenter: UIViewController {
-        var topController: UIViewController = self
-        while let presenter = topController.presentedViewController {
-            topController = presenter
-        }
-        return topController
-    }
-    
 }

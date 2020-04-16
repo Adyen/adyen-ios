@@ -87,7 +87,7 @@ internal final class APIClient: APIClientProtocol {
         
         requestCounter += 1
         
-        urlSession.dataTask(with: urlRequest) { [weak self] result in
+        urlSession.adyen.dataTask(with: urlRequest) { [weak self] result in
             
             self?.requestCounter -= 1
             

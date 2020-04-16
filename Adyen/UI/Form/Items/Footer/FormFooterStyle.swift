@@ -14,7 +14,7 @@ public struct FormFooterStyle: ViewStyle {
                                             color: UIColor.AdyenCore.componentQuaternaryLabel,
                                             textAlignment: .center)
     
-    /// The button style.
+    /// The main button style.
     public var button = ButtonStyle(title: TextStyle(font: .systemFont(ofSize: 17.0, weight: .semibold),
                                                      color: .white,
                                                      textAlignment: .center),
@@ -29,6 +29,13 @@ public struct FormFooterStyle: ViewStyle {
     /// - Parameter button: The button style.
     public init(title: TextStyle, button: ButtonStyle) {
         self.title = title
+        self.button = button
+    }
+    
+    /// Initializes the form footer style
+    ///
+    /// - Parameter button: The button style.
+    public init(button: ButtonStyle) {
         self.button = button
     }
     

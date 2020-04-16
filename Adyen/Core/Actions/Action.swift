@@ -29,7 +29,7 @@ public enum Action: Decodable {
         let type = try container.decode(ActionType.self, forKey: .type)
         
         switch type {
-        case .redirect:
+        case .redirect, .qrCode:
             self = .redirect(try RedirectAction(from: decoder))
         case .threeDS2Fingerprint:
             self = .threeDS2Fingerprint(try ThreeDS2FingerprintAction(from: decoder))
@@ -45,6 +45,7 @@ public enum Action: Decodable {
         case threeDS2Fingerprint
         case threeDS2Challenge
         case sdk
+        case qrCode
     }
     
     private enum CodingKeys: String, CodingKey {

@@ -29,7 +29,7 @@ public final class DropInActionComponent: ActionComponent {
     public func perform(_ action: Action) {
         switch action {
         case let .redirect(redirectAction):
-            presentRedirectComponent(with: redirectAction)
+            perform(redirectAction)
         case let .threeDS2Fingerprint(fingerprintAction):
             perform(fingerprintAction)
         case let .threeDS2Challenge(challengeAction):
@@ -45,14 +45,15 @@ public final class DropInActionComponent: ActionComponent {
     private var threeDS2Component: ThreeDS2Component?
     private var weChatPaySDKActionComponent: AnyWeChatPaySDKActionComponent?
     
-    private func presentRedirectComponent(with action: RedirectAction) {
-        let component = RedirectComponent(action: action, style: redirectComponentStyle)
+    private func perform(_ action: RedirectAction) {
+        let component = RedirectComponent(style: redirectComponentStyle)
         component.delegate = delegate
         component._isDropIn = _isDropIn
         component.environment = environment
+        component.presentingViewController = presenterViewController
         redirectComponent = component
         
-        presenterViewController?.topPresenter.present(component.viewController, animated: true)
+        component.handle(action)
     }
     
     private func perform(_ action: ThreeDS2FingerprintAction) {

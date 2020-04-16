@@ -68,10 +68,8 @@ internal final class FormViewItemManager {
         return itemViews[index(of: item)] as? FormItemView<T>
     }
     
-    private func newItemView<T: FormItem>(for item: T) -> FormItemView<T> {
-        guard let itemView = item.build(with: FormItemViewBuilder()) as? FormItemView<T> else {
-            preconditionFailure("FormItemView for \(String(describing: T.self)) is not registered in FormItemViewBuilder")
-        }
+    private func newItemView<T: FormItem>(for item: T) -> AnyFormItemView {
+        let itemView = item.build(with: FormItemViewBuilder())
         
         itemView.delegate = itemViewDelegate
         itemView.childItemViews.forEach { $0.delegate = itemViewDelegate }

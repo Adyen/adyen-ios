@@ -15,11 +15,23 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     /// - Parameter item: The item represented by the view.
     internal required init(item: FormCardNumberItem) {
         super.init(item: item)
-        setState(.customView(cardTypeLogosView))
+        accessory = .customView(cardTypeLogosView)
     }
     
     internal required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    internal override func textFieldDidBeginEditing(_ text: UITextField) {
+        super.textFieldDidBeginEditing(text)
+        accessory = .customView(cardTypeLogosView)
+    }
+    
+    internal override func textFieldDidEndEditing(_ text: UITextField) {
+        super.textFieldDidEndEditing(text)
+        if accessory == .valid {
+            accessory = .customView(cardTypeLogosView)
+        }
     }
     
     // MARK: - Card Type Logos View

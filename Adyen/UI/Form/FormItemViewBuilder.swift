@@ -51,4 +51,24 @@ public struct FormItemViewBuilder {
     public func build(with item: FormTextInputItem) -> FormItemView<FormTextInputItem> {
         return FormTextInputItemView(item: item)
     }
+    
+    /// Builds `ListItemView` from `ListItem`.
+    /// :nodoc:
+    public func build(with item: ListItem) -> ListItemView {
+        let listView = ListItemView()
+        listView.item = item
+        return listView
+    }
+    
+    /// Builds `FormButtonItemView` from `FormButtonItem`.
+    /// :nodoc:
+    public func build(with item: FormButtonItem) -> FormItemView<FormButtonItem> {
+        return FormButtonItemView(item: item)
+    }
+    
+    /// Builds `FormSeparatorItemView` from `FormSeparatorItem`.
+    /// :nodoc:
+    public func build(with item: FormSeparatorItem) -> FormItemView<FormSeparatorItem> {
+        return FormSeparatorItemView(item: item)
+    }
 }

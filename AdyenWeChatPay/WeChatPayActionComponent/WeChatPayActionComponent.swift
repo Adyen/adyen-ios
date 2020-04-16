@@ -18,7 +18,7 @@ public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionC
     
     /// :nodoc:
     public func handle(_ action: WeChatPaySDKAction) {
-        guard WeChatPaySDKActionComponent.isDeviceSupported() else {
+        guard Self.isDeviceSupported() else {
             delegate?.didFail(with: ComponentError.paymentMethodNotSupported, from: self)
             return
         }
@@ -44,8 +44,16 @@ public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionC
     
     /// Checks if the current device supports WeChat Pay.
     public static func isDeviceSupported() -> Bool {
+        assertWeChatPayAppSchemeWhitlisted()
         WXApi.registerApp("")
         return WXApi.isWXAppInstalled() && WXApi.isWXAppSupport()
+    }
+    
+    private static func assertWeChatPayAppSchemeWhitlisted() {
+        guard Bundle.main.adyen.isSchemeWhitelisted("weixin") else {
+            assertionFailure("weixin:// scheme must be added to Info.plist under LSApplicationQueriesSchemes key.")
+            return
+        }
     }
     
 }

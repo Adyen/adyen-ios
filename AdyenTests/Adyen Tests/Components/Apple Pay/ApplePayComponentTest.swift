@@ -10,6 +10,31 @@ import XCTest
 
 class ApplePayComponentTest: XCTestCase {
     
+    func testApplePayViewControllerIsResetAfterDidFinish() {
+        let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name")
+        let amount = Payment.Amount(value: 2, currencyCode: getRandomCurrencyCode())
+        let payment = Payment(amount: amount, countryCode: getRandomCountryCode())
+        let sut = try? ApplePayComponent(paymentMethod: paymentMethod, payment: payment, merchantIdentifier: "test_id", summaryItems: createTestSummaryItems())
+        let viewController = sut?.viewController
+        
+        XCTAssertNotNil(viewController as? PKPaymentAuthorizationViewController)
+        sut?.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
+        XCTAssertTrue(viewController !== sut?.viewController)
+    }
+    
+    func testApplePayViewControllerIsResetAfterAuthorization() {
+        let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name")
+        let amount = Payment.Amount(value: 2, currencyCode: getRandomCurrencyCode())
+        let payment = Payment(amount: amount, countryCode: getRandomCountryCode())
+        let sut = try? ApplePayComponent(paymentMethod: paymentMethod, payment: payment, merchantIdentifier: "test_id", summaryItems: createTestSummaryItems())
+        let viewController = sut?.viewController
+        
+        XCTAssertNotNil(viewController as? PKPaymentAuthorizationViewController)
+        sut?.paymentAuthorizationViewController(viewController as! PKPaymentAuthorizationViewController, didAuthorizePayment: PKPayment(), completion: { _ in })
+        sut?.stopLoading()
+        XCTAssertTrue(viewController !== sut?.viewController)
+    }
+    
     func testInvalidCurrencyCode() {
         let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name")
         let amount = Payment.Amount(value: 2, currencyCode: "wqedf")

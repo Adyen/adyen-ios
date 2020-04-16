@@ -37,7 +37,7 @@ internal final class PaymentMethodListComponent: PresentableComponent, Localizab
             let showsDisclosureIndicator = (component as? PresentableComponent)?.requiresModalPresentation == true
             
             let displayInformation = component.paymentMethod.localizedDisplayInformation(using: localizationParameters)
-            var listItem = ListItem(title: displayInformation.title, style: style.listItem)
+            let listItem = ListItem(title: displayInformation.title, style: style.listItem)
             listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
             listItem.imageURL = LogoURLProvider.logoURL(for: component.paymentMethod, environment: environment)
             listItem.subtitle = displayInformation.subtitle

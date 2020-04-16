@@ -141,7 +141,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
             let data = PaymentComponentData(paymentMethodDetails: details,
                                             storePaymentMethod: showsStorePaymentMethodField ? storeDetailsItem.value : false)
             
-            delegate?.didSubmit(data, from: self)
+            submit(data: data)
         } catch {
             delegate?.didFail(with: error, from: self)
         }
@@ -162,7 +162,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
             
             switch result {
             case let .success(details):
-                self.delegate?.didSubmit(PaymentComponentData(paymentMethodDetails: details), from: self)
+                self.submit(data: PaymentComponentData(paymentMethodDetails: details))
             case let .failure(error):
                 self.delegate?.didFail(with: error, from: self)
             }

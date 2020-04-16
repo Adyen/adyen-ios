@@ -8,7 +8,7 @@ import Foundation
 
 /// A selectable item displayed in the list.
 /// :nodoc:
-public struct ListItem {
+public class ListItem: FormItem {
     
     /// The list item style.
     public let style: ListItemStyle
@@ -51,6 +51,10 @@ public struct ListItem {
         self.style = style
         self.showsDisclosureIndicator = showsDisclosureIndicator
         self.selectionHandler = selectionHandler
+    }
+    
+    public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+        builder.build(with: self)
     }
     
 }

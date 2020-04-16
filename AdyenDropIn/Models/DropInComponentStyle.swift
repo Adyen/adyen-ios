@@ -23,13 +23,7 @@ extension DropInComponent {
         /// Indicates any `RedirectComponent` UI style.
         public var redirectComponent: RedirectComponentStyle?
         
-        /// Indicates  UI style for `PreselectedPaymentMethodComponent`.
-        internal let preselectedPaymentMethod: PreselectedPaymentMethodStyle
-        
-        /// Initializes the instance with default style.
-        public init() {
-            preselectedPaymentMethod = PreselectedPaymentMethodStyle(item: listComponent.listItem)
-        }
-        
+        /// Initializes the instance of DropIn style with the default values.
+        public init() {}
     }
 }

@@ -28,6 +28,7 @@ internal enum PaymentMethodType: String {
     case payPal = "paypal"
     case bcmc
     case bcmcMobileQR = "bcmc_mobile_QR"
+    case bcmcMobile = "bcmc_mobile"
     case weChatMiniProgram = "wechatpayMiniProgram"
     case weChatQR = "wechatpayQR"
     case qiwiWallet = "qiwiwallet"

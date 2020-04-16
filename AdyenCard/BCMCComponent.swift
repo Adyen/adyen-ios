@@ -137,10 +137,10 @@ extension BCMCComponent: PaymentComponentDelegate {
     
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         if cardComponent === component {
-            delegate?.didSubmit(data, from: self)
+            submit(data: data)
         } else {
             assertionFailure("passed component should be cardComponent, something went wrong")
-            delegate?.didSubmit(data, from: component)
+            submit(data: data, component: component)
         }
     }
 }

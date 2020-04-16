@@ -15,9 +15,7 @@ internal final class FormSplitTextItemView: FormItemView<FormSplitTextItem> {
     internal required init(item: FormSplitTextItem) {
         super.init(item: item)
         
-        addSubview(leftItemView)
-        addSubview(rightItemView)
-        
+        addSubview(stackView)
         backgroundColor = item.style.backgroundColor
         
         configureConstraints()
@@ -37,7 +35,6 @@ internal final class FormSplitTextItemView: FormItemView<FormSplitTextItem> {
         let leftItemView = item.leftItem.build(with: FormItemViewBuilder())
         leftItemView.accessibilityIdentifier = item.leftItem.identifier
         leftItemView.preservesSuperviewLayoutMargins = true
-        leftItemView.translatesAutoresizingMaskIntoConstraints = false
         
         return leftItemView
     }()
@@ -45,26 +42,30 @@ internal final class FormSplitTextItemView: FormItemView<FormSplitTextItem> {
     private lazy var rightItemView: AnyFormItemView = {
         let rightItemView = item.rightItem.build(with: FormItemViewBuilder())
         rightItemView.accessibilityIdentifier = item.rightItem.identifier
-        rightItemView.layoutMargins.left = 0.0 // Remove the default, as the spacing is done with constraints.
         rightItemView.preservesSuperviewLayoutMargins = true
-        rightItemView.translatesAutoresizingMaskIntoConstraints = false
         
         return rightItemView
     }()
     
     // MARK: - Layout
     
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: childItemViews)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.preservesSuperviewLayoutMargins = true
+        stackView.axis = .horizontal
+        stackView.alignment = .top
+        stackView.distribution = .fillEqually
+        stackView.spacing = 16
+        return stackView
+    }()
+    
     private func configureConstraints() {
         let constraints = [
-            leftItemView.topAnchor.constraint(equalTo: topAnchor),
-            leftItemView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            leftItemView.trailingAnchor.constraint(equalTo: centerXAnchor, constant: -8.0),
-            leftItemView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            
-            rightItemView.topAnchor.constraint(equalTo: topAnchor),
-            rightItemView.leadingAnchor.constraint(equalTo: centerXAnchor, constant: 8.0),
-            rightItemView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            rightItemView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            stackView.topAnchor.constraint(equalTo: topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ]
         
         NSLayoutConstraint.activate(constraints)

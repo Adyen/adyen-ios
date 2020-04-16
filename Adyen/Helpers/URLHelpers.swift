@@ -15,4 +15,8 @@ internal extension URL {
             ($0.name, $0.value?.removingPercentEncoding ?? "")
         })
     }
+    
+    var isHttp: Bool { // swiftlint:disable:this explicit_acl
+        scheme == "http" || scheme == "https"
+    }
 }

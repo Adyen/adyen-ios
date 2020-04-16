@@ -11,6 +11,9 @@ internal final class DropInNavigationController: UINavigationController {
     internal typealias CancelHandler = (Bool, PaymentComponent?) -> Void
     
     private let cancelHandler: CancelHandler?
+    
+    /// Root container allows root of navigation controller to have a flexible size.
+    /// Should be cleaned, as soon as next controller is presented.
     private var rootContainer: UIViewController?
     private var keyboardRect: CGRect = .zero
     
@@ -36,6 +39,7 @@ internal final class DropInNavigationController: UINavigationController {
     }
     
     internal func present(asModal component: PresentableComponent) {
+        rootContainer = nil
         pushViewController(wrapInModalController(component: component), animated: true)
     }
     
@@ -64,6 +68,11 @@ internal final class DropInNavigationController: UINavigationController {
         updateFrame(for: topViewController)
     }
     
+    @objc private func viewDidChangeFrame(_ notification: NSNotification) {
+        guard let topViewController = topViewController else { return }
+        updateFrame(for: topViewController)
+    }
+    
     // MARK: - Private
     
     private func wrapInModalController(component: PresentableComponent) -> ModalViewController {
@@ -82,11 +91,10 @@ internal final class DropInNavigationController: UINavigationController {
     }
     
     private func updateFrameOnUIThread(for viewController: UIViewController) {
-        guard let window = UIApplication.shared.keyWindow else { return }
-        UIView.animate(withDuration: 0.25) {
-            let frame = viewController.finalPresentationFrame(in: window, keyboardRect: self.keyboardRect)
-            viewController.viewIfLoaded?.frame = frame
-        }
+        guard let window = UIApplication.shared.keyWindow, let view = viewController.viewIfLoaded else { return }
+        
+        let frame = viewController.finalPresentationFrame(in: window, keyboardRect: self.keyboardRect)
+        UIView.animate(withDuration: 0.25) { view.frame = frame }
     }
     
     private func setup(root component: PresentableComponent) {

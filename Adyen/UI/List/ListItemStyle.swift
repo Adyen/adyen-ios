@@ -15,7 +15,7 @@ public struct ListItemStyle: ViewStyle {
                                             textAlignment: .natural)
     
     /// The subtitle style.
-    public var subtitle: TextStyle = TextStyle(font: .systemFont(ofSize: 14.0),
+    public var subtitle: TextStyle = TextStyle(font: .systemFont(ofSize: 13.0),
                                                color: UIColor.AdyenCore.componentSecondaryLabel,
                                                textAlignment: .natural)
     

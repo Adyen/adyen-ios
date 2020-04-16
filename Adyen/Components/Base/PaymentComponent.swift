@@ -17,6 +17,22 @@ public protocol PaymentComponent: Component {
     
 }
 
+/// :nodoc:
+extension PaymentComponent {
+    
+    /// :nodoc:
+    public func submit(data: PaymentComponentData, component: PaymentComponent? = nil) {
+        guard data.browserInfo == nil else {
+            delegate?.didSubmit(data, from: component ?? self)
+            return
+        }
+        data.dataByAddingBrowserInfo { [weak self] in
+            guard let self = self else { return }
+            self.delegate?.didSubmit($0, from: component ?? self)
+        }
+    }
+}
+
 /// Describes the methods a delegate of the payment component needs to implement.
 public protocol PaymentComponentDelegate: AnyObject {
     

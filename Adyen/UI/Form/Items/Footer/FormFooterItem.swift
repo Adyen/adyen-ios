@@ -22,7 +22,7 @@ public final class FormFooterItem: FormItem {
     /// The title of the submit button.
     public var submitButtonTitle: String?
     
-    /// The title of the submit button.
+    /// The observable of the button indicator activity.
     public var showsActivityIndicator = Observable(false)
     
     /// A closure that will be invoked when the submit button is selected.

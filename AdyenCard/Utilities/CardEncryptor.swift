@@ -112,7 +112,7 @@ public final class CardEncryptor {
             return
         }
         let session = URLSession(configuration: .default)
-        session.dataTask(with: url) { result in
+        session.adyen.dataTask(with: url) { result in
             switch result {
             case let .success(data):
                 do {
