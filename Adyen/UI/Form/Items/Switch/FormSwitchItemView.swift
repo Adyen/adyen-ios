@@ -59,6 +59,9 @@ public final class FormSwitchItemView: FormValueItemView<FormSwitchItem> {
     
     private lazy var switchControl: UISwitch = {
         let switchControl = UISwitch()
+        if(item.style.tintColor != nil) {
+            switchControl.onTintColor = item.style.tintColor
+        }
         switchControl.isOn = item.value
         switchControl.isAccessibilityElement = false
         switchControl.addTarget(self, action: #selector(switchControlValueChanged), for: .valueChanged)
