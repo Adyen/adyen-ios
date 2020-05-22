@@ -17,6 +17,8 @@ public struct FormSwitchItemStyle: ViewStyle {
     /// :nodoc:
     public var backgroundColor: UIColor = .clear
     
+    public var tintColor: UIColor = nil
+    
     /// Initializes the form switch item style.
     ///
     /// - Parameter title: The title style.
