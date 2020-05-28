@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -16,35 +16,46 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent {
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
     
-    /// Initializes the component.
+    /// Describes the component's UI style.
+    public let style: ListComponentStyle
+    
+    /// Initializes the issuer list component.
     ///
     /// - Parameter paymentMethod: The issuer list payment method.
-    public init(paymentMethod: IssuerListPaymentMethod) {
+    /// - Parameter style: The Component's UI style..
+    public init(paymentMethod: IssuerListPaymentMethod,
+                style: ListComponentStyle = ListComponentStyle()) {
         self.paymentMethod = paymentMethod
         self.issuerListPaymentMethod = paymentMethod
+        self.style = style
     }
     
     private let issuerListPaymentMethod: IssuerListPaymentMethod
     
     // MARK: - Presentable Component Protocol
     
-    public lazy var viewController: UIViewController = {
-        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
-        return ComponentViewController(rootViewController: listViewController, cancelButtonHandler: didSelectCancelButton)
-    }()
+    public var viewController: UIViewController {
+        return listViewController
+    }
     
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
         listViewController.stopLoading()
+        
+        completion?()
     }
+    
+    /// :nodoc:
+    public var requiresModalPresentation: Bool = true
     
     // MARK: - Private
     
     private lazy var listViewController: ListViewController = {
-        let listViewController = ListViewController()
-        
+        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
+        let listViewController = ListViewController(style: style)
         let issuers = issuerListPaymentMethod.issuers
         let items = issuers.map { issuer -> ListItem in
-            var listItem = ListItem(title: issuer.name)
+            var listItem = ListItem(title: issuer.name, style: style.listItem)
+            listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
             listItem.imageURL = LogoURLProvider.logoURL(for: issuer,
                                                         paymentMethod: issuerListPaymentMethod,
                                                         environment: environment)
@@ -52,26 +63,20 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent {
             listItem.selectionHandler = { [weak self] in
                 guard let self = self else { return }
                 
-                let details = IssuerListDetails(type: self.paymentMethod.type,
+                let details = IssuerListDetails(paymentMethod: self.issuerListPaymentMethod,
                                                 issuer: issuer.identifier)
-                self.delegate?.didSubmit(PaymentComponentData(paymentMethodDetails: details), from: self)
+                self.submit(data: PaymentComponentData(paymentMethodDetails: details))
                 listViewController.startLoading(for: listItem)
             }
             
             return listItem
         }
         
-        listViewController.navigationItem.title = paymentMethod.name
+        listViewController.title = paymentMethod.name
         listViewController.sections = [ListSection(items: items)]
         
         return listViewController
     }()
-    
-    private lazy var didSelectCancelButton: (() -> Void) = { [weak self] in
-        guard let self = self else { return }
-        
-        self.delegate?.didFail(with: ComponentError.cancelled, from: self)
-    }
 }
 
 /// Provides an issuer selection list for iDEAL payments.

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,14 +19,8 @@ internal final class EmptyPaymentComponent: PaymentComponent {
     }
     
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
-    internal func generateDetails() {
+    internal func initiatePayment() {
         let details = EmptyPaymentDetails(type: paymentMethod.type)
-        delegate?.didSubmit(PaymentComponentData(paymentMethodDetails: details), from: self)
+        submit(data: PaymentComponentData(paymentMethodDetails: details))
     }
-}
-
-internal struct EmptyPaymentDetails: PaymentMethodDetails {
-    
-    internal let type: String
-    
 }

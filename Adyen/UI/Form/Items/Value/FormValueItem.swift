@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -16,4 +16,12 @@ public protocol FormValueItem: FormItem {
     /// The value entered in the item.
     var value: ValueType { get set }
     
+    /// An empty method that provides an opportunity for subclasses to know when the value changed.
+    func valueDidChange()
+    
+}
+
+extension FormValueItem {
+    /// :nodoc:
+    public func valueDidChange() {}
 }

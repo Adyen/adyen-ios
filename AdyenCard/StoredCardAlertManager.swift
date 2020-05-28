@@ -1,14 +1,18 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import UIKit
 
-internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate {
+internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Localizable {
     
+    private let maxCharactersCount = 4
+    private let minCharactersCount = 3
     internal var completionHandler: Completion<Result<CardDetails, Error>>?
+    
+    internal var localizationParameters: LocalizationParameters?
     
     internal init(paymentMethod: StoredCardPaymentMethod, publicKey: String, amount: Payment.Amount?) {
         self.paymentMethod = paymentMethod
@@ -23,19 +27,20 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate {
     // MARK: - Alert Controller
     
     internal private(set) lazy var alertController: UIAlertController = {
-        let title = ADYLocalizedString("adyen.card.stored.title")
-        let message = ADYLocalizedString("adyen.card.stored.message", paymentMethod.displayInformation.title)
+        let title = ADYLocalizedString("adyen.card.stored.title", localizationParameters)
+        let displayInformation = paymentMethod.localizedDisplayInformation(using: localizationParameters)
+        let message = ADYLocalizedString("adyen.card.stored.message", localizationParameters, displayInformation.title)
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alertController.addTextField(configurationHandler: { textField in
+        alertController.addTextField(configurationHandler: { [weak self] textField in
             textField.textAlignment = .center
             textField.keyboardType = .numberPad
-            textField.placeholder = ADYLocalizedString("adyen.card.cvcItem.placeholder")
-            textField.accessibilityLabel = ADYLocalizedString("adyen.card.cvcItem.title")
+            textField.placeholder = ADYLocalizedString("adyen.card.cvcItem.placeholder", self?.localizationParameters)
+            textField.accessibilityLabel = ADYLocalizedString("adyen.card.cvcItem.title", self?.localizationParameters)
             textField.delegate = self
         })
         
-        let cancelActionTitle = ADYLocalizedString("adyen.cancelButton")
+        let cancelActionTitle = ADYLocalizedString("adyen.cancelButton", localizationParameters)
         let cancelAction = UIAlertAction(title: cancelActionTitle, style: .cancel) { _ in
             self.completionHandler?(.failure(ComponentError.cancelled))
         }
@@ -47,7 +52,7 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate {
     }()
     
     private lazy var submitAction: UIAlertAction = {
-        let actionTitle = ADYLocalizedSubmitButtonTitle(with: amount)
+        let actionTitle = ADYLocalizedSubmitButtonTitle(with: amount, localizationParameters)
         let action = UIAlertAction(title: actionTitle, style: .default) { [unowned self] _ in
             self.submit()
         }
@@ -64,10 +69,14 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate {
     }
     
     private func submit(securityCode: String) {
-        let card = CardEncryptor.Card(number: nil, securityCode: securityCode, expiryMonth: nil, expiryYear: nil)
-        let encryptedCard = CardEncryptor.encryptedCard(for: card, publicKey: publicKey)
-        let details = CardDetails(paymentMethod: paymentMethod, encryptedSecurityCode: encryptedCard.securityCode ?? "")
-        completionHandler?(.success(details))
+        do {
+            let card = CardEncryptor.Card(number: nil, securityCode: securityCode, expiryMonth: nil, expiryYear: nil)
+            let encryptedCard = try CardEncryptor.encryptedCard(for: card, publicKey: publicKey)
+            let details = CardDetails(paymentMethod: paymentMethod, encryptedSecurityCode: encryptedCard.securityCode ?? "")
+            completionHandler?(.success(details))
+        } catch {
+            completionHandler?(.failure(error))
+        }
     }
     
     // MARK: - UITextFieldDelegate
@@ -78,24 +87,23 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate {
         }
         
         let newString = (textFieldText as NSString).replacingCharacters(in: range, with: string)
-        let maxCharactersCount = 4
         if newString.count > maxCharactersCount {
             return false
         }
         
+        defer {
+            let isValidLenght = (minCharactersCount...maxCharactersCount).contains(newString.count)
+            submitAction.isEnabled = isValidLenght
+        }
+        
         let isDeleting = (string.count == 0 && range.length == 1)
         if isDeleting {
-            let shouldDisable = newString.count == 0
-            if shouldDisable {
-                submitAction.isEnabled = false
-            }
             return true
         }
         
         let newCharacters = CharacterSet(charactersIn: string)
         let isNumber = CharacterSet.decimalDigits.isSuperset(of: newCharacters)
         if isNumber {
-            submitAction.isEnabled = true
             return true
         }
         

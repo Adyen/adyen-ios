@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -12,7 +12,11 @@ internal extension URL {
         let queryItems = components?.queryItems ?? []
         
         return Dictionary(uniqueKeysWithValues: queryItems.map {
-            ($0.name, $0.value ?? "")
+            ($0.name, $0.value?.removingPercentEncoding ?? "")
         })
+    }
+    
+    var isHttp: Bool { // swiftlint:disable:this explicit_acl
+        scheme == "http" || scheme == "https"
     }
 }

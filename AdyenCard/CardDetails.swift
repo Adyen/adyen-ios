@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -32,11 +32,13 @@ public struct CardDetails: PaymentMethodDetails {
     
     /// Initializes the card payment details.
     ///
+    /// :nodoc:
+    ///
     /// - Parameters:
     ///   - paymentMethod: The used card payment method.
     ///   - encryptedCard: The encrypted card to read the details from.
     ///   - holderName: The holder name if available.
-    internal init(paymentMethod: CardPaymentMethod, encryptedCard: CardEncryptor.EncryptedCard, holderName: String? = nil) {
+    public init(paymentMethod: AnyCardPaymentMethod, encryptedCard: CardEncryptor.EncryptedCard, holderName: String? = nil) {
         self.type = paymentMethod.type
         self.encryptedCardNumber = encryptedCard.number
         self.encryptedExpiryMonth = encryptedCard.expiryMonth
@@ -48,10 +50,12 @@ public struct CardDetails: PaymentMethodDetails {
     
     /// Initializes the card payment details for a stored card payment method.
     ///
+    /// :nodoc:
+    ///
     /// - Parameters:
     ///   - paymentMethod: The used stored card payment method.
-    ///   - encryptedSecurityCode: The encrypted security code
-    internal init(paymentMethod: StoredCardPaymentMethod, encryptedSecurityCode: String) {
+    ///   - encryptedSecurityCode: The encrypted security code.
+    public init(paymentMethod: StoredCardPaymentMethod, encryptedSecurityCode: String) {
         self.type = paymentMethod.type
         self.encryptedSecurityCode = encryptedSecurityCode
         self.storedPaymentMethodIdentifier = paymentMethod.identifier

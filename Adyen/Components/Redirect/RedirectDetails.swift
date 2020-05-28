@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -14,9 +14,11 @@ public struct RedirectDetails: AdditionalDetails {
     
     /// Initializes the redirect payment details.
     ///
+    /// :nodoc:
+    ///
     /// - Parameter:
     ///   - returnURL: The URL through which the user returned to the app after a redirect.
-    internal init(returnURL: URL) {
+    public init(returnURL: URL) {
         self.returnURL = returnURL
     }
     
@@ -25,7 +27,10 @@ public struct RedirectDetails: AdditionalDetails {
     /// :nodoc:
     public func encode(to encoder: Encoder) throws {
         guard let codingKeysValuesPairs = extractKeyValuesFromURL() else {
-            let context = EncodingError.Context(codingPath: [CodingKeys.payload, .redirectResult, .md, .paymentResponse],
+            let context = EncodingError.Context(codingPath: [CodingKeys.payload,
+                                                             .redirectResult,
+                                                             .merchantData,
+                                                             .paymentResponse],
                                                 debugDescription: "Did not find payload, redirectResult or PaRes/md keys")
             throw EncodingError.invalidValue(encoder, context)
         }
@@ -43,18 +48,19 @@ public struct RedirectDetails: AdditionalDetails {
         case payload
         case redirectResult
         case paymentResponse = "PaRes"
-        case md = "MD"
+        case merchantData = "MD"
     }
     
     internal func extractKeyValuesFromURL() -> [(CodingKeys, String)]? {
         let queryParameters = returnURL.queryParameters
         
-        if let redirectResult = queryParameters["redirectResult"]?.removingPercentEncoding {
+        if let redirectResult = queryParameters[CodingKeys.redirectResult.rawValue]?.removingPercentEncoding {
             return [(.redirectResult, redirectResult)]
-        } else if let payload = queryParameters["payload"]?.removingPercentEncoding {
+        } else if let payload = queryParameters[CodingKeys.payload.rawValue]?.removingPercentEncoding {
             return [(.payload, payload)]
-        } else if let paymentResponse = queryParameters["PaRes"]?.removingPercentEncoding, let md = queryParameters["MD"]?.removingPercentEncoding {
-            return [(.paymentResponse, paymentResponse), (.md, md)]
+        } else if let paymentResponse = queryParameters[CodingKeys.paymentResponse.rawValue]?.removingPercentEncoding,
+            let merchantData = queryParameters[CodingKeys.merchantData.rawValue]?.removingPercentEncoding {
+            return [(.paymentResponse, paymentResponse), (.merchantData, merchantData)]
         }
         
         return nil

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -15,6 +15,22 @@ public protocol PaymentComponent: Component {
     /// The delegate of the payment component.
     var delegate: PaymentComponentDelegate? { get set }
     
+}
+
+/// :nodoc:
+extension PaymentComponent {
+    
+    /// :nodoc:
+    public func submit(data: PaymentComponentData, component: PaymentComponent? = nil) {
+        guard data.browserInfo == nil else {
+            delegate?.didSubmit(data, from: component ?? self)
+            return
+        }
+        data.dataByAddingBrowserInfo { [weak self] in
+            guard let self = self else { return }
+            self.delegate?.didSubmit($0, from: component ?? self)
+        }
+    }
 }
 
 /// Describes the methods a delegate of the payment component needs to implement.

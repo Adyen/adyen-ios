@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,6 +19,8 @@ internal final class FormHeaderItemView: FormItemView<FormHeaderItem> {
         
         layoutMargins.bottom = 18.0
         
+        backgroundColor = item.style.backgroundColor
+        
         configureConstraints()
     }
     
@@ -30,12 +32,14 @@ internal final class FormHeaderItemView: FormItemView<FormHeaderItem> {
     
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.font = .systemFont(ofSize: 32.0, weight: .bold)
-        titleLabel.textColor = .black
-        titleLabel.textAlignment = .center
+        titleLabel.font = item.style.title.font
+        titleLabel.textColor = item.style.title.color
+        titleLabel.textAlignment = item.style.title.textAlignment
+        titleLabel.backgroundColor = item.style.title.backgroundColor
         titleLabel.text = item.title
         titleLabel.numberOfLines = 0
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel") }
         
         return titleLabel
     }()

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -11,19 +11,15 @@ import UIKit
 
 internal final class ComponentsViewController: UIViewController {
     
-    internal init() {
-        super.init(nibName: nil, bundle: nil)
-        
-        navigationItem.title = "Components"
-    }
+    private lazy var componentsView = ComponentsView()
+    private let payment = Payment(amount: Configuration.amount, countryCode: Configuration.countryCode)
+    private let environment: Environment = .test
     
-    internal required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    private var paymentMethods: PaymentMethods?
+    private var currentComponent: PresentableComponent?
+    private var paymentInProgress: Bool = false
     
     // MARK: - View
-    
-    private lazy var componentsView = ComponentsView()
     
     internal override func loadView() {
         view = componentsView
@@ -31,12 +27,17 @@ internal final class ComponentsViewController: UIViewController {
     
     internal override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.title = "Components"
         
         componentsView.items = [
-            ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent),
-            ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
-            ComponentsItem(title: "iDEAL", selectionHandler: presentIdealComponent),
-            ComponentsItem(title: "SEPA Direct Debit", selectionHandler: presentSEPADirectDebitComponent)
+            [
+                ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent)
+            ],
+            [
+                ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
+                ComponentsItem(title: "iDEAL", selectionHandler: presentIdealComponent),
+                ComponentsItem(title: "SEPA Direct Debit", selectionHandler: presentSEPADirectDebitComponent)
+            ]
         ]
         
         requestPaymentMethods()
@@ -44,15 +45,17 @@ internal final class ComponentsViewController: UIViewController {
     
     // MARK: - Components
     
-    private var paymentMethods: PaymentMethods?
-    private var currentComponent: PresentableComponent?
-    private var redirectComponent: RedirectComponent?
-    private var threeDS2Component: ThreeDS2Component?
+    private lazy var actionComponent: DropInActionComponent = {
+        let handler = DropInActionComponent()
+        handler.presenterViewController = self
+        handler.redirectComponentStyle = dropInComponentStyle.redirectComponent
+        handler.delegate = self
+        return handler
+    }()
     
     private func present(_ component: PresentableComponent) {
-        component.environment = .test
-        component.payment = Payment(amount: Configuration.amount)
-        component.payment?.countryCode = "NL"
+        component.environment = environment
+        component.payment = payment
         
         if let paymentComponent = component as? PaymentComponent {
             paymentComponent.delegate = self
@@ -62,10 +65,29 @@ internal final class ComponentsViewController: UIViewController {
             actionComponent.delegate = self
         }
         
-        present(component.viewController, animated: true)
-        
         currentComponent = component
+        guard component.requiresModalPresentation else {
+            return present(component.viewController, animated: true)
+        }
+        
+        let navigation = UINavigationController(rootViewController: component.viewController)
+        component.viewController.navigationItem.leftBarButtonItem = .init(barButtonSystemItem: .cancel,
+                                                                          target: self,
+                                                                          action: #selector(cancelDidPress))
+        present(navigation, animated: true)
     }
+    
+    @objc private func cancelDidPress() {
+        guard let paymentComponent = self.currentComponent as? PaymentComponent else {
+            self.dismiss(animated: true, completion: nil)
+            return
+        }
+        paymentComponent.delegate?.didFail(with: ComponentError.cancelled, from: paymentComponent)
+    }
+    
+    // MARK: - DropIn Component
+    
+    private lazy var dropInComponentStyle: DropInComponent.Style = DropInComponent.Style()
     
     private func presentDropInComponent() {
         guard let paymentMethods = paymentMethods else { return }
@@ -73,35 +95,42 @@ internal final class ComponentsViewController: UIViewController {
         configuration.card.publicKey = Configuration.cardPublicKey
         configuration.applePay.merchantIdentifier = Configuration.applePayMerchantIdentifier
         configuration.applePay.summaryItems = Configuration.applePaySummaryItems
+        configuration.localizationParameters = nil
         
         let component = DropInComponent(paymentMethods: paymentMethods,
-                                        paymentMethodsConfiguration: configuration)
+                                        paymentMethodsConfiguration: configuration,
+                                        style: dropInComponentStyle,
+                                        title: Configuration.appName)
         component.delegate = self
         present(component)
     }
     
     private func presentCardComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: CardPaymentMethod.self) else { return }
-        let component = CardComponent(paymentMethod: paymentMethod, publicKey: Configuration.cardPublicKey)
+        let component = CardComponent(paymentMethod: paymentMethod,
+                                      publicKey: Configuration.cardPublicKey,
+                                      style: dropInComponentStyle.formComponent)
         present(component)
     }
     
     private func presentIdealComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: IssuerListPaymentMethod.self) else { return }
-        let component = IdealComponent(paymentMethod: paymentMethod)
+        let component = IdealComponent(paymentMethod: paymentMethod,
+                                       style: dropInComponentStyle.listComponent)
         present(component)
     }
     
     private func presentSEPADirectDebitComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: SEPADirectDebitPaymentMethod.self) else { return }
-        let component = SEPADirectDebitComponent(paymentMethod: paymentMethod)
+        let component = SEPADirectDebitComponent(paymentMethod: paymentMethod,
+                                                 style: dropInComponentStyle.formComponent)
         component.delegate = self
         present(component)
     }
     
     // MARK: - Networking
     
-    private lazy var apiClient = APIClient(environment: Configuration.environment)
+    private lazy var apiClient = RetryAPIClient(apiClient: APIClient(environment: Configuration.environment))
     
     private func requestPaymentMethods() {
         let request = PaymentMethodsRequest()
@@ -141,41 +170,13 @@ internal final class ComponentsViewController: UIViewController {
     }
     
     private func handle(_ action: Action) {
+        guard paymentInProgress else { return }
+        
         if let dropInComponent = currentComponent as? DropInComponent {
-            dropInComponent.handle(action)
-            
-            return
+            return dropInComponent.handle(action)
         }
         
-        switch action {
-        case let .redirect(redirectAction):
-            redirect(with: redirectAction)
-        case let .threeDS2Fingerprint(threeDS2FingerprintAction):
-            performThreeDS2Fingerprint(with: threeDS2FingerprintAction)
-        case let .threeDS2Challenge(threeDS2ChallengeAction):
-            performThreeDS2Challenge(with: threeDS2ChallengeAction)
-        }
-    }
-    
-    private func redirect(with action: RedirectAction) {
-        let redirectComponent = RedirectComponent(action: action)
-        redirectComponent.delegate = self
-        self.redirectComponent = redirectComponent
-        
-        (presentedViewController ?? self).present(redirectComponent.viewController, animated: true)
-    }
-    
-    private func performThreeDS2Fingerprint(with action: ThreeDS2FingerprintAction) {
-        let threeDS2Component = ThreeDS2Component()
-        threeDS2Component.delegate = self
-        self.threeDS2Component = threeDS2Component
-        
-        threeDS2Component.handle(action)
-    }
-    
-    private func performThreeDS2Challenge(with action: ThreeDS2ChallengeAction) {
-        guard let threeDS2Component = threeDS2Component else { return }
-        threeDS2Component.handle(action)
+        actionComponent.perform(action)
     }
     
     private func finish(with resultCode: PaymentsResponse.ResultCode) {
@@ -186,9 +187,6 @@ internal final class ComponentsViewController: UIViewController {
                 self?.presentAlert(withTitle: resultCode.rawValue)
             }
         }
-        
-        redirectComponent = nil
-        threeDS2Component = nil
     }
     
     private func finish(with error: Error) {
@@ -199,9 +197,6 @@ internal final class ComponentsViewController: UIViewController {
                 self.presentAlert(with: error)
             }
         }
-        
-        redirectComponent = nil
-        threeDS2Component = nil
     }
     
     private func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
@@ -215,21 +210,21 @@ internal final class ComponentsViewController: UIViewController {
             alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         }
         
-        (presentedViewController ?? self).present(alertController, animated: true)
+        adyen.topPresenter.present(alertController, animated: true)
     }
     
     private func presentAlert(withTitle title: String) {
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        (presentedViewController ?? self).present(alertController, animated: true)
+        adyen.topPresenter.present(alertController, animated: true)
     }
-    
 }
 
 extension ComponentsViewController: DropInComponentDelegate {
     
     internal func didSubmit(_ data: PaymentComponentData, from component: DropInComponent) {
         performPayment(with: data)
+        paymentInProgress = true
     }
     
     internal func didProvide(_ data: ActionComponentData, from component: DropInComponent) {
@@ -237,6 +232,7 @@ extension ComponentsViewController: DropInComponentDelegate {
     }
     
     internal func didFail(with error: Error, from component: DropInComponent) {
+        paymentInProgress = false
         finish(with: error)
     }
     
@@ -245,10 +241,12 @@ extension ComponentsViewController: DropInComponentDelegate {
 extension ComponentsViewController: PaymentComponentDelegate {
     
     internal func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
+        paymentInProgress = true
         performPayment(with: data)
     }
     
     internal func didFail(with error: Error, from component: PaymentComponent) {
+        paymentInProgress = false
         finish(with: error)
     }
     
@@ -257,6 +255,7 @@ extension ComponentsViewController: PaymentComponentDelegate {
 extension ComponentsViewController: ActionComponentDelegate {
     
     internal func didFail(with error: Error, from component: ActionComponent) {
+        paymentInProgress = false
         finish(with: error)
     }
     

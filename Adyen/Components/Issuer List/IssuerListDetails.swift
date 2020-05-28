@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -14,6 +14,16 @@ public struct IssuerListDetails: PaymentMethodDetails {
     
     /// The selected issuer.
     public let issuer: String
+    
+    /// Initializes the Issuer List details.
+    ///
+    /// - Parameters:
+    ///   - paymentMethod: The issuer list payment method.
+    ///   - issuer: The selected issuer.
+    public init(paymentMethod: IssuerListPaymentMethod, issuer: String) {
+        self.type = paymentMethod.type
+        self.issuer = issuer
+    }
     
 }
 

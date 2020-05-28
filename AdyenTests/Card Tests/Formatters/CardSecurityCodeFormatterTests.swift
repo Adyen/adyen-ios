@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,11 +10,19 @@ import XCTest
 class CardSecurityCodeFormatterTests: XCTestCase {
     
     func testFormatting() {
-        let formatter = CardSecurityCodeFormatter()
-        
+        let observer = Observable<CardType?>(.masterCard)
+        let formatter = CardSecurityCodeFormatter(publisher: observer)
         XCTAssertEqual(formatter.formattedValue(for: "1"), "1")
-        XCTAssertEqual(formatter.formattedValue(for: "12345"), "12345")
         XCTAssertEqual(formatter.formattedValue(for: "101abc"), "101")
+        XCTAssertEqual(formatter.formattedValue(for: "12345"), "123")
+        
+        observer.value = nil
+        XCTAssertEqual(formatter.formattedValue(for: "1"), "1")
+        XCTAssertEqual(formatter.formattedValue(for: "101abc"), "101")
+        XCTAssertEqual(formatter.formattedValue(for: "12345"), "123")
+        
+        observer.value = .americanExpress
+        XCTAssertEqual(formatter.formattedValue(for: "12345"), "1234")
     }
     
     func testSanitizing() {

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -15,7 +15,8 @@ public final class IBANValidator: Validator {
     
     /// :nodoc:
     public func isValid(_ value: String) -> Bool {
-        guard value.count <= maximumLength(for: value) else {
+        let minimumLength = 4
+        guard minimumLength...maximumLength(for: value) ~= value.count else {
             return false
         }
         

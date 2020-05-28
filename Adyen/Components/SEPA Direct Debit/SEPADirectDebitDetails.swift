@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,13 +10,27 @@ import Foundation
 public struct SEPADirectDebitDetails: PaymentMethodDetails {
     
     /// The payment method type.
-    public let type: String?
+    public let type: String
     
     /// The account IBAN number.
-    public let iban: String?
+    public let iban: String
     
     /// The account owner name.
-    public let ownerName: String?
+    public let ownerName: String
+    
+    /// Initializes the SEPA Direct Debit details.
+    ///
+    /// :nodoc:
+    ///
+    /// - Parameters:
+    ///   - paymentMethod: The SEPA Direct Debit payment method.
+    ///   - iban: The account IBAN number.
+    ///   - ownerName: The account owner name.
+    public init(paymentMethod: SEPADirectDebitPaymentMethod, iban: String, ownerName: String) {
+        self.type = paymentMethod.type
+        self.iban = iban
+        self.ownerName = ownerName
+    }
     
     private enum CodingKeys: String, CodingKey {
         case type

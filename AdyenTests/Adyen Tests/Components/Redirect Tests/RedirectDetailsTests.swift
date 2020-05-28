@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -39,7 +39,7 @@ class RedirectDetailsTests: XCTestCase {
         XCTAssertEqual(keyValues[0].0, RedirectDetails.CodingKeys.paymentResponse)
         XCTAssertEqual(keyValues[0].1, "some")
         // MD
-        XCTAssertEqual(keyValues[1].0, RedirectDetails.CodingKeys.md)
+        XCTAssertEqual(keyValues[1].0, RedirectDetails.CodingKeys.merchantData)
         XCTAssertEqual(keyValues[1].1, "lorem")
     }
     

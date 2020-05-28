@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -17,6 +17,15 @@ public protocol PaymentMethod: Decodable {
     
     /// Display information for the payment method, adapted for displaying in a list.
     var displayInformation: DisplayInformation { get }
+    
+    /// Display information for the payment method, adapted for displaying in a list.
+    ///
+    /// - Parameters:
+    ///   - using: The localization parameters.
+    func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation
+    
+    /// :nodoc:
+    func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent?
 }
 
 public struct DisplayInformation {
@@ -36,11 +45,18 @@ public struct DisplayInformation {
     public var logoName: String
 }
 
+extension DisplayInformation: Equatable {}
+
 /// :nodoc:
 public extension PaymentMethod {
     
     /// :nodoc:
     var displayInformation: DisplayInformation {
+        return DisplayInformation(title: name, subtitle: nil, logoName: type)
+    }
+    
+    /// :nodoc:
+    func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         return DisplayInformation(title: name, subtitle: nil, logoName: type)
     }
     

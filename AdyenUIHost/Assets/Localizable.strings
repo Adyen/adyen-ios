@@ -1,0 +1,3 @@
+/// Custom strings file with default table name, for testing purposes only.
+"any.key.1" = "value 1 %@";
+"any.key.2" = "value 2";

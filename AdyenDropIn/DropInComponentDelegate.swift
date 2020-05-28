@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,7 +19,7 @@ public protocol DropInComponentDelegate: AnyObject {
     /// Invoked when additional details have been provided for a payment method.
     ///
     /// - Parameters:
-    ///   - data: The additional data supplied by the drop in component..
+    ///   - data: The additional data supplied by the drop in component.
     ///   - component: The drop in component from which the additional details were provided.
     func didProvide(_ data: ActionComponentData, from component: DropInComponent)
     

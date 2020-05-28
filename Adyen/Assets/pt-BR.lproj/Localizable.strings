@@ -30,3 +30,8 @@
 "adyen.card.stored.message" = "Por favor insira o código CVC para %@";
 "adyen.card.stored.expires" = "Expira em %@";
 "adyen.dropIn.stored.title" = "Confirmar pagamento %@";
+"adyen.dropIn.preselected.openAll.title" = "Alterar método de pagamento";
+"adyen.continueTo" = "Continuar para %@";
+"adyen.phoneNumber.title" = "Número de telefone";
+"adyen.phoneNumber.invalid" = "Número de telefone inválido";
+"adyen.phoneNumber.placeholder" = "123–456–789";

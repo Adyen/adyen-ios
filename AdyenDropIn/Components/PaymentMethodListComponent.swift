@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import Foundation
 
 /// A component that presents a list of items for each payment method with a component.
-internal final class PaymentMethodListComponent: PresentableComponent {
+internal final class PaymentMethodListComponent: PresentableComponent, Localizable {
     
     /// The components that are displayed in the list.
     internal let components: SectionedComponents
@@ -15,27 +15,32 @@ internal final class PaymentMethodListComponent: PresentableComponent {
     /// The delegate of the payment method list component.
     internal weak var delegate: PaymentMethodListComponentDelegate?
     
+    /// Describes the component's UI style.
+    internal let style: ListComponentStyle
+    
     /// Initializes the list component.
     ///
     /// - Parameter components: The components to display in the list.
-    internal init(components: SectionedComponents) {
+    /// - Parameter style: The component's UI style.
+    internal init(components: SectionedComponents, style: ListComponentStyle = ListComponentStyle()) {
         self.components = components
+        self.style = style
     }
     
     // MARK: - View Controller
     
     /// :nodoc:
-    internal lazy var viewController: UIViewController = {
-        listViewController
-    }()
+    internal var viewController: UIViewController { listViewController }
     
-    private lazy var listViewController: ListViewController = {
+    internal lazy var listViewController: ListViewController = {
         func item(for component: PaymentComponent) -> ListItem {
-            let showsDisclosureIndicator = (component as? PresentableComponent)?.preferredPresentationMode == .push
+            let showsDisclosureIndicator = (component as? PresentableComponent)?.requiresModalPresentation == true
             
-            var listItem = ListItem(title: component.paymentMethod.displayInformation.title)
+            let displayInformation = component.paymentMethod.localizedDisplayInformation(using: localizationParameters)
+            let listItem = ListItem(title: displayInformation.title, style: style.listItem)
+            listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
             listItem.imageURL = LogoURLProvider.logoURL(for: component.paymentMethod, environment: environment)
-            listItem.subtitle = component.paymentMethod.displayInformation.subtitle
+            listItem.subtitle = displayInformation.subtitle
             listItem.showsDisclosureIndicator = showsDisclosureIndicator
             listItem.selectionHandler = { [unowned self, unowned component] in
                 self.delegate?.didSelect(component, in: self)
@@ -45,16 +50,22 @@ internal final class PaymentMethodListComponent: PresentableComponent {
         }
         
         let storedSection = ListSection(items: components.stored.map(item(for:)))
-        let regularSectionTitle = components.stored.isEmpty ? nil : ADYLocalizedString("adyen.paymentMethods.otherMethods")
+        let regularSectionTitle = components.stored.isEmpty ? nil : ADYLocalizedString("adyen.paymentMethods.otherMethods",
+                                                                                       localizationParameters)
         let regularSection = ListSection(title: regularSectionTitle,
                                          items: components.regular.map(item(for:)))
         
-        let listViewController = ListViewController()
-        listViewController.title = ADYLocalizedString("adyen.paymentMethods.title")
+        let listViewController = ListViewController(style: style)
+        listViewController.title = ADYLocalizedString("adyen.paymentMethods.title", localizationParameters)
         listViewController.sections = [storedSection, regularSection]
         
         return listViewController
     }()
+    
+    // MARK: - Localization
+    
+    /// :nodoc:
+    public var localizationParameters: LocalizationParameters?
     
     // MARK: - Loading
     

@@ -1,10 +1,17 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
+
+/// Describes any entity that is UI localizable.
+public protocol Localizable {
+    
+    /// Indicates the localization parameters, leave it nil to use the default parameters.
+    var localizationParameters: LocalizationParameters? { get set }
+}
 
 /// A component that provides a view controller for the shopper to fill payment details.
 public protocol PresentableComponent: Component {
@@ -12,11 +19,12 @@ public protocol PresentableComponent: Component {
     /// The payment information.
     var payment: Payment? { get set }
     
+    /// Indicates whether `viewController` expected to be presented modally,
+    /// hence it can not handle it's own presentation and dismissal.
+    var requiresModalPresentation: Bool { get }
+    
     /// Returns a view controller that presents the payment details for the shopper to fill.
     var viewController: UIViewController { get }
-    
-    /// The preferred way of presenting this component.
-    var preferredPresentationMode: PresentableComponentPresentationMode { get }
     
     /// Stops any processing animation that the view controller is running.
     ///
@@ -39,9 +47,7 @@ public extension PresentableComponent {
     }
     
     /// :nodoc:
-    var preferredPresentationMode: PresentableComponentPresentationMode {
-        return .push
-    }
+    var requiresModalPresentation: Bool { false }
     
     /// Stops any processing animation that the view controller is running.
     func stopLoading() {
@@ -64,17 +70,6 @@ public extension PresentableComponent {
     func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
         completion?()
     }
-    
-}
-
-/// Indicates the way a presentable component should be presented.
-public enum PresentableComponentPresentationMode {
-    
-    /// Indicates the component should be pushed onto a navigation stack.
-    case push
-    
-    /// Indicates the component should be presented modally.
-    case present
     
 }
 

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,7 +8,38 @@ import UIKit
 
 /// Displays a form for the user to enter details.
 /// :nodoc:
-public final class FormViewController: UIViewController {
+public final class FormViewController: UIViewController, Localizable {
+    
+    private lazy var itemManager = FormViewItemManager(itemViewDelegate: self)
+    
+    /// Indicates the `FormViewController` UI styling.
+    public let style: ViewStyle
+    
+    /// Initializes the FormViewController.
+    ///
+    /// - Parameter style: The `FormViewController` UI style.
+    public init(style: ViewStyle) {
+        self.style = style
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    internal required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Public
+    
+    /// :nodoc:
+    public override var preferredContentSize: CGSize {
+        get { formView.preferredContentSize }
+        
+        // swiftlint:disable:next unused_setter_value
+        set { assertionFailure("""
+        PreferredContentSize is overridden for this view controller.
+        getter - returns minimum possible content size.
+        setter - no implemented.
+        """) }
+    }
     
     // MARK: - Items
     
@@ -23,16 +54,16 @@ public final class FormViewController: UIViewController {
     ///   - item: The item to append.
     ///   - itemViewType: Optionally, the item view type to use for this item.
     ///                   When none is specified, the default will be used.
-    public func append<T: FormItem>(_ item: T, using itemViewType: FormItemView<T>.Type? = nil) {
-        itemManager.append(item, using: itemViewType)
+    public func append<T: FormItem>(_ item: T) {
+        itemManager.append(item)
         
-        if isViewLoaded {
-            let itemView = itemManager.itemView(for: item)
+        if isViewLoaded, let itemView = itemManager.itemView(for: item) {
             formView.appendItemView(itemView)
         }
     }
     
-    private lazy var itemManager = FormViewItemManager(itemViewDelegate: self)
+    /// :nodoc:
+    public var localizationParameters: LocalizationParameters?
     
     // MARK: - Validity
     
@@ -40,53 +71,38 @@ public final class FormViewController: UIViewController {
     ///
     /// - Returns: Whether the form is valid or not.
     public func validate() -> Bool {
-        var textItems = itemManager.items.compactMap { $0 as? FormTextItem }
-        
-        // Append items from FormSplitTextItem.
-        // TODO: Consider having a childItems property in the protocol.
-        itemManager.items.compactMap { $0 as? FormSplitTextItem }.forEach { textItems += [$0.leftItem, $0.rightItem] }
-        
-        let failureMessages: [String] = textItems.compactMap { textItem in
-            guard let validator = textItem.validator else { return nil }
-            
-            return validator.isValid(textItem.value) ? nil : textItem.validationFailureMessage
-        }
+        let validatableItems = getAllValidatableItems()
+        let isValid = validatableItems.allSatisfy { $0.isValid() }
         
         // Exit when all validations passed.
-        if failureMessages.isEmpty {
-            return true
-        }
+        guard !isValid else { return true }
         
-        let alertController = UIAlertController(title: ADYLocalizedString("adyen.validationAlert.title"),
-                                                message: nil,
-                                                preferredStyle: .alert)
+        itemManager.allItemViews
+            .compactMap { $0 as? AnyFormValueItemView }
+            .forEach { $0.validate() }
         
-        if failureMessages.count == 1 {
-            alertController.message = failureMessages.first
-        } else {
-            alertController.message = failureMessages.map { "• " + $0 }.joined(separator: "\n")
-        }
-        
-        alertController.addAction(UIAlertAction(title: ADYLocalizedString("adyen.dismissButton"),
-                                                style: .default,
-                                                handler: nil))
-        present(alertController, animated: true, completion: nil)
+        resignFirstResponder()
         
         return false
+    }
+    
+    private func getAllValidatableItems() -> [ValidatableFormItem] {
+        let flatItems = itemManager.items.flatMap { $0.flatSubitems }
+        return flatItems.compactMap { $0 as? ValidatableFormItem }
     }
     
     // MARK: - View
     
     /// :nodoc:
-    public override func loadView() {
-        view = FormView()
-    }
-    
-    /// :nodoc:
     public override func viewDidLoad() {
         super.viewDidLoad()
+        view.addSubview(formView)
+        setupConstraints()
         
         itemManager.itemViews.forEach(formView.appendItemView(_:))
+        
+        view.backgroundColor = style.backgroundColor
+        formView.backgroundColor = style.backgroundColor
         
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self,
@@ -96,47 +112,64 @@ public final class FormViewController: UIViewController {
     }
     
     /// :nodoc:
-    public override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         assignInitialFirstResponder()
     }
     
-    private var formView: FormView {
-        return view as! FormView // swiftlint:disable:this force_cast
+    private lazy var formView: FormView = {
+        let form = FormView()
+        form.translatesAutoresizingMaskIntoConstraints = false
+        return form
+    }()
+    
+    private var bottomConstraint: NSLayoutConstraint?
+    
+    private func setupConstraints() {
+        bottomConstraint = formView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        if #available(iOS 11.0, *) {
+            bottomConstraint = formView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        }
+        
+        bottomConstraint?.priority = .defaultHigh
+        let constraints = [
+            formView.topAnchor.constraint(equalTo: view.topAnchor),
+            bottomConstraint,
+            formView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            formView.rightAnchor.constraint(equalTo: view.rightAnchor)
+        ]
+        
+        NSLayoutConstraint.activate(constraints.compactMap { $0 })
     }
     
     // MARK: - Keyboard
     
+    @discardableResult
+    public override func resignFirstResponder() -> Bool {
+        let textItemView = itemManager.allItemViews.first(where: { $0.isFirstResponder })
+        textItemView?.resignFirstResponder()
+        
+        return super.resignFirstResponder()
+    }
+    
     @objc private func keyboardWillChangeFrame(_ notification: NSNotification) {
-        guard let bounds = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
-            return
-        }
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        var heightOffset = keyboardFrame.origin.y - UIScreen.main.bounds.height
         
-        var inset = bounds.height
         if #available(iOS 11.0, *) {
-            inset -= formView.safeAreaInsets.bottom
+            heightOffset += min(abs(heightOffset), view.safeAreaInsets.bottom)
         }
         
-        formView.scrollView.contentInset.bottom = inset
-        formView.scrollView.scrollIndicatorInsets.bottom = inset
+        bottomConstraint?.constant = heightOffset
     }
     
     // MARK: - Other
     
     private func assignInitialFirstResponder() {
-        // Only become first responder for larger screens.
-        guard UIScreen.main.bounds.height > 600 else { return }
-        guard didAssignInitialFirstResponder == false else { return }
-        
-        let textItemViews = itemManager.itemViews(ofType: FormTextItemView.self)
-        textItemViews.first?.becomeFirstResponder()
-        
-        didAssignInitialFirstResponder = true
+        guard view.isUserInteractionEnabled else { return }
+        let textItemView = itemManager.itemViews.first(where: { $0.canBecomeFirstResponder })
+        textItemView?.becomeFirstResponder()
     }
-    
-    private var didAssignInitialFirstResponder = false
-    
 }
 
 // MARK: - FormValueItemViewDelegate
@@ -153,17 +186,17 @@ extension FormViewController: FormValueItemViewDelegate {
 extension FormViewController: FormTextItemViewDelegate {
     
     /// :nodoc:
-    public func didReachMaximumLength(in itemView: FormTextItemView) {
+    public func didReachMaximumLength<T: FormTextItem>(in itemView: FormTextItemView<T>) {
         handleReturnKey(from: itemView)
     }
     
     /// :nodoc:
-    public func didSelectReturnKey(in itemView: FormTextItemView) {
+    public func didSelectReturnKey<T: FormTextItem>(in itemView: FormTextItemView<T>) {
         handleReturnKey(from: itemView)
     }
     
-    private func handleReturnKey(from itemView: FormTextItemView) {
-        let itemViews = itemManager.itemViews(ofType: FormTextItemView.self)
+    private func handleReturnKey<T: FormTextItem>(from itemView: FormTextItemView<T>) {
+        let itemViews = itemManager.allItemViews
         
         // Determine the index of the current item view.
         guard let currentIndex = itemViews.firstIndex(where: { $0 === itemView }) else {

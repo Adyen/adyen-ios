@@ -15,6 +15,7 @@ custom_categories:
     children:
       - DropInComponent
       - DropInComponentDelegate
+      - DropInActionComponent
   - name: Card Component
     children:
       - CardComponent
@@ -28,6 +29,17 @@ custom_categories:
       - CardSecurityCodeValidator
       - CardNumberFormatter
       - CardNumberValidator
+  - name: Qiwi Wallet Component
+    children:
+      - QiwiWalletComponent
+      - QiwiWalletDetails
+      - QiwiWalletPaymentMethod
+  - name: WeChat Pay
+    children:
+      - WeChatPaySDKActionComponent
+      - WeChatPayPaymentMethod
+      - WeChatPaySDKAction
+      - WeChatPaySDKData
   - name: 3D Secure 2 Component
     children:
       - ThreeDS2Component
@@ -37,6 +49,9 @@ custom_categories:
     children:
       - ApplePayComponent
       - ApplePayDetails
+  - name: BCMC Component
+    children:
+      - BCMCComponent
   - name: SEPA Direct Debit Component
     children:
       - SEPADirectDebitComponent
@@ -73,7 +88,6 @@ custom_categories:
       - ActionComponentData
       - ActionComponentDelegate
       - PresentableComponent
-      - PresentableComponentPresentationMode
       - Details
       - PaymentMethodDetails
       - AdditionalDetails
@@ -84,10 +98,13 @@ custom_categories:
       - PaymentMethod
       - StoredPaymentMethod
       - StoredCardPaymentMethod
+      - StoredBCMCPaymentMethod
       - StoredPayPalPaymentMethod
+      - AnyCardPaymentMethod
       - CardPaymentMethod
       - IssuerListPaymentMethod
       - ApplePayPaymentMethod
+      - BCMCPaymentMethod
       - SEPADirectDebitPaymentMethod
       - ShopperInteraction
       - DisplayInformation
@@ -96,10 +113,29 @@ custom_categories:
       - RedirectAction
       - ThreeDS2FingerprintAction
       - ThreeDS2ChallengeAction
+  - name: Styling
+    children:
+      - FormComponentStyle
+      - FormHeaderStyle
+      - FormFooterStyle
+      - FormTextItemStyle
+      - FormSwitchItemStyle
+      - ListComponentStyle
+      - ListSectionHeaderStyle
+      - ListItemStyle
+      - RedirectComponentStyle
+      - NavigationStyle
+      - ButtonStyle
+      - ImageStyle
+      - TextStyle
+      - ViewStyle
   - name: Other
     children:
+      - AdyenLogging
       - Formatter
       - Validator
       - LengthValidator
       - Environment
       - LogoURLProvider
+      - Localizable
+      - LocalizationParameters

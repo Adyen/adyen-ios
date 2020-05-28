@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,10 +10,10 @@ import Foundation
 open class LengthValidator: Validator {
     
     /// The minimum length of the string.
-    public let minimumLength: Int?
+    open var minimumLength: Int?
     
     /// The maximum length of the string.
-    public let maximumLength: Int?
+    open var maximumLength: Int?
     
     /// Initializes the length validator.
     ///

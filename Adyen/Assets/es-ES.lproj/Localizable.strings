@@ -30,3 +30,8 @@
 "adyen.card.stored.message" = "Introduzca el código de verificación de %@";
 "adyen.card.stored.expires" = "Expira el %@";
 "adyen.dropIn.stored.title" = "Confirmar pago de %@";
+"adyen.dropIn.preselected.openAll.title" = "Cambiar método de pago";
+"adyen.continueTo" = "Continuar a %@";
+"adyen.phoneNumber.title" = "Número de teléfono";
+"adyen.phoneNumber.invalid" = "El número de teléfono no es válido";
+"adyen.phoneNumber.placeholder" = "123–456–789";

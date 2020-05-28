@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -11,9 +11,6 @@ public protocol Component: AnyObject {
     
     /// Defines the environment used to make networking requests.
     var environment: Environment { get set }
-    
-    /// :nodoc:
-    var _isDropIn: Bool { get set } // swiftlint:disable:this identifier_name
     
 }
 

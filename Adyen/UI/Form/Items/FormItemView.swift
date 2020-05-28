@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -27,7 +27,7 @@ open class FormItemView<ItemType: FormItem>: UIView, AnyFormItemView {
         self.item = item
         
         super.init(frame: .zero)
-        
+        accessibilityIdentifier = item.identifier
         preservesSuperviewLayoutMargins = true
     }
     

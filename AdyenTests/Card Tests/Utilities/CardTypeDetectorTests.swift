@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -51,10 +51,6 @@ class CardTypeDetectorTests: XCTestCase {
     
     func testDankortType() {
         assert(cardNumbers: CardNumbers.dankort, with: CardType.dankort)
-    }
-    
-    func testUnionPayType() {
-        assert(cardNumbers: CardNumbers.unionPay, with: CardType.unionPay)
     }
     
     func testUATPType() {

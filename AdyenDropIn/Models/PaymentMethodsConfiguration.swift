@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -16,6 +16,9 @@ extension DropInComponent {
         public var card = CardConfiguration()
         
         public var applePay = ApplePayConfiguration()
+        
+        /// Indicates the localization parameters, leave it nil to use the default parameters.
+        public var localizationParameters: LocalizationParameters?
         
         /// Initializes the drop in configuration.
         public init() {}
@@ -41,6 +44,14 @@ extension DropInComponent {
             
             /// The merchant identifier for apple pay.
             public var merchantIdentifier: String?
+            
+            /// A list of fields that you need for a billing contact in order to process the transaction.
+            /// Ignored on iOS 10.*.
+            public var requiredBillingContactFields: Set<PKContactField> = []
+            
+            /// A list of fields that you need for a shipping contact in order to process the transaction.
+            /// Ignored on iOS 10.*.
+            public var requiredShippingContactFields: Set<PKContactField> = []
             
         }
     }

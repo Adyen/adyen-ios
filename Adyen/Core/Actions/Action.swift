@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen B.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -11,6 +11,9 @@ public enum Action: Decodable {
     
     /// Indicates the user should be redirected to a URL.
     case redirect(RedirectAction)
+    
+    /// Indicates the user should be redirected to an SDK.
+    case sdk(SDKAction)
     
     /// Indicates a 3D Secure device fingerprint should be taken.
     case threeDS2Fingerprint(ThreeDS2FingerprintAction)
@@ -26,12 +29,14 @@ public enum Action: Decodable {
         let type = try container.decode(ActionType.self, forKey: .type)
         
         switch type {
-        case .redirect:
+        case .redirect, .qrCode:
             self = .redirect(try RedirectAction(from: decoder))
         case .threeDS2Fingerprint:
             self = .threeDS2Fingerprint(try ThreeDS2FingerprintAction(from: decoder))
         case .threeDS2Challenge:
             self = .threeDS2Challenge(try ThreeDS2ChallengeAction(from: decoder))
+        case .sdk:
+            self = .sdk(try SDKAction(from: decoder))
         }
     }
     
@@ -39,6 +44,8 @@ public enum Action: Decodable {
         case redirect
         case threeDS2Fingerprint
         case threeDS2Challenge
+        case sdk
+        case qrCode
     }
     
     private enum CodingKeys: String, CodingKey {
