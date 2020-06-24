@@ -65,11 +65,11 @@ private extension FormCardNumberItemView {
                 imageView.backgroundColor = style.backgroundColor
                 cardLogos.append(imageView)
                 
-                observe(logo.isHidden) { [unowned imageView, weak self] isHidden in
+                observe(logo.$isHidden) { [unowned imageView, weak self] isHidden in
                     self?.set(view: imageView, hidden: isHidden)
                 }
                 
-                logo.isHidden.publish(false)
+                logo.$isHidden.publish(false)
             }
         }
         
@@ -104,13 +104,15 @@ private extension FormCardNumberItemView {
     
     private class CardTypeLogoView: NetworkImageView {
         
+        private let rounding: CornerRounding
+        
         internal init(cardTypeLogo: FormCardNumberItem.CardTypeLogo, style: ImageStyle) {
+            self.rounding = style.cornerRounding
             super.init(frame: .zero)
             
             imageURL = cardTypeLogo.url
             
             layer.masksToBounds = style.clipsToBounds
-            layer.cornerRadius = style.cornerRadius
             layer.borderWidth = style.borderWidth
             layer.borderColor = style.borderColor?.cgColor
             backgroundColor = style.backgroundColor
@@ -124,6 +126,9 @@ private extension FormCardNumberItemView {
             return cardSize
         }
         
+        override func layoutSubviews() {
+            super.layoutSubviews()
+            self.adyen.round(using: rounding)
+        }
     }
-    
 }

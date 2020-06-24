@@ -21,7 +21,7 @@ class BCMCComponentTests: XCTestCase {
     private static var randomTestValidCardPublicKey = "59554|59YWNVYSILHQWVXSIYY8XVK5HMLEAFT2JPJBDVHUD2798K12GKE652PYLJYYNBR0HVN0AYLC38VIU0TSBC9JTQZ4AHOHPPIGVH985H6EI5HAFZXZAM0QIXBAYEP180X0MM6HRHZONIM62TI9US8NXHXNKYSRE8ASJLY3KED6KDD6SY4I29CUY5FYTN8XEQ8NS8M0ECUAG0GV08XAX19HEX8IQ35SNRY8P9G0YOTTEFYC8QGM7N4PYRUWTSOEJV8W9AKJ8ZLR851OA0P7NZOJXZ2EOYNWSORS9RL4HGXVXGANDYXOWCD7XYPHJD6EPYGRUDV87EOT5FHR574DJW5881Y88Y2QR6R9W1WG5N0CV3WJGELJ971OR0S0PTKHOFW7PXRRDVQU1TT4Q8KJJLZ2VHS1BYP0VFQY1FOADWZ2YPGXDT6KPSN6OJ81G9B9BO7LMGYIONUDWQZQM41O27RROX44I89WRLHZHNYP5NEF2ACTF1AJHA4SNTUN9Z93HYQ2"
     
     func testDefaultConfigAllFieldsArePresent() {
-        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", brands: ["any_test_brand_name"])
+        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["any_test_brand_name"])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod, publicKey: BCMCComponentTests.randomTestValidCardPublicKey)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -42,7 +42,7 @@ class BCMCComponentTests: XCTestCase {
     }
     
     func testShowHolderNameField() {
-        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", brands: ["any_test_brand_name"])
+        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["any_test_brand_name"])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod, publicKey: BCMCComponentTests.randomTestValidCardPublicKey)
         sut.showsHolderNameField = true
@@ -64,7 +64,7 @@ class BCMCComponentTests: XCTestCase {
     }
     
     func testHideStorePaymentMethodField() {
-        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", brands: ["any_test_brand_name"])
+        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["any_test_brand_name"])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod, publicKey: BCMCComponentTests.randomTestValidCardPublicKey)
         sut.showsStorePaymentMethodField = false
@@ -86,7 +86,7 @@ class BCMCComponentTests: XCTestCase {
     }
     
     func testValidCardTypeDetection() {
-        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", brands: ["any_test_brand_name"])
+        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["any_test_brand_name"])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod, publicKey: BCMCComponentTests.randomTestValidCardPublicKey)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -102,7 +102,7 @@ class BCMCComponentTests: XCTestCase {
             let cardNumberItem = cardNumberItemView!.item
             XCTAssertEqual(cardNumberItem.cardTypeLogos.count, 1)
             XCTAssertEqual(cardNumberItem.cardTypeLogos.first?.url, LogoURLProvider.logoURL(withName: "bcmc", environment: sut.environment))
-            XCTAssertEqual(cardNumberItem.cardTypeLogos.first?.isHidden.value, false)
+            XCTAssertEqual(cardNumberItem.cardTypeLogos.first?.isHidden, false)
             XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem.cardTypeLogos"))
             
             expectation.fulfill()
@@ -111,7 +111,7 @@ class BCMCComponentTests: XCTestCase {
     }
     
     func testInvalidCardTypeDetection() {
-        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", brands: ["any_test_brand_name"])
+        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["any_test_brand_name"])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod, publicKey: BCMCComponentTests.randomTestValidCardPublicKey)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -123,7 +123,7 @@ class BCMCComponentTests: XCTestCase {
             self.populate(textItemView: cardNumberItemView!, with: "980344")
             
             let cardNumberItem = cardNumberItemView!.item
-            XCTAssertTrue(cardNumberItem.cardTypeLogos.allSatisfy { $0.isHidden.value })
+            XCTAssertTrue(cardNumberItem.cardTypeLogos.allSatisfy { $0.isHidden })
             
             expectation.fulfill()
         }
@@ -131,7 +131,7 @@ class BCMCComponentTests: XCTestCase {
     }
     
     func testSubmitValidPaymentData() {
-        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", brands: ["any_test_brand_name"])
+        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["any_test_brand_name"])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod, publicKey: BCMCComponentTests.randomTestValidCardPublicKey)
         sut.delegate = delegate
@@ -180,8 +180,58 @@ class BCMCComponentTests: XCTestCase {
         wait(for: [expectation, didSubmitExpectation], timeout: 5)
     }
     
+    func testDelegateCallledCorrectCard() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["any_test_brand_name"])
+        let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
+        let sut = BCMCComponent(paymentMethod: paymentMethod, publicKey: BCMCComponentTests.randomTestValidCardPublicKey)
+        sut.showsLargeTitle = false
+        
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        let expectationBin = XCTestExpectation(description: "Bin Expectation")
+        let expectationCardType = XCTestExpectation(description: "CardType Expectation")
+        let delegateMock = BCMCComponentDelegateMock(onBINDidChange: { value in
+            XCTAssertEqual(value, "670344")
+            expectationBin.fulfill()
+        }, onCardTypeChange: { value in
+            XCTAssertEqual(value, true)
+            expectationCardType.fulfill()
+        })
+        sut.bcmcComponentDelegate = delegateMock
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+            let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
+            self.populate(textItemView: cardNumberItemView!, with: "6703444444444449")
+        }
+        
+        wait(for: [expectationBin, expectationCardType], timeout: 5)
+    }
+    
+    func testDelegateIncorrectCard() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["any_test_brand_name"])
+        let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
+        let sut = BCMCComponent(paymentMethod: paymentMethod, publicKey: BCMCComponentTests.randomTestValidCardPublicKey)
+        sut.showsLargeTitle = false
+        
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        let expectationCardType = XCTestExpectation(description: "CardType Expectation")
+        let delegateMock = BCMCComponentDelegateMock(onBINDidChange: { _ in }, onCardTypeChange: { value in
+            XCTAssertEqual(value, false)
+            expectationCardType.fulfill()
+        })
+        sut.bcmcComponentDelegate = delegateMock
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+            let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
+            self.populate(textItemView: cardNumberItemView!, with: "321453532")
+        }
+        
+        wait(for: [expectationCardType], timeout: 5)
+    }
+    
     func testSubmitPaymentDataInvalidCardNumber() {
-        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", brands: ["any_test_brand_name"])
+        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["any_test_brand_name"])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod, publicKey: BCMCComponentTests.randomTestValidCardPublicKey)
         sut.delegate = delegate
@@ -225,7 +275,7 @@ class BCMCComponentTests: XCTestCase {
     }
     
     func testBigTitle() {
-        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", brands: ["any_test_brand_name"])
+        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["any_test_brand_name"])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod, publicKey: BCMCComponentTests.randomTestValidCardPublicKey)
         sut.showsLargeTitle = false

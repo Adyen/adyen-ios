@@ -6,13 +6,21 @@
 
 import Foundation
 
-let cardDictionary = [
+let creditCardDictionary = [
     "type": "scheme",
     "name": "Credit Card",
+    "fundingSource": "credit",
     "brands": ["mc", "visa", "amex"]
 ] as [String: Any]
 
-let storedCardDictionary = [
+let debitCardDictionary = [
+    "type": "scheme",
+    "name": "Credit Card",
+    "fundingSource": "debit",
+    "brands": ["mc", "visa", "amex"]
+] as [String: Any]
+
+let storedCreditCardDictionary = [
     "type": "scheme",
     "id": "9314881977134903",
     "name": "VISA",
@@ -21,6 +29,23 @@ let storedCardDictionary = [
     "expiryMonth": "08",
     "expiryYear": "2018",
     "holderName": "test",
+    "fundingSource": "credit",
+    "supportedShopperInteractions": [
+        "Ecommerce",
+        "ContAuth"
+    ]
+] as [String: Any]
+
+let storedDeditCardDictionary = [
+    "type": "scheme",
+    "id": "9314881977134903",
+    "name": "VISA",
+    "brand": "visa",
+    "lastFour": "1111",
+    "expiryMonth": "08",
+    "expiryYear": "2018",
+    "holderName": "test",
+    "fundingSource": "debit",
     "supportedShopperInteractions": [
         "Ecommerce",
         "ContAuth"

@@ -22,8 +22,8 @@
 "adyen.card.numberItem.invalid" = "Ungültige Kartennummer";
 "adyen.card.expiryItem.title" = "Ablaufdatum";
 "adyen.card.expiryItem.placeholder" = "MM/JJ";
-"adyen.card.expiryItem.invalid" = "Ungültiges Verfallsdatum";
-"adyen.card.cvcItem.invalid" = "Ungültiger Sicherheitscode";
+"adyen.card.expiryItem.invalid" = "Ungültiges Ablaufdatum";
+"adyen.card.cvcItem.invalid" = "Ungültiges CVC/CVV-Format";
 "adyen.card.cvcItem.title" = "CVC / CVV";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "Karte verifizieren";
@@ -35,3 +35,4 @@
 "adyen.phoneNumber.title" = "Telefonnummer";
 "adyen.phoneNumber.invalid" = "Ungültige Telefonnummer";
 "adyen.phoneNumber.placeholder" = "123–456–789";
+"adyen.card.cvcItem.placeholder.digits" = "%@ Stellen";

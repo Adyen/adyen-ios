@@ -7,6 +7,7 @@
 import Foundation
 
 /// Describes a single picker item in the list of selectable items.
+/// :nodoc:
 public struct PhoneExtensionPickerItem: Equatable {
     
     /// Picker item identifier.

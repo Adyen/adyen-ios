@@ -10,15 +10,11 @@ import Foundation
 public struct FormFooterStyle: ViewStyle {
     
     /// The title style.
-    public var title: TextStyle = TextStyle(font: .systemFont(ofSize: 13.0),
-                                            color: UIColor.AdyenCore.componentQuaternaryLabel,
-                                            textAlignment: .center)
+    public var title: TextStyle = TextStyle(font: .preferredFont(forTextStyle: .footnote),
+                                            color: UIColor.AdyenCore.componentQuaternaryLabel)
     
     /// The main button style.
-    public var button = ButtonStyle(title: TextStyle(font: .systemFont(ofSize: 17.0, weight: .semibold),
-                                                     color: .white,
-                                                     textAlignment: .center),
-                                    cornerRadius: 8.0)
+    public var button = ButtonStyle(title: TextStyle(font: .preferredFont(forTextStyle: .headline), color: .white))
     
     /// :nodoc:
     public var backgroundColor: UIColor = .clear

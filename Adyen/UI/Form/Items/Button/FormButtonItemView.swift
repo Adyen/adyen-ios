@@ -14,10 +14,12 @@ internal final class FormButtonItemView: FormItemView<FormButtonItem>, Observer 
     /// - Parameter item: The item represented by the view.
     internal required init(item: FormButtonItem) {
         super.init(item: item)
+        backgroundColor = item.style.backgroundColor
         
         addSubview(submitButton)
         
-        bind(item.showsActivityIndicator, to: submitButton, at: \.showsActivityIndicator)
+        bind(item.$showsActivityIndicator, to: submitButton, at: \.showsActivityIndicator)
+        bind(item.$enabled, to: submitButton, at: \.isEnabled)
         
         preservesSuperviewLayoutMargins = true
         configureConstraints()
@@ -31,7 +33,7 @@ internal final class FormButtonItemView: FormItemView<FormButtonItem>, Observer 
     
     private lazy var submitButton: SubmitButton = {
         
-        let submitButton = SubmitButton(style: item.style)
+        let submitButton = SubmitButton(style: item.style.button)
         
         submitButton.title = item.title
         submitButton.addTarget(self, action: #selector(didSelectSubmitButton), for: .touchUpInside)
@@ -52,10 +54,10 @@ internal final class FormButtonItemView: FormItemView<FormButtonItem>, Observer 
     
     private func configureConstraints() {
         let constraints = [
-            submitButton.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
+            submitButton.topAnchor.constraint(equalTo: topAnchor, constant: layoutMargins.top),
             submitButton.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             submitButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            submitButton.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
+            submitButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -layoutMargins.bottom - 16)
         ]
         
         NSLayoutConstraint.activate(constraints)

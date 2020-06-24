@@ -25,11 +25,6 @@ public final class ListCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    /// :nodoc:
-    public override func prepareForReuse() {
-        item = nil
-    }
-    
     // MARK: - Item
     
     /// The item displayed in the cell cell.
@@ -108,7 +103,7 @@ public final class ListCell: UITableViewCell {
         NSLayoutConstraint.activate(constraints)
         
         let heightConstraint = contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 48.0)
-        heightConstraint.priority = .required
+        heightConstraint.priority = .defaultHigh
         heightConstraint.isActive = true
     }
     

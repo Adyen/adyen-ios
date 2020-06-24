@@ -7,22 +7,16 @@
 /// A view representing a form card security code item.
 internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>, Observer {
     
-    private static let fourDigitHint = "1234"
-    private static let threeDigitHint = "123"
-    
     internal required init(item: FormCardSecurityCodeItem) {
         super.init(item: item)
         accessory = .customView(cardHintView)
-        textField.placeholder = FormCardSecurityCodeItemView.threeDigitHint
-        observe(item.selectedCard, eventHandler: { [weak self] card in
-            // TODO: replace with actual translated values
-            // let localizationKey = "creditCard.cvcField.placeholder.\(isAmex ? "4" : "3")digits"
-            // textField.placeholder = ADYLocalizedString(localizationKey, localizationParameters)
-            let hintText = card == CardType.americanExpress ?
-                FormCardSecurityCodeItemView.fourDigitHint :
-                FormCardSecurityCodeItemView.threeDigitHint
-            self?.textField.placeholder = hintText
-        })
+        observe(item.$selectedCard) { [weak self] cardsType in
+            let number = cardsType == CardType.americanExpress ? "4" : "3"
+            let localization = ADYLocalizedString("adyen.card.cvcItem.placeholder.digits", item.localizationParameters)
+            self?.textField.placeholder = String(format: localization, number)
+        }
+        
+        item.$selectedCard.publish(nil)
     }
     
     internal required init?(coder aDecoder: NSCoder) {
@@ -71,7 +65,7 @@ extension FormCardSecurityCodeItemView {
             image = UIImage(named: logoResource, in: self.bundle, compatibleWith: nil)
             translatesAutoresizingMaskIntoConstraints = false
             setupConstrints()
-            observe(item.selectedCard) { [weak self] cardType in self?.flipCard(toFront: cardType == CardType.americanExpress) }
+            observe(item.$selectedCard) { [weak self] cardType in self?.flipCard(toFront: cardType == CardType.americanExpress) }
         }
         
         internal required init?(coder: NSCoder) {
@@ -109,6 +103,12 @@ extension FormCardSecurityCodeItemView {
                            options: [.repeat, .autoreverse],
                            animations: { self.hintImage.alpha = self.minimumAlpha },
                            completion: nil)
+        }
+        
+        public override var accessibilityIdentifier: String? {
+            didSet {
+                hintImage.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "imageView")
+            }
         }
         
         private func setupConstrints() {

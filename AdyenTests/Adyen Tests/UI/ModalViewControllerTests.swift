@@ -26,42 +26,34 @@ class ModalViewControllerTests: XCTestCase {
         let style = NavigationStyle()
         
         loadAndRunTests(for: style) {
-            if #available(iOS 13.0, *) {} else {
-                XCTAssertEqual(self.sut.cancelButton.tintColor, UIColor.AdyenCore.defaultBlue)
-            }
-            
+            XCTAssertEqual(self.sut.cancelButton.tintColor.cgColor, UIColor.AdyenCore.defaultBlue.cgColor)
             XCTAssertEqual(self.sut.titleLabel.textColor, UIColor.AdyenCore.componentLabel)
-            XCTAssertEqual(self.sut.titleLabel.font, .systemFont(ofSize: 20, weight: .semibold))
+            XCTAssertEqual(self.sut.titleLabel.font, UIFont.AdyenCore.barTitle)
             XCTAssertEqual(self.sut.titleLabel.textAlignment, .left)
-            XCTAssertEqual(self.sut.view.tintColor, UIColor.AdyenCore.defaultBlue)
+            XCTAssertEqual(self.sut.view.tintColor.cgColor, UIColor.AdyenCore.defaultBlue.cgColor)
             XCTAssertEqual(self.sut.view.backgroundColor, UIColor.AdyenCore.componentBackground)
         }
     }
     
     func testCustomStyle() {
         var style = NavigationStyle()
-        style.barBackgroundColor = .green
-        style.barTitle.color = .red
-        style.barTintColor = .white
-        style.tintColor = .red
+        style.tintColor = .white
         style.backgroundColor = .brown
+        style.separatorColor = .red
         style.barTitle = .init(font: .italicSystemFont(ofSize: 17), color: .yellow, textAlignment: .right)
         
         loadAndRunTests(for: style) {
-            if #available(iOS 13.0, *) {} else {
-                XCTAssertEqual(self.sut.cancelButton.tintColor, UIColor.AdyenCore.componentBackground)
-            }
-            
+            XCTAssertEqual(self.sut.cancelButton.tintColor, .white)
             XCTAssertEqual(self.sut.titleLabel.textColor, .yellow)
             XCTAssertEqual(self.sut.titleLabel.font, .italicSystemFont(ofSize: 17))
             XCTAssertEqual(self.sut.titleLabel.textAlignment, .left)
-            XCTAssertEqual(self.sut.view.tintColor, .red)
             XCTAssertEqual(self.sut.view.backgroundColor, .brown)
+            XCTAssertEqual(self.sut.separator.backgroundColor, .red)
         }
     }
     
     fileprivate func loadAndRunTests(for style: NavigationStyle, test: @escaping () -> Void) {
-        sut = ModalViewController(rootViewController: viewController, style: style, cancelButtonHandler: nil)
+        sut = ModalViewController(rootViewController: viewController, style: style, cancelButtonHandler: { _ in })
         UIApplication.shared.keyWindow?.rootViewController = sut
         sut.loadView()
         sut.viewDidLoad()

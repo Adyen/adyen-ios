@@ -16,6 +16,9 @@ public struct CardPaymentMethod: AnyCardPaymentMethod {
     public let name: String
     
     /// :nodoc:
+    public let fundingSource: CardFundingSource?
+    
+    /// :nodoc:
     public var displayInformation: DisplayInformation {
         return DisplayInformation(title: name, subtitle: nil, logoName: "card")
     }
@@ -31,6 +34,7 @@ public struct CardPaymentMethod: AnyCardPaymentMethod {
         self.type = try container.decode(String.self, forKey: .type)
         self.name = try container.decode(String.self, forKey: .name)
         self.brands = try container.decodeIfPresent([String].self, forKey: .brands) ?? []
+        self.fundingSource = try container.decodeIfPresent(CardFundingSource.self, forKey: .fundingSource)
     }
     
     /// :nodoc:
@@ -38,22 +42,24 @@ public struct CardPaymentMethod: AnyCardPaymentMethod {
         return builder.build(paymentMethod: self)
     }
     
-    internal init(type: String, name: String, brands: [String]) {
+    internal init(type: String, name: String, fundingSource: CardFundingSource, brands: [String]) {
         self.type = type
         self.name = name
         self.brands = brands
+        self.fundingSource = fundingSource
     }
     
     private enum CodingKeys: String, CodingKey {
         case type
         case name
         case brands
+        case fundingSource
     }
     
 }
 
 /// A stored card.
-public struct StoredCardPaymentMethod: StoredPaymentMethod {
+public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod {
     
     /// :nodoc:
     public let type: String
@@ -63,6 +69,12 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod {
     
     /// :nodoc:
     public let name: String
+    
+    /// :nodoc:
+    public var brands: [String] { [brand] }
+    
+    /// :nodoc:
+    public var fundingSource: CardFundingSource?
     
     /// :nodoc:
     public var displayInformation: DisplayInformation {
@@ -113,6 +125,7 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod {
         case expiryYear
         case holderName
         case supportedShopperInteractions
+        case fundingSource
     }
     
 }

@@ -16,7 +16,6 @@ internal final class FormSplitTextItemView: FormItemView<FormSplitTextItem> {
         super.init(item: item)
         
         addSubview(stackView)
-        backgroundColor = item.style.backgroundColor
         
         configureConstraints()
     }

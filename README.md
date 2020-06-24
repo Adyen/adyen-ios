@@ -158,13 +158,26 @@ A full list of customization options can be found in the [API Reference][referen
 
 - iOS 10.0+
 - Xcode 11.0+
-- Swift 5
+- Swift 5.1
 
 ## See also
 
 * [Complete Documentation](https://docs.adyen.com/developers/checkout/ios)
 
 * [Components API Reference](https://adyen.github.io/adyen-ios/Docs/index.html)
+
+## Support
+
+If you have a feature request, or spotted a bug or a technical problem, create a GitHub issue. For other questions, contact our [support team](https://support.adyen.com/hc/en-us/requests/new?ticket_form_id=360000705420).
+
+## Contributing
+We strongly encourage you to join us in contributing to this repository so everyone can benefit from:
+* New features and functionality
+* Resolved bug fixes and issues
+* Any general improvements
+
+
+Read our [**contribution guidelines**](CONTRIBUTING.md) to find out how.
 
 ## License
 

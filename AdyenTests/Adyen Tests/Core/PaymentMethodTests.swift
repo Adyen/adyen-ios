@@ -12,8 +12,8 @@ class PaymentMethodTests: XCTestCase {
     func testDecodingPaymentMethods() throws {
         let dictionary = [
             "storedPaymentMethods": [
-                storedCardDictionary,
-                storedCardDictionary,
+                storedCreditCardDictionary,
+                storedCreditCardDictionary,
                 storedPayPalDictionary,
                 [
                     "type": "unknown",
@@ -25,10 +25,11 @@ class PaymentMethodTests: XCTestCase {
                     "type": "unknown",
                     "name": "Invalid Stored Payment Method"
                 ],
-                storedBcmcDictionary
+                storedBcmcDictionary,
+                storedDeditCardDictionary
             ],
             "paymentMethods": [
-                cardDictionary,
+                creditCardDictionary,
                 issuerListDictionary,
                 sepaDirectDebitDictionary,
                 [
@@ -48,16 +49,19 @@ class PaymentMethodTests: XCTestCase {
                 weChatMiniProgramDictionary,
                 bcmcMobileQR,
                 qiwiWallet,
-                weChatSDKDictionary
+                weChatSDKDictionary,
+                debitCardDictionary
             ]
         ]
         
         // Stored payment methods
         
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        XCTAssertEqual(paymentMethods.stored.count, 5)
+        XCTAssertEqual(paymentMethods.stored.count, 6)
         XCTAssertTrue(paymentMethods.stored[0] is StoredCardPaymentMethod)
+        
         XCTAssertTrue(paymentMethods.stored[1] is StoredCardPaymentMethod)
+        XCTAssertEqual((paymentMethods.stored[1] as! StoredCardPaymentMethod).fundingSource!, .credit)
         
         // Test StoredCardPaymentMethod localization
         let storedCardPaymentMethod = paymentMethods.stored[1] as! StoredCardPaymentMethod
@@ -70,6 +74,9 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertTrue(paymentMethods.stored[2] is StoredPayPalPaymentMethod)
         XCTAssertTrue(paymentMethods.stored[3] is StoredRedirectPaymentMethod)
         XCTAssertTrue(paymentMethods.stored[4] is StoredBCMCPaymentMethod)
+        
+        XCTAssertTrue(paymentMethods.stored[5] is StoredCardPaymentMethod)
+        XCTAssertEqual((paymentMethods.stored[5] as! StoredCardPaymentMethod).fundingSource!, .debit)
         
         // Test StoredBCMCPaymentMethod localization
         let storedBCMCPaymentMethod = paymentMethods.stored[4] as! StoredBCMCPaymentMethod
@@ -94,8 +101,10 @@ class PaymentMethodTests: XCTestCase {
         
         // Regular payment methods
         
-        XCTAssertEqual(paymentMethods.regular.count, 10)
+        XCTAssertEqual(paymentMethods.regular.count, 11)
         XCTAssertTrue(paymentMethods.regular[0] is CardPaymentMethod)
+        XCTAssertEqual((paymentMethods.regular[0] as! CardPaymentMethod).fundingSource!, .credit)
+        
         XCTAssertTrue(paymentMethods.regular[1] is IssuerListPaymentMethod)
         XCTAssertTrue(paymentMethods.regular[2] is SEPADirectDebitPaymentMethod)
         XCTAssertTrue(paymentMethods.regular[3] is RedirectPaymentMethod)
@@ -142,14 +151,26 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertTrue(paymentMethods.regular[9] is WeChatPayPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[9].type, "wechatpaySDK")
         XCTAssertEqual(paymentMethods.regular[9].name, "WeChat Pay")
+        
+        XCTAssertTrue(paymentMethods.regular[10] is CardPaymentMethod)
+        XCTAssertEqual((paymentMethods.regular[10] as! CardPaymentMethod).fundingSource!, .debit)
     }
     
     // MARK: - Card
     
-    func testDecodingCardPaymentMethod() throws {
-        let paymentMethod = try Coder.decode(cardDictionary) as CardPaymentMethod
+    func testDecodingCreditCardPaymentMethod() throws {
+        let paymentMethod = try Coder.decode(creditCardDictionary) as CardPaymentMethod
         XCTAssertEqual(paymentMethod.type, "scheme")
         XCTAssertEqual(paymentMethod.name, "Credit Card")
+        XCTAssertEqual(paymentMethod.fundingSource!, .credit)
+        XCTAssertEqual(paymentMethod.brands, ["mc", "visa", "amex"])
+    }
+    
+    func testDecodingDeditCardPaymentMethod() throws {
+        let paymentMethod = try Coder.decode(debitCardDictionary) as CardPaymentMethod
+        XCTAssertEqual(paymentMethod.type, "scheme")
+        XCTAssertEqual(paymentMethod.name, "Credit Card")
+        XCTAssertEqual(paymentMethod.fundingSource!, .debit)
         XCTAssertEqual(paymentMethod.brands, ["mc", "visa", "amex"])
     }
     
@@ -161,7 +182,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testDecodingCardPaymentMethodWithoutBrands() throws {
-        var dictionary = cardDictionary
+        var dictionary = creditCardDictionary
         dictionary.removeValue(forKey: "brands")
         
         let paymentMethod = try Coder.decode(dictionary) as CardPaymentMethod
@@ -170,8 +191,8 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertTrue(paymentMethod.brands.isEmpty)
     }
     
-    func testDecodingStoredCardPaymentMethod() throws {
-        let paymentMethod = try Coder.decode(storedCardDictionary) as StoredCardPaymentMethod
+    func testDecodingStoredCreditCardPaymentMethod() throws {
+        let paymentMethod = try Coder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
         let expectedLocalizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         XCTAssertEqual(paymentMethod.type, "scheme")
         XCTAssertEqual(paymentMethod.name, "VISA")
@@ -180,6 +201,23 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.expiryMonth, "08")
         XCTAssertEqual(paymentMethod.expiryYear, "2018")
         XCTAssertEqual(paymentMethod.holderName, "test")
+        XCTAssertEqual(paymentMethod.fundingSource, .credit)
+        XCTAssertEqual(paymentMethod.supportedShopperInteractions, [.shopperPresent, .shopperNotPresent])
+        XCTAssertEqual(paymentMethod.displayInformation, expectedStoredCardPaymentMethodDisplayInfo(method: paymentMethod, localizationParameters: nil))
+        XCTAssertEqual(paymentMethod.localizedDisplayInformation(using: expectedLocalizationParameters), expectedStoredCardPaymentMethodDisplayInfo(method: paymentMethod, localizationParameters: expectedLocalizationParameters))
+    }
+    
+    func testDecodingStoredDeditCardPaymentMethod() throws {
+        let paymentMethod = try Coder.decode(storedDeditCardDictionary) as StoredCardPaymentMethod
+        let expectedLocalizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
+        XCTAssertEqual(paymentMethod.type, "scheme")
+        XCTAssertEqual(paymentMethod.name, "VISA")
+        XCTAssertEqual(paymentMethod.brand, "visa")
+        XCTAssertEqual(paymentMethod.lastFour, "1111")
+        XCTAssertEqual(paymentMethod.expiryMonth, "08")
+        XCTAssertEqual(paymentMethod.expiryYear, "2018")
+        XCTAssertEqual(paymentMethod.holderName, "test")
+        XCTAssertEqual(paymentMethod.fundingSource, .debit)
         XCTAssertEqual(paymentMethod.supportedShopperInteractions, [.shopperPresent, .shopperNotPresent])
         XCTAssertEqual(paymentMethod.displayInformation, expectedStoredCardPaymentMethodDisplayInfo(method: paymentMethod, localizationParameters: nil))
         XCTAssertEqual(paymentMethod.localizedDisplayInformation(using: expectedLocalizationParameters), expectedStoredCardPaymentMethodDisplayInfo(method: paymentMethod, localizationParameters: expectedLocalizationParameters))

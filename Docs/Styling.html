@@ -115,6 +115,9 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Card%20Component.html#/s:5Adyen19CardNumberValidatorC">CardNumberValidator</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/CardComponentDelegate.html">CardComponentDelegate</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -184,6 +187,9 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/BCMCComponent.html">BCMCComponent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/BCMCComponentDelegate.html">BCMCComponentDelegate</a>
               </li>
             </ul>
           </li>
@@ -304,6 +310,9 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/ComponentError.html">ComponentError</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/SecuredViewController.html">SecuredViewController</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -367,10 +376,19 @@
                 <a class="nav-group-task-link" href="Structs/RedirectAction.html">RedirectAction</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/SDKAction.html">SDKAction</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/ThreeDS2FingerprintAction.html">ThreeDS2FingerprintAction</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/ThreeDS2ChallengeAction.html">ThreeDS2ChallengeAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/CardFundingSource.html">CardFundingSource</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/BrowserInfo.html">BrowserInfo</a>
               </li>
             </ul>
           </li>
@@ -391,6 +409,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/FormSwitchItemStyle.html">FormSwitchItemStyle</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/FormButtonItemStyle.html">FormButtonItemStyle</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/ListComponentStyle.html">ListComponentStyle</a>
@@ -418,6 +439,12 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/ViewStyle.html">ViewStyle</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/TintableStyle.html">TintableStyle</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/CornerRounding.html">CornerRounding</a>
               </li>
             </ul>
           </li>
@@ -447,49 +474,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/LocalizationParameters.html">LocalizationParameters</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a class="nav-group-name-link" href="Other%20Classes.html">Other Classes</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Other%20Classes.html#/s:5Adyen22NumericStringValidatorC">NumericStringValidator</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a class="nav-group-name-link" href="Other%20Enums.html">Other Enumerations</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/SDKAction.html">SDKAction</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a class="nav-group-name-link" href="Other%20Extensions.html">Other Extensions</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Other%20Extensions.html#/c:objc(cs)NSURLSession">URLSession</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a class="nav-group-name-link" href="Other%20Structs.html">Other Structures</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/BrowserInfo.html">BrowserInfo</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Other%20Structs.html#/s:5Adyen24PhoneExtensionPickerItemV">PhoneExtensionPickerItem</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a class="nav-group-name-link" href="Other%20Typealiases.html">Other Type Aliases</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Other%20Typealiases.html#/s:5Adyen10URLHandlera">URLHandler</a>
               </li>
             </ul>
           </li>
@@ -613,7 +597,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">FormTextItemStyle</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ViewStyle.html">ViewStyle</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">FormTextItemStyle</span> <span class="p">:</span> <span class="kt">FormValueItemStyle</span></code></pre>
 
                         </div>
                       </div>
@@ -641,7 +625,35 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">FormSwitchItemStyle</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ViewStyle.html">ViewStyle</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">FormSwitchItemStyle</span> <span class="p">:</span> <span class="kt">FormValueItemStyle</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen19FormButtonItemStyleV"></a>
+                    <a name="//apple_ref/swift/Struct/FormButtonItemStyle" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen19FormButtonItemStyleV">FormButtonItemStyle</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Contains the styling customization options for a form button item.</p>
+
+                        <a href="Structs/FormButtonItemStyle.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">FormButtonItemStyle</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ViewStyle.html">ViewStyle</a></span></code></pre>
 
                         </div>
                       </div>
@@ -726,6 +738,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ListItemStyle</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ViewStyle.html">ViewStyle</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">ListItemStyle</span><span class="p">:</span> <span class="kt">Equatable</span></code></pre>
 
                         </div>
                       </div>
@@ -781,7 +794,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">NavigationStyle</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ViewStyle.html">ViewStyle</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">NavigationStyle</span> <span class="p">:</span> <span class="kt"><a href="Protocols/TintableStyle.html">TintableStyle</a></span></code></pre>
 
                         </div>
                       </div>
@@ -837,7 +850,8 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ImageStyle</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ViewStyle.html">ViewStyle</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ImageStyle</span> <span class="p">:</span> <span class="kt"><a href="Protocols/TintableStyle.html">TintableStyle</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">ImageStyle</span><span class="p">:</span> <span class="kt">Equatable</span></code></pre>
 
                         </div>
                       </div>
@@ -866,6 +880,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">TextStyle</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ViewStyle.html">ViewStyle</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">TextStyle</span><span class="p">:</span> <span class="kt">Equatable</span></code></pre>
 
                         </div>
                       </div>
@@ -900,6 +915,63 @@
                     </section>
                   </div>
                 </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen13TintableStyleP"></a>
+                    <a name="//apple_ref/swift/Protocol/TintableStyle" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen13TintableStyleP">TintableStyle</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Contains the styling customization options for views with acent color.</p>
+
+                        <a href="Protocols/TintableStyle.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">TintableStyle</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ViewStyle.html">ViewStyle</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen14CornerRoundingO"></a>
+                    <a name="//apple_ref/swift/Enum/CornerRounding" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen14CornerRoundingO">CornerRounding</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The size of corner rounding.</p>
+
+                        <a href="Enums/CornerRounding.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">CornerRounding</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">CornerRounding</span><span class="p">:</span> <span class="kt">Equatable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
               </ul>
             </div>
           </div>
@@ -908,8 +980,8 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2020 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2020-04-16)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.0</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+      <p>&copy; 2020 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2020-06-19)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.4</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
 </div>

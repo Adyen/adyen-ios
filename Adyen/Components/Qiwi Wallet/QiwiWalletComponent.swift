@@ -16,7 +16,7 @@ public final class QiwiWalletComponent: PaymentComponent, PresentableComponent, 
     public weak var delegate: PaymentComponentDelegate?
     
     /// :nodoc:
-    public var viewController: UIViewController { formViewController }
+    public lazy var viewController: UIViewController = SecuredViewController(child: formViewController, style: style)
     
     /// :nodoc:
     public var localizationParameters: LocalizationParameters?
@@ -45,7 +45,7 @@ public final class QiwiWalletComponent: PaymentComponent, PresentableComponent, 
     
     /// :nodoc:
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
-        footerItem.showsActivityIndicator.value = false
+        footerItem.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
         completion?()
     }
@@ -108,7 +108,7 @@ public final class QiwiWalletComponent: PaymentComponent, PresentableComponent, 
         let details = QiwiWalletDetails(paymentMethod: paymentMethod,
                                         phonePrefix: phoneNumberItem.prefix,
                                         phoneNumber: phoneNumberItem.value)
-        footerItem.showsActivityIndicator.value = true
+        footerItem.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
         
         submit(data: PaymentComponentData(paymentMethodDetails: details))

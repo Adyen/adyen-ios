@@ -42,6 +42,11 @@ internal final class DimmingPresentationController: UIPresentationController {
         layoutDidChanged()
     }
     
+    internal override var frameOfPresentedViewInContainerView: CGRect {
+        guard let containerView = containerView else { return super.frameOfPresentedViewInContainerView }
+        return containerView.frame
+    }
+    
     /// :nodoc:
     internal override func presentationTransitionWillBegin() {
         super.presentationTransitionWillBegin()

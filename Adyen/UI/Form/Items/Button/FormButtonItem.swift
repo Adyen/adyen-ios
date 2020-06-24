@@ -10,8 +10,8 @@ import Foundation
 /// :nodoc:
 public final class FormButtonItem: FormItem {
     
-    /// Indicates the button UI styling.
-    public let style: ButtonStyle
+    /// Indicates the item's UI styling.
+    public let style: FormButtonItemStyle
     
     /// :nodoc:
     public var identifier: String?
@@ -20,15 +20,18 @@ public final class FormButtonItem: FormItem {
     public var title: String?
     
     /// The observable of the button indicator activity.
-    public var showsActivityIndicator = Observable(false)
+    @Observable(false) public var showsActivityIndicator: Bool
+    
+    /// The observable of the button's availability status.
+    @Observable(true) public var enabled: Bool
     
     /// A closure that will be invoked when a button is selected.
     public var buttonSelectionHandler: (() -> Void)?
     
     /// Initializes the button item.
     ///
-    /// - Parameter style: The `SubmitButton` UI style.
-    public init(style: ButtonStyle) {
+    /// - Parameter style: The item's UI style.
+    public init(style: FormButtonItemStyle) {
         self.style = style
     }
     

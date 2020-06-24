@@ -23,8 +23,6 @@ public final class FormSwitchItemView: FormValueItemView<FormSwitchItem> {
         accessibilityTraits = switchControl.accessibilityTraits
         accessibilityValue = switchControl.accessibilityValue
         
-        backgroundColor = item.style.backgroundColor
-        
         addSubview(stackView)
         
         configureConstraints()
@@ -44,6 +42,7 @@ public final class FormSwitchItemView: FormValueItemView<FormSwitchItem> {
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.font = item.style.title.font
+        titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.textColor = item.style.title.color
         titleLabel.textAlignment = item.style.title.textAlignment
         titleLabel.backgroundColor = item.style.title.backgroundColor
@@ -60,9 +59,11 @@ public final class FormSwitchItemView: FormValueItemView<FormSwitchItem> {
     private lazy var switchControl: UISwitch = {
         let switchControl = UISwitch()
         switchControl.isOn = item.value
+        switchControl.onTintColor = item.style.tintColor
         switchControl.isAccessibilityElement = false
         switchControl.addTarget(self, action: #selector(switchControlValueChanged), for: .valueChanged)
         switchControl.setContentHuggingPriority(.required, for: .horizontal)
+        switchControl.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "switch") }
         
         return switchControl
     }()

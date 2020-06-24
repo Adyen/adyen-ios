@@ -7,6 +7,7 @@
 import Foundation
 
 /// A typealias for a closure that handles a URL through which the application was opened.
+/// :nodoc:
 public typealias URLHandler = (URL) -> Void
 
 /// Listens for the return of the shopper after a redirect.

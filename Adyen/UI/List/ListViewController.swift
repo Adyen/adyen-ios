@@ -98,7 +98,6 @@ public final class ListViewController: UITableViewController {
         tableView.separatorColor = .clear
         tableView.sectionHeaderHeight = UITableView.automaticDimension
         tableView.sectionFooterHeight = 0.0
-        tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 56.0
         tableView.register(ListCell.self, forCellReuseIdentifier: cellReuseIdentifier)
     }

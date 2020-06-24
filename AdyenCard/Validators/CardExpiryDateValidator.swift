@@ -13,6 +13,8 @@ public final class CardExpiryDateValidator: Validator {
     
     private let referenceDate: Date
     
+    private static let maxYearsDifference: Int = 30
+    
     /// :nodoc:
     public init() {
         self.referenceDate = Date()
@@ -38,7 +40,7 @@ public final class CardExpiryDateValidator: Validator {
         let monthDiff = diffComponents.month ?? 0
         let yearDiff = diffComponents.year ?? 0
         
-        guard (0...15).contains(yearDiff), monthDiff >= -3 else { return false }
+        guard (0...Self.maxYearsDifference).contains(yearDiff), monthDiff >= -3 else { return false }
         
         return true
     }

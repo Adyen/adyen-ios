@@ -6,6 +6,7 @@
 
 import Foundation
 
+/// :nodoc:
 extension URLSession: AdyenCompatible {}
 
 public extension AdyenScope where Base: URLSession {

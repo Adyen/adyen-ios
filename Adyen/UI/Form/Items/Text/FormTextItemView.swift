@@ -34,8 +34,6 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
         
         addSubview(textStackView)
         
-        backgroundColor = item.style.backgroundColor
-        
         configureConstraints()
     }
     
@@ -76,6 +74,7 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
         stackView.axis = .horizontal
         stackView.alignment = .fill
         stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.isHidden = true
         stackView.layoutMargins.bottom = abs(item.style.text.font.descender)
         
         return stackView
@@ -83,9 +82,10 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
     
     // MARK: - Title Label
     
-    private lazy var titleLabel: UILabel = {
+    internal lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.font = item.style.title.font
+        titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.textColor = item.style.title.color
         titleLabel.textAlignment = item.style.title.textAlignment
         titleLabel.backgroundColor = item.style.title.backgroundColor
@@ -101,6 +101,7 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
     public lazy var textField: UITextField = {
         let textField = TextField()
         textField.font = item.style.text.font
+        textField.adjustsFontForContentSizeCategory = true
         textField.textColor = item.style.text.color
         textField.textAlignment = item.style.text.textAlignment
         textField.backgroundColor = item.style.backgroundColor
@@ -123,6 +124,7 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
     private lazy var alertLabel: UILabel = {
         let alertLabel = UILabel()
         alertLabel.font = item.style.title.font
+        alertLabel.adjustsFontForContentSizeCategory = true
         alertLabel.textColor = item.style.errorColor
         alertLabel.textAlignment = item.style.title.textAlignment
         alertLabel.backgroundColor = item.style.title.backgroundColor
@@ -156,9 +158,12 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
         case let .customView(view):
             accessoryView = view
         default:
+            accessoryStackView.isHidden = true
             return
         }
         
+        accessoryStackView.isHidden = false
+        accessoryView.tintColor = item.style.icon.tintColor
         accessoryStackView.addArrangedSubview(accessoryView)
     }
     

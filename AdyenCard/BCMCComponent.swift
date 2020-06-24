@@ -6,6 +6,20 @@
 
 import Foundation
 
+/// Delegate for observing user's activity on `BCMCComponent`.
+public protocol BCMCComponentDelegate: class {
+    
+    /// Called when user enters PAN in `BCMCComponent`.
+    /// - Parameter value: Up to 6 first digits in entered PAN.
+    /// - Parameter component: The `BCMCComponent` instance.
+    func didChangeBIN(_ value: String, component: BCMCComponent)
+    
+    /// Called when `BCMCComponent` detected card type(s) in entered PAN.
+    /// - Parameter value: True or false if entered value matching Bancontact card. Null - if no data entered.
+    /// - Parameter component: The `BCMCComponent` instance.
+    func didChangeCardType(_ value: Bool?, component: BCMCComponent)
+}
+
 /// A component that handles BCMC card payments.
 public final class BCMCComponent: PaymentComponent, PresentableComponent, Localizable {
     
@@ -14,6 +28,9 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
     
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
+    
+    /// The delegate for user activity on component.
+    public weak var bcmcComponentDelegate: BCMCComponentDelegate?
     
     /// Indicates if form will show a large header title. True - show title; False - assign title to a view controllers's title.
     /// Defaults to true.
@@ -66,6 +83,7 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
         self.cardComponent.supportedCardTypes = [.bcmc]
         self.cardComponent.showsSecurityCodeField = false
         self.cardComponent.delegate = self
+        self.cardComponent.cardComponentDelegate = self
     }
     
     // MARK: - Presentable Component Protocol
@@ -122,6 +140,21 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
     // MARK: - Private
     
     private let cardComponent: CardComponent
+}
+
+/// :nodoc:
+extension BCMCComponent: CardComponentDelegate {
+    
+    /// :nodoc:
+    public func didChangeBIN(_ value: String, component: CardComponent) {
+        bcmcComponentDelegate?.didChangeBIN(value, component: self)
+    }
+    
+    /// :nodoc:
+    public func didChangeCardType(_ value: [CardType]?, component: CardComponent) {
+        let isCardBCMC = value == nil ? nil : value?.first == CardType.bcmc
+        bcmcComponentDelegate?.didChangeCardType(isCardBCMC, component: self)
+    }
 }
 
 /// :nodoc:

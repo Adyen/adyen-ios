@@ -11,7 +11,7 @@ import UIKit
 internal final class ModalViewController: UIViewController {
     
     private let style: NavigationStyle
-    private weak var innerController: UIViewController?
+    private let innerController: UIViewController
     
     /// :nodoc:
     private var navigationBarHeight: CGFloat = 63.0
@@ -47,19 +47,18 @@ internal final class ModalViewController: UIViewController {
     /// :nodoc:
     internal var cancelButtonHandler: ((Bool) -> Void)?
     
-    /// :nodoc:
-    internal var requiresInput: Bool { innerController is FormViewController }
-    
     // MARK: - UIViewController
     
     /// :nodoc:
     public override func loadView() {
         super.loadView()
-        titleLabel.text = innerController?.title ?? ""
+        titleLabel.text = innerController.title ?? ""
         cancelButton.isHidden = cancelButtonHandler == nil
         
+        innerController.willMove(toParent: self)
+        addChild(innerController)
         view.addSubview(stackView)
-        innerController?.didMove(toParent: self)
+        innerController.didMove(toParent: self)
         arrangeConstraints()
     }
     
@@ -67,11 +66,10 @@ internal final class ModalViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        innerController?.view.layoutIfNeeded()
-        view.tintColor = style.tintColor
+        innerController.view.layoutIfNeeded()
         view.backgroundColor = style.backgroundColor
         
-        cancelButton.tintColor = style.barTintColor
+        cancelButton.tintColor = style.tintColor
         guard let title = titleLabel.text, !title.isEmpty else { return }
         titleLabel.attributedText = NSAttributedString(string: title,
                                                        attributes: [NSAttributedString.Key.font: style.barTitle.font,
@@ -81,8 +79,9 @@ internal final class ModalViewController: UIViewController {
     
     internal override var preferredContentSize: CGSize {
         get {
+            guard innerController.isViewLoaded else { return .zero }
             return CGSize(width: view.bounds.width,
-                          height: navigationBarHeight + (innerController?.preferredContentSize.height ?? 0))
+                          height: navigationBarHeight + innerController.preferredContentSize.height)
         }
         
         // swiftlint:disable:next unused_setter_value
@@ -90,14 +89,14 @@ internal final class ModalViewController: UIViewController {
         PreferredContentSize is overridden for this view controller.
         getter - returns combined size of an inner content and navigation bar.
         setter - no implemented.
-        """) }
-        
+        """)
+        }
     }
     
     /// :nodoc:
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        view.round(corners: [.topLeft, .topRight], radius: 10)
+        view.adyen.round(corners: [.topLeft, .topRight], radius: style.cornerRadius)
     }
     
     // MARK: - View elements
@@ -129,7 +128,7 @@ internal final class ModalViewController: UIViewController {
     
     internal lazy var separator: UIView = {
         let separator = UIView(frame: .zero)
-        separator.backgroundColor = UIColor.AdyenCore.componentSeparator
+        separator.backgroundColor = style.separatorColor ?? UIColor.AdyenDropIn.componentSeparator
         return separator
     }()
     
@@ -141,11 +140,25 @@ internal final class ModalViewController: UIViewController {
         toolbar.layoutMargins = .init(top: 0, left: 16, bottom: 0, right: 16)
         toolbar.isLayoutMarginsRelativeArrangement = true
         toolbar.translatesAutoresizingMaskIntoConstraints = false
+        
+        let background = UIView(frame: .zero)
+        background.backgroundColor = self.style.backgroundColor
+        background.translatesAutoresizingMaskIntoConstraints = false
+        toolbar.addSubview(background)
+        toolbar.sendSubviewToBack(background)
+        let constraints = [
+            toolbar.topAnchor.constraint(equalTo: background.topAnchor),
+            toolbar.bottomAnchor.constraint(equalTo: background.bottomAnchor),
+            toolbar.leftAnchor.constraint(equalTo: background.leftAnchor),
+            toolbar.rightAnchor.constraint(equalTo: background.rightAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
+        
         return toolbar
     }()
     
     internal lazy var stackView: UIStackView = {
-        let views = [toolbar, separator, self.innerController?.view]
+        let views = [toolbar, separator, innerController.view]
         let stackView = UIStackView(arrangedSubviews: views.compactMap { $0 })
         stackView.axis = .vertical
         stackView.distribution = .fill
@@ -157,7 +170,7 @@ internal final class ModalViewController: UIViewController {
     @objc private func didCancel() {
         guard let cancelHandler = cancelButtonHandler else { return }
         
-        innerController?.resignFirstResponder()
+        innerController.resignFirstResponder()
         cancelHandler(isRoot)
     }
     
@@ -177,17 +190,5 @@ internal final class ModalViewController: UIViewController {
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             bottomConstraint
         ])
-    }
-}
-
-// MARK: - UIView helper
-
-private extension UIView {
-    func round(corners: UIRectCorner, radius: CGFloat) {
-        let maskedLayer = CAShapeLayer()
-        let radii = CGSize(width: radius, height: radius)
-        let path = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: corners, cornerRadii: radii)
-        maskedLayer.path = path.cgPath
-        self.layer.mask = maskedLayer
     }
 }

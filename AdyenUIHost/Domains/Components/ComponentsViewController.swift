@@ -47,7 +47,6 @@ internal final class ComponentsViewController: UIViewController {
     
     private lazy var actionComponent: DropInActionComponent = {
         let handler = DropInActionComponent()
-        handler.presenterViewController = self
         handler.redirectComponentStyle = dropInComponentStyle.redirectComponent
         handler.delegate = self
         return handler
@@ -110,6 +109,7 @@ internal final class ComponentsViewController: UIViewController {
         let component = CardComponent(paymentMethod: paymentMethod,
                                       publicKey: Configuration.cardPublicKey,
                                       style: dropInComponentStyle.formComponent)
+        component.cardComponentDelegate = self
         present(component)
     }
     
@@ -261,5 +261,15 @@ extension ComponentsViewController: ActionComponentDelegate {
     
     internal func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
         performPaymentDetails(with: data)
+    }
+}
+
+extension ComponentsViewController: CardComponentDelegate {
+    internal func didChangeBIN(_ value: String, component: CardComponent) {
+        print("Current BIN: \(value)")
+    }
+    
+    internal func didChangeCardType(_ value: [CardType]?, component: CardComponent) {
+        print("Current card type: \((value ?? []).reduce("") { "\($0), \($1)" })")
     }
 }

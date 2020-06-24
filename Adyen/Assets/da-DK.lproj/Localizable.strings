@@ -23,7 +23,7 @@
 "adyen.card.expiryItem.title" = "Udløbsdato";
 "adyen.card.expiryItem.placeholder" = "MM/ÅÅ";
 "adyen.card.expiryItem.invalid" = "Ugyldig udløbsdato";
-"adyen.card.cvcItem.invalid" = "Ugyldig sikkerhedskode";
+"adyen.card.cvcItem.invalid" = "Ugyldigt format for CVC/CVV";
 "adyen.card.cvcItem.title" = "CVC / CVV";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "Kontrollér dit kort";
@@ -35,3 +35,4 @@
 "adyen.phoneNumber.title" = "Telefonnummer";
 "adyen.phoneNumber.invalid" = "Ugyldigt telefonnummer";
 "adyen.phoneNumber.placeholder" = "123–456–789";
+"adyen.card.cvcItem.placeholder.digits" = "%@ cifre";

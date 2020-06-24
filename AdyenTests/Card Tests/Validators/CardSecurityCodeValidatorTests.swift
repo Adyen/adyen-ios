@@ -16,7 +16,7 @@ class CardSecurityCodeValidatorTests: XCTestCase {
         XCTAssertTrue(validator.isValid("123"))
         XCTAssertFalse(validator.isValid("1234"))
         
-        observer.value = .americanExpress
+        observer.wrappedValue = .americanExpress
         XCTAssertFalse(validator.isValid("123"))
         XCTAssertTrue(validator.isValid("1234"))
     }

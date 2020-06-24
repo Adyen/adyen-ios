@@ -78,7 +78,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
                                                          configuration: configuration,
                                                          style: style)
     
-    private lazy var rootComponent: PresentableComponent = {
+    private lazy var rootComponent: LoadingComponent = {
         if let preselectedComponents = self.componentManager.components.stored.first {
             return preselectedPaymentMethodComponent(for: preselectedComponents)
         } else {
@@ -90,7 +90,6 @@ public final class DropInComponent: NSObject, PresentableComponent {
         let handler = DropInActionComponent()
         handler._isDropIn = true
         handler.environment = environment
-        handler.presenterViewController = navigationController
         handler.redirectComponentStyle = style.redirectComponent
         handler.delegate = self
         return handler
@@ -153,10 +152,12 @@ public final class DropInComponent: NSObject, PresentableComponent {
     }
     
     private func didSelectCancelButton(isRoot: Bool, component: PaymentComponent?) {
-        if isRoot || paymentInProgress {
+        guard !paymentInProgress else { return }
+        if isRoot {
             self.delegate?.didFail(with: ComponentError.cancelled, from: self)
         } else {
-            navigationController.dismiss()
+            navigationController.popViewController(animated: true)
+            stopLoading()
         }
     }
 }
@@ -166,6 +167,7 @@ extension DropInComponent: PaymentMethodListComponentDelegate {
     
     /// :nodoc:
     internal func didSelect(_ component: PaymentComponent, in paymentMethodListComponent: PaymentMethodListComponent) {
+        rootComponent.startLoading(for: component)
         didSelect(component)
     }
     
@@ -178,7 +180,6 @@ extension DropInComponent: PaymentComponentDelegate {
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         paymentInProgress = true
         delegate?.didSubmit(data, from: self)
-        (rootComponent as? PaymentMethodListComponent)?.startLoading(for: component)
     }
     
     /// :nodoc:
@@ -202,6 +203,7 @@ extension DropInComponent: ActionComponentDelegate {
     /// :nodoc:
     public func didFail(with error: Error, from component: ActionComponent) {
         if case ComponentError.cancelled = error {
+            paymentInProgress = false
             stopLoading(withSuccess: false)
         } else {
             delegate?.didFail(with: error, from: self)
@@ -217,6 +219,8 @@ extension DropInComponent: ActionComponentDelegate {
 
 extension DropInComponent: PreselectedPaymentMethodComponentDelegate {
     internal func didProceed(with component: PaymentComponent) {
+        rootComponent.startLoading(for: component)
+        
         guard let storedPaymentMethod = component.paymentMethod as? StoredPaymentMethod else {
             return didSelect(component)
         }
@@ -230,7 +234,9 @@ extension DropInComponent: PreselectedPaymentMethodComponentDelegate {
     }
     
     internal func didRequestAllPaymentMethods() {
-        navigationController.present(root: paymentMethodListComponent())
+        let newRoot = paymentMethodListComponent()
+        navigationController.present(root: newRoot)
+        rootComponent = newRoot
     }
 }
 

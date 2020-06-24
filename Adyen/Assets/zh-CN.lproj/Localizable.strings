@@ -23,7 +23,7 @@
 "adyen.card.expiryItem.title" = "有效期";
 "adyen.card.expiryItem.placeholder" = "月月/年年";
 "adyen.card.expiryItem.invalid" = "无效的到期日期";
-"adyen.card.cvcItem.invalid" = "安全码无效";
+"adyen.card.cvcItem.invalid" = "无效的 CVC / CVV 格式";
 "adyen.card.cvcItem.title" = "CVC / CVV";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "验证您的卡片";
@@ -35,3 +35,4 @@
 "adyen.phoneNumber.title" = "电话号码";
 "adyen.phoneNumber.invalid" = "无效的电话号码";
 "adyen.phoneNumber.placeholder" = "123–456–789";
+"adyen.card.cvcItem.placeholder.digits" = "%@ 位数";

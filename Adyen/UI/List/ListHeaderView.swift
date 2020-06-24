@@ -51,6 +51,7 @@ internal final class ListHeaderView: UIView {
         titleLabel.text = title.uppercased()
         titleLabel.textColor = style.title.color
         titleLabel.font = style.title.font
+        titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.textAlignment = style.title.textAlignment
         titleLabel.backgroundColor = style.title.backgroundColor
         titleLabel.accessibilityTraits = .header

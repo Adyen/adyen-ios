@@ -35,6 +35,9 @@ extension DropInComponent {
             /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
             public var showsStorePaymentMethodField = true
             
+            /// Indicates whether to show the security code field in the form.
+            public var showsSecurityCodeField = true
+            
         }
         
         public final class ApplePayConfiguration {

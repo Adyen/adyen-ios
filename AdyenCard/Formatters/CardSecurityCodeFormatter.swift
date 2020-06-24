@@ -14,11 +14,14 @@ public final class CardSecurityCodeFormatter: NumericFormatter, Observer {
     private var expectedLength: Int { cardType == CardType.americanExpress ? 4 : 3 }
     
     /// Initiate new instance of CardSecurityCodeValidator
-    /// - Parameter publisher: observer of a card type.
-    public init(publisher: Observable<CardType?>? = nil) {
+    public override init() {
         super.init()
-        guard let publisher = publisher else { return }
-        
+    }
+    
+    /// Initiate new instance of CardSecurityCodeValidator
+    /// - Parameter publisher: observer of a card type.
+    public init(publisher: Observable<CardType?>) {
+        super.init()
         bind(publisher, to: self, at: \.cardType)
     }
     

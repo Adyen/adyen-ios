@@ -210,7 +210,15 @@ internal extension CardType {
             return "^4[0-9]{0,19}$"
         case .warehouse:
             return "^(982633)[0-9]{0,10}$"
-        default:
+        case .accel,
+             .cencosud,
+             .chequeDejeneur,
+             .creditUnion24,
+             .kcp,
+             .netplus,
+             .nyce,
+             .pulse,
+             .star:
             return nil
         }
     }

@@ -12,9 +12,6 @@ internal final class UniversalRedirectComponent: ActionComponent {
     /// :nodoc:
     internal weak var delegate: ActionComponentDelegate?
     
-    /// The view controller to use to present the in-app browser incase the redirect is a non native app redirect.
-    internal weak var presentingViewController: UIViewController?
-    
     /// :nodoc:
     internal var appLauncher: AnyAppLauncher = AppLauncher()
     
@@ -72,10 +69,6 @@ internal final class UniversalRedirectComponent: ActionComponent {
     
     /// :nodoc:
     private func openInAppBrowser(_ action: RedirectAction) {
-        guard let presentingViewController = presentingViewController else {
-            assertionFailure("presentingViewController must not be nil.")
-            return
-        }
         let component = WebRedirectComponent(url: action.url,
                                              paymentData: action.paymentData,
                                              style: style)
@@ -84,7 +77,7 @@ internal final class UniversalRedirectComponent: ActionComponent {
         component.environment = environment
         redirectComponent = component
         
-        presentingViewController.adyen.topPresenter.present(component.viewController, animated: true)
+        UIViewController.findTopPresenter()?.present(component.viewController, animated: true)
     }
     
     // MARK: - Custom scheme link handling

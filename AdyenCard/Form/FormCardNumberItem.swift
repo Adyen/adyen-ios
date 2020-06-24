@@ -4,13 +4,12 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-/// Describes the methods for managing card type change.
-internal protocol CardTypeChangeDelegate: class {
-    func cardTypeDidChange(type: CardType?)
-}
-
 /// A form item into which a card number is entered.
 internal final class FormCardNumberItem: FormTextItem {
+    
+    private static let binLength = 6
+    
+    private var previouslyDetectedCardTypes: Set<CardType>?
     
     /// The supported card types.
     internal let supportedCardTypes: [CardType]
@@ -18,8 +17,13 @@ internal final class FormCardNumberItem: FormTextItem {
     /// The card type logos displayed in the form item.
     internal let cardTypeLogos: [CardTypeLogo]
     
-    /// The delegate for managing card type change
-    internal weak var delegate: CardTypeChangeDelegate?
+    /// The observable of the card's BIN value.
+    /// The value contains up to 6 first digits of card' PAN.
+    @Observable("") internal var binValue: String
+    
+    /// The observable of the matching card types for entered PAN.
+    /// The value is `nil` when no value entered; empty array when PAN unrecognized or not supported.
+    @Observable(nil) internal var detectedCardTypes: [CardType]?
     
     /// :nodoc:
     private let localizationParameters: LocalizationParameters?
@@ -48,14 +52,32 @@ internal final class FormCardNumberItem: FormTextItem {
     // MARK: - Value
     
     internal func valueDidChange() {
-        let detectedCardTypes = cardTypeDetector.types(forCardNumber: value)
-        for (cardType, logo) in zip(supportedCardTypes, cardTypeLogos) {
-            let isVisible = value.isEmpty || detectedCardTypes.contains(cardType)
-            logo.isHidden.value = !isVisible
+        binValue = String(value.prefix(FormCardNumberItem.binLength))
+        
+        defer {
+            previouslyDetectedCardTypes = Set<CardType>(detectedCardTypes ?? [])
         }
         
-        cardNumberFormatter.cardType = detectedCardTypes.first
-        delegate?.cardTypeDidChange(type: detectedCardTypes.count > 1 ? nil : detectedCardTypes.first)
+        func setLogos(for detectedCards: Set<CardType>) {
+            for (cardType, logo) in zip(supportedCardTypes, cardTypeLogos) {
+                let isVisible = detectedCards.contains(cardType)
+                logo.isHidden = !isVisible
+            }
+        }
+        
+        guard !value.isEmpty else {
+            cardNumberFormatter.cardType = nil
+            detectedCardTypes = nil
+            setLogos(for: Set<CardType>(supportedCardTypes))
+            return
+        }
+        
+        let newDetectedCardTypes = Set<CardType>(cardTypeDetector.types(forCardNumber: value))
+        guard previouslyDetectedCardTypes != newDetectedCardTypes else { return }
+        
+        cardNumberFormatter.cardType = newDetectedCardTypes.first
+        setLogos(for: newDetectedCardTypes.isEmpty ? [] : newDetectedCardTypes)
+        detectedCardTypes = newDetectedCardTypes.map { $0 }
     }
     
     // MARK: - BuildableFormItem
@@ -68,12 +90,7 @@ internal final class FormCardNumberItem: FormTextItem {
     
     private let cardNumberFormatter = CardNumberFormatter()
     
-    private lazy var cardTypeDetector: CardTypeDetector = {
-        let cardTypeDetector = CardTypeDetector()
-        cardTypeDetector.detectableTypes = supportedCardTypes
-        
-        return cardTypeDetector
-    }()
+    private lazy var cardTypeDetector: CardTypeDetector = CardTypeDetector(detectableTypes: self.supportedCardTypes)
     
 }
 
@@ -86,7 +103,7 @@ extension FormCardNumberItem {
         internal let url: URL
         
         /// Indicates if the card type logo should be hidden.
-        internal let isHidden = Observable(false)
+        @Observable(false) internal var isHidden: Bool
         
         /// Initializes the card type logo.
         ///

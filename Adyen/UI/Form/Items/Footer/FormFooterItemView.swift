@@ -22,7 +22,7 @@ internal final class FormFooterItemView: FormItemView<FormFooterItem>, Observer 
         
         backgroundColor = item.style.backgroundColor
         
-        bind(item.showsActivityIndicator, to: submitButton, at: \.showsActivityIndicator)
+        bind(item.$showsActivityIndicator, to: submitButton, at: \.showsActivityIndicator)
         
         configureConstraints()
     }
@@ -57,6 +57,7 @@ internal final class FormFooterItemView: FormItemView<FormFooterItem>, Observer 
         
         let titleLabel = UILabel()
         titleLabel.font = item.style.title.font
+        titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.textAlignment = item.style.title.textAlignment
         titleLabel.textColor = item.style.title.color
         titleLabel.backgroundColor = item.style.title.backgroundColor

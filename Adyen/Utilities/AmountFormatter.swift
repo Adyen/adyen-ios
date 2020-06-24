@@ -6,14 +6,32 @@
 
 import Foundation
 
-internal final class AmountFormatter {
+/// Helper class to format money amounts and to convert between money amounts in major currency units and amounts in minor currency units.
+/// :nodoc:
+public final class AmountFormatter {
     
     private init() {}
     
-    internal static func formatted(amount: Int, currencyCode: String) -> String? {
+    /// Format money amounts.
+    ///
+    /// - Parameters:
+    ///   - amount: The amount in minor units.
+    ///   - currencyCode: The code of the currency.
+    public static func formatted(amount: Int, currencyCode: String) -> String? {
         let decimalAmount = AmountFormatter.decimalAmount(amount, currencyCode: currencyCode)
         
         return defaultFormatter(currencyCode: currencyCode).string(from: decimalAmount)
+    }
+    
+    /// Converts an amount in major currency unit to an amount in minor currency units.
+    ///
+    /// - Parameters:
+    ///   - majorUnitAmount: The amount in major currency units.
+    ///   - currencyCode: The code of the currency.
+    public static func minorUnitAmount(from majorUnitAmount: Double, currencyCode: String) -> Int {
+        let maximumFractionDigits = AmountFormatter.maximumFractionDigits(for: currencyCode)
+        
+        return Int(majorUnitAmount * pow(Double(10), Double(maximumFractionDigits)))
     }
     
     private static func decimalAmount(_ amount: Int, currencyCode: String) -> NSDecimalNumber {

@@ -101,7 +101,7 @@ class CardComponentTests: XCTestCase {
         cardComponentStyle.switch.title.textAlignment = .left
         cardComponentStyle.switch.backgroundColor = .magenta
         
-        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", brands: ["any_test_brand_name"])
+        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["any_test_brand_name"])
         let sut = CardComponent(paymentMethod: cardPaymentMethod,
                                 publicKey: CardComponentTests.randomTestValidCardPublicKey,
                                 style: cardComponentStyle)
@@ -211,7 +211,7 @@ class CardComponentTests: XCTestCase {
     }
     
     func testBigTitle() {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", brands: ["any_test_brand_name"])
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["any_test_brand_name"])
         let sut = CardComponent(paymentMethod: method,
                                 publicKey: CardComponentTests.randomTestValidCardPublicKey)
         sut.showsLargeTitle = false
@@ -227,8 +227,43 @@ class CardComponentTests: XCTestCase {
         wait(for: [expectation], timeout: 5)
     }
     
+    func testHideCVVField() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["visa", "amex"])
+        let sut = CardComponent(paymentMethod: method,
+                                publicKey: CardComponentTests.randomTestValidCardPublicKey)
+        sut.showsSecurityCodeField = false
+        
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+            let securityCodeView: FormCardSecurityCodeItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
+            
+            XCTAssertNil(securityCodeView)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 5)
+    }
+    
+    func testShowCVVField() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex"])
+        let sut = CardComponent(paymentMethod: method,
+                                publicKey: CardComponentTests.randomTestValidCardPublicKey)
+        
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+            let securityCodeView: FormCardSecurityCodeItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
+            
+            XCTAssertNotNil(securityCodeView)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 5)
+    }
+    
     func testCVVHintChange() {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", brands: ["visa", "amex"])
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
                                 publicKey: CardComponentTests.randomTestValidCardPublicKey)
         sut.showsLargeTitle = false
@@ -239,19 +274,50 @@ class CardComponentTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
             let securityCodeCvvHint: FormCardSecurityCodeItemView.HintView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem.cvvHintIcon")
+            let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
             
             XCTAssertNotNil(securityCodeCvvHint)
             XCTAssertFalse(securityCodeCvvHint!.showFront)
+            XCTAssertEqual(securityCodeItemView?.textField.placeholder, "3 digits")
             
             self.populate(textItemView: cardNumberItemView!, with: "370000000000002")
             XCTAssertTrue(securityCodeCvvHint!.showFront)
+            XCTAssertEqual(securityCodeItemView?.textField.placeholder, "4 digits")
+            
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 5)
     }
     
+    func testDelegateCallled() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["visa", "amex"])
+        let sut = CardComponent(paymentMethod: method,
+                                publicKey: CardComponentTests.randomTestValidCardPublicKey)
+        sut.showsLargeTitle = false
+        
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        let expectationBin = XCTestExpectation(description: "Bin Expectation")
+        let expectationCardType = XCTestExpectation(description: "CardType Expectation")
+        let delegateMock = CardComponentDelegateMock(onBINDidChange: { value in
+            XCTAssertEqual(value, "370000")
+            expectationBin.fulfill()
+        }, onCardTypeChange: { value in
+            XCTAssertEqual(value, [CardType.americanExpress])
+            expectationCardType.fulfill()
+        })
+        sut.cardComponentDelegate = delegateMock
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+            let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
+            self.populate(textItemView: cardNumberItemView!, with: "370000000000002")
+        }
+        
+        wait(for: [expectationBin, expectationCardType], timeout: 5)
+    }
+    
     func testCVVFormatterChange() {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", brands: ["visa", "amex"])
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
                                 publicKey: CardComponentTests.randomTestValidCardPublicKey)
         sut.showsLargeTitle = false
@@ -274,6 +340,67 @@ class CardComponentTests: XCTestCase {
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 10)
+    }
+    
+    func testTintColorCustomisation() {
+        var style = FormComponentStyle(tintColor: .systemYellow)
+        style.textField.title.color = .gray
+        
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["visa", "amex"])
+        let sut = CardComponent(paymentMethod: method,
+                                publicKey: CardComponentTests.randomTestValidCardPublicKey,
+                                style: style)
+        sut.showsLargeTitle = false
+        
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        let switchView: UISwitch! = sut.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem.switch")
+        let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
+        XCTAssertEqual(securityCodeItemView!.titleLabel.textColor!, .gray)
+        
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+            self.focus(textItemView: securityCodeItemView!)
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+                XCTAssertEqual(switchView.onTintColor, .systemYellow)
+                XCTAssertEqual(securityCodeItemView!.titleLabel.textColor!, .systemYellow)
+                XCTAssertEqual(securityCodeItemView!.separatorView.backgroundColor?.cgColor, UIColor.systemYellow.cgColor)
+                expectation.fulfill()
+            }
+        }
+        wait(for: [expectation], timeout: 10)
+    }
+    
+    func testSuccessTintColorCustomisation() {
+        var style = FormComponentStyle(tintColor: .systemYellow)
+        style.textField.title.color = .gray
+        
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex"])
+        let sut = CardComponent(paymentMethod: method,
+                                publicKey: CardComponentTests.randomTestValidCardPublicKey,
+                                style: style)
+        sut.showsLargeTitle = false
+        
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
+        XCTAssertEqual(securityCodeItemView!.titleLabel.textColor!, .gray)
+        
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+            self.populate(textItemView: securityCodeItemView!, with: "123")
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+                let successIcon: UIImageView? = sut.viewController.view.findView(by: "cvvHintIcon.imageView")
+                XCTAssertNotNil(successIcon)
+                XCTAssertEqual(successIcon?.tintColor, .systemYellow)
+                expectation.fulfill()
+            }
+        }
+        wait(for: [expectation], timeout: 10)
+    }
+    
+    private func focus<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U) {
+        textItemView.textField.becomeFirstResponder()
     }
     
     private func populate<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U, with text: String) {

@@ -28,6 +28,7 @@ internal class PhoneExtensionInputControl: UIControl, AnyFormItemView {
         label.textAlignment = style.textAlignment
         label.textColor = style.color
         label.font = style.font
+        label.adjustsFontForContentSizeCategory = true
         
         return label
     }()

@@ -22,8 +22,8 @@
 "adyen.card.numberItem.invalid" = "Numéro de carte non valide";
 "adyen.card.expiryItem.title" = "Date d'expiration";
 "adyen.card.expiryItem.placeholder" = "MM/AA";
-"adyen.card.expiryItem.invalid" = "Date d'expiration non valide";
-"adyen.card.cvcItem.invalid" = "Code de sécurité incorrect";
+"adyen.card.expiryItem.invalid" = "Date d'expiration incorrecte";
+"adyen.card.cvcItem.invalid" = "Format CVC/CVV incorrect";
 "adyen.card.cvcItem.title" = "CVC / CVV";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "Vérifiez votre carte";
@@ -35,3 +35,4 @@
 "adyen.phoneNumber.title" = "Numéro de téléphone";
 "adyen.phoneNumber.invalid" = "Numéro de téléphone incorrect";
 "adyen.phoneNumber.placeholder" = "01 23 45 67 89";
+"adyen.card.cvcItem.placeholder.digits" = "%@ chiffres";

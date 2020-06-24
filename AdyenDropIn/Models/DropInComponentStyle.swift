@@ -23,7 +23,23 @@ extension DropInComponent {
         /// Indicates any `RedirectComponent` UI style.
         public var redirectComponent: RedirectComponentStyle?
         
+        /// The color for separator element.
+        /// When set, updates separator colors for all undelying styles unless the value were set previously.
+        /// If value is nil, the default color would be used.
+        public var separatorColor: UIColor? {
+            didSet {
+                formComponent.separatorColor = formComponent.separatorColor ?? separatorColor
+                navigation.separatorColor = navigation.separatorColor ?? separatorColor
+            }
+        }
+        
         /// Initializes the instance of DropIn style with the default values.
         public init() {}
+        
+        /// Initializes the instance of DropIn style with the default values.
+        public init(tintColor: UIColor) {
+            formComponent = FormComponentStyle(tintColor: tintColor)
+            navigation.tintColor = tintColor
+        }
     }
 }

@@ -90,11 +90,10 @@ class PreselectedPaymentComponentTests: XCTestCase {
         var formStyle = sut.style
         formStyle.backgroundColor = .green
         formStyle.separatorColor = .red
-        formStyle.mainButton = ButtonStyle(title: TextStyle(font: .systemFont(ofSize: 20), color: .cyan, textAlignment: .center), cornerRadius: 0, background: .brown)
-        formStyle.secondaryButton = ButtonStyle(title: TextStyle(font: .systemFont(ofSize: 22), color: .brown, textAlignment: .center), cornerRadius: 0, background: .cyan)
+        formStyle.mainButtonItem = FormButtonItemStyle(button: ButtonStyle(title: TextStyle(font: .systemFont(ofSize: 20), color: .cyan, textAlignment: .center), cornerRadius: 0, background: .brown), background: .red)
+        formStyle.secondaryButtonItem = FormButtonItemStyle(button: ButtonStyle(title: TextStyle(font: .systemFont(ofSize: 22), color: .brown, textAlignment: .center), cornerRadius: 0, background: .cyan), background: .black)
         
         var listStyle = sut.listItemStyle
-        listStyle.backgroundColor = .blue
         listStyle.image.backgroundColor = .red
         listStyle.title.color = .white
         listStyle.subtitle.color = .white
@@ -104,29 +103,32 @@ class PreselectedPaymentComponentTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
-        let listView = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.defaultComponent")
+        let view = sut.viewController.view!
+        let listView = view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.defaultComponent")
         let listViewTitle: UILabel! = listView!.findView(by: "titleLabel")
         let listViewSubtitle: UILabel! = listView!.findView(by: "subtitleLabel")
         
-        let submitButtonContainer = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.submitButton")
+        let submitButtonContainer = view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.submitButton")
         let submitButton = submitButtonContainer!.findView(by: "button")
         let submitButtonLabel: UILabel! = submitButton!.findView(by: "titleLabel")
         
-        let openAllButtonContainer = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.openAllButton")
+        let openAllButtonContainer = view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.openAllButton")
         let openAllButton = openAllButtonContainer!.findView(by: "button")
         let openAllButtonLabel: UILabel! = openAllButton!.findView(by: "titleLabel")
         
-        let separator = sut.viewController.view.findView(by: "separatorLine")
+        let separator = view.findView(by: "separatorLine")
         
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertEqual(listView!.backgroundColor, .blue)
+            XCTAssertEqual(view.backgroundColor, .green)
             XCTAssertEqual(listViewTitle.textColor, .white)
             XCTAssertEqual(listViewSubtitle.textColor, .white)
             
+            XCTAssertEqual(submitButtonContainer!.backgroundColor, .red)
             XCTAssertEqual(submitButton!.backgroundColor, .brown)
             XCTAssertEqual(submitButtonLabel.textColor, .cyan)
             
+            XCTAssertEqual(openAllButtonContainer!.backgroundColor, .black)
             XCTAssertEqual(openAllButton!.backgroundColor, .cyan)
             XCTAssertEqual(openAllButtonLabel.textColor, .brown)
             
@@ -189,7 +191,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
     }
     
     func getStoredCard() -> StoredCardPaymentMethod {
-        return try! Coder.decode(storedCardDictionary) as StoredCardPaymentMethod
+        return try! Coder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
     }
     
     func getStoredPaypal() -> StoredPayPalPaymentMethod {
