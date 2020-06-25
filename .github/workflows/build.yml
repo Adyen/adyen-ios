@@ -20,14 +20,14 @@ jobs:
         experimental: [false]
         include: 
           - experimental: true
-            destination: 'name=iPhone X'
+            destination: 'name=iPhone X,OS=12.4'
     
     
     steps:
     - uses: actions/checkout@v2
 
     - name: Prepare iOS 12 simulator
-      if: matrix.destination == 'iPhone X'
+      if: matrix.destination == 'name=iPhone X,OS=12.4'
       run: |
         sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
         sudo ln -s /Applications/Xcode_10.3.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime /Library/Developer/CoreSimulator/Profiles/Runtimes/iOS\ 12.4.simruntime
