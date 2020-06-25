@@ -45,15 +45,11 @@ jobs:
     - name: Build and test
       run: |
         fastlane scan --destination "${destination}" --scheme AdyenUIHost --code_coverage true
-        fastlane run sonar sonarqube_xml scheme:"AdyenUIHost"
+        fastlane run slather
       env:
         destination: ${{ matrix.destination }}
         DEVELOPER_DIR: ${{ matrix.xcode }}
-        
-  codecov:
-    needs: build
-    runs-on: macos-latest
-    steps:
+
     - name: Code coverage
       if: github.ref == 'refs/heads/develop'
       uses: codecov/codecov-action@v1
