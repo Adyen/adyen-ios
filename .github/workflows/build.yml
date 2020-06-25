@@ -45,7 +45,7 @@ jobs:
     - name: Build and test
       run: |
         set -o pipefail
-        xcodebuild -project Adyen -scheme "AdyenUIHost" -destination "${destination}" -enableCodeCoverage YES build test | xcpretty
+        xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -destination "${destination}" -enableCodeCoverage YES build test | xcpretty
         fastlane run slather proj:"Adyen.xcodeproj" scheme:"AdyenUIHost" cobertura_xml:"true" output_directory:"./reports/cobertura.xml"
       env:
         destination: ${{ matrix.destination }}
