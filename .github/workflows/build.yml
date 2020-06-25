@@ -1,0 +1,60 @@
+name: Build and Test
+
+on:
+  pull_request:
+  push:
+    branches: 
+    - master
+    - develop
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      fail-fast: false
+      matrix:
+        destination: ['name=iPhone 8', 'name=iPhone 11']
+        xcode: ['/Applications/Xcode_11.4.1.app/Contents/Developer']
+        experimental: [false]
+        include: 
+          - experimental: true
+            destination: 'name=Custom iPhone X 12.4'
+    
+    
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Prepare iOS 12 simulator
+      if: destination == 'name=Custom iPhone X 12.4'
+      run: |
+        sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
+        sudo ln -s /Applications/Xcode_10.3.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime /Library/Developer/CoreSimulator/Profiles/Runtimes/iOS\ 12.4.simruntime
+        xcrun simctl list runtimes
+        xcrun simctl create custom-test-device "Custom iPhone X 12.4" "com.apple.CoreSimulator.SimRuntime.iOS-12-4"
+        xcrun simctl list devices 12.4
+        
+    - name: Check Dependencies
+      uses: actions/cache@v1
+      id: carthage-cache
+      with:
+        path: Carthage
+        key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
+      
+    - name: Install Dependencies
+      if: steps.carthage-cache.outputs.cache-hit != 'true'
+      run: |
+        carthage bootstrap --platform iOS --cache-builds
+      
+    - name: Build and test
+      run: |
+        fastlane scan --destination "${destination}" --scheme AdyenUIHost
+      env:
+        destination: ${{ matrix.destination }}
+        DEVELOPER_DIR: ${{ matrix.xcode }}
+        
+#     - name: Code coverage
+#       uses: codecov/codecov-action@v1
+#       with:
+#         token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
