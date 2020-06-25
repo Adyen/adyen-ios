@@ -44,8 +44,7 @@ jobs:
       
     - name: Build and test
       run: |
-        fastlane scan --destination "${destination}" --scheme AdyenUIHost --code_coverage true
-        fastlane run slather
+        fastlane scan --destination "${destination}" --scheme AdyenUIHost --code_coverage true --disable_xcpretty true
       env:
         destination: ${{ matrix.destination }}
         DEVELOPER_DIR: ${{ matrix.xcode }}
