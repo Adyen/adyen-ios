@@ -44,7 +44,8 @@ jobs:
       
     - name: Build and test
       run: |
-        fastlane scan --destination "${destination}" --scheme AdyenUIHost --code_coverage true --disable_xcpretty true
+        fastlane scan --destination "${destination}" --scheme AdyenUIHost --code_coverage true --derived_data_path ./reports
+        fastlane run slather proj:"Adyen.xcodeproj" scheme:"AdyenUIHost" cobertura_xml:"true" output_directory:"./reports/cobertura.xml"
       env:
         destination: ${{ matrix.destination }}
         DEVELOPER_DIR: ${{ matrix.xcode }}
@@ -54,3 +55,4 @@ jobs:
       uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./reports/cobertura.xml
