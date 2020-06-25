@@ -1,0 +1,29 @@
+name: Scan PR
+
+on: [ pull_request ]
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+        
+    - name: Check Dependencies
+      uses: actions/cache@v1
+      id: carthage-cache
+      with:
+        path: Carthage
+        key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
+      
+    - name: Install Dependencies
+      if: steps.carthage-cache.outputs.cache-hit != 'true'
+      run: |
+        carthage bootstrap --platform iOS --cache-builds
+      
+    - name: Build and test
+      run: |
+        fastlane scan --scheme AdyenUIHost --code_coverage true --derived_data_path Build/
+        bash xccov-to-sonarqube-generic.sh Build/Logs/Test/*.xcresult/ > sonarqube-generic-coverage.xml
+        
