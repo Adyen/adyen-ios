@@ -35,7 +35,7 @@ public extension Observer {
     @discardableResult
     func bind<Value, Target: AnyObject>(_ observable: Observable<Value>, to target: Target, at keyPath: ReferenceWritableKeyPath<Target, Value>) -> Observation {
         // Set the initial value.
-        target[keyPath: keyPath] = observable.value
+        target[keyPath: keyPath] = observable.wrappedValue
         
         return observe(observable, eventHandler: { [unowned target] newValue in
             target[keyPath: keyPath] = newValue

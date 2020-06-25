@@ -111,7 +111,9 @@ class RedirectComponentTests: XCTestCase {
         let appLauncher = AppLauncherMock()
         sut.universalRedirectComponent.appLauncher = appLauncher
         let presentingViewControllerMock = PresentingViewControllerMock()
-        sut.presentingViewController = presentingViewControllerMock
+        let topViewController: UIViewController! = UIApplication.shared.keyWindow?.rootViewController?.adyen.topPresenter
+        
+        topViewController.present(presentingViewControllerMock, animated: false, completion: nil)
         
         let safariVCExpectation = expectation(description: "Expect SFSafariViewController() to be presented")
         presentingViewControllerMock.onPresent = { viewController, animated, completion in

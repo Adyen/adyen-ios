@@ -10,7 +10,7 @@ import Foundation
 public struct ListSectionHeaderStyle: ViewStyle {
     
     /// The title style.
-    public var title: TextStyle = TextStyle(font: .systemFont(ofSize: 13.0, weight: .medium),
+    public var title: TextStyle = TextStyle(font: .preferredFont(forTextStyle: .subheadline),
                                             color: UIColor.AdyenCore.componentSecondaryLabel,
                                             textAlignment: .natural)
     

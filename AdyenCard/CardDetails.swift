@@ -30,6 +30,9 @@ public struct CardDetails: PaymentMethodDetails {
     /// The name on card.
     public let holderName: String?
     
+    /// The card funding source.
+    public let fundingSource: CardFundingSource?
+    
     /// Initializes the card payment details.
     ///
     /// :nodoc:
@@ -46,6 +49,7 @@ public struct CardDetails: PaymentMethodDetails {
         self.encryptedSecurityCode = encryptedCard.securityCode
         self.holderName = holderName
         self.storedPaymentMethodIdentifier = nil
+        self.fundingSource = paymentMethod.fundingSource
     }
     
     /// Initializes the card payment details for a stored card payment method.
@@ -63,6 +67,7 @@ public struct CardDetails: PaymentMethodDetails {
         self.encryptedExpiryMonth = nil
         self.encryptedExpiryYear = nil
         self.holderName = nil
+        self.fundingSource = paymentMethod.fundingSource
     }
     
     // MARK: - Encoding
@@ -75,6 +80,7 @@ public struct CardDetails: PaymentMethodDetails {
         case encryptedExpiryYear
         case encryptedSecurityCode
         case holderName
+        case fundingSource
     }
     
 }

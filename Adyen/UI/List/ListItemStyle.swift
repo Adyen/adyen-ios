@@ -10,12 +10,12 @@ import Foundation
 public struct ListItemStyle: ViewStyle {
     
     /// The title style.
-    public var title: TextStyle = TextStyle(font: .systemFont(ofSize: 17.0),
+    public var title: TextStyle = TextStyle(font: .preferredFont(forTextStyle: .body),
                                             color: UIColor.AdyenCore.componentLabel,
                                             textAlignment: .natural)
     
     /// The subtitle style.
-    public var subtitle: TextStyle = TextStyle(font: .systemFont(ofSize: 13.0),
+    public var subtitle: TextStyle = TextStyle(font: .preferredFont(forTextStyle: .footnote),
                                                color: UIColor.AdyenCore.componentSecondaryLabel,
                                                textAlignment: .natural)
     
@@ -42,5 +42,16 @@ public struct ListItemStyle: ViewStyle {
     
     /// Initializes the list item style with the default style.
     public init() {}
+    
+}
+
+extension ListItemStyle: Equatable {
+    
+    public static func == (lhs: ListItemStyle, rhs: ListItemStyle) -> Bool {
+        return lhs.title == rhs.title &&
+            lhs.subtitle == rhs.subtitle &&
+            lhs.image == rhs.image &&
+            lhs.backgroundColor.cgColor == rhs.backgroundColor.cgColor
+    }
     
 }

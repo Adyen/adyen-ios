@@ -23,7 +23,7 @@
 "adyen.card.expiryItem.title" = "Voimassaolopäivämäärä";
 "adyen.card.expiryItem.placeholder" = "KK / VV";
 "adyen.card.expiryItem.invalid" = "Virheellinen vanhenemispäivämäärä";
-"adyen.card.cvcItem.invalid" = "Ei-kelvollinen turvakoodi";
+"adyen.card.cvcItem.invalid" = "Virheellinen CVC / CVV-muoto";
 "adyen.card.cvcItem.title" = "CVC / CVV";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "Määritä korttisi";
@@ -35,3 +35,4 @@
 "adyen.phoneNumber.title" = "Puhelinnumero";
 "adyen.phoneNumber.invalid" = "Ei-kelvollinen puhelinnumero";
 "adyen.phoneNumber.placeholder" = "123–456–789";
+"adyen.card.cvcItem.placeholder.digits" = "%@ lukua";

@@ -22,8 +22,8 @@
 "adyen.card.numberItem.invalid" = "カード番号が無効です";
 "adyen.card.expiryItem.title" = "有効期限";
 "adyen.card.expiryItem.placeholder" = "MM/YY";
-"adyen.card.expiryItem.invalid" = "有効期限の入力間違い";
-"adyen.card.cvcItem.invalid" = "セキュリティコードの入力間違い";
+"adyen.card.expiryItem.invalid" = "有効期限が無効です";
+"adyen.card.cvcItem.invalid" = "無効なCVC / CVV形式です";
 "adyen.card.cvcItem.title" = "セキュリティーコード (CVC)";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "カード情報を確認して下さい。";
@@ -35,3 +35,4 @@
 "adyen.phoneNumber.title" = "電話番号";
 "adyen.phoneNumber.invalid" = "無効な電話番号";
 "adyen.phoneNumber.placeholder" = "123–456–789";
+"adyen.card.cvcItem.placeholder.digits" = "%@桁";

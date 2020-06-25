@@ -55,22 +55,18 @@ class ListViewControllerTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             let listCell11 = sut.tableView.cellForRow(at: IndexPath(item: 0, section: 0)) as? ListCell
-            let listView11: ListItemView? = sut.view.findView(with: "11.itemView")
             let listView11TitleLabel: UILabel? = sut.view.findView(with: "11.titleLabel")
             let listView11SubtitleLabel: UILabel? = sut.view.findView(with: "11.subtitleLabel")
             
             let listCell12 = sut.tableView.cellForRow(at: IndexPath(item: 1, section: 0)) as? ListCell
-            let listView12: ListItemView? = sut.view.findView(with: "12.itemView")
             let listView12TitleLabel: UILabel? = sut.view.findView(with: "12.titleLabel")
             let listView12SubtitleLabel: UILabel? = sut.view.findView(with: "12.subtitleLabel")
             
             let listCell21 = sut.tableView.cellForRow(at: IndexPath(item: 0, section: 1)) as? ListCell
-            let listView21: ListItemView? = sut.view.findView(with: "21.itemView")
             let listView21TitleLabel: UILabel? = sut.view.findView(with: "21.titleLabel")
             let listView21SubtitleLabel: UILabel? = sut.view.findView(with: "21.subtitleLabel")
             
             let listCell22 = sut.tableView.cellForRow(at: IndexPath(item: 1, section: 1)) as? ListCell
-            let listView22: ListItemView? = sut.view.findView(with: "22.itemView")
             let listView22TitleLabel: UILabel? = sut.view.findView(with: "22.titleLabel")
             let listView22SubtitleLabel: UILabel? = sut.view.findView(with: "22.subtitleLabel")
             
@@ -84,11 +80,6 @@ class ListViewControllerTests: XCTestCase {
             XCTAssertEqual(listCell12?.backgroundColor, .magenta)
             XCTAssertEqual(listCell21?.backgroundColor, .magenta)
             XCTAssertEqual(listCell22?.backgroundColor, .magenta)
-            
-            XCTAssertEqual(listView11?.backgroundColor, .magenta)
-            XCTAssertEqual(listView12?.backgroundColor, .magenta)
-            XCTAssertEqual(listView21?.backgroundColor, .magenta)
-            XCTAssertEqual(listView22?.backgroundColor, .magenta)
             
             XCTAssertEqual(listView11TitleLabel?.backgroundColor, .black)
             XCTAssertEqual(listView12TitleLabel?.backgroundColor, .black)

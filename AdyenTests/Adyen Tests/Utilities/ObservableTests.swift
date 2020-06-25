@@ -21,14 +21,14 @@ class ObservableTests: XCTestCase, Observer {
         XCTAssertNil(latestValue)
         
         // The event handler should be called for new values.
-        observable.value = true
+        observable.wrappedValue = true
         XCTAssertEqual(latestValue, true)
         
         // Remove the observation.
         remove(observation)
         
         // The event handler should NOT be called.
-        observable.value = false
+        observable.wrappedValue = false
         XCTAssertEqual(latestValue, true)
     }
     
@@ -49,7 +49,7 @@ class ObservableTests: XCTestCase, Observer {
         XCTAssertEqual(observation1Count, 0)
         XCTAssertEqual(observation2Count, 0)
         
-        observable.value = "Hello World"
+        observable.wrappedValue = "Hello World"
         
         // Both handlers should have been called.
         XCTAssertEqual(observation1Count, 1)
@@ -57,7 +57,7 @@ class ObservableTests: XCTestCase, Observer {
         
         remove(observation2)
         
-        observable.value = "Goodbye World"
+        observable.wrappedValue = "Goodbye World"
         
         // Only the first handler should have been called.
         XCTAssertEqual(observation1Count, 2)
@@ -78,18 +78,18 @@ class ObservableTests: XCTestCase, Observer {
             }
             
             // Counter should be functioning.
-            observable.value = "Test 1"
+            observable.wrappedValue = "Test 1"
             XCTAssertEqual(count, 1)
         }
         
         // Autoreleasepool should have been executed.
-        XCTAssertEqual(observable.value, "Test 1")
+        XCTAssertEqual(observable.wrappedValue, "Test 1")
         
         // Owner should have been released.
         XCTAssertNil(observer)
         
         // Event handler is not invoked for new values.
-        observable.value = "Test 2"
+        observable.wrappedValue = "Test 2"
         XCTAssertEqual(count, 1)
     }
     
@@ -101,13 +101,13 @@ class ObservableTests: XCTestCase, Observer {
             count += 1
         }
         
-        observable.value = "Hello World"
-        observable.value = "Hello World"
-        observable.value = "Goodbye World"
-        observable.value = "Hello World"
-        observable.value = "Hello World"
-        observable.value = "Goodbye World"
-        observable.value = "Goodbye World"
+        observable.wrappedValue = "Hello World"
+        observable.wrappedValue = "Hello World"
+        observable.wrappedValue = "Goodbye World"
+        observable.wrappedValue = "Hello World"
+        observable.wrappedValue = "Hello World"
+        observable.wrappedValue = "Goodbye World"
+        observable.wrappedValue = "Goodbye World"
         
         // The handler should only be called for unique values.
         XCTAssertEqual(count, 4)

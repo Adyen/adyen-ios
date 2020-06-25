@@ -6,8 +6,22 @@
 
 import Foundation
 
+/// Delegate for observing user's activity on `CardComponent`.
+public protocol CardComponentDelegate: class {
+    
+    /// Called when user enters PAN in `CardComponent`.
+    /// - Parameter value: Up to 6 first digits in entered PAN.
+    /// - Parameter component: The `CardComponent` instance.
+    func didChangeBIN(_ value: String, component: CardComponent)
+    
+    /// Called when `CardComponent` detected card type(s) in entered PAN.
+    /// - Parameter value: Array of card types matching entered value. Null - if no data entered.
+    /// - Parameter component: The `CardComponent` instance.
+    func didChangeCardType(_ value: [CardType]?, component: CardComponent)
+}
+
 /// A component that provides a form for card payments.
-public final class CardComponent: PaymentComponent, PresentableComponent, Localizable {
+public final class CardComponent: PaymentComponent, PresentableComponent, Localizable, Observer {
     
     /// Describes the component's UI style.
     public let style: FormComponentStyle
@@ -17,6 +31,9 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
+    
+    /// The delegate for user activity on card component.
+    public weak var cardComponentDelegate: CardComponentDelegate?
     
     /// The supported card types.
     /// The getter is O(n), since it filters out all the `excludedCardTypes` before returning.
@@ -35,6 +52,9 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     
     /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
     public var showsStorePaymentMethodField = true
+    
+    /// Indicates whether to show the security code field at all.
+    public var showsSecurityCodeField = true
     
     /// Indicates if form will show a large header title. True - show title; False - assign title to a view controller's title.
     /// Defaults to true.
@@ -81,7 +101,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
             return storedCardAlertManager.alertController
         }
         
-        return formViewController
+        return securedViewController
     }
     
     /// :nodoc:
@@ -92,15 +112,12 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     
     /// :nodoc:
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
-        footerItem.showsActivityIndicator.value = false
+        footerItem.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
         completion?()
     }
     
     // MARK: - Protected
-    
-    /// Indicates whether to show the security code field at all.
-    internal var showsSecurityCodeField = true
     
     /// Indicates the card brands excluded from the supported brands.
     internal var excludedCardTypes: Set<CardType> = [.bcmc]
@@ -129,7 +146,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
             return
         }
         
-        footerItem.showsActivityIndicator.value = true
+        footerItem.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
         
         do {
@@ -173,6 +190,8 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     
     // MARK: - Form Items
     
+    private lazy var securedViewController: SecuredViewController = SecuredViewController(child: formViewController, style: style)
+    
     private lazy var formViewController: FormViewController = {
         Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
         
@@ -215,6 +234,15 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
                                       environment: environment,
                                       style: style.textField,
                                       localizationParameters: localizationParameters)
+        observe(item.$binValue) { [weak self] bin in
+            guard let self = self else { return }
+            self.cardComponentDelegate?.didChangeBIN(bin, component: self)
+        }
+        observe(item.$detectedCardTypes) { [weak self] cardTypes in
+            guard let self = self else { return }
+            self.cardComponentDelegate?.didChangeCardType(cardTypes, component: self)
+            self.securityCodeItem.selectedCard = cardTypes?.first
+        }
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "numberItem")
         return item
     }()
@@ -236,8 +264,8 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         let securityCodeItem = FormCardSecurityCodeItem(environment: environment,
                                                         style: style.textField,
                                                         localizationParameters: localizationParameters)
+        securityCodeItem.localizationParameters = self.localizationParameters
         securityCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "securityCodeItem")
-        numberItem.delegate = securityCodeItem
         return securityCodeItem
     }()
     

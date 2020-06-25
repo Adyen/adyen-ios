@@ -16,12 +16,12 @@ class CardSecurityCodeFormatterTests: XCTestCase {
         XCTAssertEqual(formatter.formattedValue(for: "101abc"), "101")
         XCTAssertEqual(formatter.formattedValue(for: "12345"), "123")
         
-        observer.value = nil
+        observer.wrappedValue = nil
         XCTAssertEqual(formatter.formattedValue(for: "1"), "1")
         XCTAssertEqual(formatter.formattedValue(for: "101abc"), "101")
         XCTAssertEqual(formatter.formattedValue(for: "12345"), "123")
         
-        observer.value = .americanExpress
+        observer.wrappedValue = .americanExpress
         XCTAssertEqual(formatter.formattedValue(for: "12345"), "1234")
     }
     

@@ -27,8 +27,6 @@ public final class SubmitButton: UIControl {
         addSubview(activityIndicatorView)
         addSubview(titleLabel)
         
-        layer.cornerRadius = style.cornerRadius
-        
         backgroundColor = style.backgroundColor
         
         configureConstraints()
@@ -42,8 +40,7 @@ public final class SubmitButton: UIControl {
     // MARK: - Background View
     
     private lazy var backgroundView: BackgroundView = {
-        let backgroundView = BackgroundView(cornerRadius: style.cornerRadius, color: style.backgroundColor)
-        backgroundView.backgroundColor = style.backgroundColor
+        let backgroundView = BackgroundView(cornerRounding: style.cornerRounding, color: style.backgroundColor)
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
         
         return backgroundView
@@ -62,6 +59,7 @@ public final class SubmitButton: UIControl {
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.font = style.title.font
+        titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.textColor = style.title.color
         titleLabel.backgroundColor = style.title.backgroundColor
         titleLabel.textAlignment = style.title.textAlignment
@@ -112,6 +110,11 @@ public final class SubmitButton: UIControl {
     
     // MARK: - Layout
     
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        self.adyen.round(corners: .allCorners, rounding: style.cornerRounding)
+    }
+    
     private func configureConstraints() {
         let constraints = [
             backgroundView.topAnchor.constraint(equalTo: topAnchor),
@@ -146,20 +149,21 @@ public final class SubmitButton: UIControl {
     
 }
 
-private extension SubmitButton {
+extension SubmitButton {
     
-    class BackgroundView: UIView {
+    private class BackgroundView: UIView {
         
         private let color: UIColor
+        private let rounding: CornerRounding
         
-        fileprivate init(cornerRadius: CGFloat, color: UIColor) {
+        fileprivate init(cornerRounding: CornerRounding, color: UIColor) {
             self.color = color
+            self.rounding = cornerRounding
             super.init(frame: .zero)
             
             backgroundColor = color
             isUserInteractionEnabled = false
             
-            layer.cornerRadius = cornerRadius
             layer.masksToBounds = true
         }
         
@@ -194,6 +198,11 @@ private extension SubmitButton {
             transition.duration = 0.2
             transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
             layer.add(transition, forKey: nil)
+        }
+        
+        override func layoutSubviews() {
+            super.layoutSubviews()
+            self.adyen.round(corners: .allCorners, rounding: rounding)
         }
         
     }

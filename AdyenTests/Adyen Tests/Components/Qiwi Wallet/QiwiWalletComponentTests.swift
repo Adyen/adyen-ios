@@ -34,6 +34,7 @@ class QiwiWalletComponentTests: XCTestCase {
         
         XCTAssertNil(sut.footerItem.title)
         XCTAssertEqual(sut.footerItem.submitButtonTitle, ADYLocalizedString("adyen.continueTo", sut.localizationParameters, method.name))
+        XCTAssertTrue(sut.footerItem.submitButtonTitle!.contains(method.name))
     }
     
     func testLocalizationWithCustomKeySeparator() {

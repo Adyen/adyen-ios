@@ -29,6 +29,7 @@ custom_categories:
       - CardSecurityCodeValidator
       - CardNumberFormatter
       - CardNumberValidator
+      - CardComponentDelegate
   - name: Qiwi Wallet Component
     children:
       - QiwiWalletComponent
@@ -52,6 +53,7 @@ custom_categories:
   - name: BCMC Component
     children:
       - BCMCComponent
+      - BCMCComponentDelegate
   - name: SEPA Direct Debit Component
     children:
       - SEPADirectDebitComponent
@@ -92,6 +94,7 @@ custom_categories:
       - PaymentMethodDetails
       - AdditionalDetails
       - ComponentError
+      - SecuredViewController
   - name: Models
     children:
       - PaymentMethods
@@ -111,8 +114,11 @@ custom_categories:
       - Payment
       - Action
       - RedirectAction
+      - SDKAction
       - ThreeDS2FingerprintAction
       - ThreeDS2ChallengeAction
+      - CardFundingSource
+      - BrowserInfo
   - name: Styling
     children:
       - FormComponentStyle
@@ -120,6 +126,7 @@ custom_categories:
       - FormFooterStyle
       - FormTextItemStyle
       - FormSwitchItemStyle
+      - FormButtonItemStyle
       - ListComponentStyle
       - ListSectionHeaderStyle
       - ListItemStyle
@@ -129,6 +136,8 @@ custom_categories:
       - ImageStyle
       - TextStyle
       - ViewStyle
+      - TintableStyle
+      - CornerRounding
   - name: Other
     children:
       - AdyenLogging

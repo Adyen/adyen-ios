@@ -22,91 +22,91 @@ class FormCardNumberItemTests: XCTestCase {
         let maestro = item.cardTypeLogos[4]
         
         // Initially, all card type logos should be visible.
-        XCTAssertEqual(visa.isHidden.value, false)
-        XCTAssertEqual(mc.isHidden.value, false)
-        XCTAssertEqual(amex.isHidden.value, false)
-        XCTAssertEqual(cup.isHidden.value, false)
-        XCTAssertEqual(maestro.isHidden.value, false)
+        XCTAssertEqual(visa.isHidden, false)
+        XCTAssertEqual(mc.isHidden, false)
+        XCTAssertEqual(amex.isHidden, false)
+        XCTAssertEqual(cup.isHidden, false)
+        XCTAssertEqual(maestro.isHidden, false)
         
         // When typing unknown combination, all logos should be hidden.
         item.value = "5"
-        XCTAssertEqual(visa.isHidden.value, true)
-        XCTAssertEqual(mc.isHidden.value, true)
-        XCTAssertEqual(amex.isHidden.value, true)
-        XCTAssertEqual(cup.isHidden.value, true)
-        XCTAssertEqual(maestro.isHidden.value, true)
+        XCTAssertEqual(visa.isHidden, true)
+        XCTAssertEqual(mc.isHidden, true)
+        XCTAssertEqual(amex.isHidden, true)
+        XCTAssertEqual(cup.isHidden, true)
+        XCTAssertEqual(maestro.isHidden, true)
         
         // When typing Maestro pattern, only Maestro should be visible.
         item.value = "56"
-        XCTAssertEqual(visa.isHidden.value, true)
-        XCTAssertEqual(mc.isHidden.value, true)
-        XCTAssertEqual(amex.isHidden.value, true)
-        XCTAssertEqual(cup.isHidden.value, true)
-        XCTAssertEqual(maestro.isHidden.value, false)
+        XCTAssertEqual(visa.isHidden, true)
+        XCTAssertEqual(mc.isHidden, true)
+        XCTAssertEqual(amex.isHidden, true)
+        XCTAssertEqual(cup.isHidden, true)
+        XCTAssertEqual(maestro.isHidden, false)
         
         // When typing Mastercard pattern, only Mastercard should be visible.
         item.value = "55"
-        XCTAssertEqual(visa.isHidden.value, true)
-        XCTAssertEqual(mc.isHidden.value, false)
-        XCTAssertEqual(amex.isHidden.value, true)
-        XCTAssertEqual(cup.isHidden.value, true)
-        XCTAssertEqual(maestro.isHidden.value, true)
+        XCTAssertEqual(visa.isHidden, true)
+        XCTAssertEqual(mc.isHidden, false)
+        XCTAssertEqual(amex.isHidden, true)
+        XCTAssertEqual(cup.isHidden, true)
+        XCTAssertEqual(maestro.isHidden, true)
         
         // When continuing to type, Mastercard should remain visible.
         item.value = "5555"
-        XCTAssertEqual(visa.isHidden.value, true)
-        XCTAssertEqual(mc.isHidden.value, false)
-        XCTAssertEqual(amex.isHidden.value, true)
-        XCTAssertEqual(cup.isHidden.value, true)
-        XCTAssertEqual(maestro.isHidden.value, true)
+        XCTAssertEqual(visa.isHidden, true)
+        XCTAssertEqual(mc.isHidden, false)
+        XCTAssertEqual(amex.isHidden, true)
+        XCTAssertEqual(cup.isHidden, true)
+        XCTAssertEqual(maestro.isHidden, true)
         
         // When entering PAN, Mastercard should remain visible.
         item.value = "5577000055770004"
-        XCTAssertEqual(visa.isHidden.value, true)
-        XCTAssertEqual(mc.isHidden.value, false)
-        XCTAssertEqual(amex.isHidden.value, true)
-        XCTAssertEqual(cup.isHidden.value, true)
-        XCTAssertEqual(maestro.isHidden.value, true)
+        XCTAssertEqual(visa.isHidden, true)
+        XCTAssertEqual(mc.isHidden, false)
+        XCTAssertEqual(amex.isHidden, true)
+        XCTAssertEqual(cup.isHidden, true)
+        XCTAssertEqual(maestro.isHidden, true)
         
         // When entering too long PAN, all logos should be hidden.
         item.value = "55770000557700040"
-        XCTAssertEqual(visa.isHidden.value, true)
-        XCTAssertEqual(mc.isHidden.value, true)
-        XCTAssertEqual(amex.isHidden.value, true)
-        XCTAssertEqual(cup.isHidden.value, true)
-        XCTAssertEqual(maestro.isHidden.value, true)
+        XCTAssertEqual(visa.isHidden, true)
+        XCTAssertEqual(mc.isHidden, true)
+        XCTAssertEqual(amex.isHidden, true)
+        XCTAssertEqual(cup.isHidden, true)
+        XCTAssertEqual(maestro.isHidden, true)
         
         // Clearing the field should bring back both logos.
         item.value = ""
-        XCTAssertEqual(visa.isHidden.value, false)
-        XCTAssertEqual(mc.isHidden.value, false)
-        XCTAssertEqual(amex.isHidden.value, false)
-        XCTAssertEqual(cup.isHidden.value, false)
-        XCTAssertEqual(maestro.isHidden.value, false)
+        XCTAssertEqual(visa.isHidden, false)
+        XCTAssertEqual(mc.isHidden, false)
+        XCTAssertEqual(amex.isHidden, false)
+        XCTAssertEqual(cup.isHidden, false)
+        XCTAssertEqual(maestro.isHidden, false)
         
         // When typing VISA pattern, only VISA should be visible.
         item.value = "4"
-        XCTAssertEqual(visa.isHidden.value, false)
-        XCTAssertEqual(mc.isHidden.value, true)
-        XCTAssertEqual(amex.isHidden.value, true)
-        XCTAssertEqual(cup.isHidden.value, true)
-        XCTAssertEqual(maestro.isHidden.value, true)
+        XCTAssertEqual(visa.isHidden, false)
+        XCTAssertEqual(mc.isHidden, true)
+        XCTAssertEqual(amex.isHidden, true)
+        XCTAssertEqual(cup.isHidden, true)
+        XCTAssertEqual(maestro.isHidden, true)
         
         // When typing Amex pattern, only Amex should be visible.
         item.value = "34"
-        XCTAssertEqual(visa.isHidden.value, true)
-        XCTAssertEqual(mc.isHidden.value, true)
-        XCTAssertEqual(amex.isHidden.value, false)
-        XCTAssertEqual(cup.isHidden.value, true)
-        XCTAssertEqual(maestro.isHidden.value, true)
+        XCTAssertEqual(visa.isHidden, true)
+        XCTAssertEqual(mc.isHidden, true)
+        XCTAssertEqual(amex.isHidden, false)
+        XCTAssertEqual(cup.isHidden, true)
+        XCTAssertEqual(maestro.isHidden, true)
         
         // When typing common pattern, all matching cards should be visible.
         item.value = "62"
-        XCTAssertEqual(visa.isHidden.value, true)
-        XCTAssertEqual(mc.isHidden.value, true)
-        XCTAssertEqual(amex.isHidden.value, true)
-        XCTAssertEqual(cup.isHidden.value, false)
-        XCTAssertEqual(maestro.isHidden.value, false)
+        XCTAssertEqual(visa.isHidden, true)
+        XCTAssertEqual(mc.isHidden, true)
+        XCTAssertEqual(amex.isHidden, true)
+        XCTAssertEqual(cup.isHidden, false)
+        XCTAssertEqual(maestro.isHidden, false)
     }
     
     func testLocalizationWithCustomTableName() {

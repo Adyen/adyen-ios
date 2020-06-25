@@ -13,7 +13,20 @@ public struct ButtonStyle: ViewStyle {
     public var title: TextStyle
     
     /// The corner radius of the button.
-    public var cornerRadius: CGFloat
+    @available(*, deprecated, message: "Use cornerRounding instead.")
+    public var cornerRadius: CGFloat {
+        get {
+            guard case let .fixed(value) = cornerRounding else { return 0 }
+            return value
+        }
+        
+        set {
+            cornerRounding = .fixed(newValue)
+        }
+    }
+    
+    /// The corners style of the button.
+    public var cornerRounding: CornerRounding = .fixed(8)
     
     /// :nodoc:
     public var backgroundColor: UIColor = UIColor.AdyenCore.defaultBlue
@@ -21,10 +34,26 @@ public struct ButtonStyle: ViewStyle {
     /// Initializes the button style.
     ///
     /// - Parameter title: The title style.
+    public init(title: TextStyle) {
+        self.title = title
+    }
+    
+    /// Initializes the button style.
+    ///
+    /// - Parameter title: The title style.
     /// - Parameter cornerRadius: The corner radius of the button.
     public init(title: TextStyle, cornerRadius: CGFloat) {
         self.title = title
-        self.cornerRadius = cornerRadius
+        self.cornerRounding = .fixed(cornerRadius)
+    }
+    
+    /// Initializes the button style.
+    ///
+    /// - Parameter title: The title style.
+    /// - Parameter cornerRounding: The corner radius of the button style.
+    public init(title: TextStyle, cornerRounding: CornerRounding) {
+        self.title = title
+        self.cornerRounding = cornerRounding
     }
     
     /// Initializes the button style.
@@ -34,7 +63,18 @@ public struct ButtonStyle: ViewStyle {
     /// - Parameter background: Color to fill button's background.
     public init(title: TextStyle, cornerRadius: CGFloat, background: UIColor) {
         self.title = title
-        self.cornerRadius = cornerRadius
+        self.cornerRounding = .fixed(cornerRadius)
+        self.backgroundColor = background
+    }
+    
+    /// Initializes the button style.
+    ///
+    /// - Parameter title: The button title text style.
+    /// - Parameter cornerRounding: The button corner radius style.
+    /// - Parameter background: Color to fill button's background.
+    public init(title: TextStyle, cornerRounding: CornerRounding, background: UIColor) {
+        self.title = title
+        self.cornerRounding = cornerRounding
         self.backgroundColor = background
     }
     

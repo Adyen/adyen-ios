@@ -13,3 +13,11 @@ public protocol ViewStyle {
     var backgroundColor: UIColor { get set }
     
 }
+
+/// Contains the styling customization options for views with acent color.
+public protocol TintableStyle: ViewStyle {
+    
+    /// The tint color of the view.
+    var tintColor: UIColor? { get set }
+    
+}

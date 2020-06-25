@@ -16,11 +16,13 @@ class CardExpiryDateValidatorTests: XCTestCase {
         XCTAssertTrue(validator.isValid("0820"))
         XCTAssertTrue(validator.isValid("0121"))
         
-        // Test date less than 15 years in the future from reference date 01/01/2020.
+        // Test date less than 30 years in the future from reference date 01/01/2020.
         XCTAssertTrue(validator.isValid("0130"))
+        XCTAssertTrue(validator.isValid("0140"))
+        XCTAssertTrue(validator.isValid("0150"))
         
-        // Test date 15 years in the future from reference date 01/01/2020.
-        XCTAssertTrue(validator.isValid("0135"))
+        // Test date 30 years in the future from reference date 01/01/2020.
+        XCTAssertTrue(validator.isValid("0150"))
         
         // Test date less than 3 months in the past from reference date 01/01/2020.
         XCTAssertTrue(validator.isValid("1019"))
@@ -57,8 +59,8 @@ class CardExpiryDateValidatorTests: XCTestCase {
         XCTAssertFalse(validator.isValid("0101"))
         XCTAssertFalse(validator.isValid("0819"))
         
-        // More than 15 years in the future from reference date 01/01/2020.
-        XCTAssertFalse(validator.isValid("0136"))
+        // More than 30 years in the future from reference date 01/01/2020.
+        XCTAssertFalse(validator.isValid("0151"))
         
         // Invalid month.
         XCTAssertFalse(validator.isValid("1320"))

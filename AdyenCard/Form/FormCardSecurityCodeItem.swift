@@ -8,10 +8,10 @@
 internal final class FormCardSecurityCodeItem: FormTextItem {
     
     /// :nodoc:
-    internal let localizationParameters: LocalizationParameters?
+    internal var localizationParameters: LocalizationParameters?
     
     /// :nodoc:
-    internal var selectedCard = Observable<CardType?>(nil)
+    @Observable(nil) internal var selectedCard: CardType?
     
     /// Initializes the form card number item.
     internal init(environment: Environment,
@@ -32,14 +32,8 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
         builder.build(with: self)
     }
     
-    private lazy var securityCodeFormatter = CardSecurityCodeFormatter(publisher: selectedCard)
-    private lazy var securityCodeValidator = CardSecurityCodeValidator(publisher: selectedCard)
-}
-
-extension FormCardSecurityCodeItem: CardTypeChangeDelegate {
-    internal func cardTypeDidChange(type: CardType?) {
-        selectedCard.value = type
-    }
+    private lazy var securityCodeFormatter = CardSecurityCodeFormatter(publisher: $selectedCard)
+    private lazy var securityCodeValidator = CardSecurityCodeValidator(publisher: $selectedCard)
 }
 
 extension FormItemViewBuilder {

@@ -12,13 +12,13 @@ class ComponentManagerTests: XCTestCase {
     
     let dictionary = [
         "storedPaymentMethods": [
-            storedCardDictionary,
-            storedCardDictionary,
+            storedCreditCardDictionary,
+            storedCreditCardDictionary,
             storedPayPalDictionary,
             storedBcmcDictionary
         ],
         "paymentMethods": [
-            cardDictionary,
+            creditCardDictionary,
             issuerListDictionary,
             sepaDirectDebitDictionary,
             bcmcCardDictionary,

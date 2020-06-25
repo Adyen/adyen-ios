@@ -37,48 +37,52 @@ public final class ListItemView: UIView, AnyFormItemView {
     /// The item displayed in the item view.
     public var item: ListItem? {
         didSet {
-            updateItemView()
+            updateItemData(item: item)
+            
+            if let style = item?.style, oldValue?.style != style {
+                updateImageView(style: style)
+                updateTitleLabel(style: style)
+                updateSubtitleLabel(style: style)
+            }
         }
     }
     
-    private func updateItemView() {
-        updateTitleLabel()
-        updateSubtitleLabel()
-        updateImageView()
-        backgroundColor = item?.style.backgroundColor
+    private func updateItemData(item: ListItem?) {
         accessibilityIdentifier = item?.identifier
-    }
-    
-    private func updateTitleLabel() {
-        titleLabel.text = item?.title
         
-        titleLabel.font = item?.style.title.font ?? .systemFont(ofSize: 17.0)
-        titleLabel.textColor = item?.style.title.color ?? UIColor.AdyenCore.componentLabel
-        titleLabel.backgroundColor = item?.style.title.backgroundColor
-        titleLabel.textAlignment = item?.style.title.textAlignment ?? .natural
+        titleLabel.text = item?.title
         titleLabel.accessibilityIdentifier = item?.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel") }
-    }
-    
-    private func updateSubtitleLabel() {
+        
         subtitleLabel.text = item?.subtitle
         subtitleLabel.isHidden = item?.subtitle?.isEmpty ?? true
-        
-        subtitleLabel.font = item?.style.subtitle.font ?? .systemFont(ofSize: 14.0)
-        subtitleLabel.textColor = item?.style.subtitle.color ?? UIColor.AdyenCore.componentSecondaryLabel
-        subtitleLabel.backgroundColor = item?.style.subtitle.backgroundColor
-        subtitleLabel.textAlignment = item?.style.subtitle.textAlignment ?? .natural
         subtitleLabel.accessibilityIdentifier = item?.identifier.map {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "subtitleLabel")
         }
+        
+        imageView.imageURL = item?.imageURL
     }
     
-    private func updateImageView() {
-        imageView.imageURL = item?.imageURL
-        imageView.contentMode = item?.style.image.contentMode ?? .scaleAspectFit
-        imageView.clipsToBounds = item?.style.image.clipsToBounds ?? true
-        imageView.layer.cornerRadius = item?.style.image.cornerRadius ?? 4.0
-        imageView.layer.borderWidth = item?.style.image.borderWidth ?? 1.0 / UIScreen.main.nativeScale
-        imageView.layer.borderColor = item?.style.image.borderColor?.cgColor ?? UIColor.AdyenCore.componentSeparator.cgColor
+    private func updateTitleLabel(style: ListItemStyle) {
+        titleLabel.font = style.title.font
+        titleLabel.adjustsFontForContentSizeCategory = true
+        titleLabel.textColor = style.title.color
+        titleLabel.backgroundColor = style.title.backgroundColor
+        titleLabel.textAlignment = style.title.textAlignment
+    }
+    
+    private func updateSubtitleLabel(style: ListItemStyle) {
+        subtitleLabel.font = style.subtitle.font
+        subtitleLabel.adjustsFontForContentSizeCategory = true
+        subtitleLabel.textColor = style.subtitle.color
+        subtitleLabel.backgroundColor = style.subtitle.backgroundColor
+        subtitleLabel.textAlignment = style.subtitle.textAlignment
+    }
+    
+    private func updateImageView(style: ListItemStyle) {
+        imageView.contentMode = style.image.contentMode
+        imageView.clipsToBounds = style.image.clipsToBounds
+        imageView.layer.borderWidth = style.image.borderWidth
+        imageView.layer.borderColor = style.image.borderColor?.cgColor
     }
     
     // MARK: - Image View
@@ -90,6 +94,11 @@ public final class ListItemView: UIView, AnyFormItemView {
         
         return imageView
     }()
+    
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        imageView.adyen.round(using: item?.style.image.cornerRounding ?? .fixed(4))
+    }
     
     // MARK: - Title Label
     
@@ -124,14 +133,16 @@ public final class ListItemView: UIView, AnyFormItemView {
     
     // MARK: - Layout
     
+    private let imageSize = CGSize(width: 40, height: 26)
+    
     private func configureConstraints() {
         let constraints = [
             imageView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
             imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
             imageView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
             imageView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-            imageView.widthAnchor.constraint(equalToConstant: 40.0),
-            imageView.heightAnchor.constraint(equalToConstant: 26.0),
+            imageView.widthAnchor.constraint(equalToConstant: imageSize.width),
+            imageView.heightAnchor.constraint(equalToConstant: imageSize.height),
             
             textStackView.topAnchor.constraint(greaterThanOrEqualTo: layoutMarginsGuide.topAnchor),
             textStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
@@ -150,6 +161,15 @@ public final class ListItemView: UIView, AnyFormItemView {
         super.traitCollectionDidChange(previousTraitCollection)
         
         imageView.layer.borderColor = item?.style.image.borderColor?.cgColor ?? UIColor.AdyenCore.componentSeparator.cgColor
+    }
+    
+    public override var intrinsicContentSize: CGSize {
+        let targetSize = CGSize(width: UIView.layoutFittingCompressedSize.width,
+                                height: UIView.layoutFittingCompressedSize.height)
+        let size = textStackView.systemLayoutSizeFitting(targetSize,
+                                                         withHorizontalFittingPriority: .fittingSizeLevel,
+                                                         verticalFittingPriority: .fittingSizeLevel)
+        return size + layoutMargins.size + CGSize(width: imageSize.width, height: 0)
     }
     
 }

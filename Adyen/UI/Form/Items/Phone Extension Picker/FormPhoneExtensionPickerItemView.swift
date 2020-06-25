@@ -63,7 +63,6 @@ internal final class FormPhoneExtensionPickerItemView: FormValueItemView<FormPho
     private func initialize() {
         showsSeparator = false
         addSubview(inputControl)
-        backgroundColor = item.style.backgroundColor
         configureConstraints()
         updateSelection()
     }

@@ -10,7 +10,7 @@ import Foundation
 public struct FormHeaderStyle: ViewStyle {
     
     /// The title style.
-    public var title: TextStyle = TextStyle(font: .systemFont(ofSize: 32.0, weight: .bold),
+    public var title: TextStyle = TextStyle(font: UIFont.AdyenCore.largeTitle,
                                             color: UIColor.AdyenCore.componentLabel,
                                             textAlignment: .center)
     

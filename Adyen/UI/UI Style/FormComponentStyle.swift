@@ -9,6 +9,9 @@ import Foundation
 /// Contains the styling customization options for any form-based component.
 public struct FormComponentStyle: ViewStyle {
     
+    /// :nodoc:
+    public var backgroundColor: UIColor = UIColor.AdyenCore.componentBackground
+    
     /// The header style.
     public var header: FormHeaderStyle = FormHeaderStyle()
     
@@ -22,23 +25,43 @@ public struct FormComponentStyle: ViewStyle {
     public var footer: FormFooterStyle
     
     /// The main button style.
-    public var mainButton = ButtonStyle(title: TextStyle(font: .systemFont(ofSize: 17.0, weight: .semibold),
-                                                         color: .white,
-                                                         textAlignment: .center),
-                                        cornerRadius: 8.0)
+    @available(*, deprecated, message: "Use mainButtonItem instead.")
+    public var mainButton: ButtonStyle {
+        get { mainButtonItem.button }
+        
+        set {
+            mainButtonItem.button = newValue
+        }
+    }
     
     /// The secondary button style.
-    public var secondaryButton = ButtonStyle(title: TextStyle(font: .systemFont(ofSize: 17.0, weight: .regular),
-                                                              color: UIColor.AdyenCore.defaultBlue,
-                                                              textAlignment: .center),
-                                             cornerRadius: 0.0,
-                                             background: .clear)
+    @available(*, deprecated, message: "Use secondaryButtonItem instead.")
+    public var secondaryButton: ButtonStyle {
+        get { secondaryButtonItem.button }
+        
+        set {
+            secondaryButtonItem.button = newValue
+        }
+    }
+    
+    /// The main button style.
+    public var mainButtonItem: FormButtonItemStyle = .main(font: .preferredFont(forTextStyle: .headline),
+                                                           textColor: .white,
+                                                           mainColor: UIColor.AdyenCore.defaultBlue)
+    
+    /// The secondary button style.
+    public var secondaryButtonItem: FormButtonItemStyle = .secondary(font: .preferredFont(forTextStyle: .body),
+                                                                     textColor: UIColor.AdyenCore.defaultBlue)
     
     /// The color for separator element.
-    public var separatorColor: UIColor = UIColor.AdyenCore.componentSeparator
-    
-    /// :nodoc:
-    public var backgroundColor: UIColor = UIColor.AdyenCore.componentBackground
+    /// When set, updates separator colors for all undelying styles unless the value were set previously.
+    /// If value is nil, the default color would be used.
+    public var separatorColor: UIColor? {
+        didSet {
+            textField.separatorColor = textField.separatorColor ?? separatorColor
+            `switch`.separatorColor = `switch`.separatorColor ?? separatorColor
+        }
+    }
     
     /// Initializes the Form UI style.
     ///
@@ -52,14 +75,14 @@ public struct FormComponentStyle: ViewStyle {
                 textField: FormTextItemStyle,
                 switch: FormSwitchItemStyle,
                 footer: FormFooterStyle,
-                mainButton: ButtonStyle,
-                secondaryButton: ButtonStyle) {
+                mainButton: FormButtonItemStyle,
+                secondaryButton: FormButtonItemStyle) {
         self.header = header
         self.textField = textField
         self.switch = `switch`
         self.footer = footer
-        self.mainButton = mainButton
-        self.secondaryButton = secondaryButton
+        self.mainButtonItem = mainButton
+        self.secondaryButtonItem = secondaryButton
     }
     
     /// Initializes the Form UI style.
@@ -78,8 +101,21 @@ public struct FormComponentStyle: ViewStyle {
         self.textField = textField
         self.switch = `switch`
         self.footer = FormFooterStyle(button: mainButton)
-        self.mainButton = mainButton
-        self.secondaryButton = secondaryButton
+        self.mainButtonItem = FormButtonItemStyle(button: mainButton)
+        self.secondaryButtonItem = FormButtonItemStyle(button: secondaryButton)
+    }
+    
+    /// Initializes the form style with the default style and custom tint for all elements.
+    /// - Parameter tintColor: The color for tinting buttons. textfields, icons and switches.
+    public init(tintColor: UIColor) {
+        self.init()
+        
+        mainButtonItem.button.backgroundColor = tintColor
+        secondaryButtonItem.button.title.color = tintColor
+        
+        footer = FormFooterStyle(button: mainButtonItem.button)
+        textField = FormTextItemStyle(tintColor: tintColor)
+        `switch`.tintColor = tintColor
     }
     
     /// Initializes the form style with the default style.

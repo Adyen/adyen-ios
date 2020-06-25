@@ -23,7 +23,7 @@
 "adyen.card.expiryItem.title" = "Utløpsdato";
 "adyen.card.expiryItem.placeholder" = "MM/ÅÅ";
 "adyen.card.expiryItem.invalid" = "Ugyldig utløpsdato";
-"adyen.card.cvcItem.invalid" = "Ugyldig sikkerhetskode";
+"adyen.card.cvcItem.invalid" = "Ugyldig CVC-/CVV-format";
 "adyen.card.cvcItem.title" = "CVC / CVV";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "Bekreft kortet ditt";
@@ -35,3 +35,4 @@
 "adyen.phoneNumber.title" = "Telefonnummer";
 "adyen.phoneNumber.invalid" = "Ugyldig telefonnummer";
 "adyen.phoneNumber.placeholder" = "987 65 432";
+"adyen.card.cvcItem.placeholder.digits" = "%@ siffer";

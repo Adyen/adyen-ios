@@ -4,8 +4,6 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import UIKit
-
 /// Animate sequential slid in and out movement for transitioning controllers.
 internal final class SlideInPresentationAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     
@@ -20,14 +18,15 @@ internal final class SlideInPresentationAnimator: NSObject, UIViewControllerAnim
     }
     
     public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        guard let toShow = transitionContext.viewController(forKey: .to),
-            let toHide = transitionContext.viewController(forKey: .from) else { return }
+        guard let toShow = transitionContext.viewController(forKey: .to) as? WrapperViewController,
+            let toHide = transitionContext.viewController(forKey: .from) as? WrapperViewController else { return }
         
         let containerView = transitionContext.containerView
         containerView.addSubview(toShow.view)
-        toShow.view.frame.origin.y = containerView.bounds.height
         
-        let preferedFrame = toShow.finalPresentationFrame(in: containerView)
+        let preferedFrame = toShow.child.adyen.finalPresentationFrame(in: containerView)
+        toShow.child.view.frame = preferedFrame
+        toShow.view.frame.origin.y = containerView.bounds.height
         
         UIView.animateKeyframes(withDuration: duration, delay: 0.0, options: [], animations: {
             UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.5) {
@@ -35,7 +34,7 @@ internal final class SlideInPresentationAnimator: NSObject, UIViewControllerAnim
             }
             
             UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.5) {
-                toShow.view.frame = preferedFrame
+                toShow.view.frame.origin.y = containerView.frame.origin.y
             }
             
         }, completion: { finished in

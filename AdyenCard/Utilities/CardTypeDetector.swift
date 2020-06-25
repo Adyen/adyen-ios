@@ -12,10 +12,12 @@ import Foundation
 public final class CardTypeDetector {
     
     /// The types to detect.
-    public var detectableTypes: [CardType] = [.visa, .masterCard, .americanExpress]
+    public var detectableTypes: [CardType]
     
     /// Initializes the card type detector.
-    public init() {}
+    public init(detectableTypes: [CardType] = [.visa, .masterCard, .americanExpress]) {
+        self.detectableTypes = detectableTypes
+    }
     
     /// Detects the type for a given card number.
     ///

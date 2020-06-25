@@ -22,8 +22,8 @@
 "adyen.card.numberItem.invalid" = "Недействительный номер карты";
 "adyen.card.expiryItem.title" = "Срок действия";
 "adyen.card.expiryItem.placeholder" = "ММ/ГГ";
-"adyen.card.expiryItem.invalid" = "Недействительный срок действия";
-"adyen.card.cvcItem.invalid" = "Недействительный защитный код";
+"adyen.card.expiryItem.invalid" = "Указан неверный срок действия";
+"adyen.card.cvcItem.invalid" = "Неверный формат CVC / CVV";
 "adyen.card.cvcItem.title" = "CVC / CVV";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "Подтвердить карту";
@@ -35,3 +35,4 @@
 "adyen.phoneNumber.title" = "Номер телефона";
 "adyen.phoneNumber.invalid" = "Недействительный номер телефона";
 "adyen.phoneNumber.placeholder" = "123–456–789";
+"adyen.card.cvcItem.placeholder.digits" = "%@ цифры";

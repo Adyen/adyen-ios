@@ -6,8 +6,14 @@
 
 import Foundation
 
+/// :nodoc:
+internal protocol LoadingComponent: PresentableComponent {
+    /// :nodoc:
+    func startLoading(for component: PaymentComponent)
+}
+
 /// A component that presents a list of items for each payment method with a component.
-internal final class PaymentMethodListComponent: PresentableComponent, Localizable {
+internal final class PaymentMethodListComponent: LoadingComponent, Localizable {
     
     /// The components that are displayed in the list.
     internal let components: SectionedComponents

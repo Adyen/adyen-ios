@@ -6,10 +6,11 @@
 
 import UIKit
 
-public extension UIColor {
+/// :nodoc:
+extension UIColor {
     
     /// :nodoc:
-    enum AdyenCore {
+    internal enum AdyenCore {
         
         internal static var componentBackground: UIColor {
             if #available(iOS 13.0, *) {
@@ -59,7 +60,7 @@ public extension UIColor {
             }
         }
         
-        public static var componentSeparator: UIColor {
+        internal static var componentSeparator: UIColor {
             if #available(iOS 13.0, *) {
                 return .separator
             } else {
@@ -71,17 +72,6 @@ public extension UIColor {
         
         internal static let defaultRed: UIColor = UIColor(hex: 0xFF3B30)
         
-    }
-    
-    internal convenience init(hex: UInt) {
-        assert(hex >= 0x000000 && hex <= 0xFFFFFF,
-               "Invalid Hexadecimal color, Hexadecimal number should be between 0x0 and 0xFFFFFF")
-        self.init(
-            red: CGFloat((hex >> 16) & 0xFF) / 255.0,
-            green: CGFloat((hex >> 8) & 0xFF) / 255.0,
-            blue: CGFloat(hex & 0xFF) / 255.0,
-            alpha: 1.0
-        )
     }
     
 }

@@ -129,9 +129,6 @@ class ApplePayComponentTest: XCTestCase {
         if #available(iOS 11.0, *) {
             XCTAssertEqual(sut?.paymentRequest.requiredBillingContactFields, expectedRequiredBillingFields)
             XCTAssertEqual(sut?.paymentRequest.requiredShippingContactFields, expectedRequiredShippingFields)
-        } else {
-            XCTAssertEqual(sut?.paymentRequest.requiredBillingAddressFields, nil)
-            XCTAssertEqual(sut?.paymentRequest.requiredShippingAddressFields, nil)
         }
     }
     

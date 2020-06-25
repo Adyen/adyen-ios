@@ -21,17 +21,8 @@ public final class RedirectComponent: ActionComponent {
     public weak var delegate: ActionComponentDelegate?
     
     /// The view controller to use to present the in-app browser incase the redirect is a non native app redirect.
-    public var presentingViewController: UIViewController? {
-        
-        get {
-            universalRedirectComponent.presentingViewController
-        }
-        
-        set {
-            universalRedirectComponent.presentingViewController = newValue
-        }
-        
-    }
+    @available(*, deprecated, message: "Setting presentingViewController is no longer required. Redirect will be presented on top of keyWindow") // swiftlint:disable:this line_length
+    public var presentingViewController: UIViewController?
     
     /// Initializes the component.
     ///

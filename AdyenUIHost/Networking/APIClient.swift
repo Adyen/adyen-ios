@@ -94,6 +94,8 @@ internal final class APIClient: APIClientProtocol {
             switch result {
             case let .success(data):
                 print(" ---- Response (/\(request.path)) ----")
+                let string = String(data: data, encoding: .utf8)?.replacingOccurrences(of: "&quot;", with: "\"")
+                let data = string!.data(using: .utf8)!
                 printAsJSON(data)
                 
                 do {

@@ -22,8 +22,8 @@
 "adyen.card.numberItem.invalid" = "유효하지 않은 카드 번호";
 "adyen.card.expiryItem.title" = "만료일";
 "adyen.card.expiryItem.placeholder" = "MM/YY";
-"adyen.card.expiryItem.invalid" = "유효하지 않은 만료 날짜";
-"adyen.card.cvcItem.invalid" = "유효하지 않은 보안 코드";
+"adyen.card.expiryItem.invalid" = "유효하지 않은 만료일";
+"adyen.card.cvcItem.invalid" = "유효하지 않은 CVC/CVV 형식";
 "adyen.card.cvcItem.title" = "CVC / CVV";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "카드 확인";
@@ -35,3 +35,4 @@
 "adyen.phoneNumber.title" = "전화번호";
 "adyen.phoneNumber.invalid" = "유효하지 않은 전화번호";
 "adyen.phoneNumber.placeholder" = "123–456–789";
+"adyen.card.cvcItem.placeholder.digits" = "%@자리";

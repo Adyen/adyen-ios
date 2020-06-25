@@ -31,7 +31,7 @@ public final class FormViewController: UIViewController, Localizable {
     
     /// :nodoc:
     public override var preferredContentSize: CGSize {
-        get { formView.preferredContentSize }
+        get { formView.intrinsicContentSize }
         
         // swiftlint:disable:next unused_setter_value
         set { assertionFailure("""

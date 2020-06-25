@@ -39,9 +39,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     // MARK: - Presentable Component Protocol
     
     /// :nodoc:
-    public var viewController: UIViewController {
-        return formViewController
-    }
+    public lazy var viewController: UIViewController = SecuredViewController(child: formViewController, style: style)
     
     /// :nodoc:
     public var requiresModalPresentation: Bool = true
@@ -51,7 +49,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     
     /// :nodoc:
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
-        footerItem.showsActivityIndicator.value = false
+        footerItem.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
         
         completion?()
@@ -91,7 +89,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
         let details = SEPADirectDebitDetails(paymentMethod: sepaDirectDebitPaymentMethod,
                                              iban: ibanItem.value,
                                              ownerName: nameItem.value)
-        footerItem.showsActivityIndicator.value = true
+        footerItem.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
         
         submit(data: PaymentComponentData(paymentMethodDetails: details))

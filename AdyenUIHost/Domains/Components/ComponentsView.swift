@@ -70,7 +70,8 @@ extension ComponentsView: UITableViewDataSource {
     
     internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.font = .systemFont(ofSize: 17.0, weight: .semibold)
+        cell.textLabel?.font = .preferredFont(forTextStyle: .headline)
+        cell.textLabel?.adjustsFontForContentSizeCategory = true
         cell.textLabel?.text = items[indexPath.section][indexPath.item].title
         
         return cell

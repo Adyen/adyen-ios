@@ -17,7 +17,7 @@ internal protocol PreselectedPaymentMethodComponentDelegate: AnyObject {
 }
 
 /// A component that presents a single preselected payment method and option to open more payment methods.
-internal final class PreselectedPaymentMethodComponent: PresentableComponent, Localizable {
+internal final class PreselectedPaymentMethodComponent: LoadingComponent, Localizable {
     
     private let title: String
     private let defaultComponent: PaymentComponent
@@ -61,7 +61,7 @@ internal final class PreselectedPaymentMethodComponent: PresentableComponent, Lo
     }()
     
     private lazy var separator: FormSeparatorItem = {
-        let separator: FormSeparatorItem = FormSeparatorItem(color: style.separatorColor)
+        let separator: FormSeparatorItem = FormSeparatorItem(color: style.separatorColor ?? UIColor.AdyenDropIn.componentSeparator)
         separator.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "separator")
         return separator
     }()
@@ -77,19 +77,18 @@ internal final class PreselectedPaymentMethodComponent: PresentableComponent, Lo
     }()
     
     private lazy var submitButtonItem: FormButtonItem = {
-        let item = FormButtonItem(style: style.mainButton)
+        let item = FormButtonItem(style: style.mainButtonItem)
         item.title = ADYLocalizedSubmitButtonTitle(with: payment?.amount, localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "submitButton")
         let component = self.defaultComponent
         item.buttonSelectionHandler = { [weak self] in
-            item.showsActivityIndicator.value = true
             self?.delegate?.didProceed(with: component)
         }
         return item
     }()
     
     private lazy var openAllButtonItem: FormButtonItem = {
-        let item = FormButtonItem(style: style.secondaryButton)
+        let item = FormButtonItem(style: style.secondaryButtonItem)
         item.title = ADYLocalizedString("adyen.dropIn.preselected.openAll.title", localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "openAllButton")
         item.buttonSelectionHandler = { [weak self] in
@@ -98,8 +97,15 @@ internal final class PreselectedPaymentMethodComponent: PresentableComponent, Lo
         return item
     }()
     
+    public func startLoading(for component: PaymentComponent) {
+        guard component === defaultComponent else { return }
+        submitButtonItem.showsActivityIndicator = true
+        openAllButtonItem.enabled = false
+    }
+    
     internal func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
-        submitButtonItem.showsActivityIndicator.value = false
+        submitButtonItem.showsActivityIndicator = false
+        openAllButtonItem.enabled = true
         completion?()
     }
     

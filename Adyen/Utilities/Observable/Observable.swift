@@ -8,25 +8,36 @@ import Foundation
 
 /// Wraps a value to make it observable.
 /// :nodoc:
+@propertyWrapper
 public final class Observable<ValueType: Equatable>: EventPublisher {
     
     /// Initializes the observable.
     ///
     /// - Parameter value: The initial value.
     public init(_ value: ValueType) {
-        self.value = value
+        self.wrappedValue = value
     }
     
     // MARK: - Value
     
     /// The observable value.
+    @available(*, deprecated, message: "Use the Swift 5.1 property wrapper syntax instead.")
     public var value: ValueType {
+        get {
+            wrappedValue
+        }
+        
+        set {
+            wrappedValue = newValue
+        }
+    }
+    
+    /// :nodoc:
+    public var wrappedValue: ValueType {
         didSet {
-            if value == oldValue {
-                return
-            }
+            guard wrappedValue != oldValue else { return }
             
-            publish(value)
+            publish(wrappedValue)
         }
     }
     
@@ -38,5 +49,8 @@ public final class Observable<ValueType: Equatable>: EventPublisher {
     
     /// The event handlers attached to the observable.
     public var eventHandlers = [EventHandlerToken: EventHandler<Event>]()
+    
+    /// :nodoc:
+    public var projectedValue: Observable { self }
     
 }

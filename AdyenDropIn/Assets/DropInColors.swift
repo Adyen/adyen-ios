@@ -6,18 +6,23 @@
 
 import UIKit
 
-internal extension UIColor {
+extension UIColor {
     
-    // swiftlint:disable:next explicit_acl
-    enum AdyenDropIn {
+    internal enum AdyenDropIn {
         
         internal static var dimmBackground: UIColor {
+            return componentSeparator
+        }
+        
+        internal static var componentSeparator: UIColor {
             if #available(iOS 13.0, *) {
                 return .separator
             } else {
                 return UIColor(white: 0.0, alpha: 0.2)
             }
         }
+        
+        internal static let defaultBlue: UIColor = UIColor(hex: 0x007AFF)
         
     }
     

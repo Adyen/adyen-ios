@@ -29,6 +29,9 @@ open class FormValueItemView<ItemType: FormValueItem>: FormItemView<ItemType>, A
         
         addSubview(separatorView)
         configureSeparatorView()
+        
+        tintColor = item.style.tintColor
+        backgroundColor = item.style.backgroundColor
     }
     
     /// :nodoc:
@@ -84,7 +87,7 @@ open class FormValueItemView<ItemType: FormValueItem>: FormItemView<ItemType>, A
     
     internal lazy var separatorView: UIView = {
         let separatorView = UIView()
-        separatorView.backgroundColor = UIColor.AdyenCore.componentSeparator
+        separatorView.backgroundColor = item.style.separatorColor ?? UIColor.AdyenCore.componentSeparator
         separatorView.isUserInteractionEnabled = false
         separatorView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -112,7 +115,7 @@ open class FormValueItemView<ItemType: FormValueItem>: FormItemView<ItemType>, A
         transitionView.frame = separatorView.frame
         addSubview(transitionView)
         
-        separatorView.backgroundColor = UIColor.AdyenCore.componentSeparator
+        separatorView.backgroundColor = item.style.separatorColor ?? UIColor.AdyenCore.componentSeparator
         
         UIView.animate(withDuration: 0.25, delay: 0.0, options: [.curveEaseInOut], animations: {
             transitionView.frame.size.width = 0.0
