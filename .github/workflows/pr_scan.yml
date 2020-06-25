@@ -28,8 +28,13 @@ jobs:
         
     - name: Sonar Code coverage
       run: |
-        fastlane run slather proj:"Adyen.xcodeproj" scheme:"AdyenUIHost" cobertura_xml:"true" output_directory:"./reports"
-        sonar-scaner
+        fastlane run slather proj:"Adyen.xcodeproj" scheme:"AdyenUIHost" sonarqube_xml:"true" output_directory:"./reports"
+      
+#     - name: SonarCloud Scan
+#       uses: sonarsource/sonarcloud-github-action@master
+#       env:
+#         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         
         
         
