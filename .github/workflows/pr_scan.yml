@@ -29,7 +29,8 @@ jobs:
     - name: Sonar Code coverage
       run: |
         fastlane scan --scheme AdyenUIHost --code_coverage true
-        fastlane run sonar
+        fastlane slather --proj Adyen.xcodeproj --scheme AdyenUIHost
+        fastlane sonar
         
         
         
