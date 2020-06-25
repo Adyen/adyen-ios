@@ -52,5 +52,5 @@ jobs:
         DEVELOPER_DIR: ${{ matrix.xcode }}
         
     - name: Code coverage
-      if: github.ref == 'develop'
+      if: github.ref == 'refs/heads/develop'
       uses: codecov/codecov-action@v1
