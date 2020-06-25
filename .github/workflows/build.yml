@@ -1,9 +1,8 @@
 name: Build and Test
 
 on:
-  pull_request:
   push:
-    branches: 
+    branches:
     - master
     - develop
 
@@ -18,10 +17,9 @@ jobs:
         destination: ['name=iPhone 8', 'name=iPhone 11']
         xcode: ['/Applications/Xcode_11.4.1.app/Contents/Developer']
         experimental: [false]
-        include: 
+        include:
           - experimental: true
             destination: 'name=iPhone X,OS=12.4'
-    
     
     steps:
     - uses: actions/checkout@v2
@@ -33,7 +31,6 @@ jobs:
         sudo ln -s /Applications/Xcode_10.3.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime /Library/Developer/CoreSimulator/Profiles/Runtimes/iOS\ 12.4.simruntime
         xcrun simctl create custom-test-device "iPhone X" "com.apple.CoreSimulator.SimRuntime.iOS-12-4"
         xcrun simctl list devices 12.4
-        xcrun simctl list runtimes
         
     - name: Check Dependencies
       uses: actions/cache@v1
@@ -54,7 +51,6 @@ jobs:
         destination: ${{ matrix.destination }}
         DEVELOPER_DIR: ${{ matrix.xcode }}
         
-#     - name: Code coverage
-#       uses: codecov/codecov-action@v1
-#       with:
-#         token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+    - name: Code coverage
+      if: github.ref == 'develop'
+      uses: codecov/codecov-action@v1
