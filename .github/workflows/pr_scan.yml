@@ -25,8 +25,11 @@ jobs:
     - name: Build and test
       run: |
         fastlane scan --scheme AdyenUIHost --code_coverage true
-        bundle exec slather
-        bash <(curl -s https://codecov.io/bash)
+        
+    - name: Sonar Code coverage
+      run: |
+        fastlane scan --scheme AdyenUIHost --code_coverage true
+        fastlane run sonar
         
         
         
