@@ -83,6 +83,7 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     /// A list of fields that you need for a billing contact in order to process the transaction. Ignored on iOS 10.*.
     /// - Parameter requiredShippingContactFields:
     /// A list of fields that you need for a shipping contact in order to process the transaction. Ignored on iOS 10.*.
+    /// - Parameter cancelHandler: Being called on cancel, e.g. when the user taps "cancel".
     /// - Throws: `ApplePayComponent.Error.userCannotMakePayment`.
     /// if user can't make payments on any of the payment request’s supported networks.
     /// - Throws: `ApplePayComponent.Error.deviceDoesNotSupportApplyPay` if the current device's hardware doesn't support ApplePay.
@@ -96,7 +97,8 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
                 merchantIdentifier: String,
                 summaryItems: [PKPaymentSummaryItem],
                 requiredBillingContactFields: Set<PKContactField> = [],
-                requiredShippingContactFields: Set<PKContactField> = []) throws {
+                requiredShippingContactFields: Set<PKContactField> = [],
+                cancelHandler: (() -> Void)? = nil) throws {
         guard PKPaymentAuthorizationViewController.canMakePayments() else {
             throw Error.deviceDoesNotSupportApplyPay
         }
@@ -125,6 +127,7 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
         self.summaryItems = summaryItems
         self.requiredBillingContactFields = requiredBillingContactFields
         self.requiredShippingContactFields = requiredShippingContactFields
+        self.dismissCompletion = cancelHandler
         
         super.init()
         
@@ -136,8 +139,9 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     /// - Parameter paymentMethod: The Apple Pay payment method.
     /// - Parameter merchantIdentifier: The merchant identifier.
     /// - Parameter summaryItems: The line items for this payment.
+    /// - Parameter cancelHandler: Being called on cancel, e.g. when the user taps "cancel".
     @available(*, deprecated, message: "Use init(paymentMethod:payment:merchantIdentifier:summaryItems:) instead.")
-    public init?(paymentMethod: ApplePayPaymentMethod, merchantIdentifier: String, summaryItems: [PKPaymentSummaryItem]) {
+    public init?(paymentMethod: ApplePayPaymentMethod, merchantIdentifier: String, summaryItems: [PKPaymentSummaryItem], cancelHandler: (() -> Void)? = nil) {
         guard PKPaymentAuthorizationViewController.canMakePayments() else {
             adyenPrint("Failed to instantiate ApplePayComponent. PKPaymentAuthorizationViewController.canMakePayments returned false.")
             return nil
@@ -154,6 +158,7 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
         self.summaryItems = summaryItems
         self.requiredBillingContactFields = []
         self.requiredShippingContactFields = []
+        self.dismissCompletion = cancelHandler
     }
     
     private let applePayPaymentMethod: ApplePayPaymentMethod
