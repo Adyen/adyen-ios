@@ -54,3 +54,5 @@ jobs:
     - name: Code coverage
       if: github.ref == 'refs/heads/develop'
       uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
