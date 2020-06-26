@@ -20,6 +20,7 @@ jobs:
       if: steps.carthage-cache.outputs.cache-hit != 'true'
       run: |
         carthage bootstrap --platform iOS --cache-builds
+        brew install sonar-scanner
       
     - name: Build and test
       run: |
