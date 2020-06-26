@@ -8,6 +8,10 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
+    
+    - name: Install Dependencies
+      run: |
+        brew install sonar-scanner
         
     - name: Check Dependencies
       uses: actions/cache@v1
@@ -20,15 +24,15 @@ jobs:
       if: steps.carthage-cache.outputs.cache-hit != 'true'
       run: |
         carthage bootstrap --platform iOS --cache-builds
-        brew install sonar-scanner
       
     - name: Build and test
       run: |
-        fastlane scan --scheme AdyenUIHost --code_coverage true --output_directory ./reports
+        fastlane scan --scheme AdyenUIHost --code_coverage true --output_directory ./reports --derivedDataPath ./Build
         
     - name: Sonar Code coverage
       run: |
-        fastlane run slather proj:"Adyen.xcodeproj" scheme:"AdyenUIHost" sonarqube_xml:"true" output_directory:"./reports" verbose:"true" simple_output:"true" output_directory:"./reports"
+        # bash xccov-to-sonarqube-generic.sh build/Logs/Test/*.xcresult/*_Test/*.xccovarchive/ > sonarqube-generic-coverage.xml
+        fastlane run slather proj:"Adyen.xcodeproj" scheme:"AdyenUIHost" sonarqube_xml:"true" output_directory:"./reports" verbose:"true" simple_output:"true" output_directory:"./reports" build_directory:"./Build"
         
     - name: Run Sonar
       run: |
