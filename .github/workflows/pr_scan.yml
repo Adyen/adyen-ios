@@ -29,7 +29,7 @@ jobs:
       
     - name: Build and test
       run: |
-        xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -derivedDataPath ./DerivedData -enableCodeCoverage YES clean build test -destination "name=iPhone 11"
+        xcodebuild -project Adyen.xcodeproj -derivedDataPath ./DerivedData -enableCodeCoverage YES clean build test -destination "name=iPhone 11"
  #       fastlane scan --scheme AdyenUIHost --code_coverage true --derived_data_path ./DerivedData --output_directory ./reports
         
     - name: Slather
