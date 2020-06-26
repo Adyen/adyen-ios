@@ -1,0 +1,40 @@
+name: Scan PR
+
+on: [ pull_request ]
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+        
+    - name: Check Dependencies
+      uses: actions/cache@v1
+      id: carthage-cache
+      with:
+        path: Carthage
+        key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
+      
+    - name: Install Dependencies
+      if: steps.carthage-cache.outputs.cache-hit != 'true'
+      run: |
+        carthage bootstrap --platform iOS --cache-builds
+      
+    - name: Build and test
+      run: |
+        fastlane scan --scheme AdyenUIHost --code_coverage true
+        
+    - name: Sonar Code coverage
+      run: |
+        fastlane run slather proj:"Adyen.xcodeproj" scheme:"AdyenUIHost" sonarqube_xml:"true" output_directory:"./reports"
+      
+#     - name: SonarCloud Scan
+#       uses: sonarsource/sonarcloud-github-action@master
+#       env:
+#         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        
+        
+        
