@@ -12,6 +12,8 @@ jobs:
     - name: Install Dependencies
       run: |
         brew install sonar-scanner
+        brew install lizard
+        brew install swiftlint
         
     - name: Check Dependencies
       uses: actions/cache@v1
@@ -27,13 +29,20 @@ jobs:
       
     - name: Build and test
       run: |
-        fastlane scan --scheme AdyenUIHost --code_coverage true --output_directory ./reports --derived_data_path ./Build
+        fastlane scan --scheme AdyenUIHost --code_coverage true --derived_data_path ./DerivedData --output_directory ./reports
         
-    - name: Sonar Code coverage
+    - name: Slather
       run: |
-        # bash xccov-to-sonarqube-generic.sh build/Logs/Test/*.xcresult/*_Test/*.xccovarchive/ > sonarqube-generic-coverage.xml
-        fastlane run slather proj:"Adyen.xcodeproj" scheme:"AdyenUIHost" sonarqube_xml:"true" output_directory:"./reports" verbose:"true" simple_output:"true" output_directory:"./reports" build_directory:"./Build"
+        fastlane run slather proj:"Adyen.xcodeproj" scheme:"AdyenUIHost" sonarqube_xml:"true" cobertura_xml:"true" jenkins:"true" output_directory:"./reports" build_directory:"./DerivedData" verbose:"true" simple_output:"true"
+        ls -ln reports
+        cat ./reports/sonarqube-generic-coverage.xml
+         
+    - name: SwiftLint
+      run: |
+        fastlane run swiftlint output_file:"./reports/swiftlint.txt" ignore_exit_status:"true"
         
     - name: Run Sonar
       run: |
-        sonar-scanner -X -Dsonar.login=${{ secrets.CODECOV_TOKEN }}
+        sonar-scanner -X -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
