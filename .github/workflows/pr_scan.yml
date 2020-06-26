@@ -34,7 +34,7 @@ jobs:
         
     - name: Slather
       run: |
-        slather -s -sq -v --scheme AdyenUIHost --output_directory ./reports --build_directory ./DerivedData Adyen.xcodeproj
+        slather coverage -s -sq -v --scheme AdyenUIHost --output_directory ./reports --build_directory ./DerivedData Adyen.xcodeproj
         ls -ln reports
         cat ./reports/sonarqube-generic-coverage.xml
          
