@@ -27,7 +27,7 @@ jobs:
       
     - name: Build and test
       run: |
-        fastlane scan --scheme AdyenUIHost --code_coverage true --output_directory ./reports --derivedDataPath ./Build
+        fastlane scan --scheme AdyenUIHost --code_coverage true --output_directory ./reports --derived_data_path ./Build
         
     - name: Sonar Code coverage
       run: |
