@@ -12,8 +12,8 @@ jobs:
     - name: Install Dependencies
       run: |
         brew install sonar-scanner
-        brew install slather
         brew install swiftlint
+        gem install slather
         
     - name: Check Dependencies
       uses: actions/cache@v1
