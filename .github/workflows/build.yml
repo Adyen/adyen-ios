@@ -6,9 +6,8 @@ on:
     - master
     - develop
 
-jobs:
+jobs:  
   build:
-
     runs-on: macos-latest
     continue-on-error: ${{ matrix.experimental }}
     strategy:
@@ -20,7 +19,6 @@ jobs:
         include:
           - experimental: true
             destination: 'name=iPhone X,OS=12.4'
-    
     steps:
     - uses: actions/checkout@v2
 
@@ -46,11 +44,16 @@ jobs:
       
     - name: Build and test
       run: |
-        fastlane scan --destination "${destination}" --scheme AdyenUIHost
+        set -o pipefail
+        xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -destination "${destination}" -enableCodeCoverage YES build test | xcpretty
+#        fastlane run slather proj:"Adyen.xcodeproj" scheme:"AdyenUIHost" cobertura_xml:"true" output_directory:"./reports/cobertura.xml"
       env:
         destination: ${{ matrix.destination }}
         DEVELOPER_DIR: ${{ matrix.xcode }}
-        
+
     - name: Code coverage
       if: github.ref == 'refs/heads/develop'
       uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+#        file: ./reports/cobertura.xml
