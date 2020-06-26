@@ -3,10 +3,9 @@ name: Scan PR
 on: [ pull_request ]
 
 jobs:
+  
   build:
-
     runs-on: macos-latest
-    
     steps:
     - uses: actions/checkout@v2
         
@@ -24,17 +23,12 @@ jobs:
       
     - name: Build and test
       run: |
-        fastlane scan --scheme AdyenUIHost --code_coverage true
+        fastlane scan --scheme AdyenUIHost --code_coverage true --output_directory ./reports
         
     - name: Sonar Code coverage
       run: |
-        fastlane run slather proj:"Adyen.xcodeproj" scheme:"AdyenUIHost" sonarqube_xml:"true" output_directory:"./reports"
-      
-    - name: SonarCloud Scan
-      uses: sonarsource/sonarcloud-github-action@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        fastlane run slather proj:"Adyen.xcodeproj" scheme:"AdyenUIHost" sonarqube_xml:"true" output_directory:"./reports" verbose:"true" simple_output:"true" output_directory:"./reports"
         
-        
-        
+    - name: Run Sonar
+      run: |
+        sonar-scanner
