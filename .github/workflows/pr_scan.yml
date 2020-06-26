@@ -30,11 +30,11 @@ jobs:
       run: |
         fastlane run slather proj:"Adyen.xcodeproj" scheme:"AdyenUIHost" sonarqube_xml:"true" output_directory:"./reports"
       
-#     - name: SonarCloud Scan
-#       uses: sonarsource/sonarcloud-github-action@master
-#       env:
-#         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    - name: SonarCloud Scan
+      uses: sonarsource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         
         
         
