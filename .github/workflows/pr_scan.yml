@@ -31,17 +31,21 @@ jobs:
       
     - name: Build and test
       run: |
-        xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -derivedDataPath ./DerivedData -enableCodeCoverage YES clean build test -destination "name=iPhone 11"
+        xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -derivedDataPath ./DerivedData -enableCodeCoverage YES clean build test -destination "name=iPhone 11" | xcpretty
                 
-#     - name: Slather
-#       run: |
-#         slather coverage --sonarqube-xml --build-directory ./DerivedData --output-directory ./reports --scheme AdyenUIHost Adyen.xcodeproj
-#         ls -ln reports
-#         cat ./reports/sonarqube-generic-coverage.xml
+    - name: Slather
+      run: |
+        slather coverage --sonarqube-xml --build-directory ./DerivedData --output-directory ./reports --scheme AdyenUIHost --binary-basename Adyen --binary-basename AdyenCard --binary-basename AdyenDropIn --binary-basename AdyenWeChatPay Adyen.xcodeproj
          
     - name: SwiftLint
       run: |
         fastlane run swiftlint output_file:"./reports/swiftlint.txt" ignore_exit_status:"true"
+        
+    - name: Coverage Report
+      run: |
+        pwd
+        ls -ln reports
+        cat ./reports/sonarqube-generic-coverage.xml
         
     - name: Run Sonar
       run: |
