@@ -30,13 +30,12 @@ jobs:
     - name: Build and test
       run: |
         xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -derivedDataPath ./DerivedData -enableCodeCoverage YES clean build test -destination "name=iPhone 11"
- #       fastlane scan --scheme AdyenUIHost --code_coverage true --derived_data_path ./DerivedData --output_directory ./reports
-        
-    - name: Slather
-      run: |
-        slather coverage --sonarqube-xml --build-directory ./DerivedData --output-directory ./reports --scheme AdyenUIHost Adyen.xcodeproj
-        ls -ln reports
-        cat ./reports/sonarqube-generic-coverage.xml
+                
+#     - name: Slather
+#       run: |
+#         slather coverage --sonarqube-xml --build-directory ./DerivedData --output-directory ./reports --scheme AdyenUIHost Adyen.xcodeproj
+#         ls -ln reports
+#         cat ./reports/sonarqube-generic-coverage.xml
          
     - name: SwiftLint
       run: |
