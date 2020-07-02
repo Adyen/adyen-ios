@@ -26,6 +26,8 @@ jobs:
       if: steps.carthage-cache.outputs.cache-hit != 'true'
       run: |
         carthage bootstrap --platform iOS --cache-builds
+      env:
+         GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
     - name: Build and test
       run: |
