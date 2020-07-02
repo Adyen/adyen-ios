@@ -22,7 +22,7 @@ jobs:
       run: |
         carthage bootstrap --platform iOS --cache-builds
       env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
     - name: Build and test
       run: |
