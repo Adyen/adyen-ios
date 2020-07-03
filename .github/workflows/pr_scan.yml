@@ -45,8 +45,8 @@ jobs:
       run: |
         pwd
         ls -ln reports
-        tail -n +2 ${ REPORT_PATH } > ${ REPORT_PATH }.tmp && mv ${ REPORT_PATH }.tmp ${ REPORT_PATH }
-        cat ${ REPORT_PATH }
+        tail -n +2 ${{ REPORT_PATH }} > ${{ REPORT_PATH }}.tmp && mv ${{ REPORT_PATH }}.tmp ${{ REPORT_PATH }}
+        cat ${{ REPORT_PATH }}
       env:
         REPORT_PATH: ./reports/sonarqube-generic-coverage.xml
         
