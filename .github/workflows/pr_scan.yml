@@ -43,12 +43,10 @@ jobs:
         
     - name: Coverage Report
       run: |
-        pwd
-        ls -ln reports
-        tail -n +2 ${{ REPORT_PATH }} > ${{ REPORT_PATH }}.tmp && mv ${{ REPORT_PATH }}.tmp ${{ REPORT_PATH }}
-        cat ${{ REPORT_PATH }}
-      env:
-        REPORT_PATH: ./reports/sonarqube-generic-coverage.xml
+        echo '::set-env name=REPORT_PATH::./reports/sonarqube-generic-coverage.xml'
+        tail -n +2 ${{ env.REPORT_PATH }} > ${{ env.REPORT_PATH }}.tmp 
+        mv ${{ env.REPORT_PATH }}.tmp ${{ env.REPORT_PATH }}
+        cat $REPORT_PATH
         
     - name: Run Sonar
       run: |
