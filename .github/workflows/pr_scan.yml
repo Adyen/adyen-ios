@@ -53,6 +53,7 @@ jobs:
         
     - name: Run Sonar
       run: |
+        rm -rf AdyenTests
         sonar-scanner -X -Dsonar.login=${{ secrets.SONAR_TOKEN }}
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
