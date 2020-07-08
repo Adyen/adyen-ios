@@ -6,21 +6,24 @@ on:
     - master
     - develop
 
-jobs:  
-  build:
+jobs:
+  tests:
     runs-on: macos-latest
     continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
       matrix:
         destination: ['name=iPhone 8', 'name=iPhone 11']
-        xcode: ['/Applications/Xcode_11.4.1.app/Contents/Developer']
         experimental: [false]
         include:
           - experimental: true
             destination: 'name=iPhone X,OS=12.4'
     steps:
     - uses: actions/checkout@v2
+    
+    - name: Set Xcode Version
+      run: |
+        echo '::set-env name=XCODE_VERSION::/Applications/Xcode_11.4.1.app/Contents/Developer'
 
     - name: Prepare iOS 12 simulator
       if: matrix.destination == 'name=iPhone X,OS=12.4'
@@ -44,16 +47,57 @@ jobs:
       
     - name: Build and test
       run: |
-        set -o pipefail
-        xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -destination "${destination}" -enableCodeCoverage YES build test | xcpretty
-#        fastlane run slather proj:"Adyen.xcodeproj" scheme:"AdyenUIHost" cobertura_xml:"true" output_directory:"./reports/cobertura.xml"
+        xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -destination "${destination}" -derivedDataPath ./DerivedData -enableCodeCoverage YES build test | xcpretty
       env:
         destination: ${{ matrix.destination }}
-        DEVELOPER_DIR: ${{ matrix.xcode }}
+        DEVELOPER_DIR: ${{ env.XCODE_VERSION }}
+        
+  sonar:
+    runs-on: macos-latest
+    steps:
+        
+    - name: Install Dependencies
+      run: |
+        brew install sonar-scanner
+        brew install swiftlint
+        gem install slather
+        
+    - name: Check Dependencies
+      uses: actions/cache@v1
+      id: carthage-cache
+      with:
+        path: Carthage
+        key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
+      
+    - name: Install Dependencies
+      if: steps.carthage-cache.outputs.cache-hit != 'true'
+      run: |
+        carthage bootstrap --platform iOS --cache-builds
+      env:
+         GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+    - name: Build and test
+      run: |
+        xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -derivedDataPath ./DerivedData -enableCodeCoverage YES clean build test -destination "name=iPhone 11" | xcpretty
+                
+    - name: Slather
+      run: |
+        slather coverage --sonarqube-xml --build-directory ./DerivedData --output-directory ./reports --scheme AdyenUIHost --binary-basename Adyen --binary-basename AdyenCard --binary-basename AdyenDropIn --binary-basename AdyenWeChatPay Adyen.xcodeproj
+        slather coverage --cobertura_xml --build-directory ./DerivedData --output-directory ./reports --scheme AdyenUIHost --binary-basename Adyen --binary-basename AdyenCard --binary-basename AdyenDropIn --binary-basename AdyenWeChatPay Adyen.xcodeproj
+         
+    - name: SwiftLint
+      run: |
+        fastlane run swiftlint output_file:"./reports/swiftlint.json" reporter:"json" ignore_exit_status:"true"
+        
+    - name: Run Sonar
+      run: |
+        sonar-scanner -X -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Code coverage
       if: github.ref == 'refs/heads/develop'
       uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-#        file: ./reports/cobertura.xml
+        file: ./reports/cobertura.xml

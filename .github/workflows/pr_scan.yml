@@ -1,6 +1,8 @@
 name: Scan PR
 
-on: [ pull_request ]
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   
@@ -39,17 +41,7 @@ jobs:
          
     - name: SwiftLint
       run: |
-        fastlane run swiftlint output_file:"./reports/swiftlint.txt" ignore_exit_status:"true"
-        cat reports/swiftlint.txt
-        
-#     - name: Set Coverage Report Path
-#       run: |
-#         echo '::set-env name=REPORT_PATH::./reports/sonarqube-generic-coverage.xml'
-        
-#     - name: Coverage Report
-#       run: |
-#         tail -n +2 ${{ env.REPORT_PATH }} > ${{ env.REPORT_PATH }}.tmp 
-#         mv ${{ env.REPORT_PATH }}.tmp ${{ env.REPORT_PATH }}
+        fastlane run swiftlint output_file:"./reports/swiftlint.json" reporter:"json" ignore_exit_status:"true"
         
     - name: Run Sonar
       run: |
