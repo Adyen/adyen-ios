@@ -40,20 +40,19 @@ jobs:
     - name: SwiftLint
       run: |
         fastlane run swiftlint output_file:"./reports/swiftlint.txt" ignore_exit_status:"true"
+        cat reports/swiftlint.txt
         
-    - name: Set Coverage Report Path
-      run: |
-        echo '::set-env name=REPORT_PATH::./reports/sonarqube-generic-coverage.xml'
+#     - name: Set Coverage Report Path
+#       run: |
+#         echo '::set-env name=REPORT_PATH::./reports/sonarqube-generic-coverage.xml'
         
-    - name: Coverage Report
-      run: |
-        tail -n +2 ${{ env.REPORT_PATH }} > ${{ env.REPORT_PATH }}.tmp 
-        mv ${{ env.REPORT_PATH }}.tmp ${{ env.REPORT_PATH }}
-        cat $REPORT_PATH
+#     - name: Coverage Report
+#       run: |
+#         tail -n +2 ${{ env.REPORT_PATH }} > ${{ env.REPORT_PATH }}.tmp 
+#         mv ${{ env.REPORT_PATH }}.tmp ${{ env.REPORT_PATH }}
         
     - name: Run Sonar
       run: |
-        rm -rf AdyenTests
         sonar-scanner -X -Dsonar.login=${{ secrets.SONAR_TOKEN }}
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
