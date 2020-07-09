@@ -16,6 +16,8 @@ jobs:
         destination: ['name=iPhone 8']
         include:
           - destination: 'name=iPhone X,OS=12.4'
+          - destination: 'name=iPhone 11,OS=14.0'
+            
     steps:
     - uses: actions/checkout@v2
     
