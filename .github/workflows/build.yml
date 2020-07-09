@@ -37,7 +37,7 @@ jobs:
       if: contains(matrix.destination, 'OS=14.0')
       run: |
         sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
-        sudo ln -s /Applications/Xcode_12.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime /Library/Developer/CoreSimulator/Profiles/Runtimes/iOS\ 14.0.simruntime
+        sudo ln -s /Applications/Xcode_12.0.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime /Library/Developer/CoreSimulator/Profiles/Runtimes/iOS\ 14.0.simruntime
         xcrun simctl create custom-test-device "iPhone 11" "com.apple.CoreSimulator.SimRuntime.iOS-14-0"
         xcrun simctl list devices 14.0
         
@@ -92,7 +92,7 @@ jobs:
     - name: Slather
       run: |
         slather coverage --sonarqube-xml --build-directory ./DerivedData --output-directory ./reports --scheme AdyenUIHost --binary-basename Adyen --binary-basename AdyenCard --binary-basename AdyenDropIn --binary-basename AdyenWeChatPay Adyen.xcodeproj
-        slather coverage --cobertura_xml --build-directory ./DerivedData --output-directory ./reports --scheme AdyenUIHost --binary-basename Adyen --binary-basename AdyenCard --binary-basename AdyenDropIn --binary-basename AdyenWeChatPay Adyen.xcodeproj
+        slather coverage --cobertura-xml --build-directory ./DerivedData --output-directory ./reports --scheme AdyenUIHost --binary-basename Adyen --binary-basename AdyenCard --binary-basename AdyenDropIn --binary-basename AdyenWeChatPay Adyen.xcodeproj
          
     - name: SwiftLint
       run: |
