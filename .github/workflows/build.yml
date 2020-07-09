@@ -9,15 +9,13 @@ on:
 jobs:
   tests:
     runs-on: macos-latest
-    continue-on-error: ${{ matrix.experimental }}
+    continue-on-error: true
     strategy:
       fail-fast: false
       matrix:
-        destination: ['name=iPhone 8', 'name=iPhone 11']
-        experimental: [false]
+        destination: ['name=iPhone 8']
         include:
-          - experimental: true
-            destination: 'name=iPhone X,OS=12.4'
+          - destination: 'name=iPhone X,OS=12.4'
     steps:
     - uses: actions/checkout@v2
     
@@ -25,13 +23,21 @@ jobs:
       run: |
         echo '::set-env name=XCODE_VERSION::/Applications/Xcode_11.4.1.app/Contents/Developer'
 
-    - name: Prepare iOS 12 simulator
-      if: matrix.destination == 'name=iPhone X,OS=12.4'
+    - name: Prepare iOS 12.4 simulator
+      if: contains(matrix.destination, 'OS=12.4')
       run: |
         sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
         sudo ln -s /Applications/Xcode_10.3.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime /Library/Developer/CoreSimulator/Profiles/Runtimes/iOS\ 12.4.simruntime
         xcrun simctl create custom-test-device "iPhone X" "com.apple.CoreSimulator.SimRuntime.iOS-12-4"
         xcrun simctl list devices 12.4
+        
+    - name: Prepare iOS 14.0 simulator
+      if: contains(matrix.destination, 'OS=14.0')
+      run: |
+        sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
+        sudo ln -s /Applications/Xcode_12.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime /Library/Developer/CoreSimulator/Profiles/Runtimes/iOS\ 14.0.simruntime
+        xcrun simctl create custom-test-device "iPhone 11" "com.apple.CoreSimulator.SimRuntime.iOS-14-0"
+        xcrun simctl list devices 14.0
         
     - name: Check Dependencies
       uses: actions/cache@v1
@@ -55,6 +61,7 @@ jobs:
   sonar:
     runs-on: macos-latest
     steps:
+    - uses: actions/checkout@v2 
         
     - name: Install Dependencies
       run: |
