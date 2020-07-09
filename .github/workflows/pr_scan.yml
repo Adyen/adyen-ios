@@ -1,14 +1,21 @@
 name: Scan PR
 
-on: [ pull_request ]
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
+  
   build:
-
     runs-on: macos-latest
-    
     steps:
     - uses: actions/checkout@v2
+    
+    - name: Install Dependencies
+      run: |
+        brew install sonar-scanner
+        brew install swiftlint
+        gem install slather
         
     - name: Check Dependencies
       uses: actions/cache@v1
@@ -26,17 +33,18 @@ jobs:
       
     - name: Build and test
       run: |
-        fastlane scan --scheme AdyenUIHost --code_coverage true
-        
-    - name: Sonar Code coverage
+        xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -derivedDataPath ./DerivedData -enableCodeCoverage YES clean build test -destination "name=iPhone 11" | xcpretty
+                
+    - name: Slather
       run: |
-        fastlane run slather proj:"Adyen.xcodeproj" scheme:"AdyenUIHost" sonarqube_xml:"true" output_directory:"./reports"
-      
-#     - name: SonarCloud Scan
-#       uses: sonarsource/sonarcloud-github-action@master
-#       env:
-#         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        slather coverage --sonarqube-xml --build-directory ./DerivedData --output-directory ./reports --scheme AdyenUIHost --binary-basename Adyen --binary-basename AdyenCard --binary-basename AdyenDropIn --binary-basename AdyenWeChatPay Adyen.xcodeproj
+         
+    - name: SwiftLint
+      run: |
+        fastlane run swiftlint output_file:"./reports/swiftlint.json" reporter:"json" ignore_exit_status:"true"
         
-        
-        
+    - name: Run Sonar
+      run: |
+        sonar-scanner -X -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -177,7 +177,7 @@ class BCMCComponentTests: XCTestCase {
             
             expectation.fulfill()
         }
-        wait(for: [expectation, didSubmitExpectation], timeout: 5)
+        wait(for: [expectation, didSubmitExpectation], timeout: 10)
     }
     
     func testDelegateCallledCorrectCard() {
