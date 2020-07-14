@@ -38,6 +38,16 @@ jobs:
     - name: Slather
       run: |
         slather coverage --sonarqube-xml --build-directory ./DerivedData --output-directory ./reports --scheme AdyenUIHost --binary-basename Adyen --binary-basename AdyenCard --binary-basename AdyenDropIn --binary-basename AdyenWeChatPay Adyen.xcodeproj
+        
+    - name: Set Coverage Report Path
+      run: |
+        echo '::set-env name=REPORT_PATH::./reports/sonarqube-generic-coverage.xml'
+        
+    - name: Coverage Report
+      run: |
+        tail -n +2 ${{ env.REPORT_PATH }} > ${{ env.REPORT_PATH }}.tmp
+        mv ${{ env.REPORT_PATH }}.tmp ${{ env.REPORT_PATH }}
+        cat $REPORT_PATH
          
     - name: SwiftLint
       run: |
