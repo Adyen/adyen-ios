@@ -1,4 +1,4 @@
-name: Build and Test
+name: Build and Test Xcode 12
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ on:
         default: 'develop'
 
 jobs:
-  tests:
+  try_xcode_12:
     runs-on: macos-latest
     continue-on-error: true
     strategy:
