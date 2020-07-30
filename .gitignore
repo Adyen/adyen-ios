@@ -28,3 +28,7 @@ DerivedData
 
 # Carthage
 Carthage/
+
+#Internal
+Internal/
+.gitmodules
