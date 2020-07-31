@@ -318,6 +318,12 @@
 		F9D5752A237C6084009C18B5 /* StoredBCMCPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D57529237C6084009C18B5 /* StoredBCMCPaymentMethod.swift */; };
 		F9D5753123828EBB009C18B5 /* AnyCardPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D5753023828EBB009C18B5 /* AnyCardPaymentMethod.swift */; };
 		F9D57535238291A1009C18B5 /* BCMCComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D57534238291A1009C18B5 /* BCMCComponentTests.swift */; };
+		F9D644DC24D2D95E0059CBE3 /* MBWayComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D644DB24D2D95E0059CBE3 /* MBWayComponent.swift */; };
+		F9D644DE24D2D9950059CBE3 /* MBWayPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D644DD24D2D9950059CBE3 /* MBWayPaymentMethod.swift */; };
+		F9D644E024D2E4210059CBE3 /* EmailValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D644DF24D2E4210059CBE3 /* EmailValidator.swift */; };
+		F9D644E224D2EA0D0059CBE3 /* MBWayDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D644E124D2EA0D0059CBE3 /* MBWayDetails.swift */; };
+		F9D644E424D2FA310059CBE3 /* EmailValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D644E324D2FA310059CBE3 /* EmailValidatorTests.swift */; };
+		F9D644E724D40C7C0059CBE3 /* MBWayComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D644E624D40C7C0059CBE3 /* MBWayComponentTests.swift */; };
 		F9DC6BA623AA293500863F3A /* ListViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9DC6BA523AA293500863F3A /* ListViewControllerTests.swift */; };
 		F9E441522382A0DD00D3CD48 /* ViewIdentifierBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E441512382A0DD00D3CD48 /* ViewIdentifierBuilder.swift */; };
 		F9EDB782239149AF00CFB3C9 /* CountryCodeValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB781239149AF00CFB3C9 /* CountryCodeValidator.swift */; };
@@ -754,6 +760,12 @@
 		F9D57529237C6084009C18B5 /* StoredBCMCPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredBCMCPaymentMethod.swift; sourceTree = "<group>"; };
 		F9D5753023828EBB009C18B5 /* AnyCardPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCardPaymentMethod.swift; sourceTree = "<group>"; };
 		F9D57534238291A1009C18B5 /* BCMCComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BCMCComponentTests.swift; sourceTree = "<group>"; };
+		F9D644DB24D2D95E0059CBE3 /* MBWayComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBWayComponent.swift; sourceTree = "<group>"; };
+		F9D644DD24D2D9950059CBE3 /* MBWayPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBWayPaymentMethod.swift; sourceTree = "<group>"; };
+		F9D644DF24D2E4210059CBE3 /* EmailValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailValidator.swift; sourceTree = "<group>"; };
+		F9D644E124D2EA0D0059CBE3 /* MBWayDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBWayDetails.swift; sourceTree = "<group>"; };
+		F9D644E324D2FA310059CBE3 /* EmailValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailValidatorTests.swift; sourceTree = "<group>"; };
+		F9D644E624D40C7C0059CBE3 /* MBWayComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBWayComponentTests.swift; sourceTree = "<group>"; };
 		F9DC6BA523AA293500863F3A /* ListViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewControllerTests.swift; sourceTree = "<group>"; };
 		F9E441512382A0DD00D3CD48 /* ViewIdentifierBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewIdentifierBuilder.swift; sourceTree = "<group>"; };
 		F9EDB781239149AF00CFB3C9 /* CountryCodeValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCodeValidator.swift; sourceTree = "<group>"; };
@@ -978,6 +990,7 @@
 				E95E24BF22C2593900973184 /* ApplePayPaymentMethod.swift */,
 				F9620D9E23C7457F005209FC /* WeChatPayPaymentMethod.swift */,
 				F926D52B23F59ABE00D058D3 /* QiwiWalletPaymentMethod.swift */,
+				F9D644DD24D2D9950059CBE3 /* MBWayPaymentMethod.swift */,
 			);
 			path = "Payment Methods";
 			sourceTree = "<group>";
@@ -999,6 +1012,7 @@
 		E28098B0220DA78B0087928F /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				F9D644DA24D2D9340059CBE3 /* MB Way */,
 				F926D52D23F5A2EC00D058D3 /* Qiwi Wallet */,
 				E97B971B229E83E300505476 /* Apple Pay */,
 				E28098B1220DA7910087928F /* Base */,
@@ -1410,6 +1424,7 @@
 		E97B9717229D533B00505476 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				F9D644E524D40C5F0059CBE3 /* MB Way */,
 				F9AC61BC2437509A0062A00D /* Redirect */,
 				F926D55323FBF18000D058D3 /* Qiwi Wallet */,
 				F96A25412371AB5D007DBF0B /* Base */,
@@ -1599,6 +1614,7 @@
 				F9D5751323757013009C18B5 /* CardPublicKeyValidatorTests.swift */,
 				F9D57525237C3576009C18B5 /* RandomStringGenerator.swift */,
 				F9A781AF2403ED4000E12487 /* NumericStringValidatorTests.swift */,
+				F9D644E324D2FA310059CBE3 /* EmailValidatorTests.swift */,
 			);
 			path = Validators;
 			sourceTree = "<group>";
@@ -1682,6 +1698,7 @@
 			isa = PBXGroup;
 			children = (
 				F926D53223F5A5D000D058D3 /* NumericStringValidator.swift */,
+				F9D644DF24D2E4210059CBE3 /* EmailValidator.swift */,
 			);
 			path = Validators;
 			sourceTree = "<group>";
@@ -1849,6 +1866,23 @@
 				F9BA21BE246D36AC00D36A63 /* LazyOptionalTests.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		F9D644DA24D2D9340059CBE3 /* MB Way */ = {
+			isa = PBXGroup;
+			children = (
+				F9D644DB24D2D95E0059CBE3 /* MBWayComponent.swift */,
+				F9D644E124D2EA0D0059CBE3 /* MBWayDetails.swift */,
+			);
+			path = "MB Way";
+			sourceTree = "<group>";
+		};
+		F9D644E524D40C5F0059CBE3 /* MB Way */ = {
+			isa = PBXGroup;
+			children = (
+				F9D644E624D40C7C0059CBE3 /* MBWayComponentTests.swift */,
+			);
+			path = "MB Way";
 			sourceTree = "<group>";
 		};
 		F9DC6BA423AA291500863F3A /* List Component */ = {
@@ -2335,6 +2369,8 @@
 				E216D3BE221AAB710013CBCF /* FormTextItem.swift in Sources */,
 				E9021DEE225CC46D009CF7F4 /* URLHelpers.swift in Sources */,
 				F96F44D123BDECAB00871C1F /* FormHeaderStyle.swift in Sources */,
+				F9D644DE24D2D9950059CBE3 /* MBWayPaymentMethod.swift in Sources */,
+				F9D644E224D2EA0D0059CBE3 /* MBWayDetails.swift in Sources */,
 				E216D3C3221AEDBE0013CBCF /* Formatter.swift in Sources */,
 				F9B798CB23AB706D00A2103C /* ListComponentStyle.swift in Sources */,
 				E2B3C216233507030067891D /* UIColorHelpers.swift in Sources */,
@@ -2379,6 +2415,7 @@
 				F9D5751C237C0EA0009C18B5 /* BCMCPaymentMethod.swift in Sources */,
 				E27BFD9022B114DC00692E0D /* ShopperInteraction.swift in Sources */,
 				F9354BE723A7B4E200A6760B /* TextStyle.swift in Sources */,
+				F9D644E024D2E4210059CBE3 /* EmailValidator.swift in Sources */,
 				E76EC6942417A107009C6E2F /* FormPhoneExtensionPickerItemView.swift in Sources */,
 				E226F54022969B650013A463 /* ThreeDS2FingerprintAction.swift in Sources */,
 				F91664F023E41D7300C10738 /* AnyEncodable.swift in Sources */,
@@ -2406,6 +2443,7 @@
 				F9D5751823799BB0009C18B5 /* AnyPaymentMethodDecoder.swift in Sources */,
 				F939DEE323C8B4C100D19249 /* EmptyPaymentDetails.swift in Sources */,
 				F96F44CD23B257D700871C1F /* Logger.swift in Sources */,
+				F9D644DC24D2D95E0059CBE3 /* MBWayComponent.swift in Sources */,
 				E28098B8220DA8650087928F /* ActionComponent.swift in Sources */,
 				E76EC6952417A107009C6E2F /* PhoneExtensionInputControl.swift in Sources */,
 				E216D3BC221AAB240013CBCF /* FormItem.swift in Sources */,
@@ -2529,6 +2567,8 @@
 				F9DC6BA623AA293500863F3A /* ListViewControllerTests.swift in Sources */,
 				F90FB7BE2446EBB9005BFE0E /* BrowserInfoTests.swift in Sources */,
 				E9E3DAC6221ECF6300697074 /* CardNumberValidatorTests.swift in Sources */,
+				F9D644E424D2FA310059CBE3 /* EmailValidatorTests.swift in Sources */,
+				F9D644E724D40C7C0059CBE3 /* MBWayComponentTests.swift in Sources */,
 				E7D3ED84243B667500E73F59 /* FormCardNumberItemViewTests.swift in Sources */,
 				E9E3DAD3221EEFF700697074 /* CardExpiryDateValidatorTests.swift in Sources */,
 				E7D5311C2447065B000046B4 /* PreselectedPaymentComponentTests.swift in Sources */,

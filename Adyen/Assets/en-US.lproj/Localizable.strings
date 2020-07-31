@@ -36,3 +36,6 @@
 "adyen.phoneNumber.invalid" = "Invalid telephone number";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ digits";
+"adyen.emailItem.title" = "Email";
+"adyen.emailItem.placeholder" = "Email";
+"adyen.emailItem.invalid" = "Invalid email address";

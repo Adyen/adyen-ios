@@ -130,6 +130,12 @@ internal final class ComponentManager {
         return component
     }
     
+    private func createMBWayComponent(_ paymentMethod: MBWayPaymentMethod) -> MBWayComponent {
+        let component = MBWayComponent(paymentMethod: paymentMethod, style: style.formComponent)
+        component.showsLargeTitle = false
+        return component
+    }
+    
 }
 
 // MARK: - PaymentComponentBuilder
@@ -187,6 +193,11 @@ extension ComponentManager: PaymentComponentBuilder {
     /// :nodoc:
     internal func build(paymentMethod: QiwiWalletPaymentMethod) -> PaymentComponent? {
         createQiwiWalletComponent(paymentMethod)
+    }
+    
+    /// :nodoc:
+    internal func build(paymentMethod: MBWayPaymentMethod) -> PaymentComponent? {
+        createMBWayComponent(paymentMethod)
     }
     
     /// :nodoc:

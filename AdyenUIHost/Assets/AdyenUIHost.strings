@@ -36,3 +36,6 @@
 "adyen.qiwiwallet.phoneExtension.placeholder" = "Test +123";
 "adyen.qiwiwallet.phoneExtension.invalid" = "Test Invalid phone extension.";
 "adyen.qiwiwallet.consentLabel" = "Test-By pressing the button above, you agree that the specified amount will be debited from your bank account.";
+"adyen.emailItem.title" = "Email";
+"adyen.emailItem.placeholder" = "Email";
+"adyen.emailItem.invalid" = "Invalid email address";
