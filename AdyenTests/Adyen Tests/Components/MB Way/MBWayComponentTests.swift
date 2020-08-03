@@ -162,6 +162,53 @@ class MBWayComponentTests: XCTestCase {
         wait(for: [expectation], timeout: 5)
     }
 
+    func testSubmitForm() {
+        let sut = MBWayComponent(paymentMethod: method)
+        let delegate = PaymentComponentDelegateMock()
+        sut.delegate = delegate
+        sut.payment = payment
+        sut.showsLargeTitle = true
+
+        let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
+        delegate.onDidSubmit = { data, component in
+            XCTAssertTrue(component === sut)
+            XCTAssertTrue(data.paymentMethod is MBWayDetails)
+            let data = data.paymentMethod as! MBWayDetails
+            XCTAssertEqual(data.shopperEmail, "shopper@domain.com")
+            XCTAssertEqual(data.telephoneNumber, "+3511233456789")
+
+            sut.stopLoading(withSuccess: true, completion: {
+                delegateExpectation.fulfill()
+            })
+            XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
+            XCTAssertEqual(sut.footerItem.showsActivityIndicator, false)
+        }
+
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        let dummyExpectation = expectation(description: "Dummy Expectation")
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+            let submitButton: UIControl? = sut.viewController.view.findView(with: "Adyen.MBWayComponent.footerItem.submitButton")
+
+            let phoneNumberView: FormPhoneNumberItemView! = sut.viewController.view.findView(with: "Adyen.MBWayComponent.phoneNumberItem")
+            self.populate(textItemView: phoneNumberView, with: "1233456789")
+
+            let emailItemView: FormTextInputItemView! = sut.viewController.view.findView(with: "Adyen.MBWayComponent.emailItem")
+            self.populate(textItemView: emailItemView, with: "shopper@domain.com")
+
+            submitButton?.sendActions(for: .touchUpInside)
+
+            dummyExpectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+
+    private func populate<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U, with text: String) {
+        let textView = textItemView.textField
+        textView.text = text
+        textView.sendActions(for: .editingChanged)
+    }
+
     func testBigTitle() {
         let sut = MBWayComponent(paymentMethod: method)
         sut.showsLargeTitle = false
