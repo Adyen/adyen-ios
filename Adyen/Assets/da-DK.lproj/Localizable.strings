@@ -31,8 +31,10 @@
 "adyen.card.stored.expires" = "Udløber %@";
 "adyen.dropIn.stored.title" = "Bekræft %@-betaling";
 "adyen.dropIn.preselected.openAll.title" = "Skift betalingsmåde";
-"adyen.continueTo" = "Fortsæt til %@";
+"adyen.continueTo" = "Fortsæt til";
 "adyen.phoneNumber.title" = "Telefonnummer";
 "adyen.phoneNumber.invalid" = "Ugyldigt telefonnummer";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ cifre";
+"adyen.emailItem.title" = "E-mailadresse";
+"adyen.emailItem.invalid" = "Ugyldig e-mailadresse";

@@ -31,8 +31,10 @@
 "adyen.card.stored.expires" = "Utløper %@";
 "adyen.dropIn.stored.title" = "Bekreft betaling med %@";
 "adyen.dropIn.preselected.openAll.title" = "Endre betalingsmetode";
-"adyen.continueTo" = "Fortsett til %@";
+"adyen.continueTo" = "Fortsett til";
 "adyen.phoneNumber.title" = "Telefonnummer";
 "adyen.phoneNumber.invalid" = "Ugyldig telefonnummer";
 "adyen.phoneNumber.placeholder" = "987 65 432";
 "adyen.card.cvcItem.placeholder.digits" = "%@ siffer";
+"adyen.emailItem.title" = "E-postadresse";
+"adyen.emailItem.invalid" = "Ugyldig e-postadresse";

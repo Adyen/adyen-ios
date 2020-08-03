@@ -31,8 +31,10 @@
 "adyen.card.stored.expires" = "Wygasa %@";
 "adyen.dropIn.stored.title" = "Potwierdź płatność %@";
 "adyen.dropIn.preselected.openAll.title" = "Zmień metodę płatności";
-"adyen.continueTo" = "Przejdź do %@";
+"adyen.continueTo" = "Przejdź do";
 "adyen.phoneNumber.title" = "Numer telefonu";
 "adyen.phoneNumber.invalid" = "Nieprawidłowy numer telefonu";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ cyfry";
+"adyen.emailItem.title" = "Adres e-mail";
+"adyen.emailItem.invalid" = "Niepoprawny adres email";

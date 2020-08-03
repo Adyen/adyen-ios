@@ -75,7 +75,7 @@ public final class MBWayComponent: PaymentComponent, PresentableComponent, Local
     internal lazy var emailItem: FormTextInputItem = {
         let emailItem = FormTextInputItem(style: style.textField)
         emailItem.title = ADYLocalizedString("adyen.emailItem.title", localizationParameters)
-        emailItem.placeholder = ADYLocalizedString("adyen.emailItem.placeholder", localizationParameters)
+        emailItem.placeholder = "shopper@domain.com"
         emailItem.validator = EmailValidator()
         emailItem.validationFailureMessage = ADYLocalizedString("adyen.emailItem.invalid", localizationParameters)
         emailItem.autocapitalizationType = .none

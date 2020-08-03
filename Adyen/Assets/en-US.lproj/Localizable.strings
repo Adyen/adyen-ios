@@ -31,11 +31,10 @@
 "adyen.card.stored.expires" = "Expires %@";
 "adyen.dropIn.stored.title" = "Confirm %@ payment";
 "adyen.dropIn.preselected.openAll.title" = "Change Payment Method";
-"adyen.continueTo" = "Continue to %@";
+"adyen.continueTo" = "Continue to";
 "adyen.phoneNumber.title" = "Telephone number";
 "adyen.phoneNumber.invalid" = "Invalid telephone number";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ digits";
-"adyen.emailItem.title" = "Email";
-"adyen.emailItem.placeholder" = "Email";
+"adyen.emailItem.title" = "E-mail address";
 "adyen.emailItem.invalid" = "Invalid email address";

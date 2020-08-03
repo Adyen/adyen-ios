@@ -29,7 +29,7 @@ class MBWayComponentTests: XCTestCase {
         XCTAssertEqual(sut.phoneNumberItem.phonePrefixItem.value.identifier, "PT")
 
         XCTAssertEqual(sut.emailItem.title, ADYLocalizedString("adyen.emailItem.title", sut.localizationParameters))
-        XCTAssertEqual(sut.emailItem.placeholder, ADYLocalizedString("adyen.emailItem.placeholder", sut.localizationParameters))
+        XCTAssertEqual(sut.emailItem.placeholder, "shopper@domain.com")
         XCTAssertEqual(sut.emailItem.validationFailureMessage, ADYLocalizedString("adyen.emailItem.invalid", sut.localizationParameters))
 
         XCTAssertNil(sut.footerItem.title)
@@ -52,7 +52,7 @@ class MBWayComponentTests: XCTestCase {
         XCTAssertEqual(sut.phoneNumberItem.phonePrefixItem.value.identifier, "PT")
 
         XCTAssertEqual(sut.emailItem.title, ADYLocalizedString("adyen_emailItem_title", sut.localizationParameters))
-        XCTAssertEqual(sut.emailItem.placeholder, ADYLocalizedString("adyen_emailItem_placeholder", sut.localizationParameters))
+        XCTAssertEqual(sut.emailItem.placeholder, "shopper@domain.com")
         XCTAssertEqual(sut.emailItem.validationFailureMessage, ADYLocalizedString("adyen_emailItem_invalid", sut.localizationParameters))
 
         XCTAssertNil(sut.footerItem.title)
