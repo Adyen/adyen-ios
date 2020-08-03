@@ -31,7 +31,7 @@
 "adyen.card.stored.expires" = "Utgår %@";
 "adyen.dropIn.stored.title" = "Bekräfta %@-betalning";
 "adyen.dropIn.preselected.openAll.title" = "Ändra betalningssätt";
-"adyen.continueTo" = "Fortsätt till";
+"adyen.continueTo" = "Fortsätt till %@";
 "adyen.phoneNumber.title" = "Telefonnummer";
 "adyen.phoneNumber.invalid" = "Ogiltigt telefonnummer";
 "adyen.phoneNumber.placeholder" = "123–456–789";
