@@ -259,6 +259,14 @@
 		F9620DAC23C74896005209FC /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9620DAB23C74896005209FC /* SystemConfiguration.framework */; };
 		F9620DB023C75430005209FC /* WeChatPayPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9620D9E23C7457F005209FC /* WeChatPayPaymentMethod.swift */; };
 		F9620DB323C75C19005209FC /* PaymentComponentBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9620DB123C75886005209FC /* PaymentComponentBuilder.swift */; };
+		F9639B1724DA910A0073F38A /* AwaitComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B1624DA910A0073F38A /* AwaitComponent.swift */; };
+		F9639B1924DABDE40073F38A /* AwaitAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B1824DABDE40073F38A /* AwaitAction.swift */; };
+		F9639B1C24DAD3380073F38A /* AwaitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B1B24DAD3380073F38A /* AwaitViewController.swift */; };
+		F9639B1E24DADC300073F38A /* AwaitComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B1D24DADC300073F38A /* AwaitComponentViewModel.swift */; };
+		F9639B2024DBEB990073F38A /* AwaitComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B1F24DBEB990073F38A /* AwaitComponentStyle.swift */; };
+		F9639B2224DC2FF50073F38A /* PresentableComponentWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B2124DC2FF50073F38A /* PresentableComponentWrapper.swift */; };
+		F9639B2424DC38460073F38A /* PresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B2324DC38460073F38A /* PresentationDelegate.swift */; };
+		F9639B2624DD3DA30073F38A /* AwaitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B2524DD3DA30073F38A /* AwaitView.swift */; };
 		F96A25432371AB75007DBF0B /* PaymentComponentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96A25422371AB75007DBF0B /* PaymentComponentDelegateMock.swift */; };
 		F96A25472372C39F007DBF0B /* ApplePayDetailsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96A25462372C39F007DBF0B /* ApplePayDetailsTest.swift */; };
 		F96F44CD23B257D700871C1F /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96F44CC23B257D700871C1F /* Logger.swift */; };
@@ -703,6 +711,14 @@
 		F9620DAB23C74896005209FC /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
 		F9620DB123C75886005209FC /* PaymentComponentBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentBuilder.swift; sourceTree = "<group>"; };
 		F9620DBB23C777DA005209FC /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
+		F9639B1624DA910A0073F38A /* AwaitComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitComponent.swift; sourceTree = "<group>"; };
+		F9639B1824DABDE40073F38A /* AwaitAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitAction.swift; sourceTree = "<group>"; };
+		F9639B1B24DAD3380073F38A /* AwaitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitViewController.swift; sourceTree = "<group>"; };
+		F9639B1D24DADC300073F38A /* AwaitComponentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitComponentViewModel.swift; sourceTree = "<group>"; };
+		F9639B1F24DBEB990073F38A /* AwaitComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitComponentStyle.swift; sourceTree = "<group>"; };
+		F9639B2124DC2FF50073F38A /* PresentableComponentWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentableComponentWrapper.swift; sourceTree = "<group>"; };
+		F9639B2324DC38460073F38A /* PresentationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationDelegate.swift; sourceTree = "<group>"; };
+		F9639B2524DD3DA30073F38A /* AwaitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitView.swift; sourceTree = "<group>"; };
 		F96A25422371AB75007DBF0B /* PaymentComponentDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentDelegateMock.swift; sourceTree = "<group>"; };
 		F96A25462372C39F007DBF0B /* ApplePayDetailsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayDetailsTest.swift; sourceTree = "<group>"; };
 		F96F44CC23B257D700871C1F /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -1005,6 +1021,7 @@
 				F9789C7223F1A5C1000B4B2B /* WeChatPaySDKAction.swift */,
 				E226F53F22969B650013A463 /* ThreeDS2FingerprintAction.swift */,
 				E226F54122969B6C0013A463 /* ThreeDS2ChallengeAction.swift */,
+				F9639B1824DABDE40073F38A /* AwaitAction.swift */,
 			);
 			path = Actions;
 			sourceTree = "<group>";
@@ -1012,6 +1029,7 @@
 		E28098B0220DA78B0087928F /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				F9639B1524DA90E50073F38A /* Await */,
 				F9D644DA24D2D9340059CBE3 /* MB Way */,
 				F926D52D23F5A2EC00D058D3 /* Qiwi Wallet */,
 				E97B971B229E83E300505476 /* Apple Pay */,
@@ -1019,6 +1037,8 @@
 				E9AFF87F224BC3AA005A0D8D /* Redirect */,
 				E28098B4220DA79C0087928F /* SEPA Direct Debit */,
 				E28098BC220DBA9D0087928F /* Issuer List */,
+				F9639B2124DC2FF50073F38A /* PresentableComponentWrapper.swift */,
+				F9639B2324DC38460073F38A /* PresentationDelegate.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1207,6 +1227,7 @@
 		E2C0E093220B04E5008616F6 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				F9639B1A24DAD3150073F38A /* Await View Controller */,
 				F9354BE523A7B4AE00A6760B /* UI Style */,
 				E2C0E094220B04E9008616F6 /* Form */,
 				E28098B9220DB9E70087928F /* List */,
@@ -1741,6 +1762,7 @@
 				F9B798D223ACF10800A2103C /* RedirectComponentStyle.swift */,
 				E749FD1D23CF4998000D18BA /* NavigationStyle.swift */,
 				E787C9AB24696A8900B401E0 /* CornerRadiusStyle.swift */,
+				F9639B1F24DBEB990073F38A /* AwaitComponentStyle.swift */,
 			);
 			path = "UI Style";
 			sourceTree = "<group>";
@@ -1785,6 +1807,24 @@
 				F9789C7423F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift */,
 			);
 			path = WeChatPayActionComponent;
+			sourceTree = "<group>";
+		};
+		F9639B1524DA90E50073F38A /* Await */ = {
+			isa = PBXGroup;
+			children = (
+				F9639B1624DA910A0073F38A /* AwaitComponent.swift */,
+			);
+			path = Await;
+			sourceTree = "<group>";
+		};
+		F9639B1A24DAD3150073F38A /* Await View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				F9639B1B24DAD3380073F38A /* AwaitViewController.swift */,
+				F9639B2524DD3DA30073F38A /* AwaitView.swift */,
+				F9639B1D24DADC300073F38A /* AwaitComponentViewModel.swift */,
+			);
+			path = "Await View Controller";
 			sourceTree = "<group>";
 		};
 		F96A25412371AB5D007DBF0B /* Base */ = {
@@ -2353,6 +2393,7 @@
 			files = (
 				E216D3C5221AEF450013CBCF /* IBANFormatter.swift in Sources */,
 				E28098B6220DA7AE0087928F /* SEPADirectDebitComponent.swift in Sources */,
+				F9639B1924DABDE40073F38A /* AwaitAction.swift in Sources */,
 				E9AFF87C224B7E9E005A0D8D /* SEPADirectDebitDetails.swift in Sources */,
 				F9B798D323ACF10800A2103C /* RedirectComponentStyle.swift in Sources */,
 				E9AFF87A224A4C9C005A0D8D /* PaymentComponent.swift in Sources */,
@@ -2386,14 +2427,17 @@
 				F9620DB023C75430005209FC /* WeChatPayPaymentMethod.swift in Sources */,
 				F9EDB78423914B4400CFB3C9 /* CurrencyCodeValidator.swift in Sources */,
 				F9AC61BB24374CE00062A00D /* AppLauncher.swift in Sources */,
+				F9639B2024DBEB990073F38A /* AwaitComponentStyle.swift in Sources */,
 				F9B8C49423FC32FB00C4D0FB /* FormItemViewBuilder.swift in Sources */,
 				E2D12BF4221D571B00EF682F /* FormHeaderItem.swift in Sources */,
 				F96F44D723BDED6B00871C1F /* FormSwitchItemStyle.swift in Sources */,
 				E216D3CF221AFC3A0013CBCF /* IBANSpecification.swift in Sources */,
 				E224088722AFA3A80058923E /* RedirectPaymentMethod.swift in Sources */,
 				E262128F22A90D8800F2B133 /* PaymentMethod.swift in Sources */,
+				F9639B2424DC38460073F38A /* PresentationDelegate.swift in Sources */,
 				E2028F5C2227F1930007FF8B /* Details.swift in Sources */,
 				E7D5311524462D87000046B4 /* FormButtonItem.swift in Sources */,
+				F9639B2224DC2FF50073F38A /* PresentableComponentWrapper.swift in Sources */,
 				F91664FD23F1615B00C10738 /* SDKAction.swift in Sources */,
 				E9AFF885224D0D3B005A0D8D /* RedirectDetails.swift in Sources */,
 				E2C0B55022A6AA0700D3367B /* AmountFormatter.swift in Sources */,
@@ -2404,6 +2448,7 @@
 				F9620DB323C75C19005209FC /* PaymentComponentBuilder.swift in Sources */,
 				E73D47F923D0DF2900B16D0B /* ContainerView.swift in Sources */,
 				E270FDEB225CC4C4006C2CD0 /* Observation.swift in Sources */,
+				F9639B1C24DAD3380073F38A /* AwaitViewController.swift in Sources */,
 				E28098C4220DC66E0087928F /* ListItemView.swift in Sources */,
 				E97B971F22A14C6C00505476 /* ApplePayDetails.swift in Sources */,
 				E28098C2220DC1080087928F /* ListCell.swift in Sources */,
@@ -2469,6 +2514,7 @@
 				E909342822969AFF00C9F04B /* PaymentComponentData.swift in Sources */,
 				E21895E422A7CC4D001B6EE0 /* FormSplitTextItem.swift in Sources */,
 				E97B971D229E83F800505476 /* ApplePayComponent.swift in Sources */,
+				F9639B2624DD3DA30073F38A /* AwaitView.swift in Sources */,
 				E7D5311424462D87000046B4 /* FormButtonItemView.swift in Sources */,
 				F926D53323F5A5D000D058D3 /* NumericStringValidator.swift in Sources */,
 				E288EB962267652D000E960C /* Observer.swift in Sources */,
@@ -2491,6 +2537,7 @@
 				E787C9AC24696A8900B401E0 /* CornerRadiusStyle.swift in Sources */,
 				F9D5752A237C6084009C18B5 /* StoredBCMCPaymentMethod.swift in Sources */,
 				E2289B3C23D0BBB1002844BF /* ListSectionHeaderStyle.swift in Sources */,
+				F9639B1724DA910A0073F38A /* AwaitComponent.swift in Sources */,
 				F926D53723F6A35700D058D3 /* NumericFormatter.swift in Sources */,
 				F924C079246C38E0006DDAB8 /* SecuredViewController.swift in Sources */,
 				E7D5311A2446F525000046B4 /* FormSeparatorItem.swift in Sources */,
@@ -2501,6 +2548,7 @@
 				E2D12BEF221D560800EF682F /* FormValueItem.swift in Sources */,
 				E76EC6882412581E009C6E2F /* FormTextInputItem.swift in Sources */,
 				E2C0E096220B04F0008616F6 /* FormViewController.swift in Sources */,
+				F9639B1E24DADC300073F38A /* AwaitComponentViewModel.swift in Sources */,
 				E9AFF883224CF959005A0D8D /* RedirectListener.swift in Sources */,
 				F97CCD3C24360A4000BC560A /* BundleHelpers.swift in Sources */,
 			);

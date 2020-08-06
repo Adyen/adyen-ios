@@ -23,6 +23,9 @@ extension DropInComponent {
         /// Indicates any `RedirectComponent` UI style.
         public var redirectComponent: RedirectComponentStyle?
         
+        /// Indicates the await action component UI style.
+        public var awaitComponent: AwaitComponentStyle = AwaitComponentStyle()
+        
         /// The color for separator element.
         /// When set, updates separator colors for all undelying styles unless the value were set previously.
         /// If value is nil, the default color would be used.

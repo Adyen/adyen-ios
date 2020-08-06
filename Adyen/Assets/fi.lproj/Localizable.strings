@@ -38,3 +38,5 @@
 "adyen.card.cvcItem.placeholder.digits" = "%@ lukua";
 "adyen.emailItem.title" = "Sähköpostiosoite";
 "adyen.emailItem.invalid" = "Ei-kelvollinen sähköpostiosoite";
+"adyen.mbway.confirmPayment" = "Vahvista maksusi MB WAY -sovelluksella";
+"adyen.await.waitForConfirmation" = "Odottaa vahvistusta";

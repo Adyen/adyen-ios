@@ -92,6 +92,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
         handler.environment = environment
         handler.redirectComponentStyle = style.redirectComponent
         handler.delegate = self
+        handler.presentationDelegate = self
         return handler
     }()
     
@@ -237,6 +238,13 @@ extension DropInComponent: PreselectedPaymentMethodComponentDelegate {
         let newRoot = paymentMethodListComponent()
         navigationController.present(root: newRoot)
         rootComponent = newRoot
+    }
+}
+
+extension DropInComponent: PresentationDelegate {
+    public func present(component: PresentableComponent, disableCloseButton: Bool) {
+        paymentInProgress = disableCloseButton
+        navigationController.present(asModal: component)
     }
 }
 

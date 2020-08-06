@@ -38,3 +38,5 @@
 "adyen.card.cvcItem.placeholder.digits" = "%@ 位數";
 "adyen.emailItem.title" = "電子郵件地址";
 "adyen.emailItem.invalid" = "電子郵件地址無效";
+"adyen.mbway.confirmPayment" = "在 MB WAY 應用程式上確認您的付款";
+"adyen.await.waitForConfirmation" = "正在等候確認";

@@ -38,3 +38,5 @@
 "adyen.card.cvcItem.placeholder.digits" = "%@ cifre";
 "adyen.emailItem.title" = "E-mailadresse";
 "adyen.emailItem.invalid" = "Ugyldig e-mailadresse";
+"adyen.mbway.confirmPayment" = "Bekræft din betaling på appen MB WAY";
+"adyen.await.waitForConfirmation" = "Venter på bekræftelse";
