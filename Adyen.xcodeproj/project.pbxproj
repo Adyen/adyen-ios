@@ -142,11 +142,9 @@
 		E909342822969AFF00C9F04B /* PaymentComponentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E909342722969AFF00C9F04B /* PaymentComponentData.swift */; };
 		E90934A72297E7C800C9F04B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E909346A2297E33B00C9F04B /* Localizable.strings */; };
 		E9240D6C2265EFE900FB57D0 /* StoredCardAlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9240D6B2265EFE900FB57D0 /* StoredCardAlertManager.swift */; };
-		E95E24B422C1155A00973184 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95E24AE22C1155A00973184 /* Request.swift */; };
 		E95E24B522C1155A00973184 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95E24AF22C1155A00973184 /* Environment.swift */; };
 		E95E24B622C1155A00973184 /* PaymentDetailsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95E24B022C1155A00973184 /* PaymentDetailsRequest.swift */; };
 		E95E24B722C1155A00973184 /* PaymentsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95E24B122C1155A00973184 /* PaymentsRequest.swift */; };
-		E95E24B822C1155A00973184 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95E24B222C1155A00973184 /* APIClient.swift */; };
 		E95E24B922C1155A00973184 /* PaymentMethodsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95E24B322C1155A00973184 /* PaymentMethodsRequest.swift */; };
 		E95E24C022C2593900973184 /* ApplePayPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95E24BF22C2593900973184 /* ApplePayPaymentMethod.swift */; };
 		E97B970C2297ED0D00505476 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E97B970A2297ED0D00505476 /* LaunchScreen.storyboard */; };
@@ -267,6 +265,12 @@
 		F9639B2224DC2FF50073F38A /* PresentableComponentWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B2124DC2FF50073F38A /* PresentableComponentWrapper.swift */; };
 		F9639B2424DC38460073F38A /* PresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B2324DC38460073F38A /* PresentationDelegate.swift */; };
 		F9639B2624DD3DA30073F38A /* AwaitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B2524DD3DA30073F38A /* AwaitView.swift */; };
+		F9639B2924DD6A440073F38A /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B2824DD6A440073F38A /* Request.swift */; };
+		F9639B2A24DD6A990073F38A /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95E24AE22C1155A00973184 /* Request.swift */; };
+		F9639B2B24DD6A9C0073F38A /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95E24B222C1155A00973184 /* APIClient.swift */; };
+		F9639B2D24DD6B370073F38A /* RetryAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B2C24DD6B370073F38A /* RetryAPIClient.swift */; };
+		F9639B2F24DD6B500073F38A /* APIEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B2E24DD6B500073F38A /* APIEnvironment.swift */; };
+		F9639B3124DD6C270073F38A /* DebugAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B3024DD6C270073F38A /* DebugAPIClient.swift */; };
 		F96A25432371AB75007DBF0B /* PaymentComponentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96A25422371AB75007DBF0B /* PaymentComponentDelegateMock.swift */; };
 		F96A25472372C39F007DBF0B /* ApplePayDetailsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96A25462372C39F007DBF0B /* ApplePayDetailsTest.swift */; };
 		F96F44CD23B257D700871C1F /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96F44CC23B257D700871C1F /* Logger.swift */; };
@@ -719,6 +723,10 @@
 		F9639B2124DC2FF50073F38A /* PresentableComponentWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentableComponentWrapper.swift; sourceTree = "<group>"; };
 		F9639B2324DC38460073F38A /* PresentationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationDelegate.swift; sourceTree = "<group>"; };
 		F9639B2524DD3DA30073F38A /* AwaitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitView.swift; sourceTree = "<group>"; };
+		F9639B2824DD6A440073F38A /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		F9639B2C24DD6B370073F38A /* RetryAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetryAPIClient.swift; sourceTree = "<group>"; };
+		F9639B2E24DD6B500073F38A /* APIEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEnvironment.swift; sourceTree = "<group>"; };
+		F9639B3024DD6C270073F38A /* DebugAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugAPIClient.swift; sourceTree = "<group>"; };
 		F96A25422371AB75007DBF0B /* PaymentComponentDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentDelegateMock.swift; sourceTree = "<group>"; };
 		F96A25462372C39F007DBF0B /* ApplePayDetailsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayDetailsTest.swift; sourceTree = "<group>"; };
 		F96F44CC23B257D700871C1F /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -1419,13 +1427,13 @@
 		E95E24AD22C1155A00973184 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				E95E24AE22C1155A00973184 /* Request.swift */,
 				E95E24AF22C1155A00973184 /* Environment.swift */,
 				E95E24B022C1155A00973184 /* PaymentDetailsRequest.swift */,
 				E95E24B122C1155A00973184 /* PaymentsRequest.swift */,
 				F91664FA23F14DAA00C10738 /* Amount.swift */,
-				E95E24B222C1155A00973184 /* APIClient.swift */,
 				E95E24B322C1155A00973184 /* PaymentMethodsRequest.swift */,
+				F9639B2824DD6A440073F38A /* Request.swift */,
+				F9639B3024DD6C270073F38A /* DebugAPIClient.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -1505,6 +1513,7 @@
 				E278EB3D22AA5E8D00497FD5 /* Actions */,
 				E278EB3C22AA5E8700497FD5 /* Payment Methods */,
 				F924C07A246C3BB8006DDAB8 /* Utilities */,
+				F9639B2724DD69D60073F38A /* APIClient */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -1825,6 +1834,17 @@
 				F9639B1D24DADC300073F38A /* AwaitComponentViewModel.swift */,
 			);
 			path = "Await View Controller";
+			sourceTree = "<group>";
+		};
+		F9639B2724DD69D60073F38A /* APIClient */ = {
+			isa = PBXGroup;
+			children = (
+				E95E24AE22C1155A00973184 /* Request.swift */,
+				E95E24B222C1155A00973184 /* APIClient.swift */,
+				F9639B2C24DD6B370073F38A /* RetryAPIClient.swift */,
+				F9639B2E24DD6B500073F38A /* APIEnvironment.swift */,
+			);
+			path = APIClient;
 			sourceTree = "<group>";
 		};
 		F96A25412371AB5D007DBF0B /* Base */ = {
@@ -2405,6 +2425,7 @@
 				E2D12C09221ED16600EF682F /* FormSwitchItemView.swift in Sources */,
 				F9B8C50E23FE973500C4D0FB /* FormPhoneNumberItemView.swift in Sources */,
 				E2D12BF6221D579000EF682F /* FormHeaderItemView.swift in Sources */,
+				F9639B2F24DD6B500073F38A /* APIEnvironment.swift in Sources */,
 				F97CCD3A2435E35E00BC560A /* UIViewControllerHelpers.swift in Sources */,
 				F9438F23243B29ED00FB9D69 /* UniversalRedirectComponent.swift in Sources */,
 				E216D3BE221AAB710013CBCF /* FormTextItem.swift in Sources */,
@@ -2445,6 +2466,7 @@
 				E9021DAA225789B1009CF7F4 /* Localization.swift in Sources */,
 				E787C9D3246EC71B00B401E0 /* UIFontHelpers.swift in Sources */,
 				F96F44DD23BE487500871C1F /* LocalizationParameters.swift in Sources */,
+				F9639B2D24DD6B370073F38A /* RetryAPIClient.swift in Sources */,
 				F9620DB323C75C19005209FC /* PaymentComponentBuilder.swift in Sources */,
 				E73D47F923D0DF2900B16D0B /* ContainerView.swift in Sources */,
 				E270FDEB225CC4C4006C2CD0 /* Observation.swift in Sources */,
@@ -2514,6 +2536,7 @@
 				E909342822969AFF00C9F04B /* PaymentComponentData.swift in Sources */,
 				E21895E422A7CC4D001B6EE0 /* FormSplitTextItem.swift in Sources */,
 				E97B971D229E83F800505476 /* ApplePayComponent.swift in Sources */,
+				F9639B2A24DD6A990073F38A /* Request.swift in Sources */,
 				F9639B2624DD3DA30073F38A /* AwaitView.swift in Sources */,
 				E7D5311424462D87000046B4 /* FormButtonItemView.swift in Sources */,
 				F926D53323F5A5D000D058D3 /* NumericStringValidator.swift in Sources */,
@@ -2551,6 +2574,7 @@
 				F9639B1E24DADC300073F38A /* AwaitComponentViewModel.swift in Sources */,
 				E9AFF883224CF959005A0D8D /* RedirectListener.swift in Sources */,
 				F97CCD3C24360A4000BC560A /* BundleHelpers.swift in Sources */,
+				F9639B2B24DD6A9C0073F38A /* APIClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2671,6 +2695,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E2C0E080220B0399008616F6 /* AppDelegate.swift in Sources */,
+				F9639B3124DD6C270073F38A /* DebugAPIClient.swift in Sources */,
 				F91664FB23F14DAA00C10738 /* Amount.swift in Sources */,
 				E95E24B622C1155A00973184 /* PaymentDetailsRequest.swift in Sources */,
 				E95E24B522C1155A00973184 /* Environment.swift in Sources */,
@@ -2678,9 +2703,8 @@
 				E95E24B922C1155A00973184 /* PaymentMethodsRequest.swift in Sources */,
 				E24FED0D2270915A00A65122 /* CodingHelpers.swift in Sources */,
 				F9620D7B23C36082005209FC /* Configuration.swift in Sources */,
-				E95E24B822C1155A00973184 /* APIClient.swift in Sources */,
 				E24FECF5226EF9AB00A65122 /* ComponentsViewController.swift in Sources */,
-				E95E24B422C1155A00973184 /* Request.swift in Sources */,
+				F9639B2924DD6A440073F38A /* Request.swift in Sources */,
 				E24FECF7226EF9D800A65122 /* ComponentsView.swift in Sources */,
 				E95E24B722C1155A00973184 /* PaymentsRequest.swift in Sources */,
 			);

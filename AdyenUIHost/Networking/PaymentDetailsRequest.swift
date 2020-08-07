@@ -20,6 +20,10 @@ internal struct PaymentDetailsRequest: Request {
     
     internal var counter: Int = 0
     
+    internal var method: HTTPMethod = .post
+    
+    internal var queryParameters: [URLQueryItem] = []
+    
     internal func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(details.encodable, forKey: .details)

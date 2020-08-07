@@ -15,6 +15,10 @@ internal struct PaymentMethodsRequest: Request {
     
     internal var counter: Int = 0
     
+    internal var method: HTTPMethod = .post
+    
+    internal var queryParameters: [URLQueryItem] = []
+    
     // MARK: - Encoding
     
     internal func encode(to encoder: Encoder) throws {
