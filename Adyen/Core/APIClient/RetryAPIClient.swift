@@ -6,14 +6,20 @@
 
 import Foundation
 
+/// An API Client that enables retying request on the basis of a closure.
+public protocol AnyRetryAPIClient: APIClientProtocol {
+    
+    typealias ShouldRetryHandler<T> = (_ result: Result<T, Error>) -> Bool
+    
+    /// Performs the API request, and takes a closure to decide whether to repeat the request.
+    func perform<R>(_ request: R, shouldRetry: ShouldRetryHandler<R.ResponseType>?, completionHandler: @escaping CompletionHandler<R.ResponseType>) where R: Request
+}
+
 /// An API Client that enables retying request on the basis of a closure or a retry count.
-public final class RetryAPIClient: APIClientProtocol {
+public final class RetryAPIClient: AnyRetryAPIClient {
     
     /// :nodoc:
     private let apiClient: APIClientProtocol
-    
-    /// :nodoc:
-    public typealias ShouldRetryHandler<T> = (_ result: Result<T, Error>) -> Bool
     
     /// The maximum number of times to retry in case of error, doesn't apply if the `ShouldRetryHandler` is supplied.
     private let maximumRetryCount: Int
@@ -47,7 +53,7 @@ public final class RetryAPIClient: APIClientProtocol {
     private func handle<R>(result: Result<R.ResponseType, Error>, for request: R, shouldRetry: ShouldRetryHandler<R.ResponseType>?, completionHandler: @escaping CompletionHandler<R.ResponseType>) where R: Request {
         if let shouldRetry = shouldRetry {
             if shouldRetry(result) {
-                perform(request, completionHandler: completionHandler)
+                perform(request, shouldRetry: shouldRetry, completionHandler: completionHandler)
             } else {
                 completionHandler(result)
             }

@@ -10,6 +10,6 @@ import Foundation
 public protocol APIEnvironment {
     
     /// The base url.
-    var baseUrl: URL { get }
+    var baseURL: URL { get }
     
 }

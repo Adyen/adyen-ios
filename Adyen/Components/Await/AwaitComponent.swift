@@ -7,16 +7,18 @@
 import Foundation
 
 /// A component that handles Await action's.
-public final class AwaitComponent: ActionComponent {
+internal protocol AnyAwaitComponent: ActionComponent {
+    func handle(_ action: AwaitAction)
+}
+
+/// A component that handles Await action's.
+public final class AwaitComponent: AnyAwaitComponent {
     
     /// :nodoc:
     public weak var presentationDelegate: PresentationDelegate?
     
     /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
-    
-    /// :nodoc:
-    private let componentName = "await"
     
     /// :nodoc:
     public let requiresModalPresentation: Bool = true
@@ -27,6 +29,9 @@ public final class AwaitComponent: ActionComponent {
     /// :nodoc:
     public var localizationParameters: LocalizationParameters?
     
+    /// :nodoc:
+    private var apiClient: AnyRetryAPIClient?
+    
     /// Initializes the `AwaitComponent`.
     ///
     /// - Parameter style: The Component UI style.
@@ -34,13 +39,24 @@ public final class AwaitComponent: ActionComponent {
         self.style = style ?? AwaitComponentStyle()
     }
     
+    /// Initializes the `AwaitComponent`.
+    ///
+    /// - Parameter apiClient: The API client.
+    /// - Parameter style: The Component UI style.
+    internal convenience init(apiClient: AnyRetryAPIClient? = nil,
+                              style: AwaitComponentStyle?) {
+        self.init(style: style)
+        self.apiClient = apiClient
+    }
+    
+    /// :nodoc:
+    private let componentName = "await"
+    
     /// Handles await action.
     ///
     /// - Parameter action: The await action object.
     public func handle(_ action: AwaitAction) {
         Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, environment: environment)
-        
-        registerRedirectBounceBackListener(action)
         
         let viewModel = AwaitComponentViewModel.viewModel(with: action.paymentMethodType)
         let viewController = AwaitViewController(viewModel: viewModel, style: style)
@@ -51,17 +67,22 @@ public final class AwaitComponent: ActionComponent {
         } else {
             fatalError("presentationDelegate is nil, please provide a presentation delegate to present the AwaitComponent UI.")
         }
+        
+        specificAwaitComponent = buildSpecificAwaitComponent(action.paymentMethodType)
+        specificAwaitComponent?.delegate = delegate
+        
+        specificAwaitComponent?.handle(action)
+    }
+    
+    private func buildSpecificAwaitComponent(_ paymentMethodType: AwaitPaymentMethod) -> AnyAwaitComponent {
+        switch paymentMethodType {
+        case .mbway:
+            let apiClient = self.apiClient ?? RetryAPIClient(apiClient: APIClient(environment: environment))
+            return MBWayAwaitComponent(apiClient: apiClient)
+        }
     }
     
     /// :nodoc:
-    private func registerRedirectBounceBackListener(_ action: AwaitAction) {
-        RedirectListener.registerForURL { [weak self] returnURL in
-            guard let self = self else { return }
-            
-            let additionalDetails = RedirectDetails(returnURL: returnURL)
-            let actionData = ActionComponentData(details: additionalDetails, paymentData: action.paymentData)
-            self.delegate?.didProvide(actionData, from: self)
-        }
-    }
+    private var specificAwaitComponent: AnyAwaitComponent?
     
 }

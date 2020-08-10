@@ -27,4 +27,12 @@ public protocol Request: Encodable {
     
 }
 
+extension Request {
+    internal var headers: [String: String] {
+        [
+            "Content-Type": "application/json"
+        ]
+    }
+}
+
 public protocol Response: Decodable {}

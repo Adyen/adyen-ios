@@ -35,7 +35,7 @@ public final class APIClient: APIClientProtocol {
     
     /// :nodoc:
     public func perform<R: Request>(_ request: R, completionHandler: @escaping CompletionHandler<R.ResponseType>) {
-        let url = environment.baseUrl.appendingPathComponent(request.path)
+        let url = environment.baseURL.appendingPathComponent(request.path)
         let body: Data
         do {
             body = try Coder.encode(request)
@@ -44,6 +44,10 @@ public final class APIClient: APIClientProtocol {
             
             return
         }
+        
+        print(" ---- Request (/\(request.path)) ----")
+        
+        printAsJSON(body)
         
         var urlRequest = URLRequest(url: add(queryParameters: request.queryParameters, to: url))
         urlRequest.httpMethod = request.method.rawValue
@@ -60,8 +64,15 @@ public final class APIClient: APIClientProtocol {
             switch result {
             case let .success(data):
                 do {
-                    let response = try Coder.decode(data) as R.ResponseType
-                    completionHandler(.success(response))
+                    print(" ---- Response (/\(request.path)) ----")
+                    self?.printAsJSON(data)
+                    
+                    if let apiError: APIError = try? Coder.decode(data) {
+                        completionHandler(.failure(apiError))
+                    } else {
+                        let response = try Coder.decode(data) as R.ResponseType
+                        completionHandler(.success(response))
+                    }
                 } catch {
                     completionHandler(.failure(error))
                 }
@@ -91,6 +102,20 @@ public final class APIClient: APIClientProtocol {
         didSet {
             let application = UIApplication.shared
             application.isNetworkActivityIndicatorVisible = self.requestCounter > 0
+        }
+    }
+    
+    private func printAsJSON(_ data: Data) {
+        do {
+            let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
+            let jsonData = try JSONSerialization.data(withJSONObject: jsonObject, options: [.prettyPrinted])
+            guard let jsonString = String(data: jsonData, encoding: .utf8) else { return }
+            
+            print(jsonString)
+        } catch {
+            if let string = String(data: data, encoding: .utf8) {
+                print(string)
+            }
         }
     }
     
