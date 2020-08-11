@@ -36,3 +36,7 @@
 "adyen.phoneNumber.invalid" = "Недействительный номер телефона";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ цифры";
+"adyen.emailItem.title" = "Адрес эл. почты";
+"adyen.emailItem.invalid" = "Недействительный адрес эл. почты";
+"adyen.mbway.confirmPayment" = "Подтвердите оплату в приложении MB WAY";
+"adyen.await.waitForConfirmation" = "Ожидание подтверждения";

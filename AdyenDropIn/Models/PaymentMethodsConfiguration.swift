@@ -15,6 +15,7 @@ extension DropInComponent {
         /// Card component related configuration.
         public var card = CardConfiguration()
         
+        /// The Apple Pay configuration.
         public var applePay = ApplePayConfiguration()
         
         /// Indicates the localization parameters, leave it nil to use the default parameters.

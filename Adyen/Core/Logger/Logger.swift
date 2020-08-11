@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
+import func Darwin.fputs
 
 /// A printing to the console is done through this logger to be able to turn it off in production.
 private var logger = Logger()

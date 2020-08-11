@@ -4,16 +4,13 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
+import Adyen
 
-internal protocol Request: Encodable {
-    
-    associatedtype ResponseType: Response
-    
-    var path: String { get }
-    
-    var counter: Int { get set }
-    
+extension Request {
+    internal var headers: [String: String] {
+        [
+            "Content-Type": "application/json",
+            "x-demo-server-api-key": Configuration.demoServerAPIKey
+        ]
+    }
 }
-
-internal protocol Response: Decodable {}

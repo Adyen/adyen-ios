@@ -67,6 +67,7 @@ internal enum AnyPaymentMethod: Decodable {
     case applePay(ApplePayPaymentMethod)
     case qiwiWallet(QiwiWalletPaymentMethod)
     case weChatPay(WeChatPayPaymentMethod)
+    case mbWay(MBWayPaymentMethod)
     
     case none
     
@@ -93,6 +94,8 @@ internal enum AnyPaymentMethod: Decodable {
         case let .qiwiWallet(paymentMethod):
             return paymentMethod
         case let .weChatPay(paymentMethod):
+            return paymentMethod
+        case let .mbWay(paymentMethod):
             return paymentMethod
         case .none:
             return nil

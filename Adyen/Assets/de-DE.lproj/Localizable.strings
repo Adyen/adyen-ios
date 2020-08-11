@@ -36,3 +36,7 @@
 "adyen.phoneNumber.invalid" = "Ungültige Telefonnummer";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ Stellen";
+"adyen.emailItem.title" = "E-Mail-Adresse";
+"adyen.emailItem.invalid" = "Ungültige E-Mail-Adresse";
+"adyen.mbway.confirmPayment" = "Bestätigen Sie Ihre Zahlung in der MB WAY-App";
+"adyen.await.waitForConfirmation" = "Warten auf Bestätigung";

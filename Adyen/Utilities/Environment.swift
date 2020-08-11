@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,10 @@
 import Foundation
 
 /// Struct that defines the environment to retrieve resources from.
-public struct Environment {
+public struct Environment: APIEnvironment {
+    
+    /// :nodoc:
+    public var baseURL: URL
     
     /// Adyen's test environment.
     public static let test = Environment(baseURL: URL(string: "https://checkoutshopper-test.adyen.com/")!,
@@ -27,9 +30,6 @@ public struct Environment {
     /// Adyen's United States live environment.
     public static let liveUnitedStates = Environment(baseURL: URL(string: "https://checkoutshopper-live-us.adyen.com/")!,
                                                      cardPublicKeyBaseURL: URL(string: "https://live-us.adyen.com/")!)
-    
-    /// Base URL for the logos.
-    public var baseURL: URL
     
     /// Base URL for fetching a card public key with token.
     public var cardPublicKeyBaseURL: URL

@@ -130,7 +130,7 @@ internal final class ComponentsViewController: UIViewController {
     
     // MARK: - Networking
     
-    private lazy var apiClient = RetryAPIClient(apiClient: APIClient(environment: Configuration.environment))
+    private lazy var apiClient = DefaultAPIClient()
     
     private func requestPaymentMethods() {
         let request = PaymentMethodsRequest()
