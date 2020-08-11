@@ -18,7 +18,7 @@ internal struct PaymentDetailsRequest: Request {
     
     internal let paymentData: String
     
-    internal var counter: Int = 0
+    internal var counter: UInt = 0
     
     internal var method: HTTPMethod = .post
     

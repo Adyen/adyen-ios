@@ -68,21 +68,24 @@ public final class AwaitComponent: AnyAwaitComponent {
             fatalError("presentationDelegate is nil, please provide a presentation delegate to present the AwaitComponent UI.")
         }
         
-        specificAwaitComponent = buildSpecificAwaitComponent(action.paymentMethodType)
-        specificAwaitComponent?.delegate = delegate
+        paymentMethodSpecificAwaitComponent = buildPaymentMethodSpecificAwaitComponent(action.paymentMethodType)
+        paymentMethodSpecificAwaitComponent?.delegate = delegate
         
-        specificAwaitComponent?.handle(action)
+        paymentMethodSpecificAwaitComponent?.handle(action)
     }
     
-    private func buildSpecificAwaitComponent(_ paymentMethodType: AwaitPaymentMethod) -> AnyAwaitComponent {
+    /// :nodoc:
+    private func buildPaymentMethodSpecificAwaitComponent(_ paymentMethodType: AwaitPaymentMethod) -> AnyAwaitComponent {
         switch paymentMethodType {
         case .mbway:
-            let apiClient = self.apiClient ?? RetryAPIClient(apiClient: APIClient(environment: environment))
+            let scheduler = BackoffScheduler(queue: .main)
+            let baseAPIClient = APIClient(environment: environment)
+            let apiClient = self.apiClient ?? RetryAPIClient(apiClient: baseAPIClient, scheduler: scheduler)
             return MBWayAwaitComponent(apiClient: apiClient)
         }
     }
     
     /// :nodoc:
-    private var specificAwaitComponent: AnyAwaitComponent?
+    private var paymentMethodSpecificAwaitComponent: AnyAwaitComponent?
     
 }

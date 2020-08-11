@@ -6,25 +6,31 @@
 
 import Foundation
 
+/// :nodoc:
 /// Describes any API Client.
 public protocol APIClientProtocol {
     
+    /// :nodoc:
     typealias CompletionHandler<T> = (Result<T, Error>) -> Void
     
+    /// :nodoc:
     /// Performs the API request.
     func perform<R: Request>(_ request: R, completionHandler: @escaping CompletionHandler<R.ResponseType>)
     
 }
 
+/// :nodoc:
 /// The Basic API Client.
 public final class APIClient: APIClientProtocol {
     
     /// :nodoc:
     public typealias CompletionHandler<T> = (Result<T, Error>) -> Void
     
+    /// :nodoc:
     /// The API environment.
     public let environment: APIEnvironment
     
+    /// :nodoc:
     /// Initializes the API client.
     ///
     /// - Parameters:

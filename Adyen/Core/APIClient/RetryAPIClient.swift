@@ -6,32 +6,38 @@
 
 import Foundation
 
+/// :nodoc:
 /// An API Client that enables retying request on the basis of a closure.
 public protocol AnyRetryAPIClient: APIClientProtocol {
     
+    /// :nodoc:
     typealias ShouldRetryHandler<T> = (_ result: Result<T, Error>) -> Bool
     
+    /// :nodoc:
     /// Performs the API request, and takes a closure to decide whether to repeat the request.
     func perform<R>(_ request: R, shouldRetry: ShouldRetryHandler<R.ResponseType>?, completionHandler: @escaping CompletionHandler<R.ResponseType>) where R: Request
 }
 
+/// :nodoc:
 /// An API Client that enables retying request on the basis of a closure or a retry count.
 public final class RetryAPIClient: AnyRetryAPIClient {
     
     /// :nodoc:
     private let apiClient: APIClientProtocol
     
-    /// The maximum number of times to retry in case of error, doesn't apply if the `ShouldRetryHandler` is supplied.
-    private let maximumRetryCount: Int
+    /// :nodoc:
+    /// Scheduler of retries.
+    private let scheduler: Scheduler
     
+    /// :nodoc:
     /// Initializes the API client.
     ///
     /// - Parameters:
     ///   - apiClient: The wrapped API client.
-    ///   - maximumRetryCount: The maximum number of times to retry in case of error, doesn't apply if the `ShouldRetryHandler` is supplied.
-    public init(apiClient: APIClientProtocol, maximumRetryCount: Int = 0) {
+    ///   - scheduler: The Scheduler of retries.
+    public init(apiClient: APIClientProtocol, scheduler: Scheduler) {
         self.apiClient = apiClient
-        self.maximumRetryCount = maximumRetryCount
+        self.scheduler = scheduler
     }
     
     /// :nodoc:
@@ -51,17 +57,24 @@ public final class RetryAPIClient: AnyRetryAPIClient {
     
     /// :nodoc:
     private func handle<R>(result: Result<R.ResponseType, Error>, for request: R, shouldRetry: ShouldRetryHandler<R.ResponseType>?, completionHandler: @escaping CompletionHandler<R.ResponseType>) where R: Request {
-        if let shouldRetry = shouldRetry {
-            if shouldRetry(result) {
-                perform(request, shouldRetry: shouldRetry, completionHandler: completionHandler)
-            } else {
-                completionHandler(result)
-            }
-        } else if case Result.failure = result, request.counter < maximumRetryCount {
-            perform(request, completionHandler: completionHandler)
+        if let shouldRetry = shouldRetry, shouldRetry(result) {
+            retry(request, result: result, shouldRetry: shouldRetry, completionHandler: completionHandler)
         } else {
             completionHandler(result)
         }
+    }
+    
+    private func retry<R>(_ request: R, result: Result<R.ResponseType, Error>, shouldRetry: ShouldRetryHandler<R.ResponseType>?, completionHandler: @escaping CompletionHandler<R.ResponseType>) where R: Request {
+        let isDone = schedule(request.counter) { [weak self] in
+            self?.perform(request, shouldRetry: shouldRetry, completionHandler: completionHandler)
+        }
+        if isDone {
+            completionHandler(result)
+        }
+    }
+    
+    private func schedule(_ currentCount: UInt, closure: @escaping () -> Void) -> Bool {
+        return scheduler.schedule(currentCount, closure: closure)
     }
     
 }

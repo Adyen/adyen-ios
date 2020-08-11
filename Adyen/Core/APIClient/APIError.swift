@@ -6,23 +6,37 @@
 
 import Foundation
 
-internal struct APIError: Decodable, Error, LocalizedError {
+/// :nodoc:
+/// Represents an API error object.
+public struct APIError: Decodable, Error, LocalizedError {
     
-    internal let status: Int
+    /// :nodoc:
+    /// The status.
+    public let status: Int
     
-    internal let errorCode: String
+    /// :nodoc:
+    /// The error code.
+    public let errorCode: String
     
-    internal let message: String
+    /// :nodoc:
+    /// The error message.
+    public let message: String
     
-    internal let errorType: APIErrorType
+    /// :nodoc:
+    /// The error type.
+    public let errorType: APIErrorType
     
-    internal var errorDescription: String? {
+    /// :nodoc:
+    /// The error human readable description.
+    public var errorDescription: String? {
         message
     }
     
 }
 
-internal enum APIErrorType: String, Decodable {
+/// :nodoc:
+/// Represents an API error type.
+public enum APIErrorType: String, Decodable {
     case `internal`
     case validation
     case security

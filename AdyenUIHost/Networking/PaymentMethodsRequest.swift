@@ -13,7 +13,7 @@ internal struct PaymentMethodsRequest: Request {
     
     internal let path = "paymentMethods"
     
-    internal var counter: Int = 0
+    internal var counter: UInt = 0
     
     internal var method: HTTPMethod = .post
     

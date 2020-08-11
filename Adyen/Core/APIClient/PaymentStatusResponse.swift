@@ -6,22 +6,30 @@
 
 import Foundation
 
+/// :nodoc:
+/// Represents the payment status code.
 internal enum PaymentResultCode: String, Decodable {
-    case authorised = "Authorised"
-    case refused = "Refused"
-    case pending = "Pending"
-    case cancelled = "Cancelled"
-    case error = "Error"
-    case received = "Received"
-    case redirectShopper = "RedirectShopper"
-    case identifyShopper = "IdentifyShopper"
-    case challengeShopper = "ChallengeShopper"
+    case authorised
+    case refused
+    case pending
+    case cancelled
+    case error
+    case received
+    case redirectShopper
+    case identifyShopper
+    case challengeShopper
 }
 
+/// :nodoc:
+/// Represents a payment status response.
 internal struct PaymentStatusResponse: Response {
     
+    /// :nodoc:
+    /// The payload.
     internal let payload: String
     
+    /// :nodoc:
+    /// The payment status.
     internal let resultCode: PaymentResultCode
     
 }

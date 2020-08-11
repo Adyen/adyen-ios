@@ -6,9 +6,11 @@
 
 import Foundation
 
+/// :nodoc:
 /// Represents any API and its different environments (test, beta, and live).
 public protocol APIEnvironment {
     
+    /// :nodoc:
     /// The base url.
     var baseURL: URL { get }
     
