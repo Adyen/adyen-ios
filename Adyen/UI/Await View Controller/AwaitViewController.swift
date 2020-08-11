@@ -16,7 +16,7 @@ internal final class AwaitViewController: UIViewController {
     private let style: AwaitComponentStyle
     
     /// :nodoc:
-    private lazy var awaitView: AwaitView = AwaitView(viewModel: viewModel, style: style)
+    internal lazy var awaitView: AwaitView = AwaitView(viewModel: viewModel, style: style)
     
     /// :nodoc:
     private lazy var containerView: UIView = UIView(frame: .zero)

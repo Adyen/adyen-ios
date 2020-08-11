@@ -9,7 +9,7 @@ import Foundation
 internal final class AwaitView: UIView {
     
     /// :nodoc:
-    private lazy var icon: UIImageView = {
+    internal lazy var icon: UIImageView = {
         var image = UIImage(named: viewModel.icon)
         if image == nil {
             image = UIImage(named: viewModel.icon, in: Bundle.internalResources, compatibleWith: nil)
@@ -23,7 +23,7 @@ internal final class AwaitView: UIView {
     }()
     
     /// :nodoc:
-    private lazy var messageLabel: UILabel = {
+    internal lazy var messageLabel: UILabel = {
         let label = UILabel()
         label.font = style.message.font
         label.adjustsFontForContentSizeCategory = true
@@ -40,7 +40,7 @@ internal final class AwaitView: UIView {
     }()
     
     /// :nodoc:
-    private lazy var spinnerView: UIView = {
+    internal lazy var spinnerView: UIView = {
         let stackView = UIStackView(arrangedSubviews: [activityIndicatorView, spinnerTitleLabel])
         stackView.axis = .horizontal
         stackView.alignment = .center
@@ -53,7 +53,7 @@ internal final class AwaitView: UIView {
     }()
     
     /// :nodoc:
-    private lazy var activityIndicatorView: UIActivityIndicatorView = {
+    internal lazy var activityIndicatorView: UIActivityIndicatorView = {
         let activityIndicatorView = UIActivityIndicatorView(style: .gray)
         activityIndicatorView.color = style.spinnerTitle.color
         activityIndicatorView.backgroundColor = .clear
@@ -65,7 +65,7 @@ internal final class AwaitView: UIView {
     }()
     
     /// :nodoc:
-    private lazy var spinnerTitleLabel: UILabel = {
+    internal lazy var spinnerTitleLabel: UILabel = {
         let label = UILabel()
         label.font = style.spinnerTitle.font
         label.adjustsFontForContentSizeCategory = true

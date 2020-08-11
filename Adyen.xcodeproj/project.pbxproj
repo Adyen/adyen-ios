@@ -282,6 +282,8 @@
 		F9639B4924E28DC80073F38A /* IntervalCalculatorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B4824E28DC80073F38A /* IntervalCalculatorMock.swift */; };
 		F9639B4B24E297120073F38A /* DefaultAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B4A24E297120073F38A /* DefaultAPIClient.swift */; };
 		F9639B4D24E298C70073F38A /* SimpleSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B4C24E298C70073F38A /* SimpleSchedulerTests.swift */; };
+		F9639B5024E29D2D0073F38A /* AwaitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B4F24E29D2D0073F38A /* AwaitComponentTests.swift */; };
+		F9639B5224E29E340073F38A /* PresentationDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B5124E29E340073F38A /* PresentationDelegateMock.swift */; };
 		F96A25432371AB75007DBF0B /* PaymentComponentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96A25422371AB75007DBF0B /* PaymentComponentDelegateMock.swift */; };
 		F96A25472372C39F007DBF0B /* ApplePayDetailsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96A25462372C39F007DBF0B /* ApplePayDetailsTest.swift */; };
 		F96F44CD23B257D700871C1F /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96F44CC23B257D700871C1F /* Logger.swift */; };
@@ -749,6 +751,8 @@
 		F9639B4824E28DC80073F38A /* IntervalCalculatorMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntervalCalculatorMock.swift; sourceTree = "<group>"; };
 		F9639B4A24E297120073F38A /* DefaultAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAPIClient.swift; sourceTree = "<group>"; };
 		F9639B4C24E298C70073F38A /* SimpleSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleSchedulerTests.swift; sourceTree = "<group>"; };
+		F9639B4F24E29D2D0073F38A /* AwaitComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitComponentTests.swift; sourceTree = "<group>"; };
+		F9639B5124E29E340073F38A /* PresentationDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationDelegateMock.swift; sourceTree = "<group>"; };
 		F96A25422371AB75007DBF0B /* PaymentComponentDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentDelegateMock.swift; sourceTree = "<group>"; };
 		F96A25462372C39F007DBF0B /* ApplePayDetailsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayDetailsTest.swift; sourceTree = "<group>"; };
 		F96F44CC23B257D700871C1F /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -1475,6 +1479,7 @@
 		E97B9717229D533B00505476 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				F9639B4E24E29D080073F38A /* Await Component */,
 				F9D644E524D40C5F0059CBE3 /* MB Way */,
 				F9AC61BC2437509A0062A00D /* Redirect */,
 				F926D55323FBF18000D058D3 /* Qiwi Wallet */,
@@ -1485,6 +1490,7 @@
 				F9EDB79023965FFC00CFB3C9 /* Payment Method List */,
 				F9BA21C0246D398200D36A63 /* Utilities */,
 				F9EDB795239663F800CFB3C9 /* PaymentComponentMock.swift */,
+				F9639B5124E29E340073F38A /* PresentationDelegateMock.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1876,6 +1882,14 @@
 				F9639B4224E27FAE0073F38A /* SimpleScheduler.swift */,
 			);
 			path = APIClient;
+			sourceTree = "<group>";
+		};
+		F9639B4E24E29D080073F38A /* Await Component */ = {
+			isa = PBXGroup;
+			children = (
+				F9639B4F24E29D2D0073F38A /* AwaitComponentTests.swift */,
+			);
+			path = "Await Component";
 			sourceTree = "<group>";
 		};
 		F96A25412371AB5D007DBF0B /* Base */ = {
@@ -2660,6 +2674,7 @@
 				F9EDB78B2395608D00CFB3C9 /* SEPADirectDebitComponentTests.swift in Sources */,
 				E9E3DB062226B3B200697074 /* CoderTests.swift in Sources */,
 				E9E3DABE221EA47800697074 /* StringExtensionsTests.swift in Sources */,
+				F9639B5224E29E340073F38A /* PresentationDelegateMock.swift in Sources */,
 				E9021E042264C55E009CF7F4 /* KeyedDecodingContainerExtensionsTests.swift in Sources */,
 				F9EDB79E2397AEF400CFB3C9 /* ComponentManagerTests.swift in Sources */,
 				F9EDB7922396603F00CFB3C9 /* PaymentMethodListComponentTests.swift in Sources */,
@@ -2667,6 +2682,7 @@
 				F9EDB78F23964FC000CFB3C9 /* StoredCardAlertManagerTests.swift in Sources */,
 				F9AC61C2243751A70062A00D /* ActionComponentDelegateMock.swift in Sources */,
 				E216D3C7221AF5650013CBCF /* IBANFormatterTests.swift in Sources */,
+				F9639B5024E29D2D0073F38A /* AwaitComponentTests.swift in Sources */,
 				F924C072246BEEF0006DDAB8 /* CardDetailsTests.swift in Sources */,
 				F96A25472372C39F007DBF0B /* ApplePayDetailsTest.swift in Sources */,
 				F9AC61C424375F510062A00D /* PresentingViewControllerMock.swift in Sources */,
