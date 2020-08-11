@@ -7,8 +7,8 @@
 import Foundation
 
 /// :nodoc:
-/// An MBWay specific await component.
-internal final class MBWayAwaitComponent: AnyAwaitComponent {
+/// A specific await component thats keeps polling the `/status` endpoint to check the payment status.
+internal final class PollingAwaitComponent: AnyAwaitComponent {
     
     /// :nodoc:
     internal weak var presentationDelegate: PresentationDelegate?
@@ -23,7 +23,7 @@ internal final class MBWayAwaitComponent: AnyAwaitComponent {
     private let apiClient: AnyRetryAPIClient
     
     /// :nodoc:
-    /// Initializes the MB Way Await component.
+    /// Initializes the Polling Await component.
     ///
     /// - Parameter apiClient: The API client.
     internal init(apiClient: AnyRetryAPIClient) {
@@ -64,15 +64,21 @@ internal final class MBWayAwaitComponent: AnyAwaitComponent {
         switch response.resultCode {
         case .pending, .received:
             return true
-        default:
-            deliverData(response, paymentData: paymentData)
-            return false
+        case .error:
+            delegate?.didFail(with: PaymentError.error, from: self)
+        case .cancelled:
+            delegate?.didFail(with: PaymentError.cancelled, from: self)
+        case .refused:
+            delegate?.didFail(with: PaymentError.refused, from: self)
+        default: ()
         }
+        deliverData(response, paymentData: paymentData)
+        return false
     }
     
     /// :nodoc:
     private func deliverData(_ response: PaymentStatusResponse, paymentData: String) {
-        let additionalDetails = MBWayActionDetails(payload: response.payload)
+        let additionalDetails = AwaitActionDetails(payload: response.payload)
         let actionData = ActionComponentData(details: additionalDetails, paymentData: paymentData)
         delegate?.didProvide(actionData, from: self)
     }

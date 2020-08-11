@@ -81,7 +81,7 @@ public final class AwaitComponent: AnyAwaitComponent {
             let scheduler = BackoffScheduler(queue: .main)
             let baseAPIClient = APIClient(environment: environment)
             let apiClient = self.apiClient ?? RetryAPIClient(apiClient: baseAPIClient, scheduler: scheduler)
-            return MBWayAwaitComponent(apiClient: apiClient)
+            return PollingAwaitComponent(apiClient: apiClient)
         }
     }
     

@@ -7,7 +7,7 @@
 import Foundation
 
 /// Contains the details supplied by the MB Way await component.
-public struct MBWayActionDetails: AdditionalDetails {
+public struct AwaitActionDetails: AdditionalDetails {
     
     /// The payload.
     public let payload: String
