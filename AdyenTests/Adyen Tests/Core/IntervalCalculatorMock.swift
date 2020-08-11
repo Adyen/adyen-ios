@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import Adyen
+@testable import Adyen
 
 internal struct IntervalCalculatorMock: IntervalCalculator {
 
