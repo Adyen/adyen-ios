@@ -88,7 +88,6 @@ internal final class PollingAwaitComponent: AnyAwaitActionHandler {
     ///
     /// - Parameter result: The request result.
     /// - Parameter paymentData: The payment data.
-    /// - Returns: A boolean value indicating whether the request should be retried.
     private func handle(finalResult result: Result<PaymentStatusResponse, Error>, paymentData: String) {
         switch result {
         case let .success(response):
