@@ -14,4 +14,12 @@ public protocol APIEnvironment {
     /// The base url.
     var baseURL: URL { get }
     
+    /// :nodoc:
+    /// The HTTP headers.
+    var headers: [String: String] { get }
+    
+    /// :nodoc:
+    /// The query parameters.
+    var queryParameters: [URLQueryItem] { get }
+    
 }

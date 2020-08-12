@@ -33,7 +33,7 @@ public protocol Request: Encodable {
     var headers: [String: String] { get }
     
     /// :nodoc:
-    // The query parameters.
+    /// The query parameters.
     var queryParameters: [URLQueryItem] { get }
     
     /// :nodoc:

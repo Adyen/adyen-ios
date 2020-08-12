@@ -17,6 +17,8 @@ internal struct PaymentMethodsRequest: Request {
     
     internal var method: HTTPMethod = .post
     
+    internal var headers: [String: String] = [:]
+    
     internal var queryParameters: [URLQueryItem] = []
     
     // MARK: - Encoding

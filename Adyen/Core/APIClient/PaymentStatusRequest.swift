@@ -20,10 +20,10 @@ internal struct PaymentStatusRequest: Request {
     internal var counter: UInt = 0
     
     /// :nodoc:
-    internal let headers: [String: String] = ["Origin": "https://test.org", "Content-Type": "application/json"]
+    internal let headers: [String: String] = [:]
     
     /// :nodoc:
-    internal let queryParameters: [URLQueryItem] = [URLQueryItem(name: "token", value: "test_YP5RJK3TL5EELNPAS7RHIRVRAIMYZXOH")]
+    internal let queryParameters: [URLQueryItem] = []
     
     /// :nodoc:
     internal let method: HTTPMethod = .post

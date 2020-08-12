@@ -9,17 +9,58 @@
 import XCTest
 @testable import Adyen
 
+final class AwaitActionHandlerMock: AnyAwaitActionHandler {
+
+    var delegate: ActionComponentDelegate?
+
+    var onHandle: ((_ action: AwaitAction) -> Void)?
+
+    func handle(_ action: AwaitAction) {
+        onHandle?(action)
+    }
+}
+
+struct AwaitActionHandlerProviderMock: AnyAwaitActionHandlerProvider {
+
+    var onHandler: (_ paymentMethodType: AwaitPaymentMethod) -> AnyAwaitActionHandler
+
+    func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyAwaitActionHandler {
+        onHandler(paymentMethodType)
+    }
+
+}
+
+extension AwaitAction: Equatable {
+    public static func == (lhs: AwaitAction, rhs: AwaitAction) -> Bool {
+        lhs.paymentData == rhs.paymentData && lhs.paymentMethodType == rhs.paymentMethodType
+    }
+}
+
 class AwaitComponentTests: XCTestCase {
 
-    func testUIConfiguration() {
+    func testActionHandling() {
         var style = AwaitComponentStyle()
         style.backgroundColor = UIColor.green
-
         style.message = TextStyle(font: UIFont.systemFont(ofSize: 15), color: UIColor.red, textAlignment: .center)
-
         style.spinnerTitle = TextStyle(font: UIFont.systemFont(ofSize: 21), color: UIColor.blue, textAlignment: .left)
 
-        let sut = AwaitComponent(apiClient: nil, style: style)
+        let action = AwaitAction(paymentData: "data", paymentMethodType: .mbway)
+
+        let handlerExpectation = expectation(description: "AwaitActionHandler.handle() must be called.")
+        let handlerProvider = AwaitActionHandlerProviderMock { type in
+
+            XCTAssertEqual(type, AwaitPaymentMethod.mbway)
+
+            let handler = AwaitActionHandlerMock()
+            handler.onHandle = {
+                XCTAssertTrue($0 == action)
+                handlerExpectation.fulfill()
+            }
+
+            return handler
+        }
+
+        let sut = AwaitComponent(awaitComponentBuilder: handlerProvider, style: style)
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
         let presentationDelegate = PresentationDelegateMock()
@@ -48,11 +89,12 @@ class AwaitComponentTests: XCTestCase {
             }
         }
 
-
         sut.presentationDelegate = presentationDelegate
-        sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbway))
+
+        sut.handle(action)
 
         waitForExpectations(timeout: 3, handler: nil)
     }
+
     
 }

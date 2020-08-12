@@ -20,7 +20,7 @@ public struct SimpleScheduler: Scheduler {
     
     /// :nodoc:
     public func schedule(_ currentCount: UInt, closure: @escaping () -> Void) -> Bool {
-        guard currentCount <= maximumCount else { return true }
+        guard currentCount < maximumCount else { return true }
         
         closure()
         

@@ -265,16 +265,15 @@
 		F9639B2224DC2FF50073F38A /* PresentableComponentWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B2124DC2FF50073F38A /* PresentableComponentWrapper.swift */; };
 		F9639B2424DC38460073F38A /* PresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B2324DC38460073F38A /* PresentationDelegate.swift */; };
 		F9639B2624DD3DA30073F38A /* AwaitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B2524DD3DA30073F38A /* AwaitView.swift */; };
-		F9639B2924DD6A440073F38A /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B2824DD6A440073F38A /* Request.swift */; };
 		F9639B2A24DD6A990073F38A /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95E24AE22C1155A00973184 /* Request.swift */; };
 		F9639B2B24DD6A9C0073F38A /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95E24B222C1155A00973184 /* APIClient.swift */; };
 		F9639B2D24DD6B370073F38A /* RetryAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B2C24DD6B370073F38A /* RetryAPIClient.swift */; };
 		F9639B2F24DD6B500073F38A /* APIEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B2E24DD6B500073F38A /* APIEnvironment.swift */; };
 		F9639B3324DD96990073F38A /* PaymentStatusRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B3224DD96990073F38A /* PaymentStatusRequest.swift */; };
 		F9639B3524DD97A30073F38A /* PaymentStatusResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B3424DD97A30073F38A /* PaymentStatusResponse.swift */; };
-		F9639B3724E122A40073F38A /* MBWayAwaitComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B3624E122A40073F38A /* MBWayAwaitComponent.swift */; };
+		F9639B3724E122A40073F38A /* PollingAwaitComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B3624E122A40073F38A /* PollingAwaitComponent.swift */; };
 		F9639B3B24E14A940073F38A /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B3A24E14A940073F38A /* APIError.swift */; };
-		F9639B3D24E178300073F38A /* MBWayActionDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B3C24E178300073F38A /* MBWayActionDetails.swift */; };
+		F9639B3D24E178300073F38A /* AwaitActionDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B3C24E178300073F38A /* AwaitActionDetails.swift */; };
 		F9639B3F24E18F620073F38A /* Scheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B3E24E18F620073F38A /* Scheduler.swift */; };
 		F9639B4124E27D0E0073F38A /* BackoffScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B4024E27D0E0073F38A /* BackoffScheduler.swift */; };
 		F9639B4324E27FAE0073F38A /* SimpleScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B4224E27FAE0073F38A /* SimpleScheduler.swift */; };
@@ -284,6 +283,9 @@
 		F9639B4D24E298C70073F38A /* SimpleSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B4C24E298C70073F38A /* SimpleSchedulerTests.swift */; };
 		F9639B5024E29D2D0073F38A /* AwaitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B4F24E29D2D0073F38A /* AwaitComponentTests.swift */; };
 		F9639B5224E29E340073F38A /* PresentationDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B5124E29E340073F38A /* PresentationDelegateMock.swift */; };
+		F9639B5624E3DB190073F38A /* PollingAwaitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B5524E3DB190073F38A /* PollingAwaitComponentTests.swift */; };
+		F9639B5824E3DB3F0073F38A /* APIClientMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B5724E3DB3F0073F38A /* APIClientMock.swift */; };
+		F9639B5C24E410130073F38A /* AwaitActionHandlerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B5B24E410130073F38A /* AwaitActionHandlerProvider.swift */; };
 		F96A25432371AB75007DBF0B /* PaymentComponentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96A25422371AB75007DBF0B /* PaymentComponentDelegateMock.swift */; };
 		F96A25472372C39F007DBF0B /* ApplePayDetailsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96A25462372C39F007DBF0B /* ApplePayDetailsTest.swift */; };
 		F96F44CD23B257D700871C1F /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96F44CC23B257D700871C1F /* Logger.swift */; };
@@ -736,14 +738,13 @@
 		F9639B2124DC2FF50073F38A /* PresentableComponentWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentableComponentWrapper.swift; sourceTree = "<group>"; };
 		F9639B2324DC38460073F38A /* PresentationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationDelegate.swift; sourceTree = "<group>"; };
 		F9639B2524DD3DA30073F38A /* AwaitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitView.swift; sourceTree = "<group>"; };
-		F9639B2824DD6A440073F38A /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		F9639B2C24DD6B370073F38A /* RetryAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetryAPIClient.swift; sourceTree = "<group>"; };
 		F9639B2E24DD6B500073F38A /* APIEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEnvironment.swift; sourceTree = "<group>"; };
 		F9639B3224DD96990073F38A /* PaymentStatusRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentStatusRequest.swift; sourceTree = "<group>"; };
 		F9639B3424DD97A30073F38A /* PaymentStatusResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentStatusResponse.swift; sourceTree = "<group>"; };
-		F9639B3624E122A40073F38A /* MBWayAwaitComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBWayAwaitComponent.swift; sourceTree = "<group>"; };
+		F9639B3624E122A40073F38A /* PollingAwaitComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingAwaitComponent.swift; sourceTree = "<group>"; };
 		F9639B3A24E14A940073F38A /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
-		F9639B3C24E178300073F38A /* MBWayActionDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBWayActionDetails.swift; sourceTree = "<group>"; };
+		F9639B3C24E178300073F38A /* AwaitActionDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitActionDetails.swift; sourceTree = "<group>"; };
 		F9639B3E24E18F620073F38A /* Scheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scheduler.swift; sourceTree = "<group>"; };
 		F9639B4024E27D0E0073F38A /* BackoffScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackoffScheduler.swift; sourceTree = "<group>"; };
 		F9639B4224E27FAE0073F38A /* SimpleScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleScheduler.swift; sourceTree = "<group>"; };
@@ -753,6 +754,9 @@
 		F9639B4C24E298C70073F38A /* SimpleSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleSchedulerTests.swift; sourceTree = "<group>"; };
 		F9639B4F24E29D2D0073F38A /* AwaitComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitComponentTests.swift; sourceTree = "<group>"; };
 		F9639B5124E29E340073F38A /* PresentationDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationDelegateMock.swift; sourceTree = "<group>"; };
+		F9639B5524E3DB190073F38A /* PollingAwaitComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingAwaitComponentTests.swift; sourceTree = "<group>"; };
+		F9639B5724E3DB3F0073F38A /* APIClientMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientMock.swift; sourceTree = "<group>"; };
+		F9639B5B24E410130073F38A /* AwaitActionHandlerProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitActionHandlerProvider.swift; sourceTree = "<group>"; };
 		F96A25422371AB75007DBF0B /* PaymentComponentDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentDelegateMock.swift; sourceTree = "<group>"; };
 		F96A25462372C39F007DBF0B /* ApplePayDetailsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayDetailsTest.swift; sourceTree = "<group>"; };
 		F96F44CC23B257D700871C1F /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -1458,7 +1462,6 @@
 				E95E24B122C1155A00973184 /* PaymentsRequest.swift */,
 				F91664FA23F14DAA00C10738 /* Amount.swift */,
 				E95E24B322C1155A00973184 /* PaymentMethodsRequest.swift */,
-				F9639B2824DD6A440073F38A /* Request.swift */,
 				F9639B4A24E297120073F38A /* DefaultAPIClient.swift */,
 			);
 			path = Networking;
@@ -1491,6 +1494,7 @@
 				F9BA21C0246D398200D36A63 /* Utilities */,
 				F9EDB795239663F800CFB3C9 /* PaymentComponentMock.swift */,
 				F9639B5124E29E340073F38A /* PresentationDelegateMock.swift */,
+				F9639B5724E3DB3F0073F38A /* APIClientMock.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1853,6 +1857,9 @@
 			isa = PBXGroup;
 			children = (
 				F9639B1624DA910A0073F38A /* AwaitComponent.swift */,
+				F9639B3C24E178300073F38A /* AwaitActionDetails.swift */,
+				F9639B3624E122A40073F38A /* PollingAwaitComponent.swift */,
+				F9639B5B24E410130073F38A /* AwaitActionHandlerProvider.swift */,
 			);
 			path = Await;
 			sourceTree = "<group>";
@@ -1888,6 +1895,7 @@
 			isa = PBXGroup;
 			children = (
 				F9639B4F24E29D2D0073F38A /* AwaitComponentTests.swift */,
+				F9639B5524E3DB190073F38A /* PollingAwaitComponentTests.swift */,
 			);
 			path = "Await Component";
 			sourceTree = "<group>";
@@ -1978,8 +1986,6 @@
 			children = (
 				F9D644DB24D2D95E0059CBE3 /* MBWayComponent.swift */,
 				F9D644E124D2EA0D0059CBE3 /* MBWayDetails.swift */,
-				F9639B3624E122A40073F38A /* MBWayAwaitComponent.swift */,
-				F9639B3C24E178300073F38A /* MBWayActionDetails.swift */,
 			);
 			path = "MB Way";
 			sourceTree = "<group>";
@@ -2500,7 +2506,7 @@
 				F9B8C49423FC32FB00C4D0FB /* FormItemViewBuilder.swift in Sources */,
 				E2D12BF4221D571B00EF682F /* FormHeaderItem.swift in Sources */,
 				F96F44D723BDED6B00871C1F /* FormSwitchItemStyle.swift in Sources */,
-				F9639B3724E122A40073F38A /* MBWayAwaitComponent.swift in Sources */,
+				F9639B3724E122A40073F38A /* PollingAwaitComponent.swift in Sources */,
 				E216D3CF221AFC3A0013CBCF /* IBANSpecification.swift in Sources */,
 				E224088722AFA3A80058923E /* RedirectPaymentMethod.swift in Sources */,
 				E262128F22A90D8800F2B133 /* PaymentMethod.swift in Sources */,
@@ -2519,7 +2525,7 @@
 				F9620DB323C75C19005209FC /* PaymentComponentBuilder.swift in Sources */,
 				E73D47F923D0DF2900B16D0B /* ContainerView.swift in Sources */,
 				E270FDEB225CC4C4006C2CD0 /* Observation.swift in Sources */,
-				F9639B3D24E178300073F38A /* MBWayActionDetails.swift in Sources */,
+				F9639B3D24E178300073F38A /* AwaitActionDetails.swift in Sources */,
 				F9639B1C24DAD3380073F38A /* AwaitViewController.swift in Sources */,
 				E28098C4220DC66E0087928F /* ListItemView.swift in Sources */,
 				E97B971F22A14C6C00505476 /* ApplePayDetails.swift in Sources */,
@@ -2602,6 +2608,7 @@
 				E76EC6972417F36A009C6E2F /* FormTextInputItemView.swift in Sources */,
 				E2C0E0B6220B08ED008616F6 /* FormView.swift in Sources */,
 				E9AFF87E224BB149005A0D8D /* IssuerListDetails.swift in Sources */,
+				F9639B5C24E410130073F38A /* AwaitActionHandlerProvider.swift in Sources */,
 				F9780B6524338DFE00CC6C73 /* RedirectComponent.swift in Sources */,
 				F9354BEF23A7C87600A6760B /* ImageStyle.swift in Sources */,
 				E9E3DB03222548E100697074 /* Coder.swift in Sources */,
@@ -2649,6 +2656,7 @@
 				F960FB092371823A00AEF74B /* ApplePayComponentTest.swift in Sources */,
 				F9BA21C62474113500D36A63 /* AmountFormatterTests.swift in Sources */,
 				E9E3DABB221EA22F00697074 /* CardExpiryDateFormatterTests.swift in Sources */,
+				F9639B5624E3DB190073F38A /* PollingAwaitComponentTests.swift in Sources */,
 				F9D5751023756327009C18B5 /* ObjC_CardEncryptorTests.swift in Sources */,
 				F99F08642383F2B000EBB948 /* FormTextItemViewTests.swift in Sources */,
 				F96A25432371AB75007DBF0B /* PaymentComponentDelegateMock.swift in Sources */,
@@ -2693,6 +2701,7 @@
 				E7620EAD23C3466B00A492C3 /* ModalViewControllerTests.swift in Sources */,
 				E262128D22A8FE6700F2B133 /* PaymentMethodTests.swift in Sources */,
 				F9EDB7A02397BD8500CFB3C9 /* TestPaymentMethodsJson.swift in Sources */,
+				F9639B5824E3DB3F0073F38A /* APIClientMock.swift in Sources */,
 				F9AC61BE243750BB0062A00D /* RedirectComponentTests.swift in Sources */,
 				F9EDB79C2396652000CFB3C9 /* StoredPaymentMethodMock.swift in Sources */,
 				F9DC6BA623AA293500863F3A /* ListViewControllerTests.swift in Sources */,
@@ -2764,7 +2773,6 @@
 				E24FED0D2270915A00A65122 /* CodingHelpers.swift in Sources */,
 				F9620D7B23C36082005209FC /* Configuration.swift in Sources */,
 				E24FECF5226EF9AB00A65122 /* ComponentsViewController.swift in Sources */,
-				F9639B2924DD6A440073F38A /* Request.swift in Sources */,
 				E24FECF7226EF9D800A65122 /* ComponentsView.swift in Sources */,
 				E95E24B722C1155A00973184 /* PaymentsRequest.swift in Sources */,
 			);
