@@ -15,18 +15,21 @@ enum DummyError: Error {
 
 final class APIClientMock: APIClientProtocol {
 
-    var mockedResponse: Response?
-
-    var mockedError: Error?
+    var mockedResults: [Result<Response, Error>] = []
 
     private(set) var counter: Int = 0
 
     func perform<R>(_ request: R, completionHandler: @escaping (Result<R.ResponseType, Error>) -> Void) where R : Request {
         counter += 1
-        if let response = mockedResponse as? R.ResponseType {
-            completionHandler(Result.success(response))
-        } else if let error = mockedError {
-            completionHandler(Result.failure(error))
+
+        let nextResult = mockedResults.removeFirst()
+
+        switch nextResult {
+        case let .success(response):
+            guard let response = response as? R.ResponseType else { return }
+            completionHandler(.success(response))
+        case let .failure(error):
+            completionHandler(.failure(error))
         }
     }
 

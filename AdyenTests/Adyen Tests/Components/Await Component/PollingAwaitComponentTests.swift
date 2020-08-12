@@ -37,7 +37,9 @@ class PollingAwaitComponentTests: XCTestCase {
 
         sut.delegate = delegate
 
-        apiClient.mockedResponse = PaymentStatusResponse(payload: "pay load", resultCode: .received)
+        let result = Result<Response, Error>.success(PaymentStatusResponse(payload: "pay load", resultCode: .received))
+
+        apiClient.mockedResults = [result, result, result]
 
         sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbway))
 
@@ -73,7 +75,9 @@ class PollingAwaitComponentTests: XCTestCase {
 
         sut.delegate = delegate
 
-        apiClient.mockedResponse = PaymentStatusResponse(payload: "pay load", resultCode: .pending)
+        let result = Result<Response, Error>.success(PaymentStatusResponse(payload: "pay load", resultCode: .pending))
+
+        apiClient.mockedResults = [result, result, result]
 
         sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbway))
 
@@ -104,7 +108,9 @@ class PollingAwaitComponentTests: XCTestCase {
 
         sut.delegate = delegate
 
-        apiClient.mockedError = DummyError.dummy
+        let result = Result<Response, Error>.failure(DummyError.dummy)
+
+        apiClient.mockedResults = [result]
 
         sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbway))
 
@@ -141,7 +147,9 @@ class PollingAwaitComponentTests: XCTestCase {
 
         sut.delegate = delegate
 
-        apiClient.mockedResponse = PaymentStatusResponse(payload: "pay load", resultCode: .refused)
+        let result = Result<Response, Error>.success(PaymentStatusResponse(payload: "pay load", resultCode: .refused))
+
+        apiClient.mockedResults = [result]
 
         sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbway))
 
@@ -177,7 +185,9 @@ class PollingAwaitComponentTests: XCTestCase {
 
         sut.delegate = delegate
 
-        apiClient.mockedResponse = PaymentStatusResponse(payload: "pay load", resultCode: .cancelled)
+        let result = Result<Response, Error>.success(PaymentStatusResponse(payload: "pay load", resultCode: .cancelled))
+
+        apiClient.mockedResults = [result]
 
         sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbway))
 
@@ -213,7 +223,9 @@ class PollingAwaitComponentTests: XCTestCase {
 
         sut.delegate = delegate
 
-        apiClient.mockedResponse = PaymentStatusResponse(payload: "pay load", resultCode: .error)
+        let result = Result<Response, Error>.success(PaymentStatusResponse(payload: "pay load", resultCode: .error))
+
+        apiClient.mockedResults = [result]
 
         sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbway))
 
@@ -249,7 +261,9 @@ class PollingAwaitComponentTests: XCTestCase {
 
         sut.delegate = delegate
 
-        apiClient.mockedResponse = PaymentStatusResponse(payload: "pay load", resultCode: .authorised)
+        let result = Result<Response, Error>.success(PaymentStatusResponse(payload: "pay load", resultCode: .authorised))
+
+        apiClient.mockedResults = [result]
 
         sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbway))
 
