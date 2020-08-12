@@ -261,7 +261,10 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
 extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     
     public func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
-        controller.dismiss(animated: true, completion: dismissCompletion)
+        controller.dismiss(animated: true) {
+            self.delegate?.didFail(with: ComponentError.cancelled, from: self)
+            self.dismissCompletion?()
+        }
         paymentAuthorizationViewController = nil
         dismissCompletion = nil
     }
