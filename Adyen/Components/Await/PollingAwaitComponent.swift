@@ -8,7 +8,7 @@ import Foundation
 
 /// :nodoc:
 /// A specific await component thats keeps polling the `/status` endpoint to check the payment status.
-internal final class PollingAwaitComponent: AnyAwaitComponent {
+internal final class PollingAwaitComponent: AnyAwaitActionHandler {
     
     /// :nodoc:
     internal weak var presentationDelegate: PresentationDelegate?

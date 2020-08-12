@@ -285,6 +285,7 @@
 		F9639B5224E29E340073F38A /* PresentationDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B5124E29E340073F38A /* PresentationDelegateMock.swift */; };
 		F9639B5624E3DB190073F38A /* PollingAwaitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B5524E3DB190073F38A /* PollingAwaitComponentTests.swift */; };
 		F9639B5824E3DB3F0073F38A /* APIClientMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B5724E3DB3F0073F38A /* APIClientMock.swift */; };
+		F9639B5C24E410130073F38A /* AwaitActionHandlerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B5B24E410130073F38A /* AwaitActionHandlerProvider.swift */; };
 		F96A25432371AB75007DBF0B /* PaymentComponentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96A25422371AB75007DBF0B /* PaymentComponentDelegateMock.swift */; };
 		F96A25472372C39F007DBF0B /* ApplePayDetailsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96A25462372C39F007DBF0B /* ApplePayDetailsTest.swift */; };
 		F96F44CD23B257D700871C1F /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96F44CC23B257D700871C1F /* Logger.swift */; };
@@ -755,6 +756,7 @@
 		F9639B5124E29E340073F38A /* PresentationDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationDelegateMock.swift; sourceTree = "<group>"; };
 		F9639B5524E3DB190073F38A /* PollingAwaitComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingAwaitComponentTests.swift; sourceTree = "<group>"; };
 		F9639B5724E3DB3F0073F38A /* APIClientMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientMock.swift; sourceTree = "<group>"; };
+		F9639B5B24E410130073F38A /* AwaitActionHandlerProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitActionHandlerProvider.swift; sourceTree = "<group>"; };
 		F96A25422371AB75007DBF0B /* PaymentComponentDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentDelegateMock.swift; sourceTree = "<group>"; };
 		F96A25462372C39F007DBF0B /* ApplePayDetailsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayDetailsTest.swift; sourceTree = "<group>"; };
 		F96F44CC23B257D700871C1F /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -1857,6 +1859,7 @@
 				F9639B1624DA910A0073F38A /* AwaitComponent.swift */,
 				F9639B3C24E178300073F38A /* AwaitActionDetails.swift */,
 				F9639B3624E122A40073F38A /* PollingAwaitComponent.swift */,
+				F9639B5B24E410130073F38A /* AwaitActionHandlerProvider.swift */,
 			);
 			path = Await;
 			sourceTree = "<group>";
@@ -2605,6 +2608,7 @@
 				E76EC6972417F36A009C6E2F /* FormTextInputItemView.swift in Sources */,
 				E2C0E0B6220B08ED008616F6 /* FormView.swift in Sources */,
 				E9AFF87E224BB149005A0D8D /* IssuerListDetails.swift in Sources */,
+				F9639B5C24E410130073F38A /* AwaitActionHandlerProvider.swift in Sources */,
 				F9780B6524338DFE00CC6C73 /* RedirectComponent.swift in Sources */,
 				F9354BEF23A7C87600A6760B /* ImageStyle.swift in Sources */,
 				E9E3DB03222548E100697074 /* Coder.swift in Sources */,

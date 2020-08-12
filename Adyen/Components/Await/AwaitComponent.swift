@@ -7,12 +7,12 @@
 import Foundation
 
 /// A component that handles Await action's.
-internal protocol AnyAwaitComponent: ActionComponent {
+internal protocol AnyAwaitActionHandler: ActionComponent {
     func handle(_ action: AwaitAction)
 }
 
 /// A component that handles Await action's.
-public final class AwaitComponent: AnyAwaitComponent {
+public final class AwaitComponent: AnyAwaitActionHandler {
     
     /// :nodoc:
     public weak var presentationDelegate: PresentationDelegate?
@@ -30,7 +30,7 @@ public final class AwaitComponent: AnyAwaitComponent {
     public var localizationParameters: LocalizationParameters?
     
     /// :nodoc:
-    private var apiClient: AnyRetryAPIClient?
+    private var awaitActionHandler: AnyAwaitActionHandlerProvider?
     
     /// Initializes the `AwaitComponent`.
     ///
@@ -41,12 +41,12 @@ public final class AwaitComponent: AnyAwaitComponent {
     
     /// Initializes the `AwaitComponent`.
     ///
-    /// - Parameter apiClient: The API client.
+    /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter style: The Component UI style.
-    internal convenience init(apiClient: AnyRetryAPIClient? = nil,
+    internal convenience init(awaitComponentBuilder: AnyAwaitActionHandlerProvider?,
                               style: AwaitComponentStyle?) {
         self.init(style: style)
-        self.apiClient = apiClient
+        self.awaitActionHandler = awaitComponentBuilder
     }
     
     /// :nodoc:
@@ -68,24 +68,15 @@ public final class AwaitComponent: AnyAwaitComponent {
             fatalError("presentationDelegate is nil, please provide a presentation delegate to present the AwaitComponent UI.")
         }
         
-        paymentMethodSpecificAwaitComponent = buildPaymentMethodSpecificAwaitComponent(action.paymentMethodType)
+        let awaitComponentBuilder = self.awaitActionHandler ?? AwaitActionHandlerProvider(environment: environment, apiClient: nil)
+        
+        paymentMethodSpecificAwaitComponent = awaitComponentBuilder.handler(for: action.paymentMethodType)
         paymentMethodSpecificAwaitComponent?.delegate = delegate
         
         paymentMethodSpecificAwaitComponent?.handle(action)
     }
     
     /// :nodoc:
-    private func buildPaymentMethodSpecificAwaitComponent(_ paymentMethodType: AwaitPaymentMethod) -> AnyAwaitComponent {
-        switch paymentMethodType {
-        case .mbway:
-            let scheduler = BackoffScheduler(queue: .main)
-            let baseAPIClient = APIClient(environment: environment)
-            let apiClient = self.apiClient ?? RetryAPIClient(apiClient: baseAPIClient, scheduler: scheduler)
-            return PollingAwaitComponent(apiClient: apiClient)
-        }
-    }
-    
-    /// :nodoc:
-    private var paymentMethodSpecificAwaitComponent: AnyAwaitComponent?
+    private var paymentMethodSpecificAwaitComponent: AnyAwaitActionHandler?
     
 }
