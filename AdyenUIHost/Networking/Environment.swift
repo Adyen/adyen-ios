@@ -19,4 +19,13 @@ internal enum DemoServerEnvironment: APIEnvironment {
             return URL(string: "https://checkoutshopper-test.adyen.com/checkoutshopper/demoserver/")!
         }
     }
+    
+    internal var headers: [String: String] {
+        [
+            "Content-Type": "application/json",
+            "x-demo-server-api-key": Configuration.demoServerAPIKey
+        ]
+    }
+    
+    internal var queryParameters: [URLQueryItem] { [] }
 }

@@ -36,44 +36,66 @@ internal final class PollingAwaitComponent: AnyAwaitComponent {
     /// - Parameter action: The await action object.
     internal func handle(_ action: AwaitAction) {
         Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, environment: environment)
-        sendStatusRequest(action)
+        startPolling(action)
     }
     
     /// :nodoc:
-    private func sendStatusRequest(_ action: AwaitAction) {
+    /// Starts polling the status end point to check the payment status.
+    ///
+    /// - Parameter action: The action object.
+    private func startPolling(_ action: AwaitAction) {
         let request = PaymentStatusRequest(paymentData: action.paymentData)
         
         apiClient.perform(request, shouldRetry: { [weak self] result in
             self?.shouldRetry(result, paymentData: action.paymentData) ?? false
-        }, completionHandler: { _ in })
+        }, completionHandler: { [weak self] result in
+            self?.handle(finalResult: result, paymentData: action.paymentData)
+        })
     }
     
     /// :nodoc:
+    /// Decides whether the status request should be repeated.
+    ///
+    /// - Parameter result: The request result.
+    /// - Parameter paymentData: The payment data.
+    /// - Returns: A boolean value indicating whether the request should be retried.
     private func shouldRetry(_ result: Result<PaymentStatusResponse, Error>, paymentData: String) -> Bool {
         switch result {
         case let .success(response):
             return shouldRetry(response, paymentData: paymentData)
-        case let .failure(error):
-            delegate?.didFail(with: error, from: self)
+        case .failure:
             return false
         }
     }
     
     /// :nodoc:
+    /// Decides whether the status request should be repeated.
+    ///
+    /// - Parameter response: The request response.
+    /// - Parameter paymentData: The payment data.
+    /// - Returns: A boolean value indicating whether the request should be retried.
     private func shouldRetry(_ response: PaymentStatusResponse, paymentData: String) -> Bool {
         switch response.resultCode {
         case .pending, .received:
             return true
-        case .error:
-            delegate?.didFail(with: PaymentError.error, from: self)
-        case .cancelled:
-            delegate?.didFail(with: PaymentError.cancelled, from: self)
-        case .refused:
-            delegate?.didFail(with: PaymentError.refused, from: self)
-        default: ()
+        default:
+            return false
         }
-        deliverData(response, paymentData: paymentData)
-        return false
+    }
+    
+    /// :nodoc:
+    /// Handles the final request result.
+    ///
+    /// - Parameter result: The request result.
+    /// - Parameter paymentData: The payment data.
+    /// - Returns: A boolean value indicating whether the request should be retried.
+    private func handle(finalResult result: Result<PaymentStatusResponse, Error>, paymentData: String) {
+        switch result {
+        case let .success(response):
+            deliverData(response, paymentData: paymentData)
+        case let .failure(error):
+            delegate?.didFail(with: error, from: self)
+        }
     }
     
     /// :nodoc:

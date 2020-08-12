@@ -47,7 +47,7 @@ internal struct BackoffScheduler: Scheduler {
     
     /// :nodoc:
     internal func schedule(_ currentCount: UInt, closure: @escaping () -> Void) -> Bool {
-        guard currentCount <= 100 else { return true }
+        guard currentCount < 100 else { return true }
         
         let dispatchInterval = backoffIntevalCalculator.interval(for: currentCount)
         

@@ -21,6 +21,8 @@ internal struct PaymentsRequest: Request {
     
     internal var queryParameters: [URLQueryItem] = []
     
+    internal var headers: [String: String] = [:]
+    
     internal func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         

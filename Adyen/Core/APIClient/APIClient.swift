@@ -51,15 +51,15 @@ public final class APIClient: APIClientProtocol {
             return
         }
         
-        print(" ---- Request (/\(request.path)) ----")
+        adyenPrint("---- Request (/\(request.path)) ----")
         
         printAsJSON(body)
         
-        var urlRequest = URLRequest(url: add(queryParameters: request.queryParameters, to: url))
+        var urlRequest = URLRequest(url: add(queryParameters: request.queryParameters + environment.queryParameters, to: url))
         urlRequest.httpMethod = request.method.rawValue
         urlRequest.httpBody = body
         
-        urlRequest.allHTTPHeaderFields = request.headers
+        urlRequest.allHTTPHeaderFields = request.headers.merging(environment.headers, uniquingKeysWith: { key1, _ in key1 })
         
         requestCounter += 1
         
@@ -70,7 +70,7 @@ public final class APIClient: APIClientProtocol {
             switch result {
             case let .success(data):
                 do {
-                    print(" ---- Response (/\(request.path)) ----")
+                    adyenPrint("---- Response (/\(request.path)) ----")
                     self?.printAsJSON(data)
                     
                     if let apiError: APIError = try? Coder.decode(data) {
@@ -117,10 +117,10 @@ public final class APIClient: APIClientProtocol {
             let jsonData = try JSONSerialization.data(withJSONObject: jsonObject, options: [.prettyPrinted])
             guard let jsonString = String(data: jsonData, encoding: .utf8) else { return }
             
-            print(jsonString)
+            adyenPrint(jsonString)
         } catch {
             if let string = String(data: data, encoding: .utf8) {
-                print(string)
+                adyenPrint(string)
             }
         }
     }
