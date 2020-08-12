@@ -9,13 +9,15 @@
 import Foundation
 @testable import Adyen
 
+typealias MockedResult = Result<Response, Error>
+
 enum DummyError: Error {
     case dummy
 }
 
 final class APIClientMock: APIClientProtocol {
 
-    var mockedResults: [Result<Response, Error>] = []
+    var mockedResults: [MockedResult] = []
 
     private(set) var counter: Int = 0
 

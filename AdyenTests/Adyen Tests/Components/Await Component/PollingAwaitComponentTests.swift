@@ -37,7 +37,7 @@ class PollingAwaitComponentTests: XCTestCase {
 
         sut.delegate = delegate
 
-        let result = Result<Response, Error>.success(PaymentStatusResponse(payload: "pay load", resultCode: .received))
+        let result = MockedResult.success(PaymentStatusResponse(payload: "pay load", resultCode: .received))
 
         apiClient.mockedResults = [result, result, result]
 
@@ -75,7 +75,7 @@ class PollingAwaitComponentTests: XCTestCase {
 
         sut.delegate = delegate
 
-        let result = Result<Response, Error>.success(PaymentStatusResponse(payload: "pay load", resultCode: .pending))
+        let result = MockedResult.success(PaymentStatusResponse(payload: "pay load", resultCode: .pending))
 
         apiClient.mockedResults = [result, result, result]
 
@@ -108,7 +108,7 @@ class PollingAwaitComponentTests: XCTestCase {
 
         sut.delegate = delegate
 
-        let result = Result<Response, Error>.failure(DummyError.dummy)
+        let result = MockedResult.failure(DummyError.dummy)
 
         apiClient.mockedResults = [result]
 
@@ -147,7 +147,7 @@ class PollingAwaitComponentTests: XCTestCase {
 
         sut.delegate = delegate
 
-        let result = Result<Response, Error>.success(PaymentStatusResponse(payload: "pay load", resultCode: .refused))
+        let result = MockedResult.success(PaymentStatusResponse(payload: "pay load", resultCode: .refused))
 
         apiClient.mockedResults = [result]
 
@@ -185,7 +185,7 @@ class PollingAwaitComponentTests: XCTestCase {
 
         sut.delegate = delegate
 
-        let result = Result<Response, Error>.success(PaymentStatusResponse(payload: "pay load", resultCode: .cancelled))
+        let result = MockedResult.success(PaymentStatusResponse(payload: "pay load", resultCode: .cancelled))
 
         apiClient.mockedResults = [result]
 
@@ -223,7 +223,7 @@ class PollingAwaitComponentTests: XCTestCase {
 
         sut.delegate = delegate
 
-        let result = Result<Response, Error>.success(PaymentStatusResponse(payload: "pay load", resultCode: .error))
+        let result = MockedResult.success(PaymentStatusResponse(payload: "pay load", resultCode: .error))
 
         apiClient.mockedResults = [result]
 
@@ -261,7 +261,7 @@ class PollingAwaitComponentTests: XCTestCase {
 
         sut.delegate = delegate
 
-        let result = Result<Response, Error>.success(PaymentStatusResponse(payload: "pay load", resultCode: .authorised))
+        let result = MockedResult.success(PaymentStatusResponse(payload: "pay load", resultCode: .authorised))
 
         apiClient.mockedResults = [result]
 
