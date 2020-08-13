@@ -135,7 +135,7 @@ internal final class ComponentManager {
     private func createMBWayComponent(_ paymentMethod: MBWayPaymentMethod) -> MBWayComponent? {
         guard configuration.clientKey != nil else {
             // swiftlint:disable:next line_length
-            adyenPrint("Failed to instantiate MBWayComponent because client key is not configured, Please supply the client key in the PaymentMethodsConfiguration.")
+            adyenPrint("Failed to instantiate MBWayComponent because client key is not configured. Please supply the client key in the PaymentMethodsConfiguration.")
             return nil
         }
         let component = MBWayComponent(paymentMethod: paymentMethod, style: style.formComponent)
