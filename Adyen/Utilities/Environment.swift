@@ -16,7 +16,13 @@ public struct Environment: APIEnvironment {
     public var headers: [String: String] = ["Origin": "https://test.org", "Content-Type": "application/json"]
     
     /// :nodoc:
-    public var queryParameters: [URLQueryItem] = [URLQueryItem(name: "token", value: "test_YP5RJK3TL5EELNPAS7RHIRVRAIMYZXOH")]
+    public var queryParameters: [URLQueryItem] {
+        guard let clientKey = clientKey else { return [] }
+        return [URLQueryItem(name: "token", value: clientKey)]
+    }
+    
+    /// :nodoc:
+    public var clientKey: String?
     
     /// Adyen's test environment.
     public static let test = Environment(baseURL: URL(string: "https://checkoutshopper-test.adyen.com/")!,

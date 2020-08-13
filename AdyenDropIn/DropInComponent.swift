@@ -20,6 +20,13 @@ public final class DropInComponent: NSObject, PresentableComponent {
     
     /// The title text on the first page of drop in component.
     public let title: String
+
+    /// :nodoc:
+    public var environment: Environment = .live {
+        didSet {
+            environment.clientKey = configuration.clientKey
+        }
+    }
     
     /// Initializes the drop in component.
     ///

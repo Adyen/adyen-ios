@@ -38,6 +38,8 @@ internal final class ComponentManager {
     private func component(for paymentMethod: PaymentMethod) -> PaymentComponent? {
         let paymentComponent: PaymentComponent? = paymentMethod.buildComponent(using: self)
         
+        paymentComponent?.environment.clientKey = configuration.clientKey
+        
         if var paymentComponent = paymentComponent as? Localizable {
             paymentComponent.localizationParameters = configuration.localizationParameters
         }
@@ -130,7 +132,12 @@ internal final class ComponentManager {
         return component
     }
     
-    private func createMBWayComponent(_ paymentMethod: MBWayPaymentMethod) -> MBWayComponent {
+    private func createMBWayComponent(_ paymentMethod: MBWayPaymentMethod) -> MBWayComponent? {
+        guard configuration.clientKey != nil else {
+            // swiftlint:disable:next line_length
+            adyenPrint("Failed to instantiate MBWayComponent because client key is not configured, Please supply the client key in the PaymentMethodsConfiguration.")
+            return nil
+        }
         let component = MBWayComponent(paymentMethod: paymentMethod, style: style.formComponent)
         component.showsLargeTitle = false
         return component

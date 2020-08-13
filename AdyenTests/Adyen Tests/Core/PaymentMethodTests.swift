@@ -50,7 +50,8 @@ class PaymentMethodTests: XCTestCase {
                 bcmcMobileQR,
                 qiwiWallet,
                 weChatSDKDictionary,
-                debitCardDictionary
+                debitCardDictionary,
+                mbway
             ]
         ]
         
@@ -101,7 +102,7 @@ class PaymentMethodTests: XCTestCase {
         
         // Regular payment methods
         
-        XCTAssertEqual(paymentMethods.regular.count, 11)
+        XCTAssertEqual(paymentMethods.regular.count, 12)
         XCTAssertTrue(paymentMethods.regular[0] is CardPaymentMethod)
         XCTAssertEqual((paymentMethods.regular[0] as! CardPaymentMethod).fundingSource!, .credit)
         
@@ -154,6 +155,10 @@ class PaymentMethodTests: XCTestCase {
         
         XCTAssertTrue(paymentMethods.regular[10] is CardPaymentMethod)
         XCTAssertEqual((paymentMethods.regular[10] as! CardPaymentMethod).fundingSource!, .debit)
+
+        XCTAssertTrue(paymentMethods.regular[11] is MBWayPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[11].name, "MB WAY")
+        XCTAssertEqual(paymentMethods.regular[11].type, "mbway")
     }
     
     // MARK: - Card
@@ -313,6 +318,14 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.displayInformation, expectedDisplayInfo)
         XCTAssertEqual(paymentMethod.localizedDisplayInformation(using: expectedLocalizationParameters),
                        expectedBancontactCardDisplayInfo(method: paymentMethod, localizationParameters: expectedLocalizationParameters))
+    }
+
+    // MARK: - MBWay
+
+    func testDecodingMBWayPaymentMethod() throws {
+        let paymentMethod = try Coder.decode(mbway) as MBWayPaymentMethod
+        XCTAssertEqual(paymentMethod.type, "mbway")
+        XCTAssertEqual(paymentMethod.name, "MB WAY")
     }
     
     public func expectedBancontactCardDisplayInfo(method: StoredBCMCPaymentMethod, localizationParameters: LocalizationParameters?) -> DisplayInformation {
