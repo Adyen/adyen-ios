@@ -44,14 +44,14 @@ NS_ASSUME_NONNULL_BEGIN
  *  @see `setMsgPrefix:`
  *  @see `setMsgSeparator:`
  */
-+ (nullable NSString *)encrypt:(NSData *)data publicKeyInHex:(NSString *)keyInHex;
++ (nullable NSString *)encrypt:(nonnull NSData *)data publicKeyInHex:(nonnull NSString *)keyInHex;
 
-+ (nullable NSData *)aesEncrypt:(NSData *)data withKey:(NSData *)key iv:(NSData *)iv;
-+ (nullable NSData *)rsaEncrypt:(NSData *)data withKeyInHex:(NSString *)keyInHex;
++ (nullable NSData *)aesEncrypt:(nonnull NSData *)data withKey:(nonnull NSData *)key iv:(nonnull NSData *)iv;
++ (nullable NSData *)rsaEncrypt:(nonnull NSData *)data withKeyInHex:(nonnull NSString *)keyInHex;
 
 
-+ (NSData *)dataFromHex:(NSString *)hex;
-+ (nullable NSData *)sha1FromStringInHex:(NSString *)stringInHex;
++ (nullable NSData *)dataFromHex:(nonnull NSString *)hex;
++ (nullable NSData *)sha1FromStringInHex:(nonnull NSString *)stringInHex;
 
 @end
 
