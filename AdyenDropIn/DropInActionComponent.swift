@@ -102,7 +102,7 @@ public final class DropInActionComponent: ActionComponent {
     private func perform(_ action: AwaitAction) {
         guard environment.clientKey != nil else {
             // swiftlint:disable:next line_length
-            assertionFailure("Failed to instantiate AwaitComponent because client key is not configured, Please supply the client key in the PaymentMethodsConfiguration if using DropInComponent, or DropInActionComponent.environment.clientKey if using DropInActionComponent separately.")
+            assertionFailure("Failed to instantiate AwaitComponent because client key is not configured. Please supply the client key in the PaymentMethodsConfiguration if using DropInComponent, or DropInActionComponent.clientKey if using DropInActionComponent separately.")
             return
         }
         let component = AwaitComponent(style: awaitComponentStyle)

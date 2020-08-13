@@ -38,7 +38,7 @@ internal final class ComponentManager {
     private func component(for paymentMethod: PaymentMethod) -> PaymentComponent? {
         let paymentComponent: PaymentComponent? = paymentMethod.buildComponent(using: self)
         
-        paymentComponent?.environment.clientKey = configuration.clientKey
+        paymentComponent?.clientKey = configuration.clientKey
         
         if var paymentComponent = paymentComponent as? Localizable {
             paymentComponent.localizationParameters = configuration.localizationParameters
