@@ -13,7 +13,7 @@ public struct Environment: APIEnvironment {
     public var baseURL: URL
     
     /// :nodoc:
-    public var headers: [String: String] = ["Origin": "https://test.org", "Content-Type": "application/json"]
+    public var headers: [String: String] = ["Content-Type": "application/json"]
     
     /// :nodoc:
     public var queryParameters: [URLQueryItem] {
