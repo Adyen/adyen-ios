@@ -12,25 +12,6 @@
 
 @implementation ADYCard
 
-+ (ADYCard *)decode:(NSData *)json error:(NSError **)error {
-    id result = [NSJSONSerialization JSONObjectWithData:json options:0 error:error];
-    if (!result) {
-        return nil;
-    } else if (![result isKindOfClass:[NSDictionary class]]) {
-        return nil;
-    } else {
-        NSDictionary* dict = (NSDictionary*)result;
-        ADYCard* card = [[ADYCard alloc] init];
-        card.number = dict[@"number"];
-        card.holderName = dict[@"holderName"];
-        card.cvc = dict[@"cvc"];
-        card.expiryMonth = dict[@"expiryMonth"];
-        card.expiryYear = dict[@"expiryYear"];
-        
-        return card;
-    }
-}
-
 - (NSData *)encode {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     
