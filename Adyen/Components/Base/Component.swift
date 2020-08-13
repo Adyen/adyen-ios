@@ -12,6 +12,10 @@ public protocol Component: AnyObject {
     /// Defines the environment used to make networking requests.
     var environment: Environment { get set }
     
+    /// The client key that corresponds to the webservice user you will use for initiating the payment.
+    /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
+    var clientKey: String? { get set }
+    
 }
 
 public extension Component {
@@ -26,6 +30,17 @@ public extension Component {
         }
         set {
             objc_setAssociatedObject(self, &AssociatedKeys.environment, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+    
+    /// :nodoc:
+    var clientKey: String? {
+        get {
+            environment.clientKey
+        }
+        
+        set {
+            environment.clientKey = newValue
         }
     }
     

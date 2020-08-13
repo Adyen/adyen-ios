@@ -91,6 +91,7 @@ internal final class ComponentsViewController: UIViewController {
     private func presentDropInComponent() {
         guard let paymentMethods = paymentMethods else { return }
         let configuration = DropInComponent.PaymentMethodsConfiguration()
+        configuration.clientKey = Configuration.clientKey
         configuration.card.publicKey = Configuration.cardPublicKey
         configuration.applePay.merchantIdentifier = Configuration.applePayMerchantIdentifier
         configuration.applePay.summaryItems = Configuration.applePaySummaryItems
