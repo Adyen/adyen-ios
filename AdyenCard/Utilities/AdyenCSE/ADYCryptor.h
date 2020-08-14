@@ -17,13 +17,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (void)setMsgPrefix:(nullable NSString *)prefix;
 
-/**
- *  Sets encoded message separator
- *
- *  @param separator Message separator, default: "$"
- */
-+ (void)setMsgSeparator:(nullable NSString *)separator;
-
 
 /**
  *  Encrypts the data with AES-CBC using

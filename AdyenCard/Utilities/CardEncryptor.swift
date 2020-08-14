@@ -192,6 +192,13 @@ public final class CardEncryptor {
         }
     }
     
+    // MARK: - Delete RSA
+    
+    /// :nodoc:
+    internal static func cleanPublicKeys(publicKeyToken: String) {
+        ObjC_CardEncryptor.deleteRSAPublicKey(publicKeyToken)
+    }
+    
     // MARK: - Error
     
     /// Describes the error that can occur during card encryption and public key fetching.
