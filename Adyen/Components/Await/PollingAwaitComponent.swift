@@ -99,6 +99,10 @@ internal final class PollingAwaitComponent: AnyAwaitActionHandler {
     /// - Parameter result: The request result.
     /// - Parameter paymentData: The payment data.
     private func handle(finalResult result: Result<PaymentStatusResponse, Error>, paymentData: String) {
+        guard !isCancelled else {
+            delegate?.didFail(with: ComponentError.cancelled, from: self)
+            return
+        }
         switch result {
         case let .success(response):
             deliverData(response, paymentData: paymentData)

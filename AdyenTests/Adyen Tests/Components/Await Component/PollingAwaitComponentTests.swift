@@ -278,23 +278,18 @@ class PollingAwaitComponentTests: XCTestCase {
         let sut = PollingAwaitComponent(apiClient: retryApiClient)
 
         let delegate = ActionComponentDelegateMock()
-        delegate.onDidFail = { _, _ in
-            XCTFail()
-        }
 
-        let onDidProvideExpectation = expectation(description: "ActionComponentDelegate.didProvide must be called.")
-        onDidProvideExpectation.assertForOverFulfill = true
-        delegate.onDidProvide = { data, component in
+        let onDidFailExpectation = expectation(description: "ActionComponentDelegate.didFail must be called.")
+        delegate.onDidFail = { error, component in
             XCTAssertTrue(component === sut)
 
-            XCTAssertEqual(data.paymentData, "data")
-            XCTAssertNotNil(data.details as? AwaitActionDetails)
+            XCTAssertEqual(error as? ComponentError, ComponentError.cancelled)
 
-            let details = data.details as! AwaitActionDetails
+            onDidFailExpectation.fulfill()
+        }
 
-            XCTAssertEqual(details.payload, "pay load")
-
-            onDidProvideExpectation.fulfill()
+        delegate.onDidProvide = { _, _ in
+            XCTFail()
         }
 
         sut.delegate = delegate
