@@ -40,10 +40,19 @@ internal final class PollingAwaitComponent: AnyAwaitActionHandler {
     }
     
     /// :nodoc:
+    private var isCancelled: Bool = false
+    
+    /// :nodoc:
+    internal func didCancel() {
+        isCancelled = true
+    }
+    
+    /// :nodoc:
     /// Starts polling the status end point to check the payment status.
     ///
     /// - Parameter action: The action object.
     private func startPolling(_ action: AwaitAction) {
+        isCancelled = false
         let request = PaymentStatusRequest(paymentData: action.paymentData)
         
         apiClient.perform(request, shouldRetry: { [weak self] result in
@@ -60,6 +69,7 @@ internal final class PollingAwaitComponent: AnyAwaitActionHandler {
     /// - Parameter paymentData: The payment data.
     /// - Returns: A boolean value indicating whether the request should be retried.
     private func shouldRetry(_ result: Result<PaymentStatusResponse, Error>, paymentData: String) -> Bool {
+        guard !isCancelled else { return false }
         switch result {
         case let .success(response):
             return shouldRetry(response, paymentData: paymentData)

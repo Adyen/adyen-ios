@@ -7,7 +7,7 @@
 import Foundation
 
 /// A component that handles Await action's.
-internal protocol AnyAwaitActionHandler: ActionComponent {
+internal protocol AnyAwaitActionHandler: ActionComponent, Cancellable {
     func handle(_ action: AwaitAction)
 }
 
@@ -74,6 +74,11 @@ public final class AwaitComponent: AnyAwaitActionHandler {
         paymentMethodSpecificAwaitComponent?.delegate = delegate
         
         paymentMethodSpecificAwaitComponent?.handle(action)
+    }
+    
+    /// :nodoc:
+    public func didCancel() {
+        paymentMethodSpecificAwaitComponent?.didCancel()
     }
     
     /// :nodoc:

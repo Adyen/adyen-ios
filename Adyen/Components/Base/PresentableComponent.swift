@@ -13,8 +13,17 @@ public protocol Localizable {
     var localizationParameters: LocalizationParameters? { get set }
 }
 
+/// :nodoc:
+/// Represents any object than can handle a cancel event.
+public protocol Cancellable {
+    
+    /// :nodoc:
+    /// Called when the user cancels the component.
+    func didCancel()
+}
+
 /// A component that provides a view controller for the shopper to fill payment details.
-public protocol PresentableComponent: Component {
+public protocol PresentableComponent: Component, Cancellable {
     
     /// The payment information.
     var payment: Payment? { get set }
@@ -70,6 +79,9 @@ public extension PresentableComponent {
     func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
         completion?()
     }
+    
+    /// :nodoc:
+    func didCancel() {}
     
 }
 

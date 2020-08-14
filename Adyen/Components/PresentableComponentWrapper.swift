@@ -23,4 +23,10 @@ internal final class PresentableComponentWrapper: PresentableComponent {
         self.component = component
         self.viewController = viewController
     }
+    
+    /// :nodoc:
+    internal func didCancel() {
+        guard let component = component as? Cancellable else { return }
+        component.didCancel()
+    }
 }
