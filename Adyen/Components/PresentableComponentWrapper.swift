@@ -15,6 +15,9 @@ internal final class PresentableComponentWrapper: PresentableComponent {
     /// The wrapped component.
     internal let component: Component
     
+    /// :nodoc:
+    internal var requiresModalPresentation: Bool = true
+    
     /// Initializes the wrapper component.
     ///
     /// - Parameter component: The wrapped component.

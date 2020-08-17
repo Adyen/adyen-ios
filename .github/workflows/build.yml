@@ -37,7 +37,7 @@ jobs:
       if: contains(matrix.destination, 'OS=14.0')
       run: |
         sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
-        sudo ln -s /Applications/Xcode_12.0.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime /Library/Developer/CoreSimulator/Profiles/Runtimes/iOS\ 14.0.simruntime
+        sudo ln -s /Applications/Xcode_12_beta.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime /Library/Developer/CoreSimulator/Profiles/Runtimes/iOS\ 14.0.simruntime
         xcrun simctl create custom-test-device "iPhone 11" "com.apple.CoreSimulator.SimRuntime.iOS-14-0"
         xcrun simctl list devices 14.0
         
@@ -84,10 +84,17 @@ jobs:
         carthage bootstrap --platform iOS --cache-builds
       env:
          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         
+    - name: Setup Build Wrapper
+      run: |
+        curl -sS https://sonarcloud.io/static/cpp/build-wrapper-macosx-x86.zip > build-wrapper.zip
+        unzip build-wrapper.zip
+        rm build-wrapper.zip
+        mkdir -p reports/build-wrapper
       
     - name: Build and test
       run: |
-        xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -derivedDataPath ./DerivedData -enableCodeCoverage YES clean build test -destination "name=iPhone 11" | xcpretty
+        build-wrapper-macosx-x86/build-wrapper-macosx-x86 --out-dir reports/build-wrapper xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -derivedDataPath ./DerivedData -enableCodeCoverage YES clean build test -destination "name=iPhone 11" | xcpretty
                 
     - name: Slather
       run: |

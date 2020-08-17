@@ -279,7 +279,7 @@ ccm_encrypt_message(const void *key, size_t kL,
     A[0] = L-1;
     
     // copy the nonce
-    memcpy(A + 1, nonce, CCM_BLOCKSIZE - L);
+    memcpy(A + 1, nonce, CCM_BLOCKSIZE - L); //NOSONAR
     
     while (lm >= CCM_BLOCKSIZE) {
         // calculate MAC

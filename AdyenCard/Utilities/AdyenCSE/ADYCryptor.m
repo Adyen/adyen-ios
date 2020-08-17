@@ -23,13 +23,6 @@ static NSUInteger crypt_ivLength = 12;
     crypt_msg_prefix = prefix;
 }
 
-+ (void)setMsgSeparator:(NSString *)separator {
-    if (!separator) {
-        separator = @"$";
-    }
-    crypt_msg_separator = separator;
-}
-
 + (NSString *)encrypt:(NSData *)data publicKeyInHex:(NSString *)keyInHex {
     NSParameterAssert(data);
     NSParameterAssert(keyInHex);

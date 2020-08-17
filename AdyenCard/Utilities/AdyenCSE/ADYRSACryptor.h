@@ -10,7 +10,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ADYRSACryptor : NSObject
 
-+ (nullable NSData *)encrypt:(NSData *)data withKeyInHex:(NSString *)keyInHex;
++ (nullable NSData *)encrypt:(nonnull NSData *)data withKeyInHex:(nonnull NSString *)keyInHex;
+
++ (BOOL)deleteRSAPublicKeyWithAppTag:(nonnull NSString*)appTag;
 
 @end
 

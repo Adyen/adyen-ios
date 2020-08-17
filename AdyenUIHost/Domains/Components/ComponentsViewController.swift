@@ -36,7 +36,8 @@ internal final class ComponentsViewController: UIViewController {
             [
                 ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
                 ComponentsItem(title: "iDEAL", selectionHandler: presentIdealComponent),
-                ComponentsItem(title: "SEPA Direct Debit", selectionHandler: presentSEPADirectDebitComponent)
+                ComponentsItem(title: "SEPA Direct Debit", selectionHandler: presentSEPADirectDebitComponent),
+                ComponentsItem(title: "MB WAY", selectionHandler: presentMBWayComponent)
             ]
         ]
         
@@ -49,11 +50,15 @@ internal final class ComponentsViewController: UIViewController {
         let handler = DropInActionComponent()
         handler.redirectComponentStyle = dropInComponentStyle.redirectComponent
         handler.delegate = self
+        handler.presentationDelegate = self
+        handler.environment = environment
+        handler.clientKey = Configuration.clientKey
         return handler
     }()
     
     private func present(_ component: PresentableComponent) {
         component.environment = environment
+        component.clientKey = Configuration.clientKey
         component.payment = payment
         
         if let paymentComponent = component as? PaymentComponent {
@@ -73,15 +78,15 @@ internal final class ComponentsViewController: UIViewController {
         component.viewController.navigationItem.leftBarButtonItem = .init(barButtonSystemItem: .cancel,
                                                                           target: self,
                                                                           action: #selector(cancelDidPress))
-        present(navigation, animated: true)
+        adyen.topPresenter.present(navigation, animated: true)
     }
     
     @objc private func cancelDidPress() {
-        guard let paymentComponent = self.currentComponent as? PaymentComponent else {
-            self.dismiss(animated: true, completion: nil)
-            return
+        currentComponent?.didCancel()
+        
+        if let paymentComponent = self.currentComponent as? PaymentComponent {
+            paymentComponent.delegate?.didFail(with: ComponentError.cancelled, from: paymentComponent)
         }
-        paymentComponent.delegate?.didFail(with: ComponentError.cancelled, from: paymentComponent)
     }
     
     // MARK: - DropIn Component
@@ -131,6 +136,14 @@ internal final class ComponentsViewController: UIViewController {
         present(component)
     }
     
+    private func presentMBWayComponent() {
+        guard let paymentMethod = paymentMethods?.paymentMethod(ofType: MBWayPaymentMethod.self) else { return }
+        let component = MBWayComponent(paymentMethod: paymentMethod,
+                                       style: dropInComponentStyle.formComponent)
+        component.delegate = self
+        present(component)
+    }
+    
     // MARK: - Networking
     
     private lazy var apiClient = DefaultAPIClient()
@@ -161,6 +174,7 @@ internal final class ComponentsViewController: UIViewController {
         switch result {
         case let .success(response):
             if let action = response.action {
+                currentComponent?.stopLoading()
                 handle(action)
             } else {
                 finish(with: response.resultCode)
@@ -274,5 +288,11 @@ extension ComponentsViewController: CardComponentDelegate {
     
     internal func didChangeCardType(_ value: [CardType]?, component: CardComponent) {
         print("Current card type: \((value ?? []).reduce("") { "\($0), \($1)" })")
+    }
+}
+
+extension ComponentsViewController: PresentationDelegate {
+    internal func present(component: PresentableComponent, disableCloseButton: Bool) {
+        present(component)
     }
 }

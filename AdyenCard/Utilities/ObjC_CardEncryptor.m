@@ -6,7 +6,9 @@
 
 #import "ObjC_CardEncryptor.h"
 #import "AdyenCSE/ADYCard.h"
+#import "AdyenCSE/ADYCryptor.h"
 #import "AdyenCSE/ADYEncrypter.h"
+#import "AdyenCSE/ADYRSACryptor.h"
 
 @implementation ObjC_CardEncryptor
 
@@ -64,6 +66,16 @@
     }
     
     return nil;
+}
+
++ (BOOL)deleteRSAPublicKey:(NSString *)publicKey {
+    NSString *fingerprint = [[ADYCryptor sha1FromStringInHex:publicKey] base64EncodedStringWithOptions:0];
+    
+    if (fingerprint) {
+        return [ADYRSACryptor deleteRSAPublicKeyWithAppTag:fingerprint];
+    }
+
+    return NO;
 }
 
 @end

@@ -201,12 +201,6 @@
 		E9E3DAEE22241BF500697074 /* ADYEncrypter.m in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DADC22241BF400697074 /* ADYEncrypter.m */; };
 		E9E3DAEF22241BF500697074 /* ADYRSACryptor.h in Headers */ = {isa = PBXBuildFile; fileRef = E9E3DADD22241BF400697074 /* ADYRSACryptor.h */; };
 		E9E3DAF022241BF500697074 /* ADYRSACryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DADE22241BF400697074 /* ADYRSACryptor.m */; };
-		E9E3DAF222241BF500697074 /* NSDictionary+AdyenUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = E9E3DAE022241BF400697074 /* NSDictionary+AdyenUtil.h */; };
-		E9E3DAF322241BF500697074 /* NSDictionary+AdyenUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAE122241BF400697074 /* NSDictionary+AdyenUtil.m */; };
-		E9E3DAF422241BF500697074 /* NSString+AdyenURLEncoding.h in Headers */ = {isa = PBXBuildFile; fileRef = E9E3DAE222241BF400697074 /* NSString+AdyenURLEncoding.h */; };
-		E9E3DAF522241BF500697074 /* NSString+AdyenURLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAE322241BF400697074 /* NSString+AdyenURLEncoding.m */; };
-		E9E3DAF622241BF500697074 /* NSString+AdyenUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = E9E3DAE422241BF400697074 /* NSString+AdyenUtil.h */; };
-		E9E3DAF722241BF500697074 /* NSString+AdyenUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAE522241BF400697074 /* NSString+AdyenUtil.m */; };
 		E9E3DAFA22241D6000697074 /* CardEncryptorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAF822241D6000697074 /* CardEncryptorExtensions.swift */; };
 		E9E3DAFB22241D6000697074 /* CardEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAF922241D6000697074 /* CardEncryptor.swift */; };
 		E9E3DAFD2225485400697074 /* URLSessionHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAFC2225485400697074 /* URLSessionHelpers.swift */; };
@@ -681,12 +675,6 @@
 		E9E3DADC22241BF400697074 /* ADYEncrypter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADYEncrypter.m; sourceTree = "<group>"; };
 		E9E3DADD22241BF400697074 /* ADYRSACryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADYRSACryptor.h; sourceTree = "<group>"; };
 		E9E3DADE22241BF400697074 /* ADYRSACryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADYRSACryptor.m; sourceTree = "<group>"; };
-		E9E3DAE022241BF400697074 /* NSDictionary+AdyenUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+AdyenUtil.h"; sourceTree = "<group>"; };
-		E9E3DAE122241BF400697074 /* NSDictionary+AdyenUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+AdyenUtil.m"; sourceTree = "<group>"; };
-		E9E3DAE222241BF400697074 /* NSString+AdyenURLEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+AdyenURLEncoding.h"; sourceTree = "<group>"; };
-		E9E3DAE322241BF400697074 /* NSString+AdyenURLEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+AdyenURLEncoding.m"; sourceTree = "<group>"; };
-		E9E3DAE422241BF400697074 /* NSString+AdyenUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+AdyenUtil.h"; sourceTree = "<group>"; };
-		E9E3DAE522241BF400697074 /* NSString+AdyenUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+AdyenUtil.m"; sourceTree = "<group>"; };
 		E9E3DAF822241D6000697074 /* CardEncryptorExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardEncryptorExtensions.swift; sourceTree = "<group>"; };
 		E9E3DAF922241D6000697074 /* CardEncryptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardEncryptor.swift; sourceTree = "<group>"; };
 		E9E3DAFC2225485400697074 /* URLSessionHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHelpers.swift; sourceTree = "<group>"; };
@@ -1717,12 +1705,6 @@
 				E9E3DADC22241BF400697074 /* ADYEncrypter.m */,
 				E9E3DADD22241BF400697074 /* ADYRSACryptor.h */,
 				E9E3DADE22241BF400697074 /* ADYRSACryptor.m */,
-				E9E3DAE022241BF400697074 /* NSDictionary+AdyenUtil.h */,
-				E9E3DAE122241BF400697074 /* NSDictionary+AdyenUtil.m */,
-				E9E3DAE222241BF400697074 /* NSString+AdyenURLEncoding.h */,
-				E9E3DAE322241BF400697074 /* NSString+AdyenURLEncoding.m */,
-				E9E3DAE422241BF400697074 /* NSString+AdyenUtil.h */,
-				E9E3DAE522241BF400697074 /* NSString+AdyenUtil.m */,
 			);
 			path = AdyenCSE;
 			sourceTree = "<group>";
@@ -2097,7 +2079,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E9E3DAF622241BF500697074 /* NSString+AdyenUtil.h in Headers */,
 				E9E30A2B22D8ADA4006B7B1B /* ObjC_CardEncryptor.h in Headers */,
 				E2C0E063220982AE008616F6 /* AdyenCard.h in Headers */,
 				E9E3DAED22241BF500697074 /* ADYEncrypter.h in Headers */,
@@ -2105,8 +2086,6 @@
 				E9E3DAE922241BF500697074 /* ADYCard.h in Headers */,
 				E9E3DAE722241BF500697074 /* ADYAESCCMCryptor.h in Headers */,
 				E9E3DAEB22241BF500697074 /* ADYCryptor.h in Headers */,
-				E9E3DAF222241BF500697074 /* NSDictionary+AdyenUtil.h in Headers */,
-				E9E3DAF422241BF500697074 /* NSString+AdyenURLEncoding.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2785,11 +2764,9 @@
 			files = (
 				E9E30A2C22D8ADA4006B7B1B /* ObjC_CardEncryptor.m in Sources */,
 				E9E3DAB3221D988200697074 /* CardComponent.swift in Sources */,
-				E9E3DAF522241BF500697074 /* NSString+AdyenURLEncoding.m in Sources */,
 				E9E3DAB7221E97F200697074 /* CardExpiryDateFormatter.swift in Sources */,
 				E9E3DAAF221D5C5E00697074 /* CardType.swift in Sources */,
 				E2345C06229BDA3C000F2C94 /* ThreeDS2ComponentFingerprintToken.swift in Sources */,
-				E9E3DAF322241BF500697074 /* NSDictionary+AdyenUtil.m in Sources */,
 				F9D5751E237C106A009C18B5 /* BCMCComponent.swift in Sources */,
 				E2345C0A229BDA70000F2C94 /* ThreeDS2ComponentFingerprint.swift in Sources */,
 				E9E3DAEA22241BF500697074 /* ADYCard.m in Sources */,
@@ -2805,7 +2782,6 @@
 				E9240D6C2265EFE900FB57D0 /* StoredCardAlertManager.swift in Sources */,
 				E9E3DAFA22241D6000697074 /* CardEncryptorExtensions.swift in Sources */,
 				E9E3DAF022241BF500697074 /* ADYRSACryptor.m in Sources */,
-				E9E3DAF722241BF500697074 /* NSString+AdyenUtil.m in Sources */,
 				F9B8C49123FC286D00C4D0FB /* FormCardNumberItem.swift in Sources */,
 				E9E3DAE822241BF500697074 /* ADYAESCCMCryptor.m in Sources */,
 				E76EC682241125F5009C6E2F /* FormCardSecurityCodeItemView.swift in Sources */,

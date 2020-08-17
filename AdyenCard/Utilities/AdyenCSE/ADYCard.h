@@ -17,7 +17,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) NSString *expiryMonth;
 @property (nonatomic, strong, nullable) NSString *expiryYear;
 
-+ (nullable ADYCard *)decode:(NSData *)json error:(NSError * _Nullable *)error;
 - (nullable NSData *)encode;
 
 @end
