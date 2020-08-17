@@ -398,6 +398,24 @@ class CardComponentTests: XCTestCase {
         }
         wait(for: [expectation], timeout: 10)
     }
+
+    func testFormViewControllerDelegate() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex"])
+        let sut = CardComponent(paymentMethod: method,
+                                clientKey: "test_client_key")
+
+        let cardPublicKeyProviderExpectation = expectation(description: "Expect cardPublicKeyProvider to be called.")
+        let cardPublicKeyProvider = CardPublicKeyProviderMock()
+        cardPublicKeyProvider.onFetch = { completion in
+            cardPublicKeyProviderExpectation.fulfill()
+            completion(.success("key"))
+        }
+        sut.cardPublicKeyProvider = cardPublicKeyProvider
+
+        sut.viewDidLoad()
+
+        waitForExpectations(timeout: 10, handler: nil)
+    }
     
     private func focus<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U) {
         textItemView.textField.becomeFirstResponder()
@@ -407,5 +425,14 @@ class CardComponentTests: XCTestCase {
         let textView = textItemView.textField
         textView.text = text
         textView.sendActions(for: .editingChanged)
+    }
+}
+
+final class CardPublicKeyProviderMock: AnyCardPublicKeyProvider {
+
+    var onFetch: ((_ completion: @escaping CompletionHandler) -> Void)?
+
+    func fetch(completion: @escaping CompletionHandler) throws {
+        onFetch?(completion)
     }
 }

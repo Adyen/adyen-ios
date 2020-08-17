@@ -126,7 +126,8 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         }
     }
     
-    internal let cardPublicKeyProvider: CardPublicKeyProvider
+    /// :nodoc:
+    internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
     
     /// Initializes the card component.
     ///
@@ -196,6 +197,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         
         let formViewController = FormViewController(style: style)
         formViewController.localizationParameters = localizationParameters
+        formViewController.delegate = self
         
         if showsLargeTitle {
             let headerItem = FormHeaderItem(style: style.header)

@@ -54,24 +54,34 @@ internal extension CardComponent {
 }
 
 internal extension CardComponent {
-    private typealias CardKeyCompletion = (_ cardPublicKey: String) -> Void
+    private typealias CardKeySuccessHandler = (_ cardPublicKey: String) -> Void
     
-    private func fetchCardPublicKey(completion: @escaping CardKeyCompletion) {
+    private typealias CardKeyFailureHandler = (_ error: Swift.Error) -> Void
+    
+    private func fetchCardPublicKey(onError: CardKeyFailureHandler? = nil, completion: @escaping CardKeySuccessHandler) {
         do {
             try cardPublicKeyProvider.fetch { [weak self] in
-                self?.handle(result: $0, completion: completion)
+                self?.handle(result: $0, onError: onError, completion: completion)
             }
         } catch {
-            delegate?.didFail(with: error, from: self)
+            if let onError = onError {
+                onError(error)
+            } else {
+                delegate?.didFail(with: error, from: self)
+            }
         }
     }
     
-    private func handle(result: Result<String, Swift.Error>, completion: CardKeyCompletion) {
+    private func handle(result: Result<String, Swift.Error>, onError: CardKeyFailureHandler? = nil, completion: CardKeySuccessHandler) {
         switch result {
         case let .success(key):
             completion(key)
         case let .failure(error):
-            delegate?.didFail(with: error, from: self)
+            if let onError = onError {
+                onError(error)
+            } else {
+                delegate?.didFail(with: error, from: self)
+            }
         }
     }
 }
@@ -87,6 +97,15 @@ public extension CardComponent {
         get {
             return showsHolderNameField
         }
+    }
+}
+
+/// :nodoc:
+extension CardComponent: FormViewControllerDelegate {
+    
+    /// :nodoc:
+    public func viewDidLoad() {
+        fetchCardPublicKey(onError: { _ in }, completion: { _ in })
     }
 }
 
