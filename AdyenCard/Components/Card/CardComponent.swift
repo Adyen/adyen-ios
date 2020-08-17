@@ -145,23 +145,6 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         self.clientKey = clientKey
     }
     
-//    /// Initializes the card component for stored cards.
-//    ///
-//    /// - Parameters:
-//    ///   -  paymentMethod: The stored card payment method.
-//    ///   -  clientKey: The client key that corresponds to the webservice user you will use for initiating the payment.
-//    /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
-//    ///   -  style: The Component's UI style.
-//    public init(paymentMethod: StoredCardPaymentMethod,
-//                clientKey: String,
-//                style: FormComponentStyle = FormComponentStyle()) {
-//        self.paymentMethod = paymentMethod
-//        self.cardPublicKeyProvider = CardPublicKeyProvider()
-//        self._supportedCardTypes = []
-//        self.style = style
-//        self.clientKey = clientKey
-//    }
-    
     // MARK: - Presentable Component Protocol
     
     /// :nodoc:
