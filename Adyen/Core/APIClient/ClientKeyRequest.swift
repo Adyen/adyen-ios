@@ -6,6 +6,7 @@
 
 import Foundation
 
+/// :nodoc:
 public struct ClientKeyRequest: Request {
     
     /// :nodoc:

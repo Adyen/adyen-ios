@@ -6,6 +6,7 @@
 
 import Foundation
 
+/// :nodoc:
 public struct ClientKeyResponse: Response {
     
     /// The card public key
