@@ -46,6 +46,7 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Loca
             textField.keyboardType = .numberPad
             textField.placeholder = ADYLocalizedString("adyen.card.cvcItem.placeholder", self?.localizationParameters)
             textField.accessibilityLabel = ADYLocalizedString("adyen.card.cvcItem.title", self?.localizationParameters)
+            textField.accessibilityIdentifier = "AdyenCard.StoredCardAlertManager.textField"
             textField.delegate = self
         })
         

@@ -12,7 +12,7 @@ public protocol FormViewControllerDelegate: AnyObject {
     
     /// :nodoc:
     /// Handles the UIViewController.viewDidLoad() event.
-    func viewDidLoad()
+    func viewDidLoad(formViewController: FormViewController)
     
 }
 
@@ -113,7 +113,7 @@ public final class FormViewController: UIViewController, Localizable {
         view.addSubview(formView)
         setupConstraints()
         
-        delegate?.viewDidLoad()
+        delegate?.viewDidLoad(formViewController: self)
         
         itemManager.itemViews.forEach(formView.appendItemView(_:))
         

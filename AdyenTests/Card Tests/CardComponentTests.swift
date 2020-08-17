@@ -412,9 +412,26 @@ class CardComponentTests: XCTestCase {
         }
         sut.cardPublicKeyProvider = cardPublicKeyProvider
 
-        sut.viewDidLoad()
+        sut.viewDidLoad(formViewController: sut.formViewController)
 
         waitForExpectations(timeout: 10, handler: nil)
+    }
+
+    func testStoredCardPayment() {
+        let method = StoredCardPaymentMethod(type: "type",
+                                             identifier: "id",
+                                             name: "name",
+                                             fundingSource: .credit,
+                                             supportedShopperInteractions: [.shopperPresent],
+                                             brand: "brand",
+                                             lastFour: "1234",
+                                             expiryMonth: "12",
+                                             expiryYear: "22",
+                                             holderName: "holderName")
+        let sut = CardComponent(paymentMethod: method,
+                                clientKey: "test_client_key")
+        XCTAssertNotNil(sut.viewController as? UIAlertController)
+        XCTAssertNotNil(sut.storedCardComponent)
     }
     
     private func focus<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U) {

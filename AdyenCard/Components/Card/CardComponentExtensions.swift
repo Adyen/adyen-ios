@@ -104,7 +104,7 @@ public extension CardComponent {
 extension CardComponent: FormViewControllerDelegate {
     
     /// :nodoc:
-    public func viewDidLoad() {
+    public func viewDidLoad(formViewController: FormViewController) {
         fetchCardPublicKey(onError: { _ in }, completion: { _ in })
     }
 }

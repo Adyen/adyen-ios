@@ -181,11 +181,14 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     
     // MARK: - Stored Card
     
-    private lazy var storedCardComponent: StoredCardComponent? = {
+    internal lazy var storedCardComponent: StoredCardComponent? = {
         guard let paymentMethod = paymentMethod as? StoredCardPaymentMethod else {
             return nil
         }
-        return StoredCardComponent(storedCardPaymentMethod: paymentMethod)
+        let component = StoredCardComponent(storedCardPaymentMethod: paymentMethod)
+        component.clientKey = clientKey
+        component.environment = environment
+        return component
     }()
     
     // MARK: - Form Items
