@@ -80,7 +80,7 @@ public extension PresentableComponent {
         completion?()
     }
     
-    /// :nodoc:
+    /// Notifies the component that the user has dismissed it.
     func didCancel() {}
     
 }
