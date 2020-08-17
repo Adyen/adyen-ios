@@ -20,7 +20,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
     
     /// The title text on the first page of drop in component.
     public let title: String
-
+    
     /// :nodoc:
     public var environment: Environment = .live {
         didSet {
@@ -159,8 +159,9 @@ public final class DropInComponent: NSObject, PresentableComponent {
         }
     }
     
-    private func didSelectCancelButton(isRoot: Bool, component: PaymentComponent?) {
+    private func didSelectCancelButton(isRoot: Bool, component: PresentableComponent) {
         guard !paymentInProgress else { return }
+        component.didCancel()
         if isRoot {
             self.delegate?.didFail(with: ComponentError.cancelled, from: self)
         } else {

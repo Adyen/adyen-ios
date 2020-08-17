@@ -15,6 +15,9 @@ internal final class PresentableComponentWrapper: PresentableComponent {
     /// The wrapped component.
     internal let component: Component
     
+    /// :nodoc:
+    internal var requiresModalPresentation: Bool = true
+    
     /// Initializes the wrapper component.
     ///
     /// - Parameter component: The wrapped component.
@@ -22,5 +25,11 @@ internal final class PresentableComponentWrapper: PresentableComponent {
     internal init(component: Component, viewController: UIViewController) {
         self.component = component
         self.viewController = viewController
+    }
+    
+    /// :nodoc:
+    internal func didCancel() {
+        guard let component = component as? Cancellable else { return }
+        component.didCancel()
     }
 }

@@ -18,6 +18,12 @@ final class AwaitActionHandlerMock: AnyAwaitActionHandler {
     func handle(_ action: AwaitAction) {
         onHandle?(action)
     }
+
+    var onDidCancel: (() -> Void)?
+
+    func didCancel() {
+        onDidCancel?()
+    }
 }
 
 struct AwaitActionHandlerProviderMock: AnyAwaitActionHandlerProvider {

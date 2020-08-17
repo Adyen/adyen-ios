@@ -271,4 +271,39 @@ class PollingAwaitComponentTests: XCTestCase {
 
         XCTAssertEqual(apiClient.counter, 1)
     }
+
+    func testStopRetryingWhenUserCancels() {
+        let apiClient = APIClientMock()
+        let retryApiClient = RetryAPIClient(apiClient: apiClient, scheduler: SimpleScheduler(maximumCount: 3))
+        let sut = PollingAwaitComponent(apiClient: retryApiClient)
+
+        let delegate = ActionComponentDelegateMock()
+
+        let onDidFailExpectation = expectation(description: "ActionComponentDelegate.didFail must be called.")
+        delegate.onDidFail = { error, component in
+            XCTAssertTrue(component === sut)
+
+            XCTAssertEqual(error as? ComponentError, ComponentError.cancelled)
+
+            onDidFailExpectation.fulfill()
+        }
+
+        delegate.onDidProvide = { _, _ in
+            XCTFail()
+        }
+
+        sut.delegate = delegate
+
+        let result = MockedResult.success(PaymentStatusResponse(payload: "pay load", resultCode: .pending))
+
+        apiClient.mockedResults = [result, result, result]
+
+        sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbway))
+
+        sut.didCancel()
+
+        waitForExpectations(timeout: 5, handler: nil)
+
+        XCTAssertEqual(apiClient.counter, 1)
+    }
 }

@@ -6,7 +6,7 @@
 
 internal final class DropInNavigationController: UINavigationController {
     
-    internal typealias CancelHandler = (Bool, PaymentComponent?) -> Void
+    internal typealias CancelHandler = (Bool, PresentableComponent) -> Void
     
     private let cancelHandler: CancelHandler?
     
@@ -63,7 +63,7 @@ internal final class DropInNavigationController: UINavigationController {
     private func wrapInModalController(component: PresentableComponent, isRoot: Bool) -> WrapperViewController {
         let modal = ModalViewController(rootViewController: component.viewController,
                                         style: style) { [weak self] modal in
-            self?.cancelHandler?(modal, component as? PaymentComponent)
+            self?.cancelHandler?(modal, component)
         }
         modal.isRoot = isRoot
         let container = WrapperViewController(child: modal)
