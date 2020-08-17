@@ -91,6 +91,7 @@ internal final class ComponentsViewController: UIViewController {
     private func presentDropInComponent() {
         guard let paymentMethods = paymentMethods else { return }
         let configuration = DropInComponent.PaymentMethodsConfiguration()
+        configuration.clientKey = Configuration.clientKey
         configuration.card.publicKey = Configuration.cardPublicKey
         configuration.applePay.merchantIdentifier = Configuration.applePayMerchantIdentifier
         configuration.applePay.summaryItems = Configuration.applePaySummaryItems
@@ -130,7 +131,7 @@ internal final class ComponentsViewController: UIViewController {
     
     // MARK: - Networking
     
-    private lazy var apiClient = RetryAPIClient(apiClient: APIClient(environment: Configuration.environment))
+    private lazy var apiClient = DefaultAPIClient()
     
     private func requestPaymentMethods() {
         let request = PaymentMethodsRequest()

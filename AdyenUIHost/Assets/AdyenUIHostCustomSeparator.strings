@@ -34,3 +34,6 @@
 "adyen_phoneNumber_placeholder" = "Test 123 456 789";
 "adyen_phoneNumber_invalid" = "Test Invalid phone number.";
 "adyen_continueTo" = "Continue to %@";
+"adyen_emailItem_title" = "Email";
+"adyen_emailItem_placeholder" = "Email";
+"adyen_emailItem_invalid" = "Invalid email address";

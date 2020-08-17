@@ -68,6 +68,16 @@ extension UIColor {
             }
         }
         
+        internal static var componentLoadingMessageColor: UIColor {
+            if #available(iOS 11.0, *) {
+                return UIColor(named: "awaitLoadingMessageColor",
+                               in: Bundle.internalResources,
+                               compatibleWith: nil) ?? componentPlaceholderText
+            } else {
+                return componentPlaceholderText
+            }
+        }
+        
         internal static let defaultBlue: UIColor = UIColor(hex: 0x007AFF)
         
         internal static let defaultRed: UIColor = UIColor(hex: 0xFF3B30)

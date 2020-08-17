@@ -21,6 +21,9 @@ public enum Action: Decodable {
     /// Indicates a 3D Secure challenge should be presented.
     case threeDS2Challenge(ThreeDS2ChallengeAction)
     
+    /// Indicate that the SDK should wait for user action.
+    case await(AwaitAction)
+    
     // MARK: - Coding
     
     /// :nodoc:
@@ -37,6 +40,8 @@ public enum Action: Decodable {
             self = .threeDS2Challenge(try ThreeDS2ChallengeAction(from: decoder))
         case .sdk:
             self = .sdk(try SDKAction(from: decoder))
+        case .await:
+            self = .await(try AwaitAction(from: decoder))
         }
     }
     
@@ -46,6 +51,7 @@ public enum Action: Decodable {
         case threeDS2Challenge
         case sdk
         case qrCode
+        case await
     }
     
     private enum CodingKeys: String, CodingKey {

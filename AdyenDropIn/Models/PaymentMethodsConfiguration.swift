@@ -15,7 +15,12 @@ extension DropInComponent {
         /// Card component related configuration.
         public var card = CardConfiguration()
         
+        /// The Apple Pay configuration.
         public var applePay = ApplePayConfiguration()
+        
+        /// The client key that corresponds to the webservice user you will use for initiating the payment.
+        /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
+        public var clientKey: String?
         
         /// Indicates the localization parameters, leave it nil to use the default parameters.
         public var localizationParameters: LocalizationParameters?

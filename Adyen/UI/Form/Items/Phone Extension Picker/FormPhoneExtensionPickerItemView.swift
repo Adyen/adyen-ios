@@ -81,6 +81,7 @@ internal final class FormPhoneExtensionPickerItemView: FormValueItemView<FormPho
     
     private lazy var inputControl: PhoneExtensionInputControl = {
         let view = PhoneExtensionInputControl(inputView: pickerView, style: item.style.text)
+        view.chevronView.isHidden = item.selectableValues.count <= 1
         view.addTarget(self, action: #selector(self.handleTapAction), for: .touchUpInside)
         view.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "inputControl") }
         view.onDidBecomeFirstResponder = { [weak self] in
@@ -95,6 +96,7 @@ internal final class FormPhoneExtensionPickerItemView: FormValueItemView<FormPho
     }()
     
     @objc private func handleTapAction() {
+        guard item.selectableValues.count > 1 else { return }
         _ = becomeFirstResponder()
     }
     

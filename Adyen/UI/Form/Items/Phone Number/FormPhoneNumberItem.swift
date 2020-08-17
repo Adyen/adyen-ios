@@ -18,6 +18,10 @@ public final class FormPhoneNumberItem: FormTextItem {
         phonePrefixItem.value.phoneExtension
     }
     
+    public var phoneNumber: String {
+        prefix + value
+    }
+    
     /// Initializes the phone number item.
     ///
     /// - Parameter selectableValues: The list of values to select from.

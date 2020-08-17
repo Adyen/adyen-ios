@@ -40,6 +40,9 @@ public protocol PaymentComponentBuilder {
     /// Builds a certain `PaymentComponent` based on a `QiwiWalletPaymentMethod`.
     func build(paymentMethod: QiwiWalletPaymentMethod) -> PaymentComponent?
     
+    /// Builds a certain `PaymentComponent` based on a `MBWayPaymentMethod`.
+    func build(paymentMethod: MBWayPaymentMethod) -> PaymentComponent?
+    
     /// Builds a certain `PaymentComponent` based on any `PaymentMethod`, as a default case.
     func build(paymentMethod: PaymentMethod) -> PaymentComponent?
     

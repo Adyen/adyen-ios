@@ -18,7 +18,13 @@ internal struct PaymentDetailsRequest: Request {
     
     internal let paymentData: String
     
-    internal var counter: Int = 0
+    internal var counter: UInt = 0
+    
+    internal var method: HTTPMethod = .post
+    
+    internal var queryParameters: [URLQueryItem] = []
+    
+    internal var headers: [String: String] = [:]
     
     internal func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)

@@ -36,3 +36,7 @@
 "adyen.phoneNumber.invalid" = "Numéro de téléphone incorrect";
 "adyen.phoneNumber.placeholder" = "01 23 45 67 89";
 "adyen.card.cvcItem.placeholder.digits" = "%@ chiffres";
+"adyen.emailItem.title" = "Adresse e-mail";
+"adyen.emailItem.invalid" = "Adresse e-mail incorrecte";
+"adyen.mbway.confirmPayment" = "Confirmez votre paiement sur l'application MB WAY";
+"adyen.await.waitForConfirmation" = "En attente de confirmation";

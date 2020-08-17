@@ -16,8 +16,14 @@ public final class DropInActionComponent: ActionComponent {
     /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
     
+    /// :nodoc:
+    public weak var presentationDelegate: PresentationDelegate?
+    
     /// Indicates the UI configuration of the redirect component.
     public var redirectComponentStyle: RedirectComponentStyle?
+    
+    /// Indicates the UI configuration of the await component.
+    public var awaitComponentStyle: AwaitComponentStyle?
     
     /// :nodoc:
     public init() {}
@@ -37,6 +43,8 @@ public final class DropInActionComponent: ActionComponent {
             perform(challengeAction)
         case let .sdk(sdkAction):
             perform(sdkAction)
+        case let .await(awaitAction):
+            perform(awaitAction)
         }
     }
     
@@ -45,6 +53,7 @@ public final class DropInActionComponent: ActionComponent {
     private var redirectComponent: RedirectComponent?
     private var threeDS2Component: ThreeDS2Component?
     private var weChatPaySDKActionComponent: AnyWeChatPaySDKActionComponent?
+    private var awaitComponent: AwaitComponent?
     
     private func perform(_ action: RedirectAction) {
         let component = RedirectComponent(style: redirectComponentStyle)
@@ -88,6 +97,22 @@ public final class DropInActionComponent: ActionComponent {
         weChatPaySDKActionComponent?.environment = environment
         weChatPaySDKActionComponent?.delegate = delegate
         weChatPaySDKActionComponent?.handle(action)
+    }
+    
+    private func perform(_ action: AwaitAction) {
+        guard environment.clientKey != nil else {
+            // swiftlint:disable:next line_length
+            assertionFailure("Failed to instantiate AwaitComponent because client key is not configured. Please supply the client key in the PaymentMethodsConfiguration if using DropInComponent, or DropInActionComponent.clientKey if using DropInActionComponent separately.")
+            return
+        }
+        let component = AwaitComponent(style: awaitComponentStyle)
+        component._isDropIn = _isDropIn
+        component.delegate = delegate
+        component.presentationDelegate = presentationDelegate
+        component.environment = environment
+        
+        component.handle(action)
+        awaitComponent = component
     }
     
 }

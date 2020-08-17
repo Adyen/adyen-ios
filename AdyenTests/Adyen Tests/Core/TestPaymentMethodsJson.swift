@@ -180,6 +180,12 @@ let bcmcMobileQR = [
     "type": "bcmc_mobile_QR"
 ] as [String: Any]
 
+let mbway = [
+    "name" : "MB WAY",
+    "supportsRecurring" : true,
+    "type" : "mbway"
+] as [String: Any]
+
 let qiwiWallet = [
     "details": [
         [

@@ -36,3 +36,7 @@
 "adyen.phoneNumber.invalid" = "無効な電話番号";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@桁";
+"adyen.emailItem.title" = "Eメールアドレス";
+"adyen.emailItem.invalid" = "Eメールアドレスが無効です";
+"adyen.mbway.confirmPayment" = "MB WAYアプリで支払を確認する";
+"adyen.await.waitForConfirmation" = "確認を待っています";
