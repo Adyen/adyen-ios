@@ -72,12 +72,34 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
     ///   - paymentMethod: The Bancontact payment method.
     ///   - publicKey: The key used for encrypting card data.
     ///   - style: The Component's UI style.
+    @available(*, deprecated, message: "Use init(paymentMethod:clientKey:style:) instead.")
     public init(paymentMethod: BCMCPaymentMethod,
                 publicKey: String,
                 style: FormComponentStyle = FormComponentStyle()) {
         self.paymentMethod = paymentMethod
         self.cardComponent = CardComponent(paymentMethod: paymentMethod,
                                            publicKey: publicKey,
+                                           style: style)
+        self.cardComponent.excludedCardTypes = []
+        self.cardComponent.supportedCardTypes = [.bcmc]
+        self.cardComponent.showsSecurityCodeField = false
+        self.cardComponent.delegate = self
+        self.cardComponent.cardComponentDelegate = self
+    }
+    
+    /// Initializes the Bancontact component.
+    ///
+    /// - Parameters:
+    ///   - paymentMethod: The Bancontact payment method.
+    ///   -  clientKey: The client key that corresponds to the webservice user you will use for initiating the payment.
+    /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
+    ///   - style: The Component's UI style.
+    public init(paymentMethod: BCMCPaymentMethod,
+                clientKey: String,
+                style: FormComponentStyle = FormComponentStyle()) {
+        self.paymentMethod = paymentMethod
+        self.cardComponent = CardComponent(paymentMethod: paymentMethod,
+                                           clientKey: clientKey,
                                            style: style)
         self.cardComponent.excludedCardTypes = []
         self.cardComponent.supportedCardTypes = [.bcmc]

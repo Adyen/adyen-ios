@@ -57,7 +57,9 @@ public final class APIClient: APIClientProtocol {
         
         var urlRequest = URLRequest(url: add(queryParameters: request.queryParameters + environment.queryParameters, to: url))
         urlRequest.httpMethod = request.method.rawValue
-        urlRequest.httpBody = body
+        if request.method == .post {
+            urlRequest.httpBody = body
+        }
         
         urlRequest.allHTTPHeaderFields = request.headers.merging(environment.headers, uniquingKeysWith: { key1, _ in key1 })
         

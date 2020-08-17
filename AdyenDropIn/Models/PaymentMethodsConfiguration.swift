@@ -22,6 +22,9 @@ extension DropInComponent {
         /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
         public var clientKey: String?
         
+        /// The environment to use.
+        public var environment: Environment?
+        
         /// Indicates the localization parameters, leave it nil to use the default parameters.
         public var localizationParameters: LocalizationParameters?
         
@@ -32,6 +35,7 @@ extension DropInComponent {
         public final class CardConfiguration {
             
             /// The public key used for encrypting card details.
+            @available(*, deprecated, message: "Use PaymentMethodsConfiguration.clientKey instead.")
             public var publicKey: String?
             
             /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.

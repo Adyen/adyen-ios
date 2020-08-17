@@ -80,10 +80,15 @@ public final class DropInComponent: NSObject, PresentableComponent {
     private let configuration: PaymentMethodsConfiguration
     private var paymentInProgress: Bool = false
     private var selectedPaymentComponent: PaymentComponent?
-    private lazy var componentManager = ComponentManager(paymentMethods: paymentMethods,
-                                                         payment: payment,
-                                                         configuration: configuration,
-                                                         style: style)
+    private lazy var componentManager: ComponentManager = {
+        let manager = ComponentManager(paymentMethods: self.paymentMethods,
+                                       payment: self.payment,
+                                       configuration: self.configuration,
+                                       style: self.style)
+        
+        manager.environment = environment
+        return manager
+    }()
     
     private lazy var rootComponent: LoadingComponent = {
         if let preselectedComponents = self.componentManager.components.stored.first {
