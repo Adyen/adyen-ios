@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @see `setMsgPrefix:`
  *  @see `setMsgSeparator:`
  */
-+ (nullable NSString *)encrypt:(NSData *)data publicKeyInHex:(NSString *)keyInHex;
++ (nullable NSString *)encrypt:(nonnull NSData *)data publicKeyInHex:(nonnull NSString *)keyInHex;
 
 @end
 

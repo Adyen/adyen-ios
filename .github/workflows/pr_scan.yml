@@ -30,10 +30,17 @@ jobs:
         carthage bootstrap --platform iOS --cache-builds
       env:
          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         
+    - name: Setup Build Wrapper
+      run: |
+        curl -sS https://sonarcloud.io/static/cpp/build-wrapper-macosx-x86.zip > build-wrapper.zip
+        unzip build-wrapper.zip
+        rm build-wrapper.zip
+        mkdir -p reports/build-wrapper
       
     - name: Build and test
       run: |
-        xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -derivedDataPath ./DerivedData -enableCodeCoverage YES clean build test -destination "name=iPhone 11" | xcpretty
+          build-wrapper-macosx-x86/build-wrapper-macosx-x86 --out-dir reports/build-wrapper xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -derivedDataPath ./DerivedData -enableCodeCoverage YES clean build test -destination "name=iPhone 11" | xcpretty
                 
     - name: Slather
       run: |
