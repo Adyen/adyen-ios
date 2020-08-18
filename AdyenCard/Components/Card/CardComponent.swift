@@ -49,11 +49,11 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     /// The getter is O(n), since it filters out all the `excludedCardTypes` before returning.
     public var supportedCardTypes: [CardType] {
         get {
-            _supportedCardTypes.filter { !excludedCardTypes.contains($0) }
+            privateSupportedCardTypes.filter { !excludedCardTypes.contains($0) }
         }
         
         set {
-            _supportedCardTypes = newValue
+            privateSupportedCardTypes = newValue
         }
     }
     
@@ -101,12 +101,12 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         self.paymentMethod = paymentMethod
         self.cardPublicKeyProvider = CardPublicKeyProvider(cardPublicKey: publicKey)
         self.style = style
-        self._supportedCardTypes = paymentMethod.brands.compactMap(CardType.init)
+        self.privateSupportedCardTypes = paymentMethod.brands.compactMap(CardType.init)
         if !isPublicKeyValid(key: publicKey) {
             assertionFailure("Card Public key is invalid, please make sure it’s in the format: {EXPONENT}|{MODULUS}")
         }
     }
-    
+
     /// Initializes the card component for stored cards.
     ///
     /// - Parameters:
@@ -119,13 +119,13 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
                 style: FormComponentStyle = FormComponentStyle()) {
         self.paymentMethod = paymentMethod
         self.cardPublicKeyProvider = CardPublicKeyProvider(cardPublicKey: publicKey)
-        self._supportedCardTypes = []
+        self.privateSupportedCardTypes = []
         self.style = style
         if !isPublicKeyValid(key: publicKey) {
             assertionFailure("Card Public key is invalid, please make sure it’s in the format: {EXPONENT}|{MODULUS}")
         }
     }
-    
+
     /// :nodoc:
     internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
     
@@ -141,7 +141,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
                 style: FormComponentStyle = FormComponentStyle()) {
         self.paymentMethod = paymentMethod
         self.cardPublicKeyProvider = CardPublicKeyProvider()
-        self._supportedCardTypes = paymentMethod.brands.compactMap(CardType.init)
+        self.privateSupportedCardTypes = paymentMethod.brands.compactMap(CardType.init)
         self.style = style
         self.clientKey = clientKey
     }
@@ -177,7 +177,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     
     // MARK: - Private
     
-    private var _supportedCardTypes: [CardType]
+    private var privateSupportedCardTypes: [CardType]
     
     // MARK: - Stored Card
     
