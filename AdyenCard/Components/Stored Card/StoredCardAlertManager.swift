@@ -31,7 +31,7 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Loca
     private let paymentMethod: StoredCardPaymentMethod
     private let amount: Payment.Amount?
     
-    private let cardPublicKeyProvider: CardPublicKeyProvider
+    internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
     
     // MARK: - Alert Controller
     

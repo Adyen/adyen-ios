@@ -35,7 +35,7 @@ internal final class StoredCardComponent: PaymentComponent, PresentableComponent
     }
     
     /// :nodoc:
-    private lazy var storedCardAlertManager: StoredCardAlertManager = {
+    internal lazy var storedCardAlertManager: StoredCardAlertManager = {
         Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
         
         var manager: StoredCardAlertManager
