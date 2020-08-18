@@ -88,44 +88,6 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     /// Defaults to true.
     public var showsLargeTitle = true
     
-    /// Initializes the card component.
-    ///
-    /// - Parameters:
-    ///   - paymentMethod: The card payment method.
-    ///   - publicKey: The key used for encrypting card data.
-    ///   - style: The Component's UI style.
-    @available(*, deprecated, message: "Use init(paymentMethod:clientKey:style:) instead.")
-    public init(paymentMethod: AnyCardPaymentMethod,
-                publicKey: String,
-                style: FormComponentStyle = FormComponentStyle()) {
-        self.paymentMethod = paymentMethod
-        self.cardPublicKeyProvider = CardPublicKeyProvider(cardPublicKey: publicKey)
-        self.style = style
-        self.privateSupportedCardTypes = paymentMethod.brands.compactMap(CardType.init)
-        if !isPublicKeyValid(key: publicKey) {
-            assertionFailure("Card Public key is invalid, please make sure it’s in the format: {EXPONENT}|{MODULUS}")
-        }
-    }
-
-    /// Initializes the card component for stored cards.
-    ///
-    /// - Parameters:
-    ///   -  paymentMethod: The stored card payment method.
-    ///   -  publicKey: The key used for encrypting card data.
-    ///   -  style: The Component's UI style.
-    @available(*, deprecated, message: "Use init(paymentMethod:clientKey:style:) instead.")
-    public init(paymentMethod: StoredCardPaymentMethod,
-                publicKey: String,
-                style: FormComponentStyle = FormComponentStyle()) {
-        self.paymentMethod = paymentMethod
-        self.cardPublicKeyProvider = CardPublicKeyProvider(cardPublicKey: publicKey)
-        self.privateSupportedCardTypes = []
-        self.style = style
-        if !isPublicKeyValid(key: publicKey) {
-            assertionFailure("Card Public key is invalid, please make sure it’s in the format: {EXPONENT}|{MODULUS}")
-        }
-    }
-
     /// :nodoc:
     internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
     
@@ -144,6 +106,22 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         self.privateSupportedCardTypes = paymentMethod.brands.compactMap(CardType.init)
         self.style = style
         self.clientKey = clientKey
+    }
+    
+    /// :nodoc:
+    /// Initializes the card component.
+    ///
+    /// - Parameters:
+    ///   - paymentMethod: The card payment method.
+    ///   - cardPublicKeyProvider: The card public key provider
+    ///   - style: The Component's UI style.
+    internal init(paymentMethod: AnyCardPaymentMethod,
+                  cardPublicKeyProvider: AnyCardPublicKeyProvider,
+                  style: FormComponentStyle = FormComponentStyle()) {
+        self.paymentMethod = paymentMethod
+        self.cardPublicKeyProvider = cardPublicKeyProvider
+        self.privateSupportedCardTypes = paymentMethod.brands.compactMap(CardType.init)
+        self.style = style
     }
     
     // MARK: - Presentable Component Protocol

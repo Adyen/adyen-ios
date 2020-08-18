@@ -36,7 +36,18 @@ extension DropInComponent {
             
             /// The public key used for encrypting card details.
             @available(*, deprecated, message: "Use PaymentMethodsConfiguration.clientKey instead.")
-            public var publicKey: String?
+            public var publicKey: String? {
+                get {
+                    deprecatedPublicKey
+                }
+                
+                set {
+                    deprecatedPublicKey = newValue
+                }
+            }
+            
+            /// :nodoc:
+            internal var deprecatedPublicKey: String?
             
             /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
             public var showsHolderNameField = false

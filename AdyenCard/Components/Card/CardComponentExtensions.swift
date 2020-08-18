@@ -86,20 +86,6 @@ internal extension CardComponent {
     }
 }
 
-public extension CardComponent {
-    
-    /// :nodoc:
-    @available(*, deprecated, renamed: "showsHolderNameField")
-    var showsHolderName: Bool {
-        set {
-            showsHolderNameField = newValue
-        }
-        get {
-            return showsHolderNameField
-        }
-    }
-}
-
 /// :nodoc:
 extension CardComponent: FormViewControllerDelegate {
     
@@ -107,6 +93,59 @@ extension CardComponent: FormViewControllerDelegate {
     public func viewDidLoad(formViewController: FormViewController) {
         fetchCardPublicKey(onError: { _ in /* Do nothing, to just cache the card public key value */ },
                            completion: { _ in /* Do nothing, to just cache the card public key value */ })
+    }
+}
+
+/// :nodoc:
+/// Deprecated initializers
+extension CardComponent {
+    
+    /// Initializes the card component.
+    ///
+    /// - Parameters:
+    ///   - paymentMethod: The card payment method.
+    ///   - publicKey: The key used for encrypting card data.
+    ///   - style: The Component's UI style.
+    @available(*, deprecated, message: "Use init(paymentMethod:clientKey:style:) instead.")
+    public convenience init(paymentMethod: AnyCardPaymentMethod,
+                            publicKey: String,
+                            style: FormComponentStyle = FormComponentStyle()) {
+        let cardPublicKeyProvider = CardPublicKeyProvider(cardPublicKey: publicKey)
+        self.init(paymentMethod: paymentMethod, cardPublicKeyProvider: cardPublicKeyProvider, style: style)
+        if !isPublicKeyValid(key: publicKey) {
+            assertionFailure("Card Public key is invalid, please make sure it’s in the format: {EXPONENT}|{MODULUS}")
+        }
+    }
+    
+    /// Initializes the card component for stored cards.
+    ///
+    /// - Parameters:
+    ///   -  paymentMethod: The stored card payment method.
+    ///   -  publicKey: The key used for encrypting card data.
+    ///   -  style: The Component's UI style.
+    @available(*, deprecated, message: "Use init(paymentMethod:clientKey:style:) instead.")
+    public convenience init(paymentMethod: StoredCardPaymentMethod,
+                            publicKey: String,
+                            style: FormComponentStyle = FormComponentStyle()) {
+        let cardPublicKeyProvider = CardPublicKeyProvider(cardPublicKey: publicKey)
+        self.init(paymentMethod: paymentMethod, cardPublicKeyProvider: cardPublicKeyProvider, style: style)
+        if !isPublicKeyValid(key: publicKey) {
+            assertionFailure("Card Public key is invalid, please make sure it’s in the format: {EXPONENT}|{MODULUS}")
+        }
+    }
+    
+    /// :nodoc:
+    /// Initializes the card component.
+    ///
+    /// - Parameters:
+    ///   - paymentMethod: The card payment method.
+    ///   - cardPublicKeyProvider: The card public key provider
+    ///   - style: The Component's UI style.
+    public static func component(paymentMethod: AnyCardPaymentMethod,
+                                 publicKey: String,
+                                 style: FormComponentStyle = FormComponentStyle()) -> CardComponent {
+        let cardPublicKeyProvider = CardPublicKeyProvider(cardPublicKey: publicKey)
+        return CardComponent(paymentMethod: paymentMethod, cardPublicKeyProvider: cardPublicKeyProvider, style: style)
     }
 }
 
