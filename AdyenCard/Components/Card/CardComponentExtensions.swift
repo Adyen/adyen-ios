@@ -105,7 +105,8 @@ extension CardComponent: FormViewControllerDelegate {
     
     /// :nodoc:
     public func viewDidLoad(formViewController: FormViewController) {
-        fetchCardPublicKey(onError: { _ in }, completion: { _ in })
+        fetchCardPublicKey(onError: { _ in /* Do nothing, to just cache the card public key value */ },
+                           completion: { _ in /* Do nothing, to just cache the card public key value */ })
     }
 }
 
