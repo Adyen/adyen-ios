@@ -23,7 +23,7 @@ extension DropInComponent {
         public var clientKey: String?
         
         /// The environment to use.
-        public var environment: Environment?
+        public var environment: Environment = .live
         
         /// Indicates the localization parameters, leave it nil to use the default parameters.
         public var localizationParameters: LocalizationParameters?
