@@ -120,9 +120,9 @@ class BCMCComponentTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
             XCTAssertNotNil(cardNumberItemView)
-            self.populate(textItemView: cardNumberItemView!, with: "980344")
             
             let cardNumberItem = cardNumberItemView!.item
+            cardNumberItem.detectedCardsDidChange(detectedCards: [])
             XCTAssertTrue(cardNumberItem.cardTypeLogos.allSatisfy { $0.isHidden })
             
             expectation.fulfill()

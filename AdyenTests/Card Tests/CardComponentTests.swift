@@ -280,7 +280,7 @@ class CardComponentTests: XCTestCase {
             XCTAssertFalse(securityCodeCvvHint!.showFront)
             XCTAssertEqual(securityCodeItemView?.textField.placeholder, "3 digits")
             
-            self.populate(textItemView: cardNumberItemView!, with: "370000000000002")
+            self.populate(textItemView: cardNumberItemView!, with: "370000")
             XCTAssertTrue(securityCodeCvvHint!.showFront)
             XCTAssertEqual(securityCodeItemView?.textField.placeholder, "4 digits")
             
@@ -334,7 +334,7 @@ class CardComponentTests: XCTestCase {
             self.populate(textItemView: securityCodeItemView!, with: "12345")
             XCTAssertEqual(securityCodeItemView!.textField.text, "123")
             
-            self.populate(textItemView: cardNumberItemView!, with: "370000000000002")
+            self.populate(textItemView: cardNumberItemView!, with: "370000")
             self.populate(textItemView: securityCodeItemView!, with: "12345")
             XCTAssertEqual(securityCodeItemView!.textField.text, "1234")
             expectation.fulfill()
