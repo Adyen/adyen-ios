@@ -66,6 +66,28 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
         }
     }
     
+    /// :nodoc:
+    public var clientKey: String? {
+        get {
+            cardComponent.clientKey
+        }
+        
+        set {
+            cardComponent.clientKey = newValue
+        }
+    }
+    
+    /// :nodoc:
+    public var environment: Environment {
+        get {
+            cardComponent.environment
+        }
+        
+        set {
+            cardComponent.environment = newValue
+        }
+    }
+    
     /// Initializes the Bancontact component.
     ///
     /// - Parameters:

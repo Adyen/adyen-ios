@@ -59,6 +59,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
     
     /// :nodoc:
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
+        paymentInProgress = false
         let rootComponent = self.rootComponent
         if let topComponent = selectedPaymentComponent as? PresentableComponent {
             topComponent.stopLoading(withSuccess: success) {
@@ -193,6 +194,7 @@ extension DropInComponent: PaymentComponentDelegate {
     
     /// :nodoc:
     public func didFail(with error: Error, from component: PaymentComponent) {
+        paymentInProgress = false
         if case ComponentError.cancelled = error {
             stopLoading(withSuccess: false)
         } else {
