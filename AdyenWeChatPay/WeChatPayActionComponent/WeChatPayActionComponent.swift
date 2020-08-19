@@ -50,7 +50,7 @@ public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionC
     }
     
     private static func assertWeChatPayAppSchemeWhitlisted() {
-        guard Bundle.main.adyen.isSchemeWhitelisted("weixin") else {
+        guard Bundle.main.adyen.isSchemeConfigured("weixin") else {
             assertionFailure("weixin:// scheme must be added to Info.plist under LSApplicationQueriesSchemes key.")
             return
         }

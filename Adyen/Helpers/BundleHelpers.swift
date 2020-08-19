@@ -14,13 +14,13 @@ extension Bundle: AdyenCompatible {}
 /// :nodoc:
 extension AdyenScope where Base: Bundle {
     
-    /// Enables any `Bundle` instance to check whether a certain scheme is whitlisted in the Info.plist or not.
+    /// Enables any `Bundle` instance to check whether a certain scheme is configured in the Info.plist or not.
     /// :nodoc:
-    public func isSchemeWhitelisted(_ scheme: String) -> Bool {
-        guard let appSchemesWhitlist = base.object(forInfoDictionaryKey: "LSApplicationQueriesSchemes") as? [String] else {
+    public func isSchemeConfigured(_ scheme: String) -> Bool {
+        guard let configuredSchemes = base.object(forInfoDictionaryKey: "LSApplicationQueriesSchemes") as? [String] else {
             return false
         }
-        guard appSchemesWhitlist.contains(where: { $0.lowercased() == scheme.lowercased() }) else {
+        guard configuredSchemes.contains(where: { $0.lowercased() == scheme.lowercased() }) else {
             return false
         }
         return true
