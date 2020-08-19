@@ -73,10 +73,10 @@ internal enum AnyPaymentMethodDecoder {
         .payPal: PayPalPaymentMethodDecoder(),
         .bcmc: BCMCCardPaymentMethodDecoder(),
         .weChatPaySDK: WeChatPayPaymentMethodDecoder(),
-        .bcmcMobileQR: BlacklistedPaymentMethodDecoder(),
-        .weChatMiniProgram: BlacklistedPaymentMethodDecoder(),
-        .weChatQR: BlacklistedPaymentMethodDecoder(),
-        .weChatPayWeb: BlacklistedPaymentMethodDecoder(),
+        .bcmcMobileQR: UnsupportedPaymentMethodDecoder(),
+        .weChatMiniProgram: UnsupportedPaymentMethodDecoder(),
+        .weChatQR: UnsupportedPaymentMethodDecoder(),
+        .weChatPayWeb: UnsupportedPaymentMethodDecoder(),
         .qiwiWallet: QiwiWalletPaymentMethodDecoder(),
         .mbWay: MBWayPaymentMethodDecoder()
     ]
@@ -183,7 +183,7 @@ private struct WeChatPayPaymentMethodDecoder: PaymentMethodDecoder {
     }
 }
 
-private struct BlacklistedPaymentMethodDecoder: PaymentMethodDecoder {
+private struct UnsupportedPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
         return .none
     }
