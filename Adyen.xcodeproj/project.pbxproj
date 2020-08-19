@@ -221,6 +221,7 @@
 		F919DF9724E6E2810027976E /* StoredCardComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F919DF9624E6E2810027976E /* StoredCardComponent.swift */; };
 		F919DF9924EA64680027976E /* CardPublicKeyProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F919DF9824EA64680027976E /* CardPublicKeyProviderTests.swift */; };
 		F919DFA024EABCC10027976E /* StoredCardComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F919DF9F24EABCC10027976E /* StoredCardComponentTests.swift */; };
+		F919DFA224ED599D0027976E /* DropInActionComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F919DFA124ED599D0027976E /* DropInActionComponentTests.swift */; };
 		F924C072246BEEF0006DDAB8 /* CardDetailsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F924C071246BEEF0006DDAB8 /* CardDetailsTests.swift */; };
 		F924C074246C2E0B006DDAB8 /* LazyOptional.swift in Sources */ = {isa = PBXBuildFile; fileRef = F924C073246C2E0B006DDAB8 /* LazyOptional.swift */; };
 		F924C079246C38E0006DDAB8 /* SecuredViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F924C078246C38E0006DDAB8 /* SecuredViewController.swift */; };
@@ -696,6 +697,7 @@
 		F919DF9624E6E2810027976E /* StoredCardComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredCardComponent.swift; sourceTree = "<group>"; };
 		F919DF9824EA64680027976E /* CardPublicKeyProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPublicKeyProviderTests.swift; sourceTree = "<group>"; };
 		F919DF9F24EABCC10027976E /* StoredCardComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredCardComponentTests.swift; sourceTree = "<group>"; };
+		F919DFA124ED599D0027976E /* DropInActionComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInActionComponentTests.swift; sourceTree = "<group>"; };
 		F924C071246BEEF0006DDAB8 /* CardDetailsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailsTests.swift; sourceTree = "<group>"; };
 		F924C073246C2E0B006DDAB8 /* LazyOptional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyOptional.swift; sourceTree = "<group>"; };
 		F924C078246C38E0006DDAB8 /* SecuredViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuredViewController.swift; sourceTree = "<group>"; };
@@ -1494,6 +1496,7 @@
 				F9EDB795239663F800CFB3C9 /* PaymentComponentMock.swift */,
 				F9639B5124E29E340073F38A /* PresentationDelegateMock.swift */,
 				F9639B5724E3DB3F0073F38A /* APIClientMock.swift */,
+				F919DFA124ED599D0027976E /* DropInActionComponentTests.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2728,6 +2731,7 @@
 				E9021E042264C55E009CF7F4 /* KeyedDecodingContainerExtensionsTests.swift in Sources */,
 				F9EDB79E2397AEF400CFB3C9 /* ComponentManagerTests.swift in Sources */,
 				F9EDB7922396603F00CFB3C9 /* PaymentMethodListComponentTests.swift in Sources */,
+				F919DFA224ED599D0027976E /* DropInActionComponentTests.swift in Sources */,
 				F9639B4924E28DC80073F38A /* IntervalCalculatorMock.swift in Sources */,
 				F919DFA024EABCC10027976E /* StoredCardComponentTests.swift in Sources */,
 				F9EDB78F23964FC000CFB3C9 /* StoredCardAlertManagerTests.swift in Sources */,

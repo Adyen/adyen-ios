@@ -144,7 +144,7 @@ class RedirectComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
 
-    func testOpenHttpLinkSuccess() {
+    func testOpenHttpWebLink() {
         let sut = RedirectComponent()
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
