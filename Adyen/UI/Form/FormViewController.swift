@@ -6,6 +6,16 @@
 
 import UIKit
 
+/// :nodoc:
+/// Delegate to handle different viewController events.
+public protocol FormViewControllerDelegate: AnyObject {
+    
+    /// :nodoc:
+    /// Handles the UIViewController.viewDidLoad() event.
+    func viewDidLoad(formViewController: FormViewController)
+    
+}
+
 /// Displays a form for the user to enter details.
 /// :nodoc:
 public final class FormViewController: UIViewController, Localizable {
@@ -14,6 +24,10 @@ public final class FormViewController: UIViewController, Localizable {
     
     /// Indicates the `FormViewController` UI styling.
     public let style: ViewStyle
+    
+    /// :nodoc:
+    /// Delegate to handle different viewController events.
+    public weak var delegate: FormViewControllerDelegate?
     
     /// Initializes the FormViewController.
     ///
@@ -98,6 +112,8 @@ public final class FormViewController: UIViewController, Localizable {
         super.viewDidLoad()
         view.addSubview(formView)
         setupConstraints()
+        
+        delegate?.viewDidLoad(formViewController: self)
         
         itemManager.itemViews.forEach(formView.appendItemView(_:))
         

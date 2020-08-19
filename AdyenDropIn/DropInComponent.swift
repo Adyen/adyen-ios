@@ -21,13 +21,6 @@ public final class DropInComponent: NSObject, PresentableComponent {
     /// The title text on the first page of drop in component.
     public let title: String
     
-    /// :nodoc:
-    public var environment: Environment = .live {
-        didSet {
-            environment.clientKey = configuration.clientKey
-        }
-    }
-    
     /// Initializes the drop in component.
     ///
     /// - Parameters:
@@ -44,6 +37,8 @@ public final class DropInComponent: NSObject, PresentableComponent {
         self.configuration = paymentMethodsConfiguration
         self.paymentMethods = paymentMethods
         self.style = style
+        super.init()
+        self.environment = configuration.environment
     }
     
     // MARK: - Handling Actions
@@ -64,6 +59,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
     
     /// :nodoc:
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
+        paymentInProgress = false
         let rootComponent = self.rootComponent
         if let topComponent = selectedPaymentComponent as? PresentableComponent {
             topComponent.stopLoading(withSuccess: success) {
@@ -80,10 +76,15 @@ public final class DropInComponent: NSObject, PresentableComponent {
     private let configuration: PaymentMethodsConfiguration
     private var paymentInProgress: Bool = false
     private var selectedPaymentComponent: PaymentComponent?
-    private lazy var componentManager = ComponentManager(paymentMethods: paymentMethods,
-                                                         payment: payment,
-                                                         configuration: configuration,
-                                                         style: style)
+    private lazy var componentManager: ComponentManager = {
+        let manager = ComponentManager(paymentMethods: self.paymentMethods,
+                                       payment: self.payment,
+                                       configuration: self.configuration,
+                                       style: self.style)
+        
+        manager.environment = environment
+        return manager
+    }()
     
     private lazy var rootComponent: LoadingComponent = {
         if let preselectedComponents = self.componentManager.components.stored.first {
@@ -193,6 +194,7 @@ extension DropInComponent: PaymentComponentDelegate {
     
     /// :nodoc:
     public func didFail(with error: Error, from component: PaymentComponent) {
+        paymentInProgress = false
         if case ComponentError.cancelled = error {
             stopLoading(withSuccess: false)
         } else {

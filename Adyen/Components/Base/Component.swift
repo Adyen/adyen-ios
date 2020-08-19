@@ -29,6 +29,8 @@ public extension Component {
             return value
         }
         set {
+            var newValue = newValue
+            newValue.clientKey = clientKey
             objc_setAssociatedObject(self, &AssociatedKeys.environment, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
@@ -36,11 +38,11 @@ public extension Component {
     /// :nodoc:
     var clientKey: String? {
         get {
-            environment.clientKey
+            return objc_getAssociatedObject(self, &AssociatedKeys.clientKey) as? String
         }
-        
         set {
             environment.clientKey = newValue
+            objc_setAssociatedObject(self, &AssociatedKeys.clientKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
     
@@ -62,4 +64,5 @@ public extension Component {
 private struct AssociatedKeys {
     internal static var isDropIn = "isDropInObject"
     internal static var environment = "environmentObject"
+    internal static var clientKey = "clientKeyObject"
 }

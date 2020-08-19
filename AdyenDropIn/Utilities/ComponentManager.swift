@@ -11,6 +11,9 @@ internal final class ComponentManager {
     /// Indicates the UI configuration of the drop in component.
     private var style: DropInComponent.Style
     
+    /// Defines the environment used to make networking requests.
+    internal var environment: Environment = .live
+    
     internal init(paymentMethods: PaymentMethods,
                   payment: Payment?,
                   configuration: DropInComponent.PaymentMethodsConfiguration,
@@ -39,6 +42,7 @@ internal final class ComponentManager {
         let paymentComponent: PaymentComponent? = paymentMethod.buildComponent(using: self)
         
         paymentComponent?.clientKey = configuration.clientKey
+        paymentComponent?.environment = environment
         
         if var paymentComponent = paymentComponent as? Localizable {
             paymentComponent.localizationParameters = configuration.localizationParameters
@@ -55,42 +59,55 @@ internal final class ComponentManager {
     
     private func createCardComponent(with paymentMethod: PaymentMethod) -> PaymentComponent? {
         let cardConfiguration = configuration.card
-        guard let publicKey = cardConfiguration.publicKey else {
+        
+        guard let paymentMethod = paymentMethod as? AnyCardPaymentMethod else { return nil }
+        
+        var cardComponent: CardComponent?
+        
+        if let clientKey = configuration.clientKey {
+            cardComponent = CardComponent(paymentMethod: paymentMethod,
+                                          clientKey: clientKey,
+                                          style: style.formComponent)
+            
+        } else if let publicKey = configuration.card.deprecatedPublicKey {
+            cardComponent = CardComponent.component(paymentMethod: paymentMethod,
+                                                    publicKey: publicKey,
+                                                    style: style.formComponent)
+        } else {
+            adyenPrint("Failed to instantiate CardComponent because client key is not configured.")
             return nil
         }
         
-        let cardComponent: CardComponent
-        switch paymentMethod {
-        case let cardPaymentMethod as CardPaymentMethod:
-            cardComponent = CardComponent(paymentMethod: cardPaymentMethod,
-                                          publicKey: publicKey,
-                                          style: style.formComponent)
-            cardComponent.showsLargeTitle = false
-        case let storedCardPaymentMethod as StoredCardPaymentMethod:
-            cardComponent = CardComponent(paymentMethod: storedCardPaymentMethod,
-                                          publicKey: publicKey,
-                                          style: style.formComponent)
-        default:
-            return nil
-        }
-        
-        cardComponent.showsHolderNameField = cardConfiguration.showsHolderNameField
-        cardComponent.showsStorePaymentMethodField = cardConfiguration.showsStorePaymentMethodField
-        cardComponent.showsSecurityCodeField = cardConfiguration.showsSecurityCodeField
+        cardComponent?.showsLargeTitle = false
+        cardComponent?.showsHolderNameField = cardConfiguration.showsHolderNameField
+        cardComponent?.showsStorePaymentMethodField = cardConfiguration.showsStorePaymentMethodField
+        cardComponent?.showsSecurityCodeField = cardConfiguration.showsSecurityCodeField
         
         return cardComponent
     }
     
     private func createBancontactComponent(with paymentMethod: BCMCPaymentMethod) -> PaymentComponent? {
         let cardConfiguration = configuration.card
-        guard let publicKey = cardConfiguration.publicKey else { return nil }
         
-        let component = BCMCComponent(paymentMethod: paymentMethod,
-                                      publicKey: publicKey,
+        var component: BCMCComponent?
+        
+        if let clientKey = configuration.clientKey {
+            component = BCMCComponent(paymentMethod: paymentMethod,
+                                      clientKey: clientKey,
                                       style: style.formComponent)
-        component.showsLargeTitle = false
-        component.showsHolderNameField = cardConfiguration.showsHolderNameField
-        component.showsStorePaymentMethodField = cardConfiguration.showsStorePaymentMethodField
+            
+        } else if let publicKey = configuration.card.deprecatedPublicKey {
+            component = BCMCComponent.component(paymentMethod: paymentMethod,
+                                                publicKey: publicKey,
+                                                style: style.formComponent)
+        } else {
+            adyenPrint("Failed to instantiate BCMCComponent because client key is not configured.")
+            return nil
+        }
+        
+        component?.showsLargeTitle = false
+        component?.showsHolderNameField = cardConfiguration.showsHolderNameField
+        component?.showsStorePaymentMethodField = cardConfiguration.showsStorePaymentMethodField
         
         return component
     }

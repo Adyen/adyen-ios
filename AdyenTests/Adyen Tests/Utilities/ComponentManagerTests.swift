@@ -41,7 +41,6 @@ class ComponentManagerTests: XCTestCase {
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         config.applePay.merchantIdentifier = Configuration.applePayMerchantIdentifier
         config.applePay.summaryItems = Configuration.applePaySummaryItems
-        config.card.publicKey = RandomStringGenerator.generateDummyCardPublicKey()
         config.clientKey = "client_key"
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    payment: payment,
@@ -62,15 +61,14 @@ class ComponentManagerTests: XCTestCase {
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         config.applePay.merchantIdentifier = Configuration.applePayMerchantIdentifier
         config.applePay.summaryItems = Configuration.applePaySummaryItems
-        config.card.publicKey = RandomStringGenerator.generateDummyCardPublicKey()
         config.clientKey = nil
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    payment: payment,
                                    configuration: config,
                                    style: DropInComponent.Style())
 
-        XCTAssertEqual(sut.components.stored.count, 4)
-        XCTAssertEqual(sut.components.regular.count, 6)
+        XCTAssertEqual(sut.components.stored.count, 2)
+        XCTAssertEqual(sut.components.regular.count, 4)
 
         XCTAssertFalse(sut.components.regular.contains { $0 is MBWayComponent })
     }
@@ -82,7 +80,6 @@ class ComponentManagerTests: XCTestCase {
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         config.applePay.merchantIdentifier = Configuration.applePayMerchantIdentifier
         config.applePay.summaryItems = Configuration.applePaySummaryItems
-        config.card.publicKey = RandomStringGenerator.generateDummyCardPublicKey()
         config.clientKey = "client_key"
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    payment: payment,
@@ -103,7 +100,6 @@ class ComponentManagerTests: XCTestCase {
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         config.applePay.merchantIdentifier = Configuration.applePayMerchantIdentifier
         config.applePay.summaryItems = Configuration.applePaySummaryItems
-        config.card.publicKey = RandomStringGenerator.generateDummyCardPublicKey()
         config.clientKey = "client_key"
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    payment: payment,
