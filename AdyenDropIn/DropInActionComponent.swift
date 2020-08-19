@@ -48,6 +48,14 @@ public final class DropInActionComponent: ActionComponent {
         }
     }
     
+    /// Dismiss any `DismissableComponent` managed by the `DropInActionComponent`, for example when payment has concluded.
+    ///
+    /// - Parameter animated: A boolean indicating whether to dismiss with animation or not.
+    /// - Parameter completion: A closure to execute when dismissal animation has completed.
+    internal func dismiss(_ animated: Bool, completion: (() -> Void)?) {
+        redirectComponent?.dismiss(animated, completion: completion)
+    }
+    
     // MARK: - Private
     
     private var redirectComponent: RedirectComponent?
