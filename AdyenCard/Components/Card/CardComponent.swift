@@ -23,6 +23,12 @@ public protocol CardComponentDelegate: class {
 /// A component that provides a form for card payments.
 public final class CardComponent: PaymentComponent, PresentableComponent, Localizable, Observer {
     
+    /// Card Component errors.
+    public enum Error: Swift.Error {
+        /// ClientKey is required for `CardPublicKeyProvider` to work, and this error is thrown in case its nil.
+        case missingClientKey
+    }
+    
     private lazy var cardTypeProvider: CardTypeProvider = {
         CardTypeProvider(supportedCardTypes: supportedCardTypes,
                          environment: self.environment,
@@ -38,7 +44,11 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     public let paymentMethod: PaymentMethod
     
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate?
+    public weak var delegate: PaymentComponentDelegate? {
+        didSet {
+            storedCardComponent?.delegate = delegate
+        }
+    }
     
     /// The delegate for user activity on card component.
     public weak var cardComponentDelegate: CardComponentDelegate?
@@ -47,11 +57,29 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     /// The getter is O(n), since it filters out all the `excludedCardTypes` before returning.
     public var supportedCardTypes: [CardType] {
         get {
-            _supportedCardTypes.filter { !excludedCardTypes.contains($0) }
+            privateSupportedCardTypes.filter { !excludedCardTypes.contains($0) }
         }
         
         set {
-            _supportedCardTypes = newValue
+            privateSupportedCardTypes = newValue
+        }
+    }
+    
+    /// :nodoc:
+    public var environment: Environment = .live {
+        didSet {
+            environment.clientKey = clientKey
+            cardPublicKeyProvider.environment = environment
+            storedCardComponent?.environment = environment
+        }
+    }
+    
+    /// :nodoc:
+    public var clientKey: String? {
+        didSet {
+            environment.clientKey = clientKey
+            cardPublicKeyProvider.clientKey = clientKey
+            storedCardComponent?.clientKey = clientKey
         }
     }
     
@@ -68,36 +96,39 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     /// Defaults to true.
     public var showsLargeTitle = true
     
+    /// :nodoc:
+    internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
+    
     /// Initializes the card component.
     ///
     /// - Parameters:
     ///   - paymentMethod: The card payment method.
-    ///   - publicKey: The key used for encrypting card data.
-    ///   - style: The Component's UI style.
+    ///   -  clientKey: The client key that corresponds to the webservice user you will use for initiating the payment.
+    /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
+    ///   -  style: The Component's UI style.
     public init(paymentMethod: AnyCardPaymentMethod,
-                publicKey: String,
+                clientKey: String,
                 style: FormComponentStyle = FormComponentStyle()) {
         self.paymentMethod = paymentMethod
-        self.publicKey = publicKey
+        self.cardPublicKeyProvider = CardPublicKeyProvider()
+        self.privateSupportedCardTypes = paymentMethod.brands.compactMap(CardType.init)
         self.style = style
-        self._supportedCardTypes = paymentMethod.brands.compactMap(CardType.init)
-        if !isPublicKeyValid(key: self.publicKey) {
-            assertionFailure("Card Public key is invalid, please make sure it’s in the format: {EXPONENT}|{MODULUS}")
-        }
+        self.clientKey = clientKey
     }
     
-    /// Initializes the card component for stored cards.
+    /// :nodoc:
+    /// Initializes the card component.
     ///
     /// - Parameters:
-    ///   -  paymentMethod: The stored card payment method.
-    ///   -  publicKey: The key used for encrypting card data.
-    ///   -  style: The Component's UI style.
-    public init(paymentMethod: StoredCardPaymentMethod,
-                publicKey: String,
-                style: FormComponentStyle = FormComponentStyle()) {
+    ///   - paymentMethod: The card payment method.
+    ///   - cardPublicKeyProvider: The card public key provider
+    ///   - style: The Component's UI style.
+    internal init(paymentMethod: AnyCardPaymentMethod,
+                  cardPublicKeyProvider: AnyCardPublicKeyProvider,
+                  style: FormComponentStyle = FormComponentStyle()) {
         self.paymentMethod = paymentMethod
-        self.publicKey = publicKey
-        self._supportedCardTypes = []
+        self.cardPublicKeyProvider = cardPublicKeyProvider
+        self.privateSupportedCardTypes = paymentMethod.brands.compactMap(CardType.init)
         self.style = style
     }
     
@@ -105,15 +136,15 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     
     /// :nodoc:
     public var viewController: UIViewController {
-        if let storedCardAlertManager = storedCardAlertManager {
-            return storedCardAlertManager.alertController
+        if let storedCardComponent = storedCardComponent {
+            return storedCardComponent.viewController
         }
         
         return securedViewController
     }
     
     /// :nodoc:
-    public var requiresModalPresentation: Bool { storedCardAlertManager == nil }
+    public var requiresModalPresentation: Bool { storedCardComponent?.requiresModalPresentation ?? true }
     
     /// :nodoc:
     public var localizationParameters: LocalizationParameters?
@@ -132,79 +163,30 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     
     // MARK: - Private
     
-    private var _supportedCardTypes: [CardType]
-    
-    private func isPublicKeyValid(key: String) -> Bool {
-        let validator = CardPublicKeyValidator()
-        return validator.isValid(key)
-    }
-    
-    private let publicKey: String
-    
-    private func getEncryptedCard() throws -> CardEncryptor.EncryptedCard {
-        let card = CardEncryptor.Card(number: numberItem.value,
-                                      securityCode: securityCodeItem.value,
-                                      expiryMonth: expiryDateItem.value[0...1],
-                                      expiryYear: "20" + expiryDateItem.value[2...3])
-        return try CardEncryptor.encryptedCard(for: card, publicKey: publicKey)
-    }
-    
-    private func didSelectSubmitButton() {
-        guard formViewController.validate() else {
-            return
-        }
-        
-        footerItem.showsActivityIndicator = true
-        formViewController.view.isUserInteractionEnabled = false
-        
-        do {
-            let encryptedCard = try getEncryptedCard()
-            let details = CardDetails(paymentMethod: paymentMethod as! AnyCardPaymentMethod, // swiftlint:disable:this force_cast
-                                      encryptedCard: encryptedCard,
-                                      holderName: showsHolderNameField ? holderNameItem.value : nil)
-            
-            let data = PaymentComponentData(paymentMethodDetails: details,
-                                            storePaymentMethod: showsStorePaymentMethodField ? storeDetailsItem.value : false)
-            
-            submit(data: data)
-        } catch {
-            delegate?.didFail(with: error, from: self)
-        }
-    }
+    private var privateSupportedCardTypes: [CardType]
     
     // MARK: - Stored Card
     
-    private lazy var storedCardAlertManager: StoredCardAlertManager? = {
+    internal lazy var storedCardComponent: StoredCardComponent? = {
         guard let paymentMethod = paymentMethod as? StoredCardPaymentMethod else {
             return nil
         }
-        
-        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
-        let manager = StoredCardAlertManager(paymentMethod: paymentMethod, publicKey: publicKey, amount: payment?.amount)
-        manager.localizationParameters = localizationParameters
-        manager.completionHandler = { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case let .success(details):
-                self.submit(data: PaymentComponentData(paymentMethodDetails: details))
-            case let .failure(error):
-                self.delegate?.didFail(with: error, from: self)
-            }
-        }
-        
-        return manager
+        let component = StoredCardComponent(storedCardPaymentMethod: paymentMethod)
+        component.clientKey = clientKey
+        component.environment = environment
+        return component
     }()
     
     // MARK: - Form Items
     
     private lazy var securedViewController: SecuredViewController = SecuredViewController(child: formViewController, style: style)
     
-    private lazy var formViewController: FormViewController = {
+    internal lazy var formViewController: FormViewController = {
         Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
         
         let formViewController = FormViewController(style: style)
         formViewController.localizationParameters = localizationParameters
+        formViewController.delegate = self
         
         if showsLargeTitle {
             let headerItem = FormHeaderItem(style: style.header)
@@ -309,18 +291,4 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         return footerItem
     }()
     
-}
-
-public extension CardComponent {
-    
-    /// :nodoc:
-    @available(*, deprecated, renamed: "showsHolderNameField")
-    var showsHolderName: Bool {
-        set {
-            showsHolderNameField = newValue
-        }
-        get {
-            return showsHolderNameField
-        }
-    }
 }

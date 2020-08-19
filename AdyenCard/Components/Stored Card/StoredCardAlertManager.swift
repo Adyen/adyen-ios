@@ -16,13 +16,22 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Loca
     
     internal init(paymentMethod: StoredCardPaymentMethod, publicKey: String, amount: Payment.Amount?) {
         self.paymentMethod = paymentMethod
-        self.publicKey = publicKey
+        self.cardPublicKeyProvider = CardPublicKeyProvider(cardPublicKey: publicKey)
         self.amount = amount
     }
     
+    internal init(paymentMethod: StoredCardPaymentMethod, clientKey: String, environment: Environment, amount: Payment.Amount?) {
+        self.paymentMethod = paymentMethod
+        self.cardPublicKeyProvider = CardPublicKeyProvider()
+        self.amount = amount
+        self.cardPublicKeyProvider.environment = environment
+        self.cardPublicKeyProvider.clientKey = clientKey
+    }
+    
     private let paymentMethod: StoredCardPaymentMethod
-    private let publicKey: String
     private let amount: Payment.Amount?
+    
+    internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
     
     // MARK: - Alert Controller
     
@@ -37,6 +46,7 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Loca
             textField.keyboardType = .numberPad
             textField.placeholder = ADYLocalizedString("adyen.card.cvcItem.placeholder", self?.localizationParameters)
             textField.accessibilityLabel = ADYLocalizedString("adyen.card.cvcItem.title", self?.localizationParameters)
+            textField.accessibilityIdentifier = "AdyenCard.StoredCardAlertManager.textField"
             textField.delegate = self
         })
         
@@ -65,13 +75,36 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Loca
             return
         }
         
-        submit(securityCode: securityCode)
+        fetchCardPublicKey { [weak self] in
+            self?.submit(securityCode: securityCode, cardPublicKey: $0)
+        }
     }
     
-    private func submit(securityCode: String) {
+    private typealias CardKeyCompletion = (_ cardPublicKey: String) -> Void
+    
+    private func fetchCardPublicKey(successHandler: @escaping CardKeyCompletion) {
+        do {
+            try cardPublicKeyProvider.fetch { [weak self] in
+                self?.handle(result: $0, successHandler: successHandler)
+            }
+        } catch {
+            completionHandler?(.failure(error))
+        }
+    }
+    
+    private func handle(result: Result<String, Error>, successHandler: CardKeyCompletion) {
+        switch result {
+        case let .success(key):
+            successHandler(key)
+        case let .failure(error):
+            completionHandler?(.failure(error))
+        }
+    }
+    
+    private func submit(securityCode: String, cardPublicKey: String) {
         do {
             let card = CardEncryptor.Card(number: nil, securityCode: securityCode, expiryMonth: nil, expiryYear: nil)
-            let encryptedCard = try CardEncryptor.encryptedCard(for: card, publicKey: publicKey)
+            let encryptedCard = try CardEncryptor.encryptedCard(for: card, publicKey: cardPublicKey)
             let details = CardDetails(paymentMethod: paymentMethod, encryptedSecurityCode: encryptedCard.securityCode ?? "")
             completionHandler?(.success(details))
         } catch {

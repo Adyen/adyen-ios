@@ -218,6 +218,13 @@
 		F91664F923E460CD00C10738 /* WeChatPaySDKData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91664F823E460CD00C10738 /* WeChatPaySDKData.swift */; };
 		F91664FB23F14DAA00C10738 /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91664FA23F14DAA00C10738 /* Amount.swift */; };
 		F91664FD23F1615B00C10738 /* SDKAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91664FC23F1615B00C10738 /* SDKAction.swift */; };
+		F919DF8F24E682250027976E /* ClientKeyRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F919DF8E24E682250027976E /* ClientKeyRequest.swift */; };
+		F919DF9124E682480027976E /* ClientKeyResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F919DF9024E682480027976E /* ClientKeyResponse.swift */; };
+		F919DF9324E68F750027976E /* CardPublicKeyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F919DF9224E68F750027976E /* CardPublicKeyProvider.swift */; };
+		F919DF9524E6D7BC0027976E /* CardComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F919DF9424E6D7BC0027976E /* CardComponentExtensions.swift */; };
+		F919DF9724E6E2810027976E /* StoredCardComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F919DF9624E6E2810027976E /* StoredCardComponent.swift */; };
+		F919DF9924EA64680027976E /* CardPublicKeyProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F919DF9824EA64680027976E /* CardPublicKeyProviderTests.swift */; };
+		F919DFA024EABCC10027976E /* StoredCardComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F919DF9F24EABCC10027976E /* StoredCardComponentTests.swift */; };
 		F924C072246BEEF0006DDAB8 /* CardDetailsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F924C071246BEEF0006DDAB8 /* CardDetailsTests.swift */; };
 		F924C074246C2E0B006DDAB8 /* LazyOptional.swift in Sources */ = {isa = PBXBuildFile; fileRef = F924C073246C2E0B006DDAB8 /* LazyOptional.swift */; };
 		F924C079246C38E0006DDAB8 /* SecuredViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F924C078246C38E0006DDAB8 /* SecuredViewController.swift */; };
@@ -690,6 +697,13 @@
 		F91664F823E460CD00C10738 /* WeChatPaySDKData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeChatPaySDKData.swift; sourceTree = "<group>"; };
 		F91664FA23F14DAA00C10738 /* Amount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
 		F91664FC23F1615B00C10738 /* SDKAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKAction.swift; sourceTree = "<group>"; };
+		F919DF8E24E682250027976E /* ClientKeyRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientKeyRequest.swift; sourceTree = "<group>"; };
+		F919DF9024E682480027976E /* ClientKeyResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientKeyResponse.swift; sourceTree = "<group>"; };
+		F919DF9224E68F750027976E /* CardPublicKeyProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPublicKeyProvider.swift; sourceTree = "<group>"; };
+		F919DF9424E6D7BC0027976E /* CardComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardComponentExtensions.swift; sourceTree = "<group>"; };
+		F919DF9624E6E2810027976E /* StoredCardComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredCardComponent.swift; sourceTree = "<group>"; };
+		F919DF9824EA64680027976E /* CardPublicKeyProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPublicKeyProviderTests.swift; sourceTree = "<group>"; };
+		F919DF9F24EABCC10027976E /* StoredCardComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredCardComponentTests.swift; sourceTree = "<group>"; };
 		F924C071246BEEF0006DDAB8 /* CardDetailsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailsTests.swift; sourceTree = "<group>"; };
 		F924C073246C2E0B006DDAB8 /* LazyOptional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyOptional.swift; sourceTree = "<group>"; };
 		F924C078246C38E0006DDAB8 /* SecuredViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuredViewController.swift; sourceTree = "<group>"; };
@@ -1215,12 +1229,9 @@
 				E9E3DAAD221D5C0500697074 /* Utilities */,
 				E9E3DAAC221D5BFF00697074 /* Formatters */,
 				E9E3DAAB221D5BEF00697074 /* Validators */,
+				F919DF9A24EA7B480027976E /* Components */,
 				E2C0E061220982AE008616F6 /* AdyenCard.h */,
 				E2C0E062220982AE008616F6 /* Info.plist */,
-				E9E3DAA5221C431A00697074 /* CardComponent.swift */,
-				F9D5751D237C106A009C18B5 /* BCMCComponent.swift */,
-				E2028F5D222805E20007FF8B /* CardDetails.swift */,
-				E9240D6B2265EFE900FB57D0 /* StoredCardAlertManager.swift */,
 			);
 			path = AdyenCard;
 			sourceTree = "<group>";
@@ -1651,9 +1662,11 @@
 				F9EDB78C2395643A00CFB3C9 /* CardComponentTests.swift */,
 				F924C071246BEEF0006DDAB8 /* CardDetailsTests.swift */,
 				F9EDB78E23964FC000CFB3C9 /* StoredCardAlertManagerTests.swift */,
+				F919DF9F24EABCC10027976E /* StoredCardComponentTests.swift */,
 				F9EDB799239664B500CFB3C9 /* StoredPaymentMethodComponentTests.swift */,
 				F9D57527237C3EE3009C18B5 /* UIView+Search.swift */,
 				E79A64802490D98F00368E9F /* CardComponentDelegateMock.swift */,
+				F919DF9824EA64680027976E /* CardPublicKeyProviderTests.swift */,
 			);
 			path = "Card Tests";
 			sourceTree = "<group>";
@@ -1733,6 +1746,52 @@
 				F9BA21C52474113500D36A63 /* AmountFormatterTests.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		F919DF9A24EA7B480027976E /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				F919DF9B24EA7B570027976E /* Card */,
+				F919DF9C24EA7B7F0027976E /* Stored Card */,
+				F919DF9D24EA7B8D0027976E /* BCMC */,
+				F919DF9E24EA7B970027976E /* Card public key provider */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		F919DF9B24EA7B570027976E /* Card */ = {
+			isa = PBXGroup;
+			children = (
+				E9E3DAA5221C431A00697074 /* CardComponent.swift */,
+				F919DF9424E6D7BC0027976E /* CardComponentExtensions.swift */,
+				E2028F5D222805E20007FF8B /* CardDetails.swift */,
+			);
+			path = Card;
+			sourceTree = "<group>";
+		};
+		F919DF9C24EA7B7F0027976E /* Stored Card */ = {
+			isa = PBXGroup;
+			children = (
+				F919DF9624E6E2810027976E /* StoredCardComponent.swift */,
+				E9240D6B2265EFE900FB57D0 /* StoredCardAlertManager.swift */,
+			);
+			path = "Stored Card";
+			sourceTree = "<group>";
+		};
+		F919DF9D24EA7B8D0027976E /* BCMC */ = {
+			isa = PBXGroup;
+			children = (
+				F9D5751D237C106A009C18B5 /* BCMCComponent.swift */,
+			);
+			path = BCMC;
+			sourceTree = "<group>";
+		};
+		F919DF9E24EA7B970027976E /* Card public key provider */ = {
+			isa = PBXGroup;
+			children = (
+				F919DF9224E68F750027976E /* CardPublicKeyProvider.swift */,
+			);
+			path = "Card public key provider";
 			sourceTree = "<group>";
 		};
 		F924C07A246C3BB8006DDAB8 /* Utilities */ = {
@@ -1889,6 +1948,8 @@
 				F9639B3E24E18F620073F38A /* Scheduler.swift */,
 				F9639B4024E27D0E0073F38A /* BackoffScheduler.swift */,
 				F9639B4224E27FAE0073F38A /* SimpleScheduler.swift */,
+				F919DF8E24E682250027976E /* ClientKeyRequest.swift */,
+				F919DF9024E682480027976E /* ClientKeyResponse.swift */,
 			);
 			path = APIClient;
 			sourceTree = "<group>";
@@ -2509,6 +2570,7 @@
 				E216D3CF221AFC3A0013CBCF /* IBANSpecification.swift in Sources */,
 				E224088722AFA3A80058923E /* RedirectPaymentMethod.swift in Sources */,
 				E262128F22A90D8800F2B133 /* PaymentMethod.swift in Sources */,
+				F919DF8F24E682250027976E /* ClientKeyRequest.swift in Sources */,
 				F9639B2424DC38460073F38A /* PresentationDelegate.swift in Sources */,
 				E2028F5C2227F1930007FF8B /* Details.swift in Sources */,
 				E7D5311524462D87000046B4 /* FormButtonItem.swift in Sources */,
@@ -2634,6 +2696,7 @@
 				E2C0E096220B04F0008616F6 /* FormViewController.swift in Sources */,
 				F9639B1E24DADC300073F38A /* AwaitComponentViewModel.swift in Sources */,
 				E9AFF883224CF959005A0D8D /* RedirectListener.swift in Sources */,
+				F919DF9124E682480027976E /* ClientKeyResponse.swift in Sources */,
 				F97CCD3C24360A4000BC560A /* BundleHelpers.swift in Sources */,
 				F9639B2B24DD6A9C0073F38A /* APIClient.swift in Sources */,
 			);
@@ -2686,6 +2749,7 @@
 				F9EDB79E2397AEF400CFB3C9 /* ComponentManagerTests.swift in Sources */,
 				F9EDB7922396603F00CFB3C9 /* PaymentMethodListComponentTests.swift in Sources */,
 				F9639B4924E28DC80073F38A /* IntervalCalculatorMock.swift in Sources */,
+				F919DFA024EABCC10027976E /* StoredCardComponentTests.swift in Sources */,
 				F9EDB78F23964FC000CFB3C9 /* StoredCardAlertManagerTests.swift in Sources */,
 				F9AC61C2243751A70062A00D /* ActionComponentDelegateMock.swift in Sources */,
 				E216D3C7221AF5650013CBCF /* IBANFormatterTests.swift in Sources */,
@@ -2697,6 +2761,7 @@
 				E9021DF2225CC6D0009CF7F4 /* RedirectDetailsTests.swift in Sources */,
 				F96F44E123BF5C2000871C1F /* ADYLocalization.swift in Sources */,
 				F9D5750E237475DB009C18B5 /* CardEncryptorCardTests.swift in Sources */,
+				F919DF9924EA64680027976E /* CardPublicKeyProviderTests.swift in Sources */,
 				E7620EAD23C3466B00A492C3 /* ModalViewControllerTests.swift in Sources */,
 				E262128D22A8FE6700F2B133 /* PaymentMethodTests.swift in Sources */,
 				F9EDB7A02397BD8500CFB3C9 /* TestPaymentMethodsJson.swift in Sources */,
@@ -2733,6 +2798,8 @@
 				E9E3DAB4221D988200697074 /* CardNumberValidator.swift in Sources */,
 				E2345C08229BDA46000F2C94 /* ThreeDS2ComponentChallengeToken.swift in Sources */,
 				E9E3DACD221EEAB200697074 /* CardSecurityCodeValidator.swift in Sources */,
+				F919DF9724E6E2810027976E /* StoredCardComponent.swift in Sources */,
+				F919DF9324E68F750027976E /* CardPublicKeyProvider.swift in Sources */,
 				E2345C0C229BDA7A000F2C94 /* ThreeDS2ComponentChallengeResult.swift in Sources */,
 				E9E3DAC0221ECD7C00697074 /* CardSecurityCodeFormatter.swift in Sources */,
 				E7166A5224EAC5BA007CCDEF /* BinLookupRequest.swift in Sources */,
@@ -2749,6 +2816,7 @@
 				F9B8C49223FC287100C4D0FB /* FormCardNumberItemView.swift in Sources */,
 				E9E3DAB5221D988200697074 /* CardNumberFormatter.swift in Sources */,
 				E9E3DAEE22241BF500697074 /* ADYEncrypter.m in Sources */,
+				F919DF9524E6D7BC0027976E /* CardComponentExtensions.swift in Sources */,
 				E76EC680241125E0009C6E2F /* FormCardSecurityCodeItem.swift in Sources */,
 				E9E3DAEC22241BF500697074 /* ADYCryptor.m in Sources */,
 				E7166A5624EAD99F007CCDEF /* CardTypeProvider.swift in Sources */,

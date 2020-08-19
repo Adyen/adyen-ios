@@ -12,7 +12,7 @@ public struct APIError: Decodable, Error, LocalizedError {
     
     /// :nodoc:
     /// The status.
-    public let status: Int
+    public let status: Int?
     
     /// :nodoc:
     /// The error code.
@@ -20,16 +20,16 @@ public struct APIError: Decodable, Error, LocalizedError {
     
     /// :nodoc:
     /// The error message.
-    public let message: String
+    public let errorMessage: String
     
     /// :nodoc:
     /// The error type.
-    public let errorType: APIErrorType
+    public let type: APIErrorType
     
     /// :nodoc:
     /// The error human readable description.
     public var errorDescription: String? {
-        message
+        errorMessage
     }
     
 }

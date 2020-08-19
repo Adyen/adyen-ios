@@ -97,9 +97,9 @@ internal final class ComponentsViewController: UIViewController {
         guard let paymentMethods = paymentMethods else { return }
         let configuration = DropInComponent.PaymentMethodsConfiguration()
         configuration.clientKey = Configuration.clientKey
-        configuration.card.publicKey = Configuration.cardPublicKey
         configuration.applePay.merchantIdentifier = Configuration.applePayMerchantIdentifier
         configuration.applePay.summaryItems = Configuration.applePaySummaryItems
+        configuration.environment = environment
         configuration.localizationParameters = nil
         
         let component = DropInComponent(paymentMethods: paymentMethods,
@@ -113,8 +113,10 @@ internal final class ComponentsViewController: UIViewController {
     private func presentCardComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: CardPaymentMethod.self) else { return }
         let component = CardComponent(paymentMethod: paymentMethod,
-                                      publicKey: Configuration.cardPublicKey,
+                                      clientKey: Configuration.clientKey,
                                       style: dropInComponentStyle.formComponent)
+        component.environment = environment
+        component.clientKey = Configuration.clientKey
         component.cardComponentDelegate = self
         present(component)
     }

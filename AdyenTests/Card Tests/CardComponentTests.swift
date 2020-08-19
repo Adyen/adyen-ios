@@ -14,7 +14,7 @@ class CardComponentTests: XCTestCase {
     func testLocalizationWithCustomTableName() {
         let method = CardPaymentMethodMock(type: "test_type", name: "test_name", brands: ["bcmc"])
         let payment = Payment(amount: Payment.Amount(value: 2, currencyCode: "EUR"), countryCode: "BE")
-        let sut = CardComponent(paymentMethod: method, publicKey: RandomStringGenerator.generateDummyCardPublicKey())
+        let sut = CardComponent(paymentMethod: method, clientKey: "test_client_key")
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         sut.showsHolderNameField = true
@@ -39,7 +39,7 @@ class CardComponentTests: XCTestCase {
     func testLocalizationWithCustomKeySeparator() {
         let method = CardPaymentMethodMock(type: "test_type", name: "test_name", brands: ["bcmc"])
         let payment = Payment(amount: Payment.Amount(value: 2, currencyCode: "EUR"), countryCode: "BE")
-        let sut = CardComponent(paymentMethod: method, publicKey: RandomStringGenerator.generateDummyCardPublicKey())
+        let sut = CardComponent(paymentMethod: method, clientKey: "test_client_key")
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         sut.showsHolderNameField = true
@@ -103,7 +103,7 @@ class CardComponentTests: XCTestCase {
         
         let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["any_test_brand_name"])
         let sut = CardComponent(paymentMethod: cardPaymentMethod,
-                                publicKey: CardComponentTests.randomTestValidCardPublicKey,
+                                clientKey: "test_client_key",
                                 style: cardComponentStyle)
         sut.showsHolderNameField = true
         
@@ -213,7 +213,7 @@ class CardComponentTests: XCTestCase {
     func testBigTitle() {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["any_test_brand_name"])
         let sut = CardComponent(paymentMethod: method,
-                                publicKey: CardComponentTests.randomTestValidCardPublicKey)
+                                clientKey: "test_client_key")
         sut.showsLargeTitle = false
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -230,7 +230,7 @@ class CardComponentTests: XCTestCase {
     func testHideCVVField() {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
-                                publicKey: CardComponentTests.randomTestValidCardPublicKey)
+                                clientKey: "test_client_key")
         sut.showsSecurityCodeField = false
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -248,7 +248,7 @@ class CardComponentTests: XCTestCase {
     func testShowCVVField() {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
-                                publicKey: CardComponentTests.randomTestValidCardPublicKey)
+                                clientKey: "test_client_key")
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -265,7 +265,7 @@ class CardComponentTests: XCTestCase {
     func testCVVHintChange() {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
-                                publicKey: CardComponentTests.randomTestValidCardPublicKey)
+                                clientKey: "test_client_key")
         sut.showsLargeTitle = false
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -289,10 +289,10 @@ class CardComponentTests: XCTestCase {
         wait(for: [expectation], timeout: 5)
     }
     
-    func testDelegateCallled() {
+    func testDelegateCalled() {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
-                                publicKey: CardComponentTests.randomTestValidCardPublicKey)
+                                clientKey: "test_client_key")
         sut.showsLargeTitle = false
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -319,7 +319,7 @@ class CardComponentTests: XCTestCase {
     func testCVVFormatterChange() {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
-                                publicKey: CardComponentTests.randomTestValidCardPublicKey)
+                                clientKey: "test_client_key")
         sut.showsLargeTitle = false
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -348,7 +348,7 @@ class CardComponentTests: XCTestCase {
         
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
-                                publicKey: CardComponentTests.randomTestValidCardPublicKey,
+                                clientKey: "test_client_key",
                                 style: style)
         sut.showsLargeTitle = false
         
@@ -377,7 +377,7 @@ class CardComponentTests: XCTestCase {
         
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
-                                publicKey: CardComponentTests.randomTestValidCardPublicKey,
+                                clientKey: "test_client_key",
                                 style: style)
         sut.showsLargeTitle = false
         
@@ -398,6 +398,41 @@ class CardComponentTests: XCTestCase {
         }
         wait(for: [expectation], timeout: 10)
     }
+
+    func testFormViewControllerDelegate() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex"])
+        let sut = CardComponent(paymentMethod: method,
+                                clientKey: "test_client_key")
+
+        let cardPublicKeyProviderExpectation = expectation(description: "Expect cardPublicKeyProvider to be called.")
+        let cardPublicKeyProvider = CardPublicKeyProviderMock()
+        cardPublicKeyProvider.onFetch = { completion in
+            cardPublicKeyProviderExpectation.fulfill()
+            completion(.success("key"))
+        }
+        sut.cardPublicKeyProvider = cardPublicKeyProvider
+
+        sut.viewDidLoad(formViewController: sut.formViewController)
+
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+
+    func testStoredCardPayment() {
+        let method = StoredCardPaymentMethod(type: "type",
+                                             identifier: "id",
+                                             name: "name",
+                                             fundingSource: .credit,
+                                             supportedShopperInteractions: [.shopperPresent],
+                                             brand: "brand",
+                                             lastFour: "1234",
+                                             expiryMonth: "12",
+                                             expiryYear: "22",
+                                             holderName: "holderName")
+        let sut = CardComponent(paymentMethod: method,
+                                clientKey: "test_client_key")
+        XCTAssertNotNil(sut.viewController as? UIAlertController)
+        XCTAssertNotNil(sut.storedCardComponent)
+    }
     
     private func focus<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U) {
         textItemView.textField.becomeFirstResponder()
@@ -407,5 +442,14 @@ class CardComponentTests: XCTestCase {
         let textView = textItemView.textField
         textView.text = text
         textView.sendActions(for: .editingChanged)
+    }
+}
+
+final class CardPublicKeyProviderMock: AnyCardPublicKeyProvider {
+
+    var onFetch: ((_ completion: @escaping CompletionHandler) -> Void)?
+
+    func fetch(completion: @escaping CompletionHandler) throws {
+        onFetch?(completion)
     }
 }
