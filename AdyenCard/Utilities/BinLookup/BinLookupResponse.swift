@@ -7,19 +7,19 @@
 import Foundation
 
 internal struct BinLookupResponse: Response {
-    public var brands: [CardType]
-
+    public var detectedBrands: [CardType]
+    
     internal init(brands: [CardType]) {
-        self.brands = brands
+        self.detectedBrands = brands
     }
     
     internal init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.brands = (try container.decode([String].self, forKey: .brands)).compactMap { CardType(rawValue: $0) }
+        self.detectedBrands = (try container.decode([String].self, forKey: .detectedBrands)).compactMap { CardType(rawValue: $0) }
     }
     
     private enum CodingKeys: String, CodingKey {
-        case brands
+        case detectedBrands
         case issuingCountryCode
     }
 }

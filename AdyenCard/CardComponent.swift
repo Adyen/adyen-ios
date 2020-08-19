@@ -23,11 +23,10 @@ public protocol CardComponentDelegate: class {
 /// A component that provides a form for card payments.
 public final class CardComponent: PaymentComponent, PresentableComponent, Localizable, Observer {
     
-    private lazy var binLookupService: BinLookupService = {
-        BinLookupService(supportedCardTypes: supportedCardTypes,
+    private lazy var cardTypeProvider: CardTypeProvider = {
+        CardTypeProvider(supportedCardTypes: supportedCardTypes,
                          environment: self.environment,
-                         publicKey: self.publicKey,
-                         clientKey: self.environment.clientKey ?? "")
+                         publicKey: self.publicKey)
     }()
     
     private static let PublicBinLenght = 6
@@ -246,9 +245,9 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         observe(item.$binValue) { [weak self] bin in
             guard let self = self else { return }
             
-            self.binLookupService.requestCardType(for: bin) { response in
-                self.securityCodeItem.selectedCard = response.brands.first
-                self.cardComponentDelegate?.didChangeCardType(response.brands, component: self)
+            self.cardTypeProvider.requestCardType(for: bin) { response in
+                self.securityCodeItem.selectedCard = response.first
+                self.cardComponentDelegate?.didChangeCardType(response, component: self)
             }
             
             self.cardComponentDelegate?.didChangeBIN(String(bin.prefix(CardComponent.PublicBinLenght)), component: self)

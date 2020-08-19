@@ -7,7 +7,7 @@
 import Foundation
 
 /// Enum containing most known types of credit and debit cards.
-public enum CardType: String, CaseIterable {
+public enum CardType: String, CaseIterable, Codable {
     
     /// Accel
     case accel
