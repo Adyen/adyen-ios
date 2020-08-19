@@ -1,16 +1,19 @@
 //
-//  BinLookupService.swift
-//  AdyenCard
+// Copyright (c) 2020 Adyen N.V.
 //
-//  Created by Vladimir Abramichev on 19/08/2020.
-//  Copyright © 2020 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
 
 /// Provide cardType detection based on BinLookup API.
 internal protocol AnyBinLookupService {
-    func requestCardType(for bin: String, caller: @escaping (Result<BinLookupResponse, Error>) -> Void)
+    
+    /// :nodoc:
+    typealias CompletionHandler = (Result<BinLookupResponse, Error>) -> Void
+    
+    /// :nodoc:
+    func requestCardType(for bin: String, caller: @escaping CompletionHandler)
 }
 
 internal final class BinLookupService: AnyBinLookupService {
@@ -24,8 +27,8 @@ internal final class BinLookupService: AnyBinLookupService {
         self.publicKey = publicKey
         self.apiClient = apiClient
     }
-
-    func requestCardType(for bin: String, caller: @escaping (Result<BinLookupResponse, Error>) -> Void) {
+    
+    internal func requestCardType(for bin: String, caller: @escaping CompletionHandler) {
         let encryptedBin = try? CardEncryptor.encryptedCard(for: CardEncryptor.Card(number: bin),
                                                             publicKey: publicKey)
         let request = BinLookupRequest(encryptedBin: encryptedBin?.number ?? "",

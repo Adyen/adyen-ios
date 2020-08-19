@@ -8,13 +8,26 @@
 import XCTest
 
 class FormCardNumberItemTests: XCTestCase {
-    
+
+    var apiClient: APIClientMock!
+    var publicKeyProvider: PublicKeyProviderMock!
     let supportedCardTypes: [CardType] = [.visa, .masterCard, .americanExpress, .chinaUnionPay, .maestro]
-    lazy var binLookupService = BinLookupService(supportedCardTypes: supportedCardTypes,
-                                                 environment: Environment.test,
-                                                 publicKey: "",
-                                                 clientKey: "")
-    
+    var cardTypeProvider: CardTypeProvider!
+
+    override func setUp() {
+        apiClient = APIClientMock()
+        publicKeyProvider = PublicKeyProviderMock()
+        cardTypeProvider = CardTypeProvider(supportedCardTypes: supportedCardTypes,
+                                            cardPublicKeyProvider: publicKeyProvider,
+                                            apiClient: apiClient)
+    }
+
+    override func tearDown() {
+        apiClient = nil
+        publicKeyProvider = nil
+        cardTypeProvider = nil
+    }
+
     func testInternalBinLookup() {
         let item = FormCardNumberItem(supportedCardTypes: supportedCardTypes, environment: .test)
         XCTAssertEqual(item.cardTypeLogos.count, 5)
@@ -34,8 +47,8 @@ class FormCardNumberItemTests: XCTestCase {
         
         // When typing unknown combination, all logos should be hidden.
         item.value = "5"
-        binLookupService.requestCardType(for: item.value) { response in
-            item.detectedCardsDidChange(detectedCards: response.brands)
+        cardTypeProvider.requestCardType(for: item.value) { response in
+            item.detectedCardsDidChange(detectedCards: response)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, true)
             XCTAssertEqual(amex.isHidden, true)
@@ -45,8 +58,8 @@ class FormCardNumberItemTests: XCTestCase {
         
         // When typing Maestro pattern, only Maestro should be visible.
         item.value = "56"
-        binLookupService.requestCardType(for: item.value) { response in
-            item.detectedCardsDidChange(detectedCards: response.brands)
+        cardTypeProvider.requestCardType(for: item.value) { response in
+            item.detectedCardsDidChange(detectedCards: response)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, true)
             XCTAssertEqual(amex.isHidden, true)
@@ -56,8 +69,8 @@ class FormCardNumberItemTests: XCTestCase {
         
         // When typing Mastercard pattern, only Mastercard should be visible.
         item.value = "55"
-        binLookupService.requestCardType(for: item.value) { response in
-            item.detectedCardsDidChange(detectedCards: response.brands)
+        cardTypeProvider.requestCardType(for: item.value) { response in
+            item.detectedCardsDidChange(detectedCards: response)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, false)
             XCTAssertEqual(amex.isHidden, true)
@@ -67,8 +80,8 @@ class FormCardNumberItemTests: XCTestCase {
         
         // When continuing to type, Mastercard should remain visible.
         item.value = "5555"
-        binLookupService.requestCardType(for: item.value) { response in
-            item.detectedCardsDidChange(detectedCards: response.brands)
+        cardTypeProvider.requestCardType(for: item.value) { response in
+            item.detectedCardsDidChange(detectedCards: response)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, false)
             XCTAssertEqual(amex.isHidden, true)
@@ -87,8 +100,8 @@ class FormCardNumberItemTests: XCTestCase {
         
         // When typing VISA pattern, only VISA should be visible.
         item.value = "4"
-        binLookupService.requestCardType(for: item.value) { response in
-            item.detectedCardsDidChange(detectedCards: response.brands)
+        cardTypeProvider.requestCardType(for: item.value) { response in
+            item.detectedCardsDidChange(detectedCards: response)
             XCTAssertEqual(visa.isHidden, false)
             XCTAssertEqual(mc.isHidden, true)
             XCTAssertEqual(amex.isHidden, true)
@@ -98,8 +111,8 @@ class FormCardNumberItemTests: XCTestCase {
         
         // When typing Amex pattern, only Amex should be visible.
         item.value = "34"
-        binLookupService.requestCardType(for: item.value) { response in
-            item.detectedCardsDidChange(detectedCards: response.brands)
+        cardTypeProvider.requestCardType(for: item.value) { response in
+            item.detectedCardsDidChange(detectedCards: response)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, true)
             XCTAssertEqual(amex.isHidden, false)
@@ -109,8 +122,8 @@ class FormCardNumberItemTests: XCTestCase {
         
         // When typing common pattern, all matching cards should be visible.
         item.value = "62"
-        binLookupService.requestCardType(for: item.value) { response in
-            item.detectedCardsDidChange(detectedCards: response.brands)
+        cardTypeProvider.requestCardType(for: item.value) { response in
+            item.detectedCardsDidChange(detectedCards: response)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, true)
             XCTAssertEqual(amex.isHidden, true)
@@ -119,7 +132,43 @@ class FormCardNumberItemTests: XCTestCase {
         }
     }
 
-    func testExternalBinLookup() {
+    func testExternalBinLookupHappyflow() {
+        publicKeyProvider.mockResponse = .success("SOME_PUBLIC_KEY")
+        apiClient.mockedResults = [.success(BinLookupResponse(brands: [.masterCard])),
+                                   .success(BinLookupResponse(brands: []))]
+
+        let item = FormCardNumberItem(supportedCardTypes: supportedCardTypes, environment: .test)
+        XCTAssertEqual(item.cardTypeLogos.count, 5)
+
+        let visa = item.cardTypeLogos[0]
+        let mc = item.cardTypeLogos[1]
+        let amex = item.cardTypeLogos[2]
+        let cup = item.cardTypeLogos[3]
+        let maestro = item.cardTypeLogos[4]
+
+        cardTypeProvider.requestCardType(for: "RANDOM_LONG_STRING") { response in
+            item.detectedCardsDidChange(detectedCards: response)
+            XCTAssertEqual(visa.isHidden, true)
+            XCTAssertEqual(mc.isHidden, false)
+            XCTAssertEqual(amex.isHidden, true)
+            XCTAssertEqual(cup.isHidden, true)
+            XCTAssertEqual(maestro.isHidden, true)
+        }
+
+        cardTypeProvider.requestCardType(for: "RANDOM_LONG_STRING") { response in
+            item.detectedCardsDidChange(detectedCards: response)
+            XCTAssertEqual(visa.isHidden, true)
+            XCTAssertEqual(mc.isHidden, true)
+            XCTAssertEqual(amex.isHidden, true)
+            XCTAssertEqual(cup.isHidden, true)
+            XCTAssertEqual(maestro.isHidden, true)
+        }
+    }
+
+    func testExternalBinLookupFallback() {
+        publicKeyProvider.mockResponse = .success("SOME_PUBLIC_KEY")
+        apiClient.mockedResults = [.failure(DummyError.dummy), .failure(DummyError.dummy)]
+
         let item = FormCardNumberItem(supportedCardTypes: supportedCardTypes, environment: .test)
         XCTAssertEqual(item.cardTypeLogos.count, 5)
 
@@ -131,8 +180,8 @@ class FormCardNumberItemTests: XCTestCase {
 
         // When entering PAN, Mastercard should remain visible.
         item.value = "5577000055770004"
-        binLookupService.requestCardType(for: item.value) { response in
-            item.detectedCardsDidChange(detectedCards: response.brands)
+        cardTypeProvider.requestCardType(for: item.value) { response in
+            item.detectedCardsDidChange(detectedCards: response)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, false)
             XCTAssertEqual(amex.isHidden, true)
@@ -142,14 +191,18 @@ class FormCardNumberItemTests: XCTestCase {
 
         // When entering too long PAN, all logos should be hidden.
         item.value = "55770000557700040"
-        binLookupService.requestCardType(for: item.value) { response in
-            item.detectedCardsDidChange(detectedCards: response.brands)
+        cardTypeProvider.requestCardType(for: item.value) { response in
+            item.detectedCardsDidChange(detectedCards: response)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, true)
             XCTAssertEqual(amex.isHidden, true)
             XCTAssertEqual(cup.isHidden, true)
             XCTAssertEqual(maestro.isHidden, true)
         }
+    }
+
+    func testExternalBinLookupPublicKeyError() {
+        publicKeyProvider.mockResponse = .failure(DummyError.dummy)
     }
     
     func testLocalizationWithCustomTableName() {
@@ -170,4 +223,12 @@ class FormCardNumberItemTests: XCTestCase {
         XCTAssertEqual(sut.validationFailureMessage, ADYLocalizedString("adyen_card_numberItem_invalid", expectedLocalizationParameters))
     }
     
+}
+
+internal final class PublicKeyProviderMock: AnyCardPublicKeyProvider {
+    var mockResponse: Result<String, Error>!
+
+    func fetch(completion: @escaping PublicKeyProviderMock.CompletionHandler) throws {
+        completion(mockResponse)
+    }
 }

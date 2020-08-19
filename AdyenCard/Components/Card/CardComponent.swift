@@ -23,19 +23,18 @@ public protocol CardComponentDelegate: class {
 /// A component that provides a form for card payments.
 public final class CardComponent: PaymentComponent, PresentableComponent, Localizable, Observer {
     
+    /// :nodoc:
+    internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
+    
+    private static let PublicBinLenght = 6
+    
+    private let cardTypeProvider: CardTypeProvider
+    
     /// Card Component errors.
     public enum Error: Swift.Error {
         /// ClientKey is required for `CardPublicKeyProvider` to work, and this error is thrown in case its nil.
         case missingClientKey
     }
-    
-    private lazy var cardTypeProvider: CardTypeProvider = {
-        CardTypeProvider(supportedCardTypes: supportedCardTypes,
-                         environment: self.environment,
-                         publicKey: self.publicKey)
-    }()
-    
-    private static let PublicBinLenght = 6
     
     /// Describes the component's UI style.
     public let style: FormComponentStyle
@@ -71,6 +70,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
             environment.clientKey = clientKey
             cardPublicKeyProvider.environment = environment
             storedCardComponent?.environment = environment
+            cardTypeProvider.environment = environment
         }
     }
     
@@ -80,6 +80,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
             environment.clientKey = clientKey
             cardPublicKeyProvider.clientKey = clientKey
             storedCardComponent?.clientKey = clientKey
+            cardTypeProvider.clientKey = clientKey
         }
     }
     
@@ -96,9 +97,6 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     /// Defaults to true.
     public var showsLargeTitle = true
     
-    /// :nodoc:
-    internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
-    
     /// Initializes the card component.
     ///
     /// - Parameters:
@@ -111,9 +109,12 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
                 style: FormComponentStyle = FormComponentStyle()) {
         self.paymentMethod = paymentMethod
         self.cardPublicKeyProvider = CardPublicKeyProvider()
-        self.privateSupportedCardTypes = paymentMethod.brands.compactMap(CardType.init)
+        let supportedCardTypes = paymentMethod.brands.compactMap(CardType.init)
+        self.privateSupportedCardTypes = supportedCardTypes
         self.style = style
         self.clientKey = clientKey
+        self.cardTypeProvider = CardTypeProvider(supportedCardTypes: supportedCardTypes,
+                                                 cardPublicKeyProvider: self.cardPublicKeyProvider)
     }
     
     /// :nodoc:
@@ -128,8 +129,11 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
                   style: FormComponentStyle = FormComponentStyle()) {
         self.paymentMethod = paymentMethod
         self.cardPublicKeyProvider = cardPublicKeyProvider
-        self.privateSupportedCardTypes = paymentMethod.brands.compactMap(CardType.init)
+        let supportedCardTypes = paymentMethod.brands.compactMap(CardType.init)
+        self.privateSupportedCardTypes = supportedCardTypes
         self.style = style
+        self.cardTypeProvider = CardTypeProvider(supportedCardTypes: supportedCardTypes,
+                                                 cardPublicKeyProvider: cardPublicKeyProvider)
     }
     
     // MARK: - Presentable Component Protocol
@@ -159,7 +163,11 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     // MARK: - Protected
     
     /// Indicates the card brands excluded from the supported brands.
-    internal var excludedCardTypes: Set<CardType> = [.bcmc]
+    internal var excludedCardTypes: Set<CardType> = [.bcmc] {
+        didSet {
+            cardTypeProvider.excludedCardTypes = excludedCardTypes
+        }
+    }
     
     // MARK: - Private
     
@@ -229,6 +237,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
             
             self.cardTypeProvider.requestCardType(for: bin) { response in
                 self.securityCodeItem.selectedCard = response.first
+                item.detectedCardsDidChange(detectedCards: response)
                 self.cardComponentDelegate?.didChangeCardType(response, component: self)
             }
             

@@ -189,12 +189,9 @@ class BCMCComponentTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
-        let expectationBin = XCTestExpectation(description: "Bin Expectation")
         let expectationCardType = XCTestExpectation(description: "CardType Expectation")
-        let delegateMock = BCMCComponentDelegateMock(onBINDidChange: { value in
-            XCTAssertEqual(value, "670344")
-            expectationBin.fulfill()
-        }, onCardTypeChange: { value in
+        let delegateMock = BCMCComponentDelegateMock(onBINDidChange: { _ in },
+                                                     onCardTypeChange: { value in
             XCTAssertEqual(value, true)
             expectationCardType.fulfill()
         })
@@ -202,10 +199,33 @@ class BCMCComponentTests: XCTestCase {
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
-            self.populate(textItemView: cardNumberItemView!, with: "6703444444444449")
+            self.populate(textItemView: cardNumberItemView!, with: "67034")
         }
         
-        wait(for: [expectationBin, expectationCardType], timeout: 5)
+        wait(for: [expectationCardType], timeout: 5)
+    }
+
+    func testDelegateCallledCorrectBIN() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["any_test_brand_name"])
+        let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
+        let sut = BCMCComponent(paymentMethod: paymentMethod, clientKey: "test_client_key")
+        sut.showsLargeTitle = false
+
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        let expectationBin = XCTestExpectation(description: "Bin Expectation")
+        let delegateMock = BCMCComponentDelegateMock(onBINDidChange: { value in
+            XCTAssertEqual(value, "670344")
+            expectationBin.fulfill()
+        }, onCardTypeChange: { _ in })
+        sut.bcmcComponentDelegate = delegateMock
+
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+            let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
+            self.populate(textItemView: cardNumberItemView!, with: "67034444234232")
+        }
+
+        wait(for: [expectationBin], timeout: 5)
     }
     
     func testDelegateIncorrectCard() {
@@ -225,7 +245,7 @@ class BCMCComponentTests: XCTestCase {
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
-            self.populate(textItemView: cardNumberItemView!, with: "321453532")
+            self.populate(textItemView: cardNumberItemView!, with: "32145")
         }
         
         wait(for: [expectationCardType], timeout: 5)
