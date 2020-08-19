@@ -18,6 +18,16 @@ public protocol Component: AnyObject {
     
 }
 
+/// A component that has UI that can be dismissed.
+public protocol DismissableComponent: Component {
+    
+    /// Dismiss any `ViewController` presented by the component, for example when payment has concluded.
+    ///
+    /// - Parameter animated: A boolean indicating whether to dismiss with animation or not.
+    /// - Parameter completion: A closure to execute when dismissal animation has completed.
+    func dismiss(_ animated: Bool, completion: (() -> Void)?)
+}
+
 public extension Component {
     
     /// :nodoc:

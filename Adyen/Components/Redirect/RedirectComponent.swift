@@ -7,7 +7,7 @@
 import UIKit
 
 /// A component that handles a redirect action. Supports external websites, apps and universal links.
-public final class RedirectComponent: ActionComponent {
+public final class RedirectComponent: ActionComponent, DismissableComponent {
     
     /// Describes the types of errors that can be returned by the component.
     public enum Error: Swift.Error {
@@ -38,6 +38,11 @@ public final class RedirectComponent: ActionComponent {
         Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, environment: environment)
         
         universalRedirectComponent.handle(action)
+    }
+    
+    /// :nodoc:
+    public func dismiss(_ animated: Bool, completion: (() -> Void)?) {
+        universalRedirectComponent.dismiss(animated, completion: completion)
     }
     
     /// This function should be invoked from the application's delegate when the application is opened through a URL.
