@@ -26,8 +26,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     /// :nodoc:
     internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
     
-    private static let PublicBinLenght = 6
-    
+    private static let publicBinLenght = 6
     private let cardTypeProvider: CardTypeProvider
     
     /// Card Component errors.
@@ -55,13 +54,8 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     /// The supported card types.
     /// The getter is O(n), since it filters out all the `excludedCardTypes` before returning.
     public var supportedCardTypes: [CardType] {
-        get {
-            privateSupportedCardTypes.filter { !excludedCardTypes.contains($0) }
-        }
-        
-        set {
-            privateSupportedCardTypes = newValue
-        }
+        get { privateSupportedCardTypes.filter { !excludedCardTypes.contains($0) } }
+        set { privateSupportedCardTypes = newValue }
     }
     
     /// :nodoc:
@@ -109,12 +103,11 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
                 style: FormComponentStyle = FormComponentStyle()) {
         self.paymentMethod = paymentMethod
         self.cardPublicKeyProvider = CardPublicKeyProvider()
-        let supportedCardTypes = paymentMethod.brands.compactMap(CardType.init)
-        self.privateSupportedCardTypes = supportedCardTypes
+        let cardTypes = paymentMethod.brands.compactMap(CardType.init)
+        self.privateSupportedCardTypes = cardTypes
         self.style = style
         self.clientKey = clientKey
-        self.cardTypeProvider = CardTypeProvider(supportedCardTypes: supportedCardTypes,
-                                                 cardPublicKeyProvider: self.cardPublicKeyProvider)
+        self.cardTypeProvider = CardTypeProvider(cardPublicKeyProvider: self.cardPublicKeyProvider)
     }
     
     /// :nodoc:
@@ -132,8 +125,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         let supportedCardTypes = paymentMethod.brands.compactMap(CardType.init)
         self.privateSupportedCardTypes = supportedCardTypes
         self.style = style
-        self.cardTypeProvider = CardTypeProvider(supportedCardTypes: supportedCardTypes,
-                                                 cardPublicKeyProvider: cardPublicKeyProvider)
+        self.cardTypeProvider = CardTypeProvider(cardPublicKeyProvider: cardPublicKeyProvider)
     }
     
     // MARK: - Presentable Component Protocol
@@ -163,11 +155,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     // MARK: - Protected
     
     /// Indicates the card brands excluded from the supported brands.
-    internal var excludedCardTypes: Set<CardType> = [.bcmc] {
-        didSet {
-            cardTypeProvider.excludedCardTypes = excludedCardTypes
-        }
-    }
+    internal var excludedCardTypes: Set<CardType> = [.bcmc]
     
     // MARK: - Private
     
@@ -235,13 +223,13 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         observe(item.$binValue) { [weak self] bin in
             guard let self = self else { return }
             
-            self.cardTypeProvider.requestCardType(for: bin) { response in
-                self.securityCodeItem.selectedCard = response.first
-                item.detectedCardsDidChange(detectedCards: response)
-                self.cardComponentDelegate?.didChangeCardType(response, component: self)
+            self.cardTypeProvider.requestCardType(for: bin, supported: self.supportedCardTypes) { cardTypes in
+                self.securityCodeItem.selectedCard = cardTypes.first
+                item.detectedCardsDidChange(detectedCards: cardTypes)
+                self.cardComponentDelegate?.didChangeCardType(cardTypes, component: self)
             }
             
-            self.cardComponentDelegate?.didChangeBIN(String(bin.prefix(CardComponent.PublicBinLenght)), component: self)
+            self.cardComponentDelegate?.didChangeBIN(String(bin.prefix(CardComponent.publicBinLenght)), component: self)
         }
         
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "numberItem")

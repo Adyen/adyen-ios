@@ -13,27 +13,25 @@ internal protocol AnyBinLookupService {
     typealias CompletionHandler = (Result<BinLookupResponse, Error>) -> Void
     
     /// :nodoc:
-    func requestCardType(for bin: String, caller: @escaping CompletionHandler)
+    func requestCardType(for bin: String, supportedCardTypes: [CardType], caller: @escaping CompletionHandler)
 }
 
 internal final class BinLookupService: AnyBinLookupService {
-
-    private let supportedCardTypes: [CardType]
+    
     private let publicKey: String
     private let apiClient: APIClientProtocol
-
-    internal init(supportedCardTypes: [CardType], publicKey: String, apiClient: APIClientProtocol) {
-        self.supportedCardTypes = supportedCardTypes
+    
+    internal init(publicKey: String, apiClient: APIClientProtocol) {
         self.publicKey = publicKey
         self.apiClient = apiClient
     }
     
-    internal func requestCardType(for bin: String, caller: @escaping CompletionHandler) {
+    internal func requestCardType(for bin: String, supportedCardTypes: [CardType], caller: @escaping CompletionHandler) {
         let encryptedBin = try? CardEncryptor.encryptedCard(for: CardEncryptor.Card(number: bin),
                                                             publicKey: publicKey)
         let request = BinLookupRequest(encryptedBin: encryptedBin?.number ?? "",
                                        supportedBrands: supportedCardTypes)
-
+        
         apiClient.perform(request, completionHandler: caller)
     }
 }

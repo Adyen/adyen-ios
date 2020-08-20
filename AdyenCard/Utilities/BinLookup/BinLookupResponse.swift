@@ -13,13 +13,7 @@ internal struct BinLookupResponse: Response {
         self.detectedBrands = brands
     }
     
-    internal init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.detectedBrands = (try container.decode([String].self, forKey: .detectedBrands)).compactMap { CardType(rawValue: $0) }
-    }
-    
     private enum CodingKeys: String, CodingKey {
         case detectedBrands
-        case issuingCountryCode
     }
 }
