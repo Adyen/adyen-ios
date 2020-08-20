@@ -19,7 +19,7 @@ internal struct Configuration {
     
     static let reference = "Test Order Reference - iOS UIHost"
     
-    static let countryCode = "BE"
+    static let countryCode = "NL"
     
     static let returnUrl = "ui-host://"
     

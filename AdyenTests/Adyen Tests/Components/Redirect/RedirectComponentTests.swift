@@ -143,5 +143,44 @@ class RedirectComponentTests: XCTestCase {
         
         waitForExpectations(timeout: 10, handler: nil)
     }
+
+    func testOpenHttpWebLink() {
+        let sut = RedirectComponent()
+        let delegate = ActionComponentDelegateMock()
+        sut.delegate = delegate
+        let appLauncher = AppLauncherMock()
+        sut.universalRedirectComponent.appLauncher = appLauncher
+
+        appLauncher.onOpenCustomSchemeUrl = { url, completion in
+            XCTFail("appLauncher.openCustomSchemeUrl() must not to be called")
+        }
+
+        appLauncher.onOpenUniversalAppUrl = { url, completion in
+            completion?(false)
+        }
+
+        delegate.onDidOpenExternalApplication = { _ in
+            XCTFail("delegate.didOpenExternalApplication() must not to be called")
+        }
+
+        let action = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "test_data")
+        sut.handle(action)
+
+        let waitExpectation = expectation(description: "Expect in app browser to be presented and then dismissed")
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
+
+            let topPresentedViewController = UIViewController.findTopPresenter()
+            XCTAssertNotNil(topPresentedViewController as? SFSafariViewController)
+
+            sut.dismiss(true) {
+                let topPresentedViewController = UIViewController.findTopPresenter()
+                XCTAssertNil(topPresentedViewController as? SFSafariViewController)
+
+                waitExpectation.fulfill()
+            }
+        }
+
+        waitForExpectations(timeout: 10, handler: nil)
+    }
     
 }

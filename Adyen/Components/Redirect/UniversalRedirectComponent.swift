@@ -7,7 +7,7 @@
 import Foundation
 
 /// Handles any redirect Url whether its a web url, an App custom scheme url, or an app universal link.
-internal final class UniversalRedirectComponent: ActionComponent {
+internal final class UniversalRedirectComponent: ActionComponent, DismissableComponent {
     
     /// :nodoc:
     internal weak var delegate: ActionComponentDelegate?
@@ -49,6 +49,11 @@ internal final class UniversalRedirectComponent: ActionComponent {
         } else {
             openCustomSchemeUrl(action)
         }
+    }
+    
+    /// :nodoc:
+    internal func dismiss(_ animated: Bool, completion: (() -> Void)?) {
+        redirectComponent?.viewController.dismiss(animated: animated, completion: completion)
     }
     
     // MARK: - Http link handling
