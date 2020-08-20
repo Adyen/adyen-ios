@@ -122,8 +122,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
                   style: FormComponentStyle = FormComponentStyle()) {
         self.paymentMethod = paymentMethod
         self.cardPublicKeyProvider = cardPublicKeyProvider
-        let supportedCardTypes = paymentMethod.brands.compactMap(CardType.init)
-        self.privateSupportedCardTypes = supportedCardTypes
+        self.privateSupportedCardTypes = paymentMethod.brands.compactMap(CardType.init)
         self.style = style
         self.cardTypeProvider = CardTypeProvider(cardPublicKeyProvider: cardPublicKeyProvider)
     }
@@ -220,15 +219,11 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
                                       environment: environment,
                                       style: style.textField,
                                       localizationParameters: localizationParameters)
+        
         observe(item.$binValue) { [weak self] bin in
             guard let self = self else { return }
             
-            self.cardTypeProvider.requestCardType(for: bin, supported: self.supportedCardTypes) { cardTypes in
-                self.securityCodeItem.selectedCard = cardTypes.first
-                item.detectedCardsDidChange(detectedCards: cardTypes)
-                self.cardComponentDelegate?.didChangeCardType(cardTypes, component: self)
-            }
-            
+            self.requestCardType(for: bin, update: item)
             self.cardComponentDelegate?.didChangeBIN(String(bin.prefix(CardComponent.publicBinLenght)), component: self)
         }
         
@@ -288,4 +283,13 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         return footerItem
     }()
     
+    fileprivate func requestCardType(for bin: String, update item: FormCardNumberItem) {
+        cardTypeProvider.requestCardType(for: bin, supported: self.supportedCardTypes) { [weak self] cardTypes in
+            guard let self = self else { return }
+            
+            self.securityCodeItem.selectedCard = cardTypes.first
+            item.detectedCardsDidChange(detectedCards: cardTypes)
+            self.cardComponentDelegate?.didChangeCardType(cardTypes, component: self)
+        }
+    }
 }

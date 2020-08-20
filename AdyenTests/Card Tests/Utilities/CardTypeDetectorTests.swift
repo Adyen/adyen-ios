@@ -56,14 +56,22 @@ class CardTypeDetectorTests: XCTestCase {
     func testUATPType() {
         assert(cardNumbers: CardNumbers.uatp, with: CardType.uatp)
     }
-    
-    private func assert(cardNumbers: [String], with type: CardType) {
+
+    func testInvalid() {
+        assert(cardNumbers: CardNumbers.invalid , with: nil )
+    }
+
+    private func assert(cardNumbers: [String], with type: CardType?) {
         let cardTypeDetector = CardTypeDetector()
-        cardTypeDetector.detectableTypes = [type]
+        let toDetect: [CardType] = type != nil ? [type!] : []
+        cardTypeDetector.detectableTypes = toDetect
         
         cardNumbers.forEach { cardNumber in
-            let detectedType = cardTypeDetector.type(forCardNumber: cardNumber)
-            XCTAssertEqual(detectedType, type, "\(cardNumber) does not match \(type) (found: \(detectedType?.rawValue ?? "nil")).")
+            XCTAssertEqual(cardTypeDetector.type(forCardNumber: cardNumber), toDetect.first)
+            XCTAssertEqual(cardTypeDetector.types(forCardNumber: cardNumber), toDetect)
+
+            XCTAssertEqual(toDetect.adyen.type(forCardNumber: cardNumber), toDetect.first)
+            XCTAssertEqual(toDetect.adyen.types(forCardNumber: cardNumber), toDetect)
         }
     }
 }

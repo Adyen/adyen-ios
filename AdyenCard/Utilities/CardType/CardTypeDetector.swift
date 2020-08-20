@@ -13,7 +13,7 @@ import Foundation
 public final class CardTypeDetector {
     
     /// The types to detect.
-    public var detectableTypes: [CardType]? = []
+    public var detectableTypes: [CardType]
     
     /// Initializes the card type detector.
     public init(detectableTypes: [CardType] = [.visa, .masterCard, .americanExpress]) {
@@ -26,7 +26,7 @@ public final class CardTypeDetector {
     /// - Returns: The type for the given card number, or `nil` if it could not be found.
     @available(*, deprecated, message: "Use extension for `[CardType].adyen.type(forCardNumber:)` instead.")
     public func type(forCardNumber cardNumber: String) -> CardType? {
-        return detectableTypes?.first { $0.matches(cardNumber: cardNumber) }
+        return detectableTypes.first { $0.matches(cardNumber: cardNumber) }
     }
     
     /// Detects all possible types for a given card number.
@@ -35,7 +35,7 @@ public final class CardTypeDetector {
     /// - Returns: The possible types for the given card number.
     @available(*, deprecated, message: "Use extension for `[CardType].adyen.types(forCardNumber:)` instead.")
     public func types(forCardNumber cardNumber: String) -> [CardType] {
-        return (detectableTypes ?? []).filter { $0.matches(cardNumber: cardNumber) }
+        return detectableTypes.filter { $0.matches(cardNumber: cardNumber) }
     }
     
 }

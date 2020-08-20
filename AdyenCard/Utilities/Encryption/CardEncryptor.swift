@@ -7,7 +7,7 @@
 import Foundation
 
 /// An object that provides static methods for encrypting card information and retrieving public keys from the server.
-public final class CardEncryptor {
+public enum CardEncryptor {
     /// Contains the information of a card that is yet to be encrypted.
     public struct Card {
         /// The card number.
@@ -101,97 +101,6 @@ public final class CardEncryptor {
         return cardToken
     }
     
-    /// Requests the public encryption key from Adyen backend.
-    ///
-    /// - Parameters:
-    ///   - token: Your public key token.
-    ///   - environment: The environment to use when requesting the public key.
-    ///   - completion: A closure that handles the result of the public key request.
-    public static func requestPublicKey(forToken token: String, environment: Environment, completion: @escaping Completion<Result<String, Swift.Error>>) {
-        guard let url = publicKeyFetchUrl(forToken: token, environment: environment) else {
-            return
-        }
-        let session = URLSession(configuration: .default)
-        session.adyen.dataTask(with: url) { result in
-            switch result {
-            case let .success(data):
-                do {
-                    let response = try Coder.decode(data) as PublicKeyResponse
-                    
-                    DispatchQueue.main.async {
-                        completion(.success(response.publicKey))
-                    }
-                } catch {
-                    DispatchQueue.main.async {
-                        completion(.failure(error))
-                    }
-                }
-            case let .failure(error):
-                DispatchQueue.main.async {
-                    completion(.failure(error))
-                }
-            }
-        }.resume()
-    }
-    
-    /// Encrypts a card.
-    /// This methods encapsulates calls to `requestPublicKey(forToken:environment:completion:)`
-    /// and `encryptedCard(for:publicKey:)`.
-    ///
-    /// - Parameters:
-    ///   - card: Card containing the data to be encrypted.
-    ///   - publicKeyToken: Your public key token.
-    ///   - environment: The environment to use when requesting the public key.
-    ///   - completion: A closure that provides you with the encrypted card, or an error when the operation fails.
-    public static func encryptedCard(for card: Card, publicKeyToken: String, environment: Environment, completion: @escaping Completion<Result<EncryptedCard, Swift.Error>>) {
-        requestPublicKey(forToken: publicKeyToken, environment: environment) { result in
-            switch result {
-            case let .success(key):
-                handleSuccess(for: card, publicKey: key, completion: completion)
-            case let .failure(error):
-                completion(.failure(error))
-            }
-            return
-        }
-    }
-    
-    private static func handleSuccess(for card: Card, publicKey: String, completion: @escaping Completion<Result<EncryptedCard, Swift.Error>>) {
-        do {
-            let encryptedCard = try CardEncryptor.encryptedCard(for: card, publicKey: publicKey)
-            completion(.success(encryptedCard))
-        } catch {
-            completion(.failure(error))
-        }
-    }
-    
-    /// Encrypts a card.
-    /// This methods encapsulates calls to `requestPublicKey(forToken:environment:completion:)`
-    /// and `encrypt(_:publicKey:)`.
-    ///
-    /// - Parameters:
-    ///   - card: Card containing the data to be encrypted.
-    ///   - holderName: The cardholder's name.
-    ///   - publicKeyToken: Your public key token.
-    ///   - environment: The environment to use when requesting the public key.
-    ///   - completion: A closure that provides you with a string representing the encrypted card, or an error when the operation fails.
-    public static func encryptedToken(for card: Card, holderName: String?, publicKeyToken: String, environment: Environment, completion: @escaping Completion<Result<String, Swift.Error>>) {
-        requestPublicKey(forToken: publicKeyToken, environment: environment) { result in
-            switch result {
-            case let .success(key):
-                do {
-                    let encryptedCardToken = try CardEncryptor.encryptedToken(for: card, holderName: holderName, publicKey: key)
-                    completion(.success(encryptedCardToken))
-                } catch {
-                    completion(.failure(error))
-                }
-                
-            case let .failure(error):
-                completion(.failure(error))
-            }
-            return
-        }
-    }
-    
     // MARK: - Delete RSA
     
     /// :nodoc:
@@ -223,21 +132,4 @@ public final class CardEncryptor {
             }
         }
     }
-    
-    // MARK: - Private
-    
-    private init() {}
-    
-    private static func publicKeyFetchUrl(forToken token: String, environment: Environment) -> URL? {
-        return environment.cardPublicKeyBaseURL.appendingPathComponent("hpp/cse/\(token)/json.shtml")
-    }
-}
-
-private struct PublicKeyResponse: Decodable {
-    public let publicKey: String
-    
-    private enum CodingKeys: CodingKey {
-        case publicKey
-    }
-    
 }

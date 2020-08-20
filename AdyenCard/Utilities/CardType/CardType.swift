@@ -137,11 +137,10 @@ public enum CardType: String, CaseIterable, Codable {
     
 }
 
-internal extension CardType {
+extension CardType {
     
-    // swiftlint:disable:next explicit_acl
-    var pattern: String? {
-        switch self {
+    internal var pattern: String? {
+        switch self { // NOSONAR
         case .alphaBankBonusMasterCard:
             return "^(510099)[0-9]{0,10}$"
         case .alphaBankBonusVISA:
@@ -224,9 +223,9 @@ internal extension CardType {
     }
 }
 
-internal extension CardType {
+extension CardType {
     
-    func matches(cardNumber: String) -> Bool { // swiftlint:disable:this explicit_acl
+    internal func matches(cardNumber: String) -> Bool {
         guard let pattern = pattern else {
             return false
         }
