@@ -17,8 +17,7 @@ class FormCardNumberItemTests: XCTestCase {
     override func setUp() {
         apiClient = APIClientMock()
         publicKeyProvider = PublicKeyProviderMock()
-        cardTypeProvider = CardTypeProvider(supportedCardTypes: supportedCardTypes,
-                                            cardPublicKeyProvider: publicKeyProvider,
+        cardTypeProvider = CardTypeProvider(cardPublicKeyProvider: publicKeyProvider,
                                             apiClient: apiClient)
     }
 
@@ -47,7 +46,7 @@ class FormCardNumberItemTests: XCTestCase {
         
         // When typing unknown combination, all logos should be hidden.
         item.value = "5"
-        cardTypeProvider.requestCardType(for: item.value) { response in
+        cardTypeProvider.requestCardType(for: item.value, supported: supportedCardTypes) { response in
             item.detectedCardsDidChange(detectedCards: response)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, true)
@@ -58,7 +57,7 @@ class FormCardNumberItemTests: XCTestCase {
         
         // When typing Maestro pattern, only Maestro should be visible.
         item.value = "56"
-        cardTypeProvider.requestCardType(for: item.value) { response in
+        cardTypeProvider.requestCardType(for: item.value, supported: supportedCardTypes) { response in
             item.detectedCardsDidChange(detectedCards: response)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, true)
@@ -69,7 +68,7 @@ class FormCardNumberItemTests: XCTestCase {
         
         // When typing Mastercard pattern, only Mastercard should be visible.
         item.value = "55"
-        cardTypeProvider.requestCardType(for: item.value) { response in
+        cardTypeProvider.requestCardType(for: item.value, supported: supportedCardTypes) { response in
             item.detectedCardsDidChange(detectedCards: response)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, false)
@@ -80,7 +79,7 @@ class FormCardNumberItemTests: XCTestCase {
         
         // When continuing to type, Mastercard should remain visible.
         item.value = "5555"
-        cardTypeProvider.requestCardType(for: item.value) { response in
+        cardTypeProvider.requestCardType(for: item.value, supported: supportedCardTypes) { response in
             item.detectedCardsDidChange(detectedCards: response)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, false)
@@ -100,7 +99,7 @@ class FormCardNumberItemTests: XCTestCase {
         
         // When typing VISA pattern, only VISA should be visible.
         item.value = "4"
-        cardTypeProvider.requestCardType(for: item.value) { response in
+        cardTypeProvider.requestCardType(for: item.value, supported: supportedCardTypes) { response in
             item.detectedCardsDidChange(detectedCards: response)
             XCTAssertEqual(visa.isHidden, false)
             XCTAssertEqual(mc.isHidden, true)
@@ -111,7 +110,7 @@ class FormCardNumberItemTests: XCTestCase {
         
         // When typing Amex pattern, only Amex should be visible.
         item.value = "34"
-        cardTypeProvider.requestCardType(for: item.value) { response in
+        cardTypeProvider.requestCardType(for: item.value, supported: supportedCardTypes) { response in
             item.detectedCardsDidChange(detectedCards: response)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, true)
@@ -122,7 +121,7 @@ class FormCardNumberItemTests: XCTestCase {
         
         // When typing common pattern, all matching cards should be visible.
         item.value = "62"
-        cardTypeProvider.requestCardType(for: item.value) { response in
+        cardTypeProvider.requestCardType(for: item.value, supported: supportedCardTypes) { response in
             item.detectedCardsDidChange(detectedCards: response)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, true)
@@ -146,7 +145,7 @@ class FormCardNumberItemTests: XCTestCase {
         let cup = item.cardTypeLogos[3]
         let maestro = item.cardTypeLogos[4]
 
-        cardTypeProvider.requestCardType(for: "RANDOM_LONG_STRING") { response in
+        cardTypeProvider.requestCardType(for: "RANDOM_LONG_STRING", supported: supportedCardTypes) { response in
             item.detectedCardsDidChange(detectedCards: response)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, false)
@@ -155,7 +154,7 @@ class FormCardNumberItemTests: XCTestCase {
             XCTAssertEqual(maestro.isHidden, true)
         }
 
-        cardTypeProvider.requestCardType(for: "RANDOM_LONG_STRING") { response in
+        cardTypeProvider.requestCardType(for: "RANDOM_LONG_STRING", supported: supportedCardTypes) { response in
             item.detectedCardsDidChange(detectedCards: response)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, true)
@@ -180,7 +179,7 @@ class FormCardNumberItemTests: XCTestCase {
 
         // When entering PAN, Mastercard should remain visible.
         item.value = "5577000055770004"
-        cardTypeProvider.requestCardType(for: item.value) { response in
+        cardTypeProvider.requestCardType(for: item.value, supported: supportedCardTypes) { response in
             item.detectedCardsDidChange(detectedCards: response)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, false)
@@ -191,7 +190,7 @@ class FormCardNumberItemTests: XCTestCase {
 
         // When entering too long PAN, all logos should be hidden.
         item.value = "55770000557700040"
-        cardTypeProvider.requestCardType(for: item.value) { response in
+        cardTypeProvider.requestCardType(for: item.value, supported: supportedCardTypes) { response in
             item.detectedCardsDidChange(detectedCards: response)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, true)
