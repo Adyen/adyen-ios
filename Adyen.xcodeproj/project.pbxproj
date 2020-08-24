@@ -311,6 +311,7 @@
 		F9789C7523F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C7423F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift */; };
 		F97CCD3A2435E35E00BC560A /* UIViewControllerHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97CCD392435E35E00BC560A /* UIViewControllerHelpers.swift */; };
 		F97CCD3C24360A4000BC560A /* BundleHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97CCD3B24360A4000BC560A /* BundleHelpers.swift */; };
+		F99262C424EECB9F00C9A60D /* ApplePayComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99262C324EECB9F00C9A60D /* ApplePayComponentExtensions.swift */; };
 		F99F08582383EA2A00EBB948 /* ValidatorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99F08572383EA2A00EBB948 /* ValidatorMock.swift */; };
 		F99F085A2383EAC800EBB948 /* FormatterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99F08592383EAC800EBB948 /* FormatterMock.swift */; };
 		F99F08642383F2B000EBB948 /* FormTextItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99F08632383F2B000EBB948 /* FormTextItemViewTests.swift */; };
@@ -784,6 +785,7 @@
 		F9789C7423F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeChatPayAdditionalDetails.swift; sourceTree = "<group>"; };
 		F97CCD392435E35E00BC560A /* UIViewControllerHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerHelpers.swift; sourceTree = "<group>"; };
 		F97CCD3B24360A4000BC560A /* BundleHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleHelpers.swift; sourceTree = "<group>"; };
+		F99262C324EECB9F00C9A60D /* ApplePayComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayComponentExtensions.swift; sourceTree = "<group>"; };
 		F99F08572383EA2A00EBB948 /* ValidatorMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatorMock.swift; sourceTree = "<group>"; };
 		F99F08592383EAC800EBB948 /* FormatterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterMock.swift; sourceTree = "<group>"; };
 		F99F08632383F2B000EBB948 /* FormTextItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextItemViewTests.swift; sourceTree = "<group>"; };
@@ -1521,6 +1523,7 @@
 			isa = PBXGroup;
 			children = (
 				E97B971C229E83F800505476 /* ApplePayComponent.swift */,
+				F99262C324EECB9F00C9A60D /* ApplePayComponentExtensions.swift */,
 				E97B971E22A14C6C00505476 /* ApplePayDetails.swift */,
 			);
 			path = "Apple Pay";
@@ -2614,6 +2617,7 @@
 				F96F44CD23B257D700871C1F /* Logger.swift in Sources */,
 				F9D644DC24D2D95E0059CBE3 /* MBWayComponent.swift in Sources */,
 				E28098B8220DA8650087928F /* ActionComponent.swift in Sources */,
+				F99262C424EECB9F00C9A60D /* ApplePayComponentExtensions.swift in Sources */,
 				E76EC6952417A107009C6E2F /* PhoneExtensionInputControl.swift in Sources */,
 				E216D3BC221AAB240013CBCF /* FormItem.swift in Sources */,
 				E9093403228EDADA00C9F04B /* Payment.swift in Sources */,
