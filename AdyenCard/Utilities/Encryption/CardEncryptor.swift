@@ -7,7 +7,7 @@
 import Foundation
 
 /// An object that provides static methods for encrypting card information and retrieving public keys from the server.
-public final class CardEncryptor {
+public enum CardEncryptor {
     /// Contains the information of a card that is yet to be encrypted.
     public struct Card {
         /// The card number.
@@ -90,6 +90,7 @@ public final class CardEncryptor {
     /// - Throws:  `CardEncryptor.Error.invalidEncryptionArguments` when trying to encrypt a card with  card number, securityCode,
     /// expiryMonth, expiryYear, and holderName, all of them are nil.
     /// - Throws:  `CardEncryptor.Error.unknown` if encryption failed for an unknown reason.
+    @available(*, deprecated, message: "Use `card.encryptedToToken(publicKey:holderName:)`.")
     public static func encryptedToken(for card: Card, holderName: String?, publicKey: String) throws -> String {
         guard let cardToken = try card.encryptedToToken(publicKey: publicKey, holderName: holderName) else {
             // This should never happen,
@@ -101,12 +102,47 @@ public final class CardEncryptor {
         return cardToken
     }
     
+    // MARK: - Delete RSA
+    
+    /// :nodoc:
+    internal static func cleanPublicKeys(publicKeyToken: String) {
+        ObjC_CardEncryptor.deleteRSAPublicKey(publicKeyToken)
+    }
+    
+    // MARK: - Error
+    
+    /// Describes the error that can occur during card encryption and public key fetching.
+    public enum Error: Swift.Error, LocalizedError {
+        /// Indicates an unknown error occurred.
+        case unknown
+        /// Indicates encryption failed  because of invalid card public key or for some other unknown reason.
+        case encryptionFailed
+        /// Indicates an error when trying to encrypt a card with  card number, securityCode,
+        /// expiryMonth, expiryYear, and holderName, all of them are nil.
+        case invalidEncryptionArguments
+        
+        public var errorDescription: String? {
+            switch self {
+            case .encryptionFailed:
+                return "Encryption failed, please check if the public key is a valid one."
+            case .invalidEncryptionArguments:
+                // swiftlint:disable:next line_length
+                return "Trying to encrypt a card with card number, securityCode, expiryMonth, expiryYear, and holderName, all of them are nil"
+            case .unknown:
+                return "Unknow Error"
+            }
+        }
+    }
+    
+    // MARK: - Deprecated
+    
     /// Requests the public encryption key from Adyen backend.
     ///
     /// - Parameters:
     ///   - token: Your public key token.
     ///   - environment: The environment to use when requesting the public key.
     ///   - completion: A closure that handles the result of the public key request.
+    @available(*, deprecated, message: "This API is no longer supported. Use CardPublic")
     public static func requestPublicKey(forToken token: String, environment: Environment, completion: @escaping Completion<Result<String, Swift.Error>>) {
         guard let url = publicKeyFetchUrl(forToken: token, environment: environment) else {
             return
@@ -142,7 +178,8 @@ public final class CardEncryptor {
     ///   - card: Card containing the data to be encrypted.
     ///   - publicKeyToken: Your public key token.
     ///   - environment: The environment to use when requesting the public key.
-    ///   - completion: A closure that provides you with the encrypted card, or an error when the operation fails.
+    ///   - completion: A closure that provides you with the encrypted card, or an error when the operation fails
+    @available(*, deprecated, message: "This API is no longer supported.")
     public static func encryptedCard(for card: Card, publicKeyToken: String, environment: Environment, completion: @escaping Completion<Result<EncryptedCard, Swift.Error>>) {
         requestPublicKey(forToken: publicKeyToken, environment: environment) { result in
             switch result {
@@ -151,7 +188,6 @@ public final class CardEncryptor {
             case let .failure(error):
                 completion(.failure(error))
             }
-            return
         }
     }
     
@@ -164,6 +200,10 @@ public final class CardEncryptor {
         }
     }
     
+    private static func publicKeyFetchUrl(forToken token: String, environment: Environment) -> URL? {
+        return environment.cardPublicKeyBaseURL.appendingPathComponent("hpp/cse/\(token)/json.shtml")
+    }
+    
     /// Encrypts a card.
     /// This methods encapsulates calls to `requestPublicKey(forToken:environment:completion:)`
     /// and `encrypt(_:publicKey:)`.
@@ -174,6 +214,7 @@ public final class CardEncryptor {
     ///   - publicKeyToken: Your public key token.
     ///   - environment: The environment to use when requesting the public key.
     ///   - completion: A closure that provides you with a string representing the encrypted card, or an error when the operation fails.
+    @available(*, deprecated, message: "This API is no longer supported.")
     public static func encryptedToken(for card: Card, holderName: String?, publicKeyToken: String, environment: Environment, completion: @escaping Completion<Result<String, Swift.Error>>) {
         requestPublicKey(forToken: publicKeyToken, environment: environment) { result in
             switch result {
@@ -188,56 +229,15 @@ public final class CardEncryptor {
             case let .failure(error):
                 completion(.failure(error))
             }
-            return
         }
     }
     
-    // MARK: - Delete RSA
-    
-    /// :nodoc:
-    internal static func cleanPublicKeys(publicKeyToken: String) {
-        ObjC_CardEncryptor.deleteRSAPublicKey(publicKeyToken)
-    }
-    
-    // MARK: - Error
-    
-    /// Describes the error that can occur during card encryption and public key fetching.
-    public enum Error: Swift.Error, LocalizedError {
-        /// Indicates an unknown error occurred.
-        case unknown
-        /// Indicates encryption failed  because of invalid card public key or for some other unknown reason.
-        case encryptionFailed
-        /// Indicates an error when trying to encrypt a card with  card number, securityCode,
-        /// expiryMonth, expiryYear, and holderName, all of them are nil.
-        case invalidEncryptionArguments
+    private struct PublicKeyResponse: Decodable {
+        public let publicKey: String
         
-        public var errorDescription: String? {
-            switch self {
-            case .encryptionFailed:
-                return "Encryption failed, please check if the public key is a valid one."
-            case .invalidEncryptionArguments:
-                // swiftlint:disable:next line_length
-                return "Trying to encrypt a card with card number, securityCode, expiryMonth, expiryYear, and holderName, all of them are nil"
-            case .unknown:
-                return "Unknow Error"
-            }
+        private enum CodingKeys: CodingKey {
+            case publicKey
         }
+        
     }
-    
-    // MARK: - Private
-    
-    private init() {}
-    
-    private static func publicKeyFetchUrl(forToken token: String, environment: Environment) -> URL? {
-        return environment.cardPublicKeyBaseURL.appendingPathComponent("hpp/cse/\(token)/json.shtml")
-    }
-}
-
-private struct PublicKeyResponse: Decodable {
-    public let publicKey: String
-    
-    private enum CodingKeys: CodingKey {
-        case publicKey
-    }
-    
 }

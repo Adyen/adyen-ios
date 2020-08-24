@@ -53,12 +53,12 @@ internal extension CardComponent {
     }
 }
 
-internal extension CardComponent {
-    private typealias CardKeySuccessHandler = (_ cardPublicKey: String) -> Void
+extension CardComponent {
+    internal typealias CardKeySuccessHandler = (_ cardPublicKey: String) -> Void
     
-    private typealias CardKeyFailureHandler = (_ error: Swift.Error) -> Void
+    internal typealias CardKeyFailureHandler = (_ error: Swift.Error) -> Void
     
-    private func fetchCardPublicKey(onError: CardKeyFailureHandler? = nil, completion: @escaping CardKeySuccessHandler) {
+    internal func fetchCardPublicKey(onError: CardKeyFailureHandler? = nil, completion: @escaping CardKeySuccessHandler) {
         do {
             try cardPublicKeyProvider.fetch { [weak self] in
                 self?.handle(result: $0, onError: onError, completion: completion)
