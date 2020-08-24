@@ -10,13 +10,13 @@ import XCTest
 class FormCardNumberItemTests: XCTestCase {
 
     var apiClient: APIClientMock!
-    var publicKeyProvider: PublicKeyProviderMock!
+    var publicKeyProvider: CardPublicKeyProviderMock!
     let supportedCardTypes: [CardType] = [.visa, .masterCard, .americanExpress, .chinaUnionPay, .maestro]
     var cardTypeProvider: CardTypeProvider!
 
     override func setUp() {
         apiClient = APIClientMock()
-        publicKeyProvider = PublicKeyProviderMock()
+        publicKeyProvider = CardPublicKeyProviderMock()
         cardTypeProvider = CardTypeProvider(cardPublicKeyProvider: publicKeyProvider,
                                             apiClient: apiClient)
     }
@@ -132,9 +132,9 @@ class FormCardNumberItemTests: XCTestCase {
     }
 
     func testExternalBinLookupHappyflow() {
-        publicKeyProvider.mockResponse = .success("SOME_PUBLIC_KEY")
-        apiClient.mockedResults = [.success(BinLookupResponse(brands: [.masterCard])),
-                                   .success(BinLookupResponse(brands: []))]
+        publicKeyProvider.onFetch = { $0(.success("SOME_PUBLIC_KEY")) }
+        apiClient.mockedResults = [.success(BinLookupResponse(detectedBrands: [.masterCard])),
+                                   .success(BinLookupResponse(detectedBrands: []))]
 
         let item = FormCardNumberItem(supportedCardTypes: supportedCardTypes, environment: .test)
         XCTAssertEqual(item.cardTypeLogos.count, 5)
@@ -165,8 +165,8 @@ class FormCardNumberItemTests: XCTestCase {
     }
 
     func testExternalBinLookupFallback() {
-        publicKeyProvider.mockResponse = .success("SOME_PUBLIC_KEY")
-        apiClient.mockedResults = [.failure(DummyError.dummy), .failure(DummyError.dummy)]
+        publicKeyProvider.onFetch = { $0(.success("SOME_PUBLIC_KEY")) }
+        apiClient.mockedResults = [.failure(Dummy.dummyError), .failure(Dummy.dummyError)]
 
         let item = FormCardNumberItem(supportedCardTypes: supportedCardTypes, environment: .test)
         XCTAssertEqual(item.cardTypeLogos.count, 5)
@@ -199,10 +199,6 @@ class FormCardNumberItemTests: XCTestCase {
             XCTAssertEqual(maestro.isHidden, true)
         }
     }
-
-    func testExternalBinLookupPublicKeyError() {
-        publicKeyProvider.mockResponse = .failure(DummyError.dummy)
-    }
     
     func testLocalizationWithCustomTableName() {
         let expectedLocalizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
@@ -222,12 +218,4 @@ class FormCardNumberItemTests: XCTestCase {
         XCTAssertEqual(sut.validationFailureMessage, ADYLocalizedString("adyen_card_numberItem_invalid", expectedLocalizationParameters))
     }
     
-}
-
-internal final class PublicKeyProviderMock: AnyCardPublicKeyProvider {
-    var mockResponse: Result<String, Error>!
-
-    func fetch(completion: @escaping PublicKeyProviderMock.CompletionHandler) throws {
-        completion(mockResponse)
-    }
 }

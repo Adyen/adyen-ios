@@ -13,7 +13,9 @@ internal final class CardTypeProvider: Component {
     private static let minBinLength = 7
     
     private let apiClient: APIClientProtocol?
+
     private var privateBinLookupService: BinLookupService?
+    
     private let cardPublicKeyProvider: AnyCardPublicKeyProvider
     
     /// Create a new instance of CardTypeProvider.
@@ -28,14 +30,14 @@ internal final class CardTypeProvider: Component {
     
     /// Request card types based on enterd BIN.
     /// - Parameters:
-    ///   - bin: Card's BIN number. If longer than `MinBinLength` - calls API, otherwise check local Regex,
+    ///   - bin: Card's BIN number. If longer than `minBinLength` - calls API, otherwise check local Regex,
     ///   - caller:  Callback to notify about results.
     internal func requestCardType(for bin: String, supported cardType: [CardType], caller: @escaping ([CardType]) -> Void) {
         guard bin.count >= CardTypeProvider.minBinLength else {
             return caller(cardType.adyen.types(forCardNumber: bin))
         }
         
-        try? fetchbinLookupService(success: { binLookupService in
+        try? fetchBinLookupService(success: { binLookupService in
             binLookupService.requestCardType(for: bin,
                                              supportedCardTypes: cardType) { result in
                 switch result {
@@ -50,7 +52,7 @@ internal final class CardTypeProvider: Component {
         })
     }
     
-    private func fetchbinLookupService(success: @escaping (BinLookupService) -> Void,
+    private func fetchBinLookupService(success: @escaping (BinLookupService) -> Void,
                                        failure: ((Swift.Error) -> Void)? = nil) throws {
         if let binLookupService = privateBinLookupService {
             return success(binLookupService)

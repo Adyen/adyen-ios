@@ -10,7 +10,7 @@ internal struct BinLookupRequest: Request {
     
     internal typealias ResponseType = BinLookupResponse
     
-    internal var path: String { "checkoutshopper/v1/bin/binLookup" }
+    internal var path: String = "checkoutshopper/v1/bin/binLookup"
     
     internal var counter: UInt = 0
     
@@ -21,6 +21,7 @@ internal struct BinLookupRequest: Request {
     internal var method: HTTPMethod = .post
     
     internal var encryptedBin: String
+
     internal var supportedBrands: [CardType]
     
     private enum CodingKeys: String, CodingKey {

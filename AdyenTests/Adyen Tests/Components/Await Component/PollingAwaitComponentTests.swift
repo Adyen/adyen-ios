@@ -97,7 +97,7 @@ class PollingAwaitComponentTests: XCTestCase {
         delegate.onDidFail = { error, component in
             XCTAssertTrue(component === sut)
 
-            XCTAssertEqual(error as? DummyError, DummyError.dummy)
+            XCTAssertEqual(error as? Dummy, Dummy.dummyError)
 
             onDidFailExpectation.fulfill()
         }
@@ -108,7 +108,7 @@ class PollingAwaitComponentTests: XCTestCase {
 
         sut.delegate = delegate
 
-        let result = MockedResult.failure(DummyError.dummy)
+        let result = MockedResult.failure(Dummy.dummyError)
 
         apiClient.mockedResults = [result]
 

@@ -19,6 +19,7 @@ internal protocol AnyBinLookupService {
 internal final class BinLookupService: AnyBinLookupService {
     
     private let publicKey: String
+    
     private let apiClient: APIClientProtocol
     
     internal init(publicKey: String, apiClient: APIClientProtocol) {

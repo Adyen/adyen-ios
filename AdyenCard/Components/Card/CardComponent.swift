@@ -103,8 +103,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
                 style: FormComponentStyle = FormComponentStyle()) {
         self.paymentMethod = paymentMethod
         self.cardPublicKeyProvider = CardPublicKeyProvider()
-        let cardTypes = paymentMethod.brands.compactMap(CardType.init)
-        self.privateSupportedCardTypes = cardTypes
+        self.privateSupportedCardTypes = paymentMethod.brands.compactMap(CardType.init)
         self.style = style
         self.clientKey = clientKey
         self.cardTypeProvider = CardTypeProvider(cardPublicKeyProvider: self.cardPublicKeyProvider)
