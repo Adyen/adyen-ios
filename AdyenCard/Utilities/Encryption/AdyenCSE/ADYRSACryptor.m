@@ -149,7 +149,7 @@
     } else if(status == errSecDuplicateItem && overwrite == YES) {
         return [self updateRSAPublicKey:publicKey appTag:appTag];
     } else {
-        NSLog(@"result = %d", (int)status);
+        NSLog(@"result = %d", status);
     }
     
     return NO;
@@ -177,11 +177,11 @@
         status = SecItemUpdate((__bridge CFDictionaryRef)query,
                                (__bridge CFDictionaryRef)@{(__bridge id)kSecValueData: publicKey});
         
-        NSLog(@"result = %d", (int)status);
+        NSLog(@"result = %d", status);
         
         return status == noErr;
     } else {
-        NSLog(@"result = %d", (int)status);
+        NSLog(@"result = %d", status);
     }
     return NO;
 }
@@ -197,7 +197,7 @@
               };
     OSStatus status = SecItemDelete((__bridge CFDictionaryRef)query);
     
-    if (status != noErr) NSLog(@"result = %d", (int)status);
+    if (status != noErr) NSLog(@"result = %d", status);
 
     return status == noErr;
 }
@@ -223,7 +223,7 @@
     if (status == noErr) {
         return publicKeyRef;
     } else {
-        NSLog(@"result = %d", (int)status);
+        NSLog(@"result = %d", status);
         return NULL;
     }
 }
@@ -251,7 +251,7 @@
             NSData *encryptedData = [[NSData alloc] initWithBytes:(const void*)encrypted length:encryptedLength];
             return encryptedData;
         } else {
-            NSLog(@"result = %d", (int)status);
+            NSLog(@"result = %d", status);
             return nil;
         }
     }

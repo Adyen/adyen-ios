@@ -23,6 +23,12 @@ public protocol CardComponentDelegate: class {
 /// A component that provides a form for card payments.
 public final class CardComponent: PaymentComponent, PresentableComponent, Localizable, Observer {
     
+    /// :nodoc:
+    internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
+    
+    private static let publicBinLenght = 6
+    private let cardTypeProvider: CardTypeProvider
+    
     /// Card Component errors.
     public enum Error: Swift.Error {
         /// ClientKey is required for `CardPublicKeyProvider` to work, and this error is thrown in case its nil.
@@ -48,13 +54,8 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     /// The supported card types.
     /// The getter is O(n), since it filters out all the `excludedCardTypes` before returning.
     public var supportedCardTypes: [CardType] {
-        get {
-            privateSupportedCardTypes.filter { !excludedCardTypes.contains($0) }
-        }
-        
-        set {
-            privateSupportedCardTypes = newValue
-        }
+        get { privateSupportedCardTypes.filter { !excludedCardTypes.contains($0) } }
+        set { privateSupportedCardTypes = newValue }
     }
     
     /// :nodoc:
@@ -63,6 +64,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
             environment.clientKey = clientKey
             cardPublicKeyProvider.environment = environment
             storedCardComponent?.environment = environment
+            cardTypeProvider.environment = environment
         }
     }
     
@@ -72,6 +74,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
             environment.clientKey = clientKey
             cardPublicKeyProvider.clientKey = clientKey
             storedCardComponent?.clientKey = clientKey
+            cardTypeProvider.clientKey = clientKey
         }
     }
     
@@ -88,9 +91,6 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     /// Defaults to true.
     public var showsLargeTitle = true
     
-    /// :nodoc:
-    internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
-    
     /// Initializes the card component.
     ///
     /// - Parameters:
@@ -106,6 +106,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         self.privateSupportedCardTypes = paymentMethod.brands.compactMap(CardType.init)
         self.style = style
         self.clientKey = clientKey
+        self.cardTypeProvider = CardTypeProvider(cardPublicKeyProvider: self.cardPublicKeyProvider)
     }
     
     /// :nodoc:
@@ -122,6 +123,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         self.cardPublicKeyProvider = cardPublicKeyProvider
         self.privateSupportedCardTypes = paymentMethod.brands.compactMap(CardType.init)
         self.style = style
+        self.cardTypeProvider = CardTypeProvider(cardPublicKeyProvider: cardPublicKeyProvider)
     }
     
     // MARK: - Presentable Component Protocol
@@ -216,15 +218,14 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
                                       environment: environment,
                                       style: style.textField,
                                       localizationParameters: localizationParameters)
+        
         observe(item.$binValue) { [weak self] bin in
             guard let self = self else { return }
-            self.cardComponentDelegate?.didChangeBIN(bin, component: self)
+            
+            self.requestCardType(for: bin, update: item)
+            self.cardComponentDelegate?.didChangeBIN(String(bin.prefix(CardComponent.publicBinLenght)), component: self)
         }
-        observe(item.$detectedCardTypes) { [weak self] cardTypes in
-            guard let self = self else { return }
-            self.cardComponentDelegate?.didChangeCardType(cardTypes, component: self)
-            self.securityCodeItem.selectedCard = cardTypes?.first
-        }
+        
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "numberItem")
         return item
     }()
@@ -281,4 +282,13 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         return footerItem
     }()
     
+    fileprivate func requestCardType(for bin: String, update item: FormCardNumberItem) {
+        cardTypeProvider.requestCardType(for: bin, supported: self.supportedCardTypes) { [weak self] cardTypes in
+            guard let self = self else { return }
+            
+            self.securityCodeItem.selectedCard = cardTypes.first
+            item.detectedCardsDidChange(detectedCards: cardTypes)
+            self.cardComponentDelegate?.didChangeCardType(cardTypes, component: self)
+        }
+    }
 }

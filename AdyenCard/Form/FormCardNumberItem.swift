@@ -7,7 +7,7 @@
 /// A form item into which a card number is entered.
 internal final class FormCardNumberItem: FormTextItem {
     
-    private static let binLength = 6
+    private static let binLength = 8
     
     private var previouslyDetectedCardTypes: Set<CardType>?
     
@@ -20,10 +20,6 @@ internal final class FormCardNumberItem: FormTextItem {
     /// The observable of the card's BIN value.
     /// The value contains up to 6 first digits of card' PAN.
     @Observable("") internal var binValue: String
-    
-    /// The observable of the matching card types for entered PAN.
-    /// The value is `nil` when no value entered; empty array when PAN unrecognized or not supported.
-    @Observable(nil) internal var detectedCardTypes: [CardType]?
     
     /// :nodoc:
     private let localizationParameters: LocalizationParameters?
@@ -54,30 +50,21 @@ internal final class FormCardNumberItem: FormTextItem {
     internal func valueDidChange() {
         binValue = String(value.prefix(FormCardNumberItem.binLength))
         
-        defer {
-            previouslyDetectedCardTypes = Set<CardType>(detectedCardTypes ?? [])
-        }
-        
-        func setLogos(for detectedCards: Set<CardType>) {
-            for (cardType, logo) in zip(supportedCardTypes, cardTypeLogos) {
-                let isVisible = detectedCards.contains(cardType)
-                logo.isHidden = !isVisible
-            }
-        }
-        
         guard !value.isEmpty else {
             cardNumberFormatter.cardType = nil
-            detectedCardTypes = nil
+            previouslyDetectedCardTypes = nil
             setLogos(for: Set<CardType>(supportedCardTypes))
             return
         }
+    }
+    
+    internal func detectedCardsDidChange(detectedCards: [CardType]) {
+        let newDetectedCardTypes = Set<CardType>(detectedCards)
+        guard self.previouslyDetectedCardTypes != newDetectedCardTypes else { return }
         
-        let newDetectedCardTypes = Set<CardType>(cardTypeDetector.types(forCardNumber: value))
-        guard previouslyDetectedCardTypes != newDetectedCardTypes else { return }
-        
+        previouslyDetectedCardTypes = newDetectedCardTypes
         cardNumberFormatter.cardType = newDetectedCardTypes.first
-        setLogos(for: newDetectedCardTypes.isEmpty ? [] : newDetectedCardTypes)
-        detectedCardTypes = newDetectedCardTypes.map { $0 }
+        setLogos(for: newDetectedCardTypes)
     }
     
     // MARK: - BuildableFormItem
@@ -90,7 +77,12 @@ internal final class FormCardNumberItem: FormTextItem {
     
     private let cardNumberFormatter = CardNumberFormatter()
     
-    private lazy var cardTypeDetector: CardTypeDetector = CardTypeDetector(detectableTypes: self.supportedCardTypes)
+    private func setLogos(for detectedCards: Set<CardType>) {
+        for (cardType, logo) in zip(supportedCardTypes, cardTypeLogos) {
+            let isVisible = detectedCards.contains(cardType)
+            logo.isHidden = !isVisible
+        }
+    }
     
 }
 
