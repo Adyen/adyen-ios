@@ -92,6 +92,7 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     /// - Parameter paymentMethod: The Apple Pay payment method.
     /// - Parameter payment: A description of the payment. Must include an amount and country code.
     /// - Parameter configuration: Apple Pay component configuration.
+    /// - Parameter cancelHandler: Being called on cancel, e.g. when the user taps "cancel".
     /// - Throws: `ApplePayComponent.Error.userCannotMakePayment`.
     /// if user can't make payments on any of the payment request’s supported networks.
     /// - Throws: `ApplePayComponent.Error.deviceDoesNotSupportApplyPay` if the current device's hardware doesn't support ApplePay.
@@ -102,7 +103,8 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     /// - Throws: `ApplePayComponent.Error.invalidCurrencyCode` if the `payment.amount.currencyCode` is not a valid ISO currency code.
     public init(paymentMethod: ApplePayPaymentMethod,
                 payment: Payment,
-                configuration: Configuration) throws {
+                configuration: Configuration,
+                cancelHandler: (() -> Void)? = nil) throws {
         guard PKPaymentAuthorizationViewController.canMakePayments() else {
             throw Error.deviceDoesNotSupportApplyPay
         }
@@ -128,6 +130,7 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
         self.paymentMethod = paymentMethod
         self.applePayPaymentMethod = paymentMethod
         self.configuration = configuration
+        self.dismissCompletion = cancelHandler
         
         super.init()
         
@@ -156,47 +159,18 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     /// - Throws: `ApplePayComponent.Error.invalidCountryCode` if the `payment.countryCode` is not a valid ISO country code.
     /// - Throws: `ApplePayComponent.Error.invalidCurrencyCode` if the `payment.amount.currencyCode` is not a valid ISO currency code.
     @available(*, deprecated, message: "Use init(paymentMethod:payment:configuration:) instead.")
-    public init(paymentMethod: ApplePayPaymentMethod,
-                payment: Payment,
-                merchantIdentifier: String,
-                summaryItems: [PKPaymentSummaryItem],
-                requiredBillingContactFields: Set<PKContactField> = [],
-                requiredShippingContactFields: Set<PKContactField> = [],
-                cancelHandler: (() -> Void)? = nil) throws {
+    public convenience init(paymentMethod: ApplePayPaymentMethod,
+                            payment: Payment,
+                            merchantIdentifier: String,
+                            summaryItems: [PKPaymentSummaryItem],
+                            requiredBillingContactFields: Set<PKContactField> = [],
+                            requiredShippingContactFields: Set<PKContactField> = [],
+                            cancelHandler: (() -> Void)? = nil) throws {
         let configuration = Configuration(summaryItems: summaryItems,
                                           merchantIdentifier: merchantIdentifier,
                                           requiredBillingContactFields: requiredBillingContactFields,
                                           requiredShippingContactFields: requiredShippingContactFields)
-        guard PKPaymentAuthorizationViewController.canMakePayments() else {
-            throw Error.deviceDoesNotSupportApplyPay
-        }
-        guard PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: configuration.supportedNetworks) else {
-            throw Error.userCannotMakePayment
-        }
-        guard let countryCode = payment.countryCode, CountryCodeValidator().isValid(countryCode) else {
-            throw Error.invalidCountryCode
-        }
-        guard CurrencyCodeValidator().isValid(payment.amount.currencyCode) else {
-            throw Error.invalidCurrencyCode
-        }
-        guard summaryItems.count > 0 else {
-            throw Error.emptySummaryItems
-        }
-        guard let lastItem = summaryItems.last, lastItem.amount.doubleValue >= 0 else {
-            throw Error.negativeGrandTotal
-        }
-        guard summaryItems.filter({ $0.amount.isEqual(to: NSDecimalNumber.notANumber) }).count == 0 else {
-            throw Error.invalidSummaryItem
-        }
-        
-        self.paymentMethod = paymentMethod
-        self.applePayPaymentMethod = paymentMethod
-        self.dismissCompletion = cancelHandler
-        self.configuration = configuration
-        
-        super.init()
-        
-        self.payment = payment
+        try self.init(paymentMethod: paymentMethod, payment: payment, configuration: configuration)
     }
     
     /// Initializes the component.
