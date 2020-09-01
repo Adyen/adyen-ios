@@ -51,8 +51,8 @@ public extension Component {
             return objc_getAssociatedObject(self, &AssociatedKeys.clientKey) as? String
         }
         set {
-            environment.clientKey = newValue
             objc_setAssociatedObject(self, &AssociatedKeys.clientKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            environment.clientKey = newValue
         }
     }
     

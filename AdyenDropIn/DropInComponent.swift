@@ -98,6 +98,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
         let handler = DropInActionComponent()
         handler._isDropIn = true
         handler.environment = environment
+        handler.clientKey = configuration.clientKey
         handler.redirectComponentStyle = style.redirectComponent
         handler.delegate = self
         handler.presentationDelegate = self
