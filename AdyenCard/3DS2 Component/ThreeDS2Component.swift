@@ -54,7 +54,7 @@ public final class ThreeDS2Component: ActionComponent {
     
     private func createFingerprint(using service: ADYService, paymentData: String) {
         do {
-            let transaction = try service.transaction(withMessageVersion: nil)
+            let transaction = try service.transaction(withMessageVersion: "2.1.0")
             self.transaction = transaction
             
             let fingerprint = try Fingerprint(authenticationRequestParameters: transaction.authenticationRequestParameters)
