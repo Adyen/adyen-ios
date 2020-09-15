@@ -35,7 +35,7 @@ public protocol DropInComponentDelegate: AnyObject {
     /// - Parameters:
     ///   - component: The component that the user closed.
     ///   - dropInComponent: The drop in component that owns the `component`.
-    func userDidClose(component: PresentableComponent, from dropInComponent: DropInComponent)
+    func didCancel(component: PresentableComponent, from dropInComponent: DropInComponent)
     
 }
 
@@ -43,5 +43,5 @@ public protocol DropInComponentDelegate: AnyObject {
 public extension DropInComponentDelegate {
     
     /// :nodoc:
-    func userDidClose(component: PresentableComponent, from dropInComponent: DropInComponent) {}
+    func didCancel(component: PresentableComponent, from dropInComponent: DropInComponent) {}
 }

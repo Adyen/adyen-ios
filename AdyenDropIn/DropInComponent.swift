@@ -171,7 +171,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
         } else {
             navigationController.popViewController(animated: true)
             stopLoading()
-            delegate?.userDidClose(component: component, from: self)
+            delegate?.didCancel(component: component, from: self)
         }
     }
 }
@@ -201,15 +201,15 @@ extension DropInComponent: PaymentComponentDelegate {
         paymentInProgress = false
         if case ComponentError.cancelled = error {
             stopLoading(withSuccess: false)
-            userDidClose(component)
+            userDidCancel(component)
         } else {
             delegate?.didFail(with: error, from: self)
         }
     }
     
-    private func userDidClose(_ component: PaymentComponent) {
+    private func userDidCancel(_ component: PaymentComponent) {
         guard let component = component as? PresentableComponent else { return }
-        delegate?.userDidClose(component: component, from: self)
+        delegate?.didCancel(component: component, from: self)
     }
 }
 
@@ -226,15 +226,15 @@ extension DropInComponent: ActionComponentDelegate {
         if case ComponentError.cancelled = error {
             paymentInProgress = false
             stopLoading(withSuccess: false)
-            userDidClose(component)
+            userDidCancel(component)
         } else {
             delegate?.didFail(with: error, from: self)
         }
     }
     
-    private func userDidClose(_ component: ActionComponent) {
+    private func userDidCancel(_ component: ActionComponent) {
         guard let component = component as? PresentableComponent else { return }
-        delegate?.userDidClose(component: component, from: self)
+        delegate?.didCancel(component: component, from: self)
     }
     
     /// :nodoc:
