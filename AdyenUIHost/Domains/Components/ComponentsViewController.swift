@@ -253,6 +253,11 @@ extension ComponentsViewController: DropInComponentDelegate {
         finish(with: error)
     }
     
+    internal func userDidClose(component: PresentableComponent, from dropInComponent: DropInComponent) {
+        // Handle the event when the user closes a PresentableComponent.
+        print("User did close: \(component)")
+    }
+    
 }
 
 extension ComponentsViewController: PaymentComponentDelegate {
