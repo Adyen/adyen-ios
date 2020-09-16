@@ -9,6 +9,18 @@ import SafariServices
 import XCTest
 
 class RedirectComponentTests: XCTestCase {
+
+    func testUIConfiguration() {
+        let action = RedirectAction(url: URL(string: "https://adyen.com")!, paymentData: "data")
+        let style = RedirectComponentStyle(preferredBarTintColor: UIColor.red,
+                                           preferredControlTintColor: UIColor.black,
+                                           modalPresentationStyle: .fullScreen)
+        let sut = WebRedirectComponent(action: action, style: style)
+        XCTAssertNotNil(sut.viewController as? SFSafariViewController)
+        XCTAssertEqual(sut.viewController.modalPresentationStyle, .fullScreen)
+        XCTAssertEqual((sut.viewController as! SFSafariViewController).preferredBarTintColor, UIColor.red)
+        XCTAssertEqual((sut.viewController as! SFSafariViewController).preferredControlTintColor, UIColor.black)
+    }
     
     func testOpenCustomSchemeSuccess() {
         let sut = RedirectComponent()

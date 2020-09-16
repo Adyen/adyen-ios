@@ -54,7 +54,7 @@ internal final class WebRedirectComponent: NSObject, PresentableComponent, Actio
     internal lazy var viewController: UIViewController = {
         let safariViewController = SFSafariViewController(url: url)
         safariViewController.delegate = self
-        safariViewController.modalPresentationStyle = .formSheet
+        safariViewController.modalPresentationStyle = style?.modalPresentationStyle ?? .formSheet
         
         style.map {
             safariViewController.preferredBarTintColor = $0.preferredBarTintColor
