@@ -4,37 +4,12 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import CommonCrypto
+import CryptoKit
 import Foundation
 
 /// An object that provides static methods for encrypting card information and retrieving public keys from the server.
 public enum CardEncryptor {
-    /// Contains the information of a card that is yet to be encrypted.
-    public struct Card {
-        /// The card number.
-        public var number: String?
-        
-        /// The card's security code.
-        public var securityCode: String?
-        
-        /// The month the card expires.
-        public var expiryMonth: String?
-        
-        /// The year the card expires.
-        public var expiryYear: String?
-        
-        /// :nodoc:
-        public init(number: String? = nil, securityCode: String? = nil, expiryMonth: String? = nil, expiryYear: String? = nil) {
-            self.number = number
-            self.securityCode = securityCode
-            self.expiryMonth = expiryMonth
-            self.expiryYear = expiryYear
-        }
-        
-        internal var isEmpty: Bool {
-            return [number, securityCode, expiryYear, expiryMonth].allSatisfy { $0 == nil }
-        }
-        
-    }
     
     /// Contains encrypted card information.
     public struct EncryptedCard {
@@ -51,6 +26,8 @@ public enum CardEncryptor {
         public let expiryYear: String?
         
     }
+    
+    // MARK: - Encrypts a card
     
     /// Encrypts a card.
     ///
@@ -105,8 +82,10 @@ public enum CardEncryptor {
     // MARK: - Delete RSA
     
     /// :nodoc:
-    internal static func cleanPublicKeys(publicKeyToken: String) {
-        ObjC_CardEncryptor.deleteRSAPublicKey(publicKeyToken)
+    internal static func cleanPublicKey(publicKeyToken: String) -> Bool {
+        let fingerprint = publicKeyToken.sha1()
+        
+        return ADYRSACryptor.deleteRSA(appTag: fingerprint)
     }
     
     // MARK: - Error
@@ -240,4 +219,73 @@ public enum CardEncryptor {
         }
         
     }
+}
+
+extension CardEncryptor {
+
+    /// Contains the information of a card that is yet to be encrypted.
+    public struct Card: Encodable {
+        /// The card number.
+        public var number: String?
+
+        /// The card's security code.
+        public var securityCode: String?
+
+        /// The month the card expires.
+        public var expiryMonth: String?
+
+        /// The year the card expires.
+        public var expiryYear: String?
+
+        internal var holder: String?
+
+        internal var generationDate: Date?
+
+        /// :nodoc:
+        public init(number: String? = nil, securityCode: String? = nil, expiryMonth: String? = nil, expiryYear: String? = nil) {
+            self.number = number
+            self.securityCode = securityCode
+            self.expiryMonth = expiryMonth
+            self.expiryYear = expiryYear
+        }
+
+        internal var isEmpty: Bool {
+            return [number, securityCode, expiryYear, expiryMonth].allSatisfy { $0 == nil }
+        }
+
+        public func jsonData() -> Data? {
+            return try? JSONEncoder().encode(self)
+        }
+
+        private static var dateFormatter: DateFormatter {
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "en_US_POSIX")
+            formatter.calendar = Calendar(identifier: .gregorian)
+            formatter.timeZone = TimeZone(abbreviation: "UTC")!
+
+            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+            return formatter
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            if let number = number { try container.encode(number, forKey: .number) }
+            if let holder = holder { try container.encode(holder, forKey: .holder) }
+            if let securityCode = securityCode { try container.encode(securityCode, forKey: .securityCode) }
+            if let expiryMonth = expiryMonth { try container.encode(expiryMonth, forKey: .expiryMonth) }
+            if let expiryYear = expiryYear { try container.encode(expiryYear, forKey: .expiryYear) }
+            if let generationDate = generationDate { try container.encode(generationDate, forKey: .generationDate) }
+        }
+
+        private enum CodingKeys: String, CodingKey {
+            case number
+            case holder = "holderName"
+            case securityCode = "cvc"
+            case expiryMonth
+            case expiryYear
+            case generationDate = "generationtime"
+        }
+    }
+
 }

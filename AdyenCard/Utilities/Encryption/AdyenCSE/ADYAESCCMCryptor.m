@@ -25,8 +25,11 @@ NSData *dh(unsigned char *d) {
     return [self encrypt:data withKey:key iv:iv tagLength:tagLength adata:nil];
 }
 
-+ (NSData *)encrypt:(NSData *)data withKey:(NSData *)key iv:(NSData *)iv
-          tagLength:(size_t)tagLength adata:(NSData *)adata {
++ (NSData *)encrypt:(NSData *)data
+            withKey:(NSData *)key
+                 iv:(NSData *)iv
+          tagLength:(size_t)tagLength
+              adata:(NSData *)adata {
     NSParameterAssert(data);
     NSParameterAssert(key);
     NSParameterAssert(iv);
