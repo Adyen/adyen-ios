@@ -114,6 +114,7 @@ public final class APIClient: APIClientProtocol {
     }
     
     private func printAsJSON(_ data: Data) {
+        guard AdyenLogging.isEnabled else { return }
         do {
             let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
             let jsonData = try JSONSerialization.data(withJSONObject: jsonObject, options: [.prettyPrinted])

@@ -45,7 +45,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'Card' do |plugin|
     plugin.dependency 'Adyen/Core'
-    plugin.dependency 'Adyen3DS2', '>= 2.1.0-rc.5'
+    plugin.dependency 'Adyen3DS2', '2.1.0-rc.6'
     plugin.source_files = 'AdyenCard/**/*.swift', 'AdyenCard/Utilities/AdyenCSE/*.{h,m}', 'AdyenCard/Utilities/*.{h,m}'
     plugin.private_header_files = 'AdyenCard/Utilities/AdyenCSE/*.h'
   end

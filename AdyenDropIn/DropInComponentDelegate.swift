@@ -30,4 +30,18 @@ public protocol DropInComponentDelegate: AnyObject {
     ///   - component: The drop in component that failed.
     func didFail(with error: Error, from component: DropInComponent)
     
+    /// Invoked when user closes a payment component.
+    ///
+    /// - Parameters:
+    ///   - component: The component that the user closed.
+    ///   - dropInComponent: The drop in component that owns the `component`.
+    func didCancel(component: PresentableComponent, from dropInComponent: DropInComponent)
+    
+}
+
+/// :nodoc:
+public extension DropInComponentDelegate {
+    
+    /// :nodoc:
+    func didCancel(component: PresentableComponent, from dropInComponent: DropInComponent) {}
 }
