@@ -20,7 +20,7 @@ internal struct Configuration {
     static let reference = "Test Order Reference - iOS UIHost"
     
     static let countryCode = "NL"
-
+    
     static let returnUrl = "ui-host://"
     
     static let shopperReference = "iOS Checkout Shopper"

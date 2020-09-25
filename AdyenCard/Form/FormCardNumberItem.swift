@@ -7,7 +7,7 @@
 /// A form item into which a card number is entered.
 internal final class FormCardNumberItem: FormTextItem {
     
-    private static let binLength = 8
+    private static let binLength = 12
     
     private var previouslyDetectedCardTypes: Set<CardType>?
     

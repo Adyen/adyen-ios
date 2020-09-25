@@ -10,7 +10,7 @@ import Foundation
 /// Fall back to local regex-based detector if API not available or BIN too short.
 internal final class CardTypeProvider: Component {
     
-    private static let minBinLength = 7
+    private static let minBinLength = 6
     
     private let apiClient: APIClientProtocol?
 
@@ -33,7 +33,7 @@ internal final class CardTypeProvider: Component {
     ///   - bin: Card's BIN number. If longer than `minBinLength` - calls API, otherwise check local Regex,
     ///   - caller:  Callback to notify about results.
     internal func requestCardType(for bin: String, supported cardType: [CardType], caller: @escaping ([CardType]) -> Void) {
-        guard bin.count >= CardTypeProvider.minBinLength else {
+        guard bin.count > CardTypeProvider.minBinLength else {
             return caller(cardType.adyen.types(forCardNumber: bin))
         }
         
@@ -42,7 +42,7 @@ internal final class CardTypeProvider: Component {
                                              supportedCardTypes: cardType) { result in
                 switch result {
                 case let .success(response):
-                    caller(response.detectedBrands)
+                    caller(response.detectedBrands ?? [])
                 case .failure:
                     caller(cardType.adyen.types(forCardNumber: bin))
                 }

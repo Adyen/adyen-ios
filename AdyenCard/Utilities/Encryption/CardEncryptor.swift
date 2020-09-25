@@ -8,6 +8,7 @@ import Foundation
 
 /// An object that provides static methods for encrypting card information and retrieving public keys from the server.
 public enum CardEncryptor {
+    
     /// Contains the information of a card that is yet to be encrypted.
     public struct Card {
         /// The card number.
@@ -32,6 +33,25 @@ public enum CardEncryptor {
         
         internal var isEmpty: Bool {
             return [number, securityCode, expiryYear, expiryMonth].allSatisfy { $0 == nil }
+        }
+        
+    }
+    
+    public struct Bin: Encodable {
+        /// The card BIN number.
+        public let value: String
+        
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(value, forKey: .value)
+            
+            let timestampString = ISO8601DateFormatter().string(from: Date())
+            try container.encode(timestampString, forKey: .timestamp)
+        }
+        
+        private enum CodingKeys: String, CodingKey {
+            case value = "binValue"
+            case timestamp = "generationtime"
         }
         
     }
@@ -76,6 +96,15 @@ public enum CardEncryptor {
                              securityCode: securityCode,
                              expiryMonth: expiryMonth,
                              expiryYear: expiryYear)
+    }
+    
+    /// Encrypt BIN.
+    /// - Parameters:
+    ///   - publicKey: The public key to use for encryption (format "Exponent|Modulus").
+    ///   - bin: BIN( Bank Identification number) is the first 6 to 12 digits of PAN.
+    static func encryptedBin(for bin: String, publicKey: String) -> String? {
+        guard let payload = try? JSONEncoder().encode(Bin(value: bin)) else { return nil }
+        return ObjC_CardEncryptor.encrypted(payload, publicKey: publicKey)
     }
     
     /// Encrypts a card.

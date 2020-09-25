@@ -31,6 +31,8 @@
                                        holderName:(nullable NSString *)holderName
                                         publicKey:(nonnull NSString *)publicKey;
 
++ (nullable NSString *)encrypted:(nonnull NSData *)data publicKey:(nonnull NSString *)publicKey;
+
 + (BOOL)deleteRSAPublicKey:(nonnull NSString *)publicKey;
 
 @end
