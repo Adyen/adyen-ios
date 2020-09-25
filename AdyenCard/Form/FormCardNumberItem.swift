@@ -58,6 +58,11 @@ internal final class FormCardNumberItem: FormTextItem {
         }
     }
     
+    internal func numberFormatDidChange(detectedCards: [CardType]) {
+        let newDetectedCardTypes = Set<CardType>(detectedCards)
+        cardNumberFormatter.cardType = newDetectedCardTypes.first
+    }
+    
     internal func detectedCardsDidChange(detectedCards: [CardType]) {
         let newDetectedCardTypes = Set<CardType>(detectedCards)
         guard self.previouslyDetectedCardTypes != newDetectedCardTypes else { return }
