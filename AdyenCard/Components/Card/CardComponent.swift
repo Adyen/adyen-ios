@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+import Foundation
 
 /// Delegate for observing user's activity on `CardComponent`.
 public protocol CardComponentDelegate: class {
@@ -221,7 +221,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
                                       localizationParameters: localizationParameters)
         
         observe(item.$binValue) { [weak self] bin in
-            self?.binDidReceived(bin)
+            self?.didReceived(bin: bin)
         }
         
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "numberItem")
@@ -280,7 +280,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         return footerItem
     }()
     
-    private func binDidReceived(_ bin: String) {
+    private func didReceived(bin: String) {
         let quickDetection = supportedCardTypes.adyen.types(forCardNumber: bin)
         self.securityCodeItem.selectedCard = quickDetection.first
         self.numberItem.numberFormatDidChange(detectedCards: quickDetection)
