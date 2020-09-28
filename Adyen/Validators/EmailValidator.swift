@@ -8,7 +8,7 @@ import Foundation
 
 /// Validates a phone number.
 /// :nodoc:
-open class EmailValidator: LengthValidator {
+internal class EmailValidator: LengthValidator {
     
     public init() {
         super.init(minimumLength: 6, maximumLength: 320)

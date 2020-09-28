@@ -49,13 +49,15 @@ internal final class DropInNavigationController: UINavigationController {
     // MARK: - Keyboard
     
     @objc private func keyboardWillChangeFrame(_ notification: NSNotification) {
-        guard let topViewController = topViewController as? WrapperViewController,
-            topViewController.requiresInput,
-            let bounds = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
-        else { return }
+        if let bounds = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+            keyboardRect = bounds.intersection(UIScreen.main.bounds)
+        } else {
+            keyboardRect = .zero
+        }
         
-        keyboardRect = bounds.intersection(UIScreen.main.bounds)
-        updateFrame(for: topViewController)
+        if let topViewController = topViewController as? WrapperViewController, topViewController.requiresInput {
+            updateFrame(for: topViewController)
+        }
     }
     
     // MARK: - Private

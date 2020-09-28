@@ -64,23 +64,10 @@ public final class MBWayComponent: PaymentComponent, PresentableComponent, Local
             formViewController.title = paymentMethod.name
         }
         
-        formViewController.append(emailItem)
         formViewController.append(phoneNumberItem)
         formViewController.append(footerItem)
         
         return formViewController
-    }()
-    
-    /// The email item.
-    internal lazy var emailItem: FormTextInputItem = {
-        let emailItem = FormTextInputItem(style: style.textField)
-        emailItem.title = ADYLocalizedString("adyen.emailItem.title", localizationParameters)
-        emailItem.placeholder = "shopper@domain.com"
-        emailItem.validator = EmailValidator()
-        emailItem.validationFailureMessage = ADYLocalizedString("adyen.emailItem.invalid", localizationParameters)
-        emailItem.autocapitalizationType = .none
-        emailItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "emailItem")
-        return emailItem
     }()
     
     /// The full phone number item.
@@ -109,8 +96,7 @@ public final class MBWayComponent: PaymentComponent, PresentableComponent, Local
         guard formViewController.validate() else { return }
         
         let details = MBWayDetails(paymentMethod: paymentMethod,
-                                   telephoneNumber: phoneNumberItem.phoneNumber,
-                                   shopperEmail: emailItem.value)
+                                   telephoneNumber: phoneNumberItem.phoneNumber)
         footerItem.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
         
