@@ -7,7 +7,7 @@
 import Foundation
 
 // Throttles requests.
-public final class Throttler {
+internal final class Throttler {
     
     private var workItem: DispatchWorkItem = DispatchWorkItem(block: {})
     private var previousRun: Date = Date.distantPast

@@ -145,4 +145,36 @@ class CardEncryptorCardTests: XCTestCase {
 
         XCTAssertNotNil( try? CardEncryptor.encryptedToken(for: card, holderName: nil, publicKey: key))
     }
+
+    // MARK: - Test encrypting BIN
+
+    func testEncryptExpiryBINShouldReturnNilWithNilBIN() {
+        XCTAssertThrowsError(try CardEncryptor.encryptedBin(for: "", publicKey: "key")) { error in
+            XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
+            XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.invalidBin, "Thrown Error is not CardEncryptor.Error.invalidBin")
+            XCTAssertEqual(error.localizedDescription, CardEncryptor.Error.invalidBin.errorDescription)
+        }
+
+        XCTAssertThrowsError(try CardEncryptor.encryptedBin(for: "asdwed", publicKey: "key")) { error in
+            XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
+            XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.invalidBin, "Thrown Error is not CardEncryptor.Error.invalidBi")
+            XCTAssertEqual(error.localizedDescription, CardEncryptor.Error.invalidBin.errorDescription)
+        }
+    }
+
+    func testEncryptBINShouldFailWithInvalidPublicKey() {
+        let key = "test_invalid_key"
+        XCTAssertThrowsError(try CardEncryptor.encryptedBin(for: "55000000", publicKey: key)) { error in
+            XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
+            XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.encryptionFailed, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
+            XCTAssertEqual(error.localizedDescription, CardEncryptor.Error.encryptionFailed.errorDescription)
+        }
+    }
+
+    func testEncryptBIN() {
+        let key = Dummy.dummyPublicKey
+        let ecrypted = try! CardEncryptor.encryptedBin(for: "55000000", publicKey: key)
+        XCTAssertNotNil(ecrypted)
+        XCTAssertTrue(ecrypted.hasPrefix("adyenan0_1_1$"))
+    }
 }

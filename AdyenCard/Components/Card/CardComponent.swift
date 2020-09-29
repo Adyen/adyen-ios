@@ -26,8 +26,10 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     /// :nodoc:
     internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
     
+    /// :nodoc:
+    internal var cardTypeProvider: AnyCardTypeProvider
+    
     private static let publicBinLenght = 6
-    private let cardTypeProvider: CardTypeProvider
     private let throttler = Throttler(minimumDelay: 0.5)
     
     /// Card Component errors.
@@ -281,9 +283,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     }()
     
     private func didReceived(bin: String) {
-        let quickDetection = supportedCardTypes.adyen.types(forCardNumber: bin)
-        self.securityCodeItem.selectedCard = quickDetection.first
-        self.numberItem.numberFormatDidChange(detectedCards: quickDetection)
+        self.securityCodeItem.selectedCard = supportedCardTypes.adyen.type(forCardNumber: bin)
         self.cardComponentDelegate?.didChangeBIN(String(bin.prefix(CardComponent.publicBinLenght)), component: self)
         
         throttler.throttle { [weak self] in
@@ -295,7 +295,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         cardTypeProvider.requestCardType(for: bin, supported: self.supportedCardTypes) { [weak self] cardTypes in
             guard let self = self else { return }
             
-            self.numberItem.detectedCardsDidChange(detectedCards: cardTypes)
+            self.numberItem.didChange(detectedCards: cardTypes)
             self.cardComponentDelegate?.didChangeCardType(cardTypes, component: self)
         }
     }

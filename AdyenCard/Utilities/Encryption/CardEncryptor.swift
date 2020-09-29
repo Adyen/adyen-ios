@@ -102,9 +102,17 @@ public enum CardEncryptor {
     /// - Parameters:
     ///   - publicKey: The public key to use for encryption (format "Exponent|Modulus").
     ///   - bin: BIN( Bank Identification number) is the first 6 to 12 digits of PAN.
-    static func encryptedBin(for bin: String, publicKey: String) -> String? {
-        guard let payload = try? JSONEncoder().encode(Bin(value: bin)) else { return nil }
-        return ObjC_CardEncryptor.encrypted(payload, publicKey: publicKey)
+    public static func encryptedBin(for bin: String, publicKey: String) throws -> String {
+        guard !bin.isEmpty, bin.allSatisfy({ $0.isNumber }) else {
+            throw Error.invalidBin
+        }
+        
+        let payload = try JSONEncoder().encode(Bin(value: bin))
+        guard let result = ObjC_CardEncryptor.encrypted(payload, publicKey: publicKey) else {
+            throw Error.encryptionFailed
+        }
+        
+        return result
     }
     
     /// Encrypts a card.
@@ -150,6 +158,8 @@ public enum CardEncryptor {
         /// expiryMonth, expiryYear, and holderName, all of them are nil.
         case invalidEncryptionArguments
         
+        case invalidBin
+        
         public var errorDescription: String? {
             switch self {
             case .encryptionFailed:
@@ -157,6 +167,8 @@ public enum CardEncryptor {
             case .invalidEncryptionArguments:
                 // swiftlint:disable:next line_length
                 return "Trying to encrypt a card with card number, securityCode, expiryMonth, expiryYear, and holderName, all of them are nil"
+            case .invalidBin:
+                return "Trying to encrypt an empty or invalid BIN"
             case .unknown:
                 return "Unknow Error"
             }
