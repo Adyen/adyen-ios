@@ -8,6 +8,19 @@
 import XCTest
 
 class PaymentMethodListComponentTests: XCTestCase {
+
+    func testRequiresKeyboardInput() {
+        let method1 = PaymentMethodMock(type: "test_stored_type_1", name: "test_stored_name_1")
+        let method2 = PaymentMethodMock(type: "test_stored_type_2", name: "test_stored_name_2")
+        let storedComponent = PaymentComponentMock(paymentMethod: method1)
+        let regularComponent = PaymentComponentMock(paymentMethod: method2)
+        let sectionedComponents = SectionedComponents(stored: [storedComponent], regular: [regularComponent])
+        let sut = PaymentMethodListComponent(components: sectionedComponents)
+
+        let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: {_,_  in })
+
+        XCTAssertFalse((navigationViewController.topViewController as! WrapperViewController).requiresKeyboardInput)
+    }
     
     func testLocalizationWithCustomTableName() {
         let method1 = PaymentMethodMock(type: "test_stored_type_1", name: "test_stored_name_1")
