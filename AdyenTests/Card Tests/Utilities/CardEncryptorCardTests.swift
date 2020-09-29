@@ -148,7 +148,7 @@ class CardEncryptorCardTests: XCTestCase {
 
     // MARK: - Test encrypting BIN
 
-    func testEncryptExpiryBINShouldReturnNilWithNilBIN() {
+    func testEncryptExpiryBINShouldReturnNilWithEmptyBIN() {
         XCTAssertThrowsError(try CardEncryptor.encryptedBin(for: "", publicKey: "key")) { error in
             XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
             XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.invalidBin, "Thrown Error is not CardEncryptor.Error.invalidBin")

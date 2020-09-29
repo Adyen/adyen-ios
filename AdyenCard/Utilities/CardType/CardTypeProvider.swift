@@ -37,7 +37,7 @@ internal final class CardTypeProvider: AnyCardTypeProvider {
     /// Request card types based on enterd BIN.
     /// - Parameters:
     ///   - bin: Card's BIN number. If longer than `minBinLength` - calls API, otherwise check local Regex,
-    ///   - caller:  Callback to notify about results.
+    ///   - completion:  Callback to notify about results.
     internal func requestCardType(for bin: String, supported cardType: [CardType], completion: @escaping ([CardType]) -> Void) {
         guard bin.count > CardTypeProvider.minBinLength else {
             return completion(cardType.adyen.types(forCardNumber: bin))
