@@ -307,7 +307,6 @@ class CardComponentTests: XCTestCase {
         }
 
         sut.cardTypeProvider = cardTypeProviderMock
-        Locale.current.regionCode
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
