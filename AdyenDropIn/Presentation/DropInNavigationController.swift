@@ -55,7 +55,7 @@ internal final class DropInNavigationController: UINavigationController {
             keyboardRect = .zero
         }
         
-        if let topViewController = topViewController as? WrapperViewController, topViewController.requiresInput {
+        if let topViewController = topViewController as? WrapperViewController, topViewController.requiresKeyboardInput {
             updateFrame(for: topViewController)
         }
     }
@@ -139,7 +139,7 @@ extension DropInNavigationController: UIViewControllerTransitioningDelegate {
 internal final class WrapperViewController: UIViewController {
     
     /// :nodoc:
-    internal lazy var requiresInput: Bool = heirarchyContainsAForm(viewController: child)
+    internal lazy var requiresKeyboardInput: Bool = heirarchyRequiresKeyboardInput(viewController: child)
     
     /// :nodoc:
     internal let child: ModalViewController
@@ -155,12 +155,12 @@ internal final class WrapperViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func heirarchyContainsAForm(viewController: UIViewController?) -> Bool {
-        if viewController is FormViewController {
-            return true
+    private func heirarchyRequiresKeyboardInput(viewController: UIViewController?) -> Bool {
+        if let viewController = viewController as? FormViewController {
+            return viewController.requiresKeyboardInput
         }
         
-        return viewController?.children.contains(where: { heirarchyContainsAForm(viewController: $0) }) ?? false
+        return viewController?.children.contains(where: { heirarchyRequiresKeyboardInput(viewController: $0) }) ?? false
     }
     
 }

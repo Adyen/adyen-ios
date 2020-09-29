@@ -22,6 +22,9 @@ public final class FormViewController: UIViewController, Localizable {
     
     private lazy var itemManager = FormViewItemManager(itemViewDelegate: self)
     
+    /// :nodoc:
+    public var requiresKeyboardInput: Bool { formRequiresInputView() }
+    
     /// Indicates the `FormViewController` UI styling.
     public let style: ViewStyle
     
@@ -101,8 +104,17 @@ public final class FormViewController: UIViewController, Localizable {
     }
     
     private func getAllValidatableItems() -> [ValidatableFormItem] {
-        let flatItems = itemManager.items.flatMap { $0.flatSubitems }
+        let flatItems = getAllFlatItems()
         return flatItems.compactMap { $0 as? ValidatableFormItem }
+    }
+    
+    private func formRequiresInputView() -> Bool {
+        let flatItems = getAllFlatItems()
+        return flatItems.contains { $0 is InputViewRequiringFormItem }
+    }
+    
+    private func getAllFlatItems() -> [FormItem] {
+        itemManager.items.flatMap { $0.flatSubitems }
     }
     
     // MARK: - View

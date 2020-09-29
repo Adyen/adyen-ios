@@ -49,3 +49,7 @@ public protocol ValidatableFormItem: FormItem {
     func isValid() -> Bool
     
 }
+
+/// A form item that requires keyboard input or otherwise custom input view.
+/// :nodoc:
+public protocol InputViewRequiringFormItem: FormItem {}
