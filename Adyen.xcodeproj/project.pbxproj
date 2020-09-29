@@ -252,6 +252,10 @@
 		F94343E623FFD9A400AADF5F /* AdyenAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F94343E523FFD9A400AADF5F /* AdyenAssets.xcassets */; };
 		F94343E823FFF9DC00AADF5F /* ISOCountry.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94343E723FFF9DC00AADF5F /* ISOCountry.swift */; };
 		F9438F23243B29ED00FB9D69 /* UniversalRedirectComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9438F22243B29ED00FB9D69 /* UniversalRedirectComponent.swift */; };
+		F95B6D8A2523138E002C9062 /* PhoneNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6D892523138E002C9062 /* PhoneNumberFormatter.swift */; };
+		F95B6D8C252316DA002C9062 /* PhoneNumberValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6D8B252316DA002C9062 /* PhoneNumberValidator.swift */; };
+		F95B6D8E25231715002C9062 /* RegularExpressionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6D8D25231715002C9062 /* RegularExpressionValidator.swift */; };
+		F95B6D9025231880002C9062 /* PhoneNumberValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6D8F25231880002C9062 /* PhoneNumberValidatorTests.swift */; };
 		F960FB092371823A00AEF74B /* ApplePayComponentTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F960FB082371823A00AEF74B /* ApplePayComponentTest.swift */; };
 		F9620D7B23C36082005209FC /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9620D7A23C36082005209FC /* Configuration.swift */; };
 		F9620D8623C73B0D005209FC /* AdyenWeChatPay.h in Headers */ = {isa = PBXBuildFile; fileRef = F9620D8423C73B0D005209FC /* AdyenWeChatPay.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -735,6 +739,10 @@
 		F94343E523FFD9A400AADF5F /* AdyenAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AdyenAssets.xcassets; sourceTree = "<group>"; };
 		F94343E723FFF9DC00AADF5F /* ISOCountry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISOCountry.swift; sourceTree = "<group>"; };
 		F9438F22243B29ED00FB9D69 /* UniversalRedirectComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalRedirectComponent.swift; sourceTree = "<group>"; };
+		F95B6D892523138E002C9062 /* PhoneNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberFormatter.swift; sourceTree = "<group>"; };
+		F95B6D8B252316DA002C9062 /* PhoneNumberValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberValidator.swift; sourceTree = "<group>"; };
+		F95B6D8D25231715002C9062 /* RegularExpressionValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularExpressionValidator.swift; sourceTree = "<group>"; };
+		F95B6D8F25231880002C9062 /* PhoneNumberValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberValidatorTests.swift; sourceTree = "<group>"; };
 		F960FB082371823A00AEF74B /* ApplePayComponentTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayComponentTest.swift; sourceTree = "<group>"; };
 		F9620D7A23C36082005209FC /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdyenWeChatPay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1764,6 +1772,7 @@
 				F9D57525237C3576009C18B5 /* RandomStringGenerator.swift */,
 				F9A781AF2403ED4000E12487 /* NumericStringValidatorTests.swift */,
 				F9D644E324D2FA310059CBE3 /* EmailValidatorTests.swift */,
+				F95B6D8F25231880002C9062 /* PhoneNumberValidatorTests.swift */,
 			);
 			path = Validators;
 			sourceTree = "<group>";
@@ -1888,7 +1897,9 @@
 			isa = PBXGroup;
 			children = (
 				F926D53223F5A5D000D058D3 /* NumericStringValidator.swift */,
+				F95B6D8D25231715002C9062 /* RegularExpressionValidator.swift */,
 				F9D644DF24D2E4210059CBE3 /* EmailValidator.swift */,
+				F95B6D8B252316DA002C9062 /* PhoneNumberValidator.swift */,
 			);
 			path = Validators;
 			sourceTree = "<group>";
@@ -1897,6 +1908,7 @@
 			isa = PBXGroup;
 			children = (
 				E9E3DAB8221E98BD00697074 /* NumericFormatter.swift */,
+				F95B6D892523138E002C9062 /* PhoneNumberFormatter.swift */,
 			);
 			path = Formatters;
 			sourceTree = "<group>";
@@ -2615,6 +2627,7 @@
 				E787C9AE24698C2E00B401E0 /* UIViewHelpers.swift in Sources */,
 				E2C0E0BA220B2966008616F6 /* FormTextItemView.swift in Sources */,
 				E97B972322B238C400505476 /* Analytics.swift in Sources */,
+				F95B6D8C252316DA002C9062 /* PhoneNumberValidator.swift in Sources */,
 				E9021E022264C4C5009CF7F4 /* KeyedDecodingContainerHelpers.swift in Sources */,
 				E28098BB220DB9F30087928F /* ListViewController.swift in Sources */,
 				F9354BE923A7B5AC00A6760B /* ViewStyle.swift in Sources */,
@@ -2643,6 +2656,7 @@
 				E9021DAA225789B1009CF7F4 /* Localization.swift in Sources */,
 				E787C9D3246EC71B00B401E0 /* UIFontHelpers.swift in Sources */,
 				F96F44DD23BE487500871C1F /* LocalizationParameters.swift in Sources */,
+				F95B6D8A2523138E002C9062 /* PhoneNumberFormatter.swift in Sources */,
 				F9639B2D24DD6B370073F38A /* RetryAPIClient.swift in Sources */,
 				F9620DB323C75C19005209FC /* PaymentComponentBuilder.swift in Sources */,
 				E73D47F923D0DF2900B16D0B /* ContainerView.swift in Sources */,
@@ -2674,6 +2688,7 @@
 				E97B972122B0F3F500505476 /* ActionComponentData.swift in Sources */,
 				F9E441522382A0DD00D3CD48 /* ViewIdentifierBuilder.swift in Sources */,
 				E28098B3220DA7980087928F /* Component.swift in Sources */,
+				F95B6D8E25231715002C9062 /* RegularExpressionValidator.swift in Sources */,
 				F926D52023F4217A00D058D3 /* DeviceDependant.swift in Sources */,
 				F9D5753123828EBB009C18B5 /* AnyCardPaymentMethod.swift in Sources */,
 				E2B317A92265EBD200C1BB30 /* EventPublisher.swift in Sources */,
@@ -2807,6 +2822,7 @@
 				E773EA3C2523432B00119499 /* CardTypeProviderMock.swift in Sources */,
 				E9E3DB062226B3B200697074 /* CoderTests.swift in Sources */,
 				E9E3DABE221EA47800697074 /* StringExtensionsTests.swift in Sources */,
+				F95B6D9025231880002C9062 /* PhoneNumberValidatorTests.swift in Sources */,
 				F9639B5224E29E340073F38A /* PresentationDelegateMock.swift in Sources */,
 				E9021E042264C55E009CF7F4 /* KeyedDecodingContainerExtensionsTests.swift in Sources */,
 				F9EDB79E2397AEF400CFB3C9 /* ComponentManagerTests.swift in Sources */,

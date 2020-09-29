@@ -8,7 +8,7 @@ import Foundation
 
 /// An item in which text can be entered using a text field.
 /// :nodoc:
-public protocol FormTextItem: FormValueItem, ValidatableFormItem {
+public protocol FormTextItem: FormValueItem, ValidatableFormItem, InputViewRequiringFormItem {
     
     /// The text item style.
     var style: FormTextItemStyle { get }

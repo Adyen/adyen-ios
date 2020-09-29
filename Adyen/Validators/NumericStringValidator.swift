@@ -6,7 +6,7 @@
 
 import Foundation
 
-/// Validates a phone number.
+/// Validates a numeric string.
 /// :nodoc:
 open class NumericStringValidator: LengthValidator {
     
