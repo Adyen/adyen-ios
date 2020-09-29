@@ -64,32 +64,21 @@ public final class MBWayComponent: PaymentComponent, PresentableComponent, Local
             formViewController.title = paymentMethod.name
         }
         
-        formViewController.append(emailItem)
         formViewController.append(phoneNumberItem)
         formViewController.append(footerItem)
         
         return formViewController
     }()
     
-    /// The email item.
-    internal lazy var emailItem: FormTextInputItem = {
-        let emailItem = FormTextInputItem(style: style.textField)
-        emailItem.title = ADYLocalizedString("adyen.emailItem.title", localizationParameters)
-        emailItem.placeholder = "shopper@domain.com"
-        emailItem.validator = EmailValidator()
-        emailItem.validationFailureMessage = ADYLocalizedString("adyen.emailItem.invalid", localizationParameters)
-        emailItem.autocapitalizationType = .none
-        emailItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "emailItem")
-        return emailItem
-    }()
-    
     /// The full phone number item.
-    internal lazy var phoneNumberItem: FormPhoneNumberItem = {
-        let item = FormPhoneNumberItem(selectableValues: [PhoneExtensionPickerItem(identifier: "PT",
-                                                                                   title: "+351",
-                                                                                   phoneExtension: "+351")],
-                                       style: style.textField,
-                                       localizationParameters: localizationParameters)
+    internal lazy var phoneNumberItem: FormTextInputItem = {
+        let item = FormTextInputItem(style: style.textField)
+        item.title = ADYLocalizedString("adyen.phoneNumber.title", localizationParameters)
+        item.placeholder = ADYLocalizedString("adyen.phoneNumber.placeholder", localizationParameters)
+        item.validator = PhoneNumberValidator()
+        item.formatter = PhoneNumberFormatter()
+        item.validationFailureMessage = ADYLocalizedString("adyen.phoneNumber.invalid", localizationParameters)
+        item.keyboardType = .phonePad
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "phoneNumberItem")
         return item
     }()
@@ -109,8 +98,7 @@ public final class MBWayComponent: PaymentComponent, PresentableComponent, Local
         guard formViewController.validate() else { return }
         
         let details = MBWayDetails(paymentMethod: paymentMethod,
-                                   telephoneNumber: phoneNumberItem.phoneNumber,
-                                   shopperEmail: emailItem.value)
+                                   telephoneNumber: phoneNumberItem.value)
         footerItem.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
         

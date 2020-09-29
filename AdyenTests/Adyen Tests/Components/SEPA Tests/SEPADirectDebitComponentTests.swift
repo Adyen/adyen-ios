@@ -5,9 +5,19 @@
 //
 
 @testable import Adyen
+@testable import AdyenDropIn
 import XCTest
 
 class SEPADirectDebitComponentTests: XCTestCase {
+
+    func testRequiresKeyboardInput() {
+        let method = SEPADirectDebitPaymentMethod(type: "test_type", name: "test_name")
+        let sut = SEPADirectDebitComponent(paymentMethod: method)
+
+        let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: { _,_  in })
+
+        XCTAssertTrue((navigationViewController.topViewController as! WrapperViewController).requiresKeyboardInput)
+    }
     
     func testLocalizationWithCustomTableName() {
         let method = SEPADirectDebitPaymentMethod(type: "test_type", name: "test_name")

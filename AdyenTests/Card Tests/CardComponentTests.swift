@@ -10,6 +10,15 @@
 import XCTest
 
 class CardComponentTests: XCTestCase {
+
+    func testRequiresKeyboardInput() {
+        let method = CardPaymentMethodMock(type: "test_type", name: "test_name", brands: ["bcmc"])
+        let sut = CardComponent(paymentMethod: method, clientKey: "test_client_key")
+
+        let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: {_,_  in })
+
+        XCTAssertTrue((navigationViewController.topViewController as! WrapperViewController).requiresKeyboardInput)
+    }
     
     func testLocalizationWithCustomTableName() {
         let method = CardPaymentMethodMock(type: "test_type", name: "test_name", brands: ["bcmc"])

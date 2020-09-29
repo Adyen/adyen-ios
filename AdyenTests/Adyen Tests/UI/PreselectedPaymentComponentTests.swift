@@ -45,6 +45,12 @@ class PreselectedPaymentComponentTests: XCTestCase {
         sut = nil
         delegate = nil
     }
+
+    func testRequiresKeyboardInput() {
+        let viewController = sut.viewController as! FormViewController
+
+        XCTAssertFalse(viewController.requiresKeyboardInput)
+    }
     
     func testTitle() {
         XCTAssertEqual(sut.viewController.title, "Test title")
