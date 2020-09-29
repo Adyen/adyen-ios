@@ -71,12 +71,14 @@ public final class MBWayComponent: PaymentComponent, PresentableComponent, Local
     }()
     
     /// The full phone number item.
-    internal lazy var phoneNumberItem: FormPhoneNumberItem = {
-        let item = FormPhoneNumberItem(selectableValues: [PhoneExtensionPickerItem(identifier: "PT",
-                                                                                   title: "+351",
-                                                                                   phoneExtension: "+351")],
-                                       style: style.textField,
-                                       localizationParameters: localizationParameters)
+    internal lazy var phoneNumberItem: FormTextInputItem = {
+        let item = FormTextInputItem(style: style.textField)
+        item.title = ADYLocalizedString("adyen.phoneNumber.title", localizationParameters)
+        item.placeholder = ADYLocalizedString("adyen.phoneNumber.placeholder", localizationParameters)
+        item.validator = PhoneNumberValidator()
+        item.formatter = PhoneNumberFormatter()
+        item.validationFailureMessage = ADYLocalizedString("adyen.phoneNumber.invalid", localizationParameters)
+        item.keyboardType = .phonePad
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "phoneNumberItem")
         return item
     }()
@@ -96,7 +98,7 @@ public final class MBWayComponent: PaymentComponent, PresentableComponent, Local
         guard formViewController.validate() else { return }
         
         let details = MBWayDetails(paymentMethod: paymentMethod,
-                                   telephoneNumber: phoneNumberItem.phoneNumber)
+                                   telephoneNumber: phoneNumberItem.value)
         footerItem.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
         
