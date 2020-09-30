@@ -22,7 +22,7 @@ public struct PhoneExtensionPickerItem: Equatable {
 }
 
 /// Describes a picker item.
-internal final class FormPhoneExtensionPickerItem: FormValueItem {
+internal final class FormPhoneExtensionPickerItem: FormValueItem, InputViewRequiringFormItem {
     
     /// :nodoc
     public var identifier: String?

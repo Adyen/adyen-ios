@@ -26,8 +26,11 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     /// :nodoc:
     internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
     
+    /// :nodoc:
+    internal var cardTypeProvider: AnyCardTypeProvider
+    
     private static let publicBinLenght = 6
-    private let cardTypeProvider: CardTypeProvider
+    private let throttler = Throttler(minimumDelay: 0.5)
     
     /// Card Component errors.
     public enum Error: Swift.Error {
@@ -220,10 +223,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
                                       localizationParameters: localizationParameters)
         
         observe(item.$binValue) { [weak self] bin in
-            guard let self = self else { return }
-            
-            self.requestCardType(for: bin, update: item)
-            self.cardComponentDelegate?.didChangeBIN(String(bin.prefix(CardComponent.publicBinLenght)), component: self)
+            self?.didReceived(bin: bin)
         }
         
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "numberItem")
@@ -282,12 +282,20 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         return footerItem
     }()
     
-    fileprivate func requestCardType(for bin: String, update item: FormCardNumberItem) {
+    private func didReceived(bin: String) {
+        self.securityCodeItem.selectedCard = supportedCardTypes.adyen.type(forCardNumber: bin)
+        self.cardComponentDelegate?.didChangeBIN(String(bin.prefix(CardComponent.publicBinLenght)), component: self)
+        
+        throttler.throttle { [weak self] in
+            self?.requestCardTypes(for: bin)
+        }
+    }
+    
+    private func requestCardTypes(for bin: String) {
         cardTypeProvider.requestCardType(for: bin, supported: self.supportedCardTypes) { [weak self] cardTypes in
             guard let self = self else { return }
             
-            self.securityCodeItem.selectedCard = cardTypes.first
-            item.detectedCardsDidChange(detectedCards: cardTypes)
+            self.numberItem.didChange(detectedCards: cardTypes)
             self.cardComponentDelegate?.didChangeCardType(cardTypes, component: self)
         }
     }

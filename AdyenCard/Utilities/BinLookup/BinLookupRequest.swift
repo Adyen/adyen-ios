@@ -24,8 +24,11 @@ internal struct BinLookupRequest: Request {
 
     internal var supportedBrands: [CardType]
     
+    internal let requestId = UUID().uuidString
+    
     private enum CodingKeys: String, CodingKey {
         case encryptedBin
         case supportedBrands
+        case requestId
     }
 }

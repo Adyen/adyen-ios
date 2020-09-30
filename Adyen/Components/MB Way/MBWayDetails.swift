@@ -15,26 +15,20 @@ public struct MBWayDetails: PaymentMethodDetails {
     /// The telephone number.
     public let telephoneNumber: String
     
-    /// The shopper email.
-    public let shopperEmail: String
-    
     /// Initializes the MB Way details.
     ///
     ///
     /// - Parameters:
     ///   - paymentMethod: The MB Way payment method.
     ///   - telephoneNumber: The telephone number.
-    ///   - shopperEmail: The shopper email.
-    public init(paymentMethod: PaymentMethod, telephoneNumber: String, shopperEmail: String) {
+    public init(paymentMethod: PaymentMethod, telephoneNumber: String) {
         self.type = paymentMethod.type
-        self.shopperEmail = shopperEmail
         self.telephoneNumber = telephoneNumber
     }
     
     private enum CodingKeys: String, CodingKey {
         case type
         case telephoneNumber
-        case shopperEmail
     }
     
 }

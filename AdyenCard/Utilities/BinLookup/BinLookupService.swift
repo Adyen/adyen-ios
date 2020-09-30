@@ -28,11 +28,14 @@ internal final class BinLookupService: AnyBinLookupService {
     }
     
     internal func requestCardType(for bin: String, supportedCardTypes: [CardType], caller: @escaping CompletionHandler) {
-        let encryptedBin = try? CardEncryptor.encryptedCard(for: CardEncryptor.Card(number: bin),
-                                                            publicKey: publicKey)
-        let request = BinLookupRequest(encryptedBin: encryptedBin?.number ?? "",
-                                       supportedBrands: supportedCardTypes)
+        let encryptedBin: String
+        do {
+            encryptedBin = try CardEncryptor.encryptedBin(for: bin, publicKey: publicKey)
+        } catch {
+            return caller(.failure(error))
+        }
         
+        let request = BinLookupRequest(encryptedBin: encryptedBin, supportedBrands: supportedCardTypes)
         apiClient.perform(request, completionHandler: caller)
     }
 }

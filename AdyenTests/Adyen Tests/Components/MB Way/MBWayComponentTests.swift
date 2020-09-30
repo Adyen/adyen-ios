@@ -19,18 +19,9 @@ class MBWayComponentTests: XCTestCase {
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
-        let expectedSelectableValues = [PhoneExtensionPickerItem(identifier: "PT", title: "+351", phoneExtension: "+351")]
-
         XCTAssertEqual(sut.phoneNumberItem.title, ADYLocalizedString("adyen.phoneNumber.title", sut.localizationParameters))
         XCTAssertEqual(sut.phoneNumberItem.placeholder, ADYLocalizedString("adyen.phoneNumber.placeholder", sut.localizationParameters))
         XCTAssertEqual(sut.phoneNumberItem.validationFailureMessage, ADYLocalizedString("adyen.phoneNumber.invalid", sut.localizationParameters))
-        XCTAssertEqual(sut.phoneNumberItem.prefix, "+351")
-        XCTAssertEqual(sut.phoneNumberItem.phonePrefixItem.selectableValues, expectedSelectableValues)
-        XCTAssertEqual(sut.phoneNumberItem.phonePrefixItem.value.identifier, "PT")
-
-        XCTAssertEqual(sut.emailItem.title, ADYLocalizedString("adyen.emailItem.title", sut.localizationParameters))
-        XCTAssertEqual(sut.emailItem.placeholder, "shopper@domain.com")
-        XCTAssertEqual(sut.emailItem.validationFailureMessage, ADYLocalizedString("adyen.emailItem.invalid", sut.localizationParameters))
 
         XCTAssertNil(sut.footerItem.title)
         XCTAssertEqual(sut.footerItem.submitButtonTitle, ADYLocalizedString("adyen.continueTo", sut.localizationParameters, method.name))
@@ -42,18 +33,9 @@ class MBWayComponentTests: XCTestCase {
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
 
-        let expectedSelectableValues = [PhoneExtensionPickerItem(identifier: "PT", title: "+351", phoneExtension: "+351")]
-
         XCTAssertEqual(sut.phoneNumberItem.title, ADYLocalizedString("adyen_phoneNumber_title", sut.localizationParameters))
         XCTAssertEqual(sut.phoneNumberItem.placeholder, ADYLocalizedString("adyen_phoneNumber_placeholder", sut.localizationParameters))
         XCTAssertEqual(sut.phoneNumberItem.validationFailureMessage, ADYLocalizedString("adyen_phoneNumber_invalid", sut.localizationParameters))
-        XCTAssertEqual(sut.phoneNumberItem.prefix, "+351")
-        XCTAssertEqual(sut.phoneNumberItem.phonePrefixItem.selectableValues, expectedSelectableValues)
-        XCTAssertEqual(sut.phoneNumberItem.phonePrefixItem.value.identifier, "PT")
-
-        XCTAssertEqual(sut.emailItem.title, ADYLocalizedString("adyen_emailItem_title", sut.localizationParameters))
-        XCTAssertEqual(sut.emailItem.placeholder, "shopper@domain.com")
-        XCTAssertEqual(sut.emailItem.validationFailureMessage, ADYLocalizedString("adyen_emailItem_invalid", sut.localizationParameters))
 
         XCTAssertNil(sut.footerItem.title)
         XCTAssertEqual(sut.footerItem.submitButtonTitle, ADYLocalizedString("adyen_continueTo", sut.localizationParameters, method.name))
@@ -98,16 +80,9 @@ class MBWayComponentTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: "Adyen.MBWayComponent.phoneNumberItem")
+            let phoneNumberView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.MBWayComponent.phoneNumberItem")
             let phoneNumberViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "Adyen.MBWayComponent.phoneNumberItem.titleLabel")
             let phoneNumberViewTextField: UITextField? = sut.viewController.view.findView(with: "Adyen.MBWayComponent.phoneNumberItem.textField")
-
-            let phoneExtensionView: FormPhoneExtensionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormPhoneNumberItem.phoneExtensionPickerItem")
-            let phoneExtensionViewLabel: UILabel? = sut.viewController.view.findView(with: "Adyen.FormPhoneNumberItem.phoneExtensionPickerItem.inputControl.label")
-
-            let emailItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.MBWayComponent.emailItem")
-            let emailItemViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "Adyen.MBWayComponent.emailItem.titleLabel")
-            let emailItemViewTextField: UITextField? = sut.viewController.view.findView(with: "Adyen.MBWayComponent.emailItem.textField")
 
             let footerItemViewButton: UIControl? = sut.viewController.view.findView(with: "Adyen.MBWayComponent.footerItem.submitButton")
             let footerItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "Adyen.MBWayComponent.footerItem.submitButton.titleLabel")
@@ -117,7 +92,7 @@ class MBWayComponentTests: XCTestCase {
 
             /// Test phone number field
             XCTAssertEqual(phoneNumberView?.backgroundColor, .red)
-            XCTAssertEqual(phoneNumberViewTitleLabel?.textColor, .yellow)
+            XCTAssertEqual(phoneNumberViewTitleLabel?.textColor, sut.viewController.view.tintColor)
             XCTAssertEqual(phoneNumberViewTitleLabel?.backgroundColor, .blue)
             XCTAssertEqual(phoneNumberViewTitleLabel?.textAlignment, .center)
             XCTAssertEqual(phoneNumberViewTitleLabel?.font, .systemFont(ofSize: 20))
@@ -125,23 +100,6 @@ class MBWayComponentTests: XCTestCase {
             XCTAssertEqual(phoneNumberViewTextField?.textAlignment, .right)
             XCTAssertEqual(phoneNumberViewTextField?.textColor, .red)
             XCTAssertEqual(phoneNumberViewTextField?.font, .systemFont(ofSize: 13))
-
-            /// Email item view.
-            XCTAssertEqual(emailItemView?.backgroundColor, .red)
-            XCTAssertEqual(emailItemViewTitleLabel?.textColor, sut.viewController.view.tintColor)
-            XCTAssertEqual(emailItemViewTitleLabel?.backgroundColor, .blue)
-            XCTAssertEqual(emailItemViewTitleLabel?.textAlignment, .center)
-            XCTAssertEqual(emailItemViewTitleLabel?.font, .systemFont(ofSize: 20))
-            XCTAssertEqual(emailItemViewTextField?.backgroundColor, .red)
-            XCTAssertEqual(emailItemViewTextField?.textAlignment, .right)
-            XCTAssertEqual(emailItemViewTextField?.textColor, .red)
-            XCTAssertEqual(emailItemViewTextField?.font, .systemFont(ofSize: 13))
-
-            /// Test phone extension
-            XCTAssertEqual(phoneExtensionView?.backgroundColor, .red)
-            XCTAssertEqual(phoneExtensionViewLabel?.textAlignment, .right)
-            XCTAssertEqual(phoneExtensionViewLabel?.textColor, .red)
-            XCTAssertEqual(phoneExtensionViewLabel?.font, .systemFont(ofSize: 13))
 
             /// Test footer
             XCTAssertEqual(footerItemViewButton?.backgroundColor, .red)
@@ -174,7 +132,6 @@ class MBWayComponentTests: XCTestCase {
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is MBWayDetails)
             let data = data.paymentMethod as! MBWayDetails
-            XCTAssertEqual(data.shopperEmail, "shopper@domain.com")
             XCTAssertEqual(data.telephoneNumber, "+3511233456789")
 
             sut.stopLoading(withSuccess: true, completion: {
@@ -189,11 +146,8 @@ class MBWayComponentTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             let submitButton: UIControl? = sut.viewController.view.findView(with: "Adyen.MBWayComponent.footerItem.submitButton")
 
-            let phoneNumberView: FormPhoneNumberItemView! = sut.viewController.view.findView(with: "Adyen.MBWayComponent.phoneNumberItem")
-            self.populate(textItemView: phoneNumberView, with: "1233456789")
-
-            let emailItemView: FormTextInputItemView! = sut.viewController.view.findView(with: "Adyen.MBWayComponent.emailItem")
-            self.populate(textItemView: emailItemView, with: "shopper@domain.com")
+            let phoneNumberView: FormTextInputItemView! = sut.viewController.view.findView(with: "Adyen.MBWayComponent.phoneNumberItem")
+            self.populate(textItemView: phoneNumberView, with: "+3511233456789")
 
             submitButton?.sendActions(for: .touchUpInside)
 

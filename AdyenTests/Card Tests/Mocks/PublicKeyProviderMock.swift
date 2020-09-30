@@ -1,12 +1,9 @@
 //
-//  PublicKeyProviderMock.swift
-//  AdyenTests
+// Copyright (c) 2020 Adyen N.V.
 //
-//  Created by Vladimir Abramichev on 24/08/2020.
-//  Copyright © 2020 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@testable import Adyen
 @testable import AdyenCard
 
 final class CardPublicKeyProviderMock: AnyCardPublicKeyProvider {

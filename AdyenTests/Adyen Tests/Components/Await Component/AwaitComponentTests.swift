@@ -8,6 +8,7 @@
 
 import XCTest
 @testable import Adyen
+@testable import AdyenDropIn
 
 final class AwaitActionHandlerMock: AnyAwaitActionHandler {
 
@@ -43,6 +44,14 @@ extension AwaitAction: Equatable {
 }
 
 class AwaitComponentTests: XCTestCase {
+
+    func testRequiresKeyboardInput() {
+        let sut = AwaitViewController(viewModel: AwaitComponentViewModel(icon: "icon", message: "message", spinnerTitle: "spinner title"))
+
+        let wrapperViewController = WrapperViewController(child: ModalViewController(rootViewController: sut))
+
+        XCTAssertFalse(wrapperViewController.requiresKeyboardInput)
+    }
 
     func testActionHandling() {
         var style = AwaitComponentStyle()

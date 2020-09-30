@@ -6,6 +6,7 @@
 
 @testable import Adyen
 @testable import AdyenCard
+@testable import AdyenDropIn
 import XCTest
 
 class BCMCComponentTests: XCTestCase {
@@ -15,6 +16,16 @@ class BCMCComponentTests: XCTestCase {
     override func setUp() {
         super.setUp()
         delegate = PaymentComponentDelegateMock()
+    }
+
+    func testRequiresKeyboardInput() {
+        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["any_test_brand_name"])
+        let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
+        let sut = BCMCComponent(paymentMethod: paymentMethod, clientKey: "test_client_key")
+
+        let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: { _,_  in })
+
+        XCTAssertTrue((navigationViewController.topViewController as! WrapperViewController).requiresKeyboardInput)
     }
     
     func testDefaultConfigAllFieldsArePresent() {
@@ -104,7 +115,7 @@ class BCMCComponentTests: XCTestCase {
             
             expectation.fulfill()
         }
-        wait(for: [expectation], timeout: 5)
+        wait(for: [expectation], timeout: 8)
     }
     
     func testInvalidCardTypeDetection() {
@@ -119,7 +130,7 @@ class BCMCComponentTests: XCTestCase {
             XCTAssertNotNil(cardNumberItemView)
             
             let cardNumberItem = cardNumberItemView!.item
-            cardNumberItem.detectedCardsDidChange(detectedCards: [])
+            cardNumberItem.didChange(detectedCards: [])
             XCTAssertTrue(cardNumberItem.cardTypeLogos.allSatisfy { $0.isHidden })
             
             expectation.fulfill()
