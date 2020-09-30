@@ -40,6 +40,10 @@
     return [ObjC_CardEncryptor encryptCard:card withPublicKey:publicKey date:date];
 }
 
++ (NSString *)encrypted:(NSData *)data publicKey:(NSString *)publicKey {
+    return [ADYEncrypter encrypt:data publicKeyInHex:publicKey];
+}
+
 + (NSString *)encryptedToTokenWithNumber:(NSString *)number
                             securityCode:(NSString *)securityCode
                              expiryMonth:(NSString *)expiryMonth

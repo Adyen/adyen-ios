@@ -115,7 +115,7 @@ class BCMCComponentTests: XCTestCase {
             
             expectation.fulfill()
         }
-        wait(for: [expectation], timeout: 5)
+        wait(for: [expectation], timeout: 8)
     }
     
     func testInvalidCardTypeDetection() {
@@ -130,7 +130,7 @@ class BCMCComponentTests: XCTestCase {
             XCTAssertNotNil(cardNumberItemView)
             
             let cardNumberItem = cardNumberItemView!.item
-            cardNumberItem.detectedCardsDidChange(detectedCards: [])
+            cardNumberItem.didChange(detectedCards: [])
             XCTAssertTrue(cardNumberItem.cardTypeLogos.allSatisfy { $0.isHidden })
             
             expectation.fulfill()

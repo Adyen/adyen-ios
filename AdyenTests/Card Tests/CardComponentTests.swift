@@ -300,6 +300,13 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 clientKey: "test_client_key")
         sut.showsLargeTitle = false
+
+        let cardTypeProviderMock = CardTypeProviderMock()
+        cardTypeProviderMock.onFetch = {
+            $0([.americanExpress])
+        }
+
+        sut.cardTypeProvider = cardTypeProviderMock
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -316,10 +323,10 @@ class CardComponentTests: XCTestCase {
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
-            self.populate(textItemView: cardNumberItemView!, with: "370000000000002")
+            self.populate(textItemView: cardNumberItemView!, with: "37000000000")
         }
         
-        wait(for: [expectationBin, expectationCardType], timeout: 5)
+        wait(for: [expectationBin, expectationCardType], timeout: 10)
     }
     
     func testCVVFormatterChange() {

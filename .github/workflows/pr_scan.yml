@@ -11,26 +11,29 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
-    - name: Install Dependencies
+    - name: Install Tools
       run: |
         brew install sonar-scanner
         brew install swiftlint
         gem install slather
         
-    - name: Check Dependencies
-      uses: actions/cache@v1
-      id: carthage-cache
-      with:
-        path: Carthage
-        key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
+#     - name: Check Dependencie Cache
+#       uses: actions/cache@v1
+#       id: carthage-cache
+#       with:
+#         path: Carthage
+#         key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
       
     - name: Install Dependencies
-      if: steps.carthage-cache.outputs.cache-hit != 'true'
+      #if: steps.carthage-cache.outputs.cache-hit != 'true'
       run: |
+        if [[ $(carthage outdated) == *"Latest"* ]] ; then
+          rm Cartfile.resolved
+        fi
         carthage bootstrap --platform iOS --cache-builds
       env:
          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-         
+    
     - name: Setup Build Wrapper
       run: |
         curl -sS https://sonarcloud.io/static/cpp/build-wrapper-macosx-x86.zip > build-wrapper.zip

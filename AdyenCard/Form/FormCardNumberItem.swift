@@ -7,7 +7,7 @@
 /// A form item into which a card number is entered.
 internal final class FormCardNumberItem: FormTextItem {
     
-    private static let binLength = 8
+    private static let binLength = 12
     
     private var previouslyDetectedCardTypes: Set<CardType>?
     
@@ -49,21 +49,20 @@ internal final class FormCardNumberItem: FormTextItem {
     
     internal func valueDidChange() {
         binValue = String(value.prefix(FormCardNumberItem.binLength))
+        cardNumberFormatter.cardType = supportedCardTypes.adyen.type(forCardNumber: value)
         
         guard !value.isEmpty else {
-            cardNumberFormatter.cardType = nil
             previouslyDetectedCardTypes = nil
             setLogos(for: Set<CardType>(supportedCardTypes))
             return
         }
     }
     
-    internal func detectedCardsDidChange(detectedCards: [CardType]) {
+    internal func didChange(detectedCards: [CardType]) {
         let newDetectedCardTypes = Set<CardType>(detectedCards)
         guard self.previouslyDetectedCardTypes != newDetectedCardTypes else { return }
         
         previouslyDetectedCardTypes = newDetectedCardTypes
-        cardNumberFormatter.cardType = newDetectedCardTypes.first
         setLogos(for: newDetectedCardTypes)
     }
     

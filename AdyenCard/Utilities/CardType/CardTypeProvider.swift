@@ -6,11 +6,17 @@
 
 import Foundation
 
+/// :nodoc:
+internal protocol AnyCardTypeProvider: Component {
+    /// :nodoc:
+    func requestCardType(for bin: String, supported cardType: [CardType], completion: @escaping ([CardType]) -> Void)
+}
+
 /// Provide cardType detection based on BinLookup API.
 /// Fall back to local regex-based detector if API not available or BIN too short.
-internal final class CardTypeProvider: Component {
+internal final class CardTypeProvider: AnyCardTypeProvider {
     
-    private static let minBinLength = 7
+    private static let minBinLength = 6
     
     private let apiClient: APIClientProtocol?
 
@@ -31,46 +37,51 @@ internal final class CardTypeProvider: Component {
     /// Request card types based on enterd BIN.
     /// - Parameters:
     ///   - bin: Card's BIN number. If longer than `minBinLength` - calls API, otherwise check local Regex,
-    ///   - caller:  Callback to notify about results.
-    internal func requestCardType(for bin: String, supported cardType: [CardType], caller: @escaping ([CardType]) -> Void) {
-        guard bin.count >= CardTypeProvider.minBinLength else {
-            return caller(cardType.adyen.types(forCardNumber: bin))
+    ///   - completion:  Callback to notify about results.
+    internal func requestCardType(for bin: String, supported cardType: [CardType], completion: @escaping ([CardType]) -> Void) {
+        guard bin.count > CardTypeProvider.minBinLength else {
+            return completion(cardType.adyen.types(forCardNumber: bin))
         }
         
-        try? fetchBinLookupService(success: { binLookupService in
+        fetchBinLookupService(success: { binLookupService in
             binLookupService.requestCardType(for: bin,
                                              supportedCardTypes: cardType) { result in
                 switch result {
                 case let .success(response):
-                    caller(response.detectedBrands)
+                    completion(response.detectedBrands ?? [])
                 case .failure:
-                    caller(cardType.adyen.types(forCardNumber: bin))
+                    completion(cardType.adyen.types(forCardNumber: bin))
                 }
             }
         }, failure: { _ in
-            caller(cardType.adyen.types(forCardNumber: bin))
+            completion(cardType.adyen.types(forCardNumber: bin))
         })
     }
     
     private func fetchBinLookupService(success: @escaping (BinLookupService) -> Void,
-                                       failure: ((Swift.Error) -> Void)? = nil) throws {
+                                       failure: ((Swift.Error) -> Void)? = nil) {
         if let binLookupService = privateBinLookupService {
             return success(binLookupService)
         }
         
         let localApiClient = self.apiClient ?? APIClient(environment: self.environment)
-        try cardPublicKeyProvider.fetch { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case let .success(publicKey):
-                let binLookupService = BinLookupService(publicKey: publicKey,
-                                                        apiClient: localApiClient)
-                self.privateBinLookupService = binLookupService
-                success(binLookupService)
-            case let .failure(error):
-                failure?(error)
+        
+        do {
+            try cardPublicKeyProvider.fetch { [weak self] result in
+                guard let self = self else { return }
+                
+                switch result {
+                case let .success(publicKey):
+                    let binLookupService = BinLookupService(publicKey: publicKey,
+                                                            apiClient: localApiClient)
+                    self.privateBinLookupService = binLookupService
+                    success(binLookupService)
+                case let .failure(error):
+                    failure?(error)
+                }
             }
+        } catch {
+            failure?(error)
         }
     }
 }
