@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 
 /// :nodoc:
-open class FormViewController: UIViewController {
+open class FormViewController: UIViewController, PaymentProcessingElement {
     
     public init(appearance: Appearance) {
         self.appearance = appearance
@@ -79,6 +79,16 @@ open class FormViewController: UIViewController {
         
         view.endEditing(true)
         formView.payButton.showsActivityIndicator = true
+    }
+
+    // MARK: - PaymentProcessingElement
+
+    func startProcessing() {
+        formView.payButton.showsActivityIndicator = true
+    }
+
+    func stopProcessing() {
+        formView.payButton.showsActivityIndicator = false
     }
     
     // MARK: - Private
