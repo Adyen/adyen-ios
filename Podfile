@@ -3,7 +3,7 @@ platform :ios, '9.0'
 use_frameworks!
 
 target 'AdyenUIHost' do
-    
+
   pod 'SwiftLint'
   pod 'SwiftFormat/CLI'
 

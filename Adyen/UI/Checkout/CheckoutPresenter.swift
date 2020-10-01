@@ -192,6 +192,9 @@ extension CheckoutPresenter: SFSafariViewControllerDelegate {
     /// :nodoc:
     public func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
         showPaymentProcessing(false)
+
+        // Dismiss the whole checkout.
+        delegate?.didSelectCancel(in: self)
     }
     
 }
