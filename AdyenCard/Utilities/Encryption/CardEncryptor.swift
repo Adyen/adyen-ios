@@ -11,53 +11,6 @@ import Foundation
 /// An object that provides static methods for encrypting card information and retrieving public keys from the server.
 public enum CardEncryptor {
     
-    /// Contains the information of a card that is yet to be encrypted.
-    public struct Card {
-        /// The card number.
-        public var number: String?
-        
-        /// The card's security code.
-        public var securityCode: String?
-        
-        /// The month the card expires.
-        public var expiryMonth: String?
-        
-        /// The year the card expires.
-        public var expiryYear: String?
-        
-        /// :nodoc:
-        public init(number: String? = nil, securityCode: String? = nil, expiryMonth: String? = nil, expiryYear: String? = nil) {
-            self.number = number
-            self.securityCode = securityCode
-            self.expiryMonth = expiryMonth
-            self.expiryYear = expiryYear
-        }
-        
-        internal var isEmpty: Bool {
-            return [number, securityCode, expiryYear, expiryMonth].allSatisfy { $0 == nil }
-        }
-        
-    }
-    
-    public struct Bin: Encodable {
-        /// The card BIN number.
-        public let value: String
-        
-        public func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encode(value, forKey: .value)
-            
-            let timestampString = ISO8601DateFormatter().string(from: Date())
-            try container.encode(timestampString, forKey: .timestamp)
-        }
-        
-        private enum CodingKeys: String, CodingKey {
-            case value = "binValue"
-            case timestamp = "generationtime"
-        }
-        
-    }
-    
     /// Contains encrypted card information.
     public struct EncryptedCard {
         /// The encrypted card number.
@@ -112,7 +65,7 @@ public enum CardEncryptor {
         }
         
         let payload = try JSONEncoder().encode(Bin(value: bin))
-        guard let result = ObjC_CardEncryptor.encrypted(payload, publicKey: publicKey) else {
+        guard let result = ADYCryptor.encrypt(data: payload, publicKey: publicKey) else {
             throw Error.encryptionFailed
         }
         
@@ -148,7 +101,6 @@ public enum CardEncryptor {
     /// :nodoc:
     internal static func cleanPublicKey(publicKeyToken: String) -> Bool {
         let fingerprint = publicKeyToken.sha1()
-        
         return ADYRSACryptor.deleteRSA(appTag: fingerprint)
     }
     
@@ -291,6 +243,29 @@ public enum CardEncryptor {
 
 extension CardEncryptor {
 
+    public struct Bin: Encodable {
+        /// The card BIN number.
+        public let value: String
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(value, forKey: .value)
+
+            let timestampString = ISO8601DateFormatter().string(from: Date())
+            try container.encode(timestampString, forKey: .timestamp)
+        }
+
+        private enum CodingKeys: String, CodingKey {
+            case value = "binValue"
+            case timestamp = "generationtime"
+        }
+
+    }
+    
+}
+
+extension CardEncryptor {
+    
     /// Contains the information of a card that is yet to be encrypted.
     public struct Card: Encodable {
         /// The card number.
@@ -325,16 +300,6 @@ extension CardEncryptor {
             return try? JSONEncoder().encode(self)
         }
 
-        private static var dateFormatter: DateFormatter {
-            let formatter = DateFormatter()
-            formatter.locale = Locale(identifier: "en_US_POSIX")
-            formatter.calendar = Calendar(identifier: .gregorian)
-            formatter.timeZone = TimeZone(abbreviation: "UTC")!
-
-            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
-            return formatter
-        }
-
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
@@ -343,7 +308,11 @@ extension CardEncryptor {
             if let securityCode = securityCode { try container.encode(securityCode, forKey: .securityCode) }
             if let expiryMonth = expiryMonth { try container.encode(expiryMonth, forKey: .expiryMonth) }
             if let expiryYear = expiryYear { try container.encode(expiryYear, forKey: .expiryYear) }
-            if let generationDate = generationDate { try container.encode(generationDate, forKey: .generationDate) }
+            
+            if let generationDate = generationDate {
+                let timestampString = ISO8601DateFormatter().string(from: generationDate)
+                try container.encode(timestampString, forKey: .generationDate)
+            }
         }
 
         private enum CodingKeys: String, CodingKey {

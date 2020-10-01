@@ -108,8 +108,6 @@
 		E73D47F923D0DF2900B16D0B /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73D47F823D0DF2900B16D0B /* ContainerView.swift */; };
 		E7484C2723B9FDF000CCF74F /* SlideInPresentationAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7484C2623B9FDF000CCF74F /* SlideInPresentationAnimator.swift */; };
 		E749FD1E23CF4998000D18BA /* NavigationStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E749FD1D23CF4998000D18BA /* NavigationStyle.swift */; };
-		E75F6A73251B4446002623ED /* ObjC_CardEncryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = E75F6A71251B4446002623ED /* ObjC_CardEncryptor.m */; };
-		E75F6A74251B4446002623ED /* ObjC_CardEncryptor.h in Headers */ = {isa = PBXBuildFile; fileRef = E75F6A72251B4446002623ED /* ObjC_CardEncryptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E7620EA123BF3DC800A492C3 /* ModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90139CA22846AD5004C74DA /* ModalViewController.swift */; };
 		E7620EAB23C345D600A492C3 /* PresentableComponentMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7620EAA23C345D600A492C3 /* PresentableComponentMock.swift */; };
 		E7620EAD23C3466B00A492C3 /* ModalViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7620EAC23C3466B00A492C3 /* ModalViewControllerTests.swift */; };
@@ -202,7 +200,7 @@
 		E9E3DACF221EEB5300697074 /* CardSecurityCodeValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DACE221EEB5300697074 /* CardSecurityCodeValidatorTests.swift */; };
 		E9E3DAD1221EEE2100697074 /* CardExpiryDateValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAD0221EEE2100697074 /* CardExpiryDateValidator.swift */; };
 		E9E3DAD3221EEFF700697074 /* CardExpiryDateValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAD2221EEFF700697074 /* CardExpiryDateValidatorTests.swift */; };
-		E9E3DAE722241BF500697074 /* ADYAESCCMCryptor.h in Headers */ = {isa = PBXBuildFile; fileRef = E9E3DAD522241BF400697074 /* ADYAESCCMCryptor.h */; };
+		E9E3DAE722241BF500697074 /* ADYAESCCMCryptor.h in Headers */ = {isa = PBXBuildFile; fileRef = E9E3DAD522241BF400697074 /* ADYAESCCMCryptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E9E3DAE822241BF500697074 /* ADYAESCCMCryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAD622241BF400697074 /* ADYAESCCMCryptor.m */; };
 		E9E3DAFA22241D6000697074 /* CardEncryptorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAF822241D6000697074 /* CardEncryptorExtensions.swift */; };
 		E9E3DAFB22241D6000697074 /* CardEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAF922241D6000697074 /* CardEncryptor.swift */; };
@@ -581,8 +579,6 @@
 		E73D47F823D0DF2900B16D0B /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
 		E7484C2623B9FDF000CCF74F /* SlideInPresentationAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideInPresentationAnimator.swift; sourceTree = "<group>"; };
 		E749FD1D23CF4998000D18BA /* NavigationStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStyle.swift; sourceTree = "<group>"; };
-		E75F6A71251B4446002623ED /* ObjC_CardEncryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjC_CardEncryptor.m; sourceTree = "<group>"; };
-		E75F6A72251B4446002623ED /* ObjC_CardEncryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjC_CardEncryptor.h; sourceTree = "<group>"; };
 		E7620EAA23C345D600A492C3 /* PresentableComponentMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentableComponentMock.swift; sourceTree = "<group>"; };
 		E7620EAC23C3466B00A492C3 /* ModalViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalViewControllerTests.swift; sourceTree = "<group>"; };
 		E7620EB123C5FB9600A492C3 /* DropInColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInColors.swift; sourceTree = "<group>"; };
@@ -1780,8 +1776,6 @@
 		E9E3DAD422241BF400697074 /* AdyenCSE */ = {
 			isa = PBXGroup;
 			children = (
-				E75F6A72251B4446002623ED /* ObjC_CardEncryptor.h */,
-				E75F6A71251B4446002623ED /* ObjC_CardEncryptor.m */,
 				E9E3DAD522241BF400697074 /* ADYAESCCMCryptor.h */,
 				E9E3DAD622241BF400697074 /* ADYAESCCMCryptor.m */,
 			);
@@ -2157,7 +2151,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E75F6A74251B4446002623ED /* ObjC_CardEncryptor.h in Headers */,
 				E2C0E063220982AE008616F6 /* AdyenCard.h in Headers */,
 				E9E3DAE722241BF500697074 /* ADYAESCCMCryptor.h in Headers */,
 			);
@@ -2876,7 +2869,6 @@
 				E2D12C132223E1C000EF682F /* CardTypeDetector.swift in Sources */,
 				F9B8C49223FC287100C4D0FB /* FormCardNumberItemView.swift in Sources */,
 				E9E3DAB5221D988200697074 /* CardNumberFormatter.swift in Sources */,
-				E75F6A73251B4446002623ED /* ObjC_CardEncryptor.m in Sources */,
 				F919DF9524E6D7BC0027976E /* CardComponentExtensions.swift in Sources */,
 				E76EC680241125E0009C6E2F /* FormCardSecurityCodeItem.swift in Sources */,
 				E7166A5624EAD99F007CCDEF /* CardTypeProvider.swift in Sources */,

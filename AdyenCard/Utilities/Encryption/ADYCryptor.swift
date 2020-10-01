@@ -81,7 +81,7 @@ internal final class ADYCryptor {
     }
     
     internal static func aesEncrypt(data: Data, with key: Data, initVector: Data) -> Data? {
-        return ObjC_CardEncryptor.aesEncrypt(data, withKey: key, iv: initVector)
+        return ADYAESCCMCryptor.encrypt(data, withKey: key, iv: initVector)
     }
     
     internal static func rsaEncrypt(data: Data, with keyInHex: String) -> Data? {

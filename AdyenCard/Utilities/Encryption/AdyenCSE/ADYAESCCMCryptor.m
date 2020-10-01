@@ -16,8 +16,7 @@ NSData *dh(unsigned char *d) {
 #endif
 
 
-+ (NSData *)encrypt:(NSData *)data withKey:(NSData *)key iv:(NSData *)iv
-{
++ (NSData *)encrypt:(NSData *)data withKey:(NSData *)key iv:(NSData *)iv {
     return [self encrypt:data withKey:key iv:iv tagLength:8];
 }
 
@@ -323,7 +322,5 @@ ccm_encrypt_message(const void *key, size_t kL,
     
     return len + M;
 }
-
-
 
 @end
