@@ -31,7 +31,7 @@ Pod::Spec.new do |s|
     plugin.xcconfig = { 'SWIFT_INCLUDE_PATHS' => '${PODS_TARGET_SRCROOT}/AdyenCard/AdyenCSE' }
     plugin.preserve_paths = 'AdyenCard/AdyenCSE/module.modulemap'
     plugin.dependency 'Adyen/Core'
-    plugin.dependency 'Adyen3DS2', '2.1.0-rc.4'
+    plugin.dependency 'Adyen3DS2', '2.1.0-rc.6'
     plugin.source_files = 'AdyenCard/**/*.swift', 'AdyenCard/AdyenCSE/*.{h,m}'
     plugin.private_header_files = 'AdyenCard/AdyenCSE/*.h'
   end
