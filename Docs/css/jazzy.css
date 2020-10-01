@@ -108,7 +108,6 @@ pre code {
   @media (min-width: 768px) {
     .content-wrapper {
       flex-direction: row; } }
-
 .header {
   display: flex;
   font-size: 0.875em;
@@ -167,7 +166,6 @@ pre code {
       overflow: hidden;
       word-wrap: normal;
       background: #fff; } }
-
 .nav-groups {
   list-style-type: none;
   padding-left: 0; }
@@ -199,7 +197,6 @@ pre code {
       order: 2;
       flex: 1;
       padding-bottom: 60px; } }
-
 .section {
   padding: 0 32px; }
 
@@ -338,6 +335,7 @@ pre code {
 
 html.dash .header, html.dash .breadcrumbs, html.dash .navigation {
   display: none; }
+
 html.dash .height-container {
   display: block; }
 
@@ -357,16 +355,20 @@ form[role=search] input {
   form[role=search] input:focus {
     border: 1px solid #00a3ff;
     outline: none; }
+
 form[role=search] .tt-menu {
   margin: 0;
   min-width: 300px;
   background: #fff;
   color: #00112C;
   border: 1px solid #ddd; }
+
 form[role=search] .tt-input:active {
   border: 1px solid; }
+
 form[role=search] .tt-highlight {
   font-weight: bold; }
+
 form[role=search] .tt-suggestion {
   font: 16px/1.7 "Fakt", sans-serif;
   padding: 0 8px; }
@@ -379,11 +381,13 @@ form[role=search] .tt-suggestion {
     font-weight: normal;
     font-size: 0.9em;
     padding-left: 16px; }
+
 form[role=search] .tt-suggestion:hover,
 form[role=search] .tt-suggestion.tt-cursor {
   cursor: pointer;
   background-color: #545f6f;
   color: #fff; }
+
 form[role=search] .tt-suggestion:hover .doc-parent-name,
 form[role=search] .tt-suggestion.tt-cursor .doc-parent-name {
   color: #fff; }

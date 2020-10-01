@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>IdentificationPaymentDetails Structure Reference</title>
+    <title>WeChatRedirectData Structure Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -23,9 +23,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Struct/IdentificationPaymentDetails" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Struct/WeChatRedirectData" class="dashAnchor"></a>
 
-    <a title="IdentificationPaymentDetails Structure Reference"></a>
+    <a title="WeChatRedirectData Structure Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -53,7 +53,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html">Adyen Reference</a>
       <img class="carat" src="../img/carat.png" />
-      IdentificationPaymentDetails Structure Reference
+      WeChatRedirectData Structure Reference
     </p>
 
     <div class="content-wrapper">
@@ -234,14 +234,14 @@
 
         <section class="section">
           <div class="section-content">
-            <h1>IdentificationPaymentDetails</h1>
+            <h1>WeChatRedirectData</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">IdentificationPaymentDetails</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/AdditionalPaymentDetails.html">AdditionalPaymentDetails</a></span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">WeChatRedirectData</span></code></pre>
 
                 </div>
               </div>
-            <p>A structure that contains details that are needed to identify the shopper.</p>
+            <p>A structure that holds WeChatSDK redirect data.</p>
 
           </div>
         </section>
@@ -253,9 +253,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:5Adyen28IdentificationPaymentDetailsV7detailsSayAA0C6DetailVGvp"></a>
-                    <a name="//apple_ref/swift/Property/details" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen28IdentificationPaymentDetailsV7detailsSayAA0C6DetailVGvp">details</a>
+                    <a name="/s:5Adyen18WeChatRedirectDataV10dictionaryACSDyS2SGSg_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(dictionary:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen18WeChatRedirectDataV10dictionaryACSDyS2SGSg_tcfc">init(dictionary:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -263,68 +263,13 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The list of details that need to be filled.</p>
-
+                        
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">details</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/PaymentDetail.html">PaymentDetail</a></span><span class="p">]</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:5Adyen28IdentificationPaymentDetailsV8userInfoSDyS2SGvp"></a>
-                    <a name="//apple_ref/swift/Property/userInfo" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen28IdentificationPaymentDetailsV8userInfoSDyS2SGvp">userInfo</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A dictionary of arbitrary values used to collect the additional payment details.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">userInfo</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">String</span><span class="p">]</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:5Adyen28IdentificationPaymentDetailsV24threeDS2FingerprintTokenSSSgvp"></a>
-                    <a name="//apple_ref/swift/Property/threeDS2FingerprintToken" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen28IdentificationPaymentDetailsV24threeDS2FingerprintTokenSSSgvp">threeDS2FingerprintToken</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The 3D-Secure 2.0 fingerprint token.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">threeDS2FingerprintToken</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">dictionary</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">String</span><span class="p">]?)</span></code></pre>
 
                         </div>
                       </div>
