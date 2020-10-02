@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -34,7 +34,6 @@ extension CardEncryptor.Card {
     }
     
     internal func encryptedToToken(publicKey: String, holderName: String?) throws -> String? {
-        // Make sure not all the card ivars's are nil, otherwise throw Error.invalidEncryptionArguments
         guard !isEmpty else {
             throw CardEncryptor.Error.invalidEncryptionArguments
         }

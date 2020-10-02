@@ -43,6 +43,25 @@ internal enum RSACryptor {
         return self.encrypt(original: data, publicKey: publicKey)
     }
 
+    @discardableResult
+    public static func deleteRSA(appTag: String) -> Bool {
+        guard let appTagData = appTag.data(using: .utf8) else { return false }
+
+        let keychainQuery: [CFString: Any] = [
+            kSecClass: kSecClassKey,
+            kSecAttrKeyType: kSecAttrKeyTypeRSA,
+            kSecAttrKeyClass: kSecAttrKeyClassPublic,
+            kSecAttrApplicationTag: appTagData as NSData as CFData
+        ]
+
+        let status = SecItemDelete(keychainQuery as CFDictionary)
+        if status != noErr {
+            adyenPrint("result = \(status)")
+        }
+
+        return status == noErr
+    }
+
     private static func encrypt(original: Data, publicKey: SecKey) -> Data? {
         var error: Unmanaged<CFError>?
 
@@ -55,7 +74,7 @@ internal enum RSACryptor {
         }
 
         if let err: Error = error?.takeRetainedValue() {
-            print("encryptData error \(err.localizedDescription)")
+            adyenPrint("encryptData error \(err.localizedDescription)")
 
         }
         return nil
@@ -81,7 +100,7 @@ internal enum RSACryptor {
         } else if status == errSecDuplicateItem, overwrite {
             return self.updateRSA(publicKey: publicKey, appTag: appTag)
         } else {
-            print("result = \(status)")
+            adyenPrint("result = \(status)")
         }
         
         return false
@@ -106,34 +125,15 @@ internal enum RSACryptor {
             
             let status = SecItemUpdate(keychainQuery as CFDictionary, valueQuery as CFDictionary)
             if status != noErr {
-                print("result = \(status)")
+                adyenPrint("result = \(status)")
                 return false
             }
             return true
         } else {
-            print("result = \(status)")
+            adyenPrint("result = \(status)")
         }
         
         return false
-    }
-    
-    @discardableResult
-    public static func deleteRSA(appTag: String) -> Bool {
-        guard let appTagData = appTag.data(using: .utf8) else { return false }
-        
-        let keychainQuery: [CFString: Any] = [
-            kSecClass: kSecClassKey,
-            kSecAttrKeyType: kSecAttrKeyTypeRSA,
-            kSecAttrKeyClass: kSecAttrKeyClassPublic,
-            kSecAttrApplicationTag: appTagData as NSData as CFData
-        ]
-        
-        let status = SecItemDelete(keychainQuery as CFDictionary)
-        if status != noErr {
-            print("result = \(status)")
-        }
-        
-        return status == noErr
     }
     
     /*
@@ -157,7 +157,7 @@ internal enum RSACryptor {
         if let dataTypeRef = dataTypeRef, status == noErr {
             return (dataTypeRef as! SecKey) // swiftlint:disable:this force_cast
         } else {
-            print("result = \(status)")
+            adyenPrint("result = \(status)")
             return nil
         }
     }
@@ -204,39 +204,6 @@ internal enum RSACryptor {
         data.append(exponentBytes, length: exponentBytes.count)
         
         return Data(bytes: data.bytes, count: data.length)
-    }
-    
-}
-
-private extension Data {
-    
-    var asBytes: [CUnsignedChar] {
-        let start = (self as NSData).bytes.bindMemory(to: CUnsignedChar.self, capacity: self.count)
-        let count: Int = self.count / MemoryLayout<CUnsignedChar>.size
-        return [CUnsignedChar](UnsafeBufferPointer<CUnsignedChar>(start: start, count: count))
-    }
-    
-}
-
-private extension NSInteger {
-    
-    func encodedOctets() -> [CUnsignedChar] {
-        // Short form
-        if self < 128 {
-            return [CUnsignedChar(self)]
-        }
-        
-        // Long form
-        let index = Int(log2(Double(self)) / 8 + 1)
-        var len = self
-        var result: [CUnsignedChar] = [CUnsignedChar(index + 0x80)]
-        
-        for _ in 0..<index {
-            result.insert(CUnsignedChar(len & 0xFF), at: 1)
-            len = len >> 8
-        }
-        
-        return result
     }
     
 }

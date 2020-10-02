@@ -7,60 +7,34 @@
 import CommonCrypto
 import Foundation
 
-internal final class Cryptor {
-
-    internal enum Error: Swift.Error, LocalizedError {
-        case randomGenerationError
-        case aesEncryptionError
-        case rsaEncryptionError
-
-        public var errorDescription: String? {
-            switch self {
-            case .randomGenerationError:
-                return "Error occured while genrating an array of cryptographically secure random bytes."
-            case .aesEncryptionError:
-                return "Error occured while encryptng data."
-            case .rsaEncryptionError:
-                return "Error occured while encryptng session key."
-            }
-        }
-    }
+internal enum Cryptor {
     
     private static let ivLength = 12
     private static var msgPrefix = "adyenan0_1_1"
     private static let msgSeparator = "$"
     
     /**
-     *  Sets encoded message prefix
+     * Encrypts the data with AES-CBC using
+     * generated AES256 session key and IV (12)
+     * Encrypts the session key with RSA using
+     * public key (using Keychain)
      *
-     *  @param prefix Prefix string, default: ""
-     */
-    internal static func setMsgPrefix(prefix: String) {
-        msgPrefix = prefix
-    }
-    
-    /**
-     *  Encrypts the data with AES-CBC using
-     *  generated AES256 session key and IV (12)
-     *  Encrypts the session key with RSA using
-     *  public key (using Keychain)
      *
-     *  @param data     data to be encrypted
-     *  @param keyInHex Public key in Hex with format "Exponent|Modulus"
+     * - Parameters:
+     *   - data: Data to be encrypted.
+     *   - keyInHex: Public key in Hex with format "Exponent|Modulus"
      *
-     *  @return Fully composed message in format:
-     *    - a prefix
-     *    - a separator
-     *    - RSA encrypted AES key, base64 encoded
-     *    - a separator
-     *    - a Payload of iv and cipherText, base64 encoded
+     * - Returns: Fully composed message in format:
+     *   - a prefix
+     *   - a separator
+     *   - RSA encrypted AES key, base64 encoded
+     *   - a separator
+     *   - a Payload of iv and cipherText, base64 encoded
      *
-     *  @see `setMsgPrefix:`
-     *  @see `setMsgSeparator:`
      */
     internal static func encrypt(data: Data, publicKey keyInHex: String) throws -> String {
         
-        // generate a unique AES key and (later) encrypt it with the public RSA key of the merchant
+        //
         var key = [UInt8](repeating: 0, count: kCCKeySizeAES256)
         guard SecRandomCopyBytes(kSecRandomDefault, key.count, &key) == noErr else {
             throw Error.randomGenerationError
@@ -95,49 +69,31 @@ internal final class Cryptor {
         throw Error.rsaEncryptionError
     }
     
-    internal static func aesEncrypt(data: Data, with key: Data, initVector: Data) -> Data? {
+    private static func aesEncrypt(data: Data, with key: Data, initVector: Data) -> Data? {
         return ADYAESCCMCryptor.encrypt(data, withKey: key, iv: initVector)
     }
     
-    internal static func rsaEncrypt(data: Data, with keyInHex: String) -> Data? {
+    private static func rsaEncrypt(data: Data, with keyInHex: String) -> Data? {
         let tokens = keyInHex.components(separatedBy: "|")
         guard tokens.count == 2 else { return nil }
         
         return RSACryptor.encrypt(data: data, exponent: tokens[0], modulus: tokens[1])
     }
-}
 
-extension String {
-    
-    internal func sha1() -> String {
-        let data = Data(self.utf8)
-        var digest = [UInt8](repeating: 0, count: Int(CC_SHA1_DIGEST_LENGTH))
-        data.withUnsafeBytes {
-            _ = CC_SHA1($0.baseAddress, CC_LONG(data.count), &digest)
+    internal enum Error: Swift.Error, LocalizedError {
+        case randomGenerationError
+        case aesEncryptionError
+        case rsaEncryptionError
+
+        public var errorDescription: String? {
+            switch self {
+            case .randomGenerationError:
+                return "Error occured while genrating an array of cryptographically secure random bytes."
+            case .aesEncryptionError:
+                return "Error occured while encryptng data."
+            case .rsaEncryptionError:
+                return "Error occured while encryptng session key."
+            }
         }
-        
-        var keyData = Data()
-        keyData.append(contentsOf: digest)
-        return keyData.base64EncodedString()
     }
-    
-    internal var hexadecimal: Data? {
-        var data = Data(capacity: count / 2)
-        var string = self
-        if string.count % 2 == 1 {
-            string.insert("0", at: startIndex)
-        }
-        
-        guard let regex = try? NSRegularExpression(pattern: "[0-9a-f]{1,2}", options: .caseInsensitive) else { return nil }
-        regex.enumerateMatches(in: string, range: NSRange(startIndex..., in: string)) { match, _, _ in
-            let byteString = (string as NSString).substring(with: match!.range)
-            let num = UInt8(byteString, radix: 16)!
-            data.append(num)
-        }
-        
-        guard !data.isEmpty else { return nil }
-        
-        return data
-    }
-    
 }

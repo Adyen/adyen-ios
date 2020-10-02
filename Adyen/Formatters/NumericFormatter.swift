@@ -10,7 +10,7 @@ import Foundation
 open class NumericFormatter: Adyen.Formatter {
     
     /// :nodoc:
-    public init() {}
+    public init() { /* empty init */ }
     
     /// :nodoc:
     open func formattedValue(for value: String) -> String {
