@@ -289,11 +289,21 @@ extension CardEncryptor {
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            if let number = number { try container.encode(number, forKey: .number) }
-            if let holder = holder { try container.encode(holder, forKey: .holder) }
-            if let securityCode = securityCode { try container.encode(securityCode, forKey: .securityCode) }
-            if let expiryMonth = expiryMonth { try container.encode(expiryMonth, forKey: .expiryMonth) }
-            if let expiryYear = expiryYear { try container.encode(expiryYear, forKey: .expiryYear) }
+            if let number = number {
+                try container.encode(number, forKey: .number)
+            }
+            if let holder = holder {
+                try container.encode(holder, forKey: .holder)
+            }
+            if let securityCode = securityCode {
+                try container.encode(securityCode, forKey: .securityCode)
+            }
+            if let expiryMonth = expiryMonth {
+                try container.encode(expiryMonth, forKey: .expiryMonth)
+            }
+            if let expiryYear = expiryYear {
+                try container.encode(expiryYear, forKey: .expiryYear)
+            }
             
             if let generationDate = generationDate {
                 let timestampString = ISO8601DateFormatter().string(from: generationDate)

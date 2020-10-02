@@ -25,7 +25,7 @@ internal enum RSACryptor {
         let fingerprint = "\(exponent)|\(modulus)".sha1()
         
         if let publicKey = self.loadRSAPublicKeyRef(appTag: fingerprint) {
-            return self.encrypt(original: data, publicKey: publicKey, padding: SecPadding.PKCS1)
+            return self.encrypt(original: data, publicKey: publicKey)
         }
 
         guard let modulusHex = modulus.hexadecimal, let exponentHex = exponent.hexadecimal else { return nil }
@@ -40,10 +40,10 @@ internal enum RSACryptor {
             return nil
         }
         
-        return self.encrypt(original: data, publicKey: publicKey, padding: SecPadding.PKCS1)
+        return self.encrypt(original: data, publicKey: publicKey)
     }
 
-    private static func encrypt(original: Data, publicKey: SecKey, padding: SecPadding) -> Data? {
+    private static func encrypt(original: Data, publicKey: SecKey) -> Data? {
         var error: Unmanaged<CFError>?
 
         guard SecKeyIsAlgorithmSupported(publicKey, .encrypt, .rsaEncryptionPKCS1) else {

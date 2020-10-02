@@ -108,15 +108,15 @@ ccm_block0(size_t M,       /* number of auth bytes */
            size_t lm,      /* l(m) message length */
            unsigned char nonce[CCM_BLOCKSIZE],
            unsigned char *result) {
-    int i;
+    int index;
     
     result[0] = CCM_FLAGS(la, M, L);
     
     /* copy the nonce */
     memcpy(result + 1, nonce, CCM_BLOCKSIZE - L);
     
-    for (i=0; i < L; i++) {
-        result[15-i] = lm & 0xff;
+    for (index=0; index < L; index++) {
+        result[15-index] = lm & 0xff;
         lm >>= 8;
     }
 }
