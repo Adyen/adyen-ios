@@ -7,36 +7,62 @@
 import Foundation
 import Security
 
-internal class ADYRSACryptor {
-    
-    internal static func encrypt(_ data: Data, withKeyInHex keyInHex: String) -> Data? {
-        let fingerprint = keyInHex.sha1()
+/// Set of helpers for RSA encryption.
+internal enum RSACryptor {
+
+    /**
+     * Encrypt with RSA public key
+     *
+     * - Parameters:
+     *   - data: The data to encrypt.
+     *   - exponent: Modulus of the public key.
+     *   - modulus: Exponent of the public key.
+     *
+     *  - Returns
+     *      Encrypted data or nil if modulus and exponent is invalid.
+     */
+    public static func encrypt(data: Data, exponent: String, modulus: String) -> Data? {
+        let fingerprint = "\(exponent)|\(modulus)".sha1()
         
         if let publicKey = self.loadRSAPublicKeyRef(appTag: fingerprint) {
             return self.encrypt(original: data, publicKey: publicKey, padding: SecPadding.PKCS1)
         }
+
+        guard let modulusHex = modulus.hexadecimal, let exponentHex = exponent.hexadecimal else { return nil }
+
+        adyenPrint("Adding PublicKey to Keystore with fingerprint: \(fingerprint)")
         
-        let tokens = keyInHex.components(separatedBy: "|")
-        guard tokens.count == 2,
-            let exponent = tokens[0].hexadecimal,
-            let modulus = tokens[1].hexadecimal
-        else { return nil }
-        
-        print("Adding PublicKey to Keystore with fingerprint: \(fingerprint)")
-        
-        let pubKeyData = self.generateRSAPublicKey(with: modulus, exponent: exponent)
+        let pubKeyData = self.generateRSAPublicKey(with: modulusHex, exponent: exponentHex)
         self.saveRSA(publicKey: pubKeyData, appTag: fingerprint, overwrite: true)
         
         guard let publicKey = self.loadRSAPublicKeyRef(appTag: fingerprint) else {
-            print("Problem obtaining SecKey")
+            adyenPrint("Problem obtaining SecKey")
             return nil
         }
         
         return self.encrypt(original: data, publicKey: publicKey, padding: SecPadding.PKCS1)
     }
+
+    private static func encrypt(original: Data, publicKey: SecKey, padding: SecPadding) -> Data? {
+        var error: Unmanaged<CFError>?
+
+        guard SecKeyIsAlgorithmSupported(publicKey, .encrypt, .rsaEncryptionPKCS1) else {
+            fatalError("Can't use this algorithm with this key!")
+        }
+
+        if let encrypted = SecKeyCreateEncryptedData(publicKey, .rsaEncryptionPKCS1, original as CFData, &error) {
+            return encrypted as NSData as Data
+        }
+
+        if let err: Error = error?.takeRetainedValue() {
+            print("encryptData error \(err.localizedDescription)")
+
+        }
+        return nil
+    }
     
     @discardableResult
-    internal static func saveRSA(publicKey: Data, appTag: String, overwrite: Bool) -> Bool {
+    private static func saveRSA(publicKey: Data, appTag: String, overwrite: Bool) -> Bool {
         guard let appTagData = appTag.data(using: .utf8) else { return false }
         
         let keychainQuery: [CFString: Any] = [
@@ -62,7 +88,7 @@ internal class ADYRSACryptor {
     }
     
     @discardableResult
-    internal static func updateRSA(publicKey: Data, appTag: String) -> Bool {
+    private static func updateRSA(publicKey: Data, appTag: String) -> Bool {
         guard let appTagData = appTag.data(using: .utf8) else { return false }
         
         let keychainQuery: [CFString: Any] = [
@@ -92,7 +118,7 @@ internal class ADYRSACryptor {
     }
     
     @discardableResult
-    internal static func deleteRSA(appTag: String) -> Bool {
+    public static func deleteRSA(appTag: String) -> Bool {
         guard let appTagData = appTag.data(using: .utf8) else { return false }
         
         let keychainQuery: [CFString: Any] = [
@@ -114,7 +140,7 @@ internal class ADYRSACryptor {
      * returned value(SecKeyRef) should be released with CFRelease() function after use.
      *
      */
-    internal static func loadRSAPublicKeyRef(appTag: String) -> SecKey? {
+    private static func loadRSAPublicKeyRef(appTag: String) -> SecKey? {
         guard let appTagData = appTag.data(using: .utf8) else { return nil }
         
         let keychainQuery: [CFString: Any] = [
@@ -128,36 +154,12 @@ internal class ADYRSACryptor {
         var dataTypeRef: AnyObject?
         let status: OSStatus = SecItemCopyMatching(keychainQuery as CFDictionary, &dataTypeRef)
         
-        if status == noErr {
+        if let dataTypeRef = dataTypeRef, status == noErr {
             return (dataTypeRef as! SecKey) // swiftlint:disable:this force_cast
         } else {
             print("result = \(status)")
             return nil
         }
-    }
-    
-    /**
-     * encrypt with RSA public key
-     *
-     * padding = kSecPaddingPKCS1 / kSecPaddingNone
-     *
-     */
-    public static func encrypt(original: Data, publicKey: SecKey, padding: SecPadding) -> Data? {
-        var error: Unmanaged<CFError>?
-        
-        guard SecKeyIsAlgorithmSupported(publicKey, .encrypt, .rsaEncryptionPKCS1) else {
-            fatalError("Can't use this algorithm with this key!")
-        }
-        
-        if let encrypted = SecKeyCreateEncryptedData(publicKey, .rsaEncryptionPKCS1, original as CFData, &error) {
-            return encrypted as NSData as Data
-        }
-        
-        if let err: Error = error?.takeRetainedValue() {
-            print("encryptData error \(err.localizedDescription)")
-            
-        }
-        return nil
     }
     
     /// https://github.com/henrinormak/Heimdall/blob/master/Heimdall/Heimdall.swift

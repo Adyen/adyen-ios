@@ -9,6 +9,10 @@ import XCTest
 
 class CardEncryptorCardTests: XCTestCase {
 
+    override func tearDown() {
+        RSACryptor.deleteRSA(appTag: Dummy.dummyPublicKey.sha1())
+    }
+
     // MARK: - Test encrypting Card number
     
     func testEncryptNumberShouldReturnNilWithNilNumber() {
@@ -21,14 +25,13 @@ class CardEncryptorCardTests: XCTestCase {
         let card = CardEncryptor.Card(number: "test_number")
         let key = "test_invalid_key"
         XCTAssertThrowsError(try card.encryptedNumber(publicKey: key, date: Date())) { error in
-            XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
-            XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.encryptionFailed, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
-            XCTAssertEqual(error.localizedDescription, CardEncryptor.Error.encryptionFailed.errorDescription)
+            XCTAssertTrue(error is Cryptor.Error, "Thrown Error is not CardEncryptor.Error")
+            XCTAssertEqual(error as! Cryptor.Error, Cryptor.Error.rsaEncryptionError, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
+            XCTAssertEqual(error.localizedDescription, Cryptor.Error.rsaEncryptionError.errorDescription)
         }
     }
 
     func testEncryptNumberShouldEncrypt() {
-        CardEncryptor.cleanPublicKeys(publicKeyToken: Dummy.dummyPublicKey)
         let card = CardEncryptor.Card(number: "test_number")
         let key = Dummy.dummyPublicKey
         XCTAssertNotNil(try card.encryptedNumber(publicKey: key, date: Date()))
@@ -46,14 +49,13 @@ class CardEncryptorCardTests: XCTestCase {
         let card = CardEncryptor.Card(securityCode: "test_security_code")
         let key = "test_invalid_key"
         XCTAssertThrowsError(try card.encryptedSecurityCode(publicKey: key, date: Date())) { error in
-            XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
-            XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.encryptionFailed, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
-            XCTAssertEqual(error.localizedDescription, CardEncryptor.Error.encryptionFailed.errorDescription)
+            XCTAssertTrue(error is Cryptor.Error, "Thrown Error is not CardEncryptor.Error")
+            XCTAssertEqual(error as! Cryptor.Error, Cryptor.Error.rsaEncryptionError, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
+            XCTAssertEqual(error.localizedDescription, Cryptor.Error.rsaEncryptionError.errorDescription)
         }
     }
 
     func testEncryptSecurityCode() {
-        CardEncryptor.cleanPublicKeys(publicKeyToken: Dummy.dummyPublicKey)
         let card = CardEncryptor.Card(securityCode: "test_security_code")
         let key = Dummy.dummyPublicKey
         XCTAssertNotNil(try card.encryptedSecurityCode(publicKey: key, date: Date()))
@@ -71,14 +73,13 @@ class CardEncryptorCardTests: XCTestCase {
         let card = CardEncryptor.Card(expiryMonth: "test_expiry_month")
         let key = "test_invalid_key"
         XCTAssertThrowsError(try card.encryptedExpiryMonth(publicKey: key, date: Date())) { error in
-            XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
-            XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.encryptionFailed, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
-            XCTAssertEqual(error.localizedDescription, CardEncryptor.Error.encryptionFailed.errorDescription)
+            XCTAssertTrue(error is Cryptor.Error, "Thrown Error is not CardEncryptor.Error")
+            XCTAssertEqual(error as! Cryptor.Error, Cryptor.Error.rsaEncryptionError, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
+            XCTAssertEqual(error.localizedDescription, Cryptor.Error.rsaEncryptionError.errorDescription)
         }
     }
 
     func testEncryptExpiryMonth() {
-        CardEncryptor.cleanPublicKeys(publicKeyToken: Dummy.dummyPublicKey)
         let card = CardEncryptor.Card(expiryMonth: "test_expiry_month")
         let key = Dummy.dummyPublicKey
         XCTAssertNotNil(try card.encryptedExpiryMonth(publicKey: key, date: Date()))
@@ -96,14 +97,13 @@ class CardEncryptorCardTests: XCTestCase {
         let card = CardEncryptor.Card(expiryYear: "test_expiry_year")
         let key = "test_invalid_key"
         XCTAssertThrowsError(try card.encryptedExpiryYear(publicKey: key, date: Date())) { error in
-            XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
-            XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.encryptionFailed, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
-            XCTAssertEqual(error.localizedDescription, CardEncryptor.Error.encryptionFailed.errorDescription)
+            XCTAssertTrue(error is Cryptor.Error, "Thrown Error is not CardEncryptor.Error")
+            XCTAssertEqual(error as! Cryptor.Error, Cryptor.Error.rsaEncryptionError, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
+            XCTAssertEqual(error.localizedDescription, Cryptor.Error.rsaEncryptionError.errorDescription)
         }
     }
 
     func testEncryptExpiryYear() {
-        CardEncryptor.cleanPublicKeys(publicKeyToken: Dummy.dummyPublicKey)
         let card = CardEncryptor.Card(expiryYear: "test_expiry_year")
         let key = Dummy.dummyPublicKey
         XCTAssertNotNil(try card.encryptedExpiryYear(publicKey: key, date: Date()))
@@ -125,21 +125,19 @@ class CardEncryptorCardTests: XCTestCase {
         let card = CardEncryptor.Card(expiryYear: "test_expiry_year")
         let key = "test_invalid_key"
         XCTAssertThrowsError(try card.encryptedToToken(publicKey: key, holderName: nil)) { error in
-            XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
-            XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.encryptionFailed, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
-            XCTAssertEqual(error.localizedDescription, CardEncryptor.Error.encryptionFailed.errorDescription)
+            XCTAssertTrue(error is Cryptor.Error, "Thrown Error is not CardEncryptor.Error")
+            XCTAssertEqual(error as! Cryptor.Error, Cryptor.Error.rsaEncryptionError, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
+            XCTAssertEqual(error.localizedDescription, Cryptor.Error.rsaEncryptionError.errorDescription)
         }
     }
 
     func testEncryptToToken() {
-        CardEncryptor.cleanPublicKeys(publicKeyToken: Dummy.dummyPublicKey)
         let card = CardEncryptor.Card(expiryYear: "test_expiry_year")
         let key = Dummy.dummyPublicKey
         XCTAssertNotNil(try card.encryptedToToken(publicKey: key, holderName: nil))
     }
 
     func testEncryptedToken() {
-        CardEncryptor.cleanPublicKeys(publicKeyToken: Dummy.dummyPublicKey)
         let card = CardEncryptor.Card(expiryYear: "test_expiry_year")
         let key = Dummy.dummyPublicKey
 
@@ -165,16 +163,15 @@ class CardEncryptorCardTests: XCTestCase {
     func testEncryptBINShouldFailWithInvalidPublicKey() {
         let key = "test_invalid_key"
         XCTAssertThrowsError(try CardEncryptor.encryptedBin(for: "55000000", publicKey: key)) { error in
-            XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
-            XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.encryptionFailed, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
-            XCTAssertEqual(error.localizedDescription, CardEncryptor.Error.encryptionFailed.errorDescription)
+            XCTAssertTrue(error is Cryptor.Error, "Thrown Error is not CardEncryptor.Error")
+            XCTAssertEqual(error as! Cryptor.Error, Cryptor.Error.rsaEncryptionError, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
+            XCTAssertEqual(error.localizedDescription, Cryptor.Error.rsaEncryptionError.errorDescription)
         }
     }
 
     func testEncryptBIN() {
-        let key = Dummy.dummyPublicKey
-        let ecrypted = try! CardEncryptor.encryptedBin(for: "55000000", publicKey: key)
+        let ecrypted = try? CardEncryptor.encryptedBin(for: "55000000", publicKey: Dummy.dummyPublicKey)
         XCTAssertNotNil(ecrypted)
-        XCTAssertTrue(ecrypted.hasPrefix("adyenan0_1_1$"))
+        XCTAssertTrue(ecrypted?.hasPrefix("adyenan0_1_1$") ?? false)
     }
 }

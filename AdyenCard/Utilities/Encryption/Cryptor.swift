@@ -7,7 +7,24 @@
 import CommonCrypto
 import Foundation
 
-internal final class ADYCryptor {
+internal final class Cryptor {
+
+    internal enum Error: Swift.Error, LocalizedError {
+        case randomGenerationError
+        case aesEncryptionError
+        case rsaEncryptionError
+
+        public var errorDescription: String? {
+            switch self {
+            case .randomGenerationError:
+                return "Error occured while genrating an array of cryptographically secure random bytes."
+            case .aesEncryptionError:
+                return "Error occured while encryptng data."
+            case .rsaEncryptionError:
+                return "Error occured while encryptng session key."
+            }
+        }
+    }
     
     private static let ivLength = 12
     private static var msgPrefix = "adyenan0_1_1"
@@ -41,25 +58,23 @@ internal final class ADYCryptor {
      *  @see `setMsgPrefix:`
      *  @see `setMsgSeparator:`
      */
-    internal static func encrypt(data: Data, publicKey keyInHex: String) -> String? {
+    internal static func encrypt(data: Data, publicKey keyInHex: String) throws -> String {
         
         // generate a unique AES key and (later) encrypt it with the public RSA key of the merchant
         var key = [UInt8](repeating: 0, count: kCCKeySizeAES256)
         guard SecRandomCopyBytes(kSecRandomDefault, key.count, &key) == noErr else {
-            return nil
+            throw Error.randomGenerationError
         }
         
-        // generate a nonce
+        // generate a initialisation vector
         var initVector = [UInt8](repeating: 0, count: ivLength)
         guard SecRandomCopyBytes(kSecRandomDefault, initVector.count, &initVector) == noErr else {
-            return nil
+            throw Error.randomGenerationError
         }
         
-        guard let cipherText = self.aesEncrypt(data: data,
-                                               with: Data(key),
-                                               initVector: Data(initVector)) else {
-            return nil
-        }
+        guard
+            let cipherText = self.aesEncrypt(data: data, with: Data(key), initVector: Data(initVector))
+        else { throw Error.aesEncryptionError }
         
         // format of the fully composed message:
         // - a prefix
@@ -77,7 +92,7 @@ internal final class ADYCryptor {
             return prefix + encryptedKey.base64EncodedString() + msgSeparator + payload.base64EncodedString()
         }
         
-        return nil
+        throw Error.rsaEncryptionError
     }
     
     internal static func aesEncrypt(data: Data, with key: Data, initVector: Data) -> Data? {
@@ -85,7 +100,10 @@ internal final class ADYCryptor {
     }
     
     internal static func rsaEncrypt(data: Data, with keyInHex: String) -> Data? {
-        return ADYRSACryptor.encrypt(data, withKeyInHex: keyInHex)
+        let tokens = keyInHex.components(separatedBy: "|")
+        guard tokens.count == 2 else { return nil }
+        
+        return RSACryptor.encrypt(data: data, exponent: tokens[0], modulus: tokens[1])
     }
 }
 

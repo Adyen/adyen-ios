@@ -6,32 +6,36 @@
 
 extension CardEncryptor.Card {
     internal func encryptedNumber(publicKey: String, date: Date) throws -> String? {
-        var card = CardEncryptor.Card(number: self.number)
+        guard let number = number else { return nil }
+        var card = CardEncryptor.Card(number: number)
         card.generationDate = date
         return try encryptCard(publicKey: publicKey, card: card)
     }
     
     internal func encryptedSecurityCode(publicKey: String, date: Date) throws -> String? {
-        var card = CardEncryptor.Card(securityCode: self.securityCode)
+        guard let securityCode = securityCode else { return nil }
+        var card = CardEncryptor.Card(securityCode: securityCode)
         card.generationDate = date
         return try encryptCard(publicKey: publicKey, card: card)
     }
     
     internal func encryptedExpiryMonth(publicKey: String, date: Date) throws -> String? {
-        var card = CardEncryptor.Card(expiryMonth: self.expiryMonth)
+        guard let expiryMonth = expiryMonth else { return nil }
+        var card = CardEncryptor.Card(expiryMonth: expiryMonth)
         card.generationDate = date
         return try encryptCard(publicKey: publicKey, card: card)
     }
     
     internal func encryptedExpiryYear(publicKey: String, date: Date) throws -> String? {
-        var card = CardEncryptor.Card(expiryYear: self.expiryYear)
+        guard let expiryYear = expiryYear else { return nil }
+        var card = CardEncryptor.Card(expiryYear: expiryYear)
         card.generationDate = date
         return try encryptCard(publicKey: publicKey, card: card)
     }
     
     internal func encryptedToToken(publicKey: String, holderName: String?) throws -> String? {
         // Make sure not all the card ivars's are nil, otherwise throw Error.invalidEncryptionArguments
-        guard [number, securityCode, expiryMonth, expiryYear, holderName].contains(where: { $0 != nil }) else {
+        guard !isEmpty else {
             throw CardEncryptor.Error.invalidEncryptionArguments
         }
         var card = CardEncryptor.Card(number: self.number,
@@ -42,8 +46,8 @@ extension CardEncryptor.Card {
         return try encryptCard(publicKey: publicKey, card: card)
     }
     
-    private func encryptCard(publicKey: String, card: CardEncryptor.Card) throws -> String? {
-        guard let encodedCard = card.jsonData() else { return nil }
-        return ADYCryptor.encrypt(data: encodedCard, publicKey: publicKey)
+    private func encryptCard(publicKey: String, card: CardEncryptor.Card) throws -> String {
+        guard let encodedCard = card.jsonData() else { throw CardEncryptor.Error.encryptionFailed }
+        return try Cryptor.encrypt(data: encodedCard, publicKey: publicKey)
     }
 }

@@ -4,8 +4,6 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import CommonCrypto
-import CryptoKit
 import Foundation
 
 /// An object that provides static methods for encrypting card information and retrieving public keys from the server.
@@ -65,43 +63,7 @@ public enum CardEncryptor {
         }
         
         let payload = try JSONEncoder().encode(Bin(value: bin))
-        guard let result = ADYCryptor.encrypt(data: payload, publicKey: publicKey) else {
-            throw Error.encryptionFailed
-        }
-        
-        return result
-    }
-    
-    /// Encrypts a card.
-    ///
-    /// - Parameters:
-    ///   - card: Card containing the data to be encrypted.
-    ///   - holderName: The cardholder's name.
-    ///   - publicKey: The public key to use for encryption (format "Exponent|Modulus").
-    /// - Returns: A string representing the encrypted card.
-    /// - Throws:  `CardEncryptor.Error.encryptionFailed` if the encryption failed,
-    ///  maybe because the card public key is an invalid one, or for any other reason.
-    /// - Throws:  `CardEncryptor.Error.invalidEncryptionArguments` when trying to encrypt a card with  card number, securityCode,
-    /// expiryMonth, expiryYear, and holderName, all of them are nil.
-    /// - Throws:  `CardEncryptor.Error.unknown` if encryption failed for an unknown reason.
-    @available(*, deprecated, message: "Use `card.encryptedToToken(publicKey:holderName:)`.")
-    public static func encryptedToken(for card: Card, holderName: String?, publicKey: String) throws -> String {
-        guard let cardToken = try card.encryptedToToken(publicKey: publicKey, holderName: holderName) else {
-            // This should never happen,
-            // because card.encryptedToToken(publicKey:holderName:) will throw an error if the generated token is some how nil,
-            // before reaching here.
-            throw Error.unknown
-        }
-        
-        return cardToken
-    }
-    
-    // MARK: - Delete RSA
-    
-    /// :nodoc:
-    internal static func cleanPublicKey(publicKeyToken: String) -> Bool {
-        let fingerprint = publicKeyToken.sha1()
-        return ADYRSACryptor.deleteRSA(appTag: fingerprint)
+        return try Cryptor.encrypt(data: payload, publicKey: publicKey)
     }
     
     // MARK: - Error
@@ -134,6 +96,30 @@ public enum CardEncryptor {
     }
     
     // MARK: - Deprecated
+
+    /// Encrypts a card.
+    ///
+    /// - Parameters:
+    ///   - card: Card containing the data to be encrypted.
+    ///   - holderName: The cardholder's name.
+    ///   - publicKey: The public key to use for encryption (format "Exponent|Modulus").
+    /// - Returns: A string representing the encrypted card.
+    /// - Throws:  `CardEncryptor.Error.encryptionFailed` if the encryption failed,
+    ///  maybe because the card public key is an invalid one, or for any other reason.
+    /// - Throws:  `CardEncryptor.Error.invalidEncryptionArguments` when trying to encrypt a card with  card number, securityCode,
+    /// expiryMonth, expiryYear, and holderName, all of them are nil.
+    /// - Throws:  `CardEncryptor.Error.unknown` if encryption failed for an unknown reason.
+    @available(*, deprecated, message: "Use `card.encryptedToToken(publicKey:holderName:)`.")
+    public static func encryptedToken(for card: Card, holderName: String?, publicKey: String) throws -> String {
+        guard let cardToken = try card.encryptedToToken(publicKey: publicKey, holderName: holderName) else {
+            // This should never happen,
+            // because card.encryptedToToken(publicKey:holderName:) will throw an error if the generated token is some how nil,
+            // before reaching here.
+            throw Error.unknown
+        }
+
+        return cardToken
+    }
     
     /// Requests the public encryption key from Adyen backend.
     ///
