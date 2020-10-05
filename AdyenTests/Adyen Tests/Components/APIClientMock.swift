@@ -15,7 +15,7 @@ enum Dummy: Error {
     case dummyError
 
     /// This is not a real public key, this is just a random string with the right pattern.
-    internal static var dummyPublicKey = "1B2F|B22CD14EF451C993318F5BDE9DA1AAEE32269D1D13590DC23761113F0E01D7D0A19910BA1DDE9348C29DCE4ED32AB121ABF6C9AF771DAB547BD4261A50FCE3686747D581455A31C166CCD84E0B3FAB2B23F9E8CB69864C520C60247A5E64C669D0719A31132AF3CEE94DB56AB2840B967FCFC65DFAD092121AE8C6435EAB95D1"
+    internal static var dummyPublicKey = "9E1CB|\(RandomStringGenerator.generateRandomHexadecimalString(length: 512))"
 }
 
 final class APIClientMock: APIClientProtocol {

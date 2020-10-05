@@ -46,7 +46,7 @@ extension CardEncryptor.Card {
     }
     
     private func encryptCard(publicKey: String, card: CardEncryptor.Card) throws -> String {
-        guard let encodedCard = card.jsonData() else { throw CardEncryptor.Error.encryptionFailed }
+        guard let encodedCard = card.jsonData() else { throw CardEncryptor.Error.invalidEncryptionArguments }
         return try Cryptor.encrypt(data: encodedCard, publicKey: publicKey)
     }
 }

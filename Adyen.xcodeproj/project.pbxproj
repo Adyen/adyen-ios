@@ -101,7 +101,7 @@
 		E7166A5224EAC5BA007CCDEF /* BinLookupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7166A5124EAC5BA007CCDEF /* BinLookupRequest.swift */; };
 		E7166A5424EACC44007CCDEF /* BinLookupResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7166A5324EACC44007CCDEF /* BinLookupResponse.swift */; };
 		E7166A5624EAD99F007CCDEF /* CardTypeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7166A5524EAD99F007CCDEF /* CardTypeProvider.swift */; };
-		E7299751250B8843004C60A2 /* RSAEncrypter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7299750250B8843004C60A2 /* RSAEncrypter.swift */; };
+		E7299751250B8843004C60A2 /* RSA.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7299750250B8843004C60A2 /* RSA.swift */; };
 		E72DA33F23E19DE300707638 /* PreselectedPaymentMethodComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72DA33C23E19DE300707638 /* PreselectedPaymentMethodComponent.swift */; };
 		E72DA34123E1BE5300707638 /* DropInNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72DA34023E1BE5300707638 /* DropInNavigationController.swift */; };
 		E736497F25277B6500AB76AE /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E736497E25277B6500AB76AE /* StringExtension.swift */; };
@@ -571,7 +571,7 @@
 		E7166A5124EAC5BA007CCDEF /* BinLookupRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinLookupRequest.swift; sourceTree = "<group>"; };
 		E7166A5324EACC44007CCDEF /* BinLookupResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinLookupResponse.swift; sourceTree = "<group>"; };
 		E7166A5524EAD99F007CCDEF /* CardTypeProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTypeProvider.swift; sourceTree = "<group>"; };
-		E7299750250B8843004C60A2 /* RSAEncrypter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSAEncrypter.swift; sourceTree = "<group>"; };
+		E7299750250B8843004C60A2 /* RSA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSA.swift; sourceTree = "<group>"; };
 		E72DA33C23E19DE300707638 /* PreselectedPaymentMethodComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreselectedPaymentMethodComponent.swift; sourceTree = "<group>"; };
 		E72DA34023E1BE5300707638 /* DropInNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropInNavigationController.swift; sourceTree = "<group>"; };
 		E736497E25277B6500AB76AE /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
@@ -1417,6 +1417,15 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		E7364987252B7C4A00AB76AE /* Cryptor */ = {
+			isa = PBXGroup;
+			children = (
+				E7C834FA250A91E700834B6E /* Cryptor.swift */,
+				E7299750250B8843004C60A2 /* RSA.swift */,
+			);
+			path = Cryptor;
+			sourceTree = "<group>";
+		};
 		E7484C2523B9FDC400CCF74F /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
@@ -1457,12 +1466,11 @@
 		E7B6280224ED646C000CEC6E /* Encryption */ = {
 			isa = PBXGroup;
 			children = (
+				E7364987252B7C4A00AB76AE /* Cryptor */,
 				E736498025277B7500AB76AE /* Extensions */,
 				E9E3DAD422241BF400697074 /* AdyenCSE */,
 				E9E3DAF922241D6000697074 /* CardEncryptor.swift */,
 				E9E3DAF822241D6000697074 /* CardEncryptorExtensions.swift */,
-				E7C834FA250A91E700834B6E /* Cryptor.swift */,
-				E7299750250B8843004C60A2 /* RSAEncrypter.swift */,
 			);
 			path = Encryption;
 			sourceTree = "<group>";
@@ -2869,7 +2877,7 @@
 				F919DF9324E68F750027976E /* CardPublicKeyProvider.swift in Sources */,
 				E2345C0C229BDA7A000F2C94 /* ThreeDS2ComponentChallengeResult.swift in Sources */,
 				E7C834FB250A91E700834B6E /* Cryptor.swift in Sources */,
-				E7299751250B8843004C60A2 /* RSAEncrypter.swift in Sources */,
+				E7299751250B8843004C60A2 /* RSA.swift in Sources */,
 				E9E3DAC0221ECD7C00697074 /* CardSecurityCodeFormatter.swift in Sources */,
 				E7166A5224EAC5BA007CCDEF /* BinLookupRequest.swift in Sources */,
 				E9E3DAFB22241D6000697074 /* CardEncryptor.swift in Sources */,

@@ -41,6 +41,7 @@ public enum CardEncryptor {
         guard !card.isEmpty else {
             throw CardEncryptor.Error.invalidEncryptionArguments
         }
+        
         let generationDate = Date()
         let number = try card.encryptedNumber(publicKey: publicKey, date: generationDate)
         let expiryYear = try card.encryptedExpiryYear(publicKey: publicKey, date: generationDate)
@@ -72,12 +73,16 @@ public enum CardEncryptor {
     public enum Error: Swift.Error, LocalizedError {
         /// Indicates an unknown error occurred.
         case unknown
+        
         /// Indicates encryption failed  because of invalid card public key or for some other unknown reason.
+        @available(*, deprecated, message: "Use `Cyptor.Error` instead.")
         case encryptionFailed
+
         /// Indicates an error when trying to encrypt a card with  card number, securityCode,
         /// expiryMonth, expiryYear, and holderName, all of them are nil.
         case invalidEncryptionArguments
         
+        /// Indicates an error when trying to encrypt empty or invalid BIN number.
         case invalidBin
         
         public var errorDescription: String? {
@@ -106,8 +111,6 @@ public enum CardEncryptor {
     /// - Returns: A string representing the encrypted card.
     /// - Throws:  `CardEncryptor.Error.encryptionFailed` if the encryption failed,
     ///  maybe because the card public key is an invalid one, or for any other reason.
-    /// - Throws:  `CardEncryptor.Error.invalidEncryptionArguments` when trying to encrypt a card with  card number, securityCode,
-    /// expiryMonth, expiryYear, and holderName, all of them are nil.
     /// - Throws:  `CardEncryptor.Error.unknown` if encryption failed for an unknown reason.
     @available(*, deprecated, message: "Use `card.encryptedToToken(publicKey:holderName:)`.")
     public static func encryptedToken(for card: Card, holderName: String?, publicKey: String) throws -> String {

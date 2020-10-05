@@ -77,7 +77,7 @@ internal enum Cryptor {
         let tokens = keyInHex.components(separatedBy: "|")
         guard tokens.count == 2 else { return nil }
         
-        return RSACryptor.encrypt(data: data, exponent: tokens[0], modulus: tokens[1])
+        return RSA.encrypt(data: data, exponent: tokens[0], modulus: tokens[1])
     }
 
     internal enum Error: Swift.Error, LocalizedError {
