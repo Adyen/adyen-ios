@@ -9,23 +9,25 @@ import AdyenCard
 import AdyenDropIn
 import UIKit
 
-internal final class ComponentsViewController: UIViewController {
+internal final class ComponentsViewController: UIViewController, Presenter {
     
     private lazy var componentsView = ComponentsView()
-    private let payment = Payment(amount: Configuration.amount, countryCode: Configuration.countryCode)
-    private let environment: Environment = .test
-    
-    private var paymentMethods: PaymentMethods?
-    private var currentComponent: PresentableComponent?
-    private var paymentInProgress: Bool = false
+
+    private lazy var controller: PaymentsController = {
+
+        let controller = PaymentsController()
+        controller.presenter = self
+
+        return controller
+    }()
     
     // MARK: - View
     
-    internal override func loadView() {
+    override internal func loadView() {
         view = componentsView
     }
     
-    internal override func viewDidLoad() {
+    override internal func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Components"
         
@@ -41,184 +43,40 @@ internal final class ComponentsViewController: UIViewController {
             ]
         ]
         
-        requestPaymentMethods()
-    }
-    
-    // MARK: - Components
-    
-    private lazy var actionComponent: DropInActionComponent = {
-        let handler = DropInActionComponent()
-        handler.redirectComponentStyle = dropInComponentStyle.redirectComponent
-        handler.delegate = self
-        handler.presentationDelegate = self
-        handler.environment = environment
-        handler.clientKey = Configuration.clientKey
-        return handler
-    }()
-    
-    private func present(_ component: PresentableComponent) {
-        component.environment = environment
-        component.clientKey = Configuration.clientKey
-        component.payment = payment
-        
-        if let paymentComponent = component as? PaymentComponent {
-            paymentComponent.delegate = self
-        }
-        
-        if let actionComponent = component as? ActionComponent {
-            actionComponent.delegate = self
-        }
-        
-        currentComponent = component
-        guard component.requiresModalPresentation else {
-            return present(component.viewController, animated: true)
-        }
-        
-        let navigation = UINavigationController(rootViewController: component.viewController)
-        component.viewController.navigationItem.leftBarButtonItem = .init(barButtonSystemItem: .cancel,
-                                                                          target: self,
-                                                                          action: #selector(cancelDidPress))
-        adyen.topPresenter.present(navigation, animated: true)
-    }
-    
-    @objc private func cancelDidPress() {
-        currentComponent?.didCancel()
-        
-        if let paymentComponent = self.currentComponent as? PaymentComponent {
-            paymentComponent.delegate?.didFail(with: ComponentError.cancelled, from: paymentComponent)
-        }
+        controller.requestPaymentMethods()
     }
     
     // MARK: - DropIn Component
-    
-    private lazy var dropInComponentStyle: DropInComponent.Style = DropInComponent.Style()
-    
-    private func presentDropInComponent() {
-        guard let paymentMethods = paymentMethods else { return }
-        let configuration = DropInComponent.PaymentMethodsConfiguration()
-        configuration.clientKey = Configuration.clientKey
-        configuration.applePay.merchantIdentifier = Configuration.applePayMerchantIdentifier
-        configuration.applePay.summaryItems = Configuration.applePaySummaryItems
-        configuration.environment = environment
-        configuration.localizationParameters = nil
-        
-        let component = DropInComponent(paymentMethods: paymentMethods,
-                                        paymentMethodsConfiguration: configuration,
-                                        style: dropInComponentStyle,
-                                        title: Configuration.appName)
-        component.delegate = self
-        present(component)
+
+    internal func presentDropInComponent() {
+        controller.presentDropInComponent()
     }
-    
-    private func presentCardComponent() {
-        guard let paymentMethod = paymentMethods?.paymentMethod(ofType: CardPaymentMethod.self) else { return }
-        let component = CardComponent(paymentMethod: paymentMethod,
-                                      clientKey: Configuration.clientKey,
-                                      style: dropInComponentStyle.formComponent)
-        component.environment = environment
-        component.clientKey = Configuration.clientKey
-        component.cardComponentDelegate = self
-        present(component)
+
+    internal func presentCardComponent() {
+        controller.presentCardComponent()
     }
-    
-    private func presentIdealComponent() {
-        guard let paymentMethod = paymentMethods?.paymentMethod(ofType: IssuerListPaymentMethod.self) else { return }
-        let component = IdealComponent(paymentMethod: paymentMethod,
-                                       style: dropInComponentStyle.listComponent)
-        present(component)
+
+    internal func presentIdealComponent() {
+        controller.presentIdealComponent()
     }
-    
-    private func presentSEPADirectDebitComponent() {
-        guard let paymentMethod = paymentMethods?.paymentMethod(ofType: SEPADirectDebitPaymentMethod.self) else { return }
-        let component = SEPADirectDebitComponent(paymentMethod: paymentMethod,
-                                                 style: dropInComponentStyle.formComponent)
-        component.delegate = self
-        present(component)
+
+    internal func presentSEPADirectDebitComponent() {
+        controller.presentSEPADirectDebitComponent()
     }
-    
-    private func presentMBWayComponent() {
-        guard let paymentMethod = paymentMethods?.paymentMethod(ofType: MBWayPaymentMethod.self) else { return }
-        let component = MBWayComponent(paymentMethod: paymentMethod,
-                                       style: dropInComponentStyle.formComponent)
-        component.delegate = self
-        present(component)
+
+    internal func presentMBWayComponent() {
+        controller.presentMBWayComponent()
     }
-    
-    // MARK: - Networking
-    
-    private lazy var apiClient = DefaultAPIClient()
-    
-    private func requestPaymentMethods() {
-        let request = PaymentMethodsRequest()
-        apiClient.perform(request) { result in
-            switch result {
-            case let .success(response):
-                self.paymentMethods = response.paymentMethods
-            case let .failure(error):
-                self.presentAlert(with: error, retryHandler: self.requestPaymentMethods)
-            }
-        }
+
+    internal func requestPaymentMethods() {
+        controller.requestPaymentMethods()
     }
-    
-    private func performPayment(with data: PaymentComponentData) {
-        let request = PaymentsRequest(data: data)
-        apiClient.perform(request, completionHandler: paymentResponseHandler)
-    }
-    
-    private func performPaymentDetails(with data: ActionComponentData) {
-        let request = PaymentDetailsRequest(details: data.details, paymentData: data.paymentData)
-        apiClient.perform(request, completionHandler: paymentResponseHandler)
-    }
-    
-    private func paymentResponseHandler(result: Result<PaymentsResponse, Error>) {
-        switch result {
-        case let .success(response):
-            if let action = response.action {
-                currentComponent?.stopLoading()
-                handle(action)
-            } else {
-                finish(with: response.resultCode)
-            }
-        case let .failure(error):
-            currentComponent?.stopLoading(withSuccess: false) { [weak self] in
-                self?.presentAlert(with: error)
-            }
-        }
-    }
-    
-    private func handle(_ action: Action) {
-        guard paymentInProgress else { return }
-        
-        if let dropInComponent = currentComponent as? DropInComponent {
-            return dropInComponent.handle(action)
-        }
-        
-        actionComponent.perform(action)
-    }
-    
-    private func finish(with resultCode: PaymentsResponse.ResultCode) {
-        let success = resultCode == .authorised || resultCode == .received || resultCode == .pending
-        
-        currentComponent?.stopLoading(withSuccess: success) { [weak self] in
-            self?.dismiss(animated: true) {
-                self?.presentAlert(withTitle: resultCode.rawValue)
-            }
-        }
-    }
-    
-    private func finish(with error: Error) {
-        let isCancelled = ((error as? ComponentError) == .cancelled)
-        
-        dismiss(animated: true) {
-            if !isCancelled {
-                self.presentAlert(with: error)
-            }
-        }
-    }
-    
-    private func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
+
+    // MARK: - Presenter
+
+    internal func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
         let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-        
+
         if let retryHandler = retryHandler {
             alertController.addAction(UIAlertAction(title: "Retry", style: .default, handler: { _ in
                 retryHandler()
@@ -226,78 +84,21 @@ internal final class ComponentsViewController: UIViewController {
         } else {
             alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         }
-        
+
         adyen.topPresenter.present(alertController, animated: true)
     }
-    
-    private func presentAlert(withTitle title: String) {
+
+    internal func presentAlert(withTitle title: String) {
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         adyen.topPresenter.present(alertController, animated: true)
     }
-}
 
-extension ComponentsViewController: DropInComponentDelegate {
-    
-    internal func didSubmit(_ data: PaymentComponentData, from component: DropInComponent) {
-        performPayment(with: data)
-        paymentInProgress = true
+    internal func present(viewController: UIViewController, completion: (() -> Void)?) {
+        adyen.topPresenter.present(viewController, animated: true, completion: completion)
     }
-    
-    internal func didProvide(_ data: ActionComponentData, from component: DropInComponent) {
-        performPaymentDetails(with: data)
-    }
-    
-    internal func didFail(with error: Error, from component: DropInComponent) {
-        paymentInProgress = false
-        finish(with: error)
-    }
-    
-    internal func didCancel(component: PresentableComponent, from dropInComponent: DropInComponent) {
-        // Handle the event when the user closes a PresentableComponent.
-        print("User did close: \(component)")
-    }
-    
-}
 
-extension ComponentsViewController: PaymentComponentDelegate {
-    
-    internal func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
-        paymentInProgress = true
-        performPayment(with: data)
-    }
-    
-    internal func didFail(with error: Error, from component: PaymentComponent) {
-        paymentInProgress = false
-        finish(with: error)
-    }
-    
-}
-
-extension ComponentsViewController: ActionComponentDelegate {
-    
-    internal func didFail(with error: Error, from component: ActionComponent) {
-        paymentInProgress = false
-        finish(with: error)
-    }
-    
-    internal func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
-        performPaymentDetails(with: data)
-    }
-}
-
-extension ComponentsViewController: CardComponentDelegate {
-    internal func didChangeBIN(_ value: String, component: CardComponent) {
-        print("Current BIN: \(value)")
-    }
-    
-    internal func didChangeCardType(_ value: [CardType]?, component: CardComponent) {
-        print("Current card type: \((value ?? []).reduce("") { "\($0), \($1)" })")
-    }
-}
-
-extension ComponentsViewController: PresentationDelegate {
-    internal func present(component: PresentableComponent, disableCloseButton: Bool) {
-        present(component)
+    internal func dismiss(completion: (() -> Void)?) {
+        dismiss(animated: true, completion: completion)
     }
 }
