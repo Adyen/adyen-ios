@@ -13,17 +13,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        destination: ['name=iPhone 8']
-        include:
-          - destination: 'name=iPhone X,OS=12.4'
-          - destination: 'name=iPhone 11,OS=14.0'
+        destination: ['name=iPhone 8', 'name=iPhone X,OS=12.4', 'name=iPhone 11,OS=14.0']
             
     steps:
     - uses: actions/checkout@v2
-    
-    - name: Set Xcode Version
-      run: |
-        echo '::set-env name=XCODE_VERSION::/Applications/Xcode_12.app/Contents/Developer'
 
     - name: Prepare iOS 12.4 simulator
       if: contains(matrix.destination, 'OS=12.4')
@@ -32,14 +25,12 @@ jobs:
         sudo ln -s /Applications/Xcode_10.3.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime /Library/Developer/CoreSimulator/Profiles/Runtimes/iOS\ 12.4.simruntime
         xcrun simctl create custom-test-device "iPhone X" "com.apple.CoreSimulator.SimRuntime.iOS-12-4"
         xcrun simctl list devices 12.4
+        echo '::set-env name=XCODE_VERSION::/Applications/Xcode_10.3.app/Contents/Developer'
         
     - name: Prepare iOS 14.0 simulator
       if: contains(matrix.destination, 'OS=14.0')
       run: |
-        sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
-        sudo ln -s /Applications/Xcode_12.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime /Library/Developer/CoreSimulator/Profiles/Runtimes/iOS\ 14.0.simruntime
-        xcrun simctl create custom-test-device "iPhone 11" "com.apple.CoreSimulator.SimRuntime.iOS-14-0"
-        xcrun simctl list devices 14.0
+        echo '::set-env name=XCODE_VERSION::/Applications/Xcode_12.app/Contents/Developer'
         
     - name: Check Dependencies
       uses: actions/cache@v1
@@ -55,6 +46,8 @@ jobs:
           rm Cartfile.resolved
         fi
         carthage bootstrap --platform iOS --cache-builds
+      env:
+         GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
     - name: Build and test
       run: |
@@ -84,6 +77,9 @@ jobs:
     - name: Install Dependencies
       if: steps.carthage-cache.outputs.cache-hit != 'true'
       run: |
+        if [[ $(carthage outdated) == *"Latest"* ]] ; then
+          rm Cartfile.resolved
+        fi
         carthage bootstrap --platform iOS --cache-builds
       env:
          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
