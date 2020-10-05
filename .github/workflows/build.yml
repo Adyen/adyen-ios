@@ -41,15 +41,15 @@ jobs:
         xcrun simctl create custom-test-device "iPhone 11" "com.apple.CoreSimulator.SimRuntime.iOS-14-0"
         xcrun simctl list devices 14.0
         
-    # - name: Check Dependencies
-    #   uses: actions/cache@v1
-    #   id: carthage-cache
-    #   with:
-    #     path: Carthage
-    #     key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
+    - name: Check Dependencies
+      uses: actions/cache@v1
+      id: carthage-cache
+      with:
+        path: Carthage
+        key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
       
     - name: Install Dependencies
-      # if: steps.carthage-cache.outputs.cache-hit != 'true'
+      if: steps.carthage-cache.outputs.cache-hit != 'true'
       run: |
         if [[ $(carthage outdated) == *"Latest"* ]] ; then
           rm Cartfile.resolved

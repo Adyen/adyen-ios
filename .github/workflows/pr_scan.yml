@@ -19,15 +19,15 @@ jobs:
         brew install swiftlint
         gem install slather
         
-#     - name: Check Dependencie Cache
-#       uses: actions/cache@v1
-#       id: carthage-cache
-#       with:
-#         path: Carthage
-#         key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
+    - name: Check Dependencie Cache
+      uses: actions/cache@v1
+      id: carthage-cache
+      with:
+        path: Carthage
+        key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
       
     - name: Install Dependencies
-      #if: steps.carthage-cache.outputs.cache-hit != 'true'
+      if: steps.carthage-cache.outputs.cache-hit != 'true'
       run: |
         if [[ $(carthage outdated) == *"Latest"* ]] ; then
           rm Cartfile.resolved
