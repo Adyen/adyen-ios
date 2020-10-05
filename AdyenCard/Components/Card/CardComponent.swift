@@ -176,7 +176,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     
     // MARK: - Form Items
     
-    private lazy var securedViewController: SecuredViewController = SecuredViewController(child: formViewController, style: style)
+    private lazy var securedViewController = SecuredViewController(child: formViewController, style: style)
     
     internal lazy var formViewController: FormViewController = {
         Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
@@ -295,7 +295,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         cardTypeProvider.requestCardType(for: bin, supported: self.supportedCardTypes) { [weak self] cardTypes in
             guard let self = self else { return }
             
-            self.numberItem.didChange(detectedCards: cardTypes)
+            self.numberItem.didChange(detectedCards: cardTypes, for: bin)
             self.cardComponentDelegate?.didChangeCardType(cardTypes, component: self)
         }
     }
