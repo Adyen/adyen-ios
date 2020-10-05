@@ -130,7 +130,7 @@ class BCMCComponentTests: XCTestCase {
             XCTAssertNotNil(cardNumberItemView)
             
             let cardNumberItem = cardNumberItemView!.item
-            cardNumberItem.didChange(detectedCards: [])
+            cardNumberItem.didChange(detectedCards: [], for: "12345")
             XCTAssertTrue(cardNumberItem.cardTypeLogos.allSatisfy { $0.isHidden })
             
             expectation.fulfill()
