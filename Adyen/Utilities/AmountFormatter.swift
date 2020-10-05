@@ -34,6 +34,26 @@ public final class AmountFormatter {
         return Int(majorUnitAmount * pow(Double(10), Double(maximumFractionDigits)))
     }
     
+    /// Converts an amount in major currency unit to an amount in minor currency units.
+    ///
+    /// - Parameters:
+    ///   - majorUnitAmount: The amount in major currency units.
+    ///   - currencyCode: The code of the currency.
+    public static func minorUnitAmount(from majorUnitAmount: Decimal, currencyCode: String) -> Int {
+        let maximumFractionDigits = AmountFormatter.maximumFractionDigits(for: currencyCode)
+        
+        let roundTowardsZero = NSDecimalNumberHandler(roundingMode: majorUnitAmount.isSignMinus ? .up : .down,
+                                                      scale: 0,
+                                                      raiseOnExactness: false,
+                                                      raiseOnOverflow: false,
+                                                      raiseOnUnderflow: false,
+                                                      raiseOnDivideByZero: false)
+        
+        return (majorUnitAmount as NSDecimalNumber)
+            .multiplying(byPowerOf10: Int16(maximumFractionDigits))
+            .rounding(accordingToBehavior: roundTowardsZero).intValue
+    }
+    
     private static func decimalAmount(_ amount: Int, currencyCode: String) -> NSDecimalNumber {
         let defaultFormatter = AmountFormatter.defaultFormatter(currencyCode: currencyCode)
         let maximumFractionDigits = AmountFormatter.maximumFractionDigits(for: currencyCode)
