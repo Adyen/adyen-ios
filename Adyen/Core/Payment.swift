@@ -28,6 +28,15 @@ public struct Payment {
             self.currencyCode = currencyCode
         }
         
+        /// Initializes an Amount from a `Decimal` value expressed in major units.
+        ///
+        /// - Parameters:
+        ///   - value: The value in major units.
+        ///   - currencyCode: The code of the currency.
+        public init(value: Decimal, currencyCode: String) {
+            self.value = AmountFormatter.minorUnitAmount(from: value, currencyCode: currencyCode)
+            self.currencyCode = currencyCode
+        }
     }
     
     /// The amount for this payment.
