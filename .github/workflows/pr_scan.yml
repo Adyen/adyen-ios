@@ -19,15 +19,15 @@ jobs:
         brew install swiftlint
         gem install slather
         
-#     - name: Check Dependencie Cache
-#       uses: actions/cache@v1
-#       id: carthage-cache
-#       with:
-#         path: Carthage
-#         key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
+    - name: Check Dependencie Cache
+      uses: actions/cache@v1
+      id: carthage-cache
+      with:
+        path: Carthage
+        key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
       
     - name: Install Dependencies
-      #if: steps.carthage-cache.outputs.cache-hit != 'true'
+      if: steps.carthage-cache.outputs.cache-hit != 'true'
       run: |
         if [[ $(carthage outdated) == *"Latest"* ]] ; then
           rm Cartfile.resolved
@@ -47,6 +47,8 @@ jobs:
       run: |
         xcodebuild -version
         build-wrapper-macosx-x86/build-wrapper-macosx-x86 --out-dir reports/build-wrapper xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -derivedDataPath ./DerivedData -enableCodeCoverage YES clean build test -destination "name=iPhone 11" | xcpretty
+      env:
+        DEVELOPER_DIR: ${{ env.XCODE_VERSION }}
                 
     - name: Slather
       run: |
@@ -57,7 +59,7 @@ jobs:
         fastlane run swiftlint output_file:"./reports/swiftlint.json" reporter:"json" ignore_exit_status:"true"
         
     - name: Run Sonar
-      if: ${{ env.sonarToken }} != null
+      if: ${{ env.sonarToken != 0 }}
       run: |
         sonar-scanner -X -Dsonar.login=${{ secrets.SONAR_TOKEN }}
       env:
