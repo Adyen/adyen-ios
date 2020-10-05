@@ -1,3 +1,0 @@
-[submodule "adyen-checkout-ios-internal"]
-	path = adyen-checkout-ios-internal
-	url = git@code.is.adyen.com:iOS/adyen-checkout-ios-internal.git
