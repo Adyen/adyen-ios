@@ -50,20 +50,14 @@ internal final class FormCardNumberItem: FormTextItem {
     internal func valueDidChange() {
         binValue = String(value.prefix(FormCardNumberItem.binLength))
         cardNumberFormatter.cardType = supportedCardTypes.adyen.type(forCardNumber: value)
-        
-        guard !value.isEmpty else {
-            previouslyDetectedCardTypes = nil
-            setLogos(for: Set<CardType>(supportedCardTypes))
-            return
-        }
     }
     
-    internal func didChange(detectedCards: [CardType]) {
+    internal func didChange(detectedCards: [CardType], for bin: String) {
         let newDetectedCardTypes = Set<CardType>(detectedCards)
         guard self.previouslyDetectedCardTypes != newDetectedCardTypes else { return }
         
         previouslyDetectedCardTypes = newDetectedCardTypes
-        setLogos(for: newDetectedCardTypes)
+        setLogos(for: bin.isEmpty ? Set<CardType>(supportedCardTypes) : newDetectedCardTypes)
     }
     
     // MARK: - BuildableFormItem
