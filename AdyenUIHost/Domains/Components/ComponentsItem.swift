@@ -17,7 +17,7 @@ internal struct ComponentsItem: Hashable {
         self.selectionHandler = selectionHandler
     }
 
-    static func == (lhs: ComponentsItem, rhs: ComponentsItem) -> Bool {
+    internal static func == (lhs: ComponentsItem, rhs: ComponentsItem) -> Bool {
         lhs.title == rhs.title
     }
 
