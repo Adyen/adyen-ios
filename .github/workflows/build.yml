@@ -23,7 +23,7 @@ jobs:
     
     - name: Set Xcode Version
       run: |
-        echo '::set-env name=XCODE_VERSION::/Applications/Xcode_11.4.1.app/Contents/Developer'
+        echo '::set-env name=XCODE_VERSION::/Applications/Xcode_12.app/Contents/Developer'
 
     - name: Prepare iOS 12.4 simulator
       if: contains(matrix.destination, 'OS=12.4')

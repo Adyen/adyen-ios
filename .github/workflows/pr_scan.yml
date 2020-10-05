@@ -8,7 +8,7 @@ jobs:
   
   build:
     env:
-      sonarToken: ${{ secrets.SONAR_TOKEN }}
+      sonarToken: ${{ secrets.SONAR_TOKENN }}
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
@@ -57,7 +57,7 @@ jobs:
         fastlane run swiftlint output_file:"./reports/swiftlint.json" reporter:"json" ignore_exit_status:"true"
         
     - name: Run Sonar
-      if: ${{ env.sonarToken }} != null
+      if: ${{ env.sonarToken != 0 }}
       run: |
         sonar-scanner -X -Dsonar.login=${{ secrets.SONAR_TOKEN }}
       env:
