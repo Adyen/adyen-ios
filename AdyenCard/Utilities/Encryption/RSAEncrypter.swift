@@ -22,54 +22,23 @@ internal enum RSACryptor {
      *      Encrypted data or nil if modulus and exponent is invalid.
      */
     public static func encrypt(data: Data, exponent: String, modulus: String) -> Data? {
-        let fingerprint = "\(exponent)|\(modulus)".sha1()
-        
-        if let publicKey = self.loadRSAPublicKeyRef(appTag: fingerprint) {
-            return self.encrypt(original: data, publicKey: publicKey)
-        }
-
         guard let modulusHex = modulus.hexadecimal, let exponentHex = exponent.hexadecimal else { return nil }
-
-        adyenPrint("Adding PublicKey to Keystore with fingerprint: \(fingerprint)")
         
         let pubKeyData = self.generateRSAPublicKey(with: modulusHex, exponent: exponentHex)
-        self.saveRSA(publicKey: pubKeyData, appTag: fingerprint, overwrite: true)
-        
-        guard let publicKey = self.loadRSAPublicKeyRef(appTag: fingerprint) else {
-            adyenPrint("Problem obtaining SecKey")
-            return nil
-        }
-        
-        return self.encrypt(original: data, publicKey: publicKey)
+        return self.encrypt(original: data, publicKey: pubKeyData)
     }
 
-    @discardableResult
-    public static func deleteRSA(appTag: String) -> Bool {
-        guard let appTagData = appTag.data(using: .utf8) else { return false }
-
-        let keychainQuery: [CFString: Any] = [
-            kSecClass: kSecClassKey,
-            kSecAttrKeyType: kSecAttrKeyTypeRSA,
-            kSecAttrKeyClass: kSecAttrKeyClassPublic,
-            kSecAttrApplicationTag: appTagData as NSData as CFData
-        ]
-
-        let status = SecItemDelete(keychainQuery as CFDictionary)
-        if status != noErr {
-            adyenPrint("result = \(status)")
-        }
-
-        return status == noErr
-    }
-
-    private static func encrypt(original: Data, publicKey: SecKey) -> Data? {
+    private static func encrypt(original: Data, publicKey: Data) -> Data? {
         var error: Unmanaged<CFError>?
 
-        guard SecKeyIsAlgorithmSupported(publicKey, .encrypt, .rsaEncryptionPKCS1) else {
-            fatalError("Can't use this algorithm with this key!")
-        }
+        let attributes: [String: Any] = [
+            kSecAttrKeyClass as String: kSecAttrKeyClassPublic,
+            kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
+            kSecAttrKeySizeInBits as String: 256
+        ]
 
-        if let encrypted = SecKeyCreateEncryptedData(publicKey, .rsaEncryptionPKCS1, original as CFData, &error) {
+        if let secKey = SecKeyCreateWithData(publicKey as CFData, attributes as CFDictionary, nil),
+            let encrypted = SecKeyCreateEncryptedData(secKey, .rsaEncryptionPKCS1, original as CFData, &error) {
             return encrypted as NSData as Data
         }
 
@@ -78,88 +47,6 @@ internal enum RSACryptor {
 
         }
         return nil
-    }
-    
-    @discardableResult
-    private static func saveRSA(publicKey: Data, appTag: String, overwrite: Bool) -> Bool {
-        guard let appTagData = appTag.data(using: .utf8) else { return false }
-        
-        let keychainQuery: [CFString: Any] = [
-            kSecClass: kSecClassKey,
-            kSecAttrKeyType: kSecAttrKeyTypeRSA,
-            kSecAttrKeyClass: kSecAttrKeyClassPublic,
-            kSecAttrApplicationTag: appTagData as NSData as CFData,
-            kSecValueData: publicKey as NSData as CFData,
-            kSecReturnPersistentRef: kCFBooleanTrue!
-        ]
-        
-        let status = SecItemAdd(keychainQuery as CFDictionary, nil)
-        
-        if status == noErr {
-            return true
-        } else if status == errSecDuplicateItem, overwrite {
-            return self.updateRSA(publicKey: publicKey, appTag: appTag)
-        } else {
-            adyenPrint("result = \(status)")
-        }
-        
-        return false
-    }
-    
-    @discardableResult
-    private static func updateRSA(publicKey: Data, appTag: String) -> Bool {
-        guard let appTagData = appTag.data(using: .utf8) else { return false }
-        
-        let keychainQuery: [CFString: Any] = [
-            kSecClass: kSecClassKey,
-            kSecAttrKeyType: kSecAttrKeyTypeRSA,
-            kSecAttrKeyClass: kSecAttrKeyClassPublic,
-            kSecAttrApplicationTag: appTagData as NSData as CFData
-        ]
-        
-        let status = SecItemCopyMatching(keychainQuery as CFDictionary, nil)
-        if status == noErr {
-            let valueQuery: [CFString: Any] = [
-                kSecValueData: publicKey as NSData as CFData
-            ]
-            
-            let status = SecItemUpdate(keychainQuery as CFDictionary, valueQuery as CFDictionary)
-            if status != noErr {
-                adyenPrint("result = \(status)")
-                return false
-            }
-            return true
-        } else {
-            adyenPrint("result = \(status)")
-        }
-        
-        return false
-    }
-    
-    /*
-     * returned value(SecKeyRef) should be released with CFRelease() function after use.
-     *
-     */
-    private static func loadRSAPublicKeyRef(appTag: String) -> SecKey? {
-        guard let appTagData = appTag.data(using: .utf8) else { return nil }
-        
-        let keychainQuery: [CFString: Any] = [
-            kSecClass: kSecClassKey,
-            kSecAttrKeyType: kSecAttrKeyTypeRSA,
-            kSecAttrKeyClass: kSecAttrKeyClassPublic,
-            kSecAttrApplicationTag: appTagData as NSData as CFData,
-            kSecReturnRef: true
-        ]
-        
-        var dataTypeRef: AnyObject?
-        let status: OSStatus = SecItemCopyMatching(keychainQuery as CFDictionary, &dataTypeRef)
-        
-        if let dataTypeRef = dataTypeRef, status == noErr {
-            return (dataTypeRef as! SecKey) // swiftlint:disable:this force_cast
-        } else {
-            adyenPrint("result = \(status)")
-            return nil
-        }
     }
     
     /// https://github.com/henrinormak/Heimdall/blob/master/Heimdall/Heimdall.swift
