@@ -9,10 +9,6 @@ import XCTest
 
 class CardEncryptorCardTests: XCTestCase {
 
-    override func tearDown() {
-        RSACryptor.deleteRSA(appTag: Dummy.dummyPublicKey.sha1())
-    }
-
     // MARK: - Test encrypting Card number
     
     func testEncryptNumberShouldReturnNilWithNilNumber() {
