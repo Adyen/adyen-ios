@@ -7,6 +7,8 @@ on:
 jobs:
   
   build:
+    env:
+      sonarToken: ${{ secrets.SONAR_TOKEN }}
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
@@ -43,7 +45,8 @@ jobs:
       
     - name: Build and test
       run: |
-          build-wrapper-macosx-x86/build-wrapper-macosx-x86 --out-dir reports/build-wrapper xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -derivedDataPath ./DerivedData -enableCodeCoverage YES clean build test -destination "name=iPhone 11" | xcpretty
+        xcodebuild -version
+        build-wrapper-macosx-x86/build-wrapper-macosx-x86 --out-dir reports/build-wrapper xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -derivedDataPath ./DerivedData -enableCodeCoverage YES clean build test -destination "name=iPhone 11" | xcpretty
                 
     - name: Slather
       run: |
@@ -54,6 +57,7 @@ jobs:
         fastlane run swiftlint output_file:"./reports/swiftlint.json" reporter:"json" ignore_exit_status:"true"
         
     - name: Run Sonar
+      if: ${{ env.sonarToken }} != null
       run: |
         sonar-scanner -X -Dsonar.login=${{ secrets.SONAR_TOKEN }}
       env:

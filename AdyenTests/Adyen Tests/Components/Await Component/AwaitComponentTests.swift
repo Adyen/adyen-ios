@@ -108,7 +108,7 @@ class AwaitComponentTests: XCTestCase {
 
         sut.handle(action)
 
-        waitForExpectations(timeout: 3, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
 
     
