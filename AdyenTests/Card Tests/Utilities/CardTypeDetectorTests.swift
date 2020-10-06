@@ -58,7 +58,7 @@ class CardTypeDetectorTests: XCTestCase {
     }
 
     func testInvalid() {
-        assert(cardNumbers: CardNumbers.invalid , with: nil )
+        assert(cardNumbers: CardNumbers.invalid, with: nil)
     }
 
     private func assert(cardNumbers: [String], with type: CardType?) {

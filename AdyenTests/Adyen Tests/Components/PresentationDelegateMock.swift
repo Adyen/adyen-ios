@@ -6,8 +6,8 @@
 //  Copyright © 2020 Adyen. All rights reserved.
 //
 
-import Foundation
 import Adyen
+import Foundation
 
 final class PresentationDelegateMock: PresentationDelegate {
 

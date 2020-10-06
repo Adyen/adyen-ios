@@ -137,7 +137,7 @@ class CardEncryptorCardTests: XCTestCase {
         let card = CardEncryptor.Card(expiryYear: "test_expiry_year")
         let key = Dummy.dummyPublicKey
 
-        XCTAssertNotNil( try? CardEncryptor.encryptedToken(for: card, holderName: nil, publicKey: key))
+        XCTAssertNotNil(try? CardEncryptor.encryptedToken(for: card, holderName: nil, publicKey: key))
     }
 
     // MARK: - Test encrypting BIN

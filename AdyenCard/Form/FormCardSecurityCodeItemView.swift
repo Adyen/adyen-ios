@@ -29,13 +29,13 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         return view
     }()
     
-    internal override func textFieldDidBeginEditing(_ text: UITextField) {
+    override internal func textFieldDidBeginEditing(_ text: UITextField) {
         super.textFieldDidBeginEditing(text)
         accessory = .customView(cardHintView)
         cardHintView.isHighlighted = true
     }
     
-    internal override func textFieldDidEndEditing(_ text: UITextField) {
+    override internal func textFieldDidEndEditing(_ text: UITextField) {
         super.textFieldDidEndEditing(text)
         cardHintView.isHighlighted = false
     }
@@ -73,7 +73,7 @@ extension FormCardSecurityCodeItemView {
         }
         
         /// Indicate when user focused on security code field
-        internal override var isHighlighted: Bool {
+        override internal var isHighlighted: Bool {
             didSet {
                 if isHighlighted {
                     animateHint()
@@ -105,7 +105,7 @@ extension FormCardSecurityCodeItemView {
                            completion: nil)
         }
         
-        public override var accessibilityIdentifier: String? {
+        override public var accessibilityIdentifier: String? {
             didSet {
                 hintImage.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "imageView")
             }

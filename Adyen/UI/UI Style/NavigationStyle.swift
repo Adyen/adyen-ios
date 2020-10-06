@@ -10,7 +10,7 @@ import Foundation
 public struct NavigationStyle: TintableStyle {
     
     /// Indicates the navigation bar background color.
-    public var backgroundColor: UIColor = UIColor.AdyenCore.componentBackground
+    public var backgroundColor = UIColor.AdyenCore.componentBackground
     
     /// The color of the thin line at the bottom of the navigation bar.
     /// If value is nil, the default color would be used.
@@ -23,9 +23,9 @@ public struct NavigationStyle: TintableStyle {
     public var cornerRadius: CGFloat = 10
     
     /// Indicates the bar title text style.
-    public var barTitle: TextStyle = TextStyle(font: UIFont.AdyenCore.barTitle,
-                                               color: UIColor.AdyenCore.componentLabel,
-                                               textAlignment: .natural)
+    public var barTitle = TextStyle(font: UIFont.AdyenCore.barTitle,
+                                    color: UIColor.AdyenCore.componentLabel,
+                                    textAlignment: .natural)
     
     /// :nodoc:
     @available(*, deprecated, message: "Use backgroundColor instead.")

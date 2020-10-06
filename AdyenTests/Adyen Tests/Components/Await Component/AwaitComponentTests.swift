@@ -6,9 +6,9 @@
 //  Copyright © 2020 Adyen. All rights reserved.
 //
 
-import XCTest
 @testable import Adyen
 @testable import AdyenDropIn
+import XCTest
 
 final class AwaitActionHandlerMock: AnyAwaitActionHandler {
 
@@ -111,5 +111,4 @@ class AwaitComponentTests: XCTestCase {
         waitForExpectations(timeout: 5, handler: nil)
     }
 
-    
 }

@@ -37,18 +37,18 @@ internal final class DimmingPresentationController: UIPresentationController {
         NSLayoutConstraint.activate(constraints)
     }
     
-    internal override func containerViewWillLayoutSubviews() {
+    override internal func containerViewWillLayoutSubviews() {
         super.containerViewWillLayoutSubviews()
         layoutDidChanged()
     }
     
-    internal override var frameOfPresentedViewInContainerView: CGRect {
+    override internal var frameOfPresentedViewInContainerView: CGRect {
         guard let containerView = containerView else { return super.frameOfPresentedViewInContainerView }
         return containerView.frame
     }
     
     /// :nodoc:
-    internal override func presentationTransitionWillBegin() {
+    override internal func presentationTransitionWillBegin() {
         super.presentationTransitionWillBegin()
         
         guard let containerView = containerView else { return }
@@ -60,12 +60,12 @@ internal final class DimmingPresentationController: UIPresentationController {
     }
     
     /// :nodoc:
-    internal override func presentationTransitionDidEnd(_ completed: Bool) {
+    override internal func presentationTransitionDidEnd(_ completed: Bool) {
         super.presentationTransitionDidEnd(completed)
     }
     
     /// :nodoc:
-    internal override func dismissalTransitionWillBegin() {
+    override internal func dismissalTransitionWillBegin() {
         super.dismissalTransitionWillBegin()
         
         presentedViewController.transitionCoordinator?.animate(alongsideTransition: { _ in

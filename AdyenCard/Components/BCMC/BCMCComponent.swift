@@ -7,7 +7,7 @@
 import Foundation
 
 /// Delegate for observing user's activity on `BCMCComponent`.
-public protocol BCMCComponentDelegate: class {
+public protocol BCMCComponentDelegate: AnyObject {
     
     /// Called when user enters PAN in `BCMCComponent`.
     /// - Parameter value: Up to 6 first digits in entered PAN.

@@ -6,8 +6,8 @@
 //  Copyright © 2020 Adyen. All rights reserved.
 //
 
-import XCTest
 @testable import Adyen
+import XCTest
 
 class PollingAwaitComponentTests: XCTestCase {
 
@@ -118,7 +118,6 @@ class PollingAwaitComponentTests: XCTestCase {
 
         XCTAssertEqual(apiClient.counter, 1)
     }
-
 
     func testNotRetryWhenResultIsRefused() {
         let apiClient = APIClientMock()

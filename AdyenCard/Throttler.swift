@@ -9,8 +9,8 @@ import Foundation
 // Throttles requests.
 internal final class Throttler {
     
-    private var workItem: DispatchWorkItem = DispatchWorkItem(block: { /* first work item is idle */ })
-    private var previousRun: Date = Date.distantPast
+    private var workItem = DispatchWorkItem(block: { /* first work item is idle */ })
+    private var previousRun = Date.distantPast
     private let queue: DispatchQueue
     private let minimumDelay: TimeInterval
     

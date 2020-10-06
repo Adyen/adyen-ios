@@ -32,15 +32,15 @@ internal final class FormPhoneExtensionPickerItemView: FormValueItemView<FormPho
     }
     
     /// :nodoc:
-    internal override var canBecomeFirstResponder: Bool { true }
+    override internal var canBecomeFirstResponder: Bool { true }
     
     /// :nodoc:
-    internal override func becomeFirstResponder() -> Bool {
+    override internal func becomeFirstResponder() -> Bool {
         return inputControl.becomeFirstResponder()
     }
     
     /// :nodoc:
-    internal override func resignFirstResponder() -> Bool {
+    override internal func resignFirstResponder() -> Bool {
         return inputControl.resignFirstResponder()
     }
     

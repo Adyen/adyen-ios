@@ -10,24 +10,24 @@ import Foundation
 public struct FormTextItemStyle: FormValueItemStyle {
     
     /// The title style.
-    public var title: TextStyle = TextStyle(font: .preferredFont(forTextStyle: .footnote),
-                                            color: UIColor.AdyenCore.componentSecondaryLabel,
-                                            textAlignment: .natural)
+    public var title = TextStyle(font: .preferredFont(forTextStyle: .footnote),
+                                 color: UIColor.AdyenCore.componentSecondaryLabel,
+                                 textAlignment: .natural)
     
     /// The text field's style.
-    public var text: TextStyle = TextStyle(font: .preferredFont(forTextStyle: .body),
-                                           color: UIColor.AdyenCore.componentLabel,
-                                           textAlignment: .natural)
+    public var text = TextStyle(font: .preferredFont(forTextStyle: .body),
+                                color: UIColor.AdyenCore.componentLabel,
+                                textAlignment: .natural)
     
     /// The text field's placeholder text style.
     public var placeholderText: TextStyle?
     
     /// The icons' style.
-    public var icon: ImageStyle = ImageStyle(borderColor: UIColor.AdyenCore.componentSeparator,
-                                             borderWidth: 1.0 / UIScreen.main.nativeScale,
-                                             cornerRadius: 4.0,
-                                             clipsToBounds: true,
-                                             contentMode: .scaleAspectFit)
+    public var icon = ImageStyle(borderColor: UIColor.AdyenCore.componentSeparator,
+                                 borderWidth: 1.0 / UIScreen.main.nativeScale,
+                                 cornerRadius: 4.0,
+                                 clipsToBounds: true,
+                                 contentMode: .scaleAspectFit)
     
     /// The tint color of text field and separator in focused state.
     public var tintColor: UIColor?
@@ -36,7 +36,7 @@ public struct FormTextItemStyle: FormValueItemStyle {
     public var backgroundColor: UIColor = .clear
     
     /// The accent color for warnings and error messages.
-    public var errorColor: UIColor = UIColor.AdyenCore.defaultRed
+    public var errorColor = UIColor.AdyenCore.defaultRed
     
     /// The color for separator element.
     /// If value is nil, the default color would be used.

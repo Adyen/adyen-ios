@@ -10,12 +10,12 @@ import Foundation
 public struct ListSectionHeaderStyle: ViewStyle {
     
     /// The title style.
-    public var title: TextStyle = TextStyle(font: .preferredFont(forTextStyle: .subheadline),
-                                            color: UIColor.AdyenCore.componentSecondaryLabel,
-                                            textAlignment: .natural)
+    public var title = TextStyle(font: .preferredFont(forTextStyle: .subheadline),
+                                 color: UIColor.AdyenCore.componentSecondaryLabel,
+                                 textAlignment: .natural)
     
     /// :nodoc:
-    public var backgroundColor: UIColor = UIColor.AdyenCore.componentBackground
+    public var backgroundColor = UIColor.AdyenCore.componentBackground
     
     /// Initializes the list header style.
     ///
