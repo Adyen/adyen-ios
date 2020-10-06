@@ -97,6 +97,14 @@ This method is invoked when an error occurred during the use of the Drop-in. Dis
 
 ---
 
+```swift
+func didCancel(component: PresentableComponent, from dropInComponent: DropInComponent)
+```
+
+This method is invoked when user closes a payment component managed by Drop-in.
+
+---
+
 #### Handling an action
 
 When `/payments` or `/payments/details` responds with a non-final result and an `action`, you can use the Drop-in to handle the action:
