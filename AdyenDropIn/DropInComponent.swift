@@ -110,7 +110,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
                                    style: style.navigation,
                                    cancelHandler: { [weak self] isRoot, component in
                                        self?.didSelectCancelButton(isRoot: isRoot, component: component)
-        })
+                                   })
     }()
     
     private func paymentMethodListComponent() -> PaymentMethodListComponent {

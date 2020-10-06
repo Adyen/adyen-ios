@@ -25,7 +25,7 @@ internal final class FormView: UIScrollView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    internal override var intrinsicContentSize: CGSize {
+    override internal var intrinsicContentSize: CGSize {
         let targetSize = CGSize(width: self.superview?.bounds.width ?? UIScreen.main.bounds.width,
                                 height: UIView.layoutFittingCompressedSize.height)
         return stackView.systemLayoutSizeFitting(targetSize,
@@ -42,7 +42,7 @@ internal final class FormView: UIScrollView {
         stackView.addArrangedSubview(itemView)
     }
     
-    internal override var contentOffset: CGPoint {
+    override internal var contentOffset: CGPoint {
         get {
             super.contentOffset
         }

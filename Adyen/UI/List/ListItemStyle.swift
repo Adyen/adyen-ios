@@ -10,24 +10,24 @@ import Foundation
 public struct ListItemStyle: ViewStyle {
     
     /// The title style.
-    public var title: TextStyle = TextStyle(font: .preferredFont(forTextStyle: .body),
-                                            color: UIColor.AdyenCore.componentLabel,
-                                            textAlignment: .natural)
+    public var title = TextStyle(font: .preferredFont(forTextStyle: .body),
+                                 color: UIColor.AdyenCore.componentLabel,
+                                 textAlignment: .natural)
     
     /// The subtitle style.
-    public var subtitle: TextStyle = TextStyle(font: .preferredFont(forTextStyle: .footnote),
-                                               color: UIColor.AdyenCore.componentSecondaryLabel,
-                                               textAlignment: .natural)
+    public var subtitle = TextStyle(font: .preferredFont(forTextStyle: .footnote),
+                                    color: UIColor.AdyenCore.componentSecondaryLabel,
+                                    textAlignment: .natural)
     
     /// The image style.
-    public var image: ImageStyle = ImageStyle(borderColor: UIColor.AdyenCore.componentSeparator,
-                                              borderWidth: 1.0 / UIScreen.main.nativeScale,
-                                              cornerRadius: 4.0,
-                                              clipsToBounds: true,
-                                              contentMode: .scaleAspectFit)
+    public var image = ImageStyle(borderColor: UIColor.AdyenCore.componentSeparator,
+                                  borderWidth: 1.0 / UIScreen.main.nativeScale,
+                                  cornerRadius: 4.0,
+                                  clipsToBounds: true,
+                                  contentMode: .scaleAspectFit)
     
     /// :nodoc:
-    public var backgroundColor: UIColor = UIColor.AdyenCore.componentBackground
+    public var backgroundColor = UIColor.AdyenCore.componentBackground
     
     /// Initializes the list item style.
     ///

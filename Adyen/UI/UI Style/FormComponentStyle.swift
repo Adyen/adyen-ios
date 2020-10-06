@@ -10,16 +10,16 @@ import Foundation
 public struct FormComponentStyle: ViewStyle {
     
     /// :nodoc:
-    public var backgroundColor: UIColor = UIColor.AdyenCore.componentBackground
+    public var backgroundColor = UIColor.AdyenCore.componentBackground
     
     /// The header style.
-    public var header: FormHeaderStyle = FormHeaderStyle()
+    public var header = FormHeaderStyle()
     
     /// The text field style.
-    public var textField: FormTextItemStyle = FormTextItemStyle()
+    public var textField = FormTextItemStyle()
     
     /// The switch style.
-    public var `switch`: FormSwitchItemStyle = FormSwitchItemStyle()
+    public var `switch` = FormSwitchItemStyle()
     
     /// The footer style.
     public var footer: FormFooterStyle

@@ -70,7 +70,7 @@ public final class SubmitButton: UIControl {
     }()
     
     /// :nodoc:
-    public override var accessibilityIdentifier: String? {
+    override public var accessibilityIdentifier: String? {
         didSet {
             titleLabel.accessibilityIdentifier = accessibilityIdentifier.map {
                 ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel")
@@ -110,7 +110,7 @@ public final class SubmitButton: UIControl {
     
     // MARK: - Layout
     
-    public override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
         self.adyen.round(corners: .allCorners, rounding: style.cornerRounding)
     }
@@ -141,7 +141,7 @@ public final class SubmitButton: UIControl {
     // MARK: - State
     
     /// :nodoc:
-    public override var isHighlighted: Bool {
+    override public var isHighlighted: Bool {
         didSet {
             backgroundView.isHighlighted = isHighlighted
         }

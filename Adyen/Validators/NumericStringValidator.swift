@@ -11,7 +11,7 @@ import Foundation
 open class NumericStringValidator: LengthValidator {
     
     /// :nodoc:
-    public override func isValid(_ value: String) -> Bool {
+    override public func isValid(_ value: String) -> Bool {
         guard super.isValid(value) else { return false }
         return !value.contains(where: { !$0.isNumber || !$0.isASCII })
     }

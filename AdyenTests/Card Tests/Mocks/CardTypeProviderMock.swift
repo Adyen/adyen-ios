@@ -8,7 +8,7 @@
 
 final class CardTypeProviderMock: AnyCardTypeProvider {
 
-    var onFetch: ((_ completion: @escaping ([CardType]) -> Void ) -> Void)?
+    var onFetch: ((_ completion: @escaping ([CardType]) -> Void) -> Void)?
 
     func requestCardType(for bin: String, supported cardType: [CardType], completion caller: @escaping ([CardType]) -> Void) {
         onFetch?(caller)

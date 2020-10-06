@@ -24,7 +24,7 @@ open class NetworkImageView: UIImageView {
     }
     
     /// :nodoc:
-    open override func didMoveToWindow() {
+    override open func didMoveToWindow() {
         super.didMoveToWindow()
         
         // If we have an image URL and are embedded in a window, load the image if we aren't already.

@@ -6,8 +6,8 @@
 //  Copyright © 2020 Adyen. All rights reserved.
 //
 
-import XCTest
 @testable import Adyen
+import XCTest
 
 extension XCTestCase {
     func wait(for interval: DispatchTimeInterval) {
@@ -32,7 +32,7 @@ class BackoffSchedulerTests: XCTestCase {
         let intervalCalculator = IntervalCalculatorMock { counter in
             if counter <= 100 {
                 return DispatchTimeInterval.microseconds(1)
-            } else  {
+            } else {
                 return DispatchTimeInterval.never
             }
         }

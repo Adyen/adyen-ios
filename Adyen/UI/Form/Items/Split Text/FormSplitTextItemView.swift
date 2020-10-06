@@ -24,7 +24,7 @@ internal final class FormSplitTextItemView: FormItemView<FormSplitTextItem> {
         fatalError("init(coder:) has not been implemented")
     }
     
-    internal override var childItemViews: [AnyFormItemView] {
+    override internal var childItemViews: [AnyFormItemView] {
         return [leftItemView, rightItemView]
     }
     

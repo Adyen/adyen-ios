@@ -50,7 +50,7 @@ internal final class ModalViewController: UIViewController {
     // MARK: - UIViewController
     
     /// :nodoc:
-    public override func loadView() {
+    override public func loadView() {
         super.loadView()
         titleLabel.text = innerController.title ?? ""
         cancelButton.isHidden = cancelButtonHandler == nil
@@ -63,7 +63,7 @@ internal final class ModalViewController: UIViewController {
     }
     
     /// :nodoc:
-    public override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         
         innerController.view.layoutIfNeeded()
@@ -77,7 +77,7 @@ internal final class ModalViewController: UIViewController {
                                                                     NSAttributedString.Key.backgroundColor: style.barTitle.backgroundColor])
     }
     
-    internal override var preferredContentSize: CGSize {
+    override internal var preferredContentSize: CGSize {
         get {
             guard innerController.isViewLoaded else { return .zero }
             return CGSize(width: view.bounds.width,
@@ -94,7 +94,7 @@ internal final class ModalViewController: UIViewController {
     }
     
     /// :nodoc:
-    public override func viewDidLayoutSubviews() {
+    override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         view.adyen.round(corners: [.topLeft, .topRight], radius: style.cornerRadius)
     }

@@ -10,8 +10,8 @@ import Foundation
 public struct FormFooterStyle: ViewStyle {
     
     /// The title style.
-    public var title: TextStyle = TextStyle(font: .preferredFont(forTextStyle: .footnote),
-                                            color: UIColor.AdyenCore.componentQuaternaryLabel)
+    public var title = TextStyle(font: .preferredFont(forTextStyle: .footnote),
+                                 color: UIColor.AdyenCore.componentQuaternaryLabel)
     
     /// The main button style.
     public var button = ButtonStyle(title: TextStyle(font: .preferredFont(forTextStyle: .headline), color: .white))

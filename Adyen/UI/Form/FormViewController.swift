@@ -47,7 +47,7 @@ public final class FormViewController: UIViewController, Localizable {
     // MARK: - Public
     
     /// :nodoc:
-    public override var preferredContentSize: CGSize {
+    override public var preferredContentSize: CGSize {
         get { formView.intrinsicContentSize }
         
         // swiftlint:disable:next unused_setter_value
@@ -120,7 +120,7 @@ public final class FormViewController: UIViewController, Localizable {
     // MARK: - View
     
     /// :nodoc:
-    public override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(formView)
         setupConstraints()
@@ -140,7 +140,7 @@ public final class FormViewController: UIViewController, Localizable {
     }
     
     /// :nodoc:
-    public override func viewDidAppear(_ animated: Bool) {
+    override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         assignInitialFirstResponder()
     }
@@ -173,7 +173,7 @@ public final class FormViewController: UIViewController, Localizable {
     // MARK: - Keyboard
     
     @discardableResult
-    public override func resignFirstResponder() -> Bool {
+    override public func resignFirstResponder() -> Bool {
         let textItemView = itemManager.allItemViews.first(where: { $0.isFirstResponder })
         textItemView?.resignFirstResponder()
         

@@ -17,7 +17,7 @@ class PaymentMethodListComponentTests: XCTestCase {
         let sectionedComponents = SectionedComponents(stored: [storedComponent], regular: [regularComponent])
         let sut = PaymentMethodListComponent(components: sectionedComponents)
 
-        let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: {_,_  in })
+        let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
 
         XCTAssertFalse((navigationViewController.topViewController as! WrapperViewController).requiresKeyboardInput)
     }

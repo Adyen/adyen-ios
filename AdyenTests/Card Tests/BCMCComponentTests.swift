@@ -23,7 +23,7 @@ class BCMCComponentTests: XCTestCase {
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod, clientKey: "test_client_key")
 
-        let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: { _,_  in })
+        let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
 
         XCTAssertTrue((navigationViewController.topViewController as! WrapperViewController).requiresKeyboardInput)
     }
@@ -200,9 +200,9 @@ class BCMCComponentTests: XCTestCase {
         let expectationCardType = XCTestExpectation(description: "CardType Expectation")
         let delegateMock = BCMCComponentDelegateMock(onBINDidChange: { _ in },
                                                      onCardTypeChange: { value in
-            XCTAssertEqual(value, true)
-            expectationCardType.fulfill()
-        })
+                                                         XCTAssertEqual(value, true)
+                                                         expectationCardType.fulfill()
+                                                     })
         sut.bcmcComponentDelegate = delegateMock
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {

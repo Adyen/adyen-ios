@@ -21,11 +21,11 @@ internal final class ComponentsViewController: UIViewController {
     
     // MARK: - View
     
-    internal override func loadView() {
+    override internal func loadView() {
         view = componentsView
     }
     
-    internal override func viewDidLoad() {
+    override internal func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Components"
         
@@ -91,7 +91,7 @@ internal final class ComponentsViewController: UIViewController {
     
     // MARK: - DropIn Component
     
-    private lazy var dropInComponentStyle: DropInComponent.Style = DropInComponent.Style()
+    private lazy var dropInComponentStyle = DropInComponent.Style()
     
     private func presentDropInComponent() {
         guard let paymentMethods = paymentMethods else { return }

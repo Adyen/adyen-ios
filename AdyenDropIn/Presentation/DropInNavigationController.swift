@@ -130,7 +130,7 @@ extension DropInNavigationController: UIViewControllerTransitioningDelegate {
                                                      let viewController = self.topViewController
                                                  else { return }
                                                  self.updateFrame(for: viewController)
-        })
+                                             })
     }
     
 }

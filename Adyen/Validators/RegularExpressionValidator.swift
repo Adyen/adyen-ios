@@ -18,14 +18,14 @@ internal class RegularExpressionValidator: LengthValidator {
     }
     
     /// :nodoc:
-    internal override func isValid(_ value: String) -> Bool {
+    override internal func isValid(_ value: String) -> Bool {
         guard super.isValid(value) else { return false }
         guard let range = value.range(of: regularExpression, options: .regularExpression) else { return false }
         return range == (value.startIndex..<value.endIndex)
     }
     
     /// :nodoc:
-    internal override func maximumLength(for value: String) -> Int {
+    override internal func maximumLength(for value: String) -> Int {
         return maximumLength ?? .max
     }
     

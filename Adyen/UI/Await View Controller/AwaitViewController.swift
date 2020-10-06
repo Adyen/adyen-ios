@@ -16,10 +16,10 @@ internal final class AwaitViewController: UIViewController {
     private let style: AwaitComponentStyle
     
     /// :nodoc:
-    internal lazy var awaitView: AwaitView = AwaitView(viewModel: viewModel, style: style)
+    internal lazy var awaitView = AwaitView(viewModel: viewModel, style: style)
     
     /// :nodoc:
-    private lazy var containerView: UIView = UIView(frame: .zero)
+    private lazy var containerView = UIView(frame: .zero)
     
     /// Initializes the `AwaitViewController`.
     ///
@@ -38,7 +38,7 @@ internal final class AwaitViewController: UIViewController {
     }
     
     /// :nodoc:
-    internal override func viewDidLoad() {
+    override internal func viewDidLoad() {
         super.viewDidLoad()
         containerView.addSubview(awaitView)
         view.addSubview(containerView)
@@ -75,7 +75,7 @@ internal final class AwaitViewController: UIViewController {
     }
     
     /// :nodoc:
-    internal override var preferredContentSize: CGSize {
+    override internal var preferredContentSize: CGSize {
         get {
             let targetSize = CGSize(width: UIScreen.main.bounds.width,
                                     height: UIView.layoutFittingCompressedSize.height)
