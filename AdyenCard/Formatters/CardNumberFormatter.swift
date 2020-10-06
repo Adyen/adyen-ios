@@ -14,7 +14,7 @@ public final class CardNumberFormatter: NumericFormatter {
     public var cardType: CardType?
     
     /// :nodoc:
-    public override func formattedValue(for value: String) -> String {
+    override public func formattedValue(for value: String) -> String {
         let sanitizedCardNumber = sanitizedValue(for: value)
         let formattedCardNumberComponents = sanitizedCardNumber.components(withLengths: cardFormatGrouping)
         return formattedCardNumberComponents.joined(separator: " ")

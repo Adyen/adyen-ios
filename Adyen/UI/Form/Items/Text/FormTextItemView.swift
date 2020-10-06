@@ -219,13 +219,13 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
     // MARK: - Validation
     
     /// :nodoc:
-    public override func validate() {
+    override public func validate() {
         updateValidationStatus(forced: true)
     }
     
     // MARK: - Editing
     
-    internal override func didChangeEditingStatus() {
+    override internal func didChangeEditingStatus() {
         super.didChangeEditingStatus()
         let customColor = (accessory == .invalid) ? item.style.errorColor : item.style.title.color
         titleLabel.textColor = isEditing ? tintColor : customColor
@@ -234,7 +234,7 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
     // MARK: - Layout
     
     /// :nodoc:
-    open override func configureSeparatorView() {
+    override open func configureSeparatorView() {
         let constraints = [
             separatorView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             separatorView.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -256,31 +256,31 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
         NSLayoutConstraint.activate(constraints)
     }
     
-    open override var lastBaselineAnchor: NSLayoutYAxisAnchor {
+    override open var lastBaselineAnchor: NSLayoutYAxisAnchor {
         return textField.lastBaselineAnchor
     }
     
     // MARK: - Interaction
     
     /// :nodoc:
-    open override var canBecomeFirstResponder: Bool {
+    override open var canBecomeFirstResponder: Bool {
         return textField.canBecomeFirstResponder
     }
     
     /// :nodoc:
     @discardableResult
-    open override func becomeFirstResponder() -> Bool {
+    override open func becomeFirstResponder() -> Bool {
         return textField.becomeFirstResponder()
     }
     
     /// :nodoc:
     @discardableResult
-    open override func resignFirstResponder() -> Bool {
+    override open func resignFirstResponder() -> Bool {
         return textField.resignFirstResponder()
     }
     
     /// :nodoc:
-    open override var isFirstResponder: Bool {
+    override open var isFirstResponder: Bool {
         return textField.isFirstResponder
     }
     
@@ -336,7 +336,7 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
                                     }
                                 }, completion: { _ in
                                     self.alertLabel.isHidden = hidden
-        })
+                                })
     }
 }
 

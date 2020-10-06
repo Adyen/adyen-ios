@@ -31,7 +31,7 @@ public final class ListViewController: UITableViewController {
     }
     
     /// :nodoc:
-    public override var preferredContentSize: CGSize {
+    override public var preferredContentSize: CGSize {
         get { tableView.contentSize }
         
         // swiftlint:disable:next unused_setter_value
@@ -87,7 +87,7 @@ public final class ListViewController: UITableViewController {
     // MARK: - View
     
     /// :nodoc:
-    public override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = style.backgroundColor
@@ -107,17 +107,17 @@ public final class ListViewController: UITableViewController {
     private let cellReuseIdentifier = "Cell"
     
     /// :nodoc:
-    public override func numberOfSections(in tableView: UITableView) -> Int {
+    override public func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
     
     /// :nodoc:
-    public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sections[section].items.count
     }
     
     /// :nodoc:
-    public override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    override public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let title = sections[section].title else {
             return nil
         }
@@ -130,12 +130,12 @@ public final class ListViewController: UITableViewController {
     }
     
     /// :nodoc:
-    public override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return sections[section].title == nil ? 0 : 44.0
     }
     
     /// :nodoc:
-    public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as? ListCell else {
             fatalError("Failed to dequeue cell.")
         }
@@ -146,7 +146,7 @@ public final class ListViewController: UITableViewController {
     }
     
     /// :nodoc:
-    public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
         let item = sections[indexPath.section].items[indexPath.item]

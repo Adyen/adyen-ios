@@ -6,8 +6,8 @@
 //  Copyright © 2020 Adyen. All rights reserved.
 //
 
-import Foundation
 @testable import Adyen
+import Foundation
 
 typealias MockedResult = Result<Response, Error>
 
@@ -21,11 +21,11 @@ enum Dummy: Error {
 final class APIClientMock: APIClientProtocol {
 
     var mockedResults: [MockedResult] = []
-    var onExecute: (()->Void)?
+    var onExecute: (() -> Void)?
 
     private(set) var counter: Int = 0
 
-    func perform<R>(_ request: R, completionHandler: @escaping (Result<R.ResponseType, Error>) -> Void) where R : Request {
+    func perform<R>(_ request: R, completionHandler: @escaping (Result<R.ResponseType, Error>) -> Void) where R: Request {
         counter += 1
         DispatchQueue.main.async {
             self.onExecute?()

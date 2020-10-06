@@ -22,12 +22,12 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         fatalError("init(coder:) has not been implemented")
     }
     
-    internal override func textFieldDidBeginEditing(_ text: UITextField) {
+    override internal func textFieldDidBeginEditing(_ text: UITextField) {
         super.textFieldDidBeginEditing(text)
         accessory = .customView(cardTypeLogosView)
     }
     
-    internal override func textFieldDidEndEditing(_ text: UITextField) {
+    override internal func textFieldDidEndEditing(_ text: UITextField) {
         super.textFieldDidEndEditing(text)
         if accessory == .valid {
             accessory = .customView(cardTypeLogosView)
@@ -122,7 +122,7 @@ private extension FormCardNumberItemView {
             fatalError("init(coder:) has not been implemented")
         }
         
-        internal override var intrinsicContentSize: CGSize {
+        override internal var intrinsicContentSize: CGSize {
             return cardSize
         }
         

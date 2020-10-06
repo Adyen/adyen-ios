@@ -16,10 +16,10 @@ internal class PhoneExtensionInputControl: UIControl, AnyFormItemView {
     internal var childItemViews: [AnyFormItemView] = []
     
     /// The country flag view.
-    internal lazy var flagView: UILabel = UILabel()
+    internal lazy var flagView = UILabel()
     
     /// The chevron image view.
-    internal lazy var chevronView: UIImageView = UIImageView(image: accessoryImage)
+    internal lazy var chevronView = UIImageView(image: accessoryImage)
     
     /// The phone code label.
     internal lazy var phoneExtensionLabel: UILabel = {
@@ -33,7 +33,7 @@ internal class PhoneExtensionInputControl: UIControl, AnyFormItemView {
         return label
     }()
     
-    internal override var accessibilityIdentifier: String? {
+    override internal var accessibilityIdentifier: String? {
         didSet {
             phoneExtensionLabel.accessibilityIdentifier = accessibilityIdentifier.map {
                 ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "label")
@@ -68,20 +68,20 @@ internal class PhoneExtensionInputControl: UIControl, AnyFormItemView {
     }
     
     /// The input view.
-    internal override var inputView: UIView? { return _inputView }
+    override internal var inputView: UIView? { return _inputView }
     
     /// :nodoc:
-    internal override var canBecomeFirstResponder: Bool { return true }
+    override internal var canBecomeFirstResponder: Bool { return true }
     
     /// :nodoc:
-    internal override func resignFirstResponder() -> Bool {
+    override internal func resignFirstResponder() -> Bool {
         let result = super.resignFirstResponder()
         onDidResignFirstResponder?()
         return result
     }
     
     /// :nodoc:
-    internal override func becomeFirstResponder() -> Bool {
+    override internal func becomeFirstResponder() -> Bool {
         let result = super.becomeFirstResponder()
         onDidBecomeFirstResponder?()
         return result

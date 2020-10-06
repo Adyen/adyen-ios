@@ -22,7 +22,7 @@ extension UIColor {
             }
         }
         
-        internal static let defaultBlue: UIColor = UIColor(hex: 0x007AFF)
+        internal static let defaultBlue = UIColor(hex: 0x007AFF)
         
     }
     

@@ -6,9 +6,9 @@
 //  Copyright © 2020 Adyen. All rights reserved.
 //
 
-import XCTest
-@testable import AdyenCard
 @testable import Adyen
+@testable import AdyenCard
+import XCTest
 
 class CardPublicKeyProviderTests: XCTestCase {
 
@@ -18,9 +18,9 @@ class CardPublicKeyProviderTests: XCTestCase {
         let sut = CardPublicKeyProvider(apiClient: apiClient)
         CardPublicKeyProvider.cachedCardPublicKey = nil
 
-        XCTAssertThrowsError(try sut.fetch(completion: { _ in }), "CardPublicKeyProvider must throw an error if client key is missing", {
+        XCTAssertThrowsError(try sut.fetch(completion: { _ in }), "CardPublicKeyProvider must throw an error if client key is missing") {
             XCTAssertEqual($0 as! CardComponent.Error, CardComponent.Error.missingClientKey)
-        })
+        }
     }
 
     func testMultipleFetchCallsAndOneRequestDispatched() throws {
@@ -49,7 +49,6 @@ class CardPublicKeyProviderTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
 
         XCTAssertEqual(baseApiClient.counter, 1)
-
 
         // Subsequent fetch calls should get the cached key value without making any requests
 

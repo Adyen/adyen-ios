@@ -6,8 +6,8 @@
 //  Copyright © 2020 Adyen. All rights reserved.
 //
 
-import XCTest
 @testable import Adyen
+import XCTest
 
 class SimpleSchedulerTests: XCTestCase {
 

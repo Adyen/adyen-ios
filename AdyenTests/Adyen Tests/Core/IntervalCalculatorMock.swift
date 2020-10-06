@@ -6,8 +6,8 @@
 //  Copyright © 2020 Adyen. All rights reserved.
 //
 
-import Foundation
 @testable import Adyen
+import Foundation
 
 internal struct IntervalCalculatorMock: IntervalCalculator {
 

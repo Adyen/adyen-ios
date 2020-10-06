@@ -11,7 +11,7 @@ import Foundation
 public final class SecuredViewController: UIViewController {
     
     /// :nodoc:
-    public override var preferredContentSize: CGSize {
+    override public var preferredContentSize: CGSize {
         
         get {
             childViewController.preferredContentSize
@@ -24,7 +24,7 @@ public final class SecuredViewController: UIViewController {
     }
     
     /// :nodoc:
-    public override var title: String? {
+    override public var title: String? {
         
         get {
             childViewController.title
@@ -57,7 +57,7 @@ public final class SecuredViewController: UIViewController {
     }
     
     /// :nodoc:
-    public override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = style.backgroundColor

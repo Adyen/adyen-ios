@@ -44,7 +44,7 @@ open class FormValueItemView<ItemType: FormValueItem>: FormItemView<ItemType>, A
     }
     
     /// :nodoc:
-    open override func didAddSubview(_ subview: UIView) {
+    override open func didAddSubview(_ subview: UIView) {
         super.didAddSubview(subview)
         bringSubviewToFront(separatorView)
     }

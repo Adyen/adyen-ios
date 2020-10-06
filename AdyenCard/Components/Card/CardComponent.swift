@@ -7,7 +7,7 @@
 import Foundation
 
 /// Delegate for observing user's activity on `CardComponent`.
-public protocol CardComponentDelegate: class {
+public protocol CardComponentDelegate: AnyObject {
     
     /// Called when user enters PAN in `CardComponent`.
     /// - Parameter value: Up to 6 first digits in entered PAN.

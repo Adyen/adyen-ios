@@ -14,7 +14,7 @@ internal protocol AnyAwaitActionHandler: ActionComponent, Cancellable {
 /// A component that handles Await action's.
 public final class AwaitComponent: AnyAwaitActionHandler {
     
-    /// :nodoc:
+    /// Delegates `ViewController`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
     
     /// :nodoc:

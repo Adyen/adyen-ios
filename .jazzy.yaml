@@ -35,6 +35,16 @@ custom_categories:
       - QiwiWalletComponent
       - QiwiWalletDetails
       - QiwiWalletPaymentMethod
+  - name: MB Way Component
+    children:
+      - MBWayComponent
+      - MBWayDetails
+      - MBWayPaymentMethod
+  - name: Await Action Component
+    children:
+      - AwaitComponent
+      - AwaitActionDetails
+      - AwaitPaymentMethod
   - name: WeChat Pay
     children:
       - WeChatPaySDKActionComponent
@@ -84,8 +94,10 @@ custom_categories:
     children:
       - Component
       - PaymentComponent
+      - DismissableComponent
       - PaymentComponentData
       - PaymentComponentDelegate
+      - PresentationDelegate
       - ActionComponent
       - ActionComponentData
       - ActionComponentDelegate
@@ -117,6 +129,7 @@ custom_categories:
       - SDKAction
       - ThreeDS2FingerprintAction
       - ThreeDS2ChallengeAction
+      - AwaitAction
       - CardFundingSource
       - BrowserInfo
   - name: Styling
@@ -130,6 +143,7 @@ custom_categories:
       - ListComponentStyle
       - ListSectionHeaderStyle
       - ListItemStyle
+      - AwaitComponentStyle
       - RedirectComponentStyle
       - NavigationStyle
       - ButtonStyle

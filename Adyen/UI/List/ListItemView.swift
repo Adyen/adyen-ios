@@ -95,7 +95,7 @@ public final class ListItemView: UIView, AnyFormItemView {
         return imageView
     }()
     
-    public override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
         imageView.adyen.round(using: item?.style.image.cornerRounding ?? .fixed(4))
     }
@@ -157,13 +157,13 @@ public final class ListItemView: UIView, AnyFormItemView {
     // MARK: - Trait Collection
     
     /// :nodoc:
-    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         
         imageView.layer.borderColor = item?.style.image.borderColor?.cgColor ?? UIColor.AdyenCore.componentSeparator.cgColor
     }
     
-    public override var intrinsicContentSize: CGSize {
+    override public var intrinsicContentSize: CGSize {
         let targetSize = CGSize(width: UIView.layoutFittingCompressedSize.width,
                                 height: UIView.layoutFittingCompressedSize.height)
         let size = textStackView.systemLayoutSizeFitting(targetSize,
