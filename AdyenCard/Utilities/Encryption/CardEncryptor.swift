@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -36,12 +36,13 @@ public enum CardEncryptor {
         }
         
     }
-    
-    public struct Bin: Encodable {
+
+    /// :nodoc:
+    internal struct Bin: Encodable {
         /// The card BIN number.
-        public let value: String
+        internal let value: String
         
-        public func encode(to encoder: Encoder) throws {
+        internal func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(value, forKey: .value)
             
