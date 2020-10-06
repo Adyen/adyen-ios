@@ -57,6 +57,12 @@ Some payment methods need additional configuration. For example, to enable the c
 let configuration = DropInComponent.PaymentMethodsConfiguration()
 configuration.card.publicKey = "..." // Your public key, retrieved from the Customer Area.
 ```
+:warning: _`PaymentMethodsConfiguration.card.publicKey` is deprectated in favour of `PaymentMethodsConfiguration.clientKey`_
+
+```swift
+let configuration = DropInComponent.PaymentMethodsConfiguration()
+configuration.clientKey = "..." // Your client key, retrieved from the Customer Area.
+```
 
 After serializing the payment methods and creating the configuration, the Drop-in is ready to be initialized. Assign a `delegate` and use the `viewController` property to present the Drop-in on the screen:
 
