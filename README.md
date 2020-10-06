@@ -136,6 +136,7 @@ In order to have more flexibility over the checkout flow, you can use our Compon
 - [WeChat Pay Component][reference.weChatPaySDKActionComponent]
 - [Qiwi Wallet Component][reference.qiwiWalletComponent]
 - [Redirect Component][reference.redirectComponent]
+- [MB Way Component][reference.mbWayComponent]
 
 ## Customization
 
@@ -208,6 +209,7 @@ This repository is open source and available under the MIT license. For more inf
 [reference.qiwiWalletComponent]: https://adyen.github.io/adyen-ios/Docs/Classes/QiwiWalletComponent.html
 [reference.sepaDirectDebitComponent]: https://adyen.github.io/adyen-ios/Docs/Classes/SEPADirectDebitComponent.html
 [reference.redirectComponent]: https://adyen.github.io/adyen-ios/Docs/Classes/RedirectComponent.html
+[reference.mbWayComponent]: https://adyen.github.io/adyen-ios/Docs/Classes/MBWayComponent.html
 [reference.styles]: https://adyen.github.io/adyen-ios/Docs/Styling.html
 [apiExplorer.paymentMethods]: https://docs.adyen.com/api-explorer/#/PaymentSetupAndVerificationService/v46/paymentMethods
 [apiExplorer.payments]: https://docs.adyen.com/api-explorer/#/PaymentSetupAndVerificationService/v46/payments
