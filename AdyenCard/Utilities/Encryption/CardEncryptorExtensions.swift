@@ -33,7 +33,7 @@ extension CardEncryptor.Card {
         return try encryptCard(publicKey: publicKey, card: card)
     }
     
-    internal func encryptedToToken(publicKey: String, holderName: String?) throws -> String? {
+    internal func encryptedToToken(publicKey: String, holderName: String?) throws -> String {
         guard !isEmpty else {
             throw CardEncryptor.Error.invalidEncryptionArguments
         }
@@ -47,6 +47,11 @@ extension CardEncryptor.Card {
     
     private func encryptCard(publicKey: String, card: CardEncryptor.Card) throws -> String {
         guard let encodedCard = card.jsonData() else { throw CardEncryptor.Error.invalidEncryptionArguments }
-        return try Cryptor.encrypt(data: encodedCard, publicKey: publicKey)
+
+        do {
+            return try Cryptor.encrypt(data: encodedCard, publicKey: publicKey)
+        } catch {
+            throw CardEncryptor.Error.encryptionFailed
+        }
     }
 }

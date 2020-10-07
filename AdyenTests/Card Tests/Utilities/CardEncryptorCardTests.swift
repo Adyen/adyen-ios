@@ -21,9 +21,9 @@ class CardEncryptorCardTests: XCTestCase {
         let card = CardEncryptor.Card(number: "test_number")
         let key = "test_invalid_key"
         XCTAssertThrowsError(try card.encryptedNumber(publicKey: key, date: Date())) { error in
-            XCTAssertTrue(error is Cryptor.Error, "Thrown Error is not CardEncryptor.Error")
-            XCTAssertEqual(error as! Cryptor.Error, Cryptor.Error.rsaEncryptionError, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
-            XCTAssertEqual(error.localizedDescription, Cryptor.Error.rsaEncryptionError.errorDescription)
+            XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
+            XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.encryptionFailed, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
+            XCTAssertEqual(error.localizedDescription, CardEncryptor.Error.encryptionFailed.errorDescription)
         }
     }
 
@@ -45,9 +45,9 @@ class CardEncryptorCardTests: XCTestCase {
         let card = CardEncryptor.Card(securityCode: "test_security_code")
         let key = "test_invalid_key"
         XCTAssertThrowsError(try card.encryptedSecurityCode(publicKey: key, date: Date())) { error in
-            XCTAssertTrue(error is Cryptor.Error, "Thrown Error is not CardEncryptor.Error")
-            XCTAssertEqual(error as! Cryptor.Error, Cryptor.Error.rsaEncryptionError, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
-            XCTAssertEqual(error.localizedDescription, Cryptor.Error.rsaEncryptionError.errorDescription)
+            XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
+            XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.encryptionFailed, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
+            XCTAssertEqual(error.localizedDescription, CardEncryptor.Error.encryptionFailed.errorDescription)
         }
     }
 
@@ -69,9 +69,9 @@ class CardEncryptorCardTests: XCTestCase {
         let card = CardEncryptor.Card(expiryMonth: "test_expiry_month")
         let key = "test_invalid_key"
         XCTAssertThrowsError(try card.encryptedExpiryMonth(publicKey: key, date: Date())) { error in
-            XCTAssertTrue(error is Cryptor.Error, "Thrown Error is not CardEncryptor.Error")
-            XCTAssertEqual(error as! Cryptor.Error, Cryptor.Error.rsaEncryptionError, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
-            XCTAssertEqual(error.localizedDescription, Cryptor.Error.rsaEncryptionError.errorDescription)
+            XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
+            XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.encryptionFailed, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
+            XCTAssertEqual(error.localizedDescription, CardEncryptor.Error.encryptionFailed.errorDescription)
         }
     }
 
@@ -93,9 +93,9 @@ class CardEncryptorCardTests: XCTestCase {
         let card = CardEncryptor.Card(expiryYear: "test_expiry_year")
         let key = "test_invalid_key"
         XCTAssertThrowsError(try card.encryptedExpiryYear(publicKey: key, date: Date())) { error in
-            XCTAssertTrue(error is Cryptor.Error, "Thrown Error is not CardEncryptor.Error")
-            XCTAssertEqual(error as! Cryptor.Error, Cryptor.Error.rsaEncryptionError, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
-            XCTAssertEqual(error.localizedDescription, Cryptor.Error.rsaEncryptionError.errorDescription)
+            XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
+            XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.encryptionFailed, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
+            XCTAssertEqual(error.localizedDescription, CardEncryptor.Error.encryptionFailed.errorDescription)
         }
     }
 
@@ -121,9 +121,9 @@ class CardEncryptorCardTests: XCTestCase {
         let card = CardEncryptor.Card(expiryYear: "test_expiry_year")
         let key = "test_invalid_key"
         XCTAssertThrowsError(try card.encryptedToToken(publicKey: key, holderName: nil)) { error in
-            XCTAssertTrue(error is Cryptor.Error, "Thrown Error is not CardEncryptor.Error")
-            XCTAssertEqual(error as! Cryptor.Error, Cryptor.Error.rsaEncryptionError, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
-            XCTAssertEqual(error.localizedDescription, Cryptor.Error.rsaEncryptionError.errorDescription)
+            XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
+            XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.encryptionFailed, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
+            XCTAssertEqual(error.localizedDescription, CardEncryptor.Error.encryptionFailed.errorDescription)
         }
     }
 
@@ -148,7 +148,9 @@ class CardEncryptorCardTests: XCTestCase {
             XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.invalidBin, "Thrown Error is not CardEncryptor.Error.invalidBin")
             XCTAssertEqual(error.localizedDescription, CardEncryptor.Error.invalidBin.errorDescription)
         }
+    }
 
+    func testEncryptExpiryBINShouldReturnNilWithInvalidBIN() {
         XCTAssertThrowsError(try CardEncryptor.encryptedBin(for: "asdwed", publicKey: "key")) { error in
             XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
             XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.invalidBin, "Thrown Error is not CardEncryptor.Error.invalidBi")
@@ -159,15 +161,15 @@ class CardEncryptorCardTests: XCTestCase {
     func testEncryptBINShouldFailWithInvalidPublicKey() {
         let key = "test_invalid_key"
         XCTAssertThrowsError(try CardEncryptor.encryptedBin(for: "55000000", publicKey: key)) { error in
-            XCTAssertTrue(error is Cryptor.Error, "Thrown Error is not CardEncryptor.Error")
-            XCTAssertEqual(error as! Cryptor.Error, Cryptor.Error.rsaEncryptionError, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
-            XCTAssertEqual(error.localizedDescription, Cryptor.Error.rsaEncryptionError.errorDescription)
+            XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
+            XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.encryptionFailed, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
+            XCTAssertEqual(error.localizedDescription, CardEncryptor.Error.encryptionFailed.errorDescription)
         }
     }
 
     func testEncryptBIN() {
-        let ecrypted = try? CardEncryptor.encryptedBin(for: "55000000", publicKey: Dummy.dummyPublicKey)
+        let ecrypted = try! CardEncryptor.encryptedBin(for: "55000000", publicKey: Dummy.dummyPublicKey)
         XCTAssertNotNil(ecrypted)
-        XCTAssertTrue(ecrypted?.hasPrefix("adyenan0_1_1$") ?? false)
+        XCTAssertTrue(ecrypted.hasPrefix("adyenan0_1_1$"))
     }
 }

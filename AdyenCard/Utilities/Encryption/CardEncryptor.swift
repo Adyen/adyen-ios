@@ -25,7 +25,7 @@ public enum CardEncryptor {
         
     }
     
-    // MARK: - Encrypts a card
+    // MARK: - Card Encryption
     
     /// Encrypts a card.
     ///
@@ -64,7 +64,11 @@ public enum CardEncryptor {
         }
         
         let payload = try JSONEncoder().encode(Bin(value: bin))
-        return try Cryptor.encrypt(data: payload, publicKey: publicKey)
+        do {
+            return try Cryptor.encrypt(data: payload, publicKey: publicKey)
+        } catch {
+            throw Error.encryptionFailed
+        }
     }
     
     // MARK: - Error
@@ -72,10 +76,10 @@ public enum CardEncryptor {
     /// Describes the error that can occur during card encryption and public key fetching.
     public enum Error: Swift.Error, LocalizedError {
         /// Indicates an unknown error occurred.
+        @available(*, deprecated, message: "This case is deprecated.")
         case unknown
         
         /// Indicates encryption failed  because of invalid card public key or for some other unknown reason.
-        @available(*, deprecated, message: "Use `Cyptor.Error` instead.")
         case encryptionFailed
 
         /// Indicates an error when trying to encrypt a card with  card number, securityCode,
@@ -114,14 +118,7 @@ public enum CardEncryptor {
     /// - Throws:  `CardEncryptor.Error.unknown` if encryption failed for an unknown reason.
     @available(*, deprecated, message: "Use `card.encryptedToToken(publicKey:holderName:)`.")
     public static func encryptedToken(for card: Card, holderName: String?, publicKey: String) throws -> String {
-        guard let cardToken = try card.encryptedToToken(publicKey: publicKey, holderName: holderName) else {
-            // This should never happen,
-            // because card.encryptedToToken(publicKey:holderName:) will throw an error if the generated token is some how nil,
-            // before reaching here.
-            throw Error.unknown
-        }
-
-        return cardToken
+        return try card.encryptedToToken(publicKey: publicKey, holderName: holderName)
     }
     
     /// Requests the public encryption key from Adyen backend.
@@ -232,7 +229,7 @@ public enum CardEncryptor {
 
 extension CardEncryptor {
 
-    public struct Bin: Encodable {
+    private struct Bin: Encodable {
         /// The card BIN number.
         public let value: String
 
