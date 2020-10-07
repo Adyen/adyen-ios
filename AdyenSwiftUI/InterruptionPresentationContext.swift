@@ -26,13 +26,16 @@ internal final class InterruptionPresentationContext: ObservableObject, Identifi
     internal init() {
         alertItem = Binding(get: { nil }, set: { _ in })
         alertItem = Binding(get: { self.alertItemToShow }, set: { [weak self] in
-            guard let self = self else { return }
-            if let newValue = $0 {
-                guard self.alertItemToShow == nil else { return }
-                self.alertItemToShow = newValue
-            } else {
-                self.alertItemToShow = nil
-            }
+            self?.updateAlertItemToShow($0)
         })
+    }
+
+    private func updateAlertItemToShow(_ newValue: AlertItem?) {
+        if let newValue = newValue {
+            guard self.alertItemToShow == nil else { return }
+            alertItemToShow = newValue
+        } else {
+            alertItemToShow = nil
+        }
     }
 }
