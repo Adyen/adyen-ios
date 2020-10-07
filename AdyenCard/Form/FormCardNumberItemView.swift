@@ -36,7 +36,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     
     // MARK: - Card Type Logos View
     
-    private lazy var cardTypeLogosView: UIView = {
+    internal lazy var cardTypeLogosView: UIView = {
         let cardTypeLogosView = CardsView(logos: item.cardTypeLogos, style: item.style)
         cardTypeLogosView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cardTypeLogos")
         cardTypeLogosView.backgroundColor = item.style.backgroundColor
@@ -47,13 +47,13 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
 
 // MARK: - FormCardNumberItemView.CardTypeLogoView
 
-private extension FormCardNumberItemView {
+extension FormCardNumberItemView {
     
-    private class CardsView: UIStackView, Observer {
+    internal class CardsView: UIStackView, Observer {
         
         private let maxCount: Int
         
-        init(logos: [FormCardNumberItem.CardTypeLogo], style: FormTextItemStyle, max count: Int = 4) {
+        internal init(logos: [FormCardNumberItem.CardTypeLogo], style: FormTextItemStyle, max count: Int = 4) {
             maxCount = count
             super.init(frame: .zero)
             axis = .horizontal
@@ -70,16 +70,16 @@ private extension FormCardNumberItemView {
             }
         }
         
-        required init(coder: NSCoder) {
+        internal required init(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
         
-        override func layoutSubviews() {
+        override internal func layoutSubviews() {
             invalidateIntrinsicContentSize()
             super.layoutSubviews()
         }
         
-        override var intrinsicContentSize: CGSize {
+        override internal var intrinsicContentSize: CGSize {
             let cardsCount = CGFloat(arrangedSubviews.filter { !$0.isHidden }.count)
             let width = FormCardNumberItemView.cardSize.width * cardsCount + FormCardNumberItemView.cardSpacing * max(cardsCount - 1, 0)
             return .init(width: max(width, FormCardNumberItemView.cardSpacing), height: FormCardNumberItemView.cardSize.height)
@@ -89,9 +89,9 @@ private extension FormCardNumberItemView {
     
 }
 
-private extension FormCardNumberItemView {
+extension FormCardNumberItemView {
     
-    private class CardTypeLogoView: NetworkImageView {
+    class CardTypeLogoView: NetworkImageView {
         
         private let rounding: CornerRounding
         

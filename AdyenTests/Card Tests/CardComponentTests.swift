@@ -446,6 +446,91 @@ class CardComponentTests: XCTestCase {
         XCTAssertNotNil(sut.viewController as? UIAlertController)
         XCTAssertNotNil(sut.storedCardComponent)
     }
+
+    func testShouldShow4CardTypesOnInit() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "cup", "maestro", "jcb"])
+        let sut = CardComponent(paymentMethod: method,
+                                clientKey: "test_client_key")
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
+        XCTAssertNotNil(cardNumberItemView)
+        let textItemView: FormTextItemView<FormCardNumberItem>? = cardNumberItemView!.findView(with: "AdyenCard.CardComponent.numberItem")
+        XCTAssertNotNil(textItemView)
+        let cardLogoView = cardNumberItemView!.cardTypeLogosView as! FormCardNumberItemView.CardsView
+        XCTAssertNotNil(cardLogoView)
+        let cardNumberItem = cardNumberItemView!.item
+
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+            XCTAssertEqual(cardNumberItem.cardTypeLogos.count, 6)
+            XCTAssertEqual(cardLogoView.subviews.count, 6)
+            XCTAssertEqual(cardLogoView.arrangedSubviews.filter{ !$0.isHidden }.count, 4)
+
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 8)
+    }
+
+    func testShouldShowNoCardTypesOnInvalidPANEnter() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        let sut = CardComponent(paymentMethod: method,
+                                clientKey: "test_client_key")
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
+        XCTAssertNotNil(cardNumberItemView)
+        let textItemView: FormTextItemView<FormCardNumberItem>? = cardNumberItemView!.findView(with: "AdyenCard.CardComponent.numberItem")
+        XCTAssertNotNil(textItemView)
+        let cardLogoView = cardNumberItemView!.cardTypeLogosView as! FormCardNumberItemView.CardsView
+        XCTAssertNotNil(cardLogoView)
+        let cardNumberItem = cardNumberItemView!.item
+
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+
+            self.populate(textItemView: cardNumberItemView!, with: "1231")
+
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+                XCTAssertEqual(cardNumberItem.cardTypeLogos.count, 3)
+                XCTAssertEqual(cardLogoView.subviews.count, 3)
+                XCTAssertTrue(cardLogoView.arrangedSubviews.allSatisfy { $0.isHidden })
+
+                expectation.fulfill()
+            }
+        }
+        wait(for: [expectation], timeout: 8)
+    }
+
+    func testShouldShowCardTypesOnPANEnter() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        let sut = CardComponent(paymentMethod: method,
+                                clientKey: "test_client_key")
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
+        XCTAssertNotNil(cardNumberItemView)
+        let textItemView: FormTextItemView<FormCardNumberItem>? = cardNumberItemView!.findView(with: "AdyenCard.CardComponent.numberItem")
+        XCTAssertNotNil(textItemView)
+        let cardLogoView = cardNumberItemView!.cardTypeLogosView as! FormCardNumberItemView.CardsView
+        XCTAssertNotNil(cardLogoView)
+        let cardNumberItem = cardNumberItemView!.item
+
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+
+            self.populate(textItemView: cardNumberItemView!, with: "3400")
+
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+                XCTAssertEqual(cardNumberItem.cardTypeLogos.count, 3)
+                XCTAssertEqual(cardLogoView.subviews.count, 3)
+                XCTAssertEqual(cardLogoView.arrangedSubviews.filter{ !$0.isHidden }.count, 1)
+
+                expectation.fulfill()
+            }
+        }
+        wait(for: [expectation], timeout: 8)
+    }
     
     private func focus<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U) {
         textItemView.textField.becomeFirstResponder()
