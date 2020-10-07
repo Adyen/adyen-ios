@@ -61,30 +61,39 @@ internal final class FullScreenView: UIViewControllerRepresentable {
     internal func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<FullScreenView>) {
         if let viewController = viewController, viewController !== context.coordinator.currentlyPresentedViewController {
 
-            if context.coordinator.currentlyPresentedViewController != nil {
-                
-                dismiss(presenter: uiViewController, animated: true, context: context) { [weak self] in
-                    self?.present(viewController: viewController, presenter: uiViewController, context: context)
-                }
-            } else {
-                present(viewController: viewController, presenter: uiViewController, context: context)
-            }
-            
+            dismissIfNeededThenPresent(viewController: viewController, presenter: uiViewController, context: context)
+
         } else if context.coordinator.currentlyPresentedViewController != nil, viewController == nil {
 
             dismiss(presenter: uiViewController, animated: true, context: context, completion: nil)
         }
     }
 
-    private func present(viewController: UIViewController, presenter: UIViewController, context: UIViewControllerRepresentableContext<FullScreenView>, completion: (() -> Void)? = nil) {
-        guard !viewController.isBeingPresented, !viewController.isBeingDismissed else { return }
-        presenter.present(viewController, animated: true) {
-            context.coordinator.currentlyPresentedViewController = viewController
-            completion?()
+    private func dismissIfNeededThenPresent(viewController: UIViewController,
+                                            presenter: UIViewController,
+                                            context: UIViewControllerRepresentableContext<FullScreenView>) {
+        if context.coordinator.currentlyPresentedViewController != nil {
+
+            dismiss(presenter: presenter, animated: true, context: context) { [weak self] in
+                self?.present(viewController: viewController, presenter: presenter, context: context)
+            }
+        } else {
+            present(viewController: viewController, presenter: presenter, context: context)
         }
     }
 
-    private func dismiss(presenter: UIViewController, animated: Bool, context: UIViewControllerRepresentableContext<FullScreenView>, completion: (() -> Void)?) {
+    private func present(viewController: UIViewController,
+                         presenter: UIViewController,
+                         context: UIViewControllerRepresentableContext<FullScreenView>) {
+        guard !viewController.isBeingPresented, !viewController.isBeingDismissed else { return }
+        presenter.present(viewController, animated: true) {
+            context.coordinator.currentlyPresentedViewController = viewController
+        }
+    }
+
+    private func dismiss(presenter: UIViewController, animated: Bool,
+                         context: UIViewControllerRepresentableContext<FullScreenView>,
+                         completion: (() -> Void)?) {
         guard let viewController = context.coordinator.currentlyPresentedViewController else { return }
         guard !viewController.isBeingPresented, !viewController.isBeingDismissed else { return }
 
