@@ -20,7 +20,7 @@ class AdyenSwiftUITests: XCTestCase {
     func testDropIn() throws {
         app.launch()
 
-        XCUIApplication().tables/*@START_MENU_TOKEN@*/.buttons["Drop In"]/*[[".cells.buttons[\"Drop In\"]",".buttons[\"Drop In\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+        XCUIApplication().tables.buttons["Drop In"].tap()
         XCTAssertTrue(app.buttons["Pay €174.08"].exists)
         XCTAssertTrue(app.staticTexts["Adyen Demo"].exists)
         XCTAssertTrue(app.buttons["Change Payment Method"].exists)
@@ -28,7 +28,7 @@ class AdyenSwiftUITests: XCTestCase {
 
     func testCardComponent() throws {
         app.launch()
-        app.tables/*@START_MENU_TOKEN@*/.buttons["Card"]/*[[".cells.buttons[\"Card\"]",".buttons[\"Card\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+        app.tables.buttons["Card"].tap()
 
         XCTAssertTrue(app.buttons["Pay €174.08"].exists)
         XCTAssertTrue(app.staticTexts["Credit Card"].exists)
