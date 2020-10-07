@@ -8,7 +8,7 @@ import Foundation
 
 /// Validates a phone number.
 /// :nodoc:
-internal class PhoneNumberValidator: RegularExpressionValidator {
+internal final class PhoneNumberValidator: RegularExpressionValidator {
     
     internal init() {
         let regex = #"^[+]*[0-9]{1,4}[\s0-9]*$"#

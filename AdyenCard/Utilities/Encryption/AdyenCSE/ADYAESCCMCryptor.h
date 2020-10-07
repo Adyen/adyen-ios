@@ -12,9 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ADYAESCCMCryptor : NSObject
 
-+ (nullable NSData *)encrypt:(NSData *)data withKey:(NSData *)key iv:(NSData *)iv;
-+ (nullable NSData *)encrypt:(NSData *)data withKey:(NSData *)key iv:(NSData *)iv
-          tagLength:(size_t)tagLength adata:(nullable NSData *)adata;
++ (nullable NSData *)encrypt:(nonnull NSData *)data withKey:(nonnull NSData *)key iv:(nonnull NSData *)iv;
 
 @end
 
