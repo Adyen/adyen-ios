@@ -65,7 +65,7 @@ internal final class FullScreenView: UIViewControllerRepresentable {
 
         } else if context.coordinator.currentlyPresentedViewController != nil, viewController == nil {
 
-            dismiss(presenter: uiViewController, animated: true, context: context, completion: nil)
+            dismiss(presenter: uiViewController, context: context, completion: nil)
         }
     }
 
@@ -74,7 +74,7 @@ internal final class FullScreenView: UIViewControllerRepresentable {
                                             context: UIViewControllerRepresentableContext<FullScreenView>) {
         if context.coordinator.currentlyPresentedViewController != nil {
 
-            dismiss(presenter: presenter, animated: true, context: context) { [weak self] in
+            dismiss(presenter: presenter, context: context) { [weak self] in
                 self?.present(viewController: viewController, presenter: presenter, context: context)
             }
         } else {
@@ -91,7 +91,7 @@ internal final class FullScreenView: UIViewControllerRepresentable {
         }
     }
 
-    private func dismiss(presenter: UIViewController, animated: Bool,
+    private func dismiss(presenter: UIViewController,
                          context: UIViewControllerRepresentableContext<FullScreenView>,
                          completion: (() -> Void)?) {
         guard let viewController = context.coordinator.currentlyPresentedViewController else { return }
