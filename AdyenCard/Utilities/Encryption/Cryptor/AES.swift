@@ -83,8 +83,9 @@ extension Cryptor.AES {
             nonce = Bytes(start: initVector.bytes.assumingMemoryBound(to: UInt8.self), count: 16)
             self.key = Bytes(start: key.bytes.assumingMemoryBound(to: UInt8.self), count: key.count)
 
-            let bufferData = Pointer(mutating: data.bytes.assumingMemoryBound(to: UInt8.self))
-            cipher = MutableBytes(start: bufferData, count: data.count + authOctets)
+            let dataPointer = data.bytes.assumingMemoryBound(to: UInt8.self)
+            cipher = MutableBytes.allocate(capacity: data.count + authOctets)
+            cipher.memecpy(from: dataPointer, offset: 0, count: data.count)
 
             blockS = MutableBytes.allocate(capacity: AESCCM.blockSize)
             blockX = MutableBytes.allocate(capacity: AESCCM.blockSize)
