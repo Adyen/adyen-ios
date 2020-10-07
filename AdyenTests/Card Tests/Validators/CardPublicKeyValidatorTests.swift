@@ -8,34 +8,38 @@
 import XCTest
 
 class CardPublicKeyValidatorTests: XCTestCase {
+
+    var sut: CardPublicKeyValidator!
+
+    override func setUp() {
+        sut = CardPublicKeyValidator()
+    }
+
+    override func tearDown() {
+        sut = nil
+    }
     
     func testInvalideCharacters() {
-        let sut = CardPublicKeyValidator()
         XCTAssertFalse(sut.isValid("fwwefv"))
     }
     
     func testMissingPipChar() {
-        let sut = CardPublicKeyValidator()
-        XCTAssertFalse(sut.isValid("\(RandomStringGenerator.generateRandomNumericString(length: 5))\(RandomStringGenerator.generateRandomAlphaNumericString(length: 512))"))
+        XCTAssertFalse(sut.isValid("\(RandomStringGenerator.generateRandomNumericString(length: 5))\(RandomStringGenerator.generateRandomHexadecimalString(length: 512))"))
     }
     
     func testWrongStringBeforeThePipChar() {
-        let sut = CardPublicKeyValidator()
-        XCTAssertFalse(sut.isValid("123GH|\(RandomStringGenerator.generateRandomAlphaNumericString(length: 512))"))
+        XCTAssertFalse(sut.isValid("123GH|\(RandomStringGenerator.generateRandomHexadecimalString(length: 512))"))
     }
     
     func testWrongStringAfterThePipChar() {
-        let sut = CardPublicKeyValidator()
-        XCTAssertFalse(sut.isValid("12345|\(RandomStringGenerator.generateRandomAlphaNumericString(length: 25))"))
+        XCTAssertFalse(sut.isValid("12345|\(RandomStringGenerator.generateRandomHexadecimalString(length: 25))"))
     }
     
     func testValidKey() {
-        let sut = CardPublicKeyValidator()
         XCTAssertTrue(sut.isValid(RandomStringGenerator.generateDummyCardPublicKey()))
     }
     
     func testLength() {
-        let sut = CardPublicKeyValidator()
         XCTAssertEqual(sut.maximumLength(for: "test_value"), 518)
     }
     

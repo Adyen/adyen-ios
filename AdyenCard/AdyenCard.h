@@ -16,4 +16,4 @@ FOUNDATION_EXPORT const unsigned char AdyenCardVersionString[];
 
 @import Adyen;
 
-#import "ObjC_CardEncryptor.h"
+#import "ADYAESCCMCryptor.h"

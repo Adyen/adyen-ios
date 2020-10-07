@@ -46,7 +46,7 @@ jobs:
     - name: Build and test
       run: |
         xcodebuild -version
-        build-wrapper-macosx-x86/build-wrapper-macosx-x86 --out-dir reports/build-wrapper xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -derivedDataPath ./DerivedData -enableCodeCoverage YES clean build test -destination "name=iPhone 11" | xcpretty
+        build-wrapper-macosx-x86/build-wrapper-macosx-x86 --out-dir reports/build-wrapper xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -derivedDataPath ./DerivedData -enableCodeCoverage YES clean build test -destination "name=iPhone 11" | xcpretty && exit ${PIPESTATUS[0]}
       env:
         DEVELOPER_DIR: ${{ env.XCODE_VERSION }}
                 

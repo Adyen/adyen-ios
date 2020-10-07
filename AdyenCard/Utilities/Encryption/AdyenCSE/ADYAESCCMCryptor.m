@@ -16,8 +16,7 @@ NSData *dh(unsigned char *d) {
 #endif
 
 
-+ (NSData *)encrypt:(NSData *)data withKey:(NSData *)key iv:(NSData *)iv
-{
++ (NSData *)encrypt:(NSData *)data withKey:(NSData *)key iv:(NSData *)iv {
     return [self encrypt:data withKey:key iv:iv tagLength:8];
 }
 
@@ -25,8 +24,11 @@ NSData *dh(unsigned char *d) {
     return [self encrypt:data withKey:key iv:iv tagLength:tagLength adata:nil];
 }
 
-+ (NSData *)encrypt:(NSData *)data withKey:(NSData *)key iv:(NSData *)iv
-          tagLength:(size_t)tagLength adata:(NSData *)adata {
++ (NSData *)encrypt:(NSData *)data
+            withKey:(NSData *)key
+                 iv:(NSData *)iv
+          tagLength:(size_t)tagLength
+              adata:(NSData *)adata {
     NSParameterAssert(data);
     NSParameterAssert(key);
     NSParameterAssert(iv);
@@ -106,15 +108,14 @@ ccm_block0(size_t M,       /* number of auth bytes */
            size_t lm,      /* l(m) message length */
            unsigned char nonce[CCM_BLOCKSIZE],
            unsigned char *result) {
-    int i;
     
     result[0] = CCM_FLAGS(la, M, L);
     
     /* copy the nonce */
     memcpy(result + 1, nonce, CCM_BLOCKSIZE - L);
     
-    for (i=0; i < L; i++) {
-        result[15-i] = lm & 0xff;
+    for (int index=0; index < L; index++) {
+        result[15-index] = lm & 0xff;
         lm >>= 8;
     }
 }
@@ -138,9 +139,8 @@ ccm_mac(const void *key, size_t kL,
         unsigned char *msg, size_t len,
         unsigned char B[CCM_BLOCKSIZE],
         unsigned char X[CCM_BLOCKSIZE]) {
-    size_t i;
     
-    for (i = 0; i < len; ++i)
+    for (size_t i = 0; i < len; ++i)
         B[i] = X[i] ^ msg[i];
     
 #if ADYC_AESCCM_TraceLog
@@ -251,7 +251,7 @@ ccm_encrypt_message(const void *key, size_t kL,
                     unsigned char nonce[CCM_BLOCKSIZE],
                     unsigned char *msg, size_t lm,
                     const unsigned char *aad, size_t la) {
-    size_t i, len;
+    size_t len;
     unsigned long counter_tmp;
     unsigned long counter = 1; /// @bug does not work correctly on ia32 when lm >= 2^16
     unsigned char A[CCM_BLOCKSIZE]; /* A_i blocks for encryption input */
@@ -315,12 +315,10 @@ ccm_encrypt_message(const void *key, size_t kL,
     CCM_SET_COUNTER(A, L, 0, counter_tmp);
     aes_encrypt(key, kL, A, S);
     
-    for (i = 0; i < M; ++i)
+    for (size_t i = 0; i < M; ++i)
         *msg++ = X[i] ^ S[i];
     
     return len + M;
 }
-
-
 
 @end

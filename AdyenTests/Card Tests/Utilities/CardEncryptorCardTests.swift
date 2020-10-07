@@ -28,7 +28,6 @@ class CardEncryptorCardTests: XCTestCase {
     }
 
     func testEncryptNumberShouldEncrypt() {
-        CardEncryptor.cleanPublicKeys(publicKeyToken: Dummy.dummyPublicKey)
         let card = CardEncryptor.Card(number: "test_number")
         let key = Dummy.dummyPublicKey
         XCTAssertNotNil(try card.encryptedNumber(publicKey: key, date: Date()))
@@ -53,7 +52,6 @@ class CardEncryptorCardTests: XCTestCase {
     }
 
     func testEncryptSecurityCode() {
-        CardEncryptor.cleanPublicKeys(publicKeyToken: Dummy.dummyPublicKey)
         let card = CardEncryptor.Card(securityCode: "test_security_code")
         let key = Dummy.dummyPublicKey
         XCTAssertNotNil(try card.encryptedSecurityCode(publicKey: key, date: Date()))
@@ -78,7 +76,6 @@ class CardEncryptorCardTests: XCTestCase {
     }
 
     func testEncryptExpiryMonth() {
-        CardEncryptor.cleanPublicKeys(publicKeyToken: Dummy.dummyPublicKey)
         let card = CardEncryptor.Card(expiryMonth: "test_expiry_month")
         let key = Dummy.dummyPublicKey
         XCTAssertNotNil(try card.encryptedExpiryMonth(publicKey: key, date: Date()))
@@ -103,7 +100,6 @@ class CardEncryptorCardTests: XCTestCase {
     }
 
     func testEncryptExpiryYear() {
-        CardEncryptor.cleanPublicKeys(publicKeyToken: Dummy.dummyPublicKey)
         let card = CardEncryptor.Card(expiryYear: "test_expiry_year")
         let key = Dummy.dummyPublicKey
         XCTAssertNotNil(try card.encryptedExpiryYear(publicKey: key, date: Date()))
@@ -132,14 +128,12 @@ class CardEncryptorCardTests: XCTestCase {
     }
 
     func testEncryptToToken() {
-        CardEncryptor.cleanPublicKeys(publicKeyToken: Dummy.dummyPublicKey)
         let card = CardEncryptor.Card(expiryYear: "test_expiry_year")
         let key = Dummy.dummyPublicKey
         XCTAssertNotNil(try card.encryptedToToken(publicKey: key, holderName: nil))
     }
 
     func testEncryptedToken() {
-        CardEncryptor.cleanPublicKeys(publicKeyToken: Dummy.dummyPublicKey)
         let card = CardEncryptor.Card(expiryYear: "test_expiry_year")
         let key = Dummy.dummyPublicKey
 
@@ -154,7 +148,9 @@ class CardEncryptorCardTests: XCTestCase {
             XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.invalidBin, "Thrown Error is not CardEncryptor.Error.invalidBin")
             XCTAssertEqual(error.localizedDescription, CardEncryptor.Error.invalidBin.errorDescription)
         }
+    }
 
+    func testEncryptExpiryBINShouldReturnNilWithInvalidBIN() {
         XCTAssertThrowsError(try CardEncryptor.encryptedBin(for: "asdwed", publicKey: "key")) { error in
             XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
             XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.invalidBin, "Thrown Error is not CardEncryptor.Error.invalidBi")
@@ -172,8 +168,7 @@ class CardEncryptorCardTests: XCTestCase {
     }
 
     func testEncryptBIN() {
-        let key = Dummy.dummyPublicKey
-        let ecrypted = try! CardEncryptor.encryptedBin(for: "55000000", publicKey: key)
+        let ecrypted = try! CardEncryptor.encryptedBin(for: "55000000", publicKey: Dummy.dummyPublicKey)
         XCTAssertNotNil(ecrypted)
         XCTAssertTrue(ecrypted.hasPrefix("adyenan0_1_1$"))
     }

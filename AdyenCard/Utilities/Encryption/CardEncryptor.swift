@@ -9,54 +9,6 @@ import Foundation
 /// An object that provides static methods for encrypting card information and retrieving public keys from the server.
 public enum CardEncryptor {
     
-    /// Contains the information of a card that is yet to be encrypted.
-    public struct Card {
-        /// The card number.
-        public var number: String?
-        
-        /// The card's security code.
-        public var securityCode: String?
-        
-        /// The month the card expires.
-        public var expiryMonth: String?
-        
-        /// The year the card expires.
-        public var expiryYear: String?
-        
-        /// :nodoc:
-        public init(number: String? = nil, securityCode: String? = nil, expiryMonth: String? = nil, expiryYear: String? = nil) {
-            self.number = number
-            self.securityCode = securityCode
-            self.expiryMonth = expiryMonth
-            self.expiryYear = expiryYear
-        }
-        
-        internal var isEmpty: Bool {
-            return [number, securityCode, expiryYear, expiryMonth].allSatisfy { $0 == nil }
-        }
-        
-    }
-
-    /// :nodoc:
-    internal struct Bin: Encodable {
-        /// The card BIN number.
-        internal let value: String
-        
-        internal func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encode(value, forKey: .value)
-            
-            let timestampString = ISO8601DateFormatter().string(from: Date())
-            try container.encode(timestampString, forKey: .timestamp)
-        }
-        
-        private enum CodingKeys: String, CodingKey {
-            case value = "binValue"
-            case timestamp = "generationtime"
-        }
-        
-    }
-    
     /// Contains encrypted card information.
     public struct EncryptedCard {
         /// The encrypted card number.
@@ -73,6 +25,8 @@ public enum CardEncryptor {
         
     }
     
+    // MARK: - Card Encryption
+    
     /// Encrypts a card.
     ///
     /// - Parameters:
@@ -87,6 +41,7 @@ public enum CardEncryptor {
         guard !card.isEmpty else {
             throw CardEncryptor.Error.invalidEncryptionArguments
         }
+        
         let generationDate = Date()
         let number = try card.encryptedNumber(publicKey: publicKey, date: generationDate)
         let expiryYear = try card.encryptedExpiryYear(publicKey: publicKey, date: generationDate)
@@ -109,42 +64,11 @@ public enum CardEncryptor {
         }
         
         let payload = try JSONEncoder().encode(Bin(value: bin))
-        guard let result = ObjC_CardEncryptor.encrypted(payload, publicKey: publicKey) else {
+        do {
+            return try Cryptor.encrypt(data: payload, publicKey: publicKey)
+        } catch {
             throw Error.encryptionFailed
         }
-        
-        return result
-    }
-    
-    /// Encrypts a card.
-    ///
-    /// - Parameters:
-    ///   - card: Card containing the data to be encrypted.
-    ///   - holderName: The cardholder's name.
-    ///   - publicKey: The public key to use for encryption (format "Exponent|Modulus").
-    /// - Returns: A string representing the encrypted card.
-    /// - Throws:  `CardEncryptor.Error.encryptionFailed` if the encryption failed,
-    ///  maybe because the card public key is an invalid one, or for any other reason.
-    /// - Throws:  `CardEncryptor.Error.invalidEncryptionArguments` when trying to encrypt a card with  card number, securityCode,
-    /// expiryMonth, expiryYear, and holderName, all of them are nil.
-    /// - Throws:  `CardEncryptor.Error.unknown` if encryption failed for an unknown reason.
-    @available(*, deprecated, message: "Use `card.encryptedToToken(publicKey:holderName:)`.")
-    public static func encryptedToken(for card: Card, holderName: String?, publicKey: String) throws -> String {
-        guard let cardToken = try card.encryptedToToken(publicKey: publicKey, holderName: holderName) else {
-            // This should never happen,
-            // because card.encryptedToToken(publicKey:holderName:) will throw an error if the generated token is some how nil,
-            // before reaching here.
-            throw Error.unknown
-        }
-        
-        return cardToken
-    }
-    
-    // MARK: - Delete RSA
-    
-    /// :nodoc:
-    internal static func cleanPublicKeys(publicKeyToken: String) {
-        ObjC_CardEncryptor.deleteRSAPublicKey(publicKeyToken)
     }
     
     // MARK: - Error
@@ -152,13 +76,17 @@ public enum CardEncryptor {
     /// Describes the error that can occur during card encryption and public key fetching.
     public enum Error: Swift.Error, LocalizedError {
         /// Indicates an unknown error occurred.
+        @available(*, deprecated, message: "This case is deprecated.")
         case unknown
+        
         /// Indicates encryption failed  because of invalid card public key or for some other unknown reason.
         case encryptionFailed
+
         /// Indicates an error when trying to encrypt a card with  card number, securityCode,
         /// expiryMonth, expiryYear, and holderName, all of them are nil.
         case invalidEncryptionArguments
         
+        /// Indicates an error when trying to encrypt empty or invalid BIN number.
         case invalidBin
         
         public var errorDescription: String? {
@@ -177,6 +105,21 @@ public enum CardEncryptor {
     }
     
     // MARK: - Deprecated
+
+    /// Encrypts a card.
+    ///
+    /// - Parameters:
+    ///   - card: Card containing the data to be encrypted.
+    ///   - holderName: The cardholder's name.
+    ///   - publicKey: The public key to use for encryption (format "Exponent|Modulus").
+    /// - Returns: A string representing the encrypted card.
+    /// - Throws:  `CardEncryptor.Error.encryptionFailed` if the encryption failed,
+    ///  maybe because the card public key is an invalid one, or for any other reason.
+    /// - Throws:  `CardEncryptor.Error.unknown` if encryption failed for an unknown reason.
+    @available(*, deprecated, message: "Use `card.encryptedToToken(publicKey:holderName:)`.")
+    public static func encryptedToken(for card: Card, holderName: String?, publicKey: String) throws -> String {
+        return try card.encryptedToToken(publicKey: publicKey, holderName: holderName)
+    }
     
     /// Requests the public encryption key from Adyen backend.
     ///
@@ -282,4 +225,100 @@ public enum CardEncryptor {
         }
         
     }
+}
+
+extension CardEncryptor {
+
+    private struct Bin: Encodable {
+        /// The card BIN number.
+        public let value: String
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(value, forKey: .value)
+
+            let timestampString = ISO8601DateFormatter().string(from: Date())
+            try container.encode(timestampString, forKey: .timestamp)
+        }
+
+        private enum CodingKeys: String, CodingKey {
+            case value = "binValue"
+            case timestamp = "generationtime"
+        }
+
+    }
+    
+}
+
+extension CardEncryptor {
+    
+    /// Contains the information of a card that is yet to be encrypted.
+    public struct Card: Encodable {
+        /// The card number.
+        public var number: String?
+
+        /// The card's security code.
+        public var securityCode: String?
+
+        /// The month the card expires.
+        public var expiryMonth: String?
+
+        /// The year the card expires.
+        public var expiryYear: String?
+
+        internal var holder: String?
+
+        internal var generationDate: Date?
+
+        /// :nodoc:
+        public init(number: String? = nil, securityCode: String? = nil, expiryMonth: String? = nil, expiryYear: String? = nil) {
+            self.number = number
+            self.securityCode = securityCode
+            self.expiryMonth = expiryMonth
+            self.expiryYear = expiryYear
+        }
+
+        internal var isEmpty: Bool {
+            return [number, securityCode, expiryYear, expiryMonth].allSatisfy { $0 == nil }
+        }
+
+        public func jsonData() -> Data? {
+            return try? JSONEncoder().encode(self)
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            if let number = number {
+                try container.encode(number, forKey: .number)
+            }
+            if let holder = holder {
+                try container.encode(holder, forKey: .holder)
+            }
+            if let securityCode = securityCode {
+                try container.encode(securityCode, forKey: .securityCode)
+            }
+            if let expiryMonth = expiryMonth {
+                try container.encode(expiryMonth, forKey: .expiryMonth)
+            }
+            if let expiryYear = expiryYear {
+                try container.encode(expiryYear, forKey: .expiryYear)
+            }
+            
+            if let generationDate = generationDate {
+                let timestampString = ISO8601DateFormatter().string(from: generationDate)
+                try container.encode(timestampString, forKey: .generationDate)
+            }
+        }
+
+        private enum CodingKeys: String, CodingKey {
+            case number
+            case holder = "holderName"
+            case securityCode = "cvc"
+            case expiryMonth
+            case expiryYear
+            case generationDate = "generationtime"
+        }
+    }
+
 }
