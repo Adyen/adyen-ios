@@ -51,7 +51,7 @@ jobs:
       
     - name: Build and test
       run: |
-        xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -destination "${destination}" -derivedDataPath ./DerivedData -enableCodeCoverage YES build test | xcpretty
+        xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -destination "${destination}" -derivedDataPath ./DerivedData -enableCodeCoverage YES build test | xcpretty && exit ${PIPESTATUS[0]}
       env:
         destination: ${{ matrix.destination }}
         DEVELOPER_DIR: ${{ env.XCODE_VERSION }}
@@ -83,17 +83,10 @@ jobs:
         carthage bootstrap --platform iOS --cache-builds
       env:
          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-         
-    - name: Setup Build Wrapper
-      run: |
-        curl -sS https://sonarcloud.io/static/cpp/build-wrapper-macosx-x86.zip > build-wrapper.zip
-        unzip build-wrapper.zip
-        rm build-wrapper.zip
-        mkdir -p reports/build-wrapper
       
     - name: Build and test
       run: |
-        build-wrapper-macosx-x86/build-wrapper-macosx-x86 --out-dir reports/build-wrapper xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -derivedDataPath ./DerivedData -enableCodeCoverage YES clean build test -destination "name=iPhone 11" | xcpretty
+        xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -derivedDataPath ./DerivedData -enableCodeCoverage YES clean build test -destination "name=iPhone 11" | xcpretty && exit ${PIPESTATUS[0]}
                 
     - name: Slather
       run: |
