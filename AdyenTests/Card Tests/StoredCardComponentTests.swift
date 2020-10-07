@@ -6,9 +6,9 @@
 //  Copyright © 2020 Adyen. All rights reserved.
 //
 
-import XCTest
-@testable import AdyenCard
 @testable import Adyen
+@testable import AdyenCard
+import XCTest
 
 class StoredCardComponentTests: XCTestCase {
 
@@ -37,8 +37,8 @@ class StoredCardComponentTests: XCTestCase {
             let textField: UITextField? = sut.viewController.view.findView(by: "AdyenCard.StoredCardAlertManager.textField")
             XCTAssertNotNil(textField)
 
-            XCTAssertTrue(alertController.actions.contains { $0.title == ADYLocalizedString("adyen.cancelButton", nil) } )
-            XCTAssertTrue(alertController.actions.contains { $0.title == ADYLocalizedSubmitButtonTitle(with: payemt.amount, nil) } )
+            XCTAssertTrue(alertController.actions.contains { $0.title == ADYLocalizedString("adyen.cancelButton", nil) })
+            XCTAssertTrue(alertController.actions.contains { $0.title == ADYLocalizedSubmitButtonTitle(with: payemt.amount, nil) })
 
             expectation.fulfill()
 
@@ -73,8 +73,8 @@ class StoredCardComponentTests: XCTestCase {
             let textField: UITextField? = sut.viewController.view.findView(by: "AdyenCard.StoredCardAlertManager.textField")
             XCTAssertNotNil(textField)
 
-            XCTAssertTrue(alertController.actions.contains { $0.title == ADYLocalizedString("adyen.cancelButton", nil) } )
-            XCTAssertTrue(alertController.actions.contains { $0.title == ADYLocalizedSubmitButtonTitle(with: payemt.amount, nil) } )
+            XCTAssertTrue(alertController.actions.contains { $0.title == ADYLocalizedString("adyen.cancelButton", nil) })
+            XCTAssertTrue(alertController.actions.contains { $0.title == ADYLocalizedSubmitButtonTitle(with: payemt.amount, nil) })
 
             expectation.fulfill()
 

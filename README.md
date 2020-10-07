@@ -57,6 +57,12 @@ Some payment methods need additional configuration. For example, to enable the c
 let configuration = DropInComponent.PaymentMethodsConfiguration()
 configuration.card.publicKey = "..." // Your public key, retrieved from the Customer Area.
 ```
+:warning: _`PaymentMethodsConfiguration.card.publicKey` is deprectated in favour of `PaymentMethodsConfiguration.clientKey`_
+
+```swift
+let configuration = DropInComponent.PaymentMethodsConfiguration()
+configuration.clientKey = "..." // Your client key, retrieved from the Customer Area.
+```
 
 After serializing the payment methods and creating the configuration, the Drop-in is ready to be initialized. Assign a `delegate` and use the `viewController` property to present the Drop-in on the screen:
 
@@ -94,6 +100,14 @@ func didFail(with error: Error, from component: DropInComponent)
 ```
 
 This method is invoked when an error occurred during the use of the Drop-in. Dismiss the Drop-in's view controller and display an error message.
+
+---
+
+```swift
+func didCancel(component: PresentableComponent, from dropInComponent: DropInComponent)
+```
+
+This method is invoked when user closes a payment component managed by Drop-in.
 
 ---
 
@@ -136,6 +150,7 @@ In order to have more flexibility over the checkout flow, you can use our Compon
 - [WeChat Pay Component][reference.weChatPaySDKActionComponent]
 - [Qiwi Wallet Component][reference.qiwiWalletComponent]
 - [Redirect Component][reference.redirectComponent]
+- [MB Way Component][reference.mbWayComponent]
 
 ## Customization
 
@@ -208,6 +223,7 @@ This repository is open source and available under the MIT license. For more inf
 [reference.qiwiWalletComponent]: https://adyen.github.io/adyen-ios/Docs/Classes/QiwiWalletComponent.html
 [reference.sepaDirectDebitComponent]: https://adyen.github.io/adyen-ios/Docs/Classes/SEPADirectDebitComponent.html
 [reference.redirectComponent]: https://adyen.github.io/adyen-ios/Docs/Classes/RedirectComponent.html
+[reference.mbWayComponent]: https://adyen.github.io/adyen-ios/Docs/Classes/MBWayComponent.html
 [reference.styles]: https://adyen.github.io/adyen-ios/Docs/Styling.html
 [apiExplorer.paymentMethods]: https://docs.adyen.com/api-explorer/#/PaymentSetupAndVerificationService/v46/paymentMethods
 [apiExplorer.payments]: https://docs.adyen.com/api-explorer/#/PaymentSetupAndVerificationService/v46/payments

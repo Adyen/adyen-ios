@@ -11,7 +11,7 @@ import Foundation
 public final class CardExpiryDateFormatter: NumericFormatter {
     
     /// :nodoc:
-    public override func formattedValue(for value: String) -> String {
+    override public func formattedValue(for value: String) -> String {
         let separator = " / "
         
         let sanitizedString = sanitizedValue(for: value).truncate(to: maxLength)

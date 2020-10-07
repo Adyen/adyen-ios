@@ -142,7 +142,6 @@ internal final class PaymentsController {
             case let .success(response):
                 self.paymentMethods = response.paymentMethods
             case let .failure(error):
-                print(error.localizedDescription)
                 self.presentAlert(with: error, retryHandler: self.requestPaymentMethods)
             }
         }

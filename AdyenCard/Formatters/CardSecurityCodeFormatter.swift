@@ -14,7 +14,7 @@ public final class CardSecurityCodeFormatter: NumericFormatter, Observer {
     private var expectedLength: Int { cardType == CardType.americanExpress ? 4 : 3 }
     
     /// Initiate new instance of CardSecurityCodeValidator
-    public override init() {
+    override public init() {
         super.init()
     }
     
@@ -26,7 +26,7 @@ public final class CardSecurityCodeFormatter: NumericFormatter, Observer {
     }
     
     /// :nodoc:
-    public override func formattedValue(for value: String) -> String {
+    override public func formattedValue(for value: String) -> String {
         let value = super.formattedValue(for: value)
         
         if value.count > expectedLength {

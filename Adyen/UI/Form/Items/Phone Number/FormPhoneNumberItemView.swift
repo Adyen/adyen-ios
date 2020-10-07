@@ -23,7 +23,7 @@ internal final class FormPhoneNumberItemView: FormTextItemView<FormPhoneNumberIt
     }
     
     /// :nodoc:
-    internal override var childItemViews: [AnyFormItemView] {
+    override internal var childItemViews: [AnyFormItemView] {
         return [phoneExtensionView]
     }
     

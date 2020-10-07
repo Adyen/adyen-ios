@@ -181,9 +181,9 @@ let bcmcMobileQR = [
 ] as [String: Any]
 
 let mbway = [
-    "name" : "MB WAY",
-    "supportsRecurring" : true,
-    "type" : "mbway"
+    "name": "MB WAY",
+    "supportsRecurring": true,
+    "type": "mbway"
 ] as [String: Any]
 
 let qiwiWallet = [

@@ -12,19 +12,19 @@ extension DropInComponent {
     public struct Style {
         
         /// Indicates any navigation style.
-        public var navigation: NavigationStyle = NavigationStyle()
+        public var navigation = NavigationStyle()
         
         /// Indicates the UI configuration of any list component.
-        public var listComponent: ListComponentStyle = ListComponentStyle()
+        public var listComponent = ListComponentStyle()
         
         /// Indicates any form component UI style.
-        public var formComponent: FormComponentStyle = FormComponentStyle()
+        public var formComponent = FormComponentStyle()
         
         /// Indicates any `RedirectComponent` UI style.
         public var redirectComponent: RedirectComponentStyle?
         
         /// Indicates the await action component UI style.
-        public var awaitComponent: AwaitComponentStyle = AwaitComponentStyle()
+        public var awaitComponent = AwaitComponentStyle()
         
         /// The color for separator element.
         /// When set, updates separator colors for all undelying styles unless the value were set previously.

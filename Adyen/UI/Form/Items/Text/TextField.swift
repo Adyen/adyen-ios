@@ -16,7 +16,7 @@ internal final class TextField: UITextField {
     
     internal var disablePlaceHolderAccessibility: Bool = true
     
-    internal override var accessibilityValue: String? {
+    override internal var accessibilityValue: String? {
         get {
             guard disablePlaceHolderAccessibility else { return super.accessibilityValue }
             if let text = super.text, !text.isEmpty {
@@ -29,7 +29,7 @@ internal final class TextField: UITextField {
         set { super.accessibilityValue = newValue }
     }
     
-    internal override var font: UIFont? {
+    override internal var font: UIFont? {
         didSet {
             heightConstraint = heightConstraint ?? heightAnchor.constraint(equalToConstant: 0)
             let sizeToFit = sizeThatFits(CGSize(width: bounds.width,

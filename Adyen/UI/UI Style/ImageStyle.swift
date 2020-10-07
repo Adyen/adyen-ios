@@ -38,7 +38,7 @@ public struct ImageStyle: TintableStyle {
     public var contentMode: UIView.ContentMode
     
     /// :nodoc:
-    public var backgroundColor: UIColor = UIColor.AdyenCore.componentBackground
+    public var backgroundColor = UIColor.AdyenCore.componentBackground
     
     /// The tint color of the icon.
     public var tintColor: UIColor?
