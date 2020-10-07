@@ -26,12 +26,13 @@ internal struct ContentView: View {
 
                 })
             }.listRowInsets(.zero)
-        }.listStyle(GroupedListStyle())
-            .present(viewController: $viewModel.viewControllerToPresent)
-            .onAppear {
-                self.viewModel.viewDidAppear()
-            }
-            .alertPresenter(presentationContext: viewModel.interruptionPresentationContext)
+        }
+        .listStyle(GroupedListStyle())
+        .present(viewController: $viewModel.viewControllerToPresent)
+        .onAppear {
+            self.viewModel.viewDidAppear()
+        }
+        .alertPresenter(presentationContext: viewModel.interruptionPresentationContext)
     }
 }
 

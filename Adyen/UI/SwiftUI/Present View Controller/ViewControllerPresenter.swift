@@ -7,6 +7,7 @@
 import SwiftUI
 
 /// :nodoc:
+@available(iOS 13.0, *)
 extension View {
 
     /// Present a `ViewController` modally.
@@ -21,6 +22,7 @@ extension View {
 }
 
 /// :nodoc:
+@available(iOS 13.0, *)
 internal struct ViewControllerPresenter: ViewModifier {
 
     @Binding internal var viewController: UIViewController?
@@ -34,6 +36,7 @@ internal struct ViewControllerPresenter: ViewModifier {
 }
 
 /// :nodoc:
+@available(iOS 13.0, *)
 internal final class FullScreenView: UIViewControllerRepresentable {
 
     @Binding internal var viewController: UIViewController?
