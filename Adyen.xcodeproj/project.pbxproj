@@ -1133,6 +1133,7 @@
 				E24FECF4226EF9AB00A65122 /* ComponentsViewController.swift */,
 				E24FECF6226EF9D800A65122 /* ComponentsView.swift */,
 				E24FECFB226EFD3C00A65122 /* ComponentsItem.swift */,
+				F95B6DD3252B294C002C9062 /* PaymentsController.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2057,7 +2058,6 @@
 				F95B6D992527454E002C9062 /* SceneDelegate.swift */,
 				F95B6D9B2527454E002C9062 /* ContentView.swift */,
 				F95B6DAD25274D9C002C9062 /* PaymentsViewModel.swift */,
-				F95B6DD3252B294C002C9062 /* PaymentsController.swift */,
 				F95B6DCE252B025C002C9062 /* AlertViewPresenter.swift */,
 				F95B6DD0252B0297002C9062 /* InterruptionPresentationContext.swift */,
 				F95B6D9D25274551002C9062 /* Assets.xcassets */,
