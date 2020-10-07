@@ -125,12 +125,13 @@ class BCMCComponentTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         let expectation = XCTestExpectation(description: "Dummy Expectation")
+        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
+        XCTAssertNotNil(cardNumberItemView)
+
+        let cardNumberItem = cardNumberItemView!.item
+        self.populate(textItemView: cardNumberItemView!, with: "00000")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
-            XCTAssertNotNil(cardNumberItemView)
-            
-            let cardNumberItem = cardNumberItemView!.item
-            cardNumberItem.didChange(detectedCards: [], for: "12345")
+
             XCTAssertTrue(cardNumberItem.cardTypeLogos.allSatisfy { $0.isHidden })
             
             expectation.fulfill()

@@ -52,7 +52,6 @@ private extension FormCardNumberItemView {
     private class CardsView: UIStackView, Observer {
         
         private let maxCount: Int
-        private var cardLogos: [CardTypeLogoView] = []
         
         init(logos: [FormCardNumberItem.CardTypeLogo], style: FormTextItemStyle, max count: Int = 4) {
             maxCount = count
@@ -60,16 +59,14 @@ private extension FormCardNumberItemView {
             axis = .horizontal
             spacing = FormCardNumberItemView.cardSpacing
             
-            logos.forEach { logo in
+            for logo in logos {
                 let imageView = CardTypeLogoView(cardTypeLogo: logo, style: style.icon)
                 imageView.backgroundColor = style.backgroundColor
-                cardLogos.append(imageView)
-                
-                observe(logo.$isHidden) { [unowned imageView, weak self] isHidden in
-                    self?.set(view: imageView, hidden: isHidden)
+                self.addArrangedSubview(imageView)
+
+                observe(logo.$isHidden) { [unowned imageView] isHidden in
+                    imageView.isHidden = isHidden
                 }
-                
-                logo.$isHidden.publish(false)
             }
         }
         
@@ -86,14 +83,6 @@ private extension FormCardNumberItemView {
             let cardsCount = CGFloat(arrangedSubviews.filter { !$0.isHidden }.count)
             let width = FormCardNumberItemView.cardSize.width * cardsCount + FormCardNumberItemView.cardSpacing * max(cardsCount - 1, 0)
             return .init(width: max(width, FormCardNumberItemView.cardSpacing), height: FormCardNumberItemView.cardSize.height)
-        }
-        
-        private func set(view: UIView, hidden: Bool) {
-            if hidden {
-                view.removeFromSuperview()
-            } else if arrangedSubviews.count < maxCount {
-                addArrangedSubview(view)
-            }
         }
         
     }
