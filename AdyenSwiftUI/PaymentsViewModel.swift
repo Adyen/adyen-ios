@@ -65,19 +65,26 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
     // MARK: - Presenter
 
     internal func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
-        interruptionPresentationContext.alertItem.wrappedValue = AlertItem(title: Text("Error"),
-                                                                           message: Text(error.localizedDescription),
-                                                                           primaryButton: Alert.Button.default(Text("Retry"), action: {
-                                                                               retryHandler?()
-                                                                           }),
-                                                                           dismissButton: Alert.Button.default(Text("OK"), action: {}))
+        DispatchQueue.main.async {
+            let primaryButton = Alert.Button.default(Text("Retry"), action: {
+                retryHandler?()
+            })
+            let dismissButton = Alert.Button.default(Text("OK"), action: {})
+            self.interruptionPresentationContext.alertItem.wrappedValue = AlertItem(title: Text("Error"),
+                                                                                    message: Text(error.localizedDescription),
+                                                                                    primaryButton: primaryButton,
+                                                                                    dismissButton: dismissButton)
+        }
     }
 
     internal func presentAlert(withTitle title: String) {
-        interruptionPresentationContext.alertItem.wrappedValue = AlertItem(title: Text(title),
-                                                                           message: nil,
-                                                                           primaryButton: nil,
-                                                                           dismissButton: Alert.Button.default(Text("OK"), action: {}))
+        DispatchQueue.main.async {
+            let dismissButton = Alert.Button.default(Text("OK"), action: {})
+            self.interruptionPresentationContext.alertItem.wrappedValue = AlertItem(title: Text(title),
+                                                                                    message: nil,
+                                                                                    primaryButton: nil,
+                                                                                    dismissButton: dismissButton)
+        }
     }
 
     internal func present(viewController: UIViewController, completion: (() -> Void)?) {
