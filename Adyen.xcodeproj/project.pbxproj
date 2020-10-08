@@ -276,8 +276,6 @@
 		F95B6DCB25275661002C9062 /* AdyenWeChatPay.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F95B6DCC25275695002C9062 /* Adyen3DS2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E226F5462296BE250013A463 /* Adyen3DS2.framework */; };
 		F95B6DCD25275696002C9062 /* Adyen3DS2.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E226F5462296BE250013A463 /* Adyen3DS2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		F95B6DCF252B025C002C9062 /* AlertViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6DCE252B025C002C9062 /* AlertViewPresenter.swift */; };
-		F95B6DD1252B0297002C9062 /* InterruptionPresentationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6DD0252B0297002C9062 /* InterruptionPresentationContext.swift */; };
 		F95B6DD4252B294C002C9062 /* PaymentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6DD3252B294C002C9062 /* PaymentsController.swift */; };
 		F95B6DD5252B2A8D002C9062 /* PaymentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6DD3252B294C002C9062 /* PaymentsController.swift */; };
 		F95B6DD6252B4654002C9062 /* ComponentsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24FECFB226EFD3C00A65122 /* ComponentsItem.swift */; };
@@ -835,8 +833,6 @@
 		F95B6DA525274551002C9062 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F95B6DAA25274A3D002C9062 /* ViewControllerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerPresenter.swift; sourceTree = "<group>"; };
 		F95B6DAD25274D9C002C9062 /* PaymentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsViewModel.swift; sourceTree = "<group>"; };
-		F95B6DCE252B025C002C9062 /* AlertViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewPresenter.swift; sourceTree = "<group>"; };
-		F95B6DD0252B0297002C9062 /* InterruptionPresentationContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterruptionPresentationContext.swift; sourceTree = "<group>"; };
 		F95B6DD3252B294C002C9062 /* PaymentsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsController.swift; sourceTree = "<group>"; };
 		F960FB082371823A00AEF74B /* ApplePayComponentTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayComponentTest.swift; sourceTree = "<group>"; };
 		F9615FAF252DDA4800FA8EDD /* AdyenSwiftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdyenSwiftUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2089,8 +2085,6 @@
 				F95B6D992527454E002C9062 /* SceneDelegate.swift */,
 				F95B6D9B2527454E002C9062 /* ContentView.swift */,
 				F95B6DAD25274D9C002C9062 /* PaymentsViewModel.swift */,
-				F95B6DCE252B025C002C9062 /* AlertViewPresenter.swift */,
-				F95B6DD0252B0297002C9062 /* InterruptionPresentationContext.swift */,
 				F95B6D9D25274551002C9062 /* Assets.xcassets */,
 				F95B6DA225274551002C9062 /* LaunchScreen.storyboard */,
 				F95B6DA525274551002C9062 /* Info.plist */,
@@ -3245,13 +3239,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F95B6DCF252B025C002C9062 /* AlertViewPresenter.swift in Sources */,
 				F95B6D982527454E002C9062 /* AppDelegate.swift in Sources */,
 				F95B6DB425274DFC002C9062 /* DefaultAPIClient.swift in Sources */,
 				F95B6DAF25274DFC002C9062 /* Environment.swift in Sources */,
 				F95B6DB225274DFC002C9062 /* Amount.swift in Sources */,
 				F95B6DB125274DFC002C9062 /* PaymentsRequest.swift in Sources */,
-				F95B6DD1252B0297002C9062 /* InterruptionPresentationContext.swift in Sources */,
 				F95B6DB025274DFC002C9062 /* PaymentDetailsRequest.swift in Sources */,
 				F95B6DD4252B294C002C9062 /* PaymentsController.swift in Sources */,
 				F95B6DB325274DFC002C9062 /* PaymentMethodsRequest.swift in Sources */,

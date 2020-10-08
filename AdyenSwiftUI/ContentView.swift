@@ -32,7 +32,6 @@ internal struct ContentView: View {
         .onAppear {
             self.viewModel.viewDidAppear()
         }
-        .alertPresenter(presentationContext: viewModel.interruptionPresentationContext)
     }
 }
 

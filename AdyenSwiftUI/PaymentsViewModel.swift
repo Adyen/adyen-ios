@@ -21,8 +21,6 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
 
     @Published internal var viewControllerToPresent: UIViewController?
 
-    @Published internal var interruptionPresentationContext = InterruptionPresentationContext()
-
     @Published internal var items = [[ComponentsItem]]()
 
     // MARK: - DropIn Component
@@ -65,26 +63,23 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
     // MARK: - Presenter
 
     internal func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
-        DispatchQueue.main.async {
-            let primaryButton = Alert.Button.default(Text("Retry"), action: {
-                retryHandler?()
-            })
-            let dismissButton = Alert.Button.default(Text("OK"), action: {})
-            self.interruptionPresentationContext.alertItem.wrappedValue = AlertItem(title: Text("Error"),
-                                                                                    message: Text(error.localizedDescription),
-                                                                                    primaryButton: primaryButton,
-                                                                                    dismissButton: dismissButton)
+        let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+
+        if let retryHandler = retryHandler {
+            alertController.addAction(UIAlertAction(title: "Retry", style: .default, handler: { _ in
+                retryHandler()
+            }))
+        } else {
+            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         }
+
+        viewControllerToPresent = alertController
     }
 
     internal func presentAlert(withTitle title: String) {
-        DispatchQueue.main.async {
-            let dismissButton = Alert.Button.default(Text("OK"), action: {})
-            self.interruptionPresentationContext.alertItem.wrappedValue = AlertItem(title: Text(title),
-                                                                                    message: nil,
-                                                                                    primaryButton: nil,
-                                                                                    dismissButton: dismissButton)
-        }
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        viewControllerToPresent = alertController
     }
 
     internal func present(viewController: UIViewController, completion: (() -> Void)?) {
