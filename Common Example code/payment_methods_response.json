@@ -1,0 +1,1170 @@
+{
+  "paymentMethods" : [
+    {
+      "configuration" : {
+        "merchantDisplayName" : "TestMerchantCheckout",
+        "merchantIdentifier" : "merchant.com.adyen.test"
+      },
+      "details" : [
+        {
+          "key" : "applepay.token",
+          "type" : "applePayToken"
+        }
+      ],
+      "name" : "Apple Pay",
+      "supportsRecurring" : true,
+      "type" : "applepay"
+    },
+    {
+      "details" : [
+        {
+          "items" : [
+            {
+              "id" : "1121",
+              "name" : "Test Issuer"
+            },
+            {
+              "id" : "1154",
+              "name" : "Test Issuer 5"
+            },
+            {
+              "id" : "1153",
+              "name" : "Test Issuer 4"
+            },
+            {
+              "id" : "1152",
+              "name" : "Test Issuer 3"
+            },
+            {
+              "id" : "1151",
+              "name" : "Test Issuer 2"
+            },
+            {
+              "id" : "1162",
+              "name" : "Test Issuer Cancelled"
+            },
+            {
+              "id" : "1161",
+              "name" : "Test Issuer Pending"
+            },
+            {
+              "id" : "1160",
+              "name" : "Test Issuer Refused"
+            },
+            {
+              "id" : "1159",
+              "name" : "Test Issuer 10"
+            },
+            {
+              "id" : "1158",
+              "name" : "Test Issuer 9"
+            },
+            {
+              "id" : "1157",
+              "name" : "Test Issuer 8"
+            },
+            {
+              "id" : "1156",
+              "name" : "Test Issuer 7"
+            },
+            {
+              "id" : "1155",
+              "name" : "Test Issuer 6"
+            }
+          ],
+          "key" : "issuer",
+          "type" : "select"
+        }
+      ],
+      "name" : "iDEAL",
+      "supportsRecurring" : true,
+      "type" : "ideal"
+    },
+    {
+      "brands" : [
+        "mc",
+        "visa",
+        "amex",
+        "maestro",
+        "cup",
+        "diners",
+        "discover",
+        "jcb"
+      ],
+      "details" : [
+        {
+          "key" : "number",
+          "type" : "text"
+        },
+        {
+          "key" : "expiryMonth",
+          "type" : "text"
+        },
+        {
+          "key" : "expiryYear",
+          "type" : "text"
+        },
+        {
+          "key" : "cvc",
+          "type" : "text"
+        },
+        {
+          "key" : "holderName",
+          "optional" : true,
+          "type" : "text"
+        }
+      ],
+      "name" : "Credit Card",
+      "type" : "scheme"
+    },
+    {
+      "configuration" : {
+        "merchantId" : "sell1_1287491142_biz@adyen.com",
+        "intent" : "capture"
+      },
+      "name" : "PayPal",
+      "supportsRecurring" : true,
+      "type" : "paypal"
+    },
+    {
+      "details" : [
+        {
+          "details" : [
+            {
+              "key" : "firstName",
+              "type" : "text"
+            },
+            {
+              "key" : "lastName",
+              "type" : "text"
+            },
+            {
+              "items" : [
+                {
+                  "id" : "M",
+                  "name" : "male"
+                },
+                {
+                  "id" : "F",
+                  "name" : "female"
+                }
+              ],
+              "key" : "gender",
+              "type" : "radio"
+            },
+            {
+              "key" : "dateOfBirth",
+              "type" : "date"
+            },
+            {
+              "key" : "telephoneNumber",
+              "type" : "tel"
+            },
+            {
+              "key" : "shopperEmail",
+              "type" : "emailAddress"
+            }
+          ],
+          "key" : "personalDetails",
+          "type" : "fieldSet"
+        },
+        {
+          "details" : [
+            {
+              "key" : "street",
+              "type" : "text"
+            },
+            {
+              "key" : "houseNumberOrName",
+              "type" : "text"
+            },
+            {
+              "key" : "city",
+              "type" : "text"
+            },
+            {
+              "key" : "postalCode",
+              "type" : "text"
+            },
+            {
+              "key" : "stateOrProvince",
+              "optional" : true,
+              "type" : "text"
+            },
+            {
+              "value" : "NL",
+              "key" : "country",
+              "items" : [
+                {
+                  "id" : "NL",
+                  "name" : "Netherlands"
+                },
+                {
+                  "id" : "BE",
+                  "name" : "Belgium"
+                }
+              ],
+              "type" : "select"
+            }
+          ],
+          "key" : "billingAddress",
+          "type" : "address"
+        },
+        {
+          "value" : "false",
+          "key" : "separateDeliveryAddress",
+          "type" : "boolean",
+          "optional" : true
+        },
+        {
+          "details" : [
+            {
+              "key" : "street",
+              "type" : "text"
+            },
+            {
+              "key" : "houseNumberOrName",
+              "type" : "text"
+            },
+            {
+              "key" : "city",
+              "type" : "text"
+            },
+            {
+              "key" : "postalCode",
+              "type" : "text"
+            },
+            {
+              "key" : "stateOrProvince",
+              "optional" : true,
+              "type" : "text"
+            },
+            {
+              "value" : "NL",
+              "key" : "country",
+              "items" : [
+                {
+                  "id" : "NL",
+                  "name" : "Netherlands"
+                },
+                {
+                  "id" : "BE",
+                  "name" : "Belgium"
+                }
+              ],
+              "type" : "select"
+            }
+          ],
+          "key" : "deliveryAddress",
+          "type" : "address",
+          "optional" : true
+        },
+        {
+          "key" : "consentCheckbox",
+          "type" : "boolean"
+        }
+      ],
+      "name" : "AfterPay Invoice",
+      "supportsRecurring" : true,
+      "type" : "afterpay_default"
+    },
+    {
+      "name" : "Pay later with Klarna.",
+      "supportsRecurring" : true,
+      "type" : "klarna"
+    },
+    {
+      "details" : [
+        {
+          "key" : "sepa.ownerName",
+          "type" : "text"
+        },
+        {
+          "key" : "sepa.ibanNumber",
+          "type" : "text"
+        }
+      ],
+      "name" : "SEPA Direct Debit",
+      "supportsRecurring" : true,
+      "type" : "sepadirectdebit"
+    },
+    {
+      "name" : "Paysafecard",
+      "supportsRecurring" : true,
+      "type" : "paysafecard"
+    },
+    {
+      "details" : [
+        {
+          "key" : "shopperEmail",
+          "type" : "emailAddress"
+        },
+        {
+          "key" : "firstName",
+          "type" : "text"
+        },
+        {
+          "key" : "lastName",
+          "type" : "text"
+        },
+        {
+          "key" : "infix",
+          "optional" : true,
+          "type" : "text"
+        }
+      ],
+      "name" : "Bank Transfer",
+      "supportsRecurring" : false,
+      "type" : "doku_permata_lite_atm"
+    },
+    {
+      "details" : [
+        {
+          "key" : "androidpay.token",
+          "type" : "androidPayToken"
+        }
+      ],
+      "name" : "Android Pay",
+      "supportsRecurring" : true,
+      "type" : "androidpay"
+    },
+    {
+      "name" : "c_cash",
+      "supportsRecurring" : true,
+      "type" : "c_cash"
+    },
+    {
+      "details" : [
+        {
+          "key" : "shopperEmail",
+          "type" : "emailAddress"
+        },
+        {
+          "key" : "firstName",
+          "type" : "text"
+        },
+        {
+          "key" : "lastName",
+          "type" : "text"
+        },
+        {
+          "key" : "infix",
+          "optional" : true,
+          "type" : "text"
+        }
+      ],
+      "name" : "DOKU",
+      "supportsRecurring" : false,
+      "type" : "doku"
+    },
+    {
+      "details" : [
+        {
+          "key" : "shopperEmail",
+          "type" : "emailAddress"
+        },
+        {
+          "key" : "firstName",
+          "type" : "text"
+        },
+        {
+          "key" : "lastName",
+          "type" : "text"
+        },
+        {
+          "key" : "infix",
+          "optional" : true,
+          "type" : "text"
+        }
+      ],
+      "name" : "Alfamart",
+      "supportsRecurring" : false,
+      "type" : "doku_alfamart"
+    },
+    {
+      "details" : [
+        {
+          "key" : "shopperEmail",
+          "type" : "emailAddress"
+        },
+        {
+          "key" : "firstName",
+          "type" : "text"
+        },
+        {
+          "key" : "lastName",
+          "type" : "text"
+        },
+        {
+          "key" : "infix",
+          "optional" : true,
+          "type" : "text"
+        }
+      ],
+      "name" : "Indomaret",
+      "supportsRecurring" : false,
+      "type" : "doku_indomaret"
+    },
+    {
+      "name" : "Mandiri ClickPay",
+      "supportsRecurring" : false,
+      "type" : "doku_mandiri_clickpay"
+    },
+    {
+      "details" : [
+        {
+          "key" : "shopperEmail",
+          "type" : "emailAddress"
+        },
+        {
+          "key" : "firstName",
+          "type" : "text"
+        },
+        {
+          "key" : "lastName",
+          "type" : "text"
+        },
+        {
+          "key" : "infix",
+          "optional" : true,
+          "type" : "text"
+        }
+      ],
+      "name" : "DOKU wallet",
+      "supportsRecurring" : false,
+      "type" : "doku_wallet"
+    },
+    {
+      "details" : [
+        {
+          "key" : "shopperEmail",
+          "type" : "emailAddress"
+        },
+        {
+          "items" : [
+            {
+              "id" : "BDO",
+              "name" : "BDO Internet Banking"
+            },
+            {
+              "id" : "BOC",
+              "name" : "Bank of Commerce Online"
+            },
+            {
+              "id" : "BOG",
+              "name" : "Test Bank Online"
+            },
+            {
+              "id" : "BPI",
+              "name" : "BPI ExpressOnline\/Mobile (Fund Transfer)"
+            },
+            {
+              "id" : "BPIA",
+              "name" : "BPI Online\/Mobile (NEW)"
+            },
+            {
+              "id" : "BPIB",
+              "name" : "BPI ExpressOnline (Bills Payment)"
+            },
+            {
+              "id" : "CBC",
+              "name" : "Chinabank Online"
+            },
+            {
+              "id" : "DPAY",
+              "name" : "Dragonpay Prepaid Credits"
+            },
+            {
+              "id" : "LBPA",
+              "name" : "Landbank ATM Online"
+            },
+            {
+              "id" : "MAYB",
+              "name" : "Maybank Online Banking"
+            },
+            {
+              "id" : "MBTC",
+              "name" : "Metrobankdirect"
+            },
+            {
+              "id" : "PSB",
+              "name" : "PSBank Online"
+            },
+            {
+              "id" : "RCBC",
+              "name" : "RCBC Online Banking"
+            },
+            {
+              "id" : "RSB",
+              "name" : "RobinsonsBank Online Bills Payment"
+            },
+            {
+              "id" : "UBPB",
+              "name" : "Unionbank Internet Banking (API)"
+            },
+            {
+              "id" : "UCPB",
+              "name" : "UCPB Connect\/Mobile"
+            }
+          ],
+          "key" : "issuer",
+          "type" : "select"
+        }
+      ],
+      "name" : "Online Banking",
+      "supportsRecurring" : true,
+      "type" : "dragonpay_ebanking"
+    },
+    {
+      "details" : [
+        {
+          "key" : "shopperEmail",
+          "type" : "emailAddress"
+        }
+      ],
+      "name" : "GCash",
+      "supportsRecurring" : true,
+      "type" : "dragonpay_gcash"
+    },
+    {
+      "details" : [
+        {
+          "key" : "shopperEmail",
+          "type" : "emailAddress"
+        },
+        {
+          "items" : [
+            {
+              "id" : "AUB",
+              "name" : "AUB Online\/Cash Payment"
+            },
+            {
+              "id" : "BDOA",
+              "name" : "Banco de Oro ATM"
+            },
+            {
+              "id" : "BDRX",
+              "name" : "BDO Cash Deposit w\/ Ref"
+            },
+            {
+              "id" : "BNRX",
+              "name" : "BDO Network Bank (formerly ONB) Cash Dep"
+            },
+            {
+              "id" : "BOGX",
+              "name" : "Test Bank Over-the-Counter"
+            },
+            {
+              "id" : "BPXB",
+              "name" : "BPI Bills Payment"
+            },
+            {
+              "id" : "CBCX",
+              "name" : "Chinabank ATM\/Cash Payment"
+            },
+            {
+              "id" : "EWXB",
+              "name" : "EastWest Online\/Cash Payment"
+            },
+            {
+              "id" : "I2I",
+              "name" : "I2I Rural Banks"
+            },
+            {
+              "id" : "LBXB",
+              "name" : "Landbank Cash Payment"
+            },
+            {
+              "id" : "MBXB",
+              "name" : "Metrobank Cash Payment"
+            },
+            {
+              "id" : "PNBB",
+              "name" : "PNB e-Banking Bills Payment"
+            },
+            {
+              "id" : "PNXB",
+              "name" : "PNB Cash Payment"
+            },
+            {
+              "id" : "RCXB",
+              "name" : "RCBC Cash Payment"
+            },
+            {
+              "id" : "RSBB",
+              "name" : "RobinsonsBank Over-the-Counter"
+            },
+            {
+              "id" : "SBC",
+              "name" : "Security Bank Online Bills Payment"
+            },
+            {
+              "id" : "SBCA",
+              "name" : "Security Bank ATM Bills Payment"
+            },
+            {
+              "id" : "SBCB",
+              "name" : "Security Bank Cash Payment"
+            },
+            {
+              "id" : "UBXB",
+              "name" : "Unionbank Cash Payment"
+            },
+            {
+              "id" : "UCXB",
+              "name" : "UCPB ATM\/Cash Payment"
+            }
+          ],
+          "key" : "issuer",
+          "type" : "select"
+        }
+      ],
+      "name" : "Over The Counter Banks",
+      "supportsRecurring" : true,
+      "type" : "dragonpay_otc_banking"
+    },
+    {
+      "details" : [
+        {
+          "key" : "shopperEmail",
+          "type" : "emailAddress"
+        }
+      ],
+      "name" : "International OTC via Dragonpay",
+      "supportsRecurring" : true,
+      "type" : "dragonpay_otc_international"
+    },
+    {
+      "details" : [
+        {
+          "key" : "number",
+          "type" : "text"
+        },
+        {
+          "key" : "expiryMonth",
+          "optional" : true,
+          "type" : "text"
+        },
+        {
+          "key" : "expiryYear",
+          "optional" : true,
+          "type" : "text"
+        },
+        {
+          "key" : "cvc",
+          "optional" : true,
+          "type" : "text"
+        },
+        {
+          "key" : "holderName",
+          "optional" : true,
+          "type" : "text"
+        }
+      ],
+      "name" : "Generic GiftCard",
+      "supportsRecurring" : false,
+      "type" : "genericgiftcard"
+    },
+    {
+      "configuration" : {
+        "merchantId" : "1000",
+        "gatewayMerchantId" : "TestMerchantCheckout"
+      },
+      "details" : [
+        {
+          "key" : "paywithgoogle.token",
+          "type" : "payWithGoogleToken"
+        }
+      ],
+      "name" : "Google Pay",
+      "supportsRecurring" : true,
+      "type" : "paywithgoogle"
+    },
+    {
+      "details" : [
+        {
+          "key" : "samsungpay.token",
+          "type" : "samsungPayToken"
+        }
+      ],
+      "name" : "Samsung Pay",
+      "supportsRecurring" : true,
+      "type" : "samsungpay"
+    },
+    {
+      "name" : "UnionPay",
+      "supportsRecurring" : true,
+      "type" : "unionpay"
+    },
+    {
+      "details" : [
+        {
+          "key" : "shopperEmail",
+          "type" : "emailAddress"
+        },
+        {
+          "items" : [
+            {
+              "id" : "711",
+              "name" : "7-Eleven"
+            },
+            {
+              "id" : "BAYD",
+              "name" : "Bayad Center"
+            },
+            {
+              "id" : "CEBL",
+              "name" : "Cebuana Lhuillier Bills Payment"
+            },
+            {
+              "id" : "ECPY",
+              "name" : "ECPay (Pawnshops, Payment Centers)"
+            },
+            {
+              "id" : "LBC",
+              "name" : "LBC"
+            },
+            {
+              "id" : "MLH",
+              "name" : "M. Lhuillier"
+            },
+            {
+              "id" : "PLWN",
+              "name" : "Palawan Pawnshop"
+            },
+            {
+              "id" : "POSB",
+              "name" : "Posible Partners"
+            },
+            {
+              "id" : "RDP",
+              "name" : "RD Pawnshop"
+            },
+            {
+              "id" : "RDS",
+              "name" : "Robinsons Dept Store"
+            },
+            {
+              "id" : "RLNT",
+              "name" : "RuralNet Banks and Coops"
+            },
+            {
+              "id" : "SMR",
+              "name" : "SM Dept\/Supermarket\/Savemore Counter"
+            }
+          ],
+          "key" : "issuer",
+          "type" : "select"
+        }
+      ],
+      "name" : "Convenience Stores",
+      "supportsRecurring" : true,
+      "type" : "dragonpay_otc_philippines"
+    },
+    {
+      "details" : [
+        {
+          "items" : [
+            {
+              "id" : "BOIB",
+              "name" : "Bank of India"
+            },
+            {
+              "id" : "CBIB",
+              "name" : "Central Bank Of India"
+            },
+            {
+              "id" : "SBIB",
+              "name" : "State Bank of India"
+            }
+          ],
+          "key" : "issuer",
+          "type" : "select"
+        }
+      ],
+      "name" : "PayU NetBanking",
+      "supportsRecurring" : true,
+      "type" : "payu_IN_nb"
+    },
+    {
+      "details" : [
+        {
+          "key" : "virtualPaymentAddress",
+          "type" : "text"
+        },
+        {
+          "details" : [
+            {
+              "items" : [
+                {
+                  "id" : "adhoc",
+                  "name" : "adhoc"
+                },
+                {
+                  "id" : "daily",
+                  "name" : "daily"
+                },
+                {
+                  "id" : "weekly",
+                  "name" : "weekly"
+                },
+                {
+                  "id" : "biweekly",
+                  "name" : "biweekly"
+                },
+                {
+                  "id" : "monthly",
+                  "name" : "monthly"
+                },
+                {
+                  "id" : "quarterly",
+                  "name" : "quarterly"
+                },
+                {
+                  "id" : "halfYearly",
+                  "name" : "halfYearly"
+                },
+                {
+                  "id" : "yearly",
+                  "name" : "yearly"
+                }
+              ],
+              "key" : "frequency",
+              "type" : "select"
+            },
+            {
+              "key" : "amount",
+              "type" : "text"
+            },
+            {
+              "key" : "amountRule",
+              "items" : [
+                {
+                  "id" : "max",
+                  "name" : "max"
+                },
+                {
+                  "id" : "exact",
+                  "name" : "exact"
+                }
+              ],
+              "type" : "select",
+              "optional" : true
+            },
+            {
+              "key" : "billingAttemptsRule",
+              "items" : [
+                {
+                  "id" : "on",
+                  "name" : "on"
+                },
+                {
+                  "id" : "before",
+                  "name" : "before"
+                },
+                {
+                  "id" : "after",
+                  "name" : "after"
+                }
+              ],
+              "type" : "select",
+              "optional" : true
+            },
+            {
+              "key" : "billingDay",
+              "optional" : true,
+              "type" : "text"
+            },
+            {
+              "key" : "startAt",
+              "optional" : true,
+              "type" : "text"
+            },
+            {
+              "key" : "endAt",
+              "type" : "text"
+            },
+            {
+              "key" : "remarks",
+              "optional" : true,
+              "type" : "text"
+            }
+          ],
+          "key" : "subscriptionDetails",
+          "type" : "fieldSet",
+          "optional" : true
+        }
+      ],
+      "name" : "PayU UPI",
+      "supportsRecurring" : true,
+      "type" : "payu_IN_upi"
+    },
+    {
+      "details" : [
+        {
+          "key" : "number",
+          "type" : "text"
+        },
+        {
+          "key" : "expiryMonth",
+          "optional" : true,
+          "type" : "text"
+        },
+        {
+          "key" : "expiryYear",
+          "optional" : true,
+          "type" : "text"
+        },
+        {
+          "key" : "cvc",
+          "optional" : true,
+          "type" : "text"
+        },
+        {
+          "key" : "holderName",
+          "optional" : true,
+          "type" : "text"
+        }
+      ],
+      "name" : "Plastix",
+      "supportsRecurring" : false,
+      "type" : "plastix"
+    }
+  ],
+  "oneClickPaymentMethods" : [
+    {
+      "storedDetails" : {
+        "card" : {
+          "holderName" : "Checkout Shopper PlaceHolder",
+          "number" : "0008",
+          "expiryMonth" : "3",
+          "expiryYear" : "2030"
+        }
+      },
+      "details" : [
+        {
+          "key" : "cardDetails.cvc",
+          "optional" : true,
+          "type" : "cvc"
+        }
+      ],
+      "name" : "Maestro",
+      "type" : "maestro",
+      "recurringDetailReference" : "8415907498770006"
+    },
+    {
+      "storedDetails" : {
+        "card" : {
+          "holderName" : "Checkout Shopper PlaceHolder",
+          "number" : "4449",
+          "expiryMonth" : "10",
+          "expiryYear" : "2020"
+        }
+      },
+      "details" : [
+        {
+          "key" : "cardDetails.cvc",
+          "optional" : true,
+          "type" : "cvc"
+        }
+      ],
+      "name" : "Maestro",
+      "type" : "maestro",
+      "recurringDetailReference" : "8415736344108917"
+    },
+    {
+      "storedDetails" : {
+        "card" : {
+          "holderName" : "Checkout Shopper PlaceHolder",
+          "number" : "0003",
+          "expiryMonth" : "10",
+          "expiryYear" : "2020"
+        }
+      },
+      "details" : [
+        {
+          "key" : "cardDetails.cvc",
+          "optional" : true,
+          "type" : "cvc"
+        }
+      ],
+      "name" : "Maestro",
+      "type" : "maestro",
+      "recurringDetailReference" : "8415737241494681"
+    },
+    {
+      "storedDetails" : {
+        "card" : {
+          "holderName" : "Checkout Shopper PlaceHolder",
+          "number" : "0007",
+          "expiryMonth" : "10",
+          "expiryYear" : "2020"
+        }
+      },
+      "details" : [
+        {
+          "key" : "cardDetails.cvc",
+          "type" : "cvc"
+        }
+      ],
+      "name" : "MasterCard",
+      "type" : "mc",
+      "recurringDetailReference" : "8315736585511564"
+    },
+    {
+      "configuration" : {
+        "koreanAuthenticationRequired" : "true"
+      },
+      "storedDetails" : {
+        "card" : {
+          "holderName" : "Checkout Shopper PlaceHolder",
+          "number" : "1111",
+          "expiryMonth" : "10",
+          "expiryYear" : "2020"
+        }
+      },
+      "details" : [
+        {
+          "key" : "cardDetails.cvc",
+          "type" : "cvc"
+        }
+      ],
+      "name" : "VISA",
+      "type" : "visa",
+      "recurringDetailReference" : "8415625756263270"
+    },
+    {
+      "storedDetails" : {
+        "card" : {
+          "holderName" : "Checkout Shopper PlaceHolder",
+          "number" : "1111",
+          "expiryMonth" : "10",
+          "expiryYear" : "2020"
+        }
+      },
+      "details" : [
+        {
+          "key" : "cardDetails.cvc",
+          "type" : "cvc"
+        }
+      ],
+      "name" : "MasterCard",
+      "type" : "mc",
+      "recurringDetailReference" : "8315611189535980"
+    }
+  ],
+  "storedPaymentMethods" : [
+    {
+      "expiryMonth" : "03",
+      "expiryYear" : "2030",
+      "id" : "8415907498770006",
+      "supportedShopperInteractions" : [
+        "Ecommerce"
+      ],
+      "lastFour" : "0008",
+      "brand" : "maestro",
+      "type" : "scheme",
+      "holderName" : "Checkout Shopper PlaceHolder",
+      "name" : "Maestro"
+    },
+    {
+      "expiryMonth" : "10",
+      "expiryYear" : "2020",
+      "id" : "8415736344108917",
+      "supportedShopperInteractions" : [
+        "Ecommerce"
+      ],
+      "lastFour" : "4449",
+      "brand" : "bcmc",
+      "type" : "scheme",
+      "holderName" : "Checkout Shopper PlaceHolder",
+      "name" : "Maestro"
+    },
+    {
+      "expiryMonth" : "10",
+      "expiryYear" : "2020",
+      "id" : "8415737241494681",
+      "supportedShopperInteractions" : [
+        "Ecommerce"
+      ],
+      "lastFour" : "0003",
+      "brand" : "bcmc",
+      "type" : "scheme",
+      "holderName" : "Checkout Shopper PlaceHolder",
+      "name" : "Maestro"
+    },
+    {
+      "expiryMonth" : "10",
+      "expiryYear" : "2020",
+      "id" : "8315736585511564",
+      "supportedShopperInteractions" : [
+        "Ecommerce",
+        "ContAuth"
+      ],
+      "lastFour" : "0007",
+      "brand" : "mc",
+      "type" : "scheme",
+      "holderName" : "Checkout Shopper PlaceHolder",
+      "name" : "MasterCard"
+    },
+    {
+      "shopperEmail" : "buy1_1287492020_per@adyen.com",
+      "id" : "8415628453182207",
+      "supportedShopperInteractions" : [
+        "ContAuth"
+      ],
+      "name" : "PayPal",
+      "type" : "paypal"
+    },
+    {
+      "expiryMonth" : "10",
+      "expiryYear" : "2020",
+      "id" : "8415625756263270",
+      "supportedShopperInteractions" : [
+        "Ecommerce",
+        "ContAuth"
+      ],
+      "lastFour" : "1111",
+      "brand" : "visa",
+      "type" : "scheme",
+      "holderName" : "Checkout Shopper PlaceHolder",
+      "name" : "VISA"
+    },
+    {
+      "expiryMonth" : "10",
+      "expiryYear" : "2020",
+      "id" : "8315611189535980",
+      "supportedShopperInteractions" : [
+        "Ecommerce",
+        "ContAuth"
+      ],
+      "lastFour" : "1111",
+      "brand" : "mc",
+      "type" : "scheme",
+      "holderName" : "Checkout Shopper PlaceHolder",
+      "name" : "MasterCard"
+    }
+  ],
+  "groups" : [
+    {
+      "name" : "Gift Card",
+      "types" : [
+        "genericgiftcard",
+        "plastix"
+      ]
+    },
+    {
+      "name" : "Credit Card",
+      "types" : [
+        "mc",
+        "visa",
+        "amex",
+        "maestro",
+        "cup",
+        "diners",
+        "discover",
+        "jcb"
+      ]
+    }
+  ]
+}

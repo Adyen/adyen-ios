@@ -4,11 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import UIKit
+import SwiftUI
 
-internal final class ComponentsViewController: UIViewController, Presenter {
-    
-    private lazy var componentsView = ComponentsView()
+internal final class PaymentsViewModel: ObservableObject, Identifiable, Presenter {
 
     private lazy var controller: PaymentsController = {
 
@@ -17,32 +15,11 @@ internal final class ComponentsViewController: UIViewController, Presenter {
 
         return controller
     }()
-    
-    // MARK: - View
-    
-    override internal func loadView() {
-        view = componentsView
-    }
-    
-    override internal func viewDidLoad() {
-        super.viewDidLoad()
-        navigationItem.title = "Components"
-        
-        componentsView.items = [
-            [
-                ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent)
-            ],
-            [
-                ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
-                ComponentsItem(title: "iDEAL", selectionHandler: presentIdealComponent),
-                ComponentsItem(title: "SEPA Direct Debit", selectionHandler: presentSEPADirectDebitComponent),
-                ComponentsItem(title: "MB WAY", selectionHandler: presentMBWayComponent)
-            ]
-        ]
-        
-        controller.requestPaymentMethods()
-    }
-    
+
+    @Published internal var viewControllerToPresent: UIViewController?
+
+    @Published internal var items = [[ComponentsItem]]()
+
     // MARK: - DropIn Component
 
     internal func presentDropInComponent() {
@@ -65,7 +42,18 @@ internal final class ComponentsViewController: UIViewController, Presenter {
         controller.presentMBWayComponent()
     }
 
-    internal func requestPaymentMethods() {
+    internal func viewDidAppear() {
+        items = [
+            [
+                ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent)
+            ],
+            [
+                ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
+                ComponentsItem(title: "iDEAL", selectionHandler: presentIdealComponent),
+                ComponentsItem(title: "SEPA Direct Debit", selectionHandler: presentSEPADirectDebitComponent),
+                ComponentsItem(title: "MB WAY", selectionHandler: presentMBWayComponent)
+            ]
+        ]
         controller.requestPaymentMethods()
     }
 
@@ -82,20 +70,22 @@ internal final class ComponentsViewController: UIViewController, Presenter {
             alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         }
 
-        adyen.topPresenter.present(alertController, animated: true)
+        viewControllerToPresent = alertController
     }
 
     internal func presentAlert(withTitle title: String) {
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        adyen.topPresenter.present(alertController, animated: true)
+        viewControllerToPresent = alertController
     }
 
     internal func present(viewController: UIViewController, completion: (() -> Void)?) {
-        adyen.topPresenter.present(viewController, animated: true, completion: completion)
+        viewControllerToPresent = viewController
+        completion?()
     }
 
     internal func dismiss(completion: (() -> Void)?) {
-        dismiss(animated: true, completion: completion)
+        viewControllerToPresent = nil
+        completion?()
     }
 }
