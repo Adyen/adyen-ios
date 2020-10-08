@@ -1146,7 +1146,6 @@
 			children = (
 				E24FECF4226EF9AB00A65122 /* ComponentsViewController.swift */,
 				E24FECF6226EF9D800A65122 /* ComponentsView.swift */,
-				E24FECFB226EFD3C00A65122 /* ComponentsItem.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2137,6 +2136,7 @@
 		F9615FC5252F49A400FA8EDD /* Common Example code */ = {
 			isa = PBXGroup;
 			children = (
+				E24FECFB226EFD3C00A65122 /* ComponentsItem.swift */,
 				F95B6DD3252B294C002C9062 /* PaymentsController.swift */,
 				F9615FBF252F076A00FA8EDD /* payment_methods_response.json */,
 			);
