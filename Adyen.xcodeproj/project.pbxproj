@@ -1147,8 +1147,6 @@
 				E24FECF4226EF9AB00A65122 /* ComponentsViewController.swift */,
 				E24FECF6226EF9D800A65122 /* ComponentsView.swift */,
 				E24FECFB226EFD3C00A65122 /* ComponentsItem.swift */,
-				F95B6DD3252B294C002C9062 /* PaymentsController.swift */,
-				F9615FBF252F076A00FA8EDD /* payment_methods_response.json */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1313,6 +1311,7 @@
 				E2C0E04022097917008616F6 /* AdyenTests */,
 				F95B6D962527454E002C9062 /* AdyenSwiftUI */,
 				F9615FB0252DDA4800FA8EDD /* AdyenSwiftUITests */,
+				F9615FC5252F49A400FA8EDD /* Common Example code */,
 				E2C0E03422097917008616F6 /* Products */,
 				E2D12C01221ECBB000EF682F /* Frameworks */,
 			);
@@ -2133,6 +2132,15 @@
 				F9615FB3252DDA4800FA8EDD /* Info.plist */,
 			);
 			path = AdyenSwiftUITests;
+			sourceTree = "<group>";
+		};
+		F9615FC5252F49A400FA8EDD /* Common Example code */ = {
+			isa = PBXGroup;
+			children = (
+				F95B6DD3252B294C002C9062 /* PaymentsController.swift */,
+				F9615FBF252F076A00FA8EDD /* payment_methods_response.json */,
+			);
+			path = "Common Example code";
 			sourceTree = "<group>";
 		};
 		F9620D8323C73B0D005209FC /* AdyenWeChatPay */ = {
