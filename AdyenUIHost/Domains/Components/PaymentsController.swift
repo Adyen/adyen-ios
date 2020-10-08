@@ -133,11 +133,28 @@ internal final class PaymentsController {
 
     // MARK: - Networking
 
-    private lazy var apiClient = DefaultAPIClient()
+    private lazy var apiClient: APIClientProtocol = {
+        if CommandLine.arguments.contains("-UITests") {
+            return apiClientMock
+        } else {
+            return DefaultAPIClient()
+        }
+    }()
+
+    private lazy var apiClientMock: APIClientProtocol = {
+        let apiClient = APIClientMock()
+        // swiftlint:disable:next force_try
+        let data = try! Data(contentsOf: Bundle.main.url(forResource: "payment_methods_response", withExtension: "json")!)
+        // swiftlint:disable:next force_try
+        let response = try! JSONDecoder().decode(PaymentMethodsResponse.self, from: data)
+        apiClient.mockedResults = [.success(response)]
+        return apiClient
+    }()
 
     internal func requestPaymentMethods() {
         let request = PaymentMethodsRequest()
-        apiClient.perform(request) { result in
+        apiClient.perform(request) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case let .success(response):
                 self.paymentMethods = response.paymentMethods

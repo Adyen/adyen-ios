@@ -15,35 +15,44 @@ class AdyenSwiftUITests: XCTestCase {
     override func setUp() {
         super.setUp()
         app = XCUIApplication()
+        app.launchArguments = ["-UITests"]
     }
 
     func testDropIn() throws {
         app.launch()
 
         XCUIApplication().tables.buttons["Drop In"].tap()
-        XCTAssertTrue(app.buttons["Pay €174.08"].exists)
-        XCTAssertTrue(app.staticTexts["Adyen Demo"].exists)
-        XCTAssertTrue(app.buttons["Change Payment Method"].exists)
+
+        wait(for: [app.buttons["Pay €174.08"], app.staticTexts["Adyen Demo"], app.buttons["Change Payment Method"]])
     }
 
     func testCardComponent() throws {
         app.launch()
         app.tables.buttons["Card"].tap()
 
-        XCTAssertTrue(app.buttons["Pay €174.08"].exists)
-        XCTAssertTrue(app.staticTexts["Credit Card"].exists)
-        XCTAssertTrue(app.textFields["1234 5678 9012 3456"].exists)
-        XCTAssertTrue(app.textFields["MM/YY"].exists)
-        XCTAssertTrue(app.textFields["3 digits"].exists)
+        wait(for: [app.buttons["Pay €174.08"],
+                   app.staticTexts["Credit Card"],
+                   app.textFields["1234 5678 9012 3456"],
+                   app.textFields["MM/YY"],
+                   app.textFields["3 digits"]])
     }
 
     func testSepaComponent() throws {
         app.launch()
         app.tables.buttons["SEPA Direct Debit"].tap()
 
-        XCTAssertTrue(app.buttons["Pay €174.08"].exists)
-        XCTAssertTrue(app.staticTexts["SEPA Direct Debit"].exists)
-        XCTAssertTrue(app.textFields["J. Smith"].exists)
-        XCTAssertTrue(app.textFields["NL26 INGB 0336 1691 16"].exists)
+        wait(for: [app.buttons["Pay €174.08"],
+                   app.staticTexts["SEPA Direct Debit"],
+                   app.textFields["J. Smith"],
+                   app.textFields["NL26 INGB 0336 1691 16"]])
+    }
+
+    private func wait(for elements: [XCUIElement]) {
+        elements.forEach {
+            let predicate = NSPredicate(format: "exists == 1")
+
+            expectation(for: predicate, evaluatedWith: $0, handler: nil)
+        }
+        waitForExpectations(timeout: 10, handler: nil)
     }
 }
