@@ -172,4 +172,13 @@ class CardEncryptorCardTests: XCTestCase {
         XCTAssertNotNil(ecrypted)
         XCTAssertTrue(ecrypted.hasPrefix("adyenan0_1_1$"))
     }
+
+    func testAES() {
+        let data = Data(base64Encoded: "eyJiaW5WYWx1ZSI6IjU1MDAwMDAiLCJnZW5lcmF0aW9udGltZSI6IjIwMjAtMTAtMDhUMDg6MjI6MTBaIn0=")!
+        let key = Data(base64Encoded: "GYXymWrBcBA2GMHQnzxg+B6WOeWy6zvsHt8KQLB0UXs=")!
+        let iv = Data(base64Encoded: "34X2GnY1dEMt3Jz9")!
+        let reslt = Cryptor.AES.encrypt(data: data, withKey: key, initVector: iv)
+        XCTAssertEqual(reslt, Data(base64Encoded: "zoKVik/ivsVguN7okPjT1Aycmquhyu4/87sCGyAsmCr6fCxrKOSOTAW8H6TcjDPfo4EvCg4nm50FyIPXdrNrzrI39dwTQw==")!)
+    }
+    
 }

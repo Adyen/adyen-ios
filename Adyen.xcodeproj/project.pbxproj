@@ -204,8 +204,6 @@
 		E9E3DACF221EEB5300697074 /* CardSecurityCodeValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DACE221EEB5300697074 /* CardSecurityCodeValidatorTests.swift */; };
 		E9E3DAD1221EEE2100697074 /* CardExpiryDateValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAD0221EEE2100697074 /* CardExpiryDateValidator.swift */; };
 		E9E3DAD3221EEFF700697074 /* CardExpiryDateValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAD2221EEFF700697074 /* CardExpiryDateValidatorTests.swift */; };
-		E9E3DAE722241BF500697074 /* ADYAESCCMCryptor.h in Headers */ = {isa = PBXBuildFile; fileRef = E9E3DAD522241BF400697074 /* ADYAESCCMCryptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E9E3DAE822241BF500697074 /* ADYAESCCMCryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAD622241BF400697074 /* ADYAESCCMCryptor.m */; };
 		E9E3DAFA22241D6000697074 /* CardEncryptorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAF822241D6000697074 /* CardEncryptorExtensions.swift */; };
 		E9E3DAFB22241D6000697074 /* CardEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAF922241D6000697074 /* CardEncryptor.swift */; };
 		E9E3DAFD2225485400697074 /* URLSessionHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAFC2225485400697074 /* URLSessionHelpers.swift */; };
@@ -780,8 +778,6 @@
 		E9E3DACE221EEB5300697074 /* CardSecurityCodeValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSecurityCodeValidatorTests.swift; sourceTree = "<group>"; };
 		E9E3DAD0221EEE2100697074 /* CardExpiryDateValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardExpiryDateValidator.swift; sourceTree = "<group>"; };
 		E9E3DAD2221EEFF700697074 /* CardExpiryDateValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardExpiryDateValidatorTests.swift; sourceTree = "<group>"; };
-		E9E3DAD522241BF400697074 /* ADYAESCCMCryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADYAESCCMCryptor.h; sourceTree = "<group>"; };
-		E9E3DAD622241BF400697074 /* ADYAESCCMCryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADYAESCCMCryptor.m; sourceTree = "<group>"; };
 		E9E3DAF822241D6000697074 /* CardEncryptorExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardEncryptorExtensions.swift; sourceTree = "<group>"; };
 		E9E3DAF922241D6000697074 /* CardEncryptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardEncryptor.swift; sourceTree = "<group>"; };
 		E9E3DAFC2225485400697074 /* URLSessionHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHelpers.swift; sourceTree = "<group>"; };
@@ -1601,7 +1597,6 @@
 			children = (
 				E7364987252B7C4A00AB76AE /* Cryptor */,
 				E736498025277B7500AB76AE /* Extensions */,
-				E9E3DAD422241BF400697074 /* AdyenCSE */,
 				E9E3DAF922241D6000697074 /* CardEncryptor.swift */,
 				E9E3DAF822241D6000697074 /* CardEncryptorExtensions.swift */,
 			);
@@ -1926,15 +1921,6 @@
 				E773EA3925221C4600119499 /* ThrottlerTests.swift */,
 			);
 			path = Utilities;
-			sourceTree = "<group>";
-		};
-		E9E3DAD422241BF400697074 /* AdyenCSE */ = {
-			isa = PBXGroup;
-			children = (
-				E9E3DAD522241BF400697074 /* ADYAESCCMCryptor.h */,
-				E9E3DAD622241BF400697074 /* ADYAESCCMCryptor.m */,
-			);
-			path = AdyenCSE;
 			sourceTree = "<group>";
 		};
 		E9E3DB042226B3A100697074 /* Utilities */ = {
@@ -2365,7 +2351,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E2C0E063220982AE008616F6 /* AdyenCard.h in Headers */,
-				E9E3DAE722241BF500697074 /* ADYAESCCMCryptor.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3186,7 +3171,6 @@
 				E7AA1098252DCCFB00AAD3C0 /* RSA.swift in Sources */,
 				E773EA3825221C1900119499 /* Throttler.swift in Sources */,
 				F9B8C49123FC286D00C4D0FB /* FormCardNumberItem.swift in Sources */,
-				E9E3DAE822241BF500697074 /* ADYAESCCMCryptor.m in Sources */,
 				E7AA1099252DCCFB00AAD3C0 /* Cryptor.swift in Sources */,
 				E76EC682241125F5009C6E2F /* FormCardSecurityCodeItemView.swift in Sources */,
 				E2D12C132223E1C000EF682F /* CardTypeDetector.swift in Sources */,

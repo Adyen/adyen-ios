@@ -9,322 +9,285 @@ import Foundation
 
 extension Cryptor {
 
-    // swiftlint:disable identifier_name
-
-    /// Set of helpers for RSA encryption.
+    /// Set of helpers for AES encryption.
     internal enum AES {
 
-        public enum Error: Swift.Error {
-            case cryptoError(CCCryptorStatus)
+        internal static func encrypt(data: Data, withKey key: Data, initVector: Data) -> Data {
+            var cipher = AESCCMEncryptor(data: data as NSData,
+                                         key: key as NSData,
+                                         initVector: initVector as NSData)
+            return cipher.data
         }
 
-        private static let CCM_BLOCKSIZE = kCCBlockSizeAES128
+    }
 
-        internal func dh(d: UnsafeRawPointer) -> NSData {
-            return NSData(bytes: d, length: kCCBlockSizeAES128)
-        }
+}
 
-        internal static func encrypt(data: Data, withKey key: Data, iv: Data) -> Data {
-            return self.encrypt(data: data, withKey: key, iv: iv, tagLength: 8)
-        }
+extension Cryptor.AES {
 
-        internal static func encrypt(data: Data, withKey key: Data, iv: Data, tagLength: Int) -> Data {
-            return self.encrypt(data: data as NSData,
-                                withKey: key as NSData,
-                                iv: iv as NSData,
-                                tagLength: tagLength)
-        }
+    /**
+      Authenticates and encrypts a message using AES in CCM mode.
+      Please see also RFC 3610 for the meaning of  M,  L,  lm and  la.
 
-        private static func encrypt(data: NSData,
-                                    withKey key: NSData,
-                                    iv: NSData,
-                                    tagLength: Int) -> Data {
+     By default the number of additional authentication octets is zero.
+     */
+    private struct AESCCMEncryptor {
 
-            let cipher = NSMutableData(bytes: (data as NSData).bytes, length: data.count + tagLength)
+        private typealias Bytes = UnsafeBufferPointer<UInt8>
+        private typealias MutableBytes = UnsafeMutableBufferPointer<UInt8>
+        private typealias Pointer = UnsafeMutablePointer<UInt8>
 
-            let LSize = 15 - iv.count
-            let mutableIv = NSMutableData(bytes: iv.bytes, length: iv.count)
-            ccm_encrypt_message(key.bytes, key.length,
-                                tagLength, LSize, mutableIv.mutableBytes,
-                                cipher.mutableBytes, data.length)
+        /// The number of authentication octets.
+        private let authOctets = 8 // M
 
-            return cipher as Data
-        }
+        /// The number of bytes used to encode the message length.
+        private let encodeBytesLength: Int // L
 
-        @discardableResult
-        private static func aes_encrypt(_ key: UnsafeRawPointer,
-                                        _ keyLength: Int,
-                                        _ bytes: UnsafeRawPointer,
-                                        _ cipher: UnsafeMutableRawPointer) -> CCCryptorStatus {
+        /// The AES key
+        private let key: Bytes
 
-            var numBytesEncrypted = 0
-            let cryptStatus = CCCrypt(CCOperation(kCCEncrypt),
-                                      CCAlgorithm(kCCAlgorithmAES),
-                                      CCOptions(kCCOptionECBMode),
-                                      key, keyLength,
-                                      nil,
-                                      bytes, kCCBlockSizeAES128,
-                                      cipher, kCCBlockSizeAES128,
-                                      &numBytesEncrypted)
+        /// The nonce value to use. You must provide `AESCCM.blockSize`
+        /// octets, although only the first  16 - L are used.
+        private let nonce: Bytes
 
-            guard cryptStatus == kCCSuccess else {
-                return CCCryptorStatus(kCCInvalidKey)
-            }
+        /// The actual length of  msg.
+        private let messageLength: Int // lm
 
-            return cryptStatus
-        }
+        /// A_i blocks for encryption input
+        private let blockA: MutableBytes
 
-        private static func CCM_FLAGS(_ A: Int, _ M: Int, _ L: Int) -> Int {
-            (((A > 0 ? 1 : 0) << 6) | (((M - 2) / 2) << 3) | (L - 1))
-        }
+        /// B_i blocks for CBC-MAC input
+        private let blockB: MutableBytes
 
-        private static func CCM_MASK_L(_ L: Int) -> Int {
-            ((1 << 8 * L) - 1)
-        }
+        /// S_i = encrypted A_i blocks
+        private let blockS: MutableBytes
 
-        private static func CCM_SET_COUNTER(_ A: NSMutableData, _ L: Int, _ cnt: UInt) {
-            var index = CCM_BLOCKSIZE - 1
-            memset(A.mutableBytes.advanced(by: CCM_BLOCKSIZE - L), 0, L)
-            var C = cnt & UInt(CCM_MASK_L(L))
-            while C > 0, index > L {
-                let value = A.mutableBytes.load(fromByteOffset: index, as: UInt.self) | (C & 0xFF)
-                A.mutableBytes.storeBytes(of: value, toByteOffset: index, as: UInt.self)
-                index += -1
-                C = C >> 8
-            }
-        }
+        /// X_i = encrypted B_i blocks
+        private let blockX: MutableBytes
 
-        // XORs `n` bytes byte-by-byte starting at `y` to the memory area starting at `x`.
-        private static func ccm_memxor(_ x: UnsafeMutableRawPointer, _ y: UnsafeMutableRawPointer, _ n: Int) {
-            for index in 0...n {
-                let valueX = x.load(fromByteOffset: index, as: UniChar.self)
-                let valueY = y.load(fromByteOffset: index, as: UniChar.self)
-                x.storeBytes(of: valueX ^ valueY, toByteOffset: index, as: UniChar.self)
-            }
-        }
-
-        private static func ccm_block0(m: Int, /* number of auth bytes */
-                                       l: Int, /* number of bytes to encode message length */
-                                       la: Int, /* l(a) octets additional authenticated data */
-                                       lm: Int, /* l(m) message length */
-                                       nonce: UnsafeRawPointer) -> NSMutableData {
-            let result = NSMutableData()
-            result.mutableBytes.storeBytes(of: CCM_FLAGS(la, m, l), as: Int.self)
-
-            /* copy the nonce */
-            memcpy(result.mutableBytes.advanced(by: 1), nonce, CCM_BLOCKSIZE - l)
-            var lm = lm
-            for index in 0...l { // (int index=0; index < L; index++) {
-                result.mutableBytes.storeBytes(of: UniChar(lm & 0xFF), toByteOffset: 15 - index, as: UniChar.self)
-                lm = lm >> 8
-            }
-
-            return result
-        }
-
-        private static func ccm_encrypt_xor(_ key: UnsafeRawPointer,
-                                            _ keyLength: Int,
-                                            _ L: Int,
-                                            _ counter: UInt,
-                                            _ msg: UnsafeMutableRawPointer,
-                                            _ ln: Int,
-                                            _ A: NSMutableData,
-                                            _ S: NSMutableData) {
-            CCM_SET_COUNTER(A, L, counter)
-            aes_encrypt(key, keyLength, A.mutableBytes, S.mutableBytes)
-            ccm_memxor(msg, S.mutableBytes, ln)
-        }
-
-        private static func ccm_mac(_ key: UnsafeRawPointer,
-                                    _ keyLength: Int,
-                                    _ msg: UnsafeRawPointer,
-                                    _ len: Int,
-                                    _ B: NSMutableData,
-                                    _ X: NSMutableData) {
-            for index in 0...len {
-                let value = X.mutableBytes.advanced(by: index).load(as: UniChar.self) ^ msg.advanced(by: index).load(as: UniChar.self)
-                B.mutableBytes.storeBytes(of: value, toByteOffset: index, as: UniChar.self)
-            }
-
-//            #if ADYC_AESCCM_TraceLog
-//            NSLog(@"ccm_mac: %@", dh(B));
-//            #endif
-
-            aes_encrypt(key, keyLength, B.mutableBytes, X.mutableBytes)
-
-//            #if ADYC_AESCCM_TraceLog
-//            NSLog(@"ccm_mac e: %@", dh(X));
-//            #endif
-        }
-
-        private static func dtls_int_to_uint16(_ field: UnsafeMutableRawPointer, _ value: Int) {
-            field.storeBytes(of: UniChar((value >> 8) & 0xFF), as: UniChar.self)
-            field.storeBytes(of: UniChar(value & 0xFF), toByteOffset: 1, as: UniChar.self)
-        }
-
-        /**
-         * Creates the CBC-MAC for the additional authentication data that
-         * is sent in cleartext. The result is written to `X`.
-         *
-         * @param key The AES key
-         * @param kL  The AES key length
-         * @param msg  The message starting with the additional authentication data.
-         * @param la   The number of additional authentication bytes in msg.
-         * @param B    The input buffer for crypto operations. When this function
-         *             is called, B must be initialized with B0 (the first
-         *             authentication block.
-         * @param X    The output buffer where the result of the CBC calculation
-         *             is placed.
+        /**  The message to encrypt.
+         *   Note that the encryption operation modifies the contents of  msg and adds
+         *   M bytes MAC. Therefore, the buffer must be at least lm +  M bytes large.
          */
-        private static func ccm_add_auth_data(_ key: UnsafeRawPointer,
-                                              _ keyLength: Int,
-                                              _ msg: NSData,
-                                              _ la: Int,
-                                              _ B: NSMutableData,
-                                              _ X: NSMutableData) {
-            aes_encrypt(key, keyLength, B.mutableBytes, X.mutableBytes)
-            memset(B.mutableBytes, 0, CCM_BLOCKSIZE)
+        private let cipher: MutableBytes
 
-            guard la > 0, la < 0xFF00 else { return }
+        /// Returns
+        public lazy var data: Data = {
+            encryptMessage()
+            return Data(bytes: cipher.baseAddress!, count: cipher.count)
+        }()
 
-            /* Here we are building for small devices and thus
-             * anticipate that the number of additional authentication bytes
-             * will not exceed 65280 bytes (0xFF00) and we can skip the
-             * workarounds required for j=6 and j=10 on devices with a word size
-             * of 32 bits or 64 bits, respectively.
-             */
+        init(data: NSData, key: NSData, initVector: NSData) {
+            encodeBytesLength = 15 - initVector.count
+            messageLength = data.count
+            nonce = Bytes(start: initVector.bytes.assumingMemoryBound(to: UInt8.self), count: 16)
+            self.key = Bytes(start: key.bytes.assumingMemoryBound(to: UInt8.self), count: key.count)
 
-            var la = la
-            dtls_int_to_uint16(B.mutableBytes, la)
+            let bufferData = Pointer(mutating: data.bytes.assumingMemoryBound(to: UInt8.self))
+            cipher = MutableBytes(start: bufferData, count: data.count + authOctets)
 
-            memcpy(B.mutableBytes.advanced(by: 2), msg.bytes, min(CCM_BLOCKSIZE - 2, la))
-            la += -min(CCM_BLOCKSIZE - 2, la)
-            var msg = msg.bytes.advanced(by: min(CCM_BLOCKSIZE - 2, la))
-
-            ccm_memxor(B.mutableBytes, X.mutableBytes, CCM_BLOCKSIZE)
-
-            aes_encrypt(key, keyLength, B.mutableBytes, X.mutableBytes)
-
-            while la > CCM_BLOCKSIZE {
-                for i in 0...CCM_BLOCKSIZE {
-                    let value = X.bytes.load(fromByteOffset: i, as: UniChar.self) ^ msg.load(as: UniChar.self)
-                    B.mutableBytes.storeBytes(of: value, toByteOffset: i, as: UniChar.self)
-                    msg = msg.advanced(by: 1)
-                }
-                la -= CCM_BLOCKSIZE
-
-                aes_encrypt(key, keyLength, B.mutableBytes, X.mutableBytes)
-            }
-
-            if la > 0 {
-                memset(B.mutableBytes, 0, CCM_BLOCKSIZE)
-                memcpy(B.mutableBytes, msg, la)
-                ccm_memxor(B.mutableBytes, X.mutableBytes, CCM_BLOCKSIZE)
-
-                aes_encrypt(key, keyLength, B.mutableBytes, X.mutableBytes)
-            }
+            blockS = MutableBytes.allocate(capacity: AESCCM.blockSize)
+            blockX = MutableBytes.allocate(capacity: AESCCM.blockSize)
+            blockA = AESCCM.blockA(encodeBytes: encodeBytesLength, nonce: nonce)
+            blockB = AESCCM.blockB(authOctets: authOctets,
+                                   messageLength: messageLength,
+                                   encodeBytes: encodeBytesLength,
+                                   nonce: nonce)
         }
 
-        /**
-         * Authenticates and encrypts a message using AES in CCM mode. Please
-         * see also RFC 3610 for the meaning of  M,  L,  lm and  la.
-         *
-         * @param key   The AES key
-         * @param kL    The AES key length
-         * @param M     The number of authentication octets.
-         * @param L     The number of bytes used to encode the message length.
-         * @param nonce The nonce value to use. You must provide  CCM_BLOCKSIZE
-         *              nonce octets, although only the first  16 -  L are used.
-         * @param msg   The message to encrypt. The first  la octets are additional
-         *              authentication data that will be cleartext. Note that the
-         *              encryption operation modifies the contents of  msg and adds
-         *              M bytes MAC. Therefore, the buffer must be at least
-         *              lm +  M bytes large.
-         * @param lm    The actual length of  msg.
-         * @param aad   A pointer to the additional authentication data (can be  NULL if
-         *              la is zero).
-         * @param la    The number of additional authentication octets (may be zero).
-         * @return length
-         */
-        private static func
-            ccm_encrypt_message(_ key: UnsafeRawPointer,
-                                _ kL: Int,
-                                _ M: Int,
-                                _ L: Int,
-                                _ nonce: UnsafeRawPointer,
-                                _ msg: UnsafeMutableRawPointer,
-                                _ lm: Int) -> Int
-        {
-            let len = lm /* save original length */
+        internal func encryptMessage() {
+
+            AESCCM.aesEncrypt(block: blockB, with: key, saveTo: blockX)
+            blockB.initialize(repeating: 0)
+
+            var unencryptedMessageLength = messageLength
+            var cipherPointer = cipher.baseAddress!
             var counter: UInt = 1 /// @bug does not work correctly on ia32 when lm >= 2^16
-            let A = NSMutableData() /* A_i blocks for encryption input */
-            let B = ccm_block0(m: M, l: L, la: 0, lm: lm, nonce: nonce) /* B_i blocks for CBC-MAC input */
-            let S = NSMutableData() /* S_i = encrypted A_i blocks */
-            let X = NSMutableData() /* X_i = encrypted B_i blocks */
+            while unencryptedMessageLength >= AESCCM.blockSize {
 
-            /* create the initial authentication block B0 */
-
-//            #if ADYC_AESCCM_TraceLog
-//            NSLog(@"ccm_block0: %@", dh(B));
-//            #endif
-
-            aes_encrypt(key, kL, B.mutableBytes, X.mutableBytes)
-            memset(B.mutableBytes, 0, CCM_BLOCKSIZE)
-
-//            #if ADYC_AESCCM_TraceLog
-//            NSLog(@"ccm_add_auth_data: B: %@ X: %@", dh(B), dh(X));
-//            #endif
-
-            /* initialize block template */
-            A.mutableBytes.storeBytes(of: L - 1, as: Int.self)
-
-            // copy the nonce
-            memcpy(A.mutableBytes.advanced(by: 1), nonce, CCM_BLOCKSIZE - L)
-
-            var lm = lm
-            var msg = msg
-            while lm >= CCM_BLOCKSIZE {
-                // calculate MAC
-                ccm_mac(key, kL, msg, CCM_BLOCKSIZE, B, X)
-
-                // encrypt
-                ccm_encrypt_xor(key, kL, L, counter, msg, CCM_BLOCKSIZE, A, S)
+                encryptMAC(from: cipherPointer,
+                           count: AESCCM.blockSize,
+                           counter: counter)
 
                 // update local pointers
-                lm -= CCM_BLOCKSIZE
-                msg = msg.advanced(by: CCM_BLOCKSIZE)
+                unencryptedMessageLength -= AESCCM.blockSize
+                cipherPointer = cipherPointer.advanced(by: AESCCM.blockSize)
                 counter += 1
             }
 
-            if lm > 0 {
+            if unencryptedMessageLength > 0 {
                 /* Calculate MAC. The remainder of B must be padded with zeroes, so
                  * B is constructed to contain X ^ msg for the first lm bytes (done in
                  * mac() and X ^ 0 for the remaining CCM_BLOCKSIZE - lm bytes
                  * (i.e., we can use memcpy() here).
                  */
-                memcpy(B.mutableBytes.advanced(by: lm), X.bytes.advanced(by: lm), CCM_BLOCKSIZE - lm)
-                ccm_mac(key, kL, msg, lm, B, X)
+                blockB.memecpy(from: blockX.baseAddress!.advanced(by: unencryptedMessageLength),
+                               offset: unencryptedMessageLength,
+                               count: AESCCM.blockSize - unencryptedMessageLength)
 
-                // encrypt
-                ccm_encrypt_xor(key, kL, L, counter, msg, lm, A, S)
+                encryptMAC(from: cipherPointer,
+                           count: unencryptedMessageLength,
+                           counter: counter)
 
                 // update local pointers
-                msg += lm
+                cipherPointer = cipherPointer.advanced(by: unencryptedMessageLength)
             }
 
             // calculate S_0
-            CCM_SET_COUNTER(A, L, 0)
+            AESCCM.setCounter(blockA, encodeBytesLength, 0)
+            AESCCM.aesEncrypt(block: blockA, with: key, saveTo: blockS)
 
-            aes_encrypt(key, kL, A.mutableBytes, S.mutableBytes)
-
-            for i in 0...M {
-                let value = X.bytes.load(fromByteOffset: i, as: UniChar.self) ^ S.bytes.load(fromByteOffset: i, as: UniChar.self)
-                msg.storeBytes(of: value, toByteOffset: i, as: UniChar.self)
+            for index in 0..<authOctets {
+                cipherPointer.initialize(to: UInt8(blockX[index] ^ blockS[index]))
+                cipherPointer = cipherPointer.successor()
             }
-
-            return len + M
         }
 
+        private func encryptMAC(from pointer: Pointer,
+                                count: Int,
+                                counter: UInt) {
+            // calculate MAC
+            AESCCM.mac(key: key,
+                       pointer: pointer,
+                       length: count,
+                       blockB: blockB,
+                       blockX: blockX)
+
+            // encrypt
+            AESCCM.encryptXor(key: key,
+                              encodeBytes: encodeBytesLength,
+                              counter: counter,
+                              pointer: pointer,
+                              length: count,
+                              blockA: blockA,
+                              blockS: blockS)
+        }
+
+        private enum AESCCM {
+
+            // Block size.
+            internal static let blockSize = kCCBlockSizeAES128
+
+            internal static func aesEncrypt(block: MutableBytes,
+                                            with key: Bytes,
+                                            saveTo cipher: MutableBytes) {
+                var numBytesEncrypted = 0
+                CCCrypt(CCOperation(kCCEncrypt),
+                        CCAlgorithm(kCCAlgorithmAES),
+                        CCOptions(kCCOptionECBMode),
+                        key.baseAddress, key.count,
+                        nil,
+                        block.baseAddress, blockSize,
+                        cipher.baseAddress, blockSize,
+                        &numBytesEncrypted)
+            }
+
+            internal static func setCounter(_ block: MutableBytes, _ encodeBytesLength: Int, _ counter: UInt) {
+                block.memset(value: 0, offset: blockSize - encodeBytesLength, count: encodeBytesLength)
+
+                var shift = counter & UInt(encodingMask(encodeBytesLength))
+                var index = blockSize - 1
+                while shift > 0, index > encodeBytesLength {
+                    block[index] |= UInt8(shift & 0xFF)
+                    index -= 1
+                    shift >>= 8
+                }
+            }
+
+            // XORs `n` bytes byte-by-byte starting at `y` to the memory area starting at `x`.
+            internal static func memxor(_ pointer: Pointer, _ bytes: MutableBytes, _ count: Int) {
+                var pointer = pointer
+                for index in 0..<count {
+                    pointer.initialize(to: pointer.pointee ^ UInt8(bytes[index]))
+                    pointer = pointer.successor()
+                }
+            }
+
+            /// Blocks for CBC-MAC input
+            internal static func blockB(authOctets: Int, messageLength: Int, encodeBytes: Int, nonce: Bytes) -> MutableBytes {
+                let blockB = MutableBytes.allocate(capacity: AESCCM.blockSize)
+                blockB[0] = AESCCM.ccmFlags(authOctets, encodeBytes)
+
+                /* copy the nonce */
+                blockB.memecpy(from: nonce, offset: 1, count: AESCCM.blockSize - encodeBytes)
+
+                var shift = messageLength
+                for index in 0..<encodeBytes {
+                    blockB[15 - index] = UInt8(shift & 0xFF)
+                    shift >>= 8
+                }
+
+                return blockB
+            }
+
+            /// Blocks for encryption input.
+            internal static func blockA(encodeBytes: Int, nonce: Bytes) -> MutableBytes {
+                let blockA = MutableBytes.allocate(capacity: AESCCM.blockSize)
+                blockA[0] = UInt8(encodeBytes - 1)
+
+                // copy the nonce
+                blockA.memecpy(from: nonce, offset: 1, count: AESCCM.blockSize - encodeBytes)
+
+                return blockA
+            }
+
+            internal static func encryptXor(key: Bytes,
+                                            encodeBytes: Int,
+                                            counter: UInt,
+                                            pointer: Pointer,
+                                            length: Int,
+                                            blockA: MutableBytes,
+                                            blockS: MutableBytes) {
+                setCounter(blockA, encodeBytes, counter)
+                aesEncrypt(block: blockA, with: key, saveTo: blockS)
+                memxor(pointer, blockS, length)
+            }
+
+            internal static func mac(key: Bytes,
+                                     pointer: Pointer,
+                                     length: Int,
+                                     blockB: MutableBytes,
+                                     blockX: MutableBytes) {
+                var pointer = pointer
+                for index in 0..<length {
+                    blockB[index] = blockX[index] ^ pointer.pointee
+                    pointer = pointer.successor()
+                }
+
+                aesEncrypt(block: blockB, with: key, saveTo: blockX)
+            }
+
+            internal static func ccmFlags(_ authOctets: Int, _ encodeBytes: Int) -> UInt8 {
+                UInt8((((authOctets - 2) / 2) << 3) | (encodeBytes - 1))
+            }
+
+            internal static func encodingMask(_ encodeBytesLength: Int) -> UInt {
+                UInt((1 << 8 * encodeBytesLength) - 1)
+            }
+
+        }
+
+    }
+}
+
+extension UnsafeMutableBufferPointer {
+
+    internal func memecpy(from source: UnsafePointer<Element>, offset: Int, count: Int) {
+        for index in offset..<(offset + count) {
+            self[index] = source.advanced(by: index - offset).pointee
+        }
+    }
+
+    internal func memecpy<T: RandomAccessCollection>(from source: T, offset: Int, count: Int) where T.Element == Element, T.Index == Int {
+        for index in offset..<(offset + count) {
+            self[index] = source[index - offset]
+        }
+    }
+
+    internal func memset(value: Element, offset: Int, count: Int) {
+        for index in offset..<offset + count {
+            self[index] = value
+        }
     }
 
 }
