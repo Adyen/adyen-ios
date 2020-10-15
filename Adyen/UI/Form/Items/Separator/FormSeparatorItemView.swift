@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// A view representing a separator line item.
 internal final class FormSeparatorItemView: FormItemView<FormSeparatorItem> {

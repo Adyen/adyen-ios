@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import Foundation
 
 /// Provides a placeholder for payment methods that don't need any payment detail to be filled.

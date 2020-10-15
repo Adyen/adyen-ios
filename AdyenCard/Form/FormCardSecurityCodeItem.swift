@@ -4,6 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
+
 /// A form item into which a card's security code (CVC/CVV) is entered.
 internal final class FormCardSecurityCodeItem: FormTextItem {
     
@@ -37,7 +39,7 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
 }
 
 extension FormItemViewBuilder {
-    internal func build(with item: FormCardSecurityCodeItem) -> FormItemView<FormCardSecurityCodeItem> {
+    func build(with item: FormCardSecurityCodeItem) -> FormItemView<FormCardSecurityCodeItem> {
         FormCardSecurityCodeItemView(item: item)
     }
 }

@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// A `UIViewController` that shows the await action UI.
 internal final class AwaitViewController: UIViewController {

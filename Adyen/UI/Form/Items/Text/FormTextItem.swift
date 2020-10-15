@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// An item in which text can be entered using a text field.
 /// :nodoc:

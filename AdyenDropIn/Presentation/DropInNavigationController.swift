@@ -4,6 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
+import AdyenCard
+import UIKit
+
 internal final class DropInNavigationController: UINavigationController {
     
     internal typealias CancelHandler = (Bool, PresentableComponent) -> Void
@@ -26,6 +30,7 @@ internal final class DropInNavigationController: UINavigationController {
         NotificationCenter.default.removeObserver(self)
     }
     
+    @available(*, unavailable)
     internal required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -127,7 +132,7 @@ extension DropInNavigationController: UIViewControllerTransitioningDelegate {
                                              presenting: presenting,
                                              layoutDidChanged: { [weak self] in
                                                  guard let self = self,
-                                                     let viewController = self.topViewController
+                                                       let viewController = self.topViewController
                                                  else { return }
                                                  self.updateFrame(for: viewController)
                                              })
@@ -151,6 +156,7 @@ internal final class WrapperViewController: UIViewController {
     }
     
     /// :nodoc:
+    @available(*, unavailable)
     internal required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

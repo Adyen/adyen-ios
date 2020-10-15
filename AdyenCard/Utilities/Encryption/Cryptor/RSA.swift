@@ -4,13 +4,14 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import Foundation
 import Security
 
 extension Cryptor {
     
     /// Set of helpers for RSA encryption.
-    internal enum RSA {
+    enum RSA {
 
         internal static let keySizeInBits = 2048
 
@@ -42,7 +43,7 @@ extension Cryptor {
             ]
 
             if let secKey = SecKeyCreateWithData(publicKey as CFData, attributes as CFDictionary, nil),
-                let encrypted = SecKeyCreateEncryptedData(secKey, .rsaEncryptionPKCS1, original as CFData, &error) {
+               let encrypted = SecKeyCreateEncryptedData(secKey, .rsaEncryptionPKCS1, original as CFData, &error) {
                 return encrypted as NSData as Data
             }
 

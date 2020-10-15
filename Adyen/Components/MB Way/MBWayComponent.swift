@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// A component that provides a form for MB Way payments.
 public final class MBWayComponent: PaymentComponent, PresentableComponent, Localizable {

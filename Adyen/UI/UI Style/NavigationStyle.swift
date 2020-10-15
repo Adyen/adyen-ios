@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Indicates the navigation level style.
 public struct NavigationStyle: TintableStyle {

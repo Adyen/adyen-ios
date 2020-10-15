@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 import PassKit
 
-internal struct Configuration {
+internal enum Configuration {
     // swiftlint:disable explicit_acl
     
     static let environment = DemoServerEnvironment.test

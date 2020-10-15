@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import Foundation
 
 /// An object that provides static methods for encrypting card information and retrieving public keys from the server.
@@ -250,10 +251,10 @@ extension CardEncryptor {
     
 }
 
-extension CardEncryptor {
+public extension CardEncryptor {
     
     /// Contains the information of a card that is yet to be encrypted.
-    public struct Card: Encodable {
+    struct Card: Encodable {
         /// The card number.
         public var number: String?
 

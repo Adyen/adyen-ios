@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// A form item that represents a separator line.
 /// :nodoc:

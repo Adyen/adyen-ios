@@ -1485,6 +1485,8 @@
 		E2D12BFE221D91DE00EF682F /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				E26EAD91233A1A340060BBA7 /* CoreColors.swift */,
+				E787C9D0246E948F00B401E0 /* CoreFonts.swift */,
 				E2D12BFF221D91ED00EF682F /* StringHelpers.swift */,
 				E9E3DAFC2225485400697074 /* URLSessionHelpers.swift */,
 				E9021DED225CC46D009CF7F4 /* URLHelpers.swift */,
@@ -1655,8 +1657,6 @@
 			isa = PBXGroup;
 			children = (
 				E909346A2297E33B00C9F04B /* Localizable.strings */,
-				E26EAD91233A1A340060BBA7 /* CoreColors.swift */,
-				E787C9D0246E948F00B401E0 /* CoreFonts.swift */,
 				F94343E523FFD9A400AADF5F /* AdyenAssets.xcassets */,
 			);
 			path = Assets;

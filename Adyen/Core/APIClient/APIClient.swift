@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// :nodoc:
 /// Describes any API Client.

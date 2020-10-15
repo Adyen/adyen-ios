@@ -4,12 +4,14 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import Foundation
+import UIKit
 
-extension DropInComponent {
+public extension DropInComponent {
     
     /// Indicates the UI configuration of the drop in components.
-    public struct Style {
+    struct Style {
         
         /// Indicates any navigation style.
         public var navigation = NavigationStyle()

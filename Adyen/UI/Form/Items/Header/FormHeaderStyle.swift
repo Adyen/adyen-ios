@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Contains the styling customization options for form header.
 public struct FormHeaderStyle: ViewStyle {

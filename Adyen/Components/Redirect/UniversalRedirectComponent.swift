@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Handles any redirect Url whether its a web url, an App custom scheme url, or an app universal link.
 internal final class UniversalRedirectComponent: ActionComponent, DismissableComponent {

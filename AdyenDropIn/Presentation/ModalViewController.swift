@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import UIKit
 
 /// View controller with a custom navigation bar for DropIn.
@@ -37,6 +38,7 @@ internal final class ModalViewController: UIViewController {
     }
     
     /// :nodoc:
+    @available(*, unavailable)
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

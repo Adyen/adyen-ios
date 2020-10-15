@@ -4,6 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
+import UIKit
+
 /// A view representing a form card number item.
 internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem> {
     
@@ -18,6 +21,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         accessory = .customView(cardTypeLogosView)
     }
     
+    @available(*, unavailable)
     internal required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -73,6 +77,7 @@ private extension FormCardNumberItemView {
             }
         }
         
+        @available(*, unavailable)
         required init(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
@@ -118,6 +123,7 @@ private extension FormCardNumberItemView {
             backgroundColor = style.backgroundColor
         }
         
+        @available(*, unavailable)
         internal required init?(coder aDecoder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }

@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// A generic component for "issuer-based" payment methods, such as iDEAL and MOLPay.
 /// This component will provide a list in which the user can select their issuer.

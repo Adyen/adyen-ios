@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Contains the styling customization options for any labels.
 public struct TextStyle: ViewStyle {

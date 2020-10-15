@@ -4,6 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
+import UIKit
+
 /// Animate sequential slid in and out movement for transitioning controllers.
 internal final class SlideInPresentationAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     
@@ -19,7 +22,7 @@ internal final class SlideInPresentationAnimator: NSObject, UIViewControllerAnim
     
     public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         guard let toShow = transitionContext.viewController(forKey: .to) as? WrapperViewController,
-            let toHide = transitionContext.viewController(forKey: .from) as? WrapperViewController else { return }
+              let toHide = transitionContext.viewController(forKey: .from) as? WrapperViewController else { return }
         
         let containerView = transitionContext.containerView
         containerView.addSubview(toShow.view)

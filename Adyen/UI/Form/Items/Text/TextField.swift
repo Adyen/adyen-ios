@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// A UITextField subclass to override the default UITextField default Accessibility behaviour,
 /// specifically the voice over reading of the UITextField.placeholder.

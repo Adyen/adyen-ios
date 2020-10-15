@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Contains the styling customization options for any list-based component.
 public struct ListComponentStyle: ViewStyle {

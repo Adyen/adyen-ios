@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Handles opening third party apps.
 /// :nodoc:

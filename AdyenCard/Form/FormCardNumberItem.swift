@@ -4,6 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
+import UIKit
+
 /// A form item into which a card number is entered.
 internal final class FormCardNumberItem: FormTextItem {
     
@@ -82,7 +85,7 @@ internal final class FormCardNumberItem: FormTextItem {
 extension FormCardNumberItem {
     
     /// Describes a card type logo shown in the card number form item.
-    internal final class CardTypeLogo {
+    final class CardTypeLogo {
         
         /// The URL of the card type logo.
         internal let url: URL
@@ -102,7 +105,7 @@ extension FormCardNumberItem {
 }
 
 extension FormItemViewBuilder {
-    internal func build(with item: FormCardNumberItem) -> FormItemView<FormCardNumberItem> {
+    func build(with item: FormCardNumberItem) -> FormItemView<FormCardNumberItem> {
         FormCardNumberItemView(item: item)
     }
 }
