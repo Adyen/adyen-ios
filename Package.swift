@@ -29,18 +29,17 @@ let package = Package(
             name: "Adyen",
             dependencies: [],
             path: "Adyen",
-            exclude: ["Info.plist"],
-            resources: [
-                .process("Assets")]),
+            exclude: [
+                "Info.plist",
+                "Utilities/Bundle Extension" // This to exclude `BundleExtension.swift` file, since swift packages has different code to access internal resources.
+            ]),
         .target(
             name: "AdyenCard",
             dependencies: [
                 .target(name: "Adyen"),
                 .target(name: "Adyen3DS2")],
             path: "AdyenCard",
-            exclude: ["Info.plist"],
-            resources: [
-                .process("Assets")]),
+            exclude: ["Info.plist"]),
         .target(
             name: "AdyenDropIn",
             dependencies: [
