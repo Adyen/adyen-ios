@@ -91,7 +91,7 @@ extension FormCardNumberItemView {
 
 extension FormCardNumberItemView {
     
-    class CardTypeLogoView: NetworkImageView {
+    private class CardTypeLogoView: NetworkImageView {
         
         private let rounding: CornerRounding
         
@@ -115,7 +115,7 @@ extension FormCardNumberItemView {
             return cardSize
         }
         
-        override func layoutSubviews() {
+        override internal func layoutSubviews() {
             super.layoutSubviews()
             self.adyen.round(using: rounding)
         }
