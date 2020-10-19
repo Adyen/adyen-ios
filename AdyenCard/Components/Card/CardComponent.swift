@@ -28,8 +28,8 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     
     /// :nodoc:
     internal var cardTypeProvider: AnyCardTypeProvider
-    
-    private var topElements: [CardType]
+
+    private static let maxCardsVisible = 4
     private static let publicBinLenght = 6
     private let throttler = Throttler(minimumDelay: 0.5)
     
@@ -59,10 +59,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     /// The getter is O(n), since it filters out all the `excludedCardTypes` before returning.
     public var supportedCardTypes: [CardType] {
         get { privateSupportedCardTypes.filter { !excludedCardTypes.contains($0) } }
-        set {
-            privateSupportedCardTypes = newValue
-            topElements = Array(privateSupportedCardTypes.prefix(4))
-        }
+        set { privateSupportedCardTypes = newValue }
     }
     
     /// :nodoc:
@@ -111,7 +108,6 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         self.paymentMethod = paymentMethod
         self.cardPublicKeyProvider = CardPublicKeyProvider()
         self.privateSupportedCardTypes = paymentMethod.brands.compactMap(CardType.init)
-        self.topElements = Array(privateSupportedCardTypes.prefix(4))
         self.style = style
         self.clientKey = clientKey
         self.cardTypeProvider = CardTypeProvider(cardPublicKeyProvider: self.cardPublicKeyProvider)
@@ -130,7 +126,6 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         self.paymentMethod = paymentMethod
         self.cardPublicKeyProvider = cardPublicKeyProvider
         self.privateSupportedCardTypes = paymentMethod.brands.compactMap(CardType.init)
-        self.topElements = Array(privateSupportedCardTypes.prefix(4))
         self.style = style
         self.cardTypeProvider = CardTypeProvider(cardPublicKeyProvider: cardPublicKeyProvider)
     }
@@ -167,6 +162,10 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     // MARK: - Private
     
     private var privateSupportedCardTypes: [CardType]
+
+    private var topCardTypes: [CardType] {
+        Array(privateSupportedCardTypes.prefix(CardComponent.maxCardsVisible))
+    }
     
     // MARK: - Stored Card
     
@@ -201,7 +200,8 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         }
         
         formViewController.append(numberItem)
-        numberItem.showLogos(for: self.topElements)
+
+        numberItem.showLogos(for: topCardTypes)
         
         if showsSecurityCodeField {
             let splitTextItem = FormSplitTextItem(items: [expiryDateItem, securityCodeItem], style: style.textField)
@@ -302,7 +302,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         cardTypeProvider.requestCardTypes(for: bin, supported: self.supportedCardTypes) { [weak self] cardTypes in
             guard let self = self else { return }
             
-            self.numberItem.showLogos(for: bin.isEmpty ? self.topElements : cardTypes)
+            self.numberItem.showLogos(for: bin.isEmpty ? self.topCardTypes : cardTypes)
             self.cardComponentDelegate?.didChangeCardType(cardTypes, component: self)
         }
     }
