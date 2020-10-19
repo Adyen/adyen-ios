@@ -23,7 +23,11 @@ let package = Package(
             name: "AdyenWeChatPay",
             targets: ["AdyenWeChatPay"])
     ],
-    dependencies: [],
+    dependencies: [
+        .package(name: "Adyen3DS2",
+                 url: "file:///Users/mohamede/Documents/ios-code-base/adyen-3ds2-ios-public",
+                 .branch("swift-package-manager"))
+    ],
     targets: [
         .target(
             name: "Adyen",
@@ -37,7 +41,7 @@ let package = Package(
             name: "AdyenCard",
             dependencies: [
                 .target(name: "Adyen"),
-                .target(name: "Adyen3DS2")],
+                .product(name: "Adyen3DS2", package: "Adyen3DS2")],
             path: "AdyenCard",
             exclude: ["Info.plist"]),
         .target(
@@ -64,10 +68,6 @@ let package = Package(
                 .linkedLibrary("z")]),
         .binaryTarget(
             name: "AdyenWeChatPayInternal",
-            path: "AdyenWeChatPay/WeChatSDK/libWeChatSDK.xcframework"),
-        .binaryTarget(
-            name: "Adyen3DS2",
-            url: "https://github.com/Adyen/adyen-3ds2-ios/releases/download/2.1.0-rc.6/Adyen3DS2.xcframework.zip",
-            checksum: "a9171749834b80aade7a7d5644c438cd59ba87077ec4db5d35a8e72bd43e1e9a")
+            path: "AdyenWeChatPay/WeChatSDK/libWeChatSDK.xcframework")
     ]
 )

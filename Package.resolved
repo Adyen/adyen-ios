@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Adyen3DS2",
+        "repositoryURL": "file:///Users/mohamede/Documents/ios-code-base/adyen-3ds2-ios-public",
+        "state": {
+          "branch": "swift-package-manager",
+          "revision": "a9fbc47305ea6f7f09ac4f6ab8d154f75126d61e",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
