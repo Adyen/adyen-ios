@@ -30,7 +30,8 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     
     /// :nodoc:
     internal var cardTypeProvider: AnyCardTypeProvider
-    
+
+    private static let maxCardsVisible = 4
     private static let publicBinLenght = 6
     private let throttler = Throttler(minimumDelay: 0.5)
     
@@ -163,6 +164,10 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     // MARK: - Private
     
     private var privateSupportedCardTypes: [CardType]
+
+    private var topCardTypes: [CardType] {
+        Array(privateSupportedCardTypes.prefix(CardComponent.maxCardsVisible))
+    }
     
     // MARK: - Stored Card
     
@@ -197,6 +202,8 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         }
         
         formViewController.append(numberItem)
+
+        numberItem.showLogos(for: topCardTypes)
         
         if showsSecurityCodeField {
             let splitTextItem = FormSplitTextItem(items: [expiryDateItem, securityCodeItem], style: style.textField)
@@ -294,10 +301,10 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     }
     
     private func requestCardTypes(for bin: String) {
-        cardTypeProvider.requestCardType(for: bin, supported: self.supportedCardTypes) { [weak self] cardTypes in
+        cardTypeProvider.requestCardTypes(for: bin, supported: self.supportedCardTypes) { [weak self] cardTypes in
             guard let self = self else { return }
             
-            self.numberItem.didChange(detectedCards: cardTypes, for: bin)
+            self.numberItem.showLogos(for: bin.isEmpty ? self.topCardTypes : cardTypes)
             self.cardComponentDelegate?.didChangeCardType(cardTypes, component: self)
         }
     }

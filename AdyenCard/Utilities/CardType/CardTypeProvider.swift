@@ -10,7 +10,7 @@ import Foundation
 /// :nodoc:
 internal protocol AnyCardTypeProvider: Component {
     /// :nodoc:
-    func requestCardType(for bin: String, supported cardType: [CardType], completion: @escaping ([CardType]) -> Void)
+    func requestCardTypes(for bin: String, supported cardType: [CardType], completion: @escaping ([CardType]) -> Void)
 }
 
 /// Provide cardType detection based on BinLookup API.
@@ -39,7 +39,7 @@ internal final class CardTypeProvider: AnyCardTypeProvider {
     /// - Parameters:
     ///   - bin: Card's BIN number. If longer than `minBinLength` - calls API, otherwise check local Regex,
     ///   - completion:  Callback to notify about results.
-    internal func requestCardType(for bin: String, supported cardType: [CardType], completion: @escaping ([CardType]) -> Void) {
+    internal func requestCardTypes(for bin: String, supported cardType: [CardType], completion: @escaping ([CardType]) -> Void) {
         guard bin.count > CardTypeProvider.minBinLength else {
             return completion(cardType.adyen.types(forCardNumber: bin))
         }
