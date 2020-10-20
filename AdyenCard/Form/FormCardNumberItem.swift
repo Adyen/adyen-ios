@@ -8,9 +8,9 @@
 internal final class FormCardNumberItem: FormTextItem {
     
     private static let binLength = 12
-    
-    private var previouslyDetectedCardTypes: Set<CardType>?
-    
+
+    private let cardNumberFormatter = CardNumberFormatter()
+
     /// The supported card types.
     internal let supportedCardTypes: [CardType]
     
@@ -31,8 +31,10 @@ internal final class FormCardNumberItem: FormTextItem {
                   localizationParameters: LocalizationParameters? = nil) {
         self.supportedCardTypes = supportedCardTypes
         
-        let logoURLs = supportedCardTypes.map { LogoURLProvider.logoURL(withName: $0.rawValue, environment: environment) }
-        self.cardTypeLogos = logoURLs.map(CardTypeLogo.init)
+        self.cardTypeLogos = supportedCardTypes.map {
+            CardTypeLogo(url: LogoURLProvider.logoURL(withName: $0.rawValue, environment: environment),
+                         type: $0)
+        }
         self.localizationParameters = localizationParameters
         
         self.style = style
@@ -52,27 +54,18 @@ internal final class FormCardNumberItem: FormTextItem {
         cardNumberFormatter.cardType = supportedCardTypes.adyen.type(forCardNumber: value)
     }
     
-    internal func didChange(detectedCards: [CardType], for bin: String) {
-        let newDetectedCardTypes = Set<CardType>(detectedCards)
-        guard self.previouslyDetectedCardTypes != newDetectedCardTypes else { return }
-        
-        previouslyDetectedCardTypes = newDetectedCardTypes
-        setLogos(for: bin.isEmpty ? Set<CardType>(supportedCardTypes) : newDetectedCardTypes)
-    }
-    
     // MARK: - BuildableFormItem
     
     internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
     
-    // MARK: - Private
-    
-    private let cardNumberFormatter = CardNumberFormatter()
-    
-    private func setLogos(for detectedCards: Set<CardType>) {
-        for (cardType, logo) in zip(supportedCardTypes, cardTypeLogos) {
-            let isVisible = detectedCards.contains(cardType)
+    /// Show logos of the card types if those types are supported.
+    /// - Parameter detectedCards: List of card types to show.
+    internal func showLogos(for cardTypes: [CardType]) {
+        let detectedCards = Set<CardType>(cardTypes)
+        for logo in self.cardTypeLogos {
+            let isVisible = detectedCards.contains(logo.type)
             logo.isHidden = !isVisible
         }
     }
@@ -83,6 +76,8 @@ extension FormCardNumberItem {
     
     /// Describes a card type logo shown in the card number form item.
     internal final class CardTypeLogo {
+
+        internal let type: CardType
         
         /// The URL of the card type logo.
         internal let url: URL
@@ -93,8 +88,9 @@ extension FormCardNumberItem {
         /// Initializes the card type logo.
         ///
         /// - Parameter cardType: The card type for which to initialize the logo.
-        internal init(url: URL) {
+        internal init(url: URL, type: CardType) {
             self.url = url
+            self.type = type
         }
         
     }
