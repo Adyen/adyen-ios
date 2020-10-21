@@ -6,7 +6,7 @@
 //  Copyright © 2020 Adyen. All rights reserved.
 //
 
-@testable import Adyen
+import Adyen
 import Foundation
 
 typealias MockedResult = Result<Response, Error>

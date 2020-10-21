@@ -11,7 +11,7 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "AdyenCore",
+            name: "Adyen",
             targets: ["Adyen"]),
         .library(
             name: "AdyenCard",
@@ -47,8 +47,7 @@ let package = Package(
         .target(
             name: "AdyenDropIn",
             dependencies: [
-                .target(name: "AdyenCard"),
-                .target(name: "Adyen")],
+                .target(name: "AdyenCard")],
             path: "AdyenDropIn",
             exclude: ["Info.plist"]),
         .target(
