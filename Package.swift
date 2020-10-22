@@ -26,7 +26,9 @@ let package = Package(
     dependencies: [
         .package(name: "Adyen3DS2",
                  url: "https://github.com/Adyen/adyen-3ds2-ios",
-                 .exact(.init(2, 2, 1)))
+                 .exact(.init(2, 2, 1))),
+        .package(name: "AdyenWeChatPayInternal",
+                 path: "AdyenWeChatPayInternal")
     ],
     targets: [
         .target(
@@ -53,7 +55,7 @@ let package = Package(
         .target(
             name: "AdyenWeChatPay",
             dependencies: [
-                .target(name: "AdyenWeChatPayInternal"),
+                .product(name: "AdyenWeChatPayInternal", package: "AdyenWeChatPayInternal"),
                 .target(name: "Adyen")],
             path: "AdyenWeChatPay/WeChatPayActionComponent",
             linkerSettings: [
@@ -64,9 +66,6 @@ let package = Package(
                 .linkedFramework("Security"),
                 .linkedLibrary("c++"),
                 .linkedLibrary("sqlite3"),
-                .linkedLibrary("z")]),
-        .binaryTarget(
-            name: "AdyenWeChatPayInternal",
-            path: "AdyenWeChatPay/WeChatSDK/libWeChatSDK.xcframework")
+                .linkedLibrary("z")])
     ]
 )
