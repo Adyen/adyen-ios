@@ -4,3 +4,8 @@ framework module AdyenWeChatPayInternal {
   export *
   module * { export * }
 }
+
+module AdyenWeChatPayInternal.Swift {
+    header "AdyenWeChatPayInternal-Swift.h"
+    requires objc
+}

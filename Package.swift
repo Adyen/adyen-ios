@@ -21,14 +21,15 @@ let package = Package(
             targets: ["AdyenDropIn"]),
         .library(
             name: "AdyenWeChatPay",
-            targets: ["AdyenWeChatPay"])
+            targets: ["AdyenWeChatPay"]),
+        .library(
+            name: "AdyenWeChatPayInternal",
+            targets: ["AdyenWeChatPayInternal"])
     ],
     dependencies: [
         .package(name: "Adyen3DS2",
                  url: "https://github.com/Adyen/adyen-3ds2-ios",
-                 .exact(.init(2, 2, 1))),
-        .package(name: "AdyenWeChatPayInternal",
-                 path: "AdyenWeChatPayInternal")
+                 .exact(Version(2, 2, 1)))
     ],
     targets: [
         .target(
@@ -37,7 +38,7 @@ let package = Package(
             path: "Adyen",
             exclude: [
                 "Info.plist",
-                "Utilities/Bundle Extension" // This to exclude `BundleExtension.swift` file, since swift packages has different code to access internal resources.
+                "Utilities/Bundle Extension" // This is to exclude `BundleExtension.swift` file, since swift packages has different code to access internal resources.
             ]),
         .target(
             name: "AdyenCard",
@@ -55,17 +56,9 @@ let package = Package(
         .target(
             name: "AdyenWeChatPay",
             dependencies: [
-                .product(name: "AdyenWeChatPayInternal", package: "AdyenWeChatPayInternal"),
+                .target(name: "AdyenWeChatPayInternal"),
                 .target(name: "Adyen")],
-            path: "AdyenWeChatPay/WeChatPayActionComponent",
-            linkerSettings: [
-                .linkedFramework("CFNetwork"),
-                .linkedFramework("CoreGraphics"),
-                .linkedFramework("CoreTelephony"),
-                .linkedFramework("SystemConfiguration"),
-                .linkedFramework("Security"),
-                .linkedLibrary("c++"),
-                .linkedLibrary("sqlite3"),
-                .linkedLibrary("z")])
+            path: "AdyenWeChatPay/WeChatPayActionComponent"),
+        .binaryTarget(name: "AdyenWeChatPayInternal", path: "AdyenWeChatPayInternal/AdyenWeChatPayInternal.xcframework")
     ]
 )

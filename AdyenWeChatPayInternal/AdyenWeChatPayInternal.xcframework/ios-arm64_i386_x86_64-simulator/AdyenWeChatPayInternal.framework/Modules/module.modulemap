@@ -1,6 +1,0 @@
-framework module AdyenWeChatPayInternal {
-  umbrella header "AdyenWeChatPayInternal.h"
-
-  export *
-  module * { export * }
-}
