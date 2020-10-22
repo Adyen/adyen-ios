@@ -25,8 +25,8 @@ let package = Package(
     ],
     dependencies: [
         .package(name: "Adyen3DS2",
-                 url: "file:///Users/mohamede/Documents/ios-code-base/adyen-3ds2-ios-public",
-                 .branch("swift-package-manager"))
+                 url: "https://github.com/Adyen/adyen-3ds2-ios",
+                 .exact(.init(2, 2, 1)))
     ],
     targets: [
         .target(
