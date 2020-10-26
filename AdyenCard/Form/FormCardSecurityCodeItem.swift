@@ -39,7 +39,7 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
 }
 
 extension FormItemViewBuilder {
-    func build(with item: FormCardSecurityCodeItem) -> FormItemView<FormCardSecurityCodeItem> {
+    internal func build(with item: FormCardSecurityCodeItem) -> FormItemView<FormCardSecurityCodeItem> {
         FormCardSecurityCodeItemView(item: item)
     }
 }

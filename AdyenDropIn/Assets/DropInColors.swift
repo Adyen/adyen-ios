@@ -9,7 +9,7 @@ import UIKit
 
 extension UIColor {
     
-    enum AdyenDropIn {
+    internal enum AdyenDropIn {
         
         internal static var dimmBackground: UIColor {
             return componentSeparator

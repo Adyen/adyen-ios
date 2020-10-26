@@ -9,7 +9,7 @@ import Foundation
 
 extension String {
 
-    var hexadecimal: Data? {
+    internal var hexadecimal: Data? {
         var data = Data(capacity: count / 2)
         var string = self
         if string.count % 2 == 1 {

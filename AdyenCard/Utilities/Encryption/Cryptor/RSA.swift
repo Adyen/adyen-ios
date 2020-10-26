@@ -11,7 +11,7 @@ import Security
 extension Cryptor {
     
     /// Set of helpers for RSA encryption.
-    enum RSA {
+    internal enum RSA {
 
         internal static let keySizeInBits = 2048
 

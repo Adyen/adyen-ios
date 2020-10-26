@@ -7,35 +7,35 @@
 import Foundation
 
 extension CardEncryptor.Card {
-    func encryptedNumber(publicKey: String, date: Date) throws -> String? {
+    internal func encryptedNumber(publicKey: String, date: Date) throws -> String? {
         guard let number = number else { return nil }
         var card = CardEncryptor.Card(number: number)
         card.generationDate = date
         return try encryptCard(publicKey: publicKey, card: card)
     }
     
-    func encryptedSecurityCode(publicKey: String, date: Date) throws -> String? {
+    internal func encryptedSecurityCode(publicKey: String, date: Date) throws -> String? {
         guard let securityCode = securityCode else { return nil }
         var card = CardEncryptor.Card(securityCode: securityCode)
         card.generationDate = date
         return try encryptCard(publicKey: publicKey, card: card)
     }
     
-    func encryptedExpiryMonth(publicKey: String, date: Date) throws -> String? {
+    internal func encryptedExpiryMonth(publicKey: String, date: Date) throws -> String? {
         guard let expiryMonth = expiryMonth else { return nil }
         var card = CardEncryptor.Card(expiryMonth: expiryMonth)
         card.generationDate = date
         return try encryptCard(publicKey: publicKey, card: card)
     }
     
-    func encryptedExpiryYear(publicKey: String, date: Date) throws -> String? {
+    internal func encryptedExpiryYear(publicKey: String, date: Date) throws -> String? {
         guard let expiryYear = expiryYear else { return nil }
         var card = CardEncryptor.Card(expiryYear: expiryYear)
         card.generationDate = date
         return try encryptCard(publicKey: publicKey, card: card)
     }
     
-    func encryptedToToken(publicKey: String, holderName: String?) throws -> String {
+    internal func encryptedToToken(publicKey: String, holderName: String?) throws -> String {
         guard !isEmpty else {
             throw CardEncryptor.Error.invalidEncryptionArguments
         }

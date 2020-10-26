@@ -78,7 +78,7 @@ internal final class FormCardNumberItem: FormTextItem {
 extension FormCardNumberItem {
     
     /// Describes a card type logo shown in the card number form item.
-    final class CardTypeLogo {
+    internal final class CardTypeLogo {
 
         internal let type: CardType
         
@@ -101,7 +101,7 @@ extension FormCardNumberItem {
 }
 
 extension FormItemViewBuilder {
-    func build(with item: FormCardNumberItem) -> FormItemView<FormCardNumberItem> {
+    internal func build(with item: FormCardNumberItem) -> FormItemView<FormCardNumberItem> {
         FormCardNumberItemView(item: item)
     }
 }
