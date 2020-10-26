@@ -9,18 +9,6 @@ import Foundation
 
 extension String {
 
-    func sha1() -> String {
-        let data = Data(self.utf8)
-        var digest = [UInt8](repeating: 0, count: Int(CC_SHA1_DIGEST_LENGTH))
-        data.withUnsafeBytes {
-            _ = CC_SHA1($0.baseAddress, CC_LONG(data.count), &digest)
-        }
-
-        var keyData = Data()
-        keyData.append(contentsOf: digest)
-        return keyData.base64EncodedString()
-    }
-
     var hexadecimal: Data? {
         var data = Data(capacity: count / 2)
         var string = self
