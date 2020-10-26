@@ -40,7 +40,7 @@ let package = Package(
             path: "Adyen",
             exclude: [
                 "Info.plist",
-                "Utilities/Bundle Extension" // This is to exclude `BundleExtension.swift` file, since swift packages has different code to access internal resources.
+                "Utilities/Non SPM Bundle Extension" // This is to exclude `BundleExtension.swift` file, since swift packages has different code to access internal resources.
             ]),
         .target(
             name: "AdyenCard",
@@ -48,7 +48,10 @@ let package = Package(
                 .target(name: "Adyen"),
                 .product(name: "Adyen3DS2", package: "Adyen3DS2")],
             path: "AdyenCard",
-            exclude: ["Info.plist"]),
+            exclude: [
+                "Info.plist",
+                "Utilities/Non SPM Bundle Extension" // This is to exclude `BundleExtension.swift` file, since swift packages has different code to access internal resources.
+            ]),
         .target(
             name: "AdyenDropIn",
             dependencies: [
