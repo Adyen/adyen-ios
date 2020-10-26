@@ -21,15 +21,17 @@ let package = Package(
             targets: ["AdyenDropIn"]),
         .library(
             name: "AdyenWeChatPay",
-            targets: ["AdyenWeChatPay"]),
-        .library(
-            name: "AdyenWeChatPayInternal",
-            targets: ["AdyenWeChatPayInternal"])
+            targets: ["AdyenWeChatPay"])
     ],
     dependencies: [
-        .package(name: "Adyen3DS2",
-                 url: "https://github.com/Adyen/adyen-3ds2-ios",
-                 .exact(Version(2, 2, 1)))
+        .package(
+            name: "Adyen3DS2",
+            url: "https://github.com/Adyen/adyen-3ds2-ios",
+            .exact(Version(2, 2, 1))),
+        .package(
+            name: "AdyenWeChatPayInternal",
+            url: "https://github.com/Adyen/adyen-wechatpay-ios",
+            .branch("main"))
     ],
     targets: [
         .target(
@@ -56,9 +58,8 @@ let package = Package(
         .target(
             name: "AdyenWeChatPay",
             dependencies: [
-                .target(name: "AdyenWeChatPayInternal"),
+                .product(name: "AdyenWeChatPayInternal", package: "AdyenWeChatPayInternal"),
                 .target(name: "Adyen")],
-            path: "AdyenWeChatPay/WeChatPayActionComponent"),
-        .binaryTarget(name: "AdyenWeChatPayInternal", path: "AdyenWeChatPayInternal/AdyenWeChatPayInternal.xcframework")
+            path: "AdyenWeChatPay/WeChatPayActionComponent")
     ]
 )
