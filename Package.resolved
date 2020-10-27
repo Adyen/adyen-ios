@@ -14,9 +14,9 @@
         "package": "AdyenWeChatPayInternal",
         "repositoryURL": "https://github.com/Adyen/adyen-wechatpay-ios",
         "state": {
-          "branch": "main",
-          "revision": "d47c5db41e4f07692aa53589fb395319f55bc697",
-          "version": null
+          "branch": null,
+          "revision": "8441165f8db64710f0cc477f98105668d0652e6e",
+          "version": "1.0.0"
         }
       }
     ]
