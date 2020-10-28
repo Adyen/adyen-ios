@@ -5,27 +5,27 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
-  
+
   build:
     env:
       sonarToken: ${{ secrets.SONAR_TOKEN }}
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
-    
+
     - name: Install Tools
       run: |
         brew install sonar-scanner
         brew install swiftlint
         gem install slather
-        
+
     - name: Check Dependencie Cache
       uses: actions/cache@v1
       id: carthage-cache
       with:
         path: Carthage
         key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
-      
+
     - name: Install Dependencies
       if: steps.carthage-cache.outputs.cache-hit != 'true'
       run: |
@@ -35,22 +35,29 @@ jobs:
         carthage bootstrap --platform iOS --cache-builds
       env:
          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
-    - name: Build and test
+
+    - name: Build and test AdyenUIHost
       run: |
         xcodebuild -version
         xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -derivedDataPath ./DerivedData -enableCodeCoverage YES clean build test -destination "name=iPhone 11" | xcpretty && exit ${PIPESTATUS[0]}
       env:
         DEVELOPER_DIR: ${{ env.XCODE_VERSION }}
-                
+
+    - name: Build and test AdyenSPMUIHost
+      run: |
+        xcodebuild -version
+        xcodebuild -project Adyen.xcodeproj -scheme AdyenSPMUIHost -derivedDataPath ./DerivedData -enableCodeCoverage YES clean build test -destination "name=iPhone 11" | xcpretty && exit ${PIPESTATUS[0]}
+      env:
+        DEVELOPER_DIR: ${{ env.XCODE_VERSION }}
+
     - name: Slather
       run: |
         slather coverage --sonarqube-xml --build-directory ./DerivedData --output-directory ./reports --scheme AdyenUIHost --binary-basename Adyen --binary-basename AdyenCard --binary-basename AdyenDropIn --binary-basename AdyenWeChatPay Adyen.xcodeproj
-         
+
     - name: SwiftLint
       run: |
         fastlane run swiftlint output_file:"./reports/swiftlint.json" reporter:"json" ignore_exit_status:"true"
-        
+
     - name: Run Sonar
       if: ${{ env.sonarToken != 0 }}
       run: |
