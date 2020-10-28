@@ -4,7 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import Foundation
+import UIKit
 
 /// A component that provides a form for stored card payments.
 internal final class StoredCardComponent: PaymentComponent, PresentableComponent, Localizable {

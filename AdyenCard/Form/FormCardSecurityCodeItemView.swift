@@ -4,6 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
+import UIKit
+
 /// A view representing a form card security code item.
 internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>, Observer {
     
@@ -19,6 +22,7 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         item.$selectedCard.publish(nil)
     }
     
+    @available(*, unavailable)
     internal required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -46,7 +50,7 @@ extension FormCardSecurityCodeItemView {
     
     internal class HintView: UIImageView, Observer {
         
-        private lazy var bundle = Bundle(for: type(of: self))
+        private lazy var bundle = Bundle.internalResources
         private let minimumAlpha: CGFloat = 0.3
         private let blinkDuration = 1.0
         
@@ -68,6 +72,7 @@ extension FormCardSecurityCodeItemView {
             observe(item.$selectedCard) { [weak self] cardType in self?.flipCard(toFront: cardType == CardType.americanExpress) }
         }
         
+        @available(*, unavailable)
         internal required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }

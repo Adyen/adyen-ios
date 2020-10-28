@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import Foundation
 
 /// Defines the methods a delegate of the drop in component should implement.

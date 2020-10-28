@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// A control to select a phone extension from a list.
 internal class PhoneExtensionInputControl: UIControl, AnyFormItemView {

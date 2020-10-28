@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import UIKit
 
 /// View controller with a custom navigation bar for DropIn.
@@ -37,6 +38,7 @@ internal final class ModalViewController: UIViewController {
     }
     
     /// :nodoc:
+    @available(*, unavailable)
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -140,22 +142,32 @@ internal final class ModalViewController: UIViewController {
         toolbar.layoutMargins = .init(top: 0, left: 16, bottom: 0, right: 16)
         toolbar.isLayoutMarginsRelativeArrangement = true
         toolbar.translatesAutoresizingMaskIntoConstraints = false
-        
-        let background = UIView(frame: .zero)
-        background.backgroundColor = self.style.backgroundColor
-        background.translatesAutoresizingMaskIntoConstraints = false
-        toolbar.addSubview(background)
-        toolbar.sendSubviewToBack(background)
-        let constraints = [
-            toolbar.topAnchor.constraint(equalTo: background.topAnchor),
-            toolbar.bottomAnchor.constraint(equalTo: background.bottomAnchor),
-            toolbar.leftAnchor.constraint(equalTo: background.leftAnchor),
-            toolbar.rightAnchor.constraint(equalTo: background.rightAnchor)
-        ]
-        NSLayoutConstraint.activate(constraints)
+
+        toolbar.addSubview(toolbarBackground)
+        toolbar.sendSubviewToBack(toolbarBackground)
+
+        anchore(view: toolbar, toView: toolbarBackground)
         
         return toolbar
     }()
+
+    private lazy var toolbarBackground: UIView = {
+        let background = UIView(frame: .zero)
+        background.backgroundColor = self.style.backgroundColor
+        background.translatesAutoresizingMaskIntoConstraints = false
+
+        return background
+    }()
+
+    private func anchore(view view1: UIView, toView view2: UIView) {
+        let constraints = [
+            view1.topAnchor.constraint(equalTo: view2.topAnchor),
+            view1.bottomAnchor.constraint(equalTo: view2.bottomAnchor),
+            view1.leftAnchor.constraint(equalTo: view2.leftAnchor),
+            view1.rightAnchor.constraint(equalTo: view2.rightAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
     
     internal lazy var stackView: UIStackView = {
         let views = [toolbar, separator, innerController.view]

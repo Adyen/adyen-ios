@@ -4,6 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
+import UIKit
+
 /// A form item into which a card number is entered.
 internal final class FormCardNumberItem: FormTextItem {
     

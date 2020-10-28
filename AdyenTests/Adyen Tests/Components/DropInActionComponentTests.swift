@@ -7,6 +7,7 @@
 //
 
 @testable import AdyenDropIn
+@testable import Adyen
 import SafariServices
 import XCTest
 

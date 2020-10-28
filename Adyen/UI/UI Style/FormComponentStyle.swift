@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Contains the styling customization options for any form-based component.
 public struct FormComponentStyle: ViewStyle {

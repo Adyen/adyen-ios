@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import Foundation
 
 // swiftlint:disable explicit_acl
@@ -54,11 +55,11 @@ internal extension CardComponent {
 }
 
 extension CardComponent {
-    internal typealias CardKeySuccessHandler = (_ cardPublicKey: String) -> Void
+    typealias CardKeySuccessHandler = (_ cardPublicKey: String) -> Void
     
-    internal typealias CardKeyFailureHandler = (_ error: Swift.Error) -> Void
+    typealias CardKeyFailureHandler = (_ error: Swift.Error) -> Void
     
-    internal func fetchCardPublicKey(onError: CardKeyFailureHandler? = nil, completion: @escaping CardKeySuccessHandler) {
+    func fetchCardPublicKey(onError: CardKeyFailureHandler? = nil, completion: @escaping CardKeySuccessHandler) {
         do {
             try cardPublicKeyProvider.fetch { [weak self] in
                 self?.handle(result: $0, onError: onError, completion: completion)
@@ -98,7 +99,7 @@ extension CardComponent: FormViewControllerDelegate {
 
 /// :nodoc:
 /// Deprecated initializers
-extension CardComponent {
+public extension CardComponent {
     
     /// Initializes the card component.
     ///
@@ -107,26 +108,9 @@ extension CardComponent {
     ///   - publicKey: The key used for encrypting card data.
     ///   - style: The Component's UI style.
     @available(*, deprecated, message: "Use init(paymentMethod:clientKey:style:) instead.")
-    public convenience init(paymentMethod: AnyCardPaymentMethod,
-                            publicKey: String,
-                            style: FormComponentStyle = FormComponentStyle()) {
-        let cardPublicKeyProvider = CardPublicKeyProvider(cardPublicKey: publicKey)
-        self.init(paymentMethod: paymentMethod, cardPublicKeyProvider: cardPublicKeyProvider, style: style)
-        if !isPublicKeyValid(key: publicKey) {
-            assertionFailure("Card Public key is invalid, please make sure it’s in the format: {EXPONENT}|{MODULUS}")
-        }
-    }
-    
-    /// Initializes the card component for stored cards.
-    ///
-    /// - Parameters:
-    ///   -  paymentMethod: The stored card payment method.
-    ///   -  publicKey: The key used for encrypting card data.
-    ///   -  style: The Component's UI style.
-    @available(*, deprecated, message: "Use init(paymentMethod:clientKey:style:) instead.")
-    public convenience init(paymentMethod: StoredCardPaymentMethod,
-                            publicKey: String,
-                            style: FormComponentStyle = FormComponentStyle()) {
+    convenience init(paymentMethod: AnyCardPaymentMethod,
+                     publicKey: String,
+                     style: FormComponentStyle = FormComponentStyle()) {
         let cardPublicKeyProvider = CardPublicKeyProvider(cardPublicKey: publicKey)
         self.init(paymentMethod: paymentMethod, cardPublicKeyProvider: cardPublicKeyProvider, style: style)
         if !isPublicKeyValid(key: publicKey) {
@@ -141,9 +125,9 @@ extension CardComponent {
     ///   - paymentMethod: The card payment method.
     ///   - cardPublicKeyProvider: The card public key provider
     ///   - style: The Component's UI style.
-    public static func component(paymentMethod: AnyCardPaymentMethod,
-                                 publicKey: String,
-                                 style: FormComponentStyle = FormComponentStyle()) -> CardComponent {
+    static func component(paymentMethod: AnyCardPaymentMethod,
+                          publicKey: String,
+                          style: FormComponentStyle = FormComponentStyle()) -> CardComponent {
         let cardPublicKeyProvider = CardPublicKeyProvider(cardPublicKey: publicKey)
         return CardComponent(paymentMethod: paymentMethod, cardPublicKeyProvider: cardPublicKeyProvider, style: style)
     }

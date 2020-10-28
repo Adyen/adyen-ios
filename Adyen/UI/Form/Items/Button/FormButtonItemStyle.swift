@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Contains the styling customization options for a form button item.
 public struct FormButtonItemStyle: ViewStyle {

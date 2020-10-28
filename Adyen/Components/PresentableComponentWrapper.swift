@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// A component that wraps any `Component` to make it a `PresentableComponent`.
 internal final class PresentableComponentWrapper: PresentableComponent {

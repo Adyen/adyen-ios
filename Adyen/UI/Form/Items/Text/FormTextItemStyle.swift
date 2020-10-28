@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Contains the styling customization options for a text item in a form.
 public struct FormTextItemStyle: FormValueItemStyle {

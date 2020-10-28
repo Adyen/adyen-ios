@@ -4,7 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import Foundation
+import UIKit
 
 /// Delegate for observing user's activity on `BCMCComponent`.
 public protocol BCMCComponentDelegate: AnyObject {
@@ -216,7 +218,7 @@ extension BCMCComponent: PaymentComponentDelegate {
 
 /// :nodoc:
 /// Deprecated initializers
-extension BCMCComponent {
+public extension BCMCComponent {
     
     /// Initializes the Bancontact component.
     ///
@@ -225,9 +227,9 @@ extension BCMCComponent {
     ///   - publicKey: The key used for encrypting card data.
     ///   - style: The Component's UI style.
     @available(*, deprecated, message: "Use init(paymentMethod:clientKey:style:) instead.")
-    public convenience init(paymentMethod: BCMCPaymentMethod,
-                            publicKey: String,
-                            style: FormComponentStyle = FormComponentStyle()) {
+    convenience init(paymentMethod: BCMCPaymentMethod,
+                     publicKey: String,
+                     style: FormComponentStyle = FormComponentStyle()) {
         let cardComponent = CardComponent(paymentMethod: paymentMethod,
                                           publicKey: publicKey,
                                           style: style)
@@ -241,9 +243,9 @@ extension BCMCComponent {
     ///   - paymentMethod: The Bancontact payment method.
     ///   - publicKey: The key used for encrypting card data.
     ///   - style: The Component's UI style.
-    public static func component(paymentMethod: BCMCPaymentMethod,
-                                 publicKey: String,
-                                 style: FormComponentStyle = FormComponentStyle()) -> BCMCComponent {
+    static func component(paymentMethod: BCMCPaymentMethod,
+                          publicKey: String,
+                          style: FormComponentStyle = FormComponentStyle()) -> BCMCComponent {
         let cardComponent = CardComponent.component(paymentMethod: paymentMethod,
                                                     publicKey: publicKey,
                                                     style: style)

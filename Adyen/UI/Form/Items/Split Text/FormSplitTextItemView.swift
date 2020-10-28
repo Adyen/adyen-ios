@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// A view representing a split text item.
 internal final class FormSplitTextItemView: FormItemView<FormSplitTextItem> {

@@ -7,7 +7,7 @@
 import Adyen
 import AdyenCard
 import AdyenDropIn
-import Foundation
+import UIKit
 
 internal protocol Presenter: AnyObject {
 

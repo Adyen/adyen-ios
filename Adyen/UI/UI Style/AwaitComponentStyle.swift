@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Contains the styling customization options for the await component.
 public struct AwaitComponentStyle: ViewStyle {

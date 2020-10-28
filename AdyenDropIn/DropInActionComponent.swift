@@ -4,7 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
+import AdyenCard
 import Foundation
+import UIKit
 
 /// A drop-in component to perform any supported action out of the box.
 public final class DropInActionComponent: ActionComponent {

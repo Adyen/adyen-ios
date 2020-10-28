@@ -180,5 +180,4 @@ class CardEncryptorCardTests: XCTestCase {
         let reslt = Cryptor.AES.encrypt(data: data, withKey: key, initVector: iv)
         XCTAssertEqual(reslt, Data(base64Encoded: "zoKVik/ivsVguN7okPjT1Aycmquhyu4/87sCGyAsmCr6fCxrKOSOTAW8H6TcjDPfo4EvCg4nm50FyIPXdrNrzrI39dwTQw==")!)
     }
-    
 }

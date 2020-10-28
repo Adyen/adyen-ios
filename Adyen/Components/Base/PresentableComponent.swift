@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Describes any entity that is UI localizable.
 public protocol Localizable {

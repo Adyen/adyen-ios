@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// The size of corner rounding.
 public enum CornerRounding {

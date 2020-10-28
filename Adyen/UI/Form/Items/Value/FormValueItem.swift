@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// A style of form elements in which a value can be entered.
 /// :nodoc:

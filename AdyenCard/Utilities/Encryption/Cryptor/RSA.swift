@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import Foundation
 import Security
 
@@ -42,7 +43,7 @@ extension Cryptor {
             ]
 
             if let secKey = SecKeyCreateWithData(publicKey as CFData, attributes as CFDictionary, nil),
-                let encrypted = SecKeyCreateEncryptedData(secKey, .rsaEncryptionPKCS1, original as CFData, &error) {
+               let encrypted = SecKeyCreateEncryptedData(secKey, .rsaEncryptionPKCS1, original as CFData, &error) {
                 return encrypted as NSData as Data
             }
 

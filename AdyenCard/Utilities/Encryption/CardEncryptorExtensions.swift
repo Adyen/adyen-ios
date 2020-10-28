@@ -4,6 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Foundation
+
 extension CardEncryptor.Card {
     internal func encryptedNumber(publicKey: String, date: Date) throws -> String? {
         guard let number = number else { return nil }

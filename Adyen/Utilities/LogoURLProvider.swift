@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Struct with helper functions to build logo URL's.
 public final class LogoURLProvider {
