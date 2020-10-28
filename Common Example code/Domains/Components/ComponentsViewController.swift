@@ -6,7 +6,7 @@
 
 import UIKit
 
-internal final class ComponentsViewController: UIViewController, Presenter {
+internal class ComponentsViewController: UIViewController, Presenter {
     
     private lazy var componentsView = ComponentsView()
 
