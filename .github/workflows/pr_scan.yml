@@ -12,13 +12,18 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
-    
+
     - name: Install Tools
       run: |
         brew install sonar-scanner
         brew install swiftlint
         gem install slather
         echo '::set-env name=XCODE_VERSION::/Applications/Xcode_12.1.app/Contents/Developer'
+
+    - name: Test Cocoapods Integration
+      run: |
+        gem install cocoapods
+        pod spec lint Adyen.podspec --allow-warnings
 
     - name: Check Dependencie Cache
       uses: actions/cache@v1
