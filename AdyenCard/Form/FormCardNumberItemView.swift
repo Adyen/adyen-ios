@@ -53,7 +53,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
 
 extension FormCardNumberItemView {
     
-    class CardsView: UIStackView, Observer {
+    internal class CardsView: UIStackView, Observer {
         
         private let maxCount: Int
         
