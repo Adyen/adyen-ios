@@ -118,23 +118,6 @@ public extension CardComponent {
         }
     }
     
-    /// Initializes the card component for stored cards.
-    ///
-    /// - Parameters:
-    ///   -  paymentMethod: The stored card payment method.
-    ///   -  publicKey: The key used for encrypting card data.
-    ///   -  style: The Component's UI style.
-    @available(*, deprecated, message: "Use init(paymentMethod:clientKey:style:) instead.")
-    convenience init(paymentMethod: StoredCardPaymentMethod,
-                     publicKey: String,
-                     style: FormComponentStyle = FormComponentStyle()) {
-        let cardPublicKeyProvider = CardPublicKeyProvider(cardPublicKey: publicKey)
-        self.init(paymentMethod: paymentMethod, cardPublicKeyProvider: cardPublicKeyProvider, style: style)
-        if !isPublicKeyValid(key: publicKey) {
-            assertionFailure("Card Public key is invalid, please make sure it’s in the format: {EXPONENT}|{MODULUS}")
-        }
-    }
-    
     /// :nodoc:
     /// Initializes the card component.
     ///
