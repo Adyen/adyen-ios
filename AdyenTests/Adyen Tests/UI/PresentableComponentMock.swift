@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import UIKit
 
 class PresentableComponentMock: PresentableComponent {
     

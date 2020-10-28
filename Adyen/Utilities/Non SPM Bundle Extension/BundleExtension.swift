@@ -8,6 +8,7 @@ import Foundation
 
 /// This is excluded from the Swift Package, since swift packages has different code to access internal resources.
 /// The Bundle extension in `BundleSPMExtension.swift` is used instead.
+/// :nodoc:
 extension Bundle {
 
     /// The main bundle of the framework.
@@ -17,13 +18,9 @@ extension Bundle {
 
     /// The bundle in which the framework's resources are located.
     internal static let internalResources: Bundle = {
-        internalBundle(withName: "Adyen", inBundle: core)
+        let url = core.url(forResource: "Adyen", withExtension: "bundle")
+        let bundle = url.flatMap { Bundle(url: $0) }
+        return bundle ?? core
     }()
 
-    /// :nodoc:
-    public static func internalBundle(withName name: String, inBundle: Bundle) -> Bundle {
-        let url = core.url(forResource: name, withExtension: "bundle")
-        let bundle = url.flatMap { Bundle(url: $0) }
-        return bundle ?? inBundle
-    }
 }

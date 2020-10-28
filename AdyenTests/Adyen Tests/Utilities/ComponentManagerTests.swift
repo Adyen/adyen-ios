@@ -5,6 +5,7 @@
 //
 
 @testable import AdyenDropIn
+@testable import Adyen
 @testable import AdyenUIHost
 import XCTest
 

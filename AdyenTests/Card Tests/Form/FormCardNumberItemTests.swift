@@ -5,6 +5,7 @@
 //
 
 @testable import AdyenCard
+@testable import Adyen
 import XCTest
 
 class FormCardNumberItemTests: XCTestCase {

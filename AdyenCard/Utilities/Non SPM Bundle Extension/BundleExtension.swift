@@ -9,8 +9,8 @@ import Foundation
 
 /// This is excluded from the Swift Package, since swift packages has different code to access internal resources.
 /// The Bundle extension in `BundleSPMExtension.swift` is used instead.
-internal extension Bundle {
-    // swiftlint:disable explicit_acl
+/// :nodoc:
+extension Bundle {
 
     /// The main bundle of the framework.
     private static let core: Bundle = {
@@ -18,9 +18,10 @@ internal extension Bundle {
     }()
 
     /// The bundle in which the framework's resources are located.
-    static let internalResources: Bundle = {
-        internalBundle(withName: "AdyenCard", inBundle: core)
-    }()
+    internal static var internalResources: Bundle {
+        let url = core.url(forResource: "AdyenCard", withExtension: "bundle")
+        let bundle = url.flatMap { Bundle(url: $0) }
+        return bundle ?? core
+    }
 
-    // swiftlint:enable explicit_acl
 }

@@ -5,6 +5,7 @@
 //
 
 @testable import AdyenDropIn
+@testable import Adyen
 import XCTest
 
 class PaymentMethodListComponentTests: XCTestCase {
