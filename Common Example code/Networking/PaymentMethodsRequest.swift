@@ -28,11 +28,13 @@ internal struct PaymentMethodsRequest: Request {
         
         try container.encode(Configuration.countryCode, forKey: .countryCode)
         try container.encode(Configuration.shopperReference, forKey: .shopperReference)
+        try container.encode(Configuration.merchantAccount, forKey: .merchantAccount)
     }
     
     internal enum CodingKeys: CodingKey {
         case countryCode
         case shopperReference
+        case merchantAccount
     }
     
 }
