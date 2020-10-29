@@ -11,7 +11,12 @@ extension URLSession: AdyenCompatible {}
 
 public extension AdyenScope where Base: URLSession {
     func dataTask(with url: URL, completion: @escaping ((Result<Data, Error>) -> Void)) -> URLSessionDataTask {
-        return base.dataTask(with: url, completionHandler: { data, _, error in
+        return base.dataTask(with: url, completionHandler: { data, response, error in
+            if let headers = (response as? HTTPURLResponse)?.allHeaderFields,
+               let path = response?.url?.path {
+                adyenPrint("---- Response Headers (/\(path)) ----")
+                adyenPrint(headers)
+            }
             if let error = error {
                 completion(.failure(error))
             } else if let data = data {
@@ -23,7 +28,12 @@ public extension AdyenScope where Base: URLSession {
     }
     
     func dataTask(with urlRequest: URLRequest, completion: @escaping ((Result<Data, Error>) -> Void)) -> URLSessionDataTask {
-        return base.dataTask(with: urlRequest, completionHandler: { data, _, error in
+        return base.dataTask(with: urlRequest, completionHandler: { data, response, error in
+            if let headers = (response as? HTTPURLResponse)?.allHeaderFields,
+               let path = response?.url?.path {
+                adyenPrint("---- Response Headers (/\(path)) ----")
+                adyenPrint(headers)
+            }
             if let error = error {
                 completion(.failure(error))
             } else if let data = data {
