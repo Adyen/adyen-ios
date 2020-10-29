@@ -34,5 +34,8 @@ internal enum DemoServerEnvironment: APIEnvironment {
         return headers
     }
     
-    internal var queryParameters: [URLQueryItem] { [] }
+    /// :nodoc:
+    internal var queryParameters: [URLQueryItem] {
+        return [URLQueryItem(name: "token", value: Configuration.clientKey)]
+    }
 }

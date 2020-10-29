@@ -11,7 +11,7 @@ import PassKit
 internal enum Configuration {
     // swiftlint:disable explicit_acl
 
-    static let demoServerEnvironment = DemoServerEnvironment.test
+    static let demoServerEnvironment = DemoServerEnvironment.directTest
     
     static let adyenEnvironment = Environment.test
     
@@ -27,7 +27,7 @@ internal enum Configuration {
     
     static let shopperReference = "iOS Checkout Shopper"
 
-    static let merchantAccount = "TestMerchant"
+    static let merchantAccount = "TestMerchantCheckout"
     
     static let shopperEmail = "checkoutshopperios@example.org"
     
