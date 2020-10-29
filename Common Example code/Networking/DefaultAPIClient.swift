@@ -13,7 +13,7 @@ internal final class DefaultAPIClient: AnyRetryAPIClient {
                                             scheduler: SimpleScheduler(maximumCount: 2))
     
     internal func perform<R>(_ request: R, completionHandler: @escaping (Result<R.ResponseType, Error>) -> Void) where R: Request {
-        apiClient.perform(request, completionHandler: completionHandler)
+        perform(request, shouldRetry: nil, completionHandler: completionHandler)
     }
     
     internal func perform<R>(_ request: R, shouldRetry: ((Result<R.ResponseType, Error>) -> Bool)?, completionHandler: @escaping (Result<R.ResponseType, Error>) -> Void) where R: Request {

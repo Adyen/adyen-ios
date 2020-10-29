@@ -9,30 +9,24 @@ import Foundation
 
 internal enum DemoServerEnvironment: APIEnvironment {
     
-    case beta, test, directTest
+    case beta, test
     
     internal var baseURL: URL {
         switch self {
         case .beta:
-            return URL(string: "https://checkoutshopper-beta.adyen.com/checkoutshopper/demoserver/")!
+            return URL(string: "https://checkout-beta.adyen.com/v64")!
         case .test:
-            return URL(string: "https://checkoutshopper-test.adyen.com/checkoutshopper/demoserver/")!
-        case .directTest:
             return URL(string: "https://checkout-test.adyen.com/v64")!
         }
     }
     
     internal var headers: [String: String] {
-        var headers = ["Content-Type": "application/json"]
-        switch self {
-        case .directTest:
-            headers["X-API-Key"] = Configuration.demoServerAPIKey
-        default:
-            headers["x-demo-server-api-key"] = Configuration.demoServerAPIKey
-        }
-
-        return headers
+        [
+            "Content-Type": "application/json",
+            "X-API-Key": Configuration.demoServerAPIKey
+        ]
     }
-    
+
+    /// :nodoc:
     internal var queryParameters: [URLQueryItem] { [] }
 }
