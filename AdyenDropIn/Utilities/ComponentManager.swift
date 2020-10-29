@@ -164,6 +164,17 @@ internal final class ComponentManager {
         component.showsLargeTitle = false
         return component
     }
+
+    private func createBLIKComponent(_ paymentMethod: BLIKPaymentMethod) -> BLIKComponent? {
+        guard configuration.clientKey != nil else {
+            // swiftlint:disable:next line_length
+            adyenPrint("Failed to instantiate BLIKComponent because client key is not configured. Please supply the client key in the PaymentMethodsConfiguration.")
+            return nil
+        }
+        let component = BLIKComponent(paymentMethod: paymentMethod, style: style.formComponent)
+        component.showsLargeTitle = false
+        return component
+    }
     
 }
 
@@ -227,6 +238,11 @@ extension ComponentManager: PaymentComponentBuilder {
     /// :nodoc:
     internal func build(paymentMethod: MBWayPaymentMethod) -> PaymentComponent? {
         createMBWayComponent(paymentMethod)
+    }
+
+    /// :nodoc:
+    internal func build(paymentMethod: BLIKPaymentMethod) -> PaymentComponent? {
+        createBLIKComponent(paymentMethod)
     }
     
     /// :nodoc:

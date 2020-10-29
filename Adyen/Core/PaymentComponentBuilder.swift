@@ -42,6 +42,9 @@ public protocol PaymentComponentBuilder {
     
     /// Builds a certain `PaymentComponent` based on a `MBWayPaymentMethod`.
     func build(paymentMethod: MBWayPaymentMethod) -> PaymentComponent?
+
+    /// Builds a certain `PaymentComponent` based on a `BLIKPaymentMethod`.
+    func build(paymentMethod: BLIKPaymentMethod) -> PaymentComponent?
     
     /// Builds a certain `PaymentComponent` based on any `PaymentMethod`, as a default case.
     func build(paymentMethod: PaymentMethod) -> PaymentComponent?
