@@ -40,3 +40,7 @@
 "adyen.emailItem.invalid" = "La dirección de correo electrónico no es válida";
 "adyen.mbway.confirmPayment" = "Confirme su pago en la aplicación MB WAY";
 "adyen.await.waitForConfirmation" = "Esperando confirmación";
+"adyen.blik.confirmPayment" = "Abra la aplicación de su banco para confirmar el pago.";
+"adyen.blik.invalid" = "Introduzca 6 dígitos";
+"adyen.blik.code" = "Código de 6 dígitos";
+"adyen.blik.help" = "Consiga el código en la aplicación de su banco.";

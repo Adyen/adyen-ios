@@ -40,3 +40,7 @@
 "adyen.emailItem.invalid" = "Eメールアドレスが無効です";
 "adyen.mbway.confirmPayment" = "MB WAYアプリで支払を確認する";
 "adyen.await.waitForConfirmation" = "確認を待っています";
+"adyen.blik.confirmPayment" = "バンキングアプリを開いて、支払を確認してください。";
+"adyen.blik.invalid" = "6つの数字を入力してください";
+"adyen.blik.code" = "6桁のコード";
+"adyen.blik.help" = "バンキングアプリからコードを取得してください。";

@@ -40,3 +40,7 @@
 "adyen.emailItem.invalid" = "Ugyldig e-mailadresse";
 "adyen.mbway.confirmPayment" = "Bekræft din betaling på appen MB WAY";
 "adyen.await.waitForConfirmation" = "Venter på bekræftelse";
+"adyen.blik.confirmPayment" = "Åbn din bankapp for at bekræfte betalingen.";
+"adyen.blik.invalid" = "Indtast 6 tal";
+"adyen.blik.code" = "6-cifret kode";
+"adyen.blik.help" = "Få koden fra din bankapp.";

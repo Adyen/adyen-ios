@@ -40,3 +40,7 @@
 "adyen.emailItem.invalid" = "无效的邮件地址";
 "adyen.mbway.confirmPayment" = "在 MB WAY 应用上确认您的付款";
 "adyen.await.waitForConfirmation" = "等待确认";
+"adyen.blik.confirmPayment" = "打开您的银行应用以确认支付。";
+"adyen.blik.invalid" = "输入 6 位数";
+"adyen.blik.code" = "6 位数代码";
+"adyen.blik.help" = "从您的银行应用中获取代码。";

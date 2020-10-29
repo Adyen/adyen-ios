@@ -40,3 +40,7 @@
 "adyen.emailItem.invalid" = "Ei-kelvollinen sähköpostiosoite";
 "adyen.mbway.confirmPayment" = "Vahvista maksusi MB WAY -sovelluksella";
 "adyen.await.waitForConfirmation" = "Odottaa vahvistusta";
+"adyen.blik.confirmPayment" = "Avaa pankkisovelluksesi vahvistaaksesi maksun.";
+"adyen.blik.invalid" = "Syötä 6 lukua";
+"adyen.blik.code" = "6-numeroinen koodi";
+"adyen.blik.help" = "Hanki koodi pankkisovelluksestasi.";
