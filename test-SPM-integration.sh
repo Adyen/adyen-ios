@@ -46,4 +46,5 @@ xcodebuild -scheme TempProject-Package -destination 'generic/platform=iOS Simula
 xcodebuild -scheme TempProject-Package -destination 'generic/platform=iOS Simulator' ARCHS=x86_64
 
 # Clean up.
+cd ../
 rm -rf $PROJECT_NAME

@@ -1,26 +1,26 @@
-name: Test Cocoapods Integration
+name: Test Swift Package Manager Integration
 
- on:
-   pull_request:
-     types: [opened, synchronize, reopened]
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
 
-   push:
-     branches:
-     - master
-     - develop
+  push:
+    branches:
+    - master
+    - develop
 
- jobs:
+jobs:
 
-   pods:
-     runs-on: macos-latest
-     steps:
-     - uses: actions/checkout@v2
+  SPM:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
 
-     - name: Install Xcode 12
-       run: |
-         echo '::set-env name=XCODE_VERSION::/Applications/Xcode_12.1.app/Contents/Developer'
-         xcodebuild -version
+    - name: Install Xcode 12
+      run: |
+        echo '::set-env name=XCODE_VERSION::/Applications/Xcode_12.1.app/Contents/Developer'
+        xcodebuild -version
 
-     - name: Test Swift Package Manager Integration
-       run: |
-         ./test-SPM-integration.sh
+    - name: Test Swift Package Manager Integration
+      run: |
+        ./test-SPM-integration.sh
