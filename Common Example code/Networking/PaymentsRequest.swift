@@ -39,6 +39,7 @@ internal struct PaymentsRequest: Request {
         try container.encode(Configuration.shopperReference, forKey: .shopperReference)
         try container.encode(Configuration.shopperEmail, forKey: .shopperEmail)
         try container.encode(Configuration.additionalData, forKey: .additionalData)
+        try container.encode(Configuration.merchantAccount, forKey: .merchantAccount)
     }
     
     private enum CodingKeys: String, CodingKey {

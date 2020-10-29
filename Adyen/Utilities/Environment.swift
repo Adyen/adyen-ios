@@ -25,34 +25,30 @@ public struct Environment: APIEnvironment {
     public var clientKey: String?
     
     /// Adyen's test environment.
-    public static let test = Environment(baseURL: URL(string: "https://checkoutshopper-test.adyen.com/")!,
-                                         cardPublicKeyBaseURL: URL(string: "https://test.adyen.com/")!)
+    public static let test = Environment(baseURL: URL(string: "https://checkoutshopper-test.adyen.com/")!)
     
     /// Adyen's default live environment.
-    public static let live = Environment(baseURL: Environment.defaultLiveBaseURL,
-                                         cardPublicKeyBaseURL: Environment.defaultLiveCardPublicKeyBaseURL)
+    public static let live = Environment(baseURL: Environment.defaultLiveBaseURL)
     
     /// Adyen's European live environment.
     public static let liveEurope = Environment.live
     
     /// Adyen's Australian live environment.
-    public static let liveAustralia = Environment(baseURL: URL(string: "https://checkoutshopper-live-au.adyen.com/")!,
-                                                  cardPublicKeyBaseURL: URL(string: "https://live-au.adyen.com/")!)
+    public static let liveAustralia = Environment(baseURL: URL(string: "https://checkoutshopper-live-au.adyen.com/")!)
     
     /// Adyen's United States live environment.
-    public static let liveUnitedStates = Environment(baseURL: URL(string: "https://checkoutshopper-live-us.adyen.com/")!,
-                                                     cardPublicKeyBaseURL: URL(string: "https://live-us.adyen.com/")!)
-    
-    /// Base URL for fetching a card public key with token.
-    public var cardPublicKeyBaseURL: URL
-    
+    public static let liveUnitedStates = Environment(baseURL: URL(string: "https://checkoutshopper-live-us.adyen.com/")!)
+
+    @available(*, deprecated, message: "This init is deprecated. Use `init(baseURL:)` instead.")
     public init(baseURL: URL? = nil, cardPublicKeyBaseURL: URL? = nil) {
         self.baseURL = baseURL ?? Environment.defaultLiveBaseURL
-        self.cardPublicKeyBaseURL = cardPublicKeyBaseURL ?? Environment.defaultLiveCardPublicKeyBaseURL
+    }
+
+    public init(baseURL: URL? = nil) {
+        self.baseURL = baseURL ?? Environment.defaultLiveBaseURL
     }
     
     // MARK: - Private
     
     private static let defaultLiveBaseURL = URL(string: "https://checkoutshopper-live.adyen.com/")!
-    private static let defaultLiveCardPublicKeyBaseURL = URL(string: "https://live.adyen.com/")!
 }
