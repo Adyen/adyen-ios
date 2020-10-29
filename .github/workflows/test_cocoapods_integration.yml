@@ -1,0 +1,27 @@
+name: Test Cocoapods Integration
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+  push:
+    branches:
+    - master
+    - develop
+
+jobs:
+
+  pods:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install Xcode 12
+      run: |
+        echo '::set-env name=XCODE_VERSION::/Applications/Xcode_12.1.app/Contents/Developer'
+        xcodebuild -version
+
+    - name: Test Cocoapods Integration
+      run: |
+        gem install cocoapods
+        pod spec lint Adyen.podspec --allow-warnings
