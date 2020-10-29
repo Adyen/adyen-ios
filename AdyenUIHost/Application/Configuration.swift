@@ -11,9 +11,9 @@ import PassKit
 internal enum Configuration {
     // swiftlint:disable explicit_acl
 
-    static let demoServerEnvironment = DemoServerEnvironment.directTest
+    static let demoServerEnvironment = DemoServerEnvironment.test
     
-    static let adyenEnvironment = Environment.test
+    static let componentsEnvironment = Environment.test
     
     static let appName = "Adyen Demo"
     
@@ -34,9 +34,6 @@ internal enum Configuration {
     static let additionalData = ["allow3DS2": true]
     
     static let clientKey = "{YOUR_CLIENT_KEY}"
-    
-    // swiftlint:disable:next line_length
-    static let cardPublicKey = "{YOUR_CARD_PUBLIC_KEY}"
     
     // swiftlint:disable:next line_length
     static let demoServerAPIKey = "{YOUR_DEMO_SERVER_API_KEY}"

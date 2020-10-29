@@ -22,7 +22,7 @@ internal protocol Presenter: AnyObject {
 
 internal final class PaymentsController {
     private let payment = Payment(amount: Configuration.amount, countryCode: Configuration.countryCode)
-    private let environment = Configuration.adyenEnvironment
+    private let environment = Configuration.componentsEnvironment
 
     private var paymentMethods: PaymentMethods?
     private var currentComponent: PresentableComponent?
