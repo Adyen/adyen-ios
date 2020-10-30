@@ -11,8 +11,12 @@ mkdir -p $PROJECT_NAME && cd $PROJECT_NAME
 swift package init
 swift package generate-xcodeproj
 
-# Create the Package.swift.
-echo "git \"file:///../\"" > Cartfile
+# Create the Cartfile.
+CWD=$(pwd)
+CURRENT_BRANCH=$(git branch --show-current)
+echo "git \"file:///$CWD/../\" \"$CURRENT_BRANCH\"" > Cartfile
+
+carthage update
 
 xcodebuild archive -scheme TempProject-Package -destination 'generic/platform=iOS'
 
