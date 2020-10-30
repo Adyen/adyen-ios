@@ -7,22 +7,13 @@ rm -rf $PROJECT_NAME
 
 mkdir -p $PROJECT_NAME && cd $PROJECT_NAME
 
-# Create the project.
-swift package init
-swift package generate-xcodeproj
-
 # Create the Cartfile.
 CWD=$(pwd)
-CURRENT_BRANCH=$(git branch --show-current)
-echo "git \"file:///$CWD/../\" \"$CURRENT_BRANCH\"" > Cartfile
+CURRENT_COMMIT=$(git rev-parse HEAD)
+echo "git \"file:///$CWD/../\" \"$CURRENT_COMMIT\"" > Cartfile
 
-carthage update
-
-xcodebuild archive -scheme TempProject-Package -destination 'generic/platform=iOS'
-
-xcodebuild archive -scheme TempProject-Package -destination 'generic/platform=iOS Simulator' ARCHS=i386
-
-xcodebuild archive -scheme TempProject-Package -destination 'generic/platform=iOS Simulator' ARCHS=x86_64
+# ../carthage.sh update
+../carthage.sh update --platform iOS
 
 # Clean up.
 cd ../

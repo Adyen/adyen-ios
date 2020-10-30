@@ -11,7 +11,7 @@ on:
 
 jobs:
 
-  SPM:
+  carthage:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
