@@ -33,17 +33,19 @@ let package = Package(
             name: \"TempProjectTests\",
             dependencies: [
                 \"TempProject\",
+                .product(name: \"Adyen\", package: \"Adyen\"),
+                .product(name: \"AdyenCard\", package: \"Adyen\"),
                 .product(name: \"AdyenDropIn\", package: \"Adyen\"),
                 .product(name: \"AdyenWeChatPay\", package: \"Adyen\")]),
     ]
 )
 " > Package.swift
 
-xcodebuild -scheme TempProject-Package -destination 'generic/platform=iOS'
+xcodebuild archive -scheme TempProject-Package -destination 'generic/platform=iOS'
 
-xcodebuild -scheme TempProject-Package -destination 'generic/platform=iOS Simulator' ARCHS=i386
+xcodebuild archive -scheme TempProject-Package -destination 'generic/platform=iOS Simulator' ARCHS=i386
 
-xcodebuild -scheme TempProject-Package -destination 'generic/platform=iOS Simulator' ARCHS=x86_64
+xcodebuild archive -scheme TempProject-Package -destination 'generic/platform=iOS Simulator' ARCHS=x86_64
 
 # Clean up.
 cd ../
