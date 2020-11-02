@@ -37,6 +37,18 @@ Adyen Components for iOS are available through either [CocoaPods](http://cocoapo
 2. Run `carthage update`.
 3. Link the framework with your target as described in [Carthage Readme](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application).
 
+### Swift Package Manager
+
+1. Follow Apple's [Adding Package Dependencies to Your App](
+https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app
+) guide on how to add a Swift Package dependency.
+2. Use `https://github.com/Adyen/adyen-ios` as the repository URL.
+3. Specify the version to be at least `3.8.0`.
+
+:warning: _Please make sure to use Xcode 12.0+ when adding `Adyen` using Swift Package Manager._
+
+:warning: _Swift Package Manager for Xcode 12.0 and 12.1 has a [know issue](https://bugs.swift.org/browse/SR-13343) when it comes to importing a dependency that in turn depend on a binary dependencies. A workaround is described [here](https://forums.swift.org/t/swiftpm-binarytarget-dependency-and-code-signing/38953)._
+
 ## Drop-in
 
 The [Drop-in](https://adyen.github.io/adyen-ios/Docs/Classes/DropInComponent.html) handles the presentation of available payment methods and the subsequent entry of a customer's payment details. It is initialized with the response of [`/paymentMethods`][apiExplorer.paymentMethods], and provides everything you need to make an API call to [`/payments`][apiExplorer.payments] and [`/payments/details`][apiExplorer.paymentsDetails].
