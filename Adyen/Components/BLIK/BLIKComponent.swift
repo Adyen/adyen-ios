@@ -7,7 +7,7 @@
 import Foundation
 import UIKit
 
-/// A component that provides a form for MB Way payments.
+/// A component that provides a form for BLIK payments.
 public final class BLIKComponent: PaymentComponent, PresentableComponent, Localizable {
     /// :nodoc:
     public var paymentMethod: PaymentMethod { blikPaymentMethod }
@@ -30,9 +30,9 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
     /// :nodoc:
     private let blikPaymentMethod: BLIKPaymentMethod
 
-    /// Initializes the MB Way component.
+    /// Initializes the BLIK component.
     ///
-    /// - Parameter paymentMethod: The MB Way payment method.
+    /// - Parameter paymentMethod: The BLIK payment method.
     /// - Parameter style: The Component's UI style.
     public init(paymentMethod: BLIKPaymentMethod, style: FormComponentStyle = FormComponentStyle()) {
         self.blikPaymentMethod = paymentMethod
@@ -101,7 +101,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
         guard formViewController.validate() else { return }
 
         let details = BLIKDetails(paymentMethod: paymentMethod,
-                                  telephoneNumber: blikCodeItem.value)
+                                  blikCode: blikCodeItem.value)
         footerItem.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
 

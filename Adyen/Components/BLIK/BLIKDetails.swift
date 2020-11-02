@@ -6,29 +6,29 @@
 
 import Foundation
 
-/// Contains the details supplied by the MB Way component.
+/// Contains the details supplied by the BLIK component.
 public struct BLIKDetails: PaymentMethodDetails {
 
     /// The payment method type.
     public let type: String
 
     /// The telephone number.
-    public let telephoneNumber: String
+    public let blikCode: String
 
     /// Initializes the MB Way details.
     ///
     ///
     /// - Parameters:
-    ///   - paymentMethod: The MB Way payment method.
-    ///   - telephoneNumber: The telephone number.
-    public init(paymentMethod: PaymentMethod, telephoneNumber: String) {
+    ///   - paymentMethod: The BLIK payment method.
+    ///   - blikCode: The BLIK code.
+    public init(paymentMethod: PaymentMethod, blikCode: String) {
         self.type = paymentMethod.type
-        self.telephoneNumber = telephoneNumber
+        self.blikCode = blikCode
     }
 
     private enum CodingKeys: String, CodingKey {
         case type
-        case telephoneNumber
+        case blikCode
     }
 
 }
