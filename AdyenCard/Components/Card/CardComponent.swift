@@ -185,7 +185,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
             component.clientKey = clientKey
             component.environment = environment
         } else {
-            component = OneClickPaymentComponent(paymentMethod: paymentMethod)
+            component = StoredPaymentMethodComponent(paymentMethod: paymentMethod)
             component.clientKey = clientKey
             component.environment = environment
         }

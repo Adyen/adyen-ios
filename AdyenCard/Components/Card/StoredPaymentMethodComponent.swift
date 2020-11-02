@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 /// :nodoc:
-public final class OneClickPaymentComponent: PaymentComponent, PresentableComponent, Localizable {
+public final class StoredPaymentMethodComponent: PaymentComponent, PresentableComponent, Localizable {
 
     /// :nodoc:
     public var paymentMethod: PaymentMethod { storedPaymentMethod }
