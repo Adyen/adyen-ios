@@ -232,7 +232,6 @@
 		F926D53523F68FD300D058D3 /* QiwiWalletDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F926D53423F68FD200D058D3 /* QiwiWalletDetails.swift */; };
 		F926D53723F6A35700D058D3 /* NumericFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAB8221E98BD00697074 /* NumericFormatter.swift */; };
 		F926D55523FBF1A800D058D3 /* QiwiWalletComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F926D55423FBF1A800D058D3 /* QiwiWalletComponentTests.swift */; };
-		F9293CE0254C42E0006B2FF3 /* StoredPaymentMethodComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D05BF12285B98900EC279A /* StoredPaymentMethodComponent.swift */; };
 		F9354BE723A7B4E200A6760B /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9354BE623A7B4E200A6760B /* TextStyle.swift */; };
 		F9354BE923A7B5AC00A6760B /* ViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9354BE823A7B5AC00A6760B /* ViewStyle.swift */; };
 		F9354BED23A7C34D00A6760B /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9354BEC23A7C34D00A6760B /* ButtonStyle.swift */; };
@@ -241,6 +240,7 @@
 		F94343E623FFD9A400AADF5F /* AdyenAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F94343E523FFD9A400AADF5F /* AdyenAssets.xcassets */; };
 		F94343E823FFF9DC00AADF5F /* ISOCountry.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94343E723FFF9DC00AADF5F /* ISOCountry.swift */; };
 		F9438F23243B29ED00FB9D69 /* UniversalRedirectComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9438F22243B29ED00FB9D69 /* UniversalRedirectComponent.swift */; };
+		F957A9CE255051130099AD73 /* StoredPaymentMethodComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D05BF12285B98900EC279A /* StoredPaymentMethodComponent.swift */; };
 		F95B6D8A2523138E002C9062 /* PhoneNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6D892523138E002C9062 /* PhoneNumberFormatter.swift */; };
 		F95B6D8C252316DA002C9062 /* PhoneNumberValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6D8B252316DA002C9062 /* PhoneNumberValidator.swift */; };
 		F95B6D8E25231715002C9062 /* RegularExpressionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6D8D25231715002C9062 /* RegularExpressionValidator.swift */; };
@@ -1214,6 +1214,7 @@
 		E28098B0220DA78B0087928F /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				F957A9C7255050DB0099AD73 /* Stored Payment Method */,
 				F9639B1524DA90E50073F38A /* Await */,
 				F9D644DA24D2D9340059CBE3 /* MB Way */,
 				F926D52D23F5A2EC00D058D3 /* Qiwi Wallet */,
@@ -1944,7 +1945,6 @@
 				E9E3DAA5221C431A00697074 /* CardComponent.swift */,
 				F919DF9424E6D7BC0027976E /* CardComponentExtensions.swift */,
 				E2028F5D222805E20007FF8B /* CardDetails.swift */,
-				E2D05BF12285B98900EC279A /* StoredPaymentMethodComponent.swift */,
 			);
 			path = Card;
 			sourceTree = "<group>";
@@ -2053,6 +2053,14 @@
 				F9639B1F24DBEB990073F38A /* AwaitComponentStyle.swift */,
 			);
 			path = "UI Style";
+			sourceTree = "<group>";
+		};
+		F957A9C7255050DB0099AD73 /* Stored Payment Method */ = {
+			isa = PBXGroup;
+			children = (
+				E2D05BF12285B98900EC279A /* StoredPaymentMethodComponent.swift */,
+			);
+			path = "Stored Payment Method";
 			sourceTree = "<group>";
 		};
 		F95B6D962527454E002C9062 /* AdyenSwiftUI */ = {
@@ -3031,6 +3039,7 @@
 				E216D3C9221AFB830013CBCF /* IBANValidator.swift in Sources */,
 				E76EC6972417F36A009C6E2F /* FormTextInputItemView.swift in Sources */,
 				E2C0E0B6220B08ED008616F6 /* FormView.swift in Sources */,
+				F957A9CE255051130099AD73 /* StoredPaymentMethodComponent.swift in Sources */,
 				E9AFF87E224BB149005A0D8D /* IssuerListDetails.swift in Sources */,
 				F9639B5C24E410130073F38A /* AwaitActionHandlerProvider.swift in Sources */,
 				F9780B6524338DFE00CC6C73 /* RedirectComponent.swift in Sources */,
@@ -3162,7 +3171,6 @@
 				E2345C06229BDA3C000F2C94 /* ThreeDS2ComponentFingerprintToken.swift in Sources */,
 				F9D5751E237C106A009C18B5 /* BCMCComponent.swift in Sources */,
 				E73649862527B82100AB76AE /* AES.swift in Sources */,
-				F9293CE0254C42E0006B2FF3 /* StoredPaymentMethodComponent.swift in Sources */,
 				E2345C0A229BDA70000F2C94 /* ThreeDS2ComponentFingerprint.swift in Sources */,
 				E7166A5424EACC44007CCDEF /* BinLookupResponse.swift in Sources */,
 				E9E3DAB4221D988200697074 /* CardNumberValidator.swift in Sources */,
