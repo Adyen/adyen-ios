@@ -26,6 +26,11 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
 
     /// Indicates if form will show a large header title. True - show title; False - assign title to a view controller's title.
     /// Defaults to true.
+    @available(*, deprecated, message: """
+     The `showsLargeTitle` property is deprecated.
+     For Component title, please, introduce your own lable implementation.
+     You can access componet's title from `viewController.title`.
+    """)
     public var showsLargeTitle = true
 
     /// :nodoc:
@@ -61,11 +66,11 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
             headerItem.title = paymentMethod.name
             headerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: paymentMethod.name)
             formViewController.append(headerItem)
-        } else {
-            formViewController.title = paymentMethod.name
         }
 
-        formViewController.append(phoneNumberItem)
+        formViewController.title = paymentMethod.name
+        formViewController.append(hinLabelItem)
+        formViewController.append(blikCodeItem)
         formViewController.append(footerItem)
 
         return formViewController
