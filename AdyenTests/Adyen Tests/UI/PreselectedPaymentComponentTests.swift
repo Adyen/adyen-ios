@@ -29,11 +29,11 @@ class PreselectedPaymentComponentTests: XCTestCase {
     
     let payment = Payment(amount: Payment.Amount(value: 4200, currencyCode: "EUR"), countryCode: "DE")
     var sut: PreselectedPaymentMethodComponent!
-    var component: StoredPaymentMethodComponent!
+    var component: OneClickPaymentMethodComponent!
     var delegate: PreselectedPaymentComponentDelegateMock!
     
     override func setUp() {
-        component = StoredPaymentMethodComponent(paymentMethod: getStoredCard())
+        component = OneClickPaymentMethodComponent(paymentMethod: getStoredCard())
         component.payment = payment
         sut = PreselectedPaymentMethodComponent(component: component, title: "Test title", style: FormComponentStyle(), listItemStyle: ListItemStyle())
         
@@ -104,7 +104,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
         listStyle.title.color = .white
         listStyle.subtitle.color = .white
         
-        component = StoredPaymentMethodComponent(paymentMethod: getStoredCard())
+        component = OneClickPaymentMethodComponent(paymentMethod: getStoredCard())
         sut = PreselectedPaymentMethodComponent(component: component, title: "", style: formStyle, listItemStyle: listStyle)
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -161,7 +161,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
     }
     
     func testPaypalComponent() {
-        component = StoredPaymentMethodComponent(paymentMethod: getStoredPaypal())
+        component = OneClickPaymentMethodComponent(paymentMethod: getStoredPaypal())
         sut = PreselectedPaymentMethodComponent(component: component, title: "", style: FormComponentStyle(), listItemStyle: ListItemStyle())
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -178,7 +178,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
     }
     
     func testStoredCardComponent() {
-        component = StoredPaymentMethodComponent(paymentMethod: getStoredCard())
+        component = OneClickPaymentMethodComponent(paymentMethod: getStoredCard())
         sut = PreselectedPaymentMethodComponent(component: component, title: "", style: FormComponentStyle(), listItemStyle: ListItemStyle())
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController

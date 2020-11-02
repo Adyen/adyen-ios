@@ -8,21 +8,26 @@ import Adyen
 import Foundation
 import UIKit
 
-internal final class StoredPaymentMethodComponent: PaymentComponent, PresentableComponent, Localizable {
-    
-    internal var paymentMethod: PaymentMethod { storedPaymentMethod }
-    
-    internal weak var delegate: PaymentComponentDelegate?
-    
-    internal init(paymentMethod: StoredPaymentMethod) {
+/// :nodoc:
+public final class OneClickPaymentMethodComponent: PaymentComponent, PresentableComponent, Localizable {
+
+    /// :nodoc:
+    public var paymentMethod: PaymentMethod { storedPaymentMethod }
+
+    /// :nodoc:
+    public weak var delegate: PaymentComponentDelegate?
+
+    /// :nodoc:
+    public init(paymentMethod: StoredPaymentMethod) {
         self.storedPaymentMethod = paymentMethod
     }
     
     private let storedPaymentMethod: StoredPaymentMethod
     
     // MARK: - PresentableComponent
-    
-    internal lazy var viewController: UIViewController = {
+
+    /// :nodoc:
+    public lazy var viewController: UIViewController = {
         Analytics.sendEvent(component: storedPaymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
         
         let displayInformation = storedPaymentMethod.localizedDisplayInformation(using: localizationParameters)
@@ -47,17 +52,19 @@ internal final class StoredPaymentMethodComponent: PaymentComponent, Presentable
     }()
     
     /// :nodoc:
-    internal var localizationParameters: LocalizationParameters?
+    public var localizationParameters: LocalizationParameters?
     
 }
 
-internal struct StoredPaymentDetails: PaymentMethodDetails {
+/// :nodoc:
+public struct StoredPaymentDetails: PaymentMethodDetails {
     
     internal let type: String
     
     internal let storedPaymentMethodIdentifier: String
-    
-    internal init(paymentMethod: StoredPaymentMethod) {
+
+    /// :nodoc:
+    public init(paymentMethod: StoredPaymentMethod) {
         self.type = paymentMethod.type
         self.storedPaymentMethodIdentifier = paymentMethod.identifier
     }

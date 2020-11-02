@@ -11,6 +11,33 @@ import XCTest
 
 class CardComponentTests: XCTestCase {
 
+    func testClientKeyInitializatpion() {
+        let method = CardPaymentMethodMock(type: "test_type", name: "test_name", brands: ["bcmc"])
+        let sut = CardComponent(paymentMethod: method, clientKey: "test_client_key")
+
+        XCTAssertEqual(sut.cardTypeProvider.clientKey, "test_client_key")
+        XCTAssertEqual(sut.cardPublicKeyProvider.clientKey, "test_client_key")
+        XCTAssertEqual(sut.environment.clientKey, "test_client_key")
+
+        sut.clientKey = "test_client_key_1"
+
+        XCTAssertEqual(sut.cardTypeProvider.clientKey, "test_client_key_1")
+        XCTAssertEqual(sut.cardPublicKeyProvider.clientKey, "test_client_key_1")
+        XCTAssertEqual(sut.environment.clientKey, "test_client_key_1")
+
+        sut.environment = .test
+
+        XCTAssertEqual(sut.cardTypeProvider.clientKey, "test_client_key_1")
+        XCTAssertEqual(sut.cardPublicKeyProvider.clientKey, "test_client_key_1")
+        XCTAssertEqual(sut.environment.clientKey, "test_client_key_1")
+
+        sut.clientKey = "test_client_key_2"
+
+        XCTAssertEqual(sut.cardTypeProvider.clientKey, "test_client_key_2")
+        XCTAssertEqual(sut.cardPublicKeyProvider.clientKey, "test_client_key_2")
+        XCTAssertEqual(sut.environment.clientKey, "test_client_key_2")
+    }
+
     func testRequiresKeyboardInput() {
         let method = CardPaymentMethodMock(type: "test_type", name: "test_name", brands: ["bcmc"])
         let sut = CardComponent(paymentMethod: method, clientKey: "test_client_key")
@@ -445,6 +472,26 @@ class CardComponentTests: XCTestCase {
                                 clientKey: "test_client_key")
         XCTAssertNotNil(sut.viewController as? UIAlertController)
         XCTAssertNotNil(sut.storedCardComponent)
+        XCTAssertNotNil(sut.storedCardComponent as? StoredCardComponent)
+    }
+
+    func testOneClickPayment() {
+        let method = StoredCardPaymentMethod(type: "type",
+                                             identifier: "id",
+                                             name: "name",
+                                             fundingSource: .credit,
+                                             supportedShopperInteractions: [.shopperPresent],
+                                             brand: "brand",
+                                             lastFour: "1234",
+                                             expiryMonth: "12",
+                                             expiryYear: "22",
+                                             holderName: "holderName")
+        let sut = CardComponent(paymentMethod: method,
+                                clientKey: "test_client_key")
+        sut.showsSecurityCodeField = false
+        XCTAssertNotNil(sut.viewController as? UIAlertController)
+        XCTAssertNotNil(sut.storedCardComponent)
+        XCTAssertNotNil(sut.storedCardComponent as? OneClickPaymentMethodComponent)
     }
 
     func testShouldShow4CardTypesOnInit() {

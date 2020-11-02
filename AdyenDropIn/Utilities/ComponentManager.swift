@@ -178,12 +178,12 @@ extension ComponentManager: PaymentComponentBuilder {
     
     /// :nodoc:
     internal func build(paymentMethod: StoredPaymentMethod) -> PaymentComponent? {
-        StoredPaymentMethodComponent(paymentMethod: paymentMethod)
+        OneClickPaymentMethodComponent(paymentMethod: paymentMethod)
     }
     
     /// :nodoc:
     internal func build(paymentMethod: StoredBCMCPaymentMethod) -> PaymentComponent? {
-        StoredPaymentMethodComponent(paymentMethod: paymentMethod)
+        OneClickPaymentMethodComponent(paymentMethod: paymentMethod)
     }
     
     /// :nodoc:
