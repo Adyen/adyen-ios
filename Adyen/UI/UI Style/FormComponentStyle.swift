@@ -24,6 +24,11 @@ public struct FormComponentStyle: ViewStyle {
     
     /// The footer style.
     public var footer: FormFooterStyle
+
+    /// The helper message style.
+    public var helper: TextStyle = .init(font: .preferredFont(forTextStyle: .body),
+                                         color: UIColor.AdyenCore.componentLabel,
+                                         textAlignment: .natural)
     
     /// The main button style.
     @available(*, deprecated, message: "Use mainButtonItem instead.")
@@ -72,18 +77,21 @@ public struct FormComponentStyle: ViewStyle {
     /// - Parameter footer: The footer style.
     /// - Parameter mainButton: The main button style.
     /// - Parameter secondaryButton: The secondary button style.
+    /// - Parameter helper: The helper message style.
     public init(header: FormHeaderStyle,
                 textField: FormTextItemStyle,
                 switch: FormSwitchItemStyle,
                 footer: FormFooterStyle,
                 mainButton: FormButtonItemStyle,
-                secondaryButton: FormButtonItemStyle) {
+                secondaryButton: FormButtonItemStyle,
+                helper: TextStyle) {
         self.header = header
         self.textField = textField
         self.switch = `switch`
         self.footer = footer
         self.mainButtonItem = mainButton
         self.secondaryButtonItem = secondaryButton
+        self.helper = helper
     }
     
     /// Initializes the Form UI style.

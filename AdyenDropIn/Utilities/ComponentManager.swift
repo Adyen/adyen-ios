@@ -171,9 +171,8 @@ internal final class ComponentManager {
             adyenPrint("Failed to instantiate BLIKComponent because client key is not configured. Please supply the client key in the PaymentMethodsConfiguration.")
             return nil
         }
-        let component = BLIKComponent(paymentMethod: paymentMethod, style: style.formComponent)
-        component.showsLargeTitle = false
-        return component
+
+        return BLIKComponent(paymentMethod: paymentMethod, style: style.formComponent)
     }
     
 }

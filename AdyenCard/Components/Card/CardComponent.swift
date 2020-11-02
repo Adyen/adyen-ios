@@ -215,7 +215,6 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
             formViewController.append(headerItem)
         }
         
-
         formViewController.title = paymentMethod.name
         formViewController.append(numberItem)
 
