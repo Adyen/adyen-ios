@@ -491,7 +491,7 @@ class CardComponentTests: XCTestCase {
         sut.showsSecurityCodeField = false
         XCTAssertNotNil(sut.viewController as? UIAlertController)
         XCTAssertNotNil(sut.storedCardComponent)
-        XCTAssertNotNil(sut.storedCardComponent as? OneClickPaymentMethodComponent)
+        XCTAssertNotNil(sut.storedCardComponent as? OneClickPaymentComponent)
     }
 
     func testShouldShow4CardTypesOnInit() {

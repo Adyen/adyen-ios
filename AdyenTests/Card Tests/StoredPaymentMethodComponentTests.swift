@@ -12,7 +12,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
     
     func testLocalizationWithCustomTableName() {
         let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: "test_type", name: "test_name")
-        let sut = OneClickPaymentMethodComponent(paymentMethod: method)
+        let sut = OneClickPaymentComponent(paymentMethod: method)
         let payment = Payment(amount: Payment.Amount(value: 34, currencyCode: "EUR"), countryCode: "DE")
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
@@ -26,7 +26,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
     
     func testLocalizationWithCustomKeySeparator() {
         let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: "test_type", name: "test_name")
-        let sut = OneClickPaymentMethodComponent(paymentMethod: method)
+        let sut = OneClickPaymentComponent(paymentMethod: method)
         let payment = Payment(amount: Payment.Amount(value: 34, currencyCode: "EUR"), countryCode: "DE")
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")

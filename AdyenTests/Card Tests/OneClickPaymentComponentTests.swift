@@ -1,5 +1,5 @@
 //
-//  OneClickPaymentMethodComponentTests.swift
+//  OneClickPaymentComponentTests.swift
 //  AdyenTests
 //
 //  Created by Mohamed Eldoheiri on 11/2/20.
@@ -10,14 +10,14 @@
 @testable import AdyenCard
 import XCTest
 
-class OneClickPaymentMethodComponentTests: XCTestCase {
+class OneClickPaymentComponentTests: XCTestCase {
 
     func testUI() {
         let method = StoredPaymentMethodMock(identifier: "id",
                                              supportedShopperInteractions: [.shopperPresent],
                                              type: "type",
                                              name: "name")
-        let sut = OneClickPaymentMethodComponent(paymentMethod: method)
+        let sut = OneClickPaymentComponent(paymentMethod: method)
         sut.clientKey = "client_key"
 
         let delegate = PaymentComponentDelegateMock()
