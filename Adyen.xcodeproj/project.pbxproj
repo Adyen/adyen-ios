@@ -84,7 +84,6 @@
 		E2C0E0BC220B2976008616F6 /* FormItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C0E0BB220B2976008616F6 /* FormItemView.swift */; };
 		E2C0E0C1220D7E5E008616F6 /* SubmitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C0E0C0220D7E5E008616F6 /* SubmitButton.swift */; };
 		E2D05BF02285B92500EC279A /* EmptyPaymentComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D05BEF2285B92500EC279A /* EmptyPaymentComponent.swift */; };
-		E2D05BF22285B98900EC279A /* StoredPaymentMethodComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D05BF12285B98900EC279A /* StoredPaymentMethodComponent.swift */; };
 		E2D12BEF221D560800EF682F /* FormValueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D12BEE221D560800EF682F /* FormValueItem.swift */; };
 		E2D12BF1221D561600EF682F /* FormValueItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D12BF0221D561600EF682F /* FormValueItemView.swift */; };
 		E2D12BF4221D571B00EF682F /* FormHeaderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D12BF3221D571B00EF682F /* FormHeaderItem.swift */; };
@@ -241,6 +240,7 @@
 		F94343E623FFD9A400AADF5F /* AdyenAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F94343E523FFD9A400AADF5F /* AdyenAssets.xcassets */; };
 		F94343E823FFF9DC00AADF5F /* ISOCountry.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94343E723FFF9DC00AADF5F /* ISOCountry.swift */; };
 		F9438F23243B29ED00FB9D69 /* UniversalRedirectComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9438F22243B29ED00FB9D69 /* UniversalRedirectComponent.swift */; };
+		F957A9CE255051130099AD73 /* StoredPaymentMethodComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D05BF12285B98900EC279A /* StoredPaymentMethodComponent.swift */; };
 		F95B6D8A2523138E002C9062 /* PhoneNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6D892523138E002C9062 /* PhoneNumberFormatter.swift */; };
 		F95B6D8C252316DA002C9062 /* PhoneNumberValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6D8B252316DA002C9062 /* PhoneNumberValidator.swift */; };
 		F95B6D8E25231715002C9062 /* RegularExpressionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6D8D25231715002C9062 /* RegularExpressionValidator.swift */; };
@@ -1214,6 +1214,7 @@
 		E28098B0220DA78B0087928F /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				F957A9C7255050DB0099AD73 /* Stored Payment Method */,
 				F9639B1524DA90E50073F38A /* Await */,
 				F9D644DA24D2D9340059CBE3 /* MB Way */,
 				F926D52D23F5A2EC00D058D3 /* Qiwi Wallet */,
@@ -1450,7 +1451,6 @@
 				E72DA33C23E19DE300707638 /* PreselectedPaymentMethodComponent.swift */,
 				E2D1783F22D8763400B6883E /* PaymentMethodListComponent.swift */,
 				E2D05BEF2285B92500EC279A /* EmptyPaymentComponent.swift */,
-				E2D05BF12285B98900EC279A /* StoredPaymentMethodComponent.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2053,6 +2053,14 @@
 				F9639B1F24DBEB990073F38A /* AwaitComponentStyle.swift */,
 			);
 			path = "UI Style";
+			sourceTree = "<group>";
+		};
+		F957A9C7255050DB0099AD73 /* Stored Payment Method */ = {
+			isa = PBXGroup;
+			children = (
+				E2D05BF12285B98900EC279A /* StoredPaymentMethodComponent.swift */,
+			);
+			path = "Stored Payment Method";
 			sourceTree = "<group>";
 		};
 		F95B6D962527454E002C9062 /* AdyenSwiftUI */ = {
@@ -3031,6 +3039,7 @@
 				E216D3C9221AFB830013CBCF /* IBANValidator.swift in Sources */,
 				E76EC6972417F36A009C6E2F /* FormTextInputItemView.swift in Sources */,
 				E2C0E0B6220B08ED008616F6 /* FormView.swift in Sources */,
+				F957A9CE255051130099AD73 /* StoredPaymentMethodComponent.swift in Sources */,
 				E9AFF87E224BB149005A0D8D /* IssuerListDetails.swift in Sources */,
 				F9639B5C24E410130073F38A /* AwaitActionHandlerProvider.swift in Sources */,
 				F9780B6524338DFE00CC6C73 /* RedirectComponent.swift in Sources */,
@@ -3230,7 +3239,6 @@
 				E7620EA123BF3DC800A492C3 /* ModalViewController.swift in Sources */,
 				E7388D8523DB1F9A008E62B8 /* DimmingPresentationController.swift in Sources */,
 				E2D1784022D8763400B6883E /* PaymentMethodListComponent.swift in Sources */,
-				E2D05BF22285B98900EC279A /* StoredPaymentMethodComponent.swift in Sources */,
 				F9789C7123F1939F000B4B2B /* DropInActionComponent.swift in Sources */,
 				E72DA33F23E19DE300707638 /* PreselectedPaymentMethodComponent.swift in Sources */,
 				E72DA34123E1BE5300707638 /* DropInNavigationController.swift in Sources */,

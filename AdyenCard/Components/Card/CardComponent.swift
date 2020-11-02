@@ -113,6 +113,10 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         self.style = style
         self.clientKey = clientKey
         self.cardTypeProvider = CardTypeProvider(cardPublicKeyProvider: self.cardPublicKeyProvider)
+
+        self.cardPublicKeyProvider.clientKey = clientKey
+        self.cardTypeProvider.clientKey = clientKey
+        self.environment.clientKey = clientKey
     }
     
     /// :nodoc:
@@ -162,7 +166,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     internal var excludedCardTypes: Set<CardType> = [.bcmc]
     
     // MARK: - Private
-    
+
     private var privateSupportedCardTypes: [CardType]
 
     private var topCardTypes: [CardType] {
@@ -171,13 +175,20 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     
     // MARK: - Stored Card
     
-    internal lazy var storedCardComponent: StoredCardComponent? = {
+    internal lazy var storedCardComponent: (PaymentComponent & PresentableComponent)? = {
         guard let paymentMethod = paymentMethod as? StoredCardPaymentMethod else {
             return nil
         }
-        let component = StoredCardComponent(storedCardPaymentMethod: paymentMethod)
-        component.clientKey = clientKey
-        component.environment = environment
+        var component: PaymentComponent & PresentableComponent
+        if showsSecurityCodeField {
+            component = StoredCardComponent(storedCardPaymentMethod: paymentMethod)
+            component.clientKey = clientKey
+            component.environment = environment
+        } else {
+            component = StoredPaymentMethodComponent(paymentMethod: paymentMethod)
+            component.clientKey = clientKey
+            component.environment = environment
+        }
         return component
     }()
     
