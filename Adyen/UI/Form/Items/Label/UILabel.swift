@@ -15,7 +15,7 @@ extension UILabel: FormItem, AnyFormItemView {
             objc_setAssociatedObject(self,
                                      &UIViewAssociatedKeys.delegate,
                                      newValue,
-                                     objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                                     objc_AssociationPolicy.OBJC_ASSOCIATION_ASSIGN)
         }
     }
 

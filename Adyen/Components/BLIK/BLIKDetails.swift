@@ -17,7 +17,6 @@ public struct BLIKDetails: PaymentMethodDetails {
 
     /// Initializes the BLIK payment details.
     ///
-    ///
     /// - Parameters:
     ///   - paymentMethod: The BLIK payment method.
     ///   - blikCode: The BLIK code.

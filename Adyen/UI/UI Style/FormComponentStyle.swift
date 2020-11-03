@@ -26,7 +26,7 @@ public struct FormComponentStyle: ViewStyle {
     public var footer: FormFooterStyle
 
     /// The helper message style.
-    public var helper: TextStyle = .init(font: .preferredFont(forTextStyle: .body),
+    public var hintLabel: TextStyle = .init(font: .preferredFont(forTextStyle: .body),
                                          color: UIColor.AdyenCore.componentLabel,
                                          textAlignment: .natural)
     
@@ -91,7 +91,7 @@ public struct FormComponentStyle: ViewStyle {
         self.footer = footer
         self.mainButtonItem = mainButton
         self.secondaryButtonItem = secondaryButton
-        self.helper = helper
+        self.hintLabel = helper
     }
     
     /// Initializes the Form UI style.

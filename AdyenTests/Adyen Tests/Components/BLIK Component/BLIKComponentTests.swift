@@ -27,37 +27,36 @@ class BLIKComponentTests: XCTestCase {
     func testLocalizationWithCustomTableName() {
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
-        XCTAssertEqual(sut.hinLabelItem.text, ADYLocalizedString("adyen.blik.help", sut.localizationParameters))
+        XCTAssertEqual(sut.hintLabelItem.text, ADYLocalizedString("adyen.blik.help", sut.localizationParameters))
 
-        XCTAssertEqual(sut.blikCodeItem.title, ADYLocalizedString("adyen.blik.code", sut.localizationParameters))
-        XCTAssertEqual(sut.blikCodeItem.placeholder, ADYLocalizedString("adyen.blik.placeholder", sut.localizationParameters))
-        XCTAssertEqual(sut.blikCodeItem.validationFailureMessage, ADYLocalizedString("adyen.blik.invalid", sut.localizationParameters))
+        XCTAssertEqual(sut.codeItem.title, ADYLocalizedString("adyen.blik.code", sut.localizationParameters))
+        XCTAssertEqual(sut.codeItem.placeholder, ADYLocalizedString("adyen.blik.placeholder", sut.localizationParameters))
+        XCTAssertEqual(sut.codeItem.validationFailureMessage, ADYLocalizedString("adyen.blik.invalid", sut.localizationParameters))
 
         XCTAssertNil(sut.footerItem.title)
-        XCTAssertEqual(sut.footerItem.submitButtonTitle, ADYLocalizedString("adyen.continueTo", sut.localizationParameters, method.name))
-        XCTAssertTrue(sut.footerItem.submitButtonTitle!.contains(method.name))
+        XCTAssertEqual(sut.footerItem.submitButtonTitle, ADYLocalizedSubmitButtonTitle(with: payment.amount, sut.localizationParameters))
     }
 
     func testLocalizationWithCustomKeySeparator() {
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
 
-        XCTAssertEqual(sut.hinLabelItem.text, ADYLocalizedString("adyen_blik_help", sut.localizationParameters))
+        XCTAssertEqual(sut.hintLabelItem.text, ADYLocalizedString("adyen_blik_help", sut.localizationParameters))
 
-        XCTAssertEqual(sut.blikCodeItem.title, ADYLocalizedString("adyen_blik_code", sut.localizationParameters))
-        XCTAssertEqual(sut.blikCodeItem.placeholder, ADYLocalizedString("adyen_blik_placeholder", sut.localizationParameters))
-        XCTAssertEqual(sut.blikCodeItem.validationFailureMessage, ADYLocalizedString("adyen_blik_invalid", sut.localizationParameters))
+        XCTAssertEqual(sut.codeItem.title, ADYLocalizedString("adyen_blik_code", sut.localizationParameters))
+        XCTAssertEqual(sut.codeItem.placeholder, ADYLocalizedString("adyen_blik_placeholder", sut.localizationParameters))
+        XCTAssertEqual(sut.codeItem.validationFailureMessage, ADYLocalizedString("adyen_blik_invalid", sut.localizationParameters))
 
         XCTAssertNil(sut.footerItem.title)
-        XCTAssertEqual(sut.footerItem.submitButtonTitle, ADYLocalizedString("adyen_continueTo", sut.localizationParameters, method.name))
+        XCTAssertEqual(sut.footerItem.submitButtonTitle, ADYLocalizedString("adyen_submitButton_formatted", sut.localizationParameters, payment.amount.formatted))
     }
 
     func testUIConfiguration() {
         var style = FormComponentStyle()
 
-        style.helper.backgroundColor = .brown
-        style.helper.font = .systemFont(ofSize: 10)
-        style.helper.textAlignment = .center
-        style.helper.color = .cyan
+        style.hintLabel.backgroundColor = .brown
+        style.hintLabel.font = .systemFont(ofSize: 10)
+        style.hintLabel.textAlignment = .center
+        style.hintLabel.color = .cyan
 
         /// Footer
         style.footer.button.title.color = .white

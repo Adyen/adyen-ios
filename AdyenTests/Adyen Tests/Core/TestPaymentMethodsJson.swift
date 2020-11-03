@@ -186,6 +186,12 @@ let mbway = [
     "type": "mbway"
 ] as [String: Any]
 
+let blik = [
+    "name": "Blik",
+    "supportsRecurring": true,
+    "type": "blik"
+] as [String: Any]
+
 let qiwiWallet = [
     "details": [
         [

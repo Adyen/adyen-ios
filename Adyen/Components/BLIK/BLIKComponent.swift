@@ -53,29 +53,29 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
         formViewController.localizationParameters = localizationParameters
 
         formViewController.title = paymentMethod.name.uppercased()
-        formViewController.append(hinLabelItem)
-        formViewController.append(blikCodeItem)
+        formViewController.append(hintLabelItem)
+        formViewController.append(codeItem)
         formViewController.append(footerItem)
 
         return formViewController
     }()
 
     /// The helper message item.
-    internal lazy var hinLabelItem: UILabel = {
+    internal lazy var hintLabelItem: UILabel = {
         let item = UILabel()
         item.text = ADYLocalizedString("adyen.blik.help", localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "blikCodeHintItem")
         item.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "blikCodeHintItem.label")
-        item.font = style.helper.font
-        item.textColor = style.helper.color
-        item.textAlignment = style.helper.textAlignment
-        item.backgroundColor = style.helper.backgroundColor
+        item.font = style.hintLabel.font
+        item.textColor = style.hintLabel.color
+        item.textAlignment = style.hintLabel.textAlignment
+        item.backgroundColor = style.hintLabel.backgroundColor
 
         return item
     }()
 
     /// The BLIK code item.
-    internal lazy var blikCodeItem: FormTextInputItem = {
+    internal lazy var codeItem: FormTextInputItem = {
         let item = FormTextInputItem(style: style.textField)
         item.title = ADYLocalizedString("adyen.blik.code", localizationParameters)
         item.placeholder = ADYLocalizedString("adyen.blik.placeholder", localizationParameters)
@@ -90,7 +90,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
     /// The footer item.
     internal lazy var footerItem: FormFooterItem = {
         let footerItem = FormFooterItem(style: style.footer)
-        footerItem.submitButtonTitle = ADYLocalizedString("adyen.continueTo", localizationParameters, blikPaymentMethod.name)
+        footerItem.submitButtonTitle = ADYLocalizedSubmitButtonTitle(with: payment?.amount, localizationParameters)
         footerItem.submitButtonSelectionHandler = { [weak self] in
             self?.didSelectSubmitButton()
         }
@@ -102,7 +102,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
         guard formViewController.validate() else { return }
 
         let details = BLIKDetails(paymentMethod: paymentMethod,
-                                  blikCode: blikCodeItem.value)
+                                  blikCode: codeItem.value)
         footerItem.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
 
