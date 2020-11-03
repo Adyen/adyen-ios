@@ -63,6 +63,16 @@ public final class APIClient: APIClientProtocol {
         }
         
         urlRequest.allHTTPHeaderFields = request.headers.merging(environment.headers, uniquingKeysWith: { key1, _ in key1 })
+
+        if let headers = urlRequest.allHTTPHeaderFields {
+            adyenPrint("---- Request Headers (/\(request.path)) ----")
+            adyenPrint(headers)
+        }
+
+        if let queryParams = urlRequest.url?.queryParameters {
+            adyenPrint("---- Request query (/\(request.path)) ----")
+            adyenPrint(queryParams)
+        }
         
         requestCounter += 1
         
