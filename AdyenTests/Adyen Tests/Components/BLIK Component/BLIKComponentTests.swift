@@ -178,7 +178,7 @@ class BLIKComponentTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertEqual(self.sut.viewController.title, self.method.name)
+            XCTAssertEqual(self.sut.viewController.title, self.method.name.uppercased())
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 5)

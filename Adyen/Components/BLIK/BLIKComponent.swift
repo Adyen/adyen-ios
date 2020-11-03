@@ -52,7 +52,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
         let formViewController = FormViewController(style: style)
         formViewController.localizationParameters = localizationParameters
 
-        formViewController.title = paymentMethod.name
+        formViewController.title = paymentMethod.name.uppercased()
         formViewController.append(hinLabelItem)
         formViewController.append(blikCodeItem)
         formViewController.append(footerItem)
