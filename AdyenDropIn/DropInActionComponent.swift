@@ -69,6 +69,7 @@ public final class DropInActionComponent: ActionComponent {
         component.delegate = delegate
         component._isDropIn = _isDropIn
         component.environment = environment
+        component.clientKey = clientKey
         redirectComponent = component
         
         component.handle(action)
@@ -79,6 +80,7 @@ public final class DropInActionComponent: ActionComponent {
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.environment = environment
+        component.clientKey = clientKey
         threeDS2Component = component
         
         component.handle(action)
@@ -104,6 +106,7 @@ public final class DropInActionComponent: ActionComponent {
         weChatPaySDKActionComponent = classObject.init()
         weChatPaySDKActionComponent?._isDropIn = _isDropIn
         weChatPaySDKActionComponent?.environment = environment
+        weChatPaySDKActionComponent?.clientKey = clientKey
         weChatPaySDKActionComponent?.delegate = delegate
         weChatPaySDKActionComponent?.handle(action)
     }
@@ -119,6 +122,7 @@ public final class DropInActionComponent: ActionComponent {
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
         component.environment = environment
+        component.clientKey = clientKey
         
         component.handle(action)
         awaitComponent = component
