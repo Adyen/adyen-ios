@@ -15,7 +15,7 @@ public struct BLIKDetails: PaymentMethodDetails {
     /// The telephone number.
     public let blikCode: String
 
-    /// Initializes the MB Way details.
+    /// Initializes the BLIK payment details.
     ///
     ///
     /// - Parameters:
