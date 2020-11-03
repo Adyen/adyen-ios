@@ -243,6 +243,10 @@
 		F94343E823FFF9DC00AADF5F /* ISOCountry.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94343E723FFF9DC00AADF5F /* ISOCountry.swift */; };
 		F9438F23243B29ED00FB9D69 /* UniversalRedirectComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9438F22243B29ED00FB9D69 /* UniversalRedirectComponent.swift */; };
 		F957A9CE255051130099AD73 /* StoredPaymentMethodComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D05BF12285B98900EC279A /* StoredPaymentMethodComponent.swift */; };
+		F957A9E325514A7E0099AD73 /* Submit3DS2FingerprintRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957A9E225514A7E0099AD73 /* Submit3DS2FingerprintRequest.swift */; };
+		F957A9F125514AB70099AD73 /* Submit3DS2FingerprintResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957A9F025514AB70099AD73 /* Submit3DS2FingerprintResponse.swift */; };
+		F957A9FA25514EEA0099AD73 /* ThreeDS2FingerprintSubmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957A9F925514EEA0099AD73 /* ThreeDS2FingerprintSubmitter.swift */; };
+		F957AA2C2551829F0099AD73 /* InternalThreeDS2Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA2B2551829F0099AD73 /* InternalThreeDS2Component.swift */; };
 		F95B6D8A2523138E002C9062 /* PhoneNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6D892523138E002C9062 /* PhoneNumberFormatter.swift */; };
 		F95B6D8C252316DA002C9062 /* PhoneNumberValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6D8B252316DA002C9062 /* PhoneNumberValidator.swift */; };
 		F95B6D8E25231715002C9062 /* RegularExpressionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6D8D25231715002C9062 /* RegularExpressionValidator.swift */; };
@@ -826,6 +830,10 @@
 		F94343E523FFD9A400AADF5F /* AdyenAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AdyenAssets.xcassets; sourceTree = "<group>"; };
 		F94343E723FFF9DC00AADF5F /* ISOCountry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISOCountry.swift; sourceTree = "<group>"; };
 		F9438F22243B29ED00FB9D69 /* UniversalRedirectComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalRedirectComponent.swift; sourceTree = "<group>"; };
+		F957A9E225514A7E0099AD73 /* Submit3DS2FingerprintRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submit3DS2FingerprintRequest.swift; sourceTree = "<group>"; };
+		F957A9F025514AB70099AD73 /* Submit3DS2FingerprintResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submit3DS2FingerprintResponse.swift; sourceTree = "<group>"; };
+		F957A9F925514EEA0099AD73 /* ThreeDS2FingerprintSubmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2FingerprintSubmitter.swift; sourceTree = "<group>"; };
+		F957AA2B2551829F0099AD73 /* InternalThreeDS2Component.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternalThreeDS2Component.swift; sourceTree = "<group>"; };
 		F95B6D892523138E002C9062 /* PhoneNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberFormatter.swift; sourceTree = "<group>"; };
 		F95B6D8B252316DA002C9062 /* PhoneNumberValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberValidator.swift; sourceTree = "<group>"; };
 		F95B6D8D25231715002C9062 /* RegularExpressionValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularExpressionValidator.swift; sourceTree = "<group>"; };
@@ -1146,7 +1154,10 @@
 		E2345C00229BCC6B000F2C94 /* 3DS2 Component */ = {
 			isa = PBXGroup;
 			children = (
+				F957A9F825514ED30099AD73 /* 3DS2 Fingerprint Submitter */,
+				F957A9E125514A590099AD73 /* API */,
 				E2345C01229BCC7D000F2C94 /* ThreeDS2Component.swift */,
+				F957AA2B2551829F0099AD73 /* InternalThreeDS2Component.swift */,
 				E2345C05229BDA3C000F2C94 /* ThreeDS2ComponentFingerprintToken.swift */,
 				E2345C09229BDA70000F2C94 /* ThreeDS2ComponentFingerprint.swift */,
 				E2345C07229BDA46000F2C94 /* ThreeDS2ComponentChallengeToken.swift */,
@@ -2083,6 +2094,23 @@
 				E2D05BF12285B98900EC279A /* StoredPaymentMethodComponent.swift */,
 			);
 			path = "Stored Payment Method";
+			sourceTree = "<group>";
+		};
+		F957A9E125514A590099AD73 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				F957A9E225514A7E0099AD73 /* Submit3DS2FingerprintRequest.swift */,
+				F957A9F025514AB70099AD73 /* Submit3DS2FingerprintResponse.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		F957A9F825514ED30099AD73 /* 3DS2 Fingerprint Submitter */ = {
+			isa = PBXGroup;
+			children = (
+				F957A9F925514EEA0099AD73 /* ThreeDS2FingerprintSubmitter.swift */,
+			);
+			path = "3DS2 Fingerprint Submitter";
 			sourceTree = "<group>";
 		};
 		F95B6D962527454E002C9062 /* AdyenSwiftUI */ = {
@@ -3214,6 +3242,7 @@
 				F9D5751E237C106A009C18B5 /* BCMCComponent.swift in Sources */,
 				E73649862527B82100AB76AE /* AES.swift in Sources */,
 				E2345C0A229BDA70000F2C94 /* ThreeDS2ComponentFingerprint.swift in Sources */,
+				F957A9F125514AB70099AD73 /* Submit3DS2FingerprintResponse.swift in Sources */,
 				E7166A5424EACC44007CCDEF /* BinLookupResponse.swift in Sources */,
 				E9E3DAB4221D988200697074 /* CardNumberValidator.swift in Sources */,
 				E2345C08229BDA46000F2C94 /* ThreeDS2ComponentChallengeToken.swift in Sources */,
@@ -3222,6 +3251,7 @@
 				F919DF9724E6E2810027976E /* StoredCardComponent.swift in Sources */,
 				F919DF9324E68F750027976E /* CardPublicKeyProvider.swift in Sources */,
 				E2345C0C229BDA7A000F2C94 /* ThreeDS2ComponentChallengeResult.swift in Sources */,
+				F957A9FA25514EEA0099AD73 /* ThreeDS2FingerprintSubmitter.swift in Sources */,
 				E9E3DAC0221ECD7C00697074 /* CardSecurityCodeFormatter.swift in Sources */,
 				E7166A5224EAC5BA007CCDEF /* BinLookupRequest.swift in Sources */,
 				E9E3DAFB22241D6000697074 /* CardEncryptor.swift in Sources */,
@@ -3241,10 +3271,12 @@
 				E76EC680241125E0009C6E2F /* FormCardSecurityCodeItem.swift in Sources */,
 				E7166A5624EAD99F007CCDEF /* CardTypeProvider.swift in Sources */,
 				E736498225277B9100AB76AE /* DataExtension.swift in Sources */,
+				F957A9E325514A7E0099AD73 /* Submit3DS2FingerprintRequest.swift in Sources */,
 				E2028F5E222805E20007FF8B /* CardDetails.swift in Sources */,
 				E9E3DAD1221EEE2100697074 /* CardExpiryDateValidator.swift in Sources */,
 				E2345C02229BCC7D000F2C94 /* ThreeDS2Component.swift in Sources */,
 				F9D5751223756BD0009C18B5 /* CardPublicKeyValidator.swift in Sources */,
+				F957AA2C2551829F0099AD73 /* InternalThreeDS2Component.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
