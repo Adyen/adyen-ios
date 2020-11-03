@@ -18,17 +18,17 @@ internal enum Configuration {
     
     static let appName = "Adyen Demo"
     
-    static let amount = Payment.Amount(value: 17408, currencyCode: "PLN")
+    static let amount = Payment.Amount(value: 17408, currencyCode: "EUR")
 
     static let reference = "Test Order Reference - iOS UIHost"
     
-    static let countryCode = "PL"
+    static let countryCode = "NL"
 
     static let returnUrl = "ui-host://"
     
     static let shopperReference = "iOS Checkout Shopper"
 
-    static let merchantAccount = "TestMerchant"
+    static let merchantAccount = "TestMerchantCheckout"
     
     static let shopperEmail = "checkoutshopperios@example.org"
     

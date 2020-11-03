@@ -82,19 +82,17 @@ internal final class ComponentsViewController: UIViewController, Presenter {
             alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-            self.present(alertController, animated: true)
-        }
+        present(alertController, animated: true)
     }
 
     internal func presentAlert(withTitle title: String) {
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        self.present(alertController, animated: true)
+        present(alertController, animated: true)
     }
 
     internal func present(viewController: UIViewController, completion: (() -> Void)?) {
-        self.present(viewController, animated: true, completion: completion)
+        present(viewController, animated: true, completion: completion)
     }
 
     internal func dismiss(completion: (() -> Void)?) {
