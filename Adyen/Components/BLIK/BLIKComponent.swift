@@ -65,6 +65,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
         let item = UILabel()
         item.text = ADYLocalizedString("adyen.blik.help", localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "blikCodeHintItem")
+        item.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "blikCodeHintItem.label")
         item.font = style.helper.font
         item.textColor = style.helper.color
         item.textAlignment = style.helper.textAlignment
@@ -77,12 +78,12 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
     internal lazy var blikCodeItem: FormTextInputItem = {
         let item = FormTextInputItem(style: style.textField)
         item.title = ADYLocalizedString("adyen.blik.code", localizationParameters)
-        item.placeholder = ADYLocalizedString("adyen.phoneNumber.placeholder", localizationParameters)
-        item.validator = PhoneNumberValidator()
-        item.formatter = PhoneNumberFormatter()
-        item.validationFailureMessage = ADYLocalizedString("adyen.phoneNumber.invalid", localizationParameters)
-        item.keyboardType = .phonePad
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "phoneNumberItem")
+        item.placeholder = ADYLocalizedString("adyen.blik.placeholder", localizationParameters)
+        item.validator = NumericStringValidator(minimumLength: 6, maximumLength: 6)
+        item.formatter = NumericFormatter()
+        item.validationFailureMessage = ADYLocalizedString("adyen.blik.invalid", localizationParameters)
+        item.keyboardType = .numberPad
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "blikCodeItem")
         return item
     }()
 

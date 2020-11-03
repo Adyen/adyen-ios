@@ -44,3 +44,4 @@
 "adyen.blik.invalid" = "Syötä 6 lukua";
 "adyen.blik.code" = "6-numeroinen koodi";
 "adyen.blik.help" = "Hanki koodi pankkisovelluksestasi.";
+"adyen.blik.placeholder" = "123–456";

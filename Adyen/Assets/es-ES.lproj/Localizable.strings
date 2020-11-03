@@ -44,3 +44,4 @@
 "adyen.blik.invalid" = "Introduzca 6 dígitos";
 "adyen.blik.code" = "Código de 6 dígitos";
 "adyen.blik.help" = "Consiga el código en la aplicación de su banco.";
+"adyen.blik.placeholder" = "123–456";

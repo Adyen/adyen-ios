@@ -44,3 +44,4 @@
 "adyen.blik.invalid" = "输入 6 位数";
 "adyen.blik.code" = "6 位数代码";
 "adyen.blik.help" = "从您的银行应用中获取代码。";
+"adyen.blik.placeholder" = "123–456";

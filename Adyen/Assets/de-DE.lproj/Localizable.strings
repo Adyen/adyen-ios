@@ -44,3 +44,4 @@
 "adyen.blik.invalid" = "6 Zahlen eingeben";
 "adyen.blik.code" = "6-stelliger Code";
 "adyen.blik.help" = "Rufen Sie den Code über Ihre Banking-App ab.";
+"adyen.blik.placeholder" = "123–456";

@@ -44,3 +44,4 @@
 "adyen.blik.invalid" = "輸入 6 個數字";
 "adyen.blik.code" = "6 位數代碼";
 "adyen.blik.help" = "從您的銀行應用程式中獲取代碼。";
+"adyen.blik.placeholder" = "123–456";

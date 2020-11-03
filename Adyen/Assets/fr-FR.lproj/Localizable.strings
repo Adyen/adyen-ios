@@ -44,3 +44,4 @@
 "adyen.blik.invalid" = "Saisissez les 6 chiffres";
 "adyen.blik.code" = "Code à 6 chiffres";
 "adyen.blik.help" = "Ouvrez votre application bancaire pour obtenir le code.";
+"adyen.blik.placeholder" = "123–456";

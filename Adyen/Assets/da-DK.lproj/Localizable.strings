@@ -44,3 +44,4 @@
 "adyen.blik.invalid" = "Indtast 6 tal";
 "adyen.blik.code" = "6-cifret kode";
 "adyen.blik.help" = "Få koden fra din bankapp.";
+"adyen.blik.placeholder" = "123–456";

@@ -44,3 +44,4 @@
 "adyen.blik.invalid" = "Введите 6 цифр";
 "adyen.blik.code" = "6-значный код";
 "adyen.blik.help" = "Получите код из банковского приложения.";
+"adyen.blik.placeholder" = "123–456";

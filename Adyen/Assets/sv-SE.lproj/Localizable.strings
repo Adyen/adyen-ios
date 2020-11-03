@@ -44,3 +44,4 @@
 "adyen.blik.invalid" = "Ange 6 siffror";
 "adyen.blik.code" = "Sexsiffrig kod";
 "adyen.blik.help" = "Hämta koden från din bankapp.";
+"adyen.blik.placeholder" = "123–456";

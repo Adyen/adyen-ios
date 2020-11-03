@@ -103,6 +103,7 @@
 		E7166A5224EAC5BA007CCDEF /* BinLookupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7166A5124EAC5BA007CCDEF /* BinLookupRequest.swift */; };
 		E7166A5424EACC44007CCDEF /* BinLookupResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7166A5324EACC44007CCDEF /* BinLookupResponse.swift */; };
 		E7166A5624EAD99F007CCDEF /* CardTypeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7166A5524EAD99F007CCDEF /* CardTypeProvider.swift */; };
+		E72521EE25517EB100533E35 /* BLIKComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72521ED25517EB100533E35 /* BLIKComponentTests.swift */; };
 		E7275BF9255012F600907CF9 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7275BF8255012F600907CF9 /* UILabel.swift */; };
 		E72DA33F23E19DE300707638 /* PreselectedPaymentMethodComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72DA33C23E19DE300707638 /* PreselectedPaymentMethodComponent.swift */; };
 		E72DA34123E1BE5300707638 /* DropInNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72DA34023E1BE5300707638 /* DropInNavigationController.swift */; };
@@ -671,6 +672,7 @@
 		E7166A5124EAC5BA007CCDEF /* BinLookupRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinLookupRequest.swift; sourceTree = "<group>"; };
 		E7166A5324EACC44007CCDEF /* BinLookupResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinLookupResponse.swift; sourceTree = "<group>"; };
 		E7166A5524EAD99F007CCDEF /* CardTypeProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTypeProvider.swift; sourceTree = "<group>"; };
+		E72521ED25517EB100533E35 /* BLIKComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLIKComponentTests.swift; sourceTree = "<group>"; };
 		E7275BF8255012F600907CF9 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		E72DA33C23E19DE300707638 /* PreselectedPaymentMethodComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreselectedPaymentMethodComponent.swift; sourceTree = "<group>"; };
 		E72DA34023E1BE5300707638 /* DropInNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropInNavigationController.swift; sourceTree = "<group>"; };
@@ -1561,6 +1563,14 @@
 			path = BinLookup;
 			sourceTree = "<group>";
 		};
+		E72521EC25517E8F00533E35 /* BLIK Component */ = {
+			isa = PBXGroup;
+			children = (
+				E72521ED25517EB100533E35 /* BLIKComponentTests.swift */,
+			);
+			path = "BLIK Component";
+			sourceTree = "<group>";
+		};
 		E7275BF7255012D400907CF9 /* Label */ = {
 			isa = PBXGroup;
 			children = (
@@ -1728,6 +1738,7 @@
 		E97B9717229D533B00505476 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				E72521EC25517E8F00533E35 /* BLIK Component */,
 				F9639B4E24E29D080073F38A /* Await Component */,
 				F9D644E524D40C5F0059CBE3 /* MB Way */,
 				F9AC61BC2437509A0062A00D /* Redirect */,
@@ -3118,6 +3129,7 @@
 				F9AC61C0243750D80062A00D /* AppLauncherMock.swift in Sources */,
 				F9EDB79A239664B500CFB3C9 /* StoredPaymentMethodComponentTests.swift in Sources */,
 				F9EDB7982396643A00CFB3C9 /* CardPaymentMethodMock.swift in Sources */,
+				E72521EE25517EB100533E35 /* BLIKComponentTests.swift in Sources */,
 				E2B317A22265BC9400C1BB30 /* LengthValidatorTests.swift in Sources */,
 				E9E3DAB2221D79C800697074 /* CardNumberFormatterTests.swift in Sources */,
 				F9EDB796239663F800CFB3C9 /* PaymentComponentMock.swift in Sources */,
