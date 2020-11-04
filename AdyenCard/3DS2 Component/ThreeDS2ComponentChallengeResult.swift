@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -23,6 +23,15 @@ public extension ThreeDS2Component {
                                                          options: [])
             
             self.isAuthenticated = challengeResult.transactionStatus == "Y"
+            self.payload = payloadData.base64EncodedString()
+        }
+
+        internal init(isAuthenticated: Bool) throws {
+            let transStatusValue = isAuthenticated ? "Y" : "N"
+            let payloadData = try JSONSerialization.data(withJSONObject: ["transStatus": transStatusValue],
+                                                         options: [])
+
+            self.isAuthenticated = isAuthenticated
             self.payload = payloadData.base64EncodedString()
         }
         
