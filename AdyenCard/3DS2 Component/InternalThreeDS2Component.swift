@@ -13,7 +13,7 @@ internal protocol AnyThreeDS2Component: Component {
 
     /// :nodoc:
     func handle(_ action: ThreeDS2FingerprintAction,
-                completionHandler: @escaping (Result<Action, Error>) -> Void)
+                completionHandler: @escaping (Result<Action?, Error>) -> Void)
 
     /// :nodoc:
     func handle(_ action: ThreeDS2ChallengeAction,
@@ -56,7 +56,7 @@ internal final class InternalThreeDS2Component: AnyThreeDS2Component {
     /// - Parameter action: The fingerprint action as received from the Checkout API.
     /// :nodoc:
     internal func handle(_ action: ThreeDS2FingerprintAction,
-                         completionHandler: @escaping (Result<Action, Error>) -> Void) {
+                         completionHandler: @escaping (Result<Action?, Error>) -> Void) {
         Analytics.sendEvent(component: fingerprintEventName, flavor: _isDropIn ? .dropin : .components, environment: environment)
 
         do {
@@ -78,7 +78,7 @@ internal final class InternalThreeDS2Component: AnyThreeDS2Component {
 
     private func createFingerprint(using service: ADYService,
                                    paymentData: String,
-                                   completionHandler: @escaping (Result<Action, Error>) -> Void) {
+                                   completionHandler: @escaping (Result<Action?, Error>) -> Void) {
         do {
             let transaction = try service.transaction(withMessageVersion: "2.1.0")
             self.transaction = transaction
