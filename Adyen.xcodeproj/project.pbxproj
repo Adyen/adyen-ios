@@ -247,6 +247,11 @@
 		F957A9F125514AB70099AD73 /* Submit3DS2FingerprintResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957A9F025514AB70099AD73 /* Submit3DS2FingerprintResponse.swift */; };
 		F957A9FA25514EEA0099AD73 /* ThreeDS2FingerprintSubmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957A9F925514EEA0099AD73 /* ThreeDS2FingerprintSubmitter.swift */; };
 		F957AA2C2551829F0099AD73 /* InternalThreeDS2Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA2B2551829F0099AD73 /* InternalThreeDS2Component.swift */; };
+		F957AA462552C3D20099AD73 /* ThreeDS2FingerprintSubmitterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA452552C3D20099AD73 /* ThreeDS2FingerprintSubmitterTests.swift */; };
+		F957AA5A2552D8BB0099AD73 /* ThreeDS2ComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA592552D8BB0099AD73 /* ThreeDS2ComponentTests.swift */; };
+		F957AA622552D8D20099AD73 /* AnyThreeDS2ComponentMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA612552D8D20099AD73 /* AnyThreeDS2ComponentMock.swift */; };
+		F957AA6A2552D98E0099AD73 /* AnyThreeDS2FingerprintSubmitterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA692552D98E0099AD73 /* AnyThreeDS2FingerprintSubmitterMock.swift */; };
+		F957AA722552DBC80099AD73 /* AnyRedirectComponentMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA712552DBC80099AD73 /* AnyRedirectComponentMock.swift */; };
 		F95B6D8A2523138E002C9062 /* PhoneNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6D892523138E002C9062 /* PhoneNumberFormatter.swift */; };
 		F95B6D8C252316DA002C9062 /* PhoneNumberValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6D8B252316DA002C9062 /* PhoneNumberValidator.swift */; };
 		F95B6D8E25231715002C9062 /* RegularExpressionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6D8D25231715002C9062 /* RegularExpressionValidator.swift */; };
@@ -834,6 +839,11 @@
 		F957A9F025514AB70099AD73 /* Submit3DS2FingerprintResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submit3DS2FingerprintResponse.swift; sourceTree = "<group>"; };
 		F957A9F925514EEA0099AD73 /* ThreeDS2FingerprintSubmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2FingerprintSubmitter.swift; sourceTree = "<group>"; };
 		F957AA2B2551829F0099AD73 /* InternalThreeDS2Component.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternalThreeDS2Component.swift; sourceTree = "<group>"; };
+		F957AA452552C3D20099AD73 /* ThreeDS2FingerprintSubmitterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2FingerprintSubmitterTests.swift; sourceTree = "<group>"; };
+		F957AA592552D8BB0099AD73 /* ThreeDS2ComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2ComponentTests.swift; sourceTree = "<group>"; };
+		F957AA612552D8D20099AD73 /* AnyThreeDS2ComponentMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyThreeDS2ComponentMock.swift; sourceTree = "<group>"; };
+		F957AA692552D98E0099AD73 /* AnyThreeDS2FingerprintSubmitterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyThreeDS2FingerprintSubmitterMock.swift; sourceTree = "<group>"; };
+		F957AA712552DBC80099AD73 /* AnyRedirectComponentMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyRedirectComponentMock.swift; sourceTree = "<group>"; };
 		F95B6D892523138E002C9062 /* PhoneNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberFormatter.swift; sourceTree = "<group>"; };
 		F95B6D8B252316DA002C9062 /* PhoneNumberValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberValidator.swift; sourceTree = "<group>"; };
 		F95B6D8D25231715002C9062 /* RegularExpressionValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularExpressionValidator.swift; sourceTree = "<group>"; };
@@ -1882,6 +1892,7 @@
 		E9E3DAB0221D79A800697074 /* Card Tests */ = {
 			isa = PBXGroup;
 			children = (
+				F957AA432552C3A90099AD73 /* 3DS2 Component */,
 				E7E8343A24F3C7ED00EC3844 /* Mocks */,
 				E2B317AA22660FAA00C1BB30 /* Form */,
 				E9E3DAC9221EDDD900697074 /* Utilities */,
@@ -2109,6 +2120,26 @@
 			isa = PBXGroup;
 			children = (
 				F957A9F925514EEA0099AD73 /* ThreeDS2FingerprintSubmitter.swift */,
+			);
+			path = "3DS2 Fingerprint Submitter";
+			sourceTree = "<group>";
+		};
+		F957AA432552C3A90099AD73 /* 3DS2 Component */ = {
+			isa = PBXGroup;
+			children = (
+				F957AA442552C3BB0099AD73 /* 3DS2 Fingerprint Submitter */,
+				F957AA592552D8BB0099AD73 /* ThreeDS2ComponentTests.swift */,
+				F957AA712552DBC80099AD73 /* AnyRedirectComponentMock.swift */,
+				F957AA612552D8D20099AD73 /* AnyThreeDS2ComponentMock.swift */,
+				F957AA692552D98E0099AD73 /* AnyThreeDS2FingerprintSubmitterMock.swift */,
+			);
+			path = "3DS2 Component";
+			sourceTree = "<group>";
+		};
+		F957AA442552C3BB0099AD73 /* 3DS2 Fingerprint Submitter */ = {
+			isa = PBXGroup;
+			children = (
+				F957AA452552C3D20099AD73 /* ThreeDS2FingerprintSubmitterTests.swift */,
 			);
 			path = "3DS2 Fingerprint Submitter";
 			sourceTree = "<group>";
@@ -3149,6 +3180,7 @@
 			files = (
 				E97B971A229D54D600505476 /* ActionTests.swift in Sources */,
 				F9AC61C0243750D80062A00D /* AppLauncherMock.swift in Sources */,
+				F957AA722552DBC80099AD73 /* AnyRedirectComponentMock.swift in Sources */,
 				F9EDB79A239664B500CFB3C9 /* StoredPaymentMethodComponentTests.swift in Sources */,
 				F9EDB7982396643A00CFB3C9 /* CardPaymentMethodMock.swift in Sources */,
 				E72521EE25517EB100533E35 /* BLIKComponentTests.swift in Sources */,
@@ -3170,6 +3202,7 @@
 				E9E3DAC8221EDDAF00697074 /* CardNumbers.swift in Sources */,
 				E9E3DACF221EEB5300697074 /* CardSecurityCodeValidatorTests.swift in Sources */,
 				E270FDE6225CB40A006C2CD0 /* ObservableTests.swift in Sources */,
+				F957AA6A2552D98E0099AD73 /* AnyThreeDS2FingerprintSubmitterMock.swift in Sources */,
 				F99F085A2383EAC800EBB948 /* FormatterMock.swift in Sources */,
 				F9639B4724E283060073F38A /* BackoffSchedulerTests.swift in Sources */,
 				E216D3CB221AFB9A0013CBCF /* IBANValidatorTests.swift in Sources */,
@@ -3178,9 +3211,11 @@
 				F9EDB78D2395643A00CFB3C9 /* CardComponentTests.swift in Sources */,
 				F9D57535238291A1009C18B5 /* BCMCComponentTests.swift in Sources */,
 				F9D57526237C3576009C18B5 /* RandomStringGenerator.swift in Sources */,
+				F957AA5A2552D8BB0099AD73 /* ThreeDS2ComponentTests.swift in Sources */,
 				F9D57528237C3EE3009C18B5 /* UIView+Search.swift in Sources */,
 				E9E3DAC2221ECE1000697074 /* CardSecurityCodeFormatterTests.swift in Sources */,
 				F9D5751423757013009C18B5 /* CardPublicKeyValidatorTests.swift in Sources */,
+				F957AA622552D8D20099AD73 /* AnyThreeDS2ComponentMock.swift in Sources */,
 				F99F08582383EA2A00EBB948 /* ValidatorMock.swift in Sources */,
 				F9EDB78B2395608D00CFB3C9 /* SEPADirectDebitComponentTests.swift in Sources */,
 				E773EA3C2523432B00119499 /* CardTypeProviderMock.swift in Sources */,
@@ -3197,6 +3232,7 @@
 				E773EA3A25221C4600119499 /* ThrottlerTests.swift in Sources */,
 				F9EDB78F23964FC000CFB3C9 /* StoredCardAlertManagerTests.swift in Sources */,
 				F9AC61C2243751A70062A00D /* ActionComponentDelegateMock.swift in Sources */,
+				F957AA462552C3D20099AD73 /* ThreeDS2FingerprintSubmitterTests.swift in Sources */,
 				E216D3C7221AF5650013CBCF /* IBANFormatterTests.swift in Sources */,
 				F9639B5024E29D2D0073F38A /* AwaitComponentTests.swift in Sources */,
 				F924C072246BEEF0006DDAB8 /* CardDetailsTests.swift in Sources */,

@@ -24,6 +24,12 @@ public enum ThreeDS2ComponentError: Error {
     
 }
 
+internal protocol AnyRedirectComponent: ActionComponent {
+    func handle(_ action: RedirectAction)
+}
+
+extension RedirectComponent: AnyRedirectComponent {}
+
 /// Handles the 3D Secure 2 fingerprint and challenge.
 public final class ThreeDS2Component: ActionComponent {
     
@@ -43,11 +49,14 @@ public final class ThreeDS2Component: ActionComponent {
     /// Initializes the 3D Secure 2 component.
     ///
     /// - Parameter threeDS2Component: The internal threeDS2Component
+    /// - Parameter redirectComponent: The redirect component.
     /// - Parameter redirectComponentStyle: `RedirectComponent` style
     internal convenience init(threeDS2Component: AnyThreeDS2Component,
+                              redirectComponent: AnyRedirectComponent,
                               redirectComponentStyle: RedirectComponentStyle? = nil) {
         self.init(redirectComponentStyle: redirectComponentStyle)
         self.threeDS2Component = threeDS2Component
+        self.redirectComponent = redirectComponent
     }
     
     // MARK: - Fingerprint
@@ -57,7 +66,7 @@ public final class ThreeDS2Component: ActionComponent {
     /// - Parameter action: The fingerprint action as received from the Checkout API.
     public func handle(_ action: ThreeDS2FingerprintAction) {
         threeDS2Component.handle(action) { [weak self] result in
-            self?.handle(result)
+            self?.handle(result, action.paymentData)
         }
     }
     
@@ -79,12 +88,26 @@ public final class ThreeDS2Component: ActionComponent {
     
     // MARK: - Private
 
-    private func handle(_ result: Result<Action, Error>) {
+    private func handle(_ result: Result<Action?, Error>, _ paymentData: String) {
         switch result {
         case let .success(action):
-            handle(action)
+            handle(action, paymentData)
         case let .failure(error):
             didFail(with: error)
+        }
+    }
+
+    private func handle(_ action: Action?, _ paymentData: String) {
+        if let action = action {
+            handle(action)
+        } else {
+            do {
+                let result = try ChallengeResult(isAuthenticated: true)
+                let details = ThreeDS2Details.challengeResult(result)
+                didFinish(data: ActionComponentData(details: details, paymentData: paymentData))
+            } catch {
+                didFail(with: error)
+            }
         }
     }
 
@@ -121,7 +144,7 @@ public final class ThreeDS2Component: ActionComponent {
         return component
     }()
 
-    private lazy var redirectComponent: RedirectComponent = {
+    private lazy var redirectComponent: AnyRedirectComponent = {
         let component = RedirectComponent(style: redirectComponentStyle)
 
         component.delegate = self

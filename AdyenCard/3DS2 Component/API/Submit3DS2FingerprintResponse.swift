@@ -14,6 +14,11 @@ internal struct Submit3DS2FingerprintResponse: Response {
 
     internal let action: Action?
 
+    internal init(resultCode: ResultCode, action: Action?) {
+        self.resultCode = resultCode
+        self.action = action
+    }
+
     private enum CodingKeys: String, CodingKey {
         case resultCode
         case action
