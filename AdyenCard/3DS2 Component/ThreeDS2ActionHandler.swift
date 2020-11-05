@@ -9,7 +9,7 @@ import Adyen3DS2
 import Foundation
 
 /// :nodoc:
-internal protocol AnyThreeDS2Component: Component {
+internal protocol AnyThreeDS2ActionHandler: Component {
 
     /// :nodoc:
     func handle(_ action: ThreeDS2FingerprintAction,
@@ -22,7 +22,7 @@ internal protocol AnyThreeDS2Component: Component {
 
 /// Handles the 3D Secure 2 fingerprint and challenge.
 /// :nodoc:
-internal final class InternalThreeDS2Component: AnyThreeDS2Component {
+internal final class ThreeDS2ActionHandler: AnyThreeDS2ActionHandler {
 
     /// The appearance configuration of the 3D Secure 2 challenge UI.
     /// :nodoc:
@@ -41,9 +41,12 @@ internal final class InternalThreeDS2Component: AnyThreeDS2Component {
     /// Initializes the 3D Secure 2 component.
     ///
     /// - Parameter fingerprintSubmitter: The fingerprint handler.
+    /// - Parameter service: The 3DS2 Service.
     /// :nodoc:
-    internal init(fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter) {
+    internal convenience init(fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter, service: AnyADYService) {
+        self.init()
         self.fingerprintSubmitter = fingerprintSubmitter
+        self.service = service
     }
 
     /// Initializes the 3D Secure 2 component.
@@ -66,9 +69,8 @@ internal final class InternalThreeDS2Component: AnyThreeDS2Component {
             serviceParameters.directoryServerIdentifier = token.directoryServerIdentifier
             serviceParameters.directoryServerPublicKey = token.directoryServerPublicKey
 
-            ADYService.service(with: serviceParameters, appearanceConfiguration: appearanceConfiguration) { service in
-                self.createFingerprint(using: service,
-                                       paymentData: action.paymentData,
+            service.service(with: serviceParameters, appearanceConfiguration: appearanceConfiguration) { _ in
+                self.createFingerprint(paymentData: action.paymentData,
                                        completionHandler: completionHandler)
             }
         } catch {
@@ -76,15 +78,14 @@ internal final class InternalThreeDS2Component: AnyThreeDS2Component {
         }
     }
 
-    private func createFingerprint(using service: ADYService,
-                                   paymentData: String,
+    private func createFingerprint(paymentData: String,
                                    completionHandler: @escaping (Result<Action?, Error>) -> Void) {
         do {
             let transaction = try service.transaction(withMessageVersion: "2.1.0")
             self.transaction = transaction
 
             let fingerprint = try ThreeDS2Component.Fingerprint(
-                authenticationRequestParameters: transaction.authenticationRequestParameters
+                authenticationRequestParameters: transaction.authenticationParameters
             )
             let encodedFingerprint = try Coder.encodeBase64(fingerprint)
             
@@ -129,7 +130,7 @@ internal final class InternalThreeDS2Component: AnyThreeDS2Component {
         }
     }
 
-    private func handle(_ sdkChallengeResult: ADYChallengeResult,
+    private func handle(_ sdkChallengeResult: AnyChallengeResult,
                         paymentData: String,
                         completionHandler: @escaping (Result<ActionComponentData, Error>) -> Void) {
         do {
@@ -147,7 +148,9 @@ internal final class InternalThreeDS2Component: AnyThreeDS2Component {
     private let fingerprintEventName = "3ds2fingerprint"
     private let challengeEventName = "3ds2challenge"
 
-    private var transaction: ADYTransaction?
+    private var transaction: AnyADYTransaction?
+
+    private lazy var service: AnyADYService = ADYServiceAdapter()
 
     private func didFinish(with challengeResult: ThreeDS2Component.ChallengeResult,
                            paymentData: String,

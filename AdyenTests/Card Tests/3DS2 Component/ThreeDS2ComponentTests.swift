@@ -24,8 +24,8 @@ class ThreeDS2ComponentTests: XCTestCase {
         let mockedDetails = RedirectDetails(returnURL: URL(string: "https://www.adyen.com")!)
         let mockedData = ActionComponentData(details: mockedDetails, paymentData: "data")
 
-        let threeDSComponent = AnyThreeDS2ComponentMock()
-        threeDSComponent.mockedFingerprintResult = .success(.redirect(mockedAction))
+        let threeDSActionHandler = AnyThreeDS2ActionHandlerMock()
+        threeDSActionHandler.mockedFingerprintResult = .success(.redirect(mockedAction))
 
 
         let redirectComponent = AnyRedirectComponentMock()
@@ -39,7 +39,7 @@ class ThreeDS2ComponentTests: XCTestCase {
 
         }
 
-        let sut = ThreeDS2Component(threeDS2Component: threeDSComponent, redirectComponent: redirectComponent)
+        let sut = ThreeDS2Component(threeDS2ActionHandler: threeDSActionHandler, redirectComponent: redirectComponent)
         sut.clientKey = "client_key"
         redirectComponent.delegate = sut
 
@@ -63,8 +63,8 @@ class ThreeDS2ComponentTests: XCTestCase {
     func testRedirectFailure() throws {
         let mockedAction = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "data")
 
-        let threeDSComponent = AnyThreeDS2ComponentMock()
-        threeDSComponent.mockedFingerprintResult = .success(.redirect(mockedAction))
+        let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
+        threeDS2ActionHandler.mockedFingerprintResult = .success(.redirect(mockedAction))
 
 
         let redirectComponent = AnyRedirectComponentMock()
@@ -78,7 +78,7 @@ class ThreeDS2ComponentTests: XCTestCase {
 
         }
 
-        let sut = ThreeDS2Component(threeDS2Component: threeDSComponent, redirectComponent: redirectComponent)
+        let sut = ThreeDS2Component(threeDS2ActionHandler: threeDS2ActionHandler, redirectComponent: redirectComponent)
         sut.clientKey = "client_key"
         redirectComponent.delegate = sut
 
@@ -104,9 +104,9 @@ class ThreeDS2ComponentTests: XCTestCase {
         let mockedDetails = ThreeDS2Details.challengeResult(try ThreeDS2Component.ChallengeResult(isAuthenticated: true))
         let mockedData = ActionComponentData(details: mockedDetails, paymentData: "data")
 
-        let threeDSComponent = AnyThreeDS2ComponentMock()
-        threeDSComponent.mockedFingerprintResult = .success(.threeDS2Challenge(mockedAction))
-        threeDSComponent.mockedChallengeResult = .success(mockedData)
+        let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
+        threeDS2ActionHandler.mockedFingerprintResult = .success(.threeDS2Challenge(mockedAction))
+        threeDS2ActionHandler.mockedChallengeResult = .success(mockedData)
 
 
         let redirectComponent = AnyRedirectComponentMock()
@@ -114,7 +114,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTFail("RedirectComponent should never be invoked.")
         }
 
-        let sut = ThreeDS2Component(threeDS2Component: threeDSComponent, redirectComponent: redirectComponent)
+        let sut = ThreeDS2Component(threeDS2ActionHandler: threeDS2ActionHandler, redirectComponent: redirectComponent)
         sut.clientKey = "client_key"
         redirectComponent.delegate = sut
 
@@ -138,9 +138,9 @@ class ThreeDS2ComponentTests: XCTestCase {
 
         let mockedAction = ThreeDS2ChallengeAction(token: "token", paymentData: "data")
 
-        let threeDSComponent = AnyThreeDS2ComponentMock()
-        threeDSComponent.mockedFingerprintResult = .success(.threeDS2Challenge(mockedAction))
-        threeDSComponent.mockedChallengeResult = .failure(Dummy.dummyError)
+        let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
+        threeDS2ActionHandler.mockedFingerprintResult = .success(.threeDS2Challenge(mockedAction))
+        threeDS2ActionHandler.mockedChallengeResult = .failure(Dummy.dummyError)
 
 
         let redirectComponent = AnyRedirectComponentMock()
@@ -148,7 +148,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTFail("RedirectComponent should never be invoked.")
         }
 
-        let sut = ThreeDS2Component(threeDS2Component: threeDSComponent, redirectComponent: redirectComponent)
+        let sut = ThreeDS2Component(threeDS2ActionHandler: threeDS2ActionHandler, redirectComponent: redirectComponent)
         sut.clientKey = "client_key"
         redirectComponent.delegate = sut
 
@@ -169,8 +169,8 @@ class ThreeDS2ComponentTests: XCTestCase {
 
     func testFingerprintFailure() throws {
 
-        let threeDSComponent = AnyThreeDS2ComponentMock()
-        threeDSComponent.mockedFingerprintResult = .failure(Dummy.dummyError)
+        let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
+        threeDS2ActionHandler.mockedFingerprintResult = .failure(Dummy.dummyError)
 
 
         let redirectComponent = AnyRedirectComponentMock()
@@ -178,7 +178,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTFail("RedirectComponent should never be invoked.")
         }
 
-        let sut = ThreeDS2Component(threeDS2Component: threeDSComponent, redirectComponent: redirectComponent)
+        let sut = ThreeDS2Component(threeDS2ActionHandler: threeDS2ActionHandler, redirectComponent: redirectComponent)
         sut.clientKey = "client_key"
         redirectComponent.delegate = sut
 
@@ -199,15 +199,15 @@ class ThreeDS2ComponentTests: XCTestCase {
 
     func testNoAction() throws {
 
-        let threeDSComponent = AnyThreeDS2ComponentMock()
-        threeDSComponent.mockedFingerprintResult = .success(nil)
+        let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
+        threeDS2ActionHandler.mockedFingerprintResult = .success(nil)
 
         let redirectComponent = AnyRedirectComponentMock()
         redirectComponent.onHandle = { action in
             XCTFail("RedirectComponent should never be invoked.")
         }
 
-        let sut = ThreeDS2Component(threeDS2Component: threeDSComponent, redirectComponent: redirectComponent)
+        let sut = ThreeDS2Component(threeDS2ActionHandler: threeDS2ActionHandler, redirectComponent: redirectComponent)
         sut.clientKey = "client_key"
         redirectComponent.delegate = sut
 
