@@ -16,13 +16,13 @@ internal protocol AnyADYTransaction {
 
 extension ADYTransaction: AnyADYTransaction {
 
-    var authenticationParameters: AnyAuthenticationRequestParameters { authenticationRequestParameters }
+    internal var authenticationParameters: AnyAuthenticationRequestParameters { authenticationRequestParameters }
 
-    func performChallenge(with parameters: ADYChallengeParameters,
-                          completionHandler: @escaping (AnyChallengeResult?, Error?) -> Void) {
+    internal func performChallenge(with parameters: ADYChallengeParameters,
+                                   completionHandler: @escaping (AnyChallengeResult?, Error?) -> Void) {
         performChallenge(with: parameters,
                          completionHandler: { (result: ADYChallengeResult?, error: Error?) -> Void in
-            completionHandler(result, error)
-        })
+                             completionHandler(result, error)
+                         })
     }
 }
