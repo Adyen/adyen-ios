@@ -75,6 +75,7 @@ public final class ThreeDS2Component: ActionComponent {
     /// Handles the 3D Secure 2 challenge action.
     ///
     /// - Parameter action: The challenge action as received from the Checkout API.
+    @available(*, deprecated, message: "This function is not needed to be called anymore, handle(_:ThreeDS2FingerprintAction) is the only call needed.")
     public func handle(_ action: ThreeDS2ChallengeAction) {
         threeDS2ActionHandler.handle(action) { [weak self] result in
             switch result {
