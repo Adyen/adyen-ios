@@ -216,8 +216,7 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     /// :nodoc:
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
         paymentAuthorizationCompletion?(success ? .success : .failure)
-        dismissCompletion = completion
-        paymentAuthorizationViewController = nil
+        dismiss(callback: completion)
     }
     
     // MARK: - Private
@@ -252,7 +251,7 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     }
     
     private func newPaymentAuthorizationViewController() -> PKPaymentAuthorizationViewController? {
-        guard let paymentAuthorizationViewController = PKPaymentAuthorizationViewController(paymentRequest: self.paymentRequest) else {
+        guard let paymentAuthorizationViewController = PKPaymentAuthorizationViewController(paymentRequest: createPaymentRequest()) else {
             adyenPrint("Failed to instantiate PKPaymentAuthorizationViewController.")
             return nil
         }
@@ -261,7 +260,7 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
         return paymentAuthorizationViewController
     }
     
-    internal lazy var paymentRequest: PKPaymentRequest = {
+    internal func createPaymentRequest() -> PKPaymentRequest {
         let paymentRequest = PKPaymentRequest()
         
         paymentRequest.countryCode = payment?.countryCode ?? ""
@@ -277,9 +276,20 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
         }
         
         return paymentRequest
-    }()
+    }
     
     private func handle(_ error: Swift.Error) {
         delegate?.didFail(with: error, from: self)
+    }
+
+    internal func dismiss(callback: (() -> Void)? = nil) {
+        paymentAuthorizationViewController?.dismiss(animated: true) { [weak self] in
+            guard let self = self else { return }
+            self.paymentAuthorizationViewController = nil
+
+            callback?()
+            self.dismissCompletion?()
+            self.dismissCompletion = nil
+        }
     }
 }

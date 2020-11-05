@@ -14,14 +14,7 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     
     /// :nodoc:
     public func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
-        controller.dismiss(animated: true) { [weak self] in
-            guard let self = self else { return }
-            
-            self.delegate?.didFail(with: ComponentError.cancelled, from: self)
-            self.dismissCompletion?()
-            self.dismissCompletion = nil
-        }
-        self.paymentAuthorizationViewController = nil
+        self.delegate?.didFail(with: ComponentError.cancelled, from: self)
     }
     
     /// :nodoc:

@@ -39,7 +39,7 @@ internal enum Configuration {
     // swiftlint:disable:next line_length
     static let demoServerAPIKey = "{YOUR_DEMO_SERVER_API_KEY}"
     
-    static let applePayMerchantIdentifier = "{YOUR_APPLE_PAY_MERCHANT_IDENTIFIER}"
+    static let applePayMerchantIdentifier = "merchant.com.adyen"
     
     static let applePaySummaryItems = [
         PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)
