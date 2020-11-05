@@ -58,49 +58,35 @@ public final class ThreeDS2Component: ActionComponent {
         self.threeDS2ActionHandler = threeDS2ActionHandler
         self.redirectComponent = redirectComponent
     }
-    
-    // MARK: - Fingerprint
-    
-    /// Handles the 3D Secure 2 fingerprint action.
-    ///
-    /// - Parameter action: The fingerprint action as received from the Checkout API.
-    public func handle(_ action: ThreeDS2FingerprintAction) {
-        threeDS2ActionHandler.handle(action) { [weak self] result in
-            self?.handle(result, action.paymentData)
-        }
-    }
-    
-    // MARK: - Challenge
-    
-    /// Handles the 3D Secure 2 challenge action.
-    ///
-    /// - Parameter action: The challenge action as received from the Checkout API.
-    @available(*, deprecated, message: "This function is not needed to be called anymore, handle(_:ThreeDS2FingerprintAction) is the only call needed.")
-    public func handle(_ action: ThreeDS2ChallengeAction) {
-        threeDS2ActionHandler.handle(action) { [weak self] result in
-            switch result {
-            case let .success(data):
-                self?.didFinish(data: data)
-            case let .failure(error):
-                self?.didFail(with: error)
-            }
-        }
-    }
-    
-    // MARK: - Private
 
-    private func handle(_ result: Result<Action?, Error>, _ paymentData: String) {
-        switch result {
+    // MARK: - 3D Secure 2 action
+    
+    /// Handles the 3D Secure 2 action.
+    ///
+    /// - Parameter threeDS2Action: The 3D Secure 2 action as received from the Checkout API.
+    public func handle(_ threeDS2Action: ThreeDS2Action) {
+        switch threeDS2Action {
+        case let .fingerprint(fingerprintAction):
+            threeDS2ActionHandler.handleFullFlow(fingerprintAction) { [weak self] actionResult in
+                self?.didReceive(actionResult, fingerprintAction.paymentData)
+            }
+        case let .challenge(challengeAction):
+            handle(challengeAction)
+        }
+    }
+
+    private func didReceive(_ actionResult: Result<Action?, Error>, _ paymentData: String) {
+        switch actionResult {
         case let .success(action):
-            handle(action, paymentData)
+            didReceive(action, paymentData)
         case let .failure(error):
             didFail(with: error)
         }
     }
 
-    private func handle(_ action: Action?, _ paymentData: String) {
+    private func didReceive(_ action: Action?, _ paymentData: String) {
         if let action = action {
-            handle(action)
+            didReceive(action)
         } else {
             do {
                 let result = try ChallengeResult(isAuthenticated: true)
@@ -112,10 +98,12 @@ public final class ThreeDS2Component: ActionComponent {
         }
     }
 
-    private func handle(_ action: Action) {
+    private func didReceive(_ action: Action) {
         switch action {
         case let .redirect(redirectAction):
             handle(redirectAction)
+        case let .threeDS2(threeDS2Action):
+            handle(threeDS2Action)
         case let .threeDS2Challenge(threeDS2ChallengeAction):
             handle(threeDS2ChallengeAction)
         default:
@@ -125,6 +113,39 @@ public final class ThreeDS2Component: ActionComponent {
 
     private func handle(_ redirectAction: RedirectAction) {
         redirectComponent.handle(redirectAction)
+    }
+
+    // MARK: - Fingerprint
+
+    /// Handles the 3D Secure 2 fingerprint action.
+    ///
+    /// - Parameter fingerprintAction: The fingerprint action as received from the Checkout API.
+    public func handle(_ fingerprintAction: ThreeDS2FingerprintAction) {
+        threeDS2ActionHandler.handle(fingerprintAction) { [weak self] dataResult in
+            self?.didReceive(dataResult)
+        }
+    }
+    
+    // MARK: - Challenge
+    
+    /// Handles the 3D Secure 2 challenge action.
+    ///
+    /// - Parameter challengeAction: The challenge action as received from the Checkout API.
+    public func handle(_ challengeAction: ThreeDS2ChallengeAction) {
+        threeDS2ActionHandler.handle(challengeAction) { [weak self] dataResult in
+            self?.didReceive(dataResult)
+        }
+    }
+    
+    // MARK: - Private
+
+    private func didReceive(_ dataResult: Result<ActionComponentData, Error>) {
+        switch dataResult {
+        case let .success(data):
+            didFinish(data: data)
+        case let .failure(error):
+            didFail(with: error)
+        }
     }
 
     private func didFinish(data: ActionComponentData) {

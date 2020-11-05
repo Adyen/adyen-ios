@@ -10,29 +10,13 @@ import Foundation
 /// :nodoc:
 internal struct Submit3DS2FingerprintResponse: Response {
 
-    internal let resultCode: ResultCode
-
     internal let action: Action?
 
-    internal init(resultCode: ResultCode, action: Action?) {
-        self.resultCode = resultCode
+    internal init(action: Action?) {
         self.action = action
     }
 
     private enum CodingKeys: String, CodingKey {
-        case resultCode
         case action
     }
-}
-
-internal enum ResultCode: String, Decodable {
-    case authorised = "Authorised"
-    case refused = "Refused"
-    case pending = "Pending"
-    case cancelled = "Cancelled"
-    case error = "Error"
-    case received = "Received"
-    case redirectShopper = "RedirectShopper"
-    case identifyShopper = "IdentifyShopper"
-    case challengeShopper = "ChallengeShopper"
 }
