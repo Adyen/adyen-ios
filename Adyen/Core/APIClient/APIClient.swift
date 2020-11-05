@@ -52,10 +52,6 @@ public final class APIClient: APIClientProtocol {
             return
         }
         
-        adyenPrint("---- Request (/\(request.path)) ----")
-        
-        printAsJSON(body)
-        
         var urlRequest = URLRequest(url: add(queryParameters: request.queryParameters + environment.queryParameters, to: url))
         urlRequest.httpMethod = request.method.rawValue
         if request.method == .post {
@@ -63,6 +59,22 @@ public final class APIClient: APIClientProtocol {
         }
         
         urlRequest.allHTTPHeaderFields = request.headers.merging(environment.headers, uniquingKeysWith: { key1, _ in key1 })
+
+        log(urlRequest: urlRequest, request: request)
+        
+        requestCounter += 1
+        
+        urlSession.adyen.dataTask(with: urlRequest) { [weak self] result in
+            self?.handle(result, request: request, completionHandler: completionHandler)
+        }.resume()
+    }
+
+    private func log<R: Request>(urlRequest: URLRequest, request: R) {
+        adyenPrint("---- Request (/\(request.path)) ----")
+
+        if let body = urlRequest.httpBody {
+            printAsJSON(body)
+        }
 
         if let headers = urlRequest.allHTTPHeaderFields {
             adyenPrint("---- Request Headers (/\(request.path)) ----")
@@ -98,8 +110,9 @@ public final class APIClient: APIClientProtocol {
             case let .failure(error):
                 completionHandler(.failure(error))
             }
-            
-        }.resume()
+        } catch {
+            completionHandler(.failure(error))
+        }
     }
     
     /// :nodoc:
