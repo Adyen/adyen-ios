@@ -45,6 +45,8 @@ public final class DropInActionComponent: ActionComponent, Localizable {
             perform(fingerprintAction)
         case let .threeDS2Challenge(challengeAction):
             perform(challengeAction)
+        case let .threeDS2(threeDS2Action):
+            perform(threeDS2Action)
         case let .sdk(sdkAction):
             perform(sdkAction)
         case let .await(awaitAction):
@@ -77,16 +79,29 @@ public final class DropInActionComponent: ActionComponent, Localizable {
         
         component.handle(action)
     }
+
+    private func perform(_ action: ThreeDS2Action) {
+        let component = createThreeDS2Component()
+        threeDS2Component = component
+
+        component.handle(action)
+    }
     
     private func perform(_ action: ThreeDS2FingerprintAction) {
+        let component = createThreeDS2Component()
+        threeDS2Component = component
+        
+        component.handle(action)
+    }
+
+    private func createThreeDS2Component() -> ThreeDS2Component {
         let component = ThreeDS2Component()
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.environment = environment
         component.clientKey = clientKey
-        threeDS2Component = component
-        
-        component.handle(action)
+
+        return component
     }
     
     private func perform(_ action: ThreeDS2ChallengeAction) {

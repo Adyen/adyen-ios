@@ -30,7 +30,7 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
         sut.clientKey = "clientKey"
 
         let mockedAction = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "data")
-        let mockedResponse = Submit3DS2FingerprintResponse(resultCode: .identifyShopper, action: .redirect(mockedAction))
+        let mockedResponse = Submit3DS2FingerprintResponse(action: .redirect(mockedAction))
         apiClient.mockedResults = [.success(mockedResponse)]
 
         let submitExpectation = expectation(description: "Expect the submit completion handler to be called.")
@@ -59,7 +59,7 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
         sut.clientKey = "clientKey"
 
         let mockedAction = ThreeDS2ChallengeAction(token: "token", paymentData: "data")
-        let mockedResponse = Submit3DS2FingerprintResponse(resultCode: .identifyShopper, action: .threeDS2Challenge(mockedAction))
+        let mockedResponse = Submit3DS2FingerprintResponse(action: .threeDS2Challenge(mockedAction))
         apiClient.mockedResults = [.success(mockedResponse)]
 
         let submitExpectation = expectation(description: "Expect the submit completion handler to be called.")
@@ -87,7 +87,7 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
         let sut = ThreeDS2FingerprintSubmitter(apiClient: retryApiClient)
         sut.clientKey = "clientKey"
 
-        let mockedResponse = Submit3DS2FingerprintResponse(resultCode: .identifyShopper, action: nil)
+        let mockedResponse = Submit3DS2FingerprintResponse(action: nil)
         apiClient.mockedResults = [.success(mockedResponse)]
 
         let submitExpectation = expectation(description: "Expect the submit completion handler to be called.")

@@ -11,9 +11,16 @@ import Foundation
 
 final class AnyThreeDS2ActionHandlerMock: AnyThreeDS2ActionHandler {
 
-    var mockedFingerprintResult: Result<Action?, Error>?
+    var mockedFullFlowResult: Result<Action?, Error>?
 
-    func handle(_ action: ThreeDS2FingerprintAction, completionHandler: @escaping (Result<Action?, Error>) -> Void) {
+    func handleFullFlow(_ fingerprintAction: ThreeDS2FingerprintAction, completionHandler: @escaping (Result<Action?, Error>) -> Void) {
+        guard let result = mockedFullFlowResult else { assertionFailure(); return }
+        completionHandler(result)
+    }
+
+    var mockedFingerprintResult: Result<ActionComponentData, Error>?
+
+    func handle(_ action: ThreeDS2FingerprintAction, completionHandler: @escaping (Result<ActionComponentData, Error>) -> Void) {
         guard let result = mockedFingerprintResult else { assertionFailure(); return }
         completionHandler(result)
     }

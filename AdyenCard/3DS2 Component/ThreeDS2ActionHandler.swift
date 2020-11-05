@@ -12,11 +12,15 @@ import Foundation
 internal protocol AnyThreeDS2ActionHandler: Component {
 
     /// :nodoc:
-    func handle(_ action: ThreeDS2FingerprintAction,
-                completionHandler: @escaping (Result<Action?, Error>) -> Void)
+    func handleFullFlow(_ fingerprintAction: ThreeDS2FingerprintAction,
+                        completionHandler: @escaping (Result<Action?, Error>) -> Void)
 
     /// :nodoc:
-    func handle(_ action: ThreeDS2ChallengeAction,
+    func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
+                completionHandler: @escaping (Result<ActionComponentData, Error>) -> Void)
+
+    /// :nodoc:
+    func handle(_ challengeAction: ThreeDS2ChallengeAction,
                 completionHandler: @escaping (Result<ActionComponentData, Error>) -> Void)
 }
 
@@ -42,30 +46,47 @@ internal final class ThreeDS2ActionHandler: AnyThreeDS2ActionHandler {
     /// Initializes the 3D Secure 2 component.
     internal init() { /* empty init */ }
 
+    // MARK: - 3D Secure 2 Action
+
+    /// Handles the 3D Secure 2 action.
+    ///
+    /// - Parameter fingerprintAction: The fingerprint action as received from the Checkout API.
+    /// - Parameter completionHandler: The completion closure.
+    /// :nodoc:
+    internal func handleFullFlow(_ fingerprintAction: ThreeDS2FingerprintAction,
+                                 completionHandler: @escaping (Result<Action?, Error>) -> Void) {
+        Analytics.sendEvent(component: threeDS2EventName, flavor: _isDropIn ? .dropin : .components, environment: environment)
+        createFingerprint(fingerprintAction) { [weak self] result in
+            switch result {
+            case let .success(encodedFingerprint):
+                self?.fingerprintSubmitter.submit(fingerprint: encodedFingerprint,
+                                                  paymentData: fingerprintAction.paymentData,
+                                                  completionHandler: completionHandler)
+            case let .failure(error):
+                self?.didFail(with: error, completionHandler: completionHandler)
+            }
+        }
+    }
+
     // MARK: - Fingerprint
 
     /// Handles the 3D Secure 2 fingerprint action.
     ///
-    /// - Parameter action: The fingerprint action as received from the Checkout API.
+    /// - Parameter fingerprintAction: The fingerprint action as received from the Checkout API.
     /// - Parameter completionHandler: The completion closure.
     /// :nodoc:
-    internal func handle(_ action: ThreeDS2FingerprintAction,
-                         completionHandler: @escaping (Result<Action?, Error>) -> Void) {
+    internal func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
+                         completionHandler: @escaping (Result<ActionComponentData, Error>) -> Void) {
         Analytics.sendEvent(component: fingerprintEventName, flavor: _isDropIn ? .dropin : .components, environment: environment)
+        createFingerprint(fingerprintAction) { [weak self] result in
+            switch result {
+            case let .success(encodedFingerprint):
+                let additionalDetails = ThreeDS2Details.fingerprint(encodedFingerprint)
 
-        do {
-            let token = try Coder.decodeBase64(action.token) as ThreeDS2Component.FingerprintToken
-
-            let serviceParameters = ADYServiceParameters()
-            serviceParameters.directoryServerIdentifier = token.directoryServerIdentifier
-            serviceParameters.directoryServerPublicKey = token.directoryServerPublicKey
-
-            service.service(with: serviceParameters, appearanceConfiguration: appearanceConfiguration) { _ in
-                self.createFingerprint(paymentData: action.paymentData,
-                                       completionHandler: completionHandler)
+                completionHandler(.success(ActionComponentData(details: additionalDetails, paymentData: fingerprintAction.paymentData)))
+            case let .failure(error):
+                self?.didFail(with: error, completionHandler: completionHandler)
             }
-        } catch {
-            didFail(with: error, completionHandler: completionHandler)
         }
     }
 
@@ -73,10 +94,10 @@ internal final class ThreeDS2ActionHandler: AnyThreeDS2ActionHandler {
 
     /// Handles the 3D Secure 2 challenge action.
     ///
-    /// - Parameter action: The challenge action as received from the Checkout API.
+    /// - Parameter challengeAction: The challenge action as received from the Checkout API.
     /// - Parameter completionHandler: The completion closure.
     /// :nodoc:
-    internal func handle(_ action: ThreeDS2ChallengeAction,
+    internal func handle(_ challengeAction: ThreeDS2ChallengeAction,
                          completionHandler: @escaping (Result<ActionComponentData, Error>) -> Void) {
         guard let transaction = transaction else {
             didFail(with: ThreeDS2ComponentError.missingTransaction, completionHandler: completionHandler)
@@ -87,7 +108,7 @@ internal final class ThreeDS2ActionHandler: AnyThreeDS2ActionHandler {
         Analytics.sendEvent(component: challengeEventName, flavor: _isDropIn ? .dropin : .components, environment: environment)
 
         do {
-            let token = try Coder.decodeBase64(action.token) as ThreeDS2Component.ChallengeToken
+            let token = try Coder.decodeBase64(challengeAction.token) as ThreeDS2Component.ChallengeToken
             let challengeParameters = ADYChallengeParameters(from: token)
             transaction.performChallenge(with: challengeParameters) { [weak self] result, error in
                 guard let self = self else { return }
@@ -95,7 +116,7 @@ internal final class ThreeDS2ActionHandler: AnyThreeDS2ActionHandler {
                     self.didFail(with: error, completionHandler: completionHandler)
                 } else if let result = result {
                     self.handle(result,
-                                paymentData: action.paymentData,
+                                paymentData: challengeAction.paymentData,
                                 completionHandler: completionHandler)
                 }
             }
@@ -120,12 +141,33 @@ internal final class ThreeDS2ActionHandler: AnyThreeDS2ActionHandler {
 
     private let challengeEventName = "3ds2challenge"
 
+    private let threeDS2EventName = "3ds2"
+
     private var transaction: AnyADYTransaction?
 
     private lazy var service: AnyADYService = ADYServiceAdapter()
 
-    private func createFingerprint(paymentData: String,
-                                   completionHandler: @escaping (Result<Action?, Error>) -> Void) {
+    private func createFingerprint(_ action: ThreeDS2FingerprintAction,
+                                   completionHandler: @escaping (Result<String, Error>) -> Void) {
+
+        do {
+            let token = try Coder.decodeBase64(action.token) as ThreeDS2Component.FingerprintToken
+
+            let serviceParameters = ADYServiceParameters()
+            serviceParameters.directoryServerIdentifier = token.directoryServerIdentifier
+            serviceParameters.directoryServerPublicKey = token.directoryServerPublicKey
+
+            service.service(with: serviceParameters, appearanceConfiguration: appearanceConfiguration) { [weak self] _ in
+                if let encodedFingerprint = self?.getFingerprint(completionHandler: completionHandler) {
+                    completionHandler(.success(encodedFingerprint))
+                }
+            }
+        } catch {
+            didFail(with: error, completionHandler: completionHandler)
+        }
+    }
+
+    private func getFingerprint<R>(completionHandler: @escaping (Result<R, Error>) -> Void) -> String? {
         do {
             let newTransaction = try service.transaction(withMessageVersion: "2.1.0")
             self.transaction = newTransaction
@@ -135,12 +177,11 @@ internal final class ThreeDS2ActionHandler: AnyThreeDS2ActionHandler {
             )
             let encodedFingerprint = try Coder.encodeBase64(fingerprint)
 
-            fingerprintSubmitter.submit(fingerprint: encodedFingerprint,
-                                        paymentData: paymentData,
-                                        completionHandler: completionHandler)
+            return encodedFingerprint
         } catch {
             didFail(with: error, completionHandler: completionHandler)
         }
+        return nil
     }
 
     private func handle(_ sdkChallengeResult: AnyChallengeResult,
