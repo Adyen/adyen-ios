@@ -1,5 +1,5 @@
 //
-//  AnyThreeDS2ComponentMock.swift
+//  AnyThreeDS2ActionHandlerMock.swift
 //  AdyenTests
 //
 //  Created by Mohamed Eldoheiri on 11/4/20.
@@ -9,7 +9,7 @@
 import Foundation
 @testable import AdyenCard
 
-final class AnyThreeDS2ComponentMock: AnyThreeDS2Component {
+final class AnyThreeDS2ActionHandlerMock: AnyThreeDS2ActionHandler {
 
     var mockedFingerprintResult: Result<Action?, Error>?
 
