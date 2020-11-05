@@ -50,7 +50,7 @@ internal final class ThreeDS2ActionHandler: AnyThreeDS2ActionHandler {
     }
 
     /// Initializes the 3D Secure 2 component.
-    internal init() {}
+    internal init() { /* empty init */ }
 
     // MARK: - Fingerprint
 
@@ -74,18 +74,18 @@ internal final class ThreeDS2ActionHandler: AnyThreeDS2ActionHandler {
                                        completionHandler: completionHandler)
             }
         } catch {
-            completionHandler(.failure(error))
+            didFail(with: error, completionHandler: completionHandler)
         }
     }
 
     private func createFingerprint(paymentData: String,
                                    completionHandler: @escaping (Result<Action?, Error>) -> Void) {
         do {
-            let transaction = try service.transaction(withMessageVersion: "2.1.0")
-            self.transaction = transaction
+            let newTransaction = try service.transaction(withMessageVersion: "2.1.0")
+            self.transaction = newTransaction
 
             let fingerprint = try ThreeDS2Component.Fingerprint(
-                authenticationRequestParameters: transaction.authenticationParameters
+                authenticationRequestParameters: newTransaction.authenticationParameters
             )
             let encodedFingerprint = try Coder.encodeBase64(fingerprint)
             
@@ -93,7 +93,7 @@ internal final class ThreeDS2ActionHandler: AnyThreeDS2ActionHandler {
                                         paymentData: paymentData,
                                         completionHandler: completionHandler)
         } catch {
-            completionHandler(.failure(error))
+            didFail(with: error, completionHandler: completionHandler)
         }
     }
 
@@ -106,7 +106,7 @@ internal final class ThreeDS2ActionHandler: AnyThreeDS2ActionHandler {
     internal func handle(_ action: ThreeDS2ChallengeAction,
                          completionHandler: @escaping (Result<ActionComponentData, Error>) -> Void) {
         guard let transaction = transaction else {
-            completionHandler(.failure(ThreeDS2ComponentError.missingTransaction))
+            didFail(with: ThreeDS2ComponentError.missingTransaction, completionHandler: completionHandler)
 
             return
         }
@@ -116,9 +116,10 @@ internal final class ThreeDS2ActionHandler: AnyThreeDS2ActionHandler {
         do {
             let token = try Coder.decodeBase64(action.token) as ThreeDS2Component.ChallengeToken
             let challengeParameters = ADYChallengeParameters(from: token)
-            transaction.performChallenge(with: challengeParameters) { result, error in
+            transaction.performChallenge(with: challengeParameters) { [weak self] result, error in
+                guard let self = self else { return }
                 if let error = error {
-                    completionHandler(.failure(error))
+                    self.didFail(with: error, completionHandler: completionHandler)
                 } else if let result = result {
                     self.handle(result,
                                 paymentData: action.paymentData,
@@ -126,7 +127,7 @@ internal final class ThreeDS2ActionHandler: AnyThreeDS2ActionHandler {
                 }
             }
         } catch {
-            completionHandler(.failure(error))
+            didFail(with: error, completionHandler: completionHandler)
         }
     }
 
@@ -139,7 +140,7 @@ internal final class ThreeDS2ActionHandler: AnyThreeDS2ActionHandler {
                       paymentData: paymentData,
                       completionHandler: completionHandler)
         } catch {
-            completionHandler(.failure(error))
+            didFail(with: error, completionHandler: completionHandler)
         }
     }
 
