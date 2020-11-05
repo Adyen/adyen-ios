@@ -18,7 +18,7 @@ public extension ThreeDS2Component {
         /// The payload to submit to verify the authentication.
         public let payload: String
         
-        internal init(from challengeResult: ADYChallengeResult) throws {
+        internal init(from challengeResult: AnyChallengeResult) throws {
             let payloadData = try JSONSerialization.data(withJSONObject: ["transStatus": challengeResult.transactionStatus],
                                                          options: [])
             

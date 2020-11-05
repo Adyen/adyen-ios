@@ -48,14 +48,14 @@ public final class ThreeDS2Component: ActionComponent {
 
     /// Initializes the 3D Secure 2 component.
     ///
-    /// - Parameter threeDS2Component: The internal threeDS2Component
+    /// - Parameter threeDS2ActionHandler: The internal threeDS2Component
     /// - Parameter redirectComponent: The redirect component.
     /// - Parameter redirectComponentStyle: `RedirectComponent` style
-    internal convenience init(threeDS2Component: AnyThreeDS2Component,
+    internal convenience init(threeDS2ActionHandler: AnyThreeDS2ActionHandler,
                               redirectComponent: AnyRedirectComponent,
                               redirectComponentStyle: RedirectComponentStyle? = nil) {
         self.init(redirectComponentStyle: redirectComponentStyle)
-        self.threeDS2Component = threeDS2Component
+        self.threeDS2ActionHandler = threeDS2ActionHandler
         self.redirectComponent = redirectComponent
     }
     
@@ -65,7 +65,7 @@ public final class ThreeDS2Component: ActionComponent {
     ///
     /// - Parameter action: The fingerprint action as received from the Checkout API.
     public func handle(_ action: ThreeDS2FingerprintAction) {
-        threeDS2Component.handle(action) { [weak self] result in
+        threeDS2ActionHandler.handle(action) { [weak self] result in
             self?.handle(result, action.paymentData)
         }
     }
@@ -76,7 +76,7 @@ public final class ThreeDS2Component: ActionComponent {
     ///
     /// - Parameter action: The challenge action as received from the Checkout API.
     public func handle(_ action: ThreeDS2ChallengeAction) {
-        threeDS2Component.handle(action) { [weak self] result in
+        threeDS2ActionHandler.handle(action) { [weak self] result in
             switch result {
             case let .success(data):
                 self?.didFinish(data: data)
@@ -134,14 +134,14 @@ public final class ThreeDS2Component: ActionComponent {
         delegate?.didFail(with: error, from: self)
     }
 
-    private lazy var threeDS2Component: AnyThreeDS2Component = {
-        let component = InternalThreeDS2Component()
+    private lazy var threeDS2ActionHandler: AnyThreeDS2ActionHandler = {
+        let handler = ThreeDS2ActionHandler()
 
-        component._isDropIn = _isDropIn
-        component.environment = environment
-        component.clientKey = clientKey
+        handler._isDropIn = _isDropIn
+        handler.environment = environment
+        handler.clientKey = clientKey
 
-        return component
+        return handler
     }()
 
     private lazy var redirectComponent: AnyRedirectComponent = {

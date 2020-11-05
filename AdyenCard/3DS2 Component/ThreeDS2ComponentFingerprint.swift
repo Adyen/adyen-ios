@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -17,7 +17,7 @@ internal extension ThreeDS2Component {
         private let sdkApplicationIdentifier: String
         private let sdkTransactionIdentifier: String
         
-        internal init(authenticationRequestParameters: ADYAuthenticationRequestParameters) throws {
+        internal init(authenticationRequestParameters: AnyAuthenticationRequestParameters) throws {
             let sdkEphemeralPublicKeyData = Data(authenticationRequestParameters.sdkEphemeralPublicKey.utf8)
             let sdkEphemeralPublicKey = try JSONDecoder().decode(EphemeralPublicKey.self, from: sdkEphemeralPublicKeyData)
             
@@ -40,9 +40,9 @@ internal extension ThreeDS2Component {
     
 }
 
-private extension ThreeDS2Component.Fingerprint {
+extension ThreeDS2Component.Fingerprint {
     
-    struct EphemeralPublicKey: Codable {
+    internal struct EphemeralPublicKey: Codable {
         
         private let keyType: String
         private let curve: String
