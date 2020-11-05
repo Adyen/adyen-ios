@@ -50,7 +50,7 @@ internal struct AnyChallengeResultMock: AnyChallengeResult {
 
     var sdkTransactionIdentifier: String
 
-    var transactionStatus: String
+    var transactionStatus: String?
 }
 
 final class AnyADYTransactionMock: AnyADYTransaction {

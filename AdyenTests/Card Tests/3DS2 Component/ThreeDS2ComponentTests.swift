@@ -17,7 +17,7 @@ extension ThreeDS2Component.ChallengeResult: Equatable {
 
 class ThreeDS2ComponentTests: XCTestCase {
 
-    func testRedirectSuccess() throws {
+    func testFullFlowRedirectSuccess() throws {
 
         let mockedAction = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "data")
 
@@ -25,7 +25,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         let mockedData = ActionComponentData(details: mockedDetails, paymentData: "data")
 
         let threeDSActionHandler = AnyThreeDS2ActionHandlerMock()
-        threeDSActionHandler.mockedFingerprintResult = .success(.redirect(mockedAction))
+        threeDSActionHandler.mockedFullFlowResult = .success(.redirect(mockedAction))
 
 
         let redirectComponent = AnyRedirectComponentMock()
@@ -55,16 +55,16 @@ class ThreeDS2ComponentTests: XCTestCase {
         }
         sut.delegate = delegate
 
-        sut.handle(ThreeDS2FingerprintAction(token: "token", paymentData: "data"))
+        sut.handle(ThreeDS2Action.fingerprint(ThreeDS2FingerprintAction(token: "token", paymentData: "data")))
 
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testRedirectFailure() throws {
+    func testFullFlowRedirectFailure() throws {
         let mockedAction = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "data")
 
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
-        threeDS2ActionHandler.mockedFingerprintResult = .success(.redirect(mockedAction))
+        threeDS2ActionHandler.mockedFullFlowResult = .success(.redirect(mockedAction))
 
 
         let redirectComponent = AnyRedirectComponentMock()
@@ -92,12 +92,12 @@ class ThreeDS2ComponentTests: XCTestCase {
         }
         sut.delegate = delegate
 
-        sut.handle(ThreeDS2FingerprintAction(token: "token", paymentData: "data"))
+        sut.handle(ThreeDS2Action.fingerprint(ThreeDS2FingerprintAction(token: "token", paymentData: "data")))
 
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testChallengeSuccess() throws {
+    func testFullFlowChallengeSuccess() throws {
 
         let mockedAction = ThreeDS2ChallengeAction(token: "token", paymentData: "data")
 
@@ -105,7 +105,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         let mockedData = ActionComponentData(details: mockedDetails, paymentData: "data")
 
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
-        threeDS2ActionHandler.mockedFingerprintResult = .success(.threeDS2Challenge(mockedAction))
+        threeDS2ActionHandler.mockedFullFlowResult = .success(.threeDS2Challenge(mockedAction))
         threeDS2ActionHandler.mockedChallengeResult = .success(mockedData)
 
 
@@ -129,17 +129,17 @@ class ThreeDS2ComponentTests: XCTestCase {
         }
         sut.delegate = delegate
 
-        sut.handle(ThreeDS2FingerprintAction(token: "token", paymentData: "data"))
+        sut.handle(ThreeDS2Action.fingerprint(ThreeDS2FingerprintAction(token: "token", paymentData: "data")))
 
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testChallengeFailure() throws {
+    func testFullFlowChallengeFailure() throws {
 
         let mockedAction = ThreeDS2ChallengeAction(token: "token", paymentData: "data")
 
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
-        threeDS2ActionHandler.mockedFingerprintResult = .success(.threeDS2Challenge(mockedAction))
+        threeDS2ActionHandler.mockedFullFlowResult = .success(.threeDS2Challenge(mockedAction))
         threeDS2ActionHandler.mockedChallengeResult = .failure(Dummy.dummyError)
 
 
@@ -162,15 +162,15 @@ class ThreeDS2ComponentTests: XCTestCase {
         }
         sut.delegate = delegate
 
-        sut.handle(ThreeDS2FingerprintAction(token: "token", paymentData: "data"))
+        sut.handle(ThreeDS2Action.fingerprint(ThreeDS2FingerprintAction(token: "token", paymentData: "data")))
 
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testFingerprintFailure() throws {
+    func testFullFlowFingerprintFailure() throws {
 
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
-        threeDS2ActionHandler.mockedFingerprintResult = .failure(Dummy.dummyError)
+        threeDS2ActionHandler.mockedFullFlowResult = .failure(Dummy.dummyError)
 
 
         let redirectComponent = AnyRedirectComponentMock()
@@ -192,15 +192,58 @@ class ThreeDS2ComponentTests: XCTestCase {
         }
         sut.delegate = delegate
 
+        sut.handle(ThreeDS2Action.fingerprint(ThreeDS2FingerprintAction(token: "token", paymentData: "data")))
+
+        waitForExpectations(timeout: 2, handler: nil)
+    }
+
+    func testFingerprintSuccess() throws {
+
+        let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
+
+        let mockedDetails = ThreeDS2Details.fingerprint("fingerprint")
+        let mockedData = ActionComponentData(details: mockedDetails, paymentData: "data")
+        threeDS2ActionHandler.mockedFingerprintResult = .success(mockedData)
+
+
+        let redirectComponent = AnyRedirectComponentMock()
+        redirectComponent.onHandle = { action in
+            XCTFail("RedirectComponent should never be invoked.")
+        }
+
+        let sut = ThreeDS2Component(threeDS2ActionHandler: threeDS2ActionHandler, redirectComponent: redirectComponent)
+        sut.clientKey = "client_key"
+        redirectComponent.delegate = sut
+
+        let delegate = ActionComponentDelegateMock()
+        let delegateExpectation = expectation(description: "Expect delegate didProvide(_:from:) function to be called.")
+        delegate.onDidProvide = { data, component in
+            XCTAssertTrue(component === sut)
+            XCTAssertEqual(data.paymentData, mockedData.paymentData)
+
+            let threeDS2Details = data.details as! ThreeDS2Details
+
+
+            switch threeDS2Details {
+            case let .fingerprint(fingerprint):
+                XCTAssertEqual(fingerprint, "fingerprint")
+            default:
+                XCTFail()
+            }
+
+            delegateExpectation.fulfill()
+        }
+        sut.delegate = delegate
+
         sut.handle(ThreeDS2FingerprintAction(token: "token", paymentData: "data"))
 
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testNoAction() throws {
+    func testFullFlowFrictionless() throws {
 
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
-        threeDS2ActionHandler.mockedFingerprintResult = .success(nil)
+        threeDS2ActionHandler.mockedFullFlowResult = .success(nil)
 
         let redirectComponent = AnyRedirectComponentMock()
         redirectComponent.onHandle = { action in
@@ -229,7 +272,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         }
         sut.delegate = delegate
 
-        sut.handle(ThreeDS2FingerprintAction(token: "token", paymentData: "data"))
+        sut.handle(ThreeDS2Action.fingerprint(ThreeDS2FingerprintAction(token: "token", paymentData: "data")))
 
         waitForExpectations(timeout: 2, handler: nil)
     }

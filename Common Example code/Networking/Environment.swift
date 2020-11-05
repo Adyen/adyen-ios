@@ -9,14 +9,16 @@ import Foundation
 
 internal enum DemoServerEnvironment: APIEnvironment {
     
-    case beta, test
+    case beta, test, local
     
     internal var baseURL: URL {
         switch self {
         case .beta:
-            return URL(string: "https://checkout-beta.adyen.com/v64")!
+            return URL(string: "https://checkout-beta.adyen.com/v100")!
         case .test:
-            return URL(string: "https://checkout-test.adyen.com/v64")!
+            return URL(string: "https://checkout-test.adyen.com/v100")!
+        case .local:
+            return URL(string: "http://localhost:8080/checkout/v100")!
         }
     }
     
