@@ -53,7 +53,10 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
         formViewController.localizationParameters = localizationParameters
 
         formViewController.title = paymentMethod.name.uppercased()
-        formViewController.append(hintLabelItem)
+
+        let container = ContainerFormItem(content: hintLabelItem,
+                                          padding: .init(top: 7, left: 0, bottom: -7, right: 0))
+        formViewController.append(container)
         formViewController.append(codeItem)
         formViewController.append(footerItem)
 
@@ -61,17 +64,10 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
     }()
 
     /// The helper message item.
-    internal lazy var hintLabelItem: UILabel = {
-        let item = UILabel()
-        item.text = ADYLocalizedString("adyen.blik.help", localizationParameters)
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "blikCodeHintItem")
-        item.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "blikCodeHintItem.label")
-        item.font = style.hintLabel.font
-        item.textColor = style.hintLabel.color
-        item.textAlignment = style.hintLabel.textAlignment
-        item.backgroundColor = style.hintLabel.backgroundColor
-
-        return item
+    internal lazy var hintLabelItem: FormLabelItem = {
+        FormLabelItem(text: ADYLocalizedString("adyen.blik.help", localizationParameters),
+                      style: style.hintLabel,
+                      identifier: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "blikCodeHintLabel"))
     }()
 
     /// The BLIK code item.

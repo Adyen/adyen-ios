@@ -94,7 +94,7 @@ class BLIKComponentTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
 
-            let hintView: UILabel! = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.blikCodeHintItem.label")
+            let hintView: UILabel! = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.blikCodeHintLabel")
 
             let blikCodeView: FormTextInputItemView! = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.blikCodeItem")
             let blikCodeViewTitleLabel: UILabel! = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.blikCodeItem.titleLabel")
