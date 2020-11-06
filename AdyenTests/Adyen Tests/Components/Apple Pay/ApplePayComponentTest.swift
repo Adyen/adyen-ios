@@ -9,26 +9,67 @@ import PassKit
 import XCTest
 
 class ApplePayComponentTest: XCTestCase {
-    
-    func testApplePayViewControllerIsResetAfterDidFinish() {
+
+    var mockDelegate: PaymentComponentDelegateMock!
+    var sut: ApplePayComponent!
+
+    override func setUp() {
         let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name")
         let amount = Payment.Amount(value: 2, currencyCode: getRandomCurrencyCode())
         let payment = Payment(amount: amount, countryCode: getRandomCountryCode())
         let configuration = ApplePayComponent.Configuration(summaryItems: createTestSummaryItems(), merchantIdentifier: "test_id")
-        let sut = try? ApplePayComponent(paymentMethod: paymentMethod, payment: payment, configuration: configuration)
-        let viewController = sut?.viewController
-        
-        XCTAssertNotNil(viewController as? PKPaymentAuthorizationViewController)
-        sut?.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
+        sut = try? ApplePayComponent(paymentMethod: paymentMethod, payment: payment, configuration: configuration)
+        mockDelegate = PaymentComponentDelegateMock()
+        sut.delegate = mockDelegate
+    }
+
+    override func tearDown() {
+        sut = nil
+        mockDelegate = nil
+    }
+    
+    func testApplePayViewControllerIsResetAfterComponentStopsLoading() {
+        let onDidFailExpectation = expectation(description: "Wait for delegate call")
+
+        let viewController = sut!.viewController
+        UIApplication.shared.keyWindow?.rootViewController = UINavigationController(rootViewController: UIViewController())
+        UIApplication.shared.keyWindow?.rootViewController?.present(viewController, animated: true) {
+            self.sut?.stopLoading(withSuccess: false) {
+                onDidFailExpectation.fulfill()
+            }
+        }
+
+        waitForExpectations(timeout: 5)
         XCTAssertTrue(viewController !== sut?.viewController)
+    }
+
+    func testApplePayViewControllerRemainsInMemoryIfViewControlerDismissed() {
+        let onDidFailExpectation = expectation(description: "Wait for delegate call")
+
+        let viewController = sut!.viewController
+        UIApplication.shared.keyWindow?.rootViewController = UINavigationController(rootViewController: UIViewController())
+        UIApplication.shared.keyWindow?.rootViewController?.present(viewController, animated: true) {
+            viewController.dismiss(animated: true) {
+                onDidFailExpectation.fulfill()
+            }
+        }
+
+        waitForExpectations(timeout: 5)
+        XCTAssertTrue(viewController === sut?.viewController)
+    }
+
+    func testApplePayViewControllerCallsDelgateDidFail() {
+        let viewController = sut?.viewController
+        let onDidFailExpectation = expectation(description: "Wait for delegate call")
+        mockDelegate.onDidFail = {  (error, component) in
+            XCTAssertEqual(error as! ComponentError, ComponentError.cancelled)
+            onDidFailExpectation.fulfill()
+        }
+        sut.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
+        waitForExpectations(timeout: 2)
     }
     
     func testApplePayViewControllerIsResetAfterAuthorization() {
-        let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name")
-        let amount = Payment.Amount(value: 2, currencyCode: getRandomCurrencyCode())
-        let payment = Payment(amount: amount, countryCode: getRandomCountryCode())
-        let configuration = ApplePayComponent.Configuration(summaryItems: createTestSummaryItems(), merchantIdentifier: "test_id")
-        let sut = try? ApplePayComponent(paymentMethod: paymentMethod, payment: payment, configuration: configuration)
         let viewController = sut?.viewController
         
         XCTAssertNotNil(viewController as? PKPaymentAuthorizationViewController)
@@ -98,20 +139,10 @@ class ApplePayComponentTest: XCTestCase {
     }
     
     func testRequiresModalPresentation() {
-        let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name")
-        let amount = Payment.Amount(value: 2, currencyCode: getRandomCurrencyCode())
-        let payment = Payment(amount: amount, countryCode: getRandomCountryCode())
-        let configuration = ApplePayComponent.Configuration(summaryItems: createTestSummaryItems(), merchantIdentifier: "test_id")
-        let sut = try? ApplePayComponent(paymentMethod: paymentMethod, payment: payment, configuration: configuration)
         XCTAssertEqual(sut?.requiresModalPresentation, false)
     }
     
     func testPresentationViewControllerValidPayment() {
-        let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name")
-        let amount = Payment.Amount(value: 2, currencyCode: getRandomCurrencyCode())
-        let payment = Payment(amount: amount, countryCode: getRandomCountryCode())
-        let configuration = ApplePayComponent.Configuration(summaryItems: createTestSummaryItems(), merchantIdentifier: "test_id")
-        let sut = try? ApplePayComponent(paymentMethod: paymentMethod, payment: payment, configuration: configuration)
         XCTAssertTrue(sut?.viewController is PKPaymentAuthorizationViewController)
     }
     
@@ -131,15 +162,16 @@ class ApplePayComponentTest: XCTestCase {
         let sut = try? ApplePayComponent(paymentMethod: paymentMethod,
                                          payment: payment,
                                          configuration: configuration)
-        XCTAssertEqual(sut?.paymentRequest.paymentSummaryItems, expectedSummaryItems)
-        XCTAssertEqual(sut?.paymentRequest.merchantCapabilities, PKMerchantCapability.capability3DS)
-        XCTAssertEqual(sut?.paymentRequest.supportedNetworks, self.supportedNetworks.filter { $0 != .visa })
-        XCTAssertEqual(sut?.paymentRequest.currencyCode, amount.currencyCode)
-        XCTAssertEqual(sut?.paymentRequest.merchantIdentifier, "test_id")
-        XCTAssertEqual(sut?.paymentRequest.countryCode, countryCode)
+        let paymentRequest = sut!.createPaymentRequest()
+        XCTAssertEqual(paymentRequest.paymentSummaryItems, expectedSummaryItems)
+        XCTAssertEqual(paymentRequest.merchantCapabilities, PKMerchantCapability.capability3DS)
+        XCTAssertEqual(paymentRequest.supportedNetworks, self.supportedNetworks.filter { $0 != .visa })
+        XCTAssertEqual(paymentRequest.currencyCode, amount.currencyCode)
+        XCTAssertEqual(paymentRequest.merchantIdentifier, "test_id")
+        XCTAssertEqual(paymentRequest.countryCode, countryCode)
         if #available(iOS 11.0, *) {
-            XCTAssertEqual(sut?.paymentRequest.requiredBillingContactFields, expectedRequiredBillingFields)
-            XCTAssertEqual(sut?.paymentRequest.requiredShippingContactFields, expectedRequiredShippingFields)
+            XCTAssertEqual(paymentRequest.requiredBillingContactFields, expectedRequiredBillingFields)
+            XCTAssertEqual(paymentRequest.requiredShippingContactFields, expectedRequiredShippingFields)
         }
     }
     
