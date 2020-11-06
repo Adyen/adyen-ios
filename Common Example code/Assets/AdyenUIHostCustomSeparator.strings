@@ -37,3 +37,8 @@
 "adyen_emailItem_title" = "Email";
 "adyen_emailItem_placeholder" = "Email";
 "adyen_emailItem_invalid" = "Invalid email address";
+"adyen_blik_confirmPayment" = "Open your banking app to confirm the payment.";
+"adyen_blik_invalid" = "Enter 6 numbers";
+"adyen_blik_code" = "6-digit code";
+"adyen_blik_help" = "Get the code from your banking app.";
+"adyen_blik_placeholder" = "123–456";

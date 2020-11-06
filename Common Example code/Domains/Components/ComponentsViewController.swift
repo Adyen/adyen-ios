@@ -82,17 +82,17 @@ internal final class ComponentsViewController: UIViewController, Presenter {
             alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         }
 
-        adyen.topPresenter.present(alertController, animated: true)
+        present(alertController, animated: true)
     }
 
     internal func presentAlert(withTitle title: String) {
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        adyen.topPresenter.present(alertController, animated: true)
+        present(alertController, animated: true)
     }
 
     internal func present(viewController: UIViewController, completion: (() -> Void)?) {
-        adyen.topPresenter.present(viewController, animated: true, completion: completion)
+        present(viewController, animated: true, completion: completion)
     }
 
     internal func dismiss(completion: (() -> Void)?) {

@@ -20,6 +20,11 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     
     /// Indicates if form will show a large header title. True - show title; False - assign title to a view controller's title.
     /// Defaults to true.
+    @available(*, deprecated, message: """
+     The `showsLargeTitle` property is deprecated.
+     For Component title, please, introduce your own lable implementation.
+     You can access componet's title from `viewController.title`.
+    """)
     public var showsLargeTitle = true
     
     /// The delegate of the component.
@@ -69,10 +74,9 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
             headerItem.title = paymentMethod.name
             headerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: paymentMethod.name)
             formViewController.append(headerItem)
-        } else {
-            formViewController.title = paymentMethod.name
         }
-        
+
+        formViewController.title = paymentMethod.name
         formViewController.append(nameItem)
         formViewController.append(ibanItem)
         formViewController.append(footerItem)

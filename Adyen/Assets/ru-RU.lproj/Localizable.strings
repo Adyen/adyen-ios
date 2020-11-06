@@ -40,3 +40,8 @@
 "adyen.emailItem.invalid" = "Недействительный адрес эл. почты";
 "adyen.mbway.confirmPayment" = "Подтвердите оплату в приложении MB WAY";
 "adyen.await.waitForConfirmation" = "Ожидание подтверждения";
+"adyen.blik.confirmPayment" = "Для подтверждения оплаты откройте приложение банка.";
+"adyen.blik.invalid" = "Введите 6 цифр";
+"adyen.blik.code" = "6-значный код";
+"adyen.blik.help" = "Получите код из банковского приложения.";
+"adyen.blik.placeholder" = "123–456";

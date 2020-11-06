@@ -8,6 +8,7 @@ import Foundation
 
 public enum AwaitPaymentMethod: String, Decodable {
     case mbway
+    case blik
 }
 
 /// Describes an action in which the SDK is waiting for user action.

@@ -40,3 +40,8 @@
 "adyen.emailItem.invalid" = "Ongeldig e-mailadres";
 "adyen.mbway.confirmPayment" = "Bevestig uw betaling via de MB WAY-app";
 "adyen.await.waitForConfirmation" = "Wacht op bevestiging";
+"adyen.blik.confirmPayment" = "Open uw bankapp om de betaling te bevestigen.";
+"adyen.blik.invalid" = "Voer 6 cijfers in";
+"adyen.blik.code" = "6-cijferige code";
+"adyen.blik.help" = "Haal de code op in uw bankapp.";
+"adyen.blik.placeholder" = "123–456";

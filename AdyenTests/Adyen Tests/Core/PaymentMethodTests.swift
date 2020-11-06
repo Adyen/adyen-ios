@@ -51,7 +51,8 @@ class PaymentMethodTests: XCTestCase {
                 qiwiWallet,
                 weChatSDKDictionary,
                 debitCardDictionary,
-                mbway
+                mbway,
+                blik
             ]
         ]
         
@@ -102,7 +103,7 @@ class PaymentMethodTests: XCTestCase {
         
         // Regular payment methods
         
-        XCTAssertEqual(paymentMethods.regular.count, 12)
+        XCTAssertEqual(paymentMethods.regular.count, 13)
         XCTAssertTrue(paymentMethods.regular[0] is CardPaymentMethod)
         XCTAssertEqual((paymentMethods.regular[0] as! CardPaymentMethod).fundingSource!, .credit)
         
@@ -159,6 +160,10 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertTrue(paymentMethods.regular[11] is MBWayPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[11].name, "MB WAY")
         XCTAssertEqual(paymentMethods.regular[11].type, "mbway")
+
+        XCTAssertTrue(paymentMethods.regular[12] is BLIKPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[12].name, "Blik")
+        XCTAssertEqual(paymentMethods.regular[12].type, "blik")
     }
     
     // MARK: - Card
