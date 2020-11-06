@@ -35,6 +35,7 @@ internal enum PaymentMethodType: String {
     case weChatPayWeb = "wechatpayWeb"
     case weChatPaySDK = "wechatpaySDK"
     case mbWay = "mbway"
+    case blik
     
 }
 
@@ -78,7 +79,8 @@ internal enum AnyPaymentMethodDecoder {
         .weChatQR: UnsupportedPaymentMethodDecoder(),
         .weChatPayWeb: UnsupportedPaymentMethodDecoder(),
         .qiwiWallet: QiwiWalletPaymentMethodDecoder(),
-        .mbWay: MBWayPaymentMethodDecoder()
+        .mbWay: MBWayPaymentMethodDecoder(),
+        .blik: BLIKPaymentMethodDecoder()
     ]
     
     private static var defaultDecoder: PaymentMethodDecoder = RedirectPaymentMethodDecoder()
@@ -198,5 +200,11 @@ private struct QiwiWalletPaymentMethodDecoder: PaymentMethodDecoder {
 private struct MBWayPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
         return .mbWay(try MBWayPaymentMethod(from: decoder))
+    }
+}
+
+private struct BLIKPaymentMethodDecoder: PaymentMethodDecoder {
+    func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
+        return .blik(try BLIKPaymentMethod(from: decoder))
     }
 }

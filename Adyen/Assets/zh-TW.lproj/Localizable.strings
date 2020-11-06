@@ -40,3 +40,8 @@
 "adyen.emailItem.invalid" = "電子郵件地址無效";
 "adyen.mbway.confirmPayment" = "在 MB WAY 應用程式上確認您的付款";
 "adyen.await.waitForConfirmation" = "正在等候確認";
+"adyen.blik.confirmPayment" = "開啟您的銀行應用程式以確認付款。";
+"adyen.blik.invalid" = "輸入 6 個數字";
+"adyen.blik.code" = "6 位數代碼";
+"adyen.blik.help" = "從您的銀行應用程式中獲取代碼。";
+"adyen.blik.placeholder" = "123–456";

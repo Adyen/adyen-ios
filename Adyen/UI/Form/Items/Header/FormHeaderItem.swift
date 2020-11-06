@@ -8,6 +8,12 @@ import Foundation
 
 /// A form item that represents a header.
 /// :nodoc:
+@available(*, deprecated, message: """
+ This form item is deprecated.
+ The 'showsLargeTitle' is deprecatred for components.
+ For Component title, please, introduce your own lable implementation.
+ For text lable use FormLabelItem.
+""")
 public final class FormHeaderItem: FormItem {
     
     /// The form header style.

@@ -1,9 +1,7 @@
 //
-//  AwaitActionHandlerProvider.swift
-//  Adyen
+// Copyright (c) 2020 Adyen N.V.
 //
-//  Created by Mohamed Eldoheiri on 8/12/20.
-//  Copyright © 2020 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
@@ -33,7 +31,7 @@ internal struct AwaitActionHandlerProvider: AnyAwaitActionHandlerProvider {
     /// :nodoc:
     internal func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyAwaitActionHandler {
         switch paymentMethodType {
-        case .mbway:
+        case .mbway, .blik:
             let scheduler = BackoffScheduler(queue: .main)
             let baseAPIClient = APIClient(environment: environment)
             let apiClient = self.apiClient ?? RetryAPIClient(apiClient: baseAPIClient, scheduler: scheduler)

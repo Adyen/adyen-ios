@@ -40,3 +40,8 @@
 "adyen.emailItem.invalid" = "유효하지 않은 이메일 주소";
 "adyen.mbway.confirmPayment" = "MB WAY 앱에서 결제를 확인하십시오";
 "adyen.await.waitForConfirmation" = "확인 대기중";
+"adyen.blik.confirmPayment" = "뱅킹 앱을 열어서 결제를 확인하세요.";
+"adyen.blik.invalid" = "6자리 숫자 입력";
+"adyen.blik.code" = "6자리 코드";
+"adyen.blik.help" = "뱅킹 앱에서 코드를 가져오세요.";
+"adyen.blik.placeholder" = "123–456";
