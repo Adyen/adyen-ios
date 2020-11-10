@@ -53,6 +53,12 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
             storedCardComponent?.delegate = delegate
         }
     }
+
+    public var payment: Payment? {
+        didSet {
+            storedCardComponent?.payment = payment
+        }
+    }
     
     /// The delegate for user activity on card component.
     public weak var cardComponentDelegate: CardComponentDelegate?
@@ -187,13 +193,12 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         var component: PaymentComponent & PresentableComponent
         if showsSecurityCodeField {
             component = StoredCardComponent(storedCardPaymentMethod: paymentMethod)
-            component.clientKey = clientKey
-            component.environment = environment
         } else {
             component = StoredPaymentMethodComponent(paymentMethod: paymentMethod)
-            component.clientKey = clientKey
-            component.environment = environment
         }
+        component.clientKey = clientKey
+        component.environment = environment
+        component.payment = payment
         return component
     }()
     

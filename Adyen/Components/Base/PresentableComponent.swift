@@ -52,7 +52,7 @@ public extension PresentableComponent {
             return objc_getAssociatedObject(self, &AssociatedKeys.payment) as? Payment
         }
         set {
-            objc_setAssociatedObject(self, &AssociatedKeys.payment, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(self, &AssociatedKeys.payment, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_COPY)
         }
     }
     
@@ -86,6 +86,6 @@ public extension PresentableComponent {
     
 }
 
-private struct AssociatedKeys {
+private enum AssociatedKeys {
     internal static var payment = "paymentObject"
 }
