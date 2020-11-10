@@ -10,6 +10,12 @@ import XCTest
 import Adyen3DS2
 @testable import AdyenCard
 
+extension ThreeDS2AuthenticatedAction: Equatable {
+    public static func == (lhs: ThreeDS2AuthenticatedAction, rhs: ThreeDS2AuthenticatedAction) -> Bool {
+        lhs.token == rhs.token && lhs.paymentData == rhs.paymentData
+    }
+}
+
 class ThreeDS2ActionHandlerTests: XCTestCase {
 
     var authenticationRequestParameters: AnyAuthenticationRequestParameters!
@@ -43,7 +49,7 @@ class ThreeDS2ActionHandlerTests: XCTestCase {
 
     func testInvalidFingerprintToken() throws {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
-        submitter.mockedResult = .success(nil)
+        submitter.mockedResult = .success(.threeDS2Authenticated(ThreeDS2AuthenticatedAction(token: "token", paymentData: "data")))
 
         let service = AnyADYServiceMock()
         service.authenticationRequestParameters = authenticationRequestParameters
@@ -72,7 +78,7 @@ class ThreeDS2ActionHandlerTests: XCTestCase {
 
     func testInvalidEphemeralPublicKey() throws {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
-        submitter.mockedResult = .success(nil)
+        submitter.mockedResult = .success(.threeDS2Authenticated(ThreeDS2AuthenticatedAction(token: "token", paymentData: "data")))
 
         let service = AnyADYServiceMock()
         service.authenticationRequestParameters = AuthenticationRequestParametersMock(deviceInformation: "device_info",
@@ -104,7 +110,9 @@ class ThreeDS2ActionHandlerTests: XCTestCase {
 
     func testFrictionlessFullFlow() throws {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
-        submitter.mockedResult = .success(nil)
+
+        let mockedAction = ThreeDS2AuthenticatedAction(token: "token", paymentData: "data")
+        submitter.mockedResult = .success(.threeDS2Authenticated(mockedAction))
 
         let service = AnyADYServiceMock()
         service.authenticationRequestParameters = authenticationRequestParameters
@@ -114,7 +122,11 @@ class ThreeDS2ActionHandlerTests: XCTestCase {
         sut.handleFullFlow(fingerprintAction) { result in
             switch result {
             case let .success(action):
-                XCTAssertNil(action)
+                if case let Action.threeDS2Authenticated(threeDS2Authenticated) = action {
+                    XCTAssertEqual(threeDS2Authenticated, mockedAction)
+                } else {
+                    XCTFail()
+                }
             case .failure:
                 XCTFail()
             }
