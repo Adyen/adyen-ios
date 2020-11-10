@@ -192,9 +192,9 @@ internal final class PaymentsController {
         switch result {
         case let .success(response):
             if let action = response.action {
-                currentComponent?.stopLoading()
                 handle(action)
             } else {
+                currentComponent?.stopLoading()
                 finish(with: response.resultCode)
             }
         case let .failure(error):

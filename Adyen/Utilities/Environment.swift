@@ -25,6 +25,7 @@ public struct Environment: APIEnvironment {
     public var clientKey: String?
 
     /// Adyen's local environment.
+    /// :nodoc:
     public static let local = Environment(baseURL: URL(string: "http://localhost:8080/")!)
 
     /// Adyen's test environment.
