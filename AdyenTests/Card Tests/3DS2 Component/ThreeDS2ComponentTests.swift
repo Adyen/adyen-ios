@@ -243,7 +243,7 @@ class ThreeDS2ComponentTests: XCTestCase {
     func testFullFlowFrictionless() throws {
 
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
-        threeDS2ActionHandler.mockedFullFlowResult = .success(nil)
+        threeDS2ActionHandler.mockedFullFlowResult = .success(.threeDS2Authenticated(ThreeDS2AuthenticatedAction(token: "token", paymentData: "data")))
 
         let redirectComponent = AnyRedirectComponentMock()
         redirectComponent.onHandle = { action in

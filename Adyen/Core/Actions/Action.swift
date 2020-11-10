@@ -24,6 +24,9 @@ public enum Action: Decodable {
     /// Indicates a full 3D Secure 2 flow should be executed including fingerprint collection,
     /// and potentially a challenge or a fallback to 3DS1.
     case threeDS2(ThreeDS2Action)
+
+    /// Indicates that the 3D Secure flow is authenticated and finished.
+    case threeDS2Authenticated(ThreeDS2AuthenticatedAction)
     
     /// Indicate that the SDK should wait for user action.
     case await(AwaitAction)
@@ -44,6 +47,8 @@ public enum Action: Decodable {
             self = .threeDS2Challenge(try ThreeDS2ChallengeAction(from: decoder))
         case .threeDS2:
             self = .threeDS2(try ThreeDS2Action(from: decoder))
+        case .authenticationFinished:
+            self = .threeDS2Authenticated(try ThreeDS2AuthenticatedAction(from: decoder))
         case .sdk:
             self = .sdk(try SDKAction(from: decoder))
         case .await:
@@ -59,6 +64,7 @@ public enum Action: Decodable {
         case sdk
         case qrCode
         case await
+        case authenticationFinished
     }
     
     private enum CodingKeys: String, CodingKey {

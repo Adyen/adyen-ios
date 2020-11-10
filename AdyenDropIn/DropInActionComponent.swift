@@ -47,6 +47,8 @@ public final class DropInActionComponent: ActionComponent, Localizable {
             perform(challengeAction)
         case let .threeDS2(threeDS2Action):
             perform(threeDS2Action)
+        case let .threeDS2Authenticated(authenticatedAction):
+            perform(authenticatedAction)
         case let .sdk(sdkAction):
             perform(sdkAction)
         case let .await(awaitAction):
@@ -105,6 +107,11 @@ public final class DropInActionComponent: ActionComponent, Localizable {
     }
     
     private func perform(_ action: ThreeDS2ChallengeAction) {
+        guard let threeDS2Component = threeDS2Component else { return }
+        threeDS2Component.handle(action)
+    }
+
+    private func perform(_ action: ThreeDS2AuthenticatedAction) {
         guard let threeDS2Component = threeDS2Component else { return }
         threeDS2Component.handle(action)
     }
