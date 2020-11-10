@@ -12,7 +12,7 @@ internal protocol AnyThreeDS2FingerprintSubmitter {
     /// :nodoc:
     func submit(fingerprint: String,
                 paymentData: String,
-                completionHandler: @escaping (Result<Action?, Error>) -> Void)
+                completionHandler: @escaping (Result<Action, Error>) -> Void)
 }
 
 /// :nodoc:
@@ -32,7 +32,7 @@ internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitt
     /// :nodoc:
     internal func submit(fingerprint: String,
                          paymentData: String,
-                         completionHandler: @escaping (Result<Action?, Swift.Error>) -> Void) {
+                         completionHandler: @escaping (Result<Action, Swift.Error>) -> Void) {
         guard let clientKey = clientKey else {
             assertionFailure("Client key is missing.")
             completionHandler(.failure(ThreeDS2ComponentError.missingClientKey))
@@ -59,7 +59,7 @@ internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitt
 
     /// :nodoc:
     private func handle(_ result: Result<Submit3DS2FingerprintResponse, Swift.Error>,
-                        completionHandler: (Result<Action?, Swift.Error>) -> Void) {
+                        completionHandler: (Result<Action, Swift.Error>) -> Void) {
         switch result {
         case let .success(response):
             completionHandler(.success(response.action))

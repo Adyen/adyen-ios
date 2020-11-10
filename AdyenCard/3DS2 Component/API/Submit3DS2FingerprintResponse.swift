@@ -10,9 +10,9 @@ import Foundation
 /// :nodoc:
 internal struct Submit3DS2FingerprintResponse: Response {
 
-    internal let action: Action?
+    internal let action: Action
 
-    internal init(action: Action?) {
+    internal init(action: Action) {
         self.action = action
     }
 

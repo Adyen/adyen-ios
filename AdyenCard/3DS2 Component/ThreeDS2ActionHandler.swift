@@ -13,7 +13,7 @@ internal protocol AnyThreeDS2ActionHandler: Component {
 
     /// :nodoc:
     func handleFullFlow(_ fingerprintAction: ThreeDS2FingerprintAction,
-                        completionHandler: @escaping (Result<Action?, Error>) -> Void)
+                        completionHandler: @escaping (Result<Action, Error>) -> Void)
 
     /// :nodoc:
     func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
@@ -32,9 +32,9 @@ internal final class ThreeDS2ActionHandler: AnyThreeDS2ActionHandler {
     /// :nodoc:
     internal let appearanceConfiguration = ADYAppearanceConfiguration()
 
-    /// Initializes the 3D Secure 2 component.
+    /// Initializes the 3D Secure 2 action handler.
     ///
-    /// - Parameter fingerprintSubmitter: The fingerprint handler.
+    /// - Parameter fingerprintSubmitter: The fingerprint submiter.
     /// - Parameter service: The 3DS2 Service.
     /// :nodoc:
     internal convenience init(fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter, service: AnyADYService) {
@@ -43,7 +43,7 @@ internal final class ThreeDS2ActionHandler: AnyThreeDS2ActionHandler {
         self.service = service
     }
 
-    /// Initializes the 3D Secure 2 component.
+    /// Initializes the 3D Secure 2 action handler.
     internal init() { /* empty init */ }
 
     // MARK: - 3D Secure 2 Action
@@ -54,7 +54,7 @@ internal final class ThreeDS2ActionHandler: AnyThreeDS2ActionHandler {
     /// - Parameter completionHandler: The completion closure.
     /// :nodoc:
     internal func handleFullFlow(_ fingerprintAction: ThreeDS2FingerprintAction,
-                                 completionHandler: @escaping (Result<Action?, Error>) -> Void) {
+                                 completionHandler: @escaping (Result<Action, Error>) -> Void) {
         Analytics.sendEvent(component: threeDS2EventName, flavor: _isDropIn ? .dropin : .components, environment: environment)
         createFingerprint(fingerprintAction) { [weak self] result in
             switch result {
