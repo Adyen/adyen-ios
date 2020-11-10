@@ -75,31 +75,19 @@ public final class ThreeDS2Component: ActionComponent {
         }
     }
 
-    private func didReceive(_ actionResult: Result<Action?, Error>, _ paymentData: String) {
+    private func didReceive(_ actionResult: Result<Action, Error>, _ paymentData: String) {
         switch actionResult {
         case let .success(action):
-            didReceive(action, paymentData)
+            didReceive(action)
         case let .failure(error):
             didFail(with: error)
         }
     }
 
-    private func didReceive(_ action: Action?, _ paymentData: String) {
-        if let action = action {
-            didReceive(action)
-        } else {
-            do {
-                let result = try ChallengeResult(isAuthenticated: true)
-                let details = ThreeDS2Details.challengeResult(result)
-                didFinish(data: ActionComponentData(details: details, paymentData: paymentData))
-            } catch {
-                didFail(with: error)
-            }
-        }
-    }
-
     private func didReceive(_ action: Action) {
         switch action {
+        case let .threeDS2Authenticated(authenticatedAction):
+            handle(authenticatedAction)
         case let .redirect(redirectAction):
             handle(redirectAction)
         case let .threeDS2(threeDS2Action):
@@ -108,6 +96,21 @@ public final class ThreeDS2Component: ActionComponent {
             handle(threeDS2ChallengeAction)
         default:
             didFail(with: ThreeDS2ComponentError.unexpectedAction)
+        }
+    }
+
+    // MARK: - Authenticated
+
+    /// Handles the 3D Secure 2 authenticated action.
+    ///
+    /// - Parameter authenticatedAction: The 3D Secure 2 action as received from the Checkout API.
+    public func handle(_ authenticatedAction: ThreeDS2AuthenticatedAction) {
+        do {
+            let result = try ChallengeResult(isAuthenticated: true)
+            let details = ThreeDS2Details.challengeResult(result)
+            didFinish(data: ActionComponentData(details: details, paymentData: authenticatedAction.paymentData))
+        } catch {
+            didFail(with: error)
         }
     }
 
