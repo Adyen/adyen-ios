@@ -139,7 +139,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         let mockedAction = ThreeDS2ChallengeAction(token: "token", paymentData: "data")
 
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
-        threeDS2ActionHandler.mockedFullFlowResult = .success(.threeDS2Challenge(mockedAction))
+        threeDS2ActionHandler.mockedFullFlowResult = .success(.threeDS2(.challenge(mockedAction)))
         threeDS2ActionHandler.mockedChallengeResult = .failure(Dummy.dummyError)
 
 
