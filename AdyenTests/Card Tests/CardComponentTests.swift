@@ -457,7 +457,7 @@ class CardComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
 
-    func testStoredCardPayment() {
+    func testStoredCardPaymentWithNoPayment() {
         let method = StoredCardPaymentMethod(type: "type",
                                              identifier: "id",
                                              name: "name",
@@ -470,9 +470,87 @@ class CardComponentTests: XCTestCase {
                                              holderName: "holderName")
         let sut = CardComponent(paymentMethod: method,
                                 clientKey: "test_client_key")
-        XCTAssertNotNil(sut.viewController as? UIAlertController)
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredCardComponent)
+        XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
+        let vc = sut.viewController as? UIAlertController
+        XCTAssertEqual(vc?.message, "Please enter the CVC code for •••• 1234")
+        XCTAssertEqual(vc?.title, "Verify your card")
+        XCTAssertEqual(vc?.actions[0].title, "Cancel")
+        XCTAssertEqual(vc?.actions[1].title, "Pay")
+    }
+
+    func testStoredCardPaymentWithPayment() {
+        let method = StoredCardPaymentMethod(type: "type",
+                                             identifier: "id",
+                                             name: "name",
+                                             fundingSource: .credit,
+                                             supportedShopperInteractions: [.shopperPresent],
+                                             brand: "brand",
+                                             lastFour: "1234",
+                                             expiryMonth: "12",
+                                             expiryYear: "22",
+                                             holderName: "holderName")
+        let sut = CardComponent(paymentMethod: method,
+                                clientKey: "test_client_key")
+        sut.payment = Payment.init(amount: Payment.Amount(value: 123456, currencyCode: "EUR"), countryCode: "NL")
+        XCTAssertNotNil(sut.storedCardComponent)
+        XCTAssertNotNil(sut.storedCardComponent as? StoredCardComponent)
+        XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
+        let vc = sut.viewController as? UIAlertController
+        XCTAssertEqual(vc?.message, "Please enter the CVC code for •••• 1234")
+        XCTAssertEqual(vc?.title, "Verify your card")
+        XCTAssertEqual(vc?.actions[0].title, "Cancel")
+        XCTAssertEqual(vc?.actions[1].title, "Pay €1,234.56")
+    }
+
+    func testStoredCardPaymentWithNoCVV() {
+        let method = StoredCardPaymentMethod(type: "type",
+                                             identifier: "id",
+                                             name: "name",
+                                             fundingSource: .credit,
+                                             supportedShopperInteractions: [.shopperPresent],
+                                             brand: "brand",
+                                             lastFour: "1234",
+                                             expiryMonth: "12",
+                                             expiryYear: "22",
+                                             holderName: "holderName")
+        let sut = CardComponent(paymentMethod: method,
+                                clientKey: "test_client_key")
+        sut.showsSecurityCodeField = false
+        sut.payment = Payment.init(amount: Payment.Amount(value: 123456, currencyCode: "EUR"), countryCode: "NL")
+        XCTAssertNotNil(sut.storedCardComponent)
+        XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)
+        XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
+        let vc = sut.viewController as? UIAlertController
+        XCTAssertEqual(vc?.message, "•••• 1234")
+        XCTAssertEqual(vc?.title, "Confirm name payment")
+        XCTAssertEqual(vc?.actions[0].title, "Cancel")
+        XCTAssertEqual(vc?.actions[1].title, "Pay €1,234.56")
+    }
+
+    func testStoredCardPaymentWithNoCVVAndNoPayment() {
+        let method = StoredCardPaymentMethod(type: "type",
+                                             identifier: "id",
+                                             name: "name",
+                                             fundingSource: .credit,
+                                             supportedShopperInteractions: [.shopperPresent],
+                                             brand: "brand",
+                                             lastFour: "1234",
+                                             expiryMonth: "12",
+                                             expiryYear: "22",
+                                             holderName: "holderName")
+        let sut = CardComponent(paymentMethod: method,
+                                clientKey: "test_client_key")
+        sut.showsSecurityCodeField = false
+        XCTAssertNotNil(sut.storedCardComponent)
+        XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)
+        XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
+        let vc = sut.viewController as? UIAlertController
+        XCTAssertEqual(vc?.message, "•••• 1234")
+        XCTAssertEqual(vc?.title, "Confirm name payment")
+        XCTAssertEqual(vc?.actions[0].title, "Cancel")
+        XCTAssertEqual(vc?.actions[1].title, "Pay")
     }
 
     func testOneClickPayment() {
