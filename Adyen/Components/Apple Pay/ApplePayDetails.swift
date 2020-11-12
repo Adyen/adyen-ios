@@ -47,7 +47,7 @@ public struct ApplePayDetails: PaymentMethodDetails {
     
     private enum CodingKeys: String, CodingKey {
         case network = "applePayCardNetwork"
-        case token = "applepay.token"
+        case token = "applePayToken"
         case type
     }
     

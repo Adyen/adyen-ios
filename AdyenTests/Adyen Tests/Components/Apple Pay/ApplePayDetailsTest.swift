@@ -23,11 +23,11 @@ class ApplePayDetailsTest: XCTestCase {
         let resultJson = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0)) as? [String: Any]
         
         let expectedJson = [
-            "applepay.token": "test_token",
+            "applePayToken": "test_token",
             "applePayCardNetwork": "test_network",
             "type": "test_type"
         ]
-        XCTAssertEqual(expectedJson["applepay.token"], resultJson?["applepay.token"] as? String)
+        XCTAssertEqual(expectedJson["applePayToken"], resultJson?["applePayToken"] as? String)
         XCTAssertEqual(expectedJson["applePayCardNetwork"], resultJson?["applePayCardNetwork"] as? String)
         XCTAssertEqual(expectedJson["type"], resultJson?["type"] as? String)
     }

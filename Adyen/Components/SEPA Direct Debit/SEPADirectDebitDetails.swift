@@ -34,8 +34,8 @@ public struct SEPADirectDebitDetails: PaymentMethodDetails {
     
     private enum CodingKeys: String, CodingKey {
         case type
-        case iban = "sepa.ibanNumber"
-        case ownerName = "sepa.ownerName"
+        case iban = "iban"
+        case ownerName = "ownerName"
     }
     
 }

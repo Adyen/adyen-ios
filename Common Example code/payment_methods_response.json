@@ -7,7 +7,7 @@
       },
       "details" : [
         {
-          "key" : "applepay.token",
+          "key" : "applePayToken",
           "type" : "applePayToken"
         }
       ],
@@ -276,11 +276,11 @@
     {
       "details" : [
         {
-          "key" : "sepa.ownerName",
+          "key" : "ownerName",
           "type" : "text"
         },
         {
-          "key" : "sepa.ibanNumber",
+          "key" : "iban",
           "type" : "text"
         }
       ],
@@ -320,7 +320,7 @@
     {
       "details" : [
         {
-          "key" : "androidpay.token",
+          "key" : "androidPayToken",
           "type" : "androidPayToken"
         }
       ],
@@ -672,7 +672,7 @@
       },
       "details" : [
         {
-          "key" : "paywithgoogle.token",
+          "key" : "googlePayToken",
           "type" : "payWithGoogleToken"
         }
       ],
@@ -683,7 +683,7 @@
     {
       "details" : [
         {
-          "key" : "samsungpay.token",
+          "key" : "samsungPayToken",
           "type" : "samsungPayToken"
         }
       ],
