@@ -32,6 +32,9 @@ extension RedirectComponent: AnyRedirectComponent {}
 
 /// Handles the 3D Secure 2 fingerprint and challenge.
 public final class ThreeDS2Component: ActionComponent {
+
+    /// The appearance configuration of the 3D Secure 2 challenge UI.
+    public let appearanceConfiguration = ADYAppearanceConfiguration()
     
     /// The delegate of the component.
     public weak var delegate: ActionComponentDelegate?
@@ -160,7 +163,7 @@ public final class ThreeDS2Component: ActionComponent {
     }
 
     private lazy var threeDS2ActionHandler: AnyThreeDS2ActionHandler = {
-        let handler = ThreeDS2ActionHandler()
+        let handler = ThreeDS2ActionHandler(appearanceConfiguration: appearanceConfiguration)
 
         handler._isDropIn = _isDropIn
         handler.environment = environment

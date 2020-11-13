@@ -30,21 +30,26 @@ internal final class ThreeDS2ActionHandler: AnyThreeDS2ActionHandler {
 
     /// The appearance configuration of the 3D Secure 2 challenge UI.
     /// :nodoc:
-    internal let appearanceConfiguration = ADYAppearanceConfiguration()
+    internal let appearanceConfiguration: ADYAppearanceConfiguration
 
     /// Initializes the 3D Secure 2 action handler.
     ///
     /// - Parameter fingerprintSubmitter: The fingerprint submiter.
     /// - Parameter service: The 3DS2 Service.
+    /// - Parameter appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
     /// :nodoc:
-    internal convenience init(fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter, service: AnyADYService) {
-        self.init()
+    internal convenience init(fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter,
+                              service: AnyADYService,
+                              appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration()) {
+        self.init(appearanceConfiguration: appearanceConfiguration)
         self.fingerprintSubmitter = fingerprintSubmitter
         self.service = service
     }
 
     /// Initializes the 3D Secure 2 action handler.
-    internal init() { /* empty init */ }
+    internal init(appearanceConfiguration: ADYAppearanceConfiguration) {
+        self.appearanceConfiguration = appearanceConfiguration
+    }
 
     // MARK: - 3D Secure 2 Action
 
