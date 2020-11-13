@@ -13,13 +13,19 @@ public struct Environment: APIEnvironment {
     public var baseURL: URL
     
     /// :nodoc:
-    public var headers: [String: String] = ["Content-Type": "application/json"]
+    public var headers: [String: String] {
+        var headers = ["Content-Type": "application/json"]
+
+        if let clientKey = clientKey {
+            headers["x-client-key"] = clientKey
+        } else {
+            assertionFailure("Client key is missing.")
+        }
+        return headers
+    }
     
     /// :nodoc:
-    public var queryParameters: [URLQueryItem] {
-        guard let clientKey = clientKey else { return [] }
-        return [URLQueryItem(name: "token", value: clientKey)]
-    }
+    public var queryParameters: [URLQueryItem] = []
     
     /// :nodoc:
     public var clientKey: String?

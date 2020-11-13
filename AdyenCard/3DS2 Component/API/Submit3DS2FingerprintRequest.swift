@@ -20,7 +20,7 @@ internal struct Submit3DS2FingerprintRequest: Request {
     internal var counter: UInt = 0
 
     /// :nodoc:
-    internal var headers: [String: String]
+    internal var headers: [String: String] = [:]
 
     /// :nodoc:
     internal let queryParameters: [URLQueryItem] = []
@@ -39,7 +39,6 @@ internal struct Submit3DS2FingerprintRequest: Request {
 
     /// :nodoc:
     internal init(clientKey: String, fingerprint: String, paymentData: String) {
-        self.headers = ["x-client-key": clientKey]
         self.fingerprint = fingerprint
         self.paymentData = paymentData
         self.clientKey = clientKey

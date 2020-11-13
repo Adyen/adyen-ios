@@ -22,7 +22,7 @@ internal enum DemoServerEnvironment: APIEnvironment {
         }
     }
 
-    internal var version: Int { 100 }
+    internal var version: Int { 64 }
     
     internal var headers: [String: String] {
         [
