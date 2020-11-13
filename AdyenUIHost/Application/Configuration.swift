@@ -13,9 +13,9 @@ internal enum Configuration {
 
     /// Please use your own web server between your app and adyen checkout API.
     static let demoServerEnvironment = DemoServerEnvironment.test
-    
+
     static let componentsEnvironment = Environment.test
-    
+
     static let appName = "Adyen Demo"
 
     static let amount = Payment.Amount(value: 17408, currencyCode: "EUR")
