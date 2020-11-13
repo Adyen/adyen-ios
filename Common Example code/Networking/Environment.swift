@@ -14,11 +14,11 @@ internal enum DemoServerEnvironment: APIEnvironment {
     internal var baseURL: URL {
         switch self {
         case .beta:
-            return URL(string: "https://checkout-beta.adyen.com/v100")!
+            return URL(string: "https://checkout-beta.adyen.com/v64")!
         case .test:
-            return URL(string: "https://checkout-test.adyen.com/v100")!
+            return URL(string: "https://checkout-test.adyen.com/v64")!
         case .local:
-            return URL(string: "http://localhost:8080/checkout/v100")!
+            return URL(string: "http://localhost:8080/checkout/v64")!
         }
     }
     
