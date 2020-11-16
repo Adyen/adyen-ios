@@ -69,7 +69,7 @@ class CardComponentTests: XCTestCase {
         
         XCTAssertEqual(sut.storeDetailsItem.title, ADYLocalizedString("adyen.card.storeDetailsButton", sut.localizationParameters))
         
-        XCTAssertEqual(sut.footerItem.submitButtonTitle, ADYLocalizedSubmitButtonTitle(with: payment.amount, sut.localizationParameters))
+        XCTAssertEqual(sut.button.title, ADYLocalizedSubmitButtonTitle(with: payment.amount, sut.localizationParameters))
     }
     
     func testLocalizationWithCustomKeySeparator() {
@@ -94,7 +94,7 @@ class CardComponentTests: XCTestCase {
         
         XCTAssertEqual(sut.storeDetailsItem.title, ADYLocalizedString("adyen_card_storeDetailsButton", sut.localizationParameters))
         
-        XCTAssertEqual(sut.footerItem.submitButtonTitle, ADYLocalizedSubmitButtonTitle(with: payment.amount, sut.localizationParameters))
+        XCTAssertEqual(sut.button.title, ADYLocalizedSubmitButtonTitle(with: payment.amount, sut.localizationParameters))
     }
     
     func testUIConfiguration() {
@@ -102,12 +102,12 @@ class CardComponentTests: XCTestCase {
         cardComponentStyle.backgroundColor = .green
         
         /// Footer
-        cardComponentStyle.footer.button.title.color = .white
-        cardComponentStyle.footer.button.title.backgroundColor = .red
-        cardComponentStyle.footer.button.title.textAlignment = .center
-        cardComponentStyle.footer.button.title.font = .systemFont(ofSize: 22)
-        cardComponentStyle.footer.button.backgroundColor = .red
-        cardComponentStyle.footer.backgroundColor = .brown
+        cardComponentStyle.mainButtonItem.button.title.color = .white
+        cardComponentStyle.mainButtonItem.button.title.backgroundColor = .red
+        cardComponentStyle.mainButtonItem.button.title.textAlignment = .center
+        cardComponentStyle.mainButtonItem.button.title.font = .systemFont(ofSize: 22)
+        cardComponentStyle.mainButtonItem.button.backgroundColor = .red
+        cardComponentStyle.mainButtonItem.backgroundColor = .brown
         
         /// Header
         cardComponentStyle.header.backgroundColor = .magenta
@@ -164,8 +164,8 @@ class CardComponentTests: XCTestCase {
             let storeDetailsItemView: FormSwitchItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem")
             let storeDetailsItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem.titleLabel")
             
-            let footerItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.footer.submitButton")
-            let footerItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.footer.submitButton.titleLabel")
+            let footerItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.footerItem.button")
+            let footerItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.footerItem.button.titleLabel")
             
             let headerItemView: UIView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.Test name")
             let headerItemViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.Test name.titleLabel")

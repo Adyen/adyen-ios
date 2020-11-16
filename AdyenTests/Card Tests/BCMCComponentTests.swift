@@ -181,7 +181,7 @@ class BCMCComponentTests: XCTestCase {
             self.populate(textItemView: expiryDateItemView!, with: "10/20")
             
             // Tap submit button
-            let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.footer.submitButton")
+            let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.footerItem.button")
             XCTAssertNotNil(submitButton)
             submitButton!.sendActions(for: .touchUpInside)
             
@@ -288,7 +288,7 @@ class BCMCComponentTests: XCTestCase {
             self.populate(textItemView: expiryDateItemView, with: "10/20")
             
             // Tap submit button
-            let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.footer.submitButton")
+            let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.footerItem.button")
             XCTAssertNotNil(submitButton)
             submitButton!.sendActions(for: .touchUpInside)
             

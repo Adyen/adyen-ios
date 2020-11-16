@@ -303,7 +303,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     
     internal lazy var button: FormButtonItem = {
         let item = FormButtonItem(style: style.mainButtonItem)
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "footer")
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "footerItem")
         item.title = ADYLocalizedSubmitButtonTitle(with: payment?.amount, localizationParameters)
         item.buttonSelectionHandler = { [weak self] in
             self?.didSelectSubmitButton()
