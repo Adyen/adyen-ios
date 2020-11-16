@@ -48,6 +48,7 @@ public final class DropInActionComponent: ActionComponent, Localizable {
         case let .threeDS2(threeDS2Action):
             perform(threeDS2Action)
         case let .threeDS2Authenticated(authenticatedAction):
+            assertionFailure("This should never happen, threeDS2Authenticated action is only used internally in the SDK.")
             perform(authenticatedAction)
         case let .sdk(sdkAction):
             perform(sdkAction)

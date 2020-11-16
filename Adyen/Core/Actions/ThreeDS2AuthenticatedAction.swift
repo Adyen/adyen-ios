@@ -7,12 +7,15 @@
 import Foundation
 
 /// Describes an action in which a 3D Secure is successful.
+/// :nodoc:
 public struct ThreeDS2AuthenticatedAction: Decodable {
 
     /// The 3D Secure token.
+    /// :nodoc:
     public let token: String
 
     /// The server-generated payment data that should be submitted to the `/payments/details` endpoint.
+    /// :nodoc:
     public let paymentData: String
 
     /// Initializes a 3D Secure authenticated action.
@@ -20,6 +23,7 @@ public struct ThreeDS2AuthenticatedAction: Decodable {
     /// - Parameters:
     ///   - token: The 3D Secure token.
     ///   - paymentData: The server-generated payment data that should be submitted to the `/payments/details` endpoint.
+    /// :nodoc:
     public init(token: String, paymentData: String) {
         self.token = token
         self.paymentData = paymentData
