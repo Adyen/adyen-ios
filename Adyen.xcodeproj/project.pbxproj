@@ -139,7 +139,7 @@
 		E7AA1098252DCCFB00AAD3C0 /* RSA.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AA1096252DCCFB00AAD3C0 /* RSA.swift */; };
 		E7AA1099252DCCFB00AAD3C0 /* Cryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AA1097252DCCFB00AAD3C0 /* Cryptor.swift */; };
 		E7B627FD24ED32CC000CEC6E /* BinLookupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B627FC24ED32CC000CEC6E /* BinLookupService.swift */; };
-		E7CD107E25544C970057C52D /* ContainerFormItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CD107D25544C970057C52D /* ContainerFormItem.swift */; };
+		E7CD107E25544C970057C52D /* FormContainerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CD107D25544C970057C52D /* FormContainerItem.swift */; };
 		E7D3ED84243B667500E73F59 /* FormCardNumberItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D3ED83243B667500E73F59 /* FormCardNumberItemViewTests.swift */; };
 		E7D5311424462D87000046B4 /* FormButtonItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D5311124462D87000046B4 /* FormButtonItemView.swift */; };
 		E7D5311524462D87000046B4 /* FormButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D5311224462D87000046B4 /* FormButtonItem.swift */; };
@@ -710,7 +710,7 @@
 		E7AA1096252DCCFB00AAD3C0 /* RSA.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RSA.swift; sourceTree = "<group>"; };
 		E7AA1097252DCCFB00AAD3C0 /* Cryptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cryptor.swift; sourceTree = "<group>"; };
 		E7B627FC24ED32CC000CEC6E /* BinLookupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinLookupService.swift; sourceTree = "<group>"; };
-		E7CD107D25544C970057C52D /* ContainerFormItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerFormItem.swift; sourceTree = "<group>"; };
+		E7CD107D25544C970057C52D /* FormContainerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormContainerItem.swift; sourceTree = "<group>"; };
 		E7D3ED83243B667500E73F59 /* FormCardNumberItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardNumberItemViewTests.swift; sourceTree = "<group>"; };
 		E7D5311124462D87000046B4 /* FormButtonItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormButtonItemView.swift; sourceTree = "<group>"; };
 		E7D5311224462D87000046B4 /* FormButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormButtonItem.swift; sourceTree = "<group>"; };
@@ -1575,7 +1575,7 @@
 			isa = PBXGroup;
 			children = (
 				E7275BF8255012F600907CF9 /* FormLabelItem.swift */,
-				E7CD107D25544C970057C52D /* ContainerFormItem.swift */,
+				E7CD107D25544C970057C52D /* FormContainerItem.swift */,
 			);
 			path = "Basic Items";
 			sourceTree = "<group>";
@@ -2999,7 +2999,7 @@
 				F9615FBB252DDD5400FA8EDD /* ViewControllerPresenter.swift in Sources */,
 				E270FDEB225CC4C4006C2CD0 /* Observation.swift in Sources */,
 				F9639B3D24E178300073F38A /* AwaitActionDetails.swift in Sources */,
-				E7CD107E25544C970057C52D /* ContainerFormItem.swift in Sources */,
+				E7CD107E25544C970057C52D /* FormContainerItem.swift in Sources */,
 				F9639B1C24DAD3380073F38A /* AwaitViewController.swift in Sources */,
 				E28098C4220DC66E0087928F /* ListItemView.swift in Sources */,
 				E97B971F22A14C6C00505476 /* ApplePayDetails.swift in Sources */,
