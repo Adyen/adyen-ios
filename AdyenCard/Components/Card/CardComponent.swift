@@ -166,7 +166,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     
     /// :nodoc:
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
-        footerItem.showsActivityIndicator = false
+        button.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
         completion?()
     }
@@ -240,7 +240,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
             formViewController.append(storeDetailsItem)
         }
         
-        formViewController.append(footerItem)
+        formViewController.append(button.withPadding(padding: .init(top: 8, left: 0, bottom: -16, right: 0)))
         
         return formViewController
     }()
@@ -301,14 +301,14 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         return storeDetailsItem
     }()
     
-    internal lazy var footerItem: FormFooterItem = {
-        let footerItem = FormFooterItem(style: style.footer)
-        footerItem.submitButtonTitle = ADYLocalizedSubmitButtonTitle(with: payment?.amount, localizationParameters)
-        footerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "footer")
-        footerItem.submitButtonSelectionHandler = { [weak self] in
+    internal lazy var button: FormButtonItem = {
+        let item = FormButtonItem(style: style.mainButtonItem)
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "footer")
+        item.title = ADYLocalizedSubmitButtonTitle(with: payment?.amount, localizationParameters)
+        item.buttonSelectionHandler = { [weak self] in
             self?.didSelectSubmitButton()
         }
-        return footerItem
+        return item
     }()
     
     private func didReceived(bin: String) {

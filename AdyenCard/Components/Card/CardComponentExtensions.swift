@@ -29,7 +29,7 @@ internal extension CardComponent {
             return
         }
         
-        footerItem.showsActivityIndicator = true
+        button.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
         
         fetchCardPublicKey { [weak self] in

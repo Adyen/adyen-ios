@@ -27,8 +27,12 @@ public struct FormComponentStyle: ViewStyle {
 
     /// The helper message style.
     public var hintLabel: TextStyle = .init(font: .preferredFont(forTextStyle: .body),
-                                         color: UIColor.AdyenCore.componentLabel,
-                                         textAlignment: .natural)
+                                            color: UIColor.AdyenCore.componentLabel,
+                                            textAlignment: .natural)
+
+    /// The footer note label style.
+    public var footerNoteLabel: TextStyle = .init(font: .preferredFont(forTextStyle: .footnote),
+                                                  color: UIColor.AdyenCore.componentQuaternaryLabel)
     
     /// The main button style.
     @available(*, deprecated, message: "Use mainButtonItem instead.")
@@ -92,6 +96,7 @@ public struct FormComponentStyle: ViewStyle {
         self.mainButtonItem = mainButton
         self.secondaryButtonItem = secondaryButton
         self.hintLabel = helper
+        self.footerNoteLabel = footer.title
     }
     
     /// Initializes the Form UI style.

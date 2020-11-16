@@ -55,7 +55,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     
     /// :nodoc:
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
-        footerItem.showsActivityIndicator = false
+        button.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
         
         completion?()
@@ -79,7 +79,8 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
         formViewController.title = paymentMethod.name
         formViewController.append(nameItem)
         formViewController.append(ibanItem)
-        formViewController.append(footerItem)
+        formViewController.append(button.withPadding(padding: .init(top: 8, left: 0, bottom: 0, right: 0)))
+        formViewController.append(footer.withPadding(padding: .init(top: 0, left: 16, bottom: -16, right: -16)))
         
         return formViewController
     }()
@@ -94,7 +95,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
         let details = SEPADirectDebitDetails(paymentMethod: sepaDirectDebitPaymentMethod,
                                              iban: ibanItem.value,
                                              ownerName: nameItem.value)
-        footerItem.showsActivityIndicator = true
+        button.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
         
         submit(data: PaymentComponentData(paymentMethodDetails: details))
@@ -133,15 +134,20 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
         return ibanItem
     }()
     
-    internal lazy var footerItem: FormFooterItem = {
-        let footerItem = FormFooterItem(style: style.footer)
-        footerItem.title = ADYLocalizedString("adyen.sepa.consentLabel", localizationParameters)
-        footerItem.submitButtonTitle = ADYLocalizedSubmitButtonTitle(with: payment?.amount, localizationParameters)
-        footerItem.submitButtonSelectionHandler = { [weak self] in
+    internal lazy var button: FormButtonItem = {
+        let item = FormButtonItem(style: style.mainButtonItem)
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "footerButton")
+        item.title = ADYLocalizedSubmitButtonTitle(with: payment?.amount, localizationParameters)
+        item.buttonSelectionHandler = { [weak self] in
             self?.didSelectSubmitButton()
         }
-        footerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "footerItem")
-        return footerItem
+        return item
     }()
     
+    internal lazy var footer: FormLabelItem = {
+        FormLabelItem(text: ADYLocalizedString("adyen.sepa.consentLabel", localizationParameters),
+                      style: style.footerNoteLabel,
+                      identifier: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "footerLabel"))
+    }()
+
 }
