@@ -23,6 +23,7 @@ public struct FormComponentStyle: ViewStyle {
     public var `switch` = FormSwitchItemStyle()
     
     /// The footer style.
+    @available(*, deprecated, message: "The `footer` property is deprecated. Use `mainButton` and `footerNote` instead.")
     public var footer: FormFooterStyle
 
     /// The helper message style.
