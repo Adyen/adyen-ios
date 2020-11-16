@@ -33,7 +33,6 @@ class SEPADirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(sut.ibanItem.title, ADYLocalizedString("adyen.sepa.ibanItem.title", sut.localizationParameters))
         XCTAssertEqual(sut.ibanItem.validationFailureMessage, ADYLocalizedString("adyen.sepa.ibanItem.invalid", sut.localizationParameters))
         
-        XCTAssertEqual(sut.footerItem.title, ADYLocalizedString("adyen.sepa.consentLabel", sut.localizationParameters))
         XCTAssertEqual(sut.button.title, ADYLocalizedSubmitButtonTitle(with: payment.amount, sut.localizationParameters))
     }
     
@@ -51,7 +50,6 @@ class SEPADirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(sut.ibanItem.title, ADYLocalizedString("adyen_sepa_ibanItem_title", sut.localizationParameters))
         XCTAssertEqual(sut.ibanItem.validationFailureMessage, ADYLocalizedString("adyen_sepa_ibanItem_invalid", sut.localizationParameters))
         
-        XCTAssertEqual(sut.footerItem.title, ADYLocalizedString("adyen_sepa_consentLabel", sut.localizationParameters))
         XCTAssertEqual(sut.button.title, ADYLocalizedSubmitButtonTitle(with: payment.amount, sut.localizationParameters))
     }
     

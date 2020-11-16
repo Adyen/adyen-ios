@@ -79,9 +79,8 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
         formViewController.title = paymentMethod.name
         formViewController.append(nameItem)
         formViewController.append(ibanItem)
-        formViewController.append(button.withPadding(padding: .init(top: 8, left: 0, bottom: 0, right: 0)))
-        formViewController.append(footer.withPadding(padding: .init(top: 0, left: 16, bottom: -16, right: -16)))
-        
+        formViewController.append(button.withPadding(padding: .init(top: 8, left: 0, bottom: -16, right: 0)))
+
         return formViewController
     }()
     
@@ -142,12 +141,6 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
             self?.didSelectSubmitButton()
         }
         return item
-    }()
-    
-    internal lazy var footer: FormLabelItem = {
-        FormLabelItem(text: ADYLocalizedString("adyen.sepa.consentLabel", localizationParameters),
-                      style: style.footerNoteLabel,
-                      identifier: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "footerLabel"))
     }()
 
 }
