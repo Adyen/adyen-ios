@@ -3,7 +3,7 @@
     {
       "details" : [
         {
-          "key" : "applepay.token",
+          "key" : "applePayToken",
           "type" : "applePayToken"
         }
       ],
@@ -123,11 +123,11 @@
     {
       "details" : [
         {
-          "key" : "sepa.ownerName",
+          "key" : "ownerName",
           "type" : "text"
         },
         {
-          "key" : "sepa.ibanNumber",
+          "key" : "iban",
           "type" : "text"
         }
       ],

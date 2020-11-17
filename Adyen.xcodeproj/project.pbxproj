@@ -669,6 +669,13 @@
 		E700A7352549EA1C0012B64C /* BLIKComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLIKComponent.swift; sourceTree = "<group>"; };
 		E700A73D2549EA680012B64C /* BLIKDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLIKDetails.swift; sourceTree = "<group>"; };
 		E705F8EA2462B1B900438C3B /* FormButtonItemStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormButtonItemStyle.swift; sourceTree = "<group>"; };
+		E7098D7D255D3E6D00829E73 /* sk-SK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "sk-SK"; path = "sk-SK.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		E7098D7E255D3E6D00829E73 /* ro-RO */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ro-RO"; path = "ro-RO.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		E7098D7F255D3E6E00829E73 /* el-GR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "el-GR"; path = "el-GR.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		E7098D80255D3E6E00829E73 /* hr-HR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "hr-HR"; path = "hr-HR.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		E7098D81255D3E6E00829E73 /* hu-HU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "hu-HU"; path = "hu-HU.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		E7098D82255D3E6E00829E73 /* cs-CZ */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "cs-CZ"; path = "cs-CZ.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		E7098D83255D3E6E00829E73 /* sl-SI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "sl-SI"; path = "sl-SI.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		E7166A5124EAC5BA007CCDEF /* BinLookupRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinLookupRequest.swift; sourceTree = "<group>"; };
 		E7166A5324EACC44007CCDEF /* BinLookupResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinLookupResponse.swift; sourceTree = "<group>"; };
 		E7166A5524EAD99F007CCDEF /* CardTypeProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTypeProvider.swift; sourceTree = "<group>"; };
@@ -2667,6 +2674,13 @@
 				ko,
 				"nb-NO",
 				fi,
+				"sk-SK",
+				"ro-RO",
+				"el-GR",
+				"hr-HR",
+				"hu-HU",
+				"cs-CZ",
+				"sl-SI",
 			);
 			mainGroup = E2C0E02922097916008616F6;
 			packageReferences = (
@@ -3442,6 +3456,13 @@
 				E7388D9323E08BF9008E62B8 /* ko */,
 				E7388D9423E08BF9008E62B8 /* nb-NO */,
 				E7388D9523E08BF9008E62B8 /* fi */,
+				E7098D7D255D3E6D00829E73 /* sk-SK */,
+				E7098D7E255D3E6D00829E73 /* ro-RO */,
+				E7098D7F255D3E6E00829E73 /* el-GR */,
+				E7098D80255D3E6E00829E73 /* hr-HR */,
+				E7098D81255D3E6E00829E73 /* hu-HU */,
+				E7098D82255D3E6E00829E73 /* cs-CZ */,
+				E7098D83255D3E6E00829E73 /* sl-SI */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
