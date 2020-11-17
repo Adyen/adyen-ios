@@ -16,9 +16,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Install Xcode 12
+    - name: Install Xcode 12.2
       run: |
-        echo '::set-env name=XCODE_VERSION::/Applications/Xcode_12.1.app/Contents/Developer'
+        echo '::set-output name=XCODE_VERSION::/Applications/Xcode_12.2.app/Contents/Developer'
         xcodebuild -version
 
     - name: Test Cocoapods Integration
