@@ -18,8 +18,11 @@ jobs:
         brew install sonar-scanner
         brew install swiftlint
         gem install slather
-        echo '::set-output name=XCODE_VERSION::/Applications/Xcode_12.2.app/Contents/Developer'
-        xcodebuild -version
+    
+    - name: Select latest Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
 
     - name: Check Dependencie Cache
       uses: actions/cache@v1
@@ -40,6 +43,7 @@ jobs:
 
     - name: Build and test
       run: |
+        xcodebuild -version
         xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -derivedDataPath ./DerivedData -enableCodeCoverage YES clean build test -destination "name=iPhone 11" | xcpretty && exit ${PIPESTATUS[0]}
       env:
         DEVELOPER_DIR: ${{ env.XCODE_VERSION }}

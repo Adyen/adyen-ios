@@ -18,6 +18,12 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Setup Xcode 10.3
+      if: contains(matrix.destination, 'OS=12.4')
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '10.3'
+        
     - name: Prepare iOS 12.4 simulator
       if: contains(matrix.destination, 'OS=12.4')
       run: |
@@ -25,14 +31,12 @@ jobs:
         sudo ln -s /Applications/Xcode_10.3.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime /Library/Developer/CoreSimulator/Profiles/Runtimes/iOS\ 12.4.simruntime
         xcrun simctl create custom-test-device "iPhone X" "com.apple.CoreSimulator.SimRuntime.iOS-12-4"
         xcrun simctl list devices 12.4
-        echo '::set-output name=XCODE_VERSION::/Applications/Xcode_10.3.app/Contents/Developer'
-        xcodebuild -version
-        
-    - name: Prepare iOS 14.2 simulator
+
+    - name: Prepare beta-version of iOS simulator
       if: contains(matrix.destination, 'OS=14.2')
-      run: |
-        echo '::set-output name=XCODE_VERSION::/Applications/Xcode_12.2.app/Contents/Developer'
-        xcodebuild -version
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest
         
     - name: Check Dependencies
       uses: actions/cache@v1
