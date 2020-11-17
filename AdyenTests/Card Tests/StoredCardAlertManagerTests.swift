@@ -44,7 +44,7 @@ class StoredCardAlertManagerTests: XCTestCase {
         
         XCTAssertEqual(alertController.actions.count, 2)
         XCTAssertEqual(alertController.actions.first?.title, ADYLocalizedString("adyen.cancelButton", sut.localizationParameters))
-        XCTAssertEqual(alertController.actions[1].title, ADYLocalizedSubmitButtonTitle(with: amount, sut.localizationParameters))
+        XCTAssertEqual(alertController.actions[1].title, ADYLocalizedSubmitButtonTitle(with: amount, style: .immediate, sut.localizationParameters))
     }
     
     func testLocalizationWithCustomKeySeparator() throws {
@@ -66,7 +66,7 @@ class StoredCardAlertManagerTests: XCTestCase {
         
         XCTAssertEqual(alertController.actions.count, 2)
         XCTAssertEqual(alertController.actions.first?.title, ADYLocalizedString("adyen_cancelButton", sut.localizationParameters))
-        XCTAssertEqual(alertController.actions[1].title, ADYLocalizedSubmitButtonTitle(with: amount, sut.localizationParameters))
+        XCTAssertEqual(alertController.actions[1].title, ADYLocalizedSubmitButtonTitle(with: amount, style: .immediate, sut.localizationParameters))
     }
     
 }

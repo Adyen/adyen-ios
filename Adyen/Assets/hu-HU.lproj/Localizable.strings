@@ -31,7 +31,7 @@
 "adyen.card.stored.expires" = "Lejár: %@";
 "adyen.dropIn.stored.title" = "%@ használatával történő fizetés jóváhagyása";
 "adyen.dropIn.preselected.openAll.title" = "Fizetési mód módosítása";
-"adyen.continueTo" = "Folytatás a következővel:";
+"adyen.continueTo" = "Folytatás a következővel: %@";
 "adyen.phoneNumber.title" = "Telefonszám";
 "adyen.phoneNumber.invalid" = "Érvénytelen telefonszám";
 "adyen.phoneNumber.placeholder" = "12–345–6789";
@@ -44,3 +44,6 @@
 "adyen.blik.invalid" = "Adjon meg 6 számjegyet";
 "adyen.blik.code" = "6 számjegyű kód";
 "adyen.blik.help" = "Kód lekérése a banki alkalmazásból.";
+"adyen.blik.placeholder" = "123–456";
+"adyen.preauthorizeWith" = "Előzetes meghatalmazás a következővel: %@";
+"adyen.confirmPreauthorization" = "Előzetes meghatalmazás jóváhagyása";

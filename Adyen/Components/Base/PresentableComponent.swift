@@ -45,7 +45,7 @@ public protocol PresentableComponent: Component, Cancellable {
 }
 
 public extension PresentableComponent {
-    
+
     /// :nodoc:
     var payment: Payment? {
         get {
@@ -87,5 +87,6 @@ public extension PresentableComponent {
 }
 
 private enum AssociatedKeys {
+
     internal static var payment = "paymentObject"
 }

@@ -31,7 +31,7 @@
 "adyen.card.stored.expires" = "Λήξη: %@";
 "adyen.dropIn.stored.title" = "Επιβεβαίωση πληρωμής μέσω %@";
 "adyen.dropIn.preselected.openAll.title" = "Αλλαγή τρόπου πληρωμής";
-"adyen.continueTo" = "Μετάβαση στην";
+"adyen.continueTo" = "Μετάβαση στην %@";
 "adyen.phoneNumber.title" = "Αριθμός τηλεφώνου";
 "adyen.phoneNumber.invalid" = "Μη έγκυρος αριθμός τηλεφώνου";
 "adyen.phoneNumber.placeholder" = "123–456–789";
@@ -44,3 +44,6 @@
 "adyen.blik.invalid" = "Εισαγάγετε 6 ψηφία";
 "adyen.blik.code" = "6ψήφιος κωδικός";
 "adyen.blik.help" = "Λάβετε τον κωδικό από την εφαρμογή τραπεζικής σας.";
+"adyen.blik.placeholder" = "123–456";
+"adyen.preauthorizeWith" = "Προεξουσιοδότηση με %@";
+"adyen.confirmPreauthorization" = "Επιβεβαίωση προεξουσιοδότησης";

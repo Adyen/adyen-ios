@@ -80,7 +80,9 @@ internal final class PreselectedPaymentMethodComponent: LoadingComponent, Locali
     
     private lazy var submitButtonItem: FormButtonItem = {
         let item = FormButtonItem(style: style.mainButtonItem)
-        item.title = ADYLocalizedSubmitButtonTitle(with: payment?.amount, localizationParameters)
+        item.title = ADYLocalizedSubmitButtonTitle(with: payment?.amount,
+                                                   style: .immediate,
+                                                   localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "submitButton")
         let component = self.defaultComponent
         item.buttonSelectionHandler = { [weak self] in

@@ -45,3 +45,5 @@
 "adyen.blik.code" = "Código de 6 dígitos";
 "adyen.blik.help" = "Obtenha o código no aplicativo do seu banco.";
 "adyen.blik.placeholder" = "123–456";
+"adyen.preauthorizeWith" = "Pré-autorizar com %@";
+"adyen.confirmPreauthorization" = "Confirmar pré-autorização";

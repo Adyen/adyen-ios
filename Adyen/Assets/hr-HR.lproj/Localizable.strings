@@ -31,7 +31,7 @@
 "adyen.card.stored.expires" = "Istječe %@";
 "adyen.dropIn.stored.title" = "Potvrdite plaćanje: % @";
 "adyen.dropIn.preselected.openAll.title" = "Promijeni način plaćanja";
-"adyen.continueTo" = "Nastavi na";
+"adyen.continueTo" = "Nastavi na %@";
 "adyen.phoneNumber.title" = "Telefonski broj";
 "adyen.phoneNumber.invalid" = "Nevažeći telefonski broj";
 "adyen.phoneNumber.placeholder" = "123–456–789";
@@ -44,3 +44,6 @@
 "adyen.blik.invalid" = "Unesite 6 znamenki";
 "adyen.blik.code" = "6-znamenkasti kôd";
 "adyen.blik.help" = "Preuzmite kôd iz bankovne aplikacije.";
+"adyen.blik.placeholder" = "123–456";
+"adyen.preauthorizeWith" = "Prethodno odobri s %@";
+"adyen.confirmPreauthorization" = "Potvrdite prethodno odobrenje";

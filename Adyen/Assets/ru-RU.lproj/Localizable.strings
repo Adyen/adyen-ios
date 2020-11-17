@@ -45,3 +45,5 @@
 "adyen.blik.code" = "6-значный код";
 "adyen.blik.help" = "Получите код из банковского приложения.";
 "adyen.blik.placeholder" = "123–456";
+"adyen.preauthorizeWith" = "Предавторизация в %@";
+"adyen.confirmPreauthorization" = "Подтвердить предавторизацию";
