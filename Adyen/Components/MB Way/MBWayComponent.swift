@@ -91,7 +91,7 @@ public final class MBWayComponent: PaymentComponent, PresentableComponent, Local
     /// The footer item.
     internal lazy var button: FormButtonItem = {
         let item = FormButtonItem(style: style.mainButtonItem)
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "footerItem")
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = ADYLocalizedString("adyen.continueTo", localizationParameters, mbWayPaymentMethod.name)
         item.buttonSelectionHandler = { [weak self] in
             self?.didSelectSubmitButton()

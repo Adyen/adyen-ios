@@ -135,7 +135,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     
     internal lazy var button: FormButtonItem = {
         let item = FormButtonItem(style: style.mainButtonItem)
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "footerItem")
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = ADYLocalizedSubmitButtonTitle(with: payment?.amount, localizationParameters)
         item.buttonSelectionHandler = { [weak self] in
             self?.didSelectSubmitButton()

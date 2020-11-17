@@ -89,7 +89,7 @@ public final class QiwiWalletComponent: PaymentComponent, PresentableComponent, 
     /// The footer item.
     internal lazy var button: FormButtonItem = {
         let item = FormButtonItem(style: style.mainButtonItem)
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "footerItem")
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = ADYLocalizedString("adyen.continueTo", localizationParameters, qiwiWalletPaymentMethod.name)
         item.buttonSelectionHandler = { [weak self] in
             self?.didSelectSubmitButton()

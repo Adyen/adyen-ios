@@ -98,8 +98,8 @@ class BLIKComponentTests: XCTestCase {
             let blikCodeViewTitleLabel: UILabel! = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.blikCodeItem.titleLabel")
             let blikCodeViewTextField: UITextField! = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.blikCodeItem.textField")
 
-            let footerItemViewButton: UIControl! = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.footerItem.button")
-            let footerItemViewButtonTitle: UILabel! = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.footerItem.button.titleLabel")
+            let payButtonItemViewButton: UIControl! = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.payButtonItem.button")
+            let payButtonItemViewButtonTitle: UILabel! = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.payButtonItem.button.titleLabel")
 
             XCTAssertEqual(hintView.backgroundColor, .brown)
             XCTAssertEqual(hintView.textColor, .cyan)
@@ -118,11 +118,11 @@ class BLIKComponentTests: XCTestCase {
             XCTAssertEqual(blikCodeViewTextField.font, .systemFont(ofSize: 13))
 
             /// Test footer
-            XCTAssertEqual(footerItemViewButton.backgroundColor, .red)
-            XCTAssertEqual(footerItemViewButtonTitle.backgroundColor, .red)
-            XCTAssertEqual(footerItemViewButtonTitle.textAlignment, .center)
-            XCTAssertEqual(footerItemViewButtonTitle.textColor, .white)
-            XCTAssertEqual(footerItemViewButtonTitle.font, .systemFont(ofSize: 22))
+            XCTAssertEqual(payButtonItemViewButton.backgroundColor, .red)
+            XCTAssertEqual(payButtonItemViewButtonTitle.backgroundColor, .red)
+            XCTAssertEqual(payButtonItemViewButtonTitle.textAlignment, .center)
+            XCTAssertEqual(payButtonItemViewButtonTitle.textColor, .white)
+            XCTAssertEqual(payButtonItemViewButtonTitle.font, .systemFont(ofSize: 22))
 
             expectation.fulfill()
         }
@@ -150,7 +150,7 @@ class BLIKComponentTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         let dummyExpectation = expectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let submitButton: UIControl? = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.footerItem.button")
+            let submitButton: UIControl? = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.payButtonItem.button")
 
             let blikCodeView: FormTextInputItemView! = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.blikCodeItem")
             self.populate(textItemView: blikCodeView, with: "123456")
