@@ -7,6 +7,7 @@
 import Foundation
 
 /// Simple form item that represent a single UILable element.
+/// :nodoc:
 public class FormLabelItem: FormItem {
 
     internal init(text: String, style: TextStyle, identifier: String? = nil) {

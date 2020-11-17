@@ -7,6 +7,7 @@
 import Foundation
 
 /// Simple form item to wrap another item and provide a margin around it.
+/// :nodoc:
 public class FormContainerItem: FormItem {
 
     /// Create a new instance of FormContainerItem, that wraps `content` item with `padding`.
