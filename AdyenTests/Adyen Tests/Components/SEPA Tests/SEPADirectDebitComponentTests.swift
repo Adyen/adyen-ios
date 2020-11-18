@@ -33,8 +33,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(sut.ibanItem.title, ADYLocalizedString("adyen.sepa.ibanItem.title", sut.localizationParameters))
         XCTAssertEqual(sut.ibanItem.validationFailureMessage, ADYLocalizedString("adyen.sepa.ibanItem.invalid", sut.localizationParameters))
         
-        XCTAssertEqual(sut.footerItem.title, ADYLocalizedString("adyen.sepa.consentLabel", sut.localizationParameters))
-        XCTAssertEqual(sut.footerItem.submitButtonTitle, ADYLocalizedSubmitButtonTitle(with: payment.amount, sut.localizationParameters))
+        XCTAssertEqual(sut.button.title, ADYLocalizedSubmitButtonTitle(with: payment.amount, sut.localizationParameters))
     }
     
     func testLocalizationWithCustomKeySeparator() {
@@ -51,20 +50,19 @@ class SEPADirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(sut.ibanItem.title, ADYLocalizedString("adyen_sepa_ibanItem_title", sut.localizationParameters))
         XCTAssertEqual(sut.ibanItem.validationFailureMessage, ADYLocalizedString("adyen_sepa_ibanItem_invalid", sut.localizationParameters))
         
-        XCTAssertEqual(sut.footerItem.title, ADYLocalizedString("adyen_sepa_consentLabel", sut.localizationParameters))
-        XCTAssertEqual(sut.footerItem.submitButtonTitle, ADYLocalizedSubmitButtonTitle(with: payment.amount, sut.localizationParameters))
+        XCTAssertEqual(sut.button.title, ADYLocalizedSubmitButtonTitle(with: payment.amount, sut.localizationParameters))
     }
     
     func testUIConfiguration() {
         var sepaComponentStyle = FormComponentStyle()
         
         /// Footer
-        sepaComponentStyle.footer.button.title.color = .white
-        sepaComponentStyle.footer.button.title.backgroundColor = .red
-        sepaComponentStyle.footer.button.title.textAlignment = .center
-        sepaComponentStyle.footer.button.title.font = .systemFont(ofSize: 22)
-        sepaComponentStyle.footer.button.backgroundColor = .red
-        sepaComponentStyle.footer.backgroundColor = .brown
+        sepaComponentStyle.mainButtonItem.button.title.color = .white
+        sepaComponentStyle.mainButtonItem.button.title.backgroundColor = .red
+        sepaComponentStyle.mainButtonItem.button.title.textAlignment = .center
+        sepaComponentStyle.mainButtonItem.button.title.font = .systemFont(ofSize: 22)
+        sepaComponentStyle.mainButtonItem.button.backgroundColor = .red
+        sepaComponentStyle.mainButtonItem.backgroundColor = .brown
         
         /// background color
         sepaComponentStyle.backgroundColor = .red
@@ -102,8 +100,8 @@ class SEPADirectDebitComponentTests: XCTestCase {
             let ibanItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.ibanItem.titleLabel")
             let ibanItemTextField: UITextField? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.ibanItem.textField")
             
-            let footerItemViewButton: UIControl? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.footerItem.submitButton")
-            let footerItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.footerItem.submitButton.titleLabel")
+            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.payButtonItem.button")
+            let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.payButtonItem.button.titleLabel")
             
             let headerItemView: UIView? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.Test name")
             let headerItemViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.Test name.titleLabel")
@@ -131,11 +129,11 @@ class SEPADirectDebitComponentTests: XCTestCase {
             XCTAssertEqual(ibanItemTextField?.font, .systemFont(ofSize: 13))
             
             /// Test footer
-            XCTAssertEqual(footerItemViewButton?.backgroundColor, .red)
-            XCTAssertEqual(footerItemViewButtonTitle?.backgroundColor, .red)
-            XCTAssertEqual(footerItemViewButtonTitle?.textAlignment, .center)
-            XCTAssertEqual(footerItemViewButtonTitle?.textColor, .white)
-            XCTAssertEqual(footerItemViewButtonTitle?.font, .systemFont(ofSize: 22))
+            XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
+            XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
+            XCTAssertEqual(payButtonItemViewButtonTitle?.textAlignment, .center)
+            XCTAssertEqual(payButtonItemViewButtonTitle?.textColor, .white)
+            XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
             
             /// Test header
             XCTAssertEqual(headerItemView?.backgroundColor, .magenta)

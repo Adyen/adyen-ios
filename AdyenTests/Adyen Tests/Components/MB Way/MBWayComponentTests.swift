@@ -23,9 +23,9 @@ class MBWayComponentTests: XCTestCase {
         XCTAssertEqual(sut.phoneNumberItem.placeholder, ADYLocalizedString("adyen.phoneNumber.placeholder", sut.localizationParameters))
         XCTAssertEqual(sut.phoneNumberItem.validationFailureMessage, ADYLocalizedString("adyen.phoneNumber.invalid", sut.localizationParameters))
 
-        XCTAssertNil(sut.footerItem.title)
-        XCTAssertEqual(sut.footerItem.submitButtonTitle, ADYLocalizedString("adyen.continueTo", sut.localizationParameters, method.name))
-        XCTAssertTrue(sut.footerItem.submitButtonTitle!.contains(method.name))
+        XCTAssertNotNil(sut.button.title)
+        XCTAssertEqual(sut.button.title, ADYLocalizedString("adyen.continueTo", sut.localizationParameters, method.name))
+        XCTAssertTrue(sut.button.title!.contains(method.name))
     }
 
     func testLocalizationWithCustomKeySeparator() {
@@ -37,20 +37,20 @@ class MBWayComponentTests: XCTestCase {
         XCTAssertEqual(sut.phoneNumberItem.placeholder, ADYLocalizedString("adyen_phoneNumber_placeholder", sut.localizationParameters))
         XCTAssertEqual(sut.phoneNumberItem.validationFailureMessage, ADYLocalizedString("adyen_phoneNumber_invalid", sut.localizationParameters))
 
-        XCTAssertNil(sut.footerItem.title)
-        XCTAssertEqual(sut.footerItem.submitButtonTitle, ADYLocalizedString("adyen_continueTo", sut.localizationParameters, method.name))
+        XCTAssertNotNil(sut.button.title)
+        XCTAssertEqual(sut.button.title, ADYLocalizedString("adyen_continueTo", sut.localizationParameters, method.name))
     }
 
     func testUIConfiguration() {
         var style = FormComponentStyle()
 
         /// Footer
-        style.footer.button.title.color = .white
-        style.footer.button.title.backgroundColor = .red
-        style.footer.button.title.textAlignment = .center
-        style.footer.button.title.font = .systemFont(ofSize: 22)
-        style.footer.button.backgroundColor = .red
-        style.footer.backgroundColor = .brown
+        style.mainButtonItem.button.title.color = .white
+        style.mainButtonItem.button.title.backgroundColor = .red
+        style.mainButtonItem.button.title.textAlignment = .center
+        style.mainButtonItem.button.title.font = .systemFont(ofSize: 22)
+        style.mainButtonItem.button.backgroundColor = .red
+        style.mainButtonItem.backgroundColor = .brown
 
         /// background color
         style.backgroundColor = .red
@@ -84,8 +84,8 @@ class MBWayComponentTests: XCTestCase {
             let phoneNumberViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "Adyen.MBWayComponent.phoneNumberItem.titleLabel")
             let phoneNumberViewTextField: UITextField? = sut.viewController.view.findView(with: "Adyen.MBWayComponent.phoneNumberItem.textField")
 
-            let footerItemViewButton: UIControl? = sut.viewController.view.findView(with: "Adyen.MBWayComponent.footerItem.submitButton")
-            let footerItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "Adyen.MBWayComponent.footerItem.submitButton.titleLabel")
+            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "Adyen.MBWayComponent.payButtonItem.button")
+            let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "Adyen.MBWayComponent.payButtonItem.button.titleLabel")
 
             let headerItemView: UIView? = sut.viewController.view.findView(with: "Adyen.MBWayComponent.test_name")
             let headerItemViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "Adyen.MBWayComponent.test_name.titleLabel")
@@ -102,11 +102,11 @@ class MBWayComponentTests: XCTestCase {
             XCTAssertEqual(phoneNumberViewTextField?.font, .systemFont(ofSize: 13))
 
             /// Test footer
-            XCTAssertEqual(footerItemViewButton?.backgroundColor, .red)
-            XCTAssertEqual(footerItemViewButtonTitle?.backgroundColor, .red)
-            XCTAssertEqual(footerItemViewButtonTitle?.textAlignment, .center)
-            XCTAssertEqual(footerItemViewButtonTitle?.textColor, .white)
-            XCTAssertEqual(footerItemViewButtonTitle?.font, .systemFont(ofSize: 22))
+            XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
+            XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
+            XCTAssertEqual(payButtonItemViewButtonTitle?.textAlignment, .center)
+            XCTAssertEqual(payButtonItemViewButtonTitle?.textColor, .white)
+            XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
 
             /// Test header
             XCTAssertEqual(headerItemView?.backgroundColor, .magenta)
@@ -138,13 +138,13 @@ class MBWayComponentTests: XCTestCase {
                 delegateExpectation.fulfill()
             })
             XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
-            XCTAssertEqual(sut.footerItem.showsActivityIndicator, false)
+            XCTAssertEqual(sut.button.showsActivityIndicator, false)
         }
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         let dummyExpectation = expectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let submitButton: UIControl? = sut.viewController.view.findView(with: "Adyen.MBWayComponent.footerItem.submitButton")
+            let submitButton: UIControl? = sut.viewController.view.findView(with: "Adyen.MBWayComponent.payButtonItem.button")
 
             let phoneNumberView: FormTextInputItemView! = sut.viewController.view.findView(with: "Adyen.MBWayComponent.phoneNumberItem")
             self.populate(textItemView: phoneNumberView, with: "+3511233456789")

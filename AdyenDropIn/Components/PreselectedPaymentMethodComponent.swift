@@ -54,9 +54,9 @@ internal final class PreselectedPaymentMethodComponent: LoadingComponent, Locali
         formViewController.localizationParameters = localizationParameters
         
         formViewController.append(listItem)
-        formViewController.append(submitButtonItem)
+        formViewController.append(submitButtonItem.withPadding(padding: .init(top: 0, left: 0, bottom: -8, right: 0)))
         formViewController.append(separator)
-        formViewController.append(openAllButtonItem)
+        formViewController.append(openAllButtonItem.withPadding(padding: .init(top: 0, left: 0, bottom: -14, right: 0)))
         
         formViewController.title = title
         return formViewController

@@ -7,6 +7,7 @@
 import Foundation
 
 /// Simple form item that represent a single UILable element.
+/// :nodoc:
 public class FormLabelItem: FormItem {
 
     internal init(text: String, style: TextStyle, identifier: String? = nil) {
@@ -28,6 +29,7 @@ public class FormLabelItem: FormItem {
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         let label = UILabel()
         label.text = text
+        label.numberOfLines = 0
         label.accessibilityIdentifier = identifier
         label.font = style.font
         label.textColor = style.color

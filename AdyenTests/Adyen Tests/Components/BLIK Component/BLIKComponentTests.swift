@@ -33,8 +33,7 @@ class BLIKComponentTests: XCTestCase {
         XCTAssertEqual(sut.codeItem.placeholder, ADYLocalizedString("adyen.blik.placeholder", sut.localizationParameters))
         XCTAssertEqual(sut.codeItem.validationFailureMessage, ADYLocalizedString("adyen.blik.invalid", sut.localizationParameters))
 
-        XCTAssertNil(sut.footerItem.title)
-        XCTAssertEqual(sut.footerItem.submitButtonTitle, ADYLocalizedSubmitButtonTitle(with: payment.amount, sut.localizationParameters))
+        XCTAssertEqual(sut.button.title, ADYLocalizedSubmitButtonTitle(with: payment.amount, sut.localizationParameters))
     }
 
     func testLocalizationWithCustomKeySeparator() {
@@ -46,8 +45,7 @@ class BLIKComponentTests: XCTestCase {
         XCTAssertEqual(sut.codeItem.placeholder, ADYLocalizedString("adyen_blik_placeholder", sut.localizationParameters))
         XCTAssertEqual(sut.codeItem.validationFailureMessage, ADYLocalizedString("adyen_blik_invalid", sut.localizationParameters))
 
-        XCTAssertNil(sut.footerItem.title)
-        XCTAssertEqual(sut.footerItem.submitButtonTitle, ADYLocalizedString("adyen_submitButton_formatted", sut.localizationParameters, payment.amount.formatted))
+        XCTAssertEqual(sut.button.title, ADYLocalizedString("adyen_submitButton_formatted", sut.localizationParameters, payment.amount.formatted))
     }
 
     func testUIConfiguration() {
@@ -59,12 +57,12 @@ class BLIKComponentTests: XCTestCase {
         style.hintLabel.color = .cyan
 
         /// Footer
-        style.footer.button.title.color = .white
-        style.footer.button.title.backgroundColor = .red
-        style.footer.button.title.textAlignment = .center
-        style.footer.button.title.font = .systemFont(ofSize: 22)
-        style.footer.button.backgroundColor = .red
-        style.footer.backgroundColor = .brown
+        style.mainButtonItem.button.title.color = .white
+        style.mainButtonItem.button.title.backgroundColor = .red
+        style.mainButtonItem.button.title.textAlignment = .center
+        style.mainButtonItem.button.title.font = .systemFont(ofSize: 22)
+        style.mainButtonItem.button.backgroundColor = .red
+        style.mainButtonItem.backgroundColor = .brown
 
         /// background color
         style.backgroundColor = .red
@@ -100,8 +98,8 @@ class BLIKComponentTests: XCTestCase {
             let blikCodeViewTitleLabel: UILabel! = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.blikCodeItem.titleLabel")
             let blikCodeViewTextField: UITextField! = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.blikCodeItem.textField")
 
-            let footerItemViewButton: UIControl! = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.footerItem.submitButton")
-            let footerItemViewButtonTitle: UILabel! = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.footerItem.submitButton.titleLabel")
+            let payButtonItemViewButton: UIControl! = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.payButtonItem.button")
+            let payButtonItemViewButtonTitle: UILabel! = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.payButtonItem.button.titleLabel")
 
             XCTAssertEqual(hintView.backgroundColor, .brown)
             XCTAssertEqual(hintView.textColor, .cyan)
@@ -120,11 +118,11 @@ class BLIKComponentTests: XCTestCase {
             XCTAssertEqual(blikCodeViewTextField.font, .systemFont(ofSize: 13))
 
             /// Test footer
-            XCTAssertEqual(footerItemViewButton.backgroundColor, .red)
-            XCTAssertEqual(footerItemViewButtonTitle.backgroundColor, .red)
-            XCTAssertEqual(footerItemViewButtonTitle.textAlignment, .center)
-            XCTAssertEqual(footerItemViewButtonTitle.textColor, .white)
-            XCTAssertEqual(footerItemViewButtonTitle.font, .systemFont(ofSize: 22))
+            XCTAssertEqual(payButtonItemViewButton.backgroundColor, .red)
+            XCTAssertEqual(payButtonItemViewButtonTitle.backgroundColor, .red)
+            XCTAssertEqual(payButtonItemViewButtonTitle.textAlignment, .center)
+            XCTAssertEqual(payButtonItemViewButtonTitle.textColor, .white)
+            XCTAssertEqual(payButtonItemViewButtonTitle.font, .systemFont(ofSize: 22))
 
             expectation.fulfill()
         }
@@ -146,13 +144,13 @@ class BLIKComponentTests: XCTestCase {
                 delegateExpectation.fulfill()
             })
             XCTAssertEqual(self.sut.viewController.view.isUserInteractionEnabled, true)
-            XCTAssertEqual(self.sut.footerItem.showsActivityIndicator, false)
+            XCTAssertEqual(self.sut.button.showsActivityIndicator, false)
         }
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         let dummyExpectation = expectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let submitButton: UIControl? = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.footerItem.submitButton")
+            let submitButton: UIControl? = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.payButtonItem.button")
 
             let blikCodeView: FormTextInputItemView! = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.blikCodeItem")
             self.populate(textItemView: blikCodeView, with: "123456")

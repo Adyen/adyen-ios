@@ -41,7 +41,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
 
     /// :nodoc:
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
-        footerItem.showsActivityIndicator = false
+        button.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
         completion?()
     }
@@ -54,11 +54,9 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
 
         formViewController.title = paymentMethod.name.uppercased()
 
-        let container = ContainerFormItem(content: hintLabelItem,
-                                          padding: .init(top: 7, left: 0, bottom: -7, right: 0))
-        formViewController.append(container)
+        formViewController.append(hintLabelItem.withPadding(padding: .init(top: 7, left: 0, bottom: -7, right: 0)))
         formViewController.append(codeItem)
-        formViewController.append(footerItem)
+        formViewController.append(button.withPadding(padding: .init(top: 8, left: 0, bottom: -16, right: 0)))
 
         return formViewController
     }()
@@ -84,14 +82,14 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
     }()
 
     /// The footer item.
-    internal lazy var footerItem: FormFooterItem = {
-        let footerItem = FormFooterItem(style: style.footer)
-        footerItem.submitButtonTitle = ADYLocalizedSubmitButtonTitle(with: payment?.amount, localizationParameters)
-        footerItem.submitButtonSelectionHandler = { [weak self] in
+    internal lazy var button: FormButtonItem = {
+        let item = FormButtonItem(style: style.mainButtonItem)
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
+        item.title = ADYLocalizedSubmitButtonTitle(with: payment?.amount, localizationParameters)
+        item.buttonSelectionHandler = { [weak self] in
             self?.didSelectSubmitButton()
         }
-        footerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "footerItem")
-        return footerItem
+        return item
     }()
 
     private func didSelectSubmitButton() {
@@ -99,7 +97,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
 
         let details = BLIKDetails(paymentMethod: paymentMethod,
                                   blikCode: codeItem.value)
-        footerItem.showsActivityIndicator = true
+        button.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
 
         submit(data: PaymentComponentData(paymentMethodDetails: details))

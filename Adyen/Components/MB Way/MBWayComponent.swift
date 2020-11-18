@@ -50,7 +50,7 @@ public final class MBWayComponent: PaymentComponent, PresentableComponent, Local
     
     /// :nodoc:
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
-        footerItem.showsActivityIndicator = false
+        button.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
         completion?()
     }
@@ -70,7 +70,7 @@ public final class MBWayComponent: PaymentComponent, PresentableComponent, Local
 
         formViewController.title = paymentMethod.name
         formViewController.append(phoneNumberItem)
-        formViewController.append(footerItem)
+        formViewController.append(button.withPadding(padding: .init(top: 8, left: 0, bottom: -16, right: 0)))
         
         return formViewController
     }()
@@ -89,14 +89,14 @@ public final class MBWayComponent: PaymentComponent, PresentableComponent, Local
     }()
     
     /// The footer item.
-    internal lazy var footerItem: FormFooterItem = {
-        let footerItem = FormFooterItem(style: style.footer)
-        footerItem.submitButtonTitle = ADYLocalizedString("adyen.continueTo", localizationParameters, mbWayPaymentMethod.name)
-        footerItem.submitButtonSelectionHandler = { [weak self] in
+    internal lazy var button: FormButtonItem = {
+        let item = FormButtonItem(style: style.mainButtonItem)
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
+        item.title = ADYLocalizedString("adyen.continueTo", localizationParameters, mbWayPaymentMethod.name)
+        item.buttonSelectionHandler = { [weak self] in
             self?.didSelectSubmitButton()
         }
-        footerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "footerItem")
-        return footerItem
+        return item
     }()
     
     private func didSelectSubmitButton() {
@@ -104,7 +104,7 @@ public final class MBWayComponent: PaymentComponent, PresentableComponent, Local
         
         let details = MBWayDetails(paymentMethod: paymentMethod,
                                    telephoneNumber: phoneNumberItem.value)
-        footerItem.showsActivityIndicator = true
+        button.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
         
         submit(data: PaymentComponentData(paymentMethodDetails: details))
