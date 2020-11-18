@@ -13,11 +13,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        destination: ['name=iPhone 8', 'name=iPhone X,OS=12.4', 'name=iPhone 11,OS=14.0']
+        destination: ['name=iPhone 8', 'name=iPhone X,OS=12.4', 'name=iPhone 11,OS=14.2']
             
     steps:
     - uses: actions/checkout@v2
 
+    - name: Setup Xcode 10.3
+      if: contains(matrix.destination, 'OS=12.4')
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '10.3'
+        
     - name: Prepare iOS 12.4 simulator
       if: contains(matrix.destination, 'OS=12.4')
       run: |
@@ -25,12 +31,12 @@ jobs:
         sudo ln -s /Applications/Xcode_10.3.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime /Library/Developer/CoreSimulator/Profiles/Runtimes/iOS\ 12.4.simruntime
         xcrun simctl create custom-test-device "iPhone X" "com.apple.CoreSimulator.SimRuntime.iOS-12-4"
         xcrun simctl list devices 12.4
-        echo '::set-env name=XCODE_VERSION::/Applications/Xcode_10.3.app/Contents/Developer'
-        
-    - name: Prepare iOS 14.0 simulator
-      if: contains(matrix.destination, 'OS=14.0')
-      run: |
-        echo '::set-env name=XCODE_VERSION::/Applications/Xcode_12.app/Contents/Developer'
+
+    - name: Prepare beta-version of iOS simulator
+      if: contains(matrix.destination, 'OS=14.2')
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest
         
     - name: Check Dependencies
       uses: actions/cache@v1
@@ -59,7 +65,7 @@ jobs:
   sonar:
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v2 
+    - uses: actions/checkout@v2
         
     - name: Install Dependencies
       run: |
