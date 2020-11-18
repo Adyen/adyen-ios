@@ -74,7 +74,7 @@ class StoredCardComponentTests: XCTestCase {
             XCTAssertNotNil(textField)
 
             XCTAssertTrue(alertController.actions.contains { $0.title == ADYLocalizedString("adyen.cancelButton", nil) })
-            XCTAssertTrue(alertController.actions.contains { $0.title == ADYLocalizedSubmitButtonTitle(with: payemt.amount, style: .needsRedirectToThirdParty("name"), nil) })
+            XCTAssertTrue(alertController.actions.contains { $0.title == ADYLocalizedSubmitButtonTitle(with: payemt.amount, style: .immediate, nil) })
 
             expectation.fulfill()
 
