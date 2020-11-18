@@ -49,7 +49,6 @@ class SEPADirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(sut.ibanItem.title, ADYLocalizedString("adyen.sepa.ibanItem.title", sut.localizationParameters))
         XCTAssertEqual(sut.ibanItem.validationFailureMessage, ADYLocalizedString("adyen.sepa.ibanItem.invalid", sut.localizationParameters))
 
-        XCTAssertEqual(sut.button.title, ADYLocalizedString("adyen.sepa.consentLabel", sut.localizationParameters))
         XCTAssertEqual(sut.button.title, ADYLocalizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
 
         XCTAssertEqual(sut.button.title, "Confirm preauthorization")
