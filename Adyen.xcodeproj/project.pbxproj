@@ -272,6 +272,9 @@
 		F95B6DD4252B294C002C9062 /* PaymentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6DD3252B294C002C9062 /* PaymentsController.swift */; };
 		F95B6DD5252B2A8D002C9062 /* PaymentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6DD3252B294C002C9062 /* PaymentsController.swift */; };
 		F95B6DD6252B4654002C9062 /* ComponentsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24FECFB226EFD3C00A65122 /* ComponentsItem.swift */; };
+		F95D76072565447B0088A353 /* AdyenTests.strings in Resources */ = {isa = PBXBuildFile; fileRef = F95D76062565447B0088A353 /* AdyenTests.strings */; };
+		F95D76152565449A0088A353 /* AdyenTestsCustomSeparator.strings in Resources */ = {isa = PBXBuildFile; fileRef = F95D76142565449A0088A353 /* AdyenTestsCustomSeparator.strings */; };
+		F95D761D256544B10088A353 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F95D761C256544B10088A353 /* Localizable.strings */; };
 		F960FB092371823A00AEF74B /* ApplePayComponentTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F960FB082371823A00AEF74B /* ApplePayComponentTest.swift */; };
 		F9615FB2252DDA4800FA8EDD /* AdyenSwiftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9615FB1252DDA4800FA8EDD /* AdyenSwiftUITests.swift */; };
 		F9615FBB252DDD5400FA8EDD /* ViewControllerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6DAA25274A3D002C9062 /* ViewControllerPresenter.swift */; };
@@ -333,7 +336,7 @@
 		F96F44D923BDEDA200871C1F /* ListItemStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96F44D823BDEDA200871C1F /* ListItemStyle.swift */; };
 		F96F44DD23BE487500871C1F /* LocalizationParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96F44DC23BE487500871C1F /* LocalizationParameters.swift */; };
 		F96F44DF23BF453800871C1F /* AdyenUIHostCustomSeparator.strings in Resources */ = {isa = PBXBuildFile; fileRef = F96F44DE23BF453800871C1F /* AdyenUIHostCustomSeparator.strings */; };
-		F96F44E123BF5C2000871C1F /* ADYLocalization.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96F44E023BF5C2000871C1F /* ADYLocalization.swift */; };
+		F96F44E123BF5C2000871C1F /* ADYLocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96F44E023BF5C2000871C1F /* ADYLocalizationTests.swift */; };
 		F96F44E323BF5ED000871C1F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F96F44E223BF5ED000871C1F /* Localizable.strings */; };
 		F9780B6524338DFE00CC6C73 /* RedirectComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9780B6424338DFE00CC6C73 /* RedirectComponent.swift */; };
 		F9789C6823F18049000B4B2B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9789C6723F18048000B4B2B /* CFNetwork.framework */; };
@@ -848,6 +851,9 @@
 		F95B6DAA25274A3D002C9062 /* ViewControllerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerPresenter.swift; sourceTree = "<group>"; };
 		F95B6DAD25274D9C002C9062 /* PaymentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsViewModel.swift; sourceTree = "<group>"; };
 		F95B6DD3252B294C002C9062 /* PaymentsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsController.swift; sourceTree = "<group>"; };
+		F95D76062565447B0088A353 /* AdyenTests.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = AdyenTests.strings; sourceTree = "<group>"; };
+		F95D76142565449A0088A353 /* AdyenTestsCustomSeparator.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = AdyenTestsCustomSeparator.strings; sourceTree = "<group>"; };
+		F95D761C256544B10088A353 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		F960FB082371823A00AEF74B /* ApplePayComponentTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayComponentTest.swift; sourceTree = "<group>"; };
 		F9615FAF252DDA4800FA8EDD /* AdyenSwiftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdyenSwiftUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9615FB1252DDA4800FA8EDD /* AdyenSwiftUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenSwiftUITests.swift; sourceTree = "<group>"; };
@@ -907,7 +913,7 @@
 		F96F44D823BDEDA200871C1F /* ListItemStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemStyle.swift; sourceTree = "<group>"; };
 		F96F44DC23BE487500871C1F /* LocalizationParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationParameters.swift; sourceTree = "<group>"; };
 		F96F44DE23BF453800871C1F /* AdyenUIHostCustomSeparator.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = AdyenUIHostCustomSeparator.strings; sourceTree = "<group>"; };
-		F96F44E023BF5C2000871C1F /* ADYLocalization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADYLocalization.swift; sourceTree = "<group>"; };
+		F96F44E023BF5C2000871C1F /* ADYLocalizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADYLocalizationTests.swift; sourceTree = "<group>"; };
 		F96F44E223BF5ED000871C1F /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		F9780B6424338DFE00CC6C73 /* RedirectComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedirectComponent.swift; sourceTree = "<group>"; };
 		F9789C6723F18048000B4B2B /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/CFNetwork.framework; sourceTree = DEVELOPER_DIR; };
@@ -1378,6 +1384,7 @@
 		E2C0E04022097917008616F6 /* AdyenTests */ = {
 			isa = PBXGroup;
 			children = (
+				F95D76052565445E0088A353 /* Assets */,
 				E97B9716229D530F00505476 /* Adyen Tests */,
 				E9E3DAB0221D79A800697074 /* Card Tests */,
 				E2C0E04322097917008616F6 /* Info.plist */,
@@ -1971,7 +1978,7 @@
 				F99F08572383EA2A00EBB948 /* ValidatorMock.swift */,
 				F99F08592383EAC800EBB948 /* FormatterMock.swift */,
 				F9EDB79D2397AEF400CFB3C9 /* ComponentManagerTests.swift */,
-				F96F44E023BF5C2000871C1F /* ADYLocalization.swift */,
+				F96F44E023BF5C2000871C1F /* ADYLocalizationTests.swift */,
 				F9AC61BF243750D80062A00D /* AppLauncherMock.swift */,
 				F9BA21C52474113500D36A63 /* AmountFormatterTests.swift */,
 			);
@@ -2149,6 +2156,16 @@
 				F95B6DA925274A30002C9062 /* Present View Controller */,
 			);
 			path = SwiftUI;
+			sourceTree = "<group>";
+		};
+		F95D76052565445E0088A353 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				F95D76062565447B0088A353 /* AdyenTests.strings */,
+				F95D76142565449A0088A353 /* AdyenTestsCustomSeparator.strings */,
+				F95D761C256544B10088A353 /* Localizable.strings */,
+			);
+			path = Assets;
 			sourceTree = "<group>";
 		};
 		F960FB06237181DC00AEF74B /* Apple Pay */ = {
@@ -2715,6 +2732,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F95D76072565447B0088A353 /* AdyenTests.strings in Resources */,
+				F95D761D256544B10088A353 /* Localizable.strings in Resources */,
+				F95D76152565449A0088A353 /* AdyenTestsCustomSeparator.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3197,7 +3217,7 @@
 				E767C9F224F3CF830068E03C /* CardTypeProviderTests.swift in Sources */,
 				F9BA21BF246D36AC00D36A63 /* LazyOptionalTests.swift in Sources */,
 				E9021DF2225CC6D0009CF7F4 /* RedirectDetailsTests.swift in Sources */,
-				F96F44E123BF5C2000871C1F /* ADYLocalization.swift in Sources */,
+				F96F44E123BF5C2000871C1F /* ADYLocalizationTests.swift in Sources */,
 				F9D5750E237475DB009C18B5 /* CardEncryptorCardTests.swift in Sources */,
 				E7E8343C24F3C81700EC3844 /* PublicKeyProviderMock.swift in Sources */,
 				F919DF9924EA64680027976E /* CardPublicKeyProviderTests.swift in Sources */,

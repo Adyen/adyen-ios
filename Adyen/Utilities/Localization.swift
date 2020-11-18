@@ -29,14 +29,9 @@ private struct LocalizationInput {
 ///   - arguments: The arguments to substitute in the templated localized string.
 /// - Returns: The localized string for the given key, or the key itself if the localized string could not be found.
 public func ADYLocalizedString(_ key: String, _ parameters: LocalizationParameters?, _ arguments: CVarArg...) -> String {
-    
-    var result = fallbackLocalizedString(key: key)
-    
     let possibleInputs = buildPossibleInputs(key, parameters)
-    
-    if let localizedString = attempt(possibleInputs) {
-        result = localizedString
-    }
+
+    let result = attempt(possibleInputs) ?? fallbackLocalizedString(key: key)
     
     guard !arguments.isEmpty else {
         return result
@@ -49,14 +44,28 @@ private func fallbackLocalizedString(key: String) -> String {
     return NSLocalizedString(key, tableName: nil, bundle: Bundle.internalResources, comment: "")
 }
 
-private func buildPossibleInputs(_ key: String, _ parameters: LocalizationParameters?) -> [LocalizationInput] {
+private func buildPossibleInputs(_ key: String,
+                                 _ parameters: LocalizationParameters?) -> [LocalizationInput] {
+    var possibleInputs = buildPossibleInputs(for: Bundle.main, key, parameters)
+
+    if let customBundle = parameters?.bundle {
+        let inputs = buildPossibleInputs(for: customBundle, key, parameters)
+        possibleInputs.append(contentsOf: inputs)
+    }
+
+    return possibleInputs
+}
+
+private func buildPossibleInputs(for bundle: Bundle,
+                                 _ key: String,
+                                 _ parameters: LocalizationParameters?) -> [LocalizationInput] {
     var possibleInputs = [LocalizationInput]()
     
     if let customKey = updated(key, withSeparator: parameters?.keySeparator) {
-        possibleInputs.append(LocalizationInput(key: customKey, table: parameters?.tableName, bundle: Bundle.main))
+        possibleInputs.append(LocalizationInput(key: customKey, table: parameters?.tableName, bundle: bundle))
     }
     
-    possibleInputs.append(LocalizationInput(key: key, table: parameters?.tableName, bundle: Bundle.main))
+    possibleInputs.append(LocalizationInput(key: key, table: parameters?.tableName, bundle: bundle))
     
     return possibleInputs
 }

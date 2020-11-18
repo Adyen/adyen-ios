@@ -17,13 +17,19 @@ public struct LocalizationParameters: Equatable {
     /// Indicates the key separator string, set it if you want the localization keys to have a different separator other than ".",
     /// otherwise a "." is used.
     public let keySeparator: String?
+
+    /// Indicates the `Bundle` in which to look for translations,
+    /// if `nil`, then the SDK try to fetch the translations from the `Bundle.main`,
+    /// if not found, then the internal SDK bundle is used.
+    public let bundle: Bundle?
     
     /// Initializes an LocalizationParameters.
     ///
     /// - Parameters:
     ///   - tableName: The string table to search.
     ///   - keySeparator: The key separator string.
-    public init(tableName: String? = nil, keySeparator: String? = nil) {
+    public init(bundle: Bundle? = nil, tableName: String? = nil, keySeparator: String? = nil) {
+        self.bundle = bundle
         self.tableName = tableName
         self.keySeparator = keySeparator
     }

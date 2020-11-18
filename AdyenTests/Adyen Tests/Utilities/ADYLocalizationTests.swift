@@ -7,7 +7,7 @@
 @testable import Adyen
 import XCTest
 
-class ADYLocalization: XCTestCase {
+class ADYLocalizationTests: XCTestCase {
     
     // MARK: - Custom Recognized TableName
     
@@ -17,19 +17,52 @@ class ADYLocalization: XCTestCase {
         XCTAssertEqual(ADYLocalizedString("adyen.dropIn.stored.title", parameters, "test"), "Test-Confirm test payment")
         XCTAssertEqual(ADYLocalizedString("adyen.card.stored.title", parameters), "Test-Verify your card")
     }
-    
+
     /// Unrecognized Separator
     func testLocalizationWithCustomRecognizedTableNameAndCustomUnrecognizedSeparator() {
         let parameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: "*")
         XCTAssertEqual(ADYLocalizedString("adyen.dropIn.stored.title", parameters, "test"), "Test-Confirm test payment")
         XCTAssertEqual(ADYLocalizedString("adyen.card.stored.title", parameters), "Test-Verify your card")
     }
-    
+
     /// Recognized Separator
     func testLocalizationWithCustomRecognizedTableNameAndCustomRecognizedSeparator() {
         let parameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         XCTAssertEqual(ADYLocalizedString("adyen.dropIn.stored.title", parameters, "test"), "Test-Confirm test payment")
         XCTAssertEqual(ADYLocalizedString("adyen.card.stored.title", parameters), "Test-Verify your card")
+    }
+
+    // MARK: - Custom Bundle
+
+    func testLocalizationWithCustomRecognizedTableNameAndDefaultSeparatorAndCustomBundle() {
+        let parameters = LocalizationParameters(bundle: Bundle(for: ADYLocalizationTests.self),
+                                                tableName: "AdyenTests",
+                                                keySeparator: nil)
+        XCTAssertEqual(ADYLocalizedString("adyen.dropIn.stored.title", parameters, "test"), "TestBundle-Confirm test payment")
+        XCTAssertEqual(ADYLocalizedString("adyen.card.stored.title", parameters), "TestBundle-Verify your card")
+    }
+
+    func testLocalizationWithCustomBundleFallbackToMainBundle() {
+        let parameters = LocalizationParameters(bundle: Bundle(for: ADYLocalizationTests.self),
+                                                tableName: nil,
+                                                keySeparator: nil)
+        XCTAssertEqual(ADYLocalizedString("any.key.1", parameters, "test"), "value 1 test")
+        XCTAssertEqual(ADYLocalizedString("any.key.2", parameters), "value 2")
+    }
+
+    func testLocalizationWithCustomBundleFallbackToSDKBundle() {
+        let parameters = LocalizationParameters(bundle: Bundle(for: ADYLocalizationTests.self),
+                                                tableName: nil,
+                                                keySeparator: nil)
+        XCTAssertEqual(ADYLocalizedString("adyen.blik.placeholder", parameters), "123–456")
+    }
+
+    func testLocalizationWithCustomRecognizedTableNameAndCustomRecognizedSeparatorAndCustomBundle() {
+        let parameters = LocalizationParameters(bundle: Bundle(for: ADYLocalizationTests.self),
+                                                tableName: "AdyenTestsCustomSeparator",
+                                                keySeparator: "_")
+        XCTAssertEqual(ADYLocalizedString("adyen.dropIn.stored.title", parameters, "test"), "TestBundle-Confirm test payment")
+        XCTAssertEqual(ADYLocalizedString("adyen.card.stored.title", parameters), "TestBundle-Verify your card")
     }
     
     // MARK: - Custom Unrecognized TableName
