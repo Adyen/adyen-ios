@@ -8,6 +8,13 @@
 import XCTest
 
 class ADYLocalizationTests: XCTestCase {
+    // MARK: - Button title
+
+    func testLocalizationWitZeroPayment() {
+        XCTAssertEqual(ADYLocalizedSubmitButtonTitle(with: Payment.Amount(value: 0, currencyCode: "EUR"), style: .needsRedirectToThirdParty("test_name"), nil), "Preauthorize with test_name")
+
+        XCTAssertEqual(ADYLocalizedSubmitButtonTitle(with: Payment.Amount(value: 0, currencyCode: "EUR"), style: .immediate, nil), "Confirm preauthorization")
+    }
     
     // MARK: - Custom Recognized TableName
     

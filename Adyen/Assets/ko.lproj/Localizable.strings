@@ -45,3 +45,5 @@
 "adyen.blik.code" = "6자리 코드";
 "adyen.blik.help" = "뱅킹 앱에서 코드를 가져오세요.";
 "adyen.blik.placeholder" = "123–456";
+"adyen.preauthorizeWith" = "사전 승인 방법:%@";
+"adyen.confirmPreauthorization" = "사전 승인 확인";

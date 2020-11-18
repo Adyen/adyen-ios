@@ -45,3 +45,5 @@
 "adyen.blik.code" = "Sexsiffrig kod";
 "adyen.blik.help" = "Hämta koden från din bankapp.";
 "adyen.blik.placeholder" = "123–456";
+"adyen.preauthorizeWith" = "Förauktorisera med %@";
+"adyen.confirmPreauthorization" = "Bekräfta förauktorisering";

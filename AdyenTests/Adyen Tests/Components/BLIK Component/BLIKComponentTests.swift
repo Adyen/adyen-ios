@@ -33,7 +33,19 @@ class BLIKComponentTests: XCTestCase {
         XCTAssertEqual(sut.codeItem.placeholder, ADYLocalizedString("adyen.blik.placeholder", sut.localizationParameters))
         XCTAssertEqual(sut.codeItem.validationFailureMessage, ADYLocalizedString("adyen.blik.invalid", sut.localizationParameters))
 
-        XCTAssertEqual(sut.button.title, ADYLocalizedSubmitButtonTitle(with: payment.amount, sut.localizationParameters))
+        XCTAssertEqual(sut.button.title, ADYLocalizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
+    }
+
+    func testLocalizationWithZeroPayment() {
+        let payment = Payment(amount: Payment.Amount(value: 0, currencyCode: "PLN"), countryCode: "PL")
+        sut.payment = payment
+        XCTAssertEqual(sut.hintLabelItem.text, ADYLocalizedString("adyen.blik.help", sut.localizationParameters))
+
+        XCTAssertEqual(sut.codeItem.title, ADYLocalizedString("adyen.blik.code", sut.localizationParameters))
+        XCTAssertEqual(sut.codeItem.placeholder, ADYLocalizedString("adyen.blik.placeholder", sut.localizationParameters))
+        XCTAssertEqual(sut.codeItem.validationFailureMessage, ADYLocalizedString("adyen.blik.invalid", sut.localizationParameters))
+
+        XCTAssertEqual(sut.button.title, ADYLocalizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
     }
 
     func testLocalizationWithCustomKeySeparator() {
@@ -188,3 +200,4 @@ class BLIKComponentTests: XCTestCase {
     }
 
 }
+

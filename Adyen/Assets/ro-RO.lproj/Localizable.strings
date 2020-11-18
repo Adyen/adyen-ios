@@ -31,7 +31,7 @@
 "adyen.card.stored.expires" = "Expiră la %@";
 "adyen.dropIn.stored.title" = "Confirmați plata %@";
 "adyen.dropIn.preselected.openAll.title" = "Schimbare metodă de plată";
-"adyen.continueTo" = "Continuați către";
+"adyen.continueTo" = "Continuați către %@";
 "adyen.phoneNumber.title" = "Număr de telefon";
 "adyen.phoneNumber.invalid" = "Număr de telefon incorect";
 "adyen.phoneNumber.placeholder" = "123–456–789";
@@ -44,3 +44,6 @@
 "adyen.blik.invalid" = "Introduceți 6 cifre";
 "adyen.blik.code" = "Cod din 6 cifre";
 "adyen.blik.help" = "Obțineți codul din aplicația dvs. de banking.";
+"adyen.blik.placeholder" = "123–456";
+"adyen.preauthorizeWith" = "Preautorizare cu %@";
+"adyen.confirmPreauthorization" = "Confirmați preautorizarea";

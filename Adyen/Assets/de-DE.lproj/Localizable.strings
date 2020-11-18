@@ -45,3 +45,5 @@
 "adyen.blik.code" = "6-stelliger Code";
 "adyen.blik.help" = "Rufen Sie den Code über Ihre Banking-App ab.";
 "adyen.blik.placeholder" = "123–456";
+"adyen.preauthorizeWith" = "Vorautorisieren mit %@";
+"adyen.confirmPreauthorization" = "Vorautorisierung bestätigen";

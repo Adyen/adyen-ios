@@ -40,7 +40,9 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
         }
         alertController.addAction(cancelAction)
         
-        let submitActionTitle = ADYLocalizedSubmitButtonTitle(with: payment?.amount, localizationParameters)
+        let submitActionTitle = ADYLocalizedSubmitButtonTitle(with: payment?.amount,
+                                                              style: .immediate,
+                                                              localizationParameters)
         let submitAction = UIAlertAction(title: submitActionTitle, style: .default) { _ in
             let details = StoredPaymentDetails(paymentMethod: self.storedPaymentMethod)
             self.submit(data: PaymentComponentData(paymentMethodDetails: details))

@@ -45,3 +45,5 @@
 "adyen.blik.code" = "6-cyfrowy kod";
 "adyen.blik.help" = "Uzyskaj kod ze swojej aplikacji bankowej.";
 "adyen.blik.placeholder" = "123–456";
+"adyen.preauthorizeWith" = "Autoryzuj wstępnie za pomocą: %@";
+"adyen.confirmPreauthorization" = "Potwierdź autoryzację wstępną";

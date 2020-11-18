@@ -38,7 +38,7 @@ class StoredCardComponentTests: XCTestCase {
             XCTAssertNotNil(textField)
 
             XCTAssertTrue(alertController.actions.contains { $0.title == ADYLocalizedString("adyen.cancelButton", nil) })
-            XCTAssertTrue(alertController.actions.contains { $0.title == ADYLocalizedSubmitButtonTitle(with: payemt.amount, nil) })
+            XCTAssertTrue(alertController.actions.contains { $0.title == ADYLocalizedSubmitButtonTitle(with: payemt.amount, style: .immediate, nil) })
 
             expectation.fulfill()
 
@@ -74,7 +74,7 @@ class StoredCardComponentTests: XCTestCase {
             XCTAssertNotNil(textField)
 
             XCTAssertTrue(alertController.actions.contains { $0.title == ADYLocalizedString("adyen.cancelButton", nil) })
-            XCTAssertTrue(alertController.actions.contains { $0.title == ADYLocalizedSubmitButtonTitle(with: payemt.amount, nil) })
+            XCTAssertTrue(alertController.actions.contains { $0.title == ADYLocalizedSubmitButtonTitle(with: payemt.amount, style: .immediate, nil) })
 
             expectation.fulfill()
 
@@ -138,7 +138,7 @@ class StoredCardComponentTests: XCTestCase {
             textField?.text = "737"
             textField?.sendActions(for: .editingChanged)
 
-            let payAction = alertController.actions.first { $0.title == ADYLocalizedSubmitButtonTitle(with: payemt.amount, nil) }!
+            let payAction = alertController.actions.first { $0.title == ADYLocalizedSubmitButtonTitle(with: payemt.amount, style: .immediate, nil) }!
 
             payAction.tap()
 
@@ -197,7 +197,7 @@ class StoredCardComponentTests: XCTestCase {
             textField?.text = "737"
             textField?.sendActions(for: .editingChanged)
 
-            let payAction = alertController.actions.first { $0.title == ADYLocalizedSubmitButtonTitle(with: payemt.amount, nil) }!
+            let payAction = alertController.actions.first { $0.title == ADYLocalizedSubmitButtonTitle(with: payemt.amount, style: .immediate, nil) }!
 
             payAction.tap()
 

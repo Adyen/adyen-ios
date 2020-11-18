@@ -45,3 +45,5 @@
 "adyen.blik.code" = "6-cijferige code";
 "adyen.blik.help" = "Haal de code op in uw bankapp.";
 "adyen.blik.placeholder" = "123–456";
+"adyen.preauthorizeWith" = "Preautorisatie uitvoeren met %@";
+"adyen.confirmPreauthorization" = "Preautorisatie bevestigen";

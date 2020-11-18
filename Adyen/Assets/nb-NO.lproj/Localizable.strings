@@ -45,3 +45,5 @@
 "adyen.blik.code" = "6-sifret kode";
 "adyen.blik.help" = "Hent koden fra bank-appen din.";
 "adyen.blik.placeholder" = "123–456";
+"adyen.preauthorizeWith" = "Forhåndsgodkjenn med %@";
+"adyen.confirmPreauthorization" = "Bekreft forhåndsgodkjenning";

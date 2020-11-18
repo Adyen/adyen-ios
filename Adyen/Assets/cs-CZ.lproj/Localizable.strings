@@ -31,7 +31,7 @@
 "adyen.card.stored.expires" = "Vyprší %@";
 "adyen.dropIn.stored.title" = "Potvrdit platbu";
 "adyen.dropIn.preselected.openAll.title" = "Změnit způsob platby";
-"adyen.continueTo" = "Pokračovat k";
+"adyen.continueTo" = "Pokračovat k %@";
 "adyen.phoneNumber.title" = "Telefonní číslo";
 "adyen.phoneNumber.invalid" = "Neplatné telefonní číslo";
 "adyen.phoneNumber.placeholder" = "123 456 789";
@@ -44,3 +44,6 @@
 "adyen.blik.invalid" = "Zadejte 6 čísel";
 "adyen.blik.code" = "Šestimístný kód";
 "adyen.blik.help" = "Získejte kód z bankovní aplikace.";
+"adyen.blik.placeholder" = "123–456";
+"adyen.preauthorizeWith" = "Předautorizovat pomocí %@";
+"adyen.confirmPreauthorization" = "Potvrdit předautorizaci";

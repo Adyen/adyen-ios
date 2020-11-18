@@ -89,16 +89,40 @@ private func attempt(_ input: LocalizationInput) -> String? {
     return nil
 }
 
+/// :nodoc:
+public enum PaymentStyle {
+    case needsRedirectToThirdParty(String)
+
+    case immediate
+}
+
 /// Helper function to create a localized submit button title. Optionally, the button title can include the given amount.
 ///
 /// :nodoc:
 ///
 /// - Parameter amount: The amount to include in the submit button title.
+/// - Parameter paymentMethodName: The payment method name.
 /// - Parameter parameters: The localization parameters.
-public func ADYLocalizedSubmitButtonTitle(with amount: Payment.Amount?, _ parameters: LocalizationParameters?) -> String {
+public func ADYLocalizedSubmitButtonTitle(with amount: Payment.Amount?,
+                                          style: PaymentStyle,
+                                          _ parameters: LocalizationParameters?) -> String {
+    if let amount = amount, amount.value == 0 {
+        return ADYLocalizedZeroPaymentAuthorisationButtonTitle(style: style,
+                                                               parameters)
+    }
     guard let formattedAmount = amount?.formatted else {
         return ADYLocalizedString("adyen.submitButton", parameters)
     }
     
     return ADYLocalizedString("adyen.submitButton.formatted", parameters, formattedAmount)
+}
+
+private func ADYLocalizedZeroPaymentAuthorisationButtonTitle(style: PaymentStyle,
+                                                             _ parameters: LocalizationParameters?) -> String {
+    switch style {
+    case let .needsRedirectToThirdParty(name):
+        return ADYLocalizedString("adyen.preauthorizeWith", parameters, name)
+    case .immediate:
+        return ADYLocalizedString("adyen.confirmPreauthorization", parameters)
+    }
 }

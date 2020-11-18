@@ -45,3 +45,5 @@
 "adyen.blik.code" = "6 位数代码";
 "adyen.blik.help" = "从您的银行应用中获取代码。";
 "adyen.blik.placeholder" = "123–456";
+"adyen.preauthorizeWith" = "预先授权%@";
+"adyen.confirmPreauthorization" = "确认预先授权";

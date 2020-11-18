@@ -71,8 +71,10 @@ public extension Component {
     
 }
 
-private struct AssociatedKeys {
+private enum AssociatedKeys {
     internal static var isDropIn = "isDropInObject"
+
     internal static var environment = "environmentObject"
+
     internal static var clientKey = "clientKeyObject"
 }
