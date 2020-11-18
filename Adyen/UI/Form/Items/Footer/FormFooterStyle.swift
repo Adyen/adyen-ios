@@ -8,6 +8,7 @@ import Foundation
 import UIKit
 
 /// Contains the styling customization options for a form footer.
+@available(*, deprecated, message: "The `FormFooterStyle` property is deprecated.")
 public struct FormFooterStyle: ViewStyle {
     
     /// The title style.

@@ -26,6 +26,7 @@ internal final class FormButtonItemView: FormItemView<FormButtonItem>, Observer 
         configureConstraints()
     }
     
+    @available(*, unavailable)
     internal required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -58,7 +59,7 @@ internal final class FormButtonItemView: FormItemView<FormButtonItem>, Observer 
             submitButton.topAnchor.constraint(equalTo: topAnchor, constant: layoutMargins.top),
             submitButton.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             submitButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            submitButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -layoutMargins.bottom - 16)
+            submitButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -layoutMargins.bottom)
         ]
         
         NSLayoutConstraint.activate(constraints)

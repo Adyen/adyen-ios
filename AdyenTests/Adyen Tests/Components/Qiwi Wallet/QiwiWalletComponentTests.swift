@@ -32,9 +32,8 @@ class QiwiWalletComponentTests: XCTestCase {
         XCTAssertEqual(sut.phoneNumberItem.phonePrefixItem.selectableValues, expectedSelectableValues)
         XCTAssertEqual(sut.phoneNumberItem.phonePrefixItem.value.identifier, "US")
         
-        XCTAssertNil(sut.footerItem.title)
-        XCTAssertEqual(sut.footerItem.submitButtonTitle, ADYLocalizedString("adyen.continueTo", sut.localizationParameters, method.name))
-        XCTAssertTrue(sut.footerItem.submitButtonTitle!.contains(method.name))
+        XCTAssertEqual(sut.button.title, ADYLocalizedString("adyen.continueTo", sut.localizationParameters, method.name))
+        XCTAssertTrue(sut.button.title!.contains(method.name))
     }
     
     func testLocalizationWithCustomKeySeparator() {
@@ -56,20 +55,19 @@ class QiwiWalletComponentTests: XCTestCase {
         XCTAssertEqual(sut.phoneNumberItem.phonePrefixItem.selectableValues, expectedSelectableValues)
         XCTAssertEqual(sut.phoneNumberItem.phonePrefixItem.value.identifier, "US")
         
-        XCTAssertNil(sut.footerItem.title)
-        XCTAssertEqual(sut.footerItem.submitButtonTitle, ADYLocalizedString("adyen_continueTo", sut.localizationParameters, method.name))
+        XCTAssertEqual(sut.button.title, ADYLocalizedString("adyen_continueTo", sut.localizationParameters, method.name))
     }
     
     func testUIConfiguration() {
         var style = FormComponentStyle()
         
         /// Footer
-        style.footer.button.title.color = .white
-        style.footer.button.title.backgroundColor = .red
-        style.footer.button.title.textAlignment = .center
-        style.footer.button.title.font = .systemFont(ofSize: 22)
-        style.footer.button.backgroundColor = .red
-        style.footer.backgroundColor = .brown
+        style.mainButtonItem.button.title.color = .white
+        style.mainButtonItem.button.title.backgroundColor = .red
+        style.mainButtonItem.button.title.textAlignment = .center
+        style.mainButtonItem.button.title.font = .systemFont(ofSize: 22)
+        style.mainButtonItem.button.backgroundColor = .red
+        style.mainButtonItem.backgroundColor = .brown
         
         /// background color
         style.backgroundColor = .red
@@ -106,8 +104,8 @@ class QiwiWalletComponentTests: XCTestCase {
             let phoneExtensionView: FormPhoneExtensionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormPhoneNumberItem.phoneExtensionPickerItem")
             let phoneExtensionViewLabel: UILabel? = sut.viewController.view.findView(with: "Adyen.FormPhoneNumberItem.phoneExtensionPickerItem.inputControl.label")
             
-            let footerItemViewButton: UIControl? = sut.viewController.view.findView(with: "Adyen.QiwiWalletComponent.footerItem.submitButton")
-            let footerItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "Adyen.QiwiWalletComponent.footerItem.submitButton.titleLabel")
+            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "Adyen.QiwiWalletComponent.payButtonItem.button")
+            let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "Adyen.QiwiWalletComponent.payButtonItem.button.titleLabel")
             
             let headerItemView: UIView? = sut.viewController.view.findView(with: "Adyen.QiwiWalletComponent.test_name")
             let headerItemViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "Adyen.QiwiWalletComponent.test_name.titleLabel")
@@ -130,11 +128,11 @@ class QiwiWalletComponentTests: XCTestCase {
             XCTAssertEqual(phoneExtensionViewLabel?.font, .systemFont(ofSize: 13))
             
             /// Test footer
-            XCTAssertEqual(footerItemViewButton?.backgroundColor, .red)
-            XCTAssertEqual(footerItemViewButtonTitle?.backgroundColor, .red)
-            XCTAssertEqual(footerItemViewButtonTitle?.textAlignment, .center)
-            XCTAssertEqual(footerItemViewButtonTitle?.textColor, .white)
-            XCTAssertEqual(footerItemViewButtonTitle?.font, .systemFont(ofSize: 22))
+            XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
+            XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
+            XCTAssertEqual(payButtonItemViewButtonTitle?.textAlignment, .center)
+            XCTAssertEqual(payButtonItemViewButtonTitle?.textColor, .white)
+            XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
             
             /// Test header
             XCTAssertEqual(headerItemView?.backgroundColor, .magenta)

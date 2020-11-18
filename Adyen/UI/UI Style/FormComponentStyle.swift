@@ -23,12 +23,13 @@ public struct FormComponentStyle: ViewStyle {
     public var `switch` = FormSwitchItemStyle()
     
     /// The footer style.
+    @available(*, deprecated, message: "The `footer` property is deprecated. Use `mainButton` and `footerNote` instead.")
     public var footer: FormFooterStyle
 
     /// The helper message style.
     public var hintLabel: TextStyle = .init(font: .preferredFont(forTextStyle: .body),
-                                         color: UIColor.AdyenCore.componentLabel,
-                                         textAlignment: .natural)
+                                            color: UIColor.AdyenCore.componentLabel,
+                                            textAlignment: .natural)
     
     /// The main button style.
     @available(*, deprecated, message: "Use mainButtonItem instead.")

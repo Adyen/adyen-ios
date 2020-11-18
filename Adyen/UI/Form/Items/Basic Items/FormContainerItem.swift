@@ -7,9 +7,15 @@
 import Foundation
 
 /// Simple form item to wrap another item and provide a margin around it.
-public class ContainerFormItem: FormItem {
+/// :nodoc:
+public class FormContainerItem: FormItem {
 
-    internal init(content: FormItem, padding: UIEdgeInsets = .zero, identifier: String? = nil) {
+    /// Create a new instance of FormContainerItem, that wraps `content` item with `padding`.
+    /// - Parameters:
+    ///   - content: The Form item to wrap.
+    ///   - padding: The padding around `content`.
+    ///   - identifier: The optional accessibility identifier for FormView.
+    public init(content: FormItem, padding: UIEdgeInsets = .zero, identifier: String? = nil) {
         self.content = content
         self.identifier = identifier
         self.padding = padding
@@ -51,4 +57,12 @@ public class ContainerFormItem: FormItem {
             NSLayoutConstraint.activate(constraints)
         }
     }
+}
+
+extension FormItem {
+
+    public func withPadding(padding: UIEdgeInsets) -> FormContainerItem {
+        return FormContainerItem(content: self, padding: padding)
+    }
+
 }
