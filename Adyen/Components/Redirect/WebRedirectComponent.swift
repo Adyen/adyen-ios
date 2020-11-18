@@ -21,7 +21,7 @@ internal final class WebRedirectComponent: NSObject, PresentableComponent, Actio
     /// - Parameter url: The URL to where the user should be redirected.
     /// - Parameter paymentData: The payment data returned by the server.
     /// - Parameter style: The component's UI style.
-    internal init(url: URL, paymentData: String, style: RedirectComponentStyle? = nil) {
+    internal init(url: URL, paymentData: String?, style: RedirectComponentStyle? = nil) {
         self.url = url
         self.paymentData = paymentData
         self.style = style
@@ -81,7 +81,7 @@ internal final class WebRedirectComponent: NSObject, PresentableComponent, Actio
     private let url: URL
     
     /// The Payment Data returned by the server.
-    private let paymentData: String
+    private let paymentData: String?
     
 }
 

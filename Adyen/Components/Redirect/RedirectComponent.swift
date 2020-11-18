@@ -78,7 +78,7 @@ public final class RedirectComponent: ActionComponent, DismissableComponent {
     /// - Parameter paymentData: The payment data returned by the server.
     /// - Parameter style: The component's UI style.
     @available(*, deprecated, message: "Use init(style:) and handle(action:) instead.")
-    public init(url: URL, paymentData: String, style: RedirectComponentStyle? = nil) {
+    public init(url: URL, paymentData: String?, style: RedirectComponentStyle? = nil) {
         self.webRedirectComponent = WebRedirectComponent(url: url, paymentData: paymentData, style: style)
         self.style = style
         self.webRedirectComponent?.delegate = self
