@@ -58,7 +58,7 @@ jobs:
       env:
         project: 'Adyen.xcodeproj'
         params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES'
-        scheme: ${{ matrix.target }}
+        scheme: ${{ matrix.scheme }}
         destination: ${{ matrix.destination }}
         DEVELOPER_DIR: ${{ matrix.xcode }}
         
