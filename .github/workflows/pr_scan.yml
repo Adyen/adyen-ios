@@ -10,6 +10,7 @@ jobs:
     env:
       sonarToken: ${{ secrets.SONAR_TOKEN }}
     runs-on: macos-latest
+
     steps:
     - uses: actions/checkout@v2
 
@@ -18,11 +19,6 @@ jobs:
         brew install sonar-scanner
         brew install swiftlint
         gem install slather
-    
-    - name: Select latest Xcode
-      uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: latest-stable
 
     - name: Check Dependencie Cache
       uses: actions/cache@v1
@@ -44,13 +40,26 @@ jobs:
     - name: Build and test
       run: |
         xcodebuild -version
-        xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -derivedDataPath ./DerivedData -enableCodeCoverage YES clean build test -destination "name=iPhone 11" | xcpretty && exit ${PIPESTATUS[0]}
+        xcodebuild build test -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}" | xcpretty && exit ${PIPESTATUS[0]}
       env:
-        DEVELOPER_DIR: ${{ env.XCODE_VERSION }}
+        project: 'Adyen.xcodeproj'
+        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES'
+        scheme: 'AdyenUIHost'
+        destination: 'name=iPhone 11'
+        DEVELOPER_DIR: ${{ matrix.xcode }}
 
     - name: Slather
       run: |
-        slather coverage --sonarqube-xml --build-directory ./DerivedData --output-directory ./reports --scheme AdyenUIHost --binary-basename Adyen --binary-basename AdyenCard --binary-basename AdyenDropIn --binary-basename AdyenWeChatPay Adyen.xcodeproj
+        slather coverage --sonarqube-xml ${params} ${project}
+      env:
+        project: 'Adyen.xcodeproj'
+        params: '--build-directory ./DerivedData
+        --output-directory ./reports
+        --scheme AdyenUIHost
+        --binary-basename Adyen
+        --binary-basename AdyenCard
+        --binary-basename AdyenDropIn
+        --binary-basename AdyenWeChatPay'
 
     - name: SwiftLint
       run: |
@@ -61,4 +70,4 @@ jobs:
       run: |
         sonar-scanner -X -Dsonar.login=${{ secrets.SONAR_TOKEN }}
       env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
