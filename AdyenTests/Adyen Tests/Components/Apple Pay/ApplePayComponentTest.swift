@@ -69,15 +69,6 @@ class ApplePayComponentTest: XCTestCase {
         waitForExpectations(timeout: 2)
     }
     
-    func testApplePayViewControllerIsResetAfterAuthorization() {
-        let viewController = sut?.viewController
-        
-        XCTAssertNotNil(viewController as? PKPaymentAuthorizationViewController)
-        sut?.paymentAuthorizationViewController(viewController as! PKPaymentAuthorizationViewController, didAuthorizePayment: PKPayment(), completion: { _ in })
-        sut?.stopLoading()
-        XCTAssertTrue(viewController !== sut?.viewController)
-    }
-    
     func testInvalidCurrencyCode() {
         let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name")
         let amount = Payment.Amount(value: 2, currencyCode: "wqedf")

@@ -7,22 +7,25 @@ on:
     - develop
 
 jobs:
+  
   tests:
     runs-on: macos-latest
     continue-on-error: true
     strategy:
       fail-fast: false
       matrix:
-        destination: ['name=iPhone 8', 'name=iPhone X,OS=12.4', 'name=iPhone 11,OS=14.2']
-            
+        include:
+        - destination: 'name=iPhone 8'
+          scheme: AdyenUIHost
+          xcode: '/Applications/Xcode_11.6.app/Contents/Developer'
+        - destination: 'name=iPhone 11'
+          scheme: AdyenUIHost
+          xcode: '/Applications/Xcode_12.2.app/Contents/Developer'
+        - destination: 'name=custom-test-device,OS=12.4'
+          scheme: AdyenUIKitTests
+          xcode: '/Applications/Xcode_10.3.app/Contents/Developer'
     steps:
     - uses: actions/checkout@v2
-
-    - name: Setup Xcode 10.3
-      if: contains(matrix.destination, 'OS=12.4')
-      uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: '10.3'
         
     - name: Prepare iOS 12.4 simulator
       if: contains(matrix.destination, 'OS=12.4')
@@ -31,12 +34,6 @@ jobs:
         sudo ln -s /Applications/Xcode_10.3.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime /Library/Developer/CoreSimulator/Profiles/Runtimes/iOS\ 12.4.simruntime
         xcrun simctl create custom-test-device "iPhone X" "com.apple.CoreSimulator.SimRuntime.iOS-12-4"
         xcrun simctl list devices 12.4
-
-    - name: Prepare beta-version of iOS simulator
-      if: contains(matrix.destination, 'OS=14.2')
-      uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: latest
         
     - name: Check Dependencies
       uses: actions/cache@v1
@@ -57,10 +54,13 @@ jobs:
       
     - name: Build and test
       run: |
-        xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -destination "${destination}" -derivedDataPath ./DerivedData -enableCodeCoverage YES build test | xcpretty && exit ${PIPESTATUS[0]}
+        xcodebuild build test -project ${project} -scheme "${scheme}" -destination "${destination}" ${params} | xcpretty && exit ${PIPESTATUS[0]}
       env:
+        project: 'Adyen.xcodeproj'
+        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES'
+        scheme: ${{ matrix.target }}
         destination: ${{ matrix.destination }}
-        DEVELOPER_DIR: ${{ env.XCODE_VERSION }}
+        DEVELOPER_DIR: ${{ matrix.xcode }}
         
   sonar:
     runs-on: macos-latest
@@ -92,12 +92,26 @@ jobs:
       
     - name: Build and test
       run: |
-        xcodebuild -project Adyen.xcodeproj -scheme AdyenUIHost -derivedDataPath ./DerivedData -enableCodeCoverage YES clean build test -destination "name=iPhone 11" | xcpretty && exit ${PIPESTATUS[0]}
+        xcodebuild build test -project ${project} -scheme "${scheme}" -destination "${destination}" ${params} | xcpretty && exit ${PIPESTATUS[0]}
+      env:
+        project: 'Adyen.xcodeproj'
+        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES'
+        scheme: AdyenUIHost
+        destination: 'name=iPhone 11'
                 
     - name: Slather
       run: |
-        slather coverage --sonarqube-xml --build-directory ./DerivedData --output-directory ./reports --scheme AdyenUIHost --binary-basename Adyen --binary-basename AdyenCard --binary-basename AdyenDropIn --binary-basename AdyenWeChatPay Adyen.xcodeproj
-        slather coverage --cobertura-xml --build-directory ./DerivedData --output-directory ./reports --scheme AdyenUIHost --binary-basename Adyen --binary-basename AdyenCard --binary-basename AdyenDropIn --binary-basename AdyenWeChatPay Adyen.xcodeproj
+        slather coverage --sonarqube-xml ${params} ${project}
+        slather coverage --cobertura-xml ${params} ${project}
+      env:
+        project: 'Adyen.xcodeproj'
+        params: '--build-directory ./DerivedData
+        --output-directory ./reports
+        --scheme AdyenUIHost
+        --binary-basename Adyen
+        --binary-basename AdyenCard
+        --binary-basename AdyenDropIn
+        --binary-basename AdyenWeChatPay'
          
     - name: SwiftLint
       run: |

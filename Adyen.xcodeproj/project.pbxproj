@@ -641,7 +641,7 @@
 		E2C0E03322097917008616F6 /* Adyen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Adyen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2C0E03622097917008616F6 /* Adyen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Adyen.h; sourceTree = "<group>"; };
 		E2C0E03722097917008616F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E2C0E03C22097917008616F6 /* AdyenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdyenTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2C0E03C22097917008616F6 /* AdyenUIKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdyenUIKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2C0E04322097917008616F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E2C0E05F220982AE008616F6 /* AdyenCard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdyenCard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2C0E061220982AE008616F6 /* AdyenCard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdyenCard.h; sourceTree = "<group>"; };
@@ -1352,7 +1352,7 @@
 			isa = PBXGroup;
 			children = (
 				E2C0E03322097917008616F6 /* Adyen.framework */,
-				E2C0E03C22097917008616F6 /* AdyenTests.xctest */,
+				E2C0E03C22097917008616F6 /* AdyenUIKitTests.xctest */,
 				E2C0E05F220982AE008616F6 /* AdyenCard.framework */,
 				E2C0E07D220B0399008616F6 /* AdyenUIHost.app */,
 				E9B36CAB2243B2FE00EAA368 /* AdyenDropIn.framework */,
@@ -2475,9 +2475,9 @@
 			productReference = E2C0E03322097917008616F6 /* Adyen.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		E2C0E03B22097917008616F6 /* AdyenTests */ = {
+		E2C0E03B22097917008616F6 /* AdyenUIKitTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E2C0E04A22097917008616F6 /* Build configuration list for PBXNativeTarget "AdyenTests" */;
+			buildConfigurationList = E2C0E04A22097917008616F6 /* Build configuration list for PBXNativeTarget "AdyenUIKitTests" */;
 			buildPhases = (
 				E2C0E03822097917008616F6 /* Sources */,
 				E2C0E03922097917008616F6 /* Frameworks */,
@@ -2492,9 +2492,9 @@
 				E2C0E03F22097917008616F6 /* PBXTargetDependency */,
 				F9D57522237C345C009C18B5 /* PBXTargetDependency */,
 			);
-			name = AdyenTests;
+			name = AdyenUIKitTests;
 			productName = AdyenTests;
-			productReference = E2C0E03C22097917008616F6 /* AdyenTests.xctest */;
+			productReference = E2C0E03C22097917008616F6 /* AdyenUIKitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		E2C0E05E220982AE008616F6 /* AdyenCard */ = {
@@ -2710,7 +2710,7 @@
 				E2C0E05E220982AE008616F6 /* AdyenCard */,
 				E9B36CAA2243B2FE00EAA368 /* AdyenDropIn */,
 				E2C0E07C220B0399008616F6 /* AdyenUIHost */,
-				E2C0E03B22097917008616F6 /* AdyenTests */,
+				E2C0E03B22097917008616F6 /* AdyenUIKitTests */,
 				F9620D8123C73B0D005209FC /* AdyenWeChatPay */,
 				F95B6D942527454E002C9062 /* AdyenSwiftUI */,
 				F9615FAE252DDA4800FA8EDD /* AdyenSwiftUITests */,
@@ -4044,7 +4044,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E2C0E04A22097917008616F6 /* Build configuration list for PBXNativeTarget "AdyenTests" */ = {
+		E2C0E04A22097917008616F6 /* Build configuration list for PBXNativeTarget "AdyenUIKitTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E2C0E04B22097917008616F6 /* Debug */,
