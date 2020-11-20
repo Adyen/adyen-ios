@@ -80,7 +80,6 @@ internal final class ComponentManager {
             return nil
         }
         
-        cardComponent?.showsLargeTitle = false
         cardComponent?.showsHolderNameField = cardConfiguration.showsHolderNameField
         cardComponent?.showsStorePaymentMethodField = cardConfiguration.showsStorePaymentMethodField
         cardComponent?.showsSecurityCodeField = cardConfiguration.showsSecurityCodeField
@@ -107,7 +106,6 @@ internal final class ComponentManager {
             return nil
         }
         
-        component?.showsLargeTitle = false
         component?.showsHolderNameField = cardConfiguration.showsHolderNameField
         component?.showsStorePaymentMethodField = cardConfiguration.showsStorePaymentMethodField
         
@@ -142,16 +140,12 @@ internal final class ComponentManager {
     }
     
     private func createSEPAComponent(_ paymentMethod: SEPADirectDebitPaymentMethod) -> SEPADirectDebitComponent {
-        let component = SEPADirectDebitComponent(paymentMethod: paymentMethod,
-                                                 style: style.formComponent)
-        component.showsLargeTitle = false
-        return component
+        return SEPADirectDebitComponent(paymentMethod: paymentMethod,
+                                        style: style.formComponent)
     }
     
     private func createQiwiWalletComponent(_ paymentMethod: QiwiWalletPaymentMethod) -> QiwiWalletComponent {
-        let component = QiwiWalletComponent(paymentMethod: paymentMethod, style: style.formComponent)
-        component.showsLargeTitle = false
-        return component
+        return QiwiWalletComponent(paymentMethod: paymentMethod, style: style.formComponent)
     }
     
     private func createMBWayComponent(_ paymentMethod: MBWayPaymentMethod) -> MBWayComponent? {
@@ -160,9 +154,7 @@ internal final class ComponentManager {
             adyenPrint("Failed to instantiate MBWayComponent because client key is not configured. Please supply the client key in the PaymentMethodsConfiguration.")
             return nil
         }
-        let component = MBWayComponent(paymentMethod: paymentMethod, style: style.formComponent)
-        component.showsLargeTitle = false
-        return component
+        return MBWayComponent(paymentMethod: paymentMethod, style: style.formComponent)
     }
 
     private func createBLIKComponent(_ paymentMethod: BLIKPaymentMethod) -> BLIKComponent? {

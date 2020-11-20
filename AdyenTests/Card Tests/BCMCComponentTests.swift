@@ -194,7 +194,7 @@ class BCMCComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["any_test_brand_name"])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
         let sut = BCMCComponent(paymentMethod: paymentMethod, clientKey: "test_client_key")
-        sut.showsLargeTitle = false
+        sut.cardComponent._showsLargeTitle = false
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -218,7 +218,7 @@ class BCMCComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["any_test_brand_name"])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
         let sut = BCMCComponent(paymentMethod: paymentMethod, clientKey: "test_client_key")
-        sut.showsLargeTitle = false
+        sut.cardComponent._showsLargeTitle = false
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -241,7 +241,7 @@ class BCMCComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["any_test_brand_name"])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
         let sut = BCMCComponent(paymentMethod: paymentMethod, clientKey: "test_client_key")
-        sut.showsLargeTitle = false
+        sut.cardComponent._showsLargeTitle = false
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -308,7 +308,7 @@ class BCMCComponentTests: XCTestCase {
         let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["any_test_brand_name"])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod, clientKey: "test_client_key")
-        sut.showsLargeTitle = false
+        sut.cardComponent._showsLargeTitle = false
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         

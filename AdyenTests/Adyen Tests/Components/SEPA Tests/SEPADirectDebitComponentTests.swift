@@ -168,7 +168,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
     func testBigTitle() {
         let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: "bcmc", name: "Test name")
         let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod)
-        sut.showsLargeTitle = false
+        sut._showsLargeTitle = false
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         

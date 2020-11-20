@@ -74,7 +74,7 @@ class MBWayComponentTests: XCTestCase {
         style.textField.backgroundColor = .red
 
         let sut = MBWayComponent(paymentMethod: method, style: style)
-        sut.showsLargeTitle = true
+        sut._showsLargeTitle = true
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -125,7 +125,7 @@ class MBWayComponentTests: XCTestCase {
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         sut.payment = payment
-        sut.showsLargeTitle = true
+        sut._showsLargeTitle = true
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidSubmit = { data, component in
@@ -165,7 +165,7 @@ class MBWayComponentTests: XCTestCase {
 
     func testBigTitle() {
         let sut = MBWayComponent(paymentMethod: method)
-        sut.showsLargeTitle = false
+        sut._showsLargeTitle = false
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 

@@ -91,7 +91,7 @@ class QiwiWalletComponentTests: XCTestCase {
         style.textField.backgroundColor = .red
         
         let sut = QiwiWalletComponent(paymentMethod: method, style: style)
-        sut.showsLargeTitle = true
+        sut._showsLargeTitle = true
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -148,7 +148,7 @@ class QiwiWalletComponentTests: XCTestCase {
     
     func testBigTitle() {
         let sut = QiwiWalletComponent(paymentMethod: method)
-        sut.showsLargeTitle = false
+        sut._showsLargeTitle = false
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         

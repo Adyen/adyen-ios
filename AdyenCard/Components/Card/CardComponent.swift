@@ -106,7 +106,19 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
      For Component title, please, introduce your own lable implementation.
      You can access componet's title from `viewController.title`.
     """)
-    public var showsLargeTitle = true
+    public var showsLargeTitle: Bool {
+        get {
+            guard !_isDropIn else { return false }
+            return _showsLargeTitle
+        }
+
+        set {
+            _showsLargeTitle = newValue
+        }
+    }
+
+    /// :nodoc:
+    internal var _showsLargeTitle = true // swiftlint:disable:this identifier_name
     
     /// Initializes the card component.
     ///
@@ -213,7 +225,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         formViewController.localizationParameters = localizationParameters
         formViewController.delegate = self
         
-        if showsLargeTitle {
+        if _showsLargeTitle, !_isDropIn {
             let headerItem = FormHeaderItem(style: style.header)
             headerItem.title = paymentMethod.name
             headerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: paymentMethod.name)
