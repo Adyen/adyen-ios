@@ -14,6 +14,22 @@ class MBWayComponentTests: XCTestCase {
     lazy var method = MBWayPaymentMethod(type: "test_type", name: "test_name")
     let payment = Payment(amount: Payment.Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
 
+    func testShowLargeTiteSetting() {
+        let sut = MBWayComponent(paymentMethod: method)
+
+        sut.showsLargeTitle = true
+        sut._isDropIn = true
+        XCTAssertFalse(sut.showsLargeTitle)
+
+        sut.showsLargeTitle = true
+        sut._isDropIn = false
+        XCTAssertTrue(sut._showsLargeTitle)
+
+        sut.showsLargeTitle = false
+        sut._isDropIn = false
+        XCTAssertFalse(sut._showsLargeTitle)
+    }
+
     func testLocalizationWithCustomTableName() {
         let sut = MBWayComponent(paymentMethod: method)
         sut.payment = payment

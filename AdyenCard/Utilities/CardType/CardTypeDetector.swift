@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -27,7 +27,7 @@ public final class CardTypeDetector {
     /// - Returns: The type for the given card number, or `nil` if it could not be found.
     @available(*, deprecated, message: "Use extension for `[CardType].adyen.type(forCardNumber:)` instead.")
     public func type(forCardNumber cardNumber: String) -> CardType? {
-        return detectableTypes.first { $0.matches(cardNumber: cardNumber) }
+        return detectableTypes.adyen.type(forCardNumber: cardNumber)
     }
     
     /// Detects all possible types for a given card number.
@@ -36,7 +36,7 @@ public final class CardTypeDetector {
     /// - Returns: The possible types for the given card number.
     @available(*, deprecated, message: "Use extension for `[CardType].adyen.types(forCardNumber:)` instead.")
     public func types(forCardNumber cardNumber: String) -> [CardType] {
-        return detectableTypes.filter { $0.matches(cardNumber: cardNumber) }
+        return detectableTypes.adyen.types(forCardNumber: cardNumber)
     }
     
 }

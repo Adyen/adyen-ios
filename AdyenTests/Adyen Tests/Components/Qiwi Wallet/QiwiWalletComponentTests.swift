@@ -12,6 +12,22 @@ class QiwiWalletComponentTests: XCTestCase {
     lazy var phoneExtensions = [PhoneExtension(value: "+1", countryCode: "US"), PhoneExtension(value: "+3", countryCode: "UK")]
     lazy var method = QiwiWalletPaymentMethod(type: "test_type", name: "test_name", phoneExtensions: phoneExtensions)
     let payment = Payment(amount: Payment.Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
+
+    func testShowLargeTiteSetting() {
+        let sut = QiwiWalletComponent(paymentMethod: method)
+
+        sut.showsLargeTitle = true
+        sut._isDropIn = true
+        XCTAssertFalse(sut.showsLargeTitle)
+
+        sut.showsLargeTitle = true
+        sut._isDropIn = false
+        XCTAssertTrue(sut._showsLargeTitle)
+
+        sut.showsLargeTitle = false
+        sut._isDropIn = false
+        XCTAssertFalse(sut._showsLargeTitle)
+    }
     
     func testLocalizationWithCustomTableName() {
         let sut = QiwiWalletComponent(paymentMethod: method)
@@ -165,6 +181,52 @@ class QiwiWalletComponentTests: XCTestCase {
         let qiwiPaymentMethod = QiwiWalletPaymentMethod(type: "qiwiwallet", name: "Test name")
         let sut = QiwiWalletComponent(paymentMethod: qiwiPaymentMethod)
         XCTAssertEqual(sut.requiresModalPresentation, true)
+    }
+
+    func testSubmit() {
+        let phoneExtensions = [PhoneExtension(value: "+3", countryCode: "UK")]
+        let method = QiwiWalletPaymentMethod(type: "test_type", name: "test_name", phoneExtensions: phoneExtensions)
+        let sut = QiwiWalletComponent(paymentMethod: method)
+        let delegate = PaymentComponentDelegateMock()
+        sut.showsLargeTitle = true
+        sut.delegate = delegate
+
+        let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
+        delegate.onDidSubmit = { data, component in
+            XCTAssertTrue(component === sut)
+            XCTAssertTrue(data.paymentMethod is QiwiWalletDetails)
+            let data = data.paymentMethod as! QiwiWalletDetails
+            XCTAssertEqual(data.phonePrefix, "+3")
+            XCTAssertEqual(data.phoneNumber, "7455573152")
+
+            sut.stopLoading(withSuccess: true, completion: {
+                delegateExpectation.fulfill()
+            })
+            XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
+            XCTAssertEqual(sut.button.showsActivityIndicator, false)
+        }
+
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+            let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: "Adyen.QiwiWalletComponent.phoneNumberItem")
+
+            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "Adyen.QiwiWalletComponent.payButtonItem.button")
+
+            self.populate(textItemView: phoneNumberView!, with: "7455573152")
+
+            payButtonItemViewButton?.sendActions(for: .touchUpInside)
+
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+
+    private func populate<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U, with text: String) {
+        let textView = textItemView.textField
+        textView.text = text
+        textView.sendActions(for: .editingChanged)
     }
     
 }

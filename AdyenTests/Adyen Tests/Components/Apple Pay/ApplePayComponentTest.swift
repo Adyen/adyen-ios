@@ -69,6 +69,23 @@ class ApplePayComponentTest: XCTestCase {
         waitForExpectations(timeout: 2)
     }
     
+    func testApplePayViewControllerIsResetAfterAuthorization() {
+        let viewController = sut!.viewController
+
+        let stopLoadingExpectation = expectation(description: "Expect the applePayComponent to be dimissed.")
+
+        UIApplication.shared.keyWindow?.rootViewController?.adyen.topPresenter.present(viewController, animated: true) {
+            XCTAssertNotNil(viewController as? PKPaymentAuthorizationViewController)
+            self.sut!.paymentAuthorizationViewController(viewController as! PKPaymentAuthorizationViewController, didAuthorizePayment: PKPayment(), completion: { _ in })
+            self.sut!.stopLoading(withSuccess: true) {
+                XCTAssertTrue(viewController !== self.sut?.viewController)
+                stopLoadingExpectation.fulfill()
+            }
+        }
+
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+
     func testInvalidCurrencyCode() {
         let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name")
         let amount = Payment.Amount(value: 2, currencyCode: "wqedf")

@@ -36,13 +36,19 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
     
     /// Indicates if form will show a large header title. True - show title; False - assign title to a view controllers's title.
     /// Defaults to true.
+    @available(*, deprecated, message: """
+     The `showsLargeTitle` property is deprecated.
+     For Component title, please, introduce your own lable implementation.
+     You can access componet's title from `viewController.title`.
+    """)
     public var showsLargeTitle: Bool {
         get {
-            return cardComponent.showsLargeTitle
+            guard !_isDropIn else { return false }
+            return cardComponent._showsLargeTitle
         }
         
         set {
-            cardComponent.showsLargeTitle = newValue
+            cardComponent._showsLargeTitle = newValue
         }
     }
     
@@ -174,10 +180,9 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
     
     /// :nodoc:
     internal var supportedCardTypes: [CardType] { cardComponent.supportedCardTypes }
-    
-    // MARK: - Private
-    
-    private let cardComponent: CardComponent
+
+    /// :nodoc:
+    internal let cardComponent: CardComponent
 }
 
 /// :nodoc:

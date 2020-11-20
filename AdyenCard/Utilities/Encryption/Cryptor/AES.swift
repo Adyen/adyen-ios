@@ -155,13 +155,14 @@ extension Cryptor.AES {
                        blockX: blockX)
 
             // encrypt
-            AESCCM.encryptXor(key: key,
-                              encodeBytes: encodeBytesLength,
-                              counter: counter,
-                              pointer: pointer,
-                              length: count,
-                              blockA: blockA,
-                              blockS: blockS)
+            let context = AESCCM.EncryptXorContext(key: key,
+                                                   encodeBytes: encodeBytesLength,
+                                                   counter: counter,
+                                                   pointer: pointer,
+                                                   length: count,
+                                                   blockA: blockA,
+                                                   blockS: blockS)
+            AESCCM.encryptXor(context: context)
         }
 
         private enum AESCCM {
@@ -232,16 +233,20 @@ extension Cryptor.AES {
                 return blockA
             }
 
-            internal static func encryptXor(key: Bytes,
-                                            encodeBytes: Int,
-                                            counter: UInt,
-                                            pointer: Pointer,
-                                            length: Int,
-                                            blockA: MutableBytes,
-                                            blockS: MutableBytes) {
-                setCounter(blockA, encodeBytes, counter)
-                aesEncrypt(block: blockA, with: key, saveTo: blockS)
-                memxor(pointer, blockS, length)
+            internal struct EncryptXorContext {
+                var key: Bytes
+                var encodeBytes: Int
+                var counter: UInt
+                var pointer: Pointer
+                var length: Int
+                var blockA: MutableBytes
+                var blockS: MutableBytes
+            }
+
+            internal static func encryptXor(context: EncryptXorContext) {
+                setCounter(context.blockA, context.encodeBytes, context.counter)
+                aesEncrypt(block: context.blockA, with: context.key, saveTo: context.blockS)
+                memxor(context.pointer, context.blockS, context.length)
             }
 
             internal static func mac(key: Bytes,
