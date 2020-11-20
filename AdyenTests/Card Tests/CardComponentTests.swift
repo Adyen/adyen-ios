@@ -656,6 +656,52 @@ class CardComponentTests: XCTestCase {
         }
         wait(for: [expectation], timeout: 8)
     }
+
+    func testSubmit() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        // Dummy public key
+        let cardPublicKey = "B8C0F|AF259DD02EC8BA094F293D89D2B06C95BCFE4D83DC397E04BB81BD02BA53B23061E88138ADB9E301CD9D3A9E4EFF7A3B78AEA6939638233AD3C93E96F2FAF1F6233F21CC182531F6AEFD1428AACF2C1552B666B6CB47081542983CCED1016E82F74FDACA61F02B20B9F11D333CE35C0C73D09D47ABBC94C3467E8574C3C617209AA44109C1F5E9A0C2C2399B8A91C7EA24FE56FDF0AA3DA5B9DE85F487B33C7FD55FAE5B39177C7DB2545F03723960702F3602D3284BB1EB3C389AB6564393DFC0412FB23573543CDCC0F6647DC15201235791323E81C416D3BC8542AC6303E2A3803E8178187556E93770903781F02A4BFD85F8D75A2229F04480211F1C00D3"
+        let sut = CardComponent.component(paymentMethod: method, publicKey: cardPublicKey)
+
+        let delegate = PaymentComponentDelegateMock()
+        sut.delegate = delegate
+
+        let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
+        delegate.onDidSubmit = { data, component in
+            XCTAssertTrue(component === sut)
+            XCTAssertTrue(data.paymentMethod is CardDetails)
+
+            sut.stopLoading(withSuccess: true, completion: {
+                delegateExpectation.fulfill()
+            })
+            XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
+            XCTAssertEqual(sut.button.showsActivityIndicator, false)
+        }
+
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
+
+
+        let expiryDateItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
+
+        let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
+
+        let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
+
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+
+            self.populate(textItemView: cardNumberItemView!, with: "4917 6100 0000 0000")
+            self.populate(textItemView: expiryDateItemView!, with: "03/30")
+            self.populate(textItemView: securityCodeItemView!, with: "737")
+
+            payButtonItemViewButton?.sendActions(for: .touchUpInside)
+
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 10, handler: nil)
+    }
     
     private func focus<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U) {
         textItemView.textField.becomeFirstResponder()
