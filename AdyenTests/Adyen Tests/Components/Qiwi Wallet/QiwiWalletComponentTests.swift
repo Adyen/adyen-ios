@@ -166,5 +166,51 @@ class QiwiWalletComponentTests: XCTestCase {
         let sut = QiwiWalletComponent(paymentMethod: qiwiPaymentMethod)
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
+
+    func testSubmit() {
+        let phoneExtensions = [PhoneExtension(value: "+3", countryCode: "UK")]
+        let method = QiwiWalletPaymentMethod(type: "test_type", name: "test_name", phoneExtensions: phoneExtensions)
+        let sut = QiwiWalletComponent(paymentMethod: method)
+        let delegate = PaymentComponentDelegateMock()
+        sut._showsLargeTitle = true
+        sut.delegate = delegate
+
+        let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
+        delegate.onDidSubmit = { data, component in
+            XCTAssertTrue(component === sut)
+            XCTAssertTrue(data.paymentMethod is QiwiWalletDetails)
+            let data = data.paymentMethod as! QiwiWalletDetails
+            XCTAssertEqual(data.phonePrefix, "+3")
+            XCTAssertEqual(data.phoneNumber, "7455573152")
+
+            sut.stopLoading(withSuccess: true, completion: {
+                delegateExpectation.fulfill()
+            })
+            XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
+            XCTAssertEqual(sut.button.showsActivityIndicator, false)
+        }
+
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+            let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: "Adyen.QiwiWalletComponent.phoneNumberItem")
+
+            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "Adyen.QiwiWalletComponent.payButtonItem.button")
+
+            self.populate(textItemView: phoneNumberView!, with: "7455573152")
+
+            payButtonItemViewButton?.sendActions(for: .touchUpInside)
+
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+
+    private func populate<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U, with text: String) {
+        let textView = textItemView.textField
+        textView.text = text
+        textView.sendActions(for: .editingChanged)
+    }
     
 }
