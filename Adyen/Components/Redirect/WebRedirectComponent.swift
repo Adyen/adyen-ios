@@ -55,6 +55,7 @@ internal final class WebRedirectComponent: NSObject, PresentableComponent, Actio
         let safariViewController = SFSafariViewController(url: url)
         safariViewController.delegate = self
         safariViewController.modalPresentationStyle = style?.modalPresentationStyle ?? .formSheet
+        safariViewController.presentationController?.delegate = self
         
         style.map {
             safariViewController.preferredBarTintColor = $0.preferredBarTintColor
@@ -89,9 +90,20 @@ internal final class WebRedirectComponent: NSObject, PresentableComponent, Actio
 
 extension WebRedirectComponent: SFSafariViewControllerDelegate {
     
+    /// Called when user clicks "Cancel" button.
     /// :nodoc:
-    public func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+    internal func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
         delegate?.didFail(with: ComponentError.cancelled, from: self)
     }
     
+}
+
+extension WebRedirectComponent: UIAdaptivePresentationControllerDelegate {
+
+    /// Called when user drag VC down to dismiss.
+    /// :nodoc:
+    internal func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        delegate?.didFail(with: ComponentError.cancelled, from: self)
+    }
+
 }
