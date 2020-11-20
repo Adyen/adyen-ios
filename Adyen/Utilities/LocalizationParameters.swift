@@ -26,6 +26,8 @@ public struct LocalizationParameters: Equatable {
     /// Initializes an LocalizationParameters.
     ///
     /// - Parameters:
+    ///   - bundle: The custom bundle to search.
+    ///   `Bundle.main` takes precedence over the custom bundle provided.
     ///   - tableName: The string table to search.
     ///   - keySeparator: The key separator string.
     public init(bundle: Bundle? = nil, tableName: String? = nil, keySeparator: String? = nil) {
