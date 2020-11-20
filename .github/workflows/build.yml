@@ -23,7 +23,7 @@ jobs:
           xcode: '/Applications/Xcode_12.2.app/Contents/Developer'
         - destination: 'name=custom-test-device,OS=12.4'
           scheme: AdyenUIKitTests
-          xcode: '/Applications/Xcode_10.3.app/Contents/Developer'
+          xcode: '/Applications/Xcode_11.3.app/Contents/Developer'
     steps:
     - uses: actions/checkout@v2
         
