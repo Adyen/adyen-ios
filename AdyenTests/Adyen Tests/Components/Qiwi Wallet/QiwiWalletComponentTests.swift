@@ -12,6 +12,22 @@ class QiwiWalletComponentTests: XCTestCase {
     lazy var phoneExtensions = [PhoneExtension(value: "+1", countryCode: "US"), PhoneExtension(value: "+3", countryCode: "UK")]
     lazy var method = QiwiWalletPaymentMethod(type: "test_type", name: "test_name", phoneExtensions: phoneExtensions)
     let payment = Payment(amount: Payment.Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
+
+    func testShowLargeTiteSetting() {
+        let sut = QiwiWalletComponent(paymentMethod: method)
+
+        sut.showsLargeTitle = true
+        sut._isDropIn = true
+        XCTAssertFalse(sut.showsLargeTitle)
+
+        sut.showsLargeTitle = true
+        sut._isDropIn = false
+        XCTAssertTrue(sut._showsLargeTitle)
+
+        sut.showsLargeTitle = false
+        sut._isDropIn = false
+        XCTAssertFalse(sut._showsLargeTitle)
+    }
     
     func testLocalizationWithCustomTableName() {
         let sut = QiwiWalletComponent(paymentMethod: method)
@@ -91,7 +107,7 @@ class QiwiWalletComponentTests: XCTestCase {
         style.textField.backgroundColor = .red
         
         let sut = QiwiWalletComponent(paymentMethod: method, style: style)
-        sut._showsLargeTitle = true
+        sut.showsLargeTitle = true
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -148,7 +164,7 @@ class QiwiWalletComponentTests: XCTestCase {
     
     func testBigTitle() {
         let sut = QiwiWalletComponent(paymentMethod: method)
-        sut._showsLargeTitle = false
+        sut.showsLargeTitle = false
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -172,7 +188,7 @@ class QiwiWalletComponentTests: XCTestCase {
         let method = QiwiWalletPaymentMethod(type: "test_type", name: "test_name", phoneExtensions: phoneExtensions)
         let sut = QiwiWalletComponent(paymentMethod: method)
         let delegate = PaymentComponentDelegateMock()
-        sut._showsLargeTitle = true
+        sut.showsLargeTitle = true
         sut.delegate = delegate
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")

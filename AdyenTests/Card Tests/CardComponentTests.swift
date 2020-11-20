@@ -247,7 +247,7 @@ class CardComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["any_test_brand_name"])
         let sut = CardComponent(paymentMethod: method,
                                 clientKey: "test_client_key")
-        sut._showsLargeTitle = false
+        sut.showsLargeTitle = false
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -299,7 +299,7 @@ class CardComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
                                 clientKey: "test_client_key")
-        sut._showsLargeTitle = false
+        sut.showsLargeTitle = false
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -326,7 +326,7 @@ class CardComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
                                 clientKey: "test_client_key")
-        sut._showsLargeTitle = false
+        sut.showsLargeTitle = false
 
         let cardTypeProviderMock = CardTypeProviderMock()
         cardTypeProviderMock.onFetch = {
@@ -360,7 +360,7 @@ class CardComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
                                 clientKey: "test_client_key")
-        sut._showsLargeTitle = false
+        sut.showsLargeTitle = false
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -390,7 +390,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 clientKey: "test_client_key",
                                 style: style)
-        sut._showsLargeTitle = false
+        sut.showsLargeTitle = false
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -419,7 +419,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 clientKey: "test_client_key",
                                 style: style)
-        sut._showsLargeTitle = false
+        sut.showsLargeTitle = false
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         

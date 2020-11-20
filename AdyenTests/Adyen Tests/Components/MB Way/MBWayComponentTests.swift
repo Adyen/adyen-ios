@@ -14,6 +14,22 @@ class MBWayComponentTests: XCTestCase {
     lazy var method = MBWayPaymentMethod(type: "test_type", name: "test_name")
     let payment = Payment(amount: Payment.Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
 
+    func testShowLargeTiteSetting() {
+        let sut = MBWayComponent(paymentMethod: method)
+
+        sut.showsLargeTitle = true
+        sut._isDropIn = true
+        XCTAssertFalse(sut.showsLargeTitle)
+
+        sut.showsLargeTitle = true
+        sut._isDropIn = false
+        XCTAssertTrue(sut._showsLargeTitle)
+
+        sut.showsLargeTitle = false
+        sut._isDropIn = false
+        XCTAssertFalse(sut._showsLargeTitle)
+    }
+
     func testLocalizationWithCustomTableName() {
         let sut = MBWayComponent(paymentMethod: method)
         sut.payment = payment
@@ -74,7 +90,7 @@ class MBWayComponentTests: XCTestCase {
         style.textField.backgroundColor = .red
 
         let sut = MBWayComponent(paymentMethod: method, style: style)
-        sut._showsLargeTitle = true
+        sut.showsLargeTitle = true
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -125,7 +141,7 @@ class MBWayComponentTests: XCTestCase {
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         sut.payment = payment
-        sut._showsLargeTitle = true
+        sut.showsLargeTitle = true
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidSubmit = { data, component in
@@ -165,7 +181,7 @@ class MBWayComponentTests: XCTestCase {
 
     func testBigTitle() {
         let sut = MBWayComponent(paymentMethod: method)
-        sut._showsLargeTitle = false
+        sut.showsLargeTitle = false
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 

@@ -10,6 +10,23 @@ import XCTest
 
 class SEPADirectDebitComponentTests: XCTestCase {
 
+    func testShowLargeTiteSetting() {
+        let method = SEPADirectDebitPaymentMethod(type: "test_type", name: "test_name")
+        let sut = SEPADirectDebitComponent(paymentMethod: method)
+
+        sut.showsLargeTitle = true
+        sut._isDropIn = true
+        XCTAssertFalse(sut.showsLargeTitle)
+
+        sut.showsLargeTitle = true
+        sut._isDropIn = false
+        XCTAssertTrue(sut._showsLargeTitle)
+
+        sut.showsLargeTitle = false
+        sut._isDropIn = false
+        XCTAssertFalse(sut._showsLargeTitle)
+    }
+
     func testRequiresKeyboardInput() {
         let method = SEPADirectDebitPaymentMethod(type: "test_type", name: "test_name")
         let sut = SEPADirectDebitComponent(paymentMethod: method)
@@ -168,7 +185,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
     func testBigTitle() {
         let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: "bcmc", name: "Test name")
         let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod)
-        sut._showsLargeTitle = false
+        sut.showsLargeTitle = false
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         

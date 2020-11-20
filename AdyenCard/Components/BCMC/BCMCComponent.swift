@@ -43,6 +43,7 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
     """)
     public var showsLargeTitle: Bool {
         get {
+            guard !_isDropIn else { return false }
             return cardComponent._showsLargeTitle
         }
         
