@@ -8,7 +8,7 @@ rm -rf $PROJECT_NAME
 mkdir -p $PROJECT_NAME && cd $PROJECT_NAME
 
 # Create the package.
-swift package init --type library
+swift package init
 
 # Create the Package.swift.
 echo "// swift-tools-version:5.3
@@ -41,11 +41,31 @@ let package = Package(
 )
 " > Package.swift
 
+swift package update
+
+# Archive for generic iOS device
+echo '############# Archive for generic iOS device ###############'
 xcodebuild archive -scheme TempProject-Package -destination 'generic/platform=iOS'
 
+# Build for generic iOS device
+echo '############# Build for generic iOS device ###############'
+xcodebuild build -scheme TempProject-Package -destination 'generic/platform=iOS'
+
+# Archive for i386 simulator
+echo '############# Archive for i386 simulator ###############'
 xcodebuild archive -scheme TempProject-Package -destination 'generic/platform=iOS Simulator' ARCHS=i386
 
+# Build for i386 simulator
+echo '############# Build for i386 simulator ###############'
+xcodebuild build -scheme TempProject-Package -destination 'generic/platform=iOS Simulator' ARCHS=i386
+
+# Archive for x86_64 simulator
+echo '############# Archive for x86_64 simulator ###############'
 xcodebuild archive -scheme TempProject-Package -destination 'generic/platform=iOS Simulator' ARCHS=x86_64
+
+# Build for x86_64 simulator
+echo '############# Build for x86_64 simulator ###############'
+xcodebuild build -scheme TempProject-Package -destination 'generic/platform=iOS Simulator' ARCHS=x86_64
 
 # Clean up.
 cd ../
