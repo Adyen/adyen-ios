@@ -20,6 +20,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'Core' do |plugin|
     plugin.source_files = 'Adyen/**/*.swift'
+    plugin.exclude_files = 'Adyen/**/BundleSPMExtension.swift'
     plugin.resource_bundles = {
         'Adyen' => [
             'Adyen/Assets/**/*.strings'
@@ -49,6 +50,7 @@ Pod::Spec.new do |s|
     plugin.dependency 'Adyen/Core'
     plugin.dependency 'Adyen3DS2', '2.2.1'
     plugin.source_files = 'AdyenCard/**/*.swift', 'AdyenCard/Utilities/Encryption/AdyenCSE/*.{h,m}', 'AdyenCard/Utilities/Encryption/*.{h,m}'
+    plugin.exclude_files = 'AdyenCard/**/BundleSPMExtension.swift'
     plugin.private_header_files = 'AdyenCard/Utilities/Encryption/AdyenCSE/*.h'
   end
 
