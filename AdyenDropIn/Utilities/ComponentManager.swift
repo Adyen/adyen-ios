@@ -5,7 +5,9 @@
 //
 
 import Adyen
+#if canImport(AdyenCard)
 import AdyenCard
+#endif
 import Foundation
 
 internal final class ComponentManager {

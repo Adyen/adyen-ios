@@ -5,7 +5,9 @@
 //
 
 import Adyen
+#if canImport(AdyenCard)
 import AdyenCard
+#endif
 import UIKit
 
 internal final class DropInNavigationController: UINavigationController {

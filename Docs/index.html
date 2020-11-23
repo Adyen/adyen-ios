@@ -85,13 +85,13 @@
                 <a class="nav-group-task-link" href="Enums/CardEncryptor.html">CardEncryptor</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/CardEncryptor/Card.html">– Card</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/CardEncryptor/EncryptedCard.html">– EncryptedCard</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/CardEncryptor/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/CardEncryptor/Card.html">– Card</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/CardType.html">CardType</a>
@@ -147,6 +147,20 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="MB%20Way%20Component.html#/s:5Adyen18MBWayPaymentMethodV">MBWayPaymentMethod</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="BLIK%20Component.html">BLIK Component</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/BLIKComponent.html">BLIKComponent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/BLIKDetails.html">BLIKDetails</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="BLIK%20Component.html#/s:5Adyen17BLIKPaymentMethodV">BLIKPaymentMethod</a>
               </li>
             </ul>
           </li>
@@ -566,6 +580,17 @@
 <li>Run <code>carthage update</code>.</li>
 <li>Link the framework with your target as described in <a href="https://github.com/Carthage/Carthage#adding-frameworks-to-an-application">Carthage Readme</a>.</li>
 </ol>
+<h3 id='swift-package-manager' class='heading'>Swift Package Manager</h3>
+
+<ol>
+<li>Follow Apple&rsquo;s <a href="https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app">Adding Package Dependencies to Your App</a> guide on how to add a Swift Package dependency.</li>
+<li>Use <code>https://github.com/Adyen/adyen-ios</code> as the repository URL.</li>
+<li>Specify the version to be at least <code>3.8.0</code>.</li>
+</ol>
+
+<p>:warning: <em>Please make sure to use Xcode 12.0+ when adding <code>Adyen</code> using Swift Package Manager.</em></p>
+
+<p>:warning: <em>Swift Package Manager for Xcode 12.0 and 12.1 has a <a href="https://bugs.swift.org/browse/SR-13343">know issue</a> when it comes to importing a dependency that in turn depend on a binary dependencies. A workaround is described <a href="https://forums.swift.org/t/swiftpm-binarytarget-dependency-and-code-signing/38953">here</a>.</em></p>
 <h2 id='drop-in' class='heading'>Drop-in</h2>
 
 <p>The <a href="https://adyen.github.io/adyen-ios/Docs/Classes/DropInComponent.html">Drop-in</a> handles the presentation of available payment methods and the subsequent entry of a customer&rsquo;s payment details. It is initialized with the response of <a href="https://docs.adyen.com/api-explorer/#/PaymentSetupAndVerificationService/v46/paymentMethods"><code>/paymentMethods</code></a>, and provides everything you need to make an API call to <a href="https://docs.adyen.com/api-explorer/#/PaymentSetupAndVerificationService/v46/payments"><code>/payments</code></a> and <a href="https://docs.adyen.com/api-explorer/#/PaymentSetupAndVerificationService/v46/paymentsDetails"><code>/payments/details</code></a>.</p>
@@ -579,6 +604,11 @@
 <p>Some payment methods need additional configuration. For example, to enable the card form, the Drop-in needs a public key to use for encryption. These payment method specific configuration parameters can be set in an instance of <code>DropInComponent.PaymentmethodsConfiguration</code>:</p>
 <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">configuration</span> <span class="o">=</span> <span class="kt">DropInComponent</span><span class="o">.</span><span class="kt">PaymentMethodsConfiguration</span><span class="p">()</span>
 <span class="n">configuration</span><span class="o">.</span><span class="n">card</span><span class="o">.</span><span class="n">publicKey</span> <span class="o">=</span> <span class="s">"..."</span> <span class="c1">// Your public key, retrieved from the Customer Area.</span>
+</code></pre>
+
+<p>:warning: <em><code>PaymentMethodsConfiguration.card.publicKey</code> is deprectated in favour of <code>PaymentMethodsConfiguration.clientKey</code></em></p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">configuration</span> <span class="o">=</span> <span class="kt">DropInComponent</span><span class="o">.</span><span class="kt">PaymentMethodsConfiguration</span><span class="p">()</span>
+<span class="n">configuration</span><span class="o">.</span><span class="n">clientKey</span> <span class="o">=</span> <span class="s">"..."</span> <span class="c1">// Your client key, retrieved from the Customer Area.</span>
 </code></pre>
 
 <p>After serializing the payment methods and creating the configuration, the Drop-in is ready to be initialized. Assign a <code>delegate</code> and use the <code>viewController</code> property to present the Drop-in on the screen:</p>
@@ -608,6 +638,12 @@
 </code></pre>
 
 <p>This method is invoked when an error occurred during the use of the Drop-in. Dismiss the Drop-in&rsquo;s view controller and display an error message.</p>
+
+<hr>
+<pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">didCancel</span><span class="p">(</span><span class="nv">component</span><span class="p">:</span> <span class="kt">PresentableComponent</span><span class="p">,</span> <span class="n">from</span> <span class="nv">dropInComponent</span><span class="p">:</span> <span class="kt">DropInComponent</span><span class="p">)</span>
+</code></pre>
+
+<p>This method is invoked when user closes a payment component managed by Drop-in.</p>
 
 <hr>
 <h4 id='handling-an-action' class='heading'>Handling an action</h4>
@@ -644,6 +680,8 @@
 <li><a href="https://adyen.github.io/adyen-ios/Docs/Classes/WeChatPaySDKActionComponent.html">WeChat Pay Component</a></li>
 <li><a href="https://adyen.github.io/adyen-ios/Docs/Classes/QiwiWalletComponent.html">Qiwi Wallet Component</a></li>
 <li><a href="https://adyen.github.io/adyen-ios/Docs/Classes/RedirectComponent.html">Redirect Component</a></li>
+<li><a href="https://adyen.github.io/adyen-ios/Docs/Classes/MBWayComponent.html">MB Way Component</a></li>
+<li><a href="https://adyen.github.io/adyen-ios/Docs/Classes/BLIKComponent.html">BLIK Component</a></li>
 </ul>
 <h2 id='customization' class='heading'>Customization</h2>
 
@@ -711,7 +749,7 @@ For example, to change the section header titles and form field titles in the Dr
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2020 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2020-10-06)</p>
+      <p>&copy; 2020 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2020-11-23)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.5</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

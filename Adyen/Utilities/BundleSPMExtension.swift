@@ -20,7 +20,7 @@ internal extension Bundle {
     }()
 
     /// The bundle in which the framework's resources are located.
-    static let internalResources: Bundle = {
+    static let coreInternalResources: Bundle = {
         Bundle.module
     }()
 

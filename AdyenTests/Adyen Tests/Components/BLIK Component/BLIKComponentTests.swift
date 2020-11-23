@@ -13,7 +13,7 @@ class BLIKComponentTests: XCTestCase {
 
     lazy var method = BLIKPaymentMethod(type: "test_type", name: "test_name")
     let payment = Payment(amount: Payment.Amount(value: 2, currencyCode: "PLN"), countryCode: "PL")
-    var sut : BLIKComponent!
+    var sut: BLIKComponent!
 
     override func setUp() {
         sut = BLIKComponent(paymentMethod: method)
@@ -200,4 +200,3 @@ class BLIKComponentTests: XCTestCase {
     }
 
 }
-

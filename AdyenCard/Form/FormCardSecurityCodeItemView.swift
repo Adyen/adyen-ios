@@ -50,7 +50,7 @@ extension FormCardSecurityCodeItemView {
     
     internal class HintView: UIImageView, Observer {
         
-        private lazy var bundle = Bundle.internalResources
+        private lazy var bundle = Bundle.cardInternalResources
         private let minimumAlpha: CGFloat = 0.3
         private let blinkDuration = 1.0
         

@@ -493,7 +493,7 @@ class CardComponentTests: XCTestCase {
                                              holderName: "holderName")
         let sut = CardComponent(paymentMethod: method,
                                 clientKey: "test_client_key")
-        sut.payment = Payment.init(amount: Payment.Amount(value: 123456, currencyCode: "EUR"), countryCode: "NL")
+        sut.payment = Payment(amount: Payment.Amount(value: 123456, currencyCode: "EUR"), countryCode: "NL")
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredCardComponent)
         XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
@@ -518,7 +518,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 clientKey: "test_client_key")
         sut.showsSecurityCodeField = false
-        sut.payment = Payment.init(amount: Payment.Amount(value: 123456, currencyCode: "EUR"), countryCode: "NL")
+        sut.payment = Payment(amount: Payment.Amount(value: 123456, currencyCode: "EUR"), countryCode: "NL")
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)
         XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
@@ -590,7 +590,7 @@ class CardComponentTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             XCTAssertEqual(cardNumberItem.cardTypeLogos.count, 6)
             XCTAssertEqual(cardLogoView.subviews.count, 6)
-            XCTAssertEqual(cardLogoView.arrangedSubviews.filter{ !$0.isHidden }.count, 4)
+            XCTAssertEqual(cardLogoView.arrangedSubviews.filter { !$0.isHidden }.count, 4)
 
             expectation.fulfill()
         }
@@ -649,7 +649,7 @@ class CardComponentTests: XCTestCase {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
                 XCTAssertEqual(cardNumberItem.cardTypeLogos.count, 3)
                 XCTAssertEqual(cardLogoView.subviews.count, 3)
-                XCTAssertEqual(cardLogoView.arrangedSubviews.filter{ !$0.isHidden }.count, 1)
+                XCTAssertEqual(cardLogoView.arrangedSubviews.filter { !$0.isHidden }.count, 1)
 
                 expectation.fulfill()
             }
@@ -681,7 +681,6 @@ class CardComponentTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
-
 
         let expiryDateItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
 

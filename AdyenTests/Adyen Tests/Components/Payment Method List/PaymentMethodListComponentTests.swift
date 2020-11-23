@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@testable import AdyenDropIn
 @testable import Adyen
+@testable import AdyenDropIn
 import XCTest
 
 class PaymentMethodListComponentTests: XCTestCase {

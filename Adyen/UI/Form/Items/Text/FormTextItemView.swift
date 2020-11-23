@@ -352,7 +352,7 @@ public extension FormTextItemView {
     private final class AccessoryLogo: UIImageView {
         init(success: Bool) {
             let resource = "verification_" + success.description
-            let bundle = Bundle.internalResources
+            let bundle = Bundle.coreInternalResources
             let image = UIImage(named: resource, in: bundle, compatibleWith: nil)
             super.init(image: image)
             

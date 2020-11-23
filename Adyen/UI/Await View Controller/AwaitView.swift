@@ -13,7 +13,7 @@ internal final class AwaitView: UIView {
     internal lazy var icon: UIImageView = {
         var image = UIImage(named: viewModel.icon)
         if image == nil {
-            image = UIImage(named: viewModel.icon, in: Bundle.internalResources, compatibleWith: nil)
+            image = UIImage(named: viewModel.icon, in: Bundle.coreInternalResources, compatibleWith: nil)
         }
         let imageView = UIImageView(image: image)
         imageView.contentMode = .center

@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import Foundation
 
 /// This is excluded from the Swift Package, since swift packages has different code to access internal resources.
@@ -12,15 +13,15 @@ import Foundation
 extension Bundle {
 
     /// The main bundle of the framework.
-    internal static let core: Bundle = {
-        Bundle(for: Coder.self)
+    private static let cardBundle: Bundle = {
+        Bundle(for: ThreeDS2Component.self)
     }()
 
     /// The bundle in which the framework's resources are located.
-    internal static let internalResources: Bundle = {
-        let url = core.url(forResource: "Adyen", withExtension: "bundle")
+    internal static var cardInternalResources: Bundle {
+        let url = cardBundle.url(forResource: "AdyenCard", withExtension: "bundle")
         let bundle = url.flatMap { Bundle(url: $0) }
-        return bundle ?? core
-    }()
+        return bundle ?? cardBundle
+    }
 
 }

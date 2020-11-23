@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'Adyen'
-  s.version = '3.7.0'
+  s.version = '3.8.0'
   s.summary = "Adyen Components for iOS"
   s.description = <<-DESC
     Adyen Components for iOS allows you to accept in-app payments by providing you with the building blocks you need to create a checkout experience.
@@ -20,9 +20,11 @@ Pod::Spec.new do |s|
 
   s.subspec 'Core' do |plugin|
     plugin.source_files = 'Adyen/**/*.swift'
+    plugin.exclude_files = 'Adyen/**/BundleSPMExtension.swift'
     plugin.resource_bundles = {
         'Adyen' => [
-            'Adyen/Assets/**/*.strings'
+            'Adyen/Assets/**/*.strings',
+            'Adyen/Assets/**/*.xcassets'
         ]
     }
   end
@@ -49,7 +51,14 @@ Pod::Spec.new do |s|
     plugin.dependency 'Adyen/Core'
     plugin.dependency 'Adyen3DS2', '2.2.1'
     plugin.source_files = 'AdyenCard/**/*.swift', 'AdyenCard/Utilities/Encryption/AdyenCSE/*.{h,m}', 'AdyenCard/Utilities/Encryption/*.{h,m}'
+    plugin.exclude_files = 'AdyenCard/**/BundleSPMExtension.swift'
     plugin.private_header_files = 'AdyenCard/Utilities/Encryption/AdyenCSE/*.h'
+    plugin.resource_bundles = {
+        'AdyenCard' => [
+            'AdyenCard/Assets/**/*.strings',
+            'AdyenCard/Assets/**/*.xcassets'
+        ]
+    }
   end
 
 end

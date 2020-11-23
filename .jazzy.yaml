@@ -40,6 +40,11 @@ custom_categories:
       - MBWayComponent
       - MBWayDetails
       - MBWayPaymentMethod
+  - name: BLIK Component
+    children:
+      - BLIKComponent
+      - BLIKDetails
+      - BLIKPaymentMethod
   - name: Await Action Component
     children:
       - AwaitComponent
