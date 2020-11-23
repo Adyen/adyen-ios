@@ -40,6 +40,7 @@ public class FormLabelItem: FormItem {
     }
 }
 
+/// :nodoc:
 extension UILabel: AnyFormItemView {
 
     public var childItemViews: [AnyFormItemView] { [] }
