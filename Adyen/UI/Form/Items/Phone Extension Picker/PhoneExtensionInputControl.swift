@@ -108,7 +108,7 @@ internal class PhoneExtensionInputControl: UIControl, AnyFormItemView {
     
     /// The chevron image.
     private var accessoryImage: UIImage? { UIImage(named: "chevron_down",
-                                                   in: Bundle.internalResources,
+                                                   in: Bundle.coreInternalResources,
                                                    compatibleWith: nil) }
     
     /// :nodoc:

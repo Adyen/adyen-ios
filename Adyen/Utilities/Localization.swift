@@ -41,7 +41,7 @@ public func ADYLocalizedString(_ key: String, _ parameters: LocalizationParamete
 }
 
 private func fallbackLocalizedString(key: String) -> String {
-    return NSLocalizedString(key, tableName: nil, bundle: Bundle.internalResources, comment: "")
+    return NSLocalizedString(key, tableName: nil, bundle: Bundle.coreInternalResources, comment: "")
 }
 
 private func buildPossibleInputs(_ key: String,

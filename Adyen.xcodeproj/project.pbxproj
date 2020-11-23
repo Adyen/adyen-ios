@@ -297,6 +297,8 @@
 		F9620DAC23C74896005209FC /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9620DAB23C74896005209FC /* SystemConfiguration.framework */; };
 		F9620DB023C75430005209FC /* WeChatPayPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9620D9E23C7457F005209FC /* WeChatPayPaymentMethod.swift */; };
 		F9620DB323C75C19005209FC /* PaymentComponentBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9620DB123C75886005209FC /* PaymentComponentBuilder.swift */; };
+		F96286B5256BDEA400043FE3 /* CardBundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96286B4256BDEA400043FE3 /* CardBundleExtension.swift */; };
+		F96286BD256BDEB000043FE3 /* CoreBundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96286BC256BDEB000043FE3 /* CoreBundleExtension.swift */; };
 		F9639B1724DA910A0073F38A /* AwaitComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B1624DA910A0073F38A /* AwaitComponent.swift */; };
 		F9639B1924DABDE40073F38A /* AwaitAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B1824DABDE40073F38A /* AwaitAction.swift */; };
 		F9639B1C24DAD3380073F38A /* AwaitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B1B24DAD3380073F38A /* AwaitViewController.swift */; };
@@ -353,8 +355,6 @@
 		F99F085A2383EAC800EBB948 /* FormatterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99F08592383EAC800EBB948 /* FormatterMock.swift */; };
 		F99F08642383F2B000EBB948 /* FormTextItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99F08632383F2B000EBB948 /* FormTextItemViewTests.swift */; };
 		F99F08662383F2D300EBB948 /* FormTextItemViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99F08652383F2D300EBB948 /* FormTextItemViewDelegateMock.swift */; };
-		F9A46B1725470B910044154E /* BundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A46B1625470B910044154E /* BundleExtension.swift */; };
-		F9A46B1F25470BA60044154E /* BundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A46B1E25470BA60044154E /* BundleExtension.swift */; };
 		F9A53C442549887F009000A7 /* DefaultAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A53C3E2549887F009000A7 /* DefaultAPIClient.swift */; };
 		F9A53C452549887F009000A7 /* DefaultAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A53C3E2549887F009000A7 /* DefaultAPIClient.swift */; };
 		F9A53C472549887F009000A7 /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A53C3F2549887F009000A7 /* Amount.swift */; };
@@ -876,6 +876,8 @@
 		F9620DAB23C74896005209FC /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
 		F9620DB123C75886005209FC /* PaymentComponentBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentBuilder.swift; sourceTree = "<group>"; };
 		F9620DBB23C777DA005209FC /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
+		F96286B4256BDEA400043FE3 /* CardBundleExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CardBundleExtension.swift; path = "Non SPM Bundle Extension/CardBundleExtension.swift"; sourceTree = "<group>"; };
+		F96286BC256BDEB000043FE3 /* CoreBundleExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CoreBundleExtension.swift; path = "Non SPM Bundle Extension/CoreBundleExtension.swift"; sourceTree = "<group>"; };
 		F9639B1624DA910A0073F38A /* AwaitComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitComponent.swift; sourceTree = "<group>"; };
 		F9639B1824DABDE40073F38A /* AwaitAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitAction.swift; sourceTree = "<group>"; };
 		F9639B1B24DAD3380073F38A /* AwaitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitViewController.swift; sourceTree = "<group>"; };
@@ -930,8 +932,6 @@
 		F99F08592383EAC800EBB948 /* FormatterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterMock.swift; sourceTree = "<group>"; };
 		F99F08632383F2B000EBB948 /* FormTextItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextItemViewTests.swift; sourceTree = "<group>"; };
 		F99F08652383F2D300EBB948 /* FormTextItemViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextItemViewDelegateMock.swift; sourceTree = "<group>"; };
-		F9A46B1625470B910044154E /* BundleExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BundleExtension.swift; path = "Non SPM Bundle Extension/BundleExtension.swift"; sourceTree = "<group>"; };
-		F9A46B1E25470BA60044154E /* BundleExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BundleExtension.swift; path = "Non SPM Bundle Extension/BundleExtension.swift"; sourceTree = "<group>"; };
 		F9A53C3E2549887F009000A7 /* DefaultAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultAPIClient.swift; sourceTree = "<group>"; };
 		F9A53C3F2549887F009000A7 /* Amount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
 		F9A53C402549887F009000A7 /* Environment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
@@ -1124,7 +1124,7 @@
 		E216D3C1221AEDB30013CBCF /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				F9A46B1625470B910044154E /* BundleExtension.swift */,
+				F96286BC256BDEB000043FE3 /* CoreBundleExtension.swift */,
 				E270FDE7225CC4A7006C2CD0 /* Observable */,
 				E2C0B54F22A6AA0600D3367B /* AmountFormatter.swift */,
 				E97B972222B238C400505476 /* Analytics.swift */,
@@ -1893,7 +1893,7 @@
 		E9E3DAAD221D5C0500697074 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				F9A46B1E25470BA60044154E /* BundleExtension.swift */,
+				F96286B4256BDEA400043FE3 /* CardBundleExtension.swift */,
 				F919DF9E24EA7B970027976E /* CardPublicKeyProvider */,
 				E7166A5024EAC591007CCDEF /* BinLookup */,
 				E7B6280124ED6450000CEC6E /* CardType */,
@@ -3021,7 +3021,6 @@
 				E9AFF885224D0D3B005A0D8D /* RedirectDetails.swift in Sources */,
 				E2C0B55022A6AA0700D3367B /* AmountFormatter.swift in Sources */,
 				F9EDB782239149AF00CFB3C9 /* CountryCodeValidator.swift in Sources */,
-				F9A46B1725470B910044154E /* BundleExtension.swift in Sources */,
 				E9021DAA225789B1009CF7F4 /* Localization.swift in Sources */,
 				E787C9D3246EC71B00B401E0 /* UIFontHelpers.swift in Sources */,
 				F96F44DD23BE487500871C1F /* LocalizationParameters.swift in Sources */,
@@ -3149,6 +3148,7 @@
 				E2C0E096220B04F0008616F6 /* FormViewController.swift in Sources */,
 				F9639B1E24DADC300073F38A /* AwaitComponentViewModel.swift in Sources */,
 				E9AFF883224CF959005A0D8D /* RedirectListener.swift in Sources */,
+				F96286BD256BDEB000043FE3 /* CoreBundleExtension.swift in Sources */,
 				F919DF9124E682480027976E /* ClientKeyResponse.swift in Sources */,
 				F97CCD3C24360A4000BC560A /* BundleHelpers.swift in Sources */,
 				F9639B2B24DD6A9C0073F38A /* APIClient.swift in Sources */,
@@ -3258,9 +3258,9 @@
 				E9E3DAB4221D988200697074 /* CardNumberValidator.swift in Sources */,
 				E2345C08229BDA46000F2C94 /* ThreeDS2ComponentChallengeToken.swift in Sources */,
 				E9E3DACD221EEAB200697074 /* CardSecurityCodeValidator.swift in Sources */,
+				F96286B5256BDEA400043FE3 /* CardBundleExtension.swift in Sources */,
 				F919DF9724E6E2810027976E /* StoredCardComponent.swift in Sources */,
 				F919DF9324E68F750027976E /* CardPublicKeyProvider.swift in Sources */,
-				F9A46B1F25470BA60044154E /* BundleExtension.swift in Sources */,
 				E2345C0C229BDA7A000F2C94 /* ThreeDS2ComponentChallengeResult.swift in Sources */,
 				E9E3DAC0221ECD7C00697074 /* CardSecurityCodeFormatter.swift in Sources */,
 				E7166A5224EAC5BA007CCDEF /* BinLookupRequest.swift in Sources */,
