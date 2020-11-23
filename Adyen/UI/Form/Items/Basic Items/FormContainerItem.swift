@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Simple form item to wrap another item and provide a margin around it.
 /// :nodoc:
