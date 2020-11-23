@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Simple form item that represent a single UILable element.
 /// :nodoc:
