@@ -205,7 +205,7 @@ class RedirectComponentTests: XCTestCase {
 
         let waitExpectation = expectation(description: "Expect in app browser to be presented and then dismissed")
 
-        delegate.onDidFail = { (error, component) in
+        delegate.onDidFail = { error, component in
             XCTAssertEqual(error as! ComponentError, ComponentError.cancelled)
             waitExpectation.fulfill()
         }
@@ -232,7 +232,7 @@ class RedirectComponentTests: XCTestCase {
 
         let waitExpectation = expectation(description: "Expect in app browser to be presented and then dismissed")
 
-        delegate.onDidFail = { (error, component) in
+        delegate.onDidFail = { error, component in
             XCTAssertEqual(error as! ComponentError, ComponentError.cancelled)
             waitExpectation.fulfill()
         }

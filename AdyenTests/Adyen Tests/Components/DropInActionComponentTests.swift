@@ -6,8 +6,8 @@
 //  Copyright © 2020 Adyen. All rights reserved.
 //
 
-@testable import AdyenDropIn
 @testable import Adyen
+@testable import AdyenDropIn
 import SafariServices
 import XCTest
 

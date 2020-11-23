@@ -59,7 +59,7 @@ public struct RedirectDetails: AdditionalDetails {
         } else if let payload = queryParameters[CodingKeys.payload.rawValue]?.removingPercentEncoding {
             return [(.payload, payload)]
         } else if let paymentResponse = queryParameters[CodingKeys.paymentResponse.rawValue]?.removingPercentEncoding,
-            let merchantData = queryParameters[CodingKeys.merchantData.rawValue]?.removingPercentEncoding {
+                  let merchantData = queryParameters[CodingKeys.merchantData.rawValue]?.removingPercentEncoding {
             return [(.paymentResponse, paymentResponse), (.merchantData, merchantData)]
         }
         

@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@testable import AdyenCard
 @testable import Adyen
+@testable import AdyenCard
 import XCTest
 
 class FormCardNumberItemTests: XCTestCase {
