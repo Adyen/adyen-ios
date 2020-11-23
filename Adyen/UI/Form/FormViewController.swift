@@ -18,6 +18,7 @@ public protocol FormViewControllerDelegate: AnyObject {
 
 /// Displays a form for the user to enter details.
 /// :nodoc:
+@objc(ADYFormViewController)
 public final class FormViewController: UIViewController, Localizable {
     
     private lazy var itemManager = FormViewItemManager(itemViewDelegate: self)
