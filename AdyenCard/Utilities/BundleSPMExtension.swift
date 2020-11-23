@@ -15,7 +15,7 @@ internal extension Bundle {
     // swiftlint:disable explicit_acl
 
     /// The bundle in which the framework's resources are located.
-    static let internalResources: Bundle = {
+    static let cardInternalResources: Bundle = {
         Bundle.module
     }()
 
