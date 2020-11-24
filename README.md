@@ -3,6 +3,7 @@
 [![carthage compatible](https://img.shields.io/badge/carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![codecov](https://codecov.io/gh/Adyen/adyen-ios/branch/develop/graph/badge.svg)](https://codecov.io/gh/Adyen/adyen-ios)
 [![codebeat badge](https://codebeat.co/badges/dc9e34ed-f1aa-4359-ac9a-b291f1f702cd)](https://codebeat.co/projects/github-com-adyen-adyen-ios-develop-1c0e3b5f-18cc-43c2-ba3c-c0c0743a3ff6)
+[![Documentation](https://img.shields.io/badge/documentation-99-brightgreen.svg)](https://codecov.io/gh/Adyen/adyen-ios/Docs)
 
 [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=Adyen_adyen-ios&metric=alert_status)](https://sonarcloud.io/dashboard?id=Adyen_adyen-ios)
 [![SonarCloud Bugs](https://sonarcloud.io/api/project_badges/measure?project=Adyen_adyen-ios&metric=bugs)](https://sonarcloud.io/component_measures/metric/reliability_rating/list?id=Adyen_adyen-ios)
