@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.swift_version = '5.1'
   s.frameworks = 'Foundation'
   s.default_subspecs = 'Core', 'Card', 'DropIn'
-  s.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
+  s.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64', 'SWIFT_SUPPRESS_WARNINGS' => 'YES' }
   s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 
   s.subspec 'Core' do |plugin|
