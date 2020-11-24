@@ -356,6 +356,7 @@
 		F9789C7523F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C7423F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift */; };
 		F97CCD3A2435E35E00BC560A /* UIViewControllerHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97CCD392435E35E00BC560A /* UIViewControllerHelpers.swift */; };
 		F97CCD3C24360A4000BC560A /* BundleHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97CCD3B24360A4000BC560A /* BundleHelpers.swift */; };
+		F9842C51256D563A0063CE5A /* ThreeDS2AuthenticatedAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9ABE331255A89E7009F3478 /* ThreeDS2AuthenticatedAction.swift */; };
 		F99262C424EECB9F00C9A60D /* ApplePayComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99262C324EECB9F00C9A60D /* ApplePayComponentExtensions.swift */; };
 		F99F08582383EA2A00EBB948 /* ValidatorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99F08572383EA2A00EBB948 /* ValidatorMock.swift */; };
 		F99F085A2383EAC800EBB948 /* FormatterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99F08592383EAC800EBB948 /* FormatterMock.swift */; };
@@ -380,7 +381,6 @@
 		F9A7AC632554068D00012EBC /* AnyChallengeResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A7AC622554068D00012EBC /* AnyChallengeResult.swift */; };
 		F9A7AC6B255406AB00012EBC /* AnyADYTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A7AC6A255406AB00012EBC /* AnyADYTransaction.swift */; };
 		F9A7AC87255430B300012EBC /* ThreeDS2Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A7AC86255430B300012EBC /* ThreeDS2Action.swift */; };
-		F9ABE332255A89E8009F3478 /* ThreeDS2AuthenticatedAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9ABE331255A89E7009F3478 /* ThreeDS2AuthenticatedAction.swift */; };
 		F9AC61B9243730C90062A00D /* WebRedirectComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AC61B8243730C90062A00D /* WebRedirectComponent.swift */; };
 		F9AC61BB24374CE00062A00D /* AppLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AC61BA24374CE00062A00D /* AppLauncher.swift */; };
 		F9AC61BE243750BB0062A00D /* RedirectComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AC61BD243750BB0062A00D /* RedirectComponentTests.swift */; };
@@ -3032,6 +3032,7 @@
 				E216D3C0221AD0620013CBCF /* FormViewItemManager.swift in Sources */,
 				E9AFF887224E5872005A0D8D /* PresentableComponent.swift in Sources */,
 				E226F53A22969A950013A463 /* Action.swift in Sources */,
+				F9842C51256D563A0063CE5A /* ThreeDS2AuthenticatedAction.swift in Sources */,
 				E90933FF228AFC6600C9F04B /* Environment.swift in Sources */,
 				F9789C7323F1A5C1000B4B2B /* WeChatPaySDKAction.swift in Sources */,
 				E2D12C09221ED16600EF682F /* FormSwitchItemView.swift in Sources */,
