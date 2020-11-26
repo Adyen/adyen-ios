@@ -34,24 +34,6 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
     /// The delegate for user activity on component.
     public weak var bcmcComponentDelegate: BCMCComponentDelegate?
     
-    /// Indicates if form will show a large header title. True - show title; False - assign title to a view controllers's title.
-    /// Defaults to true.
-    @available(*, deprecated, message: """
-     The `showsLargeTitle` property is deprecated.
-     For Component title, please, introduce your own lable implementation.
-     You can access componet's title from `viewController.title`.
-    """)
-    public var showsLargeTitle: Bool {
-        get {
-            guard !_isDropIn else { return false }
-            return cardComponent._showsLargeTitle
-        }
-        
-        set {
-            cardComponent._showsLargeTitle = newValue
-        }
-    }
-    
     /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
     public var showsHolderNameField: Bool {
         get {
@@ -235,23 +217,7 @@ extension BCMCComponent: PaymentComponentDelegate {
 
 /// :nodoc:
 /// Deprecated initializers
-public extension BCMCComponent {
-    
-    /// Initializes the Bancontact component.
-    ///
-    /// - Parameters:
-    ///   - paymentMethod: The Bancontact payment method.
-    ///   - publicKey: The key used for encrypting card data.
-    ///   - style: The Component's UI style.
-    @available(*, deprecated, message: "Use init(paymentMethod:clientKey:style:) instead.")
-    convenience init(paymentMethod: BCMCPaymentMethod,
-                     publicKey: String,
-                     style: FormComponentStyle = FormComponentStyle()) {
-        let cardComponent = CardComponent(paymentMethod: paymentMethod,
-                                          publicKey: publicKey,
-                                          style: style)
-        self.init(paymentMethod: paymentMethod, cardComponent: cardComponent)
-    }
+extension BCMCComponent {
     
     /// :nodoc:
     /// Initializes a Bancontact component.
@@ -260,9 +226,9 @@ public extension BCMCComponent {
     ///   - paymentMethod: The Bancontact payment method.
     ///   - publicKey: The key used for encrypting card data.
     ///   - style: The Component's UI style.
-    static func component(paymentMethod: BCMCPaymentMethod,
-                          publicKey: String,
-                          style: FormComponentStyle = FormComponentStyle()) -> BCMCComponent {
+    public static func component(paymentMethod: BCMCPaymentMethod,
+                                 publicKey: String,
+                                 style: FormComponentStyle = FormComponentStyle()) -> BCMCComponent {
         let cardComponent = CardComponent.component(paymentMethod: paymentMethod,
                                                     publicKey: publicKey,
                                                     style: style)

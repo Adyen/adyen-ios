@@ -109,13 +109,6 @@ class CardComponentTests: XCTestCase {
         cardComponentStyle.mainButtonItem.button.backgroundColor = .red
         cardComponentStyle.mainButtonItem.backgroundColor = .brown
         
-        /// Header
-        cardComponentStyle.header.backgroundColor = .magenta
-        cardComponentStyle.header.title.color = .white
-        cardComponentStyle.header.title.backgroundColor = .black
-        cardComponentStyle.header.title.textAlignment = .left
-        cardComponentStyle.header.title.font = .systemFont(ofSize: 30)
-        
         /// Text field
         cardComponentStyle.textField.text.color = .yellow
         cardComponentStyle.textField.text.font = .systemFont(ofSize: 5)
@@ -166,9 +159,6 @@ class CardComponentTests: XCTestCase {
             
             let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
             let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button.titleLabel")
-            
-            let headerItemView: UIView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.Test name")
-            let headerItemViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.Test name.titleLabel")
             
             /// Test card number field
             XCTAssertEqual(cardNumberItemView?.backgroundColor, .blue)
@@ -229,13 +219,6 @@ class CardComponentTests: XCTestCase {
             XCTAssertEqual(payButtonItemViewButtonTitle?.textColor, .white)
             XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
             
-            /// Test header
-            XCTAssertEqual(headerItemView?.backgroundColor, .magenta)
-            XCTAssertEqual(headerItemViewTitleLabel?.backgroundColor, .black)
-            XCTAssertEqual(headerItemViewTitleLabel?.textAlignment, .left)
-            XCTAssertEqual(headerItemViewTitleLabel?.textColor, .white)
-            XCTAssertEqual(headerItemViewTitleLabel?.font, .systemFont(ofSize: 30))
-            
             XCTAssertEqual(sut.viewController.view.backgroundColor, .green)
             
             expectation.fulfill()
@@ -247,8 +230,7 @@ class CardComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["any_test_brand_name"])
         let sut = CardComponent(paymentMethod: method,
                                 clientKey: "test_client_key")
-        sut.showsLargeTitle = false
-        
+
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         let expectation = XCTestExpectation(description: "Dummy Expectation")
@@ -299,8 +281,7 @@ class CardComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
                                 clientKey: "test_client_key")
-        sut.showsLargeTitle = false
-        
+
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         let expectation = XCTestExpectation(description: "Dummy Expectation")
@@ -326,7 +307,6 @@ class CardComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
                                 clientKey: "test_client_key")
-        sut.showsLargeTitle = false
 
         let cardTypeProviderMock = CardTypeProviderMock()
         cardTypeProviderMock.onFetch = {
@@ -360,8 +340,7 @@ class CardComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
                                 clientKey: "test_client_key")
-        sut.showsLargeTitle = false
-        
+
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         let expectation = XCTestExpectation(description: "Dummy Expectation")
@@ -390,8 +369,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 clientKey: "test_client_key",
                                 style: style)
-        sut.showsLargeTitle = false
-        
+
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         let switchView: UISwitch! = sut.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem.switch")
@@ -419,7 +397,6 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 clientKey: "test_client_key",
                                 style: style)
-        sut.showsLargeTitle = false
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         

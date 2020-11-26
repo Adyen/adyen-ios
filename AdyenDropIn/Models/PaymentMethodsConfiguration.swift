@@ -38,21 +38,6 @@ public extension DropInComponent {
         /// Card component related configuration.
         public final class CardConfiguration {
             
-            /// The public key used for encrypting card details.
-            @available(*, deprecated, message: "Use PaymentMethodsConfiguration.clientKey instead.")
-            public var publicKey: String? {
-                get {
-                    deprecatedPublicKey
-                }
-                
-                set {
-                    deprecatedPublicKey = newValue
-                }
-            }
-            
-            /// :nodoc:
-            internal var deprecatedPublicKey: String?
-            
             /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
             public var showsHolderNameField = false
             
@@ -86,20 +71,6 @@ public extension DropInComponent {
             /// The excluded card brands.
             public var excludedCardNetworks: [PKPaymentNetwork] = []
             
-        }
-    }
-}
-
-public extension DropInComponent.PaymentMethodsConfiguration.CardConfiguration {
-    
-    /// :nodoc:
-    @available(*, deprecated, renamed: "showsHolderNameField")
-    var showsHolderName: Bool {
-        set {
-            showsHolderNameField = newValue
-        }
-        get {
-            return showsHolderNameField
         }
     }
 }
