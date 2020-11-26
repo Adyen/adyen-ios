@@ -28,7 +28,7 @@ public class FormLabelItem: FormItem {
 
     /// :nodoc:
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
-        let label = UILabel()
+        let label = ADYLabel()
         label.text = text
         label.numberOfLines = 0
         label.accessibilityIdentifier = identifier
@@ -40,8 +40,10 @@ public class FormLabelItem: FormItem {
     }
 }
 
+private class ADYLabel: UILabel {}
+
 /// :nodoc:
-extension UILabel: AnyFormItemView {
+extension ADYLabel: AnyFormItemView {
 
     public var childItemViews: [AnyFormItemView] { [] }
 
