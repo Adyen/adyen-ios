@@ -10,13 +10,13 @@ import Foundation
 /// :nodoc:
 internal struct Submit3DS2FingerprintResponse: Response {
 
-    internal let action: Action
+    internal let result: ThreeDSActionHandlerResult
 
-    internal init(action: Action) {
-        self.action = action
+    internal init(result: ThreeDSActionHandlerResult) {
+        self.result = result
     }
 
-    private enum CodingKeys: String, CodingKey {
-        case action
+    internal init(from decoder: Decoder) throws {
+        self.result = try ThreeDSActionHandlerResult(from: decoder)
     }
 }

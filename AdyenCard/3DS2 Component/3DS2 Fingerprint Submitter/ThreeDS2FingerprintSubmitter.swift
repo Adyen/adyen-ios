@@ -11,8 +11,8 @@ import Foundation
 internal protocol AnyThreeDS2FingerprintSubmitter {
     /// :nodoc:
     func submit(fingerprint: String,
-                paymentData: String,
-                completionHandler: @escaping (Result<Action, Error>) -> Void)
+                paymentData: String?,
+                completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void)
 }
 
 /// :nodoc:
@@ -20,7 +20,7 @@ internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitt
 
     /// :nodoc:
     private lazy var apiClient: AnyRetryAPIClient = RetryAPIClient(apiClient: APIClient(environment: environment),
-                                                                   scheduler: SimpleScheduler(maximumCount: 2))
+                                                                   scheduler: SimpleScheduler(maximumCount: 1))
 
     /// :nodoc:
     internal init(apiClient: AnyRetryAPIClient? = nil) {
@@ -31,8 +31,8 @@ internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitt
 
     /// :nodoc:
     internal func submit(fingerprint: String,
-                         paymentData: String,
-                         completionHandler: @escaping (Result<Action, Swift.Error>) -> Void) {
+                         paymentData: String?,
+                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Swift.Error>) -> Void) {
         guard let clientKey = clientKey else {
             assertionFailure("Client key is missing.")
             completionHandler(.failure(ThreeDS2ComponentError.missingClientKey))
@@ -59,10 +59,10 @@ internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitt
 
     /// :nodoc:
     private func handle(_ result: Result<Submit3DS2FingerprintResponse, Swift.Error>,
-                        completionHandler: (Result<Action, Swift.Error>) -> Void) {
+                        completionHandler: (Result<ThreeDSActionHandlerResult, Swift.Error>) -> Void) {
         switch result {
         case let .success(response):
-            completionHandler(.success(response.action))
+            completionHandler(.success(response.result))
         case let .failure(error):
             completionHandler(.failure(error))
         }
