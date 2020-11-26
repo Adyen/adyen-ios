@@ -10,18 +10,6 @@ import Foundation
 /// :nodoc:
 public struct FormItemViewBuilder {
     
-    /// Builds `FormHeaderItemView` from `FormHeaderItem`.
-    /// :nodoc:
-    public func build(with item: FormHeaderItem) -> FormItemView<FormHeaderItem> {
-        return FormHeaderItemView(item: item)
-    }
-    
-    /// Builds `FormFooterItemView` from `FormFooterItem`.
-    /// :nodoc:
-    public func build(with item: FormFooterItem) -> FormItemView<FormFooterItem> {
-        return FormFooterItemView(item: item)
-    }
-    
     /// Builds `FormSwitchItemView` from `FormSwitchItem`.
     /// :nodoc:
     public func build(with item: FormSwitchItem) -> FormItemView<FormSwitchItem> {

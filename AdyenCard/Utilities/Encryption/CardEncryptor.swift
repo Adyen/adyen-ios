@@ -76,9 +76,6 @@ public enum CardEncryptor {
     
     /// Describes the error that can occur during card encryption and public key fetching.
     public enum Error: Swift.Error, LocalizedError {
-        /// Indicates an unknown error occurred.
-        @available(*, deprecated, message: "This case is deprecated.")
-        case unknown
         
         /// Indicates encryption failed  because of invalid card public key or for some other unknown reason.
         case encryptionFailed
@@ -99,8 +96,6 @@ public enum CardEncryptor {
                 return "Trying to encrypt a card with card number, securityCode, expiryMonth, expiryYear, and holderName, all of them are nil"
             case .invalidBin:
                 return "Trying to encrypt an empty or invalid BIN"
-            case .unknown:
-                return "Unknow Error"
             }
         }
     }

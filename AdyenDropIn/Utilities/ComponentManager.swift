@@ -73,10 +73,6 @@ internal final class ComponentManager {
                                           clientKey: clientKey,
                                           style: style.formComponent)
             
-        } else if let publicKey = configuration.card.deprecatedPublicKey {
-            cardComponent = CardComponent.component(paymentMethod: paymentMethod,
-                                                    publicKey: publicKey,
-                                                    style: style.formComponent)
         } else {
             adyenPrint("Failed to instantiate CardComponent because client key is not configured.")
             return nil
@@ -100,10 +96,6 @@ internal final class ComponentManager {
                                       clientKey: clientKey,
                                       style: style.formComponent)
             
-        } else if let publicKey = configuration.card.deprecatedPublicKey {
-            component = BCMCComponent.component(paymentMethod: paymentMethod,
-                                                publicKey: publicKey,
-                                                style: style.formComponent)
         } else {
             adyenPrint("Failed to instantiate BCMCComponent because client key is not configured.")
             return nil

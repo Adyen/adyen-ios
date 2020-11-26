@@ -28,21 +28,6 @@ public struct NavigationStyle: TintableStyle {
                                     color: UIColor.AdyenCore.componentLabel,
                                     textAlignment: .natural)
     
-    /// :nodoc:
-    @available(*, deprecated, message: "Use backgroundColor instead.")
-    public var barBackgroundColor: UIColor {
-        get { backgroundColor }
-        
-        set { backgroundColor = newValue }
-    }
-    
-    /// :nodoc:
-    @available(*, deprecated, message: "Use tintColor instead.")
-    public var barTintColor: UIColor {
-        get { tintColor ?? UIColor.AdyenCore.defaultBlue }
-        set { tintColor = newValue }
-    }
-    
     /// Initializes the navigation style.
     public init() {}
     

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,18 +19,6 @@ public final class Observable<ValueType: Equatable>: EventPublisher {
     }
     
     // MARK: - Value
-    
-    /// The observable value.
-    @available(*, deprecated, message: "Use the Swift 5.1 property wrapper syntax instead.")
-    public var value: ValueType {
-        get {
-            wrappedValue
-        }
-        
-        set {
-            wrappedValue = newValue
-        }
-    }
     
     /// :nodoc:
     public var wrappedValue: ValueType {
