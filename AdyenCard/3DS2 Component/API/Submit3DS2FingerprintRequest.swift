@@ -32,13 +32,13 @@ internal struct Submit3DS2FingerprintRequest: Request {
     internal let fingerprint: String
 
     /// :nodoc:
-    internal let paymentData: String
+    internal let paymentData: String?
 
     /// :nodoc:
     internal let clientKey: String
 
     /// :nodoc:
-    internal init(clientKey: String, fingerprint: String, paymentData: String) {
+    internal init(clientKey: String, fingerprint: String, paymentData: String?) {
         self.fingerprint = fingerprint
         self.paymentData = paymentData
         self.clientKey = clientKey

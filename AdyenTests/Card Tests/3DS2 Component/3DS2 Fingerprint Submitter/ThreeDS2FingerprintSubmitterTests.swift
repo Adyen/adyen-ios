@@ -29,8 +29,9 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
         let sut = ThreeDS2FingerprintSubmitter(apiClient: retryApiClient)
         sut.clientKey = "clientKey"
 
-        let mockedAction = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "data")
-        let mockedResponse = Submit3DS2FingerprintResponse(action: .redirect(mockedAction))
+        let mockedRedirectAction = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "data")
+        let mockedAction = Action.redirect(mockedRedirectAction)
+        let mockedResponse = Submit3DS2FingerprintResponse(result: .action(mockedAction))
         apiClient.mockedResults = [.success(mockedResponse)]
 
         let submitExpectation = expectation(description: "Expect the submit completion handler to be called.")
@@ -39,13 +40,19 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
             switch result {
             case .failure:
                 XCTFail()
-            case let .success(action):
-                switch action {
-                case let .redirect(redirectAction):
-                    XCTAssertEqual(redirectAction, mockedAction)
+            case let .success(result):
+                switch result {
+                case let .action(action):
+                    switch action {
+                    case let .redirect(redirectAction):
+                        XCTAssertEqual(redirectAction, mockedRedirectAction)
+                    default:
+                        XCTFail()
+                    }
                 default:
                     XCTFail()
                 }
+
             }
         }
 
@@ -58,8 +65,9 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
         let sut = ThreeDS2FingerprintSubmitter(apiClient: retryApiClient)
         sut.clientKey = "clientKey"
 
-        let mockedAction = ThreeDS2ChallengeAction(token: "token", paymentData: "data")
-        let mockedResponse = Submit3DS2FingerprintResponse(action: .threeDS2Challenge(mockedAction))
+        let mockedChallengeAction = ThreeDS2ChallengeAction(authorisationToken: "authToken", token: "token", paymentData: "data")
+        let mockedAction = Action.threeDS2Challenge(mockedChallengeAction)
+        let mockedResponse = Submit3DS2FingerprintResponse(result: .action(mockedAction))
         apiClient.mockedResults = [.success(mockedResponse)]
 
         let submitExpectation = expectation(description: "Expect the submit completion handler to be called.")
@@ -68,10 +76,15 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
             switch result {
             case .failure:
                 XCTFail()
-            case let .success(action):
-                switch action {
-                case let .threeDS2Challenge(threeDS2Challenge):
-                    XCTAssertEqual(threeDS2Challenge, mockedAction)
+            case let .success(result):
+                switch result {
+                case let .action(action):
+                    switch action {
+                    case let .threeDS2Challenge(challengeAction):
+                        XCTAssertEqual(challengeAction, mockedChallengeAction)
+                    default:
+                        XCTFail()
+                    }
                 default:
                     XCTFail()
                 }
@@ -87,9 +100,8 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
         let sut = ThreeDS2FingerprintSubmitter(apiClient: retryApiClient)
         sut.clientKey = "clientKey"
 
-        let mockedAction = ThreeDS2AuthenticatedAction(token: "token", paymentData: "data")
-        let action = Action.threeDS2Authenticated(mockedAction)
-        let mockedResponse = Submit3DS2FingerprintResponse(action: action)
+        let mockedDetails = ThreeDS2Details.completed(ThreeDSResult(payload: "payload"))
+        let mockedResponse = Submit3DS2FingerprintResponse(result: .details(mockedDetails))
         apiClient.mockedResults = [.success(mockedResponse)]
 
         let submitExpectation = expectation(description: "Expect the submit completion handler to be called.")
@@ -98,10 +110,18 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
             switch result {
             case .failure:
                 XCTFail()
-            case let .success(action):
-                if case let Action.threeDS2Authenticated(threeDS2Authenticated) = action {
-                    XCTAssertEqual(threeDS2Authenticated, mockedAction)
-                } else {
+            case let .success(result):
+                switch result {
+                case let .details(details):
+                    XCTAssertTrue(details is ThreeDS2Details)
+                    let details = details as! ThreeDS2Details
+                    switch details {
+                    case let .completed(threeDSResult):
+                        XCTAssertEqual(threeDSResult.payload, "payload")
+                    default:
+                        XCTFail()
+                    }
+                default:
                     XCTFail()
                 }
             }

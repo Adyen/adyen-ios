@@ -184,7 +184,9 @@ internal final class PaymentsController {
     }
 
     private func performPaymentDetails(with data: ActionComponentData) {
-        let request = PaymentDetailsRequest(details: data.details, paymentData: data.paymentData)
+        let request = PaymentDetailsRequest(details: data.details,
+                                            paymentData: data.paymentData,
+                                            merchantAccount: Configuration.merchantAccount)
         apiClient.perform(request, completionHandler: paymentResponseHandler)
     }
 
