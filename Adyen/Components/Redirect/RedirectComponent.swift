@@ -20,10 +20,6 @@ public final class RedirectComponent: ActionComponent, DismissableComponent {
     /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
     
-    /// The view controller to use to present the in-app browser incase the redirect is a non native app redirect.
-    @available(*, deprecated, message: "Setting presentingViewController is no longer required. Redirect will be presented on top of keyWindow") // swiftlint:disable:this line_length
-    public var presentingViewController: UIViewController?
-    
     /// Initializes the component.
     ///
     /// - Parameter style: The component's UI style.
@@ -66,41 +62,7 @@ public final class RedirectComponent: ActionComponent, DismissableComponent {
     
     /// :nodoc:
     private let componentName = "redirect"
-    
-    // MARK: - Deprecated Interface
-    
-    /// :nodoc:
-    private var webRedirectComponent: WebRedirectComponent?
-    
-    /// Initializes the component.
-    ///
-    /// - Parameter url: The URL to where the user should be redirected.
-    /// - Parameter paymentData: The payment data returned by the server.
-    /// - Parameter style: The component's UI style.
-    @available(*, deprecated, message: "Use init(style:) and handle(action:) instead.")
-    public init(url: URL, paymentData: String?, style: RedirectComponentStyle? = nil) {
-        self.webRedirectComponent = WebRedirectComponent(url: url, paymentData: paymentData, style: style)
-        self.style = style
-        self.webRedirectComponent?.delegate = self
-    }
-    
-    /// Initializes the component.
-    ///
-    /// - Parameter action: The redirect action to perform.
-    /// - Parameter style: The component's UI style.
-    @available(*, deprecated, message: "Use init(style:) and handle(action:) instead.")
-    public convenience init(action: RedirectAction, style: RedirectComponentStyle? = nil) {
-        self.init(url: action.url, paymentData: action.paymentData, style: style)
-    }
-    
-    /// :nodoc:
-    @available(*, deprecated, message: "Use init(style:) and handle(action:) instead.")
-    public lazy var viewController: UIViewController = {
-        guard let redirectComponent = webRedirectComponent else { fatalError("Use init(style:) and handle(action:) instead.") }
-        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, environment: environment)
-        
-        return redirectComponent.viewController
-    }()
+
 }
 
 /// :nodoc:
@@ -122,6 +84,3 @@ extension RedirectComponent: ActionComponentDelegate {
     }
     
 }
-
-/// :nodoc:
-extension RedirectComponent: PresentableComponent {}

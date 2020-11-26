@@ -13,19 +13,6 @@ public struct ButtonStyle: ViewStyle {
     /// The title style.
     public var title: TextStyle
     
-    /// The corner radius of the button.
-    @available(*, deprecated, message: "Use cornerRounding instead.")
-    public var cornerRadius: CGFloat {
-        get {
-            guard case let .fixed(value) = cornerRounding else { return 0 }
-            return value
-        }
-        
-        set {
-            cornerRounding = .fixed(newValue)
-        }
-    }
-    
     /// The corners style of the button.
     public var cornerRounding: CornerRounding = .fixed(8)
     

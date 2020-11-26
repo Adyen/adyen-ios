@@ -24,27 +24,6 @@ public final class MBWayComponent: PaymentComponent, PresentableComponent, Local
     /// Describes the component's UI style.
     public let style: FormComponentStyle
     
-    /// Indicates if form will show a large header title. True - show title; False - assign title to a view controller's title.
-    /// Defaults to true.
-    @available(*, deprecated, message: """
-     The `showsLargeTitle` property is deprecated.
-     For Component title, please, introduce your own lable implementation.
-     You can access componet's title from `viewController.title`.
-    """)
-    public var showsLargeTitle: Bool {
-        get {
-            guard !_isDropIn else { return false }
-            return _showsLargeTitle
-        }
-
-        set {
-            _showsLargeTitle = newValue
-        }
-    }
-
-    /// :nodoc:
-    internal var _showsLargeTitle = true // swiftlint:disable:this identifier_name
-    
     /// :nodoc:
     public let requiresModalPresentation: Bool = true
     
@@ -72,13 +51,6 @@ public final class MBWayComponent: PaymentComponent, PresentableComponent, Local
         
         let formViewController = FormViewController(style: style)
         formViewController.localizationParameters = localizationParameters
-        
-        if _showsLargeTitle, !_isDropIn {
-            let headerItem = FormHeaderItem(style: style.header)
-            headerItem.title = paymentMethod.name
-            headerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: paymentMethod.name)
-            formViewController.append(headerItem)
-        }
 
         formViewController.title = paymentMethod.name
         formViewController.append(phoneNumberItem)
