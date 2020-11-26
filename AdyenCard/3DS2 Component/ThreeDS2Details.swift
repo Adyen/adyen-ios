@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -14,8 +14,11 @@ public enum ThreeDS2Details: AdditionalDetails {
     case fingerprint(String)
     
     /// When a challenge was perform, this case contains the 3D Secure 2 challenge result.
-    case challengeResult(ThreeDS2Component.ChallengeResult)
-    
+    case challengeResult(ThreeDSResult)
+
+    /// When a 3DS flow is completed.
+    case completed(ThreeDSResult)
+
     // MARK: - Encoding
     
     /// :nodoc:
@@ -27,12 +30,15 @@ public enum ThreeDS2Details: AdditionalDetails {
             try container.encode(fingerprint, forKey: .fingerprint)
         case let .challengeResult(challengeResult):
             try container.encode(challengeResult.payload, forKey: .challengeResult)
+        case let .completed(result):
+            try container.encode(result.payload, forKey: .threeDSResult)
         }
     }
     
     private enum CodingKeys: String, CodingKey {
         case fingerprint = "threeds2.fingerprint"
         case challengeResult = "threeds2.challengeResult"
+        case threeDSResult
     }
     
 }
