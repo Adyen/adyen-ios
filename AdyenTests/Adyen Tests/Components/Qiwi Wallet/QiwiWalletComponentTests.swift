@@ -12,22 +12,6 @@ class QiwiWalletComponentTests: XCTestCase {
     lazy var phoneExtensions = [PhoneExtension(value: "+1", countryCode: "US"), PhoneExtension(value: "+3", countryCode: "UK")]
     lazy var method = QiwiWalletPaymentMethod(type: "test_type", name: "test_name", phoneExtensions: phoneExtensions)
     let payment = Payment(amount: Payment.Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
-
-    func testShowLargeTiteSetting() {
-        let sut = QiwiWalletComponent(paymentMethod: method)
-
-        sut.showsLargeTitle = true
-        sut._isDropIn = true
-        XCTAssertFalse(sut.showsLargeTitle)
-
-        sut.showsLargeTitle = true
-        sut._isDropIn = false
-        XCTAssertTrue(sut._showsLargeTitle)
-
-        sut.showsLargeTitle = false
-        sut._isDropIn = false
-        XCTAssertFalse(sut._showsLargeTitle)
-    }
     
     func testLocalizationWithCustomTableName() {
         let sut = QiwiWalletComponent(paymentMethod: method)
@@ -88,13 +72,6 @@ class QiwiWalletComponentTests: XCTestCase {
         /// background color
         style.backgroundColor = .red
         
-        /// Header
-        style.header.backgroundColor = .magenta
-        style.header.title.color = .white
-        style.header.title.backgroundColor = .black
-        style.header.title.textAlignment = .left
-        style.header.title.font = .systemFont(ofSize: 30)
-        
         /// Text field
         style.textField.text.color = .red
         style.textField.text.font = .systemFont(ofSize: 13)
@@ -107,8 +84,7 @@ class QiwiWalletComponentTests: XCTestCase {
         style.textField.backgroundColor = .red
         
         let sut = QiwiWalletComponent(paymentMethod: method, style: style)
-        sut.showsLargeTitle = true
-        
+
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         let expectation = XCTestExpectation(description: "Dummy Expectation")
@@ -122,9 +98,6 @@ class QiwiWalletComponentTests: XCTestCase {
             
             let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "Adyen.QiwiWalletComponent.payButtonItem.button")
             let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "Adyen.QiwiWalletComponent.payButtonItem.button.titleLabel")
-            
-            let headerItemView: UIView? = sut.viewController.view.findView(with: "Adyen.QiwiWalletComponent.test_name")
-            let headerItemViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "Adyen.QiwiWalletComponent.test_name.titleLabel")
             
             /// Test phone number field
             XCTAssertEqual(phoneNumberView?.backgroundColor, .red)
@@ -150,13 +123,6 @@ class QiwiWalletComponentTests: XCTestCase {
             XCTAssertEqual(payButtonItemViewButtonTitle?.textColor, .white)
             XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
             
-            /// Test header
-            XCTAssertEqual(headerItemView?.backgroundColor, .magenta)
-            XCTAssertEqual(headerItemViewTitleLabel?.backgroundColor, .black)
-            XCTAssertEqual(headerItemViewTitleLabel?.textAlignment, .left)
-            XCTAssertEqual(headerItemViewTitleLabel?.textColor, .white)
-            XCTAssertEqual(headerItemViewTitleLabel?.font, .systemFont(ofSize: 30))
-            
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 5)
@@ -164,8 +130,7 @@ class QiwiWalletComponentTests: XCTestCase {
     
     func testBigTitle() {
         let sut = QiwiWalletComponent(paymentMethod: method)
-        sut.showsLargeTitle = false
-        
+
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         let expectation = XCTestExpectation(description: "Dummy Expectation")
@@ -188,7 +153,6 @@ class QiwiWalletComponentTests: XCTestCase {
         let method = QiwiWalletPaymentMethod(type: "test_type", name: "test_name", phoneExtensions: phoneExtensions)
         let sut = QiwiWalletComponent(paymentMethod: method)
         let delegate = PaymentComponentDelegateMock()
-        sut.showsLargeTitle = true
         sut.delegate = delegate
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")

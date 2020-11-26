@@ -79,13 +79,6 @@ class BLIKComponentTests: XCTestCase {
         /// background color
         style.backgroundColor = .red
 
-        /// Header
-        style.header.backgroundColor = .magenta
-        style.header.title.color = .white
-        style.header.title.backgroundColor = .black
-        style.header.title.textAlignment = .left
-        style.header.title.font = .systemFont(ofSize: 30)
-
         /// Text field
         style.textField.text.color = .red
         style.textField.text.font = .systemFont(ofSize: 13)

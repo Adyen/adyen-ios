@@ -213,7 +213,7 @@ class RedirectComponentTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
 
             let topPresentedViewController = UIViewController.findTopPresenter() as? SFSafariViewController
-            XCTAssertNotNil(topPresentedViewController as? SFSafariViewController)
+            XCTAssertNotNil(topPresentedViewController)
 
             topPresentedViewController!.delegate?.safariViewControllerDidFinish?(topPresentedViewController!)
         }
@@ -240,7 +240,7 @@ class RedirectComponentTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
 
             let topPresentedViewController = UIViewController.findTopPresenter() as? SFSafariViewController
-            XCTAssertNotNil(topPresentedViewController as? SFSafariViewController)
+            XCTAssertNotNil(topPresentedViewController)
 
             topPresentedViewController!.presentationController?.delegate?.presentationControllerDidDismiss?(topPresentedViewController!.presentationController!)
         }

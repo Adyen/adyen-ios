@@ -14,10 +14,6 @@ import UIKit
 /// A drop-in component to perform any supported action out of the box.
 public final class DropInActionComponent: ActionComponent {
     
-    /// The view controller to use to present other action related view controllers, e.g Redirect Action.
-    @available(*, deprecated, message: "Setting presentingViewController is no longer required. Redirect will be presented on top of keyWindow") // swiftlint:disable:this line_length
-    public weak var presenterViewController: UIViewController?
-    
     /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
     
