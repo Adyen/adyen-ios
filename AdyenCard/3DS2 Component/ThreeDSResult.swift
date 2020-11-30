@@ -31,8 +31,8 @@ public struct ThreeDSResult: Decodable {
         self.payload = try container.decode(String.self, forKey: .payload)
     }
 
-    internal init(authentication: Bool, authorizationToken: String?) throws {
-        var payloadJson = ["transStatus": authentication ? "Y" : "N"]
+    internal init(authenticated: Bool, authorizationToken: String?) throws {
+        var payloadJson = ["transStatus": authenticated ? "Y" : "N"]
 
         if let authorizationToken = authorizationToken {
             payloadJson["authorisationToken"] = authorizationToken

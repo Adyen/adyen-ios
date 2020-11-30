@@ -182,6 +182,30 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
+    func testChallengeFlowMissingTransaction() throws {
+        let service = AnyADYServiceMock()
+
+        let sut = ThreeDS2ClassicActionHandler(service: service)
+
+        let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
+        sut.handle(challengeAction) { result in
+            switch result {
+            case .success:
+                XCTFail()
+            case let .failure(error):
+                let error = error as! ThreeDS2ComponentError
+                switch error {
+                case .missingTransaction: ()
+                default:
+                    XCTFail()
+                }
+            }
+            resultExpectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2, handler: nil)
+    }
+
     func testInvalidChallengeToken() throws {
 
         let service = AnyADYServiceMock()

@@ -245,14 +245,14 @@
 		F957A9E325514A7E0099AD73 /* Submit3DS2FingerprintRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957A9E225514A7E0099AD73 /* Submit3DS2FingerprintRequest.swift */; };
 		F957A9F125514AB70099AD73 /* Submit3DS2FingerprintResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957A9F025514AB70099AD73 /* Submit3DS2FingerprintResponse.swift */; };
 		F957A9FA25514EEA0099AD73 /* ThreeDS2FingerprintSubmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957A9F925514EEA0099AD73 /* ThreeDS2FingerprintSubmitter.swift */; };
-		F957AA2C2551829F0099AD73 /* ThreeDS2ActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA2B2551829F0099AD73 /* ThreeDS2ActionHandler.swift */; };
+		F957AA2C2551829F0099AD73 /* ThreeDS2CompactActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA2B2551829F0099AD73 /* ThreeDS2CompactActionHandler.swift */; };
 		F957AA462552C3D20099AD73 /* ThreeDS2FingerprintSubmitterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA452552C3D20099AD73 /* ThreeDS2FingerprintSubmitterTests.swift */; };
 		F957AA5A2552D8BB0099AD73 /* ThreeDS2ComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA592552D8BB0099AD73 /* ThreeDS2ComponentTests.swift */; };
 		F957AA622552D8D20099AD73 /* AnyThreeDS2ActionHandlerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA612552D8D20099AD73 /* AnyThreeDS2ActionHandlerMock.swift */; };
 		F957AA6A2552D98E0099AD73 /* AnyThreeDS2FingerprintSubmitterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA692552D98E0099AD73 /* AnyThreeDS2FingerprintSubmitterMock.swift */; };
 		F957AA722552DBC80099AD73 /* AnyRedirectComponentMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA712552DBC80099AD73 /* AnyRedirectComponentMock.swift */; };
 		F957AA7A2552F75E0099AD73 /* ADYServiceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA792552F75E0099AD73 /* ADYServiceAdapter.swift */; };
-		F957AAA62552FDC10099AD73 /* ThreeDS2ActionHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AAA52552FDC10099AD73 /* ThreeDS2ActionHandlerTests.swift */; };
+		F957AAA62552FDC10099AD73 /* ThreeDS2CompactActionHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AAA52552FDC10099AD73 /* ThreeDS2CompactActionHandlerTests.swift */; };
 		F957AAAE2552FDD70099AD73 /* AnyADYServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AAAD2552FDD70099AD73 /* AnyADYServiceMock.swift */; };
 		F95B6D8A2523138E002C9062 /* PhoneNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6D892523138E002C9062 /* PhoneNumberFormatter.swift */; };
 		F95B6D8C252316DA002C9062 /* PhoneNumberValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6D8B252316DA002C9062 /* PhoneNumberValidator.swift */; };
@@ -847,14 +847,14 @@
 		F957A9E225514A7E0099AD73 /* Submit3DS2FingerprintRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submit3DS2FingerprintRequest.swift; sourceTree = "<group>"; };
 		F957A9F025514AB70099AD73 /* Submit3DS2FingerprintResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submit3DS2FingerprintResponse.swift; sourceTree = "<group>"; };
 		F957A9F925514EEA0099AD73 /* ThreeDS2FingerprintSubmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2FingerprintSubmitter.swift; sourceTree = "<group>"; };
-		F957AA2B2551829F0099AD73 /* ThreeDS2ActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2ActionHandler.swift; sourceTree = "<group>"; };
+		F957AA2B2551829F0099AD73 /* ThreeDS2CompactActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2CompactActionHandler.swift; sourceTree = "<group>"; };
 		F957AA452552C3D20099AD73 /* ThreeDS2FingerprintSubmitterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2FingerprintSubmitterTests.swift; sourceTree = "<group>"; };
 		F957AA592552D8BB0099AD73 /* ThreeDS2ComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2ComponentTests.swift; sourceTree = "<group>"; };
 		F957AA612552D8D20099AD73 /* AnyThreeDS2ActionHandlerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyThreeDS2ActionHandlerMock.swift; sourceTree = "<group>"; };
 		F957AA692552D98E0099AD73 /* AnyThreeDS2FingerprintSubmitterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyThreeDS2FingerprintSubmitterMock.swift; sourceTree = "<group>"; };
 		F957AA712552DBC80099AD73 /* AnyRedirectComponentMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyRedirectComponentMock.swift; sourceTree = "<group>"; };
 		F957AA792552F75E0099AD73 /* ADYServiceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADYServiceAdapter.swift; sourceTree = "<group>"; };
-		F957AAA52552FDC10099AD73 /* ThreeDS2ActionHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2ActionHandlerTests.swift; sourceTree = "<group>"; };
+		F957AAA52552FDC10099AD73 /* ThreeDS2CompactActionHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2CompactActionHandlerTests.swift; sourceTree = "<group>"; };
 		F957AAAD2552FDD70099AD73 /* AnyADYServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyADYServiceMock.swift; sourceTree = "<group>"; };
 		F95B6D892523138E002C9062 /* PhoneNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberFormatter.swift; sourceTree = "<group>"; };
 		F95B6D8B252316DA002C9062 /* PhoneNumberValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberValidator.swift; sourceTree = "<group>"; };
@@ -2151,7 +2151,7 @@
 			children = (
 				F957AA442552C3BB0099AD73 /* 3DS2 Fingerprint Submitter */,
 				F957AA592552D8BB0099AD73 /* ThreeDS2ComponentTests.swift */,
-				F957AAA52552FDC10099AD73 /* ThreeDS2ActionHandlerTests.swift */,
+				F957AAA52552FDC10099AD73 /* ThreeDS2CompactActionHandlerTests.swift */,
 				F9842CCF25710BF00063CE5A /* ThreeDS2ClassicActionHandlerTests.swift */,
 				F957AAAD2552FDD70099AD73 /* AnyADYServiceMock.swift */,
 				F957AA712552DBC80099AD73 /* AnyRedirectComponentMock.swift */,
@@ -2348,7 +2348,7 @@
 		F9842CC8256FD0770063CE5A /* 3DS2 Action handlers */ = {
 			isa = PBXGroup;
 			children = (
-				F957AA2B2551829F0099AD73 /* ThreeDS2ActionHandler.swift */,
+				F957AA2B2551829F0099AD73 /* ThreeDS2CompactActionHandler.swift */,
 				F9842C9E256EBF5F0063CE5A /* ThreeDS2ClassicActionHandler.swift */,
 				F9842C66256D7A010063CE5A /* ThreeDSActionHandlerResult.swift */,
 			);
@@ -3307,7 +3307,7 @@
 				F9639B4D24E298C70073F38A /* SimpleSchedulerTests.swift in Sources */,
 				F9D644E724D40C7C0059CBE3 /* MBWayComponentTests.swift in Sources */,
 				E7D3ED84243B667500E73F59 /* FormCardNumberItemViewTests.swift in Sources */,
-				F957AAA62552FDC10099AD73 /* ThreeDS2ActionHandlerTests.swift in Sources */,
+				F957AAA62552FDC10099AD73 /* ThreeDS2CompactActionHandlerTests.swift in Sources */,
 				E9E3DAD3221EEFF700697074 /* CardExpiryDateValidatorTests.swift in Sources */,
 				E7D5311C2447065B000046B4 /* PreselectedPaymentComponentTests.swift in Sources */,
 				F99F08662383F2D300EBB948 /* FormTextItemViewDelegateMock.swift in Sources */,
@@ -3368,7 +3368,7 @@
 				E9E3DAD1221EEE2100697074 /* CardExpiryDateValidator.swift in Sources */,
 				E2345C02229BCC7D000F2C94 /* ThreeDS2Component.swift in Sources */,
 				F9D5751223756BD0009C18B5 /* CardPublicKeyValidator.swift in Sources */,
-				F957AA2C2551829F0099AD73 /* ThreeDS2ActionHandler.swift in Sources */,
+				F957AA2C2551829F0099AD73 /* ThreeDS2CompactActionHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
