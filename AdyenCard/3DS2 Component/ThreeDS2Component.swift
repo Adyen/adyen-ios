@@ -51,7 +51,8 @@ public final class ThreeDS2Component: ActionComponent {
 
     /// Initializes the 3D Secure 2 component.
     ///
-    /// - Parameter threeDS2ActionHandler: The internal threeDS2Component
+    /// - Parameter threeDS2CompactFlowHandler: The internal `AnyThreeDS2ActionHandler` for the compact flow.
+    /// - Parameter threeDS2ClassicFlowHandler: The internal `AnyThreeDS2ActionHandler` for the classic flow.
     /// - Parameter redirectComponent: The redirect component.
     /// - Parameter redirectComponentStyle: `RedirectComponent` style.
     /// :nodoc:
@@ -146,7 +147,7 @@ public final class ThreeDS2Component: ActionComponent {
     }
 
     private lazy var threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler = {
-        let handler = ThreeDS2ActionHandler(appearanceConfiguration: appearanceConfiguration)
+        let handler = ThreeDS2CompactActionHandler(appearanceConfiguration: appearanceConfiguration)
 
         handler._isDropIn = _isDropIn
         handler.environment = environment
