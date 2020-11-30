@@ -8,7 +8,7 @@ import Adyen
 import Adyen3DS2
 import Foundation
 
-/// Handles the 3D Secure 2 fingerprint and challenge.
+/// Handles the 3D Secure 2 fingerprint and challenge actions separately.
 /// :nodoc:
 internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler {
 
@@ -142,6 +142,8 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler {
                 self.didFinish(with: threeDSResult,
                                paymentData: challengeAction.paymentData,
                                completionHandler: completionHandler)
+            } else {
+                assertionFailure("Both error and result are nil, this should never happen.")
             }
         } catch {
             didFail(with: error, completionHandler: completionHandler)

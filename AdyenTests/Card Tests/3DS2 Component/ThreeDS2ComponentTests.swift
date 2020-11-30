@@ -107,7 +107,7 @@ class ThreeDS2ComponentTests: XCTestCase {
                                                    token: "token",
                                                    paymentData: "data")
 
-        let mockedDetails = ThreeDS2Details.challengeResult(ThreeDSResult(payload: "payload"))
+        let mockedDetails = ThreeDS2Details.completed(ThreeDSResult(payload: "payload"))
         let mockedData = ActionComponentData(details: mockedDetails, paymentData: "data")
 
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
@@ -303,7 +303,7 @@ class ThreeDS2ComponentTests: XCTestCase {
 
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
 
-        let mockedResult = try! ThreeDSResult(authentication: true, authorizationToken: "AuthToken")
+        let mockedResult = try! ThreeDSResult(authenticated: true, authorizationToken: "AuthToken")
         let mockedDetails = ThreeDS2Details.challengeResult(mockedResult)
         threeDS2ActionHandler.mockedChallengeResult = .success(.details(mockedDetails))
 

@@ -20,9 +20,9 @@ internal protocol AnyThreeDS2ActionHandler: Component {
                 completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void)
 }
 
-/// Handles the 3D Secure 2 fingerprint and challenge.
+/// Handles the 3D Secure 2 fingerprint and challenge in one call using a `fingerprintSubmitter`.
 /// :nodoc:
-internal final class ThreeDS2ActionHandler: ThreeDS2ClassicActionHandler {
+internal final class ThreeDS2CompactActionHandler: ThreeDS2ClassicActionHandler {
 
     /// Initializes the 3D Secure 2 action handler.
     ///
