@@ -32,7 +32,7 @@ Adyen Components for iOS are available through either [CocoaPods](http://cocoapo
 1. Add `pod 'Adyen'` to your `Podfile`.
 2. Run `pod install`.
 
-:warning: _3DS2 SDK binary dependency through CocoaPods doesn't support `arm64` Simulator builds._
+:warning: _`3DS2 SDK` binary dependency through CocoaPods doesn't support `arm64` Simulator builds. `arm64` needs to be excluded as described [here](https://github.com/Adyen/adyen-ios/issues/291) to be able to make `Any Simulator` builds._
 
 ### Carthage
 
@@ -40,7 +40,7 @@ Adyen Components for iOS are available through either [CocoaPods](http://cocoapo
 2. Run `carthage update`.
 3. Link the framework with your target as described in [Carthage Readme](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application).
 
-:warning: _3DS2 SDK binary dependency through Carthage doesn't support `arm64` Simulator builds._
+:warning: _`3DS2 SDK` binary dependency through Carthage doesn't support `arm64` Simulator builds. `arm64` needs to be excluded as described [here](https://github.com/Adyen/adyen-ios/issues/291) to be able to make `Any Simulator` builds_
 
 ### Swift Package Manager
 
@@ -54,7 +54,7 @@ https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_y
 
 :warning: _Swift Package Manager for Xcode 12.0 and 12.1 has a [know issue](https://bugs.swift.org/browse/SR-13343) when it comes to importing a dependency that in turn depend on a binary dependencies. A workaround is described [here](https://forums.swift.org/t/swiftpm-binarytarget-dependency-and-code-signing/38953)._
 
-:warning: _AdyenWeChatPay Module doesn't support  `arm64` Simulator builds, because of a limitation in the underlying `libWeChatSDK.a` static library dependency._
+:warning: _`AdyenWeChatPay` Module doesn't support  `arm64` Simulator builds, because of a limitation in the underlying `libWeChatSDK.a` static library dependency. `arm64` needs to be excluded as described [here](https://github.com/Adyen/adyen-ios/issues/291) or exclude `AdyenWeChatPay` from your dependencies, to be able to make `Any Simulator` builds ._
 
 ## Drop-in
 
