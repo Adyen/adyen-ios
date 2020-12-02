@@ -18,6 +18,31 @@ class BCMCComponentTests: XCTestCase {
         delegate = PaymentComponentDelegateMock()
     }
 
+    func testConfiguration() {
+        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["any_test_brand_name"])
+        let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
+        let sut = BCMCComponent(paymentMethod: paymentMethod, clientKey: "test_client_key")
+
+        XCTAssertEqual(sut.showsHolderNameField, sut.cardComponent.showsHolderNameField)
+        XCTAssertEqual(sut.showsStorePaymentMethodField,
+                       sut.cardComponent.showsStorePaymentMethodField)
+        XCTAssertEqual(sut.clientKey, sut.cardComponent.clientKey)
+        XCTAssertEqual(sut.storedCardConfiguration.showsSecurityCodeField,
+                       sut.cardComponent.storedCardConfiguration.showsSecurityCodeField)
+
+        sut.showsHolderNameField = true
+        sut.showsHolderNameField = false
+        sut.storedCardConfiguration.showsSecurityCodeField = false
+        sut.clientKey = "test_key"
+
+        XCTAssertEqual(sut.showsHolderNameField, sut.cardComponent.showsHolderNameField)
+        XCTAssertEqual(sut.showsStorePaymentMethodField,
+                       sut.cardComponent.showsStorePaymentMethodField)
+        XCTAssertEqual(sut.clientKey, sut.cardComponent.clientKey)
+        XCTAssertEqual(sut.storedCardConfiguration.showsSecurityCodeField,
+                       sut.cardComponent.storedCardConfiguration.showsSecurityCodeField)
+    }
+
     func testShowLargeTiteSetting() {
         let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["any_test_brand_name"])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
