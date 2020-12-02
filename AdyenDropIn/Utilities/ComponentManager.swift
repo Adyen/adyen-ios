@@ -6,7 +6,7 @@
 
 import Adyen
 #if canImport(AdyenCard)
-import AdyenCard
+    import AdyenCard
 #endif
 import Foundation
 
@@ -85,6 +85,7 @@ internal final class ComponentManager {
         cardComponent?.showsHolderNameField = cardConfiguration.showsHolderNameField
         cardComponent?.showsStorePaymentMethodField = cardConfiguration.showsStorePaymentMethodField
         cardComponent?.showsSecurityCodeField = cardConfiguration.showsSecurityCodeField
+        cardComponent?.storedCardConfiguration = cardConfiguration.stored
         
         return cardComponent
     }
