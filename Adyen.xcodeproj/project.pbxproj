@@ -2830,7 +2830,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -f $SRCROOT/Internal/post-commit ]; then\n   $SRCROOT/Internal/post-commit\nfi\n";
+			shellScript = "#if [ -f $SRCROOT/Internal/post-commit ]; then\n   #$SRCROOT/Internal/post-commit\n#fi\n";
 		};
 		F95B6DD2252B1F6A002C9062 /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2866,7 +2866,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -f $SRCROOT/Internal/post-commit ]; then\n   $SRCROOT/Internal/post-commit\nfi\n";
+			shellScript = "#if [ -f $SRCROOT/Internal/post-commit ]; then\n   #$SRCROOT/Internal/post-commit\n#fi\n";
 		};
 		F9620DA223C747BD005209FC /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
