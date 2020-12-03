@@ -58,6 +58,9 @@ public extension DropInComponent {
             
             /// Indicates whether to show the security code field in the form.
             public var showsSecurityCodeField = true
+
+            /// Stored card configuration.
+            public var stored = StoredCardConfiguration()
             
         }
         

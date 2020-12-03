@@ -95,6 +95,17 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
             cardComponent.environment = newValue
         }
     }
+
+    /// Stored card configuration.
+    public var storedCardConfiguration: StoredCardConfiguration {
+        get {
+            cardComponent.storedCardConfiguration
+        }
+
+        set {
+            cardComponent.storedCardConfiguration = newValue
+        }
+    }
     
     /// Initializes the Bancontact component.
     ///
@@ -112,6 +123,7 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
         self.cardComponent.excludedCardTypes = []
         self.cardComponent.supportedCardTypes = [.bcmc]
         self.cardComponent.showsSecurityCodeField = false
+        self.cardComponent.storedCardConfiguration.showsSecurityCodeField = false
     }
     
     /// Initializes the Bancontact component.

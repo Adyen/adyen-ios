@@ -517,7 +517,7 @@ class CardComponentTests: XCTestCase {
                                              holderName: "holderName")
         let sut = CardComponent(paymentMethod: method,
                                 clientKey: "test_client_key")
-        sut.showsSecurityCodeField = false
+        sut.storedCardConfiguration.showsSecurityCodeField = false
         sut.payment = Payment(amount: Payment.Amount(value: 123456, currencyCode: "EUR"), countryCode: "NL")
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)
@@ -542,7 +542,7 @@ class CardComponentTests: XCTestCase {
                                              holderName: "holderName")
         let sut = CardComponent(paymentMethod: method,
                                 clientKey: "test_client_key")
-        sut.showsSecurityCodeField = false
+        sut.storedCardConfiguration.showsSecurityCodeField = false
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)
         XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
@@ -566,7 +566,7 @@ class CardComponentTests: XCTestCase {
                                              holderName: "holderName")
         let sut = CardComponent(paymentMethod: method,
                                 clientKey: "test_client_key")
-        sut.showsSecurityCodeField = false
+        sut.storedCardConfiguration.showsSecurityCodeField = false
         XCTAssertNotNil(sut.viewController as? UIAlertController)
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)

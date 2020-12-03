@@ -22,6 +22,16 @@ public protocol CardComponentDelegate: AnyObject {
     func didChangeCardType(_ value: [CardType]?, component: CardComponent)
 }
 
+/// Stored card configuration.
+public struct StoredCardConfiguration {
+
+    /// Indicates whether to show the security code field.
+    public var showsSecurityCodeField = true
+
+    /// :nodoc:
+    public init() { /* empty init */ }
+}
+
 /// A component that provides a form for card payments.
 public final class CardComponent: PaymentComponent, PresentableComponent, Localizable, Observer {
     
@@ -98,6 +108,9 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     
     /// Indicates whether to show the security code field at all.
     public var showsSecurityCodeField = true
+
+    /// Stored card configuration.
+    public var storedCardConfiguration = StoredCardConfiguration()
     
     /// Indicates if form will show a large header title. True - show title; False - assign title to a view controller's title.
     /// Defaults to true.
@@ -203,7 +216,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
             return nil
         }
         var component: PaymentComponent & PresentableComponent
-        if showsSecurityCodeField {
+        if storedCardConfiguration.showsSecurityCodeField {
             component = StoredCardComponent(storedCardPaymentMethod: paymentMethod)
         } else {
             component = StoredPaymentMethodComponent(paymentMethod: paymentMethod)
