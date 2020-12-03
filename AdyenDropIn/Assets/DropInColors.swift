@@ -5,7 +5,7 @@
 //
 
 #if canImport(AdyenCard)
-import AdyenCard
+    import AdyenCard
 #endif
 import UIKit
 

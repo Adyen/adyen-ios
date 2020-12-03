@@ -30,6 +30,7 @@ custom_categories:
       - CardNumberFormatter
       - CardNumberValidator
       - CardComponentDelegate
+      - StoredCardConfiguration
   - name: Qiwi Wallet Component
     children:
       - QiwiWalletComponent
