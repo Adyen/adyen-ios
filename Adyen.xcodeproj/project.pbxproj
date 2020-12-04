@@ -226,7 +226,6 @@
 		F9175FBA2594996000D653BE /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = E226F53922969A950013A463 /* Action.swift */; };
 		F9175FBB2594996000D653BE /* RedirectAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E226F53B22969B530013A463 /* RedirectAction.swift */; };
 		F9175FBC2594996000D653BE /* WeChatPaySDKData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91664F823E460CD00C10738 /* WeChatPaySDKData.swift */; };
-		F9175FCE2594999600D653BE /* UniversalRedirectComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9438F22243B29ED00FB9D69 /* UniversalRedirectComponent.swift */; };
 		F9175FCF2594999600D653BE /* RedirectListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AFF882224CF959005A0D8D /* RedirectListener.swift */; };
 		F9175FD02594999600D653BE /* RedirectDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AFF884224D0D3B005A0D8D /* RedirectDetails.swift */; };
 		F9175FD12594999600D653BE /* WebRedirectComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AC61B8243730C90062A00D /* WebRedirectComponent.swift */; };
@@ -1006,7 +1005,6 @@
 		F939DEE223C8B4C100D19249 /* EmptyPaymentDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyPaymentDetails.swift; sourceTree = "<group>"; };
 		F94343E523FFD9A400AADF5F /* AdyenAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AdyenAssets.xcassets; sourceTree = "<group>"; };
 		F94343E723FFF9DC00AADF5F /* ISOCountry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISOCountry.swift; sourceTree = "<group>"; };
-		F9438F22243B29ED00FB9D69 /* UniversalRedirectComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalRedirectComponent.swift; sourceTree = "<group>"; };
 		F957A9E225514A7E0099AD73 /* Submit3DS2FingerprintRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submit3DS2FingerprintRequest.swift; sourceTree = "<group>"; };
 		F957A9F025514AB70099AD73 /* Submit3DS2FingerprintResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submit3DS2FingerprintResponse.swift; sourceTree = "<group>"; };
 		F957A9F925514EEA0099AD73 /* ThreeDS2FingerprintSubmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2FingerprintSubmitter.swift; sourceTree = "<group>"; };
@@ -2046,7 +2044,6 @@
 			isa = PBXGroup;
 			children = (
 				F9780B6424338DFE00CC6C73 /* RedirectComponent.swift */,
-				F9438F22243B29ED00FB9D69 /* UniversalRedirectComponent.swift */,
 				F9AC61B8243730C90062A00D /* WebRedirectComponent.swift */,
 				E9AFF882224CF959005A0D8D /* RedirectListener.swift */,
 				E9AFF884224D0D3B005A0D8D /* RedirectDetails.swift */,
@@ -4015,7 +4012,6 @@
 				F9175FBC2594996000D653BE /* WeChatPaySDKData.swift in Sources */,
 				F9175FB62594996000D653BE /* WeChatPaySDKAction.swift in Sources */,
 				F917613725A30B5700D653BE /* ThreeDSResult.swift in Sources */,
-				F9175FCE2594999600D653BE /* UniversalRedirectComponent.swift in Sources */,
 				F9175FFB259499D500D653BE /* AwaitView.swift in Sources */,
 				F9175FB52594996000D653BE /* SDKAction.swift in Sources */,
 				F917617225A30B6A00D653BE /* AnyThreeDS2ActionHandler.swift in Sources */,
