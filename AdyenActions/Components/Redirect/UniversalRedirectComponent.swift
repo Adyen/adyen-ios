@@ -84,7 +84,7 @@ internal final class UniversalRedirectComponent: ActionComponent, DismissableCom
         component.environment = environment
         redirectComponent = component
         
-        UIViewController.findTopPresenter()?.present(component.viewController, animated: true)
+        UIApplication.shared.keyWindow?.rootViewController?.adyen.topPresenter.present(component.viewController, animated: true)
     }
     
     // MARK: - Custom scheme link handling
