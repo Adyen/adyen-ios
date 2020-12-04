@@ -66,7 +66,7 @@ internal class VoucherCardView: UIView {
     }
 
     private func updateLayersStyle() {
-        containerLayer.strokeColor = UIColor(hex: 0xE6E9EB).cgColor
+        containerLayer.strokeColor = UIColor.Adyen.lightGray.cgColor
         containerLayer.fillColor = UIColor.Adyen.componentBackground.cgColor
     }
 

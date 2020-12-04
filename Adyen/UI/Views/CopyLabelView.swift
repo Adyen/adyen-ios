@@ -63,7 +63,7 @@ public final class CopyLabelView: UIView, Localizable {
         menuController.menuItems = [copyItem]
         menuController.setTargetRect(frame, in: superview)
         menuController.setMenuVisible(true, animated: true)
-        backgroundColor = UIColor(hex: 0xF3F6F9)
+        backgroundColor = UIColor.Adyen.lightGray
     }
 
     override public var canBecomeFirstResponder: Bool { true }
