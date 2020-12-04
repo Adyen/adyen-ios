@@ -41,6 +41,7 @@ public final class FormViewController: UIViewController, Localizable {
         super.init(nibName: nil, bundle: nil)
     }
     
+    @available(*, unavailable)
     internal required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -155,19 +156,27 @@ public final class FormViewController: UIViewController, Localizable {
     private var bottomConstraint: NSLayoutConstraint?
     
     private func setupConstraints() {
-        bottomConstraint = formView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+
+        let constraints: [NSLayoutConstraint?]
         if #available(iOS 11.0, *) {
             bottomConstraint = formView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            constraints = [
+                formView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                bottomConstraint,
+                formView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+                formView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor)
+            ]
+        } else {
+            bottomConstraint = formView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            constraints = [
+                formView.topAnchor.constraint(equalTo: view.topAnchor),
+                bottomConstraint,
+                formView.leftAnchor.constraint(equalTo: view.leftAnchor),
+                formView.rightAnchor.constraint(equalTo: view.rightAnchor)
+            ]
         }
         
         bottomConstraint?.priority = .defaultHigh
-        let constraints = [
-            formView.topAnchor.constraint(equalTo: view.topAnchor),
-            bottomConstraint,
-            formView.leftAnchor.constraint(equalTo: view.leftAnchor),
-            formView.rightAnchor.constraint(equalTo: view.rightAnchor)
-        ]
-        
         NSLayoutConstraint.activate(constraints.compactMap { $0 })
     }
     
