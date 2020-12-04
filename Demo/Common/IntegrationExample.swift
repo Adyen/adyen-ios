@@ -77,8 +77,9 @@ internal final class IntegrationExample {
         let success = resultCode == .authorised || resultCode == .received || resultCode == .pending
 
         currentComponent?.stopLoading(withSuccess: success) { [weak self] in
-            self?.presenter?.dismiss(completion: nil)
-            self?.presentAlert(withTitle: resultCode.rawValue)
+            self?.presenter?.dismiss { [weak self] in
+                self?.presentAlert(withTitle: resultCode.rawValue)
+            }
         }
     }
 
