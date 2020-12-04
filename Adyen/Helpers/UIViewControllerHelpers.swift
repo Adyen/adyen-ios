@@ -6,22 +6,7 @@
 
 import UIKit
 
-/// So that any `UIViewController` instance will inherit the `adyen` scope.
-/// :nodoc:
-extension UIViewController: AdyenCompatible {
-    
-    /// Access top most presented view controller for provided window.
-    /// :nodoc:
-    public static func findTopPresenter() -> UIViewController? {
-        guard let viewController = UIApplication.shared.keyWindow?.rootViewController else {
-            assertionFailure("Application's keyWindow is not set or have no rootViewController")
-            return nil
-        }
-        
-        return viewController.adyen.topPresenter
-    }
-    
-}
+extension UIViewController: AdyenCompatible {}
 
 /// Adds helper functionality to any `UIViewController` instance through the `adyen` property.
 /// :nodoc:
