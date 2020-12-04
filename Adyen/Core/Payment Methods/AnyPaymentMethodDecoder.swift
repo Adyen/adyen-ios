@@ -229,7 +229,11 @@ private struct MBWayPaymentMethodDecoder: PaymentMethodDecoder {
 
 private struct BLIKPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
-        .blik(try BLIKPaymentMethod(from: decoder))
+        if isStored {
+            return .storedBlik(try StoredBLIKPaymentMethod(from: decoder))
+        } else {
+            return .blik(try BLIKPaymentMethod(from: decoder))
+        }
     }
 }
 
