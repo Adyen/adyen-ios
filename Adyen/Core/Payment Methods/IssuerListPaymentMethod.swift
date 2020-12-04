@@ -44,20 +44,26 @@ public struct IssuerListPaymentMethod: PaymentMethod {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.type = try container.decode(String.self, forKey: .type)
         self.name = try container.decode(String.self, forKey: .name)
-        
-        var issuers: [Issuer]?
-        var detailsContainer = try container.nestedUnkeyedContainer(forKey: .details)
-        while !detailsContainer.isAtEnd {
-            let detailContainer = try detailsContainer.nestedContainer(keyedBy: CodingKeys.self)
-            let detailKey = try detailContainer.decode(String.self, forKey: .key)
-            guard detailKey == "issuer" else {
-                continue
+
+        let detailsContainer = try? container.nestedUnkeyedContainer(forKey: .details)
+
+        if var detailsContainer = detailsContainer {
+            var issuers = [Issuer]()
+
+            while !detailsContainer.isAtEnd {
+                let detailContainer = try detailsContainer.nestedContainer(keyedBy: CodingKeys.self)
+                let detailKey = try detailContainer.decode(String.self, forKey: .key)
+                guard detailKey == "issuer" else {
+                    continue
+                }
+
+                issuers = try detailContainer.decode([Issuer].self, forKey: .items)
             }
-            
-            issuers = try detailContainer.decode([Issuer].self, forKey: .items)
+
+            self.issuers = issuers
+        } else {
+            self.issuers = try container.decode([Issuer].self, forKey: .issuers)
         }
-        
-        self.issuers = issuers ?? []
     }
     
     /// :nodoc:
@@ -71,6 +77,7 @@ public struct IssuerListPaymentMethod: PaymentMethod {
         case details
         case key
         case items
+        case issuers
     }
     
 }

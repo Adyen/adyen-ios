@@ -256,6 +256,20 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.issuers[2].identifier, "1153")
         XCTAssertEqual(paymentMethod.issuers[2].name, "Test Issuer 3")
     }
+
+    func testDecodingIssuerListPaymentMethodWithoutDetailsObject() throws {
+        let paymentMethod = try Coder.decode(issuerListDictionaryWithoutDetailsObject) as IssuerListPaymentMethod
+        XCTAssertEqual(paymentMethod.type, "ideal_100")
+        XCTAssertEqual(paymentMethod.name, "iDEAL_100")
+
+        XCTAssertEqual(paymentMethod.issuers.count, 3)
+        XCTAssertEqual(paymentMethod.issuers[0].identifier, "1121")
+        XCTAssertEqual(paymentMethod.issuers[0].name, "Test Issuer 1")
+        XCTAssertEqual(paymentMethod.issuers[1].identifier, "1154")
+        XCTAssertEqual(paymentMethod.issuers[1].name, "Test Issuer 2")
+        XCTAssertEqual(paymentMethod.issuers[2].identifier, "1153")
+        XCTAssertEqual(paymentMethod.issuers[2].name, "Test Issuer 3")
+    }
     
     // MARK: - SEPA Direct Debit
     

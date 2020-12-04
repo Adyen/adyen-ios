@@ -115,5 +115,6 @@ internal enum AnyPaymentMethod: Decodable {
         case type
         case details
         case brand
+        case issuers
     }
 }
