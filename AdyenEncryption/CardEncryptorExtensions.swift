@@ -51,11 +51,7 @@ extension CardEncryptor.Card {
         guard let encodedCard = card.jsonData() else { throw CardEncryptor.Error.invalidEncryptionArguments }
 
         do {
-            if #available(iOS 13.0, *) {
-                return try Cryptor(aes: Cryptor.AES.GCM).encrypt(data: encodedCard, publicKey: publicKey)
-            } else {
-                return try Cryptor(aes: Cryptor.AES.CCM).encrypt(data: encodedCard, publicKey: publicKey)
-            }
+            return try Cryptor(aes: Cryptor.AES.CCM).encrypt(data: encodedCard, publicKey: publicKey)
         } catch {
             throw CardEncryptor.Error.encryptionFailed
         }
