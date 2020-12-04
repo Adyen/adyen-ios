@@ -95,6 +95,11 @@ internal enum AnyPaymentMethodDecoder {
             let details = try container.decodeIfPresent([PaymentMethodField].self, forKey: .details)
             let requiresDetails = details?.isAnyFieldRequired ?? false
             let brand = try? container.decode(String.self, forKey: .brand)
+            let isIssuersList = container.contains(.issuers)
+
+            if isIssuersList {
+                return try IssuerListPaymentMethodDecoder().decode(from: decoder, isStored: isStored, requiresDetails: requiresDetails)
+            }
             
             // This is a hack to handle stored Bancontact as a separate
             // payment method, even though Bancontact is just another
