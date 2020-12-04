@@ -263,6 +263,15 @@ let blik = [
     "type": "blik"
 ] as [String: Any]
 
+let storedBlik = [
+    "id" : "8315892878479934",
+    "supportedShopperInteractions" : [
+      "Ecommerce"
+    ],
+    "name" : "Blik",
+    "type" : "blik"
+] as [String: Any]
+
 let qiwiWallet = [
     "details": [
         [

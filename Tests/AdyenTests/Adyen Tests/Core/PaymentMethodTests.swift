@@ -26,7 +26,8 @@ class PaymentMethodTests: XCTestCase {
                     "name": "Invalid Stored Payment Method"
                 ],
                 storedBcmcDictionary,
-                storedDeditCardDictionary
+                storedDeditCardDictionary,
+                storedBlik
             ],
             "paymentMethods": [
                 creditCardDictionary,
@@ -63,7 +64,7 @@ class PaymentMethodTests: XCTestCase {
         // Stored payment methods
         
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        XCTAssertEqual(paymentMethods.stored.count, 6)
+        XCTAssertEqual(paymentMethods.stored.count, 7)
         XCTAssertTrue(paymentMethods.stored[0] is StoredCardPaymentMethod)
         
         XCTAssertTrue(paymentMethods.stored[1] is StoredCardPaymentMethod)
@@ -78,11 +79,15 @@ class PaymentMethodTests: XCTestCase {
                        expectedStoredCardPaymentMethodDisplayInfo(method: storedCardPaymentMethod, localizationParameters: expectedLocalizationParameters))
         
         XCTAssertTrue(paymentMethods.stored[2] is StoredPayPalPaymentMethod)
+        XCTAssertEqual((paymentMethods.stored[2] as! StoredPayPalPaymentMethod).displayInformation.subtitle, "example@shopper.com")
         XCTAssertTrue(paymentMethods.stored[3] is StoredRedirectPaymentMethod)
         XCTAssertTrue(paymentMethods.stored[4] is StoredBCMCPaymentMethod)
         
         XCTAssertTrue(paymentMethods.stored[5] is StoredCardPaymentMethod)
         XCTAssertEqual((paymentMethods.stored[5] as! StoredCardPaymentMethod).fundingSource!, .debit)
+
+        XCTAssertTrue(paymentMethods.stored[6] is StoredBLIKPaymentMethod)
+        XCTAssertEqual((paymentMethods.stored[6] as! StoredBLIKPaymentMethod).identifier, "8315892878479934")
         
         // Test StoredBCMCPaymentMethod localization
         let storedBCMCPaymentMethod = paymentMethods.stored[4] as! StoredBCMCPaymentMethod
