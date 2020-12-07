@@ -74,7 +74,7 @@ public final class APIClient: APIClientProtocol {
             case let .success(data):
                 do {
                     adyenPrint("---- Response (/\(request.path)) ----")
-                    self?.printAsJSON(data)
+                    printAsJSON(data)
                     
                     if let apiError: APIError = try? Coder.decode(data) {
                         completionHandler(.failure(apiError))
@@ -114,19 +114,19 @@ public final class APIClient: APIClientProtocol {
         }
     }
     
-    private func printAsJSON(_ data: Data) {
-        guard AdyenLogging.isEnabled else { return }
-        do {
-            let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
-            let jsonData = try JSONSerialization.data(withJSONObject: jsonObject, options: [.prettyPrinted])
-            guard let jsonString = String(data: jsonData, encoding: .utf8) else { return }
-            
-            adyenPrint(jsonString)
-        } catch {
-            if let string = String(data: data, encoding: .utf8) {
-                adyenPrint(string)
-            }
+}
+
+internal func printAsJSON(_ data: Data) {
+    guard AdyenLogging.isEnabled else { return }
+    do {
+        let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
+        let jsonData = try JSONSerialization.data(withJSONObject: jsonObject, options: [.prettyPrinted])
+        guard let jsonString = String(data: jsonData, encoding: .utf8) else { return }
+
+        adyenPrint(jsonString)
+    } catch {
+        if let string = String(data: data, encoding: .utf8) {
+            adyenPrint(string)
         }
     }
-    
 }

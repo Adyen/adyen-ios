@@ -29,14 +29,21 @@ public extension AdyenScope where Base: URLSession {
             adyenPrint("---- Response Headers (/\(path)) ----")
             adyenPrint(headers)
         }
-        if let statusCode = httpResponse?.statusCode, statusCode != 200 {
-            let error = APIError(status: statusCode,
-                                 errorCode: "\(statusCode)",
-                                 errorMessage: "Http \(statusCode) error",
-                                 type: .urlError)
+
+        let statusCode = httpResponse?.statusCode
+
+        if let error = error {
             completion(.failure(error))
-        } else if let error = error {
-            completion(.failure(error))
+        } else if let statusCode = statusCode, statusCode != 200,
+                  let data = data {
+            adyenPrint("---- Response (/\(String(describing: response?.url?.path))) ----")
+            printAsJSON(data)
+            let fallbackError = APIError(status: statusCode,
+                                         errorCode: "\(statusCode)",
+                                         errorMessage: "Http \(statusCode) error",
+                                         type: .urlError)
+            let apiError: APIError? = try? Coder.decode(data)
+            completion(.failure(apiError ?? fallbackError))
         } else if let data = data {
             completion(.success(data))
         } else {
