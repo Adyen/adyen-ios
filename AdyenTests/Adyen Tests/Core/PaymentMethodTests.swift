@@ -52,7 +52,8 @@ class PaymentMethodTests: XCTestCase {
                 weChatSDKDictionary,
                 debitCardDictionary,
                 mbway,
-                blik
+                blik,
+                googlePay
             ]
         ]
         
@@ -103,7 +104,7 @@ class PaymentMethodTests: XCTestCase {
         
         // Regular payment methods
         
-        XCTAssertEqual(paymentMethods.regular.count, 13)
+        XCTAssertEqual(paymentMethods.regular.count, 14)
         XCTAssertTrue(paymentMethods.regular[0] is CardPaymentMethod)
         XCTAssertEqual((paymentMethods.regular[0] as! CardPaymentMethod).fundingSource!, .credit)
         
@@ -134,10 +135,15 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertTrue(paymentMethods.regular[7] is RedirectPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[7].type, "giropay")
         XCTAssertEqual(paymentMethods.regular[7].name, "GiroPay")
+
+        // GiroPay with non optional details
+        XCTAssertTrue(paymentMethods.regular[8] is RedirectPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[8].type, "giropay")
+        XCTAssertEqual(paymentMethods.regular[8].name, "GiroPay with non optional details")
         
         // Qiwi Wallet
-        XCTAssertTrue(paymentMethods.regular[8] is QiwiWalletPaymentMethod)
-        let qiwiMethod = paymentMethods.regular[8] as! QiwiWalletPaymentMethod
+        XCTAssertTrue(paymentMethods.regular[9] is QiwiWalletPaymentMethod)
+        let qiwiMethod = paymentMethods.regular[9] as! QiwiWalletPaymentMethod
         XCTAssertEqual(qiwiMethod.type, "qiwiwallet")
         XCTAssertEqual(qiwiMethod.name, "Qiwi Wallet")
         XCTAssertEqual(qiwiMethod.phoneExtensions.count, 3)
@@ -150,20 +156,20 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(qiwiMethod.phoneExtensions[1].countryCode, "GE")
         XCTAssertEqual(qiwiMethod.phoneExtensions[2].countryCode, "PA")
         
-        XCTAssertTrue(paymentMethods.regular[9] is WeChatPayPaymentMethod)
-        XCTAssertEqual(paymentMethods.regular[9].type, "wechatpaySDK")
-        XCTAssertEqual(paymentMethods.regular[9].name, "WeChat Pay")
+        XCTAssertTrue(paymentMethods.regular[10] is WeChatPayPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[10].type, "wechatpaySDK")
+        XCTAssertEqual(paymentMethods.regular[10].name, "WeChat Pay")
         
-        XCTAssertTrue(paymentMethods.regular[10] is CardPaymentMethod)
-        XCTAssertEqual((paymentMethods.regular[10] as! CardPaymentMethod).fundingSource!, .debit)
+        XCTAssertTrue(paymentMethods.regular[11] is CardPaymentMethod)
+        XCTAssertEqual((paymentMethods.regular[11] as! CardPaymentMethod).fundingSource!, .debit)
 
-        XCTAssertTrue(paymentMethods.regular[11] is MBWayPaymentMethod)
-        XCTAssertEqual(paymentMethods.regular[11].name, "MB WAY")
-        XCTAssertEqual(paymentMethods.regular[11].type, "mbway")
+        XCTAssertTrue(paymentMethods.regular[12] is MBWayPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[12].name, "MB WAY")
+        XCTAssertEqual(paymentMethods.regular[12].type, "mbway")
 
-        XCTAssertTrue(paymentMethods.regular[12] is BLIKPaymentMethod)
-        XCTAssertEqual(paymentMethods.regular[12].name, "Blik")
-        XCTAssertEqual(paymentMethods.regular[12].type, "blik")
+        XCTAssertTrue(paymentMethods.regular[13] is BLIKPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[13].name, "Blik")
+        XCTAssertEqual(paymentMethods.regular[13].type, "blik")
     }
     
     // MARK: - Card
