@@ -22,7 +22,6 @@ internal final class FormButtonItemView: FormItemView<FormButtonItem>, Observer 
         bind(item.$showsActivityIndicator, to: submitButton, at: \.showsActivityIndicator)
         bind(item.$enabled, to: submitButton, at: \.isEnabled)
         
-        preservesSuperviewLayoutMargins = true
         configureConstraints()
     }
     
@@ -56,10 +55,10 @@ internal final class FormButtonItemView: FormItemView<FormButtonItem>, Observer 
     
     private func configureConstraints() {
         let constraints = [
-            submitButton.topAnchor.constraint(equalTo: topAnchor, constant: layoutMargins.top),
-            submitButton.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-            submitButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            submitButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -layoutMargins.bottom)
+            submitButton.topAnchor.constraint(equalTo: topAnchor),
+            submitButton.leadingAnchor.constraint(equalTo: leadingAnchor),
+            submitButton.trailingAnchor.constraint(equalTo: trailingAnchor),
+            submitButton.bottomAnchor.constraint(equalTo: bottomAnchor)
         ]
         
         NSLayoutConstraint.activate(constraints)

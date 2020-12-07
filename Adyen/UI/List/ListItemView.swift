@@ -29,6 +29,7 @@ public final class ListItemView: UIView, AnyFormItemView {
     }
     
     /// :nodoc:
+    @available(*, unavailable)
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -149,7 +150,9 @@ public final class ListItemView: UIView, AnyFormItemView {
             textStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
             textStackView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 16.0),
             textStackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            textStackView.bottomAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.bottomAnchor)
+            textStackView.bottomAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.bottomAnchor),
+            
+            self.heightAnchor.constraint(greaterThanOrEqualToConstant: 48)
         ]
         
         NSLayoutConstraint.activate(constraints)
