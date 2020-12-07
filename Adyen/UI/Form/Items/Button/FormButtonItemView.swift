@@ -54,7 +54,7 @@ internal final class FormButtonItemView: FormItemView<FormButtonItem>, Observer 
     // MARK: - Layout
     
     private func configureConstraints() {
-        var constraints = [
+        let constraints = [
             submitButton.topAnchor.constraint(equalTo: topAnchor),
             submitButton.leadingAnchor.constraint(equalTo: leadingAnchor),
             submitButton.trailingAnchor.constraint(equalTo: trailingAnchor),
