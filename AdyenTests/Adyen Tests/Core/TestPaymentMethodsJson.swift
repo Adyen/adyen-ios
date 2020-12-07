@@ -169,6 +169,15 @@ let giroPayDictionaryWithNonOptionalDetails = [
     "type": "giropay"
 ] as [String: Any]
 
+let googlePay = [
+  "configuration" : [
+    "merchantId" : "1000",
+    "gatewayMerchantId" : "TestMerchantCheckout"
+  ],
+  "name" : "Google Pay",
+  "type" : "paywithgoogle"
+] as [String: Any]
+
 let weChatMiniProgramDictionary = [
     "name": "WeChat Pay",
     "supportsRecurring": true,
