@@ -31,6 +31,10 @@ public struct APIError: Decodable, Error, LocalizedError {
     public var errorDescription: String? {
         errorMessage
     }
+
+    private enum CodingKeys: String, CodingKey {
+        case status, errorCode, errorMessage = "message", type = "errorType"
+    }
     
 }
 
