@@ -1,0 +1,18 @@
+name: Publish Adyen.podspec
+on: [workflow_dispatch]
+jobs:
+
+  publish:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Select latest Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+
+    - name: Publish Adyen.podspec
+      run: |
+        gem install cocoapods
+        pod trunk push Adyen.podspec --allow-warnings
