@@ -16,3 +16,5 @@ jobs:
       run: |
         gem install cocoapods
         pod trunk push Adyen.podspec --allow-warnings
+      env:
+        COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
