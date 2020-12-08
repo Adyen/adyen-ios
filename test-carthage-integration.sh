@@ -15,7 +15,7 @@ CURRENT_COMMIT=$(git rev-parse HEAD)
 echo "git \"file:///$CWD/../\" \"$CURRENT_COMMIT\"" > Cartfile
 
 # ../carthage.sh update
-../carthage.sh update --platform iOS
+../carthage.sh update
 
 # Clean up.
 cd ../
