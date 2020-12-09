@@ -251,6 +251,7 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     private func getPaymentAuthorizationViewController() -> PKPaymentAuthorizationViewController? {
         if paymentAuthorizationViewController == nil {
             paymentAuthorizationViewController = newPaymentAuthorizationViewController()
+            isSuccessfull = false
         }
         return paymentAuthorizationViewController
     }
