@@ -24,3 +24,5 @@ jobs:
     - name: Test Carthage Integration
       run: |
         ./test-carthage-integration.sh
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
