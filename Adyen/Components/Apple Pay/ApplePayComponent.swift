@@ -84,6 +84,10 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     
     /// Apple Pay component configuration.
     private let configuration: Configuration
+
+    /// Flag to verify if ApplePay is successfully finished.
+    /// :nodoc:
+    internal var isSuccessfull = false
     
     /// Initializes the component.
     ///
@@ -215,6 +219,7 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     
     /// :nodoc:
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
+        isSuccessfull = success
         paymentAuthorizationCompletion?(success ? .success : .failure)
         dismiss(callback: completion)
     }
