@@ -38,6 +38,9 @@ internal enum PaymentMethodType: String {
     case blik
     case giftcard
     case googlePay = "paywithgoogle"
+    case afterpay = "afterpay_default"
+    case androidPay = "androidpay"
+    case amazonPay = "amazonpay"
     
 }
 
@@ -68,6 +71,9 @@ internal enum AnyPaymentMethodDecoder {
         .weChatQR: UnsupportedPaymentMethodDecoder(),
         .weChatPayWeb: UnsupportedPaymentMethodDecoder(),
         .googlePay: UnsupportedPaymentMethodDecoder(),
+        .afterpay: UnsupportedPaymentMethodDecoder(),
+        .androidPay: UnsupportedPaymentMethodDecoder(),
+        .amazonPay: UnsupportedPaymentMethodDecoder(),
         
         // Supported payment methods
         .card: CardPaymentMethodDecoder(),
