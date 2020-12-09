@@ -68,6 +68,22 @@ class ApplePayComponentTest: XCTestCase {
         sut.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
         waitForExpectations(timeout: 2)
     }
+
+    func testApplePayViewControllerDoNotCallsDelgateDidFailWhenStopLoadingComponent() {
+        let viewController = sut!.viewController
+        let onDidFailExpectation = expectation(description: "Wait for delegate call")
+        mockDelegate.onDidFail = { error, component in
+            XCTFail("Should not call delegate")
+        }
+
+        UIApplication.shared.keyWindow?.rootViewController = UINavigationController(rootViewController: UIViewController())
+        UIApplication.shared.keyWindow?.rootViewController?.present(viewController, animated: true)
+
+        sut.stopLoading(withSuccess: true) { onDidFailExpectation.fulfill() }
+        sut.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
+
+        waitForExpectations(timeout: 5)
+    }
     
     func testApplePayViewControllerIsResetAfterAuthorization() {
         let viewController = sut!.viewController

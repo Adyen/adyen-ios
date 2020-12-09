@@ -84,6 +84,10 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     
     /// Apple Pay component configuration.
     private let configuration: Configuration
+
+    /// Flag to indicate that component wasn't stopped by the merchant's code. By default all cancelations assumed to be initiated by the user.
+    /// :nodoc:
+    internal var isUserCancel = true
     
     /// Initializes the component.
     ///
@@ -215,6 +219,7 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     
     /// :nodoc:
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
+        isUserCancel = false
         paymentAuthorizationCompletion?(success ? .success : .failure)
         dismiss(callback: completion)
     }
@@ -246,6 +251,7 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     private func getPaymentAuthorizationViewController() -> PKPaymentAuthorizationViewController? {
         if paymentAuthorizationViewController == nil {
             paymentAuthorizationViewController = newPaymentAuthorizationViewController()
+            isUserCancel = true
         }
         return paymentAuthorizationViewController
     }

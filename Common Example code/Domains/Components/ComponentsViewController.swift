@@ -34,6 +34,7 @@ internal final class ComponentsViewController: UIViewController, Presenter {
             ],
             [
                 ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
+                ComponentsItem(title: "ApplePay", selectionHandler: presentApplePayComponent),
                 ComponentsItem(title: "iDEAL", selectionHandler: presentIdealComponent),
                 ComponentsItem(title: "SEPA Direct Debit", selectionHandler: presentSEPADirectDebitComponent),
                 ComponentsItem(title: "MB WAY", selectionHandler: presentMBWayComponent)
@@ -63,6 +64,10 @@ internal final class ComponentsViewController: UIViewController, Presenter {
 
     internal func presentMBWayComponent() {
         controller.presentMBWayComponent()
+    }
+
+    internal func presentApplePayComponent() {
+        controller.presentApplePayComponent()
     }
 
     internal func requestPaymentMethods() {

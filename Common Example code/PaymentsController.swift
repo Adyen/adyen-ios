@@ -131,6 +131,20 @@ internal final class PaymentsController {
         present(component)
     }
 
+    internal func presentApplePayComponent() {
+        guard let paymentMethod = paymentMethods?.paymentMethod(ofType: ApplePayPaymentMethod.self) else { return }
+        let config = ApplePayComponent.Configuration(summaryItems: Configuration.applePaySummaryItems,
+                                                     merchantIdentifier: Configuration.applePayMerchantIdentifier)
+        let component = try? ApplePayComponent(paymentMethod: paymentMethod,
+                                               payment: payment,
+                                               configuration: config) {
+            print("ApplePay dismissed")
+        }
+        component?.delegate = self
+        guard let presentableComponent = component else { return }
+        present(presentableComponent)
+    }
+
     // MARK: - Networking
 
     private lazy var apiClient: APIClientProtocol = {
