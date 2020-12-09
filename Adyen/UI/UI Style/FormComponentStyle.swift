@@ -90,6 +90,6 @@ public struct FormComponentStyle: ViewStyle {
     }
     
     /// Initializes the form style with the default style.
-    public init() {}
+    public init() { /* public */}
     
 }
