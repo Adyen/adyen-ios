@@ -43,24 +43,6 @@ class BCMCComponentTests: XCTestCase {
                        sut.cardComponent.storedCardConfiguration.showsSecurityCodeField)
     }
 
-    func testShowLargeTiteSetting() {
-        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["any_test_brand_name"])
-        let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
-        let sut = BCMCComponent(paymentMethod: paymentMethod, clientKey: "test_client_key")
-
-        sut.showsLargeTitle = true
-        sut._isDropIn = true
-        XCTAssertFalse(sut.showsLargeTitle)
-
-        sut.showsLargeTitle = true
-        sut._isDropIn = false
-        XCTAssertTrue(sut.showsLargeTitle)
-
-        sut.showsLargeTitle = false
-        sut._isDropIn = false
-        XCTAssertFalse(sut.showsLargeTitle)
-    }
-
     func testRequiresKeyboardInput() {
         let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["any_test_brand_name"])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
