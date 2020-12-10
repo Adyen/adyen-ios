@@ -65,7 +65,7 @@ public final class APIClient: APIClientProtocol {
         requestCounter += 1
         
         urlSession.adyen.dataTask(with: urlRequest) { [weak self] result in
-            self?.handle(result, request: request, completionHandler: completionHandler)
+            self?.handle(result, request, completionHandler: completionHandler)
         }.resume()
     }
 
@@ -85,32 +85,28 @@ public final class APIClient: APIClientProtocol {
             adyenPrint("---- Request query (/\(request.path)) ----")
             adyenPrint(queryParams)
         }
-        
-        requestCounter += 1
-        
-        urlSession.adyen.dataTask(with: urlRequest) { [weak self] result in
-            
-            self?.requestCounter -= 1
-            
-            switch result {
-            case let .success(data):
-                do {
-                    adyenPrint("---- Response (/\(request.path)) ----")
-                    printAsJSON(data)
-                    
-                    if let apiError: APIError = try? Coder.decode(data) {
-                        completionHandler(.failure(apiError))
-                    } else {
-                        let response = try Coder.decode(data) as R.ResponseType
-                        completionHandler(.success(response))
-                    }
-                } catch {
-                    completionHandler(.failure(error))
+
+    }
+
+    private func handle<R: Request>(_ result: Result<Data, Error>, _ request: R, completionHandler: @escaping CompletionHandler<R.ResponseType>) {
+        requestCounter -= 1
+
+        switch result {
+        case let .success(data):
+            do {
+                adyenPrint("---- Response (/\(request.path)) ----")
+                printAsJSON(data)
+
+                if let apiError: APIError = try? Coder.decode(data) {
+                    completionHandler(.failure(apiError))
+                } else {
+                    let response = try Coder.decode(data) as R.ResponseType
+                    completionHandler(.success(response))
                 }
-            case let .failure(error):
+            } catch {
                 completionHandler(.failure(error))
             }
-        } catch {
+        case let .failure(error):
             completionHandler(.failure(error))
         }
     }
