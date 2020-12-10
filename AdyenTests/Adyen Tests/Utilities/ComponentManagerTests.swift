@@ -57,27 +57,6 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.components.regular.filter { $0.environment.clientKey == "client_key" }.count, 9)
     }
 
-    func testCardPublicKeyInjection() throws {
-        let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        let payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
-        let config = DropInComponent.PaymentMethodsConfiguration()
-        config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
-        config.applePay.merchantIdentifier = Configuration.applePayMerchantIdentifier
-        config.applePay.summaryItems = Configuration.applePaySummaryItems
-        config.clientKey = nil
-        config.card.deprecatedPublicKey = "card_key"
-        let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   payment: payment,
-                                   configuration: config,
-                                   style: DropInComponent.Style())
-
-        XCTAssertEqual(sut.components.stored.count, 4)
-        XCTAssertEqual(sut.components.regular.count, 7)
-
-        XCTAssertEqual(sut.components.stored.filter { $0.environment.clientKey == nil }.count, 4)
-        XCTAssertEqual(sut.components.regular.filter { $0.environment.clientKey == nil }.count, 7)
-    }
-
     func testNoClientKeyAndNoCardPublicKey() throws {
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
         let payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")

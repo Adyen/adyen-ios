@@ -7,13 +7,7 @@
 import Foundation
 
 /// Contains details supplied by a component. These details are used to initiate or complete a payment.
-public protocol Details: Encodable {
-    
-    /// An encoded representation of the details.
-    @available(*, deprecated, message: "Use `encodable` property instead.")
-    var dictionaryRepresentation: [String: Any] { get }
-    
-}
+public protocol Details: Encodable {}
 
 public extension Details {
     

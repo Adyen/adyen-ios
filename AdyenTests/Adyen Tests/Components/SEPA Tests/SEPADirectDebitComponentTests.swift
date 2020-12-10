@@ -10,23 +10,6 @@ import XCTest
 
 class SEPADirectDebitComponentTests: XCTestCase {
 
-    func testShowLargeTiteSetting() {
-        let method = SEPADirectDebitPaymentMethod(type: "test_type", name: "test_name")
-        let sut = SEPADirectDebitComponent(paymentMethod: method)
-
-        sut.showsLargeTitle = true
-        sut._isDropIn = true
-        XCTAssertFalse(sut.showsLargeTitle)
-
-        sut.showsLargeTitle = true
-        sut._isDropIn = false
-        XCTAssertTrue(sut._showsLargeTitle)
-
-        sut.showsLargeTitle = false
-        sut._isDropIn = false
-        XCTAssertFalse(sut._showsLargeTitle)
-    }
-
     func testRequiresKeyboardInput() {
         let method = SEPADirectDebitPaymentMethod(type: "test_type", name: "test_name")
         let sut = SEPADirectDebitComponent(paymentMethod: method)
@@ -102,13 +85,6 @@ class SEPADirectDebitComponentTests: XCTestCase {
         /// background color
         sepaComponentStyle.backgroundColor = .red
         
-        /// Header
-        sepaComponentStyle.header.backgroundColor = .magenta
-        sepaComponentStyle.header.title.color = .white
-        sepaComponentStyle.header.title.backgroundColor = .black
-        sepaComponentStyle.header.title.textAlignment = .left
-        sepaComponentStyle.header.title.font = .systemFont(ofSize: 30)
-        
         /// Text field
         sepaComponentStyle.textField.text.color = .red
         sepaComponentStyle.textField.text.font = .systemFont(ofSize: 13)
@@ -137,9 +113,6 @@ class SEPADirectDebitComponentTests: XCTestCase {
             
             let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.payButtonItem.button")
             let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.payButtonItem.button.titleLabel")
-            
-            let headerItemView: UIView? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.Test name")
-            let headerItemViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.Test name.titleLabel")
             
             /// Test card number field
             XCTAssertEqual(nameItemView?.backgroundColor, .red)
@@ -170,13 +143,6 @@ class SEPADirectDebitComponentTests: XCTestCase {
             XCTAssertEqual(payButtonItemViewButtonTitle?.textColor, .white)
             XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
             
-            /// Test header
-            XCTAssertEqual(headerItemView?.backgroundColor, .magenta)
-            XCTAssertEqual(headerItemViewTitleLabel?.backgroundColor, .black)
-            XCTAssertEqual(headerItemViewTitleLabel?.textAlignment, .left)
-            XCTAssertEqual(headerItemViewTitleLabel?.textColor, .white)
-            XCTAssertEqual(headerItemViewTitleLabel?.font, .systemFont(ofSize: 30))
-            
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 5)
@@ -185,7 +151,6 @@ class SEPADirectDebitComponentTests: XCTestCase {
     func testBigTitle() {
         let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: "bcmc", name: "Test name")
         let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod)
-        sut.showsLargeTitle = false
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         

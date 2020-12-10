@@ -99,24 +99,7 @@ extension CardComponent: FormViewControllerDelegate {
 
 /// :nodoc:
 /// Deprecated initializers
-public extension CardComponent {
-    
-    /// Initializes the card component.
-    ///
-    /// - Parameters:
-    ///   - paymentMethod: The card payment method.
-    ///   - publicKey: The key used for encrypting card data.
-    ///   - style: The Component's UI style.
-    @available(*, deprecated, message: "Use init(paymentMethod:clientKey:style:) instead.")
-    convenience init(paymentMethod: AnyCardPaymentMethod,
-                     publicKey: String,
-                     style: FormComponentStyle = FormComponentStyle()) {
-        let cardPublicKeyProvider = CardPublicKeyProvider(cardPublicKey: publicKey)
-        self.init(paymentMethod: paymentMethod, cardPublicKeyProvider: cardPublicKeyProvider, style: style)
-        if !isPublicKeyValid(key: publicKey) {
-            assertionFailure("Card Public key is invalid, please make sure it’s in the format: {EXPONENT}|{MODULUS}")
-        }
-    }
+extension CardComponent {
     
     /// :nodoc:
     /// Initializes the card component.
@@ -125,9 +108,9 @@ public extension CardComponent {
     ///   - paymentMethod: The card payment method.
     ///   - cardPublicKeyProvider: The card public key provider
     ///   - style: The Component's UI style.
-    static func component(paymentMethod: AnyCardPaymentMethod,
-                          publicKey: String,
-                          style: FormComponentStyle = FormComponentStyle()) -> CardComponent {
+    public static func component(paymentMethod: AnyCardPaymentMethod,
+                                 publicKey: String,
+                                 style: FormComponentStyle = FormComponentStyle()) -> CardComponent {
         let cardPublicKeyProvider = CardPublicKeyProvider(cardPublicKey: publicKey)
         return CardComponent(paymentMethod: paymentMethod, cardPublicKeyProvider: cardPublicKeyProvider, style: style)
     }

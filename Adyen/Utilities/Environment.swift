@@ -39,11 +39,6 @@ public struct Environment: APIEnvironment {
     /// Adyen's United States live environment.
     public static let liveUnitedStates = Environment(baseURL: URL(string: "https://checkoutshopper-live-us.adyen.com/")!)
 
-    @available(*, deprecated, message: "This init is deprecated. Use `init(baseURL:)` instead.")
-    public init(baseURL: URL? = nil, cardPublicKeyBaseURL: URL? = nil) {
-        self.baseURL = baseURL ?? Environment.defaultLiveBaseURL
-    }
-
     public init(baseURL: URL? = nil) {
         self.baseURL = baseURL ?? Environment.defaultLiveBaseURL
     }

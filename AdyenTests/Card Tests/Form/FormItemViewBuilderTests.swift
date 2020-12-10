@@ -9,20 +9,6 @@ import XCTest
 
 class FormItemViewBuilderTests: XCTestCase {
     
-    func testFormHeaderItemView() {
-        let item = FormHeaderItem()
-        let view = item.build(with: FormItemViewBuilder())
-        
-        XCTAssertNotNil(view as? FormHeaderItemView)
-    }
-    
-    func testFormFooterItemView() {
-        let item = FormFooterItem()
-        let view = item.build(with: FormItemViewBuilder())
-        
-        XCTAssertNotNil(view as? FormFooterItemView)
-    }
-    
     func testFormPhoneExtensionPickerItemView() {
         let selectableValues = [PhoneExtensionPickerItem(identifier: "test_id", title: "test title", phoneExtension: "test extension")]
         let item = FormPhoneExtensionPickerItem(selectableValues: selectableValues, style: FormTextItemStyle())
