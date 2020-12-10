@@ -35,7 +35,7 @@ internal enum Configuration {
     static let additionalData = ["allow3DS2": true]
     
     static let clientKey = "{YOUR_CLIENT_KEY}"
-    
+
     // swiftlint:disable:next line_length
     static let demoServerAPIKey = "{YOUR_DEMO_SERVER_API_KEY}"
     
