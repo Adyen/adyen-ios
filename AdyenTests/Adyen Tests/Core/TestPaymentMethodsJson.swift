@@ -120,6 +120,25 @@ let issuerListDictionary = [
     ]
 ] as [String: Any]
 
+let issuerListDictionaryWithoutDetailsObject = [
+    "type": "ideal_100",
+    "name": "iDEAL_100",
+    "issuers": [
+        [
+            "id": "1121",
+            "name": "Test Issuer 1"
+        ],
+        [
+            "id": "1154",
+            "name": "Test Issuer 2"
+        ],
+        [
+            "id": "1153",
+            "name": "Test Issuer 3"
+        ]
+    ]
+] as [String: Any]
+
 let sepaDirectDebitDictionary = [
     "type": "sepadirectdebit",
     "name": "SEPA Direct Debit"
@@ -148,6 +167,15 @@ let giroPayDictionaryWithNonOptionalDetails = [
     "name": "GiroPay with non optional details",
     "supportsRecurring": true,
     "type": "giropay"
+] as [String: Any]
+
+let googlePay = [
+  "configuration" : [
+    "merchantId" : "1000",
+    "gatewayMerchantId" : "TestMerchantCheckout"
+  ],
+  "name" : "Google Pay",
+  "type" : "paywithgoogle"
 ] as [String: Any]
 
 let weChatMiniProgramDictionary = [

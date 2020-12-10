@@ -21,6 +21,7 @@ class ComponentManagerTests: XCTestCase {
         "paymentMethods": [
             creditCardDictionary,
             issuerListDictionary,
+            issuerListDictionaryWithoutDetailsObject,
             sepaDirectDebitDictionary,
             bcmcCardDictionary,
             applePayDictionary,
@@ -33,7 +34,8 @@ class ComponentManagerTests: XCTestCase {
             bcmcMobileQR,
             mbway,
             blik,
-            qiwiWallet
+            qiwiWallet,
+            googlePay
         ]
     ]
 
@@ -51,10 +53,10 @@ class ComponentManagerTests: XCTestCase {
                                    style: DropInComponent.Style())
 
         XCTAssertEqual(sut.components.stored.count, 4)
-        XCTAssertEqual(sut.components.regular.count, 9)
+        XCTAssertEqual(sut.components.regular.count, 11)
 
         XCTAssertEqual(sut.components.stored.filter { $0.environment.clientKey == "client_key" }.count, 4)
-        XCTAssertEqual(sut.components.regular.filter { $0.environment.clientKey == "client_key" }.count, 9)
+        XCTAssertEqual(sut.components.regular.filter { $0.environment.clientKey == "client_key" }.count, 11)
     }
 
     func testNoClientKeyAndNoCardPublicKey() throws {
@@ -70,10 +72,10 @@ class ComponentManagerTests: XCTestCase {
                                    style: DropInComponent.Style())
 
         XCTAssertEqual(sut.components.stored.count, 2)
-        XCTAssertEqual(sut.components.regular.count, 5)
+        XCTAssertEqual(sut.components.regular.count, 7)
 
         XCTAssertEqual(sut.components.stored.filter { $0.environment.clientKey == nil }.count, 2)
-        XCTAssertEqual(sut.components.regular.filter { $0.environment.clientKey == nil }.count, 5)
+        XCTAssertEqual(sut.components.regular.filter { $0.environment.clientKey == nil }.count, 7)
     }
 
     func testPaymentMethodsThatRequireClientKey() throws {
@@ -90,7 +92,7 @@ class ComponentManagerTests: XCTestCase {
                                    style: DropInComponent.Style())
 
         XCTAssertEqual(sut.components.stored.count, 2)
-        XCTAssertEqual(sut.components.regular.count, 5)
+        XCTAssertEqual(sut.components.regular.count, 7)
 
         XCTAssertFalse(sut.components.regular.contains { $0 is MBWayComponent })
     }
@@ -109,7 +111,7 @@ class ComponentManagerTests: XCTestCase {
                                    style: DropInComponent.Style())
         
         XCTAssertEqual(sut.components.stored.count, 4)
-        XCTAssertEqual(sut.components.regular.count, 9)
+        XCTAssertEqual(sut.components.regular.count, 11)
         
         XCTAssertEqual(sut.components.stored.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 4)
         XCTAssertEqual(sut.components.regular.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 7)
@@ -129,7 +131,7 @@ class ComponentManagerTests: XCTestCase {
                                    style: DropInComponent.Style())
         
         XCTAssertEqual(sut.components.stored.count, 4)
-        XCTAssertEqual(sut.components.regular.count, 9)
+        XCTAssertEqual(sut.components.regular.count, 11)
         
         XCTAssertEqual(sut.components.stored.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 4)
         XCTAssertEqual(sut.components.regular.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 7)
