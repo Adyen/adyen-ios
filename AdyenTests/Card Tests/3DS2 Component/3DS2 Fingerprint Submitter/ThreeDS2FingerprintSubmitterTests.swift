@@ -17,7 +17,7 @@ extension RedirectAction: Equatable {
 
 extension ThreeDS2ChallengeAction: Equatable {
     public static func == (lhs: ThreeDS2ChallengeAction, rhs: ThreeDS2ChallengeAction) -> Bool {
-        lhs.token == rhs.token && lhs.paymentData == rhs.paymentData
+        lhs.challengeToken == rhs.challengeToken && lhs.paymentData == rhs.paymentData
     }
 }
 
@@ -63,7 +63,7 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
         let sut = ThreeDS2FingerprintSubmitter(apiClient: apiClient)
         sut.clientKey = "clientKey"
 
-        let mockedChallengeAction = ThreeDS2ChallengeAction(authorisationToken: "authToken", token: "token", paymentData: "data")
+        let mockedChallengeAction = ThreeDS2ChallengeAction(challengeToken: "token", authorisationToken: "authToken", paymentData: "data")
         let mockedAction = Action.threeDS2Challenge(mockedChallengeAction)
         let mockedResponse = Submit3DS2FingerprintResponse(result: .action(mockedAction))
         apiClient.mockedResults = [.success(mockedResponse)]

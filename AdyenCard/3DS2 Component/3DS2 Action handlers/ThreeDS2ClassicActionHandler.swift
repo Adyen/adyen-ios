@@ -64,7 +64,7 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler {
                                     completionHandler: @escaping (Result<String, Error>) -> Void) {
 
         do {
-            let token = try Coder.decodeBase64(action.token) as ThreeDS2Component.FingerprintToken
+            let token = try Coder.decodeBase64(action.fingerprintToken) as ThreeDS2Component.FingerprintToken
 
             let serviceParameters = ADYServiceParameters()
             serviceParameters.directoryServerIdentifier = token.directoryServerIdentifier
@@ -115,7 +115,7 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler {
         Analytics.sendEvent(component: challengeEventName, flavor: _isDropIn ? .dropin : .components, environment: environment)
 
         do {
-            let token = try Coder.decodeBase64(challengeAction.token) as ThreeDS2Component.ChallengeToken
+            let token = try Coder.decodeBase64(challengeAction.challengeToken) as ThreeDS2Component.ChallengeToken
             let challengeParameters = ADYChallengeParameters(from: token)
             transaction.performChallenge(with: challengeParameters) { [weak self] challengeResult, error in
                 self?.handle(challengeResult, error: error,
