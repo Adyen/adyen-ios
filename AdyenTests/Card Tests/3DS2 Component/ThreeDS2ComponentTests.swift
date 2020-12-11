@@ -57,7 +57,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         }
         sut.delegate = delegate
 
-        sut.handle(ThreeDS2Action.fingerprint(ThreeDS2FingerprintAction(authorisationToken: "AuthToken", token: "token", paymentData: "data")))
+        sut.handle(ThreeDS2Action.fingerprint(ThreeDS2FingerprintAction(fingerprintToken: "token", authorisationToken: "AuthToken", paymentData: "data")))
 
         waitForExpectations(timeout: 2, handler: nil)
     }
@@ -96,15 +96,15 @@ class ThreeDS2ComponentTests: XCTestCase {
         }
         sut.delegate = delegate
 
-        sut.handle(ThreeDS2Action.fingerprint(ThreeDS2FingerprintAction(authorisationToken: "AuthToken", token: "token", paymentData: "data")))
+        sut.handle(ThreeDS2Action.fingerprint(ThreeDS2FingerprintAction(fingerprintToken: "token", authorisationToken: "AuthToken", paymentData: "data")))
 
         waitForExpectations(timeout: 2, handler: nil)
     }
 
     func testFullFlowChallengeSuccess() throws {
 
-        let mockedAction = ThreeDS2ChallengeAction(authorisationToken: "AuthToken",
-                                                   token: "token",
+        let mockedAction = ThreeDS2ChallengeAction(challengeToken: "token",
+                                                   authorisationToken: "AuthToken",
                                                    paymentData: "data")
 
         let mockedDetails = ThreeDS2Details.completed(ThreeDSResult(payload: "payload"))
@@ -137,15 +137,15 @@ class ThreeDS2ComponentTests: XCTestCase {
         }
         sut.delegate = delegate
 
-        sut.handle(ThreeDS2Action.fingerprint(ThreeDS2FingerprintAction(authorisationToken: "AuthToken", token: "token", paymentData: "data")))
+        sut.handle(ThreeDS2Action.fingerprint(ThreeDS2FingerprintAction(fingerprintToken: "token", authorisationToken: "AuthToken", paymentData: "data")))
 
         waitForExpectations(timeout: 2, handler: nil)
     }
 
     func testFullFlowChallengeWrongAction() throws {
 
-        let mockedAction = ThreeDS2ChallengeAction(authorisationToken: "AuthToken",
-                                                   token: "token",
+        let mockedAction = ThreeDS2ChallengeAction(challengeToken: "token",
+                                                   authorisationToken: "AuthToken",
                                                    paymentData: "data")
 
         let mockedDetails = ThreeDS2Details.challengeResult(ThreeDSResult(payload: "payload"))
@@ -180,15 +180,15 @@ class ThreeDS2ComponentTests: XCTestCase {
         }
         sut.delegate = delegate
 
-        sut.handle(ThreeDS2Action.fingerprint(ThreeDS2FingerprintAction(authorisationToken: "AuthToken", token: "token", paymentData: "data")))
+        sut.handle(ThreeDS2Action.fingerprint(ThreeDS2FingerprintAction(fingerprintToken: "token", authorisationToken: "AuthToken", paymentData: "data")))
 
         waitForExpectations(timeout: 2, handler: nil)
     }
 
     func testFullFlowChallengeFailure() throws {
 
-        let mockedAction = ThreeDS2ChallengeAction(authorisationToken: "AuthToken",
-                                                   token: "token",
+        let mockedAction = ThreeDS2ChallengeAction(challengeToken: "token",
+                                                   authorisationToken: "AuthToken",
                                                    paymentData: "data")
 
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
@@ -217,7 +217,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         }
         sut.delegate = delegate
 
-        sut.handle(ThreeDS2Action.fingerprint(ThreeDS2FingerprintAction(authorisationToken: "AuthToken", token: "token", paymentData: "data")))
+        sut.handle(ThreeDS2Action.fingerprint(ThreeDS2FingerprintAction(fingerprintToken: "token", authorisationToken: "AuthToken", paymentData: "data")))
 
         waitForExpectations(timeout: 2, handler: nil)
     }
@@ -249,7 +249,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         }
         sut.delegate = delegate
 
-        sut.handle(ThreeDS2Action.fingerprint(ThreeDS2FingerprintAction(authorisationToken: "AuthToken", token: "token", paymentData: "data")))
+        sut.handle(ThreeDS2Action.fingerprint(ThreeDS2FingerprintAction(fingerprintToken: "token", authorisationToken: "AuthToken", paymentData: "data")))
 
         waitForExpectations(timeout: 2, handler: nil)
     }
@@ -294,7 +294,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         }
         sut.delegate = delegate
 
-        sut.handle(ThreeDS2FingerprintAction(authorisationToken: "AuthToken", token: "token", paymentData: "data"))
+        sut.handle(ThreeDS2FingerprintAction(fingerprintToken: "token", authorisationToken: "AuthToken", paymentData: "data"))
 
         waitForExpectations(timeout: 2, handler: nil)
     }
@@ -341,7 +341,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         }
         sut.delegate = delegate
 
-        sut.handle(ThreeDS2ChallengeAction(authorisationToken: "AuthToken", token: "token", paymentData: "data"))
+        sut.handle(ThreeDS2ChallengeAction(challengeToken: "token", authorisationToken: "AuthToken", paymentData: "data"))
 
         waitForExpectations(timeout: 2, handler: nil)
     }
@@ -382,7 +382,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         }
         sut.delegate = delegate
 
-        sut.handle(ThreeDS2Action.fingerprint(ThreeDS2FingerprintAction(authorisationToken: "AuthToken", token: "token", paymentData: "data")))
+        sut.handle(ThreeDS2Action.fingerprint(ThreeDS2FingerprintAction(fingerprintToken: "token", authorisationToken: "AuthToken", paymentData: "data")))
 
         waitForExpectations(timeout: 2, handler: nil)
     }
