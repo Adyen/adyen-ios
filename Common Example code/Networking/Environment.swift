@@ -23,7 +23,7 @@ internal enum DemoServerEnvironment: APIEnvironment {
     }
 
     internal var version: Int { 65 }
-    
+
     internal var headers: [String: String] {
         [
             "Content-Type": "application/json",
