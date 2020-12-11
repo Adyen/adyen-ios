@@ -25,8 +25,7 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
 
     func testRedirect() throws {
         let apiClient = APIClientMock()
-        let retryApiClient = RetryAPIClient(apiClient: apiClient, scheduler: SimpleScheduler(maximumCount: 1))
-        let sut = ThreeDS2FingerprintSubmitter(apiClient: retryApiClient)
+        let sut = ThreeDS2FingerprintSubmitter(apiClient: apiClient)
         sut.clientKey = "clientKey"
 
         let mockedRedirectAction = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "data")
@@ -61,8 +60,7 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
 
     func testThreeDSChallenge() throws {
         let apiClient = APIClientMock()
-        let retryApiClient = RetryAPIClient(apiClient: apiClient, scheduler: SimpleScheduler(maximumCount: 1))
-        let sut = ThreeDS2FingerprintSubmitter(apiClient: retryApiClient)
+        let sut = ThreeDS2FingerprintSubmitter(apiClient: apiClient)
         sut.clientKey = "clientKey"
 
         let mockedChallengeAction = ThreeDS2ChallengeAction(authorisationToken: "authToken", token: "token", paymentData: "data")
@@ -96,8 +94,7 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
 
     func testNoAction() throws {
         let apiClient = APIClientMock()
-        let retryApiClient = RetryAPIClient(apiClient: apiClient, scheduler: SimpleScheduler(maximumCount: 1))
-        let sut = ThreeDS2FingerprintSubmitter(apiClient: retryApiClient)
+        let sut = ThreeDS2FingerprintSubmitter(apiClient: apiClient)
         sut.clientKey = "clientKey"
 
         let mockedDetails = ThreeDS2Details.completed(ThreeDSResult(payload: "payload"))
@@ -132,8 +129,7 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
 
     func testFailure() throws {
         let apiClient = APIClientMock()
-        let retryApiClient = RetryAPIClient(apiClient: apiClient, scheduler: SimpleScheduler(maximumCount: 1))
-        let sut = ThreeDS2FingerprintSubmitter(apiClient: retryApiClient)
+        let sut = ThreeDS2FingerprintSubmitter(apiClient: apiClient)
         sut.clientKey = "clientKey"
 
         apiClient.mockedResults = [.failure(Dummy.dummyError)]
