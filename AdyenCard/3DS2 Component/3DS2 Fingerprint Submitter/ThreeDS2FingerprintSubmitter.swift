@@ -19,11 +19,10 @@ internal protocol AnyThreeDS2FingerprintSubmitter {
 internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitter, Component {
 
     /// :nodoc:
-    private lazy var apiClient: AnyRetryAPIClient = RetryAPIClient(apiClient: APIClient(environment: environment),
-                                                                   scheduler: SimpleScheduler(maximumCount: 1))
+    private lazy var apiClient: APIClientProtocol = APIClient(environment: environment)
 
     /// :nodoc:
-    internal init(apiClient: AnyRetryAPIClient? = nil) {
+    internal init(apiClient: APIClientProtocol? = nil) {
         if let apiClient = apiClient {
             self.apiClient = apiClient
         }
@@ -42,19 +41,9 @@ internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitt
                                                    fingerprint: fingerprint,
                                                    paymentData: paymentData)
 
-        apiClient.perform(request, shouldRetry: { [weak self] result in
-            self?.shouldRetry(result) ?? false
-        }, completionHandler: { [weak self] result in
+        apiClient.perform(request, completionHandler: { [weak self] result in
             self?.handle(result, completionHandler: completionHandler)
         })
-    }
-
-    /// :nodoc:
-    private func shouldRetry(_ result: Result<Submit3DS2FingerprintResponse, Swift.Error>) -> Bool {
-        if case Result.success = result {
-            return false
-        }
-        return true
     }
 
     /// :nodoc:
