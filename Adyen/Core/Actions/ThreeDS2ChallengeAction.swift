@@ -9,11 +9,11 @@ import Foundation
 /// Describes an action in which a 3D Secure challenge is presented to the user.
 public struct ThreeDS2ChallengeAction: Decodable {
 
+    /// The 3D Secure challenge token.
+    public let challengeToken: String
+
     /// The 3D Secure authorization token.
     public let authorisationToken: String?
-    
-    /// The 3D Secure challenge token.
-    public let token: String
     
     /// The server-generated payment data that should be submitted to the `/payments/details` endpoint.
     public let paymentData: String?
@@ -21,13 +21,17 @@ public struct ThreeDS2ChallengeAction: Decodable {
     /// Initializes a 3D Secure challenge action.
     ///
     /// - Parameters:
-    ///   - authorisationToken: The 3D Secure authorization token.
     ///   - token: The 3D Secure challenge token.
+    ///   - authorisationToken: The 3D Secure authorization token.
     ///   - paymentData: The server-generated payment data that should be submitted to the `/payments/details` endpoint.
-    public init(authorisationToken: String?, token: String, paymentData: String?) {
+    public init(challengeToken: String, authorisationToken: String? = nil, paymentData: String?) {
         self.authorisationToken = authorisationToken
-        self.token = token
+        self.challengeToken = challengeToken
         self.paymentData = paymentData
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case challengeToken = "token", paymentData, authorisationToken
     }
     
 }
