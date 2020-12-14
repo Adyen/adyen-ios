@@ -41,7 +41,7 @@ public extension AdyenScope where Base: UIViewController {
     func present(_ viewController: UIViewController, animated: Bool, completion: (() -> Void)? = nil) {
         if topPresenter.isBeingPresented || topPresenter.isBeingDismissed {
             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(10)) {
-                present(viewController, animated: animated, completion: completion)
+                self.present(viewController, animated: animated, completion: completion)
             }
         } else {
             topPresenter.present(viewController, animated: animated, completion: completion)
