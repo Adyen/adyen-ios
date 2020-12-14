@@ -71,7 +71,8 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler {
             serviceParameters.directoryServerPublicKey = token.directoryServerPublicKey
 
             service.service(with: serviceParameters, appearanceConfiguration: appearanceConfiguration) { [weak self] _ in
-                if let encodedFingerprint = self?.getFingerprint(completionHandler: completionHandler) {
+                if let encodedFingerprint = self?.getFingerprint(messageVersion: token.threeDSMessageVersion,
+                                                                 completionHandler: completionHandler) {
                     completionHandler(.success(encodedFingerprint))
                 }
             }
@@ -80,9 +81,9 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler {
         }
     }
 
-    private func getFingerprint<R>(completionHandler: @escaping (Result<R, Error>) -> Void) -> String? {
+    private func getFingerprint<R>(messageVersion: String, completionHandler: @escaping (Result<R, Error>) -> Void) -> String? {
         do {
-            let newTransaction = try service.transaction(withMessageVersion: "2.1.0")
+            let newTransaction = try service.transaction(withMessageVersion: messageVersion)
             self.transaction = newTransaction
 
             let fingerprint = try ThreeDS2Component.Fingerprint(
