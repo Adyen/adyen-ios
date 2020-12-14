@@ -12,10 +12,12 @@ internal extension ThreeDS2Component {
         
         internal let directoryServerIdentifier: String
         internal let directoryServerPublicKey: String
+        internal let threeDSMessageVersion: String
         
         private enum CodingKeys: String, CodingKey {
             case directoryServerIdentifier = "directoryServerId"
             case directoryServerPublicKey
+            case threeDSMessageVersion
         }
     }
     
