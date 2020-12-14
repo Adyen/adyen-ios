@@ -17,6 +17,8 @@ internal struct PaymentDetailsRequest: Request {
     internal let details: AdditionalDetails
     
     internal let paymentData: String?
+
+    internal let merchantAccount: String?
     
     internal var counter: UInt = 0
     
@@ -30,10 +32,12 @@ internal struct PaymentDetailsRequest: Request {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(details.encodable, forKey: .details)
         try container.encode(paymentData, forKey: .paymentData)
+        try container.encode(merchantAccount, forKey: .merchantAccount)
     }
     
     private enum CodingKeys: String, CodingKey {
         case details
         case paymentData
+        case merchantAccount
     }
 }

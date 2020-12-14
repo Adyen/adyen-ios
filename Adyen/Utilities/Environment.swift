@@ -18,12 +18,12 @@ public struct Environment: APIEnvironment {
     /// :nodoc:
     public var queryParameters: [URLQueryItem] {
         guard let clientKey = clientKey else { return [] }
-        return [URLQueryItem(name: "token", value: clientKey)]
+        return [URLQueryItem(name: "clientKey", value: clientKey)]
     }
     
     /// :nodoc:
     public var clientKey: String?
-    
+
     /// Adyen's test environment.
     public static let test = Environment(baseURL: URL(string: "https://checkoutshopper-test.adyen.com/")!)
     

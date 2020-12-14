@@ -42,6 +42,8 @@ public final class DropInActionComponent: ActionComponent {
             perform(fingerprintAction)
         case let .threeDS2Challenge(challengeAction):
             perform(challengeAction)
+        case let .threeDS2(threeDS2Action):
+            perform(threeDS2Action)
         case let .sdk(sdkAction):
             perform(sdkAction)
         case let .await(awaitAction):
@@ -69,19 +71,34 @@ public final class DropInActionComponent: ActionComponent {
         component.delegate = delegate
         component._isDropIn = _isDropIn
         component.environment = environment
+        component.clientKey = clientKey
         redirectComponent = component
         
         component.handle(action)
     }
+
+    private func perform(_ action: ThreeDS2Action) {
+        let component = createThreeDS2Component()
+        threeDS2Component = component
+
+        component.handle(action)
+    }
     
     private func perform(_ action: ThreeDS2FingerprintAction) {
+        let component = createThreeDS2Component()
+        threeDS2Component = component
+        
+        component.handle(action)
+    }
+
+    private func createThreeDS2Component() -> ThreeDS2Component {
         let component = ThreeDS2Component()
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.environment = environment
-        threeDS2Component = component
-        
-        component.handle(action)
+        component.clientKey = clientKey
+
+        return component
     }
     
     private func perform(_ action: ThreeDS2ChallengeAction) {
@@ -104,6 +121,7 @@ public final class DropInActionComponent: ActionComponent {
         weChatPaySDKActionComponent = classObject.init()
         weChatPaySDKActionComponent?._isDropIn = _isDropIn
         weChatPaySDKActionComponent?.environment = environment
+        weChatPaySDKActionComponent?.clientKey = clientKey
         weChatPaySDKActionComponent?.delegate = delegate
         weChatPaySDKActionComponent?.handle(action)
     }
@@ -119,6 +137,7 @@ public final class DropInActionComponent: ActionComponent {
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
         component.environment = environment
+        component.clientKey = clientKey
         
         component.handle(action)
         awaitComponent = component

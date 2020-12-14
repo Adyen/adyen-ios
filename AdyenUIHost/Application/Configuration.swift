@@ -13,11 +13,11 @@ internal enum Configuration {
 
     /// Please use your own web server between your app and adyen checkout API.
     static let demoServerEnvironment = DemoServerEnvironment.test
-    
+
     static let componentsEnvironment = Environment.test
-    
+
     static let appName = "Adyen Demo"
-    
+
     static let amount = Payment.Amount(value: 17408, currencyCode: "EUR")
 
     static let reference = "Test Order Reference - iOS UIHost"
@@ -35,7 +35,7 @@ internal enum Configuration {
     static let additionalData = ["allow3DS2": true]
     
     static let clientKey = "{YOUR_CLIENT_KEY}"
-    
+
     // swiftlint:disable:next line_length
     static let demoServerAPIKey = "{YOUR_DEMO_SERVER_API_KEY}"
     

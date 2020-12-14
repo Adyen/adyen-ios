@@ -49,7 +49,7 @@ class ActionTests: XCTestCase {
         }
         
         XCTAssertNotNil(fingerprintAction)
-        XCTAssertEqual(fingerprintAction?.token, "example_token")
+        XCTAssertEqual(fingerprintAction?.fingerprintToken, "example_token")
         XCTAssertEqual(fingerprintAction?.paymentData, "example_data")
     }
     
@@ -71,7 +71,7 @@ class ActionTests: XCTestCase {
         }
         
         XCTAssertNotNil(challengeAction)
-        XCTAssertEqual(challengeAction?.token, "example_token")
+        XCTAssertEqual(challengeAction?.challengeToken, "example_token")
         XCTAssertEqual(challengeAction?.paymentData, "example_data")
     }
     
