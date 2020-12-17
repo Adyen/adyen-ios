@@ -39,13 +39,18 @@ internal final class PaymentMethodListComponent: LoadingComponent, Localizable {
     
     /// :nodoc:
     internal var viewController: UIViewController { listViewController }
+
+    private let brandProtectedComponents: Set = ["applepay"]
     
     internal lazy var listViewController: ListViewController = {
         func item(for component: PaymentComponent) -> ListItem {
             let showsDisclosureIndicator = (component as? PresentableComponent)?.requiresModalPresentation == true
             
             let displayInformation = component.paymentMethod.localizedDisplayInformation(using: localizationParameters)
-            let listItem = ListItem(title: displayInformation.title, style: style.listItem)
+            let isProtected = brandProtectedComponents.contains(component.paymentMethod.type)
+            let listItem = ListItem(title: displayInformation.title,
+                                    style: style.listItem,
+                                    canModifyIcon: !isProtected)
             listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
             listItem.imageURL = LogoURLProvider.logoURL(for: component.paymentMethod, environment: environment)
             listItem.subtitle = displayInformation.subtitle

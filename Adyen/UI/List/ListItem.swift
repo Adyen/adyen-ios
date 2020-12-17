@@ -31,6 +31,9 @@ public class ListItem: FormItem {
     /// An identifier for the `ListItem`,
     /// that is set to the `ListItemView.accessibilityIdentifier`.
     public var identifier: String?
+
+    /// The flag to indicate if an icon is a custom image that should not be tempered.
+    public let canModifyIcon: Bool
     
     /// Initializes the list item.
     ///
@@ -41,16 +44,19 @@ public class ListItem: FormItem {
     ///   - showsDisclosureIndicator: A boolean value indicating whether a disclosure indicator
     ///                               should be shown in the item's cell.
     ///   - selectionHandler: The closure to execute when an item is selected.
+    ///   - canModifyIcon: The flag to indicate that image could be tampered.
     public init(title: String,
                 imageURL: URL? = nil,
                 style: ListItemStyle = ListItemStyle(),
                 showsDisclosureIndicator: Bool = true,
-                selectionHandler: (() -> Void)? = nil) {
+                selectionHandler: (() -> Void)? = nil,
+                canModifyIcon: Bool = true) {
         self.title = title
         self.imageURL = imageURL
         self.style = style
         self.showsDisclosureIndicator = showsDisclosureIndicator
         self.selectionHandler = selectionHandler
+        self.canModifyIcon = canModifyIcon
     }
     
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
