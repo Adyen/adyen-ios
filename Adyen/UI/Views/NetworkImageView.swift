@@ -37,7 +37,18 @@ open class NetworkImageView: UIImageView {
     
     private var dataTask: URLSessionDataTask?
     
+    fileprivate func setImage(_ image: UIImage) {
+        DispatchQueue.main.async {
+            self.image = image
+            self.dataTask = nil
+        }
+    }
+
     private func loadImage(from url: URL) {
+        if url.lastPathComponent.hasPrefix("applepay") {
+            return setImage(UIImage(named: "apple_pay", in: Bundle.coreInternalResources, compatibleWith: nil)!)
+        }
+
         let session = URLSession.shared
         let task = session.dataTask(with: url) { data, response, error in
             guard
@@ -48,10 +59,7 @@ open class NetworkImageView: UIImageView {
                 return
             }
             
-            DispatchQueue.main.async {
-                self.image = image
-                self.dataTask = nil
-            }
+            self.setImage(image)
         }
         task.resume()
         
