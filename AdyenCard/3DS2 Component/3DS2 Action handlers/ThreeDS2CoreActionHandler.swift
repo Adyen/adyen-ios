@@ -1,0 +1,171 @@
+//
+// Copyright (c) 2020 Adyen N.V.
+//
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
+//
+
+import Adyen
+import Adyen3DS2
+import Foundation
+
+/// Handles the 3D Secure 2 fingerprint and challenge actions separately.
+/// :nodoc:
+internal class ThreeDS2CoreActionHandler: Component {
+
+    /// The appearance configuration of the 3D Secure 2 challenge UI.
+    /// :nodoc:
+    internal let appearanceConfiguration: ADYAppearanceConfiguration
+
+    /// :nodoc:
+    internal lazy var service: AnyADYService = ADYServiceAdapter()
+
+    /// :nodoc:
+    internal var transaction: AnyADYTransaction?
+
+    /// Initializes the 3D Secure 2 action handler.
+    ///
+    /// - Parameter service: The 3DS2 Service.
+    /// - Parameter appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
+    /// :nodoc:
+    internal convenience init(service: AnyADYService,
+                              appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration()) {
+        self.init(appearanceConfiguration: appearanceConfiguration)
+        self.service = service
+    }
+
+    /// Initializes the 3D Secure 2 action handler.
+    internal init(appearanceConfiguration: ADYAppearanceConfiguration) {
+        self.appearanceConfiguration = appearanceConfiguration
+    }
+
+    // MARK: - Fingerprint
+
+    /// Handles the 3D Secure 2 fingerprint action.
+    ///
+    /// - Parameter fingerprintAction: The fingerprint action as received from the Checkout API.
+    /// - Parameter event: The Analytics event.
+    /// - Parameter completionHandler: The completion closure.
+    /// :nodoc:
+    internal func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
+                         event: Analytics.Event,
+                         completionHandler: @escaping (Result<String, Error>) -> Void) {
+        Analytics.sendEvent(component: event.component, flavor: event.flavor, environment: event.environment)
+
+        createFingerprint(fingerprintAction) { [weak self] result in
+            switch result {
+            case let .success(encodedFingerprint):
+                completionHandler(.success(encodedFingerprint))
+            case let .failure(error):
+                self?.didFail(with: error, completionHandler: completionHandler)
+            }
+        }
+    }
+
+    private func createFingerprint(_ action: ThreeDS2FingerprintAction,
+                                   completionHandler: @escaping (Result<String, Error>) -> Void) {
+        do {
+            let token = try Coder.decodeBase64(action.fingerprintToken) as ThreeDS2Component.FingerprintToken
+
+            let serviceParameters = ADYServiceParameters()
+            serviceParameters.directoryServerIdentifier = token.directoryServerIdentifier
+            serviceParameters.directoryServerPublicKey = token.directoryServerPublicKey
+
+            service.service(with: serviceParameters, appearanceConfiguration: appearanceConfiguration) { [weak self] _ in
+                if let encodedFingerprint = self?.getFingerprint(messageVersion: token.threeDSMessageVersion,
+                                                                 completionHandler: completionHandler) {
+                    completionHandler(.success(encodedFingerprint))
+                }
+            }
+        } catch {
+            didFail(with: error, completionHandler: completionHandler)
+        }
+    }
+
+    private func getFingerprint<R>(messageVersion: String, completionHandler: @escaping (Result<R, Error>) -> Void) -> String? {
+        do {
+            let newTransaction = try service.transaction(withMessageVersion: messageVersion)
+            self.transaction = newTransaction
+
+            let fingerprint = try ThreeDS2Component.Fingerprint(
+                authenticationRequestParameters: newTransaction.authenticationParameters
+            )
+            let encodedFingerprint = try Coder.encodeBase64(fingerprint)
+
+            return encodedFingerprint
+        } catch {
+            didFail(with: error, completionHandler: completionHandler)
+        }
+        return nil
+    }
+
+    // MARK: - Challenge
+
+    /// Handles the 3D Secure 2 challenge action.
+    ///
+    /// - Parameter challengeAction: The challenge action as received from the Checkout API.
+    /// - Parameter event: The Analytics event.
+    /// - Parameter completionHandler: The completion closure.
+    /// :nodoc:
+    internal func handle(_ challengeAction: ThreeDS2ChallengeAction,
+                         event: Analytics.Event,
+                         completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
+        guard let transaction = transaction else {
+            didFail(with: ThreeDS2ComponentError.missingTransaction, completionHandler: completionHandler)
+
+            return
+        }
+
+        Analytics.sendEvent(component: event.component, flavor: event.flavor, environment: event.environment)
+
+        do {
+            let token = try Coder.decodeBase64(challengeAction.challengeToken) as ThreeDS2Component.ChallengeToken
+            let challengeParameters = ADYChallengeParameters(from: token)
+            transaction.performChallenge(with: challengeParameters) { [weak self] challengeResult, error in
+                self?.handle(challengeResult, error: error,
+                             for: challengeAction,
+                             completionHandler: completionHandler)
+            }
+        } catch {
+            didFail(with: error, completionHandler: completionHandler)
+        }
+    }
+
+    private func handle(_ challengeResult: AnyChallengeResult?,
+                        error: Error?,
+                        for challengeAction: ThreeDS2ChallengeAction,
+                        completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
+        if let error = error {
+            self.didFail(with: error, completionHandler: completionHandler)
+        } else if let result = challengeResult {
+
+            self.didFinish(with: result,
+                           authorizationToken: challengeAction.authorisationToken,
+                           completionHandler: completionHandler)
+        } else {
+            assertionFailure("Both error and result are nil, this should never happen.")
+        }
+    }
+
+    private func didFinish(with challengeResult: AnyChallengeResult,
+                           authorizationToken: String?,
+                           completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
+
+        do {
+            let threeDSResult = try ThreeDSResult(from: challengeResult,
+                                                  authorizationToken: authorizationToken)
+
+            transaction = nil
+            completionHandler(.success(threeDSResult))
+        } catch {
+            completionHandler(.failure(error))
+        }
+    }
+
+    private func didFail<R>(with error: Error,
+                            completionHandler: @escaping (Result<R, Error>) -> Void) {
+        transaction = nil
+
+        completionHandler(.failure(error))
+    }
+
+}

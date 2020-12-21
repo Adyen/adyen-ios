@@ -40,6 +40,21 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         challengeAction = ThreeDS2ChallengeAction(challengeToken: challengeToken, authorisationToken: "authToken", paymentData: "paymentData")
     }
 
+    func testWrappedComponent() {
+        let sut = ThreeDS2CompactActionHandler(appearanceConfiguration: ADYAppearanceConfiguration())
+        sut.clientKey = "test_clientKey"
+        XCTAssertEqual(sut.wrappedComponent.clientKey, "test_clientKey")
+
+        sut.environment = .live
+        XCTAssertEqual(sut.wrappedComponent.environment.baseURL, Environment.live.baseURL)
+
+        sut._isDropIn = false
+        XCTAssertEqual(sut.wrappedComponent._isDropIn, false)
+
+        sut._isDropIn = true
+        XCTAssertEqual(sut.wrappedComponent._isDropIn, true)
+    }
+
     func testFingerprintFlowInvalidFingerprintToken() throws {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
 

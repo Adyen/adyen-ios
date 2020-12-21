@@ -355,6 +355,8 @@
 		F9789C7123F1939F000B4B2B /* DropInActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C6F23F1924B000B4B2B /* DropInActionComponent.swift */; };
 		F9789C7323F1A5C1000B4B2B /* WeChatPaySDKAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C7223F1A5C1000B4B2B /* WeChatPaySDKAction.swift */; };
 		F9789C7523F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C7423F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift */; };
+		F97C7C512590C56E00D80A54 /* ThreeDS2CoreActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C7C502590C56E00D80A54 /* ThreeDS2CoreActionHandler.swift */; };
+		F97C7C5F2590EE0A00D80A54 /* AnyThreeDS2ActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C7C5E2590EE0A00D80A54 /* AnyThreeDS2ActionHandler.swift */; };
 		F97CCD3A2435E35E00BC560A /* UIViewControllerHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97CCD392435E35E00BC560A /* UIViewControllerHelpers.swift */; };
 		F97CCD3C24360A4000BC560A /* BundleHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97CCD3B24360A4000BC560A /* BundleHelpers.swift */; };
 		F9842C59256D72B60063CE5A /* ThreeDSResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9842C58256D72B60063CE5A /* ThreeDSResult.swift */; };
@@ -947,6 +949,8 @@
 		F9789C6F23F1924B000B4B2B /* DropInActionComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInActionComponent.swift; sourceTree = "<group>"; };
 		F9789C7223F1A5C1000B4B2B /* WeChatPaySDKAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeChatPaySDKAction.swift; sourceTree = "<group>"; };
 		F9789C7423F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeChatPayAdditionalDetails.swift; sourceTree = "<group>"; };
+		F97C7C502590C56E00D80A54 /* ThreeDS2CoreActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2CoreActionHandler.swift; sourceTree = "<group>"; };
+		F97C7C5E2590EE0A00D80A54 /* AnyThreeDS2ActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyThreeDS2ActionHandler.swift; sourceTree = "<group>"; };
 		F97CCD392435E35E00BC560A /* UIViewControllerHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerHelpers.swift; sourceTree = "<group>"; };
 		F97CCD3B24360A4000BC560A /* BundleHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleHelpers.swift; sourceTree = "<group>"; };
 		F9842C58256D72B60063CE5A /* ThreeDSResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSResult.swift; sourceTree = "<group>"; };
@@ -2357,7 +2361,9 @@
 			children = (
 				F957AA2B2551829F0099AD73 /* ThreeDS2CompactActionHandler.swift */,
 				F9842C9E256EBF5F0063CE5A /* ThreeDS2ClassicActionHandler.swift */,
+				F97C7C502590C56E00D80A54 /* ThreeDS2CoreActionHandler.swift */,
 				F9842C66256D7A010063CE5A /* ThreeDSActionHandlerResult.swift */,
+				F97C7C5E2590EE0A00D80A54 /* AnyThreeDS2ActionHandler.swift */,
 			);
 			path = "3DS2 Action handlers";
 			sourceTree = "<group>";
@@ -3341,6 +3347,7 @@
 				E2345C0A229BDA70000F2C94 /* ThreeDS2ComponentFingerprint.swift in Sources */,
 				F957A9F125514AB70099AD73 /* Submit3DS2FingerprintResponse.swift in Sources */,
 				E7166A5424EACC44007CCDEF /* BinLookupResponse.swift in Sources */,
+				F97C7C5F2590EE0A00D80A54 /* AnyThreeDS2ActionHandler.swift in Sources */,
 				E9E3DAB4221D988200697074 /* CardNumberValidator.swift in Sources */,
 				E2345C08229BDA46000F2C94 /* ThreeDS2ComponentChallengeToken.swift in Sources */,
 				E9E3DACD221EEAB200697074 /* CardSecurityCodeValidator.swift in Sources */,
@@ -3353,6 +3360,7 @@
 				E9E3DAFB22241D6000697074 /* CardEncryptor.swift in Sources */,
 				E2345C0E229BDD2D000F2C94 /* ThreeDS2Details.swift in Sources */,
 				E9240D6C2265EFE900FB57D0 /* StoredCardAlertManager.swift in Sources */,
+				F97C7C512590C56E00D80A54 /* ThreeDS2CoreActionHandler.swift in Sources */,
 				E9E3DAFA22241D6000697074 /* CardEncryptorExtensions.swift in Sources */,
 				E7B627FD24ED32CC000CEC6E /* BinLookupService.swift in Sources */,
 				E7AA1098252DCCFB00AAD3C0 /* RSA.swift in Sources */,

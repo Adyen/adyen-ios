@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -13,6 +13,26 @@ public class Analytics {
     /// :nodoc:
     public enum Flavor: String {
         case components, dropin
+    }
+
+    /// :nodoc:
+    public struct Event {
+
+        /// :nodoc:
+        public var component: String
+
+        /// :nodoc:
+        public var flavor: Flavor
+
+        /// :nodoc:
+        public var environment: Environment
+
+        /// :nodoc:
+        public init(component: String, flavor: Flavor, environment: Environment) {
+            self.component = component
+            self.flavor = flavor
+            self.environment = environment
+        }
     }
     
     /// :nodoc:
