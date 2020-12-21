@@ -34,10 +34,12 @@ open class NetworkImageView: UIImageView {
     }
     
     // MARK: - Private
+
+    private let brandProtectedImages: [String: String] = ["applepay": "brand_apple_pay"]
     
     private var dataTask: URLSessionDataTask?
     
-    fileprivate func setImage(_ image: UIImage) {
+    private func setImage(_ image: UIImage) {
         DispatchQueue.main.async {
             self.image = image
             self.dataTask = nil
@@ -45,8 +47,11 @@ open class NetworkImageView: UIImageView {
     }
 
     private func loadImage(from url: URL) {
-        if url.lastPathComponent.hasPrefix("applepay") {
-            return setImage(UIImage(named: "apple_pay", in: Bundle.coreInternalResources, compatibleWith: nil)!)
+        let parts = url.lastPathComponent.split(separator: "@")
+        if parts.count > 1,
+           let internalName = brandProtectedImages[String(parts[0])],
+           let image = UIImage(named: internalName, in: Bundle.coreInternalResources, compatibleWith: nil) {
+            return setImage(image)
         }
 
         let session = URLSession.shared
