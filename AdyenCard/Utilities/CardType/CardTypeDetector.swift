@@ -35,3 +35,10 @@ public extension AdyenScope where Base == [CardType] {
         return base.first { $0.matches(cardNumber: cardNumber) }
     }
 }
+
+extension Array where Element: Hashable {
+
+    internal func minus(_ set: Set<Element>) -> [Element] {
+        return filter { !set.contains($0) }
+    }
+}

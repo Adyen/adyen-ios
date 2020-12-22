@@ -50,10 +50,13 @@ class CardComponentTests: XCTestCase {
     func testLocalizationWithCustomTableName() {
         let method = CardPaymentMethodMock(type: "test_type", name: "test_name", brands: ["bcmc"])
         let payment = Payment(amount: Payment.Amount(value: 2, currencyCode: "EUR"), countryCode: "BE")
-        let sut = CardComponent(paymentMethod: method, clientKey: "test_client_key")
+        var configuration = CardComponent.Configuration()
+        configuration.showsHolderNameField = true
+        let sut = CardComponent(paymentMethod: method,
+                                configuration: configuration,
+                                clientKey: "test_client_key")
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
-        sut.showsHolderNameField = true
         
         XCTAssertEqual(sut.expiryDateItem.title, ADYLocalizedString("adyen.card.expiryItem.title", nil))
         XCTAssertEqual(sut.expiryDateItem.placeholder, ADYLocalizedString("adyen.card.expiryItem.placeholder", sut.localizationParameters))
@@ -75,10 +78,13 @@ class CardComponentTests: XCTestCase {
     func testLocalizationWithCustomKeySeparator() {
         let method = CardPaymentMethodMock(type: "test_type", name: "test_name", brands: ["bcmc"])
         let payment = Payment(amount: Payment.Amount(value: 2, currencyCode: "EUR"), countryCode: "BE")
-        let sut = CardComponent(paymentMethod: method, clientKey: "test_client_key")
+        var configuration = CardComponent.Configuration()
+        configuration.showsHolderNameField = true
+        let sut = CardComponent(paymentMethod: method,
+                                configuration: configuration,
+                                clientKey: "test_client_key")
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
-        sut.showsHolderNameField = true
         
         XCTAssertEqual(sut.expiryDateItem.title, ADYLocalizedString("adyen.card.expiryItem.title", nil))
         XCTAssertEqual(sut.expiryDateItem.placeholder, ADYLocalizedString("adyen_card_expiryItem_placeholder", sut.localizationParameters))
@@ -128,10 +134,12 @@ class CardComponentTests: XCTestCase {
         cardComponentStyle.switch.backgroundColor = .magenta
         
         let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["any_test_brand_name"])
+        var configuration = CardComponent.Configuration()
+        configuration.showsHolderNameField = true
         let sut = CardComponent(paymentMethod: cardPaymentMethod,
+                                configuration: configuration,
                                 clientKey: "test_client_key",
                                 style: cardComponentStyle)
-        sut.showsHolderNameField = true
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -244,9 +252,11 @@ class CardComponentTests: XCTestCase {
     
     func testHideCVVField() {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["visa", "amex"])
+        var configuration = CardComponent.Configuration()
+        configuration.showsSecurityCodeField = false
         let sut = CardComponent(paymentMethod: method,
+                                configuration: configuration,
                                 clientKey: "test_client_key")
-        sut.showsSecurityCodeField = false
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -492,9 +502,11 @@ class CardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
+        var configuration = CardComponent.Configuration()
+        configuration.stored.showsSecurityCodeField = false
         let sut = CardComponent(paymentMethod: method,
+                                configuration: configuration,
                                 clientKey: "test_client_key")
-        sut.storedCardConfiguration.showsSecurityCodeField = false
         sut.payment = Payment(amount: Payment.Amount(value: 123456, currencyCode: "EUR"), countryCode: "NL")
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)
@@ -517,9 +529,11 @@ class CardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
+        var configuration = CardComponent.Configuration()
+        configuration.stored.showsSecurityCodeField = false
         let sut = CardComponent(paymentMethod: method,
+                                configuration: configuration,
                                 clientKey: "test_client_key")
-        sut.storedCardConfiguration.showsSecurityCodeField = false
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)
         XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
@@ -541,9 +555,11 @@ class CardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
+        var configuration = CardComponent.Configuration()
+        configuration.stored.showsSecurityCodeField = false
         let sut = CardComponent(paymentMethod: method,
+                                configuration: configuration,
                                 clientKey: "test_client_key")
-        sut.storedCardConfiguration.showsSecurityCodeField = false
         XCTAssertNotNil(sut.viewController as? UIAlertController)
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)
@@ -638,7 +654,10 @@ class CardComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         // Dummy public key
         let cardPublicKey = "B8C0F|AF259DD02EC8BA094F293D89D2B06C95BCFE4D83DC397E04BB81BD02BA53B23061E88138ADB9E301CD9D3A9E4EFF7A3B78AEA6939638233AD3C93E96F2FAF1F6233F21CC182531F6AEFD1428AACF2C1552B666B6CB47081542983CCED1016E82F74FDACA61F02B20B9F11D333CE35C0C73D09D47ABBC94C3467E8574C3C617209AA44109C1F5E9A0C2C2399B8A91C7EA24FE56FDF0AA3DA5B9DE85F487B33C7FD55FAE5B39177C7DB2545F03723960702F3602D3284BB1EB3C389AB6564393DFC0412FB23573543CDCC0F6647DC15201235791323E81C416D3BC8542AC6303E2A3803E8178187556E93770903781F02A4BFD85F8D75A2229F04480211F1C00D3"
-        let sut = CardComponent.component(paymentMethod: method, publicKey: cardPublicKey)
+        let cardPublicKeyProvider = CardPublicKeyProvider(cardPublicKey: cardPublicKey)
+        let sut = CardComponent(paymentMethod: method,
+                                cardPublicKeyProvider: cardPublicKeyProvider,
+                                clientKey: "client_key")
 
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
