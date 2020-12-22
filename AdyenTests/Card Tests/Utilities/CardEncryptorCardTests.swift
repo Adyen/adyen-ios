@@ -164,14 +164,53 @@ class CardEncryptorCardTests: XCTestCase {
     func testEncryptBIN() {
         let ecrypted = try! CardEncryptor.encryptedBin(for: "55000000", publicKey: Dummy.dummyPublicKey)
         XCTAssertNotNil(ecrypted)
-        XCTAssertTrue(ecrypted.hasPrefix("adyenan0_1_1$"))
+        if #available(iOS 13.0, *) {
+            XCTAssertTrue(ecrypted.hasPrefix("adyenio0_1_2$"))
+        } else {
+            XCTAssertTrue(ecrypted.hasPrefix("adyenio0_1_1$"))
+        }
     }
 
-    func testAES() {
-        let data = Data(base64Encoded: "eyJiaW5WYWx1ZSI6IjU1MDAwMDAiLCJnZW5lcmF0aW9udGltZSI6IjIwMjAtMTAtMDhUMDg6MjI6MTBaIn0=")!
-        let key = Data(base64Encoded: "GYXymWrBcBA2GMHQnzxg+B6WOeWy6zvsHt8KQLB0UXs=")!
-        let iv = Data(base64Encoded: "34X2GnY1dEMt3Jz9")!
-        let reslt = Cryptor.AES.encrypt(data: data, withKey: key, initVector: iv)
-        XCTAssertEqual(reslt, Data(base64Encoded: "zoKVik/ivsVguN7okPjT1Aycmquhyu4/87sCGyAsmCr6fCxrKOSOTAW8H6TcjDPfo4EvCg4nm50FyIPXdrNrzrI39dwTQw==")!)
+    func testAESCCM() {
+        let data = NSData(base64Encoded: "eyJleHBpcnlZZWFyIjoiMTk3MiIsImN2YyI6IjY2NiIsImV4cGlyeU1vbnRoIjoiNyIsImhvbGRlck5hbWUiOiJLdW4gamUgZGl0IGxlemVuPyIsIm51bWJlciI6IjA2NTU1OTAzMDAiLCJnZW5lcmF0aW9udGltZSI6IjIwMTMtMDgtMjFUMTI6MDE6MzQuMjQ5WiJ9")!
+        let key = NSData(base64Encoded: "Xjmy/REE0Unnzc4+kATHkQtN2+t1xUd/enXOB9IH8Sg=")!
+        let iv = NSData(base64Encoded: "2Mk9bTtPn1jdnMr/")!
+        let result = Cryptor.AES.CCM.encrypt(data: data, withKey: key, initVector: iv)
+        XCTAssertNotNil(result.cipher)
+        XCTAssertNil(result.atag)
+
+        var payload = Data()
+        payload.append(contentsOf: iv as Data)
+        payload.append(result.cipher!)
+
+        let expected = Data(base64Encoded: "2Mk9bTtPn1jdnMr/u/K1o0+81LFIFCGKZCYvS0briKpA53nDEoj/Igqr6XitnBe7FpamUkttm0VY+ZGAhMRCahd6uF/OT9CLw96GAlC48JLX8Jp5ul1OQwzcvsV4Oqn/P9jmiXaFvfpIZ9nfMQRmOWTokDcC6Ga7ihuRC9zunwvcNZsDqVf7chpZz++PBYazRgGbfvIZ9p++Zd1QgWhT3OPT4rNlUKP9VqQ=")!
+        XCTAssertEqual(payload, expected)
+    }
+
+    @available(iOS 13.0, *)
+    func testAESGCM() {
+        let data = NSData(base64Encoded: "eyJleHBpcnlZZWFyIjoiMTk3MiIsImN2YyI6IjY2NiIsImV4cGlyeU1vbnRoIjoiNyIsImhvbGRlck5hbWUiOiJLdW4gamUgZGl0IGxlemVuPyIsIm51bWJlciI6IjA2NTU1OTAzMDAiLCJnZW5lcmF0aW9udGltZSI6IjIwMTMtMDgtMjFUMTI6MDE6MzQuMjQ5WiJ9")!
+        let key = NSData(base64Encoded: "Xjmy/REE0Unnzc4+kATHkQtN2+t1xUd/enXOB9IH8Sg=")!
+        let iv = NSData(base64Encoded: "2Mk9bTtPn1jdnMr/")!
+        let result = Cryptor.AES.GCM.encrypt(data: data, withKey: key, initVector: iv)
+
+        var payload = Data()
+        let expected: Data
+        if #available(iOS 13.0, *) {
+            payload.append(contentsOf: iv as Data)
+            payload.append(result.cipher!)
+            payload.append(result.atag!)
+            expected = Data(base64Encoded: "2Mk9bTtPn1jdnMr/Z0tDqFGd16KdRNFKIyqR4bgQFjPzyAbxlRT0vn0Mh9CPrhmp4NYYEBYPZz9ZyLd/pihSWqz99Bs8/am6+OeQeeUQlQvX9OeabajgLa6id2HiAjLOR1ANpxLvXtqlZsQaIeIii7EgTZwz789hiQFKwFz8ia8/E6RJEVGZrw+ZQPrd8w1+9454Agm32L1mcOVC52uQOIJqqJ/43FDTLDE+dUa+4d9ahg==")!
+            XCTAssertNotNil(result.cipher)
+            XCTAssertNotNil(result.atag)
+            XCTAssertEqual(result.atag, Data(base64Encoded: "qJ/43FDTLDE+dUa+4d9ahg=="))
+            XCTAssertEqual(result.cipher, Data(base64Encoded: "Z0tDqFGd16KdRNFKIyqR4bgQFjPzyAbxlRT0vn0Mh9CPrhmp4NYYEBYPZz9ZyLd/pihSWqz99Bs8/am6+OeQeeUQlQvX9OeabajgLa6id2HiAjLOR1ANpxLvXtqlZsQaIeIii7EgTZwz789hiQFKwFz8ia8/E6RJEVGZrw+ZQPrd8w1+9454Agm32L1mcOVC52uQOIJq"))
+        } else {
+            payload.append(contentsOf: iv as Data)
+            payload.append(result.cipher!)
+            expected = Data(base64Encoded: "2Mk9bTtPn1jdnMr/u/K1o0+81LFIFCGKZCYvS0briKpA53nDEoj/Igqr6XitnBe7FpamUkttm0VY+ZGAhMRCahd6uF/OT9CLw96GAlC48JLX8Jp5ul1OQwzcvsV4Oqn/P9jmiXaFvfpIZ9nfMQRmOWTokDcC6Ga7ihuRC9zunwvcNZsDqVf7chpZz++PBYazRgGbfvIZ9p++Zd1QgWhT3OPT4rNlUKP9VqQ=")!
+        }
+
+        XCTAssertEqual(payload.base64EncodedString(), expected.base64EncodedString())
     }
 }
