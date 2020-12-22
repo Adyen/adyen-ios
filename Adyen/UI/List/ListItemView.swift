@@ -82,6 +82,10 @@ public final class ListItemView: UIView, AnyFormItemView {
     
     private func updateImageView(style: ListItemStyle) {
         imageView.contentMode = style.image.contentMode
+        guard item?.canModifyIcon == true else {
+            return imageView.layer.borderWidth = 0
+        }
+
         imageView.clipsToBounds = style.image.clipsToBounds
         imageView.layer.borderWidth = style.image.borderWidth
         imageView.layer.borderColor = style.image.borderColor?.cgColor
@@ -99,7 +103,12 @@ public final class ListItemView: UIView, AnyFormItemView {
     
     override public func layoutSubviews() {
         super.layoutSubviews()
-        imageView.adyen.round(using: item?.style.image.cornerRounding ?? .fixed(4))
+
+        guard item?.canModifyIcon == true else {
+            return imageView.adyen.round(using: .none)
+        }
+
+        imageView.adyen.round(using: item?.style.image.cornerRounding ?? .fixed(8))
     }
     
     // MARK: - Title Label
@@ -164,6 +173,10 @@ public final class ListItemView: UIView, AnyFormItemView {
     override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         
+        guard item?.canModifyIcon == true else {
+            return imageView.layer.borderColor = nil
+        }
+
         imageView.layer.borderColor = item?.style.image.borderColor?.cgColor ?? UIColor.AdyenCore.componentSeparator.cgColor
     }
     

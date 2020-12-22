@@ -61,7 +61,7 @@ public extension AdyenScope where Base: UIView {
             let radius = value * min(base.bounds.height, base.bounds.width)
             base.layer.cornerRadius = radius
         case .none:
-            break
+            base.layer.cornerRadius = 0
         }
     }
     
