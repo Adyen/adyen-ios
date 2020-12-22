@@ -8,21 +8,26 @@ import Adyen
 import Adyen3DS2
 import Foundation
 
-/// :nodoc:
-internal protocol AnyThreeDS2ActionHandler: Component {
-
-    /// :nodoc:
-    func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
-                completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void)
-
-    /// :nodoc:
-    func handle(_ challengeAction: ThreeDS2ChallengeAction,
-                completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void)
-}
-
 /// Handles the 3D Secure 2 fingerprint and challenge in one call using a `fingerprintSubmitter`.
 /// :nodoc:
-internal final class ThreeDS2CompactActionHandler: ThreeDS2ClassicActionHandler {
+internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, ComponentWrapper {
+
+    /// :nodoc:
+    internal var wrappedComponent: Component { coreActionHandler }
+
+    /// :nodoc:
+    private let coreActionHandler: ThreeDS2CoreActionHandler
+
+    /// :nodoc:
+    internal var transaction: AnyADYTransaction? {
+        get {
+            coreActionHandler.transaction
+        }
+
+        set {
+            coreActionHandler.transaction = newValue
+        }
+    }
 
     /// Initializes the 3D Secure 2 action handler.
     ///
@@ -30,17 +35,19 @@ internal final class ThreeDS2CompactActionHandler: ThreeDS2ClassicActionHandler 
     /// - Parameter service: The 3DS2 Service.
     /// - Parameter appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
     /// :nodoc:
-    internal init(fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter,
-                  service: AnyADYService,
-                  appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration()) {
-        super.init(appearanceConfiguration: appearanceConfiguration)
-        self.fingerprintSubmitter = fingerprintSubmitter
-        self.service = service
+    internal convenience init(fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter? = nil,
+                              service: AnyADYService,
+                              appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration()) {
+        self.init(appearanceConfiguration: appearanceConfiguration)
+        if let fingerprintSubmitter = fingerprintSubmitter {
+            self.fingerprintSubmitter = fingerprintSubmitter
+        }
+        self.coreActionHandler.service = service
     }
 
     /// Initializes the 3D Secure 2 action handler.
-    override internal init(appearanceConfiguration: ADYAppearanceConfiguration) {
-        super.init(appearanceConfiguration: appearanceConfiguration)
+    internal init(appearanceConfiguration: ADYAppearanceConfiguration) {
+        self.coreActionHandler = ThreeDS2CoreActionHandler(appearanceConfiguration: appearanceConfiguration)
     }
 
     // MARK: - Fingerprint
@@ -50,23 +57,49 @@ internal final class ThreeDS2CompactActionHandler: ThreeDS2ClassicActionHandler 
     /// - Parameter fingerprintAction: The fingerprint action as received from the Checkout API.
     /// - Parameter completionHandler: The completion closure.
     /// :nodoc:
-    override internal func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
-                                  completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
-        Analytics.sendEvent(component: threeDS2EventName, flavor: _isDropIn ? .dropin : .components, environment: environment)
-        createFingerprint(fingerprintAction) { [weak self] result in
+    internal func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
+                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
+        let event = Analytics.Event(component: "\(threeDS2EventName).fingerprint",
+                                    flavor: _isDropIn ? .dropin : .components,
+                                    environment: environment)
+        coreActionHandler.handle(fingerprintAction, event: event) { [weak self] result in
             switch result {
             case let .success(encodedFingerprint):
                 self?.fingerprintSubmitter.submit(fingerprint: encodedFingerprint,
                                                   paymentData: fingerprintAction.paymentData,
                                                   completionHandler: completionHandler)
             case let .failure(error):
-                self?.didFail(with: error, completionHandler: completionHandler)
+                completionHandler(.failure(error))
             }
         }
     }
 
-    override internal func createDetailsObject(from result: ThreeDSResult) -> AdditionalDetails {
-        ThreeDS2Details.completed(result)
+    // MARK: - Challenge
+
+    /// Handles the 3D Secure 2 challenge action.
+    ///
+    /// - Parameter challengeAction: The challenge action as received from the Checkout API.
+    /// - Parameter completionHandler: The completion closure.
+    /// :nodoc:
+    internal func handle(_ challengeAction: ThreeDS2ChallengeAction,
+                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
+        let event = Analytics.Event(component: "\(threeDS2EventName).challenge",
+                                    flavor: _isDropIn ? .dropin : .components,
+                                    environment: environment)
+        coreActionHandler.handle(challengeAction, event: event) { [weak self] result in
+            switch result {
+            case let .success(result):
+                self?.handle(result, completionHandler: completionHandler)
+            case let .failure(error):
+                completionHandler(.failure(error))
+            }
+        }
+    }
+
+    private func handle(_ threeDSResult: ThreeDSResult,
+                        completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
+        let additionalDetails = ThreeDS2Details.completed(threeDSResult)
+        completionHandler(.success(.details(additionalDetails)))
     }
 
     // MARK: - Private
