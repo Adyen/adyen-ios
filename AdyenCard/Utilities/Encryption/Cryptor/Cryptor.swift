@@ -7,11 +7,23 @@
 import CommonCrypto
 import Foundation
 
-internal enum Cryptor {
-    
-    private static let ivLength = 12
-    private static var msgPrefix = "adyenan0_1_1"
+/// :nodoc:
+internal struct Cryptor {
+
     private static let msgSeparator = "$"
+
+    /// :nodoc:
+    internal let aes: AES
+
+    private var prefix: String {
+        return "adyenio_0_\(aes.rawValue)_25" + Cryptor.msgSeparator
+    }
+
+    /// Initiate cryptor with selected AES alghoritm
+    /// :nodoc:
+    internal init(aes: AES) {
+        self.aes = aes
+    }
     
     /**
      * Encrypts the data with AES-CBC using
@@ -32,7 +44,7 @@ internal enum Cryptor {
      *   - a Payload of iv and cipherText, base64 encoded
      *
      */
-    internal static func encrypt(data: Data, publicKey keyInHex: String) throws -> String {
+    internal func encrypt(data: Data, publicKey keyInHex: String) throws -> String {
         
         //
         var key = [UInt8](repeating: 0, count: kCCKeySizeAES256)
@@ -41,13 +53,14 @@ internal enum Cryptor {
         }
         
         // generate a initialisation vector
-        var initVector = [UInt8](repeating: 0, count: ivLength)
+        var initVector = [UInt8](repeating: 0, count: aes.ivLength)
         guard SecRandomCopyBytes(kSecRandomDefault, initVector.count, &initVector) == noErr else {
             throw Error.randomGenerationError
         }
         
         guard
-            let cipherText = self.aesEncrypt(data: data, with: Data(key), initVector: Data(initVector))
+            case let encryptionResult = self.aesEncrypt(data: data, with: Data(key), initVector: Data(initVector)),
+            let cipherText = encryptionResult.cipher
         else { throw Error.aesEncryptionError }
         
         // format of the fully composed message:
@@ -59,21 +72,20 @@ internal enum Cryptor {
         var payload = Data()
         payload.append(contentsOf: initVector)
         payload.append(cipherText)
-        
-        let prefix = msgPrefix.isEmpty ? "" : msgPrefix.appending(msgSeparator)
+        payload.append(encryptionResult.atag ?? Data())
         
         if let encryptedKey = self.rsaEncrypt(data: Data(key), with: keyInHex) {
-            return prefix + encryptedKey.base64EncodedString() + msgSeparator + payload.base64EncodedString()
+            return prefix + encryptedKey.base64EncodedString() + Cryptor.msgSeparator + payload.base64EncodedString()
         }
         
         throw Error.rsaEncryptionError
     }
     
-    private static func aesEncrypt(data: Data, with key: Data, initVector: Data) -> Data? {
-        return AES.encrypt(data: data, withKey: key, initVector: initVector)
+    private func aesEncrypt(data: Data, with key: Data, initVector: Data) -> EncryptionResult {
+        return aes.encrypt(data: data as NSData, withKey: key as NSData, initVector: initVector as NSData)
     }
     
-    private static func rsaEncrypt(data: Data, with keyInHex: String) -> Data? {
+    private func rsaEncrypt(data: Data, with keyInHex: String) -> Data? {
         let tokens = keyInHex.components(separatedBy: "|")
         guard tokens.count == 2 else { return nil }
         
