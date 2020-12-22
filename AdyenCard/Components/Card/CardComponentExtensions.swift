@@ -42,10 +42,10 @@ internal extension CardComponent {
             let encryptedCard = try getEncryptedCard(publicKey: cardPublicKey)
             let details = CardDetails(paymentMethod: paymentMethod as! AnyCardPaymentMethod, // swiftlint:disable:this force_cast
                                       encryptedCard: encryptedCard,
-                                      holderName: showsHolderNameField ? holderNameItem.value : nil)
+                                      holderName: configuration.showsHolderNameField ? holderNameItem.value : nil)
             
             let data = PaymentComponentData(paymentMethodDetails: details,
-                                            storePaymentMethod: showsStorePaymentMethodField ? storeDetailsItem.value : false)
+                                            storePaymentMethod: configuration.showsStorePaymentMethodField ? storeDetailsItem.value : false)
             
             submit(data: data)
         } catch {
@@ -97,23 +97,54 @@ extension CardComponent: FormViewControllerDelegate {
     }
 }
 
-/// :nodoc:
-/// Deprecated initializers
 extension CardComponent {
-    
-    /// :nodoc:
-    /// Initializes the card component.
-    ///
-    /// - Parameters:
-    ///   - paymentMethod: The card payment method.
-    ///   - cardPublicKeyProvider: The card public key provider
-    ///   - style: The Component's UI style.
-    public static func component(paymentMethod: AnyCardPaymentMethod,
-                                 publicKey: String,
-                                 style: FormComponentStyle = FormComponentStyle()) -> CardComponent {
-        let cardPublicKeyProvider = CardPublicKeyProvider(cardPublicKey: publicKey)
-        return CardComponent(paymentMethod: paymentMethod, cardPublicKeyProvider: cardPublicKeyProvider, style: style)
+
+    /// Card component configuration.
+    public struct Configuration {
+
+        /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
+        public var showsHolderNameField: Bool
+
+        /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
+        public var showsStorePaymentMethodField: Bool
+
+        /// Indicates whether to show the security code field at all.
+        public var showsSecurityCodeField: Bool
+
+        /// Stored card configuration.
+        public var stored: StoredCardConfiguration
+
+        /// The supported card types.
+        public var supportedCardTypes: [CardType]?
+
+        /// Indicates the card brands excluded from the supported brands.
+        internal var excludedCardTypes: Set<CardType> = [.bcmc]
+
+        public init(showsHolderNameField: Bool = false,
+                    showsStorePaymentMethodField: Bool = true,
+                    showsSecurityCodeField: Bool = true,
+                    storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
+                    supportedCardTypes: [CardType]? = nil) {
+            self.showsHolderNameField = showsHolderNameField
+            self.showsSecurityCodeField = showsSecurityCodeField
+            self.showsStorePaymentMethodField = showsStorePaymentMethodField
+            self.stored = storedCardConfiguration
+            self.supportedCardTypes = supportedCardTypes
+        }
+
+        internal func bcmcConfiguration() -> Configuration {
+            var storedCardConfiguration = stored
+            storedCardConfiguration.showsSecurityCodeField = false
+            var configuration = Configuration(showsHolderNameField: showsHolderNameField,
+                                              showsStorePaymentMethodField: showsStorePaymentMethodField,
+                                              showsSecurityCodeField: false,
+                                              storedCardConfiguration: storedCardConfiguration,
+                                              supportedCardTypes: [.bcmc])
+            configuration.excludedCardTypes = []
+            return configuration
+        }
     }
+
 }
 
 // swiftlint:enable explicit_acl

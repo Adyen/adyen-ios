@@ -69,7 +69,15 @@ internal final class ComponentManager {
         var cardComponent: CardComponent?
         
         if let clientKey = configuration.clientKey {
+
+            let configuration = CardComponent.Configuration(showsHolderNameField: cardConfiguration.showsHolderNameField,
+                                                            showsStorePaymentMethodField: cardConfiguration.showsStorePaymentMethodField,
+                                                            showsSecurityCodeField: cardConfiguration.showsSecurityCodeField,
+                                                            storedCardConfiguration: cardConfiguration.stored,
+                                                            supportedCardTypes: nil)
+
             cardComponent = CardComponent(paymentMethod: paymentMethod,
+                                          configuration: configuration,
                                           clientKey: clientKey,
                                           style: style.formComponent)
             
@@ -77,12 +85,7 @@ internal final class ComponentManager {
             adyenPrint("Failed to instantiate CardComponent because client key is not configured.")
             return nil
         }
-        
-        cardComponent?.showsHolderNameField = cardConfiguration.showsHolderNameField
-        cardComponent?.showsStorePaymentMethodField = cardConfiguration.showsStorePaymentMethodField
-        cardComponent?.showsSecurityCodeField = cardConfiguration.showsSecurityCodeField
-        cardComponent?.storedCardConfiguration = cardConfiguration.stored
-        
+
         return cardComponent
     }
     
@@ -92,7 +95,14 @@ internal final class ComponentManager {
         var component: BCMCComponent?
         
         if let clientKey = configuration.clientKey {
+            let configuration = CardComponent.Configuration(showsHolderNameField: cardConfiguration.showsHolderNameField,
+                                                            showsStorePaymentMethodField: cardConfiguration.showsStorePaymentMethodField,
+                                                            showsSecurityCodeField: cardConfiguration.showsSecurityCodeField,
+                                                            storedCardConfiguration: cardConfiguration.stored,
+                                                            supportedCardTypes: nil)
+
             component = BCMCComponent(paymentMethod: paymentMethod,
+                                      configuration: configuration,
                                       clientKey: clientKey,
                                       style: style.formComponent)
             
@@ -100,9 +110,6 @@ internal final class ComponentManager {
             adyenPrint("Failed to instantiate BCMCComponent because client key is not configured.")
             return nil
         }
-        
-        component?.showsHolderNameField = cardConfiguration.showsHolderNameField
-        component?.showsStorePaymentMethodField = cardConfiguration.showsStorePaymentMethodField
         
         return component
     }

@@ -33,7 +33,7 @@ public struct StoredCardConfiguration {
 }
 
 /// A component that provides a form for card payments.
-public final class CardComponent: PaymentComponent, PresentableComponent, Localizable, Observer {
+public class CardComponent: PaymentComponent, PresentableComponent, Localizable, Observer {
     
     /// :nodoc:
     internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
@@ -76,7 +76,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     /// The supported card types.
     /// The getter is O(n), since it filters out all the `excludedCardTypes` before returning.
     public var supportedCardTypes: [CardType] {
-        get { privateSupportedCardTypes.filter { !excludedCardTypes.contains($0) } }
+        get { privateSupportedCardTypes }
         set { privateSupportedCardTypes = newValue }
     }
     
@@ -99,18 +99,9 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
             cardTypeProvider.clientKey = clientKey
         }
     }
-    
-    /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
-    public var showsHolderNameField = false
-    
-    /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
-    public var showsStorePaymentMethodField = true
-    
-    /// Indicates whether to show the security code field at all.
-    public var showsSecurityCodeField = true
 
-    /// Stored card configuration.
-    public var storedCardConfiguration = StoredCardConfiguration()
+    /// Card component configuration.
+    public let configuration: Configuration
     
     /// Initializes the card component.
     ///
@@ -119,19 +110,15 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     ///   -  clientKey: The client key that corresponds to the webservice user you will use for initiating the payment.
     /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
     ///   -  style: The Component's UI style.
-    public init(paymentMethod: AnyCardPaymentMethod,
-                clientKey: String,
-                style: FormComponentStyle = FormComponentStyle()) {
-        self.paymentMethod = paymentMethod
-        self.cardPublicKeyProvider = CardPublicKeyProvider()
-        self.privateSupportedCardTypes = paymentMethod.brands.compactMap(CardType.init)
-        self.style = style
-        self.clientKey = clientKey
-        self.cardTypeProvider = CardTypeProvider(cardPublicKeyProvider: self.cardPublicKeyProvider)
-
-        self.cardPublicKeyProvider.clientKey = clientKey
-        self.cardTypeProvider.clientKey = clientKey
-        self.environment.clientKey = clientKey
+    public convenience init(paymentMethod: AnyCardPaymentMethod,
+                            configuration: Configuration,
+                            clientKey: String,
+                            style: FormComponentStyle = FormComponentStyle()) {
+        self.init(paymentMethod: paymentMethod,
+                  configuration: configuration,
+                  cardPublicKeyProvider: CardPublicKeyProvider(),
+                  clientKey: clientKey,
+                  style: style)
     }
     
     /// :nodoc:
@@ -142,13 +129,25 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     ///   - cardPublicKeyProvider: The card public key provider
     ///   - style: The Component's UI style.
     internal init(paymentMethod: AnyCardPaymentMethod,
-                  cardPublicKeyProvider: AnyCardPublicKeyProvider,
+                  configuration: Configuration = Configuration(),
+                  cardPublicKeyProvider: AnyCardPublicKeyProvider = CardPublicKeyProvider(),
+                  clientKey: String,
                   style: FormComponentStyle = FormComponentStyle()) {
+        self.clientKey = clientKey
         self.paymentMethod = paymentMethod
+        self.configuration = configuration
         self.cardPublicKeyProvider = cardPublicKeyProvider
-        self.privateSupportedCardTypes = paymentMethod.brands.compactMap(CardType.init)
+        let paymentMethodCardTypes = paymentMethod.brands.compactMap(CardType.init)
+        let supportedCardTypes = configuration.supportedCardTypes
+        let excludedCardTypes = configuration.excludedCardTypes
+        self.privateSupportedCardTypes = (supportedCardTypes ?? paymentMethodCardTypes)
+            .minus(excludedCardTypes)
         self.style = style
         self.cardTypeProvider = CardTypeProvider(cardPublicKeyProvider: cardPublicKeyProvider)
+
+        self.cardPublicKeyProvider.clientKey = clientKey
+        self.cardTypeProvider.clientKey = clientKey
+        self.environment.clientKey = clientKey
     }
     
     // MARK: - Presentable Component Protocol
@@ -175,11 +174,6 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         completion?()
     }
     
-    // MARK: - Protected
-    
-    /// Indicates the card brands excluded from the supported brands.
-    internal var excludedCardTypes: Set<CardType> = [.bcmc]
-    
     // MARK: - Private
 
     private var privateSupportedCardTypes: [CardType]
@@ -195,7 +189,7 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
             return nil
         }
         var component: PaymentComponent & PresentableComponent
-        if storedCardConfiguration.showsSecurityCodeField {
+        if configuration.stored.showsSecurityCodeField {
             component = StoredCardComponent(storedCardPaymentMethod: paymentMethod)
         } else {
             component = StoredPaymentMethodComponent(paymentMethod: paymentMethod)
@@ -222,18 +216,18 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
 
         numberItem.showLogos(for: topCardTypes)
         
-        if showsSecurityCodeField {
+        if configuration.showsSecurityCodeField {
             let splitTextItem = FormSplitTextItem(items: [expiryDateItem, securityCodeItem], style: style.textField)
             formViewController.append(splitTextItem)
         } else {
             formViewController.append(expiryDateItem)
         }
         
-        if showsHolderNameField {
+        if configuration.showsHolderNameField {
             formViewController.append(holderNameItem)
         }
         
-        if showsStorePaymentMethodField {
+        if configuration.showsStorePaymentMethodField {
             formViewController.append(storeDetailsItem)
         }
         
