@@ -165,9 +165,9 @@ class CardEncryptorCardTests: XCTestCase {
         let ecrypted = try! CardEncryptor.encryptedBin(for: "55000000", publicKey: Dummy.dummyPublicKey)
         XCTAssertNotNil(ecrypted)
         if #available(iOS 13.0, *) {
-            XCTAssertTrue(ecrypted.hasPrefix("adyenio0_1_2$"))
+            XCTAssertTrue(ecrypted.hasPrefix("adyenio_0_2_25$"))
         } else {
-            XCTAssertTrue(ecrypted.hasPrefix("adyenio0_1_1$"))
+            XCTAssertTrue(ecrypted.hasPrefix("adyenio_0_1_25$"))
         }
     }
 
