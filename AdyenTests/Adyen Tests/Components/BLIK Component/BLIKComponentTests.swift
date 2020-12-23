@@ -7,6 +7,7 @@
 //
 
 @testable import Adyen
+@testable import AdyenComponents
 import XCTest
 
 class BLIKComponentTests: XCTestCase {
@@ -97,14 +98,14 @@ class BLIKComponentTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
 
-            let hintView: UILabel! = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.blikCodeHintLabel")
+            let hintView: UILabel! = self.sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeHintLabel")
 
-            let blikCodeView: FormTextInputItemView! = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.blikCodeItem")
-            let blikCodeViewTitleLabel: UILabel! = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.blikCodeItem.titleLabel")
-            let blikCodeViewTextField: UITextField! = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.blikCodeItem.textField")
+            let blikCodeView: FormTextInputItemView! = self.sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem")
+            let blikCodeViewTitleLabel: UILabel! = self.sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem.titleLabel")
+            let blikCodeViewTextField: UITextField! = self.sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem.textField")
 
-            let payButtonItemViewButton: UIControl! = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.payButtonItem.button")
-            let payButtonItemViewButtonTitle: UILabel! = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.payButtonItem.button.titleLabel")
+            let payButtonItemViewButton: UIControl! = self.sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button")
+            let payButtonItemViewButtonTitle: UILabel! = self.sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button.titleLabel")
 
             XCTAssertEqual(hintView.backgroundColor, .brown)
             XCTAssertEqual(hintView.textColor, .cyan)
@@ -155,9 +156,9 @@ class BLIKComponentTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         let dummyExpectation = expectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let submitButton: UIControl? = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.payButtonItem.button")
+            let submitButton: UIControl? = self.sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button")
 
-            let blikCodeView: FormTextInputItemView! = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.blikCodeItem")
+            let blikCodeView: FormTextInputItemView! = self.sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem")
             self.populate(textItemView: blikCodeView, with: "123456")
 
             submitButton?.sendActions(for: .touchUpInside)

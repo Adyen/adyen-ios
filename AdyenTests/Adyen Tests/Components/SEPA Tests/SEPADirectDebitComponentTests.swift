@@ -5,6 +5,7 @@
 //
 
 @testable import Adyen
+@testable import AdyenComponents
 @testable import AdyenDropIn
 import XCTest
 
@@ -103,16 +104,16 @@ class SEPADirectDebitComponentTests: XCTestCase {
         
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.nameItem")
-            let nameItemViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.nameItem.titleLabel")
-            let nameItemViewTextField: UITextField? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.nameItem.textField")
+            let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem")
+            let nameItemViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem.titleLabel")
+            let nameItemViewTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem.textField")
             
-            let ibanItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.ibanItem")
-            let ibanItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.ibanItem.titleLabel")
-            let ibanItemTextField: UITextField? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.ibanItem.textField")
+            let ibanItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem")
+            let ibanItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem.titleLabel")
+            let ibanItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem.textField")
             
-            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.payButtonItem.button")
-            let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.payButtonItem.button.titleLabel")
+            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.payButtonItem.button")
+            let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.payButtonItem.button.titleLabel")
             
             /// Test card number field
             XCTAssertEqual(nameItemView?.backgroundColor, .red)
@@ -156,7 +157,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertNil(sut.viewController.view.findView(with: "AdyenCard.CardComponent.Test name"))
+            XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.Test name"))
             XCTAssertEqual(sut.viewController.title, sepaPaymentMethod.name)
             expectation.fulfill()
         }
