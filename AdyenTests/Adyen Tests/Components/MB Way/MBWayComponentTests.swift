@@ -7,6 +7,7 @@
 //
 
 @testable import Adyen
+@testable import AdyenComponents
 import XCTest
 
 class MBWayComponentTests: XCTestCase {
@@ -72,12 +73,12 @@ class MBWayComponentTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let phoneNumberView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.MBWayComponent.phoneNumberItem")
-            let phoneNumberViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "Adyen.MBWayComponent.phoneNumberItem.titleLabel")
-            let phoneNumberViewTextField: UITextField? = sut.viewController.view.findView(with: "Adyen.MBWayComponent.phoneNumberItem.textField")
+            let phoneNumberView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.phoneNumberItem")
+            let phoneNumberViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.phoneNumberItem.titleLabel")
+            let phoneNumberViewTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.phoneNumberItem.textField")
 
-            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "Adyen.MBWayComponent.payButtonItem.button")
-            let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "Adyen.MBWayComponent.payButtonItem.button.titleLabel")
+            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.payButtonItem.button")
+            let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.payButtonItem.button.titleLabel")
 
             /// Test phone number field
             XCTAssertEqual(phoneNumberView?.backgroundColor, .red)
@@ -125,9 +126,9 @@ class MBWayComponentTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         let dummyExpectation = expectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let submitButton: UIControl? = sut.viewController.view.findView(with: "Adyen.MBWayComponent.payButtonItem.button")
+            let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.payButtonItem.button")
 
-            let phoneNumberView: FormTextInputItemView! = sut.viewController.view.findView(with: "Adyen.MBWayComponent.phoneNumberItem")
+            let phoneNumberView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.phoneNumberItem")
             self.populate(textItemView: phoneNumberView, with: "+3511233456789")
 
             submitButton?.sendActions(for: .touchUpInside)
@@ -151,7 +152,7 @@ class MBWayComponentTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertNil(sut.viewController.view.findView(with: "AdyenCard.MBWayComponent.Test name"))
+            XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.Test name"))
             XCTAssertEqual(sut.viewController.title, self.method.name)
             expectation.fulfill()
         }
