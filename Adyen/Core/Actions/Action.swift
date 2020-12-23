@@ -22,7 +22,7 @@ public enum Action: Decodable {
     case threeDS2Challenge(ThreeDS2ChallengeAction)
     
     /// Indicate that the SDK should wait for user action.
-    case await(AwaitAction)
+    case await (AwaitAction)
     
     // MARK: - Coding
     
