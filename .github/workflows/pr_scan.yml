@@ -71,6 +71,6 @@ jobs:
         sonar-scanner -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.pullrequest.key=${run_id} -Dsonar.pullrequest.branch=${head} -Dsonar.pullrequest.base=${base}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run_id: ${{ github.run_id }}
+        run_id: ${{ github.event.number }}
         head: ${{ github.head_ref }}
         base: ${{ github.base_ref }}
