@@ -5,6 +5,7 @@
 //
 
 @testable import Adyen
+@testable import AdyenComponents
 import XCTest
 
 class ApplePayDetailsTest: XCTestCase {

@@ -11,13 +11,24 @@ import Foundation
 public struct PhoneExtensionPickerItem: Equatable {
     
     /// Picker item identifier.
-    internal let identifier: String
+    public let identifier: String
     
     /// Picker item title.
-    internal let title: String
+    public let title: String
     
     /// Country phone extension.
-    internal let phoneExtension: String
+    public let phoneExtension: String
+
+    /// Initializes the extension picker item.
+    ///
+    /// - Parameter identifier: The Picker item identifier.
+    /// - Parameter title: The Picker item title.
+    /// - Parameter phoneExtension: The Country phone extension.
+    public init(identifier: String, title: String, phoneExtension: String) {
+        self.identifier = identifier
+        self.title = title
+        self.phoneExtension = phoneExtension
+    }
     
 }
 

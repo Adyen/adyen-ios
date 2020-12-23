@@ -5,6 +5,7 @@
 //
 
 @testable import Adyen
+@testable import AdyenComponents
 import XCTest
 
 class QiwiWalletComponentTests: XCTestCase {
@@ -89,15 +90,15 @@ class QiwiWalletComponentTests: XCTestCase {
         
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: "Adyen.QiwiWalletComponent.phoneNumberItem")
-            let phoneNumberViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "Adyen.QiwiWalletComponent.phoneNumberItem.titleLabel")
-            let phoneNumberViewTextField: UITextField? = sut.viewController.view.findView(with: "Adyen.QiwiWalletComponent.phoneNumberItem.textField")
+            let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.phoneNumberItem")
+            let phoneNumberViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.phoneNumberItem.titleLabel")
+            let phoneNumberViewTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.phoneNumberItem.textField")
             
             let phoneExtensionView: FormPhoneExtensionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormPhoneNumberItem.phoneExtensionPickerItem")
             let phoneExtensionViewLabel: UILabel? = sut.viewController.view.findView(with: "Adyen.FormPhoneNumberItem.phoneExtensionPickerItem.inputControl.label")
             
-            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "Adyen.QiwiWalletComponent.payButtonItem.button")
-            let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "Adyen.QiwiWalletComponent.payButtonItem.button.titleLabel")
+            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.payButtonItem.button")
+            let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.payButtonItem.button.titleLabel")
             
             /// Test phone number field
             XCTAssertEqual(phoneNumberView?.backgroundColor, .red)
@@ -135,7 +136,7 @@ class QiwiWalletComponentTests: XCTestCase {
         
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertNil(sut.viewController.view.findView(with: "AdyenCard.CardComponent.Test name"))
+            XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.CardComponent.Test name"))
             XCTAssertEqual(sut.viewController.title, self.method.name)
             expectation.fulfill()
         }
@@ -174,9 +175,9 @@ class QiwiWalletComponentTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: "Adyen.QiwiWalletComponent.phoneNumberItem")
+            let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.phoneNumberItem")
 
-            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "Adyen.QiwiWalletComponent.payButtonItem.button")
+            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.payButtonItem.button")
 
             self.populate(textItemView: phoneNumberView!, with: "7455573152")
 
