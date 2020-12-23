@@ -122,10 +122,10 @@ jobs:
         
     - name: Run Sonar
       run: |
-        sonar-scanner -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.pullrequest.branch=${head} -Dsonar.pullrequest.base=${head}
+        git fetch --unshallow --no-tags
+        sonar-scanner -Dsonar.login=${{ secrets.SONAR_TOKEN }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        head: ${{ github.head_ref }}
 
     - name: Code coverage
       if: github.ref == 'refs/heads/develop'

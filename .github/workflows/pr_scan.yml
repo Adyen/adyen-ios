@@ -71,8 +71,8 @@ jobs:
     - name: Run Sonar
       if: ${{ env.sonarToken != 0 }}
       run: |
-        git fetch --no-tags https://github.com/${repo} +refs/heads/${base}:refs/remotes/origin/${base}
-        sonar-scanner -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.pullrequest.key=${run_id} -Dsonar.pullrequest.branch=${head} -Dsonar.pullrequest.base=${base}
+        git fetch --unshallow --no-tags
+        sonar-scanner -Dsonar.login=${{ secrets.SONAR_TOKEN }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run_id: ${{ github.event.number }}
