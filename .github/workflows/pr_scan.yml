@@ -68,10 +68,6 @@ jobs:
     - name: Run Sonar
       if: ${{ env.sonarToken != 0 }}
       run: |
-        sonar-scanner -X 
-        -D sonar.login=${{ secrets.SONAR_TOKEN }}
-        -D sonar.pullrequest.key=${ GITHUB_RUN_ID }
-        -D sonar.pullrequest.branch=${ GITHUB_HEAD_REF }
-        -D sonar.pullrequest.base=${ GITHUB_BASE_REF }
+        sonar-scanner -X -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.pullrequest.key=${{ GITHUB_RUN_ID }} -Dsonar.pullrequest.branch=${{ GITHUB_HEAD_REF }} -Dsonar.pullrequest.base=${{ GITHUB_BASE_REF }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
