@@ -19,6 +19,10 @@ let package = Package(
             targets: ["AdyenCard"]
         ),
         .library(
+            name: "AdyenComponents",
+            targets: ["AdyenComponents"]
+        ),
+        .library(
             name: "AdyenDropIn",
             targets: ["AdyenDropIn"]
         ),
@@ -62,9 +66,18 @@ let package = Package(
             ]
         ),
         .target(
+            name: "AdyenComponents",
+            dependencies: [
+                .target(name: "Adyen")
+            ],
+            path: "AdyenComponents",
+            exclude: ["Info.plist"]
+        ),
+        .target(
             name: "AdyenDropIn",
             dependencies: [
-                .target(name: "AdyenCard")
+                .target(name: "AdyenCard"),
+                .target(name: "AdyenComponents")
             ],
             path: "AdyenDropIn",
             exclude: ["Info.plist"]

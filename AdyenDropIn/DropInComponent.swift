@@ -5,6 +5,9 @@
 //
 
 import Adyen
+#if canImport(AdyenComponents)
+    import AdyenComponents
+#endif
 import UIKit
 
 /// A component that handles the entire flow of payment selection and payment details entry.

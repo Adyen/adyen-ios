@@ -4,13 +4,14 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
+import Adyen
 import UIKit
 
-/// A component that provides a form for MB Way payments.
-public final class MBWayComponent: PaymentComponent, PresentableComponent, Localizable {
+/// A component that provides a form for Qiwi Wallet payments.
+public final class QiwiWalletComponent: PaymentComponent, PresentableComponent, Localizable {
+    
     /// :nodoc:
-    public var paymentMethod: PaymentMethod { mbWayPaymentMethod }
+    public var paymentMethod: PaymentMethod { qiwiWalletPaymentMethod }
     
     /// :nodoc:
     public weak var delegate: PaymentComponentDelegate?
@@ -28,14 +29,14 @@ public final class MBWayComponent: PaymentComponent, PresentableComponent, Local
     public let requiresModalPresentation: Bool = true
     
     /// :nodoc:
-    private let mbWayPaymentMethod: MBWayPaymentMethod
+    private let qiwiWalletPaymentMethod: QiwiWalletPaymentMethod
     
-    /// Initializes the MB Way component.
+    /// Initializes the Qiwi Wallet component.
     ///
-    /// - Parameter paymentMethod: The MB Way payment method.
+    /// - Parameter paymentMethod: The Qiwi Wallet payment method.
     /// - Parameter style: The Component's UI style.
-    public init(paymentMethod: MBWayPaymentMethod, style: FormComponentStyle = FormComponentStyle()) {
-        self.mbWayPaymentMethod = paymentMethod
+    public init(paymentMethod: QiwiWalletPaymentMethod, style: FormComponentStyle = FormComponentStyle()) {
+        self.qiwiWalletPaymentMethod = paymentMethod
         self.style = style
     }
     
@@ -45,6 +46,8 @@ public final class MBWayComponent: PaymentComponent, PresentableComponent, Local
         formViewController.view.isUserInteractionEnabled = true
         completion?()
     }
+    
+    // MARK: - View Controller
     
     private lazy var formViewController: FormViewController = {
         Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
@@ -59,15 +62,11 @@ public final class MBWayComponent: PaymentComponent, PresentableComponent, Local
         return formViewController
     }()
     
-    /// The full phone number item.
-    internal lazy var phoneNumberItem: FormTextInputItem = {
-        let item = FormTextInputItem(style: style.textField)
-        item.title = ADYLocalizedString("adyen.phoneNumber.title", localizationParameters)
-        item.placeholder = ADYLocalizedString("adyen.phoneNumber.placeholder", localizationParameters)
-        item.validator = PhoneNumberValidator()
-        item.formatter = PhoneNumberFormatter()
-        item.validationFailureMessage = ADYLocalizedString("adyen.phoneNumber.invalid", localizationParameters)
-        item.keyboardType = .phonePad
+    /// The full phone number item
+    internal lazy var phoneNumberItem: FormPhoneNumberItem = {
+        let item = FormPhoneNumberItem(selectableValues: selectableValues,
+                                       style: style.textField,
+                                       localizationParameters: localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "phoneNumberItem")
         return item
     }()
@@ -76,21 +75,32 @@ public final class MBWayComponent: PaymentComponent, PresentableComponent, Local
     internal lazy var button: FormButtonItem = {
         let item = FormButtonItem(style: style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
-        item.title = ADYLocalizedString("adyen.continueTo", localizationParameters, mbWayPaymentMethod.name)
+        item.title = ADYLocalizedString("adyen.continueTo", localizationParameters, qiwiWalletPaymentMethod.name)
         item.buttonSelectionHandler = { [weak self] in
             self?.didSelectSubmitButton()
         }
         return item
     }()
     
+    internal var selectableValues: [PhoneExtensionPickerItem] {
+        qiwiWalletPaymentMethod.phoneExtensions.map {
+            let title = "\($0.countryDisplayName) (\($0.value))"
+            return PhoneExtensionPickerItem(identifier: $0.countryCode,
+                                            title: title,
+                                            phoneExtension: $0.value)
+        }
+    }
+    
     private func didSelectSubmitButton() {
         guard formViewController.validate() else { return }
         
-        let details = MBWayDetails(paymentMethod: paymentMethod,
-                                   telephoneNumber: phoneNumberItem.value)
+        let details = QiwiWalletDetails(paymentMethod: paymentMethod,
+                                        phonePrefix: phoneNumberItem.prefix,
+                                        phoneNumber: phoneNumberItem.value)
         button.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
         
         submit(data: PaymentComponentData(paymentMethodDetails: details))
     }
+    
 }
