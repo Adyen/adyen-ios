@@ -21,7 +21,7 @@ internal final class DimmingPresentationController: UIPresentationController {
     private lazy var dimmingView: UIView = {
         let dimmingView = UIView()
         dimmingView.translatesAutoresizingMaskIntoConstraints = false
-        dimmingView.backgroundColor = UIColor.AdyenDropIn.dimmBackground
+        dimmingView.backgroundColor = UIColor.Adyen.dimmBackground
         dimmingView.alpha = 0.0
         
         return dimmingView

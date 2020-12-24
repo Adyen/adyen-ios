@@ -11,7 +11,7 @@ import UIKit
 public struct FormComponentStyle: ViewStyle {
     
     /// :nodoc:
-    public var backgroundColor = UIColor.AdyenCore.componentBackground
+    public var backgroundColor = UIColor.Adyen.componentBackground
     
     /// The text field style.
     public var textField = FormTextItemStyle()
@@ -21,17 +21,17 @@ public struct FormComponentStyle: ViewStyle {
 
     /// The helper message style.
     public var hintLabel: TextStyle = .init(font: .preferredFont(forTextStyle: .body),
-                                            color: UIColor.AdyenCore.componentLabel,
+                                            color: UIColor.Adyen.componentLabel,
                                             textAlignment: .natural)
     
     /// The main button style.
     public var mainButtonItem: FormButtonItemStyle = .main(font: .preferredFont(forTextStyle: .headline),
                                                            textColor: .white,
-                                                           mainColor: UIColor.AdyenCore.defaultBlue)
+                                                           mainColor: UIColor.Adyen.defaultBlue)
     
     /// The secondary button style.
     public var secondaryButtonItem: FormButtonItemStyle = .secondary(font: .preferredFont(forTextStyle: .body),
-                                                                     textColor: UIColor.AdyenCore.defaultBlue)
+                                                                     textColor: UIColor.Adyen.defaultBlue)
     
     /// The color for separator element.
     /// When set, updates separator colors for all undelying styles unless the value were set previously.
@@ -90,6 +90,6 @@ public struct FormComponentStyle: ViewStyle {
     }
     
     /// Initializes the form style with the default style.
-    public init() { /* public */}
+    public init() { /* public */ }
     
 }

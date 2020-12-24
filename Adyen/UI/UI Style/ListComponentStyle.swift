@@ -17,7 +17,7 @@ public struct ListComponentStyle: ViewStyle {
     public var sectionHeader = ListSectionHeaderStyle()
     
     /// :nodoc:
-    public var backgroundColor = UIColor.AdyenCore.componentBackground
+    public var backgroundColor = UIColor.Adyen.componentBackground
     
     /// Initializes the list component style.
     ///

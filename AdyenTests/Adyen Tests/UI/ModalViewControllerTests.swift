@@ -27,15 +27,15 @@ class ModalViewControllerTests: XCTestCase {
         
         loadAndRunTests(for: style) {
             if !ProcessInfo().isOperatingSystemAtLeast(OperatingSystemVersion(majorVersion: 13, minorVersion: 0, patchVersion: 0)) {
-                XCTAssertEqual(self.sut.cancelButton.tintColor.cgColor, UIColor.AdyenCore.defaultBlue.cgColor)
+                XCTAssertEqual(self.sut.cancelButton.tintColor.cgColor, UIColor.Adyen.defaultBlue.cgColor)
             }
-            XCTAssertEqual(self.sut.titleLabel.textColor, UIColor.AdyenCore.componentLabel)
+            XCTAssertEqual(self.sut.titleLabel.textColor, UIColor.Adyen.componentLabel)
             XCTAssertEqual(self.sut.titleLabel.font, UIFont.AdyenCore.barTitle)
             XCTAssertEqual(self.sut.titleLabel.textAlignment, .left)
             if !ProcessInfo().isOperatingSystemAtLeast(OperatingSystemVersion(majorVersion: 13, minorVersion: 0, patchVersion: 0)) {
-                XCTAssertEqual(self.sut.view.tintColor.cgColor, UIColor.AdyenCore.defaultBlue.cgColor)
+                XCTAssertEqual(self.sut.view.tintColor.cgColor, UIColor.Adyen.defaultBlue.cgColor)
             }
-            XCTAssertEqual(self.sut.view.backgroundColor, UIColor.AdyenCore.componentBackground)
+            XCTAssertEqual(self.sut.view.backgroundColor, UIColor.Adyen.componentBackground)
         }
     }
     
