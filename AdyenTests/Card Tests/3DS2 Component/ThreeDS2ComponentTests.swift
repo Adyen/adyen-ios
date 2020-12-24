@@ -8,6 +8,7 @@
 
 import XCTest
 @testable import AdyenCard
+@testable import AdyenActions
 
 extension ThreeDSResult: Equatable {
     public static func == (lhs: ThreeDSResult, rhs: ThreeDSResult) -> Bool {

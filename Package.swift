@@ -15,6 +15,10 @@ let package = Package(
             targets: ["Adyen"]
         ),
         .library(
+            name: "AdyenActions",
+            targets: ["AdyenActions"]
+        ),
+        .library(
             name: "AdyenCard",
             targets: ["AdyenCard"]
         ),
@@ -54,9 +58,18 @@ let package = Package(
             ]
         ),
         .target(
+            name: "AdyenActions",
+            dependencies: [.target(name: "Adyen")],
+            path: "AdyenActions",
+            exclude: [
+                "Info.plist",
+                "Utilities/Non SPM Bundle Extension" // This is to exclude `BundleExtension.swift` file, since swift packages has different code to access internal resources.
+            ]
+        ),
+        .target(
             name: "AdyenCard",
             dependencies: [
-                .target(name: "Adyen"),
+                .target(name: "AdyenActions"),
                 .product(name: "Adyen3DS2", package: "Adyen3DS2")
             ],
             path: "AdyenCard",
@@ -68,7 +81,7 @@ let package = Package(
         .target(
             name: "AdyenComponents",
             dependencies: [
-                .target(name: "Adyen")
+                .target(name: "AdyenActions")
             ],
             path: "AdyenComponents",
             exclude: ["Info.plist"]
@@ -86,7 +99,7 @@ let package = Package(
             name: "AdyenWeChatPay",
             dependencies: [
                 .product(name: "AdyenWeChatPayInternal", package: "AdyenWeChatPayInternal"),
-                .target(name: "Adyen")
+                .target(name: "AdyenActions")
             ],
             path: "AdyenWeChatPay/WeChatPayActionComponent"
         )

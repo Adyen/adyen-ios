@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import AdyenActions
 import AdyenCard
 import AdyenDropIn
 import AdyenComponents

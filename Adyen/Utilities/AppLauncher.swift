@@ -9,22 +9,25 @@ import UIKit
 
 /// Handles opening third party apps.
 /// :nodoc:
-internal protocol AnyAppLauncher {
+public protocol AnyAppLauncher {
     func openCustomSchemeUrl(_ url: URL, completion: ((Bool) -> Void)?)
     func openUniversalAppUrl(_ url: URL, completion: ((Bool) -> Void)?)
 }
 
 /// Handles opening third party apps.
 /// :nodoc:
-internal struct AppLauncher: AnyAppLauncher {
+public struct AppLauncher: AnyAppLauncher {
+
+    /// :nodoc:
+    public init() { /* Empty initializer */ }
     
     /// :nodoc:
-    internal func openCustomSchemeUrl(_ url: URL, completion: ((Bool) -> Void)?) {
+    public func openCustomSchemeUrl(_ url: URL, completion: ((Bool) -> Void)?) {
         UIApplication.shared.open(url, options: [:], completionHandler: completion)
     }
     
     /// :nodoc:
-    internal func openUniversalAppUrl(_ url: URL, completion: ((Bool) -> Void)?) {
+    public func openUniversalAppUrl(_ url: URL, completion: ((Bool) -> Void)?) {
         UIApplication.shared.open(url,
                                   options: [UIApplication.OpenExternalURLOptionsKey.universalLinksOnly: true],
                                   completionHandler: completion)
