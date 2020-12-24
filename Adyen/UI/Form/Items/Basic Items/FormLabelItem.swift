@@ -11,6 +11,7 @@ import UIKit
 /// :nodoc:
 public class FormLabelItem: FormItem {
 
+    /// :nodoc:
     public init(text: String, style: TextStyle, identifier: String? = nil) {
         self.identifier = identifier
         self.style = style
