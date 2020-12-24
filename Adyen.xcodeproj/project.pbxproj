@@ -247,6 +247,7 @@
 		F91760632594A0E300D653BE /* ActionsBundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91760622594A0E300D653BE /* ActionsBundleExtension.swift */; };
 		F91760812594B1F400D653BE /* RedirectComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B798D223ACF10800A2103C /* RedirectComponentStyle.swift */; };
 		F91760822594B1F400D653BE /* AwaitComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B1F24DBEB990073F38A /* AwaitComponentStyle.swift */; };
+		F91760A72594C5DF00D653BE /* AssetsAccessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91760A62594C5DF00D653BE /* AssetsAccessTests.swift */; };
 		F919DF8F24E682250027976E /* ClientKeyRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F919DF8E24E682250027976E /* ClientKeyRequest.swift */; };
 		F919DF9124E682480027976E /* ClientKeyResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F919DF9024E682480027976E /* ClientKeyResponse.swift */; };
 		F919DF9324E68F750027976E /* CardPublicKeyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F919DF9224E68F750027976E /* CardPublicKeyProvider.swift */; };
@@ -871,6 +872,7 @@
 		F9175F8F2594986900D653BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F917603D25949C2300D653BE /* AdyenActionsAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AdyenActionsAssets.xcassets; sourceTree = "<group>"; };
 		F91760622594A0E300D653BE /* ActionsBundleExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActionsBundleExtension.swift; path = "Non SPM Bundle Extension/ActionsBundleExtension.swift"; sourceTree = "<group>"; };
+		F91760A62594C5DF00D653BE /* AssetsAccessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsAccessTests.swift; sourceTree = "<group>"; };
 		F919DF8E24E682250027976E /* ClientKeyRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientKeyRequest.swift; sourceTree = "<group>"; };
 		F919DF9024E682480027976E /* ClientKeyResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientKeyResponse.swift; sourceTree = "<group>"; };
 		F919DF9224E68F750027976E /* CardPublicKeyProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPublicKeyProvider.swift; sourceTree = "<group>"; };
@@ -1800,6 +1802,7 @@
 		E97B9716229D530F00505476 /* Adyen Tests */ = {
 			isa = PBXGroup;
 			children = (
+				F91760A52594C5C000D653BE /* Assets */,
 				F99F085B2383EBFF00EBB948 /* UI */,
 				E97B9718229D54C600505476 /* Core */,
 				E97B9717229D533B00505476 /* Components */,
@@ -2146,6 +2149,14 @@
 				F9639B1F24DBEB990073F38A /* AwaitComponentStyle.swift */,
 			);
 			path = "UI Style";
+			sourceTree = "<group>";
+		};
+		F91760A52594C5C000D653BE /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				F91760A62594C5DF00D653BE /* AssetsAccessTests.swift */,
+			);
+			path = Assets;
 			sourceTree = "<group>";
 		};
 		F919DF9A24EA7B480027976E /* Components */ = {
@@ -3482,6 +3493,7 @@
 				E270FDE6225CB40A006C2CD0 /* ObservableTests.swift in Sources */,
 				F957AA6A2552D98E0099AD73 /* AnyThreeDS2FingerprintSubmitterMock.swift in Sources */,
 				F99F085A2383EAC800EBB948 /* FormatterMock.swift in Sources */,
+				F91760A72594C5DF00D653BE /* AssetsAccessTests.swift in Sources */,
 				F9639B4724E283060073F38A /* BackoffSchedulerTests.swift in Sources */,
 				E216D3CB221AFB9A0013CBCF /* IBANValidatorTests.swift in Sources */,
 				E9E3DACB221EDDE800697074 /* CardTypeDetectorTests.swift in Sources */,
