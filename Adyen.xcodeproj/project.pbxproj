@@ -1202,21 +1202,15 @@
 			isa = PBXGroup;
 			children = (
 				F96286BC256BDEB000043FE3 /* CoreBundleExtension.swift */,
+				F96F44CC23B257D700871C1F /* Logger.swift */,
 				E270FDE7225CC4A7006C2CD0 /* Observable */,
-				E2C0B54F22A6AA0600D3367B /* AmountFormatter.swift */,
 				E97B972222B238C400505476 /* Analytics.swift */,
 				E9E3DB02222548E100697074 /* Coder.swift */,
 				E9E3DAFE2225488900697074 /* Completion.swift */,
-				E90933FE228AFC6600C9F04B /* Environment.swift */,
-				E216D3C2221AEDBE0013CBCF /* Formatter.swift */,
-				E2B3179F2265BB0B00C1BB30 /* LengthValidator.swift */,
 				E9021DA9225789B1009CF7F4 /* Localization.swift */,
 				F96F44DC23BE487500871C1F /* LocalizationParameters.swift */,
 				E9093400228C54CD00C9F04B /* LogoURLProvider.swift */,
 				F94343E723FFF9DC00AADF5F /* ISOCountry.swift */,
-				F9EDB781239149AF00CFB3C9 /* CountryCodeValidator.swift */,
-				F9EDB78323914B4400CFB3C9 /* CurrencyCodeValidator.swift */,
-				E216D3CC221AFBB90013CBCF /* Validator.swift */,
 				F9E441512382A0DD00D3CD48 /* ViewIdentifierBuilder.swift */,
 				F9AC61BA24374CE00062A00D /* AppLauncher.swift */,
 				F924C073246C2E0B006DDAB8 /* LazyOptional.swift */,
@@ -1328,11 +1322,7 @@
 				F957A9C7255050DB0099AD73 /* Stored Payment Method */,
 				F9639B1524DA90E50073F38A /* Await */,
 				E28098B1220DA7910087928F /* Base */,
-				E216D3C4221AEF450013CBCF /* IBANFormatter.swift */,
-				E216D3C8221AFB830013CBCF /* IBANValidator.swift */,
 				E216D3CE221AFC3A0013CBCF /* IBANSpecification.swift */,
-				F9639B2124DC2FF50073F38A /* PresentableComponentWrapper.swift */,
-				F9639B2324DC38460073F38A /* PresentationDelegate.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1522,11 +1512,11 @@
 			isa = PBXGroup;
 			children = (
 				F95B6DAC25274B91002C9062 /* SwiftUI */,
-				F9639B1A24DAD3150073F38A /* Await View Controller */,
 				F9354BE523A7B4AE00A6760B /* UI Style */,
 				E2C0E094220B04E9008616F6 /* Form */,
 				E28098B9220DB9E70087928F /* List */,
 				E2C0E0BF220D7E53008616F6 /* Views */,
+				F9175F7625948EDF00D653BE /* View Controllers */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1575,8 +1565,6 @@
 		E2D12BFE221D91DE00EF682F /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				E26EAD91233A1A340060BBA7 /* CoreColors.swift */,
-				E787C9D0246E948F00B401E0 /* CoreFonts.swift */,
 				E2D12BFF221D91ED00EF682F /* StringHelpers.swift */,
 				E9E3DAFC2225485400697074 /* URLSessionHelpers.swift */,
 				E9021DED225CC46D009CF7F4 /* URLHelpers.swift */,
@@ -1877,10 +1865,8 @@
 				F9620DB123C75886005209FC /* PaymentComponentBuilder.swift */,
 				F939DEE223C8B4C100D19249 /* EmptyPaymentDetails.swift */,
 				F926D51C23F4214500D058D3 /* Core Protocols */,
-				F96F44CB23B257C500871C1F /* Logger */,
 				E278EB3D22AA5E8D00497FD5 /* Actions */,
 				E278EB3C22AA5E8700497FD5 /* Payment Methods */,
-				F924C07A246C3BB8006DDAB8 /* Utilities */,
 				F9639B2724DD69D60073F38A /* APIClient */,
 			);
 			path = Core;
@@ -2061,6 +2047,23 @@
 			path = AdyenComponents;
 			sourceTree = "<group>";
 		};
+		F9175F7625948EDF00D653BE /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				F9639B1A24DAD3150073F38A /* Await View Controller */,
+				F9175F7725948EFF00D653BE /* Secured View Controller */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		F9175F7725948EFF00D653BE /* Secured View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				F924C078246C38E0006DDAB8 /* SecuredViewController.swift */,
+			);
+			path = "Secured View Controller";
+			sourceTree = "<group>";
+		};
 		F919DF9A24EA7B480027976E /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -2106,17 +2109,11 @@
 			path = CardPublicKeyProvider;
 			sourceTree = "<group>";
 		};
-		F924C07A246C3BB8006DDAB8 /* Utilities */ = {
-			isa = PBXGroup;
-			children = (
-				F924C078246C38E0006DDAB8 /* SecuredViewController.swift */,
-			);
-			path = Utilities;
-			sourceTree = "<group>";
-		};
 		F926D51C23F4214500D058D3 /* Core Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				F9639B2124DC2FF50073F38A /* PresentableComponentWrapper.swift */,
+				F9639B2324DC38460073F38A /* PresentationDelegate.swift */,
 				F926D51D23F4216600D058D3 /* ParameterlessInitializable.swift */,
 				F926D51F23F4217A00D058D3 /* DeviceDependant.swift */,
 			);
@@ -2135,10 +2132,15 @@
 		F926D53123F5A5BD00D058D3 /* Validators */ = {
 			isa = PBXGroup;
 			children = (
+				E216D3CC221AFBB90013CBCF /* Validator.swift */,
+				E2B3179F2265BB0B00C1BB30 /* LengthValidator.swift */,
+				E216D3C8221AFB830013CBCF /* IBANValidator.swift */,
 				F926D53223F5A5D000D058D3 /* NumericStringValidator.swift */,
 				F95B6D8D25231715002C9062 /* RegularExpressionValidator.swift */,
 				F9D644DF24D2E4210059CBE3 /* EmailValidator.swift */,
 				F95B6D8B252316DA002C9062 /* PhoneNumberValidator.swift */,
+				F9EDB781239149AF00CFB3C9 /* CountryCodeValidator.swift */,
+				F9EDB78323914B4400CFB3C9 /* CurrencyCodeValidator.swift */,
 			);
 			path = Validators;
 			sourceTree = "<group>";
@@ -2146,8 +2148,11 @@
 		F926D53623F6A34300D058D3 /* Formatters */ = {
 			isa = PBXGroup;
 			children = (
+				E2C0B54F22A6AA0600D3367B /* AmountFormatter.swift */,
+				E216D3C2221AEDBE0013CBCF /* Formatter.swift */,
 				E9E3DAB8221E98BD00697074 /* NumericFormatter.swift */,
 				F95B6D892523138E002C9062 /* PhoneNumberFormatter.swift */,
+				E216D3C4221AEF450013CBCF /* IBANFormatter.swift */,
 			);
 			path = Formatters;
 			sourceTree = "<group>";
@@ -2173,6 +2178,8 @@
 		F9354BE523A7B4AE00A6760B /* UI Style */ = {
 			isa = PBXGroup;
 			children = (
+				E26EAD91233A1A340060BBA7 /* CoreColors.swift */,
+				E787C9D0246E948F00B401E0 /* CoreFonts.swift */,
 				F9354BE623A7B4E200A6760B /* TextStyle.swift */,
 				F9354BEC23A7C34D00A6760B /* ButtonStyle.swift */,
 				F9354BEE23A7C87600A6760B /* ImageStyle.swift */,
@@ -2381,6 +2388,7 @@
 				F9639B3E24E18F620073F38A /* Scheduler.swift */,
 				F9639B4024E27D0E0073F38A /* BackoffScheduler.swift */,
 				F9639B4224E27FAE0073F38A /* SimpleScheduler.swift */,
+				E90933FE228AFC6600C9F04B /* Environment.swift */,
 			);
 			path = APIClient;
 			sourceTree = "<group>";
@@ -2401,14 +2409,6 @@
 				F90FB7BD2446EBB9005BFE0E /* BrowserInfoTests.swift */,
 			);
 			path = Base;
-			sourceTree = "<group>";
-		};
-		F96F44CB23B257C500871C1F /* Logger */ = {
-			isa = PBXGroup;
-			children = (
-				F96F44CC23B257D700871C1F /* Logger.swift */,
-			);
-			path = Logger;
 			sourceTree = "<group>";
 		};
 		F9842CC8256FD0770063CE5A /* 3DS2 Action handlers */ = {
