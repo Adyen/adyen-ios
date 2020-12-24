@@ -7,26 +7,33 @@
 import Foundation
 
 /// Contains the country-specific specifications for countries that adopt the IBAN standard.
+/// :nodoc:
 public struct IBANSpecification {
     
     /// The highest possible length of an IBAN.
+    /// :nodoc:
     public static let highestMaximumLength = 32
     
     /// The code of the country to which the specifications apply.
+    /// :nodoc:
     public let countryCode: String
     
     /// The length of a valid IBAN.
+    /// :nodoc:
     public let length: Int
     
     /// The structure of the underlying BBAN.
+    /// :nodoc:
     public let structure: String
     
     /// An example of a valid IBAN.
+    /// :nodoc:
     public let example: String
     
     /// Returns the IBAN specification for the country with the given code, or `nil` if none could be found.
     ///
     /// - Parameter countryCode: The code of the country to retrieve the IBAN specification for.
+    /// :nodoc:
     public init?(forCountryCode countryCode: String) {
         guard let specification = IBANSpecification.specifications[countryCode] else {
             return nil
@@ -42,13 +49,15 @@ public struct IBANSpecification {
     ///   - length: The length of a valid IBAN.
     ///   - structure: The structure of the underlying BBAN.
     ///   - example: An example of a valid IBAN.
+    /// :nodoc:
     private init(countryCode: String, length: Int, structure: String, example: String) {
         self.countryCode = countryCode
         self.length = length
         self.structure = structure
         self.example = example
     }
-    
+
+    /// :nodoc:
     private static let specifications = [
         "AD": IBANSpecification(countryCode: "AD", length: 24, structure: "F04F04A12", example: "AD1200012030200359100100"),
         "AE": IBANSpecification(countryCode: "AE", length: 23, structure: "F03F16", example: "AE070331234567890123456"),

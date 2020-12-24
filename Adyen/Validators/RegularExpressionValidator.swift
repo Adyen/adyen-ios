@@ -11,7 +11,8 @@ import Foundation
 public class RegularExpressionValidator: LengthValidator {
     
     private let regularExpression: String
-    
+
+    /// :nodoc:
     public init(regularExpression: String, minimumLength: Int? = nil, maximumLength: Int? = nil) {
         self.regularExpression = regularExpression
         super.init(minimumLength: minimumLength, maximumLength: maximumLength)
