@@ -57,7 +57,7 @@ internal protocol AESEncryptor {
 }
 
 extension AESEncryptor {
-    var tag: Data? { nil }
+    internal var tag: Data? { nil }
 }
 
 extension Cryptor.AES {
@@ -70,19 +70,19 @@ extension Cryptor.AES {
 
 extension UnsafeMutableBufferPointer {
 
-    func memecpy(from source: UnsafePointer<Element>, offset: Int, count: Int) {
+    internal func memecpy(from source: UnsafePointer<Element>, offset: Int, count: Int) {
         for index in offset..<(offset + count) {
             self[index] = source.advanced(by: index - offset).pointee
         }
     }
 
-    func memecpy<T: RandomAccessCollection>(from source: T, offset: Int, count: Int) where T.Element == Element, T.Index == Int {
+    internal func memecpy<T: RandomAccessCollection>(from source: T, offset: Int, count: Int) where T.Element == Element, T.Index == Int {
         for index in offset..<(offset + count) {
             self[index] = source[index - offset]
         }
     }
 
-    func memset(value: Element, offset: Int, count: Int) {
+    internal func memset(value: Element, offset: Int, count: Int) {
         for index in offset..<offset + count {
             self[index] = value
         }
