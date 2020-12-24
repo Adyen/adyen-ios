@@ -12,7 +12,7 @@ public struct FormSwitchItemStyle: FormValueItemStyle {
     
     /// The title style.
     public var title = TextStyle(font: .preferredFont(forTextStyle: .body),
-                                 color: UIColor.AdyenCore.componentLabel,
+                                 color: UIColor.Adyen.componentLabel,
                                  textAlignment: .natural)
     
     /// The color of `onTintColor` of switch.

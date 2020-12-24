@@ -177,7 +177,7 @@ public final class ListItemView: UIView, AnyFormItemView {
             return imageView.layer.borderColor = nil
         }
 
-        imageView.layer.borderColor = item?.style.image.borderColor?.cgColor ?? UIColor.AdyenCore.componentSeparator.cgColor
+        imageView.layer.borderColor = item?.style.image.borderColor?.cgColor ?? UIColor.Adyen.componentSeparator.cgColor
     }
     
     override public var intrinsicContentSize: CGSize {

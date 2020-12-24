@@ -130,7 +130,7 @@ internal final class ModalViewController: UIViewController {
     
     internal lazy var separator: UIView = {
         let separator = UIView(frame: .zero)
-        separator.backgroundColor = style.separatorColor ?? UIColor.AdyenDropIn.componentSeparator
+        separator.backgroundColor = style.separatorColor ?? UIColor.Adyen.componentSeparator
         return separator
     }()
     
