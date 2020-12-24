@@ -7,7 +7,7 @@
 @testable import Adyen
 @testable import AdyenComponents
 @testable import AdyenDropIn
-@testable import AdyenUIHost
+import PassKit
 import XCTest
 
 class ComponentManagerTests: XCTestCase {
@@ -45,8 +45,10 @@ class ComponentManagerTests: XCTestCase {
         let payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
         let config = DropInComponent.PaymentMethodsConfiguration()
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
-        config.applePay.merchantIdentifier = Configuration.applePayMerchantIdentifier
-        config.applePay.summaryItems = Configuration.applePaySummaryItems
+        config.applePay.merchantIdentifier = "applePayMerchantIdentifier"
+        config.applePay.summaryItems = [
+            PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)
+        ]
         config.clientKey = "client_key"
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    payment: payment,
@@ -65,8 +67,10 @@ class ComponentManagerTests: XCTestCase {
         let payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
         let config = DropInComponent.PaymentMethodsConfiguration()
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
-        config.applePay.merchantIdentifier = Configuration.applePayMerchantIdentifier
-        config.applePay.summaryItems = Configuration.applePaySummaryItems
+        config.applePay.merchantIdentifier = "applePayMerchantIdentifier"
+        config.applePay.summaryItems = [
+            PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)
+        ]
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    payment: payment,
                                    configuration: config,
@@ -84,8 +88,10 @@ class ComponentManagerTests: XCTestCase {
         let payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
         let config = DropInComponent.PaymentMethodsConfiguration()
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
-        config.applePay.merchantIdentifier = Configuration.applePayMerchantIdentifier
-        config.applePay.summaryItems = Configuration.applePaySummaryItems
+        config.applePay.merchantIdentifier = "applePayMerchantIdentifier"
+        config.applePay.summaryItems = [
+            PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)
+        ]
         config.clientKey = nil
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    payment: payment,
@@ -103,8 +109,10 @@ class ComponentManagerTests: XCTestCase {
         let payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
         let config = DropInComponent.PaymentMethodsConfiguration()
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
-        config.applePay.merchantIdentifier = Configuration.applePayMerchantIdentifier
-        config.applePay.summaryItems = Configuration.applePaySummaryItems
+        config.applePay.merchantIdentifier = "applePayMerchantIdentifier"
+        config.applePay.summaryItems = [
+            PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)
+        ]
         config.clientKey = "client_key"
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    payment: payment,
@@ -123,8 +131,10 @@ class ComponentManagerTests: XCTestCase {
         let payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
         let config = DropInComponent.PaymentMethodsConfiguration()
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
-        config.applePay.merchantIdentifier = Configuration.applePayMerchantIdentifier
-        config.applePay.summaryItems = Configuration.applePaySummaryItems
+        config.applePay.merchantIdentifier = "applePayMerchantIdentifier"
+        config.applePay.summaryItems = [
+            PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)
+        ]
         config.clientKey = "client_key"
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    payment: payment,
