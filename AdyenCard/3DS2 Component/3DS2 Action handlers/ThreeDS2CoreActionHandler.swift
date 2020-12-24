@@ -4,8 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
 import Adyen3DS2
+#if canImport(AdyenActions)
+    import AdyenActions
+#endif
+import Adyen
 import Foundation
 
 /// Handles the 3D Secure 2 fingerprint and challenge actions separately.

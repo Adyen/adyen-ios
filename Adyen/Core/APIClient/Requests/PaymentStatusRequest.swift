@@ -8,29 +8,34 @@ import Foundation
 
 /// :nodoc:
 /// Represents a payment status request.
-internal struct PaymentStatusRequest: Request {
+public struct PaymentStatusRequest: Request {
     
     /// :nodoc:
-    internal typealias ResponseType = PaymentStatusResponse
+    public typealias ResponseType = PaymentStatusResponse
     
     /// :nodoc:
-    internal let path: String = "checkoutshopper/services/PaymentInitiation/v1/status"
+    public let path: String = "checkoutshopper/services/PaymentInitiation/v1/status"
     
     /// :nodoc:
-    internal var counter: UInt = 0
+    public var counter: UInt = 0
     
     /// :nodoc:
-    internal let headers: [String: String] = [:]
+    public let headers: [String: String] = [:]
     
     /// :nodoc:
-    internal let queryParameters: [URLQueryItem] = []
+    public let queryParameters: [URLQueryItem] = []
     
     /// :nodoc:
-    internal let method: HTTPMethod = .post
+    public let method: HTTPMethod = .post
     
     /// :nodoc:
     /// The payment context data.
-    internal let paymentData: String
+    public let paymentData: String
+
+    /// :nodoc:
+    public init(paymentData: String) {
+        self.paymentData = paymentData
+    }
     
     /// :nodoc:
     internal enum CodingKeys: String, CodingKey {

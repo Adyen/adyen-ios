@@ -1,13 +1,14 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
 
-internal extension URL {
-    var queryParameters: [String: String] { // swiftlint:disable:this explicit_acl
+/// :nodoc:
+public extension URL {
+    var queryParameters: [String: String] {
         let components = URLComponents(url: self, resolvingAgainstBaseURL: true)
         let queryItems = components?.queryItems ?? []
         
@@ -16,7 +17,7 @@ internal extension URL {
         })
     }
     
-    var isHttp: Bool { // swiftlint:disable:this explicit_acl
+    var isHttp: Bool {
         scheme == "http" || scheme == "https"
     }
 }

@@ -11,6 +11,9 @@ import Adyen
 #if canImport(AdyenComponents)
     import AdyenComponents
 #endif
+#if canImport(AdyenActions)
+    import AdyenActions
+#endif
 import Foundation
 
 internal final class ComponentManager {

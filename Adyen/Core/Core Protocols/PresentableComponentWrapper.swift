@@ -7,29 +7,30 @@
 import Foundation
 import UIKit
 
+/// :nodoc:
 /// A component that wraps any `Component` to make it a `PresentableComponent`.
-internal final class PresentableComponentWrapper: PresentableComponent {
+public final class PresentableComponentWrapper: PresentableComponent {
     
     /// :nodoc:
-    internal let viewController: UIViewController
+    public let viewController: UIViewController
     
     /// The wrapped component.
-    internal let component: Component
+    public let component: Component
     
     /// :nodoc:
-    internal var requiresModalPresentation: Bool = true
+    public var requiresModalPresentation: Bool = true
     
     /// Initializes the wrapper component.
     ///
     /// - Parameter component: The wrapped component.
     /// - Parameter viewController: The `ViewController` used as the UI of the `PresentableComponent`.
-    internal init(component: Component, viewController: UIViewController) {
+    public init(component: Component, viewController: UIViewController) {
         self.component = component
         self.viewController = viewController
     }
     
     /// :nodoc:
-    internal func didCancel() {
+    public func didCancel() {
         guard let component = component as? Cancellable else { return }
         component.didCancel()
     }

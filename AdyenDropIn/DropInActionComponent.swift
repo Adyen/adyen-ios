@@ -8,6 +8,9 @@ import Adyen
 #if canImport(AdyenCard)
     import AdyenCard
 #endif
+#if canImport(AdyenActions)
+    import AdyenActions
+#endif
 import Foundation
 import UIKit
 

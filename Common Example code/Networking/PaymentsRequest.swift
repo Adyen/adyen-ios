@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import AdyenActions
 import Foundation
 
 internal struct PaymentsRequest: Request {
