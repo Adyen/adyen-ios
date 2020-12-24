@@ -10,7 +10,12 @@ import UIKit
 extension UIColor {
     
     /// :nodoc:
-    public enum AdyenCore {
+    public enum Adyen {
+
+        /// :nodoc:
+        public static var dimmBackground: UIColor {
+            return componentSeparator
+        }
 
         /// :nodoc:
         public static var componentBackground: UIColor {

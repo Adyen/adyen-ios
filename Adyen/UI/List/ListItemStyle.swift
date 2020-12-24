@@ -12,23 +12,23 @@ public struct ListItemStyle: ViewStyle {
     
     /// The title style.
     public var title = TextStyle(font: .preferredFont(forTextStyle: .body),
-                                 color: UIColor.AdyenCore.componentLabel,
+                                 color: UIColor.Adyen.componentLabel,
                                  textAlignment: .natural)
     
     /// The subtitle style.
     public var subtitle = TextStyle(font: .preferredFont(forTextStyle: .footnote),
-                                    color: UIColor.AdyenCore.componentSecondaryLabel,
+                                    color: UIColor.Adyen.componentSecondaryLabel,
                                     textAlignment: .natural)
     
     /// The image style.
-    public var image = ImageStyle(borderColor: UIColor.AdyenCore.componentSeparator,
+    public var image = ImageStyle(borderColor: UIColor.Adyen.componentSeparator,
                                   borderWidth: 1.0 / UIScreen.main.nativeScale,
                                   cornerRadius: 4.0,
                                   clipsToBounds: true,
                                   contentMode: .scaleAspectFit)
     
     /// :nodoc:
-    public var backgroundColor = UIColor.AdyenCore.componentBackground
+    public var backgroundColor = UIColor.Adyen.componentBackground
     
     /// Initializes the list item style.
     ///

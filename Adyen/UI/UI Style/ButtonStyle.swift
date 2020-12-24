@@ -17,7 +17,7 @@ public struct ButtonStyle: ViewStyle {
     public var cornerRounding: CornerRounding = .fixed(8)
     
     /// :nodoc:
-    public var backgroundColor = UIColor.AdyenCore.defaultBlue
+    public var backgroundColor = UIColor.Adyen.defaultBlue
     
     /// Initializes the button style.
     ///
