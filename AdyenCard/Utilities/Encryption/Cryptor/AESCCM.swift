@@ -45,15 +45,16 @@ extension Cryptor.AES {
         /// X_i = encrypted B_i blocks
         private let blockX: MutableBytes
 
-        /**  The message to encrypt.
+        /**  The encrypted message.
          *   Note that the encryption operation modifies the contents of  msg and adds
          *   M bytes MAC. Therefore, the buffer must be at least lm +  M bytes large.
          */
         private let cipher: MutableBytes
 
-        public var cipherData: Data { Data(bytes: cipher.baseAddress!, count: cipher.count) }
+        internal var cipherData: Data { Data(bytes: cipher.baseAddress!, count: cipher.count) }
 
-        init(data: NSData, key: NSData, initVector: NSData) {
+        internal init?(data: NSData, key: NSData, initVector: NSData) {
+
             encodeBytesLength = 15 - initVector.count
             messageLength = data.count
             nonce = Bytes(start: initVector.bytes.assumingMemoryBound(to: UInt8.self), count: 16)

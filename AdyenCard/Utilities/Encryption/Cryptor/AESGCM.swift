@@ -15,15 +15,15 @@ extension Cryptor.AES {
 
         private let box: AES.GCM.SealedBox
 
-        public var cipherData: Data {
+        internal var cipherData: Data {
             box.ciphertext
         }
 
-        public var tag: Data? {
+        internal var tag: Data? {
             box.tag
         }
 
-        init?(data: NSData, key: NSData, initVector: NSData) {
+        internal init?(data: NSData, key: NSData, initVector: NSData) {
             let symmetricKey = SymmetricKey(data: key as Data)
 
             guard
