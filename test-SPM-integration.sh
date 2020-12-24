@@ -38,6 +38,7 @@ let package = Package(
             name: \"TempProject\",
             dependencies: [
                 .product(name: \"Adyen\", package: \"Adyen\"),
+                .product(name: \"AdyenActions\", package: \"Adyen\"),
                 .product(name: \"AdyenCard\", package: \"Adyen\"),
                 .product(name: \"AdyenComponents\", package: \"Adyen\"),
                 .product(name: \"AdyenDropIn\", package: \"Adyen\"),

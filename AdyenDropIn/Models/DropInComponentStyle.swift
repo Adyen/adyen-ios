@@ -5,6 +5,9 @@
 //
 
 import Adyen
+#if canImport(AdyenActions)
+    import AdyenActions
+#endif
 import Foundation
 import UIKit
 

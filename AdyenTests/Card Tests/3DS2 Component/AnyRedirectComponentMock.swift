@@ -7,6 +7,7 @@
 //
 
 import Foundation
+@testable import AdyenActions
 @testable import AdyenCard
 
 final class AnyRedirectComponentMock: AnyRedirectComponent {

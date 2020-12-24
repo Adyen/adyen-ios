@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import UIKit
 
 /// A component that handles a redirect action. Supports external websites, apps and universal links.

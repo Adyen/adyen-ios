@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import Foundation
 import UIKit
 
@@ -13,7 +14,7 @@ internal final class AwaitView: UIView {
     internal lazy var icon: UIImageView = {
         var image = UIImage(named: viewModel.icon)
         if image == nil {
-            image = UIImage(named: viewModel.icon, in: Bundle.coreInternalResources, compatibleWith: nil)
+            image = UIImage(named: viewModel.icon, in: Bundle.actionsInternalResources, compatibleWith: nil)
         }
         let imageView = UIImageView(image: image)
         imageView.contentMode = .center

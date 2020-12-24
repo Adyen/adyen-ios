@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import AdyenActions
 import UIKit
 
 @UIApplicationMain

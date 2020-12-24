@@ -8,7 +8,7 @@ import Foundation
 
 /// :nodoc:
 /// Represents the payment status code.
-internal enum PaymentResultCode: String, Decodable {
+public enum PaymentResultCode: String, Decodable {
     case authorised
     case refused
     case pending
@@ -22,14 +22,14 @@ internal enum PaymentResultCode: String, Decodable {
 
 /// :nodoc:
 /// Represents a payment status response.
-internal struct PaymentStatusResponse: Response {
+public struct PaymentStatusResponse: Response {
     
     /// :nodoc:
     /// The payload.
-    internal let payload: String
+    public let payload: String
     
     /// :nodoc:
     /// The payment status.
-    internal let resultCode: PaymentResultCode
+    public let resultCode: PaymentResultCode
     
 }

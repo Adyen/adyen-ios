@@ -8,6 +8,7 @@
 
 import Foundation
 @testable import AdyenCard
+@testable import AdyenActions
 
 final class AnyThreeDS2ActionHandlerMock: AnyThreeDS2ActionHandler {
 

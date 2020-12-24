@@ -7,6 +7,7 @@
 //
 
 @testable import Adyen
+@testable import AdyenActions
 import XCTest
 
 class PollingAwaitComponentTests: XCTestCase {
