@@ -59,7 +59,10 @@ let package = Package(
         ),
         .target(
             name: "AdyenActions",
-            dependencies: [.target(name: "Adyen")],
+            dependencies: [
+                .target(name: "Adyen"),
+                .product(name: "Adyen3DS2", package: "Adyen3DS2")
+            ],
             path: "AdyenActions",
             exclude: [
                 "Info.plist",
@@ -69,8 +72,7 @@ let package = Package(
         .target(
             name: "AdyenCard",
             dependencies: [
-                .target(name: "AdyenActions"),
-                .product(name: "Adyen3DS2", package: "Adyen3DS2")
+                .target(name: "Adyen")
             ],
             path: "AdyenCard",
             exclude: [
@@ -81,7 +83,7 @@ let package = Package(
         .target(
             name: "AdyenComponents",
             dependencies: [
-                .target(name: "AdyenActions")
+                .target(name: "Adyen")
             ],
             path: "AdyenComponents",
             exclude: ["Info.plist"]
@@ -90,7 +92,8 @@ let package = Package(
             name: "AdyenDropIn",
             dependencies: [
                 .target(name: "AdyenCard"),
-                .target(name: "AdyenComponents")
+                .target(name: "AdyenComponents"),
+                .target(name: "AdyenActions")
             ],
             path: "AdyenDropIn",
             exclude: ["Info.plist"]
