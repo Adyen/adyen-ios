@@ -1,14 +1,11 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen3DS2
-#if canImport(AdyenActions)
-    import AdyenActions
-#endif
 import Adyen
+import Adyen3DS2
 import Foundation
 
 /// Handles the 3D Secure 2 fingerprint and challenge actions separately.

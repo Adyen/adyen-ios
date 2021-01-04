@@ -7,7 +7,7 @@
 //
 
 import Foundation
-@testable import AdyenCard
+@testable import AdyenActions
 
 final class AnyThreeDS2FingerprintSubmitterMock: AnyThreeDS2FingerprintSubmitter {
 
