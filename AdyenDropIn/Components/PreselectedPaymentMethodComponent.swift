@@ -63,7 +63,7 @@ internal final class PreselectedPaymentMethodComponent: LoadingComponent, Locali
     }()
     
     private lazy var separator: FormSeparatorItem = {
-        let separator = FormSeparatorItem(color: style.separatorColor ?? UIColor.AdyenDropIn.componentSeparator)
+        let separator = FormSeparatorItem(color: style.separatorColor ?? UIColor.Adyen.componentSeparator)
         separator.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "separator")
         return separator
     }()

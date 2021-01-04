@@ -7,6 +7,7 @@
 //
 
 import XCTest
+@testable import AdyenActions
 @testable import AdyenCard
 
 extension RedirectAction: Equatable {

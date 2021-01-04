@@ -10,65 +10,78 @@ import UIKit
 extension UIColor {
     
     /// :nodoc:
-    internal enum AdyenCore {
-        
-        internal static var componentBackground: UIColor {
+    public enum Adyen {
+
+        /// :nodoc:
+        public static var dimmBackground: UIColor {
+            return componentSeparator
+        }
+
+        /// :nodoc:
+        public static var componentBackground: UIColor {
             if #available(iOS 13.0, *) {
                 return .systemBackground
             } else {
                 return .white
             }
         }
-        
-        internal static var componentLabel: UIColor {
+
+        /// :nodoc:
+        public static var componentLabel: UIColor {
             if #available(iOS 13.0, *) {
                 return .label
             } else {
                 return .black
             }
         }
-        
-        internal static var componentSecondaryLabel: UIColor {
+
+        /// :nodoc:
+        public static var componentSecondaryLabel: UIColor {
             if #available(iOS 13.0, *) {
                 return .secondaryLabel
             } else {
                 return .darkGray
             }
         }
-        
-        internal static var componentTertiaryLabel: UIColor {
+
+        /// :nodoc:
+        public static var componentTertiaryLabel: UIColor {
             if #available(iOS 13.0, *) {
                 return .tertiaryLabel
             } else {
                 return .gray
             }
         }
-        
-        internal static var componentQuaternaryLabel: UIColor {
+
+        /// :nodoc:
+        public static var componentQuaternaryLabel: UIColor {
             if #available(iOS 13.0, *) {
                 return .quaternaryLabel
             } else {
                 return .lightGray
             }
         }
-        
-        internal static var componentPlaceholderText: UIColor {
+
+        /// :nodoc:
+        public static var componentPlaceholderText: UIColor {
             if #available(iOS 13.0, *) {
                 return .placeholderText
             } else {
                 return .gray
             }
         }
-        
-        internal static var componentSeparator: UIColor {
+
+        /// :nodoc:
+        public static var componentSeparator: UIColor {
             if #available(iOS 13.0, *) {
                 return .separator
             } else {
                 return UIColor(white: 0.0, alpha: 0.2)
             }
         }
-        
-        internal static var componentLoadingMessageColor: UIColor {
+
+        /// :nodoc:
+        public static var componentLoadingMessageColor: UIColor {
             if #available(iOS 11.0, *) {
                 return UIColor(named: "awaitLoadingMessageColor",
                                in: Bundle.coreInternalResources,
@@ -77,10 +90,12 @@ extension UIColor {
                 return componentPlaceholderText
             }
         }
-        
-        internal static let defaultBlue = UIColor(hex: 0x007AFF)
-        
-        internal static let defaultRed = UIColor(hex: 0xFF3B30)
+
+        /// :nodoc:
+        public static let defaultBlue = UIColor(hex: 0x007AFF)
+
+        /// :nodoc:
+        public static let defaultRed = UIColor(hex: 0xFF3B30)
         
     }
     

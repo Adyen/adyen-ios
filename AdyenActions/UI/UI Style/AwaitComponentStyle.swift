@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import Foundation
 import UIKit
 
@@ -19,15 +20,15 @@ public struct AwaitComponentStyle: ViewStyle {
     
     /// The style of message label.
     public var message = TextStyle(font: .preferredFont(forTextStyle: .callout),
-                                   color: UIColor.AdyenCore.componentLabel)
+                                   color: UIColor.Adyen.componentLabel)
     
     /// The style of the spinner title label.
     public var spinnerTitle = TextStyle(font: .preferredFont(forTextStyle: .footnote),
-                                        color: UIColor.AdyenCore.componentLoadingMessageColor,
+                                        color: UIColor.Adyen.componentLoadingMessageColor,
                                         textAlignment: .left)
     
     /// :nodoc:
-    public var backgroundColor = UIColor.AdyenCore.componentBackground
+    public var backgroundColor = UIColor.Adyen.componentBackground
     
     /// Initializes the await component style with the default style.
     public init() {}

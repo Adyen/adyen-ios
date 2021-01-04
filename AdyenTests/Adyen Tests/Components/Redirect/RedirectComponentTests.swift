@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+@testable import AdyenActions
 @testable import Adyen
 import SafariServices
 import XCTest

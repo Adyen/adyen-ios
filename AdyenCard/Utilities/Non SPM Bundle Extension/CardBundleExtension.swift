@@ -14,7 +14,7 @@ extension Bundle {
 
     /// The main bundle of the framework.
     private static let cardBundle: Bundle = {
-        Bundle(for: ThreeDS2Component.self)
+        Bundle(for: CardComponent.self)
     }()
 
     /// The bundle in which the framework's resources are located.

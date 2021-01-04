@@ -11,7 +11,7 @@ import UIKit
 public struct NavigationStyle: TintableStyle {
     
     /// Indicates the navigation bar background color.
-    public var backgroundColor = UIColor.AdyenCore.componentBackground
+    public var backgroundColor = UIColor.Adyen.componentBackground
     
     /// The color of the thin line at the bottom of the navigation bar.
     /// If value is nil, the default color would be used.
@@ -25,7 +25,7 @@ public struct NavigationStyle: TintableStyle {
     
     /// Indicates the bar title text style.
     public var barTitle = TextStyle(font: UIFont.AdyenCore.barTitle,
-                                    color: UIColor.AdyenCore.componentLabel,
+                                    color: UIColor.Adyen.componentLabel,
                                     textAlignment: .natural)
     
     /// Initializes the navigation style.

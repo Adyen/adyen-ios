@@ -32,7 +32,7 @@ internal struct BackoffIntervalCalculator: IntervalCalculator {
 /// :nodoc:
 /// Scheduler of closures with increasing interval between dispatching's, with maximum of 100 times,
 /// how intervals are calculated is decided by injecting an `IntervalCalculator` implementation.
-internal struct BackoffScheduler: Scheduler {
+public struct BackoffScheduler: Scheduler {
     
     /// :nodoc:
     private let queue: DispatchQueue
@@ -41,12 +41,12 @@ internal struct BackoffScheduler: Scheduler {
     internal var backoffIntevalCalculator: IntervalCalculator = BackoffIntervalCalculator()
     
     /// :nodoc:
-    internal init(queue: DispatchQueue) {
+    public init(queue: DispatchQueue) {
         self.queue = queue
     }
     
     /// :nodoc:
-    internal func schedule(_ currentCount: UInt, closure: @escaping () -> Void) -> Bool {
+    public func schedule(_ currentCount: UInt, closure: @escaping () -> Void) -> Bool {
         guard currentCount < 100 else { return true }
         
         let dispatchInterval = backoffIntevalCalculator.interval(for: currentCount)

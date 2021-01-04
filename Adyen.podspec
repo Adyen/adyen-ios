@@ -18,20 +18,10 @@ Pod::Spec.new do |s|
   s.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64', 'SWIFT_SUPPRESS_WARNINGS' => 'YES' }
   s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 
-  s.subspec 'Core' do |plugin|
-    plugin.source_files = 'Adyen/**/*.swift'
-    plugin.exclude_files = 'Adyen/**/BundleSPMExtension.swift'
-    plugin.resource_bundles = {
-        'Adyen' => [
-            'Adyen/Assets/**/*.strings',
-            'Adyen/Assets/**/*.xcassets'
-        ]
-    }
-  end
-
   s.subspec 'DropIn' do |plugin|
     plugin.source_files = 'AdyenDropIn/**/*.swift'
     plugin.dependency 'Adyen/Core'
+    plugin.dependency 'Adyen/Actions'
     plugin.dependency 'Adyen/Card'
     plugin.dependency 'Adyen/Components'
   end
@@ -44,13 +34,13 @@ Pod::Spec.new do |s|
     plugin.xcconfig = { 'SWIFT_INCLUDE_PATHS' => '${PODS_TARGET_SRCROOT}/AdyenWeChatPay/WeChatSDK', 'OTHER_LDFLAGS' => '-ObjC -all_load' }
     plugin.preserve_paths = 'AdyenWeChatPay/WeChatSDK/module.modulemap'
     plugin.dependency 'Adyen/Core'
+    plugin.dependency 'Adyen/Actions'
     plugin.libraries = 'z', 'stdc++', 'sqlite3.0'
     plugin.frameworks = 'SystemConfiguration', 'CoreTelephony', 'CFNetwork', 'CoreGraphics', 'Security'
   end
 
   s.subspec 'Card' do |plugin|
     plugin.dependency 'Adyen/Core'
-    plugin.dependency 'Adyen3DS2', '2.2.1'
     plugin.source_files = 'AdyenCard/**/*.swift'
     plugin.exclude_files = 'AdyenCard/**/BundleSPMExtension.swift'
     plugin.resource_bundles = {
@@ -64,6 +54,30 @@ Pod::Spec.new do |s|
   s.subspec 'Components' do |plugin|
     plugin.dependency 'Adyen/Core'
     plugin.source_files = 'AdyenComponents/**/*.swift'
+  end
+
+
+    s.subspec 'Actions' do |plugin|
+      plugin.dependency 'Adyen/Core'
+      plugin.dependency 'Adyen3DS2', '2.2.1'
+      plugin.source_files = 'AdyenActions/**/*.swift'
+      plugin.exclude_files = 'AdyenActions/**/BundleSPMExtension.swift'
+      plugin.resource_bundles = {
+          'Adyen' => [
+              'Adyen/Assets/**/*.xcassets'
+          ]
+      }
+    end
+
+  s.subspec 'Core' do |plugin|
+    plugin.source_files = 'Adyen/**/*.swift'
+    plugin.exclude_files = 'Adyen/**/BundleSPMExtension.swift'
+    plugin.resource_bundles = {
+        'Adyen' => [
+            'Adyen/Assets/**/*.strings',
+            'Adyen/Assets/**/*.xcassets'
+        ]
+    }
   end
 
 end

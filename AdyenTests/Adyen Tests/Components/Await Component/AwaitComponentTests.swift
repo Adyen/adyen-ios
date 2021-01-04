@@ -7,6 +7,7 @@
 //
 
 @testable import Adyen
+@testable import AdyenActions
 @testable import AdyenDropIn
 import XCTest
 

@@ -8,6 +8,8 @@
 
 import XCTest
 import Adyen3DS2
+@testable import Adyen
+@testable import AdyenActions
 @testable import AdyenCard
 
 class ThreeDS2CompactActionHandlerTests: XCTestCase {
