@@ -5,6 +5,9 @@
 //
 
 import Adyen
+#if canImport(AdyenEncryption)
+    import AdyenEncryption
+#endif
 import Foundation
 
 /// Contains the details provided by the card component.
