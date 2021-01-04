@@ -4,7 +4,6 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
 import Foundation
 import Security
 
@@ -26,14 +25,14 @@ extension Cryptor {
          *  - Returns
          *      Encrypted data or nil if modulus and exponent is invalid.
          */
-        internal static func encrypt(data: Data, exponent: String, modulus: String) -> Data? {
+        internal static func encrypt(data: Data, exponent: String, modulus: String) throws -> Data? {
             guard let modulusHex = modulus.hexadecimal, let exponentHex = exponent.hexadecimal else { return nil }
 
             let pubKeyData = self.generateRSAPublicKey(with: modulusHex, exponent: exponentHex)
-            return self.encrypt(original: data, publicKey: pubKeyData)
+            return try self.encrypt(original: data, publicKey: pubKeyData)
         }
 
-        private static func encrypt(original: Data, publicKey: Data) -> Data? {
+        private static func encrypt(original: Data, publicKey: Data) throws -> Data? {
             var error: Unmanaged<CFError>?
 
             let attributes: [String: Any] = [
@@ -48,8 +47,7 @@ extension Cryptor {
             }
 
             if let err: Swift.Error = error?.takeRetainedValue() {
-                adyenPrint("encryptData error \(err.localizedDescription)")
-
+                throw err
             }
             return nil
         }
