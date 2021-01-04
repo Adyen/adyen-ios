@@ -41,7 +41,6 @@ Pod::Spec.new do |s|
 
   s.subspec 'Card' do |plugin|
     plugin.dependency 'Adyen/Core'
-    plugin.dependency 'Adyen/Actions'
     plugin.dependency 'Adyen3DS2', '2.2.1'
     plugin.source_files = 'AdyenCard/**/*.swift'
     plugin.exclude_files = 'AdyenCard/**/BundleSPMExtension.swift'
@@ -55,7 +54,6 @@ Pod::Spec.new do |s|
 
   s.subspec 'Components' do |plugin|
     plugin.dependency 'Adyen/Core'
-    plugin.dependency 'Adyen/Actions'
     plugin.source_files = 'AdyenComponents/**/*.swift'
   end
 
