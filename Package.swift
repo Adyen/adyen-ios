@@ -15,6 +15,10 @@ let package = Package(
             targets: ["Adyen"]
         ),
         .library(
+            name: "AdyenEncryption",
+            targets: ["AdyenEncryption"]
+        ),
+        .library(
             name: "AdyenActions",
             targets: ["AdyenActions"]
         ),
@@ -58,6 +62,14 @@ let package = Package(
             ]
         ),
         .target(
+            name: "AdyenEncryption",
+            dependencies: [],
+            path: "AdyenEncryption",
+            exclude: [
+                "Info.plist"
+            ]
+        ),
+        .target(
             name: "AdyenActions",
             dependencies: [
                 .target(name: "Adyen"),
@@ -72,7 +84,8 @@ let package = Package(
         .target(
             name: "AdyenCard",
             dependencies: [
-                .target(name: "Adyen")
+                .target(name: "Adyen"),
+                .target(name: "AdyenEncryption")
             ],
             path: "AdyenCard",
             exclude: [

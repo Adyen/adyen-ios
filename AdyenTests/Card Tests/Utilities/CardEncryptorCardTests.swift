@@ -5,6 +5,7 @@
 //
 
 @testable import AdyenCard
+@testable import AdyenEncryption
 import XCTest
 
 class CardEncryptorCardTests: XCTestCase {

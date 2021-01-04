@@ -5,6 +5,9 @@
 //
 
 import Adyen
+#if canImport(AdyenEncryption)
+    import AdyenEncryption
+#endif
 import Foundation
 
 // swiftlint:disable explicit_acl
