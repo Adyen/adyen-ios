@@ -262,6 +262,7 @@
 		F917618525A30B8500D653BE /* Submit3DS2FingerprintRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957A9E225514A7E0099AD73 /* Submit3DS2FingerprintRequest.swift */; };
 		F91761BE25A30E1B00D653BE /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
 		F91761CB25A30E8B00D653BE /* AdyenActions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9175F8C2594986900D653BE /* AdyenActions.framework */; };
+		F91761D425A314A500D653BE /* Adyen3DS2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E226F5462296BE250013A463 /* Adyen3DS2.framework */; };
 		F919DF8F24E682250027976E /* ClientKeyRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F919DF8E24E682250027976E /* ClientKeyRequest.swift */; };
 		F919DF9124E682480027976E /* ClientKeyResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F919DF9024E682480027976E /* ClientKeyResponse.swift */; };
 		F919DF9324E68F750027976E /* CardPublicKeyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F919DF9224E68F750027976E /* CardPublicKeyProvider.swift */; };
@@ -1100,7 +1101,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F91761BE25A30E1B00D653BE /* Adyen.framework in Frameworks */,
-				E226F5472296BE250013A463 /* Adyen3DS2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1141,6 +1141,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9175F9E259498C300D653BE /* Adyen.framework in Frameworks */,
+				F91761D425A314A500D653BE /* Adyen3DS2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4314,6 +4315,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = AdyenActions/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -4345,6 +4350,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = AdyenActions/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
