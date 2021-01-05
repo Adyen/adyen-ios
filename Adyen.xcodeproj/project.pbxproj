@@ -276,6 +276,9 @@
 		F92327D225A47555002C5BC4 /* AdyenActions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9175F8C2594986900D653BE /* AdyenActions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F92327DE25A47561002C5BC4 /* AdyenEncryption.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F92326AC25A3669E002C5BC4 /* AdyenEncryption.framework */; };
 		F92327DF25A47561002C5BC4 /* AdyenEncryption.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F92326AC25A3669E002C5BC4 /* AdyenEncryption.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F923280025A47ED5002C5BC4 /* AllCountriesPhoneExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92327FF25A47ED5002C5BC4 /* AllCountriesPhoneExtensions.swift */; };
+		F923281425A486EE002C5BC4 /* PhoneExtensionsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F923281325A486EE002C5BC4 /* PhoneExtensionsRepository.swift */; };
+		F923283A25A49559002C5BC4 /* PhoneExtensionsRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F923283925A49559002C5BC4 /* PhoneExtensionsRepositoryTests.swift */; };
 		F924C072246BEEF0006DDAB8 /* CardDetailsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F924C071246BEEF0006DDAB8 /* CardDetailsTests.swift */; };
 		F924C074246C2E0B006DDAB8 /* LazyOptional.swift in Sources */ = {isa = PBXBuildFile; fileRef = F924C073246C2E0B006DDAB8 /* LazyOptional.swift */; };
 		F924C079246C38E0006DDAB8 /* SecuredViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F924C078246C38E0006DDAB8 /* SecuredViewController.swift */; };
@@ -930,6 +933,9 @@
 		F92326AC25A3669E002C5BC4 /* AdyenEncryption.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdyenEncryption.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F92326AE25A3669E002C5BC4 /* AdyenEncryption.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdyenEncryption.h; sourceTree = "<group>"; };
 		F92326AF25A3669E002C5BC4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F92327FF25A47ED5002C5BC4 /* AllCountriesPhoneExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllCountriesPhoneExtensions.swift; sourceTree = "<group>"; };
+		F923281325A486EE002C5BC4 /* PhoneExtensionsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneExtensionsRepository.swift; sourceTree = "<group>"; };
+		F923283925A49559002C5BC4 /* PhoneExtensionsRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneExtensionsRepositoryTests.swift; sourceTree = "<group>"; };
 		F924C071246BEEF0006DDAB8 /* CardDetailsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailsTests.swift; sourceTree = "<group>"; };
 		F924C073246C2E0B006DDAB8 /* LazyOptional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyOptional.swift; sourceTree = "<group>"; };
 		F924C078246C38E0006DDAB8 /* SecuredViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuredViewController.swift; sourceTree = "<group>"; };
@@ -1300,6 +1306,8 @@
 				F9AC61BA24374CE00062A00D /* AppLauncher.swift */,
 				F924C073246C2E0B006DDAB8 /* LazyOptional.swift */,
 				F9BA21C1246E82EE00D36A63 /* SizeUtilities.swift */,
+				F92327FF25A47ED5002C5BC4 /* AllCountriesPhoneExtensions.swift */,
+				F923281325A486EE002C5BC4 /* PhoneExtensionsRepository.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -2089,6 +2097,7 @@
 				F96F44E023BF5C2000871C1F /* ADYLocalizationTests.swift */,
 				F9AC61BF243750D80062A00D /* AppLauncherMock.swift */,
 				F9BA21C52474113500D36A63 /* AmountFormatterTests.swift */,
+				F923283925A49559002C5BC4 /* PhoneExtensionsRepositoryTests.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -3420,6 +3429,7 @@
 			files = (
 				E216D3C5221AEF450013CBCF /* IBANFormatter.swift in Sources */,
 				E9AFF87A224A4C9C005A0D8D /* PaymentComponent.swift in Sources */,
+				F923281425A486EE002C5BC4 /* PhoneExtensionsRepository.swift in Sources */,
 				E216D3C0221AD0620013CBCF /* FormViewItemManager.swift in Sources */,
 				E9AFF887224E5872005A0D8D /* PresentableComponent.swift in Sources */,
 				E90933FF228AFC6600C9F04B /* Environment.swift in Sources */,
@@ -3492,6 +3502,7 @@
 				F9E441522382A0DD00D3CD48 /* ViewIdentifierBuilder.swift in Sources */,
 				E28098B3220DA7980087928F /* Component.swift in Sources */,
 				F95B6D8E25231715002C9062 /* RegularExpressionValidator.swift in Sources */,
+				F923280025A47ED5002C5BC4 /* AllCountriesPhoneExtensions.swift in Sources */,
 				F926D52023F4217A00D058D3 /* DeviceDependant.swift in Sources */,
 				F9D5753123828EBB009C18B5 /* AnyCardPaymentMethod.swift in Sources */,
 				E2B317A92265EBD200C1BB30 /* EventPublisher.swift in Sources */,
@@ -3599,6 +3610,7 @@
 				F9639B4724E283060073F38A /* BackoffSchedulerTests.swift in Sources */,
 				E216D3CB221AFB9A0013CBCF /* IBANValidatorTests.swift in Sources */,
 				E9E3DACB221EDDE800697074 /* CardTypeDetectorTests.swift in Sources */,
+				F923283A25A49559002C5BC4 /* PhoneExtensionsRepositoryTests.swift in Sources */,
 				E9021DEC225CC44C009CF7F4 /* URLExtensionsTest.swift in Sources */,
 				F9EDB78D2395643A00CFB3C9 /* CardComponentTests.swift in Sources */,
 				F9842CD025710BF00063CE5A /* ThreeDS2ClassicActionHandlerTests.swift in Sources */,
