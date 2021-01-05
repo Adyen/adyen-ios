@@ -38,16 +38,17 @@ public struct QiwiWalletPaymentMethod: PaymentMethod {
         self.name = try container.decode(String.self, forKey: .name)
         
         var phoneExtensions: [PhoneExtension]?
-        var detailsContainer = try container.nestedUnkeyedContainer(forKey: .details)
-        while !detailsContainer.isAtEnd {
-            let detailContainer = try detailsContainer.nestedContainer(keyedBy: CodingKeys.self)
-            let detailKey = try detailContainer.decode(String.self, forKey: .key)
-            guard detailKey == "qiwiwallet.telephoneNumberPrefix" else { continue }
-            
-            phoneExtensions = try detailContainer.decode([PhoneExtension].self, forKey: .items)
+        if var detailsContainer = try? container.nestedUnkeyedContainer(forKey: .details) {
+            while !detailsContainer.isAtEnd {
+                let detailContainer = try detailsContainer.nestedContainer(keyedBy: CodingKeys.self)
+                let detailKey = try detailContainer.decode(String.self, forKey: .key)
+                guard detailKey == "qiwiwallet.telephoneNumberPrefix" else { continue }
+
+                phoneExtensions = try detailContainer.decode([PhoneExtension].self, forKey: .items)
+            }
         }
         
-        self.phoneExtensions = phoneExtensions ?? []
+        self.phoneExtensions = phoneExtensions ?? PhoneExtensionsRepository.get(with: PhoneExtensionsQuery(paymentMethod: .qiwiWallet))
     }
     
     /// :nodoc:
@@ -80,6 +81,12 @@ public struct PhoneExtension: Decodable, Equatable {
     /// :nodoc:
     public var countryDisplayName: String {
         Locale.current.localizedString(forRegionCode: countryCode) ?? ""
+    }
+
+    /// :nodoc:
+    public init(value: String, countryCode: String) {
+        self.value = value
+        self.countryCode = countryCode
     }
 
     /// :nodoc:
