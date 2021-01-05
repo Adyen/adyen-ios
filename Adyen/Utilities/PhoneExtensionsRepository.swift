@@ -13,6 +13,9 @@ public enum PhoneNumberPaymentMethod {
     case qiwiWallet
 
     /// :nodoc:
+    case mbWay
+
+    /// :nodoc:
     internal var codes: [String] {
         switch self {
         case .qiwiWallet:
@@ -41,6 +44,8 @@ public enum PhoneNumberPaymentMethod {
                     "EE",
                     "RO",
                     "KR"]
+        case .mbWay:
+            return ["PT", "ES"]
         }
     }
 }
