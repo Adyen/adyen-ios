@@ -5,6 +5,9 @@
 //
 
 import Adyen
+#if canImport(AdyenEncryption)
+    import AdyenEncryption
+#endif
 import UIKit
 
 internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Localizable {

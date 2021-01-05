@@ -62,7 +62,7 @@ internal enum Cryptor {
         
         let prefix = msgPrefix.isEmpty ? "" : msgPrefix.appending(msgSeparator)
         
-        if let encryptedKey = self.rsaEncrypt(data: Data(key), with: keyInHex) {
+        if let encryptedKey = try? self.rsaEncrypt(data: Data(key), with: keyInHex) {
             return prefix + encryptedKey.base64EncodedString() + msgSeparator + payload.base64EncodedString()
         }
         
@@ -73,11 +73,11 @@ internal enum Cryptor {
         return AES.encrypt(data: data, withKey: key, initVector: initVector)
     }
     
-    private static func rsaEncrypt(data: Data, with keyInHex: String) -> Data? {
+    private static func rsaEncrypt(data: Data, with keyInHex: String) throws -> Data? {
         let tokens = keyInHex.components(separatedBy: "|")
         guard tokens.count == 2 else { return nil }
         
-        return RSA.encrypt(data: data, exponent: tokens[0], modulus: tokens[1])
+        return try RSA.encrypt(data: data, exponent: tokens[0], modulus: tokens[1])
     }
 
     internal enum Error: Swift.Error, LocalizedError {
