@@ -59,18 +59,25 @@ public final class MBWayComponent: PaymentComponent, PresentableComponent, Local
         
         return formViewController
     }()
-    
-    /// The full phone number item.
-    internal lazy var phoneNumberItem: FormTextInputItem = {
-        let item = FormTextInputItem(style: style.textField)
-        item.title = ADYLocalizedString("adyen.phoneNumber.title", localizationParameters)
-        item.placeholder = ADYLocalizedString("adyen.phoneNumber.placeholder", localizationParameters)
-        item.validator = PhoneNumberValidator()
-        item.formatter = PhoneNumberFormatter()
-        item.validationFailureMessage = ADYLocalizedString("adyen.phoneNumber.invalid", localizationParameters)
-        item.keyboardType = .phonePad
+
+    /// The full phone number item
+    internal lazy var phoneNumberItem: FormPhoneNumberItem = {
+        let item = FormPhoneNumberItem(selectableValues: selectableValues,
+                                       style: style.textField,
+                                       localizationParameters: localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "phoneNumberItem")
         return item
+    }()
+
+    internal lazy var selectableValues: [PhoneExtensionPickerItem] = {
+        let query = PhoneExtensionsQuery(paymentMethod: PhoneNumberPaymentMethod.mbWay)
+        return PhoneExtensionsRepository.get(with: query).map {
+            let title = "\($0.countryDisplayName) (\($0.value))"
+            return PhoneExtensionPickerItem(identifier: $0.countryCode,
+                                            title: title,
+                                            phoneExtension: $0.value)
+
+        }
     }()
     
     /// The footer item.
@@ -88,7 +95,7 @@ public final class MBWayComponent: PaymentComponent, PresentableComponent, Local
         guard formViewController.validate() else { return }
         
         let details = MBWayDetails(paymentMethod: paymentMethod,
-                                   telephoneNumber: phoneNumberItem.value)
+                                   telephoneNumber: phoneNumberItem.phoneNumber)
         button.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
         
