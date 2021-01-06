@@ -60,7 +60,7 @@ internal final class DropInNavigationController: UINavigationController {
         }
         
         if let topViewController = topViewController as? WrapperViewController, topViewController.requiresKeyboardInput {
-            topViewController.updateFrame(keyboardRect: keyboardRect)
+            topViewController.updateFrame(keyboardRect: keyboardRect, animated: true)
         }
     }
     
@@ -121,7 +121,7 @@ extension DropInNavigationController: UIViewControllerTransitioningDelegate {
                                                  guard let self = self,
                                                        let viewController = self.topViewController as? WrapperViewController
                                                  else { return }
-                                                 viewController.updateFrame(keyboardRect: self.keyboardRect)
+                                                 viewController.updateFrame(keyboardRect: self.keyboardRect, animated: false)
                                              })
     }
     
