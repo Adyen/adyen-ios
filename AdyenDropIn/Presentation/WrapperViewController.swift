@@ -36,8 +36,12 @@ internal final class WrapperViewController: UIViewController {
         return viewController?.children.contains(where: { heirarchyRequiresKeyboardInput(viewController: $0) }) ?? false
     }
 
-    internal func updateFrame(keyboardRect: CGRect) {
+    internal func updateFrame(keyboardRect: CGRect, animated: Bool) {
         guard let view = child.viewIfLoaded, let window = UIApplication.shared.keyWindow else { return }
-        view.frame = child.adyen.finalPresentationFrame(in: window, keyboardRect: keyboardRect)
+        let frame = child.adyen.finalPresentationFrame(in: window, keyboardRect: keyboardRect)
+        view.layer.removeAllAnimations()
+        UIView.animate(withDuration: animated ? 0.35 : 0.0, delay: 0.0, options: [.curveLinear], animations: {
+            view.frame = frame
+        }, completion: nil)
     }
 }
