@@ -7,6 +7,30 @@
 import Foundation
 import UIKit
 
+/// The style of "Cancel" button.
+public enum CancelButtonStyle {
+
+    /// Default system style. Cross icon for iOS 13, system button "Cancel" for prior versions.
+    case system
+
+    /// System button "Cancel".
+    case legacy
+
+    /// Custom button with image.
+    case custom(UIImage)
+}
+
+/// Modes for toolbar layout.
+public enum ToolbarMode {
+
+    /// Cancel button visially left aligned.
+    case leftCancel
+
+    /// Cancel button visially right aligned.
+    case rightCancel
+
+}
+
 /// Indicates the navigation level style.
 public struct NavigationStyle: TintableStyle {
     
@@ -27,6 +51,12 @@ public struct NavigationStyle: TintableStyle {
     public var barTitle = TextStyle(font: UIFont.AdyenCore.barTitle,
                                     color: UIColor.Adyen.componentLabel,
                                     textAlignment: .natural)
+
+    /// The style of cancelButton. This property is not applicable to SFViewController in redirect component.
+    public var cancelButton = CancelButtonStyle.system
+
+    /// The mode for toolbar layout. Defines positions cancel button.
+    public var toolbarMode = ToolbarMode.rightCancel
     
     /// Initializes the navigation style.
     public init() {}
