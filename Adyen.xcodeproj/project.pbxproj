@@ -109,10 +109,11 @@
 		E773EA3A25221C4600119499 /* ThrottlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E773EA3925221C4600119499 /* ThrottlerTests.swift */; };
 		E773EA3C2523432B00119499 /* CardTypeProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E773EA3B2523432B00119499 /* CardTypeProviderMock.swift */; };
 		E787C9AC24696A8900B401E0 /* CornerRadiusStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E787C9AB24696A8900B401E0 /* CornerRadiusStyle.swift */; };
-		E787C9AE24698C2E00B401E0 /* UIViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E787C9AD24698C2E00B401E0 /* UIViewHelpers.swift */; };
+		E787C9AE24698C2E00B401E0 /* UIViewRoundingHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E787C9AD24698C2E00B401E0 /* UIViewRoundingHelpers.swift */; };
 		E787C9D1246E948F00B401E0 /* CoreFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E787C9D0246E948F00B401E0 /* CoreFonts.swift */; };
 		E787C9D3246EC71B00B401E0 /* UIFontHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E787C9D2246EC71B00B401E0 /* UIFontHelpers.swift */; };
 		E79A64812490D98F00368E9F /* CardComponentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79A64802490D98F00368E9F /* CardComponentDelegateMock.swift */; };
+		E7B3DE9F25A61B9200CA4D2B /* UIViewConstraintsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B3DE9E25A61B9200CA4D2B /* UIViewConstraintsHelper.swift */; };
 		E7B627FD24ED32CC000CEC6E /* BinLookupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B627FC24ED32CC000CEC6E /* BinLookupService.swift */; };
 		E7CD107E25544C970057C52D /* FormContainerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CD107D25544C970057C52D /* FormContainerItem.swift */; };
 		E7D3ED84243B667500E73F59 /* FormCardNumberItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D3ED83243B667500E73F59 /* FormCardNumberItemViewTests.swift */; };
@@ -823,12 +824,13 @@
 		E773EA3925221C4600119499 /* ThrottlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThrottlerTests.swift; sourceTree = "<group>"; };
 		E773EA3B2523432B00119499 /* CardTypeProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTypeProviderMock.swift; sourceTree = "<group>"; };
 		E787C9AB24696A8900B401E0 /* CornerRadiusStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadiusStyle.swift; sourceTree = "<group>"; };
-		E787C9AD24698C2E00B401E0 /* UIViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewHelpers.swift; sourceTree = "<group>"; };
+		E787C9AD24698C2E00B401E0 /* UIViewRoundingHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewRoundingHelpers.swift; sourceTree = "<group>"; };
 		E787C9D0246E948F00B401E0 /* CoreFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreFonts.swift; sourceTree = "<group>"; };
 		E787C9D2246EC71B00B401E0 /* UIFontHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontHelpers.swift; sourceTree = "<group>"; };
 		E79A64802490D98F00368E9F /* CardComponentDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardComponentDelegateMock.swift; sourceTree = "<group>"; };
 		E7AA1096252DCCFB00AAD3C0 /* RSA.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RSA.swift; sourceTree = "<group>"; };
 		E7AA1097252DCCFB00AAD3C0 /* Cryptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cryptor.swift; sourceTree = "<group>"; };
+		E7B3DE9E25A61B9200CA4D2B /* UIViewConstraintsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewConstraintsHelper.swift; sourceTree = "<group>"; };
 		E7B627FC24ED32CC000CEC6E /* BinLookupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinLookupService.swift; sourceTree = "<group>"; };
 		E7CD107D25544C970057C52D /* FormContainerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormContainerItem.swift; sourceTree = "<group>"; };
 		E7D3ED83243B667500E73F59 /* FormCardNumberItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardNumberItemViewTests.swift; sourceTree = "<group>"; };
@@ -1672,8 +1674,9 @@
 				F97CCD392435E35E00BC560A /* UIViewControllerHelpers.swift */,
 				F9AC61C524376C9B0062A00D /* AdyenScope.swift */,
 				F97CCD3B24360A4000BC560A /* BundleHelpers.swift */,
-				E787C9AD24698C2E00B401E0 /* UIViewHelpers.swift */,
+				E787C9AD24698C2E00B401E0 /* UIViewRoundingHelpers.swift */,
 				E787C9D2246EC71B00B401E0 /* UIFontHelpers.swift */,
+				E7B3DE9E25A61B9200CA4D2B /* UIViewConstraintsHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -3473,12 +3476,13 @@
 				E2B3C216233507030067891D /* UIColorHelpers.swift in Sources */,
 				F9AC61C624376C9B0062A00D /* AdyenScope.swift in Sources */,
 				F96F44D923BDEDA200871C1F /* ListItemStyle.swift in Sources */,
-				E787C9AE24698C2E00B401E0 /* UIViewHelpers.swift in Sources */,
+				E787C9AE24698C2E00B401E0 /* UIViewRoundingHelpers.swift in Sources */,
 				E2C0E0BA220B2966008616F6 /* FormTextItemView.swift in Sources */,
 				E97B972322B238C400505476 /* Analytics.swift in Sources */,
 				F95B6D8C252316DA002C9062 /* PhoneNumberValidator.swift in Sources */,
 				E9021E022264C4C5009CF7F4 /* KeyedDecodingContainerHelpers.swift in Sources */,
 				E28098BB220DB9F30087928F /* ListViewController.swift in Sources */,
+				E7B3DE9F25A61B9200CA4D2B /* UIViewConstraintsHelper.swift in Sources */,
 				F9354BE923A7B5AC00A6760B /* ViewStyle.swift in Sources */,
 				F9639B4324E27FAE0073F38A /* SimpleScheduler.swift in Sources */,
 				E9B36C9D223FDE4F00EAA368 /* PaymentMethods.swift in Sources */,
