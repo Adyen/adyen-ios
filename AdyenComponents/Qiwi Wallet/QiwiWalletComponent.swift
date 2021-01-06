@@ -8,25 +8,7 @@ import Adyen
 import UIKit
 
 /// A component that provides a form for Qiwi Wallet payments.
-public final class QiwiWalletComponent: PaymentComponent, PresentableComponent, Localizable {
-    
-    /// :nodoc:
-    public var paymentMethod: PaymentMethod { qiwiWalletPaymentMethod }
-    
-    /// :nodoc:
-    public weak var delegate: PaymentComponentDelegate?
-    
-    /// :nodoc:
-    public lazy var viewController: UIViewController = SecuredViewController(child: formViewController, style: style)
-    
-    /// :nodoc:
-    public var localizationParameters: LocalizationParameters?
-    
-    /// Describes the component's UI style.
-    public let style: FormComponentStyle
-    
-    /// :nodoc:
-    public let requiresModalPresentation: Bool = true
+public final class QiwiWalletComponent: PhoneBasedPaymentComponent {
     
     /// :nodoc:
     private let qiwiWalletPaymentMethod: QiwiWalletPaymentMethod
@@ -37,70 +19,16 @@ public final class QiwiWalletComponent: PaymentComponent, PresentableComponent, 
     /// - Parameter style: The Component's UI style.
     public init(paymentMethod: QiwiWalletPaymentMethod, style: FormComponentStyle = FormComponentStyle()) {
         self.qiwiWalletPaymentMethod = paymentMethod
-        self.style = style
+        super.init(paymentMethod: paymentMethod, style: style)
     }
-    
-    /// :nodoc:
-    public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
-        button.showsActivityIndicator = false
-        formViewController.view.isUserInteractionEnabled = true
-        completion?()
-    }
-    
-    // MARK: - View Controller
-    
-    private lazy var formViewController: FormViewController = {
-        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
-        
-        let formViewController = FormViewController(style: style)
-        formViewController.localizationParameters = localizationParameters
 
-        formViewController.title = paymentMethod.name
-        formViewController.append(phoneNumberItem)
-        formViewController.append(button.withPadding(padding: .init(top: 8, left: 0, bottom: -16, right: 0)))
-        
-        return formViewController
-    }()
-    
-    /// The full phone number item
-    internal lazy var phoneNumberItem: FormPhoneNumberItem = {
-        let item = FormPhoneNumberItem(selectableValues: selectableValues,
-                                       style: style.textField,
-                                       localizationParameters: localizationParameters)
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "phoneNumberItem")
-        return item
-    }()
-    
-    /// The footer item.
-    internal lazy var button: FormButtonItem = {
-        let item = FormButtonItem(style: style.mainButtonItem)
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
-        item.title = ADYLocalizedString("adyen.continueTo", localizationParameters, qiwiWalletPaymentMethod.name)
-        item.buttonSelectionHandler = { [weak self] in
-            self?.didSelectSubmitButton()
-        }
-        return item
-    }()
-    
-    internal var selectableValues: [PhoneExtensionPickerItem] {
-        qiwiWalletPaymentMethod.phoneExtensions.map {
-            let title = "\($0.countryDisplayName) (\($0.value))"
-            return PhoneExtensionPickerItem(identifier: $0.countryCode,
-                                            title: title,
-                                            phoneExtension: $0.value)
-        }
+    override internal func getPhoneExtensions() -> [PhoneExtension] { qiwiWalletPaymentMethod.phoneExtensions
     }
-    
-    private func didSelectSubmitButton() {
-        guard formViewController.validate() else { return }
-        
-        let details = QiwiWalletDetails(paymentMethod: paymentMethod,
-                                        phonePrefix: phoneNumberItem.prefix,
-                                        phoneNumber: phoneNumberItem.value)
-        button.showsActivityIndicator = true
-        formViewController.view.isUserInteractionEnabled = false
-        
-        submit(data: PaymentComponentData(paymentMethodDetails: details))
+
+    override internal func createPaymentDetails() -> PaymentMethodDetails {
+        QiwiWalletDetails(paymentMethod: paymentMethod,
+                          phonePrefix: phoneNumberItem.prefix,
+                          phoneNumber: phoneNumberItem.value)
     }
     
 }
