@@ -5,9 +5,6 @@
 //
 
 import Adyen
-#if canImport(AdyenCard)
-    import AdyenCard
-#endif
 import UIKit
 
 internal final class DropInNavigationController: UINavigationController {
@@ -63,7 +60,7 @@ internal final class DropInNavigationController: UINavigationController {
         }
         
         if let topViewController = topViewController as? WrapperViewController, topViewController.requiresKeyboardInput {
-            updateFrame(for: topViewController)
+            updateFrame(for: topViewController, animated: true)
         }
     }
     
@@ -83,16 +80,21 @@ internal final class DropInNavigationController: UINavigationController {
         return container
     }
     
-    internal func updateFrame(for viewController: UIViewController) {
+    internal func updateFrame(for viewController: UIViewController, animated: Bool) {
         guard let viewController = viewController as? WrapperViewController else {
             return assertionFailure("Unexpected viewController type.")
         }
-        updateFrameOnUIThread(for: viewController.child)
+        updateFrameOnUIThread(for: viewController.child, animated: animated)
     }
     
-    private func updateFrameOnUIThread(for viewController: UIViewController) {
+    private func updateFrameOnUIThread(for viewController: UIViewController,
+                                       animated: Bool) {
         guard let view = viewController.viewIfLoaded, let window = UIApplication.shared.keyWindow else { return }
-        view.frame = viewController.adyen.finalPresentationFrame(in: window, keyboardRect: self.keyboardRect)
+        let frame = viewController.adyen.finalPresentationFrame(in: window, keyboardRect: self.keyboardRect)
+        view.layer.removeAllAnimations()
+        UIView.animate(withDuration: animated ? 0.35 : 0.0, delay: 0.0, options: [.curveEaseInOut], animations: {
+            view.frame = frame
+        }, completion: nil)
     }
     
     private func setup(root component: PresentableComponent) {
@@ -136,7 +138,8 @@ extension DropInNavigationController: UIViewControllerTransitioningDelegate {
                                                  guard let self = self,
                                                        let viewController = self.topViewController
                                                  else { return }
-                                                 self.updateFrame(for: viewController)
+                                                 self.updateFrame(for: viewController,
+                                                                  animated: false)
                                              })
     }
     
