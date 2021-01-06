@@ -10,13 +10,13 @@ import UIKit
 internal final class ModalToolbar: UIView {
 
     private let style: NavigationStyle
-    private let onCancel: () -> Void
+    private let cancelHandler: () -> Void
     private let title: String?
     private let paddingWithMarginCorrection: CGFloat = 20
 
-    internal init(title: String?, style: NavigationStyle, onCancel: @escaping () -> Void) {
+    internal init(title: String?, style: NavigationStyle, cancelHandler: @escaping () -> Void) {
         self.style = style
-        self.onCancel = onCancel
+        self.cancelHandler = cancelHandler
         self.title = title
         super.init(frame: .zero)
 
@@ -61,7 +61,7 @@ internal final class ModalToolbar: UIView {
     }()
 
     @objc private func didCancel() {
-        onCancel()
+        cancelHandler()
     }
 
     // MARK: - View setup
