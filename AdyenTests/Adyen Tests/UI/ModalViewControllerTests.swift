@@ -21,38 +21,15 @@ class ModalViewControllerTests: XCTestCase {
     override func tearDown() {
         sut = nil
     }
-    
-    func testDefaultStyle() {
-        let style = NavigationStyle()
-        
-        loadAndRunTests(for: style) {
-            if !ProcessInfo().isOperatingSystemAtLeast(OperatingSystemVersion(majorVersion: 13, minorVersion: 0, patchVersion: 0)) {
-                XCTAssertEqual(self.sut.cancelButton.tintColor.cgColor, UIColor.Adyen.defaultBlue.cgColor)
-            }
-            XCTAssertEqual(self.sut.titleLabel.textColor, UIColor.Adyen.componentLabel)
-            XCTAssertEqual(self.sut.titleLabel.font, UIFont.AdyenCore.barTitle)
-            XCTAssertEqual(self.sut.titleLabel.textAlignment, .left)
-            if !ProcessInfo().isOperatingSystemAtLeast(OperatingSystemVersion(majorVersion: 13, minorVersion: 0, patchVersion: 0)) {
-                XCTAssertEqual(self.sut.view.tintColor.cgColor, UIColor.Adyen.defaultBlue.cgColor)
-            }
-            XCTAssertEqual(self.sut.view.backgroundColor, UIColor.Adyen.componentBackground)
-        }
-    }
-    
+
     func testCustomStyle() {
         var style = NavigationStyle()
-        style.tintColor = .white
-        style.backgroundColor = .brown
         style.separatorColor = .red
-        style.barTitle = .init(font: .italicSystemFont(ofSize: 17), color: .yellow, textAlignment: .right)
-        
+        style.backgroundColor = .brown
+
         loadAndRunTests(for: style) {
-            XCTAssertEqual(self.sut.cancelButton.tintColor, .white)
-            XCTAssertEqual(self.sut.titleLabel.textColor, .yellow)
-            XCTAssertEqual(self.sut.titleLabel.font, .italicSystemFont(ofSize: 17))
-            XCTAssertEqual(self.sut.titleLabel.textAlignment, .left)
-            XCTAssertEqual(self.sut.view.backgroundColor, .brown)
             XCTAssertEqual(self.sut.separator.backgroundColor, .red)
+            XCTAssertEqual(self.sut.view.backgroundColor, .brown)
         }
     }
     

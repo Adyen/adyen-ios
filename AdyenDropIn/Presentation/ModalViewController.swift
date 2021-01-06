@@ -103,7 +103,7 @@ internal final class ModalViewController: UIViewController {
     internal lazy var toolbar: UIView = {
         let toolbar = ModalToolbar(title: self.innerController.title,
                                    style: style,
-                                   onCancel: { [weak self] in self?.didCancel() })
+                                   cancelHandler: { [weak self] in self?.didCancel() })
         toolbar.translatesAutoresizingMaskIntoConstraints = false
         return toolbar
     }()
