@@ -99,6 +99,8 @@ internal final class PaymentsController {
         present(component)
     }
 
+    // MARK: - Standalone Components
+
     internal func presentCardComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: CardPaymentMethod.self) else { return }
         let component = CardComponent(paymentMethod: paymentMethod,
