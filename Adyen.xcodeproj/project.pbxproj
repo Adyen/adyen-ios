@@ -279,6 +279,7 @@
 		F923280025A47ED5002C5BC4 /* AllCountriesPhoneExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92327FF25A47ED5002C5BC4 /* AllCountriesPhoneExtensions.swift */; };
 		F923281425A486EE002C5BC4 /* PhoneExtensionsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F923281325A486EE002C5BC4 /* PhoneExtensionsRepository.swift */; };
 		F923283A25A49559002C5BC4 /* PhoneExtensionsRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F923283925A49559002C5BC4 /* PhoneExtensionsRepositoryTests.swift */; };
+		F92328A125A5B920002C5BC4 /* PhoneBasedPaymentComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92328A025A5B920002C5BC4 /* PhoneBasedPaymentComponent.swift */; };
 		F924C072246BEEF0006DDAB8 /* CardDetailsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F924C071246BEEF0006DDAB8 /* CardDetailsTests.swift */; };
 		F924C074246C2E0B006DDAB8 /* LazyOptional.swift in Sources */ = {isa = PBXBuildFile; fileRef = F924C073246C2E0B006DDAB8 /* LazyOptional.swift */; };
 		F924C079246C38E0006DDAB8 /* SecuredViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F924C078246C38E0006DDAB8 /* SecuredViewController.swift */; };
@@ -936,6 +937,7 @@
 		F92327FF25A47ED5002C5BC4 /* AllCountriesPhoneExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllCountriesPhoneExtensions.swift; sourceTree = "<group>"; };
 		F923281325A486EE002C5BC4 /* PhoneExtensionsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneExtensionsRepository.swift; sourceTree = "<group>"; };
 		F923283925A49559002C5BC4 /* PhoneExtensionsRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneExtensionsRepositoryTests.swift; sourceTree = "<group>"; };
+		F92328A025A5B920002C5BC4 /* PhoneBasedPaymentComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneBasedPaymentComponent.swift; sourceTree = "<group>"; };
 		F924C071246BEEF0006DDAB8 /* CardDetailsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailsTests.swift; sourceTree = "<group>"; };
 		F924C073246C2E0B006DDAB8 /* LazyOptional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyOptional.swift; sourceTree = "<group>"; };
 		F924C078246C38E0006DDAB8 /* SecuredViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuredViewController.swift; sourceTree = "<group>"; };
@@ -2106,6 +2108,7 @@
 			isa = PBXGroup;
 			children = (
 				E700A7342549E9FC0012B64C /* BLIK */,
+				F923289F25A5B8E9002C5BC4 /* PhoneBasedPaymentComponent */,
 				F9D644DA24D2D9340059CBE3 /* MB Way */,
 				F926D52D23F5A2EC00D058D3 /* Qiwi Wallet */,
 				E97B971B229E83E300505476 /* Apple Pay */,
@@ -2273,6 +2276,14 @@
 				F92326AF25A3669E002C5BC4 /* Info.plist */,
 			);
 			path = AdyenEncryption;
+			sourceTree = "<group>";
+		};
+		F923289F25A5B8E9002C5BC4 /* PhoneBasedPaymentComponent */ = {
+			isa = PBXGroup;
+			children = (
+				F92328A025A5B920002C5BC4 /* PhoneBasedPaymentComponent.swift */,
+			);
+			path = PhoneBasedPaymentComponent;
 			sourceTree = "<group>";
 		};
 		F926D51C23F4214500D058D3 /* Core Protocols */ = {
@@ -3755,6 +3766,7 @@
 				F9175EAC259394FF00D653BE /* ApplePayComponent.swift in Sources */,
 				F9175ED32593951900D653BE /* MBWayDetails.swift in Sources */,
 				F9175EAB259394FF00D653BE /* ApplePayDetails.swift in Sources */,
+				F92328A125A5B920002C5BC4 /* PhoneBasedPaymentComponent.swift in Sources */,
 				F9175EE22593952600D653BE /* BLIKComponent.swift in Sources */,
 				F9175E8B259394E100D653BE /* SEPADirectDebitComponent.swift in Sources */,
 				F9175E8A259394E100D653BE /* SEPADirectDebitDetails.swift in Sources */,

@@ -73,7 +73,7 @@ class MBWayComponentTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let phoneNumberView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.phoneNumberItem")
+            let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.phoneNumberItem")
             let phoneNumberViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.phoneNumberItem.titleLabel")
             let phoneNumberViewTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.phoneNumberItem.textField")
 
@@ -128,8 +128,8 @@ class MBWayComponentTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.payButtonItem.button")
 
-            let phoneNumberView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.phoneNumberItem")
-            self.populate(textItemView: phoneNumberView, with: "+3511233456789")
+            let phoneNumberView: FormPhoneNumberItemView! = sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.phoneNumberItem")
+            self.populate(textItemView: phoneNumberView, with: "1233456789")
 
             submitButton?.sendActions(for: .touchUpInside)
 
