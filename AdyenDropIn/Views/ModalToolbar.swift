@@ -74,7 +74,7 @@ internal final class ModalToolbar: UIView {
             setupLayoutForCenteredMode()
         default:
             addSubview(stackView)
-            anchore(view: self, toView: stackView)
+            stackView.adyen.anchore(inside: self)
         }
 
         setupStyle()
@@ -121,16 +121,6 @@ internal final class ModalToolbar: UIView {
     }
 
     // MARK: - Private methods
-
-    private func anchore(view view1: UIView, toView view2: UIView) {
-        let constraints = [
-            view1.topAnchor.constraint(equalTo: view2.topAnchor),
-            view1.bottomAnchor.constraint(equalTo: view2.bottomAnchor),
-            view1.leftAnchor.constraint(equalTo: view2.leftAnchor),
-            view1.rightAnchor.constraint(equalTo: view2.rightAnchor)
-        ]
-        NSLayoutConstraint.activate(constraints)
-    }
 
     private func createCancelButton() -> UIButton {
         let button: UIButton
