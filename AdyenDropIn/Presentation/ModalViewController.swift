@@ -54,8 +54,6 @@ internal final class ModalViewController: UIViewController {
     /// :nodoc:
     override public func loadView() {
         super.loadView()
-        titleLabel.text = innerController.title ?? ""
-        cancelButton.isHidden = cancelButtonHandler == nil
         
         innerController.willMove(toParent: self)
         addChild(innerController)
@@ -70,13 +68,6 @@ internal final class ModalViewController: UIViewController {
         
         innerController.view.layoutIfNeeded()
         view.backgroundColor = style.backgroundColor
-        
-        cancelButton.tintColor = style.tintColor
-        guard let title = titleLabel.text, !title.isEmpty else { return }
-        titleLabel.attributedText = NSAttributedString(string: title,
-                                                       attributes: [NSAttributedString.Key.font: style.barTitle.font,
-                                                                    NSAttributedString.Key.foregroundColor: style.barTitle.color,
-                                                                    NSAttributedString.Key.backgroundColor: style.barTitle.backgroundColor])
     }
     
     override internal var preferredContentSize: CGSize {
@@ -103,31 +94,6 @@ internal final class ModalViewController: UIViewController {
     
     // MARK: - View elements
     
-    internal lazy var titleLabel: UILabel = {
-        let label = UILabel(frame: .zero)
-        label.textAlignment = style.barTitle.textAlignment
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    internal lazy var cancelButton: UIButton = {
-        let button: UIButton
-        if #available(iOS 13.0, *) {
-            button = UIButton(type: UIButton.ButtonType.close)
-            button.translatesAutoresizingMaskIntoConstraints = false
-            button.widthAnchor.constraint(equalTo: button.heightAnchor).isActive = true
-        } else {
-            button = UIButton(type: UIButton.ButtonType.system)
-            let cancelText = Bundle(for: UIApplication.self).localizedString(forKey: "Cancel", value: nil, table: nil)
-            button.setTitle(cancelText, for: .normal)
-            button.setTitleColor(style.tintColor, for: .normal)
-        }
-        
-        button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        button.addTarget(self, action: #selector(didCancel), for: .touchUpInside)
-        return button
-    }()
-    
     internal lazy var separator: UIView = {
         let separator = UIView(frame: .zero)
         separator.backgroundColor = style.separatorColor ?? UIColor.Adyen.componentSeparator
@@ -135,13 +101,10 @@ internal final class ModalViewController: UIViewController {
     }()
     
     internal lazy var toolbar: UIView = {
-        let toolbar = UIView()
-        toolbar.backgroundColor = style.backgroundColor
+        let toolbar = ModalToolbar(title: self.innerController.title,
+                                   style: style,
+                                   onCancel: { [weak self] in self?.didCancel() })
         toolbar.translatesAutoresizingMaskIntoConstraints = false
-
-        toolbar.addSubview(titleLabel)
-        toolbar.sendSubviewToBack(cancelButton)
-        
         return toolbar
     }()
     
@@ -155,7 +118,7 @@ internal final class ModalViewController: UIViewController {
         return stackView
     }()
     
-    @objc private func didCancel() {
+    private func didCancel() {
         guard let cancelHandler = cancelButtonHandler else { return }
         
         innerController.resignFirstResponder()
@@ -171,34 +134,13 @@ internal final class ModalViewController: UIViewController {
         let bottomConstraint = stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         bottomConstraint.priority = .defaultHigh
 
-        let rightAnchor: NSLayoutXAxisAnchor
-        let leftAnchor: NSLayoutXAxisAnchor
-        if #available(iOS 11.0, *) {
-            rightAnchor = toolbar.safeAreaLayoutGuide.rightAnchor
-            leftAnchor = toolbar.safeAreaLayoutGuide.leftAnchor
-        } else {
-            rightAnchor = toolbar.rightAnchor
-            leftAnchor = toolbar.leftAnchor
-        }
-
         NSLayoutConstraint.activate([
             toolbar.heightAnchor.constraint(equalToConstant: toolbarHeight),
-
             separator.heightAnchor.constraint(equalToConstant: separatorHeight),
             stackView.topAnchor.constraint(equalTo: view.topAnchor),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            bottomConstraint,
-
-            toolbar.topAnchor.constraint(equalTo: titleLabel.topAnchor),
-            toolbar.bottomAnchor.constraint(equalTo: titleLabel.bottomAnchor),
-            leftAnchor.constraint(equalTo: titleLabel.leftAnchor, constant: 16),
-            rightAnchor.constraint(equalTo: titleLabel.rightAnchor, constant: 16),
-
-            toolbar.centerYAnchor.constraint(equalTo: cancelButton.centerYAnchor),
-            rightAnchor.constraint(equalTo: cancelButton.rightAnchor, constant: 16),
-            rightAnchor.constraint(equalTo: cancelButton.rightAnchor, constant: 16),
-            toolbar.heightAnchor.constraint(greaterThanOrEqualTo: cancelButton.heightAnchor)
+            bottomConstraint
         ])
     }
 }
