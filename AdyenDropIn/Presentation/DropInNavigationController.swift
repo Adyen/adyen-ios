@@ -63,7 +63,7 @@ internal final class DropInNavigationController: UINavigationController {
         }
         
         if let topViewController = topViewController as? WrapperViewController, topViewController.requiresKeyboardInput {
-            updateFrame(for: topViewController)
+            topViewController.updateFrame(keyboardRect: keyboardRect)
         }
     }
     
@@ -81,18 +81,6 @@ internal final class DropInNavigationController: UINavigationController {
         modal.didMove(toParent: container)
         
         return container
-    }
-    
-    internal func updateFrame(for viewController: UIViewController) {
-        guard let viewController = viewController as? WrapperViewController else {
-            return assertionFailure("Unexpected viewController type.")
-        }
-        updateFrameOnUIThread(for: viewController.child)
-    }
-    
-    private func updateFrameOnUIThread(for viewController: UIViewController) {
-        guard let view = viewController.viewIfLoaded, let window = UIApplication.shared.keyWindow else { return }
-        view.frame = viewController.adyen.finalPresentationFrame(in: window, keyboardRect: self.keyboardRect)
     }
     
     private func setup(root component: PresentableComponent) {
@@ -134,41 +122,10 @@ extension DropInNavigationController: UIViewControllerTransitioningDelegate {
                                              presenting: presenting,
                                              layoutDidChanged: { [weak self] in
                                                  guard let self = self,
-                                                       let viewController = self.topViewController
+                                                       let viewController = self.topViewController as? WrapperViewController
                                                  else { return }
-                                                 self.updateFrame(for: viewController)
+                                                 viewController.updateFrame(keyboardRect: self.keyboardRect)
                                              })
-    }
-    
-}
-
-/// :nodoc:
-internal final class WrapperViewController: UIViewController {
-    
-    /// :nodoc:
-    internal lazy var requiresKeyboardInput: Bool = heirarchyRequiresKeyboardInput(viewController: child)
-    
-    /// :nodoc:
-    internal let child: ModalViewController
-    
-    /// :nodoc:
-    internal init(child: ModalViewController) {
-        self.child = child
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    /// :nodoc:
-    @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func heirarchyRequiresKeyboardInput(viewController: UIViewController?) -> Bool {
-        if let viewController = viewController as? FormViewController {
-            return viewController.requiresKeyboardInput
-        }
-        
-        return viewController?.children.contains(where: { heirarchyRequiresKeyboardInput(viewController: $0) }) ?? false
     }
     
 }
