@@ -16,11 +16,11 @@ internal final class SlideInPresentationAnimator: NSObject, UIViewControllerAnim
         self.duration = duration
     }
     
-    public func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+    internal func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         duration
     }
     
-    public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+    internal func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         guard let toShow = transitionContext.viewController(forKey: .to) as? WrapperViewController,
               let toHide = transitionContext.viewController(forKey: .from) as? WrapperViewController else { return }
         
