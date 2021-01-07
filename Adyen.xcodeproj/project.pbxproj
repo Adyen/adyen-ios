@@ -87,7 +87,6 @@
 		E72DA33F23E19DE300707638 /* PreselectedPaymentMethodComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72DA33C23E19DE300707638 /* PreselectedPaymentMethodComponent.swift */; };
 		E72DA34123E1BE5300707638 /* DropInNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72DA34023E1BE5300707638 /* DropInNavigationController.swift */; };
 		E7388D8523DB1F9A008E62B8 /* DimmingPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7388D8423DB1F9A008E62B8 /* DimmingPresentationController.swift */; };
-		E73D47F923D0DF2900B16D0B /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73D47F823D0DF2900B16D0B /* ContainerView.swift */; };
 		E7484C2723B9FDF000CCF74F /* SlideInPresentationAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7484C2623B9FDF000CCF74F /* SlideInPresentationAnimator.swift */; };
 		E749FD1E23CF4998000D18BA /* NavigationStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E749FD1D23CF4998000D18BA /* NavigationStyle.swift */; };
 		E7620EA123BF3DC800A492C3 /* ModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90139CA22846AD5004C74DA /* ModalViewController.swift */; };
@@ -805,7 +804,6 @@
 		E7388D9323E08BF9008E62B8 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E7388D9423E08BF9008E62B8 /* nb-NO */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "nb-NO"; path = "nb-NO.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		E7388D9523E08BF9008E62B8 /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E73D47F823D0DF2900B16D0B /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
 		E7484C2623B9FDF000CCF74F /* SlideInPresentationAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideInPresentationAnimator.swift; sourceTree = "<group>"; };
 		E749FD1D23CF4998000D18BA /* NavigationStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStyle.swift; sourceTree = "<group>"; };
 		E7620EAA23C345D600A492C3 /* PresentableComponentMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentableComponentMock.swift; sourceTree = "<group>"; };
@@ -1644,7 +1642,6 @@
 			children = (
 				E2C0E0C0220D7E5E008616F6 /* SubmitButton.swift */,
 				E28098C5220DCF3F0087928F /* NetworkImageView.swift */,
-				E73D47F823D0DF2900B16D0B /* ContainerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3514,7 +3511,6 @@
 				F9639B2D24DD6B370073F38A /* RetryAPIClient.swift in Sources */,
 				F9620DB323C75C19005209FC /* PaymentComponentBuilder.swift in Sources */,
 				E700A72D2549E2F00012B64C /* BLIKPaymentMethod.swift in Sources */,
-				E73D47F923D0DF2900B16D0B /* ContainerView.swift in Sources */,
 				F9615FBB252DDD5400FA8EDD /* ViewControllerPresenter.swift in Sources */,
 				E270FDEB225CC4C4006C2CD0 /* Observation.swift in Sources */,
 				E7CD107E25544C970057C52D /* FormContainerItem.swift in Sources */,

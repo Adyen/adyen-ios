@@ -29,13 +29,7 @@ internal final class DimmingPresentationController: UIPresentationController {
     
     private func attachDimmigView(to view: UIView) {
         view.insertSubview(dimmingView, at: 0)
-        let constraints = [
-            dimmingView.topAnchor.constraint(equalTo: view.topAnchor),
-            dimmingView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            dimmingView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            dimmingView.leftAnchor.constraint(equalTo: view.leftAnchor)
-        ]
-        NSLayoutConstraint.activate(constraints)
+        dimmingView.adyen.anchore(inside: view)
     }
     
     override internal func containerViewWillLayoutSubviews() {

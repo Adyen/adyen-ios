@@ -114,12 +114,7 @@ extension FormCardSecurityCodeItemView {
         private func setupConstrints() {
             addSubview(hintImage)
             setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-            NSLayoutConstraint.activate([
-                hintImage.topAnchor.constraint(equalTo: topAnchor),
-                hintImage.bottomAnchor.constraint(equalTo: bottomAnchor),
-                hintImage.leftAnchor.constraint(equalTo: leftAnchor),
-                hintImage.rightAnchor.constraint(equalTo: rightAnchor)
-            ])
+            hintImage.adyen.anchore(inside: self)
         }
         
         private lazy var hintImage: UIImageView = {

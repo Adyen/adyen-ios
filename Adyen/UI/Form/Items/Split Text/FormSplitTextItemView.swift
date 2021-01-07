@@ -17,8 +17,7 @@ internal final class FormSplitTextItemView: FormItemView<FormSplitTextItem> {
         super.init(item: item)
         
         addSubview(stackView)
-        
-        configureConstraints()
+        stackView.adyen.anchore(inside: self)
     }
     
     override internal var childItemViews: [AnyFormItemView] {
@@ -55,16 +54,5 @@ internal final class FormSplitTextItemView: FormItemView<FormSplitTextItem> {
         stackView.spacing = 16
         return stackView
     }()
-    
-    private func configureConstraints() {
-        let constraints = [
-            stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ]
-        
-        NSLayoutConstraint.activate(constraints)
-    }
     
 }

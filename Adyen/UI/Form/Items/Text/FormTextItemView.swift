@@ -246,15 +246,8 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
     }
     
     private func configureConstraints() {
-        let constraints = [
-            textStackView.topAnchor.constraint(equalTo: topAnchor),
-            textStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            textStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            textStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            separatorView.bottomAnchor.constraint(equalTo: accessoryStackView.bottomAnchor, constant: 4)
-        ]
-        
-        NSLayoutConstraint.activate(constraints)
+        textStackView.adyen.anchore(inside: self)
+        separatorView.bottomAnchor.constraint(equalTo: accessoryStackView.bottomAnchor, constant: 4).isActive = true
     }
     
     override open var lastBaselineAnchor: NSLayoutYAxisAnchor {

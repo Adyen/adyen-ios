@@ -22,7 +22,7 @@ internal final class FormButtonItemView: FormItemView<FormButtonItem>, Observer 
         bind(item.$showsActivityIndicator, to: submitButton, at: \.showsActivityIndicator)
         bind(item.$enabled, to: submitButton, at: \.isEnabled)
         
-        configureConstraints()
+        submitButton.adyen.anchore(inside: self)
     }
     
     // MARK: - Submit Button
@@ -44,19 +44,6 @@ internal final class FormButtonItemView: FormItemView<FormButtonItem>, Observer 
     
     @objc private func didSelectSubmitButton() {
         item.buttonSelectionHandler?()
-    }
-    
-    // MARK: - Layout
-    
-    private func configureConstraints() {
-        let constraints = [
-            submitButton.topAnchor.constraint(equalTo: topAnchor),
-            submitButton.leadingAnchor.constraint(equalTo: leadingAnchor),
-            submitButton.trailingAnchor.constraint(equalTo: trailingAnchor),
-            submitButton.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ]
-        
-        NSLayoutConstraint.activate(constraints)
     }
     
 }
