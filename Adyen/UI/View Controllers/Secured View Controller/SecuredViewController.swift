@@ -100,15 +100,7 @@ public final class SecuredViewController: UIViewController {
         childViewController.didMove(toParent: self)
         
         childViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        
-        let constraints = [
-            childViewController.view.leftAnchor.constraint(equalTo: view.leftAnchor),
-            childViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
-            childViewController.view.rightAnchor.constraint(equalTo: view.rightAnchor),
-            childViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ]
-        
-        NSLayoutConstraint.activate(constraints)
+        childViewController.view.adyen.anchore(inside: view)
     }
     
     private func listenToBackgroundNotifications() {

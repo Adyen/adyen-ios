@@ -64,6 +64,7 @@ internal class PhoneExtensionInputControl: UIControl, AnyFormItemView {
     }
     
     /// :nodoc:
+    @available(*, unavailable)
     internal required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -117,14 +118,7 @@ internal class PhoneExtensionInputControl: UIControl, AnyFormItemView {
     /// :nodoc:
     private func applyConstraints() {
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        let constraints = [
-            stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -6),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1)
-        ]
-        
-        NSLayoutConstraint.activate(constraints)
+        stackView.adyen.anchore(inside: self, with: .init(top: 0, left: 0, bottom: -1, right: -6))
     }
     
 }

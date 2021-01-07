@@ -31,15 +31,7 @@ internal final class ListHeaderView: UIView {
     
     private func configureConstraints() {
         layoutMargins = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 6.0, right: 16.0)
-        
-        let constraints = [
-            titleLabel.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.trailingAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
-        ]
-        
-        NSLayoutConstraint.activate(constraints)
+        titleLabel.adyen.anchore(inside: self.layoutMarginsGuide)
     }
     
     // MARK: - Title Label

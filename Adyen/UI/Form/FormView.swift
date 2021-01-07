@@ -63,19 +63,12 @@ internal final class FormView: UIScrollView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-    
+
     // MARK: - Layout
-    
+
     private func configureConstraints() {
-        let constraints = [
-            stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            stackView.widthAnchor.constraint(equalTo: widthAnchor)
-        ]
-        
-        NSLayoutConstraint.activate(constraints)
+        stackView.adyen.anchore(inside: self)
+        stackView.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
     }
     
 }
