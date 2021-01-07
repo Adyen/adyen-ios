@@ -75,7 +75,7 @@ internal struct Cryptor {
         payload.append(encryptionResult.atag ?? Data())
         
         if let encryptedKey = try? self.rsaEncrypt(data: Data(key), with: keyInHex) {
-            return prefix + encryptedKey.base64EncodedString() + msgSeparator + payload.base64EncodedString()
+            return prefix + encryptedKey.base64EncodedString() + Cryptor.msgSeparator + payload.base64EncodedString()
         }
         
         throw Error.rsaEncryptionError
@@ -85,7 +85,7 @@ internal struct Cryptor {
         return aes.encrypt(data: data as NSData, withKey: key as NSData, initVector: initVector as NSData)
     }
     
-    private func rsaEncrypt(data: Data, with keyInHex: String) -> Data? {
+    private func rsaEncrypt(data: Data, with keyInHex: String) throws -> Data? {
         let tokens = keyInHex.components(separatedBy: "|")
         guard tokens.count == 2 else { return nil }
         
