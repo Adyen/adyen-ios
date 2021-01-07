@@ -48,14 +48,7 @@ public class FormContainerItem: FormItem {
             preservesSuperviewLayoutMargins = true
             contentView.translatesAutoresizingMaskIntoConstraints = false
             addSubview(contentView)
-            let constraints = [
-                contentView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor, constant: padding.top),
-                contentView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: padding.left),
-                contentView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: padding.right),
-                contentView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor, constant: padding.bottom)
-            ]
-
-            NSLayoutConstraint.activate(constraints)
+            contentView.adyen.anchore(inside: self.layoutMarginsGuide, with: padding)
         }
     }
 }

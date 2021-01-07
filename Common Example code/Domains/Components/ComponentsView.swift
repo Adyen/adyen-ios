@@ -13,7 +13,7 @@ internal final class ComponentsView: UIView {
         
         addSubview(tableView)
         
-        configureConstraints()
+        tableView.adyen.anchore(inside: self)
     }
     
     internal required init?(coder aDecoder: NSCoder) {
@@ -42,19 +42,6 @@ internal final class ComponentsView: UIView {
         
         return tableView
     }()
-    
-    // MARK: - Layout
-    
-    private func configureConstraints() {
-        let constraints = [
-            tableView.topAnchor.constraint(equalTo: topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ]
-        
-        NSLayoutConstraint.activate(constraints)
-    }
     
 }
 

@@ -27,6 +27,7 @@ internal final class FormPhoneExtensionPickerItemView: FormValueItemView<FormPho
     }
     
     /// :nodoc:
+    @available(*, unavailable)
     internal required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -48,14 +49,7 @@ internal final class FormPhoneExtensionPickerItemView: FormValueItemView<FormPho
     
     private func configureConstraints() {
         inputControl.translatesAutoresizingMaskIntoConstraints = false
-        let constraints = [
-            inputControl.topAnchor.constraint(equalTo: topAnchor),
-            inputControl.leadingAnchor.constraint(equalTo: leadingAnchor),
-            inputControl.trailingAnchor.constraint(equalTo: trailingAnchor),
-            inputControl.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ]
-        
-        NSLayoutConstraint.activate(constraints)
+        inputControl.adyen.anchore(inside: self)
     }
     
     // MARK: - Private

@@ -24,8 +24,7 @@ public final class FormSwitchItemView: FormValueItemView<FormSwitchItem> {
         accessibilityValue = switchControl.accessibilityValue
         
         addSubview(stackView)
-        
-        configureConstraints()
+        stackView.adyen.anchore(inside: self.layoutMarginsGuide)
     }
     
     private var switchDelegate: FormValueItemViewDelegate? {
@@ -33,6 +32,7 @@ public final class FormSwitchItemView: FormValueItemView<FormSwitchItem> {
     }
     
     /// :nodoc:
+    @available(*, unavailable)
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -95,18 +95,5 @@ public final class FormSwitchItemView: FormValueItemView<FormSwitchItem> {
         
         return stackView
     }()
-    
-    // MARK: - Layout
-    
-    private func configureConstraints() {
-        let constraints = [
-            stackView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
-        ]
-        
-        NSLayoutConstraint.activate(constraints)
-    }
-    
+
 }
