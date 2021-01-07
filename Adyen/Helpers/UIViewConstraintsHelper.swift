@@ -1,0 +1,39 @@
+//
+// Copyright (c) 2021 Adyen N.V.
+//
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
+//
+
+import UIKit
+
+/// Adds helper functionality to any `UIViewController` instance through the `adyen` property.
+/// :nodoc:
+extension AdyenScope where Base: UIView {
+
+    /// Attach top, bottom, left and right anchores of this view to corespondent anchores inside specified view.
+    /// IMPORTANT: both view should be in the same hierarcy.
+    /// - Parameter view: Container view
+    public func anchore(inside view: UIView, with padding: UIEdgeInsets = .zero) {
+        let constraints = [
+            base.topAnchor.constraint(equalTo: view.topAnchor, constant: padding.top),
+            base.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: padding.bottom),
+            base.leftAnchor.constraint(equalTo: view.leftAnchor, constant: padding.left),
+            base.rightAnchor.constraint(equalTo: view.rightAnchor, constant: padding.right)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+
+    /// Attach top, bottom, left and right anchores of this view to corespondent anchores inside specified view.
+    /// IMPORTANT: both view should be in the same hierarcy.
+    /// - Parameter view: Container view
+    public func anchore(inside margines: UILayoutGuide, with padding: UIEdgeInsets = .zero) {
+        let constraints = [
+            base.topAnchor.constraint(equalTo: margines.topAnchor, constant: padding.top),
+            base.bottomAnchor.constraint(equalTo: margines.bottomAnchor, constant: padding.bottom),
+            base.leftAnchor.constraint(equalTo: margines.leftAnchor, constant: padding.left),
+            base.rightAnchor.constraint(equalTo: margines.rightAnchor, constant: padding.right)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+
+}

@@ -54,8 +54,6 @@ internal final class ModalViewController: UIViewController {
     /// :nodoc:
     override public func loadView() {
         super.loadView()
-        titleLabel.text = innerController.title ?? ""
-        cancelButton.isHidden = cancelButtonHandler == nil
         
         innerController.willMove(toParent: self)
         addChild(innerController)
@@ -70,13 +68,6 @@ internal final class ModalViewController: UIViewController {
         
         innerController.view.layoutIfNeeded()
         view.backgroundColor = style.backgroundColor
-        
-        cancelButton.tintColor = style.tintColor
-        guard let title = titleLabel.text, !title.isEmpty else { return }
-        titleLabel.attributedText = NSAttributedString(string: title,
-                                                       attributes: [NSAttributedString.Key.font: style.barTitle.font,
-                                                                    NSAttributedString.Key.foregroundColor: style.barTitle.color,
-                                                                    NSAttributedString.Key.backgroundColor: style.barTitle.backgroundColor])
     }
     
     override internal var preferredContentSize: CGSize {
@@ -103,31 +94,6 @@ internal final class ModalViewController: UIViewController {
     
     // MARK: - View elements
     
-    internal lazy var titleLabel: UILabel = {
-        let label = UILabel(frame: .zero)
-        label.textAlignment = .left
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    internal lazy var cancelButton: UIButton = {
-        let button: UIButton
-        if #available(iOS 13.0, *) {
-            button = UIButton(type: UIButton.ButtonType.close)
-            button.translatesAutoresizingMaskIntoConstraints = false
-            button.widthAnchor.constraint(equalTo: button.heightAnchor).isActive = true
-        } else {
-            button = UIButton(type: UIButton.ButtonType.system)
-            let cancelText = Bundle(for: UIApplication.self).localizedString(forKey: "Cancel", value: nil, table: nil)
-            button.setTitle(cancelText, for: .normal)
-            button.setTitleColor(style.tintColor, for: .normal)
-        }
-        
-        button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        button.addTarget(self, action: #selector(didCancel), for: .touchUpInside)
-        return button
-    }()
-    
     internal lazy var separator: UIView = {
         let separator = UIView(frame: .zero)
         separator.backgroundColor = style.separatorColor ?? UIColor.Adyen.componentSeparator
@@ -135,39 +101,12 @@ internal final class ModalViewController: UIViewController {
     }()
     
     internal lazy var toolbar: UIView = {
-        let toolbar = UIStackView(arrangedSubviews: [self.titleLabel, self.cancelButton])
-        toolbar.alignment = .center
-        toolbar.distribution = .fill
-        toolbar.axis = .horizontal
-        toolbar.layoutMargins = .init(top: 0, left: 16, bottom: 0, right: 16)
-        toolbar.isLayoutMarginsRelativeArrangement = true
+        let toolbar = ModalToolbar(title: self.innerController.title,
+                                   style: style,
+                                   cancelHandler: { [weak self] in self?.didCancel() })
         toolbar.translatesAutoresizingMaskIntoConstraints = false
-
-        toolbar.addSubview(toolbarBackground)
-        toolbar.sendSubviewToBack(toolbarBackground)
-
-        anchore(view: toolbar, toView: toolbarBackground)
-        
         return toolbar
     }()
-
-    private lazy var toolbarBackground: UIView = {
-        let background = UIView(frame: .zero)
-        background.backgroundColor = self.style.backgroundColor
-        background.translatesAutoresizingMaskIntoConstraints = false
-
-        return background
-    }()
-
-    private func anchore(view view1: UIView, toView view2: UIView) {
-        let constraints = [
-            view1.topAnchor.constraint(equalTo: view2.topAnchor),
-            view1.bottomAnchor.constraint(equalTo: view2.bottomAnchor),
-            view1.leftAnchor.constraint(equalTo: view2.leftAnchor),
-            view1.rightAnchor.constraint(equalTo: view2.rightAnchor)
-        ]
-        NSLayoutConstraint.activate(constraints)
-    }
     
     internal lazy var stackView: UIStackView = {
         let views = [toolbar, separator, innerController.view]
@@ -179,7 +118,7 @@ internal final class ModalViewController: UIViewController {
         return stackView
     }()
     
-    @objc private func didCancel() {
+    private func didCancel() {
         guard let cancelHandler = cancelButtonHandler else { return }
         
         innerController.resignFirstResponder()
@@ -194,6 +133,7 @@ internal final class ModalViewController: UIViewController {
         
         let bottomConstraint = stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         bottomConstraint.priority = .defaultHigh
+
         NSLayoutConstraint.activate([
             toolbar.heightAnchor.constraint(equalToConstant: toolbarHeight),
             separator.heightAnchor.constraint(equalToConstant: separatorHeight),
