@@ -138,10 +138,10 @@ internal final class PaymentsController {
 
     internal func presentApplePayComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: ApplePayPaymentMethod.self) else { return }
-        let config = ApplePayComponent.Configuration(summaryItems: Configuration.applePaySummaryItems,
+        let config = ApplePayComponent.Configuration(paymentMethod: paymentMethod,
+                                                     summaryItems: Configuration.applePaySummaryItems,
                                                      merchantIdentifier: Configuration.applePayMerchantIdentifier)
-        let component = try? ApplePayComponent(paymentMethod: paymentMethod,
-                                               payment: payment,
+        let component = try? ApplePayComponent(payment: payment,
                                                configuration: config) {
             print("ApplePay dismissed")
         }
