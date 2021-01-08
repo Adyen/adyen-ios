@@ -187,15 +187,14 @@ class ApplePayComponentTest: XCTestCase {
                                                             summaryItems: expectedSummaryItems,
                                                             merchantIdentifier: "test_id",
                                                             requiredBillingContactFields: expectedRequiredBillingFields,
-                                                            requiredShippingContactFields: expectedRequiredShippingFields,
-                                                            excludedCardNetworks: [.visa])
+                                                            requiredShippingContactFields: expectedRequiredShippingFields)
         let sut = try? ApplePayComponent(payment: payment,
                                          configuration: configuration)
         let paymentRequest = sut!.createPaymentRequest()
         XCTAssertEqual(paymentRequest.paymentSummaryItems, expectedSummaryItems)
             
         XCTAssertEqual(paymentRequest.merchantCapabilities, PKMerchantCapability.capability3DS)
-        XCTAssertEqual(paymentRequest.supportedNetworks, self.supportedNetworks.filter { $0 != .visa })
+        XCTAssertEqual(paymentRequest.supportedNetworks, self.supportedNetworks)
         XCTAssertEqual(paymentRequest.currencyCode, amount.currencyCode)
         XCTAssertEqual(paymentRequest.merchantIdentifier, "test_id")
         XCTAssertEqual(paymentRequest.countryCode, countryCode)
@@ -206,11 +205,10 @@ class ApplePayComponentTest: XCTestCase {
     }
 
     func testBrandsFiltering() {
-        let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name", brands: ["mc", "visa", "elo", "unknown_network"])
+        let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name", brands: ["mc", "elo", "unknown_network"])
         let configuration = ApplePayComponent.Configuration(paymentMethod: paymentMethod,
                                                             summaryItems: createTestSummaryItems(),
-                                                            merchantIdentifier: "test_id",
-                                                            excludedCardNetworks: [.visa])
+                                                            merchantIdentifier: "test_id")
         let sut = try? ApplePayComponent(payment: payment,
                                          configuration: configuration)
         let paymentRequest = sut!.createPaymentRequest()
