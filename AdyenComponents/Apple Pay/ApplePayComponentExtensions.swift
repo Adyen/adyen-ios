@@ -64,9 +64,6 @@ extension ApplePayComponent {
         /// Ignored on iOS 10.*.
         public var requiredShippingContactFields: Set<PKContactField> = []
 
-        /// The excluded card brands.
-        public var excludedCardNetworks: [PKPaymentNetwork] = []
-
         // :nodoc:
         internal var supportedNetworks: [PKPaymentNetwork] {
             var networks = ApplePayComponent.defaultNetworks
@@ -76,7 +73,7 @@ extension ApplePayComponent {
                 networks = networks.filter { brandsSet.contains($0.adyenName) }
             }
 
-            return networks.filter { !excludedCardNetworks.contains($0) }
+            return networks
         }
         
         /// Initializes the configuration.
@@ -93,14 +90,12 @@ extension ApplePayComponent {
                     summaryItems: [PKPaymentSummaryItem],
                     merchantIdentifier: String,
                     requiredBillingContactFields: Set<PKContactField> = [],
-                    requiredShippingContactFields: Set<PKContactField> = [],
-                    excludedCardNetworks: [PKPaymentNetwork] = []) {
+                    requiredShippingContactFields: Set<PKContactField> = []) {
             self.paymentMethod = paymentMethod
             self.summaryItems = summaryItems
             self.merchantIdentifier = merchantIdentifier
             self.requiredBillingContactFields = requiredBillingContactFields
             self.requiredShippingContactFields = requiredShippingContactFields
-            self.excludedCardNetworks = excludedCardNetworks
         }
     }
 
