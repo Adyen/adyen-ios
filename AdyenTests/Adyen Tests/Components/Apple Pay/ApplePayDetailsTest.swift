@@ -11,7 +11,7 @@ import XCTest
 class ApplePayDetailsTest: XCTestCase {
     
     func testSerialisation() throws {
-        let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name")
+        let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name", brands: nil)
         let sut = ApplePayDetails(paymentMethod: paymentMethod,
                                   token: "test_token",
                                   network: "test_network",
