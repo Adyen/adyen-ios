@@ -130,15 +130,13 @@ internal final class ComponentManager {
         
         let requiredBillingContactFields = configuration.applePay.requiredBillingContactFields
         let requiredShippingContactFields = configuration.applePay.requiredShippingContactFields
-        let excludedCardNetworks = configuration.applePay.excludedCardNetworks
         
         do {
             let configuration = ApplePayComponent.Configuration(paymentMethod: paymentMethod,
                                                                 summaryItems: summaryItems,
                                                                 merchantIdentifier: identfier,
                                                                 requiredBillingContactFields: requiredBillingContactFields,
-                                                                requiredShippingContactFields: requiredShippingContactFields,
-                                                                excludedCardNetworks: excludedCardNetworks)
+                                                                requiredShippingContactFields: requiredShippingContactFields)
             return try ApplePayComponent(payment: payment,
                                          configuration: configuration)
         } catch {
