@@ -11,7 +11,7 @@ import Foundation
 extension Cryptor.AES {
 
     @available(iOS 13.0, *)
-    internal struct AESGCMEncryptor: AESEncryptor {
+    internal struct GCMEncryptor: AESEncryptor {
 
         private let box: AES.GCM.SealedBox
 

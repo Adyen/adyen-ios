@@ -15,7 +15,7 @@ extension Cryptor.AES {
 
      By default the number of additional authentication octets is zero.
      */
-    internal struct AESCCMEncryptor: AESEncryptor {
+    internal struct CCMEncryptor: AESEncryptor {
 
         /// The number of authentication octets.
         private let authOctets = 8 // M
