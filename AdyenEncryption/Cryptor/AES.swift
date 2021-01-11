@@ -41,11 +41,11 @@ extension Cryptor {
         private var encryptor: AESEncryptor.Type {
             if #available(iOS 13.0, *) {
                 if self == .GCM {
-                    return AESGCMEncryptor.self
+                    return GCMEncryptor.self
                 }
             }
 
-            return AESCCMEncryptor.self
+            return CCMEncryptor.self
         }
     }
 }
