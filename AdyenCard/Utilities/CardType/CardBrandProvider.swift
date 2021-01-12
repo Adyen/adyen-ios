@@ -53,23 +53,43 @@ internal final class CardBrandProvider: AnyCardBrandProvider {
                                                     completion: completion)
         }
         
-        fetchBinLookupService(success: { binLookupService in
-            binLookupService.requestCardType(for: bin,
-                                             supportedCardTypes: brands) { [weak self] result in
-                switch result {
-                case let .success(response):
-                    completion(response.brands ?? [])
-                case .failure:
-                    self?.fallbackCardTypeProvider.provide(for: bin,
-                                                           supported: brands,
-                                                           completion: completion)
-                }
-            }
+        fetchBinLookupService(success: { [weak self] service in
+            self?.use(binLookupService: service,
+                      bin: bin,
+                      supported: brands,
+                      completion: completion)
         }, failure: { [weak self] _ in
             self?.fallbackCardTypeProvider.provide(for: bin,
                                                    supported: brands,
                                                    completion: completion)
         })
+    }
+
+    private func use(binLookupService: BinLookupService,
+                     bin: String,
+                     supported brands: [CardType],
+                     completion: @escaping ([CardBrand]) -> Void) {
+        binLookupService.requestCardType(for: bin,
+                                         supportedCardTypes: brands) { [weak self] result in
+            self?.handle(result: result,
+                         bin: bin,
+                         supported: brands,
+                         completion: completion)
+        }
+    }
+
+    private func handle(result: Result<BinLookupResponse, Error>,
+                        bin: String,
+                        supported brands: [CardType],
+                        completion: @escaping ([CardBrand]) -> Void) {
+        switch result {
+        case let .success(response):
+            completion(response.brands ?? [])
+        case .failure:
+            fallbackCardTypeProvider.provide(for: bin,
+                                             supported: brands,
+                                             completion: completion)
+        }
     }
     
     private func fetchBinLookupService(success: @escaping (BinLookupService) -> Void,
