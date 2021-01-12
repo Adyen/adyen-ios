@@ -33,7 +33,8 @@ class CardBrandProviderTests: XCTestCase {
         apiClientMock.onExecute = {
             XCTFail("Shoul not call APIClient")
         }
-        sut.provide(for: "56", supported: [.masterCard, .visa, .maestro]) { result in
+        let parameters = CardBrandProviderParameters(bin: "56", supportedTypes: [.masterCard, .visa, .maestro])
+        sut.provide(for: parameters) { result in
             XCTAssertEqual(result.map { $0.type }, [.maestro])
         }
     }
@@ -42,7 +43,8 @@ class CardBrandProviderTests: XCTestCase {
         cardPublicKeyProvider.onFetch = { $0(.success(Dummy.dummyPublicKey)) }
         let mockedBrands = [CardBrand(type: .solo)]
         apiClientMock.mockedResults = [.success(BinLookupResponse(brands: mockedBrands))]
-        sut.provide(for: "5656565656565656", supported: [.masterCard, .visa, .maestro]) { result in
+        let parameters = CardBrandProviderParameters(bin: "5656565656565656", supportedTypes: [.masterCard, .visa, .maestro])
+        sut.provide(for: parameters) { result in
             XCTAssertEqual(result.map { $0.type }, [.solo])
         }
     }
@@ -50,7 +52,8 @@ class CardBrandProviderTests: XCTestCase {
     func testLocalCardTypeFetchWhenPublicKeyFailure() {
         cardPublicKeyProvider.onFetch = { $0(.failure(Dummy.dummyError)) }
         apiClientMock.onExecute = { XCTFail("Shoul not call APIClient") }
-        sut.provide(for: "56", supported: [.masterCard, .visa, .maestro]) { result in
+        let parameters = CardBrandProviderParameters(bin: "56", supportedTypes: [.masterCard, .visa, .maestro])
+        sut.provide(for: parameters) { result in
             XCTAssertEqual(result.map { $0.type }, [.maestro])
         }
     }
@@ -58,7 +61,8 @@ class CardBrandProviderTests: XCTestCase {
     func testRemoteCardTypeFetchWhenPublicKeyFailure() {
         cardPublicKeyProvider.onFetch = { $0(.failure(Dummy.dummyError)) }
         apiClientMock.onExecute = { XCTFail("Shoul not call APIClient") }
-        sut.provide(for: "5656565656565656", supported: [.masterCard, .visa, .maestro]) { result in
+        let parameters = CardBrandProviderParameters(bin: "5656565656565656", supportedTypes: [.masterCard, .visa, .maestro])
+        sut.provide(for: parameters) { result in
             XCTAssertEqual(result.map { $0.type }, [.maestro])
         }
     }

@@ -314,7 +314,8 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
     }
     
     private func requestCardTypes(for bin: String) {
-        cardBrandProvider.provide(for: bin, supported: self.supportedCardTypes) { [weak self] cardBrands in
+        let parameters = CardBrandProviderParameters(bin: bin, supportedTypes: supportedCardTypes)
+        cardBrandProvider.provide(for: parameters) { [weak self] cardBrands in
             guard let self = self else { return }
 
             self.securityCodeItem.update(cardBrands: cardBrands)
