@@ -215,9 +215,10 @@ class BCMCComponentTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         let expectationCardType = XCTestExpectation(description: "CardType Expectation")
+        let mockedBrands = [CardBrand(type: .bcmc, cvcPolicy: .optional)]
         let delegateMock = CardComponentDelegateMock(onBINDidChange: { _ in },
-                                                     onCardTypeChange: { value in
-                                                        XCTAssertEqual(value, [.bcmc])
+                                                     onCardBrandChange: { value in
+                                                        XCTAssertEqual(value, mockedBrands)
                                                          expectationCardType.fulfill()
                                                      })
         sut.cardComponentDelegate = delegateMock
@@ -242,7 +243,7 @@ class BCMCComponentTests: XCTestCase {
         let delegateMock = CardComponentDelegateMock(onBINDidChange: { value in
             XCTAssertEqual(value, "670344")
             expectationBin.fulfill()
-        }, onCardTypeChange: { _ in })
+        }, onCardBrandChange: { _ in })
         sut.cardComponentDelegate = delegateMock
 
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
@@ -262,7 +263,7 @@ class BCMCComponentTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         let expectationCardType = XCTestExpectation(description: "CardType Expectation")
-        let delegateMock = CardComponentDelegateMock(onBINDidChange: { _ in }, onCardTypeChange: { value in
+        let delegateMock = CardComponentDelegateMock(onBINDidChange: { _ in }, onCardBrandChange: { value in
             XCTAssertEqual(value, [])
             expectationCardType.fulfill()
         })

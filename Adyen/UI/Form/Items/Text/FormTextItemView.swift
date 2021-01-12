@@ -81,8 +81,9 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
     }()
     
     // MARK: - Title Label
-    
-    internal lazy var titleLabel: UILabel = {
+
+    /// :nodoc:
+    public lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.font = item.style.title.font
         titleLabel.adjustsFontForContentSizeCategory = true
@@ -303,10 +304,14 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
             accessory = .none
         }
     }
-    
-    private func updateValidationStatus(forced: Bool = false) {
+
+    /// :nodoc:
+    open func updateValidationStatus(forced: Bool = false) {
         if item.isValid() {
             accessory = .valid
+            hideAlertLabel(true)
+            highlightSeparatorView(color: tintColor)
+            titleLabel.textColor = tintColor
         } else if forced || !(textField.text ?? "").isEmpty {
             accessory = .invalid
             hideAlertLabel(false)
