@@ -10,7 +10,7 @@ import Foundation
 /// :nodoc:
 internal protocol AnyCardBrandProvider: Component {
     /// :nodoc:
-    func requestCardBrands(for bin: String, supported brands: [CardType], completion: @escaping ([CardBrand]) -> Void)
+    func provide(for bin: String, supported brands: [CardType], completion: @escaping ([CardBrand]) -> Void)
 }
 
 /// Provide cardType detection based on BinLookup API.
@@ -46,11 +46,11 @@ internal final class CardBrandProvider: AnyCardBrandProvider {
     ///   - bin: Card's BIN number. If longer than `minBinLength` - calls API, otherwise check local Regex.
     ///   - brands: Card brands supported by the merchant.
     ///   - completion:  Callback to notify about results.
-    internal func requestCardBrands(for bin: String, supported brands: [CardType], completion: @escaping ([CardBrand]) -> Void) {
+    internal func provide(for bin: String, supported brands: [CardType], completion: @escaping ([CardBrand]) -> Void) {
         guard bin.count > CardBrandProvider.minBinLength else {
-            return fallbackCardTypeProvider.requestCardBrands(for: bin,
-                                                              supported: brands,
-                                                              completion: completion)
+            return fallbackCardTypeProvider.provide(for: bin,
+                                                    supported: brands,
+                                                    completion: completion)
         }
         
         fetchBinLookupService(success: { binLookupService in
@@ -60,15 +60,15 @@ internal final class CardBrandProvider: AnyCardBrandProvider {
                 case let .success(response):
                     completion(response.brands ?? [])
                 case .failure:
-                    self?.fallbackCardTypeProvider.requestCardBrands(for: bin,
-                                                                     supported: brands,
-                                                                     completion: completion)
+                    self?.fallbackCardTypeProvider.provide(for: bin,
+                                                           supported: brands,
+                                                           completion: completion)
                 }
             }
         }, failure: { [weak self] _ in
-            self?.fallbackCardTypeProvider.requestCardBrands(for: bin,
-                                                             supported: brands,
-                                                             completion: completion)
+            self?.fallbackCardTypeProvider.provide(for: bin,
+                                                   supported: brands,
+                                                   completion: completion)
         })
     }
     
