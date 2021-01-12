@@ -11,8 +11,8 @@ import Foundation
 internal final class FallbackCardBrandProvider: AnyCardBrandProvider {
 
     /// :nodoc:
-    internal func provide(for bin: String, supported brands: [CardType], completion: @escaping ([CardBrand]) -> Void) {
-        let result: [CardBrand] = brands.adyen.types(forCardNumber: bin).map { brand in
+    internal func provide(for parameters: CardBrandProviderParameters, completion: @escaping ([CardBrand]) -> Void) {
+        let result: [CardBrand] = parameters.supportedTypes.adyen.types(forCardNumber: parameters.bin).map { brand in
 
             var cvcPolicy: CardBrand.CVCPolicy = .required
 
