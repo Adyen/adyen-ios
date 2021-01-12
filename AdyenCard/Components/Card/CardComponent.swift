@@ -39,7 +39,7 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
     internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
     
     /// :nodoc:
-    internal var cardTypeProvider: AnyCardBrandProvider
+    internal var cardBrandProvider: AnyCardBrandProvider
 
     private static let maxCardsVisible = 4
     private static let publicBinLenght = 6
@@ -86,7 +86,7 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
             environment.clientKey = clientKey
             cardPublicKeyProvider.environment = environment
             storedCardComponent?.environment = environment
-            cardTypeProvider.environment = environment
+            cardBrandProvider.environment = environment
         }
     }
     
@@ -96,7 +96,7 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
             environment.clientKey = clientKey
             cardPublicKeyProvider.clientKey = clientKey
             storedCardComponent?.clientKey = clientKey
-            cardTypeProvider.clientKey = clientKey
+            cardBrandProvider.clientKey = clientKey
         }
     }
 
@@ -143,10 +143,10 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
         self.privateSupportedCardTypes = (supportedCardTypes ?? paymentMethodCardTypes)
             .minus(excludedCardTypes)
         self.style = style
-        self.cardTypeProvider = CardBrandProvider(cardPublicKeyProvider: cardPublicKeyProvider)
+        self.cardBrandProvider = CardBrandProvider(cardPublicKeyProvider: cardPublicKeyProvider)
 
         self.cardPublicKeyProvider.clientKey = clientKey
-        self.cardTypeProvider.clientKey = clientKey
+        self.cardBrandProvider.clientKey = clientKey
         self.environment.clientKey = clientKey
     }
     
@@ -314,7 +314,7 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
     }
     
     private func requestCardTypes(for bin: String) {
-        cardTypeProvider.requestCardBrands(for: bin, supported: self.supportedCardTypes) { [weak self] cardBrands in
+        cardBrandProvider.requestCardBrands(for: bin, supported: self.supportedCardTypes) { [weak self] cardBrands in
             guard let self = self else { return }
 
             self.securityCodeItem.update(cardBrands: cardBrands)
