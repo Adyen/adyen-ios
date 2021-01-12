@@ -9,19 +9,19 @@ import AdyenCard
 internal class CardComponentDelegateMock: CardComponentDelegate {
     
     private let onBINDidChange: (String) -> Void
-    private let onCardTypeChange: ([CardType]?) -> Void
+    private let onCardBrandChange: ([CardBrand]?) -> Void
     
     internal init(onBINDidChange: @escaping (String) -> Void,
-                  onCardTypeChange: @escaping ([CardType]?) -> Void) {
+                  onCardBrandChange: @escaping ([CardBrand]?) -> Void) {
         self.onBINDidChange = onBINDidChange
-        self.onCardTypeChange = onCardTypeChange
+        self.onCardBrandChange = onCardBrandChange
     }
     
     func didChangeBIN(_ value: String, component: CardComponent) {
         onBINDidChange(value)
     }
     
-    func didChangeCardType(_ value: [CardType]?, component: CardComponent) {
-        onCardTypeChange(value)
+    func didChangeCardBrand(_ value: [CardBrand]?, component: CardComponent) {
+        onCardBrandChange(value)
     }
 }

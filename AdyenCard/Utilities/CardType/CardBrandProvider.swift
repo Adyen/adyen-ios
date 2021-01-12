@@ -8,14 +8,13 @@ import Adyen
 import Foundation
 
 /// :nodoc:
-internal protocol AnyCardTypeProvider: Component {
+internal protocol AnyCardBrandProvider: Component {
     /// :nodoc:
-    func requestCardTypes(for bin: String, supported cardType: [CardType], completion: @escaping ([CardType]) -> Void)
+    func requestCardBrands(for bin: String, supported brands: [CardType], completion: @escaping ([CardBrand]) -> Void)
 }
 
 /// Provide cardType detection based on BinLookup API.
-/// Fall back to local regex-based detector if API not available or BIN too short.
-internal final class CardTypeProvider: AnyCardTypeProvider {
+internal final class CardBrandProvider: AnyCardBrandProvider {
     
     private static let minBinLength = 6
     
@@ -24,38 +23,52 @@ internal final class CardTypeProvider: AnyCardTypeProvider {
     private var privateBinLookupService: BinLookupService?
     
     private let cardPublicKeyProvider: AnyCardPublicKeyProvider
+
+    private let fallbackCardTypeProvider: AnyCardBrandProvider
     
     /// Create a new instance of CardTypeProvider.
     /// - Parameters:
     ///   - supportedCardTypes: Array of supported cads.
     ///   - apiClient: Any instance of `APIClientProtocol`.
     ///   - cardPublicKeyProvider: Any instance of `AnyCardPublicKeyProvider`.
-    internal init(cardPublicKeyProvider: AnyCardPublicKeyProvider, apiClient: APIClientProtocol? = nil) {
+    ///   - fallbackCardTypeProvider: Any instance of `AnyCardBrandProvider` to be used as a fallback
+    ///   if API not available or BIN too short.
+    internal init(cardPublicKeyProvider: AnyCardPublicKeyProvider,
+                  apiClient: APIClientProtocol? = nil,
+                  fallbackCardTypeProvider: AnyCardBrandProvider = FallbackCardBrandProvider()) {
         self.apiClient = apiClient
         self.cardPublicKeyProvider = cardPublicKeyProvider
+        self.fallbackCardTypeProvider = fallbackCardTypeProvider
     }
     
     /// Request card types based on enterd BIN.
     /// - Parameters:
-    ///   - bin: Card's BIN number. If longer than `minBinLength` - calls API, otherwise check local Regex,
+    ///   - bin: Card's BIN number. If longer than `minBinLength` - calls API, otherwise check local Regex.
+    ///   - brands: Card brands supported by the merchant.
     ///   - completion:  Callback to notify about results.
-    internal func requestCardTypes(for bin: String, supported cardType: [CardType], completion: @escaping ([CardType]) -> Void) {
-        guard bin.count > CardTypeProvider.minBinLength else {
-            return completion(cardType.adyen.types(forCardNumber: bin))
+    internal func requestCardBrands(for bin: String, supported brands: [CardType], completion: @escaping ([CardBrand]) -> Void) {
+        guard bin.count > CardBrandProvider.minBinLength else {
+            return fallbackCardTypeProvider.requestCardBrands(for: bin,
+                                                              supported: brands,
+                                                              completion: completion)
         }
         
         fetchBinLookupService(success: { binLookupService in
             binLookupService.requestCardType(for: bin,
-                                             supportedCardTypes: cardType) { result in
+                                             supportedCardTypes: brands) { [weak self] result in
                 switch result {
                 case let .success(response):
-                    completion(response.detectedBrands ?? [])
+                    completion(response.brands ?? [])
                 case .failure:
-                    completion(cardType.adyen.types(forCardNumber: bin))
+                    self?.fallbackCardTypeProvider.requestCardBrands(for: bin,
+                                                                     supported: brands,
+                                                                     completion: completion)
                 }
             }
-        }, failure: { _ in
-            completion(cardType.adyen.types(forCardNumber: bin))
+        }, failure: { [weak self] _ in
+            self?.fallbackCardTypeProvider.requestCardBrands(for: bin,
+                                                             supported: brands,
+                                                             completion: completion)
         })
     }
     

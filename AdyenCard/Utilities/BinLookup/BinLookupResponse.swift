@@ -8,9 +8,14 @@ import Adyen
 import Foundation
 
 internal struct BinLookupResponse: Response {
-    internal var detectedBrands: [CardType]?
+
+    internal var brands: [CardBrand]?
+
+    internal let requestId: String
+
+    internal let issuingCountryCode: String
     
     private enum CodingKeys: String, CodingKey {
-        case detectedBrands
+        case brands, requestId, issuingCountryCode
     }
 }

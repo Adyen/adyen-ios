@@ -18,6 +18,12 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
             let localization = ADYLocalizedString("adyen.card.cvcItem.placeholder.digits", item.localizationParameters)
             self?.textField.placeholder = String(format: localization, number)
         }
+
+        bind(item.$title, to: self.titleLabel, at: \.text)
+
+        observe(item.$isCVCOptional) { [weak self] _ in
+            self?.updateValidationStatus()
+        }
         
         item.$selectedCard.publish(nil)
     }
@@ -32,6 +38,14 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         view.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cvvHintIcon")
         return view
     }()
+
+    override internal func updateValidationStatus(forced: Bool = false) {
+        super.updateValidationStatus(forced: forced)
+
+        if item.isCVCOptional {
+            accessory = .customView(cardHintView)
+        }
+    }
     
     override internal func textFieldDidBeginEditing(_ text: UITextField) {
         super.textFieldDidBeginEditing(text)
