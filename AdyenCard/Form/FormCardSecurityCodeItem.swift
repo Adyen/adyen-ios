@@ -37,18 +37,7 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
     }
 
     internal func update(cardBrands: [CardBrand]) {
-        var isCVCOptional = false
-
-        if !cardBrands.isEmpty {
-            isCVCOptional = cardBrands.allSatisfy { brand in
-                switch brand.cvcPolicy {
-                case .optional, .hidden:
-                    return true
-                default:
-                    return false
-                }
-            }
-        }
+        let isCVCOptional = cardBrands.isCVCOptional
 
         let titleFailureMessageKey = isCVCOptional ? "adyen.card.cvcItem.title.optional" : "adyen.card.cvcItem.title"
         title = ADYLocalizedString(titleFailureMessageKey, localizationParameters)
@@ -68,5 +57,19 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
 extension FormItemViewBuilder {
     internal func build(with item: FormCardSecurityCodeItem) -> FormItemView<FormCardSecurityCodeItem> {
         FormCardSecurityCodeItemView(item: item)
+    }
+}
+
+extension Array where Element == CardBrand {
+    var isCVCOptional: Bool {
+        guard isEmpty else { return false }
+        return allSatisfy { brand in
+            switch brand.cvcPolicy {
+            case .optional, .hidden:
+                return true
+            default:
+                return false
+            }
+        }
     }
 }
