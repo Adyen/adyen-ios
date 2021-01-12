@@ -123,6 +123,7 @@
 		E7D531192446F525000046B4 /* FormSeparatorItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D531172446F525000046B4 /* FormSeparatorItemView.swift */; };
 		E7D5311A2446F525000046B4 /* FormSeparatorItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D531182446F525000046B4 /* FormSeparatorItem.swift */; };
 		E7D5311C2447065B000046B4 /* PreselectedPaymentComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D5311B2447065B000046B4 /* PreselectedPaymentComponentTests.swift */; };
+		E7E58BC925ACA21D00E869F9 /* DropInActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C6F23F1924B000B4B2B /* DropInActionComponent.swift */; };
 		E7E8343C24F3C81700EC3844 /* PublicKeyProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E8343B24F3C81700EC3844 /* PublicKeyProviderMock.swift */; };
 		E9021DAA225789B1009CF7F4 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9021DA9225789B1009CF7F4 /* Localization.swift */; };
 		E9021DEC225CC44C009CF7F4 /* URLExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9021DEB225CC44C009CF7F4 /* URLExtensionsTest.swift */; };
@@ -398,7 +399,6 @@
 		F9789C6A23F18057000B4B2B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9789C6923F18057000B4B2B /* CoreGraphics.framework */; };
 		F9789C6C23F18069000B4B2B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9789C6B23F18069000B4B2B /* Security.framework */; };
 		F9789C6E23F18EBD000B4B2B /* WeChatPayActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C6D23F18EBD000B4B2B /* WeChatPayActionComponent.swift */; };
-		F9789C7123F1939F000B4B2B /* DropInActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C6F23F1924B000B4B2B /* DropInActionComponent.swift */; };
 		F9789C7523F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C7423F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift */; };
 		F97CCD3A2435E35E00BC560A /* UIViewControllerHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97CCD392435E35E00BC560A /* UIViewControllerHelpers.swift */; };
 		F97CCD3C24360A4000BC560A /* BundleHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97CCD3B24360A4000BC560A /* BundleHelpers.swift */; };
@@ -1981,7 +1981,6 @@
 				E9B36CC122451C3000EAA368 /* Models */,
 				E9B36CAD2243B2FE00EAA368 /* AdyenDropIn.h */,
 				E9B36CAE2243B2FE00EAA368 /* Info.plist */,
-				F9789C6F23F1924B000B4B2B /* DropInActionComponent.swift */,
 				E9B36CB72243B38A00EAA368 /* DropInComponent.swift */,
 				E226F54A229803130013A463 /* DropInComponentDelegate.swift */,
 			);
@@ -2172,6 +2171,7 @@
 				F9175FC52594997F00D653BE /* Components */,
 				E278EB3D22AA5E8D00497FD5 /* Actions */,
 				F9175F8E2594986900D653BE /* AdyenActions.h */,
+				F9789C6F23F1924B000B4B2B /* DropInActionComponent.swift */,
 				F9175F8F2594986900D653BE /* Info.plist */,
 			);
 			path = AdyenActions;
@@ -3781,7 +3781,6 @@
 				E7620EA123BF3DC800A492C3 /* ModalViewController.swift in Sources */,
 				E7388D8523DB1F9A008E62B8 /* DimmingPresentationController.swift in Sources */,
 				E2D1784022D8763400B6883E /* PaymentMethodListComponent.swift in Sources */,
-				F9789C7123F1939F000B4B2B /* DropInActionComponent.swift in Sources */,
 				E72DA33F23E19DE300707638 /* PreselectedPaymentMethodComponent.swift in Sources */,
 				E72DA34123E1BE5300707638 /* DropInNavigationController.swift in Sources */,
 				E9B36CB82243B38A00EAA368 /* DropInComponent.swift in Sources */,
@@ -3837,6 +3836,7 @@
 				F9175FFA259499D500D653BE /* AwaitViewController.swift in Sources */,
 				F9175FD22594999600D653BE /* RedirectComponent.swift in Sources */,
 				F9175FBA2594996000D653BE /* Action.swift in Sources */,
+				E7E58BC925ACA21D00E869F9 /* DropInActionComponent.swift in Sources */,
 				F917616F25A30B6A00D653BE /* ThreeDSActionHandlerResult.swift in Sources */,
 				F9175FB92594996000D653BE /* AwaitAction.swift in Sources */,
 				F9175FB42594996000D653BE /* ThreeDS2FingerprintAction.swift in Sources */,
