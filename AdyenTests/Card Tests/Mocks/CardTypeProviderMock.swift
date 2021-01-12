@@ -10,7 +10,7 @@ final class CardTypeProviderMock: AnyCardBrandProvider {
 
     var onFetch: ((_ completion: @escaping ([CardBrand]) -> Void) -> Void)?
 
-    func provide(for bin: String, supported brands: [CardType], completion caller: @escaping ([CardBrand]) -> Void) {
-        onFetch?(caller)
+    func provide(for parameters: CardBrandProviderParameters, completion: @escaping ([CardBrand]) -> Void) {
+        onFetch?(completion)
     }
 }
