@@ -7,10 +7,9 @@ opt_in_rules:
   - explicit_acl
 
 excluded:
-  - AdyenTests
-  - AdyenUITests
-  - Examples
+  - Tests
   - Internal
+  - Docs
 
 line_length:
   ignores_function_declarations: true
