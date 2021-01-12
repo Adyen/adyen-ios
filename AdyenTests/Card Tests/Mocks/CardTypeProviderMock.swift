@@ -6,11 +6,11 @@
 
 @testable import AdyenCard
 
-final class CardTypeProviderMock: AnyCardTypeProvider {
+final class CardTypeProviderMock: AnyCardBrandProvider {
 
-    var onFetch: ((_ completion: @escaping ([CardType]) -> Void) -> Void)?
+    var onFetch: ((_ completion: @escaping ([CardBrand]) -> Void) -> Void)?
 
-    func requestCardTypes(for bin: String, supported cardType: [CardType], completion caller: @escaping ([CardType]) -> Void) {
+    func requestCardBrands(for bin: String, supported brands: [CardType], completion caller: @escaping ([CardBrand]) -> Void) {
         onFetch?(caller)
     }
 }

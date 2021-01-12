@@ -47,3 +47,4 @@
 "adyen.blik.placeholder" = "123–456";
 "adyen.preauthorizeWith" = "Autoryzuj wstępnie za pomocą: %@";
 "adyen.confirmPreauthorization" = "Potwierdź autoryzację wstępną";
+"adyen.card.cvcItem.title.optional" = "CVC / CVV (opcjonalnie)";

@@ -320,7 +320,7 @@ class CardComponentTests: XCTestCase {
 
         let cardTypeProviderMock = CardTypeProviderMock()
         cardTypeProviderMock.onFetch = {
-            $0([.americanExpress])
+            $0([CardBrand(type: .americanExpress)])
         }
 
         sut.cardTypeProvider = cardTypeProviderMock
@@ -332,8 +332,8 @@ class CardComponentTests: XCTestCase {
         let delegateMock = CardComponentDelegateMock(onBINDidChange: { value in
             XCTAssertEqual(value, "370000")
             expectationBin.fulfill()
-        }, onCardTypeChange: { value in
-            XCTAssertEqual(value, [CardType.americanExpress])
+        }, onCardBrandChange: { value in
+            XCTAssertEqual(value, [CardBrand(type: .americanExpress)])
             expectationCardType.fulfill()
         })
         sut.cardComponentDelegate = delegateMock

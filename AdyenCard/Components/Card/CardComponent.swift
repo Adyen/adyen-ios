@@ -19,7 +19,7 @@ public protocol CardComponentDelegate: AnyObject {
     /// Called when `CardComponent` detected card type(s) in entered PAN.
     /// - Parameter value: Array of card types matching entered value. Null - if no data entered.
     /// - Parameter component: The `CardComponent` instance.
-    func didChangeCardType(_ value: [CardType]?, component: CardComponent)
+    func didChangeCardBrand(_ value: [CardBrand]?, component: CardComponent)
 }
 
 /// Stored card configuration.
@@ -39,7 +39,7 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
     internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
     
     /// :nodoc:
-    internal var cardTypeProvider: AnyCardTypeProvider
+    internal var cardTypeProvider: AnyCardBrandProvider
 
     private static let maxCardsVisible = 4
     private static let publicBinLenght = 6
@@ -143,7 +143,7 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
         self.privateSupportedCardTypes = (supportedCardTypes ?? paymentMethodCardTypes)
             .minus(excludedCardTypes)
         self.style = style
-        self.cardTypeProvider = CardTypeProvider(cardPublicKeyProvider: cardPublicKeyProvider)
+        self.cardTypeProvider = CardBrandProvider(cardPublicKeyProvider: cardPublicKeyProvider)
 
         self.cardPublicKeyProvider.clientKey = clientKey
         self.cardTypeProvider.clientKey = clientKey
@@ -314,11 +314,12 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
     }
     
     private func requestCardTypes(for bin: String) {
-        cardTypeProvider.requestCardTypes(for: bin, supported: self.supportedCardTypes) { [weak self] cardTypes in
+        cardTypeProvider.requestCardBrands(for: bin, supported: self.supportedCardTypes) { [weak self] cardBrands in
             guard let self = self else { return }
-            
-            self.numberItem.showLogos(for: bin.isEmpty ? self.topCardTypes : cardTypes)
-            self.cardComponentDelegate?.didChangeCardType(cardTypes, component: self)
+
+            self.securityCodeItem.update(cardBrands: cardBrands)
+            self.numberItem.showLogos(for: bin.isEmpty ? self.topCardTypes : cardBrands.map { $0.type })
+            self.cardComponentDelegate?.didChangeCardBrand(cardBrands, component: self)
         }
     }
 }

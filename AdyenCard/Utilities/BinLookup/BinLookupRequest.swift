@@ -11,7 +11,7 @@ internal struct BinLookupRequest: Request {
     
     internal typealias ResponseType = BinLookupResponse
     
-    internal var path: String = "checkoutshopper/v1/bin/binLookup"
+    internal var path: String = "checkoutshopper/v2/bin/binLookup"
     
     internal var counter: UInt = 0
     

@@ -47,3 +47,4 @@
 "adyen.blik.placeholder" = "123–456";
 "adyen.preauthorizeWith" = "사전 승인 방법:%@";
 "adyen.confirmPreauthorization" = "사전 승인 확인";
+"adyen.card.cvcItem.title.optional" = "CVC / CVV (선택)";

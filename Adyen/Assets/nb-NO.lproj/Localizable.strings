@@ -47,3 +47,4 @@
 "adyen.blik.placeholder" = "123–456";
 "adyen.preauthorizeWith" = "Forhåndsgodkjenn med %@";
 "adyen.confirmPreauthorization" = "Bekreft forhåndsgodkjenning";
+"adyen.card.cvcItem.title.optional" = "CVC / CVV (valgfritt)";
