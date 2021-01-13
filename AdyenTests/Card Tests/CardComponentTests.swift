@@ -15,25 +15,25 @@ class CardComponentTests: XCTestCase {
         let method = CardPaymentMethodMock(type: "test_type", name: "test_name", brands: ["bcmc"])
         let sut = CardComponent(paymentMethod: method, clientKey: "test_client_key")
 
-        XCTAssertEqual(sut.cardTypeProvider.clientKey, "test_client_key")
+        XCTAssertEqual(sut.cardBrandProvider.clientKey, "test_client_key")
         XCTAssertEqual(sut.cardPublicKeyProvider.clientKey, "test_client_key")
         XCTAssertEqual(sut.environment.clientKey, "test_client_key")
 
         sut.clientKey = "test_client_key_1"
 
-        XCTAssertEqual(sut.cardTypeProvider.clientKey, "test_client_key_1")
+        XCTAssertEqual(sut.cardBrandProvider.clientKey, "test_client_key_1")
         XCTAssertEqual(sut.cardPublicKeyProvider.clientKey, "test_client_key_1")
         XCTAssertEqual(sut.environment.clientKey, "test_client_key_1")
 
         sut.environment = .test
 
-        XCTAssertEqual(sut.cardTypeProvider.clientKey, "test_client_key_1")
+        XCTAssertEqual(sut.cardBrandProvider.clientKey, "test_client_key_1")
         XCTAssertEqual(sut.cardPublicKeyProvider.clientKey, "test_client_key_1")
         XCTAssertEqual(sut.environment.clientKey, "test_client_key_1")
 
         sut.clientKey = "test_client_key_2"
 
-        XCTAssertEqual(sut.cardTypeProvider.clientKey, "test_client_key_2")
+        XCTAssertEqual(sut.cardBrandProvider.clientKey, "test_client_key_2")
         XCTAssertEqual(sut.cardPublicKeyProvider.clientKey, "test_client_key_2")
         XCTAssertEqual(sut.environment.clientKey, "test_client_key_2")
     }
@@ -320,10 +320,10 @@ class CardComponentTests: XCTestCase {
 
         let cardTypeProviderMock = CardTypeProviderMock()
         cardTypeProviderMock.onFetch = {
-            $0([.americanExpress])
+            $0([CardBrand(type: .americanExpress)])
         }
 
-        sut.cardTypeProvider = cardTypeProviderMock
+        sut.cardBrandProvider = cardTypeProviderMock
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -332,8 +332,8 @@ class CardComponentTests: XCTestCase {
         let delegateMock = CardComponentDelegateMock(onBINDidChange: { value in
             XCTAssertEqual(value, "370000")
             expectationBin.fulfill()
-        }, onCardTypeChange: { value in
-            XCTAssertEqual(value, [CardType.americanExpress])
+        }, onCardBrandChange: { value in
+            XCTAssertEqual(value, [CardBrand(type: .americanExpress)])
             expectationCardType.fulfill()
         })
         sut.cardComponentDelegate = delegateMock

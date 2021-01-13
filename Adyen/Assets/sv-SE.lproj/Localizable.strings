@@ -47,3 +47,4 @@
 "adyen.blik.placeholder" = "123–456";
 "adyen.preauthorizeWith" = "Förauktorisera med %@";
 "adyen.confirmPreauthorization" = "Bekräfta förauktorisering";
+"adyen.card.cvcItem.title.optional" = "CVC/CVV (tillval)";

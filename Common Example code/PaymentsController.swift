@@ -303,7 +303,7 @@ extension PaymentsController: CardComponentDelegate {
         print("Current BIN: \(value)")
     }
 
-    internal func didChangeCardType(_ value: [CardType]?, component: CardComponent) {
+    internal func didChangeCardBrand(_ value: [CardBrand]?, component: CardComponent) {
         print("Current card type: \((value ?? []).reduce("") { "\($0), \($1)" })")
     }
 }

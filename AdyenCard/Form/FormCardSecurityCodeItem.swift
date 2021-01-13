@@ -14,6 +14,12 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
     
     /// :nodoc:
     @Observable(nil) internal var selectedCard: CardType?
+
+    /// :nodoc:
+    @Observable(nil) internal var title: String?
+
+    /// :nodoc:
+    @Observable(false) internal var isCVCOptional: Bool
     
     /// Initializes the form card number item.
     internal init(environment: Environment,
@@ -29,6 +35,16 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
         validationFailureMessage = ADYLocalizedString("adyen.card.cvcItem.invalid", localizationParameters)
         keyboardType = .numberPad
     }
+
+    internal func update(cardBrands: [CardBrand]) {
+        let isCVCOptional = cardBrands.isCVCOptional
+
+        let titleFailureMessageKey = isCVCOptional ? "adyen.card.cvcItem.title.optional" : "adyen.card.cvcItem.title"
+        title = ADYLocalizedString(titleFailureMessageKey, localizationParameters)
+        validator = isCVCOptional ? nil : securityCodeValidator
+
+        self.isCVCOptional = isCVCOptional
+    }
     
     internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
@@ -41,5 +57,19 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
 extension FormItemViewBuilder {
     internal func build(with item: FormCardSecurityCodeItem) -> FormItemView<FormCardSecurityCodeItem> {
         FormCardSecurityCodeItemView(item: item)
+    }
+}
+
+extension Array where Element == CardBrand {
+    var isCVCOptional: Bool {
+        guard isEmpty else { return false }
+        return allSatisfy { brand in
+            switch brand.cvcPolicy {
+            case .optional, .hidden:
+                return true
+            default:
+                return false
+            }
+        }
     }
 }
