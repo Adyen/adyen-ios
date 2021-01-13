@@ -1,5 +1,3 @@
 Docs/
-AdyenUIHost/**
-AdyenSwiftUI/**
-Common Example code/**
-AdyenTests/**
+Demo/**
+Tests/**
