@@ -15,7 +15,7 @@ import Foundation
 import UIKit
 
 /// A drop-in component to perform any supported action out of the box.
-public final class DropInActionComponent: ActionComponent {
+public final class DropInActionComponent: ActionComponent, Localizable {
     
     /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
@@ -28,6 +28,9 @@ public final class DropInActionComponent: ActionComponent {
     
     /// Indicates the UI configuration of the await component.
     public var awaitComponentStyle: AwaitComponentStyle?
+
+    /// :nodoc:
+    public var localizationParameters: LocalizationParameters?
     
     /// :nodoc:
     public init() {}
@@ -141,6 +144,7 @@ public final class DropInActionComponent: ActionComponent {
         component.presentationDelegate = presentationDelegate
         component.environment = environment
         component.clientKey = clientKey
+        component.localizationParameters = localizationParameters
         
         component.handle(action)
         awaitComponent = component

@@ -109,6 +109,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
         handler.redirectComponentStyle = style.redirectComponent
         handler.delegate = self
         handler.presentationDelegate = self
+        handler.localizationParameters = configuration.localizationParameters
         return handler
     }()
     
