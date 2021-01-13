@@ -145,6 +145,7 @@ public final class DropInActionComponent: ActionComponent, Localizable {
         component.environment = environment
         component.localizationParameters = localizationParameters
         component.clientKey = clientKey
+        component.localizationParameters = localizationParameters
         
         component.handle(action)
         awaitComponent = component
