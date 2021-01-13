@@ -58,7 +58,8 @@ public final class AwaitComponent: AnyAwaitActionHandler {
     public func handle(_ action: AwaitAction) {
         Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, environment: environment)
         
-        let viewModel = AwaitComponentViewModel.viewModel(with: action.paymentMethodType)
+        let viewModel = AwaitComponentViewModel.viewModel(with: action.paymentMethodType,
+                                                          localizationParameters: localizationParameters)
         let viewController = AwaitViewController(viewModel: viewModel, style: style)
         
         if let presentationDelegate = presentationDelegate {

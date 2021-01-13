@@ -12,7 +12,7 @@ import Foundation
 import UIKit
 
 /// A drop-in component to perform any supported action out of the box.
-public final class DropInActionComponent: ActionComponent {
+public final class DropInActionComponent: ActionComponent, Localizable {
     
     /// The view controller to use to present other action related view controllers, e.g Redirect Action.
     @available(*, deprecated, message: "Setting presentingViewController is no longer required. Redirect will be presented on top of keyWindow") // swiftlint:disable:this line_length
@@ -29,6 +29,9 @@ public final class DropInActionComponent: ActionComponent {
     
     /// Indicates the UI configuration of the await component.
     public var awaitComponentStyle: AwaitComponentStyle?
+
+    /// :nodoc:
+    public var localizationParameters: LocalizationParameters?
     
     /// :nodoc:
     public init() {}
@@ -123,6 +126,7 @@ public final class DropInActionComponent: ActionComponent {
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
         component.environment = environment
+        component.localizationParameters = localizationParameters
         
         component.handle(action)
         awaitComponent = component
