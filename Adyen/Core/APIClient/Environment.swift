@@ -27,11 +27,7 @@ public struct Environment: APIEnvironment {
     /// Adyen's test environment.
     public static let test = Environment(baseURL: URL(string: "https://checkoutshopper-test.adyen.com/")!)
 
-<<<<<<< HEAD
     /// :nodoc:
-=======
-    /// Adyen's beta environment.
->>>>>>> chore: refactored CardBrandProvider to take CardBrandPoviderParameters to reduce number of parameters passed around
     public static let beta = Environment(baseURL: URL(string: "https://checkoutshopper-beta.adyen.com/")!)
     
     /// Adyen's default live environment.
