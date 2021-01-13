@@ -45,6 +45,29 @@ extension AwaitAction: Equatable {
 
 class AwaitComponentTests: XCTestCase {
 
+    func testLocalizationWithCustomTableName() {
+
+        let sut = AwaitComponent(style: nil)
+        sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
+        let presentationDelegate = PresentationDelegateMock()
+        sut.presentationDelegate = presentationDelegate
+
+        let presentationExpectation = expectation(description: "expect presentation delegate to be called")
+        presentationDelegate.doPresent = { component, _ in
+            let messageLabel: UILabel! = component.viewController.view.findView(by: "messageLabel")
+            let spinnerLabel: UILabel! = component.viewController.view.findView(by: "spinnerTitleLabel")
+
+            XCTAssertEqual(messageLabel.text, "Confirm your payment on the MB WAY app -- Test")
+            XCTAssertEqual(spinnerLabel.text, "Waiting for confirmation -- Test")
+
+            presentationExpectation.fulfill()
+        }
+
+        sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbway))
+
+        waitForExpectations(timeout: 2, handler: nil)
+    }
+
     func testRequiresKeyboardInput() {
         let sut = AwaitViewController(viewModel: AwaitComponentViewModel(icon: "icon", message: "message", spinnerTitle: "spinner title"))
 
