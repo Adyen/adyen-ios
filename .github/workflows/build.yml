@@ -5,9 +5,10 @@ on:
     branches:
     - master
     - develop
+    - release-*
 
 jobs:
-  
+
   tests:
     runs-on: macos-latest
     continue-on-error: true
@@ -26,7 +27,7 @@ jobs:
           xcode: '/Applications/Xcode_11.3.app/Contents/Developer'
     steps:
     - uses: actions/checkout@v2
-        
+
     - name: Prepare iOS 12.4 simulator
       if: contains(matrix.destination, 'OS=12.4')
       run: |
@@ -34,14 +35,14 @@ jobs:
         sudo ln -s /Applications/Xcode_10.3.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime /Library/Developer/CoreSimulator/Profiles/Runtimes/iOS\ 12.4.simruntime
         xcrun simctl create custom-test-device "iPhone X" "com.apple.CoreSimulator.SimRuntime.iOS-12-4"
         xcrun simctl list devices 12.4
-        
+
     - name: Check Dependencies
       uses: actions/cache@v1
       id: carthage-cache
       with:
         path: Carthage
         key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
-      
+
     - name: Install Dependencies
       if: steps.carthage-cache.outputs.cache-hit != 'true'
       run: |
@@ -51,7 +52,7 @@ jobs:
         carthage bootstrap --platform iOS --cache-builds
       env:
          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
+
     - name: Build and test
       run: |
         xcodebuild build test -project ${project} -scheme "${scheme}" -destination "${destination}" ${params} | xcpretty && exit ${PIPESTATUS[0]}
@@ -61,7 +62,7 @@ jobs:
         scheme: ${{ matrix.scheme }}
         destination: ${{ matrix.destination }}
         DEVELOPER_DIR: ${{ matrix.xcode }}
-        
+
   sonar:
     runs-on: macos-latest
     steps:
@@ -69,20 +70,20 @@ jobs:
     - uses: actions/setup-java@v1
       with:
         java-version: '11'
-        
+
     - name: Install Dependencies
       run: |
         brew install sonar-scanner
         brew install swiftlint
         gem install slather
-        
+
     - name: Check Dependencies
       uses: actions/cache@v1
       id: carthage-cache
       with:
         path: Carthage
         key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
-      
+
     - name: Install Dependencies
       if: steps.carthage-cache.outputs.cache-hit != 'true'
       run: |
@@ -92,7 +93,7 @@ jobs:
         carthage bootstrap --platform iOS --cache-builds
       env:
          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
+
     - name: Build and test
       run: |
         xcodebuild build test -project ${project} -scheme "${scheme}" -destination "${destination}" ${params} | xcpretty && exit ${PIPESTATUS[0]}
@@ -101,7 +102,7 @@ jobs:
         params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES'
         scheme: AdyenUIHost
         destination: 'name=iPhone 11'
-                
+
     - name: Slather
       run: |
         slather coverage --sonarqube-xml ${params} ${project}
@@ -118,11 +119,11 @@ jobs:
         --binary-basename AdyenComponents
         --binary-basename AdyenEncryption
         --binary-basename AdyenActions'
-         
+
     - name: SwiftLint
       run: |
         fastlane run swiftlint output_file:"./reports/swiftlint.json" reporter:"json" ignore_exit_status:"true"
-        
+
     - name: Run Sonar
       run: |
         git fetch --unshallow --no-tags
