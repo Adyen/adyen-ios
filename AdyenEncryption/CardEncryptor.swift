@@ -65,11 +65,7 @@ public enum CardEncryptor {
         
         let payload = try JSONEncoder().encode(Bin(value: bin))
         do {
-            if #available(iOS 13.0, *) {
-                return try Cryptor(aes: .GCM).encrypt(data: payload, publicKey: publicKey)
-            } else {
-                return try Cryptor(aes: .CCM).encrypt(data: payload, publicKey: publicKey)
-            }
+            return try Cryptor(aes: .CCM).encrypt(data: payload, publicKey: publicKey)
         } catch {
             throw Error.encryptionFailed
         }
