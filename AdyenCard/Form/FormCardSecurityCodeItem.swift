@@ -62,7 +62,7 @@ extension FormItemViewBuilder {
 
 extension Array where Element == CardBrand {
     var isCVCOptional: Bool {
-        guard isEmpty else { return false }
+        guard !isEmpty else { return false }
         return allSatisfy { brand in
             switch brand.cvcPolicy {
             case .optional, .hidden:

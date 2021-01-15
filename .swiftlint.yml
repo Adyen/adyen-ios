@@ -10,6 +10,7 @@ excluded:
   - Tests
   - Internal
   - Docs
+  - Demo
 
 line_length:
   ignores_function_declarations: true
