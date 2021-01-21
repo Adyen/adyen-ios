@@ -16,15 +16,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - destination: 'name=iPhone 8'
+        - destination: 'name=iPhone 11 Pro'
           scheme: AdyenUIHost
-          xcode: '/Applications/Xcode_11.6.app/Contents/Developer'
-        - destination: 'name=iPhone 11'
+        - destination: 'name=iPhone-6,OS=11.4'
           scheme: AdyenUIHost
-          xcode: '/Applications/Xcode_12.2.app/Contents/Developer'
         - destination: 'name=custom-test-device,OS=12.4'
           scheme: AdyenUIKitTests
-          xcode: '/Applications/Xcode_11.3.app/Contents/Developer'
     steps:
     - uses: actions/checkout@v2
 
@@ -35,6 +32,13 @@ jobs:
         sudo ln -s /Applications/Xcode_10.3.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime /Library/Developer/CoreSimulator/Profiles/Runtimes/iOS\ 12.4.simruntime
         xcrun simctl create custom-test-device "iPhone X" "com.apple.CoreSimulator.SimRuntime.iOS-12-4"
         xcrun simctl list devices 12.4
+
+    - name: Prepare iOS 11.4 simulator
+      if: contains(matrix.destination, 'OS=11.4')
+      run: |
+        xcversion simulators --install='iOS 11.4'
+        xcrun simctl create iPhone-6 "iPhone 6" "com.apple.CoreSimulator.SimRuntime.iOS-11-4"
+        xcrun simctl list devices 11.4
 
     - name: Check Dependencies
       uses: actions/cache@v1
