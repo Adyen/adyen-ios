@@ -108,8 +108,13 @@ class ModalToolbarTests: XCTestCase {
 
         sut = ModalToolbar(title: "SomeTitle", style: style, cancelHandler: {})
 
-        XCTAssertNotEqual(sut.cancelButton.title(for: .normal) , "Cancel")
-        XCTAssertNotNil(sut.cancelButton.image(for: .normal))
+        if #available(iOS 13.0, *) {
+            XCTAssertNotEqual(sut.cancelButton.title(for: .normal) , "Cancel")
+            XCTAssertNotNil(sut.cancelButton.image(for: .normal))
+        } else {
+            XCTAssertEqual(sut.cancelButton.title(for: .normal) , "Cancel")
+            XCTAssertNil(sut.cancelButton.image(for: .normal))
+        }
         XCTAssertNotEqual(sut.cancelButton.image(for: .normal), UIImage(named: "shopping-cart"))
     }
 

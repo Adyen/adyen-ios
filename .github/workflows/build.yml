@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - destination: 'name=iPhone 8'
+        - destination: 'name=iPhone 11 Pro'
           scheme: AdyenUIHost
         - destination: 'name=iPhone-6,OS=11.4'
           scheme: AdyenUIHost
