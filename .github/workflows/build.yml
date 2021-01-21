@@ -114,7 +114,10 @@ jobs:
         --binary-basename Adyen
         --binary-basename AdyenCard
         --binary-basename AdyenDropIn
-        --binary-basename AdyenWeChatPay'
+        --binary-basename AdyenWeChatPay
+        --binary-basename AdyenComponents
+        --binary-basename AdyenEncryption
+        --binary-basename AdyenActions'
          
     - name: SwiftLint
       run: |
