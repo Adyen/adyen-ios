@@ -11,6 +11,7 @@ excluded:
   - Internal
   - Docs
   - Demo
+  - Package.swift
 
 line_length:
   ignores_function_declarations: true
