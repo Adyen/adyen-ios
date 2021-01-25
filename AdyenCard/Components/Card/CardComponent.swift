@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -205,7 +205,6 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
     private lazy var securedViewController = SecuredViewController(child: formViewController, style: style)
     
     internal lazy var formViewController: FormViewController = {
-        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
         
         let formViewController = FormViewController(style: style)
         formViewController.localizationParameters = localizationParameters
@@ -319,7 +318,7 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
             guard let self = self else { return }
 
             self.securityCodeItem.update(cardBrands: cardBrands)
-            self.numberItem.showLogos(for: bin.isEmpty ? self.topCardTypes : cardBrands.map { $0.type })
+            self.numberItem.showLogos(for: bin.isEmpty ? self.topCardTypes : cardBrands.map(\.type))
             self.cardComponentDelegate?.didChangeCardBrand(cardBrands, component: self)
         }
     }

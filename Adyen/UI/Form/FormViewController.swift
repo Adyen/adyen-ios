@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -13,6 +13,10 @@ public protocol FormViewControllerDelegate: AnyObject {
     /// :nodoc:
     /// Handles the UIViewController.viewDidLoad() event.
     func viewDidLoad(formViewController: FormViewController)
+
+    /// :nodoc:
+    /// Handles the UIViewController.viewDidAppear() event.
+    func viewDidAppear(formViewController: FormViewController)
     
 }
 
@@ -64,7 +68,7 @@ public final class FormViewController: UIViewController, Localizable {
     
     /// The items displayed in the form.
     public var items: [FormItem] {
-        return itemManager.items
+        itemManager.items
     }
     
     /// Appends an item to the form.
@@ -116,7 +120,7 @@ public final class FormViewController: UIViewController, Localizable {
     }
     
     private func getAllFlatItems() -> [FormItem] {
-        itemManager.items.flatMap { $0.flatSubitems }
+        itemManager.items.flatMap(\.flatSubitems)
     }
     
     // MARK: - View
@@ -145,6 +149,7 @@ public final class FormViewController: UIViewController, Localizable {
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         assignInitialFirstResponder()
+        delegate?.viewDidAppear(formViewController: self)
     }
     
     private lazy var formView: FormView = {
