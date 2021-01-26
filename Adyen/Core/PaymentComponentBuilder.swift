@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -45,6 +45,9 @@ public protocol PaymentComponentBuilder {
 
     /// Builds a certain `PaymentComponent` based on a `BLIKPaymentMethod`.
     func build(paymentMethod: BLIKPaymentMethod) -> PaymentComponent?
+
+    /// Builds a certain `PaymentComponent` based on a `DokuWalletPaymentMethod`.
+    func build(paymentMethod: DokuWalletPaymentMethod) -> PaymentComponent?
     
     /// Builds a certain `PaymentComponent` based on any `PaymentMethod`, as a default case.
     func build(paymentMethod: PaymentMethod) -> PaymentComponent?
