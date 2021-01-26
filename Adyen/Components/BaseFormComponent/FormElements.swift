@@ -7,7 +7,7 @@
 import Foundation
 
 /// :nodoc:
-public protocol BaseFormElement {
+internal protocol BaseFormElement {
 
     /// :nodoc:
     associatedtype StyleType: ViewStyle
@@ -22,98 +22,98 @@ public protocol BaseFormElement {
     var style: StyleType { get }
 
     /// :nodoc:
-    func build(_ itemBuilder: AnyFormBuilder) -> ItemType
+    func build(_ itemBuilder: BaseFormBuilder) -> ItemType
 }
 
 /// :nodoc:
-public struct FirstNameElement: BaseFormElement {
+internal struct FirstNameElement: BaseFormElement {
 
     /// :nodoc:
-    public let style: FormTextItemStyle
+    internal let style: FormTextItemStyle
 
     /// :nodoc:
-    public var identifier: String
+    internal var identifier: String
 
     /// :nodoc:
-    public init(identifier: String,
-                style: FormTextItemStyle) {
+    internal init(identifier: String,
+                  style: FormTextItemStyle) {
         self.identifier = identifier
         self.style = style
     }
 
     /// :nodoc:
-    public func build(_ itemBuilder: AnyFormBuilder) -> FormTextInputItem {
+    internal func build(_ itemBuilder: BaseFormBuilder) -> FormTextInputItem {
         itemBuilder.build(self)
     }
 }
 
 /// :nodoc:
-public struct LastNameElement: BaseFormElement {
+internal struct LastNameElement: BaseFormElement {
 
     /// :nodoc:
-    public let style: FormTextItemStyle
+    internal let style: FormTextItemStyle
 
     /// :nodoc:
-    public var identifier: String
+    internal var identifier: String
 
     /// :nodoc:
-    public init(identifier: String,
-                style: FormTextItemStyle) {
+    internal init(identifier: String,
+                  style: FormTextItemStyle) {
         self.identifier = identifier
         self.style = style
     }
 
     /// :nodoc:
-    public func build(_ itemBuilder: AnyFormBuilder) -> FormTextInputItem {
+    internal func build(_ itemBuilder: BaseFormBuilder) -> FormTextInputItem {
         itemBuilder.build(self)
     }
 }
 
 /// :nodoc:
-public struct EmailElement: BaseFormElement {
+internal struct EmailElement: BaseFormElement {
 
     /// :nodoc:
-    public let style: FormTextItemStyle
+    internal let style: FormTextItemStyle
 
     /// :nodoc:
-    public var identifier: String
+    internal var identifier: String
 
     /// :nodoc:
-    public init(identifier: String,
-                style: FormTextItemStyle) {
+    internal init(identifier: String,
+                  style: FormTextItemStyle) {
         self.identifier = identifier
         self.style = style
     }
 
     /// :nodoc:
-    public func build(_ itemBuilder: AnyFormBuilder) -> FormTextInputItem {
+    internal func build(_ itemBuilder: BaseFormBuilder) -> FormTextInputItem {
         itemBuilder.build(self)
     }
 }
 
 /// :nodoc:
-public struct PhoneElement: BaseFormElement {
+internal struct PhoneElement: BaseFormElement {
 
     /// :nodoc:
-    public let style: FormTextItemStyle
+    internal let style: FormTextItemStyle
 
     /// :nodoc:
-    public let phoneExtensions: [PhoneExtensionPickerItem]
+    internal let phoneExtensions: [PhoneExtensionPickerItem]
 
     /// :nodoc:
-    public var identifier: String
+    internal var identifier: String
 
     /// :nodoc:
-    public init(identifier: String,
-                phoneExtensions: [PhoneExtensionPickerItem],
-                style: FormTextItemStyle) {
+    internal init(identifier: String,
+                  phoneExtensions: [PhoneExtensionPickerItem],
+                  style: FormTextItemStyle) {
         self.identifier = identifier
         self.phoneExtensions = phoneExtensions
         self.style = style
     }
 
     /// :nodoc:
-    public func build(_ itemBuilder: AnyFormBuilder) -> FormPhoneNumberItem {
+    internal func build(_ itemBuilder: BaseFormBuilder) -> FormPhoneNumberItem {
         itemBuilder.build(self)
     }
 }
