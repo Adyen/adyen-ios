@@ -30,11 +30,8 @@ extension BaseFormComponent {
     /// :nodoc:
     internal func didSelectSubmitButton() {
         guard formViewController.validate() else { return }
-        let details = createPaymentDetails(BaseFormDetails(firstName: firstNameItem?.value,
-                                                           lastName: lastNameItem?.value,
-                                                           emailAddress: emailItem?.value,
-                                                           phonePrefix: phoneItem?.prefix,
-                                                           phoneNumber: phoneItem?.value))
+
+        let details = createPaymentDetails()
 
         button.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
@@ -45,10 +42,10 @@ extension BaseFormComponent {
 
 /// :nodoc:
 public enum BaseFormField {
-    case firstName(FirstNameElement)
-    case lastName(LastNameElement)
-    case email(EmailElement)
-    case phone(PhoneElement)
+    case firstName
+    case lastName
+    case email
+    case phone
 }
 
 /// :nodoc:

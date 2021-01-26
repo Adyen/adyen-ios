@@ -20,8 +20,6 @@ class DokuWalletComponentTests: XCTestCase {
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
         XCTAssertEqual(sut.firstNameItem?.title, ADYLocalizedString("adyen.firstName", sut.localizationParameters))
         XCTAssertEqual(sut.firstNameItem?.placeholder, ADYLocalizedString("adyen.firstName", sut.localizationParameters))
         XCTAssertNil(sut.firstNameItem?.validationFailureMessage)
@@ -42,8 +40,6 @@ class DokuWalletComponentTests: XCTestCase {
         let sut = DokuWalletComponent(paymentMethod: method)
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
-
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         XCTAssertEqual(sut.firstNameItem?.title, ADYLocalizedString("adyen_firstName", sut.localizationParameters))
         XCTAssertEqual(sut.firstNameItem?.placeholder, ADYLocalizedString("adyen_firstName", sut.localizationParameters))

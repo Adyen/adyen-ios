@@ -7,7 +7,7 @@
 import Foundation
 
 /// :nodoc:
-public protocol AnyFormBuilder: Localizable {
+internal protocol AnyFormBuilder: Localizable {
 
     /// :nodoc:
     func build(_ firstNameField: FirstNameElement) -> FormTextInputItem

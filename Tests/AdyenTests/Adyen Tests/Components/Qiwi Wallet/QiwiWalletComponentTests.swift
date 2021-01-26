@@ -18,8 +18,6 @@ class QiwiWalletComponentTests: XCTestCase {
         let sut = QiwiWalletComponent(paymentMethod: method)
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
-
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         let expectedSelectableValues = phoneExtensions.map {
             PhoneExtensionPickerItem(identifier: $0.countryCode,
@@ -43,8 +41,6 @@ class QiwiWalletComponentTests: XCTestCase {
         let sut = QiwiWalletComponent(paymentMethod: method)
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
-
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         let expectedSelectableValues = phoneExtensions.map {
             PhoneExtensionPickerItem(identifier: $0.countryCode,
