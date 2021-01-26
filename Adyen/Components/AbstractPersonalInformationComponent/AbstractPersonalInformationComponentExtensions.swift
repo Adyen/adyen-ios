@@ -8,7 +8,7 @@ import Foundation
 
 // MARK: - FormViewControllerDelegate
 
-extension BaseFormComponent: FormViewControllerDelegate {
+extension AbstractPersonalInformationComponent: FormViewControllerDelegate {
     /// :nodoc:
     open func viewDidLoad(formViewController: FormViewController) { /* Empty Implementation */ }
 
@@ -18,7 +18,7 @@ extension BaseFormComponent: FormViewControllerDelegate {
     }
 }
 
-extension BaseFormComponent {
+extension AbstractPersonalInformationComponent {
 
     /// :nodoc:
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
@@ -41,7 +41,7 @@ extension BaseFormComponent {
 }
 
 /// :nodoc:
-public enum BaseFormField {
+public enum PersonalInformation {
     case firstName
     case lastName
     case email
@@ -49,16 +49,16 @@ public enum BaseFormField {
 }
 
 /// :nodoc:
-extension BaseFormComponent {
+extension AbstractPersonalInformationComponent {
 
     /// :nodoc:
     public struct Configuration {
 
         /// :nodoc:
-        public let fields: [BaseFormField]
+        public let fields: [PersonalInformation]
 
         /// :nodoc:
-        public init(fields: [BaseFormField]) {
+        public init(fields: [PersonalInformation]) {
             self.fields = fields
         }
     }

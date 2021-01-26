@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 /// A component that provides a form for MB Way payments.
-public final class MBWayComponent: BaseFormComponent {
+public final class MBWayComponent: AbstractPersonalInformationComponent {
     
     /// :nodoc:
     private let mbWayPaymentMethod: MBWayPaymentMethod
@@ -20,7 +20,7 @@ public final class MBWayComponent: BaseFormComponent {
     /// - Parameter style: The Component's UI style.
     public init(paymentMethod: MBWayPaymentMethod, style: FormComponentStyle = FormComponentStyle()) {
         self.mbWayPaymentMethod = paymentMethod
-        let configuration = BaseFormComponent.Configuration(fields: [.phone])
+        let configuration = Configuration(fields: [.phone])
         super.init(paymentMethod: paymentMethod,
                    configuration: configuration,
                    style: style)

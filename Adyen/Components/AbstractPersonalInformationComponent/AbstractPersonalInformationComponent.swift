@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 
 /// :nodoc:
-open class BaseFormComponent: PaymentComponent, PresentableComponent, Localizable {
+open class AbstractPersonalInformationComponent: PaymentComponent, PresentableComponent, Localizable {
 
     /// :nodoc:
     public let paymentMethod: PaymentMethod
@@ -61,7 +61,7 @@ open class BaseFormComponent: PaymentComponent, PresentableComponent, Localizabl
     }()
 
     /// :nodoc:
-    private lazy var formBuilder = BaseFormBuilder()
+    private lazy var formBuilder = PersonalInformationFormBuilder()
 
     /// :nodoc:
     private func build(_ formViewController: FormViewController) {
@@ -72,7 +72,7 @@ open class BaseFormComponent: PaymentComponent, PresentableComponent, Localizabl
     }
 
     /// :nodoc:
-    private func add(_ field: BaseFormField,
+    private func add(_ field: PersonalInformation,
                      into formViewController: FormViewController) {
         switch field {
         case .email:

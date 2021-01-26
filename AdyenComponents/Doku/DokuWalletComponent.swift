@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 /// A component that provides a form for Doku Wallet payments.
-public final class DokuWalletComponent: BaseFormComponent {
+public final class DokuWalletComponent: AbstractPersonalInformationComponent {
 
     /// :nodoc:
     private let dokuWalletPaymentMethod: DokuWalletPaymentMethod
@@ -20,7 +20,7 @@ public final class DokuWalletComponent: BaseFormComponent {
     /// - Parameter style: The Component's UI style.
     public init(paymentMethod: DokuWalletPaymentMethod, style: FormComponentStyle = FormComponentStyle()) {
         self.dokuWalletPaymentMethod = paymentMethod
-        let configuration = BaseFormComponent.Configuration(fields: [.firstName, .lastName, .email])
+        let configuration = Configuration(fields: [.firstName, .lastName, .email])
         super.init(paymentMethod: paymentMethod,
                    configuration: configuration,
                    style: style)
