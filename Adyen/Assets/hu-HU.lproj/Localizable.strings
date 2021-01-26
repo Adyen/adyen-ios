@@ -37,6 +37,7 @@
 "adyen.phoneNumber.placeholder" = "12–345–6789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ számjegyű";
 "adyen.emailItem.title" = "E-mail-cím";
+"adyen.emailItem.placeHolder" = "E-mail-cím";
 "adyen.emailItem.invalid" = "Érvénytelen e-mail-cím";
 "adyen.mbway.confirmPayment" = "Fizetés jóváhagyása az MB WAY alkalmazásban";
 "adyen.await.waitForConfirmation" = "Várakozás a jóváhagyásra";
@@ -48,3 +49,6 @@
 "adyen.preauthorizeWith" = "Előzetes meghatalmazás a következővel: %@";
 "adyen.confirmPreauthorization" = "Előzetes meghatalmazás jóváhagyása";
 "adyen.card.cvcItem.title.optional" = "CVC/CVV (opcionális)";
+"adyen.confirmPurchase" = "Fizetés jóváhagyása";
+"adyen.lastName" = "Vezetéknév";
+"adyen.firstName" = "Keresztnév";

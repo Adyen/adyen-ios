@@ -27,7 +27,7 @@ public final class DokuWalletComponent: BaseFormComponent {
     }
 
     override public func submitButtonTitle() -> String {
-        ADYLocalizedString("adyen.continueTo", localizationParameters, paymentMethod.name)
+        ADYLocalizedString("adyen.confirmPurchase", localizationParameters)
     }
 
     override public func createPaymentDetails() -> PaymentMethodDetails {

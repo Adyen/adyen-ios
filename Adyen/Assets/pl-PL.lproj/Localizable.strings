@@ -37,6 +37,7 @@
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ cyfry";
 "adyen.emailItem.title" = "Adres e-mail";
+"adyen.emailItem.placeHolder" = "Adres e-mail";
 "adyen.emailItem.invalid" = "Niepoprawny adres email";
 "adyen.mbway.confirmPayment" = "Potwierdź płatność w aplikacji MB WAY";
 "adyen.await.waitForConfirmation" = "Oczekiwanie na potwierdzenie";
@@ -48,3 +49,6 @@
 "adyen.preauthorizeWith" = "Autoryzuj wstępnie za pomocą: %@";
 "adyen.confirmPreauthorization" = "Potwierdź autoryzację wstępną";
 "adyen.card.cvcItem.title.optional" = "CVC / CVV (opcjonalnie)";
+"adyen.confirmPurchase" = "Potwierdź zakup";
+"adyen.lastName" = "Nazwisko";
+"adyen.firstName" = "Imię";

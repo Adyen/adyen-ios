@@ -15,32 +15,47 @@ class DokuWalletComponentTests: XCTestCase {
     lazy var method = DokuWalletPaymentMethod(type: "test_type", name: "test_name")
     let payment = Payment(amount: Payment.Amount(value: 2, currencyCode: "IDR"), countryCode: "ID")
 
-//    func testLocalizationWithCustomTableName() {
-//        let sut = DokuWalletComponent(paymentMethod: method)
-//        sut.payment = payment
-//        sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
-//
-//        XCTAssertEqual(sut.phoneItem?.title, ADYLocalizedString("adyen.phoneNumber.title", sut.localizationParameters))
-//        XCTAssertEqual(sut.phoneItem?.placeholder, ADYLocalizedString("adyen.phoneNumber.placeholder", sut.localizationParameters))
-//        XCTAssertEqual(sut.phoneItem?.validationFailureMessage, ADYLocalizedString("adyen.phoneNumber.invalid", sut.localizationParameters))
-//
-//        XCTAssertNotNil(sut.button.title)
-//        XCTAssertEqual(sut.button.title, ADYLocalizedString("adyen.continueTo", sut.localizationParameters, method.name))
-//        XCTAssertTrue(sut.button.title!.contains(method.name))
-//    }
+    func testLocalizationWithCustomTableName() {
+        let sut = DokuWalletComponent(paymentMethod: method)
+        sut.payment = payment
+        sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
-//    func testLocalizationWithCustomKeySeparator() {
-//        let sut = MBWayComponent(paymentMethod: method)
-//        sut.payment = payment
-//        sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
-//
-//        XCTAssertEqual(sut.phoneItem?.title, ADYLocalizedString("adyen_phoneNumber_title", sut.localizationParameters))
-//        XCTAssertEqual(sut.phoneItem?.placeholder, ADYLocalizedString("adyen_phoneNumber_placeholder", sut.localizationParameters))
-//        XCTAssertEqual(sut.phoneItem?.validationFailureMessage, ADYLocalizedString("adyen_phoneNumber_invalid", sut.localizationParameters))
-//
-//        XCTAssertNotNil(sut.button.title)
-//        XCTAssertEqual(sut.button.title, ADYLocalizedString("adyen_continueTo", sut.localizationParameters, method.name))
-//    }
+        XCTAssertEqual(sut.firstNameItem?.title, ADYLocalizedString("adyen.firstName", sut.localizationParameters))
+        XCTAssertEqual(sut.firstNameItem?.placeholder, ADYLocalizedString("adyen.firstName", sut.localizationParameters))
+        XCTAssertNil(sut.firstNameItem?.validationFailureMessage)
+
+        XCTAssertEqual(sut.lastNameItem?.title, ADYLocalizedString("adyen.lastName", sut.localizationParameters))
+        XCTAssertEqual(sut.lastNameItem?.placeholder, ADYLocalizedString("adyen.lastName", sut.localizationParameters))
+        XCTAssertNil(sut.lastNameItem?.validationFailureMessage)
+
+        XCTAssertEqual(sut.emailItem?.title, ADYLocalizedString("adyen.emailItem.title", sut.localizationParameters))
+        XCTAssertEqual(sut.emailItem?.placeholder, ADYLocalizedString("adyen.emailItem.placeHolder", sut.localizationParameters))
+        XCTAssertEqual(sut.emailItem?.validationFailureMessage, ADYLocalizedString("adyen.emailItem.invalid", sut.localizationParameters))
+
+        XCTAssertNotNil(sut.button.title)
+        XCTAssertEqual(sut.button.title, ADYLocalizedString("adyen.confirmPurchase", sut.localizationParameters))
+    }
+
+    func testLocalizationWithCustomKeySeparator() {
+        let sut = DokuWalletComponent(paymentMethod: method)
+        sut.payment = payment
+        sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
+
+        XCTAssertEqual(sut.firstNameItem?.title, ADYLocalizedString("adyen_firstName", sut.localizationParameters))
+        XCTAssertEqual(sut.firstNameItem?.placeholder, ADYLocalizedString("adyen_firstName", sut.localizationParameters))
+        XCTAssertNil(sut.firstNameItem?.validationFailureMessage)
+
+        XCTAssertEqual(sut.lastNameItem?.title, ADYLocalizedString("adyen_lastName", sut.localizationParameters))
+        XCTAssertEqual(sut.lastNameItem?.placeholder, ADYLocalizedString("adyen_lastName", sut.localizationParameters))
+        XCTAssertNil(sut.lastNameItem?.validationFailureMessage)
+
+        XCTAssertEqual(sut.emailItem?.title, ADYLocalizedString("adyen_emailItem_title", sut.localizationParameters))
+        XCTAssertEqual(sut.emailItem?.placeholder, ADYLocalizedString("adyen_emailItem_placeHolder", sut.localizationParameters))
+        XCTAssertEqual(sut.emailItem?.validationFailureMessage, ADYLocalizedString("adyen_emailItem_invalid", sut.localizationParameters))
+
+        XCTAssertNotNil(sut.button.title)
+        XCTAssertEqual(sut.button.title, ADYLocalizedString("adyen_confirmPurchase", sut.localizationParameters))
+    }
 
     func testUIConfiguration() {
         var style = FormComponentStyle()

@@ -37,6 +37,7 @@
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@桁";
 "adyen.emailItem.title" = "Eメールアドレス";
+"adyen.emailItem.placeHolder" = "Eメールアドレス";
 "adyen.emailItem.invalid" = "Eメールアドレスが無効です";
 "adyen.mbway.confirmPayment" = "MB WAYアプリで支払を確認する";
 "adyen.await.waitForConfirmation" = "確認を待っています";
@@ -48,3 +49,6 @@
 "adyen.preauthorizeWith" = "次で事前認証する：%@";
 "adyen.confirmPreauthorization" = "事前承認を確認する";
 "adyen.card.cvcItem.title.optional" = "セキュリティーコード(任意)";
+"adyen.confirmPurchase" = "購入を確認する";
+"adyen.lastName" = "姓";
+"adyen.firstName" = "名";

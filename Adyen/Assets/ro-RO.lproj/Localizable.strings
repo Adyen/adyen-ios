@@ -37,6 +37,7 @@
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ cifre";
 "adyen.emailItem.title" = "Adresă de e-mail";
+"adyen.emailItem.placeHolder" = "Adresă de e-mail";
 "adyen.emailItem.invalid" = "Adresă de e-mail incorectă";
 "adyen.mbway.confirmPayment" = "Confirmați plata în aplicația MB WAY";
 "adyen.await.waitForConfirmation" = "Se așteaptă confirmarea";
@@ -48,3 +49,6 @@
 "adyen.preauthorizeWith" = "Preautorizare cu %@";
 "adyen.confirmPreauthorization" = "Confirmați preautorizarea";
 "adyen.card.cvcItem.title.optional" = "CVC/CVV (opțional)";
+"adyen.confirmPurchase" = "Confirmați achiziția";
+"adyen.lastName" = "Nume de familie";
+"adyen.firstName" = "Prenume";

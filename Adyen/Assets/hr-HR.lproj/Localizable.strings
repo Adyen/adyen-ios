@@ -37,6 +37,7 @@
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ znamenke";
 "adyen.emailItem.title" = "Adresa e-pošte";
+"adyen.emailItem.placeHolder" = "Adresa e-pošte";
 "adyen.emailItem.invalid" = "Nevažeća adresa e-pošte";
 "adyen.mbway.confirmPayment" = "Potvrdite uplatu u aplikaciji MB WAY";
 "adyen.await.waitForConfirmation" = "Čeka se potvrda";
@@ -48,3 +49,6 @@
 "adyen.preauthorizeWith" = "Prethodno odobri s %@";
 "adyen.confirmPreauthorization" = "Potvrdite prethodno odobrenje";
 "adyen.card.cvcItem.title.optional" = "CVC/CVV (nije obavezno)";
+"adyen.confirmPurchase" = "Potvrdite kupnju";
+"adyen.lastName" = "Prezime";
+"adyen.firstName" = "Ime";

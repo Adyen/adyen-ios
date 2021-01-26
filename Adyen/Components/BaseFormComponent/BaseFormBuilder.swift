@@ -30,38 +30,38 @@ internal struct BaseFormBuilder: AnyFormBuilder {
 
     /// :nodoc:
     internal func build(_ firstNameField: FirstNameElement) -> FormTextInputItem {
-        let nameItem = FormTextInputItem(style: firstNameField.style)
-        nameItem.title = ADYLocalizedString("First Name", localizationParameters)
-        nameItem.placeholder = ADYLocalizedString("First Name", localizationParameters)
-        nameItem.validator = LengthValidator(minimumLength: 1, maximumLength: 50)
-        nameItem.validationFailureMessage = ADYLocalizedString("Please enter first name with maximum 50 characters", localizationParameters)
-        nameItem.autocapitalizationType = .words
-        nameItem.identifier = firstNameField.identifier
-        return nameItem
+        let item = FormTextInputItem(style: firstNameField.style)
+        item.title = ADYLocalizedString("adyen.firstName", localizationParameters)
+        item.placeholder = ADYLocalizedString("adyen.firstName", localizationParameters)
+        item.validator = LengthValidator(minimumLength: 1, maximumLength: 50)
+        item.validationFailureMessage = nil
+        item.autocapitalizationType = .words
+        item.identifier = firstNameField.identifier
+        return item
     }
 
     /// :nodoc:
     internal func build(_ lastNameField: LastNameElement) -> FormTextInputItem {
-        let nameItem = FormTextInputItem(style: lastNameField.style)
-        nameItem.title = ADYLocalizedString("Last Name", localizationParameters)
-        nameItem.placeholder = ADYLocalizedString("Last Name", localizationParameters)
-        nameItem.validator = LengthValidator(minimumLength: 1, maximumLength: 50)
-        nameItem.validationFailureMessage = ADYLocalizedString("Please enter last name with maximum 50 characters", localizationParameters)
-        nameItem.keyboardType = .emailAddress
-        nameItem.identifier = lastNameField.identifier
-        return nameItem
+        let item = FormTextInputItem(style: lastNameField.style)
+        item.title = ADYLocalizedString("adyen.lastName", localizationParameters)
+        item.placeholder = ADYLocalizedString("adyen.lastName", localizationParameters)
+        item.validator = LengthValidator(minimumLength: 1, maximumLength: 50)
+        item.validationFailureMessage = nil
+        item.keyboardType = .emailAddress
+        item.identifier = lastNameField.identifier
+        return item
     }
 
     /// :nodoc:
     internal func build(_ emailField: EmailElement) -> FormTextInputItem {
-        let nameItem = FormTextInputItem(style: emailField.style)
-        nameItem.title = ADYLocalizedString("adyen.emailItem.title", localizationParameters)
-        nameItem.placeholder = ADYLocalizedString("j.smith@domain.com", localizationParameters)
-        nameItem.validator = EmailValidator()
-        nameItem.validationFailureMessage = ADYLocalizedString("adyen.emailItem.invalid", localizationParameters)
-        nameItem.keyboardType = .emailAddress
-        nameItem.identifier = emailField.identifier
-        return nameItem
+        let item = FormTextInputItem(style: emailField.style)
+        item.title = ADYLocalizedString("adyen.emailItem.title", localizationParameters)
+        item.placeholder = ADYLocalizedString("adyen.emailItem.placeHolder", localizationParameters)
+        item.validator = EmailValidator()
+        item.validationFailureMessage = ADYLocalizedString("adyen.emailItem.invalid", localizationParameters)
+        item.keyboardType = .emailAddress
+        item.identifier = emailField.identifier
+        return item
     }
 
     /// :nodoc:
