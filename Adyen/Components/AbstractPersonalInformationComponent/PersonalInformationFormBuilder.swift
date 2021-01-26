@@ -7,7 +7,7 @@
 import Foundation
 
 /// :nodoc:
-internal protocol AnyFormBuilder: Localizable {
+internal protocol AnyPersonalInformationFormBuilder: Localizable {
 
     /// :nodoc:
     func build(_ firstNameField: FirstNameElement) -> FormTextInputItem
@@ -23,7 +23,7 @@ internal protocol AnyFormBuilder: Localizable {
 }
 
 /// :nodoc:
-internal struct BaseFormBuilder: AnyFormBuilder {
+internal class PersonalInformationFormBuilder: AnyPersonalInformationFormBuilder {
 
     /// :nodoc:
     internal var localizationParameters: LocalizationParameters?

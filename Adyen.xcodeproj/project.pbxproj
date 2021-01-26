@@ -399,10 +399,10 @@
 		F9789C6E23F18EBD000B4B2B /* WeChatPayActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C6D23F18EBD000B4B2B /* WeChatPayActionComponent.swift */; };
 		F9789C7123F1939F000B4B2B /* DropInActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C6F23F1924B000B4B2B /* DropInActionComponent.swift */; };
 		F9789C7523F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C7423F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift */; };
-		F97C81AF25BAC8E600D7F85C /* BaseFormComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C81AE25BAC8E600D7F85C /* BaseFormComponent.swift */; };
-		F97C81C325BACAAB00D7F85C /* BaseFormBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C81C225BACAAB00D7F85C /* BaseFormBuilder.swift */; };
-		F97C822125BAE99D00D7F85C /* FormElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C822025BAE99D00D7F85C /* FormElements.swift */; };
-		F97C829225BB156600D7F85C /* BaseFormComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C829125BB156600D7F85C /* BaseFormComponentExtensions.swift */; };
+		F97C81AF25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C81AE25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift */; };
+		F97C81C325BACAAB00D7F85C /* PersonalInformationFormBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C81C225BACAAB00D7F85C /* PersonalInformationFormBuilder.swift */; };
+		F97C822125BAE99D00D7F85C /* PersonalInformationElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C822025BAE99D00D7F85C /* PersonalInformationElement.swift */; };
+		F97C829225BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C829125BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift */; };
 		F97C837925BF047600D7F85C /* DokuWalletPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C837825BF047600D7F85C /* DokuWalletPaymentMethod.swift */; };
 		F97C838425BF053F00D7F85C /* DokuWalletComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C838325BF053F00D7F85C /* DokuWalletComponent.swift */; };
 		F97C839825BF05AB00D7F85C /* DokuWalletDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C839725BF05AB00D7F85C /* DokuWalletDetails.swift */; };
@@ -1077,10 +1077,10 @@
 		F9789C7423F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeChatPayAdditionalDetails.swift; sourceTree = "<group>"; };
 		F97C7C502590C56E00D80A54 /* ThreeDS2CoreActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2CoreActionHandler.swift; sourceTree = "<group>"; };
 		F97C7C5E2590EE0A00D80A54 /* AnyThreeDS2ActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyThreeDS2ActionHandler.swift; sourceTree = "<group>"; };
-		F97C81AE25BAC8E600D7F85C /* BaseFormComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseFormComponent.swift; sourceTree = "<group>"; };
-		F97C81C225BACAAB00D7F85C /* BaseFormBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseFormBuilder.swift; sourceTree = "<group>"; };
-		F97C822025BAE99D00D7F85C /* FormElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormElements.swift; sourceTree = "<group>"; };
-		F97C829125BB156600D7F85C /* BaseFormComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseFormComponentExtensions.swift; sourceTree = "<group>"; };
+		F97C81AE25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractPersonalInformationComponent.swift; sourceTree = "<group>"; };
+		F97C81C225BACAAB00D7F85C /* PersonalInformationFormBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInformationFormBuilder.swift; sourceTree = "<group>"; };
+		F97C822025BAE99D00D7F85C /* PersonalInformationElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInformationElement.swift; sourceTree = "<group>"; };
+		F97C829125BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractPersonalInformationComponentExtensions.swift; sourceTree = "<group>"; };
 		F97C837825BF047600D7F85C /* DokuWalletPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuWalletPaymentMethod.swift; sourceTree = "<group>"; };
 		F97C838325BF053F00D7F85C /* DokuWalletComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuWalletComponent.swift; sourceTree = "<group>"; };
 		F97C839725BF05AB00D7F85C /* DokuWalletDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuWalletDetails.swift; sourceTree = "<group>"; };
@@ -1441,7 +1441,7 @@
 		E28098B0220DA78B0087928F /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				F97C81AD25BAC8CF00D7F85C /* BaseFormComponent */,
+				F97C81AD25BAC8CF00D7F85C /* AbstractPersonalInformationComponent */,
 				F957A9C7255050DB0099AD73 /* Stored Payment Method */,
 				E28098B1220DA7910087928F /* Base */,
 				E216D3CE221AFC3A0013CBCF /* IBANSpecification.swift */,
@@ -2623,15 +2623,15 @@
 			path = Base;
 			sourceTree = "<group>";
 		};
-		F97C81AD25BAC8CF00D7F85C /* BaseFormComponent */ = {
+		F97C81AD25BAC8CF00D7F85C /* AbstractPersonalInformationComponent */ = {
 			isa = PBXGroup;
 			children = (
-				F97C81AE25BAC8E600D7F85C /* BaseFormComponent.swift */,
-				F97C829125BB156600D7F85C /* BaseFormComponentExtensions.swift */,
-				F97C81C225BACAAB00D7F85C /* BaseFormBuilder.swift */,
-				F97C822025BAE99D00D7F85C /* FormElements.swift */,
+				F97C81AE25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift */,
+				F97C829125BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift */,
+				F97C81C225BACAAB00D7F85C /* PersonalInformationFormBuilder.swift */,
+				F97C822025BAE99D00D7F85C /* PersonalInformationElement.swift */,
 			);
-			path = BaseFormComponent;
+			path = AbstractPersonalInformationComponent;
 			sourceTree = "<group>";
 		};
 		F97C836E25BF03C500D7F85C /* Doku */ = {
@@ -3580,7 +3580,7 @@
 				F9E441522382A0DD00D3CD48 /* ViewIdentifierBuilder.swift in Sources */,
 				E28098B3220DA7980087928F /* Component.swift in Sources */,
 				F95B6D8E25231715002C9062 /* RegularExpressionValidator.swift in Sources */,
-				F97C822125BAE99D00D7F85C /* FormElements.swift in Sources */,
+				F97C822125BAE99D00D7F85C /* PersonalInformationElement.swift in Sources */,
 				F923280025A47ED5002C5BC4 /* AllCountriesPhoneExtensions.swift in Sources */,
 				F926D52023F4217A00D058D3 /* DeviceDependant.swift in Sources */,
 				F9D5753123828EBB009C18B5 /* AnyCardPaymentMethod.swift in Sources */,
@@ -3607,9 +3607,9 @@
 				F9639B3524DD97A30073F38A /* PaymentStatusResponse.swift in Sources */,
 				F9BA21C2246E82EE00D36A63 /* SizeUtilities.swift in Sources */,
 				E76EC6932417A107009C6E2F /* FormPhoneExtensionPickerItem.swift in Sources */,
-				F97C829225BB156600D7F85C /* BaseFormComponentExtensions.swift in Sources */,
+				F97C829225BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift in Sources */,
 				E749FD1E23CF4998000D18BA /* NavigationStyle.swift in Sources */,
-				F97C81C325BACAAB00D7F85C /* BaseFormBuilder.swift in Sources */,
+				F97C81C325BACAAB00D7F85C /* PersonalInformationFormBuilder.swift in Sources */,
 				F9354BED23A7C34D00A6760B /* ButtonStyle.swift in Sources */,
 				F9B8C50C23FE962D00C4D0FB /* FormPhoneNumberItem.swift in Sources */,
 				E2C0E0BC220B2976008616F6 /* FormItemView.swift in Sources */,
@@ -3652,7 +3652,7 @@
 				E2C0E096220B04F0008616F6 /* FormViewController.swift in Sources */,
 				F96286BD256BDEB000043FE3 /* CoreBundleExtension.swift in Sources */,
 				F919DF9124E682480027976E /* ClientKeyResponse.swift in Sources */,
-				F97C81AF25BAC8E600D7F85C /* BaseFormComponent.swift in Sources */,
+				F97C81AF25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift in Sources */,
 				F97CCD3C24360A4000BC560A /* BundleHelpers.swift in Sources */,
 				F9639B2B24DD6A9C0073F38A /* APIClient.swift in Sources */,
 			);

@@ -8,7 +8,7 @@ import Adyen
 import UIKit
 
 /// A component that provides a form for Qiwi Wallet payments.
-public final class QiwiWalletComponent: BaseFormComponent {
+public final class QiwiWalletComponent: AbstractPersonalInformationComponent {
     
     /// :nodoc:
     private let qiwiWalletPaymentMethod: QiwiWalletPaymentMethod
@@ -19,7 +19,7 @@ public final class QiwiWalletComponent: BaseFormComponent {
     /// - Parameter style: The Component's UI style.
     public init(paymentMethod: QiwiWalletPaymentMethod, style: FormComponentStyle = FormComponentStyle()) {
         self.qiwiWalletPaymentMethod = paymentMethod
-        let configuration = BaseFormComponent.Configuration(fields: [.phone])
+        let configuration = Configuration(fields: [.phone])
         super.init(paymentMethod: paymentMethod,
                    configuration: configuration,
                    style: style)

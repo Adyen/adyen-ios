@@ -7,7 +7,7 @@
 import Foundation
 
 /// :nodoc:
-internal protocol BaseFormElement {
+internal protocol PersonalInformationElement {
 
     /// :nodoc:
     associatedtype StyleType: ViewStyle
@@ -22,11 +22,11 @@ internal protocol BaseFormElement {
     var style: StyleType { get }
 
     /// :nodoc:
-    func build(_ itemBuilder: BaseFormBuilder) -> ItemType
+    func build(_ itemBuilder: PersonalInformationFormBuilder) -> ItemType
 }
 
 /// :nodoc:
-internal struct FirstNameElement: BaseFormElement {
+internal struct FirstNameElement: PersonalInformationElement {
 
     /// :nodoc:
     internal let style: FormTextItemStyle
@@ -42,13 +42,13 @@ internal struct FirstNameElement: BaseFormElement {
     }
 
     /// :nodoc:
-    internal func build(_ itemBuilder: BaseFormBuilder) -> FormTextInputItem {
+    internal func build(_ itemBuilder: PersonalInformationFormBuilder) -> FormTextInputItem {
         itemBuilder.build(self)
     }
 }
 
 /// :nodoc:
-internal struct LastNameElement: BaseFormElement {
+internal struct LastNameElement: PersonalInformationElement {
 
     /// :nodoc:
     internal let style: FormTextItemStyle
@@ -64,13 +64,13 @@ internal struct LastNameElement: BaseFormElement {
     }
 
     /// :nodoc:
-    internal func build(_ itemBuilder: BaseFormBuilder) -> FormTextInputItem {
+    internal func build(_ itemBuilder: PersonalInformationFormBuilder) -> FormTextInputItem {
         itemBuilder.build(self)
     }
 }
 
 /// :nodoc:
-internal struct EmailElement: BaseFormElement {
+internal struct EmailElement: PersonalInformationElement {
 
     /// :nodoc:
     internal let style: FormTextItemStyle
@@ -86,13 +86,13 @@ internal struct EmailElement: BaseFormElement {
     }
 
     /// :nodoc:
-    internal func build(_ itemBuilder: BaseFormBuilder) -> FormTextInputItem {
+    internal func build(_ itemBuilder: PersonalInformationFormBuilder) -> FormTextInputItem {
         itemBuilder.build(self)
     }
 }
 
 /// :nodoc:
-internal struct PhoneElement: BaseFormElement {
+internal struct PhoneElement: PersonalInformationElement {
 
     /// :nodoc:
     internal let style: FormTextItemStyle
@@ -113,7 +113,7 @@ internal struct PhoneElement: BaseFormElement {
     }
 
     /// :nodoc:
-    internal func build(_ itemBuilder: BaseFormBuilder) -> FormPhoneNumberItem {
+    internal func build(_ itemBuilder: PersonalInformationFormBuilder) -> FormPhoneNumberItem {
         itemBuilder.build(self)
     }
 }
