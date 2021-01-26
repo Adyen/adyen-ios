@@ -37,6 +37,7 @@
 "adyen.phoneNumber.placeholder" = "987 65 432";
 "adyen.card.cvcItem.placeholder.digits" = "%@ siffer";
 "adyen.emailItem.title" = "E-postadresse";
+"adyen.emailItem.placeHolder" = "E-postadresse";
 "adyen.emailItem.invalid" = "Ugyldig e-postadresse";
 "adyen.mbway.confirmPayment" = "Bekreft betalingen din i MB WAY-appen";
 "adyen.await.waitForConfirmation" = "Venter på bekreftelse";
@@ -48,3 +49,6 @@
 "adyen.preauthorizeWith" = "Forhåndsgodkjenn med %@";
 "adyen.confirmPreauthorization" = "Bekreft forhåndsgodkjenning";
 "adyen.card.cvcItem.title.optional" = "CVC / CVV (valgfritt)";
+"adyen.confirmPurchase" = "Bekreft kjøp";
+"adyen.lastName" = "Etternavn";
+"adyen.firstName" = "Fornavn";

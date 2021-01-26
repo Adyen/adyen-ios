@@ -37,6 +37,7 @@
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ siffror";
 "adyen.emailItem.title" = "E-postadress";
+"adyen.emailItem.placeHolder" = "E-postadress";
 "adyen.emailItem.invalid" = "Ogiltig e-postadress";
 "adyen.mbway.confirmPayment" = "Bekräfta din betalning i appen MB WAY";
 "adyen.await.waitForConfirmation" = "Väntar på bekräftelse";
@@ -48,3 +49,6 @@
 "adyen.preauthorizeWith" = "Förauktorisera med %@";
 "adyen.confirmPreauthorization" = "Bekräfta förauktorisering";
 "adyen.card.cvcItem.title.optional" = "CVC/CVV (tillval)";
+"adyen.confirmPurchase" = "Bekräfta köp";
+"adyen.lastName" = "Efternamn";
+"adyen.firstName" = "Förnamn";

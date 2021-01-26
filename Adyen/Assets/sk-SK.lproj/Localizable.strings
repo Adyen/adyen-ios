@@ -37,6 +37,7 @@
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ číslice";
 "adyen.emailItem.title" = "E-mailová adresa";
+"adyen.emailItem.placeHolder" = "E-mailová adresa";
 "adyen.emailItem.invalid" = "Neplatná emailová adresa";
 "adyen.mbway.confirmPayment" = "Potvrďte svoju platbu v aplikácii MB WAY";
 "adyen.await.waitForConfirmation" = "Čaká sa na potvrdenie";
@@ -48,3 +49,6 @@
 "adyen.preauthorizeWith" = "Predbežne autorizovať pomocou %@";
 "adyen.confirmPreauthorization" = "Potvrďte predbežnú autorizáciu";
 "adyen.card.cvcItem.title.optional" = "CVC/CVV (voliteľné)";
+"adyen.confirmPurchase" = "Potvrďte nákup";
+"adyen.lastName" = "Priezvisko";
+"adyen.firstName" = "Krstné meno";
