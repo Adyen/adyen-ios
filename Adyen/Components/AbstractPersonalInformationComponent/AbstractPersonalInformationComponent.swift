@@ -7,7 +7,8 @@
 import Foundation
 import UIKit
 
-/// :nodoc:
+/// An abstract class that needs to be subclassed to abstract away any component
+/// whoes form consists of a combination of personal information pieces like first name, last name, phone, email, and billing address.
 open class AbstractPersonalInformationComponent: PaymentComponent, PresentableComponent, Localizable {
 
     /// :nodoc:
