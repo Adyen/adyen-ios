@@ -407,6 +407,7 @@
 		F97C838425BF053F00D7F85C /* DokuWalletComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C838325BF053F00D7F85C /* DokuWalletComponent.swift */; };
 		F97C839825BF05AB00D7F85C /* DokuWalletDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C839725BF05AB00D7F85C /* DokuWalletDetails.swift */; };
 		F97C83F725BF0C2800D7F85C /* DokuWalletComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C83F625BF0C2800D7F85C /* DokuWalletComponentTests.swift */; };
+		F97C840E25C03D9400D7F85C /* BaseFormDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C840D25C03D9400D7F85C /* BaseFormDetails.swift */; };
 		F97CCD3A2435E35E00BC560A /* UIViewControllerHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97CCD392435E35E00BC560A /* UIViewControllerHelpers.swift */; };
 		F97CCD3C24360A4000BC560A /* BundleHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97CCD3B24360A4000BC560A /* BundleHelpers.swift */; };
 		F9842CD025710BF00063CE5A /* ThreeDS2ClassicActionHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9842CCF25710BF00063CE5A /* ThreeDS2ClassicActionHandlerTests.swift */; };
@@ -1085,6 +1086,7 @@
 		F97C838325BF053F00D7F85C /* DokuWalletComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuWalletComponent.swift; sourceTree = "<group>"; };
 		F97C839725BF05AB00D7F85C /* DokuWalletDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuWalletDetails.swift; sourceTree = "<group>"; };
 		F97C83F625BF0C2800D7F85C /* DokuWalletComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuWalletComponentTests.swift; sourceTree = "<group>"; };
+		F97C840D25C03D9400D7F85C /* BaseFormDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseFormDetails.swift; sourceTree = "<group>"; };
 		F97CCD392435E35E00BC560A /* UIViewControllerHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerHelpers.swift; sourceTree = "<group>"; };
 		F97CCD3B24360A4000BC560A /* BundleHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleHelpers.swift; sourceTree = "<group>"; };
 		F9842C58256D72B60063CE5A /* ThreeDSResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSResult.swift; sourceTree = "<group>"; };
@@ -2627,6 +2629,7 @@
 			isa = PBXGroup;
 			children = (
 				F97C81AE25BAC8E600D7F85C /* BaseFormComponent.swift */,
+				F97C840D25C03D9400D7F85C /* BaseFormDetails.swift */,
 				F97C829125BB156600D7F85C /* BaseFormComponentExtensions.swift */,
 				F97C81C225BACAAB00D7F85C /* BaseFormBuilder.swift */,
 				F97C822025BAE99D00D7F85C /* FormElements.swift */,
@@ -3549,6 +3552,7 @@
 				E2C0B55022A6AA0700D3367B /* AmountFormatter.swift in Sources */,
 				F9EDB782239149AF00CFB3C9 /* CountryCodeValidator.swift in Sources */,
 				E9021DAA225789B1009CF7F4 /* Localization.swift in Sources */,
+				F97C840E25C03D9400D7F85C /* BaseFormDetails.swift in Sources */,
 				E787C9D3246EC71B00B401E0 /* UIFontHelpers.swift in Sources */,
 				F96F44DD23BE487500871C1F /* LocalizationParameters.swift in Sources */,
 				F95B6D8A2523138E002C9062 /* PhoneNumberFormatter.swift in Sources */,

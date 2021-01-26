@@ -33,7 +33,9 @@ open class BaseFormComponent: PaymentComponent, PresentableComponent, Localizabl
     public let requiresModalPresentation: Bool = true
 
     /// :nodoc:
-    public let configuration: Configuration
+    public lazy var configuration: Configuration = {
+        createConfiguration()
+    }()
 
     /// Initializes the MB Way component.
     ///
@@ -41,10 +43,8 @@ open class BaseFormComponent: PaymentComponent, PresentableComponent, Localizabl
     /// - Parameter configuration: The Component's configuration.
     /// - Parameter style: The Component's UI style.
     public init(paymentMethod: PaymentMethod,
-                configuration: Configuration,
                 style: FormComponentStyle = FormComponentStyle()) {
         self.paymentMethod = paymentMethod
-        self.configuration = configuration
         self.style = style
     }
 
@@ -75,68 +75,36 @@ open class BaseFormComponent: PaymentComponent, PresentableComponent, Localizabl
     private func add(_ field: BaseFormField,
                      into formViewController: FormViewController) {
         switch field {
-        case .email:
-            if let emailItem = emailItem {
-                formViewController.append(emailItem)
-            }
-        case .firstName:
-            if let firstNameItem = firstNameItem {
-                formViewController.append(firstNameItem)
-            }
-        case .lastName:
-            if let lastNameItem = lastNameItem {
-                formViewController.append(lastNameItem)
-            }
-        case .phone:
-            if let phoneItem = phoneItem {
-                formViewController.append(phoneItem)
-            }
+        case let .email(element):
+            let emailItem = element.build(formBuilder)
+            formViewController.append(emailItem)
+            self.emailItem = emailItem
+        case let .firstName(element):
+            let firstNameItem = element.build(formBuilder)
+            formViewController.append(firstNameItem)
+            self.firstNameItem = firstNameItem
+        case let .lastName(element):
+            let lastNameItem = element.build(formBuilder)
+            formViewController.append(lastNameItem)
+            self.lastNameItem = lastNameItem
+        case let .phone(element):
+            let phoneItem = element.build(formBuilder)
+            formViewController.append(phoneItem)
+            self.phoneItem = phoneItem
         }
     }
 
     /// :nodoc:
-    public lazy var firstNameItem: FormTextInputItem? = {
-        guard configuration.fields.contains(.firstName) else { return nil }
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "firstNameItem")
-        return FirstNameElement(identifier: identifier,
-                                style: style.textField).build(formBuilder)
-    }()
+    internal var firstNameItem: FormTextInputItem?
 
     /// :nodoc:
-    public lazy var lastNameItem: FormTextInputItem? = {
-        guard configuration.fields.contains(.lastName) else { return nil }
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "lastNameItem")
-        return LastNameElement(identifier: identifier,
-                               style: style.textField).build(formBuilder)
-    }()
+    internal var lastNameItem: FormTextInputItem?
 
     /// :nodoc:
-    public lazy var emailItem: FormTextInputItem? = {
-        guard configuration.fields.contains(.email) else { return nil }
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "emailItem")
-        return EmailElement(identifier: identifier,
-                            style: style.textField).build(formBuilder)
-    }()
+    internal var emailItem: FormTextInputItem?
 
     /// :nodoc:
-    public lazy var phoneItem: FormPhoneNumberItem? = {
-        guard configuration.fields.contains(.phone) else { return nil }
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "phoneNumberItem")
-        return PhoneElement(identifier: identifier,
-                            phoneExtensions: selectableValues,
-                            style: style.textField).build(formBuilder)
-    }()
-
-    private lazy var selectableValues: [PhoneExtensionPickerItem] = {
-        let query = PhoneExtensionsQuery(paymentMethod: PhoneNumberPaymentMethod.mbWay)
-        return getPhoneExtensions().map {
-            let title = "\($0.countryDisplayName) (\($0.value))"
-            return PhoneExtensionPickerItem(identifier: $0.countryCode,
-                                            title: title,
-                                            phoneExtension: $0.value)
-
-        }
-    }()
+    internal var phoneItem: FormPhoneNumberItem?
 
     /// The button item.
     internal lazy var button: FormButtonItem = {
@@ -155,12 +123,12 @@ open class BaseFormComponent: PaymentComponent, PresentableComponent, Localizabl
     }
 
     /// :nodoc:
-    open func createPaymentDetails() -> PaymentMethodDetails {
+    open func createPaymentDetails(_ details: BaseFormDetails) -> PaymentMethodDetails {
         fatalError("This is an abstract class that needs to be subclassed.")
     }
 
     /// :nodoc:
-    open func getPhoneExtensions() -> [PhoneExtension] {
+    open func createConfiguration() -> Configuration {
         fatalError("This is an abstract class that needs to be subclassed.")
     }
 

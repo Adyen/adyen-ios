@@ -20,25 +20,47 @@ public final class DokuWalletComponent: BaseFormComponent {
     /// - Parameter style: The Component's UI style.
     public init(paymentMethod: DokuWalletPaymentMethod, style: FormComponentStyle = FormComponentStyle()) {
         self.dokuWalletPaymentMethod = paymentMethod
-        let configuration = BaseFormComponent.Configuration(fields: [.firstName, .lastName, .email])
-        super.init(paymentMethod: paymentMethod,
-                   configuration: configuration,
-                   style: style)
+        super.init(paymentMethod: paymentMethod, style: style)
     }
 
     override public func submitButtonTitle() -> String {
         ADYLocalizedString("adyen.confirmPurchase", localizationParameters)
     }
 
-    override public func createPaymentDetails() -> PaymentMethodDetails {
-        guard let firstNameItem = firstNameItem,
-              let lastNameItem = lastNameItem,
-              let emailItem = emailItem else {
+    override public func createPaymentDetails(_ details: BaseFormDetails) -> PaymentMethodDetails {
+        guard let firstName = details.firstName,
+              let lastName = details.lastName,
+              let email = details.emailAddress else {
             fatalError("There seems to be an error in the BaseFormComponent configuration.")
         }
         return DokuWalletDetails(paymentMethod: paymentMethod,
-                                 firstName: firstNameItem.value,
-                                 lastName: lastNameItem.value,
-                                 emailAddress: emailItem.value)
+                                 firstName: firstName,
+                                 lastName: lastName,
+                                 emailAddress: email)
     }
+
+    override public func createConfiguration() -> Configuration {
+        let fields: [BaseFormField] = [.firstName(firstNameElement),
+                                       .lastName(lastNameElement),
+                                       .email(emailElement)]
+        return BaseFormComponent.Configuration(fields: fields)
+    }
+
+    private lazy var firstNameElement: FirstNameElement = {
+        let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "firstNameItem")
+        return FirstNameElement(identifier: identifier,
+                                style: style.textField)
+    }()
+
+    private lazy var lastNameElement: LastNameElement = {
+        let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "lastNameItem")
+        return LastNameElement(identifier: identifier,
+                               style: style.textField)
+    }()
+
+    private lazy var emailElement: EmailElement = {
+        let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "emailItem")
+        return EmailElement(identifier: identifier,
+                            style: style.textField)
+    }()
 }
