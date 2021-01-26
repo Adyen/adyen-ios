@@ -406,6 +406,10 @@
 		F97C81C325BACAAB00D7F85C /* BaseFormBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C81C225BACAAB00D7F85C /* BaseFormBuilder.swift */; };
 		F97C822125BAE99D00D7F85C /* FormElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C822025BAE99D00D7F85C /* FormElements.swift */; };
 		F97C829225BB156600D7F85C /* BaseFormComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C829125BB156600D7F85C /* BaseFormComponentExtensions.swift */; };
+		F97C837925BF047600D7F85C /* DokuWalletPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C837825BF047600D7F85C /* DokuWalletPaymentMethod.swift */; };
+		F97C838425BF053F00D7F85C /* DokuWalletComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C838325BF053F00D7F85C /* DokuWalletComponent.swift */; };
+		F97C839825BF05AB00D7F85C /* DokuWalletDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C839725BF05AB00D7F85C /* DokuWalletDetails.swift */; };
+		F97C83F725BF0C2800D7F85C /* DokuWalletComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C83F625BF0C2800D7F85C /* DokuWalletComponentTests.swift */; };
 		F97CCD3A2435E35E00BC560A /* UIViewControllerHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97CCD392435E35E00BC560A /* UIViewControllerHelpers.swift */; };
 		F97CCD3C24360A4000BC560A /* BundleHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97CCD3B24360A4000BC560A /* BundleHelpers.swift */; };
 		F9842CD025710BF00063CE5A /* ThreeDS2ClassicActionHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9842CCF25710BF00063CE5A /* ThreeDS2ClassicActionHandlerTests.swift */; };
@@ -1081,6 +1085,10 @@
 		F97C81C225BACAAB00D7F85C /* BaseFormBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseFormBuilder.swift; sourceTree = "<group>"; };
 		F97C822025BAE99D00D7F85C /* FormElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormElements.swift; sourceTree = "<group>"; };
 		F97C829125BB156600D7F85C /* BaseFormComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseFormComponentExtensions.swift; sourceTree = "<group>"; };
+		F97C837825BF047600D7F85C /* DokuWalletPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuWalletPaymentMethod.swift; sourceTree = "<group>"; };
+		F97C838325BF053F00D7F85C /* DokuWalletComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuWalletComponent.swift; sourceTree = "<group>"; };
+		F97C839725BF05AB00D7F85C /* DokuWalletDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuWalletDetails.swift; sourceTree = "<group>"; };
+		F97C83F625BF0C2800D7F85C /* DokuWalletComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuWalletComponentTests.swift; sourceTree = "<group>"; };
 		F97CCD392435E35E00BC560A /* UIViewControllerHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerHelpers.swift; sourceTree = "<group>"; };
 		F97CCD3B24360A4000BC560A /* BundleHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleHelpers.swift; sourceTree = "<group>"; };
 		F9842C58256D72B60063CE5A /* ThreeDSResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSResult.swift; sourceTree = "<group>"; };
@@ -1412,6 +1420,7 @@
 				F9620D9E23C7457F005209FC /* WeChatPayPaymentMethod.swift */,
 				F926D52B23F59ABE00D058D3 /* QiwiWalletPaymentMethod.swift */,
 				F9D644DD24D2D9950059CBE3 /* MBWayPaymentMethod.swift */,
+				F97C837825BF047600D7F85C /* DokuWalletPaymentMethod.swift */,
 				E700A72C2549E2F00012B64C /* BLIKPaymentMethod.swift */,
 				E7763A1025F02BD20046371E /* GiftCardPaymentMethod.swift */,
 			);
@@ -1913,6 +1922,7 @@
 		E97B9717229D533B00505476 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				F97C83D825BF0BDA00D7F85C /* Doku Wallet */,
 				E72521EC25517E8F00533E35 /* BLIK Component */,
 				F9639B4E24E29D080073F38A /* Await Component */,
 				F9D644E524D40C5F0059CBE3 /* MB Way */,
@@ -2147,6 +2157,7 @@
 		F9175E56259393E800D653BE /* AdyenComponents */ = {
 			isa = PBXGroup;
 			children = (
+				F97C836E25BF03C500D7F85C /* Doku */,
 				E700A7342549E9FC0012B64C /* BLIK */,
 				F9D644DA24D2D9340059CBE3 /* MB Way */,
 				F926D52D23F5A2EC00D058D3 /* Qiwi Wallet */,
@@ -2627,6 +2638,23 @@
 				F97C822025BAE99D00D7F85C /* FormElements.swift */,
 			);
 			path = BaseFormComponent;
+			sourceTree = "<group>";
+		};
+		F97C836E25BF03C500D7F85C /* Doku */ = {
+			isa = PBXGroup;
+			children = (
+				F97C838325BF053F00D7F85C /* DokuWalletComponent.swift */,
+				F97C839725BF05AB00D7F85C /* DokuWalletDetails.swift */,
+			);
+			path = Doku;
+			sourceTree = "<group>";
+		};
+		F97C83D825BF0BDA00D7F85C /* Doku Wallet */ = {
+			isa = PBXGroup;
+			children = (
+				F97C83F625BF0C2800D7F85C /* DokuWalletComponentTests.swift */,
+			);
+			path = "Doku Wallet";
 			sourceTree = "<group>";
 		};
 		F9842CC8256FD0770063CE5A /* Action handlers */ = {
@@ -3506,6 +3534,7 @@
 				F95B6D8C252316DA002C9062 /* PhoneNumberValidator.swift in Sources */,
 				E9021E022264C4C5009CF7F4 /* KeyedDecodingContainerHelpers.swift in Sources */,
 				E28098BB220DB9F30087928F /* ListViewController.swift in Sources */,
+				F97C837925BF047600D7F85C /* DokuWalletPaymentMethod.swift in Sources */,
 				E7B3DE9F25A61B9200CA4D2B /* UIViewConstraintsHelper.swift in Sources */,
 				F9354BE923A7B5AC00A6760B /* ViewStyle.swift in Sources */,
 				F9639B4324E27FAE0073F38A /* SimpleScheduler.swift in Sources */,
@@ -3703,6 +3732,7 @@
 				F957AA462552C3D20099AD73 /* ThreeDS2FingerprintSubmitterTests.swift in Sources */,
 				E216D3C7221AF5650013CBCF /* IBANFormatterTests.swift in Sources */,
 				F9639B5024E29D2D0073F38A /* AwaitComponentTests.swift in Sources */,
+				F97C83F725BF0C2800D7F85C /* DokuWalletComponentTests.swift in Sources */,
 				F924C072246BEEF0006DDAB8 /* CardDetailsTests.swift in Sources */,
 				F96A25472372C39F007DBF0B /* ApplePayDetailsTest.swift in Sources */,
 				F9AC61C424375F510062A00D /* PresentingViewControllerMock.swift in Sources */,
@@ -3819,6 +3849,7 @@
 			files = (
 				F9175EC22593950D00D653BE /* QiwiWalletComponent.swift in Sources */,
 				F9175EAC259394FF00D653BE /* ApplePayComponent.swift in Sources */,
+				F97C838425BF053F00D7F85C /* DokuWalletComponent.swift in Sources */,
 				F9175ED32593951900D653BE /* MBWayDetails.swift in Sources */,
 				F9175EAB259394FF00D653BE /* ApplePayDetails.swift in Sources */,
 				F9175EE22593952600D653BE /* BLIKComponent.swift in Sources */,
@@ -3827,6 +3858,7 @@
 				F9175EAA259394FF00D653BE /* ApplePayComponentExtensions.swift in Sources */,
 				F9175ED22593951800D653BE /* MBWayComponent.swift in Sources */,
 				F9175E9B259394F200D653BE /* IssuerListComponent.swift in Sources */,
+				F97C839825BF05AB00D7F85C /* DokuWalletDetails.swift in Sources */,
 				F9175E9A259394F200D653BE /* IssuerListDetails.swift in Sources */,
 				F9175EE32593952600D653BE /* BLIKDetails.swift in Sources */,
 				F9175EC32593950D00D653BE /* QiwiWalletDetails.swift in Sources */,

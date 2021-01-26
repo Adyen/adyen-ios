@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -41,6 +41,7 @@ internal enum PaymentMethodType: String {
     case afterpay = "afterpay_default"
     case androidPay = "androidpay"
     case amazonPay = "amazonpay"
+    case dokuWallet = "doku_wallet"
     
 }
 
@@ -94,7 +95,8 @@ internal enum AnyPaymentMethodDecoder {
         .qiwiWallet: QiwiWalletPaymentMethodDecoder(),
         .mbWay: MBWayPaymentMethodDecoder(),
         .blik: BLIKPaymentMethodDecoder(),
-        .giftcard: GiftcardPaymentMethodDecoder()
+        .giftcard: GiftcardPaymentMethodDecoder(),
+        .dokuWallet: DokuWalletPaymentMethodDecoder()
     ]
     
     private static var defaultDecoder: PaymentMethodDecoder = RedirectPaymentMethodDecoder()
@@ -221,5 +223,11 @@ private struct MBWayPaymentMethodDecoder: PaymentMethodDecoder {
 private struct BLIKPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         .blik(try BLIKPaymentMethod(from: decoder))
+    }
+}
+
+private struct DokuWalletPaymentMethodDecoder: PaymentMethodDecoder {
+    func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
+        .dokuWallet(try DokuWalletPaymentMethod(from: decoder))
     }
 }
