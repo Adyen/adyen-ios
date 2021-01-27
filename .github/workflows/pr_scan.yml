@@ -49,7 +49,7 @@ jobs:
         params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES'
         scheme: 'AdyenUIHost'
         destination: 'name=iPhone 11'
-        DEVELOPER_DIR: ${{ matrix.xcode }}
+        DEVELOPER_DIR: '/Applications/Xcode_12.2.app/Contents/Developer'
 
     - name: Slather
       run: |
