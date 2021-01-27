@@ -23,4 +23,5 @@ jobs:
 
     - name: Test Carthage Integration
       run: |
-        ./test-carthage-integration.sh
+        brew install xcodegen
+        Scripts/test-carthage-integration.sh

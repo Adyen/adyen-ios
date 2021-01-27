@@ -101,8 +101,8 @@ public final class DropInComponent: NSObject, PresentableComponent {
         }
     }()
     
-    private lazy var actionComponent: DropInActionComponent = {
-        let handler = DropInActionComponent()
+    private lazy var actionComponent: AdyenActionHandler = {
+        let handler = AdyenActionHandler()
         handler._isDropIn = true
         handler.environment = environment
         handler.clientKey = configuration.clientKey

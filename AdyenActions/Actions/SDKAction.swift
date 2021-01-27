@@ -22,6 +22,11 @@ public enum SDKAction: Decodable {
             self = .weChatPay(try WeChatPaySDKAction(from: decoder))
         }
     }
+
+    /// :nodoc:
+    internal init(sdkData: WeChatPaySDKData, paymentData: String) {
+        self = .weChatPay(WeChatPaySDKAction(sdkData: sdkData, paymentData: paymentData))
+    }
     
     /// :nodoc:
     private enum CodingKeys: String, CodingKey {
