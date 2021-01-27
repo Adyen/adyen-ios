@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -97,6 +97,10 @@ extension CardComponent: FormViewControllerDelegate {
     public func viewDidLoad(formViewController: FormViewController) {
         fetchCardPublicKey(onError: { _ in /* Do nothing, to just cache the card public key value */ },
                            completion: { _ in /* Do nothing, to just cache the card public key value */ })
+    }
+
+    public func viewDidAppear(formViewController: FormViewController) {
+        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
     }
 }
 

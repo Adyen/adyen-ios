@@ -37,6 +37,7 @@
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ψήφιος";
 "adyen.emailItem.title" = "Διεύθυνση email";
+"adyen.emailItem.placeHolder" = "Διεύθυνση email";
 "adyen.emailItem.invalid" = "Μη έγκυρη διεύθυνση email";
 "adyen.mbway.confirmPayment" = "Επιβεβαιώστε την πληρωμή στην εφαρμογή MB WAY";
 "adyen.await.waitForConfirmation" = "Αναμονή για επιβεβαίωση…";
@@ -48,3 +49,6 @@
 "adyen.preauthorizeWith" = "Προεξουσιοδότηση με %@";
 "adyen.confirmPreauthorization" = "Επιβεβαίωση προεξουσιοδότησης";
 "adyen.card.cvcItem.title.optional" = "CVC/CVV (προαιρετικά)";
+"adyen.confirmPurchase" = "Επιβεβαίωση αγοράς";
+"adyen.lastName" = "Επώνυμο";
+"adyen.firstName" = "Όνομα";

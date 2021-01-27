@@ -37,6 +37,7 @@
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ lukua";
 "adyen.emailItem.title" = "Sähköpostiosoite";
+"adyen.emailItem.placeHolder" = "Sähköpostiosoite";
 "adyen.emailItem.invalid" = "Ei-kelvollinen sähköpostiosoite";
 "adyen.mbway.confirmPayment" = "Vahvista maksusi MB WAY -sovelluksella";
 "adyen.await.waitForConfirmation" = "Odottaa vahvistusta";
@@ -48,3 +49,6 @@
 "adyen.preauthorizeWith" = "Ennkkolupa käyttäjän kanssa %@";
 "adyen.confirmPreauthorization" = "Vahvista ennakkolupa";
 "adyen.card.cvcItem.title.optional" = "CVC / CVV (valinnainen)";
+"adyen.confirmPurchase" = "Vahvista hankinta";
+"adyen.lastName" = "Sukunimi";
+"adyen.firstName" = "Etunimi";

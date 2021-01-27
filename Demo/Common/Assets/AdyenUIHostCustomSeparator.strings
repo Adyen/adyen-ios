@@ -42,3 +42,9 @@
 "adyen_blik_code" = "6-digit code";
 "adyen_blik_help" = "Get the code from your banking app.";
 "adyen_blik_placeholder" = "123–456";
+"adyen_lastName" = "Last name -- Test";
+"adyen_firstName" = "First name -- Test";
+"adyen_emailItem_title" = "Email address -- Test";
+"adyen_emailItem_placeHolder" = "Email address -- Test";
+"adyen_emailItem_invalid" = "Invalid email address -- Test";
+"adyen_confirmPurchase" = "Confirm purchase -- Test";

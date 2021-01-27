@@ -41,3 +41,9 @@
 "adyen.emailItem.invalid" = "Invalid email address";
 "adyen.mbway.confirmPayment" = "Confirm your payment on the MB WAY app -- Test";
 "adyen.await.waitForConfirmation" = "Waiting for confirmation -- Test";
+"adyen.confirmPurchase" = "Confirm purchase -- Test";
+"adyen.lastName" = "Last name -- Test";
+"adyen.firstName" = "First name -- Test";
+"adyen.emailItem.title" = "Email address -- Test";
+"adyen.emailItem.placeHolder" = "Email address -- Test";
+"adyen.emailItem.invalid" = "Invalid email address -- Test";

@@ -53,7 +53,8 @@ class PaymentMethodTests: XCTestCase {
                 debitCardDictionary,
                 mbway,
                 blik,
-                googlePay
+                googlePay,
+                dokuWallet
             ]
         ]
         
@@ -104,7 +105,7 @@ class PaymentMethodTests: XCTestCase {
         
         // Regular payment methods
         
-        XCTAssertEqual(paymentMethods.regular.count, 14)
+        XCTAssertEqual(paymentMethods.regular.count, 15)
         XCTAssertTrue(paymentMethods.regular[0] is CardPaymentMethod)
         XCTAssertEqual((paymentMethods.regular[0] as! CardPaymentMethod).fundingSource!, .credit)
         
@@ -170,6 +171,10 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertTrue(paymentMethods.regular[13] is BLIKPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[13].name, "Blik")
         XCTAssertEqual(paymentMethods.regular[13].type, "blik")
+
+        XCTAssertTrue(paymentMethods.regular[14] is DokuWalletPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[14].name, "DOKU wallet")
+        XCTAssertEqual(paymentMethods.regular[14].type, "doku_wallet")
     }
     
     // MARK: - Card
@@ -351,6 +356,14 @@ class PaymentMethodTests: XCTestCase {
         let paymentMethod = try Coder.decode(mbway) as MBWayPaymentMethod
         XCTAssertEqual(paymentMethod.type, "mbway")
         XCTAssertEqual(paymentMethod.name, "MB WAY")
+    }
+
+    // MARK: - Doku wallet
+
+    func testDecodingDokuWalletPaymentMethod() throws {
+        let paymentMethod = try Coder.decode(dokuWallet) as DokuWalletPaymentMethod
+        XCTAssertEqual(paymentMethod.type, "doku_wallet")
+        XCTAssertEqual(paymentMethod.name, "DOKU wallet")
     }
     
     public func expectedBancontactCardDisplayInfo(method: StoredBCMCPaymentMethod, localizationParameters: LocalizationParameters?) -> DisplayInformation {

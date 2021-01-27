@@ -37,6 +37,7 @@
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@자리";
 "adyen.emailItem.title" = "이메일 주소";
+"adyen.emailItem.placeHolder" = "이메일 주소";
 "adyen.emailItem.invalid" = "유효하지 않은 이메일 주소";
 "adyen.mbway.confirmPayment" = "MB WAY 앱에서 결제를 확인하십시오";
 "adyen.await.waitForConfirmation" = "확인 대기중";
@@ -48,3 +49,6 @@
 "adyen.preauthorizeWith" = "사전 승인 방법:%@";
 "adyen.confirmPreauthorization" = "사전 승인 확인";
 "adyen.card.cvcItem.title.optional" = "CVC / CVV (선택)";
+"adyen.confirmPurchase" = "구매 확인";
+"adyen.lastName" = "성";
+"adyen.firstName" = "이름";

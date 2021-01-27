@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -30,7 +30,7 @@ public struct PaymentMethods: Decodable {
     /// - Parameter type: The type of payment method to retrieve.
     /// - Returns: The first available payment method of the given type, or `nil` if none could be found.
     public func paymentMethod<T: PaymentMethod>(ofType type: T.Type) -> T? {
-        return regular.first { $0 is T } as? T
+        regular.first { $0 is T } as? T
     }
     
     // MARK: - Decoding
@@ -38,7 +38,7 @@ public struct PaymentMethods: Decodable {
     /// :nodoc:
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.regular = try container.decode([AnyPaymentMethod].self, forKey: .regular).compactMap { $0.value }
+        self.regular = try container.decode([AnyPaymentMethod].self, forKey: .regular).compactMap(\.value)
         
         if container.contains(.stored) {
             self.stored = try container.decode([AnyPaymentMethod].self, forKey: .stored).compactMap { $0.value as? StoredPaymentMethod }
@@ -69,6 +69,7 @@ internal enum AnyPaymentMethod: Decodable {
     case weChatPay(WeChatPayPaymentMethod)
     case mbWay(MBWayPaymentMethod)
     case blik(BLIKPaymentMethod)
+    case dokuWallet(DokuWalletPaymentMethod)
     
     case none
     
@@ -99,6 +100,8 @@ internal enum AnyPaymentMethod: Decodable {
         case let .mbWay(paymentMethod):
             return paymentMethod
         case let .blik(paymentMethod):
+            return paymentMethod
+        case let .dokuWallet(paymentMethod):
             return paymentMethod
         case .none:
             return nil

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -146,12 +146,12 @@ internal final class ComponentManager {
     }
     
     private func createSEPAComponent(_ paymentMethod: SEPADirectDebitPaymentMethod) -> SEPADirectDebitComponent {
-        return SEPADirectDebitComponent(paymentMethod: paymentMethod,
-                                        style: style.formComponent)
+        SEPADirectDebitComponent(paymentMethod: paymentMethod,
+                                 style: style.formComponent)
     }
     
     private func createQiwiWalletComponent(_ paymentMethod: QiwiWalletPaymentMethod) -> QiwiWalletComponent {
-        return QiwiWalletComponent(paymentMethod: paymentMethod, style: style.formComponent)
+        QiwiWalletComponent(paymentMethod: paymentMethod, style: style.formComponent)
     }
     
     private func createMBWayComponent(_ paymentMethod: MBWayPaymentMethod) -> MBWayComponent? {
@@ -212,7 +212,7 @@ extension ComponentManager: PaymentComponentBuilder {
     
     /// :nodoc:
     internal func build(paymentMethod: SEPADirectDebitPaymentMethod) -> PaymentComponent? {
-        return createSEPAComponent(paymentMethod)
+        createSEPAComponent(paymentMethod)
     }
     
     /// :nodoc:
@@ -240,6 +240,12 @@ extension ComponentManager: PaymentComponentBuilder {
     /// :nodoc:
     internal func build(paymentMethod: BLIKPaymentMethod) -> PaymentComponent? {
         createBLIKComponent(paymentMethod)
+    }
+
+    /// :nodoc:
+    internal func build(paymentMethod: DokuWalletPaymentMethod) -> PaymentComponent? {
+        DokuWalletComponent(paymentMethod: paymentMethod,
+                            style: style.formComponent)
     }
     
     /// :nodoc:

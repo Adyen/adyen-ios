@@ -178,6 +178,11 @@ let googlePay = [
   "type" : "paywithgoogle"
 ] as [String: Any]
 
+let dokuWallet = [
+    "name" : "DOKU wallet",
+    "type" : "doku_wallet"
+] as [String: Any]
+
 let weChatMiniProgramDictionary = [
     "name": "WeChat Pay",
     "supportsRecurring": true,
