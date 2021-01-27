@@ -14,5 +14,10 @@ public final class WeChatPaySDKAction: Decodable {
     
     /// The server-generated payment data that should be submitted to the `/payments/details` endpoint.
     public let paymentData: String
+
+    internal init(sdkData: WeChatPaySDKData, paymentData: String) {
+        self.sdkData = sdkData
+        self.paymentData = paymentData
+    }
     
 }

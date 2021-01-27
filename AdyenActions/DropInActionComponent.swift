@@ -8,14 +8,11 @@ import Adyen
 #if canImport(AdyenCard)
     import AdyenCard
 #endif
-#if canImport(AdyenActions)
-    import AdyenActions
-#endif
 import Foundation
 import UIKit
 
 /// A drop-in component to perform any supported action out of the box.
-public final class DropInActionComponent: ActionComponent, Localizable {
+public final class AdyenActionHandler: ActionComponent, Localizable {
     
     /// :nodoc:
     public weak var delegate: ActionComponentDelegate?

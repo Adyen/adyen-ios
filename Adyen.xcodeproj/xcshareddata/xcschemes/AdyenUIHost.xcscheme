@@ -20,6 +20,20 @@
                ReferencedContainer = "container:Adyen.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "NO"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E745258825C1CB10006A941F"
+               BuildableName = "AdyenWeChatTests.xctest"
+               BlueprintName = "AdyenWeChatTests"
+               ReferencedContainer = "container:Adyen.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
