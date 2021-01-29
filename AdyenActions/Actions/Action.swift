@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -27,6 +27,9 @@ public enum Action: Decodable {
     
     /// Indicate that the SDK should wait for user action.
     case await (AwaitAction)
+
+    /// Indicates that a voucher is presented to the shopper.
+    case voucher(VoucherAction)
     
     // MARK: - Coding
     
@@ -48,6 +51,8 @@ public enum Action: Decodable {
             self = .sdk(try SDKAction(from: decoder))
         case .await:
             self = .await(try AwaitAction(from: decoder))
+        case .voucher:
+            self = .voucher(try VoucherAction(from: decoder))
         }
     }
     
@@ -59,6 +64,7 @@ public enum Action: Decodable {
         case sdk
         case qrCode
         case await
+            case voucher
     }
     
     private enum CodingKeys: String, CodingKey {

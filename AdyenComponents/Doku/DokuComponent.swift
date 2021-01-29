@@ -8,18 +8,18 @@ import Adyen
 import Foundation
 import UIKit
 
-/// A component that provides a form for Doku Wallet payments.
-public final class DokuWalletComponent: AbstractPersonalInformationComponent {
+/// A component that provides a form for Doku Wallet, Doku Alfamart, and Doku Indomaret  payments.
+public final class DokuComponent: AbstractPersonalInformationComponent {
 
     /// :nodoc:
-    private let dokuWalletPaymentMethod: DokuWalletPaymentMethod
+    private let dokuPaymentMethod: DokuPaymentMethod
 
     /// Initializes the Doku component.
     ///
-    /// - Parameter paymentMethod: The Doku Wallet payment method.
+    /// - Parameter paymentMethod: The Doku Wallet, Doku Alfamart, or Doku Indomaret payment method.
     /// - Parameter style: The Component's UI style.
-    public init(paymentMethod: DokuWalletPaymentMethod, style: FormComponentStyle = FormComponentStyle()) {
-        self.dokuWalletPaymentMethod = paymentMethod
+    public init(paymentMethod: DokuPaymentMethod, style: FormComponentStyle = FormComponentStyle()) {
+        self.dokuPaymentMethod = paymentMethod
         let configuration = Configuration(fields: [.firstName, .lastName, .email])
         super.init(paymentMethod: paymentMethod,
                    configuration: configuration,

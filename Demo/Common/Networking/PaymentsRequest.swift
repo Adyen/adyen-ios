@@ -92,6 +92,7 @@ internal extension PaymentsResponse {
         case redirectShopper = "RedirectShopper"
         case identifyShopper = "IdentifyShopper"
         case challengeShopper = "ChallengeShopper"
+        case presentToShopper = "PresentToShopper"
     }
     
 }

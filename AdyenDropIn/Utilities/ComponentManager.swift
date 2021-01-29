@@ -243,9 +243,9 @@ extension ComponentManager: PaymentComponentBuilder {
     }
 
     /// :nodoc:
-    internal func build(paymentMethod: DokuWalletPaymentMethod) -> PaymentComponent? {
-        DokuWalletComponent(paymentMethod: paymentMethod,
-                            style: style.formComponent)
+    internal func build(paymentMethod: DokuPaymentMethod) -> PaymentComponent? {
+        DokuComponent(paymentMethod: paymentMethod,
+                      style: style.formComponent)
     }
     
     /// :nodoc:

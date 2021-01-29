@@ -41,6 +41,8 @@ internal enum PaymentMethodType: String {
     case androidPay = "androidpay"
     case amazonPay = "amazonpay"
     case dokuWallet = "doku_wallet"
+    case dokuAlfamart = "doku_alfamart"
+    case dokuIndomaret = "doku_indomaret"
     
 }
 
@@ -94,7 +96,9 @@ internal enum AnyPaymentMethodDecoder {
         .qiwiWallet: QiwiWalletPaymentMethodDecoder(),
         .mbWay: MBWayPaymentMethodDecoder(),
         .blik: BLIKPaymentMethodDecoder(),
-        .dokuWallet: DokuWalletPaymentMethodDecoder()
+        .dokuWallet: DokuPaymentMethodDecoder(),
+        .dokuAlfamart: DokuPaymentMethodDecoder(),
+        .dokuIndomaret: DokuPaymentMethodDecoder()
     ]
     
     private static var defaultDecoder: PaymentMethodDecoder = RedirectPaymentMethodDecoder()
@@ -224,8 +228,8 @@ private struct BLIKPaymentMethodDecoder: PaymentMethodDecoder {
     }
 }
 
-private struct DokuWalletPaymentMethodDecoder: PaymentMethodDecoder {
+private struct DokuPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
-        .dokuWallet(try DokuWalletPaymentMethod(from: decoder))
+        .doku(try DokuPaymentMethod(from: decoder))
     }
 }

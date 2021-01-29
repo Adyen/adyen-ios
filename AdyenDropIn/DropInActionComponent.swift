@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -54,6 +54,8 @@ public final class DropInActionComponent: ActionComponent, Localizable {
             perform(sdkAction)
         case let .await(awaitAction):
             perform(awaitAction)
+        case let .voucher(voucherAction):
+            perform(voucherAction)
         }
     }
     
@@ -71,6 +73,7 @@ public final class DropInActionComponent: ActionComponent, Localizable {
     private var threeDS2Component: ThreeDS2Component?
     private var weChatPaySDKActionComponent: AnyWeChatPaySDKActionComponent?
     private var awaitComponent: AwaitComponent?
+    private var voucherComponent: VoucherComponent?
     
     private func perform(_ action: RedirectAction) {
         let component = RedirectComponent(style: redirectComponentStyle)
@@ -145,10 +148,22 @@ public final class DropInActionComponent: ActionComponent, Localizable {
         component.environment = environment
         component.localizationParameters = localizationParameters
         component.clientKey = clientKey
-        component.localizationParameters = localizationParameters
         
         component.handle(action)
         awaitComponent = component
+    }
+
+    private func perform(_ action: VoucherAction) {
+        let component = VoucherComponent(style: awaitComponentStyle)
+        component._isDropIn = _isDropIn
+        component.delegate = delegate
+        component.presentationDelegate = presentationDelegate
+        component.environment = environment
+        component.localizationParameters = localizationParameters
+        component.clientKey = clientKey
+
+        component.handle(action)
+        voucherComponent = component
     }
     
 }
