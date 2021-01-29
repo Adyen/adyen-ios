@@ -65,7 +65,7 @@ jobs:
         params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES'
         scheme: ${{ matrix.scheme }}
         destination: ${{ matrix.destination }}
-        DEVELOPER_DIR: ${{ matrix.xcode }}
+        DEVELOPER_DIR: '/Applications/Xcode_12.2.app/Contents/Developer'
 
   sonar:
     runs-on: macos-latest
