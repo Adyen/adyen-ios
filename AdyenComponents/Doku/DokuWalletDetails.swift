@@ -7,7 +7,7 @@
 import Adyen
 import Foundation
 
-/// Contains the details supplied by the Doku Wallet component.
+/// Contains the details supplied by the Doku component.
 public struct DokuWalletDetails: PaymentMethodDetails {
 
     /// The payment method type.
@@ -26,7 +26,7 @@ public struct DokuWalletDetails: PaymentMethodDetails {
     ///
     ///
     /// - Parameters:
-    ///   - paymentMethod: The Doku wallet payment method.
+    ///   - paymentMethod: The Doku Wallet, Doku Alfamart, or Doku Indomaret payment method.
     ///   - firstName: The first Name.
     ///   - lastName: The last Name.
     ///   - emailAddress: The email address.

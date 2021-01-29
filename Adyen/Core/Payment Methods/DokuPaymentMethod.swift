@@ -6,8 +6,8 @@
 
 import Foundation
 
-/// A Doku Wallet paymeny method.
-public struct DokuWalletPaymentMethod: PaymentMethod {
+/// A Doku Wallet, Doku Alfamart, or Doku Indomaret payment method.
+public struct DokuPaymentMethod: PaymentMethod {
 
     /// :nodoc:
     public let type: String
@@ -15,7 +15,7 @@ public struct DokuWalletPaymentMethod: PaymentMethod {
     /// :nodoc:
     public let name: String
 
-    /// Initializes the Doku Wallet payment method.
+    /// Initializes the Doku Wallet, Doku Alfamart, or Doku Indomaret payment method.
     ///
     /// - Parameter type: The payment method type.
     /// - Parameter name: The payment method name.

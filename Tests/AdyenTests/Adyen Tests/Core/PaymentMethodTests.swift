@@ -177,7 +177,7 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethods.regular[14].name, "Generic GiftCard")
         XCTAssertEqual(paymentMethods.regular[14].type, "giftcard")
         
-        XCTAssertTrue(paymentMethods.regular[15] is DokuWalletPaymentMethod)
+        XCTAssertTrue(paymentMethods.regular[15] is DokuPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[15].name, "DOKU wallet")
         XCTAssertEqual(paymentMethods.regular[15].type, "doku_wallet")
     }
@@ -366,7 +366,7 @@ class PaymentMethodTests: XCTestCase {
     // MARK: - Doku wallet
 
     func testDecodingDokuWalletPaymentMethod() throws {
-        let paymentMethod = try Coder.decode(dokuWallet) as DokuWalletPaymentMethod
+        let paymentMethod = try Coder.decode(dokuWallet) as DokuPaymentMethod
         XCTAssertEqual(paymentMethod.type, "doku_wallet")
         XCTAssertEqual(paymentMethod.name, "DOKU wallet")
     }
