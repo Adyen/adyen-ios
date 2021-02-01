@@ -8,6 +8,8 @@ import UIKit
 
 internal class AbstractVoucherView: UIView {
 
+    internal weak var presenter: UIViewController?
+
     private lazy var voucherView: BaseVoucherView = {
         let topView = createTopView()
         let bottomView = createBottomView()
@@ -15,13 +17,9 @@ internal class AbstractVoucherView: UIView {
         return BaseVoucherView(topView: topView, bottomView: bottomView)
     }()
 
-    private let onShare: (UIView) -> Void
-
     private let model: VoucherSeparatorView.Model
 
-    internal init(model: VoucherSeparatorView.Model = VoucherSeparatorView.Model(),
-                  onShare: @escaping (UIView) -> Void) {
-        self.onShare = onShare
+    internal init(model: VoucherSeparatorView.Model = VoucherSeparatorView.Model()) {
         self.model = model
         super.init(frame: .zero)
         addVoucherView()
@@ -73,7 +71,10 @@ internal class AbstractVoucherView: UIView {
     }
 
     @objc private func shareVoucher() {
-        onShare(voucherView)
+        guard let image = adyen.snapShot() else { return }
+        let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = voucherView
+        presenter?.present(activityViewController, animated: true, completion: nil)
     }
 
 }

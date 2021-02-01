@@ -10,32 +10,12 @@ import UIKit
 
 internal final class VoucherViewController: UIViewController {
 
-    private let action: DokuIndomaretVoucherAction
-
     private lazy var scrollView = UIScrollView()
 
-    private lazy var containerView: UIView = {
-        DokuIndomaretVoucherView(model: model) { [weak self] in
-            guard let image = $0.adyen.snapShot() else { return }
-            let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
-            activityViewController.popoverPresentationController?.sourceView = $0
-            self?.present(activityViewController, animated: true, completion: nil)
-        }
-    }()
+    private let voucherView: UIView
 
-    private lazy var model = {
-        DokuIndomaretVoucherView.Model(title: "Amount",
-                                       subtitle: "IDR 700.000,00",
-                                       code: "ADY551915",
-                                       expirationTitle: "Expiration",
-                                       expirationValue: "17/04/2020",
-                                       emailTitle: "E-mail",
-                                       emailValue: "joel.vanbodegraven@adyen.com",
-                                       voucherSeparator: .init(separatorTitle: "Payment code"))
-    }()
-
-    internal init(action: DokuIndomaretVoucherAction) {
-        self.action = action
+    internal init(voucherView: UIView) {
+        self.voucherView = voucherView
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -59,10 +39,10 @@ internal final class VoucherViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.adyen.anchore(inside: guid)
 
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.addSubview(containerView)
-        containerView.adyen.anchore(inside: scrollView)
-        containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        voucherView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(voucherView)
+        voucherView.adyen.anchore(inside: scrollView)
+        voucherView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
     }
 
     /// :nodoc:
@@ -70,9 +50,9 @@ internal final class VoucherViewController: UIViewController {
         get {
             let targetSize = CGSize(width: UIScreen.main.bounds.width,
                                     height: UIView.layoutFittingCompressedSize.height)
-            return containerView.systemLayoutSizeFitting(targetSize,
-                                                         withHorizontalFittingPriority: .required,
-                                                         verticalFittingPriority: .fittingSizeLevel)
+            return voucherView.systemLayoutSizeFitting(targetSize,
+                                                       withHorizontalFittingPriority: .required,
+                                                       verticalFittingPriority: .fittingSizeLevel)
         }
 
         // swiftlint:disable:next unused_setter_value

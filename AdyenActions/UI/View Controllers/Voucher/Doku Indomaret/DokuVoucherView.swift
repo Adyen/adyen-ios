@@ -7,7 +7,17 @@
 import Adyen
 import UIKit
 
-extension DokuIndomaretVoucherView {
+extension DokuVoucherView {
+
+    internal struct VoucherField {
+
+        internal var identifier: String
+
+        internal var title: String
+
+        internal var value: String
+    }
+
     internal struct Model {
 
         internal var title: String?
@@ -16,70 +26,72 @@ extension DokuIndomaretVoucherView {
 
         internal var code: String
 
-        internal var expirationTitle: String
+        internal var fields: [VoucherField]
 
-        internal var expirationValue: String
+        internal var logoUrl: URL
 
-        internal var emailTitle: String
+        internal var style = Style()
 
-        internal var emailValue: String
+        internal struct Style {
 
-        internal var titleStyle = TextStyle(font: .systemFont(ofSize: 13),
-                                            color: UIColor(hex: 0x00112C),
-                                            textAlignment: .center)
+            internal var title = TextStyle(font: .systemFont(ofSize: 13),
+                                           color: UIColor.Adyen.componentLabel,
+                                           textAlignment: .center)
 
-        internal var subtitleStyle = TextStyle(font: .boldSystemFont(ofSize: 16),
-                                               color: UIColor(hex: 0x00112C),
-                                               textAlignment: .center)
+            internal var subtitle = TextStyle(font: .boldSystemFont(ofSize: 16),
+                                              color: UIColor.Adyen.componentLabel,
+                                              textAlignment: .center)
 
-        internal var codeTextStyle = TextStyle(font: .boldSystemFont(ofSize: 24),
-                                               color: UIColor(hex: 0x00112C),
-                                               textAlignment: .center)
+            internal var codeText = TextStyle(font: .boldSystemFont(ofSize: 24),
+                                              color: UIColor.Adyen.componentLabel,
+                                              textAlignment: .center)
 
-        internal var valueTextStyle = TextStyle(font: .boldSystemFont(ofSize: 13),
-                                                color: UIColor(hex: 0x00112C),
-                                                textAlignment: .center)
+            internal var fieldValueText = TextStyle(font: .boldSystemFont(ofSize: 13),
+                                                    color: UIColor.Adyen.componentLabel,
+                                                    textAlignment: .center)
+        }
 
         internal var voucherSeparator: VoucherSeparatorView.Model
     }
 }
 
-internal final class DokuIndomaretVoucherView: AbstractVoucherView {
+internal final class DokuVoucherView: AbstractVoucherView {
 
     private lazy var titleLabel: UILabel = {
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "titleLabel")
 
-        return createLabel(with: model.titleStyle, text: model.title, identifier: identifier)
+        return createLabel(with: model.style.title, text: model.title, identifier: identifier)
     }()
 
     private lazy var subtitleLabel: UILabel = {
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "subtitleLabel")
 
-        return createLabel(with: model.subtitleStyle, text: model.subtitle, identifier: identifier)
+        return createLabel(with: model.style.subtitle, text: model.subtitle, identifier: identifier)
     }()
 
     private let model: Model
 
-    internal init(model: Model, onShare: @escaping (UIView) -> Void) {
+    internal init(model: Model) {
         self.model = model
-        super.init(onShare: onShare)
+        super.init(model: model.voucherSeparator)
     }
 
     private lazy var logoView: NetworkImageView = {
         let imageView = NetworkImageView()
+        imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.preservesSuperviewLayoutMargins = true
-        imageView.widthAnchor.constraint(greaterThanOrEqualToConstant: 64).isActive = true
-        imageView.heightAnchor.constraint(greaterThanOrEqualToConstant: 64).isActive = true
+        imageView.widthAnchor.constraint(lessThanOrEqualToConstant: 100).isActive = true
+        imageView.heightAnchor.constraint(lessThanOrEqualToConstant: 100).isActive = true
 
         return imageView
     }()
 
     override internal func createTopView() -> UIView {
-        logoView.imageURL = URL(string: "https://checkoutshopper-test.adyen.com/checkoutshopper/images/logos/small/doku@3x.png")
+        logoView.imageURL = model.logoUrl
         let stackView = UIStackView(arrangedSubviews: [logoView, titleLabel, subtitleLabel])
         stackView.spacing = 8
-        stackView.distribution = .fillProportionally
+        stackView.distribution = .equalSpacing
         stackView.axis = .vertical
         stackView.alignment = .center
 
@@ -87,10 +99,11 @@ internal final class DokuIndomaretVoucherView: AbstractVoucherView {
     }
 
     override internal func createBottomView() -> UIView {
-        let codeLabel = CopyLabelView(text: model.code, style: model.codeTextStyle)
-        let expirationView = createKeyValueView(key: model.expirationTitle, value: model.expirationValue, identifier: "expiration")
-        let emailView = createKeyValueView(key: model.emailTitle, value: model.emailValue, identifier: "email")
-        let stackView = UIStackView(arrangedSubviews: [codeLabel, createSeparator(), expirationView, createSeparator(), emailView])
+        let codeLabel = CopyLabelView(text: model.code, style: model.style.codeText)
+        let views = [codeLabel] + model.fields.flatMap {
+            [createSeparator(), createKeyValueView(key: $0.title, value: $0.value, identifier: $0.identifier)]
+        }
+        let stackView = UIStackView(arrangedSubviews: views)
         stackView.spacing = 16
         stackView.distribution = .fillProportionally
         stackView.axis = .vertical
@@ -112,8 +125,8 @@ internal final class DokuIndomaretVoucherView: AbstractVoucherView {
     }
 
     private func createKeyValueView(key: String, value: String, identifier: String) -> UIView {
-        let keyLabel = createLabel(with: model.titleStyle, text: key, identifier: identifier + "KeyLabel")
-        let valueLabel = createLabel(with: model.valueTextStyle, text: value, identifier: identifier + "ValueLabel")
+        let keyLabel = createLabel(with: model.style.title, text: key, identifier: identifier + "KeyLabel")
+        let valueLabel = createLabel(with: model.style.fieldValueText, text: value, identifier: identifier + "ValueLabel")
 
         keyLabel.translatesAutoresizingMaskIntoConstraints = false
         valueLabel.translatesAutoresizingMaskIntoConstraints = false

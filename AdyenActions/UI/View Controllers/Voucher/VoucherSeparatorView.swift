@@ -14,7 +14,7 @@ extension VoucherSeparatorView {
         internal var separatorTitle: String? = "Payment code"
 
         internal var separatorTitlestyle = TextStyle(font: .systemFont(ofSize: 13),
-                                                     color: UIColor(hex: 0x00112C),
+                                                     color: UIColor.Adyen.componentLabel,
                                                      textAlignment: .center)
     }
 }
@@ -117,7 +117,6 @@ internal final class VoucherSeparatorView: UIView {
         separatorTextLayer.font = style.font
         separatorTextLayer.fontSize = style.font.pointSize
         separatorTextLayer.foregroundColor = style.color.cgColor
-        separatorTextLayer.backgroundColor = UIColor.Adyen.componentBackground.cgColor
         separatorTextLayer.alignmentMode = style.textAlignment.adyen.caAlignmentMode
         separatorTextLayer.string = text
         separatorTextLayer.contentsScale = UIScreen.main.scale
@@ -157,8 +156,8 @@ internal final class VoucherSeparatorView: UIView {
 
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = path.cgPath
-        shapeLayer.fillColor = UIColor(hex: 0xE6E9EB).cgColor
-        shapeLayer.strokeColor = UIColor(hex: 0xF8F9F9).cgColor
+        shapeLayer.fillColor = UIColor(hex: 0xFBFBFB).cgColor
+        shapeLayer.strokeColor = UIColor(hex: 0xE6E9EB).cgColor
         shapeLayer.lineWidth = archLineWidth
         shapeLayer.contentsScale = UIScreen.main.scale
 
