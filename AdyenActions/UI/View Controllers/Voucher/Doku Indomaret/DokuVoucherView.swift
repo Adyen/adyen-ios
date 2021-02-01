@@ -81,8 +81,8 @@ internal final class DokuVoucherView: AbstractVoucherView {
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.preservesSuperviewLayoutMargins = true
-        imageView.widthAnchor.constraint(lessThanOrEqualToConstant: 100).isActive = true
-        imageView.heightAnchor.constraint(lessThanOrEqualToConstant: 100).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 80).isActive = true
 
         return imageView
     }()
