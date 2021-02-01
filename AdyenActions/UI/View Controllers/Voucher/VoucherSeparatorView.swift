@@ -152,8 +152,6 @@ internal final class VoucherSeparatorView: UIView {
                                 endAngle: (CGFloat.pi * 3) / 2,
                                 clockwise: clockwise)
 
-        path.close()
-
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = path.cgPath
         shapeLayer.fillColor = UIColor(hex: 0xFBFBFB).cgColor

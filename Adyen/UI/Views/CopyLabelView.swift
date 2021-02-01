@@ -45,17 +45,25 @@ public final class CopyLabelView: UIView {
     @objc private func handleLongPress() {
         guard let superview = superview else { return }
         let menuController = UIMenuController.shared
-        let copyItem = UIMenuItem(title: "Copied on clipboard", action: #selector(handleCopy))
+        let copyItem = UIMenuItem(title: "Copy", action: #selector(handleCopy))
         menuController.menuItems = [copyItem]
         menuController.setTargetRect(frame, in: superview)
         menuController.setMenuVisible(true, animated: true)
-
-        handleCopy()
+        becomeFirstResponder()
+        backgroundColor = UIColor(hex: 0xF3F6F9)
     }
+
+    override public var canBecomeFirstResponder: Bool { true }
 
     @objc private func handleCopy() {
         let pastBoard = UIPasteboard.general
         pastBoard.string = text
+        backgroundColor = .clear
+    }
+
+    @discardableResult
+    override public func becomeFirstResponder() -> Bool {
+        super.becomeFirstResponder()
     }
 
 }
