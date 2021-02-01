@@ -20,15 +20,15 @@ extension DokuVoucherView {
 
     internal struct Model {
 
-        internal var title: String?
+        internal let title: String
 
-        internal var subtitle: String?
+        internal let subtitle: String?
 
-        internal var code: String
+        internal let code: String
 
-        internal var fields: [VoucherField]
+        internal let fields: [VoucherField]
 
-        internal var logoUrl: URL
+        internal let logoUrl: URL
 
         internal var style = Style()
 
@@ -58,15 +58,11 @@ extension DokuVoucherView {
 internal final class DokuVoucherView: AbstractVoucherView {
 
     private lazy var titleLabel: UILabel = {
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "titleLabel")
-
-        return createLabel(with: model.style.title, text: model.title, identifier: identifier)
+        createLabel(with: model.style.title, text: model.title, identifier: "titleLabel")
     }()
 
     private lazy var subtitleLabel: UILabel = {
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "subtitleLabel")
-
-        return createLabel(with: model.style.subtitle, text: model.subtitle, identifier: identifier)
+        createLabel(with: model.style.subtitle, text: model.subtitle, identifier: "subtitleLabel")
     }()
 
     private let model: Model
@@ -158,7 +154,7 @@ internal final class DokuVoucherView: AbstractVoucherView {
         label.backgroundColor = style.backgroundColor
         label.text = text
         label.isAccessibilityElement = false
-        label.accessibilityIdentifier = identifier
+        label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.dokuVoucher", postfix: identifier)
 
         return label
     }

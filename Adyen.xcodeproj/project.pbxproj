@@ -413,7 +413,7 @@
 		F97C837925BF047600D7F85C /* DokuPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C837825BF047600D7F85C /* DokuPaymentMethod.swift */; };
 		F97C838425BF053F00D7F85C /* DokuComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C838325BF053F00D7F85C /* DokuComponent.swift */; };
 		F97C839825BF05AB00D7F85C /* DokuWalletDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C839725BF05AB00D7F85C /* DokuWalletDetails.swift */; };
-		F97C83F725BF0C2800D7F85C /* DokuWalletComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C83F625BF0C2800D7F85C /* DokuWalletComponentTests.swift */; };
+		F97C83F725BF0C2800D7F85C /* DokuComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C83F625BF0C2800D7F85C /* DokuComponentTests.swift */; };
 		F97C84CD25C1761900D7F85C /* VoucherAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C84CC25C1761900D7F85C /* VoucherAction.swift */; };
 		F97C84D925C178E900D7F85C /* VoucherComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C84D825C178E900D7F85C /* VoucherComponent.swift */; };
 		F97C850125C17CCD00D7F85C /* VoucherViewControllerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C850025C17CCD00D7F85C /* VoucherViewControllerProvider.swift */; };
@@ -456,6 +456,7 @@
 		F9B8C49423FC32FB00C4D0FB /* FormItemViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B8C49323FC32FB00C4D0FB /* FormItemViewBuilder.swift */; };
 		F9B8C50C23FE962D00C4D0FB /* FormPhoneNumberItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B8C50B23FE962D00C4D0FB /* FormPhoneNumberItem.swift */; };
 		F9B8C50E23FE973500C4D0FB /* FormPhoneNumberItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B8C50D23FE973500C4D0FB /* FormPhoneNumberItemView.swift */; };
+		F9B997A425C8554F00891084 /* DokuVoucherUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B997A325C8554F00891084 /* DokuVoucherUITests.swift */; };
 		F9BA21BF246D36AC00D36A63 /* LazyOptionalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BA21BE246D36AC00D36A63 /* LazyOptionalTests.swift */; };
 		F9BA21C2246E82EE00D36A63 /* SizeUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BA21C1246E82EE00D36A63 /* SizeUtilities.swift */; };
 		F9BA21C62474113500D36A63 /* AmountFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BA21C52474113500D36A63 /* AmountFormatterTests.swift */; };
@@ -1103,7 +1104,7 @@
 		F97C837825BF047600D7F85C /* DokuPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuPaymentMethod.swift; sourceTree = "<group>"; };
 		F97C838325BF053F00D7F85C /* DokuComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuComponent.swift; sourceTree = "<group>"; };
 		F97C839725BF05AB00D7F85C /* DokuWalletDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuWalletDetails.swift; sourceTree = "<group>"; };
-		F97C83F625BF0C2800D7F85C /* DokuWalletComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuWalletComponentTests.swift; sourceTree = "<group>"; };
+		F97C83F625BF0C2800D7F85C /* DokuComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuComponentTests.swift; sourceTree = "<group>"; };
 		F97C84CC25C1761900D7F85C /* VoucherAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherAction.swift; sourceTree = "<group>"; };
 		F97C84D825C178E900D7F85C /* VoucherComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherComponent.swift; sourceTree = "<group>"; };
 		F97C850025C17CCD00D7F85C /* VoucherViewControllerProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherViewControllerProvider.swift; sourceTree = "<group>"; };
@@ -1147,6 +1148,7 @@
 		F9B8C49323FC32FB00C4D0FB /* FormItemViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormItemViewBuilder.swift; sourceTree = "<group>"; };
 		F9B8C50B23FE962D00C4D0FB /* FormPhoneNumberItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPhoneNumberItem.swift; sourceTree = "<group>"; };
 		F9B8C50D23FE973500C4D0FB /* FormPhoneNumberItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPhoneNumberItemView.swift; sourceTree = "<group>"; };
+		F9B997A325C8554F00891084 /* DokuVoucherUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuVoucherUITests.swift; sourceTree = "<group>"; };
 		F9BA21BE246D36AC00D36A63 /* LazyOptionalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyOptionalTests.swift; sourceTree = "<group>"; };
 		F9BA21C1246E82EE00D36A63 /* SizeUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeUtilities.swift; sourceTree = "<group>"; };
 		F9BA21C52474113500D36A63 /* AmountFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountFormatterTests.swift; sourceTree = "<group>"; };
@@ -1948,7 +1950,8 @@
 		E97B9717229D533B00505476 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				F97C83D825BF0BDA00D7F85C /* Doku Wallet */,
+				F9B997A225C8551800891084 /* Doku Voucher */,
+				F97C83D825BF0BDA00D7F85C /* Doku */,
 				E72521EC25517E8F00533E35 /* BLIK Component */,
 				F9639B4E24E29D080073F38A /* Await Component */,
 				F9D644E524D40C5F0059CBE3 /* MB Way */,
@@ -2677,12 +2680,12 @@
 			path = Doku;
 			sourceTree = "<group>";
 		};
-		F97C83D825BF0BDA00D7F85C /* Doku Wallet */ = {
+		F97C83D825BF0BDA00D7F85C /* Doku */ = {
 			isa = PBXGroup;
 			children = (
-				F97C83F625BF0C2800D7F85C /* DokuWalletComponentTests.swift */,
+				F97C83F625BF0C2800D7F85C /* DokuComponentTests.swift */,
 			);
-			path = "Doku Wallet";
+			path = Doku;
 			sourceTree = "<group>";
 		};
 		F97C84D725C178C400D7F85C /* Voucher */ = {
@@ -2805,6 +2808,14 @@
 				F9B8C50D23FE973500C4D0FB /* FormPhoneNumberItemView.swift */,
 			);
 			path = "Phone Number";
+			sourceTree = "<group>";
+		};
+		F9B997A225C8551800891084 /* Doku Voucher */ = {
+			isa = PBXGroup;
+			children = (
+				F9B997A325C8554F00891084 /* DokuVoucherUITests.swift */,
+			);
+			path = "Doku Voucher";
 			sourceTree = "<group>";
 		};
 		F9BA21C0246D398200D36A63 /* Utilities */ = {
@@ -3792,7 +3803,7 @@
 				F957AA462552C3D20099AD73 /* ThreeDS2FingerprintSubmitterTests.swift in Sources */,
 				E216D3C7221AF5650013CBCF /* IBANFormatterTests.swift in Sources */,
 				F9639B5024E29D2D0073F38A /* AwaitComponentTests.swift in Sources */,
-				F97C83F725BF0C2800D7F85C /* DokuWalletComponentTests.swift in Sources */,
+				F97C83F725BF0C2800D7F85C /* DokuComponentTests.swift in Sources */,
 				F924C072246BEEF0006DDAB8 /* CardDetailsTests.swift in Sources */,
 				F96A25472372C39F007DBF0B /* ApplePayDetailsTest.swift in Sources */,
 				F9AC61C424375F510062A00D /* PresentingViewControllerMock.swift in Sources */,
@@ -3817,6 +3828,7 @@
 				E767F4DC25A603A50077029E /* ModalToolbarTests.swift in Sources */,
 				E7D3ED84243B667500E73F59 /* FormCardNumberItemViewTests.swift in Sources */,
 				F957AAA62552FDC10099AD73 /* ThreeDS2CompactActionHandlerTests.swift in Sources */,
+				F9B997A425C8554F00891084 /* DokuVoucherUITests.swift in Sources */,
 				E9E3DAD3221EEFF700697074 /* CardExpiryDateValidatorTests.swift in Sources */,
 				E7D5311C2447065B000046B4 /* PreselectedPaymentComponentTests.swift in Sources */,
 				F99F08662383F2D300EBB948 /* FormTextItemViewDelegateMock.swift in Sources */,

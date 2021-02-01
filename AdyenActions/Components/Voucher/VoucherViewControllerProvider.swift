@@ -57,7 +57,7 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         let expiration = dateFormatter.string(from: action.expiresAt)
         return DokuVoucherView.VoucherField(identifier: "expiration",
-                                            title: "Expiration",
+                                            title: "Expiration Date",
                                             value: expiration)
     }
 
