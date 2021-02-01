@@ -415,7 +415,7 @@
 		F97C84D925C178E900D7F85C /* VoucherComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C84D825C178E900D7F85C /* VoucherComponent.swift */; };
 		F97C850125C17CCD00D7F85C /* VoucherViewControllerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C850025C17CCD00D7F85C /* VoucherViewControllerProvider.swift */; };
 		F97C851625C192D000D7F85C /* VoucherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C851525C192D000D7F85C /* VoucherViewController.swift */; };
-		F97C853D25C1ABA400D7F85C /* DokuIndomaretVoucherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C853C25C1ABA400D7F85C /* DokuIndomaretVoucherView.swift */; };
+		F97C853D25C1ABA400D7F85C /* DokuVoucherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C853C25C1ABA400D7F85C /* DokuVoucherView.swift */; };
 		F97C855A25C1ABD700D7F85C /* BaseVoucherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C855925C1ABD700D7F85C /* BaseVoucherView.swift */; };
 		F97C857725C1D5BA00D7F85C /* UIViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C857625C1D5BA00D7F85C /* UIViewHelpers.swift */; };
 		F97CCD3A2435E35E00BC560A /* UIViewControllerHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97CCD392435E35E00BC560A /* UIViewControllerHelpers.swift */; };
@@ -1104,7 +1104,7 @@
 		F97C84D825C178E900D7F85C /* VoucherComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherComponent.swift; sourceTree = "<group>"; };
 		F97C850025C17CCD00D7F85C /* VoucherViewControllerProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherViewControllerProvider.swift; sourceTree = "<group>"; };
 		F97C851525C192D000D7F85C /* VoucherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherViewController.swift; sourceTree = "<group>"; };
-		F97C853C25C1ABA400D7F85C /* DokuIndomaretVoucherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuIndomaretVoucherView.swift; sourceTree = "<group>"; };
+		F97C853C25C1ABA400D7F85C /* DokuVoucherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuVoucherView.swift; sourceTree = "<group>"; };
 		F97C855925C1ABD700D7F85C /* BaseVoucherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseVoucherView.swift; sourceTree = "<group>"; };
 		F97C857625C1D5BA00D7F85C /* UIViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewHelpers.swift; sourceTree = "<group>"; };
 		F97CCD392435E35E00BC560A /* UIViewControllerHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerHelpers.swift; sourceTree = "<group>"; };
@@ -2703,7 +2703,7 @@
 		F97C853B25C1AB7E00D7F85C /* Doku Indomaret */ = {
 			isa = PBXGroup;
 			children = (
-				F97C853C25C1ABA400D7F85C /* DokuIndomaretVoucherView.swift */,
+				F97C853C25C1ABA400D7F85C /* DokuVoucherView.swift */,
 			);
 			path = "Doku Indomaret";
 			sourceTree = "<group>";
@@ -3938,7 +3938,7 @@
 				F917615E25A30B6400D653BE /* AnyADYTransaction.swift in Sources */,
 				F97C855A25C1ABD700D7F85C /* BaseVoucherView.swift in Sources */,
 				F97C84CD25C1761900D7F85C /* VoucherAction.swift in Sources */,
-				F97C853D25C1ABA400D7F85C /* DokuIndomaretVoucherView.swift in Sources */,
+				F97C853D25C1ABA400D7F85C /* DokuVoucherView.swift in Sources */,
 				F9175FB72594996000D653BE /* ThreeDS2ChallengeAction.swift in Sources */,
 				F917615C25A30B6400D653BE /* AnyChallengeResult.swift in Sources */,
 				F9175FFA259499D500D653BE /* AwaitViewController.swift in Sources */,

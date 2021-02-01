@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -14,13 +14,22 @@ extension UIColor {
 
         /// :nodoc:
         public static var dimmBackground: UIColor {
-            return componentSeparator
+            componentSeparator
         }
 
         /// :nodoc:
         public static var componentBackground: UIColor {
             if #available(iOS 13.0, *) {
                 return .systemBackground
+            } else {
+                return .white
+            }
+        }
+
+        /// :nodoc:
+        public static var secondaryComponentBackground: UIColor {
+            if #available(iOS 13.0, *) {
+                return .secondarySystemBackground
             } else {
                 return .white
             }

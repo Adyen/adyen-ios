@@ -10,13 +10,17 @@ import Foundation
 /// Indicates the Voucher payment methods.
 public enum VoucherPaymentMethod: String, Decodable {
     case dokuIndomaret = "doku_indomaret"
+    case dokuAlfamart = "doku_alfamart"
 }
 
 /// Describes any Voucher action.
 public enum VoucherAction: Decodable {
 
     /// Indicates Doku Indomaret Voucher type.
-    case dokuIndomaret(DokuIndomaretVoucherAction)
+    case dokuIndomaret(DokuVoucherAction)
+
+    /// Indicates Doku Alfamart Voucher type.
+    case dokuAlfamart(DokuVoucherAction)
 
     /// :nodoc:
     public init(from decoder: Decoder) throws {
@@ -24,8 +28,8 @@ public enum VoucherAction: Decodable {
         let type = try container.decode(VoucherPaymentMethod.self, forKey: .paymentMethodType)
 
         switch type {
-        case .dokuIndomaret:
-            self = .dokuIndomaret(try DokuIndomaretVoucherAction(from: decoder))
+        case .dokuIndomaret, .dokuAlfamart:
+            self = .dokuIndomaret(try DokuVoucherAction(from: decoder))
         }
     }
 
@@ -36,7 +40,7 @@ public enum VoucherAction: Decodable {
 }
 
 /// Describes an action in which a voucher is presented to the shopper.
-public struct DokuIndomaretVoucherAction: Decodable {
+public struct DokuVoucherAction: Decodable {
 
     /// The `paymentMethodType` for which the voucher is presented.
     public let paymentMethodType: VoucherPaymentMethod
