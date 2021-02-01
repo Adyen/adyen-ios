@@ -1,5 +1,5 @@
 //
-//  DokuWalletComponentTests.swift
+//  DokuComponentTests.swift
 //  AdyenUIKitTests
 //
 //  Created by Mohamed Eldoheiri on 1/25/21.
@@ -10,7 +10,7 @@
 @testable import AdyenComponents
 import XCTest
 
-class DokuWalletComponentTests: XCTestCase {
+class DokuComponentTests: XCTestCase {
 
     lazy var method = DokuPaymentMethod(type: "test_type", name: "test_name")
     let payment = Payment(amount: Payment.Amount(value: 2, currencyCode: "IDR"), countryCode: "ID")
