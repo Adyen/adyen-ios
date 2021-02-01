@@ -27,10 +27,6 @@ internal final class VoucherSeparatorView: UIView {
 
     private lazy var separatorTextLayer = CATextLayer()
 
-    private lazy var leftHalfCircleLayer = CALayer()
-
-    private lazy var rightHalfCircleLayer = CALayer()
-
     private let model: Model
 
     internal init(model: Model) {
@@ -44,13 +40,13 @@ internal final class VoucherSeparatorView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private var rightHalfCircleLayerFrame: CGRect {
+    internal var leftCutoutFrame: CGRect {
         CGRect(origin: CGPoint(x: 0,
                                y: bounds.height / 2 - arcLayerSize.height / 2),
                size: arcLayerSize)
     }
 
-    private var leftHalfCircleLayerFrame: CGRect {
+    internal var rightCutoutFrame: CGRect {
         CGRect(origin: CGPoint(x: bounds.size.width - arcLayerSize.width,
                                y: bounds.height / 2 - arcLayerSize.height / 2),
                size: arcLayerSize)
@@ -87,8 +83,6 @@ internal final class VoucherSeparatorView: UIView {
 
     override internal func layoutSubviews() {
         super.layoutSubviews()
-        rightHalfCircleLayer.frame = rightHalfCircleLayerFrame
-        leftHalfCircleLayer.frame = leftHalfCircleLayerFrame
 
         rightSeparatorLayer.frame = rightSeparatorLayerFrame
         leftSeparatorLayer.frame = leftSeparatorLayerFrame
@@ -96,8 +90,6 @@ internal final class VoucherSeparatorView: UIView {
     }
 
     private func buildUI() {
-        buildRightHalfCircle()
-        buildLeftHalfCircle()
         buildSeparatorLines()
     }
 
@@ -131,35 +123,6 @@ internal final class VoucherSeparatorView: UIView {
 
     private var separatorTextLayerWidth: CGFloat {
         bounds.size.width - halfSeparatorBreadth * 2 - arcLayerSize.width * 2
-    }
-
-    private func buildRightHalfCircle() {
-        let center = CGPoint(x: 0, y: arcLayerSize.height / 2)
-        rightHalfCircleLayer = buildHalfCirclLayer(clockwise: false, center: center)
-        layer.addSublayer(rightHalfCircleLayer)
-    }
-
-    private func buildLeftHalfCircle() {
-        let center = CGPoint(x: arcLayerSize.width, y: arcLayerSize.height / 2)
-        leftHalfCircleLayer = buildHalfCirclLayer(clockwise: true, center: center)
-        layer.addSublayer(leftHalfCircleLayer)
-    }
-
-    private func buildHalfCirclLayer(clockwise: Bool, center: CGPoint) -> CALayer {
-        let path = UIBezierPath(arcCenter: center,
-                                radius: arcSize.width,
-                                startAngle: CGFloat.pi / 2,
-                                endAngle: (CGFloat.pi * 3) / 2,
-                                clockwise: clockwise)
-
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.path = path.cgPath
-        shapeLayer.fillColor = UIColor(hex: 0xFBFBFB).cgColor
-        shapeLayer.strokeColor = UIColor(hex: 0xE6E9EB).cgColor
-        shapeLayer.lineWidth = archLineWidth
-        shapeLayer.contentsScale = UIScreen.main.scale
-
-        return shapeLayer
     }
 
 }

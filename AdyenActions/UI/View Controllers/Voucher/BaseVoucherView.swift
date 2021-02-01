@@ -11,7 +11,7 @@ import UIKit
 
 internal class BaseVoucherView: UIView {
 
-    private lazy var containerLayer = CALayer()
+    private lazy var containerLayer = CAShapeLayer()
 
     private lazy var shadowsLayer = [CALayer]()
 
@@ -60,6 +60,66 @@ internal class BaseVoucherView: UIView {
             $0.frame = shadowLayersFrame
             $0.shadowPath = UIBezierPath(roundedRect: CGRect(origin: .zero, size: containerLayerFrame.size), cornerRadius: 12).cgPath
         }
+
+        drawCutOut()
+    }
+
+    private func drawCutOut() {
+        let cornerRadius: CGFloat = 12
+        let cutoutRadius: CGFloat = 6
+
+        let rightCutoutFrame = separatorView.convert(separatorView.rightCutoutFrame, to: self)
+        let leftCutoutFrame = separatorView.convert(separatorView.leftCutoutFrame, to: self)
+
+        let path = UIBezierPath()
+        path.move(to: CGPoint(x: 0, y: cornerRadius))
+
+        // Top Left corner
+        path.addArc(withCenter: CGPoint(x: cornerRadius, y: cornerRadius),
+                    radius: cornerRadius,
+                    startAngle: .pi,
+                    endAngle: (.pi * 3) / 2,
+                    clockwise: true)
+        // Top border
+        path.addLine(to: CGPoint(x: containerLayerFrame.width - cornerRadius, y: 0))
+
+        // Top right corner
+        path.addArc(withCenter: CGPoint(x: containerLayerFrame.width - cornerRadius, y: cornerRadius),
+                    radius: cornerRadius,
+                    startAngle: (.pi * 3) / 2,
+                    endAngle: 0,
+                    clockwise: true)
+
+        // Right cutout
+        let center = CGPoint(x: containerLayerFrame.width, y: rightCutoutFrame.midY - containerInsets.top)
+        path.addLine(to: CGPoint(x: center.x, y: center.y - cutoutRadius))
+        path.addArc(withCenter: center, radius: cutoutRadius, startAngle: (.pi * 3) / 2, endAngle: .pi * 0.5, clockwise: false)
+        path.addLine(to: CGPoint(x: containerLayerFrame.width, y: containerLayerFrame.height - cornerRadius))
+
+        // Right Bottom corner
+        path.addArc(withCenter: CGPoint(x: containerLayerFrame.width - cornerRadius, y: containerLayerFrame.height - cornerRadius),
+                    radius: cornerRadius,
+                    startAngle: 0,
+                    endAngle: .pi * 0.5,
+                    clockwise: true)
+
+        // Bottom border
+        path.addLine(to: CGPoint(x: cornerRadius, y: containerLayerFrame.height))
+
+        // Bottom left corner
+        path.addArc(withCenter: CGPoint(x: cornerRadius, y: containerLayerFrame.height - cornerRadius),
+                    radius: cornerRadius,
+                    startAngle: .pi * 0.5,
+                    endAngle: .pi,
+                    clockwise: true)
+
+        // Left cutout
+        let center1 = CGPoint(x: 0, y: leftCutoutFrame.midY - containerInsets.top)
+        path.addLine(to: CGPoint(x: center1.x, y: center1.y + cutoutRadius))
+        path.addArc(withCenter: center1, radius: cutoutRadius, startAngle: .pi * 0.5, endAngle: (.pi * 3) / 2, clockwise: false)
+        path.close()
+
+        containerLayer.path = path.cgPath
     }
 
     private func buildUI() {
@@ -83,12 +143,12 @@ internal class BaseVoucherView: UIView {
     }
 
     private func buildContainerLayer() {
-        containerLayer.backgroundColor = UIColor.Adyen.componentBackground.cgColor
-        containerLayer.borderWidth = 1
-        containerLayer.borderColor = UIColor(hex: 0xE6E9EB).cgColor
-        containerLayer.cornerRadius = 12
+        containerLayer.lineWidth = 1
+        containerLayer.strokeColor = UIColor(hex: 0xE6E9EB).cgColor
+        containerLayer.fillColor = UIColor.Adyen.componentBackground.cgColor
         containerLayer.masksToBounds = true
         containerLayer.contentsScale = UIScreen.main.scale
+
         buildShadowLayers()
         layer.addSublayer(containerLayer)
     }
