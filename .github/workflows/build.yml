@@ -77,7 +77,6 @@ jobs:
     - name: Install Dependencies
       run: |
         brew install sonar-scanner
-        brew install swiftlint
         gem install slather
 
     - name: Check Dependencies
