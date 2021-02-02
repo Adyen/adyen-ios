@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Adyen3DS2",
+        "repositoryURL": "https://github.com/Adyen/adyen-3ds2-ios",
+        "state": {
+          "branch": null,
+          "revision": "cb61714b902fb2734d5c879d686e0f102b0e7e4e",
+          "version": "2.2.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
