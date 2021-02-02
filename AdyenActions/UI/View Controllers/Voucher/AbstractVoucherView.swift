@@ -4,9 +4,12 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import UIKit
 
-internal class AbstractVoucherView: UIView {
+internal class AbstractVoucherView: UIView, Localizable {
+
+    internal var localizationParameters: LocalizationParameters?
 
     internal weak var presenter: UIViewController?
 
@@ -71,7 +74,7 @@ internal class AbstractVoucherView: UIView {
     }
 
     @objc private func shareVoucher() {
-        guard let image = adyen.snapShot() else { return }
+        guard let image = voucherView.adyen.snapShot() else { return }
         let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = voucherView
         presenter?.present(activityViewController, animated: true, completion: nil)

@@ -52,3 +52,8 @@
 "adyen.confirmPurchase" = "Confirmer l'achat";
 "adyen.lastName" = "Nom de famille";
 "adyen.firstName" = "Prénom";
+"adyen.voucher.merchantName" = "Marchand";
+"adyen.voucher.expirationDate" = "Date d'expiration";
+"adyen.voucher.paymentReferenceLabel" = "Référence du paiement";
+"adyen.voucher.shopperName" = "Nom de l'acheteur";
+"adyen.button.copy" = "Copier";

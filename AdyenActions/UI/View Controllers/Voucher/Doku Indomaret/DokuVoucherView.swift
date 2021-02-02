@@ -96,6 +96,7 @@ internal final class DokuVoucherView: AbstractVoucherView {
 
     override internal func createBottomView() -> UIView {
         let codeLabel = CopyLabelView(text: model.code, style: model.style.codeText)
+        codeLabel.localizationParameters = localizationParameters
         let views = [codeLabel] + model.fields.flatMap {
             [createSeparator(), createKeyValueView(key: $0.title, value: $0.value, identifier: $0.identifier)]
         }

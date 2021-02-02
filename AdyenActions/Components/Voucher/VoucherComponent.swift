@@ -59,7 +59,8 @@ public final class VoucherComponent: AnyVoucherActionHandler {
     public func handle(_ action: VoucherAction) {
         Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, environment: environment)
 
-        let viewControllerProvider = voucherViewControllerProvider ?? VoucherViewControllerProvider()
+        var viewControllerProvider = voucherViewControllerProvider ?? VoucherViewControllerProvider()
+        viewControllerProvider.localizationParameters = localizationParameters
 
         let viewController = viewControllerProvider.provide(with: action)
 

@@ -52,3 +52,8 @@
 "adyen.confirmPurchase" = "确认购买";
 "adyen.lastName" = "姓氏";
 "adyen.firstName" = "名字";
+"adyen.voucher.merchantName" = "商户";
+"adyen.voucher.expirationDate" = "有效期";
+"adyen.voucher.paymentReferenceLabel" = "交易号";
+"adyen.voucher.shopperName" = "顾客姓名";
+"adyen.button.copy" = "复制";
