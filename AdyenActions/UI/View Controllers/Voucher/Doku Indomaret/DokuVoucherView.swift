@@ -142,6 +142,8 @@ internal final class DokuVoucherView: AbstractVoucherView {
                                                                           left: 16,
                                                                           bottom: 0,
                                                                           right: -16))
+        valueLabel.widthAnchor.constraint(lessThanOrEqualTo: containerView.widthAnchor,
+                                          multiplier: 0.7).isActive = true
 
         return containerView
     }
@@ -156,6 +158,7 @@ internal final class DokuVoucherView: AbstractVoucherView {
         label.text = text
         label.isAccessibilityElement = false
         label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.dokuVoucher", postfix: identifier)
+        label.lineBreakMode = .byTruncatingTail
 
         return label
     }

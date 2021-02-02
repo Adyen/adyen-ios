@@ -13,6 +13,17 @@ internal class AbstractVoucherView: UIView, Localizable {
 
     internal weak var presenter: UIViewController?
 
+    /// Ugly hack to work around the following bug
+    /// https://stackoverflow.com/questions/59413850/uiactivityviewcontroller-dismissing-current-view-controller-after-sharing-file
+    private lazy var fakeViewController: UIViewController = {
+        let viewController = UIViewController()
+        presenter?.addChild(viewController)
+        presenter?.view.insertSubview(viewController.view, at: 0)
+        viewController.view.frame = .zero
+        viewController.didMove(toParent: presenter)
+        return viewController
+    }()
+
     private lazy var voucherView: BaseVoucherView = {
         let topView = createTopView()
         let bottomView = createBottomView()
@@ -77,7 +88,7 @@ internal class AbstractVoucherView: UIView, Localizable {
         guard let image = voucherView.adyen.snapShot() else { return }
         let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = voucherView
-        presenter?.present(activityViewController, animated: true, completion: nil)
+        fakeViewController.present(activityViewController, animated: true, completion: nil)
     }
 
 }
