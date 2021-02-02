@@ -6,7 +6,9 @@
 
 import UIKit
 
-public final class CopyLabelView: UIView {
+public final class CopyLabelView: UIView, Localizable {
+
+    public var localizationParameters: LocalizationParameters?
 
     private let style: TextStyle
 
@@ -33,8 +35,8 @@ public final class CopyLabelView: UIView {
         addSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.adyen.anchore(inside: self)
-        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
-        addGestureRecognizer(longPressGesture)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        addGestureRecognizer(tapGesture)
     }
 
     @available(*, unavailable)
@@ -42,14 +44,14 @@ public final class CopyLabelView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc private func handleLongPress() {
+    @objc private func handleTap() {
         guard let superview = superview else { return }
+        becomeFirstResponder()
         let menuController = UIMenuController.shared
-        let copyItem = UIMenuItem(title: "Copy", action: #selector(handleCopy))
+        let copyItem = UIMenuItem(title: ADYLocalizedString("adyen.button.copy", localizationParameters), action: #selector(handleCopy))
         menuController.menuItems = [copyItem]
         menuController.setTargetRect(frame, in: superview)
         menuController.setMenuVisible(true, animated: true)
-        becomeFirstResponder()
         backgroundColor = UIColor(hex: 0xF3F6F9)
     }
 

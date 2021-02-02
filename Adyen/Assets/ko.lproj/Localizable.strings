@@ -52,3 +52,8 @@
 "adyen.confirmPurchase" = "구매 확인";
 "adyen.lastName" = "성";
 "adyen.firstName" = "이름";
+"adyen.voucher.merchantName" = "가맹점";
+"adyen.voucher.expirationDate" = "만료일";
+"adyen.voucher.paymentReferenceLabel" = "결제 참조번호";
+"adyen.voucher.shopperName" = "구매자 이름";
+"adyen.button.copy" = "복사";

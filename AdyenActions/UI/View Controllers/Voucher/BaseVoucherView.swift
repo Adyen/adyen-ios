@@ -11,7 +11,7 @@ import UIKit
 
 internal class BaseVoucherView: UIView {
 
-    private lazy var containerLayer = CAShapeLayer()
+    private lazy var containerLayer = VoucherCardLayer()
 
     private lazy var shadowsLayer = [CALayer]()
 
@@ -61,65 +61,21 @@ internal class BaseVoucherView: UIView {
             $0.shadowPath = UIBezierPath(roundedRect: CGRect(origin: .zero, size: containerLayerFrame.size), cornerRadius: 12).cgPath
         }
 
-        drawCutOut()
+        drawCardCutOut()
+        updateLayersStyle()
     }
 
-    private func drawCutOut() {
-        let cornerRadius: CGFloat = 12
-        let cutoutRadius: CGFloat = 6
+    private func updateLayersStyle() {
+        containerLayer.strokeColor = UIColor(hex: 0xE6E9EB).cgColor
+        containerLayer.fillColor = UIColor.Adyen.componentBackground.cgColor
+    }
 
+    private var cornerRadius: CGFloat = 12
+    private var cutoutRadius: CGFloat = 6
+
+    private func drawCardCutOut() {
         let rightCutoutFrame = separatorView.convert(separatorView.rightCutoutFrame, to: self)
-        let leftCutoutFrame = separatorView.convert(separatorView.leftCutoutFrame, to: self)
-
-        let path = UIBezierPath()
-        path.move(to: CGPoint(x: 0, y: cornerRadius))
-
-        // Top Left corner
-        path.addArc(withCenter: CGPoint(x: cornerRadius, y: cornerRadius),
-                    radius: cornerRadius,
-                    startAngle: .pi,
-                    endAngle: (.pi * 3) / 2,
-                    clockwise: true)
-        // Top border
-        path.addLine(to: CGPoint(x: containerLayerFrame.width - cornerRadius, y: 0))
-
-        // Top right corner
-        path.addArc(withCenter: CGPoint(x: containerLayerFrame.width - cornerRadius, y: cornerRadius),
-                    radius: cornerRadius,
-                    startAngle: (.pi * 3) / 2,
-                    endAngle: 0,
-                    clockwise: true)
-
-        // Right cutout
-        let center = CGPoint(x: containerLayerFrame.width, y: rightCutoutFrame.midY - containerInsets.top)
-        path.addLine(to: CGPoint(x: center.x, y: center.y - cutoutRadius))
-        path.addArc(withCenter: center, radius: cutoutRadius, startAngle: (.pi * 3) / 2, endAngle: .pi * 0.5, clockwise: false)
-        path.addLine(to: CGPoint(x: containerLayerFrame.width, y: containerLayerFrame.height - cornerRadius))
-
-        // Right Bottom corner
-        path.addArc(withCenter: CGPoint(x: containerLayerFrame.width - cornerRadius, y: containerLayerFrame.height - cornerRadius),
-                    radius: cornerRadius,
-                    startAngle: 0,
-                    endAngle: .pi * 0.5,
-                    clockwise: true)
-
-        // Bottom border
-        path.addLine(to: CGPoint(x: cornerRadius, y: containerLayerFrame.height))
-
-        // Bottom left corner
-        path.addArc(withCenter: CGPoint(x: cornerRadius, y: containerLayerFrame.height - cornerRadius),
-                    radius: cornerRadius,
-                    startAngle: .pi * 0.5,
-                    endAngle: .pi,
-                    clockwise: true)
-
-        // Left cutout
-        let center1 = CGPoint(x: 0, y: leftCutoutFrame.midY - containerInsets.top)
-        path.addLine(to: CGPoint(x: center1.x, y: center1.y + cutoutRadius))
-        path.addArc(withCenter: center1, radius: cutoutRadius, startAngle: .pi * 0.5, endAngle: (.pi * 3) / 2, clockwise: false)
-        path.close()
-
-        containerLayer.path = path.cgPath
+        containerLayer.drawCardCutOut(cutoutCenterY: rightCutoutFrame.midY - containerInsets.top)
     }
 
     private func buildUI() {
@@ -144,10 +100,10 @@ internal class BaseVoucherView: UIView {
 
     private func buildContainerLayer() {
         containerLayer.lineWidth = 1
-        containerLayer.strokeColor = UIColor(hex: 0xE6E9EB).cgColor
-        containerLayer.fillColor = UIColor.Adyen.componentBackground.cgColor
         containerLayer.masksToBounds = true
         containerLayer.contentsScale = UIScreen.main.scale
+        containerLayer.shouldRasterize = true
+        containerLayer.rasterizationScale = UIScreen.main.scale
 
         buildShadowLayers()
         layer.addSublayer(containerLayer)

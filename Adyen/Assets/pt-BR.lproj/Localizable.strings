@@ -52,3 +52,8 @@
 "adyen.confirmPurchase" = "Confirmar compra";
 "adyen.lastName" = "Sobrenome";
 "adyen.firstName" = "Nome";
+"adyen.voucher.merchantName" = "Comerciante online";
+"adyen.voucher.expirationDate" = "Data de validade";
+"adyen.voucher.paymentReferenceLabel" = "Referência de pagamento";
+"adyen.voucher.shopperName" = "Nome do consumidor";
+"adyen.button.copy" = "Copiar";

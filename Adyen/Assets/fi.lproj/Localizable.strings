@@ -52,3 +52,8 @@
 "adyen.confirmPurchase" = "Vahvista hankinta";
 "adyen.lastName" = "Sukunimi";
 "adyen.firstName" = "Etunimi";
+"adyen.voucher.merchantName" = "Kauppias";
+"adyen.voucher.expirationDate" = "Vanhenemispäivämäärä";
+"adyen.voucher.paymentReferenceLabel" = "Maksun viite";
+"adyen.voucher.shopperName" = "Ostajan nimi";
+"adyen.button.copy" = "Kopio";

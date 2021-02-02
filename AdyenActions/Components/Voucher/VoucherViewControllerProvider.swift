@@ -8,11 +8,14 @@ import Adyen
 import Foundation
 import UIKit
 
-internal protocol AnyVoucherViewControllerProvider: Component {
+internal protocol AnyVoucherViewControllerProvider: Component, Localizable {
     func provide(with action: VoucherAction) -> UIViewController
 }
 
 internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProvider {
+
+    internal var localizationParameters: LocalizationParameters?
+
     internal func provide(with action: VoucherAction) -> UIViewController {
         switch action {
         case let .dokuIndomaret(action):
@@ -24,6 +27,7 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
 
     private func createDokuViewController(with action: DokuVoucherAction) -> UIViewController {
         let view = DokuVoucherView(model: createDokuModel(with: action))
+        view.localizationParameters = localizationParameters
         let viewController = VoucherViewController(voucherView: view)
         view.presenter = viewController
         return viewController
@@ -37,12 +41,13 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
         let logoUrl = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue,
                                               environment: .test,
                                               size: .medium)
+        let separatorTitle = ADYLocalizedString("adyen.voucher.paymentReferenceLabel", localizationParameters)
         return DokuVoucherView.Model(title: "Amount",
                                      subtitle: amountString,
                                      code: action.reference,
                                      fields: fields,
                                      logoUrl: logoUrl,
-                                     voucherSeparator: .init(separatorTitle: "Payment code"))
+                                     voucherSeparator: .init(separatorTitle: separatorTitle))
     }
 
     private func createVoucherFields(for action: DokuVoucherAction) -> [DokuVoucherView.VoucherField] {
@@ -57,25 +62,19 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         let expiration = dateFormatter.string(from: action.expiresAt)
         return DokuVoucherView.VoucherField(identifier: "expiration",
-                                            title: "Expiration Date",
+                                            title: ADYLocalizedString("adyen.voucher.expirationDate", localizationParameters),
                                             value: expiration)
-    }
-
-    private func createEmailField(with action: DokuVoucherAction) -> DokuVoucherView.VoucherField {
-        DokuVoucherView.VoucherField(identifier: "email",
-                                     title: "E-mail",
-                                     value: action.shopperEmail)
     }
 
     private func createShopperNameField(with action: DokuVoucherAction) -> DokuVoucherView.VoucherField {
         DokuVoucherView.VoucherField(identifier: "shopperName",
-                                     title: "Shopper Name",
+                                     title: ADYLocalizedString("adyen.voucher.shopperName", localizationParameters),
                                      value: action.shopperName)
     }
 
     private func createMerchantField(with action: DokuVoucherAction) -> DokuVoucherView.VoucherField {
         DokuVoucherView.VoucherField(identifier: "merchant",
-                                     title: "Merchant",
+                                     title: ADYLocalizedString("adyen.voucher.merchantName", localizationParameters),
                                      value: action.merchantName)
     }
 }

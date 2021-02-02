@@ -52,3 +52,8 @@
 "adyen.confirmPurchase" = "Bekräfta köp";
 "adyen.lastName" = "Efternamn";
 "adyen.firstName" = "Förnamn";
+"adyen.voucher.merchantName" = "Handlare";
+"adyen.voucher.expirationDate" = "Utgångsdatum";
+"adyen.voucher.paymentReferenceLabel" = "Betalreferens";
+"adyen.voucher.shopperName" = "Konsumentens namn";
+"adyen.button.copy" = "Kopiera";

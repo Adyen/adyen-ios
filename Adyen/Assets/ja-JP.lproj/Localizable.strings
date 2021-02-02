@@ -52,3 +52,8 @@
 "adyen.confirmPurchase" = "購入を確認する";
 "adyen.lastName" = "姓";
 "adyen.firstName" = "名";
+"adyen.voucher.merchantName" = "業者";
+"adyen.voucher.expirationDate" = "有効期限";
+"adyen.voucher.paymentReferenceLabel" = "支払の参照";
+"adyen.voucher.shopperName" = "購入者氏名";
+"adyen.button.copy" = "コピー";

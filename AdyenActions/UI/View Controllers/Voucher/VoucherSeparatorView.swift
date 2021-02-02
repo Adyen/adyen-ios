@@ -87,6 +87,8 @@ internal final class VoucherSeparatorView: UIView {
         rightSeparatorLayer.frame = rightSeparatorLayerFrame
         leftSeparatorLayer.frame = leftSeparatorLayerFrame
         separatorTextLayer.frame = separatorTextLayerFrame
+
+        separatorTextLayer.foregroundColor = model.separatorTitlestyle.color.cgColor
     }
 
     private func buildUI() {
@@ -108,7 +110,6 @@ internal final class VoucherSeparatorView: UIView {
         let style = model.separatorTitlestyle
         separatorTextLayer.font = style.font
         separatorTextLayer.fontSize = style.font.pointSize
-        separatorTextLayer.foregroundColor = style.color.cgColor
         separatorTextLayer.alignmentMode = style.textAlignment.adyen.caAlignmentMode
         separatorTextLayer.string = text
         separatorTextLayer.contentsScale = UIScreen.main.scale
