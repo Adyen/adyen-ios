@@ -37,6 +37,17 @@ public final class CopyLabelView: UIView, Localizable {
         label.adyen.anchore(inside: self)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         addGestureRecognizer(tapGesture)
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didHideCopyMenu),
+            name: UIMenuController.didHideMenuNotification,
+            object: nil
+        )
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     @available(*, unavailable)
@@ -60,6 +71,10 @@ public final class CopyLabelView: UIView, Localizable {
     @objc private func handleCopy() {
         let pastBoard = UIPasteboard.general
         pastBoard.string = text
+        backgroundColor = .clear
+    }
+
+    @objc private func didHideCopyMenu() {
         backgroundColor = .clear
     }
 
