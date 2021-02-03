@@ -322,7 +322,7 @@
 		F95B6D9025231880002C9062 /* PhoneNumberValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6D8F25231880002C9062 /* PhoneNumberValidatorTests.swift */; };
 		F95B6D982527454E002C9062 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6D972527454E002C9062 /* AppDelegate.swift */; };
 		F95B6D9A2527454E002C9062 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6D992527454E002C9062 /* SceneDelegate.swift */; };
-		F95B6D9C2527454E002C9062 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6D9B2527454E002C9062 /* ContentView.swift */; };
+		F95B6D9C2527454E002C9062 /* ComponentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6D9B2527454E002C9062 /* ComponentsView.swift */; };
 		F95B6D9E25274551002C9062 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F95B6D9D25274551002C9062 /* Assets.xcassets */; };
 		F95B6DA125274551002C9062 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F95B6DA025274551002C9062 /* Preview Assets.xcassets */; };
 		F95B6DA425274551002C9062 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F95B6DA225274551002C9062 /* LaunchScreen.storyboard */; };
@@ -1015,7 +1015,7 @@
 		F95B6D952527454E002C9062 /* AdyenSwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AdyenSwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F95B6D972527454E002C9062 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F95B6D992527454E002C9062 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		F95B6D9B2527454E002C9062 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		F95B6D9B2527454E002C9062 /* ComponentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentsView.swift; sourceTree = "<group>"; };
 		F95B6D9D25274551002C9062 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F95B6DA025274551002C9062 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		F95B6DA325274551002C9062 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -1402,15 +1402,6 @@
 			path = 3DS2;
 			sourceTree = "<group>";
 		};
-		E24FECF3226EF99F00A65122 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				E24FECF4226EF9AB00A65122 /* ComponentsViewController.swift */,
-				E24FECF6226EF9D800A65122 /* ComponentsView.swift */,
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
 		E24FED0B2270913000A65122 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1637,6 +1628,8 @@
 			isa = PBXGroup;
 			children = (
 				E2C0E07F220B0399008616F6 /* AppDelegate.swift */,
+				E24FECF4226EF9AB00A65122 /* ComponentsViewController.swift */,
+				E24FECF6226EF9D800A65122 /* ComponentsView.swift */,
 				E9909FB322B7C815008DE50C /* PaymentMethods.json */,
 				E97B970A2297ED0D00505476 /* LaunchScreen.storyboard */,
 				E2C0E086220B039B008616F6 /* Assets.xcassets */,
@@ -2070,14 +2063,6 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		E9B36CCB22451E4800EAA368 /* Domains */ = {
-			isa = PBXGroup;
-			children = (
-				E24FECF3226EF99F00A65122 /* Components */,
-			);
-			path = Domains;
-			sourceTree = "<group>";
-		};
 		E9E3DAAB221D5BEF00697074 /* Validators */ = {
 			isa = PBXGroup;
 			children = (
@@ -2508,7 +2493,7 @@
 			children = (
 				F95B6D972527454E002C9062 /* AppDelegate.swift */,
 				F95B6D992527454E002C9062 /* SceneDelegate.swift */,
-				F95B6D9B2527454E002C9062 /* ContentView.swift */,
+				F95B6D9B2527454E002C9062 /* ComponentsView.swift */,
 				F95B6DAD25274D9C002C9062 /* PaymentsViewModel.swift */,
 				F95B6D9D25274551002C9062 /* Assets.xcassets */,
 				F95B6DA225274551002C9062 /* LaunchScreen.storyboard */,
@@ -2574,12 +2559,10 @@
 			isa = PBXGroup;
 			children = (
 				F9EDB78723955A8400CFB3C9 /* Assets */,
-				E9B36CCB22451E4800EAA368 /* Domains */,
 				F9A53C3D2549887F009000A7 /* Networking */,
 				E24FED0B2270913000A65122 /* Helpers */,
 				E24FECFB226EFD3C00A65122 /* ComponentsItem.swift */,
 				F95B6DD3252B294C002C9062 /* PaymentsController.swift */,
-				F9615FBF252F076A00FA8EDD /* payment_methods_response.json */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2880,6 +2863,7 @@
 		F9EDB78723955A8400CFB3C9 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				F9615FBF252F076A00FA8EDD /* payment_methods_response.json */,
 				F9EDB78823955ABF00CFB3C9 /* AdyenUIHost.strings */,
 				F96F44DE23BF453800871C1F /* AdyenUIHostCustomSeparator.strings */,
 				F96F44E223BF5ED000871C1F /* Localizable.strings */,
@@ -4070,7 +4054,7 @@
 				F9A53C482549887F009000A7 /* Amount.swift in Sources */,
 				F9615FBE252F066E00FA8EDD /* APIClientMock.swift in Sources */,
 				F9A53C452549887F009000A7 /* DefaultAPIClient.swift in Sources */,
-				F95B6D9C2527454E002C9062 /* ContentView.swift in Sources */,
+				F95B6D9C2527454E002C9062 /* ComponentsView.swift in Sources */,
 				F95B6DAE25274D9C002C9062 /* PaymentsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
