@@ -4,50 +4,73 @@ set -e # Any subsequent(*) commands which fail will cause the shell script to ex
 
 PROJECT_NAME=TempProject
 
-# Clean up.
+echo "==  Clean up =="
 rm -rf $PROJECT_NAME
 
 mkdir -p $PROJECT_NAME && cd $PROJECT_NAME
 
-# Create the Cartfile.
+echo "== Create the Cartfile =="
 CWD=$(pwd)
 CURRENT_COMMIT=$(git rev-parse HEAD)
-echo "
-git \"file://$CWD/../\" \"$CURRENT_COMMIT\"
-" > Cartfile
 
-echo " === Carthage update"
-../Scripts/carthage.sh update
+echo "git \"file://$CWD/../\" \"$CURRENT_COMMIT\"" > Cartfile
 
-# Setup Project
+../Scripts/carthage.sh update --use-xcframeworks
+
+echo "==   Setup Project =="
 echo "
 name: $PROJECT_NAME
 options:
   findCarthageFrameworks: true
 targets:
-  Framework:
+  $PROJECT_NAME:
     type: framework
     platform: iOS
     dependencies:
-      - carthage: adyen
+      - framework: Carthage/Build/Adyen.xcframework
+        embed: true
+        codeSign: true
+      - framework: Carthage/Build/AdyenActions.xcframework
+        embed: true
+        codeSign: true
+      - framework: Carthage/Build/AdyenCard.xcframework
+        embed: true
+        codeSign: true
+      - framework: Carthage/Build/AdyenComponents.xcframework
+        embed: true
+        codeSign: true
+      - framework: Carthage/Build/AdyenDropIn.xcframework
+        embed: true
+        codeSign: true
+      - framework: Carthage/Build/AdyenEncryption.xcframework
+        embed: true
+        codeSign: true
+      - framework: Carthage/Build/AdyenWeChatPay.xcframework
+        embed: true
+        codeSign: true
+      - framework: Carthage/Checkouts/adyen-3ds2-ios/XCFramework/Dynamic/Adyen3DS2.xcframework
+        embed: true
+        codeSign: true
   Tests:
     type: bundle.unit-test
     platform: iOS
     sources:
       - Tests/
     dependencies:
-      - target: Framework
-
+      - target: $PROJECT_NAME
 " > project.yml
 
 mkdir Tests
-mv "../Tests/AdyenTests/Adyen Tests/Components/AdyenActionHandlerTests.swift" Tests/Tests.swift
+mv -v "../Demo/Common" Common
+mv -v "../Demo/UIKit" ./
+mv "../Demo/Configuration.swift" Configuration.swift
+mv "../Tests/AdyenTests/Adyen Tests/UI/DropIn/DropInTests.swift" Tests/DropInTests.swift
 
 xcodegen generate
 
-# Run Tests
-xcodebuild build test -project TempProject.xcodeproj -scheme Tests | xcpretty && exit ${PIPESTATUS[0]}
+echo "==   Run Tests =="
+xcodebuild test -project $PROJECT_NAME.xcodeproj -scheme Tests -destination "name=iPhone 11" | xcpretty && exit ${PIPESTATUS[0]}
 
-# Clean up.
+echo "==   Clean up =="
 cd ../
 rm -rf $PROJECT_NAME
