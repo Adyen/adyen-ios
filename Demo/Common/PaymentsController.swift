@@ -38,9 +38,13 @@ internal final class PaymentsController {
         let handler = AdyenActionComponent()
         handler.redirectComponentStyle = dropInComponentStyle.redirectComponent
         handler.delegate = self
-        handler.presentationDelegate = self
         handler.environment = environment
         handler.clientKey = Configuration.clientKey
+
+        // ATTENTION: in case of DropIn integration use DropInComponent here.
+        // Otherwise, use custom implementation of PresentationDelegate
+        handler.presentationDelegate = self
+
         return handler
     }()
 
@@ -305,6 +309,10 @@ extension PaymentsController: CardComponentDelegate {
 
 extension PaymentsController: PresentationDelegate {
     internal func present(component: PresentableComponent, disableCloseButton: Bool) {
-        present(component)
+        guard let dropInComponent = self.currentComponent as? DropInComponent else {
+            return present(component)
+        }
+
+        dropInComponent.present(component: component, disableCloseButton: disableCloseButton)
     }
 }
