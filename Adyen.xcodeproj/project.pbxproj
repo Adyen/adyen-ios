@@ -92,6 +92,7 @@
 		E7484C2723B9FDF000CCF74F /* SlideInPresentationAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7484C2623B9FDF000CCF74F /* SlideInPresentationAnimator.swift */; };
 		E749FD1E23CF4998000D18BA /* NavigationStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E749FD1D23CF4998000D18BA /* NavigationStyle.swift */; };
 		E74D918325AF3FE600743B0C /* CardBrandProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D918225AF3FE600743B0C /* CardBrandProviderTests.swift */; };
+		E759E24C25CB3BB700B1F8DC /* DropInTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E759E1F425CB373F00B1F8DC /* DropInTests.swift */; };
 		E7620EA123BF3DC800A492C3 /* ModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90139CA22846AD5004C74DA /* ModalViewController.swift */; };
 		E7620EAB23C345D600A492C3 /* PresentableComponentMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7620EAA23C345D600A492C3 /* PresentableComponentMock.swift */; };
 		E7620EAD23C3466B00A492C3 /* ModalViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7620EAC23C3466B00A492C3 /* ModalViewControllerTests.swift */; };
@@ -832,6 +833,7 @@
 		E7484C2623B9FDF000CCF74F /* SlideInPresentationAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideInPresentationAnimator.swift; sourceTree = "<group>"; };
 		E749FD1D23CF4998000D18BA /* NavigationStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStyle.swift; sourceTree = "<group>"; };
 		E74D918225AF3FE600743B0C /* CardBrandProviderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardBrandProviderTests.swift; sourceTree = "<group>"; };
+		E759E1F425CB373F00B1F8DC /* DropInTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInTests.swift; sourceTree = "<group>"; };
 		E7620EAA23C345D600A492C3 /* PresentableComponentMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentableComponentMock.swift; sourceTree = "<group>"; };
 		E7620EAC23C3466B00A492C3 /* ModalViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalViewControllerTests.swift; sourceTree = "<group>"; };
 		E767F34D25A4865A0077029E /* WrapperViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WrapperViewController.swift; sourceTree = "<group>"; };
@@ -1813,6 +1815,14 @@
 			path = Presentation;
 			sourceTree = "<group>";
 		};
+		E759E1F325CB371800B1F8DC /* DropIn */ = {
+			isa = PBXGroup;
+			children = (
+				E759E1F425CB373F00B1F8DC /* DropInTests.swift */,
+			);
+			path = DropIn;
+			sourceTree = "<group>";
+		};
 		E767F49925A5E9670077029E /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -2737,6 +2747,7 @@
 		F99F085B2383EBFF00EBB948 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				E759E1F325CB371800B1F8DC /* DropIn */,
 				F99F08602383F28800EBB948 /* Form */,
 				F9DC6BA423AA291500863F3A /* List Component */,
 				E7620EAA23C345D600A492C3 /* PresentableComponentMock.swift */,
@@ -3825,6 +3836,7 @@
 				F9FE13F425CC0E3C0067B593 /* VoucherViewControllerProviderTests.swift in Sources */,
 				F9EDB78F23964FC000CFB3C9 /* StoredCardAlertManagerTests.swift in Sources */,
 				F9AC61C2243751A70062A00D /* ActionComponentDelegateMock.swift in Sources */,
+				E759E24C25CB3BB700B1F8DC /* DropInTests.swift in Sources */,
 				F957AA462552C3D20099AD73 /* ThreeDS2FingerprintSubmitterTests.swift in Sources */,
 				E216D3C7221AF5650013CBCF /* IBANFormatterTests.swift in Sources */,
 				F9639B5024E29D2D0073F38A /* AwaitComponentTests.swift in Sources */,
