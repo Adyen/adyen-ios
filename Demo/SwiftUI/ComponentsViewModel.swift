@@ -5,15 +5,14 @@
 //
 
 import SwiftUI
+import Adyen
 
-internal final class PaymentsViewModel: ObservableObject, Identifiable, Presenter {
+internal final class ComponentsViewModel: ObservableObject, Identifiable {
 
-    private lazy var controller: PaymentsController = {
-
-        let controller = PaymentsController()
-        controller.presenter = self
-
-        return controller
+    private lazy var model: PaymentsModel = {
+        let model = PaymentsModel()
+        model.presenter = self
+        return model
     }()
 
     @Published internal var viewControllerToPresent: UIViewController?
@@ -22,42 +21,14 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
 
     // MARK: - DropIn Component
 
-    internal func presentDropInComponent() {
-        controller.presentDropInComponent()
-    }
-
-    internal func presentCardComponent() {
-        controller.presentCardComponent()
-    }
-
-    internal func presentIdealComponent() {
-        controller.presentIdealComponent()
-    }
-
-    internal func presentSEPADirectDebitComponent() {
-        controller.presentSEPADirectDebitComponent()
-    }
-
-    internal func presentMBWayComponent() {
-        controller.presentMBWayComponent()
-    }
-
     internal func viewDidAppear() {
-        items = [
-            [
-                ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent)
-            ],
-            [
-                ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
-                ComponentsItem(title: "iDEAL", selectionHandler: presentIdealComponent),
-                ComponentsItem(title: "SEPA Direct Debit", selectionHandler: presentSEPADirectDebitComponent),
-                ComponentsItem(title: "MB WAY", selectionHandler: presentMBWayComponent)
-            ]
-        ]
-        controller.requestPaymentMethods()
+        items = model.items
+        model.requestPaymentMethods()
     }
 
-    // MARK: - Presenter
+}
+
+extension ComponentsViewModel: Presenter {
 
     internal func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
         let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)

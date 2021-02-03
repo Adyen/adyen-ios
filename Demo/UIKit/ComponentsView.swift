@@ -22,7 +22,7 @@ internal final class ComponentsView: UIView {
     
     // MARK: - Items
     
-    internal var items = [[ComponentsItem]]()
+    internal var items = [[ComponentItem]]()
     
     // MARK: - Table View
     

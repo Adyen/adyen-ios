@@ -9,7 +9,7 @@ import SwiftUI
 
 internal struct ComponentsView: View {
 
-    @ObservedObject internal var viewModel = ContentViewModel()
+    @ObservedObject internal var viewModel = ComponentsViewModel()
 
     internal var body: some View {
         List {

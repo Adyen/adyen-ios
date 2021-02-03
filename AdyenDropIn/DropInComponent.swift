@@ -67,6 +67,15 @@ public final class DropInComponent: NSObject, PresentableComponent {
             rootComponent.stopLoading(withSuccess: success, completion: completion)
         }
     }
+
+    // MARK: - Handling Actions
+
+    /// Handles an action to complete a payment.
+    ///
+    /// - Parameter action: The action to handle.
+    public func handle(_ action: Action) {
+        actionComponent.perform(action)
+    }
     
     // MARK: - Private
     
@@ -82,6 +91,18 @@ public final class DropInComponent: NSObject, PresentableComponent {
         
         manager.environment = environment
         return manager
+    }()
+
+    private lazy var actionComponent: AdyenActionComponent = {
+        let handler = AdyenActionComponent()
+        handler._isDropIn = true
+        handler.environment = environment
+        handler.clientKey = configuration.clientKey
+        handler.redirectComponentStyle = style.redirectComponent
+        handler.delegate = self
+        handler.presentationDelegate = self
+        handler.localizationParameters = configuration.localizationParameters
+        return handler
     }()
     
     private lazy var rootComponent: LoadingComponent = {

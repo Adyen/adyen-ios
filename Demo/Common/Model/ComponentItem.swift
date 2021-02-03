@@ -6,18 +6,18 @@
 
 import Foundation
 
-internal struct ComponentsItem: Hashable {
+internal struct ComponentItem: Hashable {
 
     internal var title: String
     
     internal var selectionHandler: (() -> Void)?
     
-    internal init(title: String, selectionHandler: (() -> Void)? = nil) {
+    internal init(title: String, present: (() -> Void)? = nil) {
         self.title = title
-        self.selectionHandler = selectionHandler
+        self.selectionHandler = present
     }
 
-    internal static func == (lhs: ComponentsItem, rhs: ComponentsItem) -> Bool {
+    internal static func == (lhs: ComponentItem, rhs: ComponentItem) -> Bool {
         lhs.title == rhs.title
     }
 
