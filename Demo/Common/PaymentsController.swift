@@ -213,11 +213,6 @@ internal final class PaymentsController {
 
     private func handle(_ action: Action) {
         guard paymentInProgress else { return }
-
-        if let dropInComponent = currentComponent as? DropInComponent {
-            return dropInComponent.handle(action)
-        }
-
         actionComponent.perform(action)
     }
 
