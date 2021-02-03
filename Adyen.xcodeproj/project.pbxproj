@@ -103,8 +103,8 @@
 		E7618E6A25CD843900EFFA5D /* PaymentMethodsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7618E5525CD83E400EFFA5D /* PaymentMethodsProvider.swift */; };
 		E7618E7525CD860600EFFA5D /* HasAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7618E7425CD860600EFFA5D /* HasAPIClient.swift */; };
 		E7618E7625CD860600EFFA5D /* HasAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7618E7425CD860600EFFA5D /* HasAPIClient.swift */; };
-		E7618E8A25CD933100EFFA5D /* PaymentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7618E8925CD933100EFFA5D /* PaymentsViewModel.swift */; };
-		E7618E8B25CD933100EFFA5D /* PaymentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7618E8925CD933100EFFA5D /* PaymentsViewModel.swift */; };
+		E7618E8A25CD933100EFFA5D /* ComponentsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7618E8925CD933100EFFA5D /* ComponentsModel.swift */; };
+		E7618E8B25CD933100EFFA5D /* ComponentsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7618E8925CD933100EFFA5D /* ComponentsModel.swift */; };
 		E7620EA123BF3DC800A492C3 /* ModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90139CA22846AD5004C74DA /* ModalViewController.swift */; };
 		E7620EAB23C345D600A492C3 /* PresentableComponentMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7620EAA23C345D600A492C3 /* PresentableComponentMock.swift */; };
 		E7620EAD23C3466B00A492C3 /* ModalViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7620EAC23C3466B00A492C3 /* ModalViewControllerTests.swift */; };
@@ -849,7 +849,7 @@
 		E7618E2D25CD7DF200EFFA5D /* AdyenIntegration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenIntegration.swift; sourceTree = "<group>"; };
 		E7618E5525CD83E400EFFA5D /* PaymentMethodsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsProvider.swift; sourceTree = "<group>"; };
 		E7618E7425CD860600EFFA5D /* HasAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HasAPIClient.swift; sourceTree = "<group>"; };
-		E7618E8925CD933100EFFA5D /* PaymentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsViewModel.swift; sourceTree = "<group>"; };
+		E7618E8925CD933100EFFA5D /* ComponentsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentsModel.swift; sourceTree = "<group>"; };
 		E7620EAA23C345D600A492C3 /* PresentableComponentMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentableComponentMock.swift; sourceTree = "<group>"; };
 		E7620EAC23C3466B00A492C3 /* ModalViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalViewControllerTests.swift; sourceTree = "<group>"; };
 		E767F34D25A4865A0077029E /* WrapperViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WrapperViewController.swift; sourceTree = "<group>"; };
@@ -1847,7 +1847,7 @@
 			isa = PBXGroup;
 			children = (
 				E24FECFB226EFD3C00A65122 /* ComponentItem.swift */,
-				E7618E8925CD933100EFFA5D /* PaymentsViewModel.swift */,
+				E7618E8925CD933100EFFA5D /* ComponentsModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -3940,7 +3940,7 @@
 				F9615FC2252F083400FA8EDD /* APIClientMock.swift in Sources */,
 				E24FECFC226EFD3C00A65122 /* ComponentItem.swift in Sources */,
 				F9A53C442549887F009000A7 /* DefaultAPIClient.swift in Sources */,
-				E7618E8A25CD933100EFFA5D /* PaymentsViewModel.swift in Sources */,
+				E7618E8A25CD933100EFFA5D /* ComponentsModel.swift in Sources */,
 				F9A53C472549887F009000A7 /* Amount.swift in Sources */,
 				E24FED0D2270915A00A65122 /* CodingHelpers.swift in Sources */,
 				F9A53C4A2549887F009000A7 /* Environment.swift in Sources */,
@@ -4101,7 +4101,7 @@
 				F95B6D9C2527454E002C9062 /* ComponentsView.swift in Sources */,
 				F95B6DAE25274D9C002C9062 /* ComponentsViewModel.swift in Sources */,
 				E7618E7625CD860600EFFA5D /* HasAPIClient.swift in Sources */,
-				E7618E8B25CD933100EFFA5D /* PaymentsViewModel.swift in Sources */,
+				E7618E8B25CD933100EFFA5D /* ComponentsModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

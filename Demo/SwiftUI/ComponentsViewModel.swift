@@ -17,12 +17,24 @@ internal final class ComponentsViewModel: ObservableObject, Identifiable {
 
     @Published internal var viewControllerToPresent: UIViewController?
 
-    @Published internal var items = [[ComponentItem]]()
+    @Published internal var items: [[ComponentItem]] = []
 
     // MARK: - DropIn Component
 
     internal func viewDidAppear() {
-        items = model.items
+        items = [
+            [
+                ComponentItem(title: "Drop In", present: model.dropInIntegration.DropIn)
+            ],
+            [
+                ComponentItem(title: "Card", present: model.componentIntegration.Card),
+                ComponentItem(title: "ApplePay", present: model.componentIntegration.ApplePay),
+                ComponentItem(title: "iDEAL", present: model.componentIntegration.Ideal),
+                ComponentItem(title: "SEPA Direct Debit", present: model.componentIntegration.SEPADirectDebit),
+                ComponentItem(title: "MB WAY", present: model.componentIntegration.MBWay)
+            ]
+        ]
+
         model.requestPaymentMethods()
     }
 

@@ -9,11 +9,25 @@ import Adyen
     
 internal final class ComponentsViewController: UIViewController {
     private lazy var componentsView = ComponentsView()
+
     private lazy var model: ComponentsModel = {
         let model = ComponentsModel()
         model.presenter = self
         return model
     }()
+
+    internal lazy var items: [[ComponentItem]] = [
+        [
+            ComponentItem(title: "Drop In", present: model.dropInIntegration.DropIn)
+        ],
+        [
+            ComponentItem(title: "Card", present: model.componentIntegration.Card),
+            ComponentItem(title: "ApplePay", present: model.componentIntegration.ApplePay),
+            ComponentItem(title: "iDEAL", present: model.componentIntegration.Ideal),
+            ComponentItem(title: "SEPA Direct Debit", present: model.componentIntegration.SEPADirectDebit),
+            ComponentItem(title: "MB WAY", present: model.componentIntegration.MBWay)
+        ]
+    ]
     
     // MARK: - View
     
@@ -24,8 +38,8 @@ internal final class ComponentsViewController: UIViewController {
     override internal func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Components"
-        
-        componentsView.items = model.items
+
+        componentsView.items = items
         model.requestPaymentMethods()
     }
 
