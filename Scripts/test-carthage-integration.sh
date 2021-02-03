@@ -13,9 +13,11 @@ mkdir -p $PROJECT_NAME && cd $PROJECT_NAME
 CWD=$(pwd)
 CURRENT_COMMIT=$(git rev-parse HEAD)
 echo "
-git \"file:///$CWD/../\" \"$CURRENT_COMMIT\"
-github \"ReactiveCocoa/ReactiveSwift\" ~> 4.0
+git \"file://$CWD/../\" \"$CURRENT_COMMIT\"
 " > Cartfile
+
+echo " === Carthage update"
+../Scripts/carthage.sh update
 
 # Setup Project
 echo "
@@ -28,7 +30,6 @@ targets:
     platform: iOS
     dependencies:
       - carthage: adyen
-      - carthage: CarthageTestFixture
   Tests:
     type: bundle.unit-test
     platform: iOS
@@ -36,16 +37,16 @@ targets:
       - Tests/
     dependencies:
       - target: Framework
-    
+
 " > project.yml
 
-pwd
-mv ../Tests/AdyenWeChatTests/AdyenWeChatTests.swift Tests/Tests.swift
+mkdir Tests
+mv "../Tests/AdyenTests/Adyen Tests/Components/AdyenActionHandlerTests.swift" Tests/Tests.swift
 
 xcodegen generate
 
-# ../carthage.sh update
-../carthage.sh update
+# Run Tests
+xcodebuild build test -project TempProject.xcodeproj -scheme Tests | xcpretty && exit ${PIPESTATUS[0]}
 
 # Clean up.
 cd ../
