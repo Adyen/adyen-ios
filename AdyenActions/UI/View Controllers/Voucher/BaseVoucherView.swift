@@ -71,7 +71,6 @@ internal class BaseVoucherView: UIView {
     }
 
     private var cornerRadius: CGFloat = 12
-    private var cutoutRadius: CGFloat = 6
 
     private func drawCardCutOut() {
         let rightCutoutFrame = separatorView.convert(separatorView.rightCutoutFrame, to: self)

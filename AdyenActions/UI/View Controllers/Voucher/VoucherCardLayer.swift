@@ -13,7 +13,7 @@ internal final class VoucherCardLayer: CAShapeLayer {
 
     internal func drawCardCutOut(cutoutCenterY: CGFloat) {
         let path = UIBezierPath()
-        path.move(to: CGPoint(x: 0, y: cardCornerRadius))
+        path.move(to: CGPoint(x: lineWidth, y: cardCornerRadius + lineWidth))
 
         drawCardTop(path: path)
 
@@ -28,17 +28,17 @@ internal final class VoucherCardLayer: CAShapeLayer {
 
     private func drawCardTop(path: UIBezierPath) {
         // Top Left corner
-        let topLeftCornerCenter = CGPoint(x: cardCornerRadius, y: cardCornerRadius)
+        let topLeftCornerCenter = CGPoint(x: cardCornerRadius + lineWidth, y: cardCornerRadius + lineWidth)
         path.addArc(withCenter: topLeftCornerCenter,
                     radius: cardCornerRadius,
                     startAngle: .pi,
                     endAngle: (.pi * 3) / 2,
                     clockwise: true)
         // Top border
-        path.addLine(to: CGPoint(x: bounds.width - cardCornerRadius, y: 0))
+        path.addLine(to: CGPoint(x: bounds.width - cardCornerRadius - lineWidth, y: lineWidth))
 
         // Top right corner
-        let topRightCornerCenter = CGPoint(x: bounds.width - cardCornerRadius, y: cardCornerRadius)
+        let topRightCornerCenter = CGPoint(x: bounds.width - cardCornerRadius - lineWidth, y: cardCornerRadius + lineWidth)
         path.addArc(withCenter: topRightCornerCenter,
                     radius: cardCornerRadius,
                     startAngle: (.pi * 3) / 2,
@@ -48,15 +48,16 @@ internal final class VoucherCardLayer: CAShapeLayer {
 
     private func drawCardRightSide(path: UIBezierPath, cutoutCenterY: CGFloat) {
         // Right cutout
-        let rightCutoutCenter = CGPoint(x: bounds.width, y: cutoutCenterY)
+        let rightCutoutCenter = CGPoint(x: bounds.width - lineWidth, y: cutoutCenterY)
         path.addLine(to: CGPoint(x: rightCutoutCenter.x, y: rightCutoutCenter.y - cutoutRadius))
         path.addArc(withCenter: rightCutoutCenter, radius: cutoutRadius, startAngle: (.pi * 3) / 2, endAngle: .pi * 0.5, clockwise: false)
-        path.addLine(to: CGPoint(x: bounds.width, y: bounds.height - cardCornerRadius))
+        path.addLine(to: CGPoint(x: bounds.width - lineWidth, y: bounds.height - cardCornerRadius - lineWidth))
     }
 
     private func drawCardBottomSide(path: UIBezierPath) {
         // Right Bottom corner
-        let bottomRightCornerCenter = CGPoint(x: bounds.width - cardCornerRadius, y: bounds.height - cardCornerRadius)
+        let bottomRightCornerCenter = CGPoint(x: bounds.width - cardCornerRadius - lineWidth,
+                                              y: bounds.height - cardCornerRadius - lineWidth)
         path.addArc(withCenter: bottomRightCornerCenter,
                     radius: cardCornerRadius,
                     startAngle: 0,
@@ -64,10 +65,10 @@ internal final class VoucherCardLayer: CAShapeLayer {
                     clockwise: true)
 
         // Bottom border
-        path.addLine(to: CGPoint(x: cardCornerRadius, y: bounds.height))
+        path.addLine(to: CGPoint(x: cardCornerRadius + lineWidth, y: bounds.height - lineWidth))
 
         // Bottom left corner
-        let bottomLeftCornerCenter = CGPoint(x: cardCornerRadius, y: bounds.height - cardCornerRadius)
+        let bottomLeftCornerCenter = CGPoint(x: cardCornerRadius + lineWidth, y: bounds.height - cardCornerRadius - lineWidth)
         path.addArc(withCenter: bottomLeftCornerCenter,
                     radius: cardCornerRadius,
                     startAngle: .pi * 0.5,
@@ -77,7 +78,7 @@ internal final class VoucherCardLayer: CAShapeLayer {
 
     private func drawCardLeftSide(path: UIBezierPath, cutoutCenterY: CGFloat) {
         // Left cutout
-        let leftCutoutCenter = CGPoint(x: 0, y: cutoutCenterY)
+        let leftCutoutCenter = CGPoint(x: lineWidth, y: cutoutCenterY)
         path.addLine(to: CGPoint(x: leftCutoutCenter.x, y: leftCutoutCenter.y + cutoutRadius))
         path.addArc(withCenter: leftCutoutCenter, radius: cutoutRadius, startAngle: .pi * 0.5, endAngle: (.pi * 3) / 2, clockwise: false)
         path.close()
