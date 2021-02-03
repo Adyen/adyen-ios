@@ -45,7 +45,7 @@ public final class VoucherComponent: AnyVoucherActionHandler {
     /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter style: The Component UI style.
     internal convenience init(voucherViewControllerProvider: AnyVoucherViewControllerProvider?,
-                              style: AwaitComponentStyle?) {
+                              style: AwaitComponentStyle? = nil) {
         self.init(style: style)
         self.voucherViewControllerProvider = voucherViewControllerProvider
     }
