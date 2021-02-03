@@ -48,15 +48,6 @@ public final class DropInComponent: NSObject, PresentableComponent {
         self.environment = configuration.environment
     }
     
-    // MARK: - Handling Actions
-    
-    /// Handles an action to complete a payment.
-    ///
-    /// - Parameter action: The action to handle.
-    public func handle(_ action: Action) {
-        actionComponent.perform(action)
-    }
-    
     // MARK: - Presentable Component Protocol
     
     /// :nodoc:
@@ -99,18 +90,6 @@ public final class DropInComponent: NSObject, PresentableComponent {
         } else {
             return paymentMethodListComponent()
         }
-    }()
-    
-    private lazy var actionComponent: AdyenActionHandler = {
-        let handler = AdyenActionHandler()
-        handler._isDropIn = true
-        handler.environment = environment
-        handler.clientKey = configuration.clientKey
-        handler.redirectComponentStyle = style.redirectComponent
-        handler.delegate = self
-        handler.presentationDelegate = self
-        handler.localizationParameters = configuration.localizationParameters
-        return handler
     }()
     
     private lazy var navigationController: DropInNavigationController = {
@@ -285,7 +264,7 @@ extension DropInComponent: PresentationDelegate {
 private extension Bundle {
     // Name of the app - title under the icon.
     var displayName: String {
-        return object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ??
+        object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ??
             object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
     }
 }
