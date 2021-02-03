@@ -127,13 +127,6 @@ internal class BaseVoucherView: UIView {
 
     private let containerInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
 
-    private var cardLayerFrame: CGRect {
-        CGRect(x: 0,
-               y: 0,
-               width: containerLayer.bounds.size.width,
-               height: containerLayer.bounds.size.height)
-    }
-
     private var shadowLayersFrame: CGRect {
         containerLayerFrame
     }

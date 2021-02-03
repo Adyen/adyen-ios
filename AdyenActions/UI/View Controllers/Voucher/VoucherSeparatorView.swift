@@ -40,12 +40,6 @@ internal final class VoucherSeparatorView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    internal var leftCutoutFrame: CGRect {
-        CGRect(origin: CGPoint(x: 0,
-                               y: bounds.height / 2 - arcLayerSize.height / 2),
-               size: arcLayerSize)
-    }
-
     internal var rightCutoutFrame: CGRect {
         CGRect(origin: CGPoint(x: bounds.size.width - arcLayerSize.width,
                                y: bounds.height / 2 - arcLayerSize.height / 2),

@@ -183,6 +183,44 @@ let dokuWallet = [
     "type" : "doku_wallet"
 ] as [String: Any]
 
+let dokuIndomaretAction: [String: Any] = [
+    "reference" : "9786512300056485",
+    "initialAmount" : [
+      "currency" : "IDR",
+      "value" : 17408
+    ],
+    "paymentMethodType" : "doku_indomaret",
+    "instructionsUrl" : "https://www.doku.com/how-to-pay/indomaret.php",
+    "shopperEmail" : "Qwfqwf@POj.co",
+    "totalAmount" : [
+      "currency" : "IDR",
+      "value" : 17408
+    ],
+    "expiresAt" : "2021-02-02T22:00:00",
+    "merchantName" : "Adyen Demo Shop",
+    "shopperName" : "Qwfqwew Gewgewf",
+    "type" : "voucher"
+  ]
+
+let dokuAlfamartAction: [String: Any] = [
+    "reference" : "8888823200056486",
+    "initialAmount" : [
+      "currency" : "IDR",
+      "value" : 17408
+    ],
+    "paymentMethodType" : "doku_alfamart",
+    "instructionsUrl" : "https://www.doku.com/how-to-pay/alfamart.php",
+    "shopperEmail" : "Qsosih@oih.com",
+    "totalAmount" : [
+      "currency" : "IDR",
+      "value" : 17408
+    ],
+    "expiresAt" : "2021-02-02T22:58:00",
+    "merchantName" : "Adyen Demo Shop",
+    "shopperName" : "Qwodihqw Wqodihq",
+    "type" : "voucher"
+  ]
+
 let weChatMiniProgramDictionary = [
     "name": "WeChat Pay",
     "supportsRecurring": true,
