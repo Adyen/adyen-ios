@@ -7,7 +7,7 @@
 import Adyen
 import SwiftUI
 
-internal struct ContentView: View {
+internal struct ComponentsView: View {
 
     @ObservedObject internal var viewModel = PaymentsViewModel()
 
@@ -38,7 +38,7 @@ internal struct ContentView: View {
 // swiftlint:disable:next type_name
 internal struct ContentView_Previews: PreviewProvider {
     internal static var previews: some View {
-        ContentView()
+        ComponentsView()
     }
 }
 

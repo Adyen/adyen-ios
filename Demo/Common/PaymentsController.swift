@@ -41,6 +41,7 @@ internal final class PaymentsController {
         handler.presentationDelegate = self
         handler.environment = environment
         handler.clientKey = Configuration.clientKey
+
         return handler
     }()
 
@@ -213,7 +214,12 @@ internal final class PaymentsController {
 
     private func handle(_ action: Action) {
         guard paymentInProgress else { return }
-        actionComponent.perform(action)
+
+        guard let dropInComponent = currentComponent as? DropInComponent else {
+            return actionComponent.perform(action)
+        }
+
+        dropInComponent.handle(action)
     }
 
     private func finish(with resultCode: PaymentsResponse.ResultCode) {
