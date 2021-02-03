@@ -1,9 +1,7 @@
 //
-//  HasAPIClient.swift
-//  Adyen
+// Copyright (c) 2021 Adyen N.V.
 //
-//  Created by Vladimir Abramichev on 05/02/2021.
-//  Copyright © 2021 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Adyen
@@ -25,9 +23,7 @@ extension HasAPIClient  {
     }
 
     private var persistedApiClient: DefaultAPIClient? {
-        get {
-            return objc_getAssociatedObject(self, &HasAPIClientKeys.persistedApiClient) as? DefaultAPIClient
-        }
+        return objc_getAssociatedObject(self, &HasAPIClientKeys.persistedApiClient) as? DefaultAPIClient
     }
 
     private func setPersistedApiCLient(_ newClien: DefaultAPIClient) {
@@ -39,6 +35,6 @@ extension HasAPIClient  {
 
 }
 
-private struct HasAPIClientKeys {
+private enum HasAPIClientKeys {
     internal static var persistedApiClient = "persistedApiClient"
 }

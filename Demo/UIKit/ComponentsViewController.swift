@@ -6,8 +6,8 @@
 
 import Adyen
 
-internal final class ComponentsViewController: UIViewController  {
     
+internal final class ComponentsViewController: UIViewController {
     private lazy var componentsView = ComponentsView()
     private lazy var model: ComponentsModel = {
         let model = ComponentsModel()

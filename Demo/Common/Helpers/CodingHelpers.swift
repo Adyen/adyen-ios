@@ -138,7 +138,7 @@ private struct JSONCodingKeys: CodingKey {
     internal var intValue: Int?
     
     internal init(value: String) {
-        self.stringValue = value
+        stringValue = value
     }
     
     internal init?(stringValue: String) {

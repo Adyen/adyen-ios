@@ -1,16 +1,14 @@
 //
-//  AdyenIntegration.swift
-//  Adyen
+// Copyright (c) 2021 Adyen N.V.
 //
-//  Created by Vladimir Abramichev on 05/02/2021.
-//  Copyright © 2021 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Adyen
 import AdyenActions
 import AdyenCard
-import AdyenDropIn
 import AdyenComponents
+import AdyenDropIn
 import UIKit
 
 internal protocol Presenter: AnyObject {
@@ -86,7 +84,7 @@ open class AdyenIntegrationController: HasAPIClient {
 
     // MARK: - Action handling
 
-    open func handle(_ action: Action) {
+    open func handle(_: Action) {
         assertionFailure("This is abstract method. Please, provide implementation in on higher descendant.")
     }
 

@@ -1,16 +1,14 @@
 //
-//  DropInIntegrationController.swift
-//  Adyen
+// Copyright (c) 2021 Adyen N.V.
 //
-//  Created by Vladimir Abramichev on 05/02/2021.
-//  Copyright © 2021 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Adyen
 import AdyenActions
 import AdyenCard
-import AdyenDropIn
 import AdyenComponents
+import AdyenDropIn
 import UIKit
 
 internal final class DropInIntegrationController: AdyenIntegrationController {
@@ -44,7 +42,7 @@ internal final class DropInIntegrationController: AdyenIntegrationController {
 
     // MARK: - Action handling
 
-    internal override func handle(_ action: Action) {
+    override internal func handle(_ action: Action) {
         guard paymentInProgress else { return }
         (currentComponent as? DropInComponent)?.handle(action)
     }

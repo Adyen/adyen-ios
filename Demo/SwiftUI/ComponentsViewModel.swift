@@ -4,20 +4,20 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import SwiftUI
 import Adyen
+import SwiftUI
 
 internal final class ComponentsViewModel: ObservableObject, Identifiable {
 
-    private lazy var model: PaymentsModel = {
-        let model = PaymentsModel()
+    private lazy var model: ComponentsModel = {
+        let model = ComponentsModel()
         model.presenter = self
         return model
     }()
 
     @Published internal var viewControllerToPresent: UIViewController?
 
-    @Published internal var items = [[ComponentsItem]]()
+    @Published internal var items = [[ComponentItem]]()
 
     // MARK: - DropIn Component
 

@@ -15,8 +15,9 @@ internal final class ComponentsView: UIView {
         
         tableView.adyen.anchore(inside: self)
     }
-    
-    internal required init?(coder aDecoder: NSCoder) {
+
+    @available(*, unavailable)
+    internal required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

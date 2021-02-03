@@ -44,7 +44,7 @@ internal struct PaymentMethodsResponse: Response {
     internal let paymentMethods: PaymentMethods
     
     internal init(from decoder: Decoder) throws {
-        self.paymentMethods = try PaymentMethods(from: decoder)
+        paymentMethods = try PaymentMethods(from: decoder)
     }
     
 }

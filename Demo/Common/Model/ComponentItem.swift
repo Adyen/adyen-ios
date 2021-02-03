@@ -14,7 +14,7 @@ internal struct ComponentItem: Hashable {
     
     internal init(title: String, present: (() -> Void)? = nil) {
         self.title = title
-        self.selectionHandler = present
+        selectionHandler = present
     }
 
     internal static func == (lhs: ComponentItem, rhs: ComponentItem) -> Bool {

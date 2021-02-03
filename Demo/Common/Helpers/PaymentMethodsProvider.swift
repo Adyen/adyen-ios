@@ -1,16 +1,14 @@
 //
-//  PaymentMethodsProvider.swift
-//  Adyen
+// Copyright (c) 2021 Adyen N.V.
 //
-//  Created by Vladimir Abramichev on 05/02/2021.
-//  Copyright © 2021 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Adyen
 
 internal protocol PaymentMethodsProvider {
 
-    typealias Callback = (Result<PaymentMethods, Error>)->Void
+    typealias Callback = (Result<PaymentMethods, Error>) -> Void
 
     func request(callback: @escaping Callback)
 

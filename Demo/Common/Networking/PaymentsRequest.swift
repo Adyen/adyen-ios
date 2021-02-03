@@ -68,8 +68,8 @@ internal struct PaymentsResponse: Response {
     
     internal init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.resultCode = try container.decode(ResultCode.self, forKey: .resultCode)
-        self.action = try container.decodeIfPresent(Action.self, forKey: .action)
+        resultCode = try container.decode(ResultCode.self, forKey: .resultCode)
+        action = try container.decodeIfPresent(Action.self, forKey: .action)
     }
     
     private enum CodingKeys: String, CodingKey {

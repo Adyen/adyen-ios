@@ -1,13 +1,11 @@
 //
-//  PaymentsViewModel.swift
-//  Adyen
+// Copyright (c) 2021 Adyen N.V.
 //
-//  Created by Vladimir Abramichev on 05/02/2021.
-//  Copyright © 2021 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import UIKit
 import Adyen
+import UIKit
 
 open class ComponentsModel {
 
@@ -51,7 +49,7 @@ open class ComponentsModel {
     }()
 
     internal func requestPaymentMethods() {
-        paymentMethodProvider.request { (result) in
+        paymentMethodProvider.request { result in
             switch result {
             case let .success(paymentMethods):
                 self.dropInIntegration.paymentMethods = paymentMethods

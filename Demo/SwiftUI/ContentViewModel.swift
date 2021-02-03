@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import SwiftUI
 import Adyen
+import SwiftUI
 
 internal final class ComponentsViewModel: ObservableObject, Identifiable {
 
