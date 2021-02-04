@@ -34,8 +34,8 @@ internal final class PaymentsController {
 
     // MARK: - Components
 
-    private lazy var actionComponent: AdyenActionHandler = {
-        let handler = AdyenActionHandler()
+    private lazy var actionComponent: AdyenActionComponent = {
+        let handler = AdyenActionComponent()
         handler.redirectComponentStyle = dropInComponentStyle.redirectComponent
         handler.delegate = self
         handler.presentationDelegate = self

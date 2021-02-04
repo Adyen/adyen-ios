@@ -23,6 +23,7 @@ jobs:
         
     - name: Resolve dependencies
       run: |
+        brew update
         brew install xcodegen
         brew upgrade carthage
 
