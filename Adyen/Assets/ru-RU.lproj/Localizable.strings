@@ -52,3 +52,10 @@
 "adyen.confirmPurchase" = "Подтвердить покупку";
 "adyen.lastName" = "Фамилия";
 "adyen.firstName" = "Имя";
+"adyen.voucher.merchantName" = "Продавец";
+"adyen.voucher.expirationDate" = "Срок действия";
+"adyen.voucher.paymentReferenceLabel" = "Код оплаты";
+"adyen.voucher.shopperName" = "Имя покупателя";
+"adyen.button.copy" = "Копия";
+"adyen.voucher.introduction" = "Благодарим за покупку. Для завершения оплаты используйте следующие сведения.";
+"adyen.voucher.readInstructions" = "Прочитайте инструкции";

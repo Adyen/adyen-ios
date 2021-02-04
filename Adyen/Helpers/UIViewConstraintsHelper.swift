@@ -6,7 +6,7 @@
 
 import UIKit
 
-/// Adds helper functionality to any `UIViewController` instance through the `adyen` property.
+/// Adds helper functionality to any `UIView` instance through the `adyen` property.
 /// :nodoc:
 extension AdyenScope where Base: UIView {
 

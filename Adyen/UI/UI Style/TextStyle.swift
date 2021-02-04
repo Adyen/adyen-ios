@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -44,10 +44,12 @@ public struct TextStyle: ViewStyle {
     
 }
 
+extension NSTextAlignment {}
+
 extension TextStyle: Equatable {
     
     public static func == (lhs: TextStyle, rhs: TextStyle) -> Bool {
-        return lhs.font == rhs.font &&
+        lhs.font == rhs.font &&
             lhs.color.cgColor == rhs.color.cgColor &&
             lhs.backgroundColor == rhs.backgroundColor &&
             lhs.textAlignment == rhs.textAlignment

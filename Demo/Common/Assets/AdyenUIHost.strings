@@ -47,3 +47,10 @@
 "adyen.emailItem.title" = "Email address -- Test";
 "adyen.emailItem.placeHolder" = "Email address -- Test";
 "adyen.emailItem.invalid" = "Invalid email address -- Test";
+"adyen.voucher.merchantName" = "Merchant -- Test";
+"adyen.voucher.expirationDate" = "Expiration Date -- Test";
+"adyen.voucher.paymentReferenceLabel" = "Payment Reference -- Test";
+"adyen.voucher.shopperName" = "Shopper Name -- Test";
+"adyen.button.copy" = "Copy -- Test";
+"adyen.voucher.introduction" = "Thank you for your purchase, please use the following information to complete your payment. -- Test";
+"adyen.voucher.readInstructions" = "Read instructions -- Test";

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -26,11 +26,6 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         }
         
         item.$selectedCard.publish(nil)
-    }
-    
-    @available(*, unavailable)
-    internal required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     private lazy var cardHintView: HintView = {

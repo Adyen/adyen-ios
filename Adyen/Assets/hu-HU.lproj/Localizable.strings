@@ -52,3 +52,10 @@
 "adyen.confirmPurchase" = "Fizetés jóváhagyása";
 "adyen.lastName" = "Vezetéknév";
 "adyen.firstName" = "Keresztnév";
+"adyen.voucher.merchantName" = "Kereskedő";
+"adyen.voucher.expirationDate" = "Lejárati dátum";
+"adyen.voucher.paymentReferenceLabel" = "Fizetési referencia";
+"adyen.voucher.shopperName" = "Vásárló neve";
+"adyen.button.copy" = "Másolás";
+"adyen.voucher.introduction" = "Köszönjük a vásárlást! Kérjük, a fizetéshez használja a következő információt.";
+"adyen.voucher.readInstructions" = "Olvassa el az utasításokat";

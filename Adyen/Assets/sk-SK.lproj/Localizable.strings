@@ -52,3 +52,10 @@
 "adyen.confirmPurchase" = "Potvrďte nákup";
 "adyen.lastName" = "Priezvisko";
 "adyen.firstName" = "Krstné meno";
+"adyen.voucher.merchantName" = "Predajca";
+"adyen.voucher.expirationDate" = "Dátum vypršania platnosti";
+"adyen.voucher.paymentReferenceLabel" = "Platobná referencia";
+"adyen.voucher.shopperName" = "Meno kupujúceho";
+"adyen.button.copy" = "Kopírovať";
+"adyen.voucher.introduction" = "Ďakujeme vám za nákup. Na dokončenie platby použite nasledujúce informácie.";
+"adyen.voucher.readInstructions" = "Prečítajte si pokyny";

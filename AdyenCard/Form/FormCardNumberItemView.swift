@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,11 +19,6 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     internal required init(item: FormCardNumberItem) {
         super.init(item: item)
         accessory = .customView(cardTypeLogosView)
-    }
-    
-    @available(*, unavailable)
-    internal required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     override internal func textFieldDidBeginEditing(_ text: UITextField) {
@@ -118,7 +113,7 @@ extension FormCardNumberItemView {
         }
         
         override internal var intrinsicContentSize: CGSize {
-            return cardSize
+            cardSize
         }
         
         override internal func layoutSubviews() {

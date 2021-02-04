@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -38,12 +38,13 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
     }
     
     /// :nodoc:
+    @available(*, unavailable)
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     private var textDelegate: FormTextItemViewDelegate? {
-        return delegate as? FormTextItemViewDelegate
+        delegate as? FormTextItemViewDelegate
     }
     
     // MARK: - Stack View
@@ -251,31 +252,31 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
     }
     
     override open var lastBaselineAnchor: NSLayoutYAxisAnchor {
-        return textField.lastBaselineAnchor
+        textField.lastBaselineAnchor
     }
     
     // MARK: - Interaction
     
     /// :nodoc:
     override open var canBecomeFirstResponder: Bool {
-        return textField.canBecomeFirstResponder
+        textField.canBecomeFirstResponder
     }
     
     /// :nodoc:
     @discardableResult
     override open func becomeFirstResponder() -> Bool {
-        return textField.becomeFirstResponder()
+        textField.becomeFirstResponder()
     }
     
     /// :nodoc:
     @discardableResult
     override open func resignFirstResponder() -> Bool {
-        return textField.resignFirstResponder()
+        textField.resignFirstResponder()
     }
     
     /// :nodoc:
     override open var isFirstResponder: Bool {
-        return textField.isFirstResponder
+        textField.isFirstResponder
     }
     
     // MARK: - UITextFieldDelegate
@@ -321,6 +322,7 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
     }
     
     private func hideAlertLabel(_ hidden: Bool) {
+        guard hidden || alertLabel.text != nil else { return }
         UIView.animateKeyframes(withDuration: 0.25,
                                 delay: 0,
                                 options: [.calculationModeLinear],
@@ -358,6 +360,7 @@ public extension FormTextItemView {
             setContentCompressionResistancePriority(.required, for: .horizontal)
         }
         
+        @available(*, unavailable)
         required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }

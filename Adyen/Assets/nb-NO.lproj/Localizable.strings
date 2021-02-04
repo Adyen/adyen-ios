@@ -52,3 +52,10 @@
 "adyen.confirmPurchase" = "Bekreft kjøp";
 "adyen.lastName" = "Etternavn";
 "adyen.firstName" = "Fornavn";
+"adyen.voucher.merchantName" = "Forhandler";
+"adyen.voucher.expirationDate" = "Utløpsdato";
+"adyen.voucher.paymentReferenceLabel" = "Betalingsreferanse";
+"adyen.voucher.shopperName" = "Kundenavn";
+"adyen.button.copy" = "Kopier";
+"adyen.voucher.introduction" = "Takk for ditt kjøp, vennligst bruk den følgende informasjonen for å fullføre betalingen.";
+"adyen.voucher.readInstructions" = "Les instruksjoner";

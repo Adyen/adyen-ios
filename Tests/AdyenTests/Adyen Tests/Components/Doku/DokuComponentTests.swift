@@ -1,5 +1,5 @@
 //
-//  DokuWalletComponentTests.swift
+//  DokuComponentTests.swift
 //  AdyenUIKitTests
 //
 //  Created by Mohamed Eldoheiri on 1/25/21.
@@ -10,13 +10,13 @@
 @testable import AdyenComponents
 import XCTest
 
-class DokuWalletComponentTests: XCTestCase {
+class DokuComponentTests: XCTestCase {
 
-    lazy var method = DokuWalletPaymentMethod(type: "test_type", name: "test_name")
+    lazy var method = DokuPaymentMethod(type: "test_type", name: "test_name")
     let payment = Payment(amount: Payment.Amount(value: 2, currencyCode: "IDR"), countryCode: "ID")
 
     func testLocalizationWithCustomTableName() {
-        let sut = DokuWalletComponent(paymentMethod: method)
+        let sut = DokuComponent(paymentMethod: method)
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
@@ -37,7 +37,7 @@ class DokuWalletComponentTests: XCTestCase {
     }
 
     func testLocalizationWithCustomKeySeparator() {
-        let sut = DokuWalletComponent(paymentMethod: method)
+        let sut = DokuComponent(paymentMethod: method)
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
 
@@ -82,7 +82,7 @@ class DokuWalletComponentTests: XCTestCase {
         style.textField.title.textAlignment = .center
         style.textField.backgroundColor = .red
 
-        let sut = DokuWalletComponent(paymentMethod: method, style: style)
+        let sut = DokuComponent(paymentMethod: method, style: style)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -90,26 +90,26 @@ class DokuWalletComponentTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
 
             /// Test firstName field
-            self.assertTextInputUI("AdyenComponents.DokuWalletComponent.firstNameItem",
+            self.assertTextInputUI("AdyenComponents.DokuComponent.firstNameItem",
                      view: sut.viewController.view,
                      style: style.textField,
                      isFirstField: true)
 
             /// Test lastName field
-            self.assertTextInputUI("AdyenComponents.DokuWalletComponent.lastNameItem",
+            self.assertTextInputUI("AdyenComponents.DokuComponent.lastNameItem",
                      view: sut.viewController.view,
                      style: style.textField,
                      isFirstField: false)
 
             /// Test email field
-            self.assertTextInputUI("AdyenComponents.DokuWalletComponent.emailItem",
+            self.assertTextInputUI("AdyenComponents.DokuComponent.emailItem",
                      view: sut.viewController.view,
                      style: style.textField,
                      isFirstField: false)
 
             /// Test submit button
-            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.DokuWalletComponent.payButtonItem.button")
-            let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.DokuWalletComponent.payButtonItem.button.titleLabel")
+            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.DokuComponent.payButtonItem.button")
+            let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.DokuComponent.payButtonItem.button.titleLabel")
 
             XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
             XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
@@ -143,7 +143,7 @@ class DokuWalletComponentTests: XCTestCase {
     }
 
     func testSubmitForm() {
-        let sut = DokuWalletComponent(paymentMethod: method)
+        let sut = DokuComponent(paymentMethod: method)
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         sut.payment = payment
@@ -167,15 +167,15 @@ class DokuWalletComponentTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         let dummyExpectation = expectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.DokuWalletComponent.payButtonItem.button")
+            let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.DokuComponent.payButtonItem.button")
 
-            let firstNameView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.DokuWalletComponent.firstNameItem")
+            let firstNameView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.DokuComponent.firstNameItem")
             self.populate(textItemView: firstNameView, with: "Mohamed")
 
-            let lastNameView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.DokuWalletComponent.lastNameItem")
+            let lastNameView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.DokuComponent.lastNameItem")
             self.populate(textItemView: lastNameView, with: "Smith")
 
-            let emailView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.DokuWalletComponent.emailItem")
+            let emailView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.DokuComponent.emailItem")
             self.populate(textItemView: emailView, with: "mohamed.smith@domain.com")
 
             submitButton?.sendActions(for: .touchUpInside)
@@ -193,13 +193,13 @@ class DokuWalletComponentTests: XCTestCase {
     }
 
     func testBigTitle() {
-        let sut = DokuWalletComponent(paymentMethod: method)
+        let sut = DokuComponent(paymentMethod: method)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.DokuWalletComponent.Test name"))
+            XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.DokuComponent.Test name"))
             XCTAssertEqual(sut.viewController.title, self.method.name)
             expectation.fulfill()
         }
@@ -207,8 +207,8 @@ class DokuWalletComponentTests: XCTestCase {
     }
 
     func testRequiresModalPresentation() {
-        let dokuPaymentMethod = DokuWalletPaymentMethod(type: "doku_wallet", name: "Test name")
-        let sut = DokuWalletComponent(paymentMethod: dokuPaymentMethod)
+        let dokuPaymentMethod = DokuPaymentMethod(type: "doku_wallet", name: "Test name")
+        let sut = DokuComponent(paymentMethod: dokuPaymentMethod)
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 

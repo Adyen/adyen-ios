@@ -52,3 +52,10 @@
 "adyen.confirmPurchase" = "Επιβεβαίωση αγοράς";
 "adyen.lastName" = "Επώνυμο";
 "adyen.firstName" = "Όνομα";
+"adyen.voucher.merchantName" = "Έμπορος";
+"adyen.voucher.expirationDate" = "Ημερομηνία λήξης";
+"adyen.voucher.paymentReferenceLabel" = "Αναφορά πληρωμής";
+"adyen.voucher.shopperName" = "Όνομα αγοραστή";
+"adyen.button.copy" = "Αντιγραφή";
+"adyen.voucher.introduction" = "Σας ευχαριστούμε για την αγορά. Χρησιμοποιήστε τις ακόλουθες πληροφορίες για να ολοκληρώσετε την πληρωμή.";
+"adyen.voucher.readInstructions" = "Διαβάστε τις οδηγίες";

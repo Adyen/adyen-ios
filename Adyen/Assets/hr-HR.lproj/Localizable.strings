@@ -52,3 +52,10 @@
 "adyen.confirmPurchase" = "Potvrdite kupnju";
 "adyen.lastName" = "Prezime";
 "adyen.firstName" = "Ime";
+"adyen.voucher.merchantName" = "Trgovac";
+"adyen.voucher.expirationDate" = "Datum isteka";
+"adyen.voucher.paymentReferenceLabel" = "Referenca za plaćanje";
+"adyen.voucher.shopperName" = "Ime kupca";
+"adyen.button.copy" = "Kopiraj";
+"adyen.voucher.introduction" = "Zahvaljujemo na kupnji, upotrijebite sljedeće podatke za dovršetak plaćanja.";
+"adyen.voucher.readInstructions" = "Pročitajte upute";
