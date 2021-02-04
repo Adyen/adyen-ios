@@ -57,3 +57,5 @@
 "adyen.voucher.paymentReferenceLabel" = "Maksun viite";
 "adyen.voucher.shopperName" = "Ostajan nimi";
 "adyen.button.copy" = "Kopio";
+"adyen.voucher.introduction" = "Kiitos hankinnastasi, käytä seuraavia tietoja päättääksesi maksusi.";
+"adyen.voucher.readInstructions" = "Lue ohjeet";

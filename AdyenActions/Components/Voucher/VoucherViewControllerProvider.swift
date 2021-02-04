@@ -42,8 +42,13 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
                                               environment: .test,
                                               size: .medium)
         let separatorTitle = ADYLocalizedString("adyen.voucher.paymentReferenceLabel", localizationParameters)
-        return DokuVoucherView.Model(title: "Amount",
-                                     subtitle: amountString,
+        let text = ADYLocalizedString("adyen.voucher.introduction", localizationParameters)
+        let instructionTitle = ADYLocalizedString("adyen.voucher.readInstructions", localizationParameters)
+        let instruction = DokuVoucherView.Model.Instruction(title: instructionTitle,
+                                                            url: URL(string: action.instructionsUrl))
+        return DokuVoucherView.Model(text: text,
+                                     amount: amountString,
+                                     instruction: instruction,
                                      code: action.reference,
                                      fields: fields,
                                      logoUrl: logoUrl,

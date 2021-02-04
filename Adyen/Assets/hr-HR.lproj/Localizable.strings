@@ -57,3 +57,5 @@
 "adyen.voucher.paymentReferenceLabel" = "Referenca za plaćanje";
 "adyen.voucher.shopperName" = "Ime kupca";
 "adyen.button.copy" = "Kopiraj";
+"adyen.voucher.introduction" = "Zahvaljujemo na kupnji, upotrijebite sljedeće podatke za dovršetak plaćanja.";
+"adyen.voucher.readInstructions" = "Pročitajte upute";

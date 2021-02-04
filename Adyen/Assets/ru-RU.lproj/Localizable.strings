@@ -57,3 +57,5 @@
 "adyen.voucher.paymentReferenceLabel" = "Код оплаты";
 "adyen.voucher.shopperName" = "Имя покупателя";
 "adyen.button.copy" = "Копия";
+"adyen.voucher.introduction" = "Благодарим за покупку. Для завершения оплаты используйте следующие сведения.";
+"adyen.voucher.readInstructions" = "Прочитайте инструкции";

@@ -57,3 +57,5 @@
 "adyen.voucher.paymentReferenceLabel" = "Fizetési referencia";
 "adyen.voucher.shopperName" = "Vásárló neve";
 "adyen.button.copy" = "Másolás";
+"adyen.voucher.introduction" = "Köszönjük a vásárlást! Kérjük, a fizetéshez használja a következő információt.";
+"adyen.voucher.readInstructions" = "Olvassa el az utasításokat";

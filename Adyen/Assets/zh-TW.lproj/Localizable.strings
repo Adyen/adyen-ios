@@ -57,3 +57,5 @@
 "adyen.voucher.paymentReferenceLabel" = "付款參照號碼";
 "adyen.voucher.shopperName" = "購物者姓名";
 "adyen.button.copy" = "複製";
+"adyen.voucher.introduction" = "多謝惠顧，請使用以下資訊完成付款。";
+"adyen.voucher.readInstructions" = "閱覽說明";

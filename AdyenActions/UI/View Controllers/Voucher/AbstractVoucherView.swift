@@ -31,6 +31,23 @@ internal class AbstractVoucherView: UIView, Localizable {
         return BaseVoucherView(topView: topView, bottomView: bottomView)
     }()
 
+    private lazy var saveButton: UIButton = {
+        let saveButton = UIButton()
+        saveButton.setTitle("save", for: .normal)
+        saveButton.imageEdgeInsets = UIEdgeInsets(top: 8, left: -2, bottom: 8, right: 8)
+        saveButton.titleEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: -2)
+        saveButton.setImage(UIImage(named: "share",
+                                    in: Bundle.actionsInternalResources,
+                                    compatibleWith: nil), for: .normal)
+
+        saveButton.layer.backgroundColor = UIColor.Adyen.defaultBlue.cgColor
+        saveButton.layer.cornerRadius = 8
+        saveButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        saveButton.addTarget(self, action: #selector(shareVoucher), for: .touchUpInside)
+
+        return saveButton
+    }()
+
     private let model: VoucherSeparatorView.Model
 
     internal init(model: VoucherSeparatorView.Model = VoucherSeparatorView.Model()) {
@@ -63,25 +80,12 @@ internal class AbstractVoucherView: UIView, Localizable {
     }
 
     private func addShareButton() {
-        let saveButton = UIButton()
-        saveButton.setTitle("save", for: .normal)
-        saveButton.imageEdgeInsets = UIEdgeInsets(top: 8, left: -2, bottom: 8, right: 8)
-        saveButton.titleEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: -2)
-        saveButton.setImage(UIImage(named: "share",
-                                    in: Bundle.actionsInternalResources,
-                                    compatibleWith: nil), for: .normal)
-
-        saveButton.layer.backgroundColor = UIColor(red: 0, green: 0.478, blue: 1, alpha: 1).cgColor
-        saveButton.layer.cornerRadius = 8
-
         addSubview(saveButton)
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         saveButton.leftAnchor.constraint(equalTo: leftAnchor, constant: 18).isActive = true
         saveButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -18).isActive = true
         saveButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -60).isActive = true
         saveButton.topAnchor.constraint(equalTo: voucherView.bottomAnchor, constant: 30).isActive = true
-        saveButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        saveButton.addTarget(self, action: #selector(shareVoucher), for: .touchUpInside)
     }
 
     @objc private func shareVoucher() {

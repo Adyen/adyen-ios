@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,13 +19,8 @@ internal final class FormPhoneNumberItemView: FormTextItemView<FormPhoneNumberIt
     }
     
     /// :nodoc:
-    internal required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    /// :nodoc:
     override internal var childItemViews: [AnyFormItemView] {
-        return [phoneExtensionView]
+        [phoneExtensionView]
     }
     
     // MARK: - Private

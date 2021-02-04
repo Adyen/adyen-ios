@@ -22,11 +22,14 @@ class DokuVoucherUITests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = viewController
 
-        let titleLabel: UILabel! = viewController.view.findView(by: "adyen.dokuVoucher.titleLabel")
-        XCTAssertEqual(titleLabel.text, "Amount")
+        let textLabel: UILabel! = viewController.view.findView(by: "adyen.dokuVoucher.textLabel")
+        XCTAssertEqual(textLabel.text, "Thank you for your purchase, please use the following information to complete your payment.")
 
-        let subTitleLabel: UILabel! = viewController.view.findView(by: "adyen.dokuVoucher.subtitleLabel")
-        XCTAssertEqual(subTitleLabel.text, AmountFormatter.formatted(amount: dokuAction.totalAmount.value,
+        let instructionButton: UIButton! = viewController.view.findView(by: "adyen.dokuVoucher.instructionButton")
+        XCTAssertEqual(instructionButton.titleLabel?.text, "Read instructions")
+
+        let amountLabel: UILabel! = viewController.view.findView(by: "adyen.dokuVoucher.amountLabel")
+        XCTAssertEqual(amountLabel.text, AmountFormatter.formatted(amount: dokuAction.totalAmount.value,
                                                                   currencyCode: dokuAction.totalAmount.currencyCode))
 
         let expireyKeyLabel: UILabel! = viewController.view.findView(by: "adyen.dokuVoucher.expirationKeyLabel")
@@ -58,11 +61,14 @@ class DokuVoucherUITests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = viewController
 
-        let titleLabel: UILabel! = viewController.view.findView(by: "adyen.dokuVoucher.titleLabel")
-        XCTAssertEqual(titleLabel.text, "Amount")
+        let textLabel: UILabel! = viewController.view.findView(by: "adyen.dokuVoucher.textLabel")
+        XCTAssertEqual(textLabel.text, "Thank you for your purchase, please use the following information to complete your payment.")
 
-        let subTitleLabel: UILabel! = viewController.view.findView(by: "adyen.dokuVoucher.subtitleLabel")
-        XCTAssertEqual(subTitleLabel.text, AmountFormatter.formatted(amount: dokuAction.totalAmount.value,
+        let instructionButton: UIButton! = viewController.view.findView(by: "adyen.dokuVoucher.instructionButton")
+        XCTAssertEqual(instructionButton.titleLabel?.text, "Read instructions")
+
+        let amountLabel: UILabel! = viewController.view.findView(by: "adyen.dokuVoucher.amountLabel")
+        XCTAssertEqual(amountLabel.text, AmountFormatter.formatted(amount: dokuAction.totalAmount.value,
                                                                   currencyCode: dokuAction.totalAmount.currencyCode))
 
         let expireyKeyLabel: UILabel! = viewController.view.findView(by: "adyen.dokuVoucher.expirationKeyLabel")

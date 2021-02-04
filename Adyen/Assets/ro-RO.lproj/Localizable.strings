@@ -57,3 +57,5 @@
 "adyen.voucher.paymentReferenceLabel" = "Referința plății";
 "adyen.voucher.shopperName" = "Nume cumpărător";
 "adyen.button.copy" = "Copiere";
+"adyen.voucher.introduction" = "Vă mulțumim pentru cumpărături, vă rugăm să utilizați următoarele informații pentru a vă finaliza plata.";
+"adyen.voucher.readInstructions" = "Citiți instrucțiunile";
