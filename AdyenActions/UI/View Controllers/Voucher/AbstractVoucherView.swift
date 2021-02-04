@@ -24,11 +24,11 @@ internal class AbstractVoucherView: UIView, Localizable {
         return viewController
     }()
 
-    private lazy var voucherView: BaseVoucherView = {
+    private lazy var voucherView: VoucherCardView = {
         let topView = createTopView()
         let bottomView = createBottomView()
 
-        return BaseVoucherView(topView: topView, bottomView: bottomView)
+        return VoucherCardView(topView: topView, bottomView: bottomView)
     }()
 
     private lazy var saveButton: UIButton = {
