@@ -57,3 +57,5 @@
 "adyen.voucher.paymentReferenceLabel" = "Riferimento del pagamento";
 "adyen.voucher.shopperName" = "Nome dell'acquirente";
 "adyen.button.copy" = "Copia";
+"adyen.voucher.introduction" = "Grazie per il tuo acquisto, utilizza i seguenti dati per completare il pagamento.";
+"adyen.voucher.readInstructions" = "Leggi le istruzioni";

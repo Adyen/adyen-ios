@@ -20,9 +20,18 @@ extension DokuVoucherView {
 
     internal struct Model {
 
-        internal let title: String
+        internal struct Instruction {
 
-        internal let subtitle: String?
+            internal let title: String
+
+            internal let url: URL?
+        }
+
+        internal let text: String
+
+        internal let amount: String?
+
+        internal let instruction: Instruction
 
         internal let code: String
 
@@ -34,13 +43,17 @@ extension DokuVoucherView {
 
         internal struct Style {
 
-            internal var title = TextStyle(font: .systemFont(ofSize: 13),
-                                           color: UIColor.Adyen.componentLabel,
-                                           textAlignment: .center)
+            internal var text = TextStyle(font: .systemFont(ofSize: 13),
+                                          color: UIColor.Adyen.componentLabel,
+                                          textAlignment: .center)
 
-            internal var subtitle = TextStyle(font: .boldSystemFont(ofSize: 16),
-                                              color: UIColor.Adyen.componentLabel,
-                                              textAlignment: .center)
+            internal var instruction = TextStyle(font: .systemFont(ofSize: 9),
+                                                 color: UIColor.Adyen.componentLabel,
+                                                 textAlignment: .center)
+
+            internal var amount = TextStyle(font: .boldSystemFont(ofSize: 16),
+                                            color: UIColor.Adyen.componentLabel,
+                                            textAlignment: .center)
 
             internal var codeText = TextStyle(font: .boldSystemFont(ofSize: 24),
                                               color: UIColor.Adyen.componentLabel,
@@ -57,12 +70,15 @@ extension DokuVoucherView {
 
 internal final class DokuVoucherView: AbstractVoucherView {
 
-    private lazy var titleLabel: UILabel = {
-        createLabel(with: model.style.title, text: model.title, identifier: "titleLabel")
+    private lazy var textLabel: UILabel = {
+        let label = createLabel(with: model.style.text, text: model.text, identifier: "textLabel")
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        return label
     }()
 
-    private lazy var subtitleLabel: UILabel = {
-        createLabel(with: model.style.subtitle, text: model.subtitle, identifier: "subtitleLabel")
+    private lazy var amountLabel: UILabel = {
+        createLabel(with: model.style.amount, text: model.amount, identifier: "amountLabel")
     }()
 
     private let model: Model
@@ -78,15 +94,41 @@ internal final class DokuVoucherView: AbstractVoucherView {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.preservesSuperviewLayoutMargins = true
         imageView.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
 
         return imageView
     }()
 
+    private lazy var instructionButton: UIButton = {
+        let button = UIButton()
+        button.setTitle(model.instruction.title, for: .normal)
+        button.titleLabel?.font = model.style.instruction.font
+        button.setTitleColor(UIColor.Adyen.defaultBlue, for: .normal)
+        button.backgroundColor = .clear
+        button.layer.borderColor = UIColor.Adyen.defaultBlue.cgColor
+        button.layer.borderWidth = 1
+        button.layer.cornerRadius = 10
+        button.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        button.addTarget(self, action: #selector(openInstructions), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.dokuVoucher", postfix: "instructionButton")
+
+        return button
+    }()
+
+    @objc private func openInstructions() {
+        guard let url = model.instruction.url else { return }
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    }
+
     override internal func createTopView() -> UIView {
         logoView.imageURL = model.logoUrl
-        let stackView = UIStackView(arrangedSubviews: [logoView, titleLabel, subtitleLabel])
-        stackView.spacing = 8
+        let stackView = UIStackView(arrangedSubviews: [logoView,
+                                                       textLabel,
+                                                       instructionButton,
+                                                       amountLabel])
+        stackView.spacing = 16
         stackView.distribution = .equalSpacing
         stackView.axis = .vertical
         stackView.alignment = .center
@@ -122,7 +164,7 @@ internal final class DokuVoucherView: AbstractVoucherView {
     }
 
     private func createKeyValueView(key: String, value: String, identifier: String) -> UIView {
-        let keyLabel = createLabel(with: model.style.title, text: key, identifier: identifier + "KeyLabel")
+        let keyLabel = createLabel(with: model.style.text, text: key, identifier: identifier + "KeyLabel")
         let valueLabel = createLabel(with: model.style.fieldValueText, text: value, identifier: identifier + "ValueLabel")
 
         keyLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -159,6 +201,7 @@ internal final class DokuVoucherView: AbstractVoucherView {
         label.isAccessibilityElement = false
         label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.dokuVoucher", postfix: identifier)
         label.lineBreakMode = .byTruncatingTail
+        label.numberOfLines = 1
 
         return label
     }

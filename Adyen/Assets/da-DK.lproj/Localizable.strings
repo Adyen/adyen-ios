@@ -57,3 +57,5 @@
 "adyen.voucher.paymentReferenceLabel" = "Betalingsreference";
 "adyen.voucher.shopperName" = "Kundenavn";
 "adyen.button.copy" = "Kopiér";
+"adyen.voucher.introduction" = "Tak for dit køb. Brug følgende oplysninger til at gennemføre din betaling.";
+"adyen.voucher.readInstructions" = "Læs anvisningerne";

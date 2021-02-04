@@ -57,3 +57,5 @@
 "adyen.voucher.paymentReferenceLabel" = "Číslo platby";
 "adyen.voucher.shopperName" = "Jméno kupujícího";
 "adyen.button.copy" = "Kopírovat";
+"adyen.voucher.introduction" = "Děkujeme za nákup. K dokončení platby použijte prosím následující informace.";
+"adyen.voucher.readInstructions" = "Přečtěte si pokyny";
