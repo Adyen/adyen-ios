@@ -2741,7 +2741,7 @@
 		F97C851425C1928500D7F85C /* Voucher */ = {
 			isa = PBXGroup;
 			children = (
-				F97C853B25C1AB7E00D7F85C /* Doku Indomaret */,
+				F97C853B25C1AB7E00D7F85C /* Doku */,
 				F97C851525C192D000D7F85C /* VoucherViewController.swift */,
 				F97C855925C1ABD700D7F85C /* VoucherCardView.swift */,
 				F9B997C925C949AC00891084 /* VoucherCardLayer.swift */,
@@ -2751,13 +2751,13 @@
 			path = Voucher;
 			sourceTree = "<group>";
 		};
-		F97C853B25C1AB7E00D7F85C /* Doku Indomaret */ = {
+		F97C853B25C1AB7E00D7F85C /* Doku */ = {
 			isa = PBXGroup;
 			children = (
 				F97C853C25C1ABA400D7F85C /* DokuVoucherView.swift */,
 				F9FE13DF25CBF6870067B593 /* DokuVoucherViewModel.swift */,
 			);
-			path = "Doku Indomaret";
+			path = Doku;
 			sourceTree = "<group>";
 		};
 		F9842CC8256FD0770063CE5A /* Action handlers */ = {

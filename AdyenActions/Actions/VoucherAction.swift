@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 
 /// Indicates the Voucher payment methods.
-public enum VoucherPaymentMethod: String, Decodable {
+public enum VoucherPaymentMethod: String, Decodable, CaseIterable {
     case dokuIndomaret = "doku_indomaret"
     case dokuAlfamart = "doku_alfamart"
 }
