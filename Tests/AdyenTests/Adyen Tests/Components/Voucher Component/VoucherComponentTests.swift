@@ -17,6 +17,7 @@ class VoucherComponentTests: XCTestCase {
         let viewControllerProvider = VoucherViewControllerProviderMock()
         let presentationDelegate = PresentationDelegateMock()
         let sut = VoucherComponent(voucherViewControllerProvider: viewControllerProvider)
+        sut.localizationParameters = LocalizationParameters(tableName: "test_table")
         sut.presentationDelegate = presentationDelegate
 
         let action = try Coder.decode(dokuIndomaretAction) as VoucherAction
@@ -39,6 +40,7 @@ class VoucherComponentTests: XCTestCase {
         }
 
         sut.handle(action)
+        XCTAssertEqual(viewControllerProvider.localizationParameters?.tableName, "test_table")
 
         waitForExpectations(timeout: 2, handler: nil)
     }

@@ -497,6 +497,7 @@
 		F9EDB79E2397AEF400CFB3C9 /* ComponentManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB79D2397AEF400CFB3C9 /* ComponentManagerTests.swift */; };
 		F9EDB7A02397BD8500CFB3C9 /* TestPaymentMethodsJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB79F2397BD8500CFB3C9 /* TestPaymentMethodsJson.swift */; };
 		F9FE13E025CBF6870067B593 /* DokuVoucherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE13DF25CBF6870067B593 /* DokuVoucherViewModel.swift */; };
+		F9FE13F425CC0E3C0067B593 /* VoucherViewControllerProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE13F325CC0E3C0067B593 /* VoucherViewControllerProviderTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1196,6 +1197,7 @@
 		F9EDB79D2397AEF400CFB3C9 /* ComponentManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentManagerTests.swift; sourceTree = "<group>"; };
 		F9EDB79F2397BD8500CFB3C9 /* TestPaymentMethodsJson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPaymentMethodsJson.swift; sourceTree = "<group>"; };
 		F9FE13DF25CBF6870067B593 /* DokuVoucherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuVoucherViewModel.swift; sourceTree = "<group>"; };
+		F9FE13F325CC0E3C0067B593 /* VoucherViewControllerProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherViewControllerProviderTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2844,6 +2846,7 @@
 			children = (
 				F9C5F0DC25CAB8FC005A6E54 /* VoucherComponentTests.swift */,
 				F9C5F0F025CAB917005A6E54 /* VoucherViewControllerProviderMock.swift */,
+				F9FE13F325CC0E3C0067B593 /* VoucherViewControllerProviderTests.swift */,
 			);
 			path = "Voucher Component";
 			sourceTree = "<group>";
@@ -3831,6 +3834,7 @@
 				F9639B4924E28DC80073F38A /* IntervalCalculatorMock.swift in Sources */,
 				F919DFA024EABCC10027976E /* StoredCardComponentTests.swift in Sources */,
 				E773EA3A25221C4600119499 /* ThrottlerTests.swift in Sources */,
+				F9FE13F425CC0E3C0067B593 /* VoucherViewControllerProviderTests.swift in Sources */,
 				F9EDB78F23964FC000CFB3C9 /* StoredCardAlertManagerTests.swift in Sources */,
 				F9AC61C2243751A70062A00D /* ActionComponentDelegateMock.swift in Sources */,
 				F957AA462552C3D20099AD73 /* ThreeDS2FingerprintSubmitterTests.swift in Sources */,
