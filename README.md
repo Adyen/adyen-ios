@@ -83,6 +83,8 @@ let configuration = DropInComponent.PaymentMethodsConfiguration()
 configuration.clientKey = "..." // Your client key, retrieved from the Customer Area.
 ```
 
+Also for voucher payment methods like Doku variants, in order for the `DokuComponent` to enable the shopper to save the voucher, access to the shopper photos is requested, so a suitable text need to be added to key  `NSPhotoLibraryAddUsageDescription` in the application Info.plist.
+
 After serializing the payment methods and creating the configuration, the Drop-in is ready to be initialized. Assign a `delegate` and use the `viewController` property to present the Drop-in on the screen:
 
 ```swift

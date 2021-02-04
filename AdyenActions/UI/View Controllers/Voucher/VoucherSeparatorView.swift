@@ -13,7 +13,7 @@ extension VoucherSeparatorView {
     internal struct Model {
         internal var separatorTitle: String? = "Payment code"
 
-        internal var separatorTitlestyle = TextStyle(font: .systemFont(ofSize: 13),
+        internal var separatorStyle = TextStyle(font: .systemFont(ofSize: 13),
                                                      color: UIColor.Adyen.componentLabel,
                                                      textAlignment: .center)
     }
@@ -82,7 +82,7 @@ internal final class VoucherSeparatorView: UIView {
         leftSeparatorLayer.frame = leftSeparatorLayerFrame
         separatorTextLayer.frame = separatorTextLayerFrame
 
-        separatorTextLayer.foregroundColor = model.separatorTitlestyle.color.cgColor
+        separatorTextLayer.foregroundColor = model.separatorStyle.color.cgColor
     }
 
     private func buildUI() {
@@ -101,7 +101,7 @@ internal final class VoucherSeparatorView: UIView {
 
     private func buildSeparatorTextLayer() {
         guard let text = model.separatorTitle else { return }
-        let style = model.separatorTitlestyle
+        let style = model.separatorStyle
         separatorTextLayer.font = style.font
         separatorTextLayer.fontSize = style.font.pointSize
         separatorTextLayer.alignmentMode = style.textAlignment.adyen.caAlignmentMode
