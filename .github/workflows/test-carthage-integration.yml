@@ -20,7 +20,14 @@ jobs:
       uses: maxim-lobanov/setup-xcode@v1
       with:
         xcode-version: latest-stable
+        
+    - name: Resolve dependencies
+      run: |
+        brew update
+        brew install xcodegen
+        brew upgrade carthage
 
     - name: Test Carthage Integration
       run: |
-        ./test-carthage-integration.sh
+        carthage version
+        Scripts/test-carthage-integration.sh

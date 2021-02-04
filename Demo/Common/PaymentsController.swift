@@ -34,8 +34,8 @@ internal final class PaymentsController {
 
     // MARK: - Components
 
-    private lazy var actionComponent: DropInActionComponent = {
-        let handler = DropInActionComponent()
+    private lazy var actionComponent: AdyenActionComponent = {
+        let handler = AdyenActionComponent()
         handler.redirectComponentStyle = dropInComponentStyle.redirectComponent
         handler.delegate = self
         handler.presentationDelegate = self
@@ -213,11 +213,6 @@ internal final class PaymentsController {
 
     private func handle(_ action: Action) {
         guard paymentInProgress else { return }
-
-        if let dropInComponent = currentComponent as? DropInComponent {
-            return dropInComponent.handle(action)
-        }
-
         actionComponent.perform(action)
     }
 
