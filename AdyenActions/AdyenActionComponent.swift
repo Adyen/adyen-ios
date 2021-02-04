@@ -1,18 +1,15 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Adyen
-#if canImport(AdyenCard)
-    import AdyenCard
-#endif
 import Foundation
 import UIKit
 
-/// A drop-in component to perform any supported action out of the box.
-public final class AdyenActionHandler: ActionComponent, Localizable {
+/// An action handler component to perform any supported action out of the box.
+public final class AdyenActionComponent: ActionComponent, Localizable {
     
     /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
@@ -51,12 +48,12 @@ public final class AdyenActionHandler: ActionComponent, Localizable {
             perform(sdkAction)
         case let .await(awaitAction):
             perform(awaitAction)
-        case let .voucher(voucherAction):
-            perform(voucherAction)
+        case let .voucher(voucher):
+            perform(voucher)
         }
     }
     
-    /// Dismiss any `DismissableComponent` managed by the `DropInActionComponent`, for example when payment has concluded.
+    /// Dismiss any `DismissableComponent` managed by the `AdyenActionsComponent`, for example when payment has concluded.
     ///
     /// - Parameter animated: A boolean indicating whether to dismiss with animation or not.
     /// - Parameter completion: A closure to execute when dismissal animation has completed.
@@ -67,8 +64,8 @@ public final class AdyenActionHandler: ActionComponent, Localizable {
     // MARK: - Private
     
     private var redirectComponent: RedirectComponent?
-    private var threeDS2Component: ThreeDS2Component?
-    private var weChatPaySDKActionComponent: AnyWeChatPaySDKActionComponent?
+    internal var threeDS2Component: ThreeDS2Component?
+    internal var weChatPaySDKActionComponent: AnyWeChatPaySDKActionComponent?
     private var awaitComponent: AwaitComponent?
     private var voucherComponent: VoucherComponent?
     
@@ -135,7 +132,7 @@ public final class AdyenActionHandler: ActionComponent, Localizable {
     private func perform(_ action: AwaitAction) {
         guard environment.clientKey != nil else {
             // swiftlint:disable:next line_length
-            assertionFailure("Failed to instantiate AwaitComponent because client key is not configured. Please supply the client key in the PaymentMethodsConfiguration if using DropInComponent, or DropInActionComponent.clientKey if using DropInActionComponent separately.")
+            assertionFailure("Failed to instantiate AwaitComponent because client key is not configured. Please supply the client key in the PaymentMethodsConfiguration if using DropInComponent, or AdyenActionsComponent.clientKey if using AdyenActionsComponent separately.")
             return
         }
         let component = AwaitComponent(style: awaitComponentStyle)
@@ -149,7 +146,7 @@ public final class AdyenActionHandler: ActionComponent, Localizable {
         component.handle(action)
         awaitComponent = component
     }
-
+    
     private func perform(_ action: VoucherAction) {
         let component = VoucherComponent(style: awaitComponentStyle)
         component._isDropIn = _isDropIn
@@ -162,5 +159,5 @@ public final class AdyenActionHandler: ActionComponent, Localizable {
         component.handle(action)
         voucherComponent = component
     }
-    
+
 }
