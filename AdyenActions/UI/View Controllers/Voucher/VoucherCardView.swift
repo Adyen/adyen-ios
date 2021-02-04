@@ -9,7 +9,7 @@ import CoreGraphics
 import QuartzCore
 import UIKit
 
-internal class BaseVoucherView: UIView {
+internal class VoucherCardView: UIView {
 
     private lazy var containerLayer = VoucherCardLayer()
 

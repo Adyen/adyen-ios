@@ -417,7 +417,7 @@
 		F97C850125C17CCD00D7F85C /* VoucherViewControllerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C850025C17CCD00D7F85C /* VoucherViewControllerProvider.swift */; };
 		F97C851625C192D000D7F85C /* VoucherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C851525C192D000D7F85C /* VoucherViewController.swift */; };
 		F97C853D25C1ABA400D7F85C /* DokuVoucherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C853C25C1ABA400D7F85C /* DokuVoucherView.swift */; };
-		F97C855A25C1ABD700D7F85C /* BaseVoucherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C855925C1ABD700D7F85C /* BaseVoucherView.swift */; };
+		F97C855A25C1ABD700D7F85C /* VoucherCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C855925C1ABD700D7F85C /* VoucherCardView.swift */; };
 		F97C857725C1D5BA00D7F85C /* UIViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C857625C1D5BA00D7F85C /* UIViewHelpers.swift */; };
 		F97CCD3A2435E35E00BC560A /* UIViewControllerHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97CCD392435E35E00BC560A /* UIViewControllerHelpers.swift */; };
 		F97CCD3C24360A4000BC560A /* BundleHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97CCD3B24360A4000BC560A /* BundleHelpers.swift */; };
@@ -496,6 +496,7 @@
 		F9EDB79C2396652000CFB3C9 /* StoredPaymentMethodMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB79B2396652000CFB3C9 /* StoredPaymentMethodMock.swift */; };
 		F9EDB79E2397AEF400CFB3C9 /* ComponentManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB79D2397AEF400CFB3C9 /* ComponentManagerTests.swift */; };
 		F9EDB7A02397BD8500CFB3C9 /* TestPaymentMethodsJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB79F2397BD8500CFB3C9 /* TestPaymentMethodsJson.swift */; };
+		F9FE13E025CBF6870067B593 /* DokuVoucherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE13DF25CBF6870067B593 /* DokuVoucherViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1115,7 +1116,7 @@
 		F97C850025C17CCD00D7F85C /* VoucherViewControllerProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherViewControllerProvider.swift; sourceTree = "<group>"; };
 		F97C851525C192D000D7F85C /* VoucherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherViewController.swift; sourceTree = "<group>"; };
 		F97C853C25C1ABA400D7F85C /* DokuVoucherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuVoucherView.swift; sourceTree = "<group>"; };
-		F97C855925C1ABD700D7F85C /* BaseVoucherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseVoucherView.swift; sourceTree = "<group>"; };
+		F97C855925C1ABD700D7F85C /* VoucherCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherCardView.swift; sourceTree = "<group>"; };
 		F97C857625C1D5BA00D7F85C /* UIViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewHelpers.swift; sourceTree = "<group>"; };
 		F97CCD392435E35E00BC560A /* UIViewControllerHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerHelpers.swift; sourceTree = "<group>"; };
 		F97CCD3B24360A4000BC560A /* BundleHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleHelpers.swift; sourceTree = "<group>"; };
@@ -1194,6 +1195,7 @@
 		F9EDB79B2396652000CFB3C9 /* StoredPaymentMethodMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredPaymentMethodMock.swift; sourceTree = "<group>"; };
 		F9EDB79D2397AEF400CFB3C9 /* ComponentManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentManagerTests.swift; sourceTree = "<group>"; };
 		F9EDB79F2397BD8500CFB3C9 /* TestPaymentMethodsJson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPaymentMethodsJson.swift; sourceTree = "<group>"; };
+		F9FE13DF25CBF6870067B593 /* DokuVoucherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuVoucherViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2711,7 +2713,7 @@
 			children = (
 				F97C853B25C1AB7E00D7F85C /* Doku Indomaret */,
 				F97C851525C192D000D7F85C /* VoucherViewController.swift */,
-				F97C855925C1ABD700D7F85C /* BaseVoucherView.swift */,
+				F97C855925C1ABD700D7F85C /* VoucherCardView.swift */,
 				F9B997C925C949AC00891084 /* VoucherCardLayer.swift */,
 				F95A78CC25C43C4F0032CF7E /* VoucherSeparatorView.swift */,
 				F95A78B825C4302A0032CF7E /* AbstractVoucherView.swift */,
@@ -2723,6 +2725,7 @@
 			isa = PBXGroup;
 			children = (
 				F97C853C25C1ABA400D7F85C /* DokuVoucherView.swift */,
+				F9FE13DF25CBF6870067B593 /* DokuVoucherViewModel.swift */,
 			);
 			path = "Doku Indomaret";
 			sourceTree = "<group>";
@@ -3987,7 +3990,7 @@
 				F917617325A30B6A00D653BE /* ThreeDS2ClassicActionHandler.swift in Sources */,
 				F9175FB82594996000D653BE /* ThreeDS2Action.swift in Sources */,
 				F917615E25A30B6400D653BE /* AnyADYTransaction.swift in Sources */,
-				F97C855A25C1ABD700D7F85C /* BaseVoucherView.swift in Sources */,
+				F97C855A25C1ABD700D7F85C /* VoucherCardView.swift in Sources */,
 				F97C84CD25C1761900D7F85C /* VoucherAction.swift in Sources */,
 				F97C853D25C1ABA400D7F85C /* DokuVoucherView.swift in Sources */,
 				F9175FB72594996000D653BE /* ThreeDS2ChallengeAction.swift in Sources */,
@@ -4014,6 +4017,7 @@
 				F917617125A30B6A00D653BE /* ThreeDS2CompactActionHandler.swift in Sources */,
 				F9B997CA25C949AC00891084 /* VoucherCardLayer.swift in Sources */,
 				F97C84D925C178E900D7F85C /* VoucherComponent.swift in Sources */,
+				F9FE13E025CBF6870067B593 /* DokuVoucherViewModel.swift in Sources */,
 				F9175FD12594999600D653BE /* WebRedirectComponent.swift in Sources */,
 				F917618525A30B8500D653BE /* Submit3DS2FingerprintRequest.swift in Sources */,
 				F9175FE52594999C00D653BE /* AwaitActionHandlerProvider.swift in Sources */,
