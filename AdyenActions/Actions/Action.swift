@@ -64,9 +64,9 @@ public enum Action: Decodable {
         case sdk
         case qrCode
         case await
-            case voucher
+        case voucher
     }
-    
+
     private enum CodingKeys: String, CodingKey {
         case type
     }

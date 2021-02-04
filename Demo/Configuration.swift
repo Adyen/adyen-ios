@@ -28,7 +28,7 @@ internal enum Configuration {
     
     static let shopperReference = "iOS Checkout Shopper"
 
-    static let merchantAccount = "TestMerchant"
+    static let merchantAccount = "TestMerchantCheckout"
 
     static let shopperEmail = "checkoutshopperios@example.org"
     
