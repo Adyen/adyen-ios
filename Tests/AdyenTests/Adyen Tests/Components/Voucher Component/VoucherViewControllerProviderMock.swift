@@ -12,6 +12,8 @@ import Adyen
 
 internal final class VoucherViewControllerProviderMock: AnyVoucherViewControllerProvider {
 
+    internal var style: VoucherComponentStyle = VoucherComponentStyle()
+
     internal var localizationParameters: LocalizationParameters?
 
     internal var onProvide: ((_ action: VoucherAction) -> UIViewController)?

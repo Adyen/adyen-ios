@@ -51,10 +51,13 @@ internal class AbstractVoucherView: UIView, Localizable {
         saveButton.setImage(UIImage(named: "share",
                                     in: Bundle.actionsInternalResources,
                                     compatibleWith: nil), for: .normal)
-
+        saveButton.layer.borderWidth = model.mainButtonStyle.borderWidth
+        saveButton.layer.borderColor = model.mainButtonStyle.borderColor?.cgColor
         saveButton.layer.backgroundColor = model.mainButtonStyle.backgroundColor.cgColor
+        saveButton.adyen.round(using: model.mainButtonStyle.cornerRounding)
         saveButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         saveButton.addTarget(self, action: #selector(shareVoucher), for: .touchUpInside)
+        saveButton.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.voucher", postfix: "saveButton")
 
         return saveButton
     }()
@@ -81,7 +84,7 @@ internal class AbstractVoucherView: UIView, Localizable {
         fatalError("This is an abstract class that needs to be subclassed.")
     }
 
-    internal override func layoutSubviews() {
+    override internal func layoutSubviews() {
         super.layoutSubviews()
         saveButton.adyen.round(using: model.mainButtonStyle.cornerRounding)
     }
