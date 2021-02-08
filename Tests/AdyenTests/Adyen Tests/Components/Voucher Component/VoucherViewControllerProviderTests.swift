@@ -17,7 +17,7 @@ class VoucherViewControllerProviderTests: XCTestCase {
         let dokuAction = try Coder.decode(dokuIndomaretAction) as DokuVoucherAction
         let action: VoucherAction = .dokuIndomaret(dokuAction)
 
-        let sut = VoucherViewControllerProvider()
+        let sut = VoucherViewControllerProvider(style: VoucherComponentStyle())
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost")
 
         let viewController = sut.provide(with: action) as! VoucherViewController
@@ -51,6 +51,32 @@ class VoucherViewControllerProviderTests: XCTestCase {
 
         let merchantValueLabel: UILabel! = viewController.view.findView(by: "adyen.dokuVoucher.merchantValueLabel")
         XCTAssertEqual(merchantValueLabel.text, "Adyen Demo Shop")
+    }
+
+    func testCustomUI() throws {
+        let dokuAction = try Coder.decode(dokuIndomaretAction) as DokuVoucherAction
+        let action: VoucherAction = .dokuIndomaret(dokuAction)
+
+        var style = VoucherComponentStyle()
+        style.mainButton.backgroundColor = UIColor.red
+        style.mainButton.borderColor = UIColor.blue
+        style.mainButton.borderWidth = 2
+        style.mainButton.cornerRounding = .fixed(12)
+        style.mainButton.title.color = UIColor.white
+        style.mainButton.title.font = .systemFont(ofSize: 34)
+        let sut = VoucherViewControllerProvider(style: style)
+
+        let viewController = sut.provide(with: action) as! VoucherViewController
+
+        UIApplication.shared.keyWindow?.rootViewController = viewController
+
+        let saveButton: UIButton! = viewController.view.findView(by: "adyen.voucher.saveButton")
+        XCTAssertEqual(saveButton.titleColor(for: .normal), UIColor.white)
+        XCTAssertEqual(saveButton.layer.backgroundColor, UIColor.red.cgColor)
+        XCTAssertEqual(saveButton.titleLabel?.font, .systemFont(ofSize: 34))
+        XCTAssertEqual(saveButton.layer.borderWidth, 2)
+        XCTAssertEqual(saveButton.layer.borderColor, UIColor.blue.cgColor)
+        XCTAssertEqual(saveButton.layer.cornerRadius, 12)
     }
 
 }
