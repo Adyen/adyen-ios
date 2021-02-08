@@ -38,7 +38,7 @@ internal class VoucherCardView: UIView {
 
     private let model: VoucherSeparatorView.Model
 
-    internal init(model: VoucherSeparatorView.Model = VoucherSeparatorView.Model(),
+    internal init(model: VoucherSeparatorView.Model,
                   topView: UIView,
                   bottomView: UIView) {
         self.model = model

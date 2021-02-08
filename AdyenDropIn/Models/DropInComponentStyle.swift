@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -30,6 +30,9 @@ public extension DropInComponent {
         
         /// Indicates the await action component UI style.
         public var awaitComponent = AwaitComponentStyle()
+
+        /// Indicates the voucher action component UI style.
+        public var voucherComponent = VoucherComponentStyle()
         
         /// The color for separator element.
         /// When set, updates separator colors for all undelying styles unless the value were set previously.
