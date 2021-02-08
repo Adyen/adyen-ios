@@ -9,12 +9,21 @@ import Foundation
 import UIKit
 
 internal protocol AnyVoucherViewControllerProvider: Component, Localizable {
+
+    var style: VoucherComponentStyle { get }
+
     func provide(with action: VoucherAction) -> UIViewController
 }
 
 internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProvider {
 
+    internal var style: VoucherComponentStyle
+
     internal var localizationParameters: LocalizationParameters?
+
+    internal init(style: VoucherComponentStyle) {
+        self.style = style
+    }
 
     internal func provide(with action: VoucherAction) -> UIViewController {
         switch action {
@@ -44,14 +53,19 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
         let separatorTitle = ADYLocalizedString("adyen.voucher.paymentReferenceLabel", localizationParameters)
         let text = ADYLocalizedString("adyen.voucher.introduction", localizationParameters)
         let instructionTitle = ADYLocalizedString("adyen.voucher.readInstructions", localizationParameters)
+        let instructionStyle = DokuVoucherView.Model.Instruction.Style()
         let instruction = DokuVoucherView.Model.Instruction(title: instructionTitle,
-                                                            url: URL(string: action.instructionsUrl))
+                                                            url: URL(string: action.instructionsUrl),
+                                                            style: instructionStyle)
+
+        let style = DokuVoucherView.Model.Style(saveButton: self.style.mainButton)
         return DokuVoucherView.Model(text: text,
                                      amount: amountString,
                                      instruction: instruction,
                                      code: action.reference,
                                      fields: fields,
                                      logoUrl: logoUrl,
+                                     style: style,
                                      voucherSeparator: .init(separatorTitle: separatorTitle))
     }
 

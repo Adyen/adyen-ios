@@ -9,6 +9,13 @@ import UIKit
 
 internal class AbstractVoucherView: UIView, Localizable {
 
+    internal struct Model {
+
+        internal let separatorModel: VoucherSeparatorView.Model
+
+        internal let mainButtonStyle: ButtonStyle
+    }
+
     internal var localizationParameters: LocalizationParameters?
 
     internal weak var presenter: UIViewController?
@@ -28,29 +35,33 @@ internal class AbstractVoucherView: UIView, Localizable {
         let topView = createTopView()
         let bottomView = createBottomView()
 
-        return VoucherCardView(topView: topView, bottomView: bottomView)
+        return VoucherCardView(model: model.separatorModel,
+                               topView: topView,
+                               bottomView: bottomView)
     }()
 
     private lazy var saveButton: UIButton = {
         let saveButton = UIButton()
-        saveButton.setTitle("save", for: .normal)
+        let titleStyle = model.mainButtonStyle.title
+        saveButton.setTitle("Save", for: .normal)
+        saveButton.titleLabel?.font = titleStyle.font
+        saveButton.setTitleColor(titleStyle.color, for: .normal)
         saveButton.imageEdgeInsets = UIEdgeInsets(top: 8, left: -2, bottom: 8, right: 8)
         saveButton.titleEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: -2)
         saveButton.setImage(UIImage(named: "share",
                                     in: Bundle.actionsInternalResources,
                                     compatibleWith: nil), for: .normal)
 
-        saveButton.layer.backgroundColor = UIColor.Adyen.defaultBlue.cgColor
-        saveButton.layer.cornerRadius = 8
+        saveButton.layer.backgroundColor = model.mainButtonStyle.backgroundColor.cgColor
         saveButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         saveButton.addTarget(self, action: #selector(shareVoucher), for: .touchUpInside)
 
         return saveButton
     }()
 
-    private let model: VoucherSeparatorView.Model
+    private let model: Model
 
-    internal init(model: VoucherSeparatorView.Model = VoucherSeparatorView.Model()) {
+    internal init(model: Model) {
         self.model = model
         super.init(frame: .zero)
         addVoucherView()
@@ -68,6 +79,11 @@ internal class AbstractVoucherView: UIView, Localizable {
 
     internal func createBottomView() -> UIView {
         fatalError("This is an abstract class that needs to be subclassed.")
+    }
+
+    internal override func layoutSubviews() {
+        super.layoutSubviews()
+        saveButton.adyen.round(using: model.mainButtonStyle.cornerRounding)
     }
 
     private func addVoucherView() {

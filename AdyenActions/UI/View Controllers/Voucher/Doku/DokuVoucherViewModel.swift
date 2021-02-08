@@ -25,13 +25,28 @@ extension DokuVoucherView {
             internal let title: String
 
             internal let url: URL?
+
+            internal var style: Style
+
+            internal struct Style {
+
+                internal lazy var button: ButtonStyle = {
+                    var style = ButtonStyle(title: TextStyle(font: .systemFont(ofSize: 9),
+                                                             color: UIColor.Adyen.defaultBlue),
+                                            cornerRounding: .percent(0.5))
+                    style.borderColor = UIColor.Adyen.defaultBlue
+                    style.borderWidth = 1
+                    style.backgroundColor = .clear
+                    return style
+                }()
+            }
         }
 
         internal let text: String
 
         internal let amount: String?
 
-        internal let instruction: Instruction
+        internal var instruction: Instruction
 
         internal let code: String
 
@@ -39,17 +54,13 @@ extension DokuVoucherView {
 
         internal let logoUrl: URL
 
-        internal var style = Style()
+        internal var style: Style
 
         internal struct Style {
 
             internal var text = TextStyle(font: .systemFont(ofSize: 13),
                                           color: UIColor.Adyen.componentLabel,
                                           textAlignment: .center)
-
-            internal var instruction = TextStyle(font: .systemFont(ofSize: 9),
-                                                 color: UIColor.Adyen.componentLabel,
-                                                 textAlignment: .center)
 
             internal var amount = TextStyle(font: .boldSystemFont(ofSize: 16),
                                             color: UIColor.Adyen.componentLabel,
@@ -62,6 +73,8 @@ extension DokuVoucherView {
             internal var fieldValueText = TextStyle(font: .boldSystemFont(ofSize: 13),
                                                     color: UIColor.Adyen.componentLabel,
                                                     textAlignment: .center)
+
+            internal var saveButton: ButtonStyle
         }
 
         internal var voucherSeparator: VoucherSeparatorView.Model
