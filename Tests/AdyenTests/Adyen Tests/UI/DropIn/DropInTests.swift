@@ -5,6 +5,7 @@
 //
 
 import AdyenDropIn
+import Adyen
 import XCTest
 
 class DropInTests: XCTestCase {
@@ -104,18 +105,20 @@ class DropInTests: XCTestCase {
         sut = DropInComponent(paymentMethods: paymenMethods, paymentMethodsConfiguration: config)
         sut.payment = Payment(amount: Payment.Amount(value: 100, currencyCode: "CNY" ), countryCode: "CN")
 
-        UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: true, completion: nil)
+        let root = UIViewController()
+        UIApplication.shared.keyWindow?.rootViewController = root
+        root.present(sut.viewController, animated: true, completion: nil)
 
         let waitExpectation = expectation(description: "Expect DropIn to open")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
-            let topVC = self.sut.viewController.children[0].children[0].children[0] as? ListViewController
+            let topVC = self.sut.viewController.findChild(of: ListViewController.self)
             XCTAssertNotNil(topVC)
             XCTAssertEqual(topVC!.sections.count, 1)
             XCTAssertEqual(topVC!.sections[0].items.count, 2)
             waitExpectation.fulfill()
         }
 
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 15, handler: nil)
     }
 
     func testOpenDropInAsOneclickPayment() {
@@ -126,15 +129,30 @@ class DropInTests: XCTestCase {
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneclick.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymenMethods, paymentMethodsConfiguration: config)
 
-        UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: true, completion: nil)
+        let root = UIViewController()
+        UIApplication.shared.keyWindow?.rootViewController = root
+        root.present(sut.viewController, animated: true, completion: nil)
 
         let waitExpectation = expectation(description: "Expect DropIn to open")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
-            XCTAssertFalse(self.sut.viewController.children[0].children[0].children[0] is ListViewController)
+            XCTAssertNil(self.sut.viewController.findChild(of: ListViewController.self))
             waitExpectation.fulfill()
         }
 
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 15, handler: nil)
+    }
+
+}
+
+extension UIViewController {
+
+    fileprivate func findChild<T: UIViewController>(of type: T.Type) -> T? {
+        if self is T { return self as? T }
+        var result: T? = nil
+        for child in self.children {
+            result = result ?? child.findChild(of: T.self)
+        }
+        return result
     }
 
 }
