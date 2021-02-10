@@ -44,13 +44,12 @@ class ComponentManagerTests: XCTestCase {
     func testClientKeyInjection() throws {
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
         let payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
-        let config = DropInComponent.PaymentMethodsConfiguration()
+        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: "client_key")
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         config.applePay.merchantIdentifier = "applePayMerchantIdentifier"
         config.applePay.summaryItems = [
             PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)
         ]
-        config.clientKey = "client_key"
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    payment: payment,
                                    configuration: config,
@@ -62,59 +61,17 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.components.stored.filter { $0.environment.clientKey == "client_key" }.count, 4)
         XCTAssertEqual(sut.components.regular.filter { $0.environment.clientKey == "client_key" }.count, 12)
     }
-
-    func testNoClientKeyAndNoCardPublicKey() throws {
-        let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        let payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
-        let config = DropInComponent.PaymentMethodsConfiguration()
-        config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
-        config.applePay.merchantIdentifier = "applePayMerchantIdentifier"
-        config.applePay.summaryItems = [
-            PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)
-        ]
-        let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   payment: payment,
-                                   configuration: config,
-                                   style: DropInComponent.Style())
-
-        XCTAssertEqual(sut.components.stored.count, 2)
-        XCTAssertEqual(sut.components.regular.count, 8)
-
-        XCTAssertEqual(sut.components.stored.filter { $0.environment.clientKey == nil }.count, 2)
-        XCTAssertEqual(sut.components.regular.filter { $0.environment.clientKey == nil }.count, 8)
-    }
-
-    func testPaymentMethodsThatRequireClientKey() throws {
-        let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        let payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
-        let config = DropInComponent.PaymentMethodsConfiguration()
-        config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
-        config.applePay.merchantIdentifier = "applePayMerchantIdentifier"
-        config.applePay.summaryItems = [
-            PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)
-        ]
-        config.clientKey = nil
-        let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   payment: payment,
-                                   configuration: config,
-                                   style: DropInComponent.Style())
-
-        XCTAssertEqual(sut.components.stored.count, 2)
-        XCTAssertEqual(sut.components.regular.count, 8)
-
-        XCTAssertFalse(sut.components.regular.contains { $0 is MBWayComponent })
-    }
     
     func testLocalizationWithCustomTableName() throws {
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
         let payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
-        let config = DropInComponent.PaymentMethodsConfiguration()
+        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: "client_key")
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         config.applePay.merchantIdentifier = "applePayMerchantIdentifier"
         config.applePay.summaryItems = [
             PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)
         ]
-        config.clientKey = "client_key"
+
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    payment: payment,
                                    configuration: config,
@@ -130,13 +87,13 @@ class ComponentManagerTests: XCTestCase {
     func testLocalizationWithCustomKeySeparator() throws {
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
         let payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
-        let config = DropInComponent.PaymentMethodsConfiguration()
+        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: "client_key")
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         config.applePay.merchantIdentifier = "applePayMerchantIdentifier"
         config.applePay.summaryItems = [
             PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)
         ]
-        config.clientKey = "client_key"
+
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    payment: payment,
                                    configuration: config,
