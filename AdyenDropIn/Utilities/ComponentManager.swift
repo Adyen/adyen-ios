@@ -67,11 +67,9 @@ internal final class ComponentManager {
     private let payment: Payment?
     private let configuration: DropInComponent.PaymentMethodsConfiguration
     
-    private func createCardComponent(with paymentMethod: PaymentMethod) -> PaymentComponent? {
+    private func createCardComponent(with paymentMethod: AnyCardPaymentMethod) -> PaymentComponent? {
         let cardConfiguration = configuration.card
         let clientKey = configuration.clientKey
-        guard let paymentMethod = paymentMethod as? AnyCardPaymentMethod else { return nil }
-
         let configuration = CardComponent.Configuration(showsHolderNameField: cardConfiguration.showsHolderNameField,
                                                         showsStorePaymentMethodField: cardConfiguration.showsStorePaymentMethodField,
                                                         showsSecurityCodeField: cardConfiguration.showsSecurityCodeField,
