@@ -1875,6 +1875,14 @@
 			path = Responses;
 			sourceTree = "<group>";
 		};
+		E7D189F925D4425F006AD3B7 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E24FECFB226EFD3C00A65122 /* ComponentsItem.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		E7D5310F24462D87000046B4 /* Button */ = {
 			isa = PBXGroup;
 			children = (
@@ -2570,11 +2578,11 @@
 		F9615FC5252F49A400FA8EDD /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				E7D189F925D4425F006AD3B7 /* Models */,
 				E757F02425D2ED41007C813D /* Utils */,
 				F9EDB78723955A8400CFB3C9 /* Assets */,
 				F9A53C3D2549887F009000A7 /* Networking */,
 				E24FED0B2270913000A65122 /* Helpers */,
-				E24FECFB226EFD3C00A65122 /* ComponentsItem.swift */,
 				F95B6DD3252B294C002C9062 /* PaymentsController.swift */,
 			);
 			path = Common;
