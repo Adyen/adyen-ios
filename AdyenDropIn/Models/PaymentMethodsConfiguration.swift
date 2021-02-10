@@ -31,6 +31,9 @@ public extension DropInComponent {
         
         /// Indicates the localization parameters, leave it nil to use the default parameters.
         public var localizationParameters: LocalizationParameters?
+
+        /// The payment information.
+        public var payment: Adyen.Payment?
         
         /// Initializes the drop in configuration.
         public init() {}
