@@ -46,6 +46,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
         self.style = style
         super.init()
         self.environment = configuration.environment
+        self.payment = configuration.payment
     }
     
     // MARK: - Presentable Component Protocol
