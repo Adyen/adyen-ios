@@ -73,4 +73,14 @@ class RedirectDetailsTests: XCTestCase {
         XCTAssertEqual(keyValues[0].0, RedirectDetails.CodingKeys.redirectResult)
         XCTAssertEqual(keyValues[0].1, "encoded! @ $")
     }
+
+    func testQueryStringExtractionFromURL() {
+        let url = URL(string: "url://?param1=abc&pp=H7j5+pwnbNk8uKpS/m67rDp/K+AiJbQ==&param2=3")!
+        let details = RedirectDetails(returnURL: url)
+        let keyValues = details.extractKeyValuesFromURL()!
+
+        XCTAssertEqual(keyValues.count, 1)
+        XCTAssertEqual(keyValues[0].0, RedirectDetails.CodingKeys.queryString)
+        XCTAssertEqual(keyValues[0].1, "H7j5+pwnbNk8uKpS/m67rDp/K+AiJbQ==")
+    }
 }
