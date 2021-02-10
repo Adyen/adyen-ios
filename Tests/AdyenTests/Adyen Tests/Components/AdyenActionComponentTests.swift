@@ -37,6 +37,27 @@ class AdyenActionComponentTests: XCTestCase {
     }
     """
 
+    let voucherAction = """
+    {
+      "reference" : "0",
+      "initialAmount" : {
+        "currency" : "IDR",
+        "value" : 17408
+      },
+      "paymentMethodType" : "doku_alfamart",
+      "instructionsUrl" : "x",
+      "shopperEmail" : "x",
+      "totalAmount" : {
+        "currency" : "IDR",
+        "value" : 17408
+      },
+      "expiresAt" : "2025-01-01T23:52:00",
+      "merchantName" : "x",
+      "shopperName" : "x",
+      "type" : "voucher"
+    }
+    """
+
     func testRedirectToHttpWebLink() {
         let sut = AdyenActionComponent()
         let delegate = ActionComponentDelegateMock()
@@ -108,7 +129,6 @@ class AdyenActionComponentTests: XCTestCase {
 
     func test3DSAction() {
         let sut = AdyenActionComponent()
-
         let action = try! JSONDecoder().decode(ThreeDS2Action.self, from: threeDSFingerprintAction.data(using: .utf8)!)
         sut.perform(Action.threeDS2(action))
 
@@ -116,6 +136,29 @@ class AdyenActionComponentTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
             XCTAssertNotNil(sut.threeDS2Component)
             waitExpectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+
+    func testVoucherAction() {
+        let sut = AdyenActionComponent()
+        sut.presentationDelegate = UIViewController.findTopPresenter()
+        
+        let action = try! JSONDecoder().decode(VoucherAction.self, from: voucherAction.data(using: .utf8)!)
+        sut.perform(Action.voucher(action))
+
+        let waitExpectation = expectation(description: "Expect VoucherViewController to be presented")
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
+            let topPresentedViewController = UIViewController.findTopPresenter()
+            XCTAssertNotNil(topPresentedViewController as? VoucherViewController)
+
+            (sut.presentationDelegate as! UIViewController).dismiss(animated: true) {
+                let topPresentedViewController = UIViewController.findTopPresenter()
+                XCTAssertNil(topPresentedViewController as? VoucherViewController)
+
+                waitExpectation.fulfill()
+            }
         }
 
         waitForExpectations(timeout: 10, handler: nil)
