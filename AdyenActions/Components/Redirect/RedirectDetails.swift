@@ -50,12 +50,15 @@ public struct RedirectDetails: AdditionalDetails {
         case redirectResult
         case paymentResponse = "PaRes"
         case merchantData = "MD"
+        case queryString = "returnUrlQueryString"
     }
     
     internal func extractKeyValuesFromURL() -> [(CodingKeys, String)]? {
         let queryParameters = returnURL.queryParameters
-        
-        if let redirectResult = queryParameters[CodingKeys.redirectResult.rawValue]?.removingPercentEncoding {
+
+        if let queryString = queryParameters["pp"]?.removingPercentEncoding {
+            return [(.queryString, queryString)]
+        } else if let redirectResult = queryParameters[CodingKeys.redirectResult.rawValue]?.removingPercentEncoding {
             return [(.redirectResult, redirectResult)]
         } else if let payload = queryParameters[CodingKeys.payload.rawValue]?.removingPercentEncoding {
             return [(.payload, payload)]
