@@ -22,7 +22,7 @@ internal protocol Presenter: AnyObject {
     func presentAlert(with error: Error, retryHandler: (() -> Void)?)
 }
 
-internal final class PaymentsController {
+internal final class IntegrationExample {
     internal let payment = Payment(amount: Configuration.amount, countryCode: Configuration.countryCode)
     internal let environment = Configuration.componentsEnvironment
 
@@ -32,9 +32,9 @@ internal final class PaymentsController {
 
     internal weak var presenter: Presenter?
 
-    // MARK: - Action Handling
+    // MARK: - Action Handling for Components
 
-    private lazy var actionComponent: AdyenActionComponent = {
+    internal lazy var actionComponent: AdyenActionComponent = {
         let handler = AdyenActionComponent()
         handler.redirectComponentStyle = RedirectComponentStyle()
         handler.delegate = self
@@ -44,19 +44,10 @@ internal final class PaymentsController {
         return handler
     }()
 
-    private func handle(_ action: Action) {
-        guard paymentInProgress else { return }
-        if let dropInComponent = currentComponent as? DropInComponent {
-            return dropInComponent.handle(action)
-        }
-
-        actionComponent.perform(action)
-    }
-
     // MARK: - Networking
 
     // swiftlint:disable:enable force_try
-    private lazy var apiClient: APIClientProtocol = {
+    internal lazy var apiClient: APIClientProtocol = {
         if CommandLine.arguments.contains("-UITests") {
             let apiClient = APIClientMock()
             let data = try! Data(contentsOf: Bundle.main.url(forResource: "payment_methods_response", withExtension: "json")!)
@@ -82,34 +73,6 @@ internal final class PaymentsController {
         }
     }
 
-    internal func performPayment(with data: PaymentComponentData) {
-        let request = PaymentsRequest(data: data)
-        apiClient.perform(request, completionHandler: paymentResponseHandler)
-    }
-
-    internal func performPaymentDetails(with data: ActionComponentData) {
-        let request = PaymentDetailsRequest(details: data.details,
-                                            paymentData: data.paymentData,
-                                            merchantAccount: Configuration.merchantAccount)
-        apiClient.perform(request, completionHandler: paymentResponseHandler)
-    }
-
-    private func paymentResponseHandler(result: Result<PaymentsResponse, Error>) {
-        switch result {
-        case let .success(response):
-            if let action = response.action {
-                handle(action)
-            } else {
-                finish(with: response.resultCode)
-            }
-        case let .failure(error):
-            currentComponent?.stopLoading(withSuccess: false) { [weak self] in
-                self?.presenter?.dismiss(completion: nil)
-                self?.presentAlert(with: error)
-            }
-        }
-    }
-
     internal func finish(with resultCode: PaymentsResponse.ResultCode) {
         let success = resultCode == .authorised || resultCode == .received || resultCode == .pending
 
@@ -129,11 +92,11 @@ internal final class PaymentsController {
         }
     }
 
-    private func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
+    internal func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
         presenter?.presentAlert(with: error, retryHandler: retryHandler)
     }
 
-    private func presentAlert(withTitle title: String) {
+    internal func presentAlert(withTitle title: String) {
         presenter?.presentAlert(withTitle: title)
     }
 }

@@ -10,7 +10,7 @@ import AdyenCard
 import AdyenComponents
 import UIKit
 
-extension PaymentsController {
+extension IntegrationExample {
 
     // MARK: - Standalone Components
 
@@ -103,13 +103,37 @@ extension PaymentsController {
         }
     }
 
+    // MARK : - Payment response handling
+
+    fileprivate func paymentResponseHandler(result: Result<PaymentsResponse, Error>) {
+        switch result {
+        case let .success(response):
+            if let action = response.action {
+                handle(action)
+            } else {
+                finish(with: response.resultCode)
+            }
+        case let .failure(error):
+            currentComponent?.stopLoading(withSuccess: false) { [weak self] in
+                self?.presenter?.dismiss(completion: nil)
+                self?.presentAlert(with: error)
+            }
+        }
+    }
+
+    private func handle(_ action: Action) {
+        guard paymentInProgress else { return }
+        actionComponent.perform(action)
+    }
+
 }
 
-extension PaymentsController: PaymentComponentDelegate {
+extension IntegrationExample: PaymentComponentDelegate {
 
     internal func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         paymentInProgress = true
-        performPayment(with: data)
+        let request = PaymentsRequest(data: data)
+        apiClient.perform(request, completionHandler: paymentResponseHandler)
     }
 
     internal func didFail(with error: Error, from component: PaymentComponent) {
@@ -119,7 +143,7 @@ extension PaymentsController: PaymentComponentDelegate {
 
 }
 
-extension PaymentsController: ActionComponentDelegate {
+extension IntegrationExample: ActionComponentDelegate {
 
     internal func didFail(with error: Error, from component: ActionComponent) {
         paymentInProgress = false
@@ -127,11 +151,14 @@ extension PaymentsController: ActionComponentDelegate {
     }
 
     internal func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
-        performPaymentDetails(with: data)
+        let request = PaymentDetailsRequest(details: data.details,
+                                            paymentData: data.paymentData,
+                                            merchantAccount: Configuration.merchantAccount)
+        apiClient.perform(request, completionHandler: paymentResponseHandler)
     }
 }
 
-extension PaymentsController: CardComponentDelegate {
+extension IntegrationExample: CardComponentDelegate {
     internal func didChangeBIN(_ value: String, component: CardComponent) {
         print("Current BIN: \(value)")
     }
@@ -141,7 +168,7 @@ extension PaymentsController: CardComponentDelegate {
     }
 }
 
-extension PaymentsController: PresentationDelegate {
+extension IntegrationExample: PresentationDelegate {
     internal func present(component: PresentableComponent, disableCloseButton: Bool) {
         present(component)
     }

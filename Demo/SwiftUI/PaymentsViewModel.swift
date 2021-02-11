@@ -8,12 +8,10 @@ import SwiftUI
 
 internal final class PaymentsViewModel: ObservableObject, Identifiable, Presenter {
 
-    private lazy var controller: PaymentsController = {
-
-        let controller = PaymentsController()
-        controller.presenter = self
-
-        return controller
+    private lazy var integrationExample: IntegrationExample = {
+        let integrationExample = IntegrationExample()
+        integrationExample.presenter = self
+        return integrationExample
     }()
 
     @Published internal var viewControllerToPresent: UIViewController?
@@ -23,23 +21,23 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
     // MARK: - DropIn Component
 
     internal func presentDropInComponent() {
-        controller.presentDropInComponent()
+        integrationExample.presentDropInComponent()
     }
 
     internal func presentCardComponent() {
-        controller.presentCardComponent()
+        integrationExample.presentCardComponent()
     }
 
     internal func presentIdealComponent() {
-        controller.presentIdealComponent()
+        integrationExample.presentIdealComponent()
     }
 
     internal func presentSEPADirectDebitComponent() {
-        controller.presentSEPADirectDebitComponent()
+        integrationExample.presentSEPADirectDebitComponent()
     }
 
     internal func presentMBWayComponent() {
-        controller.presentMBWayComponent()
+        integrationExample.presentMBWayComponent()
     }
 
     internal func viewDidAppear() {
@@ -54,7 +52,7 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
                 ComponentsItem(title: "MB WAY", selectionHandler: presentMBWayComponent)
             ]
         ]
-        controller.requestPaymentMethods()
+        integrationExample.requestPaymentMethods()
     }
 
     // MARK: - Presenter

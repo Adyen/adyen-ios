@@ -10,7 +10,7 @@ import AdyenDropIn
 import AdyenComponents
 import UIKit
 
-extension PaymentsController {
+extension IntegrationExample {
 
     // MARK: - DropIn Component
 
@@ -34,21 +34,43 @@ extension PaymentsController {
         presenter?.present(viewController: component.viewController, completion: nil)
     }
 
+    // MARK : - Payment response handling
+
+    fileprivate func paymentResponseHandler(result: Result<PaymentsResponse, Error>) {
+        switch result {
+        case let .success(response):
+            if let action = response.action {
+                handle(action)
+            } else {
+                finish(with: response.resultCode)
+            }
+        case let .failure(error):
+            currentComponent?.stopLoading(withSuccess: false) { [weak self] in
+                self?.presenter?.dismiss(completion: nil)
+                self?.presentAlert(with: error)
+            }
+        }
+    }
+
     private func handle(_ action: Action) {
         guard paymentInProgress else { return }
         (currentComponent as? DropInComponent)?.handle(action)
     }
 }
 
-extension PaymentsController: DropInComponentDelegate {
+extension IntegrationExample: DropInComponentDelegate {
 
     internal func didSubmit(_ data: PaymentComponentData, from component: DropInComponent) {
-        performPayment(with: data)
         paymentInProgress = true
+        let request = PaymentsRequest(data: data)
+        apiClient.perform(request, completionHandler: paymentResponseHandler)
     }
 
     internal func didProvide(_ data: ActionComponentData, from component: DropInComponent) {
-        performPaymentDetails(with: data)
+        let request = PaymentDetailsRequest(details: data.details,
+                                            paymentData: data.paymentData,
+                                            merchantAccount: Configuration.merchantAccount)
+        apiClient.perform(request, completionHandler: paymentResponseHandler)
     }
 
     internal func didFail(with error: Error, from component: DropInComponent) {

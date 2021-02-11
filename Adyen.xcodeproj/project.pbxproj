@@ -127,10 +127,10 @@
 		E7B627FD24ED32CC000CEC6E /* BinLookupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B627FC24ED32CC000CEC6E /* BinLookupService.swift */; };
 		E7CD107E25544C970057C52D /* FormContainerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CD107D25544C970057C52D /* FormContainerItem.swift */; };
 		E7D189B025D31936006AD3B7 /* DropInActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D189AF25D31936006AD3B7 /* DropInActionTests.swift */; };
-		E7D18A0425D44610006AD3B7 /* PaymentsController+DropIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D18A0325D44610006AD3B7 /* PaymentsController+DropIn.swift */; };
-		E7D18A0525D44610006AD3B7 /* PaymentsController+DropIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D18A0325D44610006AD3B7 /* PaymentsController+DropIn.swift */; };
-		E7D18A1025D44769006AD3B7 /* PaymentsController+Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D18A0F25D44769006AD3B7 /* PaymentsController+Components.swift */; };
-		E7D18A1125D44769006AD3B7 /* PaymentsController+Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D18A0F25D44769006AD3B7 /* PaymentsController+Components.swift */; };
+		E7D18A0425D44610006AD3B7 /* IntegrationExampleDropIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D18A0325D44610006AD3B7 /* IntegrationExampleDropIn.swift */; };
+		E7D18A0525D44610006AD3B7 /* IntegrationExampleDropIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D18A0325D44610006AD3B7 /* IntegrationExampleDropIn.swift */; };
+		E7D18A1025D44769006AD3B7 /* IntegrationExampleComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D18A0F25D44769006AD3B7 /* IntegrationExampleComponents.swift */; };
+		E7D18A1125D44769006AD3B7 /* IntegrationExampleComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D18A0F25D44769006AD3B7 /* IntegrationExampleComponents.swift */; };
 		E7D3ED84243B667500E73F59 /* FormCardNumberItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D3ED83243B667500E73F59 /* FormCardNumberItemViewTests.swift */; };
 		E7D5311424462D87000046B4 /* FormButtonItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D5311124462D87000046B4 /* FormButtonItemView.swift */; };
 		E7D5311524462D87000046B4 /* FormButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D5311224462D87000046B4 /* FormButtonItem.swift */; };
@@ -349,8 +349,8 @@
 		F95B6DC92527565F002C9062 /* AdyenDropIn.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E9B36CAB2243B2FE00EAA368 /* AdyenDropIn.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F95B6DCA25275661002C9062 /* AdyenWeChatPay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */; };
 		F95B6DCB25275661002C9062 /* AdyenWeChatPay.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		F95B6DD4252B294C002C9062 /* PaymentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6DD3252B294C002C9062 /* PaymentsController.swift */; };
-		F95B6DD5252B2A8D002C9062 /* PaymentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6DD3252B294C002C9062 /* PaymentsController.swift */; };
+		F95B6DD4252B294C002C9062 /* IntegrationExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6DD3252B294C002C9062 /* IntegrationExample.swift */; };
+		F95B6DD5252B2A8D002C9062 /* IntegrationExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6DD3252B294C002C9062 /* IntegrationExample.swift */; };
 		F95B6DD6252B4654002C9062 /* ComponentsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24FECFB226EFD3C00A65122 /* ComponentsItem.swift */; };
 		F95D76072565447B0088A353 /* AdyenTests.strings in Resources */ = {isa = PBXBuildFile; fileRef = F95D76062565447B0088A353 /* AdyenTests.strings */; };
 		F95D76152565449A0088A353 /* AdyenTestsCustomSeparator.strings in Resources */ = {isa = PBXBuildFile; fileRef = F95D76142565449A0088A353 /* AdyenTestsCustomSeparator.strings */; };
@@ -876,8 +876,8 @@
 		E7B627FC24ED32CC000CEC6E /* BinLookupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinLookupService.swift; sourceTree = "<group>"; };
 		E7CD107D25544C970057C52D /* FormContainerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormContainerItem.swift; sourceTree = "<group>"; };
 		E7D189AF25D31936006AD3B7 /* DropInActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInActionTests.swift; sourceTree = "<group>"; };
-		E7D18A0325D44610006AD3B7 /* PaymentsController+DropIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PaymentsController+DropIn.swift"; sourceTree = "<group>"; };
-		E7D18A0F25D44769006AD3B7 /* PaymentsController+Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PaymentsController+Components.swift"; sourceTree = "<group>"; };
+		E7D18A0325D44610006AD3B7 /* IntegrationExampleDropIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationExampleDropIn.swift; sourceTree = "<group>"; };
+		E7D18A0F25D44769006AD3B7 /* IntegrationExampleComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationExampleComponents.swift; sourceTree = "<group>"; };
 		E7D3ED83243B667500E73F59 /* FormCardNumberItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardNumberItemViewTests.swift; sourceTree = "<group>"; };
 		E7D5311124462D87000046B4 /* FormButtonItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormButtonItemView.swift; sourceTree = "<group>"; };
 		E7D5311224462D87000046B4 /* FormButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormButtonItem.swift; sourceTree = "<group>"; };
@@ -1040,7 +1040,7 @@
 		F95B6DA525274551002C9062 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F95B6DAA25274A3D002C9062 /* ViewControllerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerPresenter.swift; sourceTree = "<group>"; };
 		F95B6DAD25274D9C002C9062 /* PaymentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsViewModel.swift; sourceTree = "<group>"; };
-		F95B6DD3252B294C002C9062 /* PaymentsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsController.swift; sourceTree = "<group>"; };
+		F95B6DD3252B294C002C9062 /* IntegrationExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationExample.swift; sourceTree = "<group>"; };
 		F95D76062565447B0088A353 /* AdyenTests.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = AdyenTests.strings; sourceTree = "<group>"; };
 		F95D76142565449A0088A353 /* AdyenTestsCustomSeparator.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = AdyenTestsCustomSeparator.strings; sourceTree = "<group>"; };
 		F95D761C256544B10088A353 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
@@ -2599,9 +2599,9 @@
 				F9EDB78723955A8400CFB3C9 /* Assets */,
 				F9A53C3D2549887F009000A7 /* Networking */,
 				E24FED0B2270913000A65122 /* Helpers */,
-				F95B6DD3252B294C002C9062 /* PaymentsController.swift */,
-				E7D18A0325D44610006AD3B7 /* PaymentsController+DropIn.swift */,
-				E7D18A0F25D44769006AD3B7 /* PaymentsController+Components.swift */,
+				F95B6DD3252B294C002C9062 /* IntegrationExample.swift */,
+				E7D18A0325D44610006AD3B7 /* IntegrationExampleDropIn.swift */,
+				E7D18A0F25D44769006AD3B7 /* IntegrationExampleComponents.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -3942,8 +3942,8 @@
 				F9A53C502549887F009000A7 /* PaymentsRequest.swift in Sources */,
 				F9A53C532549887F009000A7 /* PaymentMethodsRequest.swift in Sources */,
 				E2C0E080220B0399008616F6 /* AppDelegate.swift in Sources */,
-				F95B6DD5252B2A8D002C9062 /* PaymentsController.swift in Sources */,
-				E7D18A1025D44769006AD3B7 /* PaymentsController+Components.swift in Sources */,
+				F95B6DD5252B2A8D002C9062 /* IntegrationExample.swift in Sources */,
+				E7D18A1025D44769006AD3B7 /* IntegrationExampleComponents.swift in Sources */,
 				E24FECFC226EFD3C00A65122 /* ComponentsItem.swift in Sources */,
 				F9A53C442549887F009000A7 /* DefaultAPIClient.swift in Sources */,
 				F9A53C472549887F009000A7 /* Amount.swift in Sources */,
@@ -3953,7 +3953,7 @@
 				F9620D7B23C36082005209FC /* Configuration.swift in Sources */,
 				E24FECF5226EF9AB00A65122 /* ComponentsViewController.swift in Sources */,
 				E24FECF7226EF9D800A65122 /* ComponentsView.swift in Sources */,
-				E7D18A0425D44610006AD3B7 /* PaymentsController+DropIn.swift in Sources */,
+				E7D18A0425D44610006AD3B7 /* IntegrationExampleDropIn.swift in Sources */,
 				F9A53C4D2549887F009000A7 /* PaymentDetailsRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4089,13 +4089,13 @@
 				F95B6D982527454E002C9062 /* AppDelegate.swift in Sources */,
 				F9A53C4B2549887F009000A7 /* Environment.swift in Sources */,
 				F9A53C512549887F009000A7 /* PaymentsRequest.swift in Sources */,
-				F95B6DD4252B294C002C9062 /* PaymentsController.swift in Sources */,
+				F95B6DD4252B294C002C9062 /* IntegrationExample.swift in Sources */,
 				F9A53C4E2549887F009000A7 /* PaymentDetailsRequest.swift in Sources */,
-				E7D18A0525D44610006AD3B7 /* PaymentsController+DropIn.swift in Sources */,
+				E7D18A0525D44610006AD3B7 /* IntegrationExampleDropIn.swift in Sources */,
 				F9A53D6325499B13009000A7 /* Configuration.swift in Sources */,
 				F95B6D9A2527454E002C9062 /* SceneDelegate.swift in Sources */,
 				F95B6DD6252B4654002C9062 /* ComponentsItem.swift in Sources */,
-				E7D18A1125D44769006AD3B7 /* PaymentsController+Components.swift in Sources */,
+				E7D18A1125D44769006AD3B7 /* IntegrationExampleComponents.swift in Sources */,
 				E757F03A25D2ED58007C813D /* APIClientMock.swift in Sources */,
 				F95B6DB525274DFF002C9062 /* CodingHelpers.swift in Sources */,
 				F9A53C482549887F009000A7 /* Amount.swift in Sources */,
