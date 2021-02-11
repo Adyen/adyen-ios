@@ -46,6 +46,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
         self.style = style
         super.init()
         self.environment = configuration.environment
+        self.payment = configuration.payment
     }
     
     // MARK: - Presentable Component Protocol
@@ -69,6 +70,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
     }
 
     // MARK: - Handling Actions
+
     /// Handles an action to complete a payment.
     ///
     /// - Parameter action: The action to handle.
@@ -181,6 +183,11 @@ public final class DropInComponent: NSObject, PresentableComponent {
             delegate?.didCancel(component: component, from: self)
         }
     }
+
+    private func userDidCancel(_ component: Component) {
+        guard let component = component as? PresentableComponent else { return }
+        delegate?.didCancel(component: component, from: self)
+    }
 }
 
 /// :nodoc:
@@ -213,11 +220,7 @@ extension DropInComponent: PaymentComponentDelegate {
             delegate?.didFail(with: error, from: self)
         }
     }
-    
-    private func userDidCancel(_ component: PaymentComponent) {
-        guard let component = component as? PresentableComponent else { return }
-        delegate?.didCancel(component: component, from: self)
-    }
+
 }
 
 /// :nodoc:
@@ -237,11 +240,6 @@ extension DropInComponent: ActionComponentDelegate {
         } else {
             delegate?.didFail(with: error, from: self)
         }
-    }
-    
-    private func userDidCancel(_ component: ActionComponent) {
-        guard let component = component as? PresentableComponent else { return }
-        delegate?.didCancel(component: component, from: self)
     }
     
     /// :nodoc:

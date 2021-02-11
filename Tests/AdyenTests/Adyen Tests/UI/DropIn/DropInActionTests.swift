@@ -19,9 +19,8 @@ class DropInActionsTests: XCTestCase {
     }
 
     func testOpenRedirectAcitionOnDropIn() {
-        let config = DropInComponent.PaymentMethodsConfiguration()
+        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: "SOME_CLIENT_KEY")
         config.environment = .test
-        config.clientKey = "SOME_CLIENT_KEY"
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymenMethods, paymentMethodsConfiguration: config)

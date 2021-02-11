@@ -67,57 +67,34 @@ internal final class ComponentManager {
     private let payment: Payment?
     private let configuration: DropInComponent.PaymentMethodsConfiguration
     
-    private func createCardComponent(with paymentMethod: PaymentMethod) -> PaymentComponent? {
+    private func createCardComponent(with paymentMethod: AnyCardPaymentMethod) -> PaymentComponent? {
         let cardConfiguration = configuration.card
-        
-        guard let paymentMethod = paymentMethod as? AnyCardPaymentMethod else { return nil }
-        
-        var cardComponent: CardComponent?
-        
-        if let clientKey = configuration.clientKey {
+        let clientKey = configuration.clientKey
+        let configuration = CardComponent.Configuration(showsHolderNameField: cardConfiguration.showsHolderNameField,
+                                                        showsStorePaymentMethodField: cardConfiguration.showsStorePaymentMethodField,
+                                                        showsSecurityCodeField: cardConfiguration.showsSecurityCodeField,
+                                                        storedCardConfiguration: cardConfiguration.stored,
+                                                        supportedCardTypes: nil)
 
-            let configuration = CardComponent.Configuration(showsHolderNameField: cardConfiguration.showsHolderNameField,
-                                                            showsStorePaymentMethodField: cardConfiguration.showsStorePaymentMethodField,
-                                                            showsSecurityCodeField: cardConfiguration.showsSecurityCodeField,
-                                                            storedCardConfiguration: cardConfiguration.stored,
-                                                            supportedCardTypes: nil)
-
-            cardComponent = CardComponent(paymentMethod: paymentMethod,
-                                          configuration: configuration,
-                                          clientKey: clientKey,
-                                          style: style.formComponent)
-            
-        } else {
-            adyenPrint("Failed to instantiate CardComponent because client key is not configured.")
-            return nil
-        }
-
-        return cardComponent
+        return CardComponent(paymentMethod: paymentMethod,
+                             configuration: configuration,
+                             clientKey: clientKey,
+                             style: style.formComponent)
     }
     
     private func createBancontactComponent(with paymentMethod: BCMCPaymentMethod) -> PaymentComponent? {
         let cardConfiguration = configuration.card
-        
-        var component: BCMCComponent?
-        
-        if let clientKey = configuration.clientKey {
-            let configuration = CardComponent.Configuration(showsHolderNameField: cardConfiguration.showsHolderNameField,
-                                                            showsStorePaymentMethodField: cardConfiguration.showsStorePaymentMethodField,
-                                                            showsSecurityCodeField: cardConfiguration.showsSecurityCodeField,
-                                                            storedCardConfiguration: cardConfiguration.stored,
-                                                            supportedCardTypes: nil)
+        let clientKey = configuration.clientKey
+        let configuration = CardComponent.Configuration(showsHolderNameField: cardConfiguration.showsHolderNameField,
+                                                        showsStorePaymentMethodField: cardConfiguration.showsStorePaymentMethodField,
+                                                        showsSecurityCodeField: cardConfiguration.showsSecurityCodeField,
+                                                        storedCardConfiguration: cardConfiguration.stored,
+                                                        supportedCardTypes: nil)
 
-            component = BCMCComponent(paymentMethod: paymentMethod,
-                                      configuration: configuration,
-                                      clientKey: clientKey,
-                                      style: style.formComponent)
-            
-        } else {
-            adyenPrint("Failed to instantiate BCMCComponent because client key is not configured.")
-            return nil
-        }
-        
-        return component
+        return BCMCComponent(paymentMethod: paymentMethod,
+                             configuration: configuration,
+                             clientKey: clientKey,
+                             style: style.formComponent)
     }
     
     private func createApplePayComponent(with paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
@@ -155,22 +132,11 @@ internal final class ComponentManager {
     }
     
     private func createMBWayComponent(_ paymentMethod: MBWayPaymentMethod) -> MBWayComponent? {
-        guard configuration.clientKey != nil else {
-            // swiftlint:disable:next line_length
-            adyenPrint("Failed to instantiate MBWayComponent because client key is not configured. Please supply the client key in the PaymentMethodsConfiguration.")
-            return nil
-        }
-        return MBWayComponent(paymentMethod: paymentMethod, style: style.formComponent)
+        MBWayComponent(paymentMethod: paymentMethod, style: style.formComponent)
     }
 
     private func createBLIKComponent(_ paymentMethod: BLIKPaymentMethod) -> BLIKComponent? {
-        guard configuration.clientKey != nil else {
-            // swiftlint:disable:next line_length
-            adyenPrint("Failed to instantiate BLIKComponent because client key is not configured. Please supply the client key in the PaymentMethodsConfiguration.")
-            return nil
-        }
-
-        return BLIKComponent(paymentMethod: paymentMethod, style: style.formComponent)
+        BLIKComponent(paymentMethod: paymentMethod, style: style.formComponent)
     }
     
 }
