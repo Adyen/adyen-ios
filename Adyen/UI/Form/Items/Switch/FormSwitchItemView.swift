@@ -28,13 +28,7 @@ public final class FormSwitchItemView: FormValueItemView<FormSwitchItem> {
     }
     
     private var switchDelegate: FormValueItemViewDelegate? {
-        return delegate as? FormValueItemViewDelegate
-    }
-    
-    /// :nodoc:
-    @available(*, unavailable)
-    public required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        delegate as? FormValueItemViewDelegate
     }
     
     // MARK: - Title Label
