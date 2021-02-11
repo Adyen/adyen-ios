@@ -32,6 +32,8 @@ open class FormValueItemView<ItemType: FormValueItem>: FormItemView<ItemType>, A
         
         tintColor = item.style.tintColor
         backgroundColor = item.style.backgroundColor
+
+        gestureRecognizers = [UITapGestureRecognizer(target: self, action: #selector(becomeFirstResponder))]
     }
     
     private var valueDelegate: FormValueItemViewDelegate? {

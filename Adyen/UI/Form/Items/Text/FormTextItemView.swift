@@ -37,12 +37,6 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
         configureConstraints()
     }
     
-    /// :nodoc:
-    @available(*, unavailable)
-    public required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     private var textDelegate: FormTextItemViewDelegate? {
         delegate as? FormTextItemViewDelegate
     }
