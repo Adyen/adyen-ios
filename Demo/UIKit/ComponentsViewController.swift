@@ -10,12 +10,10 @@ internal final class ComponentsViewController: UIViewController, Presenter {
     
     private lazy var componentsView = ComponentsView()
 
-    private lazy var controller: PaymentsController = {
-
-        let controller = PaymentsController()
-        controller.presenter = self
-
-        return controller
+    private lazy var integrationExample: IntegrationExample = {
+        let integrationExample = IntegrationExample()
+        integrationExample.presenter = self
+        return integrationExample
     }()
     
     // MARK: - View
@@ -41,37 +39,37 @@ internal final class ComponentsViewController: UIViewController, Presenter {
             ]
         ]
         
-        controller.requestPaymentMethods()
+        integrationExample.requestPaymentMethods()
     }
     
     // MARK: - DropIn Component
 
     internal func presentDropInComponent() {
-        controller.presentDropInComponent()
+        integrationExample.presentDropInComponent()
     }
 
     internal func presentCardComponent() {
-        controller.presentCardComponent()
+        integrationExample.presentCardComponent()
     }
 
     internal func presentIdealComponent() {
-        controller.presentIdealComponent()
+        integrationExample.presentIdealComponent()
     }
 
     internal func presentSEPADirectDebitComponent() {
-        controller.presentSEPADirectDebitComponent()
+        integrationExample.presentSEPADirectDebitComponent()
     }
 
     internal func presentMBWayComponent() {
-        controller.presentMBWayComponent()
+        integrationExample.presentMBWayComponent()
     }
 
     internal func presentApplePayComponent() {
-        controller.presentApplePayComponent()
+        integrationExample.presentApplePayComponent()
     }
 
     internal func requestPaymentMethods() {
-        controller.requestPaymentMethods()
+        integrationExample.requestPaymentMethods()
     }
 
     // MARK: - Presenter
