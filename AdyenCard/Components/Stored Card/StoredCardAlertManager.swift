@@ -12,10 +12,11 @@ import UIKit
 
 internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Localizable {
     
-    private let maxCharactersCount = 4
-    private let minCharactersCount = 3
+    private let paymentMethod: StoredCardPaymentMethod
+    private let amount: Payment.Amount?
+
+    internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
     internal var completionHandler: Completion<Result<CardDetails, Error>>?
-    
     internal var localizationParameters: LocalizationParameters?
     
     internal init(paymentMethod: StoredCardPaymentMethod, publicKey: String, amount: Payment.Amount?) {
@@ -32,11 +33,28 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Loca
         self.cardPublicKeyProvider.clientKey = clientKey
     }
     
-    private let paymentMethod: StoredCardPaymentMethod
-    private let amount: Payment.Amount?
-    
-    internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
-    
+    // MARK: - CVC length
+
+    private var minCharactersCount: Int {
+        guard let brand = CardType(rawValue: paymentMethod.brand) else { return 3 }
+        switch brand {
+        case .americanExpress:
+            return 4
+        default:
+            return 3
+        }
+    }
+
+    private var maxCharactersCount: Int {
+        guard let brand = CardType(rawValue: paymentMethod.brand) else { return 4 }
+        switch brand {
+        case .americanExpress:
+            return 4
+        default:
+            return 3
+        }
+    }
+
     // MARK: - Alert Controller
     
     internal private(set) lazy var alertController: UIAlertController = {
