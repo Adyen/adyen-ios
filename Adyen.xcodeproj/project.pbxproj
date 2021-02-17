@@ -118,6 +118,7 @@
 		E7763A8025F10C9B0046371E /* Adyen3DS2.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E7763A7E25F10C9B0046371E /* Adyen3DS2.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E7763A8725F10CA60046371E /* Adyen3DS2.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7763A7E25F10C9B0046371E /* Adyen3DS2.xcframework */; };
 		E7763A8825F10CA60046371E /* Adyen3DS2.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E7763A7E25F10C9B0046371E /* Adyen3DS2.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E774A24F25DD72D700503C40 /* LogoGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E774A23B25DD72D300503C40 /* LogoGenerator.swift */; };
 		E787C9AC24696A8900B401E0 /* CornerRadiusStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E787C9AB24696A8900B401E0 /* CornerRadiusStyle.swift */; };
 		E787C9AE24698C2E00B401E0 /* UIViewRoundingHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E787C9AD24698C2E00B401E0 /* UIViewRoundingHelpers.swift */; };
 		E787C9D1246E948F00B401E0 /* CoreFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E787C9D0246E948F00B401E0 /* CoreFonts.swift */; };
@@ -865,6 +866,7 @@
 		E773EA3B2523432B00119499 /* CardTypeProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTypeProviderMock.swift; sourceTree = "<group>"; };
 		E7763A1025F02BD20046371E /* GiftCardPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftCardPaymentMethod.swift; sourceTree = "<group>"; };
 		E7763A7E25F10C9B0046371E /* Adyen3DS2.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Adyen3DS2.xcframework; path = "Carthage/Checkouts/adyen-3ds2-ios/XCFramework/Dynamic/Adyen3DS2.xcframework"; sourceTree = "<group>"; };
+		E774A23B25DD72D300503C40 /* LogoGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoGenerator.swift; sourceTree = "<group>"; };
 		E787C9AB24696A8900B401E0 /* CornerRadiusStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadiusStyle.swift; sourceTree = "<group>"; };
 		E787C9AD24698C2E00B401E0 /* UIViewRoundingHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewRoundingHelpers.swift; sourceTree = "<group>"; };
 		E787C9D0246E948F00B401E0 /* CoreFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreFonts.swift; sourceTree = "<group>"; };
@@ -2212,6 +2214,7 @@
 				F9AC61BF243750D80062A00D /* AppLauncherMock.swift */,
 				F9BA21C52474113500D36A63 /* AmountFormatterTests.swift */,
 				F923283925A49559002C5BC4 /* PhoneExtensionsRepositoryTests.swift */,
+				E774A23B25DD72D300503C40 /* LogoGenerator.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -3853,6 +3856,7 @@
 				E9E3DABE221EA47800697074 /* StringExtensionsTests.swift in Sources */,
 				F95B6D9025231880002C9062 /* PhoneNumberValidatorTests.swift in Sources */,
 				F9639B5224E29E340073F38A /* PresentationDelegateMock.swift in Sources */,
+				E774A24F25DD72D700503C40 /* LogoGenerator.swift in Sources */,
 				E9021E042264C55E009CF7F4 /* KeyedDecodingContainerExtensionsTests.swift in Sources */,
 				F9EDB79E2397AEF400CFB3C9 /* ComponentManagerTests.swift in Sources */,
 				F9EDB7922396603F00CFB3C9 /* PaymentMethodListComponentTests.swift in Sources */,
