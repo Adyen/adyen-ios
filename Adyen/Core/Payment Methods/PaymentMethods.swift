@@ -70,6 +70,7 @@ internal enum AnyPaymentMethod: Decodable {
     case mbWay(MBWayPaymentMethod)
     case blik(BLIKPaymentMethod)
     case doku(DokuPaymentMethod)
+    case giftcard(GiftCardPaymentMethod)
     
     case none
     
@@ -102,6 +103,8 @@ internal enum AnyPaymentMethod: Decodable {
         case let .blik(paymentMethod):
             return paymentMethod
         case let .doku(paymentMethod):
+            return paymentMethod
+        case let .giftcard(paymentMethod):
             return paymentMethod
         case .none:
             return nil

@@ -54,7 +54,8 @@ class PaymentMethodTests: XCTestCase {
                 mbway,
                 blik,
                 googlePay,
-                dokuWallet
+                dokuWallet,
+                giftCard
             ]
         ]
         
@@ -105,7 +106,7 @@ class PaymentMethodTests: XCTestCase {
         
         // Regular payment methods
         
-        XCTAssertEqual(paymentMethods.regular.count, 15)
+        XCTAssertEqual(paymentMethods.regular.count, 16)
         XCTAssertTrue(paymentMethods.regular[0] is CardPaymentMethod)
         XCTAssertEqual((paymentMethods.regular[0] as! CardPaymentMethod).fundingSource!, .credit)
         
@@ -175,6 +176,10 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertTrue(paymentMethods.regular[14] is DokuPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[14].name, "DOKU wallet")
         XCTAssertEqual(paymentMethods.regular[14].type, "doku_wallet")
+
+        XCTAssertTrue(paymentMethods.regular[15] is GiftCardPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[15].name, "Generic GiftCard")
+        XCTAssertEqual(paymentMethods.regular[15].type, "giftcard")
     }
     
     // MARK: - Card
