@@ -20,7 +20,6 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     internal var isUserCancel = true
     internal var paymentAuthorizationCompletion: ((PKPaymentAuthorizationStatus) -> Void)?
     internal var paymentAuthorizationViewController: PKPaymentAuthorizationViewController?
-    internal var dismissCompletion: (() -> Void)?
     
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
@@ -52,8 +51,7 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     /// - Warning: `stopLoading()` must be called before dismissing this component.
     ///
     /// - Parameter payment: A description of the payment. Must include an amount and country code.
-    /// - Parameter configuration: Apple Pay component configuration.
-    /// - Parameter cancelHandler: Being called on cancel, e.g. when the user taps "cancel".
+    /// - Parameter configuration: Apple Pay component configuration
     /// - Throws: `ApplePayComponent.Error.userCannotMakePayment`.
     /// if user can't make payments on any of the payment request’s supported networks.
     /// - Throws: `ApplePayComponent.Error.deviceDoesNotSupportApplyPay` if the current device's hardware doesn't support ApplePay.
@@ -63,8 +61,7 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     /// - Throws: `ApplePayComponent.Error.invalidCountryCode` if the `payment.countryCode` is not a valid ISO country code.
     /// - Throws: `ApplePayComponent.Error.invalidCurrencyCode` if the `payment.amount.currencyCode` is not a valid ISO currency code.
     public init(payment: Payment,
-                configuration: Configuration,
-                cancelHandler: (() -> Void)? = nil) throws {
+                configuration: Configuration) throws {
         guard PKPaymentAuthorizationViewController.canMakePayments() else {
             throw Error.deviceDoesNotSupportApplyPay
         }
@@ -88,7 +85,6 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
         }
         
         self.configuration = configuration
-        self.dismissCompletion = cancelHandler
         super.init()
 
         self.payment = payment
@@ -98,7 +94,7 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     
     /// :nodoc:
     public var viewController: UIViewController {
-        return getPaymentAuthorizationViewController() ?? errorAlertController
+        getPaymentAuthorizationViewController() ?? errorAlertController
     }
     
     /// :nodoc:
@@ -175,8 +171,6 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
             self.paymentAuthorizationViewController = nil
 
             callback?()
-            self.dismissCompletion?()
-            self.dismissCompletion = nil
         }
     }
 }
