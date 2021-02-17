@@ -44,6 +44,7 @@ internal enum PaymentMethodType: String {
     case dokuAlfamart = "doku_alfamart"
     case dokuIndomaret = "doku_indomaret"
     case giftcard
+    case doku
     
 }
 

@@ -36,17 +36,17 @@ internal enum Configuration {
     
     static let additionalData = ["allow3DS2": true]
     
-    static let clientKey = "devl_F73CCZ4Y7NHFRLC3OMVZHDIVQY47VWFL"
+    static let clientKey = "test_L6HTEOAXQBCZJHKNU4NLN6EI7IE6VRRW"
 
     // swiftlint:disable:next line_length
-    static let demoServerAPIKey = "AQEmhmfuXNWTK0Qc+iSEl3cshOuWWIpDFNWZ7BldpzFgqjaFCkrORCwQwV1bDb7kfNy1WIxIIkxgBw==-3YcmHFltObXoxB00Qd/TNqph2ohOoIucx00nLRbI21E=-0000000000000000"
+    static let demoServerAPIKey = "AQEthmfxKo7MbhFLw0m/n3Q5qf3VfI5eGbBFVXVXyGHNhisxSHQZLQhnJZKhUXeVEMFdWw2+5HzctViMSCJMYAc=-iLjeIbd8YjLi4aPYhovzGTmJkrNSaNExFw267yN7eYY=-t4aYUIMHdBz6MudS"
     
     static let applePayMerchantIdentifier = "{YOUR_APPLE_PAY_MERCHANT_IDENTIFIER}"
     
     static let applePaySummaryItems = [
         PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)
     ]
-    
+
     // swiftlint:enable explicit_acl
     
 }
