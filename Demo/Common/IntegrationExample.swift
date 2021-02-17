@@ -85,9 +85,9 @@ internal final class IntegrationExample {
     internal func finish(with error: Error) {
         let isCancelled = ((error as? ComponentError) == .cancelled)
 
-        presenter?.dismiss { [weak self] in
-            if !isCancelled {
-                self?.presentAlert(with: error)
+        currentComponent?.stopLoading(withSuccess: false) { [weak self] in
+            self?.presenter?.dismiss { [weak self] in
+                if !isCancelled { self?.presentAlert(with: error) }
             }
         }
     }

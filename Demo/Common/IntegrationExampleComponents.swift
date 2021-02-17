@@ -58,10 +58,7 @@ extension IntegrationExample {
         let config = ApplePayComponent.Configuration(paymentMethod: paymentMethod,
                                                      summaryItems: Configuration.applePaySummaryItems,
                                                      merchantIdentifier: Configuration.applePayMerchantIdentifier)
-        let component = try? ApplePayComponent(payment: payment,
-                                               configuration: config) {
-            print("ApplePay dismissed")
-        }
+        let component = try? ApplePayComponent(payment: payment, configuration: config)
         component?.delegate = self
         guard let presentableComponent = component else { return }
         present(presentableComponent)
@@ -114,10 +111,7 @@ extension IntegrationExample {
                 finish(with: response.resultCode)
             }
         case let .failure(error):
-            currentComponent?.stopLoading(withSuccess: false) { [weak self] in
-                self?.presenter?.dismiss(completion: nil)
-                self?.presentAlert(with: error)
-            }
+            finish(with: error)
         }
     }
 

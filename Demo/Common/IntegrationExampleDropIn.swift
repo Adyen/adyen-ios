@@ -45,10 +45,7 @@ extension IntegrationExample {
                 finish(with: response.resultCode)
             }
         case let .failure(error):
-            currentComponent?.stopLoading(withSuccess: false) { [weak self] in
-                self?.presenter?.dismiss(completion: nil)
-                self?.presentAlert(with: error)
-            }
+            finish(with: error)
         }
     }
 
