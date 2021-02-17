@@ -44,6 +44,7 @@ internal enum PaymentMethodType: String {
     case dokuWallet = "doku_wallet"
     case dokuAlfamart = "doku_alfamart"
     case dokuIndomaret = "doku_indomaret"
+    case giftcard
     
 }
 
@@ -100,7 +101,9 @@ internal enum AnyPaymentMethodDecoder {
         .giftcard: GiftcardPaymentMethodDecoder(),
         .dokuWallet: DokuPaymentMethodDecoder(),
         .dokuAlfamart: DokuPaymentMethodDecoder(),
-        .dokuIndomaret: DokuPaymentMethodDecoder()
+        .dokuIndomaret: DokuPaymentMethodDecoder(),
+        .giftcard: GiftCardPaymentMethodDecoder()
+
     ]
     
     private static var defaultDecoder: PaymentMethodDecoder = RedirectPaymentMethodDecoder()
@@ -233,5 +236,11 @@ private struct BLIKPaymentMethodDecoder: PaymentMethodDecoder {
 private struct DokuPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         .doku(try DokuPaymentMethod(from: decoder))
+    }
+}
+
+private struct GiftCardPaymentMethodDecoder: PaymentMethodDecoder {
+    func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
+        .giftcard(try GiftCardPaymentMethod(from: decoder))
     }
 }

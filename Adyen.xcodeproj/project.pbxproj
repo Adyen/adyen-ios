@@ -3755,6 +3755,7 @@
 				E24FED0822704C9800A65122 /* ComponentError.swift in Sources */,
 				F95A788825C416A60032CF7E /* CopyLabelView.swift in Sources */,
 				E270FDE9225CC4B1006C2CD0 /* ObservationManager.swift in Sources */,
+				E774A23125DD6FCB00503C40 /* GiftCardPaymentMethod.swift in Sources */,
 				E2D12BF1221D561600EF682F /* FormValueItemView.swift in Sources */,
 				F9639B3B24E14A940073F38A /* APIError.swift in Sources */,
 				E909342822969AFF00C9F04B /* PaymentComponentData.swift in Sources */,
