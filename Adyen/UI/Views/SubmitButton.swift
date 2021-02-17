@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -41,7 +41,10 @@ public final class SubmitButton: UIControl {
     // MARK: - Background View
     
     private lazy var backgroundView: BackgroundView = {
-        let backgroundView = BackgroundView(cornerRounding: style.cornerRounding, color: style.backgroundColor)
+        let backgroundView = BackgroundView(cornerRounding: style.cornerRounding,
+                                            borderColor: style.borderColor,
+                                            borderWidth: style.borderWidth,
+                                            color: style.backgroundColor)
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
         
         return backgroundView
@@ -84,7 +87,7 @@ public final class SubmitButton: UIControl {
     /// Boolean value indicating whether an activity indicator should be shown.
     public var showsActivityIndicator: Bool {
         get {
-            return activityIndicatorView.isAnimating
+            activityIndicatorView.isAnimating
         }
         
         set {
@@ -154,12 +157,16 @@ extension SubmitButton {
         private let color: UIColor
         private let rounding: CornerRounding
         
-        fileprivate init(cornerRounding: CornerRounding, color: UIColor) {
+        fileprivate init(cornerRounding: CornerRounding,
+                         borderColor: UIColor?,
+                         borderWidth: CGFloat, color: UIColor) {
             self.color = color
             self.rounding = cornerRounding
             super.init(frame: .zero)
             
             backgroundColor = color
+            layer.borderColor = borderColor?.cgColor
+            layer.borderWidth = borderWidth
             isUserInteractionEnabled = false
             
             layer.masksToBounds = true

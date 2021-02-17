@@ -435,6 +435,7 @@
 		F99F085A2383EAC800EBB948 /* FormatterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99F08592383EAC800EBB948 /* FormatterMock.swift */; };
 		F99F08642383F2B000EBB948 /* FormTextItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99F08632383F2B000EBB948 /* FormTextItemViewTests.swift */; };
 		F99F08662383F2D300EBB948 /* FormTextItemViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99F08652383F2D300EBB948 /* FormTextItemViewDelegateMock.swift */; };
+		F9A2D01225DBF104008944BE /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A2D01125DBF104008944BE /* PassKit.framework */; };
 		F9A53C442549887F009000A7 /* DefaultAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A53C3E2549887F009000A7 /* DefaultAPIClient.swift */; };
 		F9A53C452549887F009000A7 /* DefaultAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A53C3E2549887F009000A7 /* DefaultAPIClient.swift */; };
 		F9A53C472549887F009000A7 /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A53C3F2549887F009000A7 /* Amount.swift */; };
@@ -1147,6 +1148,8 @@
 		F99F08592383EAC800EBB948 /* FormatterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterMock.swift; sourceTree = "<group>"; };
 		F99F08632383F2B000EBB948 /* FormTextItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextItemViewTests.swift; sourceTree = "<group>"; };
 		F99F08652383F2D300EBB948 /* FormTextItemViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextItemViewDelegateMock.swift; sourceTree = "<group>"; };
+		F9A2D01025DBF104008944BE /* AdyenUIHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AdyenUIHost.entitlements; sourceTree = "<group>"; };
+		F9A2D01125DBF104008944BE /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = System/Library/Frameworks/PassKit.framework; sourceTree = SDKROOT; };
 		F9A53C3E2549887F009000A7 /* DefaultAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultAPIClient.swift; sourceTree = "<group>"; };
 		F9A53C3F2549887F009000A7 /* Amount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
 		F9A53C402549887F009000A7 /* Environment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
@@ -1252,6 +1255,7 @@
 				F9175EEE2593955C00D653BE /* AdyenComponents.framework in Frameworks */,
 				F92327C425A46EF0002C5BC4 /* AdyenEncryption.framework in Frameworks */,
 				F926D52423F555A900D058D3 /* AdyenWeChatPay.framework in Frameworks */,
+				F9A2D01225DBF104008944BE /* PassKit.framework in Frameworks */,
 				F92327C025A46EE9002C5BC4 /* AdyenActions.framework in Frameworks */,
 				E2C0E098220B0827008616F6 /* Adyen.framework in Frameworks */,
 				E9B36CB22243B2FF00EAA368 /* AdyenDropIn.framework in Frameworks */,
@@ -1570,6 +1574,7 @@
 		E2C0E02922097916008616F6 = {
 			isa = PBXGroup;
 			children = (
+				F9A2D01025DBF104008944BE /* AdyenUIHost.entitlements */,
 				E27B8EAD22B79CD20075BB6A /* README.md */,
 				E2289B3A23D04B57002844BF /* .jazzy.yaml */,
 				E2C0E03522097917008616F6 /* Adyen */,
@@ -1740,7 +1745,7 @@
 		E2D12C01221ECBB000EF682F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				E7763A7E25F10C9B0046371E /* Adyen3DS2.xcframework */,
+				F9A2D01125DBF104008944BE /* PassKit.framework */,
 				F9789C6B23F18069000B4B2B /* Security.framework */,
 				F9789C6923F18057000B4B2B /* CoreGraphics.framework */,
 				F9789C6723F18048000B4B2B /* CFNetwork.framework */,
@@ -4582,6 +4587,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = AdyenUIHost.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = B2NYSS5932;
@@ -4602,6 +4608,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = AdyenUIHost.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = B2NYSS5932;
