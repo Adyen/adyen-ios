@@ -99,7 +99,6 @@ internal final class PaymentMethodListComponent: LoadingComponent, Localizable {
     /// :nodoc:
     internal func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
         listViewController.stopLoading()
-        
         completion?()
     }
     

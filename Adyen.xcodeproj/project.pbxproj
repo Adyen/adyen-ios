@@ -113,6 +113,7 @@
 		E773EA3825221C1900119499 /* Throttler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E773EA35251E26BE00119499 /* Throttler.swift */; };
 		E773EA3A25221C4600119499 /* ThrottlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E773EA3925221C4600119499 /* ThrottlerTests.swift */; };
 		E773EA3C2523432B00119499 /* CardTypeProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E773EA3B2523432B00119499 /* CardTypeProviderMock.swift */; };
+		E774A23125DD6FCB00503C40 /* GiftCardPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E774A23025DD6FCB00503C40 /* GiftCardPaymentMethod.swift */; };
 		E787C9AC24696A8900B401E0 /* CornerRadiusStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E787C9AB24696A8900B401E0 /* CornerRadiusStyle.swift */; };
 		E787C9AE24698C2E00B401E0 /* UIViewRoundingHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E787C9AD24698C2E00B401E0 /* UIViewRoundingHelpers.swift */; };
 		E787C9D1246E948F00B401E0 /* CoreFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E787C9D0246E948F00B401E0 /* CoreFonts.swift */; };
@@ -856,6 +857,7 @@
 		E773EA35251E26BE00119499 /* Throttler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Throttler.swift; sourceTree = "<group>"; };
 		E773EA3925221C4600119499 /* ThrottlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThrottlerTests.swift; sourceTree = "<group>"; };
 		E773EA3B2523432B00119499 /* CardTypeProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTypeProviderMock.swift; sourceTree = "<group>"; };
+		E774A23025DD6FCB00503C40 /* GiftCardPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftCardPaymentMethod.swift; sourceTree = "<group>"; };
 		E787C9AB24696A8900B401E0 /* CornerRadiusStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadiusStyle.swift; sourceTree = "<group>"; };
 		E787C9AD24698C2E00B401E0 /* UIViewRoundingHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewRoundingHelpers.swift; sourceTree = "<group>"; };
 		E787C9D0246E948F00B401E0 /* CoreFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreFonts.swift; sourceTree = "<group>"; };
@@ -1452,6 +1454,7 @@
 				F9D644DD24D2D9950059CBE3 /* MBWayPaymentMethod.swift */,
 				F97C837825BF047600D7F85C /* DokuPaymentMethod.swift */,
 				E700A72C2549E2F00012B64C /* BLIKPaymentMethod.swift */,
+				E774A23025DD6FCB00503C40 /* GiftCardPaymentMethod.swift */,
 			);
 			path = "Payment Methods";
 			sourceTree = "<group>";
@@ -3743,6 +3746,7 @@
 				E24FED0822704C9800A65122 /* ComponentError.swift in Sources */,
 				F95A788825C416A60032CF7E /* CopyLabelView.swift in Sources */,
 				E270FDE9225CC4B1006C2CD0 /* ObservationManager.swift in Sources */,
+				E774A23125DD6FCB00503C40 /* GiftCardPaymentMethod.swift in Sources */,
 				E2D12BF1221D561600EF682F /* FormValueItemView.swift in Sources */,
 				F9639B3B24E14A940073F38A /* APIError.swift in Sources */,
 				E909342822969AFF00C9F04B /* PaymentComponentData.swift in Sources */,
