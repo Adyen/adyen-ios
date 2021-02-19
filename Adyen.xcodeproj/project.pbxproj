@@ -81,6 +81,7 @@
 		E7166A5224EAC5BA007CCDEF /* BinLookupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7166A5124EAC5BA007CCDEF /* BinLookupRequest.swift */; };
 		E7166A5424EACC44007CCDEF /* BinLookupResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7166A5324EACC44007CCDEF /* BinLookupResponse.swift */; };
 		E7166A5624EAD99F007CCDEF /* CardBrandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7166A5524EAD99F007CCDEF /* CardBrandProvider.swift */; };
+		E71E8F3E257921D10054B03D /* StoredBLIKPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71E8F3D257921D10054B03D /* StoredBLIKPaymentMethod.swift */; };
 		E72521EE25517EB100533E35 /* BLIKComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72521ED25517EB100533E35 /* BLIKComponentTests.swift */; };
 		E7275BF9255012F600907CF9 /* FormLabelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7275BF8255012F600907CF9 /* FormLabelItem.swift */; };
 		E72DA33F23E19DE300707638 /* PreselectedPaymentMethodComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72DA33C23E19DE300707638 /* PreselectedPaymentMethodComponent.swift */; };
@@ -823,6 +824,7 @@
 		E7166A5124EAC5BA007CCDEF /* BinLookupRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinLookupRequest.swift; sourceTree = "<group>"; };
 		E7166A5324EACC44007CCDEF /* BinLookupResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinLookupResponse.swift; sourceTree = "<group>"; };
 		E7166A5524EAD99F007CCDEF /* CardBrandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardBrandProvider.swift; sourceTree = "<group>"; };
+		E71E8F3D257921D10054B03D /* StoredBLIKPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredBLIKPaymentMethod.swift; sourceTree = "<group>"; };
 		E72521ED25517EB100533E35 /* BLIKComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLIKComponentTests.swift; sourceTree = "<group>"; };
 		E7275BF8255012F600907CF9 /* FormLabelItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLabelItem.swift; sourceTree = "<group>"; };
 		E72DA33C23E19DE300707638 /* PreselectedPaymentMethodComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreselectedPaymentMethodComponent.swift; sourceTree = "<group>"; };
@@ -1457,6 +1459,7 @@
 				F97C837825BF047600D7F85C /* DokuPaymentMethod.swift */,
 				E700A72C2549E2F00012B64C /* BLIKPaymentMethod.swift */,
 				E774A23025DD6FCB00503C40 /* GiftCardPaymentMethod.swift */,
+				E71E8F3D257921D10054B03D /* StoredBLIKPaymentMethod.swift */,
 			);
 			path = "Payment Methods";
 			sourceTree = "<group>";
@@ -3777,6 +3780,8 @@
 				F924C079246C38E0006DDAB8 /* SecuredViewController.swift in Sources */,
 				E7D5311A2446F525000046B4 /* FormSeparatorItem.swift in Sources */,
 				E9E3DAFD2225485400697074 /* URLSessionHelpers.swift in Sources */,
+				F926D53523F68FD300D058D3 /* QiwiWalletDetails.swift in Sources */,
+				E71E8F3E257921D10054B03D /* StoredBLIKPaymentMethod.swift in Sources */,
 				F9B798C923AB697100A2103C /* FormComponentStyle.swift in Sources */,
 				E7275BF9255012F600907CF9 /* FormLabelItem.swift in Sources */,
 				E2D12BEF221D560800EF682F /* FormValueItem.swift in Sources */,
