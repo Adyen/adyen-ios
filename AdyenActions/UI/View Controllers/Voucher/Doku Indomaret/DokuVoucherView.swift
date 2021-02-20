@@ -96,7 +96,7 @@ internal final class DokuVoucherView: AbstractVoucherView {
 
     private func createSeparator() -> UIView {
         let view = UIView()
-        view.backgroundColor = UIColor(hex: 0xE6E9EB)
+        view.backgroundColor = UIColor.Adyen.lightGray
         view.translatesAutoresizingMaskIntoConstraints = false
         view.heightAnchor.constraint(equalToConstant: 1).isActive = true
         return view

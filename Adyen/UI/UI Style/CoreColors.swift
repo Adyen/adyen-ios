@@ -92,10 +92,26 @@ extension UIColor {
         }
 
         /// :nodoc:
-        public static let defaultBlue = UIColor(hex: 0x007AFF)
+        public static let defaultBlue = color(hex: 0x007AFF)
 
         /// :nodoc:
-        public static let defaultRed = UIColor(hex: 0xFF3B30)
+        public static let defaultRed = color(hex: 0xFF3B30)
+
+        /// :nodoc:
+        public static let lightGray = color(hex: 0xE6E9EB)
+
+        /// Create new UIColor from hex value.
+        /// - Parameter hex: The hex value of color. Should be between 0 and 0xFFFFFF.
+        internal static func color(hex: UInt) -> UIColor {
+            assert(hex >= 0x000000 && hex <= 0xFFFFFF,
+                   "Invalid Hexadecimal color, Hexadecimal number should be between 0x0 and 0xFFFFFF")
+            return UIColor(
+                red: CGFloat((hex >> 16) & 0xFF) / 255.0,
+                green: CGFloat((hex >> 8) & 0xFF) / 255.0,
+                blue: CGFloat(hex & 0xFF) / 255.0,
+                alpha: 1.0
+            )
+        }
         
     }
     
