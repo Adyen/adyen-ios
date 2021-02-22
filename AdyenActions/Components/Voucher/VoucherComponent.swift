@@ -33,25 +33,11 @@ public final class VoucherComponent: AnyVoucherActionHandler {
     /// :nodoc:
     private var voucherViewControllerProvider: AnyVoucherViewControllerProvider?
 
-    /// :nodoc:
-    private lazy var apiClient: APIClientProtocol = APIClient(environment: environment)
-
     /// Initializes the `AwaitComponent`.
     ///
     /// - Parameter style: The Component UI style.
-    public convenience init(style: VoucherComponentStyle?) {
-        self.init(style: style, apiClient: nil)
-    }
-
-    /// Initializes the `AwaitComponent`.
-    ///
-    /// - Parameter style: The Component UI style.
-    internal init(style: VoucherComponentStyle?,
-                  apiClient: APIClientProtocol?) {
+    public init(style: VoucherComponentStyle?) {
         self.style = style ?? VoucherComponentStyle()
-        if let apiClient = apiClient {
-            self.apiClient = apiClient
-        }
     }
 
     /// Initializes the `AwaitComponent`.
@@ -90,7 +76,7 @@ public final class VoucherComponent: AnyVoucherActionHandler {
 }
 
 extension VoucherComponent: VoucherViewDelegate {
-    internal func didComplete(voucherAction: GenericVoucherAction, presentingViewController: UIViewController) {
+    internal func didComplete(presentingViewController: UIViewController) {
         delegate?.didComplete(from: self)
     }
 

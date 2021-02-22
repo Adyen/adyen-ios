@@ -28,8 +28,10 @@ public enum VoucherAction: Decodable {
         let type = try container.decode(VoucherPaymentMethod.self, forKey: .paymentMethodType)
 
         switch type {
-        case .dokuIndomaret, .dokuAlfamart:
+        case .dokuIndomaret:
             self = .dokuIndomaret(try GenericVoucherAction(from: decoder))
+        case .dokuAlfamart:
+            self = .dokuAlfamart(try GenericVoucherAction(from: decoder))
         }
     }
 
@@ -40,7 +42,7 @@ public enum VoucherAction: Decodable {
 }
 
 /// Describes an action in which a voucher is presented to the shopper.
-public class GenericVoucherAction: Codable {
+public class GenericVoucherAction: Decodable {
 
     /// The `paymentMethodType` for which the voucher is presented.
     public let paymentMethodType: VoucherPaymentMethod
@@ -69,9 +71,6 @@ public class GenericVoucherAction: Codable {
     /// The instruction url.
     public let instructionsUrl: String
 
-    /// The action signature.
-    public let signature: String?
-
     /// :nodoc:
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -83,7 +82,6 @@ public class GenericVoucherAction: Codable {
         merchantName = try container.decode(String.self, forKey: .merchantName)
         shopperName = try container.decode(String.self, forKey: .shopperName)
         instructionsUrl = try container.decode(String.self, forKey: .instructionsUrl)
-        signature = try container.decodeIfPresent(String.self, forKey: .signature)
 
         let expiresAtString = try container.decode(String.self, forKey: .expiresAt)
         let dateFormatter = DateFormatter()
@@ -100,26 +98,6 @@ public class GenericVoucherAction: Codable {
         }
     }
 
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(paymentMethodType.rawValue, forKey: .paymentMethodType)
-        try container.encode(initialAmount, forKey: .initialAmount)
-        try container.encode(totalAmount, forKey: .totalAmount)
-        try container.encode(reference, forKey: .reference)
-        try container.encode(shopperEmail, forKey: .shopperEmail)
-        try container.encode(merchantName, forKey: .merchantName)
-        try container.encode(shopperName, forKey: .shopperName)
-        try container.encode(instructionsUrl, forKey: .instructionsUrl)
-        try container.encode(signature, forKey: .signature)
-
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        let expiresAtString = dateFormatter.string(from: expiresAt)
-
-        try container.encode(expiresAtString, forKey: .expiresAt)
-    }
-
     /// :nodoc:
     private enum CodingKeys: String, CodingKey {
         case paymentMethodType,
@@ -130,8 +108,7 @@ public class GenericVoucherAction: Codable {
              merchantName,
              shopperName,
              instructionsUrl,
-             expiresAt,
-             signature
+             expiresAt
 
     }
 }
