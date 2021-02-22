@@ -5,7 +5,7 @@
 //
 
 import Adyen
-import Foundation
+import UIKit
 
 /// A component that handles voucher action's.
 internal protocol AnyVoucherActionHandler: ActionComponent {
