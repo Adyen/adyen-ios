@@ -42,12 +42,6 @@ internal class AbstractVoucherView: UIView, Localizable {
 
     internal weak var presenter: UIViewController?
 
-    private lazy var apiClient: APIClient = {
-        var environment = Environment(baseURL: URL(string: "http://localhost:8080/"))
-        environment.clientKey = "devl_F73CCZ4Y7NHFRLC3OMVZHDIVQY47VWFL"
-        return APIClient(environment: environment)
-    }()
-
     /// Ugly hack to work around the following bug
     /// https://stackoverflow.com/questions/59413850/uiactivityviewcontroller-dismissing-current-view-controller-after-sharing-file
     private lazy var fakeViewController: UIViewController = {
