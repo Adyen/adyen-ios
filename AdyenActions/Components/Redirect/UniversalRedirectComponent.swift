@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -39,7 +39,7 @@ internal final class UniversalRedirectComponent: ActionComponent, DismissableCom
     /// - Returns: A boolean value indicating whether the URL was handled by the redirect component.
     @discardableResult
     internal static func applicationDidOpen(from url: URL) -> Bool {
-        return WebRedirectComponent.applicationDidOpen(from: url)
+        WebRedirectComponent.applicationDidOpen(from: url)
     }
     
     /// Handles a redirect action.
@@ -123,6 +123,11 @@ extension UniversalRedirectComponent: ActionComponentDelegate {
     /// :nodoc:
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
         delegate?.didProvide(data, from: self)
+    }
+
+    /// :nodoc:
+    public func didComplete(from component: ActionComponent) {
+        delegate?.didComplete(from: self)
     }
     
     /// :nodoc:

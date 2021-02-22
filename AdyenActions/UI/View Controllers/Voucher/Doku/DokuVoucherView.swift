@@ -24,8 +24,8 @@ internal final class DokuVoucherView: AbstractVoucherView {
 
     internal init(model: Model) {
         self.model = model
-        super.init(model: AbstractVoucherView.Model(separatorModel: model.voucherSeparator,
-                                                    mainButtonStyle: model.style.saveButton))
+        
+        super.init(model: model.baseViewModel)
     }
 
     override internal func layoutSubviews() {

@@ -12,6 +12,8 @@ internal protocol AnyVoucherViewControllerProvider: Component, Localizable {
 
     var style: VoucherComponentStyle { get }
 
+    var delegate: VoucherViewDelegate? { get set }
+
     func provide(with action: VoucherAction) -> UIViewController
 }
 
@@ -20,6 +22,8 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
     internal var style: VoucherComponentStyle
 
     internal var localizationParameters: LocalizationParameters?
+
+    internal weak var delegate: VoucherViewDelegate?
 
     internal init(style: VoucherComponentStyle) {
         self.style = style
@@ -34,15 +38,16 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
         }
     }
 
-    private func createDokuViewController(with action: DokuVoucherAction) -> UIViewController {
+    private func createDokuViewController(with action: GenericVoucherAction) -> UIViewController {
         let view = DokuVoucherView(model: createDokuModel(with: action))
+        view.delegate = delegate
         view.localizationParameters = localizationParameters
         let viewController = VoucherViewController(voucherView: view)
         view.presenter = viewController
         return viewController
     }
 
-    private func createDokuModel(with action: DokuVoucherAction) -> DokuVoucherView.Model {
+    private func createDokuModel(with action: GenericVoucherAction) -> DokuVoucherView.Model {
         let fields = createVoucherFields(for: action)
         let amountString = AmountFormatter.formatted(amount: action.totalAmount.value,
                                                      currencyCode: action.totalAmount.currencyCode)
@@ -58,7 +63,18 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
                                                             url: URL(string: action.instructionsUrl),
                                                             style: instructionStyle)
 
-        let style = DokuVoucherView.Model.Style(saveButton: self.style.mainButton)
+        let style = DokuVoucherView.Model.Style(mainButton: self.style.mainButton,
+                                                secondaryButton: self.style.secondaryButton,
+                                                backgroundColor: self.style.backgroundColor)
+
+        let baseStyle = AbstractVoucherView.Model.Style(mainButtonStyle: self.style.mainButton,
+                                                        secondaryButtonStyle: self.style.secondaryButton,
+                                                        backgroundColor: self.style.backgroundColor)
+        let baseModel = AbstractVoucherView.Model(voucherAction: action,
+                                                  separatorModel: .init(separatorTitle: separatorTitle),
+                                                  saveButtonTitle: "Save",
+                                                  doneButtonTitle: "Return to Mystore",
+                                                  style: baseStyle)
         return DokuVoucherView.Model(text: text,
                                      amount: amountString,
                                      instruction: instruction,
@@ -66,16 +82,16 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
                                      fields: fields,
                                      logoUrl: logoUrl,
                                      style: style,
-                                     voucherSeparator: .init(separatorTitle: separatorTitle))
+                                     baseViewModel: baseModel)
     }
 
-    private func createVoucherFields(for action: DokuVoucherAction) -> [DokuVoucherView.VoucherField] {
+    private func createVoucherFields(for action: GenericVoucherAction) -> [DokuVoucherView.VoucherField] {
         [createExpirationField(with: action),
          createShopperNameField(with: action),
          createMerchantField(with: action)]
     }
 
-    private func createExpirationField(with action: DokuVoucherAction) -> DokuVoucherView.VoucherField {
+    private func createExpirationField(with action: GenericVoucherAction) -> DokuVoucherView.VoucherField {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yyyy"
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
@@ -85,13 +101,13 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
                                             value: expiration)
     }
 
-    private func createShopperNameField(with action: DokuVoucherAction) -> DokuVoucherView.VoucherField {
+    private func createShopperNameField(with action: GenericVoucherAction) -> DokuVoucherView.VoucherField {
         DokuVoucherView.VoucherField(identifier: "shopperName",
                                      title: ADYLocalizedString("adyen.voucher.shopperName", localizationParameters),
                                      value: action.shopperName)
     }
 
-    private func createMerchantField(with action: DokuVoucherAction) -> DokuVoucherView.VoucherField {
+    private func createMerchantField(with action: GenericVoucherAction) -> DokuVoucherView.VoucherField {
         DokuVoucherView.VoucherField(identifier: "merchant",
                                      title: ADYLocalizedString("adyen.voucher.merchantName", localizationParameters),
                                      value: action.merchantName)

@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 
 /// Indicates the Voucher payment methods.
-public enum VoucherPaymentMethod: String, Decodable, CaseIterable {
+public enum VoucherPaymentMethod: String, Codable, CaseIterable {
     case dokuIndomaret = "doku_indomaret"
     case dokuAlfamart = "doku_alfamart"
 }
@@ -17,10 +17,10 @@ public enum VoucherPaymentMethod: String, Decodable, CaseIterable {
 public enum VoucherAction: Decodable {
 
     /// Indicates Doku Indomaret Voucher type.
-    case dokuIndomaret(DokuVoucherAction)
+    case dokuIndomaret(GenericVoucherAction)
 
     /// Indicates Doku Alfamart Voucher type.
-    case dokuAlfamart(DokuVoucherAction)
+    case dokuAlfamart(GenericVoucherAction)
 
     /// :nodoc:
     public init(from decoder: Decoder) throws {
@@ -29,7 +29,7 @@ public enum VoucherAction: Decodable {
 
         switch type {
         case .dokuIndomaret, .dokuAlfamart:
-            self = .dokuIndomaret(try DokuVoucherAction(from: decoder))
+            self = .dokuIndomaret(try GenericVoucherAction(from: decoder))
         }
     }
 
@@ -40,7 +40,7 @@ public enum VoucherAction: Decodable {
 }
 
 /// Describes an action in which a voucher is presented to the shopper.
-public struct DokuVoucherAction: Decodable {
+public class GenericVoucherAction: Codable {
 
     /// The `paymentMethodType` for which the voucher is presented.
     public let paymentMethodType: VoucherPaymentMethod
@@ -69,8 +69,11 @@ public struct DokuVoucherAction: Decodable {
     /// The instruction url.
     public let instructionsUrl: String
 
+    /// The action signature.
+    public let signature: String?
+
     /// :nodoc:
-    public init(from decoder: Decoder) throws {
+    public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         paymentMethodType = try container.decode(VoucherPaymentMethod.self, forKey: .paymentMethodType)
         initialAmount = try container.decode(Payment.Amount.self, forKey: .initialAmount)
@@ -80,6 +83,7 @@ public struct DokuVoucherAction: Decodable {
         merchantName = try container.decode(String.self, forKey: .merchantName)
         shopperName = try container.decode(String.self, forKey: .shopperName)
         instructionsUrl = try container.decode(String.self, forKey: .instructionsUrl)
+        signature = try container.decodeIfPresent(String.self, forKey: .signature)
 
         let expiresAtString = try container.decode(String.self, forKey: .expiresAt)
         let dateFormatter = DateFormatter()
@@ -96,6 +100,26 @@ public struct DokuVoucherAction: Decodable {
         }
     }
 
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(paymentMethodType.rawValue, forKey: .paymentMethodType)
+        try container.encode(initialAmount, forKey: .initialAmount)
+        try container.encode(totalAmount, forKey: .totalAmount)
+        try container.encode(reference, forKey: .reference)
+        try container.encode(shopperEmail, forKey: .shopperEmail)
+        try container.encode(merchantName, forKey: .merchantName)
+        try container.encode(shopperName, forKey: .shopperName)
+        try container.encode(instructionsUrl, forKey: .instructionsUrl)
+        try container.encode(signature, forKey: .signature)
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        let expiresAtString = dateFormatter.string(from: expiresAt)
+
+        try container.encode(expiresAtString, forKey: .expiresAt)
+    }
+
     /// :nodoc:
     private enum CodingKeys: String, CodingKey {
         case paymentMethodType,
@@ -106,7 +130,8 @@ public struct DokuVoucherAction: Decodable {
              merchantName,
              shopperName,
              instructionsUrl,
-             expiresAt
+             expiresAt,
+             signature
 
     }
 }

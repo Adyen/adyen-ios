@@ -432,10 +432,10 @@
 		F99F08642383F2B000EBB948 /* FormTextItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99F08632383F2B000EBB948 /* FormTextItemViewTests.swift */; };
 		F99F08662383F2D300EBB948 /* FormTextItemViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99F08652383F2D300EBB948 /* FormTextItemViewDelegateMock.swift */; };
 		F9A2D01225DBF104008944BE /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A2D01125DBF104008944BE /* PassKit.framework */; };
+		F9A2D08F25DEDD01008944BE /* AppleWalletPassRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A2D08E25DEDD01008944BE /* AppleWalletPassRequest.swift */; };
+		F9A2D09A25DEDD10008944BE /* AppleWalletPassResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A2D09925DEDD10008944BE /* AppleWalletPassResponse.swift */; };
 		F9A53C442549887F009000A7 /* DefaultAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A53C3E2549887F009000A7 /* DefaultAPIClient.swift */; };
 		F9A53C452549887F009000A7 /* DefaultAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A53C3E2549887F009000A7 /* DefaultAPIClient.swift */; };
-		F9A53C472549887F009000A7 /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A53C3F2549887F009000A7 /* Amount.swift */; };
-		F9A53C482549887F009000A7 /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A53C3F2549887F009000A7 /* Amount.swift */; };
 		F9A53C4A2549887F009000A7 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A53C402549887F009000A7 /* Environment.swift */; };
 		F9A53C4B2549887F009000A7 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A53C402549887F009000A7 /* Environment.swift */; };
 		F9A53C4D2549887F009000A7 /* PaymentDetailsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A53C412549887F009000A7 /* PaymentDetailsRequest.swift */; };
@@ -1143,8 +1143,9 @@
 		F99F08652383F2D300EBB948 /* FormTextItemViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextItemViewDelegateMock.swift; sourceTree = "<group>"; };
 		F9A2D01025DBF104008944BE /* AdyenUIHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AdyenUIHost.entitlements; sourceTree = "<group>"; };
 		F9A2D01125DBF104008944BE /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = System/Library/Frameworks/PassKit.framework; sourceTree = SDKROOT; };
+		F9A2D08E25DEDD01008944BE /* AppleWalletPassRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleWalletPassRequest.swift; sourceTree = "<group>"; };
+		F9A2D09925DEDD10008944BE /* AppleWalletPassResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleWalletPassResponse.swift; sourceTree = "<group>"; };
 		F9A53C3E2549887F009000A7 /* DefaultAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultAPIClient.swift; sourceTree = "<group>"; };
-		F9A53C3F2549887F009000A7 /* Amount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
 		F9A53C402549887F009000A7 /* Environment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		F9A53C412549887F009000A7 /* PaymentDetailsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentDetailsRequest.swift; sourceTree = "<group>"; };
 		F9A53C422549887F009000A7 /* PaymentsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentsRequest.swift; sourceTree = "<group>"; };
@@ -2258,6 +2259,7 @@
 		F9175F8D2594986900D653BE /* AdyenActions */ = {
 			isa = PBXGroup;
 			children = (
+				F9A2D0B625DFF4C9008944BE /* APIClient */,
 				F917604725949CA500D653BE /* Utilities */,
 				F917603C25949BFE00D653BE /* Assets */,
 				F9175FEF259499C100D653BE /* UI */,
@@ -2813,11 +2815,35 @@
 			path = Text;
 			sourceTree = "<group>";
 		};
+		F9A2D0B625DFF4C9008944BE /* APIClient */ = {
+			isa = PBXGroup;
+			children = (
+				F9A2D0B825DFF4DB008944BE /* Responses */,
+				F9A2D0B725DFF4D3008944BE /* Requests */,
+			);
+			path = APIClient;
+			sourceTree = "<group>";
+		};
+		F9A2D0B725DFF4D3008944BE /* Requests */ = {
+			isa = PBXGroup;
+			children = (
+				F9A2D08E25DEDD01008944BE /* AppleWalletPassRequest.swift */,
+			);
+			path = Requests;
+			sourceTree = "<group>";
+		};
+		F9A2D0B825DFF4DB008944BE /* Responses */ = {
+			isa = PBXGroup;
+			children = (
+				F9A2D09925DEDD10008944BE /* AppleWalletPassResponse.swift */,
+			);
+			path = Responses;
+			sourceTree = "<group>";
+		};
 		F9A53C3D2549887F009000A7 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
 				F9A53C3E2549887F009000A7 /* DefaultAPIClient.swift */,
-				F9A53C3F2549887F009000A7 /* Amount.swift */,
 				F9A53C402549887F009000A7 /* Environment.swift */,
 				F9A53C412549887F009000A7 /* PaymentDetailsRequest.swift */,
 				F9A53C422549887F009000A7 /* PaymentsRequest.swift */,
@@ -3956,7 +3982,6 @@
 				E7D18A1025D44769006AD3B7 /* IntegrationExampleComponents.swift in Sources */,
 				E24FECFC226EFD3C00A65122 /* ComponentsItem.swift in Sources */,
 				F9A53C442549887F009000A7 /* DefaultAPIClient.swift in Sources */,
-				F9A53C472549887F009000A7 /* Amount.swift in Sources */,
 				E24FED0D2270915A00A65122 /* CodingHelpers.swift in Sources */,
 				E757F03925D2ED57007C813D /* APIClientMock.swift in Sources */,
 				F9A53C4A2549887F009000A7 /* Environment.swift in Sources */,
@@ -4065,11 +4090,13 @@
 				F9175FE52594999C00D653BE /* AwaitActionHandlerProvider.swift in Sources */,
 				F917613425A30B5700D653BE /* ThreeDS2Component.swift in Sources */,
 				F917617025A30B6A00D653BE /* ThreeDS2CoreActionHandler.swift in Sources */,
+				F9A2D08F25DEDD01008944BE /* AppleWalletPassRequest.swift in Sources */,
 				F917615B25A30B6400D653BE /* AnyAuthenticationRequestParameters.swift in Sources */,
 				F91760632594A0E300D653BE /* ActionsBundleExtension.swift in Sources */,
 				F917614A25A30B5E00D653BE /* ThreeDS2FingerprintSubmitter.swift in Sources */,
 				F917613525A30B5700D653BE /* ThreeDS2Details.swift in Sources */,
 				F917613825A30B5700D653BE /* ThreeDS2ComponentFingerprint.swift in Sources */,
+				F9A2D09A25DEDD10008944BE /* AppleWalletPassResponse.swift in Sources */,
 				F970143925D139BE007E74D9 /* VoucherComponentStyle.swift in Sources */,
 				F917613925A30B5700D653BE /* ThreeDS2ComponentFingerprintToken.swift in Sources */,
 			);
@@ -4109,7 +4136,6 @@
 				E7D18A1125D44769006AD3B7 /* IntegrationExampleComponents.swift in Sources */,
 				E757F03A25D2ED58007C813D /* APIClientMock.swift in Sources */,
 				F95B6DB525274DFF002C9062 /* CodingHelpers.swift in Sources */,
-				F9A53C482549887F009000A7 /* Amount.swift in Sources */,
 				F9A53C452549887F009000A7 /* DefaultAPIClient.swift in Sources */,
 				F95B6D9C2527454E002C9062 /* ComponentsView.swift in Sources */,
 				F95B6DAE25274D9C002C9062 /* PaymentsViewModel.swift in Sources */,

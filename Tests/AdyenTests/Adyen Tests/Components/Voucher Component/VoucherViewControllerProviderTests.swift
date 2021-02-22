@@ -14,7 +14,7 @@ import Adyen
 class VoucherViewControllerProviderTests: XCTestCase {
 
     func testCustomLocalization() throws {
-        let dokuAction = try Coder.decode(dokuIndomaretAction) as DokuVoucherAction
+        let dokuAction = try Coder.decode(dokuIndomaretAction) as GenericVoucherAction
         let action: VoucherAction = .dokuIndomaret(dokuAction)
 
         let sut = VoucherViewControllerProvider(style: VoucherComponentStyle())
@@ -54,16 +54,23 @@ class VoucherViewControllerProviderTests: XCTestCase {
     }
 
     func testCustomUI() throws {
-        let dokuAction = try Coder.decode(dokuIndomaretAction) as DokuVoucherAction
+        let dokuAction = try Coder.decode(dokuIndomaretAction) as GenericVoucherAction
         let action: VoucherAction = .dokuIndomaret(dokuAction)
 
         var style = VoucherComponentStyle()
-        style.mainButton.backgroundColor = UIColor.red
-        style.mainButton.borderColor = UIColor.blue
-        style.mainButton.borderWidth = 2
-        style.mainButton.cornerRounding = .fixed(12)
-        style.mainButton.title.color = UIColor.white
-        style.mainButton.title.font = .systemFont(ofSize: 34)
+        style.mainButton.backgroundColor = UIColor.cyan
+        style.mainButton.borderColor = UIColor.red
+        style.mainButton.borderWidth = 3
+        style.mainButton.cornerRounding = .fixed(6)
+        style.mainButton.title.color = UIColor.black
+        style.mainButton.title.font = .systemFont(ofSize: 23)
+
+        style.secondaryButton.backgroundColor = UIColor.red
+        style.secondaryButton.borderColor = UIColor.blue
+        style.secondaryButton.borderWidth = 2
+        style.secondaryButton.cornerRounding = .fixed(12)
+        style.secondaryButton.title.color = UIColor.white
+        style.secondaryButton.title.font = .systemFont(ofSize: 34)
         let sut = VoucherViewControllerProvider(style: style)
 
         let viewController = sut.provide(with: action) as! VoucherViewController
@@ -77,6 +84,14 @@ class VoucherViewControllerProviderTests: XCTestCase {
         XCTAssertEqual(saveButton.layer.borderWidth, 2)
         XCTAssertEqual(saveButton.layer.borderColor, UIColor.blue.cgColor)
         XCTAssertEqual(saveButton.layer.cornerRadius, 12)
+
+        let doneButton: UIButton! = viewController.view.findView(by: "adyen.voucher.doneButton")
+        XCTAssertEqual(doneButton.titleColor(for: .normal), UIColor.black)
+        XCTAssertEqual(doneButton.layer.backgroundColor, UIColor.cyan.cgColor)
+        XCTAssertEqual(doneButton.titleLabel?.font, .systemFont(ofSize: 23))
+        XCTAssertEqual(doneButton.layer.borderWidth, 3)
+        XCTAssertEqual(doneButton.layer.borderColor, UIColor.red.cgColor)
+        XCTAssertEqual(doneButton.layer.cornerRadius, 6)
     }
 
 }

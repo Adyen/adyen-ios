@@ -6,6 +6,7 @@
 
 import Adyen
 import Foundation
+import PassKit
 
 /// A component that handles voucher action's.
 internal protocol AnyVoucherActionHandler: ActionComponent {
@@ -33,11 +34,25 @@ public final class VoucherComponent: AnyVoucherActionHandler {
     /// :nodoc:
     private var voucherViewControllerProvider: AnyVoucherViewControllerProvider?
 
+    /// :nodoc:
+    private lazy var apiClient: APIClientProtocol = APIClient(environment: environment)
+
     /// Initializes the `AwaitComponent`.
     ///
     /// - Parameter style: The Component UI style.
-    public init(style: VoucherComponentStyle?) {
+    public convenience init(style: VoucherComponentStyle?) {
+        self.init(style: style, apiClient: nil)
+    }
+
+    /// Initializes the `AwaitComponent`.
+    ///
+    /// - Parameter style: The Component UI style.
+    internal init(style: VoucherComponentStyle?,
+                  apiClient: APIClientProtocol?) {
         self.style = style ?? VoucherComponentStyle()
+        if let apiClient = apiClient {
+            self.apiClient = apiClient
+        }
     }
 
     /// Initializes the `AwaitComponent`.
@@ -61,6 +76,7 @@ public final class VoucherComponent: AnyVoucherActionHandler {
 
         var viewControllerProvider = voucherViewControllerProvider ?? VoucherViewControllerProvider(style: style)
         viewControllerProvider.localizationParameters = localizationParameters
+        viewControllerProvider.delegate = self
 
         let viewController = viewControllerProvider.provide(with: action)
 
@@ -72,4 +88,46 @@ public final class VoucherComponent: AnyVoucherActionHandler {
         }
     }
 
+}
+
+extension VoucherComponent: VoucherViewDelegate {
+    internal func didComplete(voucherAction: GenericVoucherAction, presentingViewController: UIViewController) {
+        delegate?.didComplete(from: self)
+    }
+
+    internal func saveToAppleWallet(voucherAction: GenericVoucherAction, presentingViewController: UIViewController, completion: (() -> Void)?) {
+        let request = AppleWalletPassRequest(action: voucherAction)
+        apiClient.perform(request, completionHandler: { [weak self] result in
+            switch result {
+            case let .failure(error):
+                adyenPrint(error)
+                completion?()
+            case let .success(response):
+                self?.handle(response: response,
+                             presentingViewController: presentingViewController,
+                             completion: completion)
+            }
+        })
+    }
+
+    private func handle(response: AppleWalletPassResponse, presentingViewController: UIViewController, completion: (() -> Void)?) {
+        guard let data = response.appleWalletPassBundle else { completion?(); return }
+        do {
+            let pass = try PKPass(data: data)
+            guard let viewController = PKAddPassesViewController(pass: pass) else { completion?(); return }
+            presentingViewController.present(viewController, animated: true) {
+                completion?()
+            }
+        } catch {
+            adyenPrint(error)
+            completion?()
+        }
+    }
+
+    internal func saveAsImage(voucherView: UIView, presentingViewController: UIViewController) {
+        guard let image = voucherView.adyen.snapShot() else { return }
+        let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = voucherView
+        presentingViewController.present(activityViewController, animated: true, completion: nil)
+    }
 }
