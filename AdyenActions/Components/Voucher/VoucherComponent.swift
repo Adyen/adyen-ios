@@ -6,7 +6,6 @@
 
 import Adyen
 import Foundation
-import PassKit
 
 /// A component that handles voucher action's.
 internal protocol AnyVoucherActionHandler: ActionComponent {
