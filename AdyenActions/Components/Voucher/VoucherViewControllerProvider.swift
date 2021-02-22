@@ -70,8 +70,7 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
         let baseStyle = AbstractVoucherView.Model.Style(mainButtonStyle: self.style.mainButton,
                                                         secondaryButtonStyle: self.style.secondaryButton,
                                                         backgroundColor: self.style.backgroundColor)
-        let baseModel = AbstractVoucherView.Model(voucherAction: action,
-                                                  separatorModel: .init(separatorTitle: separatorTitle),
+        let baseModel = AbstractVoucherView.Model(separatorModel: .init(separatorTitle: separatorTitle),
                                                   saveButtonTitle: "Save as image",
                                                   doneButtonTitle: "Finish",
                                                   style: baseStyle)

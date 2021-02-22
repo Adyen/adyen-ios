@@ -9,7 +9,7 @@ import UIKit
 
 internal protocol VoucherViewDelegate: AnyObject {
 
-    func didComplete(voucherAction: GenericVoucherAction, presentingViewController: UIViewController)
+    func didComplete(presentingViewController: UIViewController)
 
     func saveAsImage(voucherView: UIView, presentingViewController: UIViewController)
 }
@@ -19,8 +19,6 @@ internal class AbstractVoucherView: UIView, Localizable {
     internal weak var delegate: VoucherViewDelegate?
 
     internal struct Model {
-
-        internal let voucherAction: GenericVoucherAction
 
         internal let separatorModel: VoucherSeparatorView.Model
 
@@ -176,7 +174,7 @@ internal class AbstractVoucherView: UIView, Localizable {
     }
 
     @objc private func done() {
-        delegate?.didComplete(voucherAction: model.voucherAction, presentingViewController: fakeViewController)
+        delegate?.didComplete(presentingViewController: fakeViewController)
     }
 
 }
