@@ -72,8 +72,8 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
                                                         backgroundColor: self.style.backgroundColor)
         let baseModel = AbstractVoucherView.Model(voucherAction: action,
                                                   separatorModel: .init(separatorTitle: separatorTitle),
-                                                  saveButtonTitle: "Save",
-                                                  doneButtonTitle: "Return to Mystore",
+                                                  saveButtonTitle: "Save as image",
+                                                  doneButtonTitle: "Finish",
                                                   style: baseStyle)
         return DokuVoucherView.Model(text: text,
                                      amount: amountString,
