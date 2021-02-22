@@ -95,35 +95,6 @@ extension VoucherComponent: VoucherViewDelegate {
         delegate?.didComplete(from: self)
     }
 
-    internal func saveToAppleWallet(voucherAction: GenericVoucherAction, presentingViewController: UIViewController, completion: (() -> Void)?) {
-        let request = AppleWalletPassRequest(action: voucherAction)
-        apiClient.perform(request, completionHandler: { [weak self] result in
-            switch result {
-            case let .failure(error):
-                adyenPrint(error)
-                completion?()
-            case let .success(response):
-                self?.handle(response: response,
-                             presentingViewController: presentingViewController,
-                             completion: completion)
-            }
-        })
-    }
-
-    private func handle(response: AppleWalletPassResponse, presentingViewController: UIViewController, completion: (() -> Void)?) {
-        guard let data = response.appleWalletPassBundle else { completion?(); return }
-        do {
-            let pass = try PKPass(data: data)
-            guard let viewController = PKAddPassesViewController(pass: pass) else { completion?(); return }
-            presentingViewController.present(viewController, animated: true) {
-                completion?()
-            }
-        } catch {
-            adyenPrint(error)
-            completion?()
-        }
-    }
-
     internal func saveAsImage(voucherView: UIView, presentingViewController: UIViewController) {
         guard let image = voucherView.adyen.snapShot() else { return }
         let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
