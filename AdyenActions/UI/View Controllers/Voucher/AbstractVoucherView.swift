@@ -10,8 +10,6 @@ import UIKit
 
 internal protocol VoucherViewDelegate: AnyObject {
 
-    func saveToAppleWallet(voucherAction: GenericVoucherAction, presentingViewController: UIViewController, completion: (() -> Void)?)
-
     func didComplete(voucherAction: GenericVoucherAction, presentingViewController: UIViewController)
 
     func saveAsImage(voucherView: UIView, presentingViewController: UIViewController)
@@ -82,15 +80,6 @@ internal class AbstractVoucherView: UIView, Localizable {
                             accessibilityIdentifier: accessibilityIdentifier)
     }()
 
-    private lazy var appleWalletButton: PKAddPassButton = {
-        let button = PKAddPassButton(addPassButtonStyle: .black)
-        button.addTarget(self, action: #selector(addToAppleWallet), for: .touchUpInside)
-        button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.voucher", postfix: "appleWalletButton")
-        button.preservesSuperviewLayoutMargins = true
-
-        return button
-    }()
-
     private lazy var doneButton: UIButton = {
         let accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.voucher", postfix: "doneButton")
 
@@ -134,7 +123,6 @@ internal class AbstractVoucherView: UIView, Localizable {
 
     private func buildUI() {
         addVoucherView()
-        addAppleWalletButton()
         addShareButton()
         addDoneButton()
     }
@@ -154,7 +142,6 @@ internal class AbstractVoucherView: UIView, Localizable {
 
     override internal func layoutSubviews() {
         super.layoutSubviews()
-        appleWalletButton.adyen.round(using: model.style.mainButtonStyle.cornerRounding)
         saveButton.adyen.round(using: model.style.secondaryButtonStyle.cornerRounding)
         doneButton.adyen.round(using: model.style.mainButtonStyle.cornerRounding)
     }
@@ -168,26 +155,12 @@ internal class AbstractVoucherView: UIView, Localizable {
         voucherView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
     }
 
-    private func addAppleWalletButton() {
-        guard model.voucherAction.signature != nil else { return }
-        addSubview(appleWalletButton)
-        appleWalletButton.translatesAutoresizingMaskIntoConstraints = false
-        appleWalletButton.widthAnchor.constraint(equalToConstant: 280).isActive = true
-        appleWalletButton.topAnchor.constraint(equalTo: voucherView.bottomAnchor, constant: 30).isActive = true
-        appleWalletButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-    }
-
     private func addShareButton() {
         addSubview(saveButton)
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         saveButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 18).isActive = true
         saveButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -18).isActive = true
-
-        if model.voucherAction.signature != nil {
-            saveButton.topAnchor.constraint(equalTo: appleWalletButton.bottomAnchor, constant: 30).isActive = true
-        } else {
-            saveButton.topAnchor.constraint(equalTo: voucherView.bottomAnchor, constant: 30).isActive = true
-        }
+        saveButton.topAnchor.constraint(equalTo: voucherView.bottomAnchor, constant: 30).isActive = true
     }
 
     private func addDoneButton() {
@@ -197,13 +170,6 @@ internal class AbstractVoucherView: UIView, Localizable {
         doneButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 18).isActive = true
         doneButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -18).isActive = true
         doneButton.topAnchor.constraint(equalTo: saveButton.bottomAnchor, constant: 16).isActive = true
-    }
-
-    @objc private func addToAppleWallet() {
-        appleWalletButton.isEnabled = false
-        delegate?.saveToAppleWallet(voucherAction: model.voucherAction, presentingViewController: fakeViewController) { [weak self] in
-            self?.appleWalletButton.isEnabled = true
-        }
     }
 
     @objc private func shareVoucher() {
