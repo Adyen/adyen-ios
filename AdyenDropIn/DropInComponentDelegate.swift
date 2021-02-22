@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -26,6 +26,14 @@ public protocol DropInComponentDelegate: AnyObject {
     ///   - data: The additional data supplied by the drop in component.
     ///   - component: The drop in component from which the additional details were provided.
     func didProvide(_ data: ActionComponentData, from component: DropInComponent)
+
+    /// Invoked when the action component finishes,
+    /// without any further steps needed by the application, for example in case of voucher payment methods.
+    /// The application just needs to dismiss the `DropInComponent`.
+    ///
+    /// - Parameters:
+    ///   - component: The component that handled the action.
+    func didComplete(from component: DropInComponent)
     
     /// Invoked when the drop in component failed with an error.
     ///

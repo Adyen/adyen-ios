@@ -74,9 +74,13 @@ extension DokuVoucherView {
                                                     color: UIColor.Adyen.componentLabel,
                                                     textAlignment: .center)
 
-            internal var saveButton: ButtonStyle
+            internal var mainButton: ButtonStyle
+
+            internal var secondaryButton: ButtonStyle
+
+            internal var backgroundColor: UIColor
         }
 
-        internal var voucherSeparator: VoucherSeparatorView.Model
+        internal var baseViewModel: AbstractVoucherView.Model
     }
 }

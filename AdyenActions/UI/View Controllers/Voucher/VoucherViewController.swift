@@ -27,7 +27,7 @@ internal final class VoucherViewController: UIViewController {
     override internal func viewDidLoad() {
         super.viewDidLoad()
         buildUI()
-        view.backgroundColor = UIColor.Adyen.componentBackground
+        view.backgroundColor = .clear
     }
 
     private func buildUI() {

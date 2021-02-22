@@ -10,7 +10,7 @@ import Foundation
 public struct Payment {
     
     /// Describes the amount of a payment.
-    public struct Amount: Decodable {
+    public struct Amount: Codable {
         
         /// The value of the amount in minor units.
         public var value: Int

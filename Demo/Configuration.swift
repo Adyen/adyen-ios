@@ -12,23 +12,25 @@ internal enum Configuration {
     // swiftlint:disable explicit_acl
 
     /// Please use your own web server between your app and adyen checkout API.
-    static let demoServerEnvironment = DemoServerEnvironment.test
+    static let demoServerEnvironment = DemoServerEnvironment.local
 
-    static let componentsEnvironment = Environment.test
+    static let local = Environment(baseURL: URL(string: "http://localhost:8080/")!)
+
+    static let componentsEnvironment = local
 
     static let appName = "Adyen Demo"
 
-    static let amount = Payment.Amount(value: 17408, currencyCode: "EUR")
+    static let amount = Payment.Amount(value: 17408, currencyCode: "IDR")
 
     static let reference = "Test Order Reference - iOS UIHost"
     
-    static let countryCode = "NL"
+    static let countryCode = "ID"
 
     static let returnUrl = "ui-host://"
     
     static let shopperReference = "iOS Checkout Shopper"
 
-    static let merchantAccount = "TestMerchantCheckout"
+    static let merchantAccount = "TestMerchant"
 
     static let shopperEmail = "checkoutshopperios@example.org"
     
