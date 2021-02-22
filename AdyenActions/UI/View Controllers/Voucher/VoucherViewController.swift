@@ -5,7 +5,6 @@
 //
 
 import Adyen
-import PassKit
 import UIKit
 
 internal final class VoucherViewController: UIViewController {
