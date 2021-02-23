@@ -7,7 +7,36 @@
 import Adyen
 import UIKit
 
+internal protocol VoucherViewDelegate: AnyObject {
+
+    func didComplete(presentingViewController: UIViewController)
+
+    func saveAsImage(voucherView: UIView, presentingViewController: UIViewController)
+}
+
 internal class AbstractVoucherView: UIView, Localizable {
+
+    internal weak var delegate: VoucherViewDelegate?
+
+    internal struct Model {
+
+        internal let separatorModel: VoucherSeparatorView.Model
+
+        internal let saveButtonTitle: String
+
+        internal let doneButtonTitle: String
+
+        internal let style: Style
+
+        internal struct Style {
+
+            internal let mainButtonStyle: ButtonStyle
+
+            internal let secondaryButtonStyle: ButtonStyle
+
+            internal let backgroundColor: UIColor
+        }
+    }
 
     internal var localizationParameters: LocalizationParameters?
 
@@ -28,33 +57,65 @@ internal class AbstractVoucherView: UIView, Localizable {
         let topView = createTopView()
         let bottomView = createBottomView()
 
-        return VoucherCardView(topView: topView, bottomView: bottomView)
+        return VoucherCardView(model: model.separatorModel,
+                               topView: topView,
+                               bottomView: bottomView)
     }()
 
     private lazy var saveButton: UIButton = {
-        let saveButton = UIButton()
-        saveButton.setTitle("save", for: .normal)
-        saveButton.imageEdgeInsets = UIEdgeInsets(top: 8, left: -2, bottom: 8, right: 8)
-        saveButton.titleEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: -2)
-        saveButton.setImage(UIImage(named: "share",
-                                    in: Bundle.actionsInternalResources,
-                                    compatibleWith: nil), for: .normal)
+        let accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.voucher", postfix: "saveButton")
 
-        saveButton.layer.backgroundColor = UIColor.Adyen.defaultBlue.cgColor
-        saveButton.layer.cornerRadius = 8
-        saveButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        saveButton.addTarget(self, action: #selector(shareVoucher), for: .touchUpInside)
-
-        return saveButton
+        return createButton(with: model.style.secondaryButtonStyle,
+                            title: model.saveButtonTitle,
+                            action: #selector(shareVoucher),
+                            accessibilityIdentifier: accessibilityIdentifier)
     }()
 
-    private let model: VoucherSeparatorView.Model
+    private lazy var doneButton: UIButton = {
+        let accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.voucher", postfix: "doneButton")
 
-    internal init(model: VoucherSeparatorView.Model = VoucherSeparatorView.Model()) {
+        return createButton(with: model.style.mainButtonStyle,
+                            title: model.doneButtonTitle,
+                            action: #selector(done),
+                            accessibilityIdentifier: accessibilityIdentifier)
+    }()
+
+    private func createButton(with style: ButtonStyle,
+                              title: String,
+                              image: UIImage? = nil,
+                              action: Selector,
+                              accessibilityIdentifier: String) -> UIButton {
+        let button = UIButton()
+        let titleStyle = style.title
+        button.setTitle(title, for: .normal)
+        button.titleLabel?.font = titleStyle.font
+        button.setTitleColor(titleStyle.color, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: -2, bottom: 8, right: 8)
+        button.titleEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: -2)
+        button.layer.borderWidth = style.borderWidth
+        button.layer.borderColor = style.borderColor?.cgColor
+        button.layer.backgroundColor = style.backgroundColor.cgColor
+        button.adyen.round(using: style.cornerRounding)
+        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        button.addTarget(self, action: action, for: .touchUpInside)
+        button.accessibilityIdentifier = accessibilityIdentifier
+
+        return button
+    }
+
+    private let model: Model
+
+    internal init(model: Model) {
         self.model = model
         super.init(frame: .zero)
+        buildUI()
+        backgroundColor = model.style.backgroundColor
+    }
+
+    private func buildUI() {
         addVoucherView()
         addShareButton()
+        addDoneButton()
     }
 
     @available(*, unavailable)
@@ -70,29 +131,44 @@ internal class AbstractVoucherView: UIView, Localizable {
         fatalError("This is an abstract class that needs to be subclassed.")
     }
 
+    override internal func layoutSubviews() {
+        super.layoutSubviews()
+        saveButton.adyen.round(using: model.style.secondaryButtonStyle.cornerRounding)
+        doneButton.adyen.round(using: model.style.mainButtonStyle.cornerRounding)
+    }
+
     private func addVoucherView() {
         voucherView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(voucherView)
 
-        voucherView.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
+        voucherView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true
         voucherView.topAnchor.constraint(equalTo: topAnchor, constant: 20).isActive = true
-        voucherView.rightAnchor.constraint(equalTo: rightAnchor, constant: -20).isActive = true
+        voucherView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
     }
 
     private func addShareButton() {
         addSubview(saveButton)
         saveButton.translatesAutoresizingMaskIntoConstraints = false
-        saveButton.leftAnchor.constraint(equalTo: leftAnchor, constant: 18).isActive = true
-        saveButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -18).isActive = true
-        saveButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -60).isActive = true
+        saveButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 18).isActive = true
+        saveButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -18).isActive = true
         saveButton.topAnchor.constraint(equalTo: voucherView.bottomAnchor, constant: 30).isActive = true
     }
 
+    private func addDoneButton() {
+        addSubview(doneButton)
+        doneButton.translatesAutoresizingMaskIntoConstraints = false
+        doneButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -60).isActive = true
+        doneButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 18).isActive = true
+        doneButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -18).isActive = true
+        doneButton.topAnchor.constraint(equalTo: saveButton.bottomAnchor, constant: 16).isActive = true
+    }
+
     @objc private func shareVoucher() {
-        guard let image = voucherView.adyen.snapShot() else { return }
-        let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
-        activityViewController.popoverPresentationController?.sourceView = voucherView
-        fakeViewController.present(activityViewController, animated: true, completion: nil)
+        delegate?.saveAsImage(voucherView: voucherView, presentingViewController: fakeViewController)
+    }
+
+    @objc private func done() {
+        delegate?.didComplete(presentingViewController: fakeViewController)
     }
 
 }

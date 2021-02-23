@@ -5,7 +5,7 @@
 //
 
 import Adyen
-import Foundation
+import UIKit
 
 /// A component that handles voucher action's.
 internal protocol AnyVoucherActionHandler: ActionComponent {
@@ -25,7 +25,7 @@ public final class VoucherComponent: AnyVoucherActionHandler {
     public let requiresModalPresentation: Bool = true
 
     /// The Component UI style.
-    public let style: AwaitComponentStyle
+    public let style: VoucherComponentStyle
 
     /// :nodoc:
     public var localizationParameters: LocalizationParameters?
@@ -36,8 +36,8 @@ public final class VoucherComponent: AnyVoucherActionHandler {
     /// Initializes the `AwaitComponent`.
     ///
     /// - Parameter style: The Component UI style.
-    public init(style: AwaitComponentStyle?) {
-        self.style = style ?? AwaitComponentStyle()
+    public init(style: VoucherComponentStyle?) {
+        self.style = style ?? VoucherComponentStyle()
     }
 
     /// Initializes the `AwaitComponent`.
@@ -45,7 +45,7 @@ public final class VoucherComponent: AnyVoucherActionHandler {
     /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter style: The Component UI style.
     internal convenience init(voucherViewControllerProvider: AnyVoucherViewControllerProvider?,
-                              style: AwaitComponentStyle? = nil) {
+                              style: VoucherComponentStyle? = nil) {
         self.init(style: style)
         self.voucherViewControllerProvider = voucherViewControllerProvider
     }
@@ -59,8 +59,9 @@ public final class VoucherComponent: AnyVoucherActionHandler {
     public func handle(_ action: VoucherAction) {
         Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, environment: environment)
 
-        var viewControllerProvider = voucherViewControllerProvider ?? VoucherViewControllerProvider()
+        var viewControllerProvider = voucherViewControllerProvider ?? VoucherViewControllerProvider(style: style)
         viewControllerProvider.localizationParameters = localizationParameters
+        viewControllerProvider.delegate = self
 
         let viewController = viewControllerProvider.provide(with: action)
 
@@ -72,4 +73,17 @@ public final class VoucherComponent: AnyVoucherActionHandler {
         }
     }
 
+}
+
+extension VoucherComponent: VoucherViewDelegate {
+    internal func didComplete(presentingViewController: UIViewController) {
+        delegate?.didComplete(from: self)
+    }
+
+    internal func saveAsImage(voucherView: UIView, presentingViewController: UIViewController) {
+        guard let image = voucherView.adyen.snapShot() else { return }
+        let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = voucherView
+        presentingViewController.present(activityViewController, animated: true, completion: nil)
+    }
 }

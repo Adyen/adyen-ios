@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -15,6 +15,12 @@ public struct ButtonStyle: ViewStyle {
     
     /// The corners style of the button.
     public var cornerRounding: CornerRounding = .fixed(8)
+
+    /// The color of the Button's border.
+    public var borderColor: UIColor?
+
+    /// The width of the Button's border.
+    public var borderWidth: CGFloat = 0
     
     /// :nodoc:
     public var backgroundColor = UIColor.Adyen.defaultBlue

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -186,6 +186,10 @@ extension ThreeDS2Component: ActionComponentDelegate {
 
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
         delegate?.didProvide(data, from: self)
+    }
+
+    public func didComplete(from component: ActionComponent) {
+        delegate?.didComplete(from: self)
     }
 
     public func didFail(with error: Error, from component: ActionComponent) {

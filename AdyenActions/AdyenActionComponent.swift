@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -22,6 +22,9 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
     
     /// Indicates the UI configuration of the await component.
     public var awaitComponentStyle: AwaitComponentStyle?
+
+    /// Indicates the UI configuration of the voucher component.
+    public var voucherComponentStyle: VoucherComponentStyle?
 
     /// :nodoc:
     public var localizationParameters: LocalizationParameters?
@@ -148,7 +151,7 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
     }
     
     private func perform(_ action: VoucherAction) {
-        let component = VoucherComponent(style: awaitComponentStyle)
+        let component = VoucherComponent(style: voucherComponentStyle)
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
