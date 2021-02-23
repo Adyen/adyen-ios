@@ -70,6 +70,11 @@ extension IntegrationExample: DropInComponentDelegate {
         apiClient.perform(request, completionHandler: paymentResponseHandler)
     }
 
+    internal func didComplete(from component: DropInComponent) {
+        paymentInProgress = false
+        finish(with: .authorised)
+    }
+
     internal func didFail(with error: Error, from component: DropInComponent) {
         paymentInProgress = false
         finish(with: error)

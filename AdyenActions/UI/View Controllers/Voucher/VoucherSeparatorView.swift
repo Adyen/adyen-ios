@@ -11,7 +11,7 @@ import UIKit
 
 extension VoucherSeparatorView {
     internal struct Model {
-        internal var separatorTitle: String? = "Payment code"
+        internal var separatorTitle: String
 
         internal var separatorStyle = TextStyle(font: .systemFont(ofSize: 13),
                                                 color: UIColor.Adyen.componentLabel,
@@ -100,7 +100,7 @@ internal final class VoucherSeparatorView: UIView {
     }
 
     private func buildSeparatorTextLayer() {
-        guard let text = model.separatorTitle else { return }
+        let text = model.separatorTitle
         let style = model.separatorStyle
         separatorTextLayer.font = style.font
         separatorTextLayer.fontSize = style.font.pointSize

@@ -33,7 +33,7 @@ internal enum Configuration {
     static let shopperEmail = "checkoutshopperios@example.org"
     
     static let additionalData = ["allow3DS2": true]
-    
+
     static let clientKey = "{YOUR_CLIENT_KEY}"
 
     // swiftlint:disable:next line_length
@@ -44,7 +44,7 @@ internal enum Configuration {
     static let applePaySummaryItems = [
         PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)
     ]
-    
+
     // swiftlint:enable explicit_acl
     
 }

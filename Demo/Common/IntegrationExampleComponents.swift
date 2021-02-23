@@ -144,6 +144,11 @@ extension IntegrationExample: ActionComponentDelegate {
         finish(with: error)
     }
 
+    internal func didComplete(from component: ActionComponent) {
+        paymentInProgress = false
+        finish(with: .authorised)
+    }
+
     internal func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
         let request = PaymentDetailsRequest(details: data.details,
                                             paymentData: data.paymentData,

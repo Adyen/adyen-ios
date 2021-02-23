@@ -20,6 +20,10 @@ final class ActionComponentDelegateMock: ActionComponentDelegate {
     func didFail(with error: Error, from component: ActionComponent) {
         onDidFail?(error, component)
     }
+
+    func didComplete(from component: ActionComponent) {
+        
+    }
     
     var onDidOpenExternalApplication: ((_ component: ActionComponent) -> Void)?
     

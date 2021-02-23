@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -48,7 +48,7 @@ public final class RedirectComponent: ActionComponent, DismissableComponent {
     /// - Returns: A boolean value indicating whether the URL was handled by the redirect component.
     @discardableResult
     public static func applicationDidOpen(from url: URL) -> Bool {
-        return UniversalRedirectComponent.applicationDidOpen(from: url)
+        UniversalRedirectComponent.applicationDidOpen(from: url)
     }
     
     /// :nodoc:
@@ -72,6 +72,11 @@ extension RedirectComponent: ActionComponentDelegate {
     /// :nodoc:
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
         delegate?.didProvide(data, from: self)
+    }
+
+    /// :nodoc:
+    public func didComplete(from component: ActionComponent) {
+        delegate?.didComplete(from: self)
     }
     
     /// :nodoc:

@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 
 /// Indicates the Voucher payment methods.
-public enum VoucherPaymentMethod: String, Decodable {
+public enum VoucherPaymentMethod: String, Codable, CaseIterable {
     case dokuIndomaret = "doku_indomaret"
     case dokuAlfamart = "doku_alfamart"
 }
@@ -17,10 +17,10 @@ public enum VoucherPaymentMethod: String, Decodable {
 public enum VoucherAction: Decodable {
 
     /// Indicates Doku Indomaret Voucher type.
-    case dokuIndomaret(DokuVoucherAction)
+    case dokuIndomaret(GenericVoucherAction)
 
     /// Indicates Doku Alfamart Voucher type.
-    case dokuAlfamart(DokuVoucherAction)
+    case dokuAlfamart(GenericVoucherAction)
 
     /// :nodoc:
     public init(from decoder: Decoder) throws {
@@ -28,8 +28,10 @@ public enum VoucherAction: Decodable {
         let type = try container.decode(VoucherPaymentMethod.self, forKey: .paymentMethodType)
 
         switch type {
-        case .dokuIndomaret, .dokuAlfamart:
-            self = .dokuIndomaret(try DokuVoucherAction(from: decoder))
+        case .dokuIndomaret:
+            self = .dokuIndomaret(try GenericVoucherAction(from: decoder))
+        case .dokuAlfamart:
+            self = .dokuAlfamart(try GenericVoucherAction(from: decoder))
         }
     }
 
@@ -40,7 +42,7 @@ public enum VoucherAction: Decodable {
 }
 
 /// Describes an action in which a voucher is presented to the shopper.
-public struct DokuVoucherAction: Decodable {
+public class GenericVoucherAction: Decodable {
 
     /// The `paymentMethodType` for which the voucher is presented.
     public let paymentMethodType: VoucherPaymentMethod
@@ -70,7 +72,7 @@ public struct DokuVoucherAction: Decodable {
     public let instructionsUrl: String
 
     /// :nodoc:
-    public init(from decoder: Decoder) throws {
+    public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         paymentMethodType = try container.decode(VoucherPaymentMethod.self, forKey: .paymentMethodType)
         initialAmount = try container.decode(Payment.Amount.self, forKey: .initialAmount)

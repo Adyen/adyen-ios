@@ -44,5 +44,4 @@ class VoucherComponentTests: XCTestCase {
 
         waitForExpectations(timeout: 2, handler: nil)
     }
-
 }
