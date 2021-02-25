@@ -59,3 +59,5 @@
 "adyen.button.copy" = "Копия";
 "adyen.voucher.introduction" = "Благодарим за покупку. Для завершения оплаты используйте следующие сведения.";
 "adyen.voucher.readInstructions" = "Прочитайте инструкции";
+"adyen.voucher.saveImage" = "Save as image";
+"adyen.voucher.finish" = "Finish";

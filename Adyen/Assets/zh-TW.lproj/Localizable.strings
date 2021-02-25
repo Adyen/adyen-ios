@@ -59,3 +59,5 @@
 "adyen.button.copy" = "複製";
 "adyen.voucher.introduction" = "多謝惠顧，請使用以下資訊完成付款。";
 "adyen.voucher.readInstructions" = "閱覽說明";
+"adyen.voucher.saveImage" = "Save as image";
+"adyen.voucher.finish" = "Finish";

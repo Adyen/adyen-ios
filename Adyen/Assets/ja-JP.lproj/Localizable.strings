@@ -59,3 +59,5 @@
 "adyen.button.copy" = "コピー";
 "adyen.voucher.introduction" = "お買い上げありがとうございます。以下の情報を使用して、お支払いを完了してください。";
 "adyen.voucher.readInstructions" = "手順を参照してください";
+"adyen.voucher.saveImage" = "Save as image";
+"adyen.voucher.finish" = "Finish";

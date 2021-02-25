@@ -59,3 +59,5 @@
 "adyen.button.copy" = "복사";
 "adyen.voucher.introduction" = "구매해 주셔서 감사합니다. 다음 정보를 이용하여 결제를 완료하십시오.";
 "adyen.voucher.readInstructions" = "안내 읽기";
+"adyen.voucher.saveImage" = "Save as image";
+"adyen.voucher.finish" = "Finish";

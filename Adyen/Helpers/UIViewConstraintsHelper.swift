@@ -36,4 +36,19 @@ extension AdyenScope where Base: UIView {
         NSLayoutConstraint.activate(constraints)
     }
 
+    /// Wrap the view inside a container view with certain edge insets
+    ///
+    /// - Parameter insets: The insets inside the container view.
+    public func wrapped(with insets: UIEdgeInsets = .zero) -> UIView {
+        let containerView = UIView()
+        containerView.addSubview(base)
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        base.translatesAutoresizingMaskIntoConstraints = false
+        anchore(inside: containerView, with: UIEdgeInsets(top: insets.top,
+                                                          left: insets.left,
+                                                          bottom: insets.bottom,
+                                                          right: insets.right))
+        return containerView
+    }
+
 }
