@@ -69,8 +69,12 @@ internal final class DokuVoucherView: AbstractVoucherView {
 
     override internal func createTopView() -> UIView {
         logoView.imageURL = model.logoUrl
+        let textLabelWrapper = textLabel.adyen.wrapped(with: UIEdgeInsets(top: 0,
+                                                                          left: 16,
+                                                                          bottom: 0,
+                                                                          right: -16))
         let stackView = UIStackView(arrangedSubviews: [logoView,
-                                                       textLabel,
+                                                       textLabelWrapper,
                                                        instructionButton,
                                                        amountLabel])
         stackView.spacing = 16
@@ -122,15 +126,12 @@ internal final class DokuVoucherView: AbstractVoucherView {
         stackView.alignment = .center
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
-        let containerView = UIView()
-        containerView.addSubview(stackView)
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.adyen.anchore(inside: containerView, with: UIEdgeInsets(top: 0,
-                                                                          left: 16,
-                                                                          bottom: 0,
-                                                                          right: -16))
+        let containerView = stackView.adyen.wrapped(with: UIEdgeInsets(top: 0,
+                                                                       left: 16,
+                                                                       bottom: 0,
+                                                                       right: -16))
         valueLabel.widthAnchor.constraint(lessThanOrEqualTo: containerView.widthAnchor,
-                                          multiplier: 0.7).isActive = true
+                                          multiplier: 0.5).isActive = true
 
         return containerView
     }

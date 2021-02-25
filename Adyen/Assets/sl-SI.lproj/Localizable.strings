@@ -59,3 +59,5 @@
 "adyen.button.copy" = "Kopiraj";
 "adyen.voucher.introduction" = "Zahvaljujemo se vam za nakup. Za dokončanje plačila uporabite naslednji kupon.";
 "adyen.voucher.readInstructions" = "Preberite navodila";
+"adyen.voucher.saveImage" = "Save as image";
+"adyen.voucher.finish" = "Finish";

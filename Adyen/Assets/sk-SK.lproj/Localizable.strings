@@ -59,3 +59,5 @@
 "adyen.button.copy" = "Kopírovať";
 "adyen.voucher.introduction" = "Ďakujeme vám za nákup. Na dokončenie platby použite nasledujúce informácie.";
 "adyen.voucher.readInstructions" = "Prečítajte si pokyny";
+"adyen.voucher.saveImage" = "Save as image";
+"adyen.voucher.finish" = "Finish";

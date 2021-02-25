@@ -59,3 +59,5 @@
 "adyen.button.copy" = "Copiere";
 "adyen.voucher.introduction" = "Vă mulțumim pentru cumpărături, vă rugăm să utilizați următoarele informații pentru a vă finaliza plata.";
 "adyen.voucher.readInstructions" = "Citiți instrucțiunile";
+"adyen.voucher.saveImage" = "Save as image";
+"adyen.voucher.finish" = "Finish";

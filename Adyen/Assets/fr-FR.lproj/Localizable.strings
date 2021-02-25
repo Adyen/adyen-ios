@@ -59,3 +59,5 @@
 "adyen.button.copy" = "Copier";
 "adyen.voucher.introduction" = "Nous vous remercions de votre achat. Veuillez finaliser votre paiement à l'aide des informations suivantes.";
 "adyen.voucher.readInstructions" = "Lire les instructions";
+"adyen.voucher.saveImage" = "Save as image";
+"adyen.voucher.finish" = "Finish";

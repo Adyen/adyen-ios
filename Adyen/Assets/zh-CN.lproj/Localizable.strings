@@ -59,3 +59,5 @@
 "adyen.button.copy" = "复制";
 "adyen.voucher.introduction" = "感谢您的购买，请使用以下信息完成支付。";
 "adyen.voucher.readInstructions" = "阅读说明";
+"adyen.voucher.saveImage" = "Save as image";
+"adyen.voucher.finish" = "Finish";
