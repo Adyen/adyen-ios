@@ -70,9 +70,11 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
         let baseStyle = AbstractVoucherView.Model.Style(mainButtonStyle: self.style.mainButton,
                                                         secondaryButtonStyle: self.style.secondaryButton,
                                                         backgroundColor: self.style.backgroundColor)
+        let saveAsImageCopy = ADYLocalizedString("adyen.voucher.saveImage", localizationParameters)
+        let finishCopy = ADYLocalizedString("adyen.voucher.finish", localizationParameters)
         let baseModel = AbstractVoucherView.Model(separatorModel: .init(separatorTitle: separatorTitle),
-                                                  saveButtonTitle: "Save as image",
-                                                  doneButtonTitle: "Finish",
+                                                  saveButtonTitle: saveAsImageCopy,
+                                                  doneButtonTitle: finishCopy,
                                                   style: baseStyle)
         return DokuVoucherView.Model(text: text,
                                      amount: amountString,

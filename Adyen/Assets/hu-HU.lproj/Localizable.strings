@@ -59,3 +59,5 @@
 "adyen.button.copy" = "Másolás";
 "adyen.voucher.introduction" = "Köszönjük a vásárlást! Kérjük, a fizetéshez használja a következő információt.";
 "adyen.voucher.readInstructions" = "Olvassa el az utasításokat";
+"adyen.voucher.saveImage" = "Save as image";
+"adyen.voucher.finish" = "Finish";

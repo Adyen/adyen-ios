@@ -59,3 +59,5 @@
 "adyen.button.copy" = "Kopier";
 "adyen.voucher.introduction" = "Takk for ditt kjøp, vennligst bruk den følgende informasjonen for å fullføre betalingen.";
 "adyen.voucher.readInstructions" = "Les instruksjoner";
+"adyen.voucher.saveImage" = "Save as image";
+"adyen.voucher.finish" = "Finish";
