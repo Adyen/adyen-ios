@@ -75,11 +75,11 @@ public final class ThreeDS2Component: ActionComponent {
         switch threeDS2Action {
         case let .fingerprint(fingerprintAction):
             threeDS2CompactFlowHandler.handle(fingerprintAction) { [weak self] result in
-                self?.didReceive(result, paymentData: fingerprintAction.paymentData)
+                self?.didReceive(result, paymentData: nil)
             }
         case let .challenge(challengeAction):
             threeDS2CompactFlowHandler.handle(challengeAction) { [weak self] result in
-                self?.didReceive(result, paymentData: challengeAction.paymentData)
+                self?.didReceive(result, paymentData: nil)
             }
         }
     }
