@@ -250,3 +250,14 @@ class RedirectComponentTests: XCTestCase {
     }
     
 }
+
+extension UIViewController {
+    public static func findTopPresenter() -> UIViewController? {
+        guard let viewController = UIApplication.shared.keyWindow?.rootViewController else {
+            assertionFailure("Application's keyWindow is not set or have no rootViewController")
+            return nil
+        }
+        return viewController.adyen.topPresenter
+    }
+
+}

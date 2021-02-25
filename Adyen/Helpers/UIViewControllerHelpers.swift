@@ -6,22 +6,7 @@
 
 import UIKit
 
-/// So that any `UIViewController` instance will inherit the `adyen` scope.
-/// :nodoc:
-extension UIViewController: AdyenCompatible {
-    
-    /// Access top most presented view controller for provided window.
-    /// :nodoc:
-    public static func findTopPresenter() -> UIViewController? {
-        guard let viewController = UIApplication.shared.keyWindow?.rootViewController else {
-            assertionFailure("Application's keyWindow is not set or have no rootViewController")
-            return nil
-        }
-        
-        return viewController.adyen.topPresenter
-    }
-    
-}
+extension UIViewController: AdyenCompatible {}
 
 /// Adds helper functionality to any `UIViewController` instance through the `adyen` property.
 /// :nodoc:
@@ -35,17 +20,6 @@ public extension AdyenScope where Base: UIViewController {
             topController = presenter
         }
         return topController
-    }
-
-    /// :nodoc:
-    func present(_ viewController: UIViewController, animated: Bool, completion: (() -> Void)? = nil) {
-        if topPresenter.isBeingPresented || topPresenter.isBeingDismissed {
-            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(10)) {
-                self.present(viewController, animated: animated, completion: completion)
-            }
-        } else {
-            topPresenter.present(viewController, animated: animated, completion: completion)
-        }
     }
     
     private var leastPresentableHeightScale: CGFloat { 0.3 }

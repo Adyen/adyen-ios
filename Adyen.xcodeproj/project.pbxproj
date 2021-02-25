@@ -3785,7 +3785,6 @@
 				F924C079246C38E0006DDAB8 /* SecuredViewController.swift in Sources */,
 				E7D5311A2446F525000046B4 /* FormSeparatorItem.swift in Sources */,
 				E9E3DAFD2225485400697074 /* URLSessionHelpers.swift in Sources */,
-				F926D53523F68FD300D058D3 /* QiwiWalletDetails.swift in Sources */,
 				E71E8F3E257921D10054B03D /* StoredBLIKPaymentMethod.swift in Sources */,
 				F9B798C923AB697100A2103C /* FormComponentStyle.swift in Sources */,
 				E7275BF9255012F600907CF9 /* FormLabelItem.swift in Sources */,
