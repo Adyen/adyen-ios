@@ -28,8 +28,6 @@ internal protocol AnyRedirectComponent: ActionComponent {
     func handle(_ action: RedirectAction)
 }
 
-extension RedirectComponent: AnyRedirectComponent {}
-
 /// Handles the 3D Secure 2 fingerprint and challenge.
 public final class ThreeDS2Component: ActionComponent {
 

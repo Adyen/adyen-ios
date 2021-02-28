@@ -78,6 +78,7 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
         component._isDropIn = _isDropIn
         component.environment = environment
         component.clientKey = clientKey
+        component.presentationDelegate = presentationDelegate
         redirectComponent = component
         
         component.handle(action)
