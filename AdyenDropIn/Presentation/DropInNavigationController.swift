@@ -43,7 +43,11 @@ internal final class DropInNavigationController: UINavigationController {
     }
     
     internal func present(asModal component: PresentableComponent) {
-        pushViewController(wrapInModalController(component: component, isRoot: false), animated: true)
+        if component.requiresModalPresentation {
+            pushViewController(wrapInModalController(component: component, isRoot: false), animated: true)
+        } else {
+            present(component.viewController, animated: true, completion: nil)
+        }
     }
     
     internal func present(root component: PresentableComponent) {
@@ -104,7 +108,7 @@ extension DropInNavigationController: UINavigationControllerDelegate {
                                        animationControllerFor operation: UINavigationController.Operation,
                                        from fromVC: UIViewController,
                                        to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return SlideInPresentationAnimator(duration: 0.5)
+        SlideInPresentationAnimator(duration: 0.5)
     }
     
 }
@@ -115,14 +119,14 @@ extension DropInNavigationController: UIViewControllerTransitioningDelegate {
     public func presentationController(forPresented presented: UIViewController,
                                        presenting: UIViewController?,
                                        source: UIViewController) -> UIPresentationController? {
-        return DimmingPresentationController(presented: presented,
-                                             presenting: presenting,
-                                             layoutDidChanged: { [weak self] in
-                                                 guard let self = self,
-                                                       let viewController = self.topViewController as? WrapperViewController
-                                                 else { return }
-                                                 viewController.updateFrame(keyboardRect: self.keyboardRect, animated: false)
-                                             })
+        DimmingPresentationController(presented: presented,
+                                      presenting: presenting,
+                                      layoutDidChanged: { [weak self] in
+                                          guard let self = self,
+                                                let viewController = self.topViewController as? WrapperViewController
+                                          else { return }
+                                          viewController.updateFrame(keyboardRect: self.keyboardRect, animated: false)
+                                      })
     }
     
 }

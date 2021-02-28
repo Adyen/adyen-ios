@@ -61,6 +61,7 @@ class AdyenActionComponentTests: XCTestCase {
     func testRedirectToHttpWebLink() {
         let sut = AdyenActionComponent()
         let delegate = ActionComponentDelegateMock()
+        sut.presentationDelegate = UIViewController.findTopPresenter()
         sut.delegate = delegate
 
         delegate.onDidOpenExternalApplication = { _ in
@@ -167,6 +168,6 @@ class AdyenActionComponentTests: XCTestCase {
 
 extension UIViewController: PresentationDelegate {
     public func present(component: PresentableComponent, disableCloseButton: Bool) {
-        self.present(component.viewController, animated: false, completion: nil)
+        self.present(component.viewController, animated: true, completion: nil)
     }
 }

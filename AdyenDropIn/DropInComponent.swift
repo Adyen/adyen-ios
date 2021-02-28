@@ -174,13 +174,12 @@ public final class DropInComponent: NSObject,
     private func didSelectCancelButton(isRoot: Bool, component: PresentableComponent) {
         guard !paymentInProgress else { return }
         
-        component.didCancel()
-        
         if isRoot {
             self.delegate?.didFail(with: ComponentError.cancelled, from: self)
         } else {
             navigationController.popViewController(animated: true)
             stopLoading()
+            (component as? Cancellable)?.didCancel()
             delegate?.didCancel(component: component, from: self)
         }
     }
