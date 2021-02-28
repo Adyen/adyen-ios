@@ -178,13 +178,13 @@ public final class DropInComponent: NSObject, PresentableComponent {
         } else {
             navigationController.popViewController(animated: true)
             stopLoading()
-            (component as? Cancellable)?.didCancel()
-            delegate?.didCancel(component: component, from: self)
+            userDidCancel(component)
         }
     }
 
     private func userDidCancel(_ component: Component) {
-        guard let component = component as? PresentableComponent else { return }
+        (component as? Cancellable)?.didCancel()
+        guard let component = (component as? PaymentComponent) ?? selectedPaymentComponent else { return }
         delegate?.didCancel(component: component, from: self)
     }
 }
