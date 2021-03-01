@@ -186,12 +186,7 @@ class RedirectComponentTests: XCTestCase {
             let topPresentedViewController = UIViewController.findTopPresenter()
             XCTAssertNotNil(topPresentedViewController as? SFSafariViewController)
 
-            sut.dismiss(true) {
-                let topPresentedViewController = UIViewController.findTopPresenter()
-                XCTAssertNil(topPresentedViewController as? SFSafariViewController)
-
-                waitExpectation.fulfill()
-            }
+            waitExpectation.fulfill()
         }
 
         waitForExpectations(timeout: 10, handler: nil)

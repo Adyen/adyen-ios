@@ -183,8 +183,7 @@ class BCMCComponentTests: XCTestCase {
         delegate.onDidFail = { error, _ in
             XCTFail("delegate.didFail() must not be called")
         }
-        
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
+
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             // Enter Card Number
             let cardNumberView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberItem")
@@ -204,10 +203,8 @@ class BCMCComponentTests: XCTestCase {
             let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.payButtonItem.button")
             XCTAssertNotNil(submitButton)
             submitButton!.sendActions(for: .touchUpInside)
-            
-            expectation.fulfill()
         }
-        wait(for: [expectation, didSubmitExpectation], timeout: 10)
+        wait(for: [didSubmitExpectation], timeout: 10)
     }
     
     func testDelegateCallledCorrectCard() {
