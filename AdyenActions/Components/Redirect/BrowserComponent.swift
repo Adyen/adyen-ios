@@ -43,15 +43,7 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
     internal init(url: URL, style: RedirectComponentStyle? = nil) {
         self.url = url
         self.style = style
-        
         super.init()
-    }
-
-    /// :nodoc:
-    internal func dismiss(_ animated: Bool, completion: (() -> Void)?) {
-        viewController.dismiss(animated: animated) {
-            completion?()
-        }
     }
 
 }

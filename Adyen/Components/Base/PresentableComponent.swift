@@ -83,7 +83,9 @@ public extension PresentableComponent {
     
     /// Notifies the component that the user has dismissed it.
     func dismiss(_ animated: Bool, completion: (() -> Void)?) {
-        viewController.dismiss(animated: animated, completion: completion)
+        viewController.dismiss(animated: animated) {
+            completion?()
+        }
     }
     
 }

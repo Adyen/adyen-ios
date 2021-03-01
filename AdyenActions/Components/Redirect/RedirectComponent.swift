@@ -10,7 +10,7 @@ import UIKit
 extension RedirectComponent: AnyRedirectComponent {}
 
 /// Handles any redirect Url whether its a web url, an App custom scheme url, or an app universal link.
-public final class RedirectComponent: ActionComponent, DismissableComponent {
+public final class RedirectComponent: ActionComponent {
     
     /// Describes the types of errors that can be returned by the component.
     public enum Error: Swift.Error {
@@ -52,14 +52,6 @@ public final class RedirectComponent: ActionComponent, DismissableComponent {
         }
     }
 
-    /// :nodoc:
-    public func dismiss(_ animated: Bool, completion: (() -> Void)?) {
-        browserComponent?.dismiss(animated) { [weak self] in
-            self?.browserComponent = nil
-            completion?()
-        }
-    }
-
     // MARK: - Returning From a Redirect
 
     /// This function should be invoked from the application's delegate when the application is opened through a URL.
@@ -92,7 +84,6 @@ public final class RedirectComponent: ActionComponent, DismissableComponent {
         component._isDropIn = _isDropIn
         component.environment = environment
         browserComponent = component
-
         presentationDelegate?.present(component: component, disableCloseButton: false)
     }
     
@@ -128,7 +119,8 @@ extension RedirectComponent: Cancellable {
 
     /// :nodoc:
     public func didCancel() {
-        dismiss(true) {
+        browserComponent?.dismiss(true) {
+            self.browserComponent = nil
             self.delegate?.didFail(with: ComponentError.cancelled, from: self)
         }
     }
