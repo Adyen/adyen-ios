@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import Foundation
 
 /// A component that handles the initial phase of getting payment details to initiate a payment.
-public protocol PaymentComponent: Component {
+public protocol PaymentComponent: PaymentAwareComponent {
     
     /// The payment method for which to gather payment details.
     var paymentMethod: PaymentMethod { get }
@@ -50,4 +50,27 @@ public protocol PaymentComponentDelegate: AnyObject {
     ///   - component: The payment component that failed.
     func didFail(with error: Error, from component: PaymentComponent)
     
+}
+
+public protocol PaymentAwareComponent: Component {
+
+    /// The payment information.
+    var payment: Payment? { get set }
+}
+
+extension PaymentAwareComponent {
+    /// :nodoc:
+    public var payment: Payment? {
+        get {
+            objc_getAssociatedObject(self, &AssociatedKeys.payment) as? Payment
+        }
+        set {
+            objc_setAssociatedObject(self, &AssociatedKeys.payment, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_COPY)
+        }
+    }
+}
+
+private enum AssociatedKeys {
+
+    internal static var payment = "paymentObject"
 }
