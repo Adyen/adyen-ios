@@ -25,12 +25,24 @@ Adyen Components for iOS allows you to accept in-app payments by providing you w
 
 ## Installation
 
-Adyen Components for iOS are available through either [CocoaPods](http://cocoapods.org) or [Carthage](https://github.com/Carthage/Carthage).
+Adyen Components for iOS are available through either [CocoaPods](http://cocoapods.org), [Carthage](https://github.com/Carthage/Carthage) or [Swift Package Manager](https://swift.org/package-manager/).
 
 ### CocoaPods
 
 1. Add `pod 'Adyen'` to your `Podfile`.
 2. Run `pod install`.
+
+`Adyen` Pod spec installs all modules (`Adyen/DropIn`, `Adyen/Actions`, `Adyen/Card`, `Adyen/Components`..etc).
+Optionally you can add only one of those dependencies alone depending on your needs and integration type:
+* Only Card components:
+  `pod 'Adyen/Card'` 
+* Only non-Card components:
+  `pod 'Adyen/Components'` 
+* Only Action Components:
+ `pod 'Adyen/Actions'`
+* Only Encryption:
+ `pod 'Adyen/Encryption'`
+
 
 :warning: _`3DS2 SDK` binary dependency through CocoaPods doesn't support `arm64` Simulator builds. `arm64` needs to be excluded as described [here](https://github.com/Adyen/adyen-ios/issues/291) to be able to make `Any Simulator` builds._
 
@@ -49,6 +61,17 @@ https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_y
 ) guide on how to add a Swift Package dependency.
 2. Use `https://github.com/Adyen/adyen-ios` as the repository URL.
 3. Specify the version to be at least `3.8.0`.
+
+`AdyenDropIn` module uses all other modules (`AdyenActions`, `AdyenCard`, `AdyenComponents`..etc) as dependecies.
+Optionally you can add only one of those dependencies alone depending on your needs and integration type:
+* Only Card components:
+  Only add `AdyenCard` Module
+* Only non-Card components:
+  Only add `AdyenComponents` Module
+* Only Action Components:
+  Only add `AdyenActions` Module.
+* Only Encryption:
+  Only add `AdyenEncryption` Module.
 
 :warning: _Please make sure to use Xcode 12.0+ when adding `Adyen` using Swift Package Manager._
 
@@ -70,13 +93,14 @@ The Drop-in requires the response of the `/paymentMethods` endpoint to be initia
 let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: response)
 ```
 
-Some payment methods need additional configuration. For example, to enable the card form, the Drop-in needs a public key to use for encryption. These payment method specific configuration parameters can be set in an instance of `DropInComponent.PaymentmethodsConfiguration`:
+Some payment methods need additional configuration. For example `ApplePayComponent`. These payment method specific configuration parameters can be set in an instance of `DropInComponent.PaymentmethodsConfiguration`:
 
 ```swift
 let configuration = DropInComponent.PaymentMethodsConfiguration()
-configuration.card.publicKey = "..." // Your public key, retrieved from the Customer Area.
+configuration.applePay.summaryItems = "..." // Apple Pay summary items.
+configuration.applePay.merchantIdentifier = "..." // Apple Pay merchant identifier.
 ```
-:warning: _`PaymentMethodsConfiguration.card.publicKey` is deprectated in favour of `PaymentMethodsConfiguration.clientKey`_
+All Payment Components needs a client key, please read more [here](https://docs.adyen.com/development-resources/client-side-authentication) about the client key and how to get it.
 
 ```swift
 let configuration = DropInComponent.PaymentMethodsConfiguration()
@@ -132,6 +156,14 @@ This method is invoked when user closes a payment component managed by Drop-in.
 
 ---
 
+```swift
+func didComplete(from component: DropInComponent)
+```
+
+This method is invoked when the action component finishes, without any further steps needed by the application, for example in case of voucher payment methods. The application just needs to dismiss the `DropInComponent`..
+
+---
+
 #### Handling an action
 
 When `/payments` or `/payments/details` responds with a non-final result and an `action`, you can use the Drop-in to handle the action:
@@ -173,6 +205,7 @@ In order to have more flexibility over the checkout flow, you can use our Compon
 - [Redirect Component][reference.redirectComponent]
 - [MB Way Component][reference.mbWayComponent]
 - [BLIK Component][reference.BLIKComponent]
+- [Doku Component][reference.DokuComponent]
 
 ## Customization
 
@@ -247,6 +280,7 @@ This repository is open source and available under the MIT license. For more inf
 [reference.redirectComponent]: https://adyen.github.io/adyen-ios/Docs/Classes/RedirectComponent.html
 [reference.mbWayComponent]: https://adyen.github.io/adyen-ios/Docs/Classes/MBWayComponent.html
 [reference.BLIKComponent]: https://adyen.github.io/adyen-ios/Docs/Classes/BLIKComponent.html
+[reference.DokuComponent]:  https://adyen.github.io/adyen-ios/Docs/Classes/DokuComponent.html
 [reference.styles]: https://adyen.github.io/adyen-ios/Docs/Styling.html
 [apiExplorer.paymentMethods]: https://docs.adyen.com/api-explorer/#/PaymentSetupAndVerificationService/v46/paymentMethods
 [apiExplorer.payments]: https://docs.adyen.com/api-explorer/#/PaymentSetupAndVerificationService/v46/payments

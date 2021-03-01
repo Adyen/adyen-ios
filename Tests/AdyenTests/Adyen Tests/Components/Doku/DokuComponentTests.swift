@@ -151,8 +151,8 @@ class DokuComponentTests: XCTestCase {
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidSubmit = { data, component in
             XCTAssertTrue(component === sut)
-            XCTAssertTrue(data.paymentMethod is DokuWalletDetails)
-            let data = data.paymentMethod as! DokuWalletDetails
+            XCTAssertTrue(data.paymentMethod is DokuDetails)
+            let data = data.paymentMethod as! DokuDetails
             XCTAssertEqual(data.firstName, "Mohamed")
             XCTAssertEqual(data.lastName, "Smith")
             XCTAssertEqual(data.emailAddress, "mohamed.smith@domain.com")

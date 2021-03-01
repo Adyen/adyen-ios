@@ -51,6 +51,16 @@ custom_categories:
       - AwaitComponent
       - AwaitActionDetails
       - AwaitPaymentMethod
+  - name: Doku Component
+    children:
+      - DokuComponent
+      - DokuDetails
+      - DokuPaymentMethod
+  - name: Voucher Action Component
+    children:
+      - VoucherComponent
+      - VoucherAction
+      - VoucherPaymentMethod
   - name: WeChat Pay
     children:
       - WeChatPaySDKActionComponent
