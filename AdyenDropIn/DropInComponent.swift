@@ -14,7 +14,10 @@ import Adyen
 import UIKit
 
 /// A component that handles the entire flow of payment selection and payment details entry.
-public final class DropInComponent: NSObject, PresentableComponent {
+public final class DropInComponent: NSObject,
+    PresentableComponent,
+    PaymentAwareComponent,
+    LoadingComponent {
     
     /// The payment methods to display.
     public let paymentMethods: PaymentMethods
@@ -60,7 +63,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
         paymentInProgress = false
         let rootComponent = self.rootComponent
-        if let topComponent = selectedPaymentComponent as? PresentableComponent {
+        if let topComponent = selectedPaymentComponent as? LoadingComponent {
             topComponent.stopLoading(withSuccess: success) {
                 rootComponent.stopLoading(withSuccess: success, completion: completion)
             }
@@ -94,7 +97,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
         return manager
     }()
     
-    private lazy var rootComponent: LoadingComponent = {
+    private lazy var rootComponent: PresentableComponent & LoadingComponent = {
         if let preselectedComponents = self.componentManager.components.stored.first {
             return preselectedPaymentMethodComponent(for: preselectedComponents)
         } else {
@@ -153,9 +156,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
         component._isDropIn = true
         component.environment = environment
         
-        if let presentableComponent = component as? PresentableComponent {
-            presentableComponent.payment = payment
-        }
+        component.payment = payment
         
         switch component {
         case let component as PresentableComponent where component.requiresModalPresentation:

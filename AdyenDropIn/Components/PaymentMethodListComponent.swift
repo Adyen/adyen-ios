@@ -9,13 +9,48 @@ import Foundation
 import UIKit
 
 /// :nodoc:
-internal protocol LoadingComponent: PresentableComponent {
+public protocol LoadingComponent {
     /// :nodoc:
     func startLoading(for component: PaymentComponent)
+
+    /// Stops any processing animation that the view controller is running.
+    ///
+    /// - Parameters:
+    ///   - success: Boolean indicating the component should go to a success or failure state.
+    ///   - completion: Completion block to be called when animations are finished.
+    func stopLoading(withSuccess success: Bool, completion: (() -> Void)?)
+}
+
+extension LoadingComponent {
+
+    /// Stops any processing animation that the view controller is running.
+    func stopLoading() {
+        stopLoading(withSuccess: true, completion: nil)
+    }
+
+    /// Stops any processing animation that the view controller is running.
+    ///
+    /// - Parameters:
+    ///   - success: Boolean indicating the component should go to a success or failure state.
+    func stopLoading(withSuccess success: Bool) {
+        stopLoading(withSuccess: success, completion: nil)
+    }
+
+    /// Stops any processing animation that the view controller is running.
+    ///
+    /// - Parameters:
+    ///   - success: Boolean indicating the component should go to a success or failure state.
+    ///   - completion: Completion block to be called when animations are finished.
+    public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
+        completion?()
+    }
+
+    /// :nodoc:
+    public func startLoading(for component: PaymentComponent) { /* Empty default implementation */ }
 }
 
 /// A component that presents a list of items for each payment method with a component.
-internal final class PaymentMethodListComponent: LoadingComponent, Localizable {
+internal final class PaymentMethodListComponent: LoadingComponent, PresentableComponent, Localizable {
     
     /// The components that are displayed in the list.
     internal let components: SectionedComponents
@@ -86,7 +121,7 @@ internal final class PaymentMethodListComponent: LoadingComponent, Localizable {
     ///
     /// - Parameter component: The component for which to start a loading animation.
     internal func startLoading(for component: PaymentComponent) {
-        let allListItems = listViewController.sections.flatMap { $0.items }
+        let allListItems = listViewController.sections.flatMap(\.items)
         let allComponents = [components.stored, components.regular].flatMap { $0 }
         
         guard let index = allComponents.firstIndex(where: { $0 === component }) else {

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,7 +19,10 @@ internal protocol PreselectedPaymentMethodComponentDelegate: AnyObject {
 }
 
 /// A component that presents a single preselected payment method and option to open more payment methods.
-internal final class PreselectedPaymentMethodComponent: LoadingComponent, Localizable {
+internal final class PreselectedPaymentMethodComponent: LoadingComponent,
+    PresentableComponent,
+    PaymentAwareComponent,
+    Localizable {
     
     private let title: String
     private let defaultComponent: PaymentComponent
