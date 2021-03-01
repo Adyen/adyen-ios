@@ -109,7 +109,6 @@ class ThreeDS2ComponentTests: XCTestCase {
                                                    paymentData: "data")
 
         let mockedDetails = ThreeDS2Details.completed(ThreeDSResult(payload: "payload"))
-        let mockedData = ActionComponentData(details: mockedDetails, paymentData: "data")
 
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
         threeDS2ActionHandler.mockedFingerprintResult = .success(.action(.threeDS2(.challenge(mockedAction))))
@@ -131,7 +130,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         let delegateExpectation = expectation(description: "Expect delegate didProvide(_:from:) function to be called.")
         delegate.onDidProvide = { data, component in
             XCTAssertTrue(component === sut)
-            XCTAssertEqual(data.paymentData, mockedData.paymentData)
+            XCTAssertNil(data.paymentData)
             XCTAssertNotNil(data.details as? ThreeDS2Details)
 
             delegateExpectation.fulfill()
