@@ -93,8 +93,7 @@ extension IntegrationExample {
     }
 
     @objc private func cancelDidPress() {
-        currentComponent?.didCancel()
-
+        (currentComponent as? Cancellable)?.didCancel()
         if let paymentComponent = self.currentComponent as? PaymentComponent {
             paymentComponent.delegate?.didFail(with: ComponentError.cancelled, from: paymentComponent)
         }

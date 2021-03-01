@@ -16,7 +16,7 @@ public protocol Localizable {
 
 /// :nodoc:
 /// Represents any object than can handle a cancel event.
-public protocol Cancellable {
+public protocol Cancellable: AnyObject {
     
     /// :nodoc:
     /// Called when the user cancels the component.
@@ -24,7 +24,7 @@ public protocol Cancellable {
 }
 
 /// A component that provides a view controller for the shopper to fill payment details.
-public protocol PresentableComponent: Component, Cancellable {
+public protocol PresentableComponent: DismissableComponent {
     
     /// The payment information.
     var payment: Payment? { get set }
@@ -49,7 +49,7 @@ public extension PresentableComponent {
     /// :nodoc:
     var payment: Payment? {
         get {
-            return objc_getAssociatedObject(self, &AssociatedKeys.payment) as? Payment
+            objc_getAssociatedObject(self, &AssociatedKeys.payment) as? Payment
         }
         set {
             objc_setAssociatedObject(self, &AssociatedKeys.payment, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_COPY)
@@ -82,7 +82,11 @@ public extension PresentableComponent {
     }
     
     /// Notifies the component that the user has dismissed it.
-    func didCancel() {}
+    func dismiss(_ animated: Bool, completion: (() -> Void)?) {
+        viewController.dismiss(animated: animated) {
+            completion?()
+        }
+    }
     
 }
 

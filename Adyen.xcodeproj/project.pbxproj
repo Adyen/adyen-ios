@@ -89,6 +89,7 @@
 		E736413025A73061007C10E3 /* AESCCM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7327623256844EC003D3F59 /* AESCCM.swift */; };
 		E736413A25A73064007C10E3 /* AESGCM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E732763F256845A0003D3F59 /* AESGCM.swift */; };
 		E7388D8523DB1F9A008E62B8 /* DimmingPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7388D8423DB1F9A008E62B8 /* DimmingPresentationController.swift */; };
+		E73C54E425EBD2DC00B57758 /* BrowserComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73C54E325EBD2DC00B57758 /* BrowserComponent.swift */; };
 		E745256925C1C9E1006A941F /* AdyenActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C6F23F1924B000B4B2B /* AdyenActionComponent.swift */; };
 		E7484C2723B9FDF000CCF74F /* SlideInPresentationAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7484C2623B9FDF000CCF74F /* SlideInPresentationAnimator.swift */; };
 		E749FD1E23CF4998000D18BA /* NavigationStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E749FD1D23CF4998000D18BA /* NavigationStyle.swift */; };
@@ -226,10 +227,8 @@
 		F9175FBA2594996000D653BE /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = E226F53922969A950013A463 /* Action.swift */; };
 		F9175FBB2594996000D653BE /* RedirectAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E226F53B22969B530013A463 /* RedirectAction.swift */; };
 		F9175FBC2594996000D653BE /* WeChatPaySDKData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91664F823E460CD00C10738 /* WeChatPaySDKData.swift */; };
-		F9175FCE2594999600D653BE /* UniversalRedirectComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9438F22243B29ED00FB9D69 /* UniversalRedirectComponent.swift */; };
 		F9175FCF2594999600D653BE /* RedirectListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AFF882224CF959005A0D8D /* RedirectListener.swift */; };
 		F9175FD02594999600D653BE /* RedirectDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AFF884224D0D3B005A0D8D /* RedirectDetails.swift */; };
-		F9175FD12594999600D653BE /* WebRedirectComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AC61B8243730C90062A00D /* WebRedirectComponent.swift */; };
 		F9175FD22594999600D653BE /* RedirectComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9780B6424338DFE00CC6C73 /* RedirectComponent.swift */; };
 		F9175FE32594999C00D653BE /* PollingAwaitComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B3624E122A40073F38A /* PollingAwaitComponent.swift */; };
 		F9175FE42594999C00D653BE /* AwaitActionDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B3C24E178300073F38A /* AwaitActionDetails.swift */; };
@@ -839,6 +838,7 @@
 		E7388D9323E08BF9008E62B8 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E7388D9423E08BF9008E62B8 /* nb-NO */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "nb-NO"; path = "nb-NO.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		E7388D9523E08BF9008E62B8 /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E73C54E325EBD2DC00B57758 /* BrowserComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowserComponent.swift; sourceTree = "<group>"; };
 		E7484C2623B9FDF000CCF74F /* SlideInPresentationAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideInPresentationAnimator.swift; sourceTree = "<group>"; };
 		E749FD1D23CF4998000D18BA /* NavigationStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStyle.swift; sourceTree = "<group>"; };
 		E74D918225AF3FE600743B0C /* CardBrandProviderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardBrandProviderTests.swift; sourceTree = "<group>"; };
@@ -1006,7 +1006,6 @@
 		F939DEE223C8B4C100D19249 /* EmptyPaymentDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyPaymentDetails.swift; sourceTree = "<group>"; };
 		F94343E523FFD9A400AADF5F /* AdyenAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AdyenAssets.xcassets; sourceTree = "<group>"; };
 		F94343E723FFF9DC00AADF5F /* ISOCountry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISOCountry.swift; sourceTree = "<group>"; };
-		F9438F22243B29ED00FB9D69 /* UniversalRedirectComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalRedirectComponent.swift; sourceTree = "<group>"; };
 		F957A9E225514A7E0099AD73 /* Submit3DS2FingerprintRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submit3DS2FingerprintRequest.swift; sourceTree = "<group>"; };
 		F957A9F025514AB70099AD73 /* Submit3DS2FingerprintResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submit3DS2FingerprintResponse.swift; sourceTree = "<group>"; };
 		F957A9F925514EEA0099AD73 /* ThreeDS2FingerprintSubmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2FingerprintSubmitter.swift; sourceTree = "<group>"; };
@@ -1152,7 +1151,6 @@
 		F9A7AC622554068D00012EBC /* AnyChallengeResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyChallengeResult.swift; sourceTree = "<group>"; };
 		F9A7AC6A255406AB00012EBC /* AnyADYTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyADYTransaction.swift; sourceTree = "<group>"; };
 		F9A7AC86255430B300012EBC /* ThreeDS2Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2Action.swift; sourceTree = "<group>"; };
-		F9AC61B8243730C90062A00D /* WebRedirectComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRedirectComponent.swift; sourceTree = "<group>"; };
 		F9AC61BA24374CE00062A00D /* AppLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLauncher.swift; sourceTree = "<group>"; };
 		F9AC61BD243750BB0062A00D /* RedirectComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedirectComponentTests.swift; sourceTree = "<group>"; };
 		F9AC61BF243750D80062A00D /* AppLauncherMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLauncherMock.swift; sourceTree = "<group>"; };
@@ -2045,9 +2043,8 @@
 		E9AFF87F224BC3AA005A0D8D /* Redirect */ = {
 			isa = PBXGroup;
 			children = (
+				E73C54E325EBD2DC00B57758 /* BrowserComponent.swift */,
 				F9780B6424338DFE00CC6C73 /* RedirectComponent.swift */,
-				F9438F22243B29ED00FB9D69 /* UniversalRedirectComponent.swift */,
-				F9AC61B8243730C90062A00D /* WebRedirectComponent.swift */,
 				E9AFF882224CF959005A0D8D /* RedirectListener.swift */,
 				E9AFF884224D0D3B005A0D8D /* RedirectDetails.swift */,
 			);
@@ -4015,7 +4012,6 @@
 				F9175FBC2594996000D653BE /* WeChatPaySDKData.swift in Sources */,
 				F9175FB62594996000D653BE /* WeChatPaySDKAction.swift in Sources */,
 				F917613725A30B5700D653BE /* ThreeDSResult.swift in Sources */,
-				F9175FCE2594999600D653BE /* UniversalRedirectComponent.swift in Sources */,
 				F9175FFB259499D500D653BE /* AwaitView.swift in Sources */,
 				F9175FB52594996000D653BE /* SDKAction.swift in Sources */,
 				F917617225A30B6A00D653BE /* AnyThreeDS2ActionHandler.swift in Sources */,
@@ -4028,6 +4024,7 @@
 				F97C855A25C1ABD700D7F85C /* VoucherCardView.swift in Sources */,
 				F97C84CD25C1761900D7F85C /* VoucherAction.swift in Sources */,
 				F97C853D25C1ABA400D7F85C /* DokuVoucherView.swift in Sources */,
+				E73C54E425EBD2DC00B57758 /* BrowserComponent.swift in Sources */,
 				F9175FB72594996000D653BE /* ThreeDS2ChallengeAction.swift in Sources */,
 				F917615C25A30B6400D653BE /* AnyChallengeResult.swift in Sources */,
 				F9175FFA259499D500D653BE /* AwaitViewController.swift in Sources */,
@@ -4054,7 +4051,6 @@
 				F9B997CA25C949AC00891084 /* VoucherCardLayer.swift in Sources */,
 				F97C84D925C178E900D7F85C /* VoucherComponent.swift in Sources */,
 				F9FE13E025CBF6870067B593 /* DokuVoucherViewModel.swift in Sources */,
-				F9175FD12594999600D653BE /* WebRedirectComponent.swift in Sources */,
 				F917618525A30B8500D653BE /* Submit3DS2FingerprintRequest.swift in Sources */,
 				F9175FE52594999C00D653BE /* AwaitActionHandlerProvider.swift in Sources */,
 				F917613425A30B5700D653BE /* ThreeDS2Component.swift in Sources */,
