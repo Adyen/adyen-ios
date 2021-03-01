@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 
 /// Contains the details supplied by the Doku component.
-public struct DokuWalletDetails: PaymentMethodDetails {
+public struct DokuDetails: PaymentMethodDetails {
 
     /// The payment method type.
     public let type: String
