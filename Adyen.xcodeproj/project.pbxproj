@@ -415,7 +415,7 @@
 		F97C829225BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C829125BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift */; };
 		F97C837925BF047600D7F85C /* DokuPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C837825BF047600D7F85C /* DokuPaymentMethod.swift */; };
 		F97C838425BF053F00D7F85C /* DokuComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C838325BF053F00D7F85C /* DokuComponent.swift */; };
-		F97C839825BF05AB00D7F85C /* DokuWalletDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C839725BF05AB00D7F85C /* DokuWalletDetails.swift */; };
+		F97C839825BF05AB00D7F85C /* DokuDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C839725BF05AB00D7F85C /* DokuDetails.swift */; };
 		F97C83F725BF0C2800D7F85C /* DokuComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C83F625BF0C2800D7F85C /* DokuComponentTests.swift */; };
 		F97C84CD25C1761900D7F85C /* VoucherAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C84CC25C1761900D7F85C /* VoucherAction.swift */; };
 		F97C84D925C178E900D7F85C /* VoucherComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C84D825C178E900D7F85C /* VoucherComponent.swift */; };
@@ -1119,7 +1119,7 @@
 		F97C829125BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractPersonalInformationComponentExtensions.swift; sourceTree = "<group>"; };
 		F97C837825BF047600D7F85C /* DokuPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuPaymentMethod.swift; sourceTree = "<group>"; };
 		F97C838325BF053F00D7F85C /* DokuComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuComponent.swift; sourceTree = "<group>"; };
-		F97C839725BF05AB00D7F85C /* DokuWalletDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuWalletDetails.swift; sourceTree = "<group>"; };
+		F97C839725BF05AB00D7F85C /* DokuDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuDetails.swift; sourceTree = "<group>"; };
 		F97C83F625BF0C2800D7F85C /* DokuComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuComponentTests.swift; sourceTree = "<group>"; };
 		F97C84CC25C1761900D7F85C /* VoucherAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherAction.swift; sourceTree = "<group>"; };
 		F97C84D825C178E900D7F85C /* VoucherComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherComponent.swift; sourceTree = "<group>"; };
@@ -2715,7 +2715,7 @@
 			isa = PBXGroup;
 			children = (
 				F97C838325BF053F00D7F85C /* DokuComponent.swift */,
-				F97C839725BF05AB00D7F85C /* DokuWalletDetails.swift */,
+				F97C839725BF05AB00D7F85C /* DokuDetails.swift */,
 			);
 			path = Doku;
 			sourceTree = "<group>";
@@ -3999,7 +3999,7 @@
 				F9175EAA259394FF00D653BE /* ApplePayComponentExtensions.swift in Sources */,
 				F9175ED22593951800D653BE /* MBWayComponent.swift in Sources */,
 				F9175E9B259394F200D653BE /* IssuerListComponent.swift in Sources */,
-				F97C839825BF05AB00D7F85C /* DokuWalletDetails.swift in Sources */,
+				F97C839825BF05AB00D7F85C /* DokuDetails.swift in Sources */,
 				F9175E9A259394F200D653BE /* IssuerListDetails.swift in Sources */,
 				F9175EE32593952600D653BE /* BLIKDetails.swift in Sources */,
 				F9175EC32593950D00D653BE /* QiwiWalletDetails.swift in Sources */,
