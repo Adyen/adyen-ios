@@ -8,6 +8,10 @@ import Adyen
 import SafariServices
 import UIKit
 
+internal protocol BrowserComponentDelegate: AnyObject {
+    func didCancel()
+}
+
 /// A component that opens a URL in web browsed and presents it.
 internal final class BrowserComponent: NSObject, PresentableComponent {
 
@@ -34,7 +38,7 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
     }()
     
     /// :nodoc:
-    internal weak var delegate: Cancellable?
+    internal weak var delegate: BrowserComponentDelegate?
     
     /// Initializes the component.
     ///

@@ -81,8 +81,6 @@ public final class RedirectComponent: ActionComponent {
     private func openInAppBrowser(_ action: RedirectAction) {
         let component = BrowserComponent(url: action.url, style: style)
         component.delegate = self
-        component._isDropIn = _isDropIn
-        component.environment = environment
         browserComponent = component
         presentationDelegate?.present(component: component, disableCloseButton: false)
     }
@@ -115,10 +113,10 @@ public final class RedirectComponent: ActionComponent {
     
 }
 
-extension RedirectComponent: Cancellable {
+extension RedirectComponent: BrowserComponentDelegate {
 
     /// :nodoc:
-    public func didCancel() {
+    internal func didCancel() {
         browserComponent?.dismiss(true) {
             self.browserComponent = nil
             self.delegate?.didFail(with: ComponentError.cancelled, from: self)
