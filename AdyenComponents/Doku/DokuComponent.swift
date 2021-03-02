@@ -36,9 +36,9 @@ public final class DokuComponent: AbstractPersonalInformationComponent {
               let emailItem = emailItem else {
             fatalError("There seems to be an error in the BaseFormComponent configuration.")
         }
-        return DokuWalletDetails(paymentMethod: paymentMethod,
-                                 firstName: firstNameItem.value,
-                                 lastName: lastNameItem.value,
-                                 emailAddress: emailItem.value)
+        return DokuDetails(paymentMethod: paymentMethod,
+                           firstName: firstNameItem.value,
+                           lastName: lastNameItem.value,
+                           emailAddress: emailItem.value)
     }
 }

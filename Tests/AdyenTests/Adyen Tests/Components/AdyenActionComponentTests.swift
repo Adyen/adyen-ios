@@ -61,6 +61,7 @@ class AdyenActionComponentTests: XCTestCase {
     func testRedirectToHttpWebLink() {
         let sut = AdyenActionComponent()
         let delegate = ActionComponentDelegateMock()
+        sut.presentationDelegate = UIViewController.findTopPresenter()
         sut.delegate = delegate
 
         delegate.onDidOpenExternalApplication = { _ in
@@ -76,12 +77,7 @@ class AdyenActionComponentTests: XCTestCase {
             let topPresentedViewController = UIViewController.findTopPresenter()
             XCTAssertNotNil(topPresentedViewController as? SFSafariViewController)
 
-            sut.dismiss(true) {
-                let topPresentedViewController = UIViewController.findTopPresenter()
-                XCTAssertNil(topPresentedViewController as? SFSafariViewController)
-
-                waitExpectation.fulfill()
-            }
+            waitExpectation.fulfill()
         }
 
         waitForExpectations(timeout: 10, handler: nil)
@@ -167,6 +163,6 @@ class AdyenActionComponentTests: XCTestCase {
 
 extension UIViewController: PresentationDelegate {
     public func present(component: PresentableComponent, disableCloseButton: Bool) {
-        self.present(component.viewController, animated: false, completion: nil)
+        self.present(component.viewController, animated: true, completion: nil)
     }
 }

@@ -16,7 +16,7 @@ class RedirectComponentTests: XCTestCase {
         let style = RedirectComponentStyle(preferredBarTintColor: UIColor.red,
                                            preferredControlTintColor: UIColor.black,
                                            modalPresentationStyle: .fullScreen)
-        let sut = WebRedirectComponent(action: action, style: style)
+        let sut = BrowserComponent(url: action.url, style: style)
         XCTAssertNotNil(sut.viewController as? SFSafariViewController)
         XCTAssertEqual(sut.viewController.modalPresentationStyle, .fullScreen)
         XCTAssertEqual((sut.viewController as! SFSafariViewController).preferredBarTintColor, UIColor.red)
@@ -28,7 +28,7 @@ class RedirectComponentTests: XCTestCase {
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
         let appLauncher = AppLauncherMock()
-        sut.universalRedirectComponent.appLauncher = appLauncher
+        sut.appLauncher = appLauncher
         
         let appLauncherExpectation = expectation(description: "Expect appLauncher.openCustomSchemeUrl() to be called")
         appLauncher.onOpenCustomSchemeUrl = { url, completion in
@@ -58,7 +58,7 @@ class RedirectComponentTests: XCTestCase {
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
         let appLauncher = AppLauncherMock()
-        sut.universalRedirectComponent.appLauncher = appLauncher
+        sut.appLauncher = appLauncher
         
         let appLauncherExpectation = expectation(description: "Expect appLauncher.openCustomSchemeUrl() to be called")
         appLauncher.onOpenCustomSchemeUrl = { url, completion in
@@ -92,7 +92,7 @@ class RedirectComponentTests: XCTestCase {
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
         let appLauncher = AppLauncherMock()
-        sut.universalRedirectComponent.appLauncher = appLauncher
+        sut.appLauncher = appLauncher
         
         appLauncher.onOpenCustomSchemeUrl = { url, completion in
             XCTFail("appLauncher.openCustomSchemeUrl() must not to be called")
@@ -122,10 +122,10 @@ class RedirectComponentTests: XCTestCase {
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
         let appLauncher = AppLauncherMock()
-        sut.universalRedirectComponent.appLauncher = appLauncher
+        sut.appLauncher = appLauncher
         let presentingViewControllerMock = PresentingViewControllerMock()
-        let topViewController: UIViewController! = UIApplication.shared.keyWindow?.rootViewController?.adyen.topPresenter
-        
+        sut.presentationDelegate = presentingViewControllerMock
+        let topViewController: UIViewController! = UIViewController.findTopPresenter()
         topViewController.present(presentingViewControllerMock, animated: false, completion: nil)
         
         let safariVCExpectation = expectation(description: "Expect SFSafariViewController() to be presented")
@@ -159,10 +159,11 @@ class RedirectComponentTests: XCTestCase {
 
     func testOpenHttpWebLink() {
         let sut = RedirectComponent()
+        sut.presentationDelegate = UIViewController.findTopPresenter()
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
         let appLauncher = AppLauncherMock()
-        sut.universalRedirectComponent.appLauncher = appLauncher
+        sut.appLauncher = appLauncher
 
         appLauncher.onOpenCustomSchemeUrl = { url, completion in
             XCTFail("appLauncher.openCustomSchemeUrl() must not to be called")
@@ -185,12 +186,7 @@ class RedirectComponentTests: XCTestCase {
             let topPresentedViewController = UIViewController.findTopPresenter()
             XCTAssertNotNil(topPresentedViewController as? SFSafariViewController)
 
-            sut.dismiss(true) {
-                let topPresentedViewController = UIViewController.findTopPresenter()
-                XCTAssertNil(topPresentedViewController as? SFSafariViewController)
-
-                waitExpectation.fulfill()
-            }
+            waitExpectation.fulfill()
         }
 
         waitForExpectations(timeout: 10, handler: nil)
@@ -198,6 +194,7 @@ class RedirectComponentTests: XCTestCase {
 
     func testOpenHttpWebLinkAndClose() {
         let sut = RedirectComponent()
+        sut.presentationDelegate = UIViewController.findTopPresenter()
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
 
@@ -225,6 +222,7 @@ class RedirectComponentTests: XCTestCase {
     @available(iOS 13.0, *)
     func testOpenHttpWebLinkAndDragedDown() {
         let sut = RedirectComponent()
+        sut.presentationDelegate = UIViewController.findTopPresenter()
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
 

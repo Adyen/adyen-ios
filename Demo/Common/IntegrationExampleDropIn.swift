@@ -80,7 +80,7 @@ extension IntegrationExample: DropInComponentDelegate {
         finish(with: error)
     }
 
-    internal func didCancel(component: PresentableComponent, from dropInComponent: DropInComponent) {
+    internal func didCancel(component: PaymentComponent, from dropInComponent: DropInComponent) {
         // Handle the event when the user closes a PresentableComponent.
         print("User did close: \(component)")
     }
