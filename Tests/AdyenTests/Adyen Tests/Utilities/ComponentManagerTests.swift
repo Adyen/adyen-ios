@@ -41,7 +41,7 @@ class ComponentManagerTests: XCTestCase {
         ]
     ]
 
-    func testClientKeyInjection() throws {
+    func testClientKeyInjectionAndProtocolConfromance() throws {
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
         let payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
         let config = DropInComponent.PaymentMethodsConfiguration(clientKey: "client_key")
@@ -60,6 +60,10 @@ class ComponentManagerTests: XCTestCase {
 
         XCTAssertEqual(sut.components.stored.filter { $0.environment.clientKey == "client_key" }.count, 4)
         XCTAssertEqual(sut.components.regular.filter { $0.environment.clientKey == "client_key" }.count, 12)
+
+        XCTAssertEqual(sut.components.regular.filter { $0 is LoadingComponent }.count, 10)
+        XCTAssertEqual(sut.components.regular.filter { $0 is Localizable }.count, 8)
+        XCTAssertEqual(sut.components.regular.filter { $0 is PresentableComponent }.count, 10)
     }
     
     func testLocalizationWithCustomTableName() throws {
