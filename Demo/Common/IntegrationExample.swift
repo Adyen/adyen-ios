@@ -76,7 +76,7 @@ internal final class IntegrationExample {
     internal func finish(with resultCode: PaymentsResponse.ResultCode) {
         let success = resultCode == .authorised || resultCode == .received || resultCode == .pending
 
-        currentComponent?.stopLoading(withSuccess: success) { [weak self] in
+        stopLoadingIfNeeded(success) { [weak self] in
             self?.presenter?.dismiss { [weak self] in
                 self?.presentAlert(withTitle: resultCode.rawValue)
             }
@@ -86,10 +86,18 @@ internal final class IntegrationExample {
     internal func finish(with error: Error) {
         let isCancelled = ((error as? ComponentError) == .cancelled)
 
-        currentComponent?.stopLoading(withSuccess: false) { [weak self] in
+        stopLoadingIfNeeded(false) { [weak self] in
             self?.presenter?.dismiss { [weak self] in
                 if !isCancelled { self?.presentAlert(with: error) }
             }
+        }
+    }
+
+    private func stopLoadingIfNeeded(_ success: Bool, completion: (() -> Void)?) {
+        if let currentComponent = currentComponent as? LoadingComponent {
+            currentComponent.stopLoading(withSuccess: success, completion: completion)
+        } else {
+            completion?()
         }
     }
 

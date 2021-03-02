@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 /// A component that provides a form for SEPA Direct Debit payments.
-public final class SEPADirectDebitComponent: PaymentComponent, PresentableComponent, Localizable {
+public final class SEPADirectDebitComponent: PaymentComponent, PresentableComponent, Localizable, LoadingComponent {
     
     /// Describes the component's UI style.
     public let style: FormComponentStyle

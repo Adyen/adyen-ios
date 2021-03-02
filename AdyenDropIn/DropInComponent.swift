@@ -14,8 +14,11 @@ import Adyen
 import UIKit
 
 /// A component that handles the entire flow of payment selection and payment details entry.
-public final class DropInComponent: NSObject, PresentableComponent {
-    
+public final class DropInComponent: NSObject,
+    PresentableComponent,
+    PaymentAwareComponent,
+    LoadingComponent {
+
     /// The payment methods to display.
     public let paymentMethods: PaymentMethods
     
@@ -60,7 +63,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
         paymentInProgress = false
         let rootComponent = self.rootComponent
-        if let topComponent = selectedPaymentComponent as? PresentableComponent {
+        if let topComponent = selectedPaymentComponent as? LoadingComponent {
             topComponent.stopLoading(withSuccess: success) {
                 rootComponent.stopLoading(withSuccess: success, completion: completion)
             }
@@ -94,7 +97,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
         return manager
     }()
     
-    private lazy var rootComponent: LoadingComponent = {
+    private lazy var rootComponent: PresentableComponent & ComponentLoader = {
         if let preselectedComponents = self.componentManager.components.stored.first {
             return preselectedPaymentMethodComponent(for: preselectedComponents)
         } else {
@@ -153,9 +156,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
         component._isDropIn = true
         component.environment = environment
         
-        if let presentableComponent = component as? PresentableComponent {
-            presentableComponent.payment = payment
-        }
+        component.payment = payment
         
         switch component {
         case let component as PresentableComponent where component.requiresModalPresentation:
@@ -177,7 +178,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
             self.delegate?.didFail(with: ComponentError.cancelled, from: self)
         } else {
             navigationController.popViewController(animated: true)
-            stopLoading()
+            stopLoading(withSuccess: true, completion: nil)
             userDidCancel(component)
         }
     }
@@ -213,7 +214,7 @@ extension DropInComponent: PaymentComponentDelegate {
     public func didFail(with error: Error, from component: PaymentComponent) {
         paymentInProgress = false
         if case ComponentError.cancelled = error {
-            stopLoading(withSuccess: false)
+            stopLoading(withSuccess: false, completion: nil)
             userDidCancel(component)
         } else {
             delegate?.didFail(with: error, from: self)
@@ -227,7 +228,7 @@ extension DropInComponent: ActionComponentDelegate {
     
     /// :nodoc:
     public func didOpenExternalApplication(_ component: ActionComponent) {
-        stopLoading(withSuccess: true)
+        stopLoading(withSuccess: true, completion: nil)
     }
 
     /// :nodoc:
@@ -239,7 +240,7 @@ extension DropInComponent: ActionComponentDelegate {
     public func didFail(with error: Error, from component: ActionComponent) {
         if case ComponentError.cancelled = error {
             paymentInProgress = false
-            stopLoading(withSuccess: false)
+            stopLoading(withSuccess: false, completion: nil)
             userDidCancel(component)
         } else {
             delegate?.didFail(with: error, from: self)

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,14 +8,8 @@ import Adyen
 import Foundation
 import UIKit
 
-/// :nodoc:
-internal protocol LoadingComponent: PresentableComponent {
-    /// :nodoc:
-    func startLoading(for component: PaymentComponent)
-}
-
 /// A component that presents a list of items for each payment method with a component.
-internal final class PaymentMethodListComponent: LoadingComponent, Localizable {
+internal final class PaymentMethodListComponent: ComponentLoader, PresentableComponent, Localizable {
     
     /// The components that are displayed in the list.
     internal let components: SectionedComponents
@@ -86,7 +80,7 @@ internal final class PaymentMethodListComponent: LoadingComponent, Localizable {
     ///
     /// - Parameter component: The component for which to start a loading animation.
     internal func startLoading(for component: PaymentComponent) {
-        let allListItems = listViewController.sections.flatMap { $0.items }
+        let allListItems = listViewController.sections.flatMap(\.items)
         let allComponents = [components.stored, components.regular].flatMap { $0 }
         
         guard let index = allComponents.firstIndex(where: { $0 === component }) else {

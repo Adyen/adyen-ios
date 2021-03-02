@@ -69,7 +69,10 @@ extension IntegrationExample {
     private func present(_ component: PresentableComponent) {
         component.environment = environment
         component.clientKey = Configuration.clientKey
-        component.payment = payment
+
+        if let component = component as? PaymentAwareComponent {
+            component.payment = payment
+        }
 
         if let paymentComponent = component as? PaymentComponent {
             paymentComponent.delegate = self

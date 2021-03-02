@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 /// A component that provides a form for BLIK payments.
-public final class BLIKComponent: PaymentComponent, PresentableComponent, Localizable {
+public final class BLIKComponent: PaymentComponent, PresentableComponent, Localizable, LoadingComponent {
     /// :nodoc:
     public var paymentMethod: PaymentMethod { blikPaymentMethod }
 
