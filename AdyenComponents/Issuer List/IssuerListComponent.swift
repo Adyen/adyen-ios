@@ -40,9 +40,8 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
         listViewController
     }
     
-    public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
+    public func stopLoading(completion: (() -> Void)?) {
         listViewController.stopLoading()
-        
         completion?()
     }
     

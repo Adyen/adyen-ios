@@ -164,9 +164,9 @@ class QiwiWalletComponentTests: XCTestCase {
             XCTAssertEqual(data.phonePrefix, "+3")
             XCTAssertEqual(data.phoneNumber, "7455573152")
 
-            sut.stopLoading(withSuccess: true, completion: {
+            sut.stopLoading {
                 delegateExpectation.fulfill()
-            })
+            }
             XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
             XCTAssertEqual(sut.button.showsActivityIndicator, false)
         }

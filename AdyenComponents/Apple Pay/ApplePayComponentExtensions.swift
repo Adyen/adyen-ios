@@ -15,7 +15,7 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     
     /// :nodoc:
     public func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
-        if isUserCancel {
+        dismiss(true) {
             self.delegate?.didFail(with: ComponentError.cancelled, from: self)
         }
     }
@@ -24,7 +24,6 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     public func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
                                                    didAuthorizePayment payment: PKPayment,
                                                    completion: @escaping (PKPaymentAuthorizationStatus) -> Void) {
-        paymentAuthorizationCompletion = completion
         
         let token = String(data: payment.token.paymentData, encoding: .utf8) ?? ""
         let network = payment.token.paymentMethod.network?.rawValue ?? ""
@@ -46,6 +45,9 @@ extension ApplePayComponent {
     
     /// Apple Pay component configuration.
     public struct Configuration {
+
+        /// A description of the payment. Must include an amount and country code.
+        public var payment: Payment
 
         /// The payment method for Apple Pay.
         public let paymentMethod: ApplePayPaymentMethod
@@ -78,7 +80,7 @@ extension ApplePayComponent {
         
         /// Initializes the configuration.
         ///
-        /// - Parameter paymentMethod: The Apple Pay payment method.
+        /// - Parameter paymentMethod: The Apple Pay payment method. Must include country code.
         /// - Parameter summaryItems: The line items for this payment.
         /// - Parameter merchantIdentifier: The merchant identifier.
         /// - Parameter requiredBillingContactFields:
@@ -86,7 +88,8 @@ extension ApplePayComponent {
         /// - Parameter requiredShippingContactFields:
         /// A list of fields that you need for a shipping contact in order to process the transaction. Ignored on iOS 10.*.
         /// - Parameter requiredShippingContactFields: The excluded card brands.
-        public init(paymentMethod: ApplePayPaymentMethod,
+        public init(payment: Payment,
+                    paymentMethod: ApplePayPaymentMethod,
                     summaryItems: [PKPaymentSummaryItem],
                     merchantIdentifier: String,
                     requiredBillingContactFields: Set<PKContactField> = [],
@@ -96,6 +99,25 @@ extension ApplePayComponent {
             self.merchantIdentifier = merchantIdentifier
             self.requiredBillingContactFields = requiredBillingContactFields
             self.requiredShippingContactFields = requiredShippingContactFields
+            self.payment = payment
+        }
+
+        internal func createPaymentRequest() -> PKPaymentRequest {
+            let paymentRequest = PKPaymentRequest()
+
+            paymentRequest.countryCode = payment.countryCode ?? ""
+            paymentRequest.merchantIdentifier = merchantIdentifier
+            paymentRequest.currencyCode = payment.amount.currencyCode
+            paymentRequest.supportedNetworks = supportedNetworks
+            paymentRequest.merchantCapabilities = .capability3DS
+            paymentRequest.paymentSummaryItems = summaryItems
+
+            if #available(iOS 11.0, *) {
+                paymentRequest.requiredBillingContactFields = requiredBillingContactFields
+                paymentRequest.requiredShippingContactFields = requiredShippingContactFields
+            }
+
+            return paymentRequest
         }
     }
 

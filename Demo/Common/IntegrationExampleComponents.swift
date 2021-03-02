@@ -55,10 +55,11 @@ extension IntegrationExample {
 
     internal func presentApplePayComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: ApplePayPaymentMethod.self) else { return }
-        let config = ApplePayComponent.Configuration(paymentMethod: paymentMethod,
+        let config = ApplePayComponent.Configuration(payment: payment,
+                                                     paymentMethod: paymentMethod,
                                                      summaryItems: Configuration.applePaySummaryItems,
                                                      merchantIdentifier: Configuration.applePayMerchantIdentifier)
-        let component = try? ApplePayComponent(payment: payment, configuration: config)
+        let component = try? ApplePayComponent(configuration: config)
         component?.delegate = self
         guard let presentableComponent = component else { return }
         present(presentableComponent)
@@ -170,7 +171,7 @@ extension IntegrationExample: CardComponentDelegate {
 }
 
 extension IntegrationExample: PresentationDelegate {
-    internal func present(component: PresentableComponent, disableCloseButton: Bool) {
+    internal func present(component: PresentableComponent) {
         present(component)
     }
 }
