@@ -6,43 +6,20 @@
 
 import Foundation
 
+/// Any `Component` that shows a loading state of some kind when initiating another `PaymentComponent`.
 /// :nodoc:
-public protocol LoadingComponent {
+public protocol ComponentLoader: LoadingComponent {
     /// :nodoc:
     func startLoading(for component: PaymentComponent)
+}
 
+/// Any `Component` that show a loading state of some kind
+/// :nodoc:
+public protocol LoadingComponent {
     /// Stops any processing animation that the view controller is running.
     ///
     /// - Parameters:
     ///   - success: Boolean indicating the component should go to a success or failure state.
     ///   - completion: Completion block to be called when animations are finished.
     func stopLoading(withSuccess success: Bool, completion: (() -> Void)?)
-}
-
-extension LoadingComponent {
-
-    /// Stops any processing animation that the view controller is running.
-    public func stopLoading() {
-        stopLoading(withSuccess: true, completion: nil)
-    }
-
-    /// Stops any processing animation that the view controller is running.
-    ///
-    /// - Parameters:
-    ///   - success: Boolean indicating the component should go to a success or failure state.
-    public func stopLoading(withSuccess success: Bool) {
-        stopLoading(withSuccess: success, completion: nil)
-    }
-
-    /// Stops any processing animation that the view controller is running.
-    ///
-    /// - Parameters:
-    ///   - success: Boolean indicating the component should go to a success or failure state.
-    ///   - completion: Completion block to be called when animations are finished.
-    public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
-        completion?()
-    }
-
-    /// :nodoc:
-    public func startLoading(for component: PaymentComponent) { /* Empty default implementation */ }
 }

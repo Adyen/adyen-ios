@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 /// A component that presents a list of items for each payment method with a component.
-internal final class PaymentMethodListComponent: LoadingComponent, PresentableComponent, Localizable {
+internal final class PaymentMethodListComponent: ComponentLoader, PresentableComponent, Localizable {
     
     /// The components that are displayed in the list.
     internal let components: SectionedComponents
