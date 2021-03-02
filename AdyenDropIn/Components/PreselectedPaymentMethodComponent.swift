@@ -110,7 +110,7 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
         openAllButtonItem.enabled = false
     }
     
-    internal func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
+    internal func stopLoading(completion: (() -> Void)?) {
         submitButtonItem.showsActivityIndicator = false
         openAllButtonItem.enabled = true
         completion?()

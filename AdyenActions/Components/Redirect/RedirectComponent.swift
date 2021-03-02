@@ -82,7 +82,7 @@ public final class RedirectComponent: ActionComponent {
         let component = BrowserComponent(url: action.url, style: style)
         component.delegate = self
         browserComponent = component
-        presentationDelegate?.present(component: component, disableCloseButton: false)
+        presentationDelegate?.present(component: component)
     }
     
     // MARK: - Custom scheme link handling

@@ -116,9 +116,9 @@ class MBWayComponentTests: XCTestCase {
             let data = data.paymentMethod as! MBWayDetails
             XCTAssertEqual(data.telephoneNumber, "+3511233456789")
 
-            sut.stopLoading(withSuccess: true, completion: {
+            sut.stopLoading {
                 delegateExpectation.fulfill()
-            })
+            }
             XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
             XCTAssertEqual(sut.button.showsActivityIndicator, false)
         }

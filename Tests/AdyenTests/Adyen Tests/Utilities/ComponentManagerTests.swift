@@ -61,7 +61,7 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.components.stored.filter { $0.environment.clientKey == "client_key" }.count, 4)
         XCTAssertEqual(sut.components.regular.filter { $0.environment.clientKey == "client_key" }.count, 12)
 
-        XCTAssertEqual(sut.components.regular.filter { $0 is LoadingComponent }.count, 10)
+        XCTAssertEqual(sut.components.regular.filter { $0 is LoadingComponent }.count, 9)
         XCTAssertEqual(sut.components.regular.filter { $0 is Localizable }.count, 8)
         XCTAssertEqual(sut.components.regular.filter { $0 is PresentableComponent }.count, 10)
     }

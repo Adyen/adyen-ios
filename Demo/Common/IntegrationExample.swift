@@ -22,7 +22,7 @@ internal protocol Presenter: AnyObject {
     func presentAlert(with error: Error, retryHandler: (() -> Void)?)
 }
 
-internal final class IntegrationExample {
+internal final class IntegrationExample: APIClientAware {
     internal let payment = Payment(amount: Configuration.amount, countryCode: Configuration.countryCode)
     internal let environment = Configuration.componentsEnvironment
 
@@ -46,20 +46,6 @@ internal final class IntegrationExample {
 
     // MARK: - Networking
 
-    // swiftlint:disable:enable force_try
-    internal lazy var apiClient: APIClientProtocol = {
-        if CommandLine.arguments.contains("-UITests") {
-            let apiClient = APIClientMock()
-            let data = try! Data(contentsOf: Bundle.main.url(forResource: "payment_methods_response", withExtension: "json")!)
-            let response = try! JSONDecoder().decode(PaymentMethodsResponse.self, from: data)
-            apiClient.mockedResults = [.success(response)]
-            return apiClient
-        } else {
-            return DefaultAPIClient()
-        }
-    }()
-    // swiftlint:disable:disable force_try
-
     internal func requestPaymentMethods() {
         let request = PaymentMethodsRequest()
         apiClient.perform(request) { [weak self] result in
@@ -74,30 +60,18 @@ internal final class IntegrationExample {
     }
 
     internal func finish(with resultCode: PaymentsResponse.ResultCode) {
-        let success = resultCode == .authorised || resultCode == .received || resultCode == .pending
-
-        stopLoadingIfNeeded(success) { [weak self] in
-            self?.presenter?.dismiss { [weak self] in
-                self?.presentAlert(withTitle: resultCode.rawValue)
-            }
+        presenter?.dismiss { [weak self] in
+            // Payment is processed. Add your code here.
+            self?.presentAlert(withTitle: resultCode.rawValue)
         }
     }
 
     internal func finish(with error: Error) {
         let isCancelled = ((error as? ComponentError) == .cancelled)
 
-        stopLoadingIfNeeded(false) { [weak self] in
-            self?.presenter?.dismiss { [weak self] in
-                if !isCancelled { self?.presentAlert(with: error) }
-            }
-        }
-    }
-
-    private func stopLoadingIfNeeded(_ success: Bool, completion: (() -> Void)?) {
-        if let currentComponent = currentComponent as? LoadingComponent {
-            currentComponent.stopLoading(withSuccess: success, completion: completion)
-        } else {
-            completion?()
+        presenter?.dismiss { [weak self] in
+            // Payment is unsuccessful. Add your code here.
+            if !isCancelled { self?.presentAlert(with: error) }
         }
     }
 
