@@ -18,7 +18,7 @@ extension AbstractPersonalInformationComponent: FormViewControllerDelegate {
     }
 }
 
-extension AbstractPersonalInformationComponent {
+extension AbstractPersonalInformationComponent: LoadingComponent {
 
     /// :nodoc:
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {

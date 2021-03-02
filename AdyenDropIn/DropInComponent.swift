@@ -97,7 +97,7 @@ public final class DropInComponent: NSObject,
         return manager
     }()
     
-    private lazy var rootComponent: PresentableComponent & LoadingComponent = {
+    private lazy var rootComponent: PresentableComponent & ComponentLoader = {
         if let preselectedComponents = self.componentManager.components.stored.first {
             return preselectedPaymentMethodComponent(for: preselectedComponents)
         } else {
@@ -178,7 +178,7 @@ public final class DropInComponent: NSObject,
             self.delegate?.didFail(with: ComponentError.cancelled, from: self)
         } else {
             navigationController.popViewController(animated: true)
-            stopLoading()
+            stopLoading(withSuccess: true, completion: nil)
             userDidCancel(component)
         }
     }
@@ -214,7 +214,7 @@ extension DropInComponent: PaymentComponentDelegate {
     public func didFail(with error: Error, from component: PaymentComponent) {
         paymentInProgress = false
         if case ComponentError.cancelled = error {
-            stopLoading(withSuccess: false)
+            stopLoading(withSuccess: false, completion: nil)
             userDidCancel(component)
         } else {
             delegate?.didFail(with: error, from: self)
@@ -228,7 +228,7 @@ extension DropInComponent: ActionComponentDelegate {
     
     /// :nodoc:
     public func didOpenExternalApplication(_ component: ActionComponent) {
-        stopLoading(withSuccess: true)
+        stopLoading(withSuccess: true, completion: nil)
     }
 
     /// :nodoc:
@@ -240,7 +240,7 @@ extension DropInComponent: ActionComponentDelegate {
     public func didFail(with error: Error, from component: ActionComponent) {
         if case ComponentError.cancelled = error {
             paymentInProgress = false
-            stopLoading(withSuccess: false)
+            stopLoading(withSuccess: false, completion: nil)
             userDidCancel(component)
         } else {
             delegate?.didFail(with: error, from: self)
