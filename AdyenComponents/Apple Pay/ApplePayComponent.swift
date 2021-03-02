@@ -9,7 +9,7 @@ import Foundation
 import PassKit
 
 /// A component that handles Apple Pay payments.
-public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent, Localizable {
+public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent, Localizable, LoadingComponent {
 
     /// Apple Pay component configuration.
     internal let configuration: Configuration

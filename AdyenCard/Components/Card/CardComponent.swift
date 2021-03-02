@@ -33,7 +33,7 @@ public struct StoredCardConfiguration {
 }
 
 /// A component that provides a form for card payments.
-public class CardComponent: PaymentComponent, PresentableComponent, Localizable, Observer {
+public class CardComponent: PaymentComponent, PresentableComponent, Localizable, Observer, LoadingComponent {
     
     /// :nodoc:
     internal var cardPublicKeyProvider: AnyCardPublicKeyProvider

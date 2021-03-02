@@ -18,7 +18,7 @@ public final class DropInComponent: NSObject,
     PresentableComponent,
     PaymentAwareComponent,
     LoadingComponent {
-    
+
     /// The payment methods to display.
     public let paymentMethods: PaymentMethods
     
