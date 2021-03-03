@@ -52,7 +52,8 @@ class PaymentMethodTests: XCTestCase {
                 weChatSDKDictionary,
                 debitCardDictionary,
                 mbway,
-                blik
+                blik,
+                giftCard
             ]
         ]
         
@@ -164,6 +165,10 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertTrue(paymentMethods.regular[12] is BLIKPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[12].name, "Blik")
         XCTAssertEqual(paymentMethods.regular[12].type, "blik")
+
+        XCTAssertTrue(paymentMethods.regular[13] is GiftCardPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[13].name, "Generic GiftCard")
+        XCTAssertEqual(paymentMethods.regular[13].type, "giftcard")
     }
     
     // MARK: - Card

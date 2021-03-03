@@ -221,3 +221,9 @@ let qiwiWallet = [
     "supportsRecurring": true,
     "type": "qiwiwallet"
 ] as [String: Any]
+
+let giftCard = [
+    "brand" : "genericgiftcard",
+    "name" : "Generic GiftCard",
+    "type" : "giftcard"
+] as [String: Any]

@@ -36,6 +36,7 @@ internal enum PaymentMethodType: String {
     case weChatPaySDK = "wechatpaySDK"
     case mbWay = "mbway"
     case blik
+    case giftcard
     
 }
 
@@ -80,7 +81,8 @@ internal enum AnyPaymentMethodDecoder {
         .weChatPayWeb: UnsupportedPaymentMethodDecoder(),
         .qiwiWallet: QiwiWalletPaymentMethodDecoder(),
         .mbWay: MBWayPaymentMethodDecoder(),
-        .blik: BLIKPaymentMethodDecoder()
+        .blik: BLIKPaymentMethodDecoder(),
+        .giftcard: GiftcardPaymentMethodDecoder()
     ]
     
     private static var defaultDecoder: PaymentMethodDecoder = RedirectPaymentMethodDecoder()
@@ -141,19 +143,19 @@ private struct BCMCCardPaymentMethodDecoder: PaymentMethodDecoder {
 
 private struct IssuerListPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
-        return .issuerList(try IssuerListPaymentMethod(from: decoder))
+        .issuerList(try IssuerListPaymentMethod(from: decoder))
     }
 }
 
 private struct SEPADirectDebitPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
-        return .sepaDirectDebit(try SEPADirectDebitPaymentMethod(from: decoder))
+        .sepaDirectDebit(try SEPADirectDebitPaymentMethod(from: decoder))
     }
 }
 
 private struct ApplePayPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
-        return .applePay(try ApplePayPaymentMethod(from: decoder))
+        .applePay(try ApplePayPaymentMethod(from: decoder))
     }
 }
 
@@ -181,30 +183,36 @@ private struct RedirectPaymentMethodDecoder: PaymentMethodDecoder {
 
 private struct WeChatPayPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
-        return .weChatPay(try WeChatPayPaymentMethod(from: decoder))
+        .weChatPay(try WeChatPayPaymentMethod(from: decoder))
     }
 }
 
 private struct UnsupportedPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
-        return .none
+        .none
     }
 }
 
 private struct QiwiWalletPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
-        return .qiwiWallet(try QiwiWalletPaymentMethod(from: decoder))
+        .qiwiWallet(try QiwiWalletPaymentMethod(from: decoder))
     }
 }
 
 private struct MBWayPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
-        return .mbWay(try MBWayPaymentMethod(from: decoder))
+        .mbWay(try MBWayPaymentMethod(from: decoder))
     }
 }
 
 private struct BLIKPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
-        return .blik(try BLIKPaymentMethod(from: decoder))
+        .blik(try BLIKPaymentMethod(from: decoder))
+    }
+}
+
+private struct GiftcardPaymentMethodDecoder: PaymentMethodDecoder {
+    func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
+        .giftcard(try GiftCardPaymentMethod(from: decoder))
     }
 }
