@@ -72,7 +72,10 @@ internal final class IntegrationExample: APIClientAware {
     }
 
     internal func finish(with error: Error) {
-        let isCancelled = ((error as? ComponentError) == .cancelled)
+        let isCancelled = (error as? ComponentError) == .cancelled
+        if let finalizableComponent = currentComponent as? FinalizableComponent {
+            finalizableComponent.didFinalize(with: false)
+        }
 
         presenter?.dismiss { [weak self] in
             // Payment is unsuccessful. Add your code here.
