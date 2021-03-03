@@ -24,7 +24,7 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     public func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
                                                    didAuthorizePayment payment: PKPayment,
                                                    completion: @escaping (PKPaymentAuthorizationStatus) -> Void) {
-        
+        paymentAuthorizationCompletion = completion
         let token = String(data: payment.token.paymentData, encoding: .utf8) ?? ""
         let network = payment.token.paymentMethod.network?.rawValue ?? ""
         let billingContact = payment.billingContact

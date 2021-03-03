@@ -9,7 +9,7 @@ import Foundation
 import PassKit
 
 /// A component that handles Apple Pay payments.
-public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent, Localizable {
+public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent, Localizable, FinalizableComponent {
 
     /// The Apple Pay payment method.
     public var paymentMethod: PaymentMethod {
@@ -19,6 +19,7 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     /// Apple Pay component configuration.
     internal let configuration: Configuration
     internal var paymentAuthorizationViewController: PKPaymentAuthorizationViewController?
+    internal var paymentAuthorizationCompletion: ((PKPaymentAuthorizationStatus) -> Void)?
     
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
@@ -79,6 +80,12 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     
     /// :nodoc:
     public var localizationParameters: LocalizationParameters?
+
+    /// Finalizes ApplePay payment after being proccessed by payment provider.
+    /// - Parameter success: The status of the payment.
+    public func didFinalize(with success: Bool) {
+        paymentAuthorizationCompletion?(success ? .success : .failure)
+    }
     
     // MARK: - Private
     
@@ -87,6 +94,7 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
             let request = configuration.createPaymentRequest()
             paymentAuthorizationViewController = ApplePayComponent.createPaymentAuthorizationViewController(from: request)
             paymentAuthorizationViewController?.delegate = self
+            paymentAuthorizationCompletion = nil
         }
         return paymentAuthorizationViewController!
     }
@@ -104,7 +112,6 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
         paymentAuthorizationViewController?.dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
             self.paymentAuthorizationViewController = nil
-
             completion?()
         }
     }
