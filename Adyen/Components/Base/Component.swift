@@ -18,16 +18,6 @@ public protocol Component: AnyObject {
     
 }
 
-/// A component that has UI that can be dismissed.
-public protocol DismissableComponent: Component {
-    
-    /// Dismiss any `ViewController` presented by the component, for example when payment has concluded.
-    ///
-    /// - Parameter animated: A boolean indicating whether to dismiss with animation or not.
-    /// - Parameter completion: A closure to execute when dismissal animation has completed.
-    func dismiss(_ animated: Bool, completion: (() -> Void)?)
-}
-
 /// A component that needs to be aware of the result of the payment.
 public protocol FinalizableComponent: Component {
 
@@ -56,7 +46,7 @@ public extension Component {
     /// :nodoc:
     var clientKey: String? {
         get {
-            return objc_getAssociatedObject(self, &AssociatedKeys.clientKey) as? String
+            objc_getAssociatedObject(self, &AssociatedKeys.clientKey) as? String
         }
         set {
             objc_setAssociatedObject(self, &AssociatedKeys.clientKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)

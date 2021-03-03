@@ -24,7 +24,7 @@ public protocol Cancellable: AnyObject {
 }
 
 /// A component that provides a view controller for the shopper to fill payment details.
-public protocol PresentableComponent: DismissableComponent {
+public protocol PresentableComponent: Component {
     
     /// Indicates whether `viewController` expected to be presented modally,
     /// hence it can not handle it's own presentation and dismissal.
@@ -38,12 +38,5 @@ public extension PresentableComponent {
     
     /// :nodoc:
     var requiresModalPresentation: Bool { false }
-    
-    /// Notifies the component that the user has dismissed it.
-    func dismiss(_ animated: Bool, completion: (() -> Void)?) {
-        viewController.dismiss(animated: animated) {
-            completion?()
-        }
-    }
     
 }

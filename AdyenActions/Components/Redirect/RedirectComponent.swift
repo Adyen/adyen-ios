@@ -117,7 +117,7 @@ extension RedirectComponent: BrowserComponentDelegate {
 
     /// :nodoc:
     internal func didCancel() {
-        browserComponent?.dismiss(true) {
+        if browserComponent != nil {
             self.browserComponent = nil
             self.delegate?.didFail(with: ComponentError.cancelled, from: self)
         }
