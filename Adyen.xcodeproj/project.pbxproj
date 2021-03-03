@@ -92,6 +92,7 @@
 		E73C54E425EBD2DC00B57758 /* BrowserComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73C54E325EBD2DC00B57758 /* BrowserComponent.swift */; };
 		E73C560625EE8C8D00B57758 /* APIClientHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73C560525EE8C8D00B57758 /* APIClientHelper.swift */; };
 		E73C560725EE8C8D00B57758 /* APIClientHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73C560525EE8C8D00B57758 /* APIClientHelper.swift */; };
+		E73C567F25EFCC4200B57758 /* IssuerListComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73C567E25EFCC4200B57758 /* IssuerListComponentTests.swift */; };
 		E745256925C1C9E1006A941F /* AdyenActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C6F23F1924B000B4B2B /* AdyenActionComponent.swift */; };
 		E7484C2723B9FDF000CCF74F /* SlideInPresentationAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7484C2623B9FDF000CCF74F /* SlideInPresentationAnimator.swift */; };
 		E749FD1E23CF4998000D18BA /* NavigationStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E749FD1D23CF4998000D18BA /* NavigationStyle.swift */; };
@@ -843,6 +844,7 @@
 		E7388D9523E08BF9008E62B8 /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E73C54E325EBD2DC00B57758 /* BrowserComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowserComponent.swift; sourceTree = "<group>"; };
 		E73C560525EE8C8D00B57758 /* APIClientHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientHelper.swift; sourceTree = "<group>"; };
+		E73C567E25EFCC4200B57758 /* IssuerListComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuerListComponentTests.swift; sourceTree = "<group>"; };
 		E7484C2623B9FDF000CCF74F /* SlideInPresentationAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideInPresentationAnimator.swift; sourceTree = "<group>"; };
 		E749FD1D23CF4998000D18BA /* NavigationStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStyle.swift; sourceTree = "<group>"; };
 		E74D918225AF3FE600743B0C /* CardBrandProviderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardBrandProviderTests.swift; sourceTree = "<group>"; };
@@ -2702,6 +2704,7 @@
 			children = (
 				F96A25422371AB75007DBF0B /* PaymentComponentDelegateMock.swift */,
 				F90FB7BD2446EBB9005BFE0E /* BrowserInfoTests.swift */,
+				E73C567E25EFCC4200B57758 /* IssuerListComponentTests.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -3897,6 +3900,7 @@
 				E757EFFE25D2ECDB007C813D /* APIClientMock.swift in Sources */,
 				F9DC6BA623AA293500863F3A /* ListViewControllerTests.swift in Sources */,
 				F90FB7BE2446EBB9005BFE0E /* BrowserInfoTests.swift in Sources */,
+				E73C567F25EFCC4200B57758 /* IssuerListComponentTests.swift in Sources */,
 				E9E3DAC6221ECF6300697074 /* CardNumberValidatorTests.swift in Sources */,
 				F9D644E424D2FA310059CBE3 /* EmailValidatorTests.swift in Sources */,
 				F9639B4D24E298C70073F38A /* SimpleSchedulerTests.swift in Sources */,

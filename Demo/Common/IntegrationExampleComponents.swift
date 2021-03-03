@@ -119,7 +119,6 @@ extension IntegrationExample {
     }
 
     private func handle(_ action: Action) {
-        guard paymentInProgress else { return }
         actionComponent.perform(action)
     }
 
@@ -128,13 +127,11 @@ extension IntegrationExample {
 extension IntegrationExample: PaymentComponentDelegate {
 
     internal func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
-        paymentInProgress = true
         let request = PaymentsRequest(data: data)
         apiClient.perform(request, completionHandler: paymentResponseHandler)
     }
 
     internal func didFail(with error: Error, from component: PaymentComponent) {
-        paymentInProgress = false
         finish(with: error)
     }
 
@@ -143,12 +140,10 @@ extension IntegrationExample: PaymentComponentDelegate {
 extension IntegrationExample: ActionComponentDelegate {
 
     internal func didFail(with error: Error, from component: ActionComponent) {
-        paymentInProgress = false
         finish(with: error)
     }
 
     internal func didComplete(from component: ActionComponent) {
-        paymentInProgress = false
         finish(with: .authorised)
     }
 
