@@ -25,6 +25,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     public weak var delegate: PaymentComponentDelegate?
     
     /// Initializes the component.
+    /// - Warning: didFInalize() must be called before dismissing this component.
     ///
     /// - Parameter configuration: Apple Pay component configuration
     /// - Throws: `ApplePayComponent.Error.userCannotMakePayment`.
@@ -86,6 +87,18 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     public func didFinalize(with success: Bool) {
         paymentAuthorizationCompletion?(success ? .success : .failure)
     }
+
+    /// Dismiss `PKPaymentAuthorizationViewController` presented by the component, for example when payment has concluded.
+    ///
+    /// - Parameter animated: A boolean indicating whether to dismiss with animation or not.
+    /// - Parameter completion: A closure to execute when dismissal animation has completed.
+    public func dismiss(_ animated: Bool, completion: (() -> Void)?) {
+        paymentAuthorizationViewController?.dismiss(animated: true) { [weak self] in
+            guard let self = self else { return }
+            self.paymentAuthorizationViewController = nil
+            completion?()
+        }
+    }
     
     // MARK: - Private
     
@@ -106,14 +119,6 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         }
         
         return paymentAuthorizationViewController
-    }
-
-    public func dismiss(_ animated: Bool, completion: (() -> Void)?) {
-        paymentAuthorizationViewController?.dismiss(animated: true) { [weak self] in
-            guard let self = self else { return }
-            self.paymentAuthorizationViewController = nil
-            completion?()
-        }
     }
 }
 
