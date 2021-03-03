@@ -32,16 +32,18 @@ Adyen Components for iOS are available through either [CocoaPods](http://cocoapo
 1. Add `pod 'Adyen'` to your `Podfile`.
 2. Run `pod install`.
 
-`Adyen` Pod spec installs all modules (`Adyen/DropIn`, `Adyen/Actions`, `Adyen/Card`, `Adyen/Components`..etc).
-Optionally you can add only one of those dependencies alone depending on your needs and integration type:
-* Only Card components:
-  `pod 'Adyen/Card'` 
-* Only non-Card components:
-  `pod 'Adyen/Components'` 
-* Only Action Components:
- `pod 'Adyen/Actions'`
-* Only Encryption:
- `pod 'Adyen/Encryption'`
+You can install all modules or add individual modules, depending on your needs and integration type.
+The `AdyenWeChatPay` module needs to be explicitly added to support WeChat Pay.
+
+```
+pod 'Adyen'               // Add DropIn with all modules except WeChat Pay.
+// Add individual modules
+pod 'Adyen/Card'          // Card components.
+pod 'Adyen/Encryption'    // Encryption module.
+pod 'Adyen/Components'    // All other payment components except WeChat Pay.
+pod 'Adyen/Actions'       // Action Components.
+pod 'Adyen/WeChatPay'     // WeChat Pay Component.
+```
 
 
 :warning: _`3DS2 SDK` binary dependency through CocoaPods doesn't support `arm64` Simulator builds. `arm64` needs to be excluded as described [here](https://github.com/Adyen/adyen-ios/issues/291) to be able to make `Any Simulator` builds._
@@ -62,16 +64,15 @@ https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_y
 2. Use `https://github.com/Adyen/adyen-ios` as the repository URL.
 3. Specify the version to be at least `3.8.0`.
 
-`AdyenDropIn` module uses all other modules (`AdyenActions`, `AdyenCard`, `AdyenComponents`..etc) as dependecies.
-Optionally you can add only one of those dependencies alone depending on your needs and integration type:
-* Only Card components:
-  Only add `AdyenCard` Module
-* Only non-Card components:
-  Only add `AdyenComponents` Module
-* Only Action Components:
-  Only add `AdyenActions` Module.
-* Only Encryption:
-  Only add `AdyenEncryption` Module.
+You can add all modules or select individual modules to add to your integration.
+The `AdyenWeChatPay` module needs to be explicitly added to support WeChat Pay.
+
+* `AdyenDropIn`: all modules except `AdyenWeChatPay`.
+* `AdyenCard`: the card components.
+* `AdyenComponents`: all other payment components except WeChat Pay.
+* `AdyenActions`:  action components.
+* `AdyenEncryption`: encryption.
+* `AdyenWeChatPay`: WeChat Pay component.
 
 :warning: _Please make sure to use Xcode 12.0+ when adding `Adyen` using Swift Package Manager._
 

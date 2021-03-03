@@ -1011,6 +1011,7 @@
 		F939DEE223C8B4C100D19249 /* EmptyPaymentDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyPaymentDetails.swift; sourceTree = "<group>"; };
 		F94343E523FFD9A400AADF5F /* AdyenAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AdyenAssets.xcassets; sourceTree = "<group>"; };
 		F94343E723FFF9DC00AADF5F /* ISOCountry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISOCountry.swift; sourceTree = "<group>"; };
+		F94B870925EFB71100D270A6 /* MIGRATION.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = MIGRATION.md; sourceTree = "<group>"; };
 		F957A9E225514A7E0099AD73 /* Submit3DS2FingerprintRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submit3DS2FingerprintRequest.swift; sourceTree = "<group>"; };
 		F957A9F025514AB70099AD73 /* Submit3DS2FingerprintResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submit3DS2FingerprintResponse.swift; sourceTree = "<group>"; };
 		F957A9F925514EEA0099AD73 /* ThreeDS2FingerprintSubmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2FingerprintSubmitter.swift; sourceTree = "<group>"; };
@@ -1570,6 +1571,7 @@
 		E2C0E02922097916008616F6 = {
 			isa = PBXGroup;
 			children = (
+				F94B870925EFB71100D270A6 /* MIGRATION.md */,
 				F9A2D01025DBF104008944BE /* AdyenUIHost.entitlements */,
 				E27B8EAD22B79CD20075BB6A /* README.md */,
 				E2289B3A23D04B57002844BF /* .jazzy.yaml */,
