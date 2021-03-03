@@ -28,6 +28,14 @@ public protocol DismissableComponent: Component {
     func dismiss(_ animated: Bool, completion: (() -> Void)?)
 }
 
+/// A component that needs to be aware of the result of the payment.
+public protocol FinalizableComponent: Component {
+
+    /// Finalizes payment after being proccessed by payment provider.
+    /// - Parameter success: The status of the payment.
+    func didFinalize(with success: Bool)
+}
+
 public extension Component {
     
     /// :nodoc:

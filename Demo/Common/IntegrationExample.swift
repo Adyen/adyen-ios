@@ -60,6 +60,11 @@ internal final class IntegrationExample: APIClientAware {
     }
 
     internal func finish(with resultCode: PaymentsResponse.ResultCode) {
+        if let finalizableComponent = currentComponent as? FinalizableComponent {
+            let success = resultCode == .authorised || resultCode == .received || resultCode == .pending
+            finalizableComponent.didFinalize(with: success)
+        }
+
         presenter?.dismiss { [weak self] in
             // Payment is processed. Add your code here.
             self?.presentAlert(withTitle: resultCode.rawValue)
