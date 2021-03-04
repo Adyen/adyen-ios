@@ -8,7 +8,7 @@ import Adyen
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
-import Foundation
+import UIKit
 
 // swiftlint:disable explicit_acl
 
@@ -91,16 +91,14 @@ extension CardComponent {
 }
 
 /// :nodoc:
-extension CardComponent: FormViewControllerDelegate {
+extension CardComponent: TrackableComponent {
     
     /// :nodoc:
-    public func viewDidLoad(formViewController: FormViewController) {
+    public func viewDidLoad(viewController: UIViewController) {
         Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
         fetchCardPublicKey(onError: { _ in /* Do nothing, to just cache the card public key value */ },
                            completion: { _ in /* Do nothing, to just cache the card public key value */ })
     }
-
-    public func viewDidAppear(formViewController: FormViewController) { /* Not Implemented */ }
 }
 
 extension CardComponent {

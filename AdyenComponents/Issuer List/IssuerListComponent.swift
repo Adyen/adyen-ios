@@ -52,8 +52,8 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
     // MARK: - Private
     
     private lazy var listViewController: ListViewController = {
-        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
         let listViewController = ListViewController(style: style)
+        listViewController.delegate = self
         let issuers = issuerListPaymentMethod.issuers
         let items = issuers.map { issuer -> ListItem in
             var listItem = ListItem(title: issuer.name, style: style.listItem)
@@ -98,3 +98,5 @@ public typealias EntercashComponent = IssuerListComponent
 
 /// Provides an issuer selection list for OpenBanking payments.
 public typealias OpenBankingComponent = IssuerListComponent
+
+extension IssuerListComponent: TrackableComponent {}

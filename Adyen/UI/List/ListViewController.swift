@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -12,6 +12,10 @@ public final class ListViewController: UITableViewController {
     
     /// Indicates the list view controller UI style.
     public let style: ListComponentStyle
+
+    /// :nodoc:
+    /// Delegate to handle different viewController events.
+    public weak var delegate: ViewControllerDelegate?
     
     /// Initializes the list view controller.
     ///
@@ -26,6 +30,7 @@ public final class ListViewController: UITableViewController {
     }
     
     /// :nodoc:
+    @available(*, unavailable)
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -100,6 +105,13 @@ public final class ListViewController: UITableViewController {
         tableView.sectionFooterHeight = 0.0
         tableView.estimatedRowHeight = 56.0
         tableView.register(ListCell.self, forCellReuseIdentifier: cellReuseIdentifier)
+
+        delegate?.viewDidLoad(viewController: self)
+    }
+
+    override public func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        delegate?.viewDidAppear(viewController: self)
     }
     
     // MARK: - UITableView
@@ -108,12 +120,12 @@ public final class ListViewController: UITableViewController {
     
     /// :nodoc:
     override public func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
+        sections.count
     }
     
     /// :nodoc:
     override public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].items.count
+        sections[section].items.count
     }
     
     /// :nodoc:
@@ -131,7 +143,7 @@ public final class ListViewController: UITableViewController {
     
     /// :nodoc:
     override public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return sections[section].title == nil ? 0 : 44.0
+        sections[section].title == nil ? 0 : 44.0
     }
     
     /// :nodoc:

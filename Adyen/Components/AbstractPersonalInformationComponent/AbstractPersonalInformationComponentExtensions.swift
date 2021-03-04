@@ -6,19 +6,7 @@
 
 import Foundation
 
-// MARK: - FormViewControllerDelegate
-
-extension AbstractPersonalInformationComponent: FormViewControllerDelegate {
-    /// :nodoc:
-    open func viewDidLoad(formViewController: FormViewController) {
-        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
-    }
-
-    /// :nodoc:
-    open func viewDidAppear(formViewController: FormViewController) { /* Empty Implementation */ }
-}
-
-extension AbstractPersonalInformationComponent: LoadingComponent {
+extension AbstractPersonalInformationComponent: LoadingComponent, TrackableComponent {
 
     /// :nodoc:
     public func stopLoading(completion: (() -> Void)?) {

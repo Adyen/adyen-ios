@@ -40,3 +40,15 @@ public extension PresentableComponent {
     var requiresModalPresentation: Bool { false }
     
 }
+
+public protocol TrackableComponent: Component, PaymentMethodAware, ViewControllerDelegate {}
+
+extension TrackableComponent {
+    /// :nodoc:
+    public func viewDidLoad(viewController: UIViewController) {
+        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
+    }
+
+    /// :nodoc:
+    public func viewDidAppear(viewController: UIViewController) { /* Empty Implementation */ }
+}

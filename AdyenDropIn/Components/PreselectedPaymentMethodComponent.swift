@@ -26,6 +26,9 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     
     private let title: String
     private let defaultComponent: PaymentComponent
+
+    /// :nodoc:
+    internal var paymentMethod: PaymentMethod { defaultComponent.paymentMethod }
     
     /// Delegate actions.
     internal weak var delegate: PreselectedPaymentMethodComponentDelegate?
@@ -121,13 +124,4 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     
 }
 
-extension PreselectedPaymentMethodComponent: FormViewControllerDelegate {
-
-    /// :nodoc:
-    public func viewDidLoad(formViewController: FormViewController) {
-        Analytics.sendEvent(component: defaultComponent.paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
-    }
-
-    /// :nodoc:
-    public func viewDidAppear(formViewController: FormViewController) { /* Empty Implementation */ }
-}
+extension PreselectedPaymentMethodComponent: TrackableComponent {}

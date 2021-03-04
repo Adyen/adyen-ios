@@ -439,7 +439,7 @@ class CardComponentTests: XCTestCase {
         }
         sut.cardPublicKeyProvider = cardPublicKeyProvider
 
-        sut.viewDidLoad(formViewController: sut.formViewController)
+        sut.viewDidLoad(viewController: sut.formViewController)
 
         waitForExpectations(timeout: 10, handler: nil)
     }
