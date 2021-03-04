@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -48,10 +48,9 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
     }
 
     private lazy var formViewController: FormViewController = {
-        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
-
         let formViewController = FormViewController(style: style)
         formViewController.localizationParameters = localizationParameters
+        formViewController.delegate = self
 
         formViewController.title = paymentMethod.name.uppercased()
 
@@ -104,5 +103,14 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
         formViewController.view.isUserInteractionEnabled = false
 
         submit(data: PaymentComponentData(paymentMethodDetails: details))
+    }
+}
+
+extension BLIKComponent: FormViewControllerDelegate {
+
+    public func viewDidLoad(formViewController: FormViewController) { /* Not Implemented */ }
+
+    public func viewDidAppear(formViewController: FormViewController) {
+        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
     }
 }
