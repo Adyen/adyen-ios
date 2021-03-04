@@ -13,11 +13,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '11'
 
     - name: Install Tools
       run: |
         brew install sonar-scanner
-        brew install swiftlint
         gem install slather
 
     - name: Check Dependencie Cache
@@ -46,7 +48,6 @@ jobs:
         params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES'
         scheme: 'AdyenUIHost'
         destination: 'name=iPhone 11'
-        DEVELOPER_DIR: ${{ matrix.xcode }}
 
     - name: Slather
       run: |
@@ -68,7 +69,8 @@ jobs:
     - name: Run Sonar
       if: ${{ env.sonarToken != 0 }}
       run: |
-        sonar-scanner -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.pullrequest.key=${run_id} -Dsonar.pullrequest.branch=${head} -Dsonar.pullrequest.base=${base}
+        git fetch --unshallow --no-tags
+        sonar-scanner -Dsonar.login=${{ secrets.SONAR_TOKEN }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run_id: ${{ github.event.number }}
