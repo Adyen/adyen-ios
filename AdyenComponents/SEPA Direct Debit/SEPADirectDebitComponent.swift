@@ -132,9 +132,11 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
 
 extension SEPADirectDebitComponent: FormViewControllerDelegate {
 
-    public func viewDidLoad(formViewController: FormViewController) { /* Not Implemented */ }
-
-    public func viewDidAppear(formViewController: FormViewController) {
+    /// :nodoc:
+    public func viewDidLoad(formViewController: FormViewController) {
         Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
     }
+
+    /// :nodoc:
+    public func viewDidAppear(formViewController: FormViewController) { /* Empty Implementation */ }
 }
