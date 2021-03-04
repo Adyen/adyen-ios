@@ -95,13 +95,12 @@ extension CardComponent: FormViewControllerDelegate {
     
     /// :nodoc:
     public func viewDidLoad(formViewController: FormViewController) {
+        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
         fetchCardPublicKey(onError: { _ in /* Do nothing, to just cache the card public key value */ },
                            completion: { _ in /* Do nothing, to just cache the card public key value */ })
     }
 
-    public func viewDidAppear(formViewController: FormViewController) {
-        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
-    }
+    public func viewDidAppear(formViewController: FormViewController) { /* Not Implemented */ }
 }
 
 extension CardComponent {

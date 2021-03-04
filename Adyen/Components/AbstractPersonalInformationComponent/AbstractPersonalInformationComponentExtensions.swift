@@ -10,12 +10,12 @@ import Foundation
 
 extension AbstractPersonalInformationComponent: FormViewControllerDelegate {
     /// :nodoc:
-    open func viewDidLoad(formViewController: FormViewController) { /* Empty Implementation */ }
-
-    /// :nodoc:
-    open func viewDidAppear(formViewController: FormViewController) {
+    open func viewDidLoad(formViewController: FormViewController) {
         Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
     }
+
+    /// :nodoc:
+    open func viewDidAppear(formViewController: FormViewController) { /* Empty Implementation */ }
 }
 
 extension AbstractPersonalInformationComponent: LoadingComponent {
