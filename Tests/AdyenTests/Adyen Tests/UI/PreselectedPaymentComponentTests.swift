@@ -77,6 +77,23 @@ class PreselectedPaymentComponentTests: XCTestCase {
         }
         wait(for: [expectation], timeout: 5)
     }
+
+    func testSubmitButtonLoading() {
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.submitButton.button")
+        XCTAssertFalse(button.showsActivityIndicator)
+        sut.startLoading(for: component)
+
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+            XCTAssertTrue(button.showsActivityIndicator)
+            self.sut.stopLoading {
+                XCTAssertFalse(button.showsActivityIndicator)
+                expectation.fulfill()
+            }
+        }
+        wait(for: [expectation], timeout: 5)
+    }
     
     func testPressOpenAllButton() {
         let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.openAllButton.button")

@@ -11,10 +11,10 @@ import Foundation
 
 final class PresentationDelegateMock: PresentationDelegate {
 
-    var doPresent: ((_ component: PresentableComponent, _ disableCloseButton: Bool) -> Void)?
+    var doPresent: ((_ component: PresentableComponent) -> Void)?
 
-    func present(component: PresentableComponent, disableCloseButton: Bool) {
-        doPresent?(component, disableCloseButton)
+    func present(component: PresentableComponent) {
+        doPresent?(component)
     }
 
 }

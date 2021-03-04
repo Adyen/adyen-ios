@@ -82,7 +82,7 @@ public final class RedirectComponent: ActionComponent {
         let component = BrowserComponent(url: action.url, style: style)
         component.delegate = self
         browserComponent = component
-        presentationDelegate?.present(component: component, disableCloseButton: false)
+        presentationDelegate?.present(component: component)
     }
     
     // MARK: - Custom scheme link handling
@@ -117,7 +117,7 @@ extension RedirectComponent: BrowserComponentDelegate {
 
     /// :nodoc:
     internal func didCancel() {
-        browserComponent?.dismiss(true) {
+        if browserComponent != nil {
             self.browserComponent = nil
             self.delegate?.didFail(with: ComponentError.cancelled, from: self)
         }

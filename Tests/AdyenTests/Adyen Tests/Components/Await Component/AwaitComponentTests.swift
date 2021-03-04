@@ -54,7 +54,7 @@ class AwaitComponentTests: XCTestCase {
         sut.presentationDelegate = presentationDelegate
 
         let presentationExpectation = expectation(description: "expect presentation delegate to be called")
-        presentationDelegate.doPresent = { component, _ in
+        presentationDelegate.doPresent = { component in
             let messageLabel: UILabel! = component.viewController.view.findView(by: "messageLabel")
             let spinnerLabel: UILabel! = component.viewController.view.findView(by: "spinnerTitleLabel")
 
@@ -104,7 +104,7 @@ class AwaitComponentTests: XCTestCase {
 
         let presentationDelegate = PresentationDelegateMock()
         let waitExpectation = expectation(description: "Wait for the presentationDelegate to be called.")
-        presentationDelegate.doPresent = { component, disableCloseButton in
+        presentationDelegate.doPresent = { component in
             XCTAssertNotNil(component.viewController as? AwaitViewController)
             let viewController = component.viewController as! AwaitViewController
 

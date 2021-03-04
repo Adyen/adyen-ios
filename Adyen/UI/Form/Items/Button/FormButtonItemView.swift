@@ -32,7 +32,7 @@ internal final class FormButtonItemView: FormItemView<FormButtonItem>, Observer 
     
     // MARK: - Submit Button
     
-    private lazy var submitButton: SubmitButton = {
+    internal lazy var submitButton: SubmitButton = {
         
         let submitButton = SubmitButton(style: item.style.button)
         

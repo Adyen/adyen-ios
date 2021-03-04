@@ -32,7 +32,7 @@ class VoucherComponentTests: XCTestCase {
         }
 
         let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
-        presentationDelegate.doPresent = { component, disableCloseButton in
+        presentationDelegate.doPresent = { component in
             let component = component as! PresentableComponentWrapper
             XCTAssertEqual(component.viewController.title, "test_title")
             XCTAssertTrue(component.viewController === expectedViewContoller)
