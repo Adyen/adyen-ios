@@ -91,7 +91,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     }
     
     /// :nodoc:
-    internal func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
+    internal func stopLoading(completion: (() -> Void)?) {
         listViewController.stopLoading()
         completion?()
     }

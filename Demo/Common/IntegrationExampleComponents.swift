@@ -55,10 +55,11 @@ extension IntegrationExample {
 
     internal func presentApplePayComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: ApplePayPaymentMethod.self) else { return }
-        let config = ApplePayComponent.Configuration(paymentMethod: paymentMethod,
+        let config = ApplePayComponent.Configuration(payment: payment,
+                                                     paymentMethod: paymentMethod,
                                                      summaryItems: Configuration.applePaySummaryItems,
                                                      merchantIdentifier: Configuration.applePayMerchantIdentifier)
-        let component = try? ApplePayComponent(payment: payment, configuration: config)
+        let component = try? ApplePayComponent(configuration: config)
         component?.delegate = self
         guard let presentableComponent = component else { return }
         present(presentableComponent)
@@ -118,7 +119,6 @@ extension IntegrationExample {
     }
 
     private func handle(_ action: Action) {
-        guard paymentInProgress else { return }
         actionComponent.perform(action)
     }
 
@@ -127,13 +127,11 @@ extension IntegrationExample {
 extension IntegrationExample: PaymentComponentDelegate {
 
     internal func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
-        paymentInProgress = true
         let request = PaymentsRequest(data: data)
         apiClient.perform(request, completionHandler: paymentResponseHandler)
     }
 
     internal func didFail(with error: Error, from component: PaymentComponent) {
-        paymentInProgress = false
         finish(with: error)
     }
 
@@ -142,12 +140,10 @@ extension IntegrationExample: PaymentComponentDelegate {
 extension IntegrationExample: ActionComponentDelegate {
 
     internal func didFail(with error: Error, from component: ActionComponent) {
-        paymentInProgress = false
         finish(with: error)
     }
 
     internal func didComplete(from component: ActionComponent) {
-        paymentInProgress = false
         finish(with: .authorised)
     }
 
@@ -170,7 +166,7 @@ extension IntegrationExample: CardComponentDelegate {
 }
 
 extension IntegrationExample: PresentationDelegate {
-    internal func present(component: PresentableComponent, disableCloseButton: Bool) {
+    internal func present(component: PresentableComponent) {
         present(component)
     }
 }

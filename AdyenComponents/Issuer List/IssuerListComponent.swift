@@ -13,7 +13,9 @@ import UIKit
 public final class IssuerListComponent: PaymentComponent, PresentableComponent, LoadingComponent {
     
     /// The issuer list payment method.
-    public let paymentMethod: PaymentMethod
+    public var paymentMethod: PaymentMethod {
+        issuerListPaymentMethod
+    }
     
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
@@ -27,7 +29,6 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
     /// - Parameter style: The Component's UI style..
     public init(paymentMethod: IssuerListPaymentMethod,
                 style: ListComponentStyle = ListComponentStyle()) {
-        self.paymentMethod = paymentMethod
         self.issuerListPaymentMethod = paymentMethod
         self.style = style
     }
@@ -40,9 +41,8 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
         listViewController
     }
     
-    public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
+    public func stopLoading(completion: (() -> Void)?) {
         listViewController.stopLoading()
-        
         completion?()
     }
     

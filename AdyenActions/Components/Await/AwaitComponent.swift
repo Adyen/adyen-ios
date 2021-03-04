@@ -65,7 +65,7 @@ public final class AwaitComponent: AnyAwaitActionHandler {
         
         if let presentationDelegate = presentationDelegate {
             let presentableComponent = PresentableComponentWrapper(component: self, viewController: viewController)
-            presentationDelegate.present(component: presentableComponent, disableCloseButton: false)
+            presentationDelegate.present(component: presentableComponent)
         } else {
             assertionFailure("presentationDelegate is nil, please provide a presentation delegate to present the AwaitComponent UI.")
         }

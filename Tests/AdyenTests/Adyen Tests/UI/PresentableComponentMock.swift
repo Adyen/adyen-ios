@@ -17,7 +17,7 @@ class PresentableComponentMock: PresentableComponent {
         return controll
     }
     
-    func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {}
+    func stopLoading(completion: (() -> Void)?) {}
     
     var environment: Environment = .test
 }

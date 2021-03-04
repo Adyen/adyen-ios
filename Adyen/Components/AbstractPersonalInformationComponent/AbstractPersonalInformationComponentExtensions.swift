@@ -21,7 +21,7 @@ extension AbstractPersonalInformationComponent: FormViewControllerDelegate {
 extension AbstractPersonalInformationComponent: LoadingComponent {
 
     /// :nodoc:
-    public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
+    public func stopLoading(completion: (() -> Void)?) {
         button.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
         completion?()

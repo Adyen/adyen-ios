@@ -9,7 +9,7 @@ import UIKit
 
 /// :nodoc:
 /// Describes any API Client.
-public protocol APIClientProtocol {
+public protocol APIClientProtocol: AnyObject {
     
     /// :nodoc:
     typealias CompletionHandler<T> = (Result<T, Error>) -> Void

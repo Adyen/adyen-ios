@@ -162,7 +162,7 @@ class AdyenActionComponentTests: XCTestCase {
 }
 
 extension UIViewController: PresentationDelegate {
-    public func present(component: PresentableComponent, disableCloseButton: Bool) {
+    public func present(component: PresentableComponent) {
         self.present(component.viewController, animated: true, completion: nil)
     }
 }

@@ -16,8 +16,7 @@ import UIKit
 /// A component that handles the entire flow of payment selection and payment details entry.
 public final class DropInComponent: NSObject,
     PresentableComponent,
-    PaymentAwareComponent,
-    LoadingComponent {
+    PaymentAwareComponent {
 
     /// The payment methods to display.
     public let paymentMethods: PaymentMethods
@@ -57,19 +56,6 @@ public final class DropInComponent: NSObject,
     /// :nodoc:
     public var viewController: UIViewController {
         navigationController
-    }
-    
-    /// :nodoc:
-    public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
-        paymentInProgress = false
-        let rootComponent = self.rootComponent
-        if let topComponent = selectedPaymentComponent as? LoadingComponent {
-            topComponent.stopLoading(withSuccess: success) {
-                rootComponent.stopLoading(withSuccess: success, completion: completion)
-            }
-        } else {
-            rootComponent.stopLoading(withSuccess: success, completion: completion)
-        }
     }
 
     // MARK: - Handling Actions
@@ -172,21 +158,37 @@ public final class DropInComponent: NSObject,
     }
     
     private func didSelectCancelButton(isRoot: Bool, component: PresentableComponent) {
-        guard !paymentInProgress else { return }
+        guard !paymentInProgress || component is Cancellable else { return }
         
         if isRoot {
             self.delegate?.didFail(with: ComponentError.cancelled, from: self)
         } else {
             navigationController.popViewController(animated: true)
-            stopLoading(withSuccess: true, completion: nil)
             userDidCancel(component)
         }
     }
 
     private func userDidCancel(_ component: Component) {
+        stopLoading()
         (component as? Cancellable)?.didCancel()
-        guard let component = (component as? PaymentComponent) ?? selectedPaymentComponent else { return }
-        delegate?.didCancel(component: component, from: self)
+
+        if let component = (component as? PaymentComponent) ?? selectedPaymentComponent, paymentInProgress {
+            delegate?.didCancel(component: component, from: self)
+        }
+
+        paymentInProgress = false
+    }
+
+    /// :nodoc:
+    private func stopLoading(completion: (() -> Void)? = nil) {
+        let rootComponent = self.rootComponent
+        if let topComponent = selectedPaymentComponent as? LoadingComponent {
+            topComponent.stopLoading {
+                rootComponent.stopLoading(completion: nil)
+            }
+        } else {
+            rootComponent.stopLoading(completion: nil)
+        }
     }
 }
 
@@ -212,9 +214,7 @@ extension DropInComponent: PaymentComponentDelegate {
     
     /// :nodoc:
     public func didFail(with error: Error, from component: PaymentComponent) {
-        paymentInProgress = false
         if case ComponentError.cancelled = error {
-            stopLoading(withSuccess: false, completion: nil)
             userDidCancel(component)
         } else {
             delegate?.didFail(with: error, from: self)
@@ -228,7 +228,7 @@ extension DropInComponent: ActionComponentDelegate {
     
     /// :nodoc:
     public func didOpenExternalApplication(_ component: ActionComponent) {
-        stopLoading(withSuccess: true, completion: nil)
+        stopLoading()
     }
 
     /// :nodoc:
@@ -239,8 +239,6 @@ extension DropInComponent: ActionComponentDelegate {
     /// :nodoc:
     public func didFail(with error: Error, from component: ActionComponent) {
         if case ComponentError.cancelled = error {
-            paymentInProgress = false
-            stopLoading(withSuccess: false, completion: nil)
             userDidCancel(component)
         } else {
             delegate?.didFail(with: error, from: self)
@@ -278,9 +276,21 @@ extension DropInComponent: PreselectedPaymentMethodComponentDelegate {
 }
 
 extension DropInComponent: PresentationDelegate {
-    public func present(component: PresentableComponent, disableCloseButton: Bool) {
-        paymentInProgress = disableCloseButton
+    public func present(component: PresentableComponent) {
         navigationController.present(asModal: component)
+    }
+}
+
+extension DropInComponent: FinalizableComponent {
+
+    /// Stops loading and finalise DropIn's selected payment if nececery.
+    /// This method must be called after certan payment methods (e.x. ApplePay)
+    /// - Parameter success: Status of the payment.
+    public func didFinalize(with success: Bool) {
+        stopLoading { [weak self] in
+            guard let topComponent = self?.selectedPaymentComponent as? FinalizableComponent else { return }
+            topComponent.didFinalize(with: success)
+        }
     }
 }
 

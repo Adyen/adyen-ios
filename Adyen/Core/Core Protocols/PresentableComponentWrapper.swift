@@ -9,7 +9,7 @@ import UIKit
 
 /// :nodoc:
 /// A component that wraps any `Component` to make it a `PresentableComponent`.
-public final class PresentableComponentWrapper: PresentableComponent {
+public final class PresentableComponentWrapper: PresentableComponent, Cancellable {
     
     /// :nodoc:
     public let viewController: UIViewController
