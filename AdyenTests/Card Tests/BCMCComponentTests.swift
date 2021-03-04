@@ -252,7 +252,11 @@ class BCMCComponentTests: XCTestCase {
             // Enter Expiry Date
             let expiryDateItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
             XCTAssertNotNil(expiryDateItemView)
-            self.populate(textItemView: expiryDateItemView!, with: "10/20")
+            let date = Date(timeIntervalSinceNow: 60 * 60 * 24 * 30 * 2)
+            let calendar = Calendar(identifier: .gregorian)
+            let components = calendar.dateComponents([.month, .year], from: date)
+            let expireyDate = "\(String(format: "%02d/%02d", components.month!, components.year! % 100))"
+            self.populate(textItemView: expiryDateItemView!, with: expireyDate)
             
             // Tap submit button
             let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
