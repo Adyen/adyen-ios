@@ -106,13 +106,4 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
     }
 }
 
-extension BLIKComponent: FormViewControllerDelegate {
-
-    /// :nodoc:
-    public func viewDidLoad(formViewController: FormViewController) {
-        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
-    }
-
-    /// :nodoc:
-    public func viewDidAppear(formViewController: FormViewController) { /* Empty Implementation */ }
-}
+extension BLIKComponent: TrackableComponent {}

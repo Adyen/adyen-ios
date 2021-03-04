@@ -8,15 +8,15 @@ import UIKit
 
 /// :nodoc:
 /// Delegate to handle different viewController events.
-public protocol FormViewControllerDelegate: AnyObject {
+public protocol ViewControllerDelegate: AnyObject {
     
     /// :nodoc:
     /// Handles the UIViewController.viewDidLoad() event.
-    func viewDidLoad(formViewController: FormViewController)
+    func viewDidLoad(viewController: UIViewController)
 
     /// :nodoc:
     /// Handles the UIViewController.viewDidAppear() event.
-    func viewDidAppear(formViewController: FormViewController)
+    func viewDidAppear(viewController: UIViewController)
     
 }
 
@@ -35,7 +35,7 @@ public final class FormViewController: UIViewController, Localizable {
     
     /// :nodoc:
     /// Delegate to handle different viewController events.
-    public weak var delegate: FormViewControllerDelegate?
+    public weak var delegate: ViewControllerDelegate?
     
     /// Initializes the FormViewController.
     ///
@@ -131,7 +131,7 @@ public final class FormViewController: UIViewController, Localizable {
         view.addSubview(formView)
         setupConstraints()
         
-        delegate?.viewDidLoad(formViewController: self)
+        delegate?.viewDidLoad(viewController: self)
         
         itemManager.itemViews.forEach(formView.appendItemView(_:))
         
@@ -149,7 +149,7 @@ public final class FormViewController: UIViewController, Localizable {
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         assignInitialFirstResponder()
-        delegate?.viewDidAppear(formViewController: self)
+        delegate?.viewDidAppear(viewController: self)
     }
     
     private lazy var formView: FormView = {

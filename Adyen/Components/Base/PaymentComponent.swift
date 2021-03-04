@@ -6,11 +6,14 @@
 
 import Foundation
 
-/// A component that handles the initial phase of getting payment details to initiate a payment.
-public protocol PaymentComponent: PaymentAwareComponent {
-    
+/// :nodoc:
+public protocol PaymentMethodAware {
     /// The payment method for which to gather payment details.
     var paymentMethod: PaymentMethod { get }
+}
+
+/// A component that handles the initial phase of getting payment details to initiate a payment.
+public protocol PaymentComponent: PaymentAwareComponent, PaymentMethodAware {
     
     /// The delegate of the payment component.
     var delegate: PaymentComponentDelegate? { get set }
