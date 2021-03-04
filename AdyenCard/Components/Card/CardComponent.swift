@@ -168,7 +168,7 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
     public var localizationParameters: LocalizationParameters?
     
     /// :nodoc:
-    public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
+    public func stopLoading(completion: (() -> Void)?) {
         button.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
         completion?()

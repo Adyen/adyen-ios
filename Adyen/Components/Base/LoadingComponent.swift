@@ -19,7 +19,6 @@ public protocol LoadingComponent {
     /// Stops any processing animation that the view controller is running.
     ///
     /// - Parameters:
-    ///   - success: Boolean indicating the component should go to a success or failure state.
     ///   - completion: Completion block to be called when animations are finished.
-    func stopLoading(withSuccess success: Bool, completion: (() -> Void)?)
+    func stopLoading(completion: (() -> Void)?)
 }

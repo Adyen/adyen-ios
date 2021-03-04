@@ -96,7 +96,7 @@ internal final class ComponentsViewController: UIViewController, Presenter {
     }
 
     internal func present(viewController: UIViewController, completion: (() -> Void)?) {
-        present(viewController, animated: true, completion: completion)
+        adyen.topPresenter.present(viewController, animated: true, completion: completion)
     }
 
     internal func dismiss(completion: (() -> Void)?) {

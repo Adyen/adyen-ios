@@ -50,7 +50,6 @@ extension IntegrationExample {
     }
 
     private func handle(_ action: Action) {
-        guard paymentInProgress else { return }
         (currentComponent as? DropInComponent)?.handle(action)
     }
 }
@@ -58,7 +57,6 @@ extension IntegrationExample {
 extension IntegrationExample: DropInComponentDelegate {
 
     internal func didSubmit(_ data: PaymentComponentData, from component: DropInComponent) {
-        paymentInProgress = true
         let request = PaymentsRequest(data: data)
         apiClient.perform(request, completionHandler: paymentResponseHandler)
     }
@@ -71,12 +69,10 @@ extension IntegrationExample: DropInComponentDelegate {
     }
 
     internal func didComplete(from component: DropInComponent) {
-        paymentInProgress = false
         finish(with: .authorised)
     }
 
     internal func didFail(with error: Error, from component: DropInComponent) {
-        paymentInProgress = false
         finish(with: error)
     }
 

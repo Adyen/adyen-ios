@@ -169,5 +169,23 @@ class SEPADirectDebitComponentTests: XCTestCase {
         let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod)
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
+
+    func testStopLoading() {
+        let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: "bcmc", name: "Test name")
+        let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod)
+
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+            XCTAssertFalse(sut.button.showsActivityIndicator)
+            sut.button.showsActivityIndicator = true
+            sut.stopLoading {
+                XCTAssertFalse(sut.button.showsActivityIndicator)
+                expectation.fulfill()
+            }
+        }
+        wait(for: [expectation], timeout: 5)
+    }
     
 }
