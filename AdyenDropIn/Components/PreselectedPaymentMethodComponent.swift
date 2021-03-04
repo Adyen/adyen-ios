@@ -50,11 +50,9 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     // MARK: - View Controller
     
     public lazy var viewController: UIViewController = {
-        let paymentMethod = defaultComponent.paymentMethod
-        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
-        
         let formViewController = FormViewController(style: style)
         formViewController.localizationParameters = localizationParameters
+        formViewController.delegate = self
         
         formViewController.append(listItem)
         formViewController.append(submitButtonItem.withPadding(padding: .init(top: 0, left: 0, bottom: -8, right: 0)))
@@ -121,4 +119,15 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     /// :nodoc:
     public var localizationParameters: LocalizationParameters?
     
+}
+
+extension PreselectedPaymentMethodComponent: FormViewControllerDelegate {
+
+    public func viewDidLoad(formViewController: FormViewController) { /* Not Implemented */ }
+
+    public func viewDidAppear(formViewController: FormViewController) {
+        Analytics.sendEvent(component: defaultComponent.paymentMethod.type,
+                            flavor: _isDropIn ? .dropin : .components,
+                            environment: environment)
+    }
 }
