@@ -30,14 +30,9 @@ internal final class VoucherViewController: UIViewController {
     }
 
     private func buildUI() {
-        var guid = view.layoutMarginsGuide
-        if #available(iOS 11, *) {
-            guid = view.safeAreaLayoutGuide
-        }
-
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(scrollView)
-        scrollView.adyen.anchore(inside: guid)
+        scrollView.adyen.anchore(inside: view)
 
         voucherView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(voucherView)

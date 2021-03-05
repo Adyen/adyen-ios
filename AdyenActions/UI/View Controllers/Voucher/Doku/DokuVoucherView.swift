@@ -28,6 +28,11 @@ internal final class DokuVoucherView: AbstractVoucherView {
         super.init(model: model.baseViewModel)
     }
 
+    override internal func layoutSublayers(of layer: CALayer) {
+        super.layoutSublayers(of: layer)
+        instructionButton.adyen.round(using: model.instruction.style.button.cornerRounding)
+    }
+
     override internal func layoutSubviews() {
         super.layoutSubviews()
         instructionButton.adyen.round(using: model.instruction.style.button.cornerRounding)
@@ -58,6 +63,7 @@ internal final class DokuVoucherView: AbstractVoucherView {
         button.addTarget(self, action: #selector(openInstructions), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.dokuVoucher", postfix: "instructionButton")
+        button.adyen.round(using: model.instruction.style.button.cornerRounding)
 
         return button
     }()

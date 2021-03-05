@@ -131,8 +131,17 @@ internal class AbstractVoucherView: UIView, Localizable {
         fatalError("This is an abstract class that needs to be subclassed.")
     }
 
+    override internal func layoutSublayers(of layer: CALayer) {
+        super.layoutSublayers(of: layer)
+        updateLayout()
+    }
+
     override internal func layoutSubviews() {
         super.layoutSubviews()
+        updateLayout()
+    }
+
+    private func updateLayout() {
         saveButton.adyen.round(using: model.style.secondaryButtonStyle.cornerRounding)
         doneButton.adyen.round(using: model.style.mainButtonStyle.cornerRounding)
     }

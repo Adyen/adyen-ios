@@ -53,8 +53,17 @@ internal class VoucherCardView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override internal func layoutSublayers(of layer: CALayer) {
+        super.layoutSublayers(of: layer)
+        updateLayout()
+    }
+
     override internal func layoutSubviews() {
         super.layoutSubviews()
+        updateLayout()
+    }
+
+    private func updateLayout() {
         containerLayer.frame = containerLayerFrame
         shadowsLayer.forEach {
             $0.frame = shadowLayersFrame
