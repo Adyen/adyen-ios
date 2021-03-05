@@ -21,11 +21,6 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         accessory = .customView(cardTypeLogosView)
     }
     
-    @available(*, unavailable)
-    internal required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override internal func textFieldDidBeginEditing(_ text: UITextField) {
         super.textFieldDidBeginEditing(text)
         accessory = .customView(cardTypeLogosView)
@@ -118,7 +113,7 @@ extension FormCardNumberItemView {
         }
         
         override internal var intrinsicContentSize: CGSize {
-            return cardSize
+            cardSize
         }
         
         override internal func layoutSubviews() {

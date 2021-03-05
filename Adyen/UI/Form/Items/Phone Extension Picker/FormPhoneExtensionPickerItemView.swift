@@ -27,22 +27,16 @@ internal final class FormPhoneExtensionPickerItemView: FormValueItemView<FormPho
     }
     
     /// :nodoc:
-    @available(*, unavailable)
-    internal required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    /// :nodoc:
     override internal var canBecomeFirstResponder: Bool { true }
     
     /// :nodoc:
     override internal func becomeFirstResponder() -> Bool {
-        return inputControl.becomeFirstResponder()
+        inputControl.becomeFirstResponder()
     }
     
     /// :nodoc:
     override internal func resignFirstResponder() -> Bool {
-        return inputControl.resignFirstResponder()
+        inputControl.resignFirstResponder()
     }
     
     // MARK: - Layout

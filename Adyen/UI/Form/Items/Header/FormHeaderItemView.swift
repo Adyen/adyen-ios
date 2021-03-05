@@ -24,11 +24,6 @@ internal final class FormHeaderItemView: FormItemView<FormHeaderItem> {
         configureConstraints()
     }
     
-    @available(*, unavailable)
-    internal required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     // MARK: - Title Label
     
     private lazy var titleLabel: UILabel = {

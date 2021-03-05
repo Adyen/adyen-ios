@@ -21,13 +21,8 @@ internal final class FormSplitTextItemView: FormItemView<FormSplitTextItem> {
         configureConstraints()
     }
     
-    @available(*, unavailable)
-    internal required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override internal var childItemViews: [AnyFormItemView] {
-        return [leftItemView, rightItemView]
+        [leftItemView, rightItemView]
     }
     
     // MARK: - Text Items

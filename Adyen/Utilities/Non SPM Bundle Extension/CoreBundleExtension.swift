@@ -13,7 +13,7 @@ extension Bundle {
 
     /// The main bundle of the framework.
     internal static let core: Bundle = {
-        Bundle(for: Coder.self)
+        Bundle(for: FormView.self)
     }()
 
     /// The bundle in which the framework's resources are located.

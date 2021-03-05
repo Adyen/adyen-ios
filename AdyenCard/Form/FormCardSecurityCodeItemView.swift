@@ -22,11 +22,6 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         item.$selectedCard.publish(nil)
     }
     
-    @available(*, unavailable)
-    internal required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     private lazy var cardHintView: HintView = {
         let view = HintView(item: self.item)
         view.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cvvHintIcon")

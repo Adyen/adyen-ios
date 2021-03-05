@@ -29,11 +29,6 @@ internal final class FormFooterItemView: FormItemView<FormFooterItem>, Observer 
         configureConstraints()
     }
     
-    @available(*, unavailable)
-    internal required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     // MARK: - Submit Button
     
     private lazy var submitButton: SubmitButton = {
