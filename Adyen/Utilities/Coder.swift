@@ -8,7 +8,7 @@ import Foundation
 
 /// An object that provides helper functions for conding and deconding responses.
 /// :nodoc:
-public final class Coder {
+public enum Coder {
     
     // MARK: - Decoding
     

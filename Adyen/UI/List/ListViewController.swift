@@ -26,6 +26,7 @@ public final class ListViewController: UITableViewController {
     }
     
     /// :nodoc:
+    @available(*, unavailable)
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

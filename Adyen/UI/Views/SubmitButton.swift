@@ -33,6 +33,7 @@ public final class SubmitButton: UIControl {
     }
     
     /// :nodoc:
+    @available(*, unavailable)
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -167,6 +168,7 @@ extension SubmitButton {
             layer.masksToBounds = true
         }
         
+        @available(*, unavailable)
         fileprivate required init?(coder aDecoder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }

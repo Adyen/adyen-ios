@@ -70,7 +70,7 @@ public extension Observer {
 }
 
 /// The keys used for associated objects.
-private struct AssociatedKeys {
+private enum AssociatedKeys {
     
     /// The observation manager associated with the object.
     public static var observationManager = "observationManager"

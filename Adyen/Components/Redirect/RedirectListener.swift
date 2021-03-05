@@ -12,7 +12,7 @@ public typealias URLHandler = (URL) -> Void
 
 /// Listens for the return of the shopper after a redirect.
 /// :nodoc:
-public final class RedirectListener {
+public enum RedirectListener {
     
     // MARK: - Registering for URLs
     

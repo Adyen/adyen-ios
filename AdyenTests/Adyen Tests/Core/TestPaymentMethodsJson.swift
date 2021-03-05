@@ -223,7 +223,7 @@ let qiwiWallet = [
 ] as [String: Any]
 
 let giftCard = [
-    "brand" : "genericgiftcard",
-    "name" : "Generic GiftCard",
-    "type" : "giftcard"
+    "brand": "genericgiftcard",
+    "name": "Generic GiftCard",
+    "type": "giftcard"
 ] as [String: Any]

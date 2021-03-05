@@ -200,7 +200,7 @@ public extension FormTextItem {
     }
 }
 
-private struct FormTextItemAssociatedKeys {
+private enum FormTextItemAssociatedKeys {
     internal static var autocapitalizationType = "autocapitalizationType"
     internal static var autocorrectionType = "autocorrectionType"
     internal static var keyboardType = "keyboardType"

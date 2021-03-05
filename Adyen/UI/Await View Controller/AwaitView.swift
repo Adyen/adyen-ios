@@ -103,6 +103,7 @@ internal final class AwaitView: UIView {
         backgroundColor = style.backgroundColor
     }
     
+    @available(*, unavailable)
     internal required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

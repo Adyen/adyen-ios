@@ -35,6 +35,7 @@ open class FormValueItemView<ItemType: FormValueItem>: FormItemView<ItemType>, A
     }
     
     /// :nodoc:
+    @available(*, unavailable)
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
