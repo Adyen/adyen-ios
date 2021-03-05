@@ -345,6 +345,16 @@ class PaymentMethodTests: XCTestCase {
                                   subtitle: ADYLocalizedString("adyen.card.stored.expires", localizationParameters, expireDate),
                                   logoName: method.brand)
     }
+
+    // MARK: - GiftCard
+
+    func testDecodingGiftCardPaymentMethod() throws {
+        let paymentMethod = try Coder.decode(giftCard) as GiftCardPaymentMethod
+        XCTAssertEqual(paymentMethod.type, "giftcard")
+        XCTAssertEqual(paymentMethod.name, "Generic GiftCard")
+        XCTAssertEqual(paymentMethod.displayInformation.logoName, "genericgiftcard")
+        XCTAssertEqual(paymentMethod.localizedDisplayInformation(using: nil) .logoName, "genericgiftcard")
+    }
 }
 
 internal extension Coder {
