@@ -72,7 +72,6 @@ internal enum AnyPaymentMethod: Decodable {
     case blik(BLIKPaymentMethod)
     case giftcard(GiftCardPaymentMethod)
     case doku(DokuPaymentMethod)
-    case giftcard(GiftCardPaymentMethod)
     
     case none
     

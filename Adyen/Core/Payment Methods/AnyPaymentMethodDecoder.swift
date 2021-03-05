@@ -36,7 +36,6 @@ internal enum PaymentMethodType: String {
     case weChatPaySDK = "wechatpaySDK"
     case mbWay = "mbway"
     case blik
-    case giftcard
     case googlePay = "paywithgoogle"
     case afterpay = "afterpay_default"
     case androidPay = "androidpay"
@@ -99,7 +98,6 @@ internal enum AnyPaymentMethodDecoder {
         .qiwiWallet: QiwiWalletPaymentMethodDecoder(),
         .mbWay: MBWayPaymentMethodDecoder(),
         .blik: BLIKPaymentMethodDecoder(),
-        .giftcard: GiftcardPaymentMethodDecoder(),
         .dokuWallet: DokuPaymentMethodDecoder(),
         .dokuAlfamart: DokuPaymentMethodDecoder(),
         .dokuIndomaret: DokuPaymentMethodDecoder(),
