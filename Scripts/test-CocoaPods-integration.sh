@@ -12,7 +12,7 @@ swift package generate-xcodeproj
 
 # Create a Podfile with our pod as dependency.
 echo "
-platform :ios, '10.3'
+platform :ios, '11.0'
 
 target '$PROJECT_NAME' do
   use_frameworks!
