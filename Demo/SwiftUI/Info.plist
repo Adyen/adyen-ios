@@ -45,6 +45,8 @@
 	<true/>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Save vouchers to your photos library</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Save vouchers to your photos library</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
