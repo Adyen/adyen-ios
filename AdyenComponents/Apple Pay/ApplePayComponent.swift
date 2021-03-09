@@ -88,19 +88,15 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         paymentAuthorizationCompletion?(success ? .success : .failure)
     }
 
-    /// Dismiss `PKPaymentAuthorizationViewController` presented by the component, for example when payment has concluded.
-    ///
-    /// - Parameter animated: A boolean indicating whether to dismiss with animation or not.
-    /// - Parameter completion: A closure to execute when dismissal animation has completed.
-    public func dismiss(_ animated: Bool, completion: (() -> Void)?) {
+    // MARK: - Private
+
+    internal func dismiss(completion: (() -> Void)?) {
         paymentAuthorizationViewController?.dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
             self.paymentAuthorizationViewController = nil
             completion?()
         }
     }
-    
-    // MARK: - Private
     
     private func getPaymentAuthorizationViewController() -> PKPaymentAuthorizationViewController {
         if paymentAuthorizationViewController == nil {
