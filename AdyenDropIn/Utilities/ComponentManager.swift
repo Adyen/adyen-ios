@@ -68,8 +68,7 @@ internal final class ComponentManager {
 
     private func isAllowed(_ paymentMethod: PaymentMethod) -> Bool {
         guard isVoucherPaymentMethod(paymentMethod) else { return true }
-        return Bundle.main.object(forInfoDictionaryKey: "NSPhotoLibraryAddUsageDescription") != nil &&
-            Bundle.main.object(forInfoDictionaryKey: "NSPhotoLibraryUsageDescription") != nil
+        return Bundle.main.object(forInfoDictionaryKey: "NSPhotoLibraryAddUsageDescription") != nil
     }
 
     private func isVoucherPaymentMethod(_ paymentMethod: PaymentMethod) -> Bool {
