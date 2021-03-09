@@ -22,7 +22,7 @@ let package = Package(
     name: \"TempProject\",
     defaultLocalization: \"en-US\",
     platforms: [
-        .iOS(.v10)
+        .iOS(.v11)
     ],
     products: [
         .library(
@@ -56,14 +56,6 @@ xcodebuild archive -scheme TempProject -destination 'generic/platform=iOS'
 # Build for generic iOS device
 echo '############# Build for generic iOS device ###############'
 xcodebuild build -scheme TempProject -destination 'generic/platform=iOS'
-
-# Archive for i386 simulator
-echo '############# Archive for i386 simulator ###############'
-xcodebuild archive -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=i386
-
-# Build for i386 simulator
-echo '############# Build for i386 simulator ###############'
-xcodebuild build -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=i386
 
 # Archive for x86_64 simulator
 echo '############# Archive for x86_64 simulator ###############'

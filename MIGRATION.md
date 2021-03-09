@@ -18,4 +18,4 @@
 - Remove `cancelCalback` from `ApplePayComponent`.
 - Module `Adyen` introduces object `Payment.Amount` as `Encoded`.
 - Method `func present(component: PresentableComponent, disableCloseButton: Bool)` simplified into `func present(component: PresentableComponent)` in `PresentationDelegate`.
-- To proccess voucher payments your app's Info.plist should contain `NSPhotoLibraryAddUsageDescription`
+- To proccess voucher payments your app's Info.plist should contain `NSPhotoLibraryAddUsageDescription`.

@@ -75,9 +75,17 @@ internal final class VoucherSeparatorView: UIView {
         CGSize(width: 6, height: 12)
     }
 
+    override internal func layoutSublayers(of layer: CALayer) {
+        super.layoutSublayers(of: layer)
+        updateLayout()
+    }
+
     override internal func layoutSubviews() {
         super.layoutSubviews()
+        updateLayout()
+    }
 
+    private func updateLayout() {
         rightSeparatorLayer.frame = rightSeparatorLayerFrame
         leftSeparatorLayer.frame = leftSeparatorLayerFrame
         separatorTextLayer.frame = separatorTextLayerFrame

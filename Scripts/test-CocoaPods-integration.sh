@@ -4,15 +4,48 @@ set -e # Any subsequent(*) commands which fail will cause the shell script to ex
 
 PROJECT_NAME=TempProject
 
+rm -rf $PROJECT_NAME
+
 mkdir -p $PROJECT_NAME && cd $PROJECT_NAME
 
 # Create a new Xcode project.
 swift package init
+
+# Create the Package.swift.
+echo "// swift-tools-version:5.3
+// The swift-tools-version declares the minimum version of Swift required to build this package.
+
+import PackageDescription
+
+let package = Package(
+    name: \"TempProject\",
+    platforms: [
+        .iOS(.v11)
+    ],
+    products: [
+        .library(
+            name: \"TempProject\",
+            targets: [\"TempProject\"]),
+    ],
+    dependencies: [],
+    targets: [
+        .target(
+            name: \"TempProject\",
+            dependencies: []),
+        .testTarget(
+            name: \"TempProjectTests\",
+            dependencies: [\"TempProject\"]),
+    ]
+)
+
+" > Package.swift
+
+swift package update
+
 swift package generate-xcodeproj
 
 # Create a Podfile with our pod as dependency.
-echo "
-platform :ios, '10.3'
+echo "platform :ios, '11.0'
 
 target '$PROJECT_NAME' do
   use_frameworks!
