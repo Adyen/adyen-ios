@@ -176,9 +176,8 @@ class BCMCComponentTests: XCTestCase {
             XCTAssertNotNil(resultJson["encryptedSecurityCode"] as? String)
             XCTAssertNotNil(resultJson["encryptedExpiryMonth"] as? String)
 
-            sut.stopLoading {
-                didSubmitExpectation.fulfill()
-            }
+            sut.stopLoadingIfNeeded()
+            didSubmitExpectation.fulfill()
         }
         delegate.onDidFail = { error, _ in
             XCTFail("delegate.didFail() must not be called")

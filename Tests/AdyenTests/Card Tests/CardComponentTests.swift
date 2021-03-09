@@ -667,9 +667,8 @@ class CardComponentTests: XCTestCase {
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is CardDetails)
 
-            sut.stopLoading {
-                delegateExpectation.fulfill()
-            }
+            sut.stopLoadingIfNeeded()
+            delegateExpectation.fulfill()
             XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
             XCTAssertEqual(sut.button.showsActivityIndicator, false)
         }

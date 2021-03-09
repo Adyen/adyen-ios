@@ -41,9 +41,8 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
         listViewController
     }
     
-    public func stopLoading(completion: (() -> Void)?) {
+    public func stopLoading() {
         listViewController.stopLoading()
-        completion?()
     }
     
     /// :nodoc:

@@ -87,10 +87,9 @@ class PreselectedPaymentComponentTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             XCTAssertTrue(button.showsActivityIndicator)
-            self.sut.stopLoading {
-                XCTAssertFalse(button.showsActivityIndicator)
-                expectation.fulfill()
-            }
+            self.sut.stopLoadingIfNeeded()
+            XCTAssertFalse(button.showsActivityIndicator)
+            expectation.fulfill()
         }
         wait(for: [expectation], timeout: 5)
     }

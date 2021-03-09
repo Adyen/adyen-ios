@@ -170,7 +170,7 @@ public final class DropInComponent: NSObject,
 
     private func userDidCancel(_ component: Component) {
         stopLoading()
-        (component as? Cancellable)?.didCancel()
+        component.cancelIfNeeded()
 
         if let component = (component as? PaymentComponent) ?? selectedPaymentComponent, paymentInProgress {
             delegate?.didCancel(component: component, from: self)
@@ -180,15 +180,9 @@ public final class DropInComponent: NSObject,
     }
 
     /// :nodoc:
-    private func stopLoading(completion: (() -> Void)? = nil) {
-        let rootComponent = self.rootComponent
-        if let topComponent = selectedPaymentComponent as? LoadingComponent {
-            topComponent.stopLoading {
-                rootComponent.stopLoading(completion: nil)
-            }
-        } else {
-            rootComponent.stopLoading(completion: nil)
-        }
+    private func stopLoading() {
+        rootComponent.stopLoading()
+        selectedPaymentComponent?.stopLoadingIfNeeded()
     }
 }
 
@@ -287,10 +281,8 @@ extension DropInComponent: FinalizableComponent {
     /// This method must be called after certan payment methods (e.x. ApplePay)
     /// - Parameter success: Status of the payment.
     public func didFinalize(with success: Bool) {
-        stopLoading { [weak self] in
-            guard let topComponent = self?.selectedPaymentComponent as? FinalizableComponent else { return }
-            topComponent.didFinalize(with: success)
-        }
+        stopLoading()
+        selectedPaymentComponent?.finalizeIfNeeded(with: success)
     }
 }
 

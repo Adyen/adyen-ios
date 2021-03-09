@@ -46,10 +46,9 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     public var localizationParameters: LocalizationParameters?
     
     /// :nodoc:
-    public func stopLoading(completion: (() -> Void)?) {
+    public func stopLoading() {
         button.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
-        completion?()
     }
     
     // MARK: - View Controller

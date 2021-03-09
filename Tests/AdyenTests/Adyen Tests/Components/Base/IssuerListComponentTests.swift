@@ -25,10 +25,9 @@ class IssuerListComponentTests: XCTestCase {
             XCTAssertFalse(cell.showsActivityIndicator)
             listViewController?.startLoading(for: item)
             XCTAssertTrue(cell.showsActivityIndicator)
-            sut.stopLoading {
-                XCTAssertFalse(cell.showsActivityIndicator)
-                expectation.fulfill()
-            }
+            sut.stopLoadingIfNeeded()
+            XCTAssertFalse(cell.showsActivityIndicator)
+            expectation.fulfill()
         }
 
         wait(for: [expectation], timeout: 5)

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -31,7 +31,23 @@ public final class PresentableComponentWrapper: PresentableComponent, Cancellabl
     
     /// :nodoc:
     public func didCancel() {
-        guard let component = component as? Cancellable else { return }
-        component.didCancel()
+        cancelIfNeeded()
+    }
+
+    /// :nodoc:
+    public func cancelIfNeeded() {
+        component.cancelIfNeeded()
+        stopLoadingIfNeeded()
+    }
+
+    /// :nodoc:
+    public func finalizeIfNeeded(with success: Bool) {
+        component.finalizeIfNeeded(with: success)
+        stopLoadingIfNeeded()
+    }
+
+    /// :nodoc:
+    public func stopLoadingIfNeeded() {
+        component.stopLoadingIfNeeded()
     }
 }
