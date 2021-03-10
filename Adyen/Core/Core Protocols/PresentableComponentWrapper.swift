@@ -9,7 +9,10 @@ import UIKit
 
 /// :nodoc:
 /// A component that wraps any `Component` to make it a `PresentableComponent`.
-public final class PresentableComponentWrapper: PresentableComponent, Cancellable {
+public final class PresentableComponentWrapper: PresentableComponent,
+    Cancellable,
+    FinalizableComponent,
+    LoadingComponent {
     
     /// :nodoc:
     public let viewController: UIViewController
@@ -31,23 +34,18 @@ public final class PresentableComponentWrapper: PresentableComponent, Cancellabl
     
     /// :nodoc:
     public func didCancel() {
-        cancelIfNeeded()
-    }
-
-    /// :nodoc:
-    public func cancelIfNeeded() {
         component.cancelIfNeeded()
-        stopLoadingIfNeeded()
+        stopLoading()
     }
 
     /// :nodoc:
-    public func finalizeIfNeeded(with success: Bool) {
+    public func didFinalize(with success: Bool) {
         component.finalizeIfNeeded(with: success)
-        stopLoadingIfNeeded()
+        stopLoading()
     }
 
     /// :nodoc:
-    public func stopLoadingIfNeeded() {
+    public func stopLoading() {
         component.stopLoadingIfNeeded()
     }
 }
