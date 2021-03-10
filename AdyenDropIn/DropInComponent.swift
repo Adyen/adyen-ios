@@ -209,7 +209,7 @@ extension DropInComponent: PaymentComponentDelegate {
     /// :nodoc:
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         paymentInProgress = true
-        delegate?.didSubmit(data, from: self)
+        delegate?.didSubmit(data, for: component.paymentMethod, from: self)
     }
     
     /// :nodoc:
@@ -265,7 +265,7 @@ extension DropInComponent: PreselectedPaymentMethodComponentDelegate {
         }
         
         let details = StoredPaymentDetails(paymentMethod: storedPaymentMethod)
-        self.delegate?.didSubmit(PaymentComponentData(paymentMethodDetails: details), from: self)
+        self.delegate?.didSubmit(PaymentComponentData(paymentMethodDetails: details), for: storedPaymentMethod, from: self)
     }
     
     internal func didRequestAllPaymentMethods() {

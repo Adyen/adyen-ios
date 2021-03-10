@@ -56,7 +56,8 @@ extension IntegrationExample {
 
 extension IntegrationExample: DropInComponentDelegate {
 
-    internal func didSubmit(_ data: PaymentComponentData, from component: DropInComponent) {
+    internal func didSubmit(_ data: PaymentComponentData, for paymentMethod: PaymentMethod, from component: DropInComponent) {
+        print("User did start: \(paymentMethod.name)")
         let request = PaymentsRequest(data: data)
         apiClient.perform(request, completionHandler: paymentResponseHandler)
     }
@@ -78,7 +79,7 @@ extension IntegrationExample: DropInComponentDelegate {
 
     internal func didCancel(component: PaymentComponent, from dropInComponent: DropInComponent) {
         // Handle the event when the user closes a PresentableComponent.
-        print("User did close: \(component)")
+        print("User did close: \(component.paymentMethod.name)")
     }
 
 }
