@@ -1572,7 +1572,6 @@
 			isa = PBXGroup;
 			children = (
 				F94B870925EFB71100D270A6 /* MIGRATION.md */,
-				F9A2D01025DBF104008944BE /* AdyenUIHost.entitlements */,
 				E27B8EAD22B79CD20075BB6A /* README.md */,
 				E2289B3A23D04B57002844BF /* .jazzy.yaml */,
 				E2C0E03522097917008616F6 /* Adyen */,
@@ -2913,6 +2912,7 @@
 		F9EDB78723955A8400CFB3C9 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				F9A2D01025DBF104008944BE /* AdyenUIHost.entitlements */,
 				F9615FBF252F076A00FA8EDD /* payment_methods_response.json */,
 				F9EDB78823955ABF00CFB3C9 /* AdyenUIHost.strings */,
 				F96F44DE23BF453800871C1F /* AdyenUIHostCustomSeparator.strings */,
@@ -4588,8 +4588,8 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = AdyenUIHost.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_ENTITLEMENTS = Demo/Common/Assets/AdyenUIHost.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				INFOPLIST_FILE = Demo/UIKit/Info.plist;
@@ -4610,8 +4610,8 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = AdyenUIHost.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_ENTITLEMENTS = Demo/Common/Assets/AdyenUIHost.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				INFOPLIST_FILE = Demo/UIKit/Info.plist;
@@ -4874,14 +4874,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Demo/Common/Assets/AdyenUIHost.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Demo/SwiftUI/Preview Content\"";
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				ENABLE_PREVIEWS = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/iOS/**";
 				INFOPLIST_FILE = Demo/SwiftUI/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -4901,14 +4900,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Demo/Common/Assets/AdyenUIHost.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Demo/SwiftUI/Preview Content\"";
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				ENABLE_PREVIEWS = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/iOS/**";
 				INFOPLIST_FILE = Demo/SwiftUI/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = (
