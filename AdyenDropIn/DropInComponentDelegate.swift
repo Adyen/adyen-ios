@@ -16,9 +16,10 @@ public protocol DropInComponentDelegate: AnyObject {
     /// Invoked when a payment method is selected and the initial details have been filled.
     ///
     /// - Parameters:
-    ///   - data: The data supplied by the drop in component, containing the selected payment method and the filled details.
+    ///   - data: The data supplied by the drop in component, containing the filled payment method details.
+    ///   - paymentMethod: The paymen method of selected paymen component.
     ///   - component: The drop in component in which the payment method was selected and filled.
-    func didSubmit(_ data: PaymentComponentData, from component: DropInComponent)
+    func didSubmit(_ data: PaymentComponentData, for paymentMethod: PaymentMethod, from component: DropInComponent)
     
     /// Invoked when additional details have been provided for a payment method.
     ///
