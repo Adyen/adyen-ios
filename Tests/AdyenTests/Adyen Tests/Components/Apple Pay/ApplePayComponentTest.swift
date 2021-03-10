@@ -16,6 +16,12 @@ class ApplePayComponentTest: XCTestCase {
     lazy var amount = Payment.Amount(value: 2, currencyCode: getRandomCurrencyCode())
     lazy var payment = Payment(amount: amount, countryCode: getRandomCountryCode())
 
+    private var emptyVC: UIViewController {
+        let vc = UIViewController()
+        vc.view.backgroundColor = .white
+        return vc
+    }
+
     override func setUp() {
         let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name", brands: nil)
         let configuration = ApplePayComponent.Configuration(payment: payment,
@@ -31,36 +37,76 @@ class ApplePayComponentTest: XCTestCase {
         sut = nil
         mockDelegate = nil
     }
-    
-    func testApplePayViewControllerIsResetAfterComponentStopsLoading() {
-        let onDidFailExpectation = expectation(description: "Wait for delegate call")
+
+    func testApplePayViewControllerIsDismissedFromInside() {
+        guard Available.iOS12 else { return }
+        let dummyExpectation = expectation(description: "Wait stop dismissing")
 
         mockDelegate.onDidFail = { error, component in
             XCTFail("should not call didFail")
         }
 
-        let viewController = sut!.viewController
-        UIApplication.shared.keyWindow?.rootViewController = UINavigationController(rootViewController: UIViewController())
-        UIApplication.shared.keyWindow?.rootViewController?.present(viewController, animated: true) {
-            XCTAssertTrue(viewController === self.sut?.viewController)
-            self.sut.dismiss(true) {
-                XCTAssertTrue(viewController !== self.sut?.viewController)
-                onDidFailExpectation.fulfill()
+        let viewController = sut.viewController
+        UIApplication.shared.keyWindow!.rootViewController = emptyVC
+        UIApplication.shared.keyWindow!.rootViewController!.present(self.sut.viewController, animated: false)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            XCTAssertTrue(viewController === self.sut.viewController)
+            self.sut.dismiss {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    dummyExpectation.fulfill()
+                }
             }
         }
 
-        waitForExpectations(timeout: 5)
+        waitForExpectations(timeout: 10)
+        XCTAssertTrue(viewController !== self.sut.viewController)
+        UIApplication.shared.keyWindow!.rootViewController!.dismiss(animated: false)
     }
 
-    func testApplePayViewControllerCallsDelgateDidFail() {
-        let viewController = sut?.viewController
+    func testApplePayViewControllerIsDismissedFromOutside() {
+        guard Available.iOS12 else { return }
+        let dummyExpectation = expectation(description: "Wait stop dismissing")
+
+        mockDelegate.onDidFail = { error, component in
+            XCTFail("should not call didFail")
+        }
+
+        let viewController = sut.viewController
+        UIApplication.shared.keyWindow!.rootViewController = emptyVC
+        UIApplication.shared.keyWindow!.rootViewController!.present(viewController, animated: false)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            XCTAssertTrue(viewController === self.sut.viewController)
+            UIApplication.shared.keyWindow!.rootViewController!.dismiss(animated: true) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    dummyExpectation.fulfill()
+                }
+            }
+        }
+
+        waitForExpectations(timeout: 10)
+    }
+
+    func testApplePayViewControllerShouldCallDelgateDidFail() {
+        let viewController = sut!.viewController
         let onDidFailExpectation = expectation(description: "Wait for delegate call")
         mockDelegate.onDidFail = { error, component in
             XCTAssertEqual(error as! ComponentError, ComponentError.cancelled)
             onDidFailExpectation.fulfill()
         }
-        sut.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
-        waitForExpectations(timeout: 2)
+
+        UIApplication.shared.keyWindow!.rootViewController = emptyVC
+        UIApplication.shared.keyWindow!.rootViewController!.present(viewController, animated: false)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.sut.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
+        }
+
+        waitForExpectations(timeout: 10)
+
+        XCTAssertTrue(viewController !== self.sut.viewController)
+        UIApplication.shared.keyWindow!.rootViewController!.dismiss(animated: false) { }
     }
 
     func testInvalidCurrencyCode() {
@@ -245,5 +291,15 @@ class ApplePayComponentTest: XCTestCase {
         }
         
         return networks
+    }
+}
+
+enum Available {
+    static var iOS12: Bool {
+        if #available(iOS 12.0, *) {
+            return true
+        } else {
+            return false
+        }
     }
 }
