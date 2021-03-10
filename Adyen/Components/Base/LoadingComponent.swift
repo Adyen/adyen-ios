@@ -18,7 +18,5 @@ public protocol ComponentLoader: LoadingComponent {
 public protocol LoadingComponent {
     /// Stops any processing animation that the view controller is running.
     ///
-    /// - Parameters:
-    ///   - completion: Completion block to be called when animations are finished.
-    func stopLoading(completion: (() -> Void)?)
+    func stopLoading()
 }

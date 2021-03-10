@@ -157,9 +157,8 @@ class DokuComponentTests: XCTestCase {
             XCTAssertEqual(data.lastName, "Smith")
             XCTAssertEqual(data.emailAddress, "mohamed.smith@domain.com")
 
-            sut.stopLoading {
-                delegateExpectation.fulfill()
-            }
+            sut.stopLoadingIfNeeded()
+            delegateExpectation.fulfill()
             XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
             XCTAssertEqual(sut.button.showsActivityIndicator, false)
         }

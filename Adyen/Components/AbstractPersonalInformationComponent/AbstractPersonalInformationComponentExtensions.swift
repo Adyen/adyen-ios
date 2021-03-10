@@ -9,10 +9,9 @@ import Foundation
 extension AbstractPersonalInformationComponent: LoadingComponent, TrackableComponent {
 
     /// :nodoc:
-    public func stopLoading(completion: (() -> Void)?) {
+    public func stopLoading() {
         button.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
-        completion?()
     }
 
     /// :nodoc:

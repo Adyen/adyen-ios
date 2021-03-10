@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -16,6 +16,29 @@ public protocol Component: AnyObject {
     /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
     var clientKey: String? { get set }
     
+}
+
+/// :nodoc:
+extension Component {
+
+    /// Finalizes the payment if there is any, after being proccessed by payment provider.
+    /// - Parameter success: The status of the payment.
+    /// :nodoc:
+    public func finalizeIfNeeded(with success: Bool) {
+        (self as? FinalizableComponent)?.didFinalize(with: success)
+        stopLoadingIfNeeded()
+    }
+
+    /// Called when the user cancels the component.
+    public func cancelIfNeeded() {
+        (self as? Cancellable)?.didCancel()
+        stopLoadingIfNeeded()
+    }
+
+    /// Stops any processing animation that might be running.
+    public func stopLoadingIfNeeded() {
+        (self as? LoadingComponent)?.stopLoading()
+    }
 }
 
 /// A component that needs to be aware of the result of the payment.

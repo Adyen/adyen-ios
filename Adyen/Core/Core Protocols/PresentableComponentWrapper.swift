@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,7 +9,10 @@ import UIKit
 
 /// :nodoc:
 /// A component that wraps any `Component` to make it a `PresentableComponent`.
-public final class PresentableComponentWrapper: PresentableComponent, Cancellable {
+public final class PresentableComponentWrapper: PresentableComponent,
+    Cancellable,
+    FinalizableComponent,
+    LoadingComponent {
     
     /// :nodoc:
     public let viewController: UIViewController
@@ -31,7 +34,18 @@ public final class PresentableComponentWrapper: PresentableComponent, Cancellabl
     
     /// :nodoc:
     public func didCancel() {
-        guard let component = component as? Cancellable else { return }
-        component.didCancel()
+        component.cancelIfNeeded()
+        stopLoading()
+    }
+
+    /// :nodoc:
+    public func didFinalize(with success: Bool) {
+        component.finalizeIfNeeded(with: success)
+        stopLoading()
+    }
+
+    /// :nodoc:
+    public func stopLoading() {
+        component.stopLoadingIfNeeded()
     }
 }

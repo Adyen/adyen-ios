@@ -180,10 +180,9 @@ class SEPADirectDebitComponentTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             XCTAssertFalse(sut.button.showsActivityIndicator)
             sut.button.showsActivityIndicator = true
-            sut.stopLoading {
-                XCTAssertFalse(sut.button.showsActivityIndicator)
-                expectation.fulfill()
-            }
+            sut.stopLoadingIfNeeded()
+            XCTAssertFalse(sut.button.showsActivityIndicator)
+            expectation.fulfill()
         }
         wait(for: [expectation], timeout: 5)
     }

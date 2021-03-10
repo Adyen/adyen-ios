@@ -41,10 +41,9 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
     }
 
     /// :nodoc:
-    public func stopLoading(completion: (() -> Void)?) {
+    public func stopLoading() {
         button.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
-        completion?()
     }
 
     private lazy var formViewController: FormViewController = {
