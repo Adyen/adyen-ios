@@ -66,8 +66,8 @@ targets:
 " > project.yml
 
 mkdir Tests
-cp "../Demo/Common" Common
-cp "../Demo/UIKit" ./
+cp -a "../Demo/Common" Common
+cp -a "../Demo/UIKit" ./
 cp "../Demo/Configuration.swift" Configuration.swift
 cp "../Tests/AdyenTests/Adyen Tests/UI/DropIn/DropInTests.swift" Tests/DropInTests.swift
 
