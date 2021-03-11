@@ -120,13 +120,14 @@ extension CardComponent {
         /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
         public var showsStorePaymentMethodField: Bool
 
-        /// Indicates whether to show the security code field at all.
+        /// Indicates whether to show the security code field at all. Defaults to true.
         public var showsSecurityCodeField: Bool
 
         /// Stored card configuration.
         public var stored: StoredCardConfiguration
 
-        /// The supported card types.
+        /// The supported card types. By default list of supported cards is extracted from component's `AnyCardPaymentMethod`.
+        /// Use this property to override them.
         public var supportedCardTypes: [CardType]?
 
         /// Indicates the card brands excluded from the supported brands.
@@ -134,11 +135,14 @@ extension CardComponent {
 
         /// Configuration of Card component.
         /// - Parameters:
-        ///   - showsHolderNameField: Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
-        ///   - showsStorePaymentMethodField: Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
+        ///   - showsHolderNameField: Indicates if the field for entering the holder name should be displayed in the form.
+        ///   Defaults to false.
+        ///   - showsStorePaymentMethodField: Indicates if the field for storing the card payment method should be displayed in the form.
+        ///   Defaults to true.
         ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
-        ///   - storedCardConfiguration: /// Stored card configuration.
-        ///   - supportedCardTypes: /// The supported card types.
+        ///   Defaults to true.
+        ///   - storedCardConfiguration: Stored card configuration.
+        ///   - supportedCardTypes: The supported card types.
         public init(showsHolderNameField: Bool = false,
                     showsStorePaymentMethodField: Bool = true,
                     showsSecurityCodeField: Bool = true,

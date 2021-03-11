@@ -205,7 +205,7 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
         numberItem.showLogos(for: topCardTypes)
         
         if configuration.showsSecurityCodeField {
-            let splitTextItem = FormSplitTextItem(items: [expiryDateItem, securityCodeItem], style: style.textField)
+            let splitTextItem = FormSplitItem(items: [expiryDateItem, securityCodeItem], style: style.textField)
             formViewController.append(splitTextItem)
         } else {
             formViewController.append(expiryDateItem)

@@ -13,31 +13,31 @@ public struct FormItemViewBuilder {
     /// Builds `FormSwitchItemView` from `FormSwitchItem`.
     /// :nodoc:
     public func build(with item: FormSwitchItem) -> FormItemView<FormSwitchItem> {
-        return FormSwitchItemView(item: item)
+        FormSwitchItemView(item: item)
     }
     
-    /// Builds `FormSplitTextItemView` from `FormSplitTextItem`.
+    /// Builds `FormSplitItemView` from `FormSplitItem`.
     /// :nodoc:
-    public func build(with item: FormSplitTextItem) -> FormItemView<FormSplitTextItem> {
-        return FormSplitTextItemView(item: item)
+    public func build(with item: FormSplitItem) -> FormItemView<FormSplitItem> {
+        FormSplitItemView(item: item)
     }
     
     /// Builds `PhoneNumberItemView` from `PhoneNumberItem`.
     /// :nodoc:
     public func build(with item: FormPhoneNumberItem) -> FormItemView<FormPhoneNumberItem> {
-        return FormPhoneNumberItemView(item: item)
+        FormPhoneNumberItemView(item: item)
     }
     
     /// Builds `FormPhoneExtensionPickerItemView` from `FormPhoneExtensionPickerItem`.
     /// :nodoc:
     internal func build(with item: FormPhoneExtensionPickerItem) -> FormItemView<FormPhoneExtensionPickerItem> {
-        return FormPhoneExtensionPickerItemView(item: item)
+        FormPhoneExtensionPickerItemView(item: item)
     }
     
     /// Builds `FormTextInputItemView` from `FormTextInputItem`.
     /// :nodoc:
     public func build(with item: FormTextInputItem) -> FormItemView<FormTextInputItem> {
-        return FormTextInputItemView(item: item)
+        FormTextInputItemView(item: item)
     }
     
     /// Builds `ListItemView` from `ListItem`.
@@ -51,12 +51,12 @@ public struct FormItemViewBuilder {
     /// Builds `FormButtonItemView` from `FormButtonItem`.
     /// :nodoc:
     public func build(with item: FormButtonItem) -> FormItemView<FormButtonItem> {
-        return FormButtonItemView(item: item)
+        FormButtonItemView(item: item)
     }
     
     /// Builds `FormSeparatorItemView` from `FormSeparatorItem`.
     /// :nodoc:
     public func build(with item: FormSeparatorItem) -> FormItemView<FormSeparatorItem> {
-        return FormSeparatorItemView(item: item)
+        FormSeparatorItemView(item: item)
     }
 }

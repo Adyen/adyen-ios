@@ -6,20 +6,20 @@
 
 import Foundation
 
-/// A form item in which two text items are shown side-by-side.
+/// A form item in which two items are shown side-by-side horizontally.
 /// :nodoc:
-public final class FormSplitTextItem: CompoundFormItem {
+public final class FormSplitItem: CompoundFormItem {
     
-    /// Indicates the `FormSplitTextItemView` UI styling.
+    /// Indicates the `FormSplitItemView` UI styling.
     public let style: ViewStyle
     
     /// :nodoc:
     public var identifier: String?
     
-    /// The text item displayed on the left side.
+    /// The item displayed on the left side.
     public var leftItem: FormItem
     
-    /// The text item displayed on the right side.
+    /// The item displayed on the right side.
     public var rightItem: FormItem
     
     /// :nodoc:
@@ -30,7 +30,7 @@ public final class FormSplitTextItem: CompoundFormItem {
     /// Initializes the split text item.
     ///
     /// - Parameter items: The items displayed side-by-side. Must be two.
-    /// - Parameter style: The `FormSplitTextItemView` UI style.
+    /// - Parameter style: The `FormSplitItemView` UI style.
     public init(items: [FormItem], style: ViewStyle) {
         assert(items.count == 2)
         self.leftItem = items[0]
