@@ -10,11 +10,19 @@ import Adyen
 #endif
 import UIKit
 
-// swiftlint:disable explicit_acl
+/// Stored card configuration.
+public struct StoredCardConfiguration {
 
-internal extension CardComponent {
+    /// Indicates whether to show the security code field.
+    public var showsSecurityCodeField = true
+
+    /// :nodoc:
+    public init() { /* empty init */ }
+}
+
+extension CardComponent {
     
-    func isPublicKeyValid(key: String) -> Bool {
+    internal func isPublicKeyValid(key: String) -> Bool {
         let validator = CardPublicKeyValidator()
         return validator.isValid(key)
     }
@@ -27,7 +35,7 @@ internal extension CardComponent {
         return try CardEncryptor.encryptedCard(for: card, publicKey: publicKey)
     }
     
-    func didSelectSubmitButton() {
+    internal func didSelectSubmitButton() {
         guard formViewController.validate() else {
             return
         }
@@ -62,7 +70,7 @@ extension CardComponent {
     
     typealias CardKeyFailureHandler = (_ error: Swift.Error) -> Void
     
-    func fetchCardPublicKey(onError: CardKeyFailureHandler? = nil, completion: @escaping CardKeySuccessHandler) {
+    internal func fetchCardPublicKey(onError: CardKeyFailureHandler? = nil, completion: @escaping CardKeySuccessHandler) {
         do {
             try cardPublicKeyProvider.fetch { [weak self] in
                 self?.handle(result: $0, onError: onError, completion: completion)
@@ -124,6 +132,13 @@ extension CardComponent {
         /// Indicates the card brands excluded from the supported brands.
         internal var excludedCardTypes: Set<CardType> = [.bcmc]
 
+        /// Configuration of Card component.
+        /// - Parameters:
+        ///   - showsHolderNameField: Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
+        ///   - showsStorePaymentMethodField: Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
+        ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
+        ///   - storedCardConfiguration: /// Stored card configuration.
+        ///   - supportedCardTypes: /// The supported card types.
         public init(showsHolderNameField: Bool = false,
                     showsStorePaymentMethodField: Bool = true,
                     showsSecurityCodeField: Bool = true,
@@ -150,5 +165,3 @@ extension CardComponent {
     }
 
 }
-
-// swiftlint:enable explicit_acl
