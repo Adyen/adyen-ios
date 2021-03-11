@@ -66,10 +66,10 @@ targets:
 " > project.yml
 
 mkdir Tests
-mv -v "../Demo/Common" Common
-mv -v "../Demo/UIKit" ./
-mv "../Demo/Configuration.swift" Configuration.swift
-mv "../Tests/AdyenTests/Adyen Tests/UI/DropIn/DropInTests.swift" Tests/DropInTests.swift
+cp "../Demo/Common" Common
+cp "../Demo/UIKit" ./
+cp "../Demo/Configuration.swift" Configuration.swift
+cp "../Tests/AdyenTests/Adyen Tests/UI/DropIn/DropInTests.swift" Tests/DropInTests.swift
 
 xcodegen generate
 

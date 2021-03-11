@@ -2,7 +2,7 @@
 
 ## 4.0.0
 
-- we changed the module structure of the SDK to be more granular and enables merchants to import what they need without too much extra over head, please refer to the read me file for how to import modules using CocoaPods, Carthage or Swift Package Manager.
+- We changed the module structure of the SDK to be more granular and enables merchants to import what they need without too much extra over head, please refer to the read me file for how to import modules using CocoaPods, Carthage or Swift Package Manager.
 - When a payment is concluded, merchants must to call `finalizeIfNeeded(success:)` .
 - When user cancles a component,  merchants must to call `cancelIfNeeded()`.
 - To make a component stop its loading animation if any,  merchants should call `stopLoadingIfNeeded()`.
