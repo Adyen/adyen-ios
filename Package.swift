@@ -19,6 +19,10 @@ let package = Package(
             targets: ["AdyenEncryption"]
         ),
         .library(
+            name: "AdyenSwiftUI",
+            targets: ["AdyenSwiftUI"]
+        ),
+        .library(
             name: "AdyenActions",
             targets: ["AdyenActions"]
         ),
@@ -65,6 +69,14 @@ let package = Package(
             name: "AdyenEncryption",
             dependencies: [],
             path: "AdyenEncryption",
+            exclude: [
+                "Info.plist"
+            ]
+        ),
+        .target(
+            name: "AdyenSwiftUI",
+            dependencies: [],
+            path: "AdyenSwiftUI",
             exclude: [
                 "Info.plist"
             ]

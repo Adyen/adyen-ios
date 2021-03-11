@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F95B6D942527454E002C9062"
-               BuildableName = "AdyenSwiftUI.app"
-               BlueprintName = "AdyenSwiftUI"
+               BuildableName = "AdyenSwiftUIHost.app"
+               BlueprintName = "AdyenSwiftUIHost"
                ReferencedContainer = "container:Adyen.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -55,8 +55,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F95B6D942527454E002C9062"
-            BuildableName = "AdyenSwiftUI.app"
-            BlueprintName = "AdyenSwiftUI"
+            BuildableName = "AdyenSwiftUIHost.app"
+            BlueprintName = "AdyenSwiftUIHost"
             ReferencedContainer = "container:Adyen.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -72,8 +72,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F95B6D942527454E002C9062"
-            BuildableName = "AdyenSwiftUI.app"
-            BlueprintName = "AdyenSwiftUI"
+            BuildableName = "AdyenSwiftUIHost.app"
+            BlueprintName = "AdyenSwiftUIHost"
             ReferencedContainer = "container:Adyen.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
