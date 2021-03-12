@@ -102,6 +102,7 @@ class DropInTests: XCTestCase {
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymenMethods, paymentMethodsConfiguration: config)
+        sut.environment = .test
 
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root
@@ -124,6 +125,7 @@ class DropInTests: XCTestCase {
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneclick.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymenMethods, paymentMethodsConfiguration: config)
+        sut.environment = .test
 
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root
