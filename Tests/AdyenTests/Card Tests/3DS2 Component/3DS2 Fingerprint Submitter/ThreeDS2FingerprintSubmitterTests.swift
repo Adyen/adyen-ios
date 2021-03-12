@@ -27,7 +27,7 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
     func testRedirect() throws {
         let apiClient = APIClientMock()
         let sut = ThreeDS2FingerprintSubmitter(apiClient: apiClient)
-        sut.clientKey = "clientKey"
+        sut.clientKey = "client_Key"
 
         let mockedRedirectAction = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "data")
         let mockedAction = Action.redirect(mockedRedirectAction)
@@ -62,7 +62,7 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
     func testThreeDSChallenge() throws {
         let apiClient = APIClientMock()
         let sut = ThreeDS2FingerprintSubmitter(apiClient: apiClient)
-        sut.clientKey = "clientKey"
+        sut.clientKey = "client_Key"
 
         let mockedChallengeAction = ThreeDS2ChallengeAction(challengeToken: "token", authorisationToken: "authToken", paymentData: "data")
         let mockedAction = Action.threeDS2Challenge(mockedChallengeAction)
@@ -96,7 +96,7 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
     func testNoAction() throws {
         let apiClient = APIClientMock()
         let sut = ThreeDS2FingerprintSubmitter(apiClient: apiClient)
-        sut.clientKey = "clientKey"
+        sut.clientKey = "client_Key"
 
         let mockedDetails = ThreeDS2Details.completed(ThreeDSResult(payload: "payload"))
         let mockedResponse = Submit3DS2FingerprintResponse(result: .details(mockedDetails))
@@ -131,7 +131,7 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
     func testFailure() throws {
         let apiClient = APIClientMock()
         let sut = ThreeDS2FingerprintSubmitter(apiClient: apiClient)
-        sut.clientKey = "clientKey"
+        sut.clientKey = "client_Key"
 
         apiClient.mockedResults = [.failure(Dummy.dummyError)]
 

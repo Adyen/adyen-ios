@@ -16,8 +16,8 @@ class DropInTests: XCTestCase {
           "paymentMethods" : [
             {
               "configuration" : {
-                "merchantDisplayName" : "TestMerchantCheckout",
-                "merchantIdentifier" : "merchant.com.adyen.test"
+                "merchantDisplayName" : "TheMerchant",
+                "merchantIdentifier" : "merchant.com.mycompany.test"
               },
               "details" : [
                 {
@@ -74,7 +74,7 @@ class DropInTests: XCTestCase {
             {
               "expiryMonth" : "10",
               "expiryYear" : "2020",
-              "id" : "8415625756263270",
+              "id" : "123412341234",
               "supportedShopperInteractions" : [
                 "Ecommerce",
                 "ContAuth"
@@ -97,7 +97,7 @@ class DropInTests: XCTestCase {
     }
 
     func testOpenDropInAsList() {
-        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: "SOME_CLIENT_KEY")
+        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: "client_key")
         config.environment = .test
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
@@ -121,7 +121,7 @@ class DropInTests: XCTestCase {
     }
 
     func testOpenDropInAsOneclickPayment() {
-        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: "SOME_CLIENT_KEY")
+        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: "client_key")
         config.environment = .test
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneclick.data(using: .utf8)!)
