@@ -74,8 +74,8 @@ public extension Component {
         set {
             if let newValue = newValue, !ClientKeyValidator().isValid(newValue) {
                 let message = """
-                The key you have provided to a \(String(describing: self)) does not seem like a proper client key.
-                Please check https://docs.adyen.com/user-management/client-side-authentication for more information.
+                The key you have provided to \(String(describing: self)) is not a valid client key.
+                Check https://docs.adyen.com/user-management/client-side-authentication for more information.
                 """
                 assertionFailure(message)
             }
