@@ -67,7 +67,8 @@ public final class AwaitComponent: AnyAwaitActionHandler {
             let presentableComponent = PresentableComponentWrapper(component: self, viewController: viewController)
             presentationDelegate.present(component: presentableComponent)
         } else {
-            assertionFailure("presentationDelegate is nil, please provide a presentation delegate to present the AwaitComponent UI.")
+            let message = "PresentationDelegate is nil. Provide a presentation delegate to AwaitComponent."
+            AdyenAssertion.assert(message: message)
         }
         
         let awaitComponentBuilder = self.awaitActionHandler ?? AwaitActionHandlerProvider(environment: environment, apiClient: nil)

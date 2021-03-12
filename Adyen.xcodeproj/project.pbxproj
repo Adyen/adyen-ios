@@ -78,6 +78,8 @@
 		E2D1784022D8763400B6883E /* PaymentMethodListComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D1783F22D8763400B6883E /* PaymentMethodListComponent.swift */; };
 		E700A72D2549E2F00012B64C /* BLIKPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E700A72C2549E2F00012B64C /* BLIKPaymentMethod.swift */; };
 		E702BDA5260108A700280682 /* ClientKeyValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E702BDA4260108A700280682 /* ClientKeyValidator.swift */; };
+		E702BDE42602149E00280682 /* Assertion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E702BDE32602149E00280682 /* Assertion.swift */; };
+		E702BE192602525E00280682 /* AssertsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E702BE182602525E00280682 /* AssertsTests.swift */; };
 		E705F8EB2462B1B900438C3B /* FormButtonItemStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E705F8EA2462B1B900438C3B /* FormButtonItemStyle.swift */; };
 		E7166A5224EAC5BA007CCDEF /* BinLookupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7166A5124EAC5BA007CCDEF /* BinLookupRequest.swift */; };
 		E7166A5424EACC44007CCDEF /* BinLookupResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7166A5324EACC44007CCDEF /* BinLookupResponse.swift */; };
@@ -109,7 +111,6 @@
 		E757F03A25D2ED58007C813D /* APIClientMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E757F02525D2ED4C007C813D /* APIClientMock.swift */; };
 		E759E24C25CB3BB700B1F8DC /* DropInTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E759E1F425CB373F00B1F8DC /* DropInTests.swift */; };
 		E7620EA123BF3DC800A492C3 /* ModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90139CA22846AD5004C74DA /* ModalViewController.swift */; };
-		E7620EAB23C345D600A492C3 /* PresentableComponentMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7620EAA23C345D600A492C3 /* PresentableComponentMock.swift */; };
 		E7620EAD23C3466B00A492C3 /* ModalViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7620EAC23C3466B00A492C3 /* ModalViewControllerTests.swift */; };
 		E767F3F525A4CFAF0077029E /* WrapperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E767F34D25A4865A0077029E /* WrapperViewController.swift */; };
 		E767F49B25A5E9740077029E /* ModalToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E767F49A25A5E9740077029E /* ModalToolbar.swift */; };
@@ -834,6 +835,8 @@
 		E700A7352549EA1C0012B64C /* BLIKComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLIKComponent.swift; sourceTree = "<group>"; };
 		E700A73D2549EA680012B64C /* BLIKDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLIKDetails.swift; sourceTree = "<group>"; };
 		E702BDA4260108A700280682 /* ClientKeyValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientKeyValidator.swift; sourceTree = "<group>"; };
+		E702BDE32602149E00280682 /* Assertion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assertion.swift; sourceTree = "<group>"; };
+		E702BE182602525E00280682 /* AssertsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssertsTests.swift; sourceTree = "<group>"; };
 		E705F8EA2462B1B900438C3B /* FormButtonItemStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormButtonItemStyle.swift; sourceTree = "<group>"; };
 		E7098D7D255D3E6D00829E73 /* sk-SK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "sk-SK"; path = "sk-SK.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		E7098D7E255D3E6D00829E73 /* ro-RO */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ro-RO"; path = "ro-RO.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -874,7 +877,6 @@
 		E74D918225AF3FE600743B0C /* CardBrandProviderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardBrandProviderTests.swift; sourceTree = "<group>"; };
 		E757F02525D2ED4C007C813D /* APIClientMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientMock.swift; sourceTree = "<group>"; };
 		E759E1F425CB373F00B1F8DC /* DropInTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInTests.swift; sourceTree = "<group>"; };
-		E7620EAA23C345D600A492C3 /* PresentableComponentMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentableComponentMock.swift; sourceTree = "<group>"; };
 		E7620EAC23C3466B00A492C3 /* ModalViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalViewControllerTests.swift; sourceTree = "<group>"; };
 		E767F34D25A4865A0077029E /* WrapperViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WrapperViewController.swift; sourceTree = "<group>"; };
 		E767F49A25A5E9740077029E /* ModalToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalToolbar.swift; sourceTree = "<group>"; };
@@ -1414,9 +1416,9 @@
 		E216D3C1221AEDB30013CBCF /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				F96286BC256BDEB000043FE3 /* CoreBundleExtension.swift */,
-				F96F44CC23B257D700871C1F /* Logger.swift */,
+				E702BDE22602148900280682 /* Debugging */,
 				E270FDE7225CC4A7006C2CD0 /* Observable */,
+				F96286BC256BDEB000043FE3 /* CoreBundleExtension.swift */,
 				E97B972222B238C400505476 /* Analytics.swift */,
 				E9E3DB02222548E100697074 /* Coder.swift */,
 				E9E3DAFE2225488900697074 /* Completion.swift */,
@@ -1810,6 +1812,15 @@
 				E700A73D2549EA680012B64C /* BLIKDetails.swift */,
 			);
 			path = BLIK;
+			sourceTree = "<group>";
+		};
+		E702BDE22602148900280682 /* Debugging */ = {
+			isa = PBXGroup;
+			children = (
+				F96F44CC23B257D700871C1F /* Logger.swift */,
+				E702BDE32602149E00280682 /* Assertion.swift */,
+			);
+			path = Debugging;
 			sourceTree = "<group>";
 		};
 		E7166A5024EAC591007CCDEF /* BinLookup */ = {
@@ -2266,6 +2277,7 @@
 		E9E3DB042226B3A100697074 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				E702BE182602525E00280682 /* AssertsTests.swift */,
 				E9E3DB052226B3B200697074 /* CoderTests.swift */,
 				E270FDE5225CB40A006C2CD0 /* ObservableTests.swift */,
 				E2B317A12265BC9400C1BB30 /* LengthValidatorTests.swift */,
@@ -2845,7 +2857,6 @@
 				E759E1F325CB371800B1F8DC /* DropIn */,
 				F99F08602383F28800EBB948 /* Form */,
 				F9DC6BA423AA291500863F3A /* List Component */,
-				E7620EAA23C345D600A492C3 /* PresentableComponentMock.swift */,
 				E7620EAC23C3466B00A492C3 /* ModalViewControllerTests.swift */,
 				E7D5311B2447065B000046B4 /* PreselectedPaymentComponentTests.swift */,
 				E767F4DB25A603A50077029E /* ModalToolbarTests.swift */,
@@ -3331,7 +3342,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1220;
-				LastUpgradeCheck = 1110;
+				LastUpgradeCheck = 1240;
 				ORGANIZATIONNAME = Adyen;
 				TargetAttributes = {
 					E2C0E03222097917008616F6 = {
@@ -3874,6 +3885,7 @@
 				F9639B2A24DD6A990073F38A /* Request.swift in Sources */,
 				E7D5311424462D87000046B4 /* FormButtonItemView.swift in Sources */,
 				F926D53323F5A5D000D058D3 /* NumericStringValidator.swift in Sources */,
+				E702BDE42602149E00280682 /* Assertion.swift in Sources */,
 				E288EB962267652D000E960C /* Observer.swift in Sources */,
 				F9EDB7862391734200CFB3C9 /* UnknownError.swift in Sources */,
 				F924C074246C2E0B006DDAB8 /* LazyOptional.swift in Sources */,
@@ -3924,7 +3936,6 @@
 				F9EDB796239663F800CFB3C9 /* PaymentComponentMock.swift in Sources */,
 				E7D189B025D31936006AD3B7 /* DropInActionTests.swift in Sources */,
 				F9A781B02403ED4000E12487 /* NumericStringValidatorTests.swift in Sources */,
-				E7620EAB23C345D600A492C3 /* PresentableComponentMock.swift in Sources */,
 				F960FB092371823A00AEF74B /* ApplePayComponentTest.swift in Sources */,
 				F9BA21C62474113500D36A63 /* AmountFormatterTests.swift in Sources */,
 				E9E3DABB221EA22F00697074 /* CardExpiryDateFormatterTests.swift in Sources */,
@@ -3970,6 +3981,7 @@
 				F9EDB79E2397AEF400CFB3C9 /* ComponentManagerTests.swift in Sources */,
 				F9EDB7922396603F00CFB3C9 /* PaymentMethodListComponentTests.swift in Sources */,
 				F919DFA224ED599D0027976E /* AdyenActionComponentTests.swift in Sources */,
+				E702BE192602525E00280682 /* AssertsTests.swift in Sources */,
 				F9639B4924E28DC80073F38A /* IntervalCalculatorMock.swift in Sources */,
 				F919DFA024EABCC10027976E /* StoredCardComponentTests.swift in Sources */,
 				E773EA3A25221C4600119499 /* ThrottlerTests.swift in Sources */,
@@ -4464,6 +4476,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -4528,6 +4541,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;

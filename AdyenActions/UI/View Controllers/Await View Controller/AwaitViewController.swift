@@ -83,7 +83,7 @@ internal final class AwaitViewController: UIViewController {
         }
         
         // swiftlint:disable:next unused_setter_value
-        set { assertionFailure("""
+        set { AdyenAssertion.assert(message: """
         PreferredContentSize is overridden for this view controller.
         getter - returns minimum possible content size.
         setter - no implemented.

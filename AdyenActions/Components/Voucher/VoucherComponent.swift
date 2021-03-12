@@ -69,7 +69,8 @@ public final class VoucherComponent: AnyVoucherActionHandler {
             let presentableComponent = PresentableComponentWrapper(component: self, viewController: viewController)
             presentationDelegate.present(component: presentableComponent)
         } else {
-            assertionFailure("presentationDelegate is nil, please provide a presentation delegate to present the VoucherComponent UI.")
+            let message = "PresentationDelegate is nil. Provide a presentation delegate to VoucherAction."
+            AdyenAssertion.assert(message: message)
         }
     }
 

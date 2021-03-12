@@ -43,22 +43,17 @@ public final class APIClient: APIClientProtocol {
     /// :nodoc:
     public func perform<R: Request>(_ request: R, completionHandler: @escaping CompletionHandler<R.ResponseType>) {
         let url = environment.baseURL.appendingPathComponent(request.path)
-        let body: Data
-        do {
-            body = try Coder.encode(request)
-        } catch {
-            completionHandler(.failure(error))
-            
-            return
-        }
-        
+
         var urlRequest = URLRequest(url: add(queryParameters: request.queryParameters + environment.queryParameters, to: url))
         urlRequest.httpMethod = request.method.rawValue
-        if request.method == .post {
-            urlRequest.httpBody = body
-        }
-        
         urlRequest.allHTTPHeaderFields = request.headers.merging(environment.headers, uniquingKeysWith: { key1, _ in key1 })
+        if request.method == .post {
+            do {
+                urlRequest.httpBody = try Coder.encode(request)
+            } catch {
+                return completionHandler(.failure(error))
+            }
+        }
 
         log(urlRequest: urlRequest, request: request)
         

@@ -73,11 +73,10 @@ public extension Component {
         }
         set {
             if let newValue = newValue, !ClientKeyValidator().isValid(newValue) {
-                let message = """
+                AdyenAssertion.assert(message: """
                 The key you have provided to \(String(describing: self)) is not a valid client key.
                 Check https://docs.adyen.com/user-management/client-side-authentication for more information.
-                """
-                assertionFailure(message)
+                """)
             }
             objc_setAssociatedObject(self, &AssociatedKeys.clientKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             environment.clientKey = newValue
