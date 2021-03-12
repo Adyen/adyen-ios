@@ -85,7 +85,7 @@ class AdyenActionComponentTests: XCTestCase {
 
     func testAwaitAction() {
         let sut = AdyenActionComponent()
-        sut.clientKey = "client_key"
+        sut.clientKey = Dummy.dummyClientKey
         sut.presentationDelegate = UIViewController.findTopPresenter()
 
         let action = Action.await(AwaitAction(paymentData: "SOME_DATA", paymentMethodType: .blik))

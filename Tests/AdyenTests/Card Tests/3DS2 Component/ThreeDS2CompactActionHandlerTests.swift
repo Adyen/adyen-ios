@@ -43,8 +43,8 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
 
     func testWrappedComponent() {
         let sut = ThreeDS2CompactActionHandler(appearanceConfiguration: ADYAppearanceConfiguration())
-        sut.clientKey = "test_clientKey"
-        XCTAssertEqual(sut.wrappedComponent.clientKey, "test_clientKey")
+        sut.clientKey = Dummy.dummyClientKey
+        XCTAssertEqual(sut.wrappedComponent.clientKey, Dummy.dummyClientKey)
 
         sut.environment = .live
         XCTAssertEqual(sut.wrappedComponent.environment.baseURL, Environment.live.baseURL)

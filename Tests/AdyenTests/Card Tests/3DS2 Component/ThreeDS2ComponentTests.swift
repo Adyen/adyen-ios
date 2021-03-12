@@ -41,7 +41,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         let sut = ThreeDS2Component(threeDS2CompactFlowHandler: threeDSActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     redirectComponent: redirectComponent)
-        sut.clientKey = "client_key"
+        sut.clientKey = Dummy.dummyClientKey
         redirectComponent.delegate = sut
 
         let delegate = ActionComponentDelegateMock()
@@ -80,7 +80,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         let sut = ThreeDS2Component(threeDS2CompactFlowHandler: threeDS2ActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     redirectComponent: redirectComponent)
-        sut.clientKey = "client_key"
+        sut.clientKey = Dummy.dummyClientKey
         redirectComponent.delegate = sut
 
         let delegate = ActionComponentDelegateMock()
@@ -118,7 +118,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         let sut = ThreeDS2Component(threeDS2CompactFlowHandler: threeDS2ActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     redirectComponent: redirectComponent)
-        sut.clientKey = "client_key"
+        sut.clientKey = Dummy.dummyClientKey
         redirectComponent.delegate = sut
 
         let delegate = ActionComponentDelegateMock()
@@ -157,7 +157,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         let sut = ThreeDS2Component(threeDS2CompactFlowHandler: threeDS2ActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     redirectComponent: redirectComponent)
-        sut.clientKey = "client_key"
+        sut.clientKey = Dummy.dummyClientKey
         redirectComponent.delegate = sut
 
         let delegate = ActionComponentDelegateMock()
@@ -197,7 +197,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         let sut = ThreeDS2Component(threeDS2CompactFlowHandler: threeDS2ActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     redirectComponent: redirectComponent)
-        sut.clientKey = "client_key"
+        sut.clientKey = Dummy.dummyClientKey
         redirectComponent.delegate = sut
 
         let delegate = ActionComponentDelegateMock()
@@ -228,7 +228,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         let sut = ThreeDS2Component(threeDS2CompactFlowHandler: threeDS2ActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     redirectComponent: redirectComponent)
-        sut.clientKey = "client_key"
+        sut.clientKey = Dummy.dummyClientKey
         redirectComponent.delegate = sut
 
         let delegate = ActionComponentDelegateMock()
@@ -262,7 +262,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         let sut = ThreeDS2Component(threeDS2CompactFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     threeDS2ClassicFlowHandler: threeDS2ActionHandler,
                                     redirectComponent: redirectComponent)
-        sut.clientKey = "client_key"
+        sut.clientKey = Dummy.dummyClientKey
         redirectComponent.delegate = sut
 
         let delegate = ActionComponentDelegateMock()
@@ -305,7 +305,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         let sut = ThreeDS2Component(threeDS2CompactFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     threeDS2ClassicFlowHandler: threeDS2ActionHandler,
                                     redirectComponent: redirectComponent)
-        sut.clientKey = "client_key"
+        sut.clientKey = Dummy.dummyClientKey
         redirectComponent.delegate = sut
 
         let delegate = ActionComponentDelegateMock()
@@ -350,7 +350,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         let sut = ThreeDS2Component(threeDS2CompactFlowHandler: threeDS2ActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     redirectComponent: redirectComponent)
-        sut.clientKey = "client_key"
+        sut.clientKey = Dummy.dummyClientKey
         redirectComponent.delegate = sut
 
         let delegate = ActionComponentDelegateMock()
