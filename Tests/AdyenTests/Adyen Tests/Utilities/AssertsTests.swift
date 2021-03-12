@@ -90,6 +90,44 @@ class AssertsTests: XCTestCase {
 
     }
 
+    func testActionComponentAwaitActionNoClientKeyAssertion() {
+        let sut = AdyenActionComponent()
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+
+        AdyenAssertion.listner = { message in
+            XCTAssertEqual(message, "Failed to instantiate AwaitComponent because client key is not configured.\nPlease supply the client key:\n-  if using DropInComponent, or AdyenActionsComponent.clientKey in the PaymentMethodsConfiguration;\n-  if using AdyenActionsComponent separately in AdyenActionsComponent.clientKey.")
+            expectation.fulfill()
+        }
+
+        sut.perform(Action.await(AwaitAction(paymentData: "", paymentMethodType: .blik)))
+
+        wait(for: [expectation], timeout: 2)
+
+    }
+
+    func testVoucherComponentPresentationDelegateAssertion() {
+        let sut = VoucherComponent(style: nil)
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+
+        AdyenAssertion.listner = { message in
+            XCTAssertEqual(message, "PresentationDelegate is nil. Provide a presentation delegate to VoucherAction.")
+            expectation.fulfill()
+        }
+
+        sut.handle(VoucherAction.dokuAlfamart(GenericVoucherAction(paymentMethodType: .dokuAlfamart,
+                                                                   initialAmount: Payment.Amount(value: 100, currencyCode: ""),
+                                                                   totalAmount: Payment.Amount(value: 100, currencyCode: ""),
+                                                                   reference: "",
+                                                                   shopperEmail: "",
+                                                                   expiresAt: .distantFuture,
+                                                                   merchantName: "",
+                                                                   shopperName: "",
+                                                                   instructionsUrl: "")))
+
+        wait(for: [expectation], timeout: 2)
+
+    }
+
     func testVoucherViewControllerPreferredContentSizeAssertion() {
         let sut = VoucherViewController(voucherView: UIView())
         let expectation = XCTestExpectation(description: "Dummy Expectation")
