@@ -114,8 +114,8 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
         self.cardPublicKeyProvider = cardPublicKeyProvider
         let paymentMethodCardTypes = paymentMethod.brands.compactMap(CardType.init)
         let excludedCardTypes = configuration.excludedCardTypes
-        let supportedCardTypes = configuration.supportedCardTypes ?? paymentMethodCardTypes
-        self.supportedCardTypes = supportedCardTypes.minus(excludedCardTypes)
+        let allowedCardTypes = configuration.allowedCardTypes ?? paymentMethodCardTypes
+        self.supportedCardTypes = allowedCardTypes.minus(excludedCardTypes)
         self.style = style
         self.cardBrandProvider = CardBrandProvider(cardPublicKeyProvider: cardPublicKeyProvider)
         self.cardPublicKeyProvider.clientKey = clientKey
@@ -172,7 +172,8 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
                                                     formStyle: style,
                                                     payment: payment,
                                                     environment: environment,
-                                                    supportedCardTypes: supportedCardTypes)
+                                                    supportedCardTypes: supportedCardTypes,
+                                                    scope: String(describing: self))
         formViewController.localizationParameters = localizationParameters
         formViewController.delegate = self
         formViewController.cardDelegate = self
@@ -185,6 +186,7 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
 extension CardComponent: CardViewControllerDelegate {
     
     func didChangeBIN(_ value: String) {
+        self.cardComponentDelegate?.didChangeBIN(value, component: self)
         let parameters = CardBrandProviderParameters(bin: value, supportedTypes: supportedCardTypes)
         cardBrandProvider.provide(for: parameters) { [weak self] binInfo in
             guard let self = self else { return }

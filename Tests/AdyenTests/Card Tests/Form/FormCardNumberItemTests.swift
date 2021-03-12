@@ -49,7 +49,7 @@ class FormCardNumberItemTests: XCTestCase {
         item.value = "5"
         let parameters1 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
         cardBrandProvider.provide(for: parameters1) { response in
-            let brands = response.map(\.type)
+            let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, true)
@@ -62,7 +62,7 @@ class FormCardNumberItemTests: XCTestCase {
         item.value = "56"
         let parameters2 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
         cardBrandProvider.provide(for: parameters2) { response in
-            let brands = response.map(\.type)
+            let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, true)
@@ -75,7 +75,7 @@ class FormCardNumberItemTests: XCTestCase {
         item.value = "55"
         let parameters3 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
         cardBrandProvider.provide(for: parameters3) { response in
-            let brands = response.map(\.type)
+            let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, false)
@@ -88,7 +88,7 @@ class FormCardNumberItemTests: XCTestCase {
         item.value = "5555"
         let parameters4 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
         cardBrandProvider.provide(for: parameters4) { response in
-            let brands = response.map(\.type)
+            let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, false)
@@ -101,7 +101,7 @@ class FormCardNumberItemTests: XCTestCase {
         item.value = ""
         let parameters5 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
         cardBrandProvider.provide(for: parameters5) { response in
-            let brands = response.map(\.type)
+            let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, true)
@@ -114,7 +114,7 @@ class FormCardNumberItemTests: XCTestCase {
         item.value = "4"
         let parameters6 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
         cardBrandProvider.provide(for: parameters6) { response in
-            let brands = response.map(\.type)
+            let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
             XCTAssertEqual(visa.isHidden, false)
             XCTAssertEqual(mc.isHidden, true)
@@ -127,7 +127,7 @@ class FormCardNumberItemTests: XCTestCase {
         item.value = "34"
         let parameters7 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
         cardBrandProvider.provide(for: parameters7) { response in
-            let brands = response.map(\.type)
+            let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, true)
@@ -140,7 +140,7 @@ class FormCardNumberItemTests: XCTestCase {
         item.value = "62"
         let parameters8 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
         cardBrandProvider.provide(for: parameters8) { response in
-            let brands = response.map(\.type)
+            let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, true)
@@ -168,7 +168,7 @@ class FormCardNumberItemTests: XCTestCase {
         item.value = "1234567890"
         let parameters = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
         cardBrandProvider.provide(for: parameters) { response in
-            let brands = response.map(\.type)
+            let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, true)
@@ -195,7 +195,7 @@ class FormCardNumberItemTests: XCTestCase {
         item.value = "5577000055770004"
         let parameters1 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
         cardBrandProvider.provide(for: parameters1) { response in
-            let brands = response.map(\.type)
+            let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, false)
@@ -208,7 +208,7 @@ class FormCardNumberItemTests: XCTestCase {
         item.value = "55770000557700040"
         let parameters2 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
         cardBrandProvider.provide(for: parameters2) { response in
-            let brands = response.map(\.type)
+            let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
             XCTAssertEqual(visa.isHidden, true)
             XCTAssertEqual(mc.isHidden, true)
