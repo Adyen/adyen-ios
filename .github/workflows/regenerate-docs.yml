@@ -6,6 +6,8 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1
