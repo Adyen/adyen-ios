@@ -131,7 +131,6 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
         if let storedCardComponent = storedCardComponent {
             return storedCardComponent.viewController
         }
-        
         return securedViewController
     }
     
@@ -191,7 +190,6 @@ extension CardComponent: CardViewControllerDelegate {
         let parameters = CardBrandProviderParameters(bin: value, supportedTypes: supportedCardTypes)
         cardBrandProvider.provide(for: parameters) { [weak self] binInfo in
             guard let self = self else { return }
-
             self.cardViewController.update(binInfo: binInfo)
             self.cardComponentDelegate?.didChangeCardBrand(binInfo.brands ?? [], component: self)
         }

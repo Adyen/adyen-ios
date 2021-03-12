@@ -9,14 +9,16 @@ import UIKit
 
 /// View controller with a custom navigation bar for DropIn.
 
-internal final class ModalViewController: UIViewController {
+internal final class ModalViewController: UIViewController, DynamicViewController {
     
     private let style: NavigationStyle
+
     private let innerController: UIViewController
-    
-    /// :nodoc:
+
+    internal weak var delegate: ViewControllerDelegate?
+
     private var navigationBarHeight: CGFloat = 63.0
-    
+
     // MARK: - Initializing
     
     /// Initializes the component view controller.
@@ -33,7 +35,7 @@ internal final class ModalViewController: UIViewController {
         self.style = style
         
         super.init(nibName: nil, bundle: nil)
-        
+        (innerController as? DynamicViewController)?.dynamicContentDelegate = self
         addChild(rootViewController)
     }
     
@@ -131,16 +133,21 @@ internal final class ModalViewController: UIViewController {
         let separatorHeight: CGFloat = 1.0 / UIScreen.main.scale
         let toolbarHeight = navigationBarHeight - separatorHeight
         
-        let bottomConstraint = stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        bottomConstraint.priority = .defaultHigh
+        let stackConstraints = stackView.adyen.anchore(inside: view)
+        stackConstraints.first { $0.firstAttribute == .bottom }?.priority = .defaultHigh
 
         NSLayoutConstraint.activate([
             toolbar.heightAnchor.constraint(equalToConstant: toolbarHeight),
-            separator.heightAnchor.constraint(equalToConstant: separatorHeight),
-            stackView.topAnchor.constraint(equalTo: view.topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            bottomConstraint
+            separator.heightAnchor.constraint(equalToConstant: separatorHeight)
         ])
     }
+}
+
+extension ModalViewController: DynamicViewControllerDelegate {
+
+    /// :nodoc:
+    public func viewDidChangeContentSize(viewController: UIViewController) {
+        dynamicContentDelegate?.viewDidChangeContentSize(viewController: self)
+    }
+
 }

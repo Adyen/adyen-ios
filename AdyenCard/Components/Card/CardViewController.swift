@@ -38,8 +38,8 @@ internal class CardViewController: FormViewController, Observer {
     ///   - configuration: The configurations of the `CardComponent`.
     ///   - formStyle: The style of form view controller.
     ///   - payment: The payment object to visialise payment amount.
-    ///   - environment: The environment
-    ///   - supportedCardTypes: <#supportedCardTypes description#>
+    ///   - logoProvider: The provider for logo image URLs.
+    ///   - supportedCardTypes: The list of supported cards.
     internal init(configuration: CardComponent.Configuration,
                   formStyle: FormComponentStyle,
                   payment: Payment?,
@@ -76,6 +76,10 @@ internal class CardViewController: FormViewController, Observer {
 
         if configuration.showsAddressVerification {
             addressFoldableItem.isFolded = true
+            observe(addressFoldableItem.$isFolded) { [weak self] _ in
+                guard let self = self else { return }
+                self.dynamicContentDelegate?.viewDidChangeContentSize(viewController: self)
+            }
             append(addressFoldableItem)
         }
 
@@ -129,7 +133,6 @@ internal class CardViewController: FormViewController, Observer {
         default:
             self.numberItem.showLogos(for: [])
         }
-
     }
 
     // MARK: Items
@@ -147,9 +150,7 @@ internal class CardViewController: FormViewController, Observer {
                                       logoProvider: logoProvider,
                                       style: formStyle.textField,
                                       localizationParameters: localizationParameters)
-
         observe(item.$binValue) { [weak self] in self?.didReceived(bin: $0) }
-
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "numberItem")
         return item
     }()

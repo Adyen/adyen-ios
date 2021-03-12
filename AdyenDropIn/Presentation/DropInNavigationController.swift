@@ -79,6 +79,7 @@ internal final class DropInNavigationController: UINavigationController {
         let container = WrapperViewController(child: modal)
         container.addChild(modal)
         container.view.addSubview(modal.view)
+        container.dynamicContentDelegate = self
         modal.didMove(toParent: container)
         
         return container
@@ -103,7 +104,6 @@ internal final class DropInNavigationController: UINavigationController {
 
 extension DropInNavigationController: UINavigationControllerDelegate {
     
-    /// :nodoc:
     internal func navigationController(_ navigationController: UINavigationController,
                                        animationControllerFor operation: UINavigationController.Operation,
                                        from fromVC: UIViewController,
@@ -114,11 +114,10 @@ extension DropInNavigationController: UINavigationControllerDelegate {
 }
 
 extension DropInNavigationController: UIViewControllerTransitioningDelegate {
-    
-    /// :nodoc:
-    public func presentationController(forPresented presented: UIViewController,
-                                       presenting: UIViewController?,
-                                       source: UIViewController) -> UIPresentationController? {
+
+    internal func presentationController(forPresented presented: UIViewController,
+                                         presenting: UIViewController?,
+                                         source: UIViewController) -> UIPresentationController? {
         DimmingPresentationController(presented: presented,
                                       presenting: presenting,
                                       layoutDidChanged: { [weak self] in
@@ -129,4 +128,13 @@ extension DropInNavigationController: UIViewControllerTransitioningDelegate {
                                       })
     }
     
+}
+
+extension DropInNavigationController: DynamicViewControllerDelegate {
+
+    internal func viewDidChangeContentSize(viewController: UIViewController) {
+        guard let dynamicViewController = viewController as? WrapperViewController else { return }
+        dynamicViewController.updateFrame(keyboardRect: self.keyboardRect, animated: true)
+    }
+
 }

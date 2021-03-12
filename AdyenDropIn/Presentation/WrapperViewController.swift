@@ -8,7 +8,7 @@ import Adyen
 import UIKit
 
 /// :nodoc:
-internal final class WrapperViewController: UIViewController {
+internal final class WrapperViewController: UIViewController, DynamicViewController {
 
     /// :nodoc:
     internal lazy var requiresKeyboardInput: Bool = heirarchyRequiresKeyboardInput(viewController: child)
@@ -20,6 +20,8 @@ internal final class WrapperViewController: UIViewController {
     internal init(child: ModalViewController) {
         self.child = child
         super.init(nibName: nil, bundle: nil)
+
+        child.dynamicContentDelegate = self
     }
 
     /// :nodoc:
@@ -44,4 +46,13 @@ internal final class WrapperViewController: UIViewController {
             view.frame = frame
         }, completion: nil)
     }
+}
+
+extension WrapperViewController: DynamicViewControllerDelegate {
+
+    /// :nodoc:
+    public func viewDidChangeContentSize(viewController: UIViewController) {
+        dynamicContentDelegate?.viewDidChangeContentSize(viewController: self)
+    }
+
 }

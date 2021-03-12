@@ -8,7 +8,7 @@ import UIKit
 
 /// Displays a list from which items can be selected.
 /// :nodoc:
-public final class ListViewController: UITableViewController {
+public final class ListViewController: UITableViewController, DynamicViewController {
     
     /// Indicates the list view controller UI style.
     public let style: ListComponentStyle
