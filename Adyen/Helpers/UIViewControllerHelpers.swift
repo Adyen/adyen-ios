@@ -6,6 +6,7 @@
 
 import UIKit
 
+/// :nodoc:
 extension UIViewController: AdyenCompatible {}
 
 /// Adds helper functionality to any `UIViewController` instance through the `adyen` property.
