@@ -8,8 +8,10 @@ import Foundation
 import UIKit
 import QuartzCore
 
+/// :nodoc:
 extension NSTextAlignment: AdyenCompatible {}
 
+/// :nodoc:
 public extension AdyenScope where Base == NSTextAlignment {
     var caAlignmentMode: CATextLayerAlignmentMode {
         switch base {

@@ -15,14 +15,12 @@ custom_categories:
     children:
       - DropInComponent
       - DropInComponentDelegate
-      - DropInActionComponent
   - name: Card Component
     children:
       - CardComponent
       - CardDetails
       - CardEncryptor
       - CardType
-      - CardTypeDetector
       - CardExpiryDateFormatter
       - CardExpiryDateValidator
       - CardSecurityCodeFormatter
@@ -31,6 +29,7 @@ custom_categories:
       - CardNumberValidator
       - CardComponentDelegate
       - StoredCardConfiguration
+      - CardBrand
   - name: Qiwi Wallet Component
     children:
       - QiwiWalletComponent
@@ -46,6 +45,7 @@ custom_categories:
       - BLIKComponent
       - BLIKDetails
       - BLIKPaymentMethod
+      - StoredBLIKPaymentMethod
   - name: Await Action Component
     children:
       - AwaitComponent
@@ -79,7 +79,6 @@ custom_categories:
   - name: BCMC Component
     children:
       - BCMCComponent
-      - BCMCComponentDelegate
   - name: SEPA Direct Debit Component
     children:
       - SEPADirectDebitComponent
@@ -102,6 +101,9 @@ custom_categories:
       - EntercashDetails
       - OpenBankingComponent
       - OpenBankingDetails
+  - name: Adyen Action Component
+    children:
+      - AdyenActionComponent
   - name: Redirect Component
     children:
       - RedirectComponent
@@ -110,7 +112,9 @@ custom_categories:
     children:
       - Component
       - PaymentComponent
-      - DismissableComponent
+      - FinalizableComponent
+      - PaymentAwareComponent
+      - TrackableComponent
       - PaymentComponentData
       - PaymentComponentDelegate
       - PresentationDelegate
@@ -123,6 +127,7 @@ custom_categories:
       - AdditionalDetails
       - ComponentError
       - SecuredViewController
+      - Localizable
   - name: Models
     children:
       - PaymentMethods
@@ -131,6 +136,7 @@ custom_categories:
       - StoredCardPaymentMethod
       - StoredBCMCPaymentMethod
       - StoredPayPalPaymentMethod
+      - StoredBLIKPaymentMethod
       - AnyCardPaymentMethod
       - CardPaymentMethod
       - IssuerListPaymentMethod
@@ -142,12 +148,15 @@ custom_categories:
       - Payment
       - Action
       - RedirectAction
+      - GenericVoucherAction
+      - ThreeDS2Action
       - SDKAction
       - ThreeDS2FingerprintAction
       - ThreeDS2ChallengeAction
       - AwaitAction
       - CardFundingSource
       - BrowserInfo
+      - LocalizationParameters
   - name: Styling
     children:
       - FormComponentStyle
@@ -161,8 +170,11 @@ custom_categories:
       - ListItemStyle
       - AwaitComponentStyle
       - RedirectComponentStyle
+      - VoucherComponentStyle
       - NavigationStyle
+      - ToolbarMode
       - ButtonStyle
+      - CancelButtonStyle
       - ImageStyle
       - TextStyle
       - ViewStyle
@@ -176,5 +188,3 @@ custom_categories:
       - LengthValidator
       - Environment
       - LogoURLProvider
-      - Localizable
-      - LocalizationParameters
