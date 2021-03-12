@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -58,5 +58,17 @@ public struct FormItemViewBuilder {
     /// :nodoc:
     public func build(with item: FormSeparatorItem) -> FormItemView<FormSeparatorItem> {
         FormSeparatorItemView(item: item)
+    }
+
+    /// Builds `FormSeparatorItemView` from `FormSeparatorItem`.
+    /// :nodoc:
+    public func build(with item: FormFoldableItem) -> FormItemView<FormFoldableItem> {
+        FormFoldableItemView(item: item)
+    }
+
+    public static func renderItem(_ item: FormItem) -> AnyFormItemView {
+        let itemView = item.build(with: FormItemViewBuilder())
+        itemView.accessibilityIdentifier = item.identifier
+        return itemView
     }
 }

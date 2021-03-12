@@ -17,7 +17,7 @@ internal struct BinLookupResponse: Response {
     internal let requestId: String
 
     /// :nodoc:
-    internal let issuingCountryCode: String
+    internal let issuingCountryCode: String?
 
     /// :nodoc:
     internal init(brands: [CardBrand]?,

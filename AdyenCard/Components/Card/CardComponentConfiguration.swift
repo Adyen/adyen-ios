@@ -20,6 +20,9 @@ extension CardComponent {
         /// Indicates whether to show the security code field at all. Defaults to true.
         public var showsSecurityCodeField: Bool
 
+        /// Indicates whether to show the address verification form for supported issuing countries. Defaults to true.
+        public var showsAddressVerification: Bool
+
         /// Stored card configuration.
         public var stored: StoredCardConfiguration
 
@@ -39,11 +42,14 @@ extension CardComponent {
         ///   Defaults to true.
         ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
         ///   Defaults to true.
+        ///   - showsAddressVerification: Indicates whether to show the address verification form for supported issuing countries.
+        ///   Defaults to true.
         ///   - storedCardConfiguration: Stored card configuration.
         ///   - allowedCardTypes: The enforced list of allowed card types.
         public init(showsHolderNameField: Bool = false,
                     showsStorePaymentMethodField: Bool = true,
                     showsSecurityCodeField: Bool = true,
+                    showsAddressVerification: Bool = true,
                     storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
                     allowedCardTypes: [CardType]? = nil) {
             self.showsHolderNameField = showsHolderNameField
@@ -51,6 +57,7 @@ extension CardComponent {
             self.showsStorePaymentMethodField = showsStorePaymentMethodField
             self.stored = storedCardConfiguration
             self.allowedCardTypes = allowedCardTypes
+            self.showsAddressVerification = showsAddressVerification
         }
 
         internal func bcmcConfiguration() -> Configuration {

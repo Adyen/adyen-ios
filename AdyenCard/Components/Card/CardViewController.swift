@@ -35,6 +35,13 @@ internal class CardViewController: FormViewController, Observer {
 
     // MARK: Init view controller
 
+    /// <#Description#>
+    /// - Parameters:
+    ///   - configuration: <#configuration description#>
+    ///   - formStyle: <#formStyle description#>
+    ///   - payment: <#payment description#>
+    ///   - environment: <#environment description#>
+    ///   - supportedCardTypes: <#supportedCardTypes description#>
     internal init(configuration: CardComponent.Configuration,
                   formStyle: FormComponentStyle,
                   payment: Payment?,
@@ -67,6 +74,10 @@ internal class CardViewController: FormViewController, Observer {
 
         if configuration.showsStorePaymentMethodField {
             append(storeDetailsItem)
+        }
+
+        if configuration.showsAddressVerification {
+            // append(UILabel())
         }
 
         append(button.withPadding(padding: .init(top: 8, left: 0, bottom: -16, right: 0)))

@@ -138,6 +138,8 @@
 		E7B3DE9F25A61B9200CA4D2B /* UIViewConstraintsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B3DE9E25A61B9200CA4D2B /* UIViewConstraintsHelper.swift */; };
 		E7B627FD24ED32CC000CEC6E /* BinLookupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B627FC24ED32CC000CEC6E /* BinLookupService.swift */; };
 		E7CD107E25544C970057C52D /* FormContainerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CD107D25544C970057C52D /* FormContainerItem.swift */; };
+		E7CEFFAD26131F0900EC8C0B /* FormFoldableItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CEFFAB26131F0900EC8C0B /* FormFoldableItemView.swift */; };
+		E7CEFFAE26131F0900EC8C0B /* FormFoldableItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CEFFAC26131F0900EC8C0B /* FormFoldableItem.swift */; };
 		E7D189B025D31936006AD3B7 /* DropInActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D189AF25D31936006AD3B7 /* DropInActionTests.swift */; };
 		E7D18A0425D44610006AD3B7 /* IntegrationExampleDropIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D18A0325D44610006AD3B7 /* IntegrationExampleDropIn.swift */; };
 		E7D18A0525D44610006AD3B7 /* IntegrationExampleDropIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D18A0325D44610006AD3B7 /* IntegrationExampleDropIn.swift */; };
@@ -925,6 +927,8 @@
 		E7B3DE9E25A61B9200CA4D2B /* UIViewConstraintsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewConstraintsHelper.swift; sourceTree = "<group>"; };
 		E7B627FC24ED32CC000CEC6E /* BinLookupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinLookupService.swift; sourceTree = "<group>"; };
 		E7CD107D25544C970057C52D /* FormContainerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormContainerItem.swift; sourceTree = "<group>"; };
+		E7CEFFAB26131F0900EC8C0B /* FormFoldableItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormFoldableItemView.swift; sourceTree = "<group>"; };
+		E7CEFFAC26131F0900EC8C0B /* FormFoldableItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormFoldableItem.swift; sourceTree = "<group>"; };
 		E7D189AF25D31936006AD3B7 /* DropInActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInActionTests.swift; sourceTree = "<group>"; };
 		E7D18A0325D44610006AD3B7 /* IntegrationExampleDropIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationExampleDropIn.swift; sourceTree = "<group>"; };
 		E7D18A0F25D44769006AD3B7 /* IntegrationExampleComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationExampleComponents.swift; sourceTree = "<group>"; };
@@ -1427,6 +1431,7 @@
 			children = (
 				E216D3BB221AAB240013CBCF /* FormItem.swift */,
 				E2C0E0BB220B2976008616F6 /* FormItemView.swift */,
+				E7CEFFAA26131F0900EC8C0B /* Foldable */,
 				E7D531162446F525000046B4 /* Separator */,
 				E7D5310F24462D87000046B4 /* Button */,
 				F9B8C50A23FE960E00C4D0FB /* Phone Number */,
@@ -2012,6 +2017,15 @@
 				F919DF9024E682480027976E /* ClientKeyResponse.swift */,
 			);
 			path = Responses;
+			sourceTree = "<group>";
+		};
+		E7CEFFAA26131F0900EC8C0B /* Foldable */ = {
+			isa = PBXGroup;
+			children = (
+				E7CEFFAB26131F0900EC8C0B /* FormFoldableItemView.swift */,
+				E7CEFFAC26131F0900EC8C0B /* FormFoldableItem.swift */,
+			);
+			path = Foldable;
 			sourceTree = "<group>";
 		};
 		E7D189F925D4425F006AD3B7 /* Models */ = {
@@ -3919,6 +3933,7 @@
 				E224088722AFA3A80058923E /* RedirectPaymentMethod.swift in Sources */,
 				E262128F22A90D8800F2B133 /* PaymentMethod.swift in Sources */,
 				F95A789325C41BB20032CF7E /* NSTextAlignmentHelpers.swift in Sources */,
+				E7CEFFAE26131F0900EC8C0B /* FormFoldableItem.swift in Sources */,
 				F919DF8F24E682250027976E /* ClientKeyRequest.swift in Sources */,
 				F9639B2424DC38460073F38A /* PresentationDelegate.swift in Sources */,
 				E2028F5C2227F1930007FF8B /* Details.swift in Sources */,
@@ -4039,6 +4054,7 @@
 				E2C0E096220B04F0008616F6 /* FormViewController.swift in Sources */,
 				F96286BD256BDEB000043FE3 /* CoreBundleExtension.swift in Sources */,
 				F919DF9124E682480027976E /* ClientKeyResponse.swift in Sources */,
+				E7CEFFAD26131F0900EC8C0B /* FormFoldableItemView.swift in Sources */,
 				F97C81AF25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift in Sources */,
 				F97CCD3C24360A4000BC560A /* BundleHelpers.swift in Sources */,
 				F9639B2B24DD6A9C0073F38A /* APIClient.swift in Sources */,
