@@ -17,28 +17,21 @@ extension CardComponent {
         /// ClientKey is required for `CardPublicKeyProvider` to work, and this error is thrown in case its nil.
         case missingClientKey
     }
+}
+
+extension CardComponent {
     
     internal func isPublicKeyValid(key: String) -> Bool {
         let validator = CardPublicKeyValidator()
         return validator.isValid(key)
     }
     
-    private func getEncryptedCard(publicKey: String) throws -> EncryptedCard {
-        let card = Card(number: numberItem.value,
-                        securityCode: configuration.showsSecurityCodeField ? securityCodeItem.nonEmptyValue : nil,
-                        expiryMonth: expiryDateItem.value[0...1],
-                        expiryYear: "20" + expiryDateItem.value[2...3],
-                        holder: configuration.showsHolderNameField ? holderNameItem.nonEmptyValue : nil)
-        return try CardEncryptor.encrypt(card: card, with: publicKey)
-    }
-    
     internal func didSelectSubmitButton() {
-        guard formViewController.validate() else {
+        guard cardViewController.validate() else {
             return
         }
         
-        button.showsActivityIndicator = true
-        formViewController.view.isUserInteractionEnabled = false
+        cardViewController.startLoading()
         
         fetchCardPublicKey { [weak self] in
             self?.submitEncryptedCardData(cardPublicKey: $0)
@@ -47,14 +40,15 @@ extension CardComponent {
     
     private func submitEncryptedCardData(cardPublicKey: String) {
         do {
-            let encryptedCard = try getEncryptedCard(publicKey: cardPublicKey)
+            let card = cardViewController.card
+            let encryptedCard = try CardEncryptor.encrypt(card: card, with: cardPublicKey)
             let details = CardDetails(paymentMethod: cardPaymentMethod,
                                       encryptedCard: encryptedCard,
-                                      holderName: configuration.showsHolderNameField ? holderNameItem.value : nil)
+                                      holderName: card.holder)
             
             let data = PaymentComponentData(paymentMethodDetails: details,
-                                            storePaymentMethod: configuration.showsStorePaymentMethodField ? storeDetailsItem.value : false)
-            
+                                            storePaymentMethod: cardViewController.storePayment)
+
             submit(data: data)
         } catch {
             delegate?.didFail(with: error, from: self)
@@ -63,9 +57,9 @@ extension CardComponent {
 }
 
 extension CardComponent {
-    typealias CardKeySuccessHandler = (_ cardPublicKey: String) -> Void
-    
-    typealias CardKeyFailureHandler = (_ error: Swift.Error) -> Void
+
+    internal typealias CardKeySuccessHandler = (_ cardPublicKey: String) -> Void
+    internal typealias CardKeyFailureHandler = (_ error: Swift.Error) -> Void
     
     internal func fetchCardPublicKey(onError: CardKeyFailureHandler? = nil, completion: @escaping CardKeySuccessHandler) {
         do {
@@ -103,11 +97,5 @@ extension CardComponent: TrackableComponent {
         Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
         fetchCardPublicKey(onError: { _ in /* Do nothing, to just cache the card public key value */ },
                            completion: { _ in /* Do nothing, to just cache the card public key value */ })
-    }
-}
-
-private extension FormValueItem where ValueType == String {
-    var nonEmptyValue: String? {
-        self.value.isEmpty ? nil : self.value
     }
 }
