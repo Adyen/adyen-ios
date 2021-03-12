@@ -25,27 +25,28 @@ public protocol CardComponentDelegate: AnyObject {
 /// A component that provides a form for card payments.
 public class CardComponent: PaymentComponent, PresentableComponent, Localizable, Observer, LoadingComponent {
     
-    /// :nodoc:
+    internal let cardPaymentMethod: AnyCardPaymentMethod
     internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
-    
-    /// :nodoc:
     internal var cardBrandProvider: AnyCardBrandProvider
 
     private static let maxCardsVisible = 4
     private static let publicBinLenght = 6
     private let throttler = Throttler(minimumDelay: 0.5)
     
-    /// Card Component errors.
-    public enum Error: Swift.Error {
-        /// ClientKey is required for `CardPublicKeyProvider` to work, and this error is thrown in case its nil.
-        case missingClientKey
-    }
-    
     /// Describes the component's UI style.
     public let style: FormComponentStyle
     
     /// The card payment method.
-    public let paymentMethod: PaymentMethod
+    public var paymentMethod: PaymentMethod { cardPaymentMethod }
+
+    /// The delegate for user activity on card component.
+    public weak var cardComponentDelegate: CardComponentDelegate?
+
+    /// The supported card types.
+    public let supportedCardTypes: [CardType]
+
+    /// Card component configuration.
+    public let configuration: Configuration
     
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate? {
@@ -54,20 +55,11 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
         }
     }
 
+    /// :nodoc:
     public var payment: Payment? {
         didSet {
             storedCardComponent?.payment = payment
         }
-    }
-    
-    /// The delegate for user activity on card component.
-    public weak var cardComponentDelegate: CardComponentDelegate?
-    
-    /// The supported card types.
-    /// The getter is O(n), since it filters out all the `excludedCardTypes` before returning.
-    public var supportedCardTypes: [CardType] {
-        get { privateSupportedCardTypes }
-        set { privateSupportedCardTypes = newValue }
     }
     
     /// :nodoc:
@@ -89,9 +81,6 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
             cardBrandProvider.clientKey = clientKey
         }
     }
-
-    /// Card component configuration.
-    public let configuration: Configuration
     
     /// Initializes the card component.
     ///
@@ -124,17 +113,15 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
                   clientKey: String,
                   style: FormComponentStyle = FormComponentStyle()) {
         self.clientKey = clientKey
-        self.paymentMethod = paymentMethod
+        self.cardPaymentMethod = paymentMethod
         self.configuration = configuration
         self.cardPublicKeyProvider = cardPublicKeyProvider
         let paymentMethodCardTypes = paymentMethod.brands.compactMap(CardType.init)
-        let supportedCardTypes = configuration.supportedCardTypes
         let excludedCardTypes = configuration.excludedCardTypes
-        self.privateSupportedCardTypes = (supportedCardTypes ?? paymentMethodCardTypes)
-            .minus(excludedCardTypes)
+        let allowedCardTypes = configuration.allowedCardTypes ?? paymentMethodCardTypes
+        self.supportedCardTypes = allowedCardTypes.minus(excludedCardTypes)
         self.style = style
         self.cardBrandProvider = CardBrandProvider(cardPublicKeyProvider: cardPublicKeyProvider)
-
         self.cardPublicKeyProvider.clientKey = clientKey
         self.cardBrandProvider.clientKey = clientKey
         self.environment.clientKey = clientKey
@@ -165,10 +152,8 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
     
     // MARK: - Private
 
-    private var privateSupportedCardTypes: [CardType]
-
     private var topCardTypes: [CardType] {
-        Array(privateSupportedCardTypes.prefix(CardComponent.maxCardsVisible))
+        Array(supportedCardTypes.prefix(CardComponent.maxCardsVisible))
     }
     
     // MARK: - Stored Card
