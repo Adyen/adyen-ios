@@ -62,14 +62,16 @@ internal final class CardBrandProvider: AnyCardBrandProvider {
                                                     completion: completion)
         }
         
-        fetchBinLookupService(success: { [weak self] service in
-            self?.use(binLookupService: service,
-                      parameters: parameters,
-                      completion: completion)
-        }, failure: { [weak self] _ in
-            self?.fallbackCardTypeProvider.provide(for: parameters,
-                                                   completion: completion)
-        })
+        fetchBinLookupService(
+            success: { [weak self] service in
+                self?.use(binLookupService: service,
+                          parameters: parameters,
+                          completion: completion)
+            },
+            failure: { [weak self] _ in
+                self?.fallbackCardTypeProvider.provide(for: parameters, completion: completion)
+            }
+        )
     }
 
     private func use(binLookupService: BinLookupService,

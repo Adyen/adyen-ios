@@ -12,14 +12,21 @@ import Adyen
 internal class CardViewController: FormViewController, Observer {
 
     private let configuration: CardComponent.Configuration
+
     private let formStyle: FormComponentStyle
+
     private let payment: Payment?
+
     private let environment: Environment
+
     private let supportedCardTypes: [CardType]
+
     private let scope: String
 
     private let maxCardsVisible = 4
+
     private let publicBinLenght = 6
+    
     private let throttler = Throttler(minimumDelay: 0.5)
 
     private var topCardTypes: [CardType] {
@@ -98,8 +105,15 @@ internal class CardViewController: FormViewController, Observer {
     internal func update(binInfo: BinLookupResponse) {
         self.securityCodeItem.update(cardBrands: binInfo.brands ?? [])
 
-        guard let brands = binInfo.brands else { return }
-        self.numberItem.showLogos(for: brands.isEmpty ? self.topCardTypes : brands.map(\.type))
+        switch (binInfo.brands, self.numberItem.value) {
+        case (_, ""):
+            self.numberItem.showLogos(for: self.topCardTypes)
+        case let (.some(brands), _):
+            self.numberItem.showLogos(for: brands.map(\.type))
+        default:
+            self.numberItem.showLogos(for: [])
+        }
+
     }
 
     // MARK: Items
