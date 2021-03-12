@@ -21,9 +21,6 @@ internal final class ComponentManager {
     /// Indicates the UI configuration of the drop in component.
     private var style: DropInComponent.Style
     
-    /// Defines the environment used to make networking requests.
-    internal var environment: Environment = .live
-    
     internal init(paymentMethods: PaymentMethods,
                   configuration: DropInComponent.PaymentMethodsConfiguration,
                   style: DropInComponent.Style) {
@@ -52,15 +49,15 @@ internal final class ComponentManager {
             AdyenAssertion.assert(message: "For voucher payment methods like \(paymentMethod.name) it is required to add a suitable text for the key NSPhotoLibraryAddUsageDescription in the Application Info.plist, to enable the shopper to save the voucher to their photo library.")
             return nil
         }
-        let paymentComponent: PaymentComponent? = paymentMethod.buildComponent(using: self)
-        
-        paymentComponent?.clientKey = configuration.clientKey
-        paymentComponent?.environment = environment
-        
+
+        guard let paymentComponent = paymentMethod.buildComponent(using: self) else { return nil }
+
         if var paymentComponent = paymentComponent as? Localizable {
             paymentComponent.localizationParameters = configuration.localizationParameters
         }
-        
+
+        paymentComponent.payment = configuration.payment
+        paymentComponent.clientKey = configuration.clientKey
         return paymentComponent
     }
 

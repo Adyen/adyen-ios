@@ -26,9 +26,6 @@ public extension DropInComponent {
         /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
         public var clientKey: String
         
-        /// The environment to use.
-        public var environment: Environment = .live
-        
         /// Indicates the localization parameters, leave it nil to use the default parameters.
         public var localizationParameters: LocalizationParameters?
 
@@ -39,23 +36,22 @@ public extension DropInComponent {
         public init(clientKey: String) {
             self.clientKey = clientKey
         }
-        
-        /// Card component related configuration.
-        public final class CardConfiguration {
-            
-            /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
-            public var showsHolderNameField = false
-            
-            /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
-            public var showsStorePaymentMethodField = true
-            
-            /// Indicates whether to show the security code field in the form.
-            public var showsSecurityCodeField = true
+    }
 
-            /// Stored card configuration.
-            public var stored = StoredCardConfiguration()
-            
-        }
+    /// Card component related configuration.
+    final class CardConfiguration {
+
+        /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
+        public var showsHolderNameField = false
+
+        /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
+        public var showsStorePaymentMethodField = true
+
+        /// Indicates whether to show the security code field in the form.
+        public var showsSecurityCodeField = true
+
+        /// Stored card configuration.
+        public var stored = StoredCardConfiguration()
 
     }
 
