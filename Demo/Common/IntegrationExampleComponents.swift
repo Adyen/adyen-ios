@@ -19,10 +19,8 @@ extension IntegrationExample {
         let style = FormComponentStyle()
         let component = CardComponent(paymentMethod: paymentMethod,
                                       configuration: CardComponent.Configuration(),
-                                      clientKey: Configuration.clientKey,
+                                      clientKey: clientKey,
                                       style: style)
-        component.environment = environment
-        component.clientKey = Configuration.clientKey
         component.cardComponentDelegate = self
         present(component)
     }
@@ -69,7 +67,7 @@ extension IntegrationExample {
 
     private func present(_ component: PresentableComponent) {
         component.environment = environment
-        component.clientKey = Configuration.clientKey
+        component.clientKey = clientKey
 
         if let component = component as? PaymentAwareComponent {
             component.payment = payment
