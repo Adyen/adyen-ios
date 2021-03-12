@@ -68,20 +68,11 @@ public final class DropInComponent: NSObject,
     }
     
     // MARK: - Private
-    
-    private let componentName = "dropin"
-    private let configuration: PaymentMethodsConfiguration
-    private var paymentInProgress: Bool = false
-    private var selectedPaymentComponent: PaymentComponent?
-    private lazy var componentManager: ComponentManager = {
-        let manager = ComponentManager(paymentMethods: self.paymentMethods,
-                                       payment: self.payment,
-                                       configuration: self.configuration,
-                                       style: self.style)
-        
-        manager.environment = environment
-        return manager
-    }()
+
+    private lazy var componentManager = ComponentManager(paymentMethods: paymentMethods,
+                                                         configuration: configuration,
+                                                         style: style,
+                                                         environment: environment)
     
     private lazy var rootComponent: PresentableComponent & ComponentLoader = {
         if let preselectedComponents = self.componentManager.components.stored.first {
@@ -112,21 +103,20 @@ public final class DropInComponent: NSObject,
     }()
     
     private func paymentMethodListComponent() -> PaymentMethodListComponent {
-        let paymentMethodListComponent = PaymentMethodListComponent(components: componentManager.components,
-                                                                    style: style.listComponent)
-        paymentMethodListComponent.localizationParameters = configuration.localizationParameters
-        paymentMethodListComponent.delegate = self
-        paymentMethodListComponent._isDropIn = true
-        paymentMethodListComponent.environment = environment
-        
-        return paymentMethodListComponent
+        let paymentComponents = componentManager.components
+        let component = PaymentMethodListComponent(components: paymentComponents, style: style.listComponent)
+        component.localizationParameters = configuration.localizationParameters
+        component.delegate = self
+        component._isDropIn = true
+        component.environment = environment
+        return component
     }
     
     private func preselectedPaymentMethodComponent(for storedPaymentComponent: PaymentComponent) -> PreselectedPaymentMethodComponent {
         let component = PreselectedPaymentMethodComponent(component: storedPaymentComponent,
-                                                          title: self.title,
-                                                          style: self.style.formComponent,
-                                                          listItemStyle: self.style.listComponent.listItem)
+                                                          title: title,
+                                                          style: style.formComponent,
+                                                          listItemStyle: style.listComponent.listItem)
         component.payment = payment
         component.localizationParameters = configuration.localizationParameters
         component.delegate = self
@@ -141,7 +131,6 @@ public final class DropInComponent: NSObject,
         component.delegate = self
         component._isDropIn = true
         component.environment = environment
-        
         component.payment = payment
         
         switch component {

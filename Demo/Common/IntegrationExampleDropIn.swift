@@ -3,6 +3,7 @@
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
+
 import Adyen
 import AdyenActions
 import AdyenCard
@@ -17,8 +18,8 @@ extension IntegrationExample {
     internal func presentDropInComponent() {
         guard let paymentMethods = paymentMethods else { return }
         let configuration = DropInComponent.PaymentMethodsConfiguration(clientKey: clientKey)
-        configuration.applePay.merchantIdentifier = Configuration.applePayMerchantIdentifier
-        configuration.applePay.summaryItems = Configuration.applePaySummaryItems
+        configuration.applePay = DropInComponent.ApplePayConfiguration(summaryItems: Configuration.applePaySummaryItems,
+                                                                       merchantIdentifier: Configuration.applePayMerchantIdentifier)
         configuration.environment = environment
         configuration.localizationParameters = nil
         configuration.payment = payment

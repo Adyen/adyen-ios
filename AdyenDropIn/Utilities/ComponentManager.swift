@@ -25,11 +25,9 @@ internal final class ComponentManager {
     internal var environment: Environment = .live
     
     internal init(paymentMethods: PaymentMethods,
-                  payment: Payment?,
                   configuration: DropInComponent.PaymentMethodsConfiguration,
                   style: DropInComponent.Style) {
         self.paymentMethods = paymentMethods
-        self.payment = payment
         self.configuration = configuration
         self.style = style
     }
@@ -78,7 +76,6 @@ internal final class ComponentManager {
     // MARK: - Private
     
     private let paymentMethods: PaymentMethods
-    private let payment: Payment?
     private let configuration: DropInComponent.PaymentMethodsConfiguration
     
     private func createCardComponent(with paymentMethod: AnyCardPaymentMethod) -> PaymentComponent? {
@@ -110,23 +107,23 @@ internal final class ComponentManager {
     }
     
     private func createApplePayComponent(with paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
-        guard
-            let summaryItems = configuration.applePay.summaryItems,
-            let identfier = configuration.applePay.merchantIdentifier,
-            let payment = payment else {
+        guard let applePay = configuration.applePay else {
+            adyenPrint("Failed to instantiate ApplePayComponent because ApplePayConfiguration is missing")
             return nil
         }
-        
-        let requiredBillingContactFields = configuration.applePay.requiredBillingContactFields
-        let requiredShippingContactFields = configuration.applePay.requiredShippingContactFields
-        
+
+        guard let payment = configuration.payment else {
+            adyenPrint("Failed to instantiate ApplePayComponent because payment is missing")
+            return nil
+        }
+
         do {
             let configuration = ApplePayComponent.Configuration(payment: payment,
                                                                 paymentMethod: paymentMethod,
-                                                                summaryItems: summaryItems,
-                                                                merchantIdentifier: identfier,
-                                                                requiredBillingContactFields: requiredBillingContactFields,
-                                                                requiredShippingContactFields: requiredShippingContactFields)
+                                                                summaryItems: applePay.summaryItems,
+                                                                merchantIdentifier: applePay.merchantIdentifier,
+                                                                requiredBillingContactFields: applePay.requiredBillingContactFields,
+                                                                requiredShippingContactFields: applePay.requiredShippingContactFields)
             return try ApplePayComponent(configuration: configuration)
         } catch {
             adyenPrint("Failed to instantiate ApplePayComponent because of error: \(error.localizedDescription)")
