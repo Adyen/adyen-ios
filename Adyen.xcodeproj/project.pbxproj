@@ -19,8 +19,8 @@
 		E216D3CB221AFB9A0013CBCF /* IBANValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E216D3CA221AFB9A0013CBCF /* IBANValidatorTests.swift */; };
 		E216D3CD221AFBB90013CBCF /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E216D3CC221AFBB90013CBCF /* Validator.swift */; };
 		E216D3CF221AFC3A0013CBCF /* IBANSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = E216D3CE221AFC3A0013CBCF /* IBANSpecification.swift */; };
-		E21895E422A7CC4D001B6EE0 /* FormSplitTextItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21895E322A7CC4D001B6EE0 /* FormSplitTextItem.swift */; };
-		E21895E622A7CC56001B6EE0 /* FormSplitTextItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21895E522A7CC56001B6EE0 /* FormSplitTextItemView.swift */; };
+		E21895E422A7CC4D001B6EE0 /* FormSplitItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21895E322A7CC4D001B6EE0 /* FormSplitItem.swift */; };
+		E21895E622A7CC56001B6EE0 /* FormSplitItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21895E522A7CC56001B6EE0 /* FormSplitItemView.swift */; };
 		E224088722AFA3A80058923E /* RedirectPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E224088622AFA3A80058923E /* RedirectPaymentMethod.swift */; };
 		E224088D22B0FD220058923E /* StoredPayPalPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E224088C22B0FD220058923E /* StoredPayPalPaymentMethod.swift */; };
 		E226F54B229803130013A463 /* DropInComponentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E226F54A229803130013A463 /* DropInComponentDelegate.swift */; };
@@ -745,8 +745,8 @@
 		E216D3CA221AFB9A0013CBCF /* IBANValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IBANValidatorTests.swift; sourceTree = "<group>"; };
 		E216D3CC221AFBB90013CBCF /* Validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
 		E216D3CE221AFC3A0013CBCF /* IBANSpecification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IBANSpecification.swift; sourceTree = "<group>"; };
-		E21895E322A7CC4D001B6EE0 /* FormSplitTextItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSplitTextItem.swift; sourceTree = "<group>"; };
-		E21895E522A7CC56001B6EE0 /* FormSplitTextItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSplitTextItemView.swift; sourceTree = "<group>"; };
+		E21895E322A7CC4D001B6EE0 /* FormSplitItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSplitItem.swift; sourceTree = "<group>"; };
+		E21895E522A7CC56001B6EE0 /* FormSplitItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSplitItemView.swift; sourceTree = "<group>"; };
 		E224088622AFA3A80058923E /* RedirectPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedirectPaymentMethod.swift; sourceTree = "<group>"; };
 		E224088C22B0FD220058923E /* StoredPayPalPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredPayPalPaymentMethod.swift; sourceTree = "<group>"; };
 		E226F53922969A950013A463 /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
@@ -1378,7 +1378,7 @@
 				E2D12BED221D55F800EF682F /* Value */,
 				E216D3B822170B360013CBCF /* Text */,
 				E2D12C05221ED15300EF682F /* Switch */,
-				E21895E222A7CC3B001B6EE0 /* Split Text */,
+				E21895E222A7CC3B001B6EE0 /* Split */,
 				E7275BF7255012D400907CF9 /* Basic Items */,
 			);
 			path = Items;
@@ -1420,13 +1420,13 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		E21895E222A7CC3B001B6EE0 /* Split Text */ = {
+		E21895E222A7CC3B001B6EE0 /* Split */ = {
 			isa = PBXGroup;
 			children = (
-				E21895E322A7CC4D001B6EE0 /* FormSplitTextItem.swift */,
-				E21895E522A7CC56001B6EE0 /* FormSplitTextItemView.swift */,
+				E21895E322A7CC4D001B6EE0 /* FormSplitItem.swift */,
+				E21895E522A7CC56001B6EE0 /* FormSplitItemView.swift */,
 			);
-			path = "Split Text";
+			path = Split;
 			sourceTree = "<group>";
 		};
 		E2345C00229BCC6B000F2C94 /* 3DS2 */ = {
@@ -3832,7 +3832,7 @@
 				E2D12BF1221D561600EF682F /* FormValueItemView.swift in Sources */,
 				F9639B3B24E14A940073F38A /* APIError.swift in Sources */,
 				E909342822969AFF00C9F04B /* PaymentComponentData.swift in Sources */,
-				E21895E422A7CC4D001B6EE0 /* FormSplitTextItem.swift in Sources */,
+				E21895E422A7CC4D001B6EE0 /* FormSplitItem.swift in Sources */,
 				F9639B2A24DD6A990073F38A /* Request.swift in Sources */,
 				E7D5311424462D87000046B4 /* FormButtonItemView.swift in Sources */,
 				F926D53323F5A5D000D058D3 /* NumericStringValidator.swift in Sources */,
@@ -3847,7 +3847,7 @@
 				F9354BEF23A7C87600A6760B /* ImageStyle.swift in Sources */,
 				E9E3DB03222548E100697074 /* Coder.swift in Sources */,
 				E9093401228C54CD00C9F04B /* LogoURLProvider.swift in Sources */,
-				E21895E622A7CC56001B6EE0 /* FormSplitTextItemView.swift in Sources */,
+				E21895E622A7CC56001B6EE0 /* FormSplitItemView.swift in Sources */,
 				E9021DF8225E2240009CF7F4 /* ListSection.swift in Sources */,
 				E787C9AC24696A8900B401E0 /* CornerRadiusStyle.swift in Sources */,
 				F9D5752A237C6084009C18B5 /* StoredBCMCPaymentMethod.swift in Sources */,

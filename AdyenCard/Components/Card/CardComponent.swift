@@ -22,16 +22,6 @@ public protocol CardComponentDelegate: AnyObject {
     func didChangeCardBrand(_ value: [CardBrand]?, component: CardComponent)
 }
 
-/// Stored card configuration.
-public struct StoredCardConfiguration {
-
-    /// Indicates whether to show the security code field.
-    public var showsSecurityCodeField = true
-
-    /// :nodoc:
-    public init() { /* empty init */ }
-}
-
 /// A component that provides a form for card payments.
 public class CardComponent: PaymentComponent, PresentableComponent, Localizable, Observer, LoadingComponent {
     
@@ -215,7 +205,7 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
         numberItem.showLogos(for: topCardTypes)
         
         if configuration.showsSecurityCodeField {
-            let splitTextItem = FormSplitTextItem(items: [expiryDateItem, securityCodeItem], style: style.textField)
+            let splitTextItem = FormSplitItem(items: [expiryDateItem, securityCodeItem], style: style.textField)
             formViewController.append(splitTextItem)
         } else {
             formViewController.append(expiryDateItem)
