@@ -7,13 +7,13 @@
 import Foundation
 import UIKit
 
-/// A view representing a split text item.
-internal final class FormSplitTextItemView: FormItemView<FormSplitTextItem> {
+/// A view representing a split item.
+internal final class FormSplitItemView: FormItemView<FormSplitItem> {
     
-    /// Initializes the split text item view.
+    /// Initializes the split item view.
     ///
     /// - Parameter item: The item represented by the view.
-    internal required init(item: FormSplitTextItem) {
+    internal required init(item: FormSplitItem) {
         super.init(item: item)
         
         addSubview(stackView)
@@ -24,7 +24,7 @@ internal final class FormSplitTextItemView: FormItemView<FormSplitTextItem> {
         [leftItemView, rightItemView]
     }
     
-    // MARK: - Text Items
+    // MARK: - Items
     
     private lazy var leftItemView: AnyFormItemView = {
         let leftItemView = item.leftItem.build(with: FormItemViewBuilder())

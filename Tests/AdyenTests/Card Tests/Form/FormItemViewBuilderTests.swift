@@ -31,12 +31,12 @@ class FormItemViewBuilderTests: XCTestCase {
         XCTAssertNotNil(view as? FormSwitchItemView)
     }
     
-    func testFormSplitTextItemView() {
+    func testFormSplitItemView() {
         let textItems = [FormTextInputItem(), FormTextInputItem()]
-        let item = FormSplitTextItem(items: textItems, style: FormTextItemStyle())
+        let item = FormSplitItem(items: textItems, style: FormTextItemStyle())
         let view = item.build(with: FormItemViewBuilder())
         
-        XCTAssertNotNil(view as? FormSplitTextItemView)
+        XCTAssertNotNil(view as? FormSplitItemView)
     }
     
     func testFormPhoneNumberItemView() {
