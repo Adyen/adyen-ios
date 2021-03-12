@@ -17,15 +17,13 @@ internal class CardViewController: FormViewController, Observer {
 
     private let payment: Payment?
 
-    private let environment: Environment
+    private let logoProvider: LogoURLProvider
 
     private let supportedCardTypes: [CardType]
 
     private let scope: String
 
     private let maxCardsVisible = 4
-
-    private let publicBinLenght = 6
     
     private let throttler = Throttler(minimumDelay: 0.5)
 
@@ -35,23 +33,23 @@ internal class CardViewController: FormViewController, Observer {
 
     // MARK: Init view controller
 
-    /// <#Description#>
+    /// Create new instance of CardViewController
     /// - Parameters:
-    ///   - configuration: <#configuration description#>
-    ///   - formStyle: <#formStyle description#>
-    ///   - payment: <#payment description#>
-    ///   - environment: <#environment description#>
+    ///   - configuration: The configurations of the `CardComponent`.
+    ///   - formStyle: The style of form view controller.
+    ///   - payment: The payment object to visialise payment amount.
+    ///   - environment: The environment
     ///   - supportedCardTypes: <#supportedCardTypes description#>
     internal init(configuration: CardComponent.Configuration,
                   formStyle: FormComponentStyle,
                   payment: Payment?,
-                  environment: Environment,
+                  logoProvider: LogoURLProvider,
                   supportedCardTypes: [CardType],
                   scope: String) {
         self.configuration = configuration
         self.formStyle = formStyle
         self.payment = payment
-        self.environment = environment
+        self.logoProvider = logoProvider
         self.supportedCardTypes = supportedCardTypes
         self.scope = scope
         super.init(style: formStyle)
@@ -77,7 +75,8 @@ internal class CardViewController: FormViewController, Observer {
         }
 
         if configuration.showsAddressVerification {
-            // append(UILabel())
+            addressFoldableItem.isFolded = true
+            append(addressFoldableItem)
         }
 
         append(button.withPadding(padding: .init(top: 8, left: 0, bottom: -16, right: 0)))
@@ -115,6 +114,12 @@ internal class CardViewController: FormViewController, Observer {
 
     internal func update(binInfo: BinLookupResponse) {
         self.securityCodeItem.update(cardBrands: binInfo.brands ?? [])
+        if let issuingCountryCode = binInfo.issuingCountryCode,
+           configuration.addressVerificationSupportingCountryCodes.contains(issuingCountryCode) {
+            self.addressFoldableItem.isFolded = false
+        } else {
+            self.addressFoldableItem.isFolded = true
+        }
 
         switch (binInfo.brands, self.numberItem.value) {
         case (_, ""):
@@ -129,9 +134,17 @@ internal class CardViewController: FormViewController, Observer {
 
     // MARK: Items
 
+    internal lazy var addressFoldableItem: FormFoldableItem = {
+        let style = TextStyle(font: .preferredFont(forTextStyle: .headline),
+                              color: UIColor.Adyen.componentLabel,
+                              textAlignment: .center)
+        let item = FormLabelItem(text: "I am here!", style: style)
+        return FormFoldableItem(item: item.withPadding(padding: .init(top: 24, left: 0, bottom: -24, right: 0)), style: style)
+    }()
+
     internal lazy var numberItem: FormCardNumberItem = {
         let item = FormCardNumberItem(supportedCardTypes: supportedCardTypes,
-                                      environment: environment,
+                                      logoProvider: logoProvider,
                                       style: formStyle.textField,
                                       localizationParameters: localizationParameters)
 
@@ -155,8 +168,7 @@ internal class CardViewController: FormViewController, Observer {
     }()
 
     internal lazy var securityCodeItem: FormCardSecurityCodeItem = {
-        let securityCodeItem = FormCardSecurityCodeItem(environment: environment,
-                                                        style: formStyle.textField,
+        let securityCodeItem = FormCardSecurityCodeItem(style: formStyle.textField,
                                                         localizationParameters: localizationParameters)
         securityCodeItem.localizationParameters = self.localizationParameters
         securityCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "securityCodeItem")
@@ -197,8 +209,6 @@ internal class CardViewController: FormViewController, Observer {
 
     private func didReceived(bin: String) {
         self.securityCodeItem.selectedCard = supportedCardTypes.adyen.type(forCardNumber: bin)
-        self.cardDelegate?.didChangeBIN(String(bin.prefix(publicBinLenght)))
-
         throttler.throttle { [weak self] in self?.cardDelegate?.didChangeBIN(bin) }
     }
     

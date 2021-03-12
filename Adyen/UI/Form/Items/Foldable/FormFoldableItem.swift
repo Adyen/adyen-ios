@@ -22,7 +22,7 @@ public final class FormFoldableItem: CompoundFormItem {
     public var subitems: [FormItem] { [item] }
 
     /// The observable of the goups visibility.
-    @Observable(false) public var isVisible: Bool
+    @Observable(false) public var isFolded: Bool
 
     /// Initializes foldable items group.
     ///

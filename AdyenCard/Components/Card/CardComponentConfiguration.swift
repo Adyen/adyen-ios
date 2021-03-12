@@ -34,6 +34,9 @@ extension CardComponent {
         /// Indicates the card brands excluded from the supported brands.
         internal var excludedCardTypes: Set<CardType> = [.bcmc]
 
+        /// Indicates the list of issuing countries where address verification is supported.
+        internal var addressVerificationSupportingCountryCodes: Set<String> = ["CA", "US", "UK"] // swiftlint:disable:this identifier_name
+
         /// Configuration of Card component.
         /// - Parameters:
         ///   - showsHolderNameField: Indicates if the field for entering the holder name should be displayed in the form.

@@ -21,7 +21,8 @@ internal final class FormFoldableItemView: FormItemView<FormFoldableItem>, Obser
 
         addSubview(stackView)
         stackView.adyen.anchore(inside: self)
-        bind(item.$isVisible, to: stackView, at: \.isHidden)
+        observe(item.$isFolded) { [weak self] in self?.changeState($0) }
+        changeState(item.isFolded)
     }
 
     override internal var childItemViews: [AnyFormItemView] { [view] }
@@ -42,5 +43,14 @@ internal final class FormFoldableItemView: FormItemView<FormFoldableItem>, Obser
         itemView.preservesSuperviewLayoutMargins = true
         return itemView
     }
+
+    private func changeState(_ isFolded: Bool) {
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            self?.stackView.arrangedSubviews.forEach { $0.isHidden = isFolded }
+            self?.invalidateIntrinsicContentSize()
+        }
+    }
+
+    override internal var intrinsicContentSize: CGSize { stackView.intrinsicContentSize }
 
 }

@@ -22,8 +22,7 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
     @Observable(false) internal var isCVCOptional: Bool
     
     /// Initializes the form card number item.
-    internal init(environment: Environment,
-                  style: FormTextItemStyle = FormTextItemStyle(),
+    internal init(style: FormTextItemStyle = FormTextItemStyle(),
                   localizationParameters: LocalizationParameters? = nil) {
         self.localizationParameters = localizationParameters
         self.style = style

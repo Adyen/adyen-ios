@@ -26,7 +26,7 @@ internal struct CardBrandProviderParameters {
 /// Provide cardType detection based on BinLookup API.
 internal final class CardBrandProvider: AnyCardBrandProvider {
     
-    private static let minBinLength = 6
+    private static let minBinLength = 10
     
     private let apiClient: APIClientProtocol?
 
