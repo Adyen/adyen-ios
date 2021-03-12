@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E2C0E07C220B0399008616F6"
-               BuildableName = "AdyenUIHost.app"
-               BlueprintName = "AdyenUIHost"
+               BlueprintIdentifier = "F95B6D942527454E002C9062"
+               BuildableName = "AdyenSwiftUIHost.app"
+               BlueprintName = "AdyenSwiftUIHost"
                ReferencedContainer = "container:Adyen.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -26,17 +26,7 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "NO"
-      codeCoverageEnabled = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E2C0E07C220B0399008616F6"
-            BuildableName = "AdyenUIHost.app"
-            BlueprintName = "AdyenUIHost"
-            ReferencedContainer = "container:Adyen.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
+      shouldUseLaunchSchemeArgsEnv = "YES">
       <CommandLineArguments>
          <CommandLineArgument
             argument = "-UITests"
@@ -44,16 +34,6 @@
          </CommandLineArgument>
       </CommandLineArguments>
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E2C0E03B22097917008616F6"
-               BuildableName = "AdyenUIKitTests.xctest"
-               BlueprintName = "AdyenUIKitTests"
-               ReferencedContainer = "container:Adyen.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
          <TestableReference
             skipped = "NO">
             <BuildableReference
@@ -80,9 +60,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E2C0E07C220B0399008616F6"
-            BuildableName = "AdyenUIHost.app"
-            BlueprintName = "AdyenUIHost"
+            BlueprintIdentifier = "F95B6D942527454E002C9062"
+            BuildableName = "AdyenSwiftUIHost.app"
+            BlueprintName = "AdyenSwiftUIHost"
             ReferencedContainer = "container:Adyen.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -97,9 +77,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E2C0E07C220B0399008616F6"
-            BuildableName = "AdyenUIHost.app"
-            BlueprintName = "AdyenUIHost"
+            BlueprintIdentifier = "F95B6D942527454E002C9062"
+            BuildableName = "AdyenSwiftUIHost.app"
+            BlueprintName = "AdyenSwiftUIHost"
             ReferencedContainer = "container:Adyen.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
