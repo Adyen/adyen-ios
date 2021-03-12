@@ -9,18 +9,15 @@ import Foundation
 /// A form item in which two items are shown side-by-side horizontally.
 /// :nodoc:
 public final class FormSplitItem: CompoundFormItem {
+
+    internal var leftItem: FormItem
+    internal var rightItem: FormItem
     
     /// Indicates the `FormSplitItemView` UI styling.
     public let style: ViewStyle
     
     /// :nodoc:
     public var identifier: String?
-    
-    /// The item displayed on the left side.
-    public var leftItem: FormItem
-    
-    /// The item displayed on the right side.
-    public var rightItem: FormItem
     
     /// :nodoc:
     public var subitems: [FormItem] {
