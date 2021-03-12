@@ -33,16 +33,18 @@ Adyen Components for iOS are available through either [CocoaPods](http://cocoapo
 2. Run `pod install`.
 
 You can install all modules or add individual modules, depending on your needs and integration type.
-The `AdyenWeChatPay` module needs to be explicitly added to support WeChat Pay.
+The `Adyen/WeChatPay` module needs to be explicitly added to support WeChat Pay.
+The `Adyen/SwiftUI` module needs to be explicitly added to use the SwiftUI specific helpers..
 
 ```
-pod 'Adyen'               // Add DropIn with all modules except WeChat Pay.
+pod 'Adyen'               // Add DropIn with all modules except WeChat Pay and SwiftUI.
 // Add individual modules
 pod 'Adyen/Card'          // Card components.
 pod 'Adyen/Encryption'    // Encryption module.
 pod 'Adyen/Components'    // All other payment components except WeChat Pay.
 pod 'Adyen/Actions'       // Action Components.
 pod 'Adyen/WeChatPay'     // WeChat Pay Component.
+pod 'Adyen/SwiftUI'       // SwiftUI apps specific module.
 ```
 
 
@@ -66,6 +68,7 @@ https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_y
 
 You can add all modules or select individual modules to add to your integration.
 The `AdyenWeChatPay` module needs to be explicitly added to support WeChat Pay.
+The `AdyenSwiftUI` module needs to be explicitly added to use the SwiftUI specific helpers.
 
 * `AdyenDropIn`: all modules except `AdyenWeChatPay`.
 * `AdyenCard`: the card components.
@@ -73,6 +76,7 @@ The `AdyenWeChatPay` module needs to be explicitly added to support WeChat Pay.
 * `AdyenActions`:  action components.
 * `AdyenEncryption`: encryption.
 * `AdyenWeChatPay`: WeChat Pay component.
+* `AdyenSwiftUI`: SwiftUI apps specific module.
 
 :warning: _Please make sure to use Xcode 12.0+ when adding `Adyen` using Swift Package Manager._
 

@@ -53,6 +53,9 @@ targets:
       - framework: Carthage/Checkouts/adyen-3ds2-ios/XCFramework/Dynamic/Adyen3DS2.xcframework
         embed: true
         codeSign: true
+      - framework: Carthage/Build/AdyenSwiftUI.xcframework
+        embed: true
+        codeSign: true
   Tests:
     type: bundle.unit-test
     platform: iOS
@@ -63,10 +66,10 @@ targets:
 " > project.yml
 
 mkdir Tests
-mv -v "../Demo/Common" Common
-mv -v "../Demo/UIKit" ./
-mv "../Demo/Configuration.swift" Configuration.swift
-mv "../Tests/AdyenTests/Adyen Tests/UI/DropIn/DropInTests.swift" Tests/DropInTests.swift
+cp -a "../Demo/Common" Common
+cp -a "../Demo/UIKit" ./
+cp "../Demo/Configuration.swift" Configuration.swift
+cp "../Tests/AdyenTests/Adyen Tests/UI/DropIn/DropInTests.swift" Tests/DropInTests.swift
 
 xcodegen generate
 

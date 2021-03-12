@@ -75,6 +75,10 @@ Pod::Spec.new do |s|
     plugin.source_files = 'AdyenEncryption/**/*.swift'
   end
 
+  s.subspec 'SwiftUI' do |plugin|
+    plugin.source_files = 'AdyenSwiftUI/**/*.swift'
+  end
+
   s.subspec 'Core' do |plugin|
     plugin.source_files = 'Adyen/**/*.swift'
     plugin.exclude_files = 'Adyen/**/BundleSPMExtension.swift'

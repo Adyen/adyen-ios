@@ -52,6 +52,7 @@ target '$PROJECT_NAME' do
 
   pod 'Adyen', :path => '../'
   pod 'Adyen/WeChatPay', :path => '../'
+  pod 'Adyen/SwiftUI', :path => '../'
 end
 " >> Podfile
 
