@@ -127,9 +127,8 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Loca
     
     private func submit(securityCode: String, cardPublicKey: String) {
         do {
-            let card = CardEncryptor.Card(number: nil, securityCode: securityCode, expiryMonth: nil, expiryYear: nil)
-            let encryptedCard = try CardEncryptor.encryptedCard(for: card, publicKey: cardPublicKey)
-            let details = CardDetails(paymentMethod: paymentMethod, encryptedSecurityCode: encryptedCard.securityCode ?? "")
+            let encryptedSecurityCode = try CardEncryptor.encrypt(securityCode: securityCode, with: cardPublicKey)
+            let details = CardDetails(paymentMethod: paymentMethod, encryptedSecurityCode: encryptedSecurityCode)
             completionHandler?(.success(details))
         } catch {
             completionHandler?(.failure(error))
