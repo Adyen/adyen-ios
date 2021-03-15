@@ -18,9 +18,16 @@ class CardEncryptorCardTests: XCTestCase {
         let card = Card()
         XCTAssertThrowsError(try CardEncryptor.encrypt(card: card, with: "test_key")) { error in
             XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
-            XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.invalidCard, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
+            XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.invalidCard, "Thrown Error is not CardEncryptor.Error.invalidCard")
             XCTAssertEqual(error.localizedDescription, CardEncryptor.Error.invalidCard.errorDescription)
         }
+    }
+
+    func testEncryptCardWIthOneFIeldShouldSucceed() {
+        var card = Card()
+        card.number = "1233467890"
+        let key = Dummy.dummyPublicKey
+        XCTAssertNotNil(try CardEncryptor.encrypt(card: card, with: key))
     }
 
     func testEncryptCardShouldThrowOnInvalidKey() {
@@ -144,6 +151,13 @@ class CardEncryptorCardTests: XCTestCase {
             XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.invalidCard, "Thrown Error is not CardEncryptor.Error.invalidCard")
             XCTAssertEqual(error.localizedDescription, CardEncryptor.Error.invalidCard.localizedDescription)
         }
+    }
+
+    func testEncryptToTokenWIthOneFIeldShouldSucceed() {
+        var card = Card()
+        card.number = "1233467890"
+        let key = Dummy.dummyPublicKey
+        XCTAssertNotNil(try CardEncryptor.encryptToken(from: card, with: key))
     }
 
     // MARK: - Test encrypting BIN

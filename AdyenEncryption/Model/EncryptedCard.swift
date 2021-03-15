@@ -9,7 +9,7 @@ import Foundation
 /// Contains encrypted card information.
 public struct EncryptedCard {
 
-    internal init(number: String, securityCode: String, expiryMonth: String, expiryYear: String) {
+    internal init(number: String?, securityCode: String?, expiryMonth: String?, expiryYear: String?) {
         self.number = number
         self.securityCode = securityCode
         self.expiryMonth = expiryMonth
@@ -17,14 +17,14 @@ public struct EncryptedCard {
     }
 
     /// The encrypted card number.
-    public let number: String
+    public let number: String?
 
     /// The card's encrypted security code.
-    public let securityCode: String
+    public let securityCode: String?
 
     /// The encrypted month the card expires.
-    public let expiryMonth: String
+    public let expiryMonth: String?
 
     /// The encrypted year the card expires.
-    public let expiryYear: String
+    public let expiryYear: String?
 }

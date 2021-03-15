@@ -22,18 +22,30 @@ public enum CardEncryptor {
     /// - Throws:  `CardEncryptor.Error.invalidEncryptionArguments` when trying to encrypt a card with  card number, securityCode,
     /// expiryMonth, and expiryYear, all of them are nil.
     public static func encrypt(card: Card, with publicKey: String) throws -> EncryptedCard {
-        guard
-            let number = card.number,
-            let securityCode = card.securityCode,
-            let expiryMonth = card.expiryMonth,
-            let expiryYear = card.expiryYear
-        else { throw Error.invalidCard }
+        guard !card.isEmpty else { throw CardEncryptor.Error.invalidCard }
 
-        let builder = CardPayloadBuilder()
-        return EncryptedCard(number: try encrypt(builder.add(number: number), with: publicKey),
-                             securityCode: try encrypt(builder.add(securityCode: securityCode), with: publicKey),
-                             expiryMonth: try encrypt(builder.add(expiryMonth: expiryMonth), with: publicKey),
-                             expiryYear: try encrypt(builder.add(expiryYear: expiryYear), with: publicKey))
+        var encryptedNumber: String?
+        var encryptedCode: String?
+        var encryptedMonth: String?
+        var encryptedYear: String?
+
+        if let number = card.number {
+            encryptedNumber = try encrypt(CardPayload().add(number: number), with: publicKey)
+        }
+        if let securityCode = card.securityCode {
+            encryptedCode = try encrypt(CardPayload().add(securityCode: securityCode), with: publicKey)
+        }
+        if let expiryMonth = card.expiryMonth {
+            encryptedMonth = try encrypt(CardPayload().add(expiryMonth: expiryMonth), with: publicKey)
+        }
+        if let expiryYear = card.expiryYear {
+            encryptedYear = try encrypt(CardPayload().add(expiryYear: expiryYear), with: publicKey)
+        }
+
+        return EncryptedCard(number: encryptedNumber,
+                             securityCode: encryptedCode,
+                             expiryMonth: encryptedMonth,
+                             expiryYear: encryptedYear)
     }
 
     /// Encrypts card number.
@@ -50,10 +62,8 @@ public enum CardEncryptor {
         guard !number.isEmpty, number.allSatisfy({ $0.isNumber }) else {
             throw Error.invalidNumber
         }
-        let builder = CardPayloadBuilder()
-        builder.add(number: number)
-
-        return try encrypt(builder.payload, with: publicKey)
+        let payload = CardPayload().add(number: number)
+        return try encrypt(payload, with: publicKey)
     }
 
     /// Encrypts security code.
@@ -70,10 +80,8 @@ public enum CardEncryptor {
         guard !securityCode.isEmpty, securityCode.allSatisfy({ $0.isNumber }) else {
             throw Error.invalidSecureCode
         }
-        let builder = CardPayloadBuilder()
-        builder.add(securityCode: securityCode)
-
-        return try encrypt(builder.payload, with: publicKey)
+        let payload = CardPayload().add(securityCode: securityCode)
+        return try encrypt(payload, with: publicKey)
     }
 
     /// Encrypts enspiration month.
@@ -90,10 +98,8 @@ public enum CardEncryptor {
         guard !expirationMonth.isEmpty, expirationMonth.allSatisfy({ $0.isNumber }) else {
             throw Error.invalidExpiryMonth
         }
-        let builder = CardPayloadBuilder()
-        builder.add(expiryMonth: expirationMonth)
-
-        return try encrypt(builder.payload, with: publicKey)
+        let payload = CardPayload().add(expiryMonth: expirationMonth)
+        return try encrypt(payload, with: publicKey)
     }
 
     /// Encrypts enspiration year.
@@ -110,10 +116,8 @@ public enum CardEncryptor {
         guard !expirationYear.isEmpty, expirationYear.allSatisfy({ $0.isNumber }) else {
             throw Error.invalidExpiryYear
         }
-        let builder = CardPayloadBuilder()
-        builder.add(expiryYear: expirationYear)
-
-        return try encrypt(builder.payload, with: publicKey)
+        let payload = CardPayload().add(expiryYear: expirationYear)
+        return try encrypt(payload, with: publicKey)
     }
     
     /// Encrypt BIN.
@@ -129,11 +133,8 @@ public enum CardEncryptor {
         guard !bin.isEmpty, bin.allSatisfy({ $0.isNumber }) else {
             throw Error.invalidBin
         }
-        
-        let builder = BinPayloadBuilder()
-        builder.add(bin: bin)
-
-        return try encrypt(builder.payload, with: publicKey)
+        let payload = BinPayload().add(bin: bin)
+        return try encrypt(payload, with: publicKey)
     }
 
     /// Encrypts a card as a token.
@@ -146,32 +147,18 @@ public enum CardEncryptor {
     /// - Throws:  `CardEncryptor.Error.invalidEncryptionArguments` when trying to encrypt a card with  card number, securityCode,
     /// expiryMonth, and expiryYear, all of them are nil.
     public static func encryptToken(from card: Card, with publicKey: String) throws -> String {
-        guard
-            let number = card.number,
-            let securityCode = card.securityCode,
-            let expiryMonth = card.expiryMonth,
-            let expiryYear = card.expiryYear
-        else { throw Error.invalidCard }
-
-        let builder = CardPayloadBuilder()
-        builder.add(number: number)
-        builder.add(securityCode: securityCode)
-        builder.add(expiryMonth: expiryMonth)
-        builder.add(expiryYear: expiryYear)
-
-        do {
-            return try encrypt(builder.payload, with: publicKey)
-        } catch {
-            throw Error.encryptionFailed
-        }
+        guard !card.isEmpty else { throw CardEncryptor.Error.invalidCard }
+        let payload = CardPayload()
+            .add(number: card.number)
+            .add(securityCode: card.securityCode)
+            .add(expiryMonth: card.expiryMonth)
+            .add(expiryYear: card.expiryYear)
+        return try encrypt(payload, with: publicKey)
     }
 
     private static func encrypt(_ payload: Payload, with publicKey: String) throws -> String {
-        guard
-            let unencryptedData = payload.jsonData()
-        else { throw CardEncryptor.Error.invalidCard }
-
         do {
+            let unencryptedData = try payload.jsonData()
             return try Cryptor(aes: Cryptor.AES.CCM).encrypt(data: unencryptedData, publicKey: publicKey)
         } catch {
             throw CardEncryptor.Error.encryptionFailed
