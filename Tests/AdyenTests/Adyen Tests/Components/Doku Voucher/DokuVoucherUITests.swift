@@ -6,9 +6,9 @@
 //  Copyright © 2021 Adyen. All rights reserved.
 //
 
-import XCTest
 import Adyen
 @testable import AdyenActions
+import XCTest
 
 class DokuVoucherUITests: XCTestCase {
 
@@ -31,7 +31,7 @@ class DokuVoucherUITests: XCTestCase {
 
         let amountLabel: UILabel! = sut.view.findView(by: "adyen.dokuVoucher.amountLabel")
         XCTAssertEqual(amountLabel.text, AmountFormatter.formatted(amount: dokuAction.totalAmount.value,
-                                                                  currencyCode: dokuAction.totalAmount.currencyCode))
+                                                                   currencyCode: dokuAction.totalAmount.currencyCode))
 
         let expireyKeyLabel: UILabel! = sut.view.findView(by: "adyen.dokuVoucher.expirationKeyLabel")
         XCTAssertEqual(expireyKeyLabel.text, "Expiration Date -- Test")
@@ -70,7 +70,7 @@ class DokuVoucherUITests: XCTestCase {
 
         let amountLabel: UILabel! = viewController.view.findView(by: "adyen.dokuVoucher.amountLabel")
         XCTAssertEqual(amountLabel.text, AmountFormatter.formatted(amount: dokuAction.totalAmount.value,
-                                                                  currencyCode: dokuAction.totalAmount.currencyCode))
+                                                                   currencyCode: dokuAction.totalAmount.currencyCode))
 
         let expireyKeyLabel: UILabel! = viewController.view.findView(by: "adyen.dokuVoucher.expirationKeyLabel")
         XCTAssertEqual(expireyKeyLabel.text, "Expiration Date")
@@ -109,7 +109,7 @@ class DokuVoucherUITests: XCTestCase {
 
         let amountLabel: UILabel! = viewController.view.findView(by: "adyen.dokuVoucher.amountLabel")
         XCTAssertEqual(amountLabel.text, AmountFormatter.formatted(amount: dokuAction.totalAmount.value,
-                                                                  currencyCode: dokuAction.totalAmount.currencyCode))
+                                                                   currencyCode: dokuAction.totalAmount.currencyCode))
 
         let expireyKeyLabel: UILabel! = viewController.view.findView(by: "adyen.dokuVoucher.expirationKeyLabel")
         XCTAssertEqual(expireyKeyLabel.text, "Expiration Date")

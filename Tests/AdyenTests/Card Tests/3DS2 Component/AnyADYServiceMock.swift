@@ -6,9 +6,9 @@
 //  Copyright © 2020 Adyen. All rights reserved.
 //
 
-import Foundation
 import Adyen3DS2
 @testable import AdyenActions
+import Foundation
 
 final class AnyADYServiceMock: AnyADYService {
 

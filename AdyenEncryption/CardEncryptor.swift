@@ -152,11 +152,11 @@ public extension CardEncryptor {
         }
 
         internal var isEmpty: Bool {
-            return [number, securityCode, expiryYear, expiryMonth].allSatisfy { $0 == nil }
+            [number, securityCode, expiryYear, expiryMonth].allSatisfy { $0 == nil }
         }
 
         public func jsonData() -> Data? {
-            return try? JSONEncoder().encode(self)
+            try? JSONEncoder().encode(self)
         }
 
         public func encode(to encoder: Encoder) throws {

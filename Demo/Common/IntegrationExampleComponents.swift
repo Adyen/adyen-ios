@@ -103,9 +103,9 @@ extension IntegrationExample {
         }
     }
 
-    // MARK : - Payment response handling
+    // MARK: - Payment response handling
 
-    fileprivate func paymentResponseHandler(result: Result<PaymentsResponse, Error>) {
+    private func paymentResponseHandler(result: Result<PaymentsResponse, Error>) {
         switch result {
         case let .success(response):
             if let action = response.action {

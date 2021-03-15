@@ -4,9 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import AdyenDropIn
 import Adyen
 import AdyenActions
+import AdyenDropIn
 import SafariServices
 import XCTest
 
@@ -24,7 +24,7 @@ class DropInActionsTests: XCTestCase {
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymenMethods, paymentMethodsConfiguration: config)
-        sut.payment = Payment(amount: Payment.Amount(value: 100, currencyCode: "CNY" ), countryCode: "CN")
+        sut.payment = Payment(amount: Payment.Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
 
         let waitExpectation = expectation(description: "Expect SafariViewController to open")
         let root = UIViewController()

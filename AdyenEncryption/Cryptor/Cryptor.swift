@@ -16,7 +16,7 @@ internal struct Cryptor {
     internal let aes: AES
 
     private var prefix: String {
-        return "adyenio_0_\(aes.rawValue)_25" + Cryptor.msgSeparator
+        "adyenio_0_\(aes.rawValue)_25" + Cryptor.msgSeparator
     }
 
     /// Initiate cryptor with selected AES alghoritm
@@ -82,7 +82,7 @@ internal struct Cryptor {
     }
     
     private func aesEncrypt(data: Data, with key: Data, initVector: Data) -> EncryptionResult {
-        return aes.encrypt(data: data as NSData, withKey: key as NSData, initVector: initVector as NSData)
+        aes.encrypt(data: data as NSData, withKey: key as NSData, initVector: initVector as NSData)
     }
     
     private func rsaEncrypt(data: Data, with keyInHex: String) throws -> Data? {

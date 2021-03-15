@@ -24,11 +24,11 @@ class LengthValidatorTests: XCTestCase {
     }
     
     func validate(_ string: String, minimumLength: Int? = nil, maximumLenght: Int? = nil) -> Bool {
-        return LengthValidator(minimumLength: minimumLength, maximumLength: maximumLenght).isValid(string)
+        LengthValidator(minimumLength: minimumLength, maximumLength: maximumLenght).isValid(string)
     }
     
     func testMaximumLength(_ string: String, maximumLength: Int?) -> Bool {
-        return string.count == LengthValidator(maximumLength: maximumLength).maximumLength(for: string)
+        string.count == LengthValidator(maximumLength: maximumLength).maximumLength(for: string)
     }
     
 }

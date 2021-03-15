@@ -6,8 +6,8 @@
 //  Copyright © 2021 Adyen. All rights reserved.
 //
 
-import XCTest
 @testable import Adyen
+import XCTest
 
 class LogoURLProviderTests: XCTestCase {
 
@@ -36,6 +36,5 @@ class LogoURLProviderTests: XCTestCase {
         let logo = LogoURLProvider.logoURL(for: paymentMethod, environment: .test)
         XCTAssertEqual(logo.absoluteString, "https://checkoutshopper-test.adyen.com/checkoutshopper/images/logos/small/genericgiftcard@\(scale)x.png")
     }
-
 
 }

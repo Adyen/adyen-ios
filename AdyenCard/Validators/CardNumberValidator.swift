@@ -24,7 +24,7 @@ public final class CardNumberValidator: Validator {
     
     /// :nodoc:
     public func maximumLength(for value: String) -> Int {
-        return 19
+        19
     }
     
     // MARK: - Private

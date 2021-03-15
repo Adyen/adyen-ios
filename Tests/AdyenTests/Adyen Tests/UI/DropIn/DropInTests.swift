@@ -4,91 +4,91 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import AdyenDropIn
 import Adyen
+import AdyenDropIn
 import XCTest
 
 class DropInTests: XCTestCase {
 
     static let paymentMethods =
-    """
-    {
-      "paymentMethods" : [
+        """
         {
-          "configuration" : {
-            "merchantDisplayName" : "TestMerchantCheckout",
-            "merchantIdentifier" : "merchant.com.adyen.test"
-          },
-          "details" : [
+          "paymentMethods" : [
             {
-              "key" : "applePayToken",
-              "type" : "applePayToken"
+              "configuration" : {
+                "merchantDisplayName" : "TestMerchantCheckout",
+                "merchantIdentifier" : "merchant.com.adyen.test"
+              },
+              "details" : [
+                {
+                  "key" : "applePayToken",
+                  "type" : "applePayToken"
+                }
+              ],
+              "name" : "Apple Pay",
+              "supportsRecurring" : true,
+              "type" : "applepay"
+            },
+            {
+              "name" : "WeChat Pay",
+              "type" : "wechatpaySDK"
+            },
+            {
+              "details" : [
+                {
+                  "items" : [],
+                  "key" : "issuer",
+                  "type" : "select"
+                }
+              ],
+              "name" : "iDEAL",
+              "supportsRecurring" : true,
+              "type" : "ideal"
+            },
+            {
+              "brands" : [ "mc", "visa" ],
+              "details" : [],
+              "name" : "Credit Card",
+              "type" : "scheme"
             }
           ],
-          "name" : "Apple Pay",
-          "supportsRecurring" : true,
-          "type" : "applepay"
-        },
-        {
-          "name" : "WeChat Pay",
-          "type" : "wechatpaySDK"
-        },
-        {
-          "details" : [
-            {
-              "items" : [],
-              "key" : "issuer",
-              "type" : "select"
-            }
-          ],
-          "name" : "iDEAL",
-          "supportsRecurring" : true,
-          "type" : "ideal"
-        },
-        {
-          "brands" : [ "mc", "visa" ],
-          "details" : [],
-          "name" : "Credit Card",
-          "type" : "scheme"
+          "oneClickPaymentMethods" : [],
+          "storedPaymentMethods" : [],
+          "groups" : []
         }
-      ],
-      "oneClickPaymentMethods" : [],
-      "storedPaymentMethods" : [],
-      "groups" : []
-    }
-    """
+        """
 
     static let paymentMethodsOneclick =
-    """
-    {
-      "paymentMethods" : [
+        """
         {
-          "brands" : [ "mc", "visa" ],
-          "details" : [],
-          "name" : "Credit Card",
-          "type" : "scheme"
-        }
-      ],
-      "oneClickPaymentMethods" : [],
-      "storedPaymentMethods" : [
-        {
-          "expiryMonth" : "10",
-          "expiryYear" : "2020",
-          "id" : "8415625756263270",
-          "supportedShopperInteractions" : [
-            "Ecommerce",
-            "ContAuth"
+          "paymentMethods" : [
+            {
+              "brands" : [ "mc", "visa" ],
+              "details" : [],
+              "name" : "Credit Card",
+              "type" : "scheme"
+            }
           ],
-          "lastFour" : "1111",
-          "brand" : "visa",
-          "type" : "scheme",
-          "holderName" : "Checkout Shopper PlaceHolder",
-          "name" : "VISA"
+          "oneClickPaymentMethods" : [],
+          "storedPaymentMethods" : [
+            {
+              "expiryMonth" : "10",
+              "expiryYear" : "2020",
+              "id" : "8415625756263270",
+              "supportedShopperInteractions" : [
+                "Ecommerce",
+                "ContAuth"
+              ],
+              "lastFour" : "1111",
+              "brand" : "visa",
+              "type" : "scheme",
+              "holderName" : "Checkout Shopper PlaceHolder",
+              "name" : "VISA"
+            }
+        ],
+          "groups" : []
         }
-    ],
-      "groups" : []
-    }
-    """
+        """
 
     var sut: DropInComponent!
 
@@ -102,7 +102,7 @@ class DropInTests: XCTestCase {
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymenMethods, paymentMethodsConfiguration: config)
-        sut.payment = Payment(amount: Payment.Amount(value: 100, currencyCode: "CNY" ), countryCode: "CN")
+        sut.payment = Payment(amount: Payment.Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
 
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root
@@ -146,7 +146,7 @@ extension UIViewController {
 
     fileprivate func findChild<T: UIViewController>(of type: T.Type) -> T? {
         if self is T { return self as? T }
-        var result: T? = nil
+        var result: T?
         for child in self.children {
             result = result ?? child.findChild(of: T.self)
         }

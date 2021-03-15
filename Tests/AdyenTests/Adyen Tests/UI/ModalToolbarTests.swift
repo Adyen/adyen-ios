@@ -57,8 +57,8 @@ class ModalToolbarTests: XCTestCase {
 
         sut = ModalToolbar(title: "SomeTitle", style: style, cancelHandler: {})
 
-        XCTAssertNotNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.leftAnchor } )
-        XCTAssertNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.rightAnchor } )
+        XCTAssertNotNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.leftAnchor })
+        XCTAssertNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.rightAnchor })
     }
 
     func testRightCenteredMode() {
@@ -68,8 +68,8 @@ class ModalToolbarTests: XCTestCase {
 
         sut = ModalToolbar(title: "SomeTitle", style: style, cancelHandler: {})
 
-        XCTAssertNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.leftAnchor } )
-        XCTAssertNotNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.rightAnchor } )
+        XCTAssertNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.leftAnchor })
+        XCTAssertNotNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.rightAnchor })
     }
 
     func testLeftMode() {
@@ -98,7 +98,7 @@ class ModalToolbarTests: XCTestCase {
 
         sut = ModalToolbar(title: "SomeTitle", style: style, cancelHandler: {})
 
-        XCTAssertEqual(sut.cancelButton.title(for: .normal) , "Cancel")
+        XCTAssertEqual(sut.cancelButton.title(for: .normal), "Cancel")
         XCTAssertNil(sut.cancelButton.image(for: .normal))
     }
 
@@ -109,10 +109,10 @@ class ModalToolbarTests: XCTestCase {
         sut = ModalToolbar(title: "SomeTitle", style: style, cancelHandler: {})
 
         if #available(iOS 13.0, *) {
-            XCTAssertNotEqual(sut.cancelButton.title(for: .normal) , "Cancel")
+            XCTAssertNotEqual(sut.cancelButton.title(for: .normal), "Cancel")
             XCTAssertNotNil(sut.cancelButton.image(for: .normal))
         } else {
-            XCTAssertEqual(sut.cancelButton.title(for: .normal) , "Cancel")
+            XCTAssertEqual(sut.cancelButton.title(for: .normal), "Cancel")
             XCTAssertNil(sut.cancelButton.image(for: .normal))
         }
         XCTAssertNotEqual(sut.cancelButton.image(for: .normal), UIImage(named: "shopping-cart"))
@@ -124,7 +124,7 @@ class ModalToolbarTests: XCTestCase {
 
         sut = ModalToolbar(title: "SomeTitle", style: style, cancelHandler: {})
 
-        XCTAssertNotEqual(sut.cancelButton.title(for: .normal) , "Cancel")
+        XCTAssertNotEqual(sut.cancelButton.title(for: .normal), "Cancel")
         XCTAssertEqual(sut.cancelButton.image(for: .normal), UIImage(named: "shopping-cart"))
     }
 

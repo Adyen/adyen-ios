@@ -91,21 +91,21 @@ class DokuComponentTests: XCTestCase {
 
             /// Test firstName field
             self.assertTextInputUI("AdyenComponents.DokuComponent.firstNameItem",
-                     view: sut.viewController.view,
-                     style: style.textField,
-                     isFirstField: true)
+                                   view: sut.viewController.view,
+                                   style: style.textField,
+                                   isFirstField: true)
 
             /// Test lastName field
             self.assertTextInputUI("AdyenComponents.DokuComponent.lastNameItem",
-                     view: sut.viewController.view,
-                     style: style.textField,
-                     isFirstField: false)
+                                   view: sut.viewController.view,
+                                   style: style.textField,
+                                   isFirstField: false)
 
             /// Test email field
             self.assertTextInputUI("AdyenComponents.DokuComponent.emailItem",
-                     view: sut.viewController.view,
-                     style: style.textField,
-                     isFirstField: false)
+                                   view: sut.viewController.view,
+                                   style: style.textField,
+                                   isFirstField: false)
 
             /// Test submit button
             let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.DokuComponent.payButtonItem.button")

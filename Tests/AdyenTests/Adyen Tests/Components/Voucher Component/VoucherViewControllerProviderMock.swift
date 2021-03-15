@@ -6,13 +6,13 @@
 //  Copyright © 2021 Adyen. All rights reserved.
 //
 
-import UIKit
 import Adyen
 @testable import AdyenActions
+import UIKit
 
 internal final class VoucherViewControllerProviderMock: AnyVoucherViewControllerProvider {
 
-    internal var style: VoucherComponentStyle = VoucherComponentStyle()
+    internal var style = VoucherComponentStyle()
 
     internal var delegate: VoucherViewDelegate?
 

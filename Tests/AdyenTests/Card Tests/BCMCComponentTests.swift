@@ -218,7 +218,7 @@ class BCMCComponentTests: XCTestCase {
         let mockedBrands = [CardBrand(type: .bcmc, cvcPolicy: .optional)]
         let delegateMock = CardComponentDelegateMock(onBINDidChange: { _ in },
                                                      onCardBrandChange: { value in
-                                                        XCTAssertEqual(value, mockedBrands)
+                                                         XCTAssertEqual(value, mockedBrands)
                                                          expectationCardType.fulfill()
                                                      })
         sut.cardComponentDelegate = delegateMock

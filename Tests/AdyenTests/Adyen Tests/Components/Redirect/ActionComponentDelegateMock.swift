@@ -21,9 +21,7 @@ final class ActionComponentDelegateMock: ActionComponentDelegate {
         onDidFail?(error, component)
     }
 
-    func didComplete(from component: ActionComponent) {
-        
-    }
+    func didComplete(from component: ActionComponent) {}
     
     var onDidOpenExternalApplication: ((_ component: ActionComponent) -> Void)?
     

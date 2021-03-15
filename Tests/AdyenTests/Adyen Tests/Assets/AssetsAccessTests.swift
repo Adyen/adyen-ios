@@ -6,9 +6,9 @@
 //  Copyright © 2020 Adyen. All rights reserved.
 //
 
-import XCTest
 @testable import Adyen
 @testable import AdyenActions
+import XCTest
 
 class AssetsAccessTests: XCTestCase {
 

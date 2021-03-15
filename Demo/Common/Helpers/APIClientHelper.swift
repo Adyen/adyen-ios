@@ -4,7 +4,6 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-
 import Adyen
 
 protocol APIClientAware {
@@ -50,4 +49,3 @@ extension APIClientAware {
 private enum AssociatedKeys {
     internal static var apiClient = "apiClient"
 }
-

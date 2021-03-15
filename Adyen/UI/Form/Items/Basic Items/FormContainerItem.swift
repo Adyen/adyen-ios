@@ -56,7 +56,7 @@ public class FormContainerItem: FormItem {
 extension FormItem {
 
     public func withPadding(padding: UIEdgeInsets) -> FormContainerItem {
-        return FormContainerItem(content: self, padding: padding)
+        FormContainerItem(content: self, padding: padding)
     }
 
 }
