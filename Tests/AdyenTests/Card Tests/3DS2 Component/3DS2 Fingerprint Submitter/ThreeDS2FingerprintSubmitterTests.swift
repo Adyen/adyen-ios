@@ -6,9 +6,9 @@
 //  Copyright © 2020 Adyen. All rights reserved.
 //
 
-import XCTest
 @testable import AdyenActions
 @testable import AdyenCard
+import XCTest
 
 extension RedirectAction: Equatable {
     public static func == (lhs: RedirectAction, rhs: RedirectAction) -> Bool {

@@ -69,11 +69,11 @@ public struct PhoneExtensionsQuery {
 }
 
 /// :nodoc:
-public struct PhoneExtensionsRepository {
+public enum PhoneExtensionsRepository {
 
     /// :nodoc:
     public static func get(with query: PhoneExtensionsQuery) -> [PhoneExtension] {
-        return query.codes.compactMap {
+        query.codes.compactMap {
             guard let phoneExtension = allCountriesPhoneExtensions[$0] else {
                 return nil
             }

@@ -41,7 +41,7 @@ public func ADYLocalizedString(_ key: String, _ parameters: LocalizationParamete
 }
 
 private func fallbackLocalizedString(key: String) -> String {
-    return NSLocalizedString(key, tableName: nil, bundle: Bundle.coreInternalResources, comment: "")
+    NSLocalizedString(key, tableName: nil, bundle: Bundle.coreInternalResources, comment: "")
 }
 
 private func buildPossibleInputs(_ key: String,
@@ -76,7 +76,7 @@ private func updated(_ key: String, withSeparator separator: String?) -> String?
 }
 
 private func attempt(_ inputs: [LocalizationInput]) -> String? {
-    return inputs.compactMap { attempt($0) }.first
+    inputs.compactMap { attempt($0) }.first
 }
 
 private func attempt(_ input: LocalizationInput) -> String? {

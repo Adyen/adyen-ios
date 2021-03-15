@@ -14,7 +14,7 @@ open class NumericFormatter: Adyen.Formatter {
     
     /// :nodoc:
     open func formattedValue(for value: String) -> String {
-        return sanitizedValue(for: value)
+        sanitizedValue(for: value)
     }
     
     /// :nodoc:

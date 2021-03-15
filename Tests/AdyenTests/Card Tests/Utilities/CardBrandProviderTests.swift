@@ -35,7 +35,7 @@ class CardBrandProviderTests: XCTestCase {
         }
         let parameters = CardBrandProviderParameters(bin: "56", supportedTypes: [.masterCard, .visa, .maestro])
         sut.provide(for: parameters) { result in
-            XCTAssertEqual(result.map { $0.type }, [.maestro])
+            XCTAssertEqual(result.map(\.type), [.maestro])
         }
     }
 
@@ -45,7 +45,7 @@ class CardBrandProviderTests: XCTestCase {
         apiClientMock.mockedResults = [.success(BinLookupResponse(brands: mockedBrands))]
         let parameters = CardBrandProviderParameters(bin: "5656565656565656", supportedTypes: [.masterCard, .visa, .maestro])
         sut.provide(for: parameters) { result in
-            XCTAssertEqual(result.map { $0.type }, [.solo])
+            XCTAssertEqual(result.map(\.type), [.solo])
         }
     }
 
@@ -54,7 +54,7 @@ class CardBrandProviderTests: XCTestCase {
         apiClientMock.onExecute = { XCTFail("Shoul not call APIClient") }
         let parameters = CardBrandProviderParameters(bin: "56", supportedTypes: [.masterCard, .visa, .maestro])
         sut.provide(for: parameters) { result in
-            XCTAssertEqual(result.map { $0.type }, [.maestro])
+            XCTAssertEqual(result.map(\.type), [.maestro])
         }
     }
 
@@ -63,7 +63,7 @@ class CardBrandProviderTests: XCTestCase {
         apiClientMock.onExecute = { XCTFail("Shoul not call APIClient") }
         let parameters = CardBrandProviderParameters(bin: "5656565656565656", supportedTypes: [.masterCard, .visa, .maestro])
         sut.provide(for: parameters) { result in
-            XCTAssertEqual(result.map { $0.type }, [.maestro])
+            XCTAssertEqual(result.map(\.type), [.maestro])
         }
     }
 

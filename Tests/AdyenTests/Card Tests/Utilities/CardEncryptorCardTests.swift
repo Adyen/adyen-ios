@@ -10,7 +10,7 @@ import XCTest
 
 class CardEncryptorCardTests: XCTestCase {
 
-    let correctCard = Card(number: "1234567890",securityCode: "123", expiryMonth: "12", expiryYear: "2025", holder: "J. Smidt")
+    let correctCard = Card(number: "1234567890", securityCode: "123", expiryMonth: "12", expiryYear: "2025", holder: "J. Smidt")
 
     // MARK: - Test encrypt card
     

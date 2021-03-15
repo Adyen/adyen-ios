@@ -106,7 +106,7 @@ class ApplePayComponentTest: XCTestCase {
         waitForExpectations(timeout: 10)
 
         XCTAssertTrue(viewController !== self.sut.viewController)
-        UIApplication.shared.keyWindow!.rootViewController!.dismiss(animated: false) { }
+        UIApplication.shared.keyWindow!.rootViewController!.dismiss(animated: false) {}
     }
 
     func testInvalidCurrencyCode() {

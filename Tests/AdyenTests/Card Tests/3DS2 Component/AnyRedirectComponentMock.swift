@@ -6,9 +6,9 @@
 //  Copyright © 2020 Adyen. All rights reserved.
 //
 
-import Foundation
 @testable import AdyenActions
 @testable import AdyenCard
+import Foundation
 
 final class AnyRedirectComponentMock: AnyRedirectComponent {
 

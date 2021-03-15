@@ -6,10 +6,10 @@
 //  Copyright © 2021 Adyen. All rights reserved.
 //
 
-import XCTest
-import UIKit
 import Adyen
 @testable import AdyenActions
+import UIKit
+import XCTest
 
 class VoucherViewControllerProviderTests: XCTestCase {
 
@@ -32,7 +32,7 @@ class VoucherViewControllerProviderTests: XCTestCase {
 
         let amountLabel: UILabel! = viewController.view.findView(by: "adyen.dokuVoucher.amountLabel")
         XCTAssertEqual(amountLabel.text, AmountFormatter.formatted(amount: dokuAction.totalAmount.value,
-                                                                  currencyCode: dokuAction.totalAmount.currencyCode))
+                                                                   currencyCode: dokuAction.totalAmount.currencyCode))
 
         let expireyKeyLabel: UILabel! = viewController.view.findView(by: "adyen.dokuVoucher.expirationKeyLabel")
         XCTAssertEqual(expireyKeyLabel.text, "Expiration Date -- Test")

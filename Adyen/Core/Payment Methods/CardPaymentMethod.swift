@@ -20,7 +20,7 @@ public struct CardPaymentMethod: AnyCardPaymentMethod {
     
     /// :nodoc:
     public var displayInformation: DisplayInformation {
-        return DisplayInformation(title: name, subtitle: nil, logoName: "card")
+        DisplayInformation(title: name, subtitle: nil, logoName: "card")
     }
     
     /// An array containing the supported brands, such as `"mc"`, `"visa"`, `"amex"`, `"bcmc"`.
@@ -39,7 +39,7 @@ public struct CardPaymentMethod: AnyCardPaymentMethod {
     
     /// :nodoc:
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        return builder.build(paymentMethod: self)
+        builder.build(paymentMethod: self)
     }
     
     internal init(type: String, name: String, fundingSource: CardFundingSource, brands: [String]) {
@@ -78,7 +78,7 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
     
     /// :nodoc:
     public var displayInformation: DisplayInformation {
-        return localizedDisplayInformation(using: nil)
+        localizedDisplayInformation(using: nil)
     }
     
     /// :nodoc:
@@ -92,7 +92,7 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
     
     /// :nodoc:
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        return builder.build(paymentMethod: self)
+        builder.build(paymentMethod: self)
     }
     
     /// :nodoc:

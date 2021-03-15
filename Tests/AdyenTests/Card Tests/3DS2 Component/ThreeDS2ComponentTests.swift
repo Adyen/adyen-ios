@@ -6,9 +6,9 @@
 //  Copyright © 2020 Adyen. All rights reserved.
 //
 
-import XCTest
-@testable import AdyenCard
 @testable import AdyenActions
+@testable import AdyenCard
+import XCTest
 
 extension ThreeDSResult: Equatable {
     public static func == (lhs: ThreeDSResult, rhs: ThreeDSResult) -> Bool {
@@ -28,13 +28,11 @@ class ThreeDS2ComponentTests: XCTestCase {
         let threeDSActionHandler = AnyThreeDS2ActionHandlerMock()
         threeDSActionHandler.mockedFingerprintResult = .success(.action(.redirect(RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "data"))))
 
-
         let redirectComponent = AnyRedirectComponentMock()
         redirectComponent.onHandle = { [weak redirectComponent] action in
             guard let redirectComponent = redirectComponent else { return }
 
             XCTAssertEqual(action, mockedAction)
-
 
             redirectComponent.delegate?.didProvide(mockedData, from: redirectComponent)
 
@@ -69,13 +67,11 @@ class ThreeDS2ComponentTests: XCTestCase {
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
         threeDS2ActionHandler.mockedFingerprintResult = .success(.action(.redirect(mockedAction)))
 
-
         let redirectComponent = AnyRedirectComponentMock()
         redirectComponent.onHandle = { [weak redirectComponent] action in
             guard let redirectComponent = redirectComponent else { return }
 
             XCTAssertEqual(action, mockedAction)
-
 
             redirectComponent.delegate?.didFail(with: Dummy.dummyError, from: redirectComponent)
 
@@ -113,7 +109,6 @@ class ThreeDS2ComponentTests: XCTestCase {
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
         threeDS2ActionHandler.mockedFingerprintResult = .success(.action(.threeDS2(.challenge(mockedAction))))
         threeDS2ActionHandler.mockedChallengeResult = .success(.details(mockedDetails))
-
 
         let redirectComponent = AnyRedirectComponentMock()
         redirectComponent.onHandle = { action in
@@ -153,7 +148,6 @@ class ThreeDS2ComponentTests: XCTestCase {
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
         threeDS2ActionHandler.mockedFingerprintResult = .success(.action(.threeDS2Challenge(mockedAction)))
         threeDS2ActionHandler.mockedChallengeResult = .success(.details(mockedDetails))
-
 
         let redirectComponent = AnyRedirectComponentMock()
         redirectComponent.onHandle = { action in
@@ -195,7 +189,6 @@ class ThreeDS2ComponentTests: XCTestCase {
         threeDS2ActionHandler.mockedFingerprintResult = .success(.action(.threeDS2(.challenge(mockedAction))))
         threeDS2ActionHandler.mockedChallengeResult = .failure(Dummy.dummyError)
 
-
         let redirectComponent = AnyRedirectComponentMock()
         redirectComponent.onHandle = { action in
             XCTFail("RedirectComponent should never be invoked.")
@@ -226,7 +219,6 @@ class ThreeDS2ComponentTests: XCTestCase {
 
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
         threeDS2ActionHandler.mockedFingerprintResult = .failure(Dummy.dummyError)
-
 
         let redirectComponent = AnyRedirectComponentMock()
         redirectComponent.onHandle = { action in
@@ -262,7 +254,6 @@ class ThreeDS2ComponentTests: XCTestCase {
         let mockedData = ActionComponentData(details: mockedDetails, paymentData: "data")
         threeDS2ActionHandler.mockedFingerprintResult = .success(.details(mockedDetails))
 
-
         let redirectComponent = AnyRedirectComponentMock()
         redirectComponent.onHandle = { action in
             XCTFail("RedirectComponent should never be invoked.")
@@ -281,7 +272,6 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTAssertEqual(data.paymentData, mockedData.paymentData)
 
             let threeDS2Details = data.details as! ThreeDS2Details
-
 
             switch threeDS2Details {
             case let .fingerprint(fingerprint):
@@ -306,7 +296,6 @@ class ThreeDS2ComponentTests: XCTestCase {
         let mockedResult = try! ThreeDSResult(authenticated: true, authorizationToken: "AuthToken")
         let mockedDetails = ThreeDS2Details.challengeResult(mockedResult)
         threeDS2ActionHandler.mockedChallengeResult = .success(.details(mockedDetails))
-
 
         let redirectComponent = AnyRedirectComponentMock()
         redirectComponent.onHandle = { action in

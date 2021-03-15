@@ -62,7 +62,7 @@ public final class CardExpiryDateValidator: Validator {
     
     /// :nodoc:
     public func maximumLength(for value: String) -> Int {
-        return 4
+        4
     }
     
 }
