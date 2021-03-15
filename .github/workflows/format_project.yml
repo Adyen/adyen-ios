@@ -1,8 +1,8 @@
-name: Generate Docs
+name: Format project
 on: [workflow_dispatch]
 jobs:
 
-  Generate:
+  Update:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
@@ -17,17 +17,16 @@ jobs:
       with:
         xcode-version: latest-stable
 
-    - name: Generate Docs
+    - name: Format project
       run: |
-        gem install cocoapods
-        gem install jazzy
-        Scripts/generate_documentation.sh
+        brew install swiftformat
+        swiftformat .
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
       with:
         delete-branch: true
-        branch: update-docs-github-action
-        commit-message: "chore: updated documentation"
-        title: update documentation
-        body: Regenerate documentation.
+        branch: format-project-github-action
+        commit-message: "chore: format project"
+        title: Format project
+        body: Format project.
         token: ${{ secrets.MANUAL_ACTION_TOKEN }}

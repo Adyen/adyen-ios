@@ -1,8 +1,13 @@
-name: Generate Docs
-on: [workflow_dispatch]
+name: Update version number
+on:
+  workflow_dispatch:
+    inputs:
+      newVersion:
+        description: 'The new version'
+        required: true
 jobs:
 
-  Generate:
+  Update:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
@@ -17,17 +22,15 @@ jobs:
       with:
         xcode-version: latest-stable
 
-    - name: Generate Docs
+    - name: Update version number
       run: |
-        gem install cocoapods
-        gem install jazzy
-        Scripts/generate_documentation.sh
+        Scripts/increment_version.sh ${{ github.event.inputs.newVersion }}
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
       with:
         delete-branch: true
-        branch: update-docs-github-action
-        commit-message: "chore: updated documentation"
-        title: update documentation
-        body: Regenerate documentation.
+        branch: update-version-github-action
+        commit-message: "chore: updated version"
+        title: Update version
+        body: Update version.
         token: ${{ secrets.MANUAL_ACTION_TOKEN }}
