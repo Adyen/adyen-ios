@@ -24,7 +24,10 @@ jobs:
           scheme: AdyenUIKitTests
     steps:
     - uses: actions/checkout@v2
-    
+    - uses: n1hility/cancel-previous-runs@v2
+      with:
+        token: ${{ secrets.MANUAL_ACTION_TOKEN }}
+
     - name: Prepare custom devices
       run: |
         sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
