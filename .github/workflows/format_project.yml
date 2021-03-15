@@ -20,13 +20,7 @@ jobs:
     - name: Format project
       run: |
         brew install swiftformat
-        swiftformat . \
-            --disable blankLinesAtStartOfScope,blankLinesAtEndOfScope,unusedArguments,redundantSelf,wrapMultilineStatementBraces,extensionAccessControl \
-            --swiftversion "5.2" \
-            --commas inline \
-            --ranges nospace \
-            --trimwhitespace nonblank-lines \
-            --decimalgrouping none
+        swiftformat .
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
       with:
