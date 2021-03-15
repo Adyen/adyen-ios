@@ -1,6 +1,222 @@
 {
   "warnings": [
-
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/Adyen/Components/Base/PaymentComponent.swift",
+      "line": 58,
+      "symbol": "PaymentAwareComponent",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/Adyen/Components/Base/PresentableComponent.swift",
+      "line": 44,
+      "symbol": "TrackableComponent",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/Adyen/Core/APIClient/Environment.swift",
+      "line": 45,
+      "symbol": "Environment.init(baseURL:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/Adyen/Core/Payment Methods/PaymentMethod.swift",
+      "line": 31,
+      "symbol": "DisplayInformation",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/Adyen/Core/Payment Methods/PaymentMethod.swift",
+      "line": 48,
+      "symbol": "DisplayInformation",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/Adyen/Helpers/URLSessionHelpers.swift",
+      "line": 13,
+      "symbol": "AdyenScope.dataTask(with:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/Adyen/Helpers/URLSessionHelpers.swift",
+      "line": 19,
+      "symbol": "AdyenScope.dataTask(with:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/Adyen/UI/Form/Items/Basic Items/FormContainerItem.swift",
+      "line": 58,
+      "symbol": "FormItem.withPadding(padding:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/Adyen/UI/Form/Items/Text/FormTextItemView.swift",
+      "line": 339,
+      "symbol": "FormTextItemView.AccessoryType",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/Adyen/UI/Form/Items/Text/FormTextItemView.swift",
+      "line": 340,
+      "symbol": "FormTextItemView.AccessoryType.invalid",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/Adyen/UI/Form/Items/Text/FormTextItemView.swift",
+      "line": 341,
+      "symbol": "FormTextItemView.AccessoryType.valid",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/Adyen/UI/Form/Items/Text/FormTextItemView.swift",
+      "line": 342,
+      "symbol": "FormTextItemView.AccessoryType.customView(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/Adyen/UI/Form/Items/Text/FormTextItemView.swift",
+      "line": 343,
+      "symbol": "FormTextItemView.AccessoryType.none",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/Adyen/Utilities/Logger.swift",
+      "line": 9,
+      "symbol": "AdyenLogging",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/Adyen/Utilities/LogoURLProvider.swift",
+      "line": 15,
+      "symbol": "LogoURLProvider.Size.small",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/Adyen/Utilities/LogoURLProvider.swift",
+      "line": 16,
+      "symbol": "LogoURLProvider.Size.medium",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/Adyen/Utilities/LogoURLProvider.swift",
+      "line": 17,
+      "symbol": "LogoURLProvider.Size.large",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/AdyenActions/Actions/AwaitAction.swift",
+      "line": 9,
+      "symbol": "AwaitPaymentMethod",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/AdyenActions/Actions/AwaitAction.swift",
+      "line": 10,
+      "symbol": "AwaitPaymentMethod.mbway",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/AdyenActions/Actions/AwaitAction.swift",
+      "line": 11,
+      "symbol": "AwaitPaymentMethod.blik",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/AdyenActions/Actions/ThreeDS2Action.swift",
+      "line": 34,
+      "symbol": "ThreeDS2Action.ActionType.fingerprint",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/AdyenActions/Actions/ThreeDS2Action.swift",
+      "line": 35,
+      "symbol": "ThreeDS2Action.ActionType.challenge",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/AdyenActions/Actions/VoucherAction.swift",
+      "line": 12,
+      "symbol": "VoucherPaymentMethod.dokuIndomaret",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/AdyenActions/Actions/VoucherAction.swift",
+      "line": 13,
+      "symbol": "VoucherPaymentMethod.dokuAlfamart",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/AdyenCard/Utilities/CardType/CardBrand.swift",
+      "line": 24,
+      "symbol": "CardBrand.CVCPolicy.required",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/AdyenCard/Utilities/CardType/CardBrand.swift",
+      "line": 26,
+      "symbol": "CardBrand.CVCPolicy.optional",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/AdyenCard/Utilities/CardType/CardBrand.swift",
+      "line": 28,
+      "symbol": "CardBrand.CVCPolicy.hidden",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/AdyenCard/Utilities/CardType/CardType.swift",
+      "line": 70,
+      "symbol": "CardType.forbrugsforeningen",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/AdyenDropIn/Models/PaymentMethodsConfiguration.swift",
+      "line": 60,
+      "symbol": "DropInComponent.PaymentMethodsConfiguration.ApplePayConfiguration",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/AdyenEncryption/CardEncryptor.swift",
+      "line": 158,
+      "symbol": "CardEncryptor.Card.jsonData()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/AdyenWeChatPay/WeChatPayActionComponent/WeChatPayActionComponent.swift",
+      "line": 67,
+      "symbol": "WeChatPaySDKActionComponent.onResp(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    }
   ],
-  "source_directory": "/Users/mohamede/Documents/ios-code-base/adyen-ios/TempProject/Pods"
+  "source_directory": "/Users/runner/work/adyen-ios/adyen-ios/TempProject/Pods"
 }
