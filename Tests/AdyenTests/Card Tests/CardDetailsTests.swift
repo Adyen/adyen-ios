@@ -12,7 +12,7 @@ class CardDetailsTests: XCTestCase {
     
     func testSerializeCreditCard() throws {
         let paymenthMethod = CardPaymentMethodMock(fundingSource: .credit, type: "test_type", name: "test name", brands: ["barnd_1", "barnd_2"])
-        let sut = CardDetails(paymentMethod: paymenthMethod, encryptedCard: CardEncryptor.EncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year"))
+        let sut = CardDetails(paymentMethod: paymenthMethod, encryptedCard: EncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year"))
         let data = try JSONEncoder().encode(sut)
         let dictionary = try JSONSerialization.jsonObject(with: data, options: []) as! [String: String]
         
@@ -26,7 +26,7 @@ class CardDetailsTests: XCTestCase {
     
     func testSerializeDeditCard() throws {
         let paymenthMethod = CardPaymentMethodMock(fundingSource: .debit, type: "test_type", name: "test name", brands: ["barnd_1", "barnd_2"])
-        let sut = CardDetails(paymentMethod: paymenthMethod, encryptedCard: CardEncryptor.EncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year"))
+        let sut = CardDetails(paymentMethod: paymenthMethod, encryptedCard: EncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year"))
         let data = try JSONEncoder().encode(sut)
         let dictionary = try JSONSerialization.jsonObject(with: data, options: []) as! [String: String]
         
