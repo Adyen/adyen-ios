@@ -1,10 +1,5 @@
-name: Update version number
-on:
-  workflow_dispatch:
-    inputs:
-      newVersion:
-        description: 'The new version'
-        required: true
+name: Format project
+on: [workflow_dispatch]
 jobs:
 
   Update:
@@ -22,15 +17,16 @@ jobs:
       with:
         xcode-version: latest-stable
 
-    - name: Update version number
+    - name: Format project
       run: |
-        Scripts/increment_version.sh ${{ github.event.inputs.newVersion }}
+        brew install swiftformat
+        swiftformat .
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
       with:
         delete-branch: true
-        branch: update-version-github-action
-        commit-message: "chore: updated version"
-        title: Update version
-        body: Update version.
+        branch: format-project-github-action
+        commit-message: "chore: format project"
+        title: Format project
+        body: Format project.
         token: ${{ secrets.MANUAL_ACTION_TOKEN }}
