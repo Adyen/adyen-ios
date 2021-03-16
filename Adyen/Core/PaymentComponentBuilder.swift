@@ -48,6 +48,9 @@ public protocol PaymentComponentBuilder {
 
     /// Builds a certain `PaymentComponent` based on a `DokuWalletPaymentMethod`.
     func build(paymentMethod: DokuPaymentMethod) -> PaymentComponent?
+
+    /// Builds a certain `PaymentComponent` based on a `SevenElevenPaymentMethod`.
+    func build(paymentMethod: SevenElevenPaymentMethod) -> PaymentComponent?
     
     /// Builds a certain `PaymentComponent` based on any `PaymentMethod`, as a default case.
     func build(paymentMethod: PaymentMethod) -> PaymentComponent?

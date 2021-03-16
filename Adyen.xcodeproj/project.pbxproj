@@ -335,6 +335,8 @@
 		F95899D825FA526A00E4113F /* AdyenSwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F95899C625FA524100E4113F /* AdyenSwiftUI.framework */; };
 		F95899D925FA526A00E4113F /* AdyenSwiftUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F95899C625FA524100E4113F /* AdyenSwiftUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F9589C7D2600FAB800E4113F /* SevenElevenPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589C7C2600FAB800E4113F /* SevenElevenPaymentMethod.swift */; };
+		F9589C942600FD7A00E4113F /* SevenElevenComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589C932600FD7A00E4113F /* SevenElevenComponent.swift */; };
+		F9589CA02600FE4700E4113F /* SevenElevenDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589C9F2600FE4700E4113F /* SevenElevenDetails.swift */; };
 		F95A788825C416A60032CF7E /* CopyLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95A788725C416A60032CF7E /* CopyLabelView.swift */; };
 		F95A789325C41BB20032CF7E /* NSTextAlignmentHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95A789225C41BB20032CF7E /* NSTextAlignmentHelpers.swift */; };
 		F95A78B925C4302A0032CF7E /* AbstractVoucherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95A78B825C4302A0032CF7E /* AbstractVoucherView.swift */; };
@@ -1049,6 +1051,8 @@
 		F95899C825FA524100E4113F /* AdyenSwiftUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdyenSwiftUI.h; sourceTree = "<group>"; };
 		F95899C925FA524100E4113F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F9589C7C2600FAB800E4113F /* SevenElevenPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SevenElevenPaymentMethod.swift; sourceTree = "<group>"; };
+		F9589C932600FD7A00E4113F /* SevenElevenComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SevenElevenComponent.swift; sourceTree = "<group>"; };
+		F9589C9F2600FE4700E4113F /* SevenElevenDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SevenElevenDetails.swift; sourceTree = "<group>"; };
 		F95A788725C416A60032CF7E /* CopyLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyLabelView.swift; sourceTree = "<group>"; };
 		F95A789225C41BB20032CF7E /* NSTextAlignmentHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSTextAlignmentHelpers.swift; sourceTree = "<group>"; };
 		F95A78B825C4302A0032CF7E /* AbstractVoucherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractVoucherView.swift; sourceTree = "<group>"; };
@@ -2281,6 +2285,7 @@
 		F9175E56259393E800D653BE /* AdyenComponents */ = {
 			isa = PBXGroup;
 			children = (
+				F9589C882600FD5D00E4113F /* 7 Eleven */,
 				F97C836E25BF03C500D7F85C /* Doku */,
 				E700A7342549E9FC0012B64C /* BLIK */,
 				F9D644DA24D2D9340059CBE3 /* MB Way */,
@@ -2596,6 +2601,15 @@
 				F95899C925FA524100E4113F /* Info.plist */,
 			);
 			path = AdyenSwiftUI;
+			sourceTree = "<group>";
+		};
+		F9589C882600FD5D00E4113F /* 7 Eleven */ = {
+			isa = PBXGroup;
+			children = (
+				F9589C932600FD7A00E4113F /* SevenElevenComponent.swift */,
+				F9589C9F2600FE4700E4113F /* SevenElevenDetails.swift */,
+			);
+			path = "7 Eleven";
 			sourceTree = "<group>";
 		};
 		F95B6D962527454E002C9062 /* SwiftUI */ = {
@@ -4101,7 +4115,9 @@
 				F9175EE22593952600D653BE /* BLIKComponent.swift in Sources */,
 				F9175E8B259394E100D653BE /* SEPADirectDebitComponent.swift in Sources */,
 				F9175E8A259394E100D653BE /* SEPADirectDebitDetails.swift in Sources */,
+				F9589C942600FD7A00E4113F /* SevenElevenComponent.swift in Sources */,
 				F9175EAA259394FF00D653BE /* ApplePayComponentExtensions.swift in Sources */,
+				F9589CA02600FE4700E4113F /* SevenElevenDetails.swift in Sources */,
 				F9175ED22593951800D653BE /* MBWayComponent.swift in Sources */,
 				F9175E9B259394F200D653BE /* IssuerListComponent.swift in Sources */,
 				F97C839825BF05AB00D7F85C /* DokuDetails.swift in Sources */,

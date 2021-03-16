@@ -223,6 +223,12 @@ extension ComponentManager: PaymentComponentBuilder {
     }
 
     /// :nodoc:
+    internal func build(paymentMethod: SevenElevenPaymentMethod) -> PaymentComponent? {
+        SevenElevenComponent(paymentMethod: paymentMethod,
+                             style: style.formComponent)
+    }
+
+    /// :nodoc:
     internal func build(paymentMethod: DokuPaymentMethod) -> PaymentComponent? {
         DokuComponent(paymentMethod: paymentMethod,
                       style: style.formComponent)
