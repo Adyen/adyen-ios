@@ -392,7 +392,7 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.type, "giftcard")
         XCTAssertEqual(paymentMethod.name, "Generic GiftCard")
         XCTAssertEqual(paymentMethod.displayInformation.logoName, "genericgiftcard")
-        XCTAssertEqual(paymentMethod.localizedDisplayInformation(using: nil) .logoName, "genericgiftcard")
+        XCTAssertEqual(paymentMethod.localizedDisplayInformation(using: nil).logoName, "genericgiftcard")
     }
 }
 

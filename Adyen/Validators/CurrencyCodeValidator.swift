@@ -20,6 +20,6 @@ public struct CurrencyCodeValidator: Validator {
 
     /// :nodoc:
     public func maximumLength(for value: String) -> Int {
-        return 3
+        3
     }
 }

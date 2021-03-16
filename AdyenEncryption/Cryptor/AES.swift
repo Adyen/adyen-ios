@@ -35,7 +35,7 @@ extension Cryptor {
         /// Lenght of the initial vector (nonce).
         /// :nodoc:
         internal var ivLength: Int {
-            return 12
+            12
         }
 
         private var encryptor: AESEncryptor.Type {

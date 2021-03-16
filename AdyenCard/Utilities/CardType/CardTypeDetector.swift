@@ -22,7 +22,7 @@ public extension AdyenScope where Base == [CardType] {
     /// - Parameter cardNumber: The card number to retrieve the type of. The number is expected to be sanitized (digits only).
     /// - Returns: The type for the given card number, or `nil` if it could not be found.
     func types(forCardNumber cardNumber: String) -> [CardType] {
-        return base.filter { $0.matches(cardNumber: cardNumber) }
+        base.filter { $0.matches(cardNumber: cardNumber) }
     }
     
     /// Detects all possible types for a given card number.
@@ -32,13 +32,13 @@ public extension AdyenScope where Base == [CardType] {
     /// - Parameter cardNumber: The card number to retrieve the types for. The number is expected to be sanitized (digits only).
     /// - Returns: The possible types for the given card number.
     func type(forCardNumber cardNumber: String) -> CardType? {
-        return base.first { $0.matches(cardNumber: cardNumber) }
+        base.first { $0.matches(cardNumber: cardNumber) }
     }
 }
 
 extension Array where Element: Hashable {
 
     internal func minus(_ set: Set<Element>) -> [Element] {
-        return filter { !set.contains($0) }
+        filter { !set.contains($0) }
     }
 }

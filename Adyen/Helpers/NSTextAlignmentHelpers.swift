@@ -5,8 +5,8 @@
 //
 
 import Foundation
-import UIKit
 import QuartzCore
+import UIKit
 
 /// :nodoc:
 extension NSTextAlignment: AdyenCompatible {}

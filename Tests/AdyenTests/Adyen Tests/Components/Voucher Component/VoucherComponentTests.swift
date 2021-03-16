@@ -6,10 +6,10 @@
 //  Copyright © 2021 Adyen. All rights reserved.
 //
 
-import XCTest
-import UIKit
 import Adyen
 @testable import AdyenActions
+import UIKit
+import XCTest
 
 class VoucherComponentTests: XCTestCase {
 

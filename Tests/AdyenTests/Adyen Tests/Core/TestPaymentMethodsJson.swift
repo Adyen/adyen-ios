@@ -170,56 +170,56 @@ let giroPayDictionaryWithNonOptionalDetails = [
 ] as [String: Any]
 
 let googlePay = [
-  "configuration" : [
-    "merchantId" : "1000",
-    "gatewayMerchantId" : "TestMerchantCheckout"
-  ],
-  "name" : "Google Pay",
-  "type" : "paywithgoogle"
+    "configuration": [
+        "merchantId": "1000",
+        "gatewayMerchantId": "TestMerchantCheckout"
+    ],
+    "name": "Google Pay",
+    "type": "paywithgoogle"
 ] as [String: Any]
 
 let dokuWallet = [
-    "name" : "DOKU wallet",
-    "type" : "doku_wallet"
+    "name": "DOKU wallet",
+    "type": "doku_wallet"
 ] as [String: Any]
 
 let dokuIndomaretAction: [String: Any] = [
-    "reference" : "9786512300056485",
-    "initialAmount" : [
-      "currency" : "IDR",
-      "value" : 17408
+    "reference": "9786512300056485",
+    "initialAmount": [
+        "currency": "IDR",
+        "value": 17408
     ],
-    "paymentMethodType" : "doku_indomaret",
-    "instructionsUrl" : "https://www.doku.com/how-to-pay/indomaret.php",
-    "shopperEmail" : "Qwfqwf@POj.co",
-    "totalAmount" : [
-      "currency" : "IDR",
-      "value" : 17408
+    "paymentMethodType": "doku_indomaret",
+    "instructionsUrl": "https://www.doku.com/how-to-pay/indomaret.php",
+    "shopperEmail": "Qwfqwf@POj.co",
+    "totalAmount": [
+        "currency": "IDR",
+        "value": 17408
     ],
-    "expiresAt" : "2021-02-02T22:00:00",
-    "merchantName" : "Adyen Demo Shop",
-    "shopperName" : "Qwfqwew Gewgewf",
-    "type" : "voucher"
-  ]
+    "expiresAt": "2021-02-02T22:00:00",
+    "merchantName": "Adyen Demo Shop",
+    "shopperName": "Qwfqwew Gewgewf",
+    "type": "voucher"
+]
 
 let dokuAlfamartAction: [String: Any] = [
-    "reference" : "8888823200056486",
-    "initialAmount" : [
-      "currency" : "IDR",
-      "value" : 17408
+    "reference": "8888823200056486",
+    "initialAmount": [
+        "currency": "IDR",
+        "value": 17408
     ],
-    "paymentMethodType" : "doku_alfamart",
-    "instructionsUrl" : "https://www.doku.com/how-to-pay/alfamart.php",
-    "shopperEmail" : "Qsosih@oih.com",
-    "totalAmount" : [
-      "currency" : "IDR",
-      "value" : 17408
+    "paymentMethodType": "doku_alfamart",
+    "instructionsUrl": "https://www.doku.com/how-to-pay/alfamart.php",
+    "shopperEmail": "Qsosih@oih.com",
+    "totalAmount": [
+        "currency": "IDR",
+        "value": 17408
     ],
-    "expiresAt" : "2021-02-02T22:58:00",
-    "merchantName" : "Adyen Demo Shop",
-    "shopperName" : "Qwodihqw Wqodihq",
-    "type" : "voucher"
-  ]
+    "expiresAt": "2021-02-02T22:58:00",
+    "merchantName": "Adyen Demo Shop",
+    "shopperName": "Qwodihqw Wqodihq",
+    "type": "voucher"
+]
 
 let weChatMiniProgramDictionary = [
     "name": "WeChat Pay",
@@ -264,12 +264,12 @@ let blik = [
 ] as [String: Any]
 
 let storedBlik = [
-    "id" : "8315892878479934",
-    "supportedShopperInteractions" : [
-      "Ecommerce"
+    "id": "8315892878479934",
+    "supportedShopperInteractions": [
+        "Ecommerce"
     ],
-    "name" : "Blik",
-    "type" : "blik"
+    "name": "Blik",
+    "type": "blik"
 ] as [String: Any]
 
 let qiwiWallet = [

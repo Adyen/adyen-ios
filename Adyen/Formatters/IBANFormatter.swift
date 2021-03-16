@@ -15,7 +15,7 @@ public final class IBANFormatter: Formatter {
     /// :nodoc:
     public func formattedValue(for value: String) -> String {
         // Sanitize the string first, then group it into sets of 4.
-        return sanitizedValue(for: value).components(withLength: 4).joined(separator: " ")
+        sanitizedValue(for: value).components(withLength: 4).joined(separator: " ")
     }
     
     /// :nodoc:

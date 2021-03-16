@@ -30,7 +30,7 @@ public struct Observation: Hashable {
     
     /// :nodoc:
     public static func == (lhs: Observation, rhs: Observation) -> Bool {
-        return lhs.uuid == rhs.uuid
+        lhs.uuid == rhs.uuid
     }
     
     // MARK: - Hashable

@@ -20,6 +20,6 @@ internal struct CardPublicKeyValidator: Validator {
     
     /// :nodoc:
     public func maximumLength(for value: String) -> Int {
-        return 518
+        518
     }
 }

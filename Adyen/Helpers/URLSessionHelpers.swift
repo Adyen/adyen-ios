@@ -11,13 +11,13 @@ extension URLSession: AdyenCompatible {}
 
 public extension AdyenScope where Base: URLSession {
     func dataTask(with url: URL, completion: @escaping ((Result<Data, Error>) -> Void)) -> URLSessionDataTask {
-        return base.dataTask(with: url, completionHandler: { data, response, error in
+        base.dataTask(with: url, completionHandler: { data, response, error in
             self.handle(data: data, response: response, error: error, completion: completion)
         })
     }
     
     func dataTask(with urlRequest: URLRequest, completion: @escaping ((Result<Data, Error>) -> Void)) -> URLSessionDataTask {
-        return base.dataTask(with: urlRequest, completionHandler: { data, response, error in
+        base.dataTask(with: urlRequest, completionHandler: { data, response, error in
             self.handle(data: data, response: response, error: error, completion: completion)
         })
     }

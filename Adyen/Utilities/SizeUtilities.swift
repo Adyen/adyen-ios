@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 
 internal func + (lhs: CGSize, rhs: CGSize) -> CGSize {
-    return CGSize(width: lhs.width + rhs.width, height: lhs.height + rhs.height)
+    CGSize(width: lhs.width + rhs.width, height: lhs.height + rhs.height)
 }
 
 extension UIEdgeInsets {

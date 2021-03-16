@@ -40,7 +40,7 @@ public struct Card {
     }
 
     internal var isEmpty: Bool {
-        return [number, securityCode, expiryYear, expiryMonth].allSatisfy { $0 == nil }
+        [number, securityCode, expiryYear, expiryMonth].allSatisfy { $0 == nil }
     }
 
 }

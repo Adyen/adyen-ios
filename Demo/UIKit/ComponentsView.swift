@@ -49,11 +49,11 @@ internal final class ComponentsView: UIView {
 extension ComponentsView: UITableViewDataSource {
     
     internal func numberOfSections(in tableView: UITableView) -> Int {
-        return items.count
+        items.count
     }
     
     internal func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items[section].count
+        items[section].count
     }
     
     internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

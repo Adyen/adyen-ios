@@ -76,7 +76,7 @@ extension ListItem: Hashable {
     }
     
     public static func == (lhs: ListItem, rhs: ListItem) -> Bool {
-        return lhs.title == rhs.title && lhs.imageURL == rhs.imageURL
+        lhs.title == rhs.title && lhs.imageURL == rhs.imageURL
     }
     
 }

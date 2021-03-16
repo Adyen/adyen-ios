@@ -66,15 +66,15 @@ internal final class StoredCardComponent: PaymentComponent, PresentableComponent
     }()
     
     private func createStoredCardAlertManager(withClientKey clientKey: String) -> StoredCardAlertManager {
-        return StoredCardAlertManager(paymentMethod: storedCardPaymentMethod,
-                                      clientKey: clientKey,
-                                      environment: environment,
-                                      amount: payment?.amount)
+        StoredCardAlertManager(paymentMethod: storedCardPaymentMethod,
+                               clientKey: clientKey,
+                               environment: environment,
+                               amount: payment?.amount)
     }
     
     private func createStoredCardAlertManager(withPublicKey publicKey: String) -> StoredCardAlertManager {
-        return StoredCardAlertManager(paymentMethod: storedCardPaymentMethod,
-                                      publicKey: publicKey,
-                                      amount: payment?.amount)
+        StoredCardAlertManager(paymentMethod: storedCardPaymentMethod,
+                               publicKey: publicKey,
+                               amount: payment?.amount)
     }
 }

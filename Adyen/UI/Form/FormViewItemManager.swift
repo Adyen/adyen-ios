@@ -65,7 +65,7 @@ internal final class FormViewItemManager {
     /// - Parameter item: The item to retrieve the item view for.
     /// - Returns: The item view for the given item or nil if item not found.
     internal func itemView<T: FormItem>(for item: T) -> FormItemView<T>? {
-        return itemViews[index(of: item)] as? FormItemView<T>
+        itemViews[index(of: item)] as? FormItemView<T>
     }
     
     private func newItemView<T: FormItem>(for item: T) -> AnyFormItemView {
