@@ -38,7 +38,7 @@ class BCMCComponentTests: XCTestCase {
                                 clientKey: "test_client_key")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
-        XCTAssertEqual(sut.configuration.supportedCardTypes, [.bcmc])
+        XCTAssertEqual(sut.configuration.allowedCardTypes, [.bcmc])
         XCTAssertEqual(sut.configuration.excludedCardTypes, [])
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
@@ -63,7 +63,7 @@ class BCMCComponentTests: XCTestCase {
                                 clientKey: "test_client_key")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
-        XCTAssertEqual(sut.configuration.supportedCardTypes, [.bcmc])
+        XCTAssertEqual(sut.configuration.allowedCardTypes, [.bcmc])
         XCTAssertEqual(sut.configuration.excludedCardTypes, [])
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
@@ -88,7 +88,7 @@ class BCMCComponentTests: XCTestCase {
                                 clientKey: "test_client_key")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
-        XCTAssertEqual(sut.configuration.supportedCardTypes, [.bcmc])
+        XCTAssertEqual(sut.configuration.allowedCardTypes, [.bcmc])
         XCTAssertEqual(sut.configuration.excludedCardTypes, [])
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
@@ -173,7 +173,7 @@ class BCMCComponentTests: XCTestCase {
             XCTAssertNotNil(resultJson["encryptedCardNumber"] as? String)
             XCTAssertNotNil(resultJson["type"] as? String)
             XCTAssertEqual(resultJson["type"] as? String, "bcmc")
-            XCTAssertNotNil(resultJson["encryptedSecurityCode"] as? String)
+            XCTAssertNil(resultJson["encryptedSecurityCode"] as? String)
             XCTAssertNotNil(resultJson["encryptedExpiryMonth"] as? String)
 
             sut.stopLoadingIfNeeded()
