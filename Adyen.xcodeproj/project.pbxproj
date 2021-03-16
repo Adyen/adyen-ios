@@ -97,6 +97,8 @@
 		E74517A425FB834C000BDCCF /* EncryptedCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74517A325FB834C000BDCCF /* EncryptedCard.swift */; };
 		E74517CB25FBA2A5000BDCCF /* BinPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74517CA25FBA2A5000BDCCF /* BinPayload.swift */; };
 		E745185D25FBDDC7000BDCCF /* Payload.swift in Sources */ = {isa = PBXBuildFile; fileRef = E745185C25FBDDC7000BDCCF /* Payload.swift */; };
+		E7451A052600EC8D000BDCCF /* CardComponentConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7451A042600EC8D000BDCCF /* CardComponentConfiguration.swift */; };
+		E7451A112600EDE0000BDCCF /* StoredCardConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7451A102600EDE0000BDCCF /* StoredCardConfiguration.swift */; };
 		E745256925C1C9E1006A941F /* AdyenActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C6F23F1924B000B4B2B /* AdyenActionComponent.swift */; };
 		E7484C2723B9FDF000CCF74F /* SlideInPresentationAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7484C2623B9FDF000CCF74F /* SlideInPresentationAnimator.swift */; };
 		E749FD1E23CF4998000D18BA /* NavigationStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E749FD1D23CF4998000D18BA /* NavigationStyle.swift */; };
@@ -863,6 +865,8 @@
 		E74517A325FB834C000BDCCF /* EncryptedCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedCard.swift; sourceTree = "<group>"; };
 		E74517CA25FBA2A5000BDCCF /* BinPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinPayload.swift; sourceTree = "<group>"; };
 		E745185C25FBDDC7000BDCCF /* Payload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payload.swift; sourceTree = "<group>"; };
+		E7451A042600EC8D000BDCCF /* CardComponentConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardComponentConfiguration.swift; sourceTree = "<group>"; };
+		E7451A102600EDE0000BDCCF /* StoredCardConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredCardConfiguration.swift; sourceTree = "<group>"; };
 		E7484C2623B9FDF000CCF74F /* SlideInPresentationAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideInPresentationAnimator.swift; sourceTree = "<group>"; };
 		E749FD1D23CF4998000D18BA /* NavigationStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStyle.swift; sourceTree = "<group>"; };
 		E74D918225AF3FE600743B0C /* CardBrandProviderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardBrandProviderTests.swift; sourceTree = "<group>"; };
@@ -2411,6 +2415,7 @@
 				E9E3DAA5221C431A00697074 /* CardComponent.swift */,
 				F919DF9424E6D7BC0027976E /* CardComponentExtensions.swift */,
 				E2028F5D222805E20007FF8B /* CardDetails.swift */,
+				E7451A042600EC8D000BDCCF /* CardComponentConfiguration.swift */,
 			);
 			path = Card;
 			sourceTree = "<group>";
@@ -2420,6 +2425,7 @@
 			children = (
 				F919DF9624E6E2810027976E /* StoredCardComponent.swift */,
 				E9240D6B2265EFE900FB57D0 /* StoredCardAlertManager.swift */,
+				E7451A102600EDE0000BDCCF /* StoredCardConfiguration.swift */,
 			);
 			path = "Stored Card";
 			sourceTree = "<group>";
@@ -4018,6 +4024,7 @@
 				F92329DD25AD049E002C5BC4 /* FallbackCardBrandProvider.swift in Sources */,
 				E9E3DACD221EEAB200697074 /* CardSecurityCodeValidator.swift in Sources */,
 				F96286B5256BDEA400043FE3 /* CardBundleExtension.swift in Sources */,
+				E7451A112600EDE0000BDCCF /* StoredCardConfiguration.swift in Sources */,
 				F919DF9724E6E2810027976E /* StoredCardComponent.swift in Sources */,
 				F919DF9324E68F750027976E /* CardPublicKeyProvider.swift in Sources */,
 				E9E3DAC0221ECD7C00697074 /* CardSecurityCodeFormatter.swift in Sources */,
@@ -4031,6 +4038,7 @@
 				F9B8C49223FC287100C4D0FB /* FormCardNumberItemView.swift in Sources */,
 				E9E3DAB5221D988200697074 /* CardNumberFormatter.swift in Sources */,
 				F92329D225AD0240002C5BC4 /* CardBrand.swift in Sources */,
+				E7451A052600EC8D000BDCCF /* CardComponentConfiguration.swift in Sources */,
 				F919DF9524E6D7BC0027976E /* CardComponentExtensions.swift in Sources */,
 				E76EC680241125E0009C6E2F /* FormCardSecurityCodeItem.swift in Sources */,
 				E7166A5624EAD99F007CCDEF /* CardBrandProvider.swift in Sources */,

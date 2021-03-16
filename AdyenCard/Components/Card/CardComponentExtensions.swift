@@ -10,17 +10,13 @@ import Adyen
 #endif
 import UIKit
 
-/// Stored card configuration.
-public struct StoredCardConfiguration {
-
-    /// Indicates whether to show the security code field.
-    public var showsSecurityCodeField = true
-
-    /// :nodoc:
-    public init() { /* empty init */ }
-}
-
 extension CardComponent {
+
+    /// Card Component errors.
+    public enum Error: Swift.Error {
+        /// ClientKey is required for `CardPublicKeyProvider` to work, and this error is thrown in case its nil.
+        case missingClientKey
+    }
     
     internal func isPublicKeyValid(key: String) -> Bool {
         let validator = CardPublicKeyValidator()
@@ -29,9 +25,10 @@ extension CardComponent {
     
     private func getEncryptedCard(publicKey: String) throws -> EncryptedCard {
         let card = Card(number: numberItem.value,
-                        securityCode: securityCodeItem.value,
+                        securityCode: configuration.showsSecurityCodeField ? securityCodeItem.nonEmptyValue : nil,
                         expiryMonth: expiryDateItem.value[0...1],
-                        expiryYear: "20" + expiryDateItem.value[2...3])
+                        expiryYear: "20" + expiryDateItem.value[2...3],
+                        holder: configuration.showsHolderNameField ? holderNameItem.nonEmptyValue : nil)
         return try CardEncryptor.encrypt(card: card, with: publicKey)
     }
     
@@ -51,7 +48,7 @@ extension CardComponent {
     private func submitEncryptedCardData(cardPublicKey: String) {
         do {
             let encryptedCard = try getEncryptedCard(publicKey: cardPublicKey)
-            let details = CardDetails(paymentMethod: paymentMethod as! AnyCardPaymentMethod, // swiftlint:disable:this force_cast
+            let details = CardDetails(paymentMethod: cardPaymentMethod,
                                       encryptedCard: encryptedCard,
                                       holderName: configuration.showsHolderNameField ? holderNameItem.value : nil)
             
@@ -109,63 +106,8 @@ extension CardComponent: TrackableComponent {
     }
 }
 
-extension CardComponent {
-
-    /// Card component configuration.
-    public struct Configuration {
-
-        /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
-        public var showsHolderNameField: Bool
-
-        /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
-        public var showsStorePaymentMethodField: Bool
-
-        /// Indicates whether to show the security code field at all. Defaults to true.
-        public var showsSecurityCodeField: Bool
-
-        /// Stored card configuration.
-        public var stored: StoredCardConfiguration
-
-        /// The supported card types. By default list of supported cards is extracted from component's `AnyCardPaymentMethod`.
-        /// Use this property to override them.
-        public var supportedCardTypes: [CardType]?
-
-        /// Indicates the card brands excluded from the supported brands.
-        internal var excludedCardTypes: Set<CardType> = [.bcmc]
-
-        /// Configuration of Card component.
-        /// - Parameters:
-        ///   - showsHolderNameField: Indicates if the field for entering the holder name should be displayed in the form.
-        ///   Defaults to false.
-        ///   - showsStorePaymentMethodField: Indicates if the field for storing the card payment method should be displayed in the form.
-        ///   Defaults to true.
-        ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
-        ///   Defaults to true.
-        ///   - storedCardConfiguration: Stored card configuration.
-        ///   - supportedCardTypes: The supported card types.
-        public init(showsHolderNameField: Bool = false,
-                    showsStorePaymentMethodField: Bool = true,
-                    showsSecurityCodeField: Bool = true,
-                    storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
-                    supportedCardTypes: [CardType]? = nil) {
-            self.showsHolderNameField = showsHolderNameField
-            self.showsSecurityCodeField = showsSecurityCodeField
-            self.showsStorePaymentMethodField = showsStorePaymentMethodField
-            self.stored = storedCardConfiguration
-            self.supportedCardTypes = supportedCardTypes
-        }
-
-        internal func bcmcConfiguration() -> Configuration {
-            var storedCardConfiguration = stored
-            storedCardConfiguration.showsSecurityCodeField = false
-            var configuration = Configuration(showsHolderNameField: showsHolderNameField,
-                                              showsStorePaymentMethodField: showsStorePaymentMethodField,
-                                              showsSecurityCodeField: false,
-                                              storedCardConfiguration: storedCardConfiguration,
-                                              supportedCardTypes: [.bcmc])
-            configuration.excludedCardTypes = []
-            return configuration
-        }
+private extension FormValueItem where ValueType == String {
+    var nonEmptyValue: String? {
+        self.value.isEmpty ? nil : self.value
     }
-
 }
