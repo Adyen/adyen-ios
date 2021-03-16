@@ -87,8 +87,7 @@ internal final class ComponentManager {
         let configuration = CardComponent.Configuration(showsHolderNameField: cardConfiguration.showsHolderNameField,
                                                         showsStorePaymentMethodField: cardConfiguration.showsStorePaymentMethodField,
                                                         showsSecurityCodeField: cardConfiguration.showsSecurityCodeField,
-                                                        storedCardConfiguration: cardConfiguration.stored,
-                                                        supportedCardTypes: nil)
+                                                        storedCardConfiguration: cardConfiguration.stored)
 
         return CardComponent(paymentMethod: paymentMethod,
                              configuration: configuration,
@@ -102,8 +101,7 @@ internal final class ComponentManager {
         let configuration = CardComponent.Configuration(showsHolderNameField: cardConfiguration.showsHolderNameField,
                                                         showsStorePaymentMethodField: cardConfiguration.showsStorePaymentMethodField,
                                                         showsSecurityCodeField: cardConfiguration.showsSecurityCodeField,
-                                                        storedCardConfiguration: cardConfiguration.stored,
-                                                        supportedCardTypes: nil)
+                                                        storedCardConfiguration: cardConfiguration.stored)
 
         return BCMCComponent(paymentMethod: paymentMethod,
                              configuration: configuration,
