@@ -56,7 +56,8 @@ class PaymentMethodTests: XCTestCase {
                 blik,
                 giftCard,
                 googlePay,
-                dokuWallet
+                dokuWallet,
+                sevenElevenDictionary
             ]
         ]
         
@@ -111,7 +112,7 @@ class PaymentMethodTests: XCTestCase {
         
         // Regular payment methods
         
-        XCTAssertEqual(paymentMethods.regular.count, 16)
+        XCTAssertEqual(paymentMethods.regular.count, 17)
         XCTAssertTrue(paymentMethods.regular[0] is CardPaymentMethod)
         XCTAssertEqual((paymentMethods.regular[0] as! CardPaymentMethod).fundingSource!, .credit)
         
@@ -185,6 +186,10 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertTrue(paymentMethods.regular[15] is DokuPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[15].name, "DOKU wallet")
         XCTAssertEqual(paymentMethods.regular[15].type, "doku_wallet")
+
+        XCTAssertTrue(paymentMethods.regular[16] is SevenElevenPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[16].name, "7-Eleven")
+        XCTAssertEqual(paymentMethods.regular[16].type, "econtext_seven_eleven")
 
     }
     
@@ -339,6 +344,14 @@ class PaymentMethodTests: XCTestCase {
         let paymentMethod = try Coder.decode(giroPayDictionaryWithOptionalDetails) as RedirectPaymentMethod
         XCTAssertEqual(paymentMethod.type, "giropay")
         XCTAssertEqual(paymentMethod.name, "GiroPay")
+    }
+
+    // MARK: - Seven Eleven
+
+    func testDecodingSevenElevenPaymentMethod() throws {
+        let paymentMethod = try Coder.decode(sevenElevenDictionary) as SevenElevenPaymentMethod
+        XCTAssertEqual(paymentMethod.name, "7-Eleven")
+        XCTAssertEqual(paymentMethod.type, "econtext_seven_eleven")
     }
     
     // MARK: - Stored Bancontact

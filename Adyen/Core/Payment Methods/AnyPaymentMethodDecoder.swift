@@ -45,6 +45,7 @@ internal enum PaymentMethodType: String {
     case dokuIndomaret = "doku_indomaret"
     case giftcard
     case doku
+    case econtextSevenEleven = "econtext_seven_eleven"
     
 }
 
@@ -101,8 +102,8 @@ internal enum AnyPaymentMethodDecoder {
         .dokuWallet: DokuPaymentMethodDecoder(),
         .dokuAlfamart: DokuPaymentMethodDecoder(),
         .dokuIndomaret: DokuPaymentMethodDecoder(),
-        .giftcard: GiftCardPaymentMethodDecoder()
-
+        .giftcard: GiftCardPaymentMethodDecoder(),
+        .econtextSevenEleven: SevenElevenPaymentMethodDecoder()
     ]
     
     private static var defaultDecoder: PaymentMethodDecoder = RedirectPaymentMethodDecoder()
@@ -245,5 +246,11 @@ private struct DokuPaymentMethodDecoder: PaymentMethodDecoder {
 private struct GiftCardPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         .giftcard(try GiftCardPaymentMethod(from: decoder))
+    }
+}
+
+private struct SevenElevenPaymentMethodDecoder: PaymentMethodDecoder {
+    func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
+        .sevenEleven(try SevenElevenPaymentMethod(from: decoder))
     }
 }

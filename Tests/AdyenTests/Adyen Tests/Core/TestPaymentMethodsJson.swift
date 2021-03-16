@@ -120,6 +120,29 @@ let issuerListDictionary = [
     ]
 ] as [String: Any]
 
+let sevenElevenDictionary = [
+    "details" : [
+      [
+        "key" : "shopperEmail",
+        "type" : "emailAddress"
+      ],
+      [
+        "key" : "firstName",
+        "type" : "text"
+      ],
+      [
+        "key" : "lastName",
+        "type" : "text"
+      ],
+      [
+        "key" : "telephoneNumber",
+        "type" : "tel"
+      ]
+    ],
+    "name" : "7-Eleven",
+    "type" : "econtext_seven_eleven"
+  ] as [String: Any]
+
 let issuerListDictionaryWithoutDetailsObject = [
     "type": "ideal_100",
     "name": "iDEAL_100",
