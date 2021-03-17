@@ -31,6 +31,13 @@ internal final class IntegrationExample: APIClientAware {
 
     internal weak var presenter: Presenter?
 
+    internal var clientKey: String {
+        if CommandLine.arguments.contains("-UITests") {
+            return "local_DUMMYKEYFORTESTING"
+        }
+        return Configuration.clientKey
+    }
+
     // MARK: - Action Handling for Components
 
     internal lazy var actionComponent: AdyenActionComponent = {
@@ -39,7 +46,7 @@ internal final class IntegrationExample: APIClientAware {
         handler.delegate = self
         handler.presentationDelegate = self
         handler.environment = environment
-        handler.clientKey = Configuration.clientKey
+        handler.clientKey = clientKey
         return handler
     }()
 
