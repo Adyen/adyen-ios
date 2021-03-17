@@ -73,9 +73,6 @@ public extension DropInComponent {
             /// Ignored on iOS 10.*.
             public var requiredShippingContactFields: Set<PKContactField> = []
             
-            /// The excluded card brands.
-            public var excludedCardNetworks: [PKPaymentNetwork] = []
-            
         }
     }
 }
