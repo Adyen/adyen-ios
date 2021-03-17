@@ -188,3 +188,8 @@ custom_categories:
       - LengthValidator
       - Environment
       - LogoURLProvider
+  - name: Encryption
+    children:
+      - CardEncryptor
+      - Card
+      - EncryptedCard
