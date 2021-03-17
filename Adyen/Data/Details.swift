@@ -21,20 +21,3 @@ public protocol PaymentMethodDetails: Details {}
 
 /// Contains additional details that were retrieved to complete a payment.
 public protocol AdditionalDetails: Details {}
-
-/// :nodoc:
-public extension Details {
-    
-    /// An encoded representation of the details.
-    var dictionaryRepresentation: [String: Any] {
-        do {
-            let data = try Coder.encode(self) as Data
-            let dictionary = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-            
-            return dictionary ?? [:]
-        } catch {
-            return [:]
-        }
-    }
-    
-}
