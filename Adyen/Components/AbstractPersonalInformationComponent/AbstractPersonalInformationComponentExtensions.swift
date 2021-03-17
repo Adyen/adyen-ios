@@ -28,11 +28,25 @@ extension AbstractPersonalInformationComponent: LoadingComponent, TrackableCompo
 }
 
 /// :nodoc:
-public enum PersonalInformation {
+public enum PersonalInformation: Equatable {
     case firstName
     case lastName
     case email
     case phone
+    case custom(FormItemInjector)
+
+    public static func == (lhs: PersonalInformation, rhs: PersonalInformation) -> Bool {
+        switch (lhs, rhs) {
+        case (.firstName, .firstName),
+             (.lastName, .lastName),
+             (.email, .email),
+             (.phone, .phone),
+             (.custom, .custom):
+            return true
+        default:
+            return false
+        }
+    }
 }
 
 /// :nodoc:

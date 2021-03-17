@@ -339,6 +339,11 @@
 		F9589C7D2600FAB800E4113F /* SevenElevenPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589C7C2600FAB800E4113F /* SevenElevenPaymentMethod.swift */; };
 		F9589C942600FD7A00E4113F /* SevenElevenComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589C932600FD7A00E4113F /* SevenElevenComponent.swift */; };
 		F9589CA02600FE4700E4113F /* SevenElevenDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589C9F2600FE4700E4113F /* SevenElevenDetails.swift */; };
+		F9589D032601EE7800E4113F /* FormItemInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589D022601EE7800E4113F /* FormItemInjector.swift */; };
+		F9589D0F2601EF8100E4113F /* FirstNameFormItemInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589D0E2601EF8100E4113F /* FirstNameFormItemInjector.swift */; };
+		F9589D1B2601F11E00E4113F /* LastNameFormItemInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589D1A2601F11E00E4113F /* LastNameFormItemInjector.swift */; };
+		F9589D272601F19E00E4113F /* EmailFormItemInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589D262601F19E00E4113F /* EmailFormItemInjector.swift */; };
+		F9589D332601F1D400E4113F /* PhoneFormItemInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589D322601F1D400E4113F /* PhoneFormItemInjector.swift */; };
 		F95A788825C416A60032CF7E /* CopyLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95A788725C416A60032CF7E /* CopyLabelView.swift */; };
 		F95A789325C41BB20032CF7E /* NSTextAlignmentHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95A789225C41BB20032CF7E /* NSTextAlignmentHelpers.swift */; };
 		F95A78B925C4302A0032CF7E /* AbstractVoucherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95A78B825C4302A0032CF7E /* AbstractVoucherView.swift */; };
@@ -426,8 +431,6 @@
 		F9789C6E23F18EBD000B4B2B /* WeChatPayActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C6D23F18EBD000B4B2B /* WeChatPayActionComponent.swift */; };
 		F9789C7523F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C7423F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift */; };
 		F97C81AF25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C81AE25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift */; };
-		F97C81C325BACAAB00D7F85C /* PersonalInformationFormBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C81C225BACAAB00D7F85C /* PersonalInformationFormBuilder.swift */; };
-		F97C822125BAE99D00D7F85C /* PersonalInformationElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C822025BAE99D00D7F85C /* PersonalInformationElement.swift */; };
 		F97C829225BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C829125BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift */; };
 		F97C837925BF047600D7F85C /* DokuPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C837825BF047600D7F85C /* DokuPaymentMethod.swift */; };
 		F97C838425BF053F00D7F85C /* DokuComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C838325BF053F00D7F85C /* DokuComponent.swift */; };
@@ -1057,6 +1060,11 @@
 		F9589C7C2600FAB800E4113F /* SevenElevenPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SevenElevenPaymentMethod.swift; sourceTree = "<group>"; };
 		F9589C932600FD7A00E4113F /* SevenElevenComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SevenElevenComponent.swift; sourceTree = "<group>"; };
 		F9589C9F2600FE4700E4113F /* SevenElevenDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SevenElevenDetails.swift; sourceTree = "<group>"; };
+		F9589D022601EE7800E4113F /* FormItemInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormItemInjector.swift; sourceTree = "<group>"; };
+		F9589D0E2601EF8100E4113F /* FirstNameFormItemInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstNameFormItemInjector.swift; sourceTree = "<group>"; };
+		F9589D1A2601F11E00E4113F /* LastNameFormItemInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastNameFormItemInjector.swift; sourceTree = "<group>"; };
+		F9589D262601F19E00E4113F /* EmailFormItemInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailFormItemInjector.swift; sourceTree = "<group>"; };
+		F9589D322601F1D400E4113F /* PhoneFormItemInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneFormItemInjector.swift; sourceTree = "<group>"; };
 		F95A788725C416A60032CF7E /* CopyLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyLabelView.swift; sourceTree = "<group>"; };
 		F95A789225C41BB20032CF7E /* NSTextAlignmentHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSTextAlignmentHelpers.swift; sourceTree = "<group>"; };
 		F95A78B825C4302A0032CF7E /* AbstractVoucherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractVoucherView.swift; sourceTree = "<group>"; };
@@ -1152,8 +1160,6 @@
 		F97C7C502590C56E00D80A54 /* ThreeDS2CoreActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2CoreActionHandler.swift; sourceTree = "<group>"; };
 		F97C7C5E2590EE0A00D80A54 /* AnyThreeDS2ActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyThreeDS2ActionHandler.swift; sourceTree = "<group>"; };
 		F97C81AE25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractPersonalInformationComponent.swift; sourceTree = "<group>"; };
-		F97C81C225BACAAB00D7F85C /* PersonalInformationFormBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInformationFormBuilder.swift; sourceTree = "<group>"; };
-		F97C822025BAE99D00D7F85C /* PersonalInformationElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInformationElement.swift; sourceTree = "<group>"; };
 		F97C829125BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractPersonalInformationComponentExtensions.swift; sourceTree = "<group>"; };
 		F97C837825BF047600D7F85C /* DokuPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuPaymentMethod.swift; sourceTree = "<group>"; };
 		F97C838325BF053F00D7F85C /* DokuComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuComponent.swift; sourceTree = "<group>"; };
@@ -2787,8 +2793,11 @@
 			children = (
 				F97C81AE25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift */,
 				F97C829125BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift */,
-				F97C81C225BACAAB00D7F85C /* PersonalInformationFormBuilder.swift */,
-				F97C822025BAE99D00D7F85C /* PersonalInformationElement.swift */,
+				F9589D022601EE7800E4113F /* FormItemInjector.swift */,
+				F9589D0E2601EF8100E4113F /* FirstNameFormItemInjector.swift */,
+				F9589D1A2601F11E00E4113F /* LastNameFormItemInjector.swift */,
+				F9589D262601F19E00E4113F /* EmailFormItemInjector.swift */,
+				F9589D322601F1D400E4113F /* PhoneFormItemInjector.swift */,
 			);
 			path = AbstractPersonalInformationComponent;
 			sourceTree = "<group>";
@@ -3766,6 +3775,7 @@
 				E9AFF87A224A4C9C005A0D8D /* PaymentComponent.swift in Sources */,
 				F923281425A486EE002C5BC4 /* PhoneExtensionsRepository.swift in Sources */,
 				E216D3C0221AD0620013CBCF /* FormViewItemManager.swift in Sources */,
+				F9589D0F2601EF8100E4113F /* FirstNameFormItemInjector.swift in Sources */,
 				E9AFF887224E5872005A0D8D /* PresentableComponent.swift in Sources */,
 				E90933FF228AFC6600C9F04B /* Environment.swift in Sources */,
 				E2D12C09221ED16600EF682F /* FormSwitchItemView.swift in Sources */,
@@ -3812,6 +3822,7 @@
 				E787C9D3246EC71B00B401E0 /* UIFontHelpers.swift in Sources */,
 				F96F44DD23BE487500871C1F /* LocalizationParameters.swift in Sources */,
 				F95B6D8A2523138E002C9062 /* PhoneNumberFormatter.swift in Sources */,
+				F9589D272601F19E00E4113F /* EmailFormItemInjector.swift in Sources */,
 				F9639B2D24DD6B370073F38A /* RetryAPIClient.swift in Sources */,
 				F9620DB323C75C19005209FC /* PaymentComponentBuilder.swift in Sources */,
 				E700A72D2549E2F00012B64C /* BLIKPaymentMethod.swift in Sources */,
@@ -3826,6 +3837,7 @@
 				E2D12C00221D91ED00EF682F /* StringHelpers.swift in Sources */,
 				F9D5751C237C0EA0009C18B5 /* BCMCPaymentMethod.swift in Sources */,
 				E27BFD9022B114DC00692E0D /* ShopperInteraction.swift in Sources */,
+				F9589D332601F1D400E4113F /* PhoneFormItemInjector.swift in Sources */,
 				F9354BE723A7B4E200A6760B /* TextStyle.swift in Sources */,
 				F9D644E024D2E4210059CBE3 /* EmailValidator.swift in Sources */,
 				E76EC6942417A107009C6E2F /* FormPhoneExtensionPickerItemView.swift in Sources */,
@@ -3840,7 +3852,6 @@
 				F9E441522382A0DD00D3CD48 /* ViewIdentifierBuilder.swift in Sources */,
 				E28098B3220DA7980087928F /* Component.swift in Sources */,
 				F95B6D8E25231715002C9062 /* RegularExpressionValidator.swift in Sources */,
-				F97C822125BAE99D00D7F85C /* PersonalInformationElement.swift in Sources */,
 				F923280025A47ED5002C5BC4 /* AllCountriesPhoneExtensions.swift in Sources */,
 				F926D52023F4217A00D058D3 /* DeviceDependant.swift in Sources */,
 				F9D5753123828EBB009C18B5 /* AnyCardPaymentMethod.swift in Sources */,
@@ -3850,6 +3861,7 @@
 				F90FB7BC2446E8C8005BFE0E /* BrowserInfo.swift in Sources */,
 				E787C9D1246E948F00B401E0 /* CoreFonts.swift in Sources */,
 				F9639B4124E27D0E0073F38A /* BackoffScheduler.swift in Sources */,
+				F9589D032601EE7800E4113F /* FormItemInjector.swift in Sources */,
 				F94343E823FFF9DC00AADF5F /* ISOCountry.swift in Sources */,
 				F96F44D523BDED4400871C1F /* FormTextItemStyle.swift in Sources */,
 				E278EB4522AA5ED600497FD5 /* SEPADirectDebitPaymentMethod.swift in Sources */,
@@ -3857,6 +3869,7 @@
 				F939DEE323C8B4C100D19249 /* EmptyPaymentDetails.swift in Sources */,
 				F96F44CD23B257D700871C1F /* Logger.swift in Sources */,
 				E76EC6952417A107009C6E2F /* PhoneExtensionInputControl.swift in Sources */,
+				F9589D1B2601F11E00E4113F /* LastNameFormItemInjector.swift in Sources */,
 				E216D3BC221AAB240013CBCF /* FormItem.swift in Sources */,
 				E9093403228EDADA00C9F04B /* Payment.swift in Sources */,
 				E216D3CD221AFBB90013CBCF /* Validator.swift in Sources */,
@@ -3870,7 +3883,6 @@
 				F97C829225BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift in Sources */,
 				F939CD7725EE56BA00018DEC /* LoadingComponent.swift in Sources */,
 				E749FD1E23CF4998000D18BA /* NavigationStyle.swift in Sources */,
-				F97C81C325BACAAB00D7F85C /* PersonalInformationFormBuilder.swift in Sources */,
 				F9354BED23A7C34D00A6760B /* ButtonStyle.swift in Sources */,
 				F9B8C50C23FE962D00C4D0FB /* FormPhoneNumberItem.swift in Sources */,
 				E2C0E0BC220B2976008616F6 /* FormItemView.swift in Sources */,
