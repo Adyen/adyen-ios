@@ -66,7 +66,7 @@ public enum CardType: String, CaseIterable, Codable {
     /// Elo
     case elo
     
-    // Forbrugsforeningen
+    /// Forbrugsforeningen
     case forbrugsforeningen
     
     /// Hiper

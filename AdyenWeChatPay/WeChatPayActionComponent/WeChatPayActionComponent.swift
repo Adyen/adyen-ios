@@ -62,8 +62,10 @@ public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionC
     
 }
 
+/// :nodoc:
 extension WeChatPaySDKActionComponent: WXApiDelegate {
-    
+
+    /// :nodoc:
     public func onResp(_ resp: BaseResp) {
         guard let currentlyHandledAction = currentlyHandledAction else { assertionFailure(); return }
         let additionalData = WeChatPayAdditionalDetails(resultCode: String(resp.errCode))
@@ -74,7 +76,9 @@ extension WeChatPaySDKActionComponent: WXApiDelegate {
     
 }
 
+/// :nodoc:
 private extension PayReq {
+    /// :nodoc:
     convenience init(actionData: WeChatPaySDKData) {
         self.init()
         

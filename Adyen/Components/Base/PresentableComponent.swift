@@ -34,6 +34,7 @@ public protocol PresentableComponent: Component {
     var viewController: UIViewController { get }
 }
 
+/// :nodoc:
 public extension PresentableComponent {
     
     /// :nodoc:
@@ -41,8 +42,10 @@ public extension PresentableComponent {
     
 }
 
+/// :nodoc:
 public protocol TrackableComponent: Component, PaymentMethodAware, ViewControllerDelegate {}
 
+/// :nodoc:
 extension TrackableComponent {
     /// :nodoc:
     public func viewDidLoad(viewController: UIViewController) {

@@ -6,6 +6,7 @@
 
 import func Darwin.fputs
 
+/// Provides control over SDK logging.
 public enum AdyenLogging {
     /// Indicates whether to enable printing to the console.
     public static var isEnabled: Bool = false
