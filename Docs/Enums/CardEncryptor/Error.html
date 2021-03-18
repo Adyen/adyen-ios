@@ -74,10 +74,10 @@
                 <a class="nav-group-task-link" href="../../Classes/CardComponent.html">CardComponent</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../../Classes/CardComponent/Error.html">– Error</a>
+                <a class="nav-group-task-link" href="../../Classes/CardComponent/Configuration.html">– Configuration</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../../Classes/CardComponent/Configuration.html">– Configuration</a>
+                <a class="nav-group-task-link" href="../../Classes/CardComponent/Error.html">– Error</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../../Structs/CardDetails.html">CardDetails</a>
@@ -86,13 +86,7 @@
                 <a class="nav-group-task-link" href="../../Enums/CardEncryptor.html">CardEncryptor</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../../Enums/CardEncryptor/EncryptedCard.html">– EncryptedCard</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../../Enums/CardEncryptor/Error.html">– Error</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../../Enums/CardEncryptor/Card.html">– Card</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../../Enums/CardType.html">CardType</a>
@@ -597,6 +591,17 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../../Encryption.html">Encryption</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Structs/Card.html">Card</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Structs/EncryptedCard.html">EncryptedCard</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -650,9 +655,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:5Adyen13CardEncryptorO5ErrorO26invalidEncryptionArgumentsyA2EmF"></a>
-                    <a name="//apple_ref/swift/Element/invalidEncryptionArguments" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen13CardEncryptorO5ErrorO26invalidEncryptionArgumentsyA2EmF">invalidEncryptionArguments</a>
+                    <a name="/s:5Adyen13CardEncryptorO5ErrorO07invalidB0yA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/invalidCard" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen13CardEncryptorO5ErrorO07invalidB0yA2EmF">invalidCard</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -660,15 +665,15 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Indicates an error when trying to encrypt a card with  card number, securityCode,
-expiryMonth, expiryYear, and holderName, all of them are nil.</p>
+                        <p>Indicates an error when trying to encrypt a card with card number, securityCode,
+expiryMonth, expiryYear are nil.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">invalidEncryptionArguments</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">invalidCard</span></code></pre>
 
                         </div>
                       </div>
@@ -696,6 +701,114 @@ expiryMonth, expiryYear, and holderName, all of them are nil.</p>
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="k">case</span> <span class="n">invalidBin</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen13CardEncryptorO5ErrorO17invalidExpiryYearyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/invalidExpiryYear" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen13CardEncryptorO5ErrorO17invalidExpiryYearyA2EmF">invalidExpiryYear</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Indicates an error when trying to encrypt empty or invalid expiry year.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">invalidExpiryYear</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen13CardEncryptorO5ErrorO18invalidExpiryMonthyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/invalidExpiryMonth" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen13CardEncryptorO5ErrorO18invalidExpiryMonthyA2EmF">invalidExpiryMonth</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Indicates an error when trying to encrypt empty or invalid expiry year.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">invalidExpiryMonth</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen13CardEncryptorO5ErrorO17invalidSecureCodeyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/invalidSecureCode" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen13CardEncryptorO5ErrorO17invalidSecureCodeyA2EmF">invalidSecureCode</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Indicates an error when trying to encrypt empty or invalid expiry year.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">invalidSecureCode</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen13CardEncryptorO5ErrorO13invalidNumberyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/invalidNumber" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen13CardEncryptorO5ErrorO13invalidNumberyA2EmF">invalidNumber</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Indicates an error when trying to encrypt empty or invalid expiry year.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">invalidNumber</span></code></pre>
 
                         </div>
                       </div>
@@ -736,8 +849,8 @@ expiryMonth, expiryYear, and holderName, all of them are nil.</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2021 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2021-03-12)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.5</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+      <p>&copy; 2021 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2021-03-18)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
 </div>
