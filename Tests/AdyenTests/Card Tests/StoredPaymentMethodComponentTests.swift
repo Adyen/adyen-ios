@@ -60,7 +60,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
                                              type: "type",
                                              name: "name")
         let sut = StoredPaymentMethodComponent(paymentMethod: method)
-        sut.clientKey = "client_key"
+        sut.clientKey = Dummy.dummyClientKey
 
         let delegate = PaymentComponentDelegateMock()
 

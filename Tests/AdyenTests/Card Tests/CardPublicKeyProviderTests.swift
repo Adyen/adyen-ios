@@ -28,7 +28,7 @@ class CardPublicKeyProviderTests: XCTestCase {
         var apiClient = RetryAPIClient(apiClient: baseApiClient, scheduler: SimpleScheduler(maximumCount: 2))
         var sut = CardPublicKeyProvider(apiClient: apiClient)
         CardPublicKeyProvider.cachedCardPublicKey = nil
-        sut.clientKey = "test_client_key"
+        sut.clientKey = Dummy.dummyClientKey
 
         baseApiClient.mockedResults = [.success(ClientKeyResponse(cardPublicKey: "test_public_key"))]
 
@@ -55,7 +55,7 @@ class CardPublicKeyProviderTests: XCTestCase {
         baseApiClient = APIClientMock()
         apiClient = RetryAPIClient(apiClient: baseApiClient, scheduler: SimpleScheduler(maximumCount: 2))
         sut = CardPublicKeyProvider(apiClient: apiClient)
-        sut.clientKey = "test_client_key"
+        sut.clientKey = Dummy.dummyClientKey
 
         let secondFetchExpectation = expectation(description: "second CardPublicKeyProvider.fetch() completion handler must be called.")
         try sut.fetch { result in

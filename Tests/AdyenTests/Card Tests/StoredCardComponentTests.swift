@@ -24,7 +24,7 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryYear: "22",
                                              holderName: "holderName")
         let sut = StoredCardComponent(storedCardPaymentMethod: method)
-        sut.clientKey = "client_key"
+        sut.clientKey = Dummy.dummyClientKey
 
         let payemt = Payment(amount: Payment.Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payemt
@@ -60,7 +60,7 @@ class StoredCardComponentTests: XCTestCase {
                                              holderName: "holderName")
         let sut = StoredCardComponent(storedCardPaymentMethod: method)
         sut.clientKey = nil
-        CardPublicKeyProvider.cachedCardPublicKey = "public_key"
+        CardPublicKeyProvider.cachedCardPublicKey = Dummy.dummyClientKey
 
         let payemt = Payment(amount: Payment.Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payemt
@@ -95,7 +95,7 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryYear: "22",
                                              holderName: "holderName")
         let sut = StoredCardComponent(storedCardPaymentMethod: method)
-        sut.clientKey = "client_key"
+        sut.clientKey = Dummy.dummyClientKey
 
         let payemt = Payment(amount: Payment.Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payemt
@@ -161,7 +161,7 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryYear: "22",
                                              holderName: "holderName")
         let sut = StoredCardComponent(storedCardPaymentMethod: method)
-        sut.clientKey = "client_key"
+        sut.clientKey = Dummy.dummyClientKey
 
         let payemt = Payment(amount: Payment.Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payemt
@@ -220,7 +220,7 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryYear: "22",
                                              holderName: "holderName")
         let sut = StoredCardComponent(storedCardPaymentMethod: method)
-        sut.clientKey = "client_key"
+        sut.clientKey = Dummy.dummyClientKey
 
         let payemt = Payment(amount: Payment.Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payemt
@@ -277,7 +277,7 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryYear: "22",
                                              holderName: "holderName")
         let sut = StoredCardComponent(storedCardPaymentMethod: method)
-        sut.clientKey = "client_key"
+        sut.clientKey = Dummy.dummyClientKey
 
         let payemt = Payment(amount: Payment.Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payemt
@@ -322,7 +322,7 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryYear: "22",
                                              holderName: "holderName")
         let sut = StoredCardComponent(storedCardPaymentMethod: method)
-        sut.clientKey = "client_key"
+        sut.clientKey = Dummy.dummyClientKey
 
         let payemt = Payment(amount: Payment.Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payemt

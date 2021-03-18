@@ -16,7 +16,7 @@ extension IntegrationExample {
 
     internal func presentDropInComponent() {
         guard let paymentMethods = paymentMethods else { return }
-        let configuration = DropInComponent.PaymentMethodsConfiguration(clientKey: Configuration.clientKey)
+        let configuration = DropInComponent.PaymentMethodsConfiguration(clientKey: clientKey)
         configuration.applePay.merchantIdentifier = Configuration.applePayMerchantIdentifier
         configuration.applePay.summaryItems = Configuration.applePaySummaryItems
         configuration.environment = environment
