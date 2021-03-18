@@ -1,22 +1,22 @@
 //
-//  DokuComponentTests.swift
+//  SevenElevenComponentTests.swift
 //  AdyenUIKitTests
 //
-//  Created by Mohamed Eldoheiri on 1/25/21.
+//  Created by Mohamed Eldoheiri on 3/18/21.
 //  Copyright © 2021 Adyen. All rights reserved.
 //
 
+import XCTest
 @testable import Adyen
 @testable import AdyenComponents
-import XCTest
 
-class DokuComponentTests: XCTestCase {
+class SevenElevenComponentTests: XCTestCase {
 
-    lazy var method = DokuPaymentMethod(type: "test_type", name: "test_name")
+    lazy var method = SevenElevenPaymentMethod(type: "test_type", name: "test_name")
     let payment = Payment(amount: Payment.Amount(value: 2, currencyCode: "IDR"), countryCode: "ID")
 
     func testLocalizationWithCustomTableName() {
-        let sut = DokuComponent(paymentMethod: method)
+        let sut = SevenElevenComponent(paymentMethod: method)
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
@@ -37,7 +37,7 @@ class DokuComponentTests: XCTestCase {
     }
 
     func testLocalizationWithCustomKeySeparator() {
-        let sut = DokuComponent(paymentMethod: method)
+        let sut = SevenElevenComponent(paymentMethod: method)
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
 
@@ -72,6 +72,7 @@ class DokuComponentTests: XCTestCase {
         style.backgroundColor = .yellow
 
         /// Text field
+        style.textField.backgroundColor = .cyan
         style.textField.text.color = .brown
         style.textField.text.font = .systemFont(ofSize: 13)
         style.textField.text.textAlignment = .right
@@ -82,7 +83,7 @@ class DokuComponentTests: XCTestCase {
         style.textField.title.textAlignment = .center
         style.textField.backgroundColor = .red
 
-        let sut = DokuComponent(paymentMethod: method, style: style)
+        let sut = SevenElevenComponent(paymentMethod: method, style: style)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -90,32 +91,47 @@ class DokuComponentTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
 
             /// Test firstName field
-            self.assertTextInputUI("AdyenComponents.DokuComponent.firstNameItem",
+            self.assertTextInputUI("AdyenComponents.SevenElevenComponent.firstNameItem",
                                    view: sut.viewController.view,
                                    style: style.textField,
                                    isFirstField: true)
 
             /// Test lastName field
-            self.assertTextInputUI("AdyenComponents.DokuComponent.lastNameItem",
+            self.assertTextInputUI("AdyenComponents.SevenElevenComponent.lastNameItem",
                                    view: sut.viewController.view,
                                    style: style.textField,
                                    isFirstField: false)
 
             /// Test email field
-            self.assertTextInputUI("AdyenComponents.DokuComponent.emailItem",
+            self.assertTextInputUI("AdyenComponents.SevenElevenComponent.emailItem",
                                    view: sut.viewController.view,
                                    style: style.textField,
                                    isFirstField: false)
 
+            let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: "AdyenComponents.SevenElevenComponent.phoneNumberItem")
+            let phoneNumberViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.SevenElevenComponent.phoneNumberItem.titleLabel")
+            let phoneNumberViewTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.SevenElevenComponent.phoneNumberItem.textField")
+
             /// Test submit button
-            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.DokuComponent.payButtonItem.button")
-            let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.DokuComponent.payButtonItem.button.titleLabel")
+            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.SevenElevenComponent.payButtonItem.button")
+            let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.SevenElevenComponent.payButtonItem.button.titleLabel")
 
             XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
             XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
             XCTAssertEqual(payButtonItemViewButtonTitle?.textAlignment, .center)
             XCTAssertEqual(payButtonItemViewButtonTitle?.textColor, .white)
             XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
+
+            /// Test phone number field
+            XCTAssertEqual(phoneNumberView?.backgroundColor, .red)
+            XCTAssertEqual(phoneNumberViewTitleLabel?.textColor, .yellow)
+            XCTAssertEqual(phoneNumberViewTitleLabel?.backgroundColor, .blue)
+            XCTAssertEqual(phoneNumberViewTitleLabel?.textAlignment, .center)
+            XCTAssertEqual(phoneNumberViewTitleLabel?.font, .systemFont(ofSize: 20))
+            XCTAssertEqual(phoneNumberViewTextField?.backgroundColor, .red)
+            XCTAssertEqual(phoneNumberViewTextField?.textAlignment, .right)
+            XCTAssertEqual(phoneNumberViewTextField?.textColor, .brown)
+            XCTAssertEqual(phoneNumberViewTextField?.font, .systemFont(ofSize: 13))
 
             expectation.fulfill()
         }
@@ -143,7 +159,7 @@ class DokuComponentTests: XCTestCase {
     }
 
     func testSubmitForm() {
-        let sut = DokuComponent(paymentMethod: method)
+        let sut = SevenElevenComponent(paymentMethod: method)
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         sut.payment = payment
@@ -151,11 +167,12 @@ class DokuComponentTests: XCTestCase {
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidSubmit = { data, component in
             XCTAssertTrue(component === sut)
-            XCTAssertTrue(data.paymentMethod is DokuDetails)
-            let data = data.paymentMethod as! DokuDetails
+            XCTAssertTrue(data.paymentMethod is SevenElevenDetails)
+            let data = data.paymentMethod as! SevenElevenDetails
             XCTAssertEqual(data.firstName, "Mohamed")
             XCTAssertEqual(data.lastName, "Smith")
             XCTAssertEqual(data.emailAddress, "mohamed.smith@domain.com")
+            XCTAssertEqual(data.telephoneNumber, "+11233456789")
 
             sut.stopLoadingIfNeeded()
             delegateExpectation.fulfill()
@@ -166,16 +183,19 @@ class DokuComponentTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         let dummyExpectation = expectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.DokuComponent.payButtonItem.button")
+            let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.SevenElevenComponent.payButtonItem.button")
 
-            let firstNameView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.DokuComponent.firstNameItem")
+            let firstNameView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.SevenElevenComponent.firstNameItem")
             self.populate(textItemView: firstNameView, with: "Mohamed")
 
-            let lastNameView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.DokuComponent.lastNameItem")
+            let lastNameView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.SevenElevenComponent.lastNameItem")
             self.populate(textItemView: lastNameView, with: "Smith")
 
-            let emailView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.DokuComponent.emailItem")
+            let emailView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.SevenElevenComponent.emailItem")
             self.populate(textItemView: emailView, with: "mohamed.smith@domain.com")
+
+            let phoneNumberView: FormPhoneNumberItemView! = sut.viewController.view.findView(with: "AdyenComponents.SevenElevenComponent.phoneNumberItem")
+            self.populate(textItemView: phoneNumberView, with: "1233456789")
 
             submitButton?.sendActions(for: .touchUpInside)
 
@@ -186,13 +206,13 @@ class DokuComponentTests: XCTestCase {
     }
 
     func testBigTitle() {
-        let sut = DokuComponent(paymentMethod: method)
+        let sut = SevenElevenComponent(paymentMethod: method)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.DokuComponent.Test name"))
+            XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.SevenElevenComponent.Test name"))
             XCTAssertEqual(sut.viewController.title, self.method.name)
             expectation.fulfill()
         }
@@ -200,8 +220,8 @@ class DokuComponentTests: XCTestCase {
     }
 
     func testRequiresModalPresentation() {
-        let dokuPaymentMethod = DokuPaymentMethod(type: "doku_wallet", name: "Test name")
-        let sut = DokuComponent(paymentMethod: dokuPaymentMethod)
+        let paymentMethod = SevenElevenPaymentMethod(type: "test_type", name: "Test name")
+        let sut = SevenElevenComponent(paymentMethod: paymentMethod)
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 

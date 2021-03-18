@@ -339,10 +339,4 @@ class BCMCComponentTests: XCTestCase {
         wait(for: [expectation], timeout: 5)
     }
     
-    private func populate<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U, with text: String) {
-        let textView = textItemView.textField
-        textView.text = text
-        textView.sendActions(for: .editingChanged)
-    }
-    
 }
