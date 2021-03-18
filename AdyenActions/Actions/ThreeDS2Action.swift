@@ -31,7 +31,11 @@ public enum ThreeDS2Action: Decodable {
 
     /// The 3DS2 flow type.
     public enum ActionType: String, Decodable {
+
+        /// Device fingerprint action.
         case fingerprint
+
+        /// Challenge shopper action.
         case challenge
     }
 
