@@ -63,9 +63,8 @@ targets:
       - Tests/
     dependencies:
       - target: $PROJECT_NAME
-    scheme:
-      commandLineArguments:
-        "-UITests": true
+    commandLineArguments:
+      "-UITests": true
 " > project.yml
 
 mkdir Tests
