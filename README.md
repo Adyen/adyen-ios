@@ -56,6 +56,16 @@ pod 'Adyen/SwiftUI'       // SwiftUI apps specific module.
 2. Run `carthage update`.
 3. Link the framework with your target as described in [Carthage Readme](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application).
 
+You can add all modules or select individual modules to add to your integration. But make sure to include each module dependency modules.
+
+* `AdyenDropIn`: DropInComponent.
+* `AdyenCard`: the card components.
+* `AdyenComponents`: all other payment components except WeChat Pay.
+* `AdyenActions`:  action components.
+* `AdyenEncryption`: encryption.
+* `AdyenWeChatPay`: WeChat Pay component.
+* `AdyenSwiftUI`: SwiftUI apps specific module.
+
 :warning: _`3DS2 SDK` binary dependency through Carthage doesn't support `arm64` Simulator builds. `arm64` needs to be excluded as described [here](https://github.com/Adyen/adyen-ios/issues/291) to be able to make `Any Simulator` builds_
 
 ### Swift Package Manager
