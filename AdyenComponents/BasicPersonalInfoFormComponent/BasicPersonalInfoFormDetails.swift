@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 
 /// Contains the details supplied by the 7 Eleven component.
-public struct SevenElevenDetails: PaymentMethodDetails {
+public struct BasicPersonalInfoFormDetails: PaymentMethodDetails {
 
     /// The payment method type.
     public let type: String

@@ -73,6 +73,7 @@ internal enum AnyPaymentMethod: Decodable {
     case giftcard(GiftCardPaymentMethod)
     case doku(DokuPaymentMethod)
     case sevenEleven(SevenElevenPaymentMethod)
+    case econtextStores(EContextStoresPaymentMethod)
     
     case none
     
@@ -111,6 +112,8 @@ internal enum AnyPaymentMethod: Decodable {
         case let .giftcard(paymentMethod):
             return paymentMethod
         case let .sevenEleven(paymentMethod):
+            return paymentMethod
+        case let .econtextStores(paymentMethod):
             return paymentMethod
         case .none:
             return nil

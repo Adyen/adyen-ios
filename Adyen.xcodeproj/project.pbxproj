@@ -339,7 +339,6 @@
 		F95899D925FA526A00E4113F /* AdyenSwiftUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F95899C625FA524100E4113F /* AdyenSwiftUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F9589C7D2600FAB800E4113F /* SevenElevenPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589C7C2600FAB800E4113F /* SevenElevenPaymentMethod.swift */; };
 		F9589C942600FD7A00E4113F /* SevenElevenComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589C932600FD7A00E4113F /* SevenElevenComponent.swift */; };
-		F9589CA02600FE4700E4113F /* SevenElevenDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589C9F2600FE4700E4113F /* SevenElevenDetails.swift */; };
 		F9589D032601EE7800E4113F /* FormItemInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589D022601EE7800E4113F /* FormItemInjector.swift */; };
 		F9589D0F2601EF8100E4113F /* FirstNameFormItemInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589D0E2601EF8100E4113F /* FirstNameFormItemInjector.swift */; };
 		F9589D1B2601F11E00E4113F /* LastNameFormItemInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589D1A2601F11E00E4113F /* LastNameFormItemInjector.swift */; };
@@ -416,7 +415,7 @@
 		F9639B5624E3DB190073F38A /* PollingAwaitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B5524E3DB190073F38A /* PollingAwaitComponentTests.swift */; };
 		F96A25432371AB75007DBF0B /* PaymentComponentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96A25422371AB75007DBF0B /* PaymentComponentDelegateMock.swift */; };
 		F96A25472372C39F007DBF0B /* ApplePayDetailsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96A25462372C39F007DBF0B /* ApplePayDetailsTest.swift */; };
-		F96AE5052603814C009F82BD /* SevenElevenComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96AE5042603814C009F82BD /* SevenElevenComponentTests.swift */; };
+		F96AE5052603814C009F82BD /* BasicPersonalInfoFormComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96AE5042603814C009F82BD /* BasicPersonalInfoFormComponentTests.swift */; };
 		F96AE51B26038602009F82BD /* XCTestCaseExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96AE51A26038602009F82BD /* XCTestCaseExtension.swift */; };
 		F96F44CD23B257D700871C1F /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96F44CC23B257D700871C1F /* Logger.swift */; };
 		F96F44CF23BDEC0200871C1F /* DropInComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96F44CE23BDEC0200871C1F /* DropInComponentStyle.swift */; };
@@ -473,6 +472,10 @@
 		F9AC61C2243751A70062A00D /* ActionComponentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AC61C1243751A70062A00D /* ActionComponentDelegateMock.swift */; };
 		F9AC61C424375F510062A00D /* PresentingViewControllerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AC61C324375F510062A00D /* PresentingViewControllerMock.swift */; };
 		F9AC61C624376C9B0062A00D /* AdyenScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AC61C524376C9B0062A00D /* AdyenScope.swift */; };
+		F9B016F92604F3FF001F23FC /* BasicPersonalInfoFormComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B016F82604F3FF001F23FC /* BasicPersonalInfoFormComponent.swift */; };
+		F9B017252604F49C001F23FC /* BasicPersonalInfoFormDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B017242604F49C001F23FC /* BasicPersonalInfoFormDetails.swift */; };
+		F9B017452604F6F9001F23FC /* EContextStoresPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B017442604F6F9001F23FC /* EContextStoresPaymentMethod.swift */; };
+		F9B017522604F76C001F23FC /* EContextStoreComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B017512604F76C001F23FC /* EContextStoreComponent.swift */; };
 		F9B798C923AB697100A2103C /* FormComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B798C823AB697100A2103C /* FormComponentStyle.swift */; };
 		F9B798CB23AB706D00A2103C /* ListComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B798CA23AB706D00A2103C /* ListComponentStyle.swift */; };
 		F9B8C49123FC286D00C4D0FB /* FormCardNumberItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B317A42265D76600C1BB30 /* FormCardNumberItem.swift */; };
@@ -1063,7 +1066,6 @@
 		F95899C925FA524100E4113F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F9589C7C2600FAB800E4113F /* SevenElevenPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SevenElevenPaymentMethod.swift; sourceTree = "<group>"; };
 		F9589C932600FD7A00E4113F /* SevenElevenComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SevenElevenComponent.swift; sourceTree = "<group>"; };
-		F9589C9F2600FE4700E4113F /* SevenElevenDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SevenElevenDetails.swift; sourceTree = "<group>"; };
 		F9589D022601EE7800E4113F /* FormItemInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormItemInjector.swift; sourceTree = "<group>"; };
 		F9589D0E2601EF8100E4113F /* FirstNameFormItemInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstNameFormItemInjector.swift; sourceTree = "<group>"; };
 		F9589D1A2601F11E00E4113F /* LastNameFormItemInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastNameFormItemInjector.swift; sourceTree = "<group>"; };
@@ -1143,7 +1145,7 @@
 		F9639B5B24E410130073F38A /* AwaitActionHandlerProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitActionHandlerProvider.swift; sourceTree = "<group>"; };
 		F96A25422371AB75007DBF0B /* PaymentComponentDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentDelegateMock.swift; sourceTree = "<group>"; };
 		F96A25462372C39F007DBF0B /* ApplePayDetailsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayDetailsTest.swift; sourceTree = "<group>"; };
-		F96AE5042603814C009F82BD /* SevenElevenComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SevenElevenComponentTests.swift; sourceTree = "<group>"; };
+		F96AE5042603814C009F82BD /* BasicPersonalInfoFormComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicPersonalInfoFormComponentTests.swift; sourceTree = "<group>"; };
 		F96AE51A26038602009F82BD /* XCTestCaseExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestCaseExtension.swift; sourceTree = "<group>"; };
 		F96F44CC23B257D700871C1F /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		F96F44CE23BDEC0200871C1F /* DropInComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInComponentStyle.swift; sourceTree = "<group>"; };
@@ -1208,6 +1210,10 @@
 		F9AC61C1243751A70062A00D /* ActionComponentDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionComponentDelegateMock.swift; sourceTree = "<group>"; };
 		F9AC61C324375F510062A00D /* PresentingViewControllerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentingViewControllerMock.swift; sourceTree = "<group>"; };
 		F9AC61C524376C9B0062A00D /* AdyenScope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenScope.swift; sourceTree = "<group>"; };
+		F9B016F82604F3FF001F23FC /* BasicPersonalInfoFormComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicPersonalInfoFormComponent.swift; sourceTree = "<group>"; };
+		F9B017242604F49C001F23FC /* BasicPersonalInfoFormDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicPersonalInfoFormDetails.swift; sourceTree = "<group>"; };
+		F9B017442604F6F9001F23FC /* EContextStoresPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EContextStoresPaymentMethod.swift; sourceTree = "<group>"; };
+		F9B017512604F76C001F23FC /* EContextStoreComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EContextStoreComponent.swift; sourceTree = "<group>"; };
 		F9B798C823AB697100A2103C /* FormComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormComponentStyle.swift; sourceTree = "<group>"; };
 		F9B798CA23AB706D00A2103C /* ListComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListComponentStyle.swift; sourceTree = "<group>"; };
 		F9B798D223ACF10800A2103C /* RedirectComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedirectComponentStyle.swift; sourceTree = "<group>"; };
@@ -1521,6 +1527,7 @@
 				E7763A1025F02BD20046371E /* GiftCardPaymentMethod.swift */,
 				E71E8F3D257921D10054B03D /* StoredBLIKPaymentMethod.swift */,
 				F9589C7C2600FAB800E4113F /* SevenElevenPaymentMethod.swift */,
+				F9B017442604F6F9001F23FC /* EContextStoresPaymentMethod.swift */,
 			);
 			path = "Payment Methods";
 			sourceTree = "<group>";
@@ -2303,6 +2310,8 @@
 		F9175E56259393E800D653BE /* AdyenComponents */ = {
 			isa = PBXGroup;
 			children = (
+				F9B017502604F753001F23FC /* EContextStoreComponent */,
+				F9B016F72604F388001F23FC /* BasicPersonalInfoFormComponent */,
 				F9589C882600FD5D00E4113F /* 7 Eleven */,
 				F97C836E25BF03C500D7F85C /* Doku */,
 				E700A7342549E9FC0012B64C /* BLIK */,
@@ -2628,7 +2637,6 @@
 			isa = PBXGroup;
 			children = (
 				F9589C932600FD7A00E4113F /* SevenElevenComponent.swift */,
-				F9589C9F2600FE4700E4113F /* SevenElevenDetails.swift */,
 			);
 			path = "7 Eleven";
 			sourceTree = "<group>";
@@ -2800,7 +2808,7 @@
 		F96AE5032603812B009F82BD /* Seven Eleven Component */ = {
 			isa = PBXGroup;
 			children = (
-				F96AE5042603814C009F82BD /* SevenElevenComponentTests.swift */,
+				F96AE5042603814C009F82BD /* BasicPersonalInfoFormComponentTests.swift */,
 			);
 			path = "Seven Eleven Component";
 			sourceTree = "<group>";
@@ -2949,6 +2957,23 @@
 				F9AC61C324375F510062A00D /* PresentingViewControllerMock.swift */,
 			);
 			path = Redirect;
+			sourceTree = "<group>";
+		};
+		F9B016F72604F388001F23FC /* BasicPersonalInfoFormComponent */ = {
+			isa = PBXGroup;
+			children = (
+				F9B016F82604F3FF001F23FC /* BasicPersonalInfoFormComponent.swift */,
+				F9B017242604F49C001F23FC /* BasicPersonalInfoFormDetails.swift */,
+			);
+			path = BasicPersonalInfoFormComponent;
+			sourceTree = "<group>";
+		};
+		F9B017502604F753001F23FC /* EContextStoreComponent */ = {
+			isa = PBXGroup;
+			children = (
+				F9B017512604F76C001F23FC /* EContextStoreComponent.swift */,
+			);
+			path = EContextStoreComponent;
 			sourceTree = "<group>";
 		};
 		F9B8C50A23FE960E00C4D0FB /* Phone Number */ = {
@@ -3912,6 +3937,7 @@
 				F95A788825C416A60032CF7E /* CopyLabelView.swift in Sources */,
 				E270FDE9225CC4B1006C2CD0 /* ObservationManager.swift in Sources */,
 				E2D12BF1221D561600EF682F /* FormValueItemView.swift in Sources */,
+				F9B017452604F6F9001F23FC /* EContextStoresPaymentMethod.swift in Sources */,
 				F9639B3B24E14A940073F38A /* APIError.swift in Sources */,
 				E909342822969AFF00C9F04B /* PaymentComponentData.swift in Sources */,
 				E21895E422A7CC4D001B6EE0 /* FormSplitItem.swift in Sources */,
@@ -4018,7 +4044,7 @@
 				F9639B4924E28DC80073F38A /* IntervalCalculatorMock.swift in Sources */,
 				F919DFA024EABCC10027976E /* StoredCardComponentTests.swift in Sources */,
 				E773EA3A25221C4600119499 /* ThrottlerTests.swift in Sources */,
-				F96AE5052603814C009F82BD /* SevenElevenComponentTests.swift in Sources */,
+				F96AE5052603814C009F82BD /* BasicPersonalInfoFormComponentTests.swift in Sources */,
 				F9FE13F425CC0E3C0067B593 /* VoucherViewControllerProviderTests.swift in Sources */,
 				F9EDB78F23964FC000CFB3C9 /* StoredCardAlertManagerTests.swift in Sources */,
 				F9AC61C2243751A70062A00D /* ActionComponentDelegateMock.swift in Sources */,
@@ -4147,6 +4173,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F9B017252604F49C001F23FC /* BasicPersonalInfoFormDetails.swift in Sources */,
 				F9175EC22593950D00D653BE /* QiwiWalletComponent.swift in Sources */,
 				F9175EAC259394FF00D653BE /* ApplePayComponent.swift in Sources */,
 				F97C838425BF053F00D7F85C /* DokuComponent.swift in Sources */,
@@ -4154,15 +4181,16 @@
 				F9175EAB259394FF00D653BE /* ApplePayDetails.swift in Sources */,
 				F9175EE22593952600D653BE /* BLIKComponent.swift in Sources */,
 				F9175E8B259394E100D653BE /* SEPADirectDebitComponent.swift in Sources */,
+				F9B017522604F76C001F23FC /* EContextStoreComponent.swift in Sources */,
 				F9175E8A259394E100D653BE /* SEPADirectDebitDetails.swift in Sources */,
 				F9589C942600FD7A00E4113F /* SevenElevenComponent.swift in Sources */,
 				F9175EAA259394FF00D653BE /* ApplePayComponentExtensions.swift in Sources */,
-				F9589CA02600FE4700E4113F /* SevenElevenDetails.swift in Sources */,
 				F9175ED22593951800D653BE /* MBWayComponent.swift in Sources */,
 				F9175E9B259394F200D653BE /* IssuerListComponent.swift in Sources */,
 				F97C839825BF05AB00D7F85C /* DokuDetails.swift in Sources */,
 				F9175E9A259394F200D653BE /* IssuerListDetails.swift in Sources */,
 				F9175EE32593952600D653BE /* BLIKDetails.swift in Sources */,
+				F9B016F92604F3FF001F23FC /* BasicPersonalInfoFormComponent.swift in Sources */,
 				F9175EC32593950D00D653BE /* QiwiWalletDetails.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,5 +1,5 @@
 //
-//  SevenElevenComponentTests.swift
+//  BasicPersonalInfoFormComponentTests.swift
 //  AdyenUIKitTests
 //
 //  Created by Mohamed Eldoheiri on 3/18/21.
@@ -10,7 +10,7 @@ import XCTest
 @testable import Adyen
 @testable import AdyenComponents
 
-class SevenElevenComponentTests: XCTestCase {
+class BasicPersonalInfoFormComponentTests: XCTestCase {
 
     lazy var method = SevenElevenPaymentMethod(type: "test_type", name: "test_name")
     let payment = Payment(amount: Payment.Amount(value: 2, currencyCode: "IDR"), countryCode: "ID")
@@ -91,30 +91,30 @@ class SevenElevenComponentTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
 
             /// Test firstName field
-            self.assertTextInputUI("AdyenComponents.SevenElevenComponent.firstNameItem",
+            self.assertTextInputUI("AdyenComponents.BasicPersonalInfoFormComponent.firstNameItem",
                                    view: sut.viewController.view,
                                    style: style.textField,
                                    isFirstField: true)
 
             /// Test lastName field
-            self.assertTextInputUI("AdyenComponents.SevenElevenComponent.lastNameItem",
+            self.assertTextInputUI("AdyenComponents.BasicPersonalInfoFormComponent.lastNameItem",
                                    view: sut.viewController.view,
                                    style: style.textField,
                                    isFirstField: false)
 
             /// Test email field
-            self.assertTextInputUI("AdyenComponents.SevenElevenComponent.emailItem",
+            self.assertTextInputUI("AdyenComponents.BasicPersonalInfoFormComponent.emailItem",
                                    view: sut.viewController.view,
                                    style: style.textField,
                                    isFirstField: false)
 
-            let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: "AdyenComponents.SevenElevenComponent.phoneNumberItem")
-            let phoneNumberViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.SevenElevenComponent.phoneNumberItem.titleLabel")
-            let phoneNumberViewTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.SevenElevenComponent.phoneNumberItem.textField")
+            let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.phoneNumberItem")
+            let phoneNumberViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.phoneNumberItem.titleLabel")
+            let phoneNumberViewTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.phoneNumberItem.textField")
 
             /// Test submit button
-            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.SevenElevenComponent.payButtonItem.button")
-            let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.SevenElevenComponent.payButtonItem.button.titleLabel")
+            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.payButtonItem.button")
+            let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.payButtonItem.button.titleLabel")
 
             XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
             XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
@@ -167,8 +167,8 @@ class SevenElevenComponentTests: XCTestCase {
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidSubmit = { data, component in
             XCTAssertTrue(component === sut)
-            XCTAssertTrue(data.paymentMethod is SevenElevenDetails)
-            let data = data.paymentMethod as! SevenElevenDetails
+            XCTAssertTrue(data.paymentMethod is BasicPersonalInfoFormDetails)
+            let data = data.paymentMethod as! BasicPersonalInfoFormDetails
             XCTAssertEqual(data.firstName, "Mohamed")
             XCTAssertEqual(data.lastName, "Smith")
             XCTAssertEqual(data.emailAddress, "mohamed.smith@domain.com")
@@ -183,18 +183,18 @@ class SevenElevenComponentTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         let dummyExpectation = expectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.SevenElevenComponent.payButtonItem.button")
+            let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.payButtonItem.button")
 
-            let firstNameView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.SevenElevenComponent.firstNameItem")
+            let firstNameView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.firstNameItem")
             self.populate(textItemView: firstNameView, with: "Mohamed")
 
-            let lastNameView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.SevenElevenComponent.lastNameItem")
+            let lastNameView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.lastNameItem")
             self.populate(textItemView: lastNameView, with: "Smith")
 
-            let emailView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.SevenElevenComponent.emailItem")
+            let emailView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.emailItem")
             self.populate(textItemView: emailView, with: "mohamed.smith@domain.com")
 
-            let phoneNumberView: FormPhoneNumberItemView! = sut.viewController.view.findView(with: "AdyenComponents.SevenElevenComponent.phoneNumberItem")
+            let phoneNumberView: FormPhoneNumberItemView! = sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.phoneNumberItem")
             self.populate(textItemView: phoneNumberView, with: "1233456789")
 
             submitButton?.sendActions(for: .touchUpInside)
@@ -212,7 +212,7 @@ class SevenElevenComponentTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.SevenElevenComponent.Test name"))
+            XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.Test name"))
             XCTAssertEqual(sut.viewController.title, self.method.name)
             expectation.fulfill()
         }
