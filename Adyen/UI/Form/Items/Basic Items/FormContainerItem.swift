@@ -53,8 +53,10 @@ public class FormContainerItem: FormItem {
     }
 }
 
+/// :nodoc:
 extension FormItem {
 
+    /// :nodoc:
     public func withPadding(padding: UIEdgeInsets) -> FormContainerItem {
         FormContainerItem(content: self, padding: padding)
     }

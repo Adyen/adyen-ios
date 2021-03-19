@@ -56,7 +56,8 @@ public extension DropInComponent {
             public var stored = StoredCardConfiguration()
             
         }
-        
+
+        /// Apple Pay component configuration.
         public final class ApplePayConfiguration {
             
             /// The public key used for encrypting card details.

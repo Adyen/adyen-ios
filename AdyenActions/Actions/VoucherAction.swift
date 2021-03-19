@@ -9,7 +9,11 @@ import Foundation
 
 /// Indicates the Voucher payment methods.
 public enum VoucherPaymentMethod: String, Codable, CaseIterable {
+
+    /// Doku Indomaret.
     case dokuIndomaret = "doku_indomaret"
+
+    /// Doku Alfamart.
     case dokuAlfamart = "doku_alfamart"
 }
 

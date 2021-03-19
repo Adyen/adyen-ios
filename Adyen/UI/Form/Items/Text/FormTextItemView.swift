@@ -334,16 +334,21 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
     }
 }
 
+/// :nodoc:
 public extension FormTextItemView {
-    
+
+    /// :nodoc:
     enum AccessoryType: Equatable {
         case invalid
         case valid
         case customView(UIView)
         case none
     }
-    
+
+    /// :nodoc:
     private final class AccessoryLogo: UIImageView {
+
+        /// :nodoc:
         init(success: Bool) {
             let resource = "verification_" + success.description
             let bundle = Bundle.coreInternalResources
@@ -353,7 +358,8 @@ public extension FormTextItemView {
             setContentHuggingPriority(.required, for: .horizontal)
             setContentCompressionResistancePriority(.required, for: .horizontal)
         }
-        
+
+        /// :nodoc:
         @available(*, unavailable)
         required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")

@@ -21,10 +21,13 @@ public struct CardBrand: Decodable {
     /// Indicates the cvc policy of the brand.
     public enum CVCPolicy: String, Decodable {
 
+        /// CVC is required.
         case required
 
+        /// CVC is optional.
         case optional
 
+        /// CVC should be hidden.
         case hidden
     }
 
@@ -63,4 +66,5 @@ public struct CardBrand: Decodable {
     }
 }
 
+/// :nodoc:
 extension CardBrand: Equatable {}

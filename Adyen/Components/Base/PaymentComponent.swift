@@ -55,12 +55,14 @@ public protocol PaymentComponentDelegate: AnyObject {
     
 }
 
+/// Any component with a payment property.
 public protocol PaymentAwareComponent: Component {
 
     /// The payment information.
     var payment: Payment? { get set }
 }
 
+/// :nodoc:
 extension PaymentAwareComponent {
     /// :nodoc:
     public var payment: Payment? {
