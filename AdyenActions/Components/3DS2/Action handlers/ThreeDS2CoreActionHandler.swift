@@ -110,40 +110,31 @@ internal class ThreeDS2CoreActionHandler: Component {
                          event: Analytics.Event,
                          completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
         guard let transaction = transaction else {
-            didFail(with: ThreeDS2ComponentError.missingTransaction, completionHandler: completionHandler)
-
-            return
+            return didFail(with: ThreeDS2ComponentError.missingTransaction, completionHandler: completionHandler)
         }
 
         Analytics.sendEvent(component: event.component, flavor: event.flavor, environment: event.environment)
 
+        let token: ThreeDS2Component.ChallengeToken
         do {
-            let token = try Coder.decodeBase64(challengeAction.challengeToken) as ThreeDS2Component.ChallengeToken
-            let challengeParameters = ADYChallengeParameters(from: token)
-            transaction.performChallenge(with: challengeParameters) { [weak self] challengeResult, error in
-                self?.handle(challengeResult, error: error,
-                             for: challengeAction,
-                             completionHandler: completionHandler)
-            }
+            token = try Coder.decodeBase64(challengeAction.challengeToken) as ThreeDS2Component.ChallengeToken
         } catch {
-            didFail(with: error, completionHandler: completionHandler)
+            return didFail(with: error, completionHandler: completionHandler)
         }
-    }
 
-    private func handle(_ challengeResult: AnyChallengeResult?,
-                        error: Error?,
-                        for challengeAction: ThreeDS2ChallengeAction,
-                        completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
-        if let error = error {
-            self.didFail(with: error, completionHandler: completionHandler)
-        } else if let result = challengeResult {
+        let challengeParameters = ADYChallengeParameters(from: token)
+        transaction.performChallenge(with: challengeParameters) { [weak self] challengeResult, error in
+            guard let result = challengeResult else {
+                let error = error ?? UnknownError(errorDescription: "Both error and result are nil, this should never happen.")
+                self?.didFail(with: error, completionHandler: completionHandler)
+                return
+            }
 
-            self.didFinish(with: result,
-                           authorizationToken: challengeAction.authorisationToken,
-                           completionHandler: completionHandler)
-        } else {
-            assertionFailure("Both error and result are nil, this should never happen.")
+            self?.didFinish(with: result,
+                            authorizationToken: challengeAction.authorisationToken,
+                            completionHandler: completionHandler)
         }
+
     }
 
     private func didFinish(with challengeResult: AnyChallengeResult,

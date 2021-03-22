@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E2C0E05E220982AE008616F6"
-               BuildableName = "AdyenCard.framework"
-               BlueprintName = "AdyenCard"
+               BlueprintIdentifier = "F95B6D942527454E002C9062"
+               BuildableName = "AdyenSwiftUIHost.app"
+               BlueprintName = "AdyenSwiftUIHost"
                ReferencedContainer = "container:Adyen.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -27,7 +27,23 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "-UITests"
+            isEnabled = "YES">
+         </CommandLineArgument>
+      </CommandLineArguments>
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F9615FAE252DDA4800FA8EDD"
+               BuildableName = "AdyenSwiftUITests.xctest"
+               BlueprintName = "AdyenSwiftUITests"
+               ReferencedContainer = "container:Adyen.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -40,15 +56,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E2C0E05E220982AE008616F6"
-            BuildableName = "AdyenCard.framework"
-            BlueprintName = "AdyenCard"
+            BlueprintIdentifier = "F95B6D942527454E002C9062"
+            BuildableName = "AdyenSwiftUIHost.app"
+            BlueprintName = "AdyenSwiftUIHost"
             ReferencedContainer = "container:Adyen.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -56,15 +73,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E2C0E05E220982AE008616F6"
-            BuildableName = "AdyenCard.framework"
-            BlueprintName = "AdyenCard"
+            BlueprintIdentifier = "F95B6D942527454E002C9062"
+            BuildableName = "AdyenSwiftUIHost.app"
+            BlueprintName = "AdyenSwiftUIHost"
             ReferencedContainer = "container:Adyen.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

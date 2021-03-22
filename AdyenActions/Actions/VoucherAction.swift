@@ -103,6 +103,26 @@ public class GenericVoucherAction: Decodable {
     }
 
     /// :nodoc:
+    internal init(paymentMethodType: VoucherPaymentMethod,
+                  initialAmount: Payment.Amount,
+                  totalAmount: Payment.Amount,
+                  reference: String,
+                  shopperEmail: String,
+                  expiresAt: Date,
+                  merchantName: String,
+                  shopperName: String,
+                  instructionsUrl: String) {
+        self.paymentMethodType = paymentMethodType
+        self.initialAmount = initialAmount
+        self.totalAmount = totalAmount
+        self.reference = reference
+        self.shopperEmail = shopperEmail
+        self.expiresAt = expiresAt
+        self.merchantName = merchantName
+        self.shopperName = shopperName
+        self.instructionsUrl = instructionsUrl
+    }
+
     private enum CodingKeys: String, CodingKey {
         case paymentMethodType,
              initialAmount,
