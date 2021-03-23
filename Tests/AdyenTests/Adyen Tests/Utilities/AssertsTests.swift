@@ -114,7 +114,7 @@ class AssertsTests: XCTestCase {
             expectation.fulfill()
         }
 
-        sut.handle(VoucherAction.dokuAlfamart(GenericVoucherAction(paymentMethodType: .dokuAlfamart,
+        sut.handle(VoucherAction.dokuAlfamart(DokuVoucherAction(paymentMethodType: .dokuAlfamart,
                                                                    initialAmount: Payment.Amount(value: 100, currencyCode: ""),
                                                                    totalAmount: Payment.Amount(value: 100, currencyCode: ""),
                                                                    reference: "",
