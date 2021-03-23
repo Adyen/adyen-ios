@@ -6,7 +6,7 @@
 
 import Foundation
 
-internal final class LastNameFormItemInjector: FormItemInjector, Localizable {
+internal final class NameFormItemInjector: FormItemInjector, Localizable {
 
     /// :nodoc:
     internal var localizationParameters: LocalizationParameters?
@@ -18,10 +18,13 @@ internal final class LastNameFormItemInjector: FormItemInjector, Localizable {
     internal var identifier: String
 
     /// :nodoc:
+    internal var localizationKey: String
+
+    /// :nodoc:
     internal lazy var item: FormTextInputItem = {
         let item = FormTextInputItem(style: style)
-        item.title = ADYLocalizedString("adyen.lastName", localizationParameters)
-        item.placeholder = ADYLocalizedString("adyen.lastName", localizationParameters)
+        item.title = ADYLocalizedString(localizationKey, localizationParameters)
+        item.placeholder = ADYLocalizedString(localizationKey, localizationParameters)
         item.validator = LengthValidator(minimumLength: 1, maximumLength: 50)
         item.validationFailureMessage = nil
         item.autocapitalizationType = .words
@@ -29,8 +32,9 @@ internal final class LastNameFormItemInjector: FormItemInjector, Localizable {
         return item
     }()
 
-    internal init(identifier: String, style: FormTextItemStyle) {
+    internal init(identifier: String, localizationKey: String, style: FormTextItemStyle) {
         self.identifier = identifier
+        self.localizationKey = localizationKey
         self.style = style
     }
 
@@ -38,5 +42,5 @@ internal final class LastNameFormItemInjector: FormItemInjector, Localizable {
     internal func inject(into formViewController: FormViewController) {
         formViewController.append(item)
     }
-
+    
 }

@@ -341,8 +341,7 @@
 		F9589C7D2600FAB800E4113F /* SevenElevenPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589C7C2600FAB800E4113F /* SevenElevenPaymentMethod.swift */; };
 		F9589C942600FD7A00E4113F /* SevenElevenComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589C932600FD7A00E4113F /* SevenElevenComponent.swift */; };
 		F9589D032601EE7800E4113F /* FormItemInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589D022601EE7800E4113F /* FormItemInjector.swift */; };
-		F9589D0F2601EF8100E4113F /* FirstNameFormItemInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589D0E2601EF8100E4113F /* FirstNameFormItemInjector.swift */; };
-		F9589D1B2601F11E00E4113F /* LastNameFormItemInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589D1A2601F11E00E4113F /* LastNameFormItemInjector.swift */; };
+		F9589D0F2601EF8100E4113F /* NameFormItemInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589D0E2601EF8100E4113F /* NameFormItemInjector.swift */; };
 		F9589D272601F19E00E4113F /* EmailFormItemInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589D262601F19E00E4113F /* EmailFormItemInjector.swift */; };
 		F9589D332601F1D400E4113F /* PhoneFormItemInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589D322601F1D400E4113F /* PhoneFormItemInjector.swift */; };
 		F95A788825C416A60032CF7E /* CopyLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95A788725C416A60032CF7E /* CopyLabelView.swift */; };
@@ -1073,8 +1072,7 @@
 		F9589C7C2600FAB800E4113F /* SevenElevenPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SevenElevenPaymentMethod.swift; sourceTree = "<group>"; };
 		F9589C932600FD7A00E4113F /* SevenElevenComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SevenElevenComponent.swift; sourceTree = "<group>"; };
 		F9589D022601EE7800E4113F /* FormItemInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormItemInjector.swift; sourceTree = "<group>"; };
-		F9589D0E2601EF8100E4113F /* FirstNameFormItemInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstNameFormItemInjector.swift; sourceTree = "<group>"; };
-		F9589D1A2601F11E00E4113F /* LastNameFormItemInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastNameFormItemInjector.swift; sourceTree = "<group>"; };
+		F9589D0E2601EF8100E4113F /* NameFormItemInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameFormItemInjector.swift; sourceTree = "<group>"; };
 		F9589D262601F19E00E4113F /* EmailFormItemInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailFormItemInjector.swift; sourceTree = "<group>"; };
 		F9589D322601F1D400E4113F /* PhoneFormItemInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneFormItemInjector.swift; sourceTree = "<group>"; };
 		F95A788725C416A60032CF7E /* CopyLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyLabelView.swift; sourceTree = "<group>"; };
@@ -2843,8 +2841,7 @@
 				F97C81AE25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift */,
 				F97C829125BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift */,
 				F9589D022601EE7800E4113F /* FormItemInjector.swift */,
-				F9589D0E2601EF8100E4113F /* FirstNameFormItemInjector.swift */,
-				F9589D1A2601F11E00E4113F /* LastNameFormItemInjector.swift */,
+				F9589D0E2601EF8100E4113F /* NameFormItemInjector.swift */,
 				F9589D262601F19E00E4113F /* EmailFormItemInjector.swift */,
 				F9589D322601F1D400E4113F /* PhoneFormItemInjector.swift */,
 			);
@@ -3840,7 +3837,7 @@
 				E9AFF87A224A4C9C005A0D8D /* PaymentComponent.swift in Sources */,
 				F923281425A486EE002C5BC4 /* PhoneExtensionsRepository.swift in Sources */,
 				E216D3C0221AD0620013CBCF /* FormViewItemManager.swift in Sources */,
-				F9589D0F2601EF8100E4113F /* FirstNameFormItemInjector.swift in Sources */,
+				F9589D0F2601EF8100E4113F /* NameFormItemInjector.swift in Sources */,
 				E9AFF887224E5872005A0D8D /* PresentableComponent.swift in Sources */,
 				E90933FF228AFC6600C9F04B /* Environment.swift in Sources */,
 				E2D12C09221ED16600EF682F /* FormSwitchItemView.swift in Sources */,
@@ -3936,7 +3933,6 @@
 				F939DEE323C8B4C100D19249 /* EmptyPaymentDetails.swift in Sources */,
 				F96F44CD23B257D700871C1F /* Logger.swift in Sources */,
 				E76EC6952417A107009C6E2F /* PhoneExtensionInputControl.swift in Sources */,
-				F9589D1B2601F11E00E4113F /* LastNameFormItemInjector.swift in Sources */,
 				E216D3BC221AAB240013CBCF /* FormItem.swift in Sources */,
 				E9093403228EDADA00C9F04B /* Payment.swift in Sources */,
 				E216D3CD221AFBB90013CBCF /* Validator.swift in Sources */,

@@ -84,11 +84,12 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     }
 
     /// :nodoc:
-    internal lazy var firstNameItemInjector: FirstNameFormItemInjector? = {
+    internal lazy var firstNameItemInjector: NameFormItemInjector? = {
         guard configuration.fields.contains(.firstName) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "firstNameItem")
-        let injector = FirstNameFormItemInjector(identifier: identifier,
-                                                 style: style.textField)
+        let injector = NameFormItemInjector(identifier: identifier,
+                                            localizationKey: "adyen.firstName",
+                                            style: style.textField)
         injector.localizationParameters = localizationParameters
         return injector
     }()
@@ -97,11 +98,12 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     public var firstNameItem: FormTextInputItem? { firstNameItemInjector?.item }
 
     /// :nodoc:
-    internal lazy var lastNameItemInjector: LastNameFormItemInjector? = {
+    internal lazy var lastNameItemInjector: NameFormItemInjector? = {
         guard configuration.fields.contains(.lastName) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "lastNameItem")
-        let injector = LastNameFormItemInjector(identifier: identifier,
-                                                style: style.textField)
+        let injector = NameFormItemInjector(identifier: identifier,
+                                            localizationKey: "adyen.lastName",
+                                            style: style.textField)
         injector.localizationParameters = localizationParameters
         return injector
     }()
