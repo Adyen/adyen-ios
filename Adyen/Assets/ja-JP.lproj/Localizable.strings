@@ -61,3 +61,4 @@
 "adyen.voucher.readInstructions" = "手順を参照してください";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.voucher.collectionInstitutionNumber" = "収納機関番号";

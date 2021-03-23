@@ -61,3 +61,4 @@
 "adyen.voucher.readInstructions" = "Leggi le istruzioni";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.voucher.collectionInstitutionNumber" = "Codice identificativo del negozio";

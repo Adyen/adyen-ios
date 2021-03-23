@@ -61,3 +61,4 @@
 "adyen.voucher.readInstructions" = "Anweisungen lesen";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.voucher.collectionInstitutionNumber" = "Nummer der Zahlungsannahmestelle";

@@ -480,6 +480,9 @@
 		F9B017E12608D4A8001F23FC /* EContextATMComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B017E02608D4A8001F23FC /* EContextATMComponent.swift */; };
 		F9B017F72608F4FE001F23FC /* DokuVoucherAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B017F62608F4FE001F23FC /* DokuVoucherAction.swift */; };
 		F9B018032608F648001F23FC /* EContextStoresVoucherAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B018022608F648001F23FC /* EContextStoresVoucherAction.swift */; };
+		F9B018B8260A2DB2001F23FC /* EContextATMVoucherAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B018B7260A2DB2001F23FC /* EContextATMVoucherAction.swift */; };
+		F9B018C4260A32AA001F23FC /* EContextOnlinePaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B018C3260A32AA001F23FC /* EContextOnlinePaymentMethod.swift */; };
+		F9B018D1260A32DC001F23FC /* EContextOnlineComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B018D0260A32DC001F23FC /* EContextOnlineComponent.swift */; };
 		F9B798C923AB697100A2103C /* FormComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B798C823AB697100A2103C /* FormComponentStyle.swift */; };
 		F9B798CB23AB706D00A2103C /* ListComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B798CA23AB706D00A2103C /* ListComponentStyle.swift */; };
 		F9B8C49123FC286D00C4D0FB /* FormCardNumberItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B317A42265D76600C1BB30 /* FormCardNumberItem.swift */; };
@@ -1222,6 +1225,9 @@
 		F9B017E02608D4A8001F23FC /* EContextATMComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EContextATMComponent.swift; sourceTree = "<group>"; };
 		F9B017F62608F4FE001F23FC /* DokuVoucherAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuVoucherAction.swift; sourceTree = "<group>"; };
 		F9B018022608F648001F23FC /* EContextStoresVoucherAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EContextStoresVoucherAction.swift; sourceTree = "<group>"; };
+		F9B018B7260A2DB2001F23FC /* EContextATMVoucherAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EContextATMVoucherAction.swift; sourceTree = "<group>"; };
+		F9B018C3260A32AA001F23FC /* EContextOnlinePaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EContextOnlinePaymentMethod.swift; sourceTree = "<group>"; };
+		F9B018D0260A32DC001F23FC /* EContextOnlineComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EContextOnlineComponent.swift; sourceTree = "<group>"; };
 		F9B798C823AB697100A2103C /* FormComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormComponentStyle.swift; sourceTree = "<group>"; };
 		F9B798CA23AB706D00A2103C /* ListComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListComponentStyle.swift; sourceTree = "<group>"; };
 		F9B798D223ACF10800A2103C /* RedirectComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedirectComponentStyle.swift; sourceTree = "<group>"; };
@@ -1537,6 +1543,7 @@
 				F9589C7C2600FAB800E4113F /* SevenElevenPaymentMethod.swift */,
 				F9B017442604F6F9001F23FC /* EContextStoresPaymentMethod.swift */,
 				F9B017D32608D402001F23FC /* EContextATMPaymentMethod.swift */,
+				F9B018C3260A32AA001F23FC /* EContextOnlinePaymentMethod.swift */,
 			);
 			path = "Payment Methods";
 			sourceTree = "<group>";
@@ -1556,6 +1563,7 @@
 				F97C84CC25C1761900D7F85C /* VoucherAction.swift */,
 				F9B017F62608F4FE001F23FC /* DokuVoucherAction.swift */,
 				F9B018022608F648001F23FC /* EContextStoresVoucherAction.swift */,
+				F9B018B7260A2DB2001F23FC /* EContextATMVoucherAction.swift */,
 			);
 			path = Actions;
 			sourceTree = "<group>";
@@ -2331,6 +2339,7 @@
 		F9175E56259393E800D653BE /* AdyenComponents */ = {
 			isa = PBXGroup;
 			children = (
+				F9B018CF260A32CE001F23FC /* EContextOnlineComponent */,
 				F9B017DF2608D490001F23FC /* EContextATMComponent */,
 				F9B017502604F753001F23FC /* EContextStoreComponent */,
 				F9B016F72604F388001F23FC /* BasicPersonalInfoFormComponent */,
@@ -2994,6 +3003,14 @@
 				F9B017E02608D4A8001F23FC /* EContextATMComponent.swift */,
 			);
 			path = EContextATMComponent;
+			sourceTree = "<group>";
+		};
+		F9B018CF260A32CE001F23FC /* EContextOnlineComponent */ = {
+			isa = PBXGroup;
+			children = (
+				F9B018D0260A32DC001F23FC /* EContextOnlineComponent.swift */,
+			);
+			path = EContextOnlineComponent;
 			sourceTree = "<group>";
 		};
 		F9B8C50A23FE960E00C4D0FB /* Phone Number */ = {
@@ -3883,6 +3900,7 @@
 				F9EDB782239149AF00CFB3C9 /* CountryCodeValidator.swift in Sources */,
 				E9021DAA225789B1009CF7F4 /* Localization.swift in Sources */,
 				E787C9D3246EC71B00B401E0 /* UIFontHelpers.swift in Sources */,
+				F9B018C4260A32AA001F23FC /* EContextOnlinePaymentMethod.swift in Sources */,
 				F96F44DD23BE487500871C1F /* LocalizationParameters.swift in Sources */,
 				F95B6D8A2523138E002C9062 /* PhoneNumberFormatter.swift in Sources */,
 				F9589D272601F19E00E4113F /* EmailFormItemInjector.swift in Sources */,
@@ -4201,6 +4219,7 @@
 				F9175ED32593951900D653BE /* MBWayDetails.swift in Sources */,
 				F9175EAB259394FF00D653BE /* ApplePayDetails.swift in Sources */,
 				F9175EE22593952600D653BE /* BLIKComponent.swift in Sources */,
+				F9B018D1260A32DC001F23FC /* EContextOnlineComponent.swift in Sources */,
 				F9175E8B259394E100D653BE /* SEPADirectDebitComponent.swift in Sources */,
 				F9B017522604F76C001F23FC /* EContextStoreComponent.swift in Sources */,
 				F9175E8A259394E100D653BE /* SEPADirectDebitDetails.swift in Sources */,
@@ -4222,6 +4241,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9175FD02594999600D653BE /* RedirectDetails.swift in Sources */,
+				F9B018B8260A2DB2001F23FC /* EContextATMVoucherAction.swift in Sources */,
 				F917613625A30B5700D653BE /* ThreeDS2ComponentChallengeToken.swift in Sources */,
 				F9175FBC2594996000D653BE /* WeChatPaySDKData.swift in Sources */,
 				F9175FB62594996000D653BE /* WeChatPaySDKAction.swift in Sources */,
