@@ -54,6 +54,9 @@ public protocol PaymentComponentBuilder {
 
     /// Builds a certain `PaymentComponent` based on a `EContextStoresPaymentMethod`.
     func build(paymentMethod: EContextStoresPaymentMethod) -> PaymentComponent?
+
+    /// Builds a certain `PaymentComponent` based on a `EContextATMPaymentMethod`.
+    func build(paymentMethod: EContextATMPaymentMethod) -> PaymentComponent?
     
     /// Builds a certain `PaymentComponent` based on any `PaymentMethod`, as a default case.
     func build(paymentMethod: PaymentMethod) -> PaymentComponent?

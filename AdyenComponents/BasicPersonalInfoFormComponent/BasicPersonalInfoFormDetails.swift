@@ -8,22 +8,29 @@ import Adyen
 import Foundation
 
 /// Contains the details supplied by the 7 Eleven component.
-public struct BasicPersonalInfoFormDetails: PaymentMethodDetails {
+public struct BasicPersonalInfoFormDetails: PaymentMethodDetails, ShopperInformation {
 
     /// The payment method type.
     public let type: String
 
+    /// The shopper Name.
+    public var shopperName: ShopperName? {
+        guard let firstName = firstName else { return nil }
+        guard let lastName = lastName else { return nil }
+        return ShopperName(firstName: firstName, lastName: lastName)
+    }
+
     /// The first Name.
-    public let firstName: String
+    public let firstName: String?
 
     /// The last Name.
-    public let lastName: String
+    public let lastName: String?
 
     /// The email address.
-    public let emailAddress: String
+    public let emailAddress: String?
 
     /// The telephone number.
-    public let telephoneNumber: String
+    public let telephoneNumber: String?
 
     /// Initializes the 7 Eleven details.
     ///

@@ -233,6 +233,12 @@ extension ComponentManager: PaymentComponentBuilder {
     }
 
     /// :nodoc:
+    internal func build(paymentMethod: EContextATMPaymentMethod) -> PaymentComponent? {
+        EContextATMComponent(paymentMethod: paymentMethod,
+                             style: style.formComponent)
+    }
+
+    /// :nodoc:
     internal func build(paymentMethod: DokuPaymentMethod) -> PaymentComponent? {
         DokuComponent(paymentMethod: paymentMethod,
                       style: style.formComponent)

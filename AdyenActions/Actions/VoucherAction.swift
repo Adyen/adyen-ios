@@ -11,16 +11,20 @@ import Foundation
 public enum VoucherPaymentMethod: String, Codable, CaseIterable {
     case dokuIndomaret = "doku_indomaret"
     case dokuAlfamart = "doku_alfamart"
+    case econtextStores = "econtext_stores"
 }
 
 /// Describes any Voucher action.
 public enum VoucherAction: Decodable {
 
     /// Indicates Doku Indomaret Voucher type.
-    case dokuIndomaret(GenericVoucherAction)
+    case dokuIndomaret(DokuVoucherAction)
 
     /// Indicates Doku Alfamart Voucher type.
-    case dokuAlfamart(GenericVoucherAction)
+    case dokuAlfamart(DokuVoucherAction)
+
+    /// Indicates an EContext Stores Voucher type.
+    case econtextStores(EContextStoresVoucherAction)
 
     /// :nodoc:
     public init(from decoder: Decoder) throws {
@@ -29,9 +33,11 @@ public enum VoucherAction: Decodable {
 
         switch type {
         case .dokuIndomaret:
-            self = .dokuIndomaret(try GenericVoucherAction(from: decoder))
+            self = .dokuIndomaret(try DokuVoucherAction(from: decoder))
         case .dokuAlfamart:
-            self = .dokuAlfamart(try GenericVoucherAction(from: decoder))
+            self = .dokuAlfamart(try DokuVoucherAction(from: decoder))
+        case .econtextStores:
+            self = .econtextStores(try EContextStoresVoucherAction(from: decoder))
         }
     }
 
@@ -56,17 +62,11 @@ public class GenericVoucherAction: Decodable {
     /// The payment reference.
     public let reference: String
 
-    /// The shopper email.
-    public let shopperEmail: String
-
     /// Expirey Date.
     public let expiresAt: Date
 
     /// Merchant Name.
     public let merchantName: String
-
-    /// Shopper Name.
-    public let shopperName: String
 
     /// The instruction url.
     public let instructionsUrl: String
@@ -78,9 +78,7 @@ public class GenericVoucherAction: Decodable {
         initialAmount = try container.decode(Payment.Amount.self, forKey: .initialAmount)
         totalAmount = try container.decode(Payment.Amount.self, forKey: .totalAmount)
         reference = try container.decode(String.self, forKey: .reference)
-        shopperEmail = try container.decode(String.self, forKey: .shopperEmail)
         merchantName = try container.decode(String.self, forKey: .merchantName)
-        shopperName = try container.decode(String.self, forKey: .shopperName)
         instructionsUrl = try container.decode(String.self, forKey: .instructionsUrl)
 
         let expiresAtString = try container.decode(String.self, forKey: .expiresAt)

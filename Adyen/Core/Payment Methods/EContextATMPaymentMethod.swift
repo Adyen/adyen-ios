@@ -6,8 +6,8 @@
 
 import Foundation
 
-/// An E-context stores payment method.
-public struct EContextStoresPaymentMethod: PaymentMethod {
+/// An E-context ATM payment method.
+public struct EContextATMPaymentMethod: PaymentMethod {
 
     /// :nodoc:
     public let type: String
@@ -15,7 +15,7 @@ public struct EContextStoresPaymentMethod: PaymentMethod {
     /// :nodoc:
     public let name: String
 
-    /// Initializes the E-context stores payment method.
+    /// Initializes the E-context ATM payment method.
     ///
     /// - Parameter type: The payment method type.
     /// - Parameter name: The payment method name.

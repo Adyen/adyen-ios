@@ -442,7 +442,7 @@
 		F97C84D925C178E900D7F85C /* VoucherComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C84D825C178E900D7F85C /* VoucherComponent.swift */; };
 		F97C850125C17CCD00D7F85C /* VoucherViewControllerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C850025C17CCD00D7F85C /* VoucherViewControllerProvider.swift */; };
 		F97C851625C192D000D7F85C /* VoucherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C851525C192D000D7F85C /* VoucherViewController.swift */; };
-		F97C853D25C1ABA400D7F85C /* DokuVoucherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C853C25C1ABA400D7F85C /* DokuVoucherView.swift */; };
+		F97C853D25C1ABA400D7F85C /* GenericVoucherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C853C25C1ABA400D7F85C /* GenericVoucherView.swift */; };
 		F97C855A25C1ABD700D7F85C /* VoucherCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C855925C1ABD700D7F85C /* VoucherCardView.swift */; };
 		F97C857725C1D5BA00D7F85C /* UIViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C857625C1D5BA00D7F85C /* UIViewHelpers.swift */; };
 		F97CCD3A2435E35E00BC560A /* UIViewControllerHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97CCD392435E35E00BC560A /* UIViewControllerHelpers.swift */; };
@@ -476,6 +476,10 @@
 		F9B017252604F49C001F23FC /* BasicPersonalInfoFormDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B017242604F49C001F23FC /* BasicPersonalInfoFormDetails.swift */; };
 		F9B017452604F6F9001F23FC /* EContextStoresPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B017442604F6F9001F23FC /* EContextStoresPaymentMethod.swift */; };
 		F9B017522604F76C001F23FC /* EContextStoreComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B017512604F76C001F23FC /* EContextStoreComponent.swift */; };
+		F9B017D42608D402001F23FC /* EContextATMPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B017D32608D402001F23FC /* EContextATMPaymentMethod.swift */; };
+		F9B017E12608D4A8001F23FC /* EContextATMComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B017E02608D4A8001F23FC /* EContextATMComponent.swift */; };
+		F9B017F72608F4FE001F23FC /* DokuVoucherAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B017F62608F4FE001F23FC /* DokuVoucherAction.swift */; };
+		F9B018032608F648001F23FC /* EContextStoresVoucherAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B018022608F648001F23FC /* EContextStoresVoucherAction.swift */; };
 		F9B798C923AB697100A2103C /* FormComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B798C823AB697100A2103C /* FormComponentStyle.swift */; };
 		F9B798CB23AB706D00A2103C /* ListComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B798CA23AB706D00A2103C /* ListComponentStyle.swift */; };
 		F9B8C49123FC286D00C4D0FB /* FormCardNumberItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B317A42265D76600C1BB30 /* FormCardNumberItem.swift */; };
@@ -523,7 +527,7 @@
 		F9EDB79C2396652000CFB3C9 /* StoredPaymentMethodMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB79B2396652000CFB3C9 /* StoredPaymentMethodMock.swift */; };
 		F9EDB79E2397AEF400CFB3C9 /* ComponentManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB79D2397AEF400CFB3C9 /* ComponentManagerTests.swift */; };
 		F9EDB7A02397BD8500CFB3C9 /* TestPaymentMethodsJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB79F2397BD8500CFB3C9 /* TestPaymentMethodsJson.swift */; };
-		F9FE13E025CBF6870067B593 /* DokuVoucherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE13DF25CBF6870067B593 /* DokuVoucherViewModel.swift */; };
+		F9FE13E025CBF6870067B593 /* GenericVoucherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE13DF25CBF6870067B593 /* GenericVoucherViewModel.swift */; };
 		F9FE13F425CC0E3C0067B593 /* VoucherViewControllerProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE13F325CC0E3C0067B593 /* VoucherViewControllerProviderTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -1177,7 +1181,7 @@
 		F97C84D825C178E900D7F85C /* VoucherComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherComponent.swift; sourceTree = "<group>"; };
 		F97C850025C17CCD00D7F85C /* VoucherViewControllerProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherViewControllerProvider.swift; sourceTree = "<group>"; };
 		F97C851525C192D000D7F85C /* VoucherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherViewController.swift; sourceTree = "<group>"; };
-		F97C853C25C1ABA400D7F85C /* DokuVoucherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuVoucherView.swift; sourceTree = "<group>"; };
+		F97C853C25C1ABA400D7F85C /* GenericVoucherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericVoucherView.swift; sourceTree = "<group>"; };
 		F97C855925C1ABD700D7F85C /* VoucherCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherCardView.swift; sourceTree = "<group>"; };
 		F97C857625C1D5BA00D7F85C /* UIViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewHelpers.swift; sourceTree = "<group>"; };
 		F97CCD392435E35E00BC560A /* UIViewControllerHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerHelpers.swift; sourceTree = "<group>"; };
@@ -1214,6 +1218,10 @@
 		F9B017242604F49C001F23FC /* BasicPersonalInfoFormDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicPersonalInfoFormDetails.swift; sourceTree = "<group>"; };
 		F9B017442604F6F9001F23FC /* EContextStoresPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EContextStoresPaymentMethod.swift; sourceTree = "<group>"; };
 		F9B017512604F76C001F23FC /* EContextStoreComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EContextStoreComponent.swift; sourceTree = "<group>"; };
+		F9B017D32608D402001F23FC /* EContextATMPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EContextATMPaymentMethod.swift; sourceTree = "<group>"; };
+		F9B017E02608D4A8001F23FC /* EContextATMComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EContextATMComponent.swift; sourceTree = "<group>"; };
+		F9B017F62608F4FE001F23FC /* DokuVoucherAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuVoucherAction.swift; sourceTree = "<group>"; };
+		F9B018022608F648001F23FC /* EContextStoresVoucherAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EContextStoresVoucherAction.swift; sourceTree = "<group>"; };
 		F9B798C823AB697100A2103C /* FormComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormComponentStyle.swift; sourceTree = "<group>"; };
 		F9B798CA23AB706D00A2103C /* ListComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListComponentStyle.swift; sourceTree = "<group>"; };
 		F9B798D223ACF10800A2103C /* RedirectComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedirectComponentStyle.swift; sourceTree = "<group>"; };
@@ -1261,7 +1269,7 @@
 		F9EDB79B2396652000CFB3C9 /* StoredPaymentMethodMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredPaymentMethodMock.swift; sourceTree = "<group>"; };
 		F9EDB79D2397AEF400CFB3C9 /* ComponentManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentManagerTests.swift; sourceTree = "<group>"; };
 		F9EDB79F2397BD8500CFB3C9 /* TestPaymentMethodsJson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPaymentMethodsJson.swift; sourceTree = "<group>"; };
-		F9FE13DF25CBF6870067B593 /* DokuVoucherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuVoucherViewModel.swift; sourceTree = "<group>"; };
+		F9FE13DF25CBF6870067B593 /* GenericVoucherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericVoucherViewModel.swift; sourceTree = "<group>"; };
 		F9FE13F325CC0E3C0067B593 /* VoucherViewControllerProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherViewControllerProviderTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1528,6 +1536,7 @@
 				E71E8F3D257921D10054B03D /* StoredBLIKPaymentMethod.swift */,
 				F9589C7C2600FAB800E4113F /* SevenElevenPaymentMethod.swift */,
 				F9B017442604F6F9001F23FC /* EContextStoresPaymentMethod.swift */,
+				F9B017D32608D402001F23FC /* EContextATMPaymentMethod.swift */,
 			);
 			path = "Payment Methods";
 			sourceTree = "<group>";
@@ -1545,6 +1554,8 @@
 				F9A7AC86255430B300012EBC /* ThreeDS2Action.swift */,
 				F9639B1824DABDE40073F38A /* AwaitAction.swift */,
 				F97C84CC25C1761900D7F85C /* VoucherAction.swift */,
+				F9B017F62608F4FE001F23FC /* DokuVoucherAction.swift */,
+				F9B018022608F648001F23FC /* EContextStoresVoucherAction.swift */,
 			);
 			path = Actions;
 			sourceTree = "<group>";
@@ -2310,6 +2321,7 @@
 		F9175E56259393E800D653BE /* AdyenComponents */ = {
 			isa = PBXGroup;
 			children = (
+				F9B017DF2608D490001F23FC /* EContextATMComponent */,
 				F9B017502604F753001F23FC /* EContextStoreComponent */,
 				F9B016F72604F388001F23FC /* BasicPersonalInfoFormComponent */,
 				F9589C882600FD5D00E4113F /* 7 Eleven */,
@@ -2856,7 +2868,8 @@
 		F97C851425C1928500D7F85C /* Voucher */ = {
 			isa = PBXGroup;
 			children = (
-				F97C853B25C1AB7E00D7F85C /* Doku */,
+				F97C853C25C1ABA400D7F85C /* GenericVoucherView.swift */,
+				F9FE13DF25CBF6870067B593 /* GenericVoucherViewModel.swift */,
 				F97C851525C192D000D7F85C /* VoucherViewController.swift */,
 				F97C855925C1ABD700D7F85C /* VoucherCardView.swift */,
 				F9B997C925C949AC00891084 /* VoucherCardLayer.swift */,
@@ -2864,15 +2877,6 @@
 				F95A78B825C4302A0032CF7E /* AbstractVoucherView.swift */,
 			);
 			path = Voucher;
-			sourceTree = "<group>";
-		};
-		F97C853B25C1AB7E00D7F85C /* Doku */ = {
-			isa = PBXGroup;
-			children = (
-				F97C853C25C1ABA400D7F85C /* DokuVoucherView.swift */,
-				F9FE13DF25CBF6870067B593 /* DokuVoucherViewModel.swift */,
-			);
-			path = Doku;
 			sourceTree = "<group>";
 		};
 		F9842CC8256FD0770063CE5A /* Action handlers */ = {
@@ -2974,6 +2978,14 @@
 				F9B017512604F76C001F23FC /* EContextStoreComponent.swift */,
 			);
 			path = EContextStoreComponent;
+			sourceTree = "<group>";
+		};
+		F9B017DF2608D490001F23FC /* EContextATMComponent */ = {
+			isa = PBXGroup;
+			children = (
+				F9B017E02608D4A8001F23FC /* EContextATMComponent.swift */,
+			);
+			path = EContextATMComponent;
 			sourceTree = "<group>";
 		};
 		F9B8C50A23FE960E00C4D0FB /* Phone Number */ = {
@@ -3825,6 +3837,7 @@
 				F9639B2F24DD6B500073F38A /* APIEnvironment.swift in Sources */,
 				F97CCD3A2435E35E00BC560A /* UIViewControllerHelpers.swift in Sources */,
 				E216D3BE221AAB710013CBCF /* FormTextItem.swift in Sources */,
+				F9B017D42608D402001F23FC /* EContextATMPaymentMethod.swift in Sources */,
 				E9021DEE225CC46D009CF7F4 /* URLHelpers.swift in Sources */,
 				F9D644DE24D2D9950059CBE3 /* MBWayPaymentMethod.swift in Sources */,
 				E216D3C3221AEDBE0013CBCF /* Formatter.swift in Sources */,
@@ -4185,6 +4198,7 @@
 				F9175E8A259394E100D653BE /* SEPADirectDebitDetails.swift in Sources */,
 				F9589C942600FD7A00E4113F /* SevenElevenComponent.swift in Sources */,
 				F9175EAA259394FF00D653BE /* ApplePayComponentExtensions.swift in Sources */,
+				F9B017E12608D4A8001F23FC /* EContextATMComponent.swift in Sources */,
 				F9175ED22593951800D653BE /* MBWayComponent.swift in Sources */,
 				F9175E9B259394F200D653BE /* IssuerListComponent.swift in Sources */,
 				F97C839825BF05AB00D7F85C /* DokuDetails.swift in Sources */,
@@ -4206,6 +4220,7 @@
 				F917613725A30B5700D653BE /* ThreeDSResult.swift in Sources */,
 				F9175FFB259499D500D653BE /* AwaitView.swift in Sources */,
 				F9175FB52594996000D653BE /* SDKAction.swift in Sources */,
+				F9B017F72608F4FE001F23FC /* DokuVoucherAction.swift in Sources */,
 				F917617225A30B6A00D653BE /* AnyThreeDS2ActionHandler.swift in Sources */,
 				F91760812594B1F400D653BE /* RedirectComponentStyle.swift in Sources */,
 				F9175FF9259499D500D653BE /* AwaitComponentViewModel.swift in Sources */,
@@ -4215,7 +4230,7 @@
 				F917615E25A30B6400D653BE /* AnyADYTransaction.swift in Sources */,
 				F97C855A25C1ABD700D7F85C /* VoucherCardView.swift in Sources */,
 				F97C84CD25C1761900D7F85C /* VoucherAction.swift in Sources */,
-				F97C853D25C1ABA400D7F85C /* DokuVoucherView.swift in Sources */,
+				F97C853D25C1ABA400D7F85C /* GenericVoucherView.swift in Sources */,
 				E73C54E425EBD2DC00B57758 /* BrowserComponent.swift in Sources */,
 				F9175FB72594996000D653BE /* ThreeDS2ChallengeAction.swift in Sources */,
 				F917615C25A30B6400D653BE /* AnyChallengeResult.swift in Sources */,
@@ -4242,7 +4257,7 @@
 				F917617125A30B6A00D653BE /* ThreeDS2CompactActionHandler.swift in Sources */,
 				F9B997CA25C949AC00891084 /* VoucherCardLayer.swift in Sources */,
 				F97C84D925C178E900D7F85C /* VoucherComponent.swift in Sources */,
-				F9FE13E025CBF6870067B593 /* DokuVoucherViewModel.swift in Sources */,
+				F9FE13E025CBF6870067B593 /* GenericVoucherViewModel.swift in Sources */,
 				F917618525A30B8500D653BE /* Submit3DS2FingerprintRequest.swift in Sources */,
 				F9175FE52594999C00D653BE /* AwaitActionHandlerProvider.swift in Sources */,
 				F917613425A30B5700D653BE /* ThreeDS2Component.swift in Sources */,
@@ -4251,6 +4266,7 @@
 				F91760632594A0E300D653BE /* ActionsBundleExtension.swift in Sources */,
 				F917614A25A30B5E00D653BE /* ThreeDS2FingerprintSubmitter.swift in Sources */,
 				F917613525A30B5700D653BE /* ThreeDS2Details.swift in Sources */,
+				F9B018032608F648001F23FC /* EContextStoresVoucherAction.swift in Sources */,
 				F917613825A30B5700D653BE /* ThreeDS2ComponentFingerprint.swift in Sources */,
 				F970143925D139BE007E74D9 /* VoucherComponentStyle.swift in Sources */,
 				F917613925A30B5700D653BE /* ThreeDS2ComponentFingerprintToken.swift in Sources */,

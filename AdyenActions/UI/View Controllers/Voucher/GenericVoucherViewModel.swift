@@ -7,7 +7,7 @@
 import Adyen
 import UIKit
 
-extension DokuVoucherView {
+extension GenericVoucherView {
 
     internal struct VoucherField {
 

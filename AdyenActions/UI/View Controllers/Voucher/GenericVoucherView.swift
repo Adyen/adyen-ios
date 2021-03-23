@@ -7,7 +7,7 @@
 import Adyen
 import UIKit
 
-internal final class DokuVoucherView: AbstractVoucherView {
+internal final class GenericVoucherView: AbstractVoucherView {
 
     private lazy var textLabel: UILabel = {
         let label = createLabel(with: model.style.text, text: model.text, identifier: "textLabel")
