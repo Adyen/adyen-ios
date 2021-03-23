@@ -39,7 +39,8 @@ class ComponentManagerTests: XCTestCase {
             googlePay,
             dokuWallet,
             econtextStores,
-            econtextATM
+            econtextATM,
+            econtextOnline
         ]
     ]
 
@@ -58,14 +59,14 @@ class ComponentManagerTests: XCTestCase {
                                    style: DropInComponent.Style())
 
         XCTAssertEqual(sut.components.stored.count, 4)
-        XCTAssertEqual(sut.components.regular.count, 14)
+        XCTAssertEqual(sut.components.regular.count, 15)
 
         XCTAssertEqual(sut.components.stored.filter { $0.environment.clientKey == Dummy.dummyClientKey }.count, 4)
-        XCTAssertEqual(sut.components.regular.filter { $0.environment.clientKey == Dummy.dummyClientKey }.count, 14)
+        XCTAssertEqual(sut.components.regular.filter { $0.environment.clientKey == Dummy.dummyClientKey }.count, 15)
 
-        XCTAssertEqual(sut.components.regular.filter { $0 is LoadingComponent }.count, 11)
-        XCTAssertEqual(sut.components.regular.filter { $0 is Localizable }.count, 10)
-        XCTAssertEqual(sut.components.regular.filter { $0 is PresentableComponent }.count, 12)
+        XCTAssertEqual(sut.components.regular.filter { $0 is LoadingComponent }.count, 12)
+        XCTAssertEqual(sut.components.regular.filter { $0 is Localizable }.count, 11)
+        XCTAssertEqual(sut.components.regular.filter { $0 is PresentableComponent }.count, 13)
     }
     
     func testLocalizationWithCustomTableName() throws {
@@ -84,10 +85,10 @@ class ComponentManagerTests: XCTestCase {
                                    style: DropInComponent.Style())
         
         XCTAssertEqual(sut.components.stored.count, 4)
-        XCTAssertEqual(sut.components.regular.count, 14)
+        XCTAssertEqual(sut.components.regular.count, 15)
         
         XCTAssertEqual(sut.components.stored.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 4)
-        XCTAssertEqual(sut.components.regular.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 10)
+        XCTAssertEqual(sut.components.regular.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 11)
     }
     
     func testLocalizationWithCustomKeySeparator() throws {
@@ -106,10 +107,10 @@ class ComponentManagerTests: XCTestCase {
                                    style: DropInComponent.Style())
         
         XCTAssertEqual(sut.components.stored.count, 4)
-        XCTAssertEqual(sut.components.regular.count, 14)
+        XCTAssertEqual(sut.components.regular.count, 15)
         
         XCTAssertEqual(sut.components.stored.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 4)
-        XCTAssertEqual(sut.components.regular.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 10)
+        XCTAssertEqual(sut.components.regular.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 11)
     }
     
 }

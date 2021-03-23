@@ -216,6 +216,11 @@ let econtextATM = [
     "type" : "econtext_atm"
 ] as [String: Any]
 
+let econtextOnline = [
+    "name" : "Online Banking",
+    "type" : "econtext_online"
+] as [String: Any]
+
 let dokuIndomaretAction: [String: Any] = [
     "reference": "9786512300056485",
     "initialAmount": [
