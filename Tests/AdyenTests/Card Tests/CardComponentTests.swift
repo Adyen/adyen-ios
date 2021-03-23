@@ -700,10 +700,4 @@ class CardComponentTests: XCTestCase {
     private func focus<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U) {
         textItemView.textField.becomeFirstResponder()
     }
-    
-    private func populate<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U, with text: String) {
-        let textView = textItemView.textField
-        textView.text = text
-        textView.sendActions(for: .editingChanged)
-    }
 }

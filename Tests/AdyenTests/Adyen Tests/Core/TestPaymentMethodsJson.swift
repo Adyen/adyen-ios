@@ -120,6 +120,29 @@ let issuerListDictionary = [
     ]
 ] as [String: Any]
 
+let sevenElevenDictionary = [
+    "details" : [
+      [
+        "key" : "shopperEmail",
+        "type" : "emailAddress"
+      ],
+      [
+        "key" : "firstName",
+        "type" : "text"
+      ],
+      [
+        "key" : "lastName",
+        "type" : "text"
+      ],
+      [
+        "key" : "telephoneNumber",
+        "type" : "tel"
+      ]
+    ],
+    "name" : "7-Eleven",
+    "type" : "econtext_seven_eleven"
+  ] as [String: Any]
+
 let issuerListDictionaryWithoutDetailsObject = [
     "type": "ideal_100",
     "name": "iDEAL_100",
@@ -181,6 +204,16 @@ let googlePay = [
 let dokuWallet = [
     "name": "DOKU wallet",
     "type": "doku_wallet"
+] as [String: Any]
+
+let econtextStores = [
+    "name" : "Convenience Stores",
+    "type" : "econtext_stores"
+] as [String: Any]
+
+let econtextATM = [
+    "name" : "Pay-easy ATM",
+    "type" : "econtext_atm"
 ] as [String: Any]
 
 let dokuIndomaretAction: [String: Any] = [

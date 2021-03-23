@@ -14,7 +14,7 @@ import XCTest
 class VoucherViewControllerProviderTests: XCTestCase {
 
     func testCustomLocalization() throws {
-        let dokuAction = try Coder.decode(dokuIndomaretAction) as GenericVoucherAction
+        let dokuAction = try Coder.decode(dokuIndomaretAction) as DokuVoucherAction
         let action: VoucherAction = .dokuIndomaret(dokuAction)
 
         let sut = VoucherViewControllerProvider(style: VoucherComponentStyle())
@@ -54,7 +54,7 @@ class VoucherViewControllerProviderTests: XCTestCase {
     }
 
     func testCustomUI() throws {
-        let dokuAction = try Coder.decode(dokuIndomaretAction) as GenericVoucherAction
+        let dokuAction = try Coder.decode(dokuIndomaretAction) as DokuVoucherAction
         let action: VoucherAction = .dokuIndomaret(dokuAction)
 
         var style = VoucherComponentStyle()

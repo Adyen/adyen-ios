@@ -186,11 +186,5 @@ class QiwiWalletComponentTests: XCTestCase {
         }
         waitForExpectations(timeout: 10, handler: nil)
     }
-
-    private func populate<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U, with text: String) {
-        let textView = textItemView.textField
-        textView.text = text
-        textView.sendActions(for: .editingChanged)
-    }
     
 }

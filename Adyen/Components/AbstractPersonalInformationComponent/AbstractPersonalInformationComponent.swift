@@ -22,11 +22,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     public lazy var viewController: UIViewController = SecuredViewController(child: formViewController, style: style)
 
     /// :nodoc:
-    public var localizationParameters: LocalizationParameters? {
-        didSet {
-            formBuilder.localizationParameters = localizationParameters
-        }
-    }
+    public var localizationParameters: LocalizationParameters?
 
     /// Describes the component's UI style.
     public let style: FormComponentStyle
@@ -63,9 +59,6 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     }()
 
     /// :nodoc:
-    private lazy var formBuilder = PersonalInformationFormBuilder()
-
-    /// :nodoc:
     private func build(_ formViewController: FormViewController) {
         configuration.fields.forEach { field in
             self.add(field, into: formViewController)
@@ -78,56 +71,72 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
                      into formViewController: FormViewController) {
         switch field {
         case .email:
-            if let emailItem = emailItem {
-                formViewController.append(emailItem)
-            }
+            emailItemInjector?.inject(into: formViewController)
         case .firstName:
-            if let firstNameItem = firstNameItem {
-                formViewController.append(firstNameItem)
-            }
+            firstNameItemInjector?.inject(into: formViewController)
         case .lastName:
-            if let lastNameItem = lastNameItem {
-                formViewController.append(lastNameItem)
-            }
+            lastNameItemInjector?.inject(into: formViewController)
         case .phone:
-            if let phoneItem = phoneItem {
-                formViewController.append(phoneItem)
-            }
+            phoneItemInjector?.inject(into: formViewController)
+        case let .custom(injector):
+            injector.inject(into: formViewController)
         }
     }
 
     /// :nodoc:
-    public lazy var firstNameItem: FormTextInputItem? = {
+    internal lazy var firstNameItemInjector: NameFormItemInjector? = {
         guard configuration.fields.contains(.firstName) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "firstNameItem")
-        return FirstNameElement(identifier: identifier,
-                                style: style.textField).build(formBuilder)
+        let injector = NameFormItemInjector(identifier: identifier,
+                                            localizationKey: "adyen.firstName",
+                                            style: style.textField)
+        injector.localizationParameters = localizationParameters
+        return injector
     }()
 
     /// :nodoc:
-    public lazy var lastNameItem: FormTextInputItem? = {
+    public var firstNameItem: FormTextInputItem? { firstNameItemInjector?.item }
+
+    /// :nodoc:
+    internal lazy var lastNameItemInjector: NameFormItemInjector? = {
         guard configuration.fields.contains(.lastName) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "lastNameItem")
-        return LastNameElement(identifier: identifier,
-                               style: style.textField).build(formBuilder)
+        let injector = NameFormItemInjector(identifier: identifier,
+                                            localizationKey: "adyen.lastName",
+                                            style: style.textField)
+        injector.localizationParameters = localizationParameters
+        return injector
     }()
 
     /// :nodoc:
-    public lazy var emailItem: FormTextInputItem? = {
+    public var lastNameItem: FormTextInputItem? { lastNameItemInjector?.item }
+
+    /// :nodoc:
+    internal lazy var emailItemInjector: EmailFormItemInjector? = {
         guard configuration.fields.contains(.email) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "emailItem")
-        return EmailElement(identifier: identifier,
-                            style: style.textField).build(formBuilder)
+        let injector = EmailFormItemInjector(identifier: identifier,
+                                             style: style.textField)
+        injector.localizationParameters = localizationParameters
+        return injector
     }()
 
     /// :nodoc:
-    public lazy var phoneItem: FormPhoneNumberItem? = {
+    public var emailItem: FormTextInputItem? { emailItemInjector?.item }
+
+    /// :nodoc:
+    internal lazy var phoneItemInjector: PhoneFormItemInjector? = {
         guard configuration.fields.contains(.phone) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "phoneNumberItem")
-        return PhoneElement(identifier: identifier,
-                            phoneExtensions: selectableValues,
-                            style: style.textField).build(formBuilder)
+        let injector = PhoneFormItemInjector(identifier: identifier,
+                                             phoneExtensions: selectableValues,
+                                             style: style.textField)
+        injector.localizationParameters = localizationParameters
+        return injector
     }()
+
+    /// :nodoc:
+    public var phoneItem: FormPhoneNumberItem? { phoneItemInjector?.item }
 
     private lazy var selectableValues: [PhoneExtensionPickerItem] = {
         let query = PhoneExtensionsQuery(paymentMethod: PhoneNumberPaymentMethod.mbWay)
