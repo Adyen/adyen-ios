@@ -9,19 +9,24 @@ import Foundation
 /// :nodoc:
 extension URLSession: AdyenCompatible {}
 
+/// :nodoc:
 public extension AdyenScope where Base: URLSession {
+
+    /// :nodoc:
     func dataTask(with url: URL, completion: @escaping ((Result<Data, Error>) -> Void)) -> URLSessionDataTask {
         base.dataTask(with: url, completionHandler: { data, response, error in
             self.handle(data: data, response: response, error: error, completion: completion)
         })
     }
-    
+
+    /// :nodoc:
     func dataTask(with urlRequest: URLRequest, completion: @escaping ((Result<Data, Error>) -> Void)) -> URLSessionDataTask {
         base.dataTask(with: urlRequest, completionHandler: { data, response, error in
             self.handle(data: data, response: response, error: error, completion: completion)
         })
     }
 
+    /// :nodoc:
     private func handle(data: Data?, response: URLResponse?, error: Error?, completion: @escaping ((Result<Data, Error>) -> Void)) {
         let httpResponse = response as? HTTPURLResponse
         if let headers = httpResponse?.allHeaderFields,

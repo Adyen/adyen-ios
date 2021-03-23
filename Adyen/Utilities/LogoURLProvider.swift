@@ -12,8 +12,14 @@ public final class LogoURLProvider {
 
     /// Indicates the image size
     public enum Size: String {
+
+        /// Small icon.
         case small
+
+        /// Medium icon.
         case medium
+
+        /// Large icon.
         case large
     }
     

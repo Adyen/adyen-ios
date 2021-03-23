@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -28,6 +28,7 @@ public protocol PaymentMethod: Decodable {
     func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent?
 }
 
+/// Describes a payment method display information.
 public struct DisplayInformation {
     
     /// The title for the payment method, adapted for displaying in a list.
@@ -45,6 +46,7 @@ public struct DisplayInformation {
     public var logoName: String
 }
 
+/// :nodoc:
 extension DisplayInformation: Equatable {}
 
 /// :nodoc:

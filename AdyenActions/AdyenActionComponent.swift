@@ -127,8 +127,12 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
     
     private func perform(_ action: AwaitAction) {
         guard environment.clientKey != nil else {
-            // swiftlint:disable:next line_length
-            assertionFailure("Failed to instantiate AwaitComponent because client key is not configured. Please supply the client key in the PaymentMethodsConfiguration if using DropInComponent, or AdyenActionsComponent.clientKey if using AdyenActionsComponent separately.")
+            AdyenAssertion.assert(message: """
+            Failed to instantiate AwaitComponent because client key is not configured.
+            Please supply the client key:
+            -  if using DropInComponent, or AdyenActionsComponent.clientKey in the PaymentMethodsConfiguration;
+            -  if using AdyenActionsComponent separately in AdyenActionsComponent.clientKey.
+            """)
             return
         }
         let component = AwaitComponent(style: awaitComponentStyle)

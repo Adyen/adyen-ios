@@ -6,8 +6,13 @@
 
 import Foundation
 
+/// Indicates the payment methods that has an `await` action in its flow.
 public enum AwaitPaymentMethod: String, Decodable {
+    
+    /// MBWay payment method.
     case mbway
+
+    /// BLIK payment method.
     case blik
 }
 

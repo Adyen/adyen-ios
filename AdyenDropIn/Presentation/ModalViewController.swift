@@ -78,7 +78,7 @@ internal final class ModalViewController: UIViewController {
         }
         
         // swiftlint:disable:next unused_setter_value
-        set { assertionFailure("""
+        set { AdyenAssertion.assert(message: """
         PreferredContentSize is overridden for this view controller.
         getter - returns combined size of an inner content and navigation bar.
         setter - no implemented.

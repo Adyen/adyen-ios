@@ -51,7 +51,7 @@ internal final class ComponentManager {
     private func component(for paymentMethod: PaymentMethod) -> PaymentComponent? {
         guard isAllowed(paymentMethod) else {
             // swiftlint:disable:next line_length
-            assertionFailure("For voucher payment methods like \(paymentMethod.name) it is required to add a suitable text for the key NSPhotoLibraryAddUsageDescription in the Application Info.plist, to enable the shopper to save the voucher to their photo library.")
+            AdyenAssertion.assert(message: "For voucher payment methods like \(paymentMethod.name) it is required to add a suitable text for the key NSPhotoLibraryAddUsageDescription in the Application Info.plist, to enable the shopper to save the voucher to their photo library.")
             return nil
         }
         let paymentComponent: PaymentComponent? = paymentMethod.buildComponent(using: self)
