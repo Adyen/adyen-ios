@@ -206,6 +206,16 @@ let dokuWallet = [
     "type": "doku_wallet"
 ] as [String: Any]
 
+let econtextStores = [
+    "name" : "Convenience Stores",
+    "type" : "econtext_stores"
+] as [String: Any]
+
+let econtextATM = [
+    "name" : "Pay-easy ATM",
+    "type" : "econtext_atm"
+] as [String: Any]
+
 let dokuIndomaretAction: [String: Any] = [
     "reference": "9786512300056485",
     "initialAmount": [
