@@ -3311,6 +3311,7 @@
 				F92326A825A3669E002C5BC4 /* Sources */,
 				F92326A925A3669E002C5BC4 /* Frameworks */,
 				F92326AA25A3669E002C5BC4 /* Resources */,
+				E7388FC1260B68C400291DE7 /* Format and lint */,
 			);
 			buildRules = (
 			);
@@ -3329,6 +3330,7 @@
 				F95899C225FA524100E4113F /* Sources */,
 				F95899C325FA524100E4113F /* Frameworks */,
 				F95899C425FA524100E4113F /* Resources */,
+				E7388FC2260B68DE00291DE7 /* Format and lint */,
 			);
 			buildRules = (
 			);
@@ -3628,6 +3630,42 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		E7388FC1260B68C400291DE7 /* Format and lint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Format and lint";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ -f $SRCROOT/Internal/format.sh ]; then\n   $SRCROOT/Internal/format.sh \"$SRCROOT/$TARGETNAME\"\nfi\n\nif [ -f $SRCROOT/Internal/swiftlint ]; then\n   cd \"$SRCROOT/$TARGETNAME\"\n   $SRCROOT/Internal/swiftlint --config \"$SRCROOT/.swiftlint.yml\"\nfi\n";
+		};
+		E7388FC2260B68DE00291DE7 /* Format and lint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Format and lint";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ -f $SRCROOT/Internal/format.sh ]; then\n   $SRCROOT/Internal/format.sh \"$SRCROOT/$TARGETNAME\"\nfi\n\nif [ -f $SRCROOT/Internal/swiftlint ]; then\n   cd \"$SRCROOT/$TARGETNAME\"\n   $SRCROOT/Internal/swiftlint --config \"$SRCROOT/.swiftlint.yml\"\nfi\n";
+		};
 		E97B971522980D1C00505476 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3716,7 +3754,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -f $SRCROOT/Internal/format.sh ]; then\n   $SRCROOT/Internal/format.sh \"$SRCROOT/Demo/$TARGETNAME\"\nfi\n\nif [ -f $SRCROOT/Internal/swiftlint ]; then\n   cd \"$SRCROOT/$TARGETNAME\"\n   $SRCROOT/Internal/swiftlint --config \"$SRCROOT/.swiftlint.yml\"\nfi\n";
+			shellScript = "if [ -f $SRCROOT/Internal/format.sh ]; then\n   $SRCROOT/Internal/format.sh\nfi\n\nif [ -f $SRCROOT/Internal/swiftlint ]; then\n   cd \"$SRCROOT/$TARGETNAME\"\n   $SRCROOT/Internal/swiftlint --config \"$SRCROOT/.swiftlint.yml\"\nfi\n";
 		};
 		F9615FBC252DE30B00FA8EDD /* AdyenSwiftUI configuration */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3824,7 +3862,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -f $SRCROOT/Internal/format.sh ]; then\n   $SRCROOT/Internal/format.sh \"$SRCROOT/Demo/$TARGETNAME\"\nfi\n\nif [ -f $SRCROOT/Internal/swiftlint ]; then\n   cd \"$SRCROOT/Demo/$TARGETNAME\"\n   $SRCROOT/Internal/swiftlint --config \"$SRCROOT/.swiftlint.yml\"\nfi\n";
+			shellScript = "if [ -f $SRCROOT/Internal/format.sh ]; then\n   $SRCROOT/Internal/format.sh\nfi\n\nif [ -f $SRCROOT/Internal/swiftlint ]; then\n   cd \"$SRCROOT/Demo/$TARGETNAME\"\n   $SRCROOT/Internal/swiftlint --config \"$SRCROOT/.swiftlint.yml\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
