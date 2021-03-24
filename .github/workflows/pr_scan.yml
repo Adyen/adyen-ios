@@ -24,8 +24,8 @@ jobs:
       run: |
         brew install sonar-scanner
         gem install slather
-
-    - name: Check Dependencie Cache
+        
+    - name: Check Dependencies
       uses: actions/cache@v1
       id: carthage-cache
       with:
@@ -57,7 +57,8 @@ jobs:
         slather coverage --sonarqube-xml ${params} ${project}
       env:
         project: 'Adyen.xcodeproj'
-        params: '--build-directory ./DerivedData
+        params: '
+        --build-directory ./DerivedData
         --output-directory ./reports
         --scheme AdyenUIHost
         --binary-basename Adyen
@@ -66,7 +67,8 @@ jobs:
         --binary-basename AdyenWeChatPay
         --binary-basename AdyenComponents
         --binary-basename AdyenEncryption
-        --binary-basename AdyenActions'
+        --binary-basename AdyenActions
+        --binary-basename AdyenSwiftUI'
 
     - name: SwiftLint
       run: |
@@ -79,7 +81,3 @@ jobs:
         sonar-scanner -Dsonar.login=${{ secrets.SONAR_TOKEN }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run_id: ${{ github.event.number }}
-        head: ${{ github.head_ref }}
-        base: ${{ github.base_ref }}
-        repo: ${{ github.repository }}
