@@ -3,23 +3,55 @@
 set -e # Any subsequent(*) commands which fail will cause the shell script to exit immediately
 
 function echo_header {
-  echo "==   $1   =="
+  echo " "
+  echo "===   $1"
+}
+
+function print_help {
+  echo "Test Carthage Integration"
+  echo " "
+  echo "test-carthage-integration [project name] [arguments]"
+  echo " "
+  echo "options:"
+  echo "-h, --help                show brief help"
+  echo "-c, --no-clean            ignore cleanup"
 }
 
 PROJECT_NAME=TempProject
+NEED_CLEANUP=true
 
-echo_header "Clean up"
-rm -rf $PROJECT_NAME
+while test $# -gt 0; do
+  case "$1" in
+    -h|--help)
+      print_help
+      exit 0
+      ;;
+    -c|--no-clean)
+      NEED_CLEANUP=false
+      shift
+      ;;
+    -p|--project)
+      PROJECT_NAME="$1"
+      shift
+      ;;
+  esac
+done
 
-mkdir -p $PROJECT_NAME && cd $PROJECT_NAME
+if [ "$NEED_CLEANUP" == true ]
+then
+  echo_header "Clean up $PROJECT_NAME"
+  rm -rf $PROJECT_NAME
+  mkdir -p $PROJECT_NAME && cd $PROJECT_NAME
 
-echo_header "Setup Carthage"
-CWD=$(pwd)
-CURRENT_COMMIT=$(git rev-parse HEAD)
+  echo_header "Setup Carthage"
+  CWD=$(pwd)
+  CURRENT_COMMIT=$(git rev-parse HEAD)
 
-echo "git \"file://$CWD/../\" \"$CURRENT_COMMIT\"" > Cartfile
-
-../Scripts/carthage.sh update --use-xcframeworks
+  echo "git \"file://$CWD/../\" \"$CURRENT_COMMIT\"" > Cartfile
+  ../Scripts/carthage.sh update --use-xcframeworks
+else
+  cd $PROJECT_NAME
+fi
 
 echo_header "Generate Project"
 echo "
@@ -59,16 +91,12 @@ targets:
   Tests:
     type: bundle.unit-test
     platform: iOS
-    sources:
-      - Tests/
+    sources: Tests
     dependencies:
       - target: $PROJECT_NAME
 " > project.yml
 
 mkdir Tests
-cp -a "../Demo/Common" Common
-cp -a "../Demo/UIKit" ./
-cp "../Demo/Configuration.swift" Configuration.swift
 cp "../Tests/AdyenTests/Adyen Tests/UI/DropIn/DropInTests.swift" Tests/DropInTests.swift
 
 xcodegen generate
@@ -76,6 +104,9 @@ xcodegen generate
 echo_header "Run Tests"
 xcodebuild test -project $PROJECT_NAME.xcodeproj -scheme Tests -destination "name=iPhone 11" | xcpretty && exit ${PIPESTATUS[0]}
 
-echo_header "Clean up"
-cd ../
-rm -rf $PROJECT_NAME
+if [ "$NEED_CLEANUP" == true ]
+then
+  echo_header "Clean up"
+  cd ../
+  rm -rf $PROJECT_NAME
+fi
