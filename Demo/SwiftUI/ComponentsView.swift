@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import AdyenSwiftUI
 import SwiftUI
 
 internal struct ComponentsView: View {
