@@ -58,8 +58,14 @@ echo "
 name: $PROJECT_NAME
 targets:
   $PROJECT_NAME:
-    type: framework
+    type: application
     platform: iOS
+    sources: Source
+    testTargets: Tests
+    settings:
+      base:
+        INFOPLIST_FILE: Source/UIKit/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.adyen.$PROJECT_NAME
     dependencies:
       - framework: Carthage/Build/Adyen.xcframework
         embed: true
@@ -89,20 +95,32 @@ targets:
         embed: true
         codeSign: true
   Tests:
-    type: bundle.unit-test
+    type: bundle.ui-testing
     platform: iOS
     sources: Tests
-    dependencies:
-      - target: $PROJECT_NAME
+schemes:
+  App:
+    build:
+      targets:
+        $PROJECT_NAME: all
+        Tests: [tests]
+    test:
+      commandLineArguments: "-UITests"
+      targets:
+        - Tests
 " > project.yml
 
-mkdir Tests
+mkdir -p Tests
+mkdir -p Source
 cp "../Tests/AdyenTests/Adyen Tests/UI/DropIn/DropInTests.swift" Tests/DropInTests.swift
+cp -a "../Demo/Common" Source/
+cp -a "../Demo/UIKit" Source/
+cp "../Demo/Configuration.swift" Source/Configuration.swift
 
 xcodegen generate
 
 echo_header "Run Tests"
-xcodebuild test -project $PROJECT_NAME.xcodeproj -scheme Tests -destination "name=iPhone 11" | xcpretty && exit ${PIPESTATUS[0]}
+xcodebuild build test -project $PROJECT_NAME.xcodeproj -scheme App -destination "name=iPhone 11" | xcpretty && exit ${PIPESTATUS[0]}
 
 if [ "$NEED_CLEANUP" == true ]
 then
