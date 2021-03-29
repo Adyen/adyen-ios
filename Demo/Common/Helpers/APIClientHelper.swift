@@ -6,7 +6,7 @@
 
 import Adyen
 
-protocol APIClientAware {
+internal protocol APIClientAware {
     var apiClient: APIClientProtocol { get }
 }
 

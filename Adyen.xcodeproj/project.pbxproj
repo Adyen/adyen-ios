@@ -3735,7 +3735,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -f $SRCROOT/Internal/format.sh ]; then\n   $SRCROOT/Internal/format.sh\nfi\n\nif [ -f $SRCROOT/Internal/swiftlint ]; then\n   cd \"$SRCROOT/$TARGETNAME\"\n   $SRCROOT/Internal/swiftlint --config \"$SRCROOT/.swiftlint.yml\"\nfi\n";
+			shellScript = "if [ -f $SRCROOT/Internal/format.sh ]; then\n   $SRCROOT/Internal/format.sh \"$SRCROOT/Demo\"\nfi\n\nif [ -f $SRCROOT/Internal/swiftlint ]; then\n   cd \"$SRCROOT/Demo\"\n   $SRCROOT/Internal/swiftlint --config \"$SRCROOT/.swiftlint.yml\"\nfi\n";
 		};
 		F9615FBC252DE30B00FA8EDD /* AdyenSwiftUI configuration */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3843,7 +3843,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -f $SRCROOT/Internal/format.sh ]; then\n   $SRCROOT/Internal/format.sh\nfi\n\nif [ -f $SRCROOT/Internal/swiftlint ]; then\n   cd \"$SRCROOT/Demo/$TARGETNAME\"\n   $SRCROOT/Internal/swiftlint --config \"$SRCROOT/.swiftlint.yml\"\nfi\n";
+			shellScript = "if [ -f $SRCROOT/Internal/format.sh ]; then\n   $SRCROOT/Internal/format.sh \"$SRCROOT/Demo\"\nfi\n\nif [ -f $SRCROOT/Internal/swiftlint ]; then\n   cd \"$SRCROOT/Demo\"\n   $SRCROOT/Internal/swiftlint --config \"$SRCROOT/.swiftlint.yml\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -4835,7 +4835,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = B2NYSS5932;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)/**";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Demo/UIKit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -4859,7 +4859,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = B2NYSS5932;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)/**";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Demo/UIKit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -5243,7 +5243,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = B2NYSS5932;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)/**";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/AdyenSwiftUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -5266,7 +5266,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = B2NYSS5932;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)/**";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/AdyenSwiftUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = (
