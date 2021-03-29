@@ -97,7 +97,7 @@ class DropInTests: XCTestCase {
     }
 
     func testOpenDropInAsList() {
-        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: Dummy.dummyClientKey)
+        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: "local_MYLOCALCLIENTKEY")
         config.environment = .test
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
@@ -121,7 +121,7 @@ class DropInTests: XCTestCase {
     }
 
     func testOpenDropInAsOneclickPayment() {
-        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: Dummy.dummyClientKey)
+        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: "local_MYLOCALCLIENTKEY")
         config.environment = .test
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneclick.data(using: .utf8)!)
