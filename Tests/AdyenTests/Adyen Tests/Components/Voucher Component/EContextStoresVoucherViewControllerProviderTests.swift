@@ -1,9 +1,7 @@
 //
-//  VoucherViewControllerProviderTests.swift
-//  AdyenUIKitTests
+// Copyright (c) 2021 Adyen N.V.
 //
-//  Created by Mohamed Eldoheiri on 2/4/21.
-//  Copyright © 2021 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Adyen
@@ -11,11 +9,11 @@ import Adyen
 import UIKit
 import XCTest
 
-class VoucherViewControllerProviderTests: XCTestCase {
+class EContextStoresVoucherViewControllerProviderTests: XCTestCase {
 
     func testCustomLocalization() throws {
-        let dokuAction = try Coder.decode(dokuIndomaretAction) as DokuVoucherAction
-        let action: VoucherAction = .dokuIndomaret(dokuAction)
+        let econtextAction = try Coder.decode(econtextStoresAction) as EContextStoresVoucherAction
+        let action: VoucherAction = .econtextStores(econtextAction)
 
         let sut = VoucherViewControllerProvider(style: VoucherComponentStyle())
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost")
@@ -24,38 +22,33 @@ class VoucherViewControllerProviderTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = viewController
 
-        let textLabel: UILabel! = viewController.view.findView(by: "adyen.dokuVoucher.textLabel")
+        let textLabel: UILabel! = viewController.view.findView(by: "adyen.voucher.textLabel")
         XCTAssertEqual(textLabel.text, "Thank you for your purchase, please use the following information to complete your payment. -- Test")
 
-        let instructionButton: UIButton! = viewController.view.findView(by: "adyen.dokuVoucher.instructionButton")
+        let instructionButton: UIButton! = viewController.view.findView(by: "adyen.voucher.instructionButton")
         XCTAssertEqual(instructionButton.titleLabel?.text, "Read instructions -- Test")
 
-        let amountLabel: UILabel! = viewController.view.findView(by: "adyen.dokuVoucher.amountLabel")
-        XCTAssertEqual(amountLabel.text, AmountFormatter.formatted(amount: dokuAction.totalAmount.value,
-                                                                   currencyCode: dokuAction.totalAmount.currencyCode))
+        let amountLabel: UILabel! = viewController.view.findView(by: "adyen.voucher.amountLabel")
+        XCTAssertEqual(amountLabel.text, AmountFormatter.formatted(amount: econtextAction.totalAmount.value,
+                                                                   currencyCode: econtextAction.totalAmount.currencyCode))
 
-        let expireyKeyLabel: UILabel! = viewController.view.findView(by: "adyen.dokuVoucher.expirationKeyLabel")
+        let expireyKeyLabel: UILabel! = viewController.view.findView(by: "adyen.voucher.expirationKeyLabel")
         XCTAssertEqual(expireyKeyLabel.text, "Expiration Date -- Test")
 
-        let expireyValueLable: UILabel! = viewController.view.findView(by: "adyen.dokuVoucher.expirationValueLabel")
-        XCTAssertEqual(expireyValueLable.text, "02/02/2021")
+        let expireyValueLable: UILabel! = viewController.view.findView(by: "adyen.voucher.expirationValueLabel")
+        XCTAssertEqual(expireyValueLable.text, "02/04/2021")
 
-        let shopperNameKeyLabel: UILabel! = viewController.view.findView(by: "adyen.dokuVoucher.shopperNameKeyLabel")
-        XCTAssertEqual(shopperNameKeyLabel.text, "Shopper Name -- Test")
+        let maskedPhoneKeyLabel: UILabel! = viewController.view.findView(by: "adyen.voucher.maskedTelephoneNumberKeyLabel")
+        XCTAssertEqual(maskedPhoneKeyLabel.text, "Test-Phone Number")
 
-        let shopperNameValueLabel: UILabel! = viewController.view.findView(by: "adyen.dokuVoucher.shopperNameValueLabel")
-        XCTAssertEqual(shopperNameValueLabel.text, "Qwfqwew Gewgewf")
+        let maskedPhoneValueLabel: UILabel! = viewController.view.findView(by: "adyen.voucher.maskedTelephoneNumberValueLabel")
+        XCTAssertEqual(maskedPhoneValueLabel.text, "11******89")
 
-        let merchantKeyLabel: UILabel! = viewController.view.findView(by: "adyen.dokuVoucher.merchantKeyLabel")
-        XCTAssertEqual(merchantKeyLabel.text, "Merchant -- Test")
-
-        let merchantValueLabel: UILabel! = viewController.view.findView(by: "adyen.dokuVoucher.merchantValueLabel")
-        XCTAssertEqual(merchantValueLabel.text, "Adyen Demo Shop")
     }
 
     func testCustomUI() throws {
-        let dokuAction = try Coder.decode(dokuIndomaretAction) as DokuVoucherAction
-        let action: VoucherAction = .dokuIndomaret(dokuAction)
+        let econtextAction = try Coder.decode(econtextStoresAction) as EContextStoresVoucherAction
+        let action: VoucherAction = .econtextStores(econtextAction)
 
         var style = VoucherComponentStyle()
         style.mainButton.backgroundColor = UIColor.cyan

@@ -62,7 +62,7 @@ internal final class GenericVoucherView: AbstractVoucherView {
         button.widthAnchor.constraint(equalToConstant: 100).isActive = true
         button.addTarget(self, action: #selector(openInstructions), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.dokuVoucher", postfix: "instructionButton")
+        button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.voucher", postfix: "instructionButton")
         button.adyen.round(using: model.instruction.style.button.cornerRounding)
 
         return button
@@ -151,7 +151,7 @@ internal final class GenericVoucherView: AbstractVoucherView {
         label.backgroundColor = style.backgroundColor
         label.text = text
         label.isAccessibilityElement = false
-        label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.dokuVoucher", postfix: identifier)
+        label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.voucher", postfix: identifier)
         label.lineBreakMode = .byTruncatingTail
         label.numberOfLines = 1
 
