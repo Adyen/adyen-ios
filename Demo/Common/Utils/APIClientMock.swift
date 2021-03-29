@@ -6,16 +6,16 @@
 
 import Adyen
 
-typealias MockedResult = Result<Response, Error>
+internal typealias MockedResult = Result<Response, Error>
 
-final class APIClientMock: APIClientProtocol {
+internal final class APIClientMock: APIClientProtocol {
 
-    var mockedResults: [MockedResult] = []
-    var onExecute: (() -> Void)?
+    internal var mockedResults: [MockedResult] = []
+    internal var onExecute: (() -> Void)?
 
-    private(set) var counter: Int = 0
+    internal private(set) var counter: Int = 0
 
-    func perform<R>(_ request: R, completionHandler: @escaping (Result<R.ResponseType, Error>) -> Void) where R: Request {
+    internal func perform<R>(_ request: R, completionHandler: @escaping (Result<R.ResponseType, Error>) -> Void) where R: Request {
         counter += 1
         DispatchQueue.main.async {
             self.onExecute?()
