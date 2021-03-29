@@ -69,9 +69,9 @@ internal class CardViewController: FormViewController, Observer {
 
     // MARK: Public methods
 
-    public weak var cardDelegate: CardViewControllerDelegate?
+    internal weak var cardDelegate: CardViewControllerDelegate?
 
-    public var card: Card {
+    internal var card: Card {
         Card(number: numberItem.value,
              securityCode: configuration.showsSecurityCodeField ? securityCodeItem.nonEmptyValue : nil,
              expiryMonth: expiryDateItem.value[0...1],
@@ -79,23 +79,23 @@ internal class CardViewController: FormViewController, Observer {
              holder: configuration.showsHolderNameField ? holderNameItem.nonEmptyValue : nil)
     }
 
-    public var storePayment: Bool {
+    internal var storePayment: Bool {
         configuration.showsStorePaymentMethodField ? storeDetailsItem.value : false
     }
 
     /// :nodoc:
-    public func stopLoading() {
+    internal func stopLoading() {
         button.showsActivityIndicator = false
         view.isUserInteractionEnabled = true
     }
 
     /// :nodoc:
-    public func startLoading() {
+    internal func startLoading() {
         button.showsActivityIndicator = true
         view.isUserInteractionEnabled = false
     }
 
-    public func update(binInfo: BinLookupResponse) {
+    internal func update(binInfo: BinLookupResponse) {
         self.securityCodeItem.update(cardBrands: binInfo.brands ?? [])
 
         guard let brands = binInfo.brands else { return }
