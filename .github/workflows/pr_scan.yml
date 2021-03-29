@@ -24,24 +24,7 @@ jobs:
       run: |
         brew install sonar-scanner
         gem install slather
-
-    - name: Check Dependencie Cache
-      uses: actions/cache@v1
-      id: carthage-cache
-      with:
-        path: Carthage
-        key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
-
-    - name: Install Dependencies
-      if: steps.carthage-cache.outputs.cache-hit != 'true'
-      run: |
-        if [[ $(carthage outdated) == *"Latest"* ]] ; then
-          rm Cartfile.resolved
-        fi
-        carthage bootstrap --platform iOS --cache-builds
-      env:
-         GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+        
     - name: Build and test
       run: |
         xcodebuild -version
@@ -57,7 +40,8 @@ jobs:
         slather coverage --sonarqube-xml ${params} ${project}
       env:
         project: 'Adyen.xcodeproj'
-        params: '--build-directory ./DerivedData
+        params: '
+        --build-directory ./DerivedData
         --output-directory ./reports
         --scheme AdyenUIHost
         --binary-basename Adyen
@@ -66,7 +50,8 @@ jobs:
         --binary-basename AdyenWeChatPay
         --binary-basename AdyenComponents
         --binary-basename AdyenEncryption
-        --binary-basename AdyenActions'
+        --binary-basename AdyenActions
+        --binary-basename AdyenSwiftUI'
 
     - name: SwiftLint
       run: |
@@ -79,7 +64,3 @@ jobs:
         sonar-scanner -Dsonar.login=${{ secrets.SONAR_TOKEN }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run_id: ${{ github.event.number }}
-        head: ${{ github.head_ref }}
-        base: ${{ github.base_ref }}
-        repo: ${{ github.repository }}

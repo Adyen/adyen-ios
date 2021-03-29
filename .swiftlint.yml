@@ -12,6 +12,8 @@ excluded:
   - Docs
   - Demo
   - Package.swift
+  - DerivedData
+  - Carthage
 
 line_length:
   ignores_function_declarations: true

@@ -46,23 +46,6 @@ jobs:
         xcrun simctl create iPhone-6 "iPhone 6" "com.apple.CoreSimulator.SimRuntime.iOS-11-4"
         xcrun simctl list devices 11.4
 
-    - name: Check Dependencies
-      uses: actions/cache@v1
-      id: carthage-cache
-      with:
-        path: Carthage
-        key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
-
-    - name: Install Dependencies
-      if: steps.carthage-cache.outputs.cache-hit != 'true'
-      run: |
-        if [[ $(carthage outdated) == *"Latest"* ]] ; then
-          rm Cartfile.resolved
-        fi
-        carthage bootstrap --platform iOS --cache-builds
-      env:
-         GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
     - name: Build and test
       run: |
         xcodebuild build test -project ${project} -scheme "${scheme}" -destination "${destination}" ${params} | xcpretty && exit ${PIPESTATUS[0]}
@@ -79,28 +62,12 @@ jobs:
     - uses: actions/setup-java@v1
       with:
         java-version: '11'
+        
     - name: Install Dependencies
       run: |
         brew install sonar-scanner
         gem install slather
-
-    - name: Check Dependencies
-      uses: actions/cache@v1
-      id: carthage-cache
-      with:
-        path: Carthage
-        key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
-
-    - name: Install Dependencies
-      if: steps.carthage-cache.outputs.cache-hit != 'true'
-      run: |
-        if [[ $(carthage outdated) == *"Latest"* ]] ; then
-          rm Cartfile.resolved
-        fi
-        carthage bootstrap --platform iOS --cache-builds
-      env:
-         GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+         
     - name: Build and test
       run: |
         xcodebuild build test -project ${project} -scheme "${scheme}" -destination "${destination}" ${params} | xcpretty && exit ${PIPESTATUS[0]}
@@ -116,7 +83,8 @@ jobs:
         slather coverage --cobertura-xml ${params} ${project}
       env:
         project: 'Adyen.xcodeproj'
-        params: '--build-directory ./DerivedData
+        params: '
+        --build-directory ./DerivedData
         --output-directory ./reports
         --scheme AdyenUIHost
         --binary-basename Adyen
@@ -125,7 +93,9 @@ jobs:
         --binary-basename AdyenWeChatPay
         --binary-basename AdyenComponents
         --binary-basename AdyenEncryption
-        --binary-basename AdyenActions'
+        --binary-basename AdyenActions
+        --binary-basename AdyenSwiftUI'
+        
     - name: SwiftLint
       run: |
         fastlane run swiftlint output_file:"./reports/swiftlint.json" reporter:"json" ignore_exit_status:"true"
