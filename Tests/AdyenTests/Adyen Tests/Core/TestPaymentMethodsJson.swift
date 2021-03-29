@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -121,27 +121,27 @@ let issuerListDictionary = [
 ] as [String: Any]
 
 let sevenElevenDictionary = [
-    "details" : [
-      [
-        "key" : "shopperEmail",
-        "type" : "emailAddress"
-      ],
-      [
-        "key" : "firstName",
-        "type" : "text"
-      ],
-      [
-        "key" : "lastName",
-        "type" : "text"
-      ],
-      [
-        "key" : "telephoneNumber",
-        "type" : "tel"
-      ]
+    "details": [
+        [
+            "key": "shopperEmail",
+            "type": "emailAddress"
+        ],
+        [
+            "key": "firstName",
+            "type": "text"
+        ],
+        [
+            "key": "lastName",
+            "type": "text"
+        ],
+        [
+            "key": "telephoneNumber",
+            "type": "tel"
+        ]
     ],
-    "name" : "7-Eleven",
-    "type" : "econtext_seven_eleven"
-  ] as [String: Any]
+    "name": "7-Eleven",
+    "type": "econtext_seven_eleven"
+] as [String: Any]
 
 let issuerListDictionaryWithoutDetailsObject = [
     "type": "ideal_100",
@@ -207,18 +207,18 @@ let dokuWallet = [
 ] as [String: Any]
 
 let econtextStores = [
-    "name" : "Convenience Stores",
-    "type" : "econtext_stores"
+    "name": "Convenience Stores",
+    "type": "econtext_stores"
 ] as [String: Any]
 
 let econtextATM = [
-    "name" : "Pay-easy ATM",
-    "type" : "econtext_atm"
+    "name": "Pay-easy ATM",
+    "type": "econtext_atm"
 ] as [String: Any]
 
 let econtextOnline = [
-    "name" : "Online Banking",
-    "type" : "econtext_online"
+    "name": "Online Banking",
+    "type": "econtext_online"
 ] as [String: Any]
 
 let dokuIndomaretAction: [String: Any] = [
@@ -256,6 +256,43 @@ let dokuAlfamartAction: [String: Any] = [
     "expiresAt": "2021-02-02T22:58:00",
     "merchantName": "Adyen Demo Shop",
     "shopperName": "Qwodihqw Wqodihq",
+    "type": "voucher"
+]
+
+let econtextStoresAction: [String: Any] = [
+    "reference": "551342",
+    "initialAmount": [
+        "currency": "JPY",
+        "value": 17408
+    ],
+    "paymentMethodType": "econtext_stores",
+    "instructionsUrl": "https://www.econtext.jp/support/cvs/8brand.html",
+    "totalAmount": [
+        "currency": "JPY",
+        "value": 17408
+    ],
+    "maskedTelephoneNumber": "11******89",
+    "expiresAt": "2021-04-02T18:46:00",
+    "merchantName": "TestMerchantCheckout",
+    "type": "voucher"
+]
+
+let econtextATMAction: [String: Any] = [
+    "reference": "954297",
+    "collectionInstitutionNumber": "58091",
+    "initialAmount": [
+        "currency": "JPY",
+        "value": 17408
+    ],
+    "paymentMethodType": "econtext_atm",
+    "instructionsUrl": "https://www.econtext.jp/support/atm/index.html",
+    "totalAmount": [
+        "currency": "JPY",
+        "value": 17408
+    ],
+    "maskedTelephoneNumber": "11******89",
+    "expiresAt": "2021-04-02T18:48:00",
+    "merchantName": "TestMerchantCheckout",
     "type": "voucher"
 ]
 
