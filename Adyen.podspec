@@ -65,8 +65,8 @@ Pod::Spec.new do |s|
     plugin.source_files = 'AdyenActions/**/*.swift'
     plugin.exclude_files = 'AdyenActions/**/BundleSPMExtension.swift'
     plugin.resource_bundles = {
-        'Adyen' => [
-            'Adyen/Assets/**/*.xcassets'
+        'AdyenActions' => [
+            'AdyenActions/Assets/**/*.xcassets'
         ]
     }
   end
