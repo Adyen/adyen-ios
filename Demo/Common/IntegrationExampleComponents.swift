@@ -5,9 +5,15 @@
 //
 
 import Adyen
-import AdyenActions
-import AdyenCard
-import AdyenComponents
+#if canImport(AdyenCard)
+    import AdyenCard
+#endif
+#if canImport(AdyenComponents)
+    import AdyenComponents
+#endif
+#if canImport(AdyenActions)
+    import AdyenActions
+#endif
 import UIKit
 
 extension IntegrationExample {

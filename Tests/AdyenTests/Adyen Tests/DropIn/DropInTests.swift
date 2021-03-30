@@ -5,7 +5,9 @@
 //
 
 import Adyen
+#if canImport(AdyenDropIn)
 import AdyenDropIn
+#endif
 import XCTest
 
 class DropInTests: XCTestCase {

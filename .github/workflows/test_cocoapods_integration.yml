@@ -24,8 +24,13 @@ jobs:
       with:
         xcode-version: latest-stable
 
+    - name: Resolve dependencies
+      run: |
+        brew update
+        brew install xcodegen
+        gem install cocoapods
+
     - name: Test Cocoapods Integration
       run: |
-        gem install cocoapods
         pod lib lint Adyen.podspec --allow-warnings
         Scripts/test-CocoaPods-integration.sh

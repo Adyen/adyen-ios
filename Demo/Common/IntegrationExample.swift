@@ -5,10 +5,18 @@
 //
 
 import Adyen
-import AdyenActions
-import AdyenCard
-import AdyenComponents
-import AdyenDropIn
+#if canImport(AdyenCard)
+    import AdyenCard
+#endif
+#if canImport(AdyenComponents)
+    import AdyenComponents
+#endif
+#if canImport(AdyenActions)
+    import AdyenActions
+#endif
+#if canImport(AdyenDropIn)
+    import AdyenDropIn
+#endif
 import UIKit
 
 internal protocol Presenter: AnyObject {

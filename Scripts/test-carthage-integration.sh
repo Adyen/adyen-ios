@@ -61,7 +61,7 @@ targets:
     type: application
     platform: iOS
     sources: Source
-    testTargets: Tests
+    testTargets: [UITests,UnitTests]
     settings:
       base:
         INFOPLIST_FILE: Source/UIKit/Info.plist
@@ -94,26 +94,39 @@ targets:
       - framework: Carthage/Build/AdyenSwiftUI.xcframework
         embed: true
         codeSign: true
-  Tests:
+  UITests:
     type: bundle.ui-testing
     platform: iOS
-    sources: Tests
+    sources: UITests
+  UnitTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: UnitTests
+    dependencies:
+      - framework: Carthage/Build/Adyen.xcframework
+      - framework: Carthage/Build/AdyenActions.xcframework
+      - framework: Carthage/Build/AdyenCard.xcframework
 schemes:
   App:
     build:
       targets:
         $PROJECT_NAME: all
-        Tests: [tests]
+        UITests: [test]
+        UnitTests: [test]
     test:
       commandLineArguments: "-UITests"
       targets:
-        - Tests
+        - UITests
+        - UnitTests
+
 " > project.yml
 
-mkdir -p Tests
+mkdir -p UITests
+mkdir -p UnitTests
 mkdir -p Source
 cp "../Tests/AdyenTests/Adyen Tests/DropIn/DropInTests.swift" Tests/DropInTests.swift
 cp "../Tests/AdyenTests/Adyen Tests/Components/Dummy.swift" Tests/Dummy.swift
+cp "../Tests/AdyenTests/Adyen Tests/Assets/AssetsAccessTests.swift" UnitTests/AssetsAccessTests.swift
 cp -a "../Demo/Common" Source/
 cp -a "../Demo/UIKit" Source/
 cp "../Demo/Configuration.swift" Source/Configuration.swift
