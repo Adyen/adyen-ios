@@ -24,14 +24,10 @@ public protocol CardComponentDelegate: AnyObject {
 
 /// A component that provides a form for card payments.
 public class CardComponent: PaymentComponent, PresentableComponent, Localizable, Observer, LoadingComponent {
-    
+
     internal let cardPaymentMethod: AnyCardPaymentMethod
     internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
     internal var cardBrandProvider: AnyCardBrandProvider
-
-    private static let maxCardsVisible = 4
-    private static let publicBinLenght = 6
-    private let throttler = Throttler(minimumDelay: 0.5)
     
     /// Describes the component's UI style.
     public let style: FormComponentStyle
@@ -55,7 +51,7 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
         }
     }
 
-    /// :nodoc:
+    /// The payment information.
     public var payment: Payment? {
         didSet {
             storedCardComponent?.payment = payment
@@ -146,14 +142,7 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
     
     /// :nodoc:
     public func stopLoading() {
-        button.showsActivityIndicator = false
-        formViewController.view.isUserInteractionEnabled = true
-    }
-    
-    // MARK: - Private
-
-    private var topCardTypes: [CardType] {
-        Array(supportedCardTypes.prefix(CardComponent.maxCardsVisible))
+        cardViewController.stopLoading()
     }
     
     // MARK: - Stored Card
@@ -176,124 +165,35 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
     
     // MARK: - Form Items
     
-    private lazy var securedViewController = SecuredViewController(child: formViewController, style: style)
+    private lazy var securedViewController = SecuredViewController(child: cardViewController, style: style)
     
-    internal lazy var formViewController: FormViewController = {
-        
-        let formViewController = FormViewController(style: style)
+    internal lazy var cardViewController: CardViewController = {
+        let formViewController = CardViewController(configuration: configuration,
+                                                    formStyle: style,
+                                                    payment: payment,
+                                                    environment: environment,
+                                                    supportedCardTypes: supportedCardTypes,
+                                                    scope: String(describing: self))
         formViewController.localizationParameters = localizationParameters
         formViewController.delegate = self
-        
+        formViewController.cardDelegate = self
         formViewController.title = paymentMethod.name
-        formViewController.append(numberItem)
-
-        numberItem.showLogos(for: topCardTypes)
-        
-        if configuration.showsSecurityCodeField {
-            let splitTextItem = FormSplitItem(items: [expiryDateItem, securityCodeItem], style: style.textField)
-            formViewController.append(splitTextItem)
-        } else {
-            formViewController.append(expiryDateItem)
-        }
-        
-        if configuration.showsHolderNameField {
-            formViewController.append(holderNameItem)
-        }
-        
-        if configuration.showsStorePaymentMethodField {
-            formViewController.append(storeDetailsItem)
-        }
-        
-        formViewController.append(button.withPadding(padding: .init(top: 8, left: 0, bottom: -16, right: 0)))
-        
         return formViewController
     }()
-    
-    internal lazy var numberItem: FormCardNumberItem = {
-        let item = FormCardNumberItem(supportedCardTypes: supportedCardTypes,
-                                      environment: environment,
-                                      style: style.textField,
-                                      localizationParameters: localizationParameters)
-        
-        observe(item.$binValue) { [weak self] bin in
-            self?.didReceived(bin: bin)
-        }
-        
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "numberItem")
-        return item
-    }()
-    
-    internal lazy var expiryDateItem: FormTextInputItem = {
-        let expiryDateItem = FormTextInputItem(style: style.textField)
-        expiryDateItem.title = ADYLocalizedString("adyen.card.expiryItem.title", localizationParameters)
-        expiryDateItem.placeholder = ADYLocalizedString("adyen.card.expiryItem.placeholder", localizationParameters)
-        expiryDateItem.formatter = CardExpiryDateFormatter()
-        expiryDateItem.validator = CardExpiryDateValidator()
-        expiryDateItem.validationFailureMessage = ADYLocalizedString("adyen.card.expiryItem.invalid", localizationParameters)
-        expiryDateItem.keyboardType = .numberPad
-        expiryDateItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "expiryDateItem")
-        
-        return expiryDateItem
-    }()
-    
-    internal lazy var securityCodeItem: FormCardSecurityCodeItem = {
-        let securityCodeItem = FormCardSecurityCodeItem(environment: environment,
-                                                        style: style.textField,
-                                                        localizationParameters: localizationParameters)
-        securityCodeItem.localizationParameters = self.localizationParameters
-        securityCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "securityCodeItem")
-        return securityCodeItem
-    }()
-    
-    internal lazy var holderNameItem: FormTextInputItem = {
-        let holderNameItem = FormTextInputItem(style: style.textField)
-        holderNameItem.title = ADYLocalizedString("adyen.card.nameItem.title", localizationParameters)
-        holderNameItem.placeholder = ADYLocalizedString("adyen.card.nameItem.placeholder", localizationParameters)
-        holderNameItem.validator = LengthValidator(minimumLength: 2)
-        holderNameItem.validationFailureMessage = ADYLocalizedString("adyen.card.nameItem.invalid", localizationParameters)
-        holderNameItem.autocapitalizationType = .words
-        holderNameItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "holderNameItem")
-        
-        return holderNameItem
-    }()
-    
-    internal lazy var storeDetailsItem: FormSwitchItem = {
-        let storeDetailsItem = FormSwitchItem(style: style.switch)
-        storeDetailsItem.title = ADYLocalizedString("adyen.card.storeDetailsButton", localizationParameters)
-        storeDetailsItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "storeDetailsItem")
-        
-        return storeDetailsItem
-    }()
 
-    internal lazy var button: FormButtonItem = {
-        let item = FormButtonItem(style: style.mainButtonItem)
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
-        item.title = ADYLocalizedSubmitButtonTitle(with: payment?.amount,
-                                                   style: .immediate,
-                                                   localizationParameters)
-        item.buttonSelectionHandler = { [weak self] in
-            self?.didSelectSubmitButton()
-        }
-        return item
-    }()
+}
+
+extension CardComponent: CardViewControllerDelegate {
     
-    private func didReceived(bin: String) {
-        self.securityCodeItem.selectedCard = supportedCardTypes.adyen.type(forCardNumber: bin)
-        self.cardComponentDelegate?.didChangeBIN(String(bin.prefix(CardComponent.publicBinLenght)), component: self)
-        
-        throttler.throttle { [weak self] in
-            self?.requestCardTypes(for: bin)
-        }
-    }
-    
-    private func requestCardTypes(for bin: String) {
-        let parameters = CardBrandProviderParameters(bin: bin, supportedTypes: supportedCardTypes)
-        cardBrandProvider.provide(for: parameters) { [weak self] cardBrands in
+    func didChangeBIN(_ value: String) {
+        self.cardComponentDelegate?.didChangeBIN(value, component: self)
+        let parameters = CardBrandProviderParameters(bin: value, supportedTypes: supportedCardTypes)
+        cardBrandProvider.provide(for: parameters) { [weak self] binInfo in
             guard let self = self else { return }
 
-            self.securityCodeItem.update(cardBrands: cardBrands)
-            self.numberItem.showLogos(for: bin.isEmpty ? self.topCardTypes : cardBrands.map(\.type))
-            self.cardComponentDelegate?.didChangeCardBrand(cardBrands, component: self)
+            self.cardViewController.update(binInfo: binInfo)
+            self.cardComponentDelegate?.didChangeCardBrand(binInfo.brands ?? [], component: self)
         }
     }
+    
 }

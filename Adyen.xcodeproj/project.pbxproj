@@ -97,6 +97,7 @@
 		E73C560625EE8C8D00B57758 /* APIClientHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73C560525EE8C8D00B57758 /* APIClientHelper.swift */; };
 		E73C560725EE8C8D00B57758 /* APIClientHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73C560525EE8C8D00B57758 /* APIClientHelper.swift */; };
 		E73C567F25EFCC4200B57758 /* IssuerListComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73C567E25EFCC4200B57758 /* IssuerListComponentTests.swift */; };
+		E745175525FB6A59000BDCCF /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E745175425FB6A59000BDCCF /* CardViewController.swift */; };
 		E745179925FB8340000BDCCF /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = E745179825FB8340000BDCCF /* Card.swift */; };
 		E74517A425FB834C000BDCCF /* EncryptedCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74517A325FB834C000BDCCF /* EncryptedCard.swift */; };
 		E74517CB25FBA2A5000BDCCF /* BinPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74517CA25FBA2A5000BDCCF /* BinPayload.swift */; };
@@ -885,6 +886,7 @@
 		E73C54E325EBD2DC00B57758 /* BrowserComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowserComponent.swift; sourceTree = "<group>"; };
 		E73C560525EE8C8D00B57758 /* APIClientHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientHelper.swift; sourceTree = "<group>"; };
 		E73C567E25EFCC4200B57758 /* IssuerListComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuerListComponentTests.swift; sourceTree = "<group>"; };
+		E745175425FB6A59000BDCCF /* CardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewController.swift; sourceTree = "<group>"; };
 		E745179825FB8340000BDCCF /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		E74517A325FB834C000BDCCF /* EncryptedCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedCard.swift; sourceTree = "<group>"; };
 		E74517CA25FBA2A5000BDCCF /* BinPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinPayload.swift; sourceTree = "<group>"; };
@@ -2482,6 +2484,7 @@
 				F919DF9424E6D7BC0027976E /* CardComponentExtensions.swift */,
 				E2028F5D222805E20007FF8B /* CardDetails.swift */,
 				E7451A042600EC8D000BDCCF /* CardComponentConfiguration.swift */,
+				E745175425FB6A59000BDCCF /* CardViewController.swift */,
 			);
 			path = Card;
 			sourceTree = "<group>";
@@ -4170,6 +4173,7 @@
 				F919DF9324E68F750027976E /* CardPublicKeyProvider.swift in Sources */,
 				E9E3DAC0221ECD7C00697074 /* CardSecurityCodeFormatter.swift in Sources */,
 				E7166A5224EAC5BA007CCDEF /* BinLookupRequest.swift in Sources */,
+				E745175525FB6A59000BDCCF /* CardViewController.swift in Sources */,
 				E9240D6C2265EFE900FB57D0 /* StoredCardAlertManager.swift in Sources */,
 				E7B627FD24ED32CC000CEC6E /* BinLookupService.swift in Sources */,
 				E773EA3825221C1900119499 /* Throttler.swift in Sources */,

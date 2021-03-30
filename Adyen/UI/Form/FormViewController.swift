@@ -23,7 +23,7 @@ public protocol ViewControllerDelegate: AnyObject {
 /// Displays a form for the user to enter details.
 /// :nodoc:
 @objc(ADYFormViewController)
-public final class FormViewController: UIViewController, Localizable {
+open class FormViewController: UIViewController, Localizable {
     
     private lazy var itemManager = FormViewItemManager(itemViewDelegate: self)
     
@@ -46,7 +46,7 @@ public final class FormViewController: UIViewController, Localizable {
     }
     
     @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
+    public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -126,7 +126,7 @@ public final class FormViewController: UIViewController, Localizable {
     // MARK: - View
     
     /// :nodoc:
-    override public func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(formView)
         setupConstraints()
@@ -146,7 +146,7 @@ public final class FormViewController: UIViewController, Localizable {
     }
     
     /// :nodoc:
-    override public func viewDidAppear(_ animated: Bool) {
+    override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         assignInitialFirstResponder()
         delegate?.viewDidAppear(viewController: self)

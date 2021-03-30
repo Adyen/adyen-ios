@@ -8,9 +8,9 @@
 
 final class CardTypeProviderMock: AnyCardBrandProvider {
 
-    var onFetch: ((_ completion: @escaping ([CardBrand]) -> Void) -> Void)?
+    var onFetch: ((_ completion: @escaping (BinLookupResponse) -> Void) -> Void)?
 
-    func provide(for parameters: CardBrandProviderParameters, completion: @escaping ([CardBrand]) -> Void) {
+    func provide(for parameters: CardBrandProviderParameters, completion: @escaping (BinLookupResponse) -> Void) {
         onFetch?(completion)
     }
 }
