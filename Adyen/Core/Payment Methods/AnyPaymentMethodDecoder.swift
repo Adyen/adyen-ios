@@ -48,6 +48,7 @@ internal enum PaymentMethodType: String {
     case econtextSevenEleven = "econtext_seven_eleven"
     case econtextStores = "econtext_stores"
     case econtextATM = "econtext_atm"
+    case econtextOnline = "econtext_online"
     
 }
 
@@ -107,7 +108,8 @@ internal enum AnyPaymentMethodDecoder {
         .giftcard: GiftCardPaymentMethodDecoder(),
         .econtextSevenEleven: SevenElevenPaymentMethodDecoder(),
         .econtextStores: EContextStoresPaymentMethodDecoder(),
-        .econtextATM: EContextATMPaymentMethodDecoder()
+        .econtextATM: EContextATMPaymentMethodDecoder(),
+        .econtextOnline: EContextOnlinePaymentMethodDecoder()
     ]
     
     private static var defaultDecoder: PaymentMethodDecoder = RedirectPaymentMethodDecoder()
@@ -268,5 +270,11 @@ private struct EContextStoresPaymentMethodDecoder: PaymentMethodDecoder {
 private struct EContextATMPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         .econtextATM(try EContextATMPaymentMethod(from: decoder))
+    }
+}
+
+private struct EContextOnlinePaymentMethodDecoder: PaymentMethodDecoder {
+    func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
+        .econtextOnline(try EContextOnlinePaymentMethod(from: decoder))
     }
 }

@@ -61,3 +61,4 @@
 "adyen.voucher.readInstructions" = "Leia as instruções";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.voucher.collectionInstitutionNumber" = "Número da instituição de cobrança";

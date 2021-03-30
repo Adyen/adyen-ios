@@ -54,3 +54,4 @@
 "adyen.button.copy" = "Copy -- Test";
 "adyen.voucher.introduction" = "Thank you for your purchase, please use the following information to complete your payment. -- Test";
 "adyen.voucher.readInstructions" = "Read instructions -- Test";
+"adyen.voucher.collectionInstitutionNumber" = "Collection Institution Number -- Test";

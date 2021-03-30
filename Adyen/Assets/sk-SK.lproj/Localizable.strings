@@ -61,3 +61,4 @@
 "adyen.voucher.readInstructions" = "Prečítajte si pokyny";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.voucher.collectionInstitutionNumber" = "Číslo inkasnej inštitúcie";

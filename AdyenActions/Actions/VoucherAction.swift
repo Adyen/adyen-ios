@@ -15,7 +15,12 @@ public enum VoucherPaymentMethod: String, Codable, CaseIterable {
 
     /// Doku Alfamart.
     case dokuAlfamart = "doku_alfamart"
+
+    /// E-Context Stores
     case econtextStores = "econtext_stores"
+
+    /// E-Context ATM
+    case econtextATM = "econtext_atm"
 }
 
 /// Describes any Voucher action.
@@ -30,6 +35,9 @@ public enum VoucherAction: Decodable {
     /// Indicates an EContext Stores Voucher type.
     case econtextStores(EContextStoresVoucherAction)
 
+    /// Indicates an EContext ATM Voucher type.
+    case econtextATM(EContextATMVoucherAction)
+
     /// :nodoc:
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -42,6 +50,8 @@ public enum VoucherAction: Decodable {
             self = .dokuAlfamart(try DokuVoucherAction(from: decoder))
         case .econtextStores:
             self = .econtextStores(try EContextStoresVoucherAction(from: decoder))
+        case .econtextATM:
+            self = .econtextATM(try EContextATMVoucherAction(from: decoder))
         }
     }
 

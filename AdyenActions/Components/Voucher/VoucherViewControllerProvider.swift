@@ -40,6 +40,9 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
         case let .econtextStores(action):
             let fields = createEContextStoresVoucherFields(for: action)
             return createGenericViewController(with: action, fields: fields)
+        case let .econtextATM(action):
+            let fields = createEContextATMVoucherFields(for: action)
+            return createGenericViewController(with: action, fields: fields)
         }
     }
 
@@ -97,6 +100,12 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
          createMaskedPhoneField(with: action.maskedTelephoneNumber)]
     }
 
+    private func createEContextATMVoucherFields(for action: EContextATMVoucherAction) -> [GenericVoucherView.VoucherField] {
+        [createCollectionInstitutionField(with: action.collectionInstitutionNumber),
+         createExpirationField(with: action.expiresAt),
+         createMaskedPhoneField(with: action.maskedTelephoneNumber)]
+    }
+
     private func createDokuVoucherFields(for action: DokuVoucherAction) -> [GenericVoucherView.VoucherField] {
         [createExpirationField(with: action.expiresAt),
          createShopperNameField(with: action.shopperName),
@@ -127,7 +136,13 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
 
     private func createMaskedPhoneField(with phone: String) -> GenericVoucherView.VoucherField {
         GenericVoucherView.VoucherField(identifier: "maskedTelephoneNumber",
-                                        title: ADYLocalizedString("adyen.voucher.maskedTelephoneNumber", localizationParameters),
+                                        title: ADYLocalizedString("adyen.phoneNumber.title", localizationParameters),
                                         value: phone)
+    }
+
+    private func createCollectionInstitutionField(with number: String) -> GenericVoucherView.VoucherField {
+        GenericVoucherView.VoucherField(identifier: "CollectionInstitutionNumber",
+                                        title: ADYLocalizedString("adyen.voucher.collectionInstitutionNumber", localizationParameters),
+                                        value: number)
     }
 }

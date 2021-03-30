@@ -61,3 +61,4 @@
 "adyen.voucher.readInstructions" = "Preberite navodila";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.voucher.collectionInstitutionNumber" = "Številka ustanove za zbiranje";

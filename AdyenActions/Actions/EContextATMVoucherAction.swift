@@ -6,21 +6,21 @@
 
 import Foundation
 
-/// Describes an action in which an EContext Stores voucher is presented to the shopper.
-public class EContextStoresVoucherAction: GenericVoucherAction {
+/// Describes an action in which an EContext ATM voucher is presented to the shopper.
+public class EContextATMVoucherAction: EContextStoresVoucherAction {
 
-    /// Masked shopper telephone number.
-    public let maskedTelephoneNumber: String
+    /// Collection institution number.
+    public let collectionInstitutionNumber: String
 
     /// :nodoc:
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        maskedTelephoneNumber = try container.decode(String.self, forKey: .maskedTelephoneNumber)
+        collectionInstitutionNumber = try container.decode(String.self, forKey: .collectionInstitutionNumber)
         try super.init(from: decoder)
     }
 
     /// :nodoc:
     private enum CodingKeys: String, CodingKey {
-        case maskedTelephoneNumber
+        case collectionInstitutionNumber
     }
 }
