@@ -61,3 +61,4 @@
 "adyen.voucher.readInstructions" = "阅读说明";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.voucher.collectionInstitutionNumber" = "收款机构编号";

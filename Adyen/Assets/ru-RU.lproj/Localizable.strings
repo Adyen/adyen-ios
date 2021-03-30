@@ -61,3 +61,4 @@
 "adyen.voucher.readInstructions" = "Прочитайте инструкции";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.voucher.collectionInstitutionNumber" = "Номер получателя средств";

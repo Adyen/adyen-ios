@@ -55,10 +55,6 @@ public struct BasicPersonalInfoFormDetails: PaymentMethodDetails, ShopperInforma
 
     private enum CodingKeys: String, CodingKey {
         case type
-        case firstName
-        case lastName
-        case emailAddress = "shopperEmail"
-        case telephoneNumber
     }
 
 }

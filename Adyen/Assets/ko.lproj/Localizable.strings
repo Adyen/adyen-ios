@@ -61,3 +61,4 @@
 "adyen.voucher.readInstructions" = "안내 읽기";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.voucher.collectionInstitutionNumber" = "수금 기관 번호";

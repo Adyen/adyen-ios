@@ -61,3 +61,4 @@
 "adyen.voucher.readInstructions" = "Citiți instrucțiunile";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.voucher.collectionInstitutionNumber" = "Număr instituție de colectare";

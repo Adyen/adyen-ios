@@ -57,7 +57,10 @@ class PaymentMethodTests: XCTestCase {
                 giftCard,
                 googlePay,
                 dokuWallet,
-                sevenElevenDictionary
+                sevenElevenDictionary,
+                econtextATM,
+                econtextStores,
+                econtextOnline
             ]
         ]
         
@@ -112,7 +115,7 @@ class PaymentMethodTests: XCTestCase {
         
         // Regular payment methods
         
-        XCTAssertEqual(paymentMethods.regular.count, 17)
+        XCTAssertEqual(paymentMethods.regular.count, 20)
         XCTAssertTrue(paymentMethods.regular[0] is CardPaymentMethod)
         XCTAssertEqual((paymentMethods.regular[0] as! CardPaymentMethod).fundingSource!, .credit)
         
@@ -190,6 +193,18 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertTrue(paymentMethods.regular[16] is SevenElevenPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[16].name, "7-Eleven")
         XCTAssertEqual(paymentMethods.regular[16].type, "econtext_seven_eleven")
+
+        XCTAssertTrue(paymentMethods.regular[17] is EContextATMPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[17].name, "Pay-easy ATM")
+        XCTAssertEqual(paymentMethods.regular[17].type, "econtext_atm")
+
+        XCTAssertTrue(paymentMethods.regular[18] is EContextStoresPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[18].name, "Convenience Stores")
+        XCTAssertEqual(paymentMethods.regular[18].type, "econtext_stores")
+
+        XCTAssertTrue(paymentMethods.regular[19] is EContextOnlinePaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[19].name, "Online Banking")
+        XCTAssertEqual(paymentMethods.regular[19].type, "econtext_online")
 
     }
     
@@ -352,6 +367,30 @@ class PaymentMethodTests: XCTestCase {
         let paymentMethod = try Coder.decode(sevenElevenDictionary) as SevenElevenPaymentMethod
         XCTAssertEqual(paymentMethod.name, "7-Eleven")
         XCTAssertEqual(paymentMethod.type, "econtext_seven_eleven")
+    }
+
+    // MARK: - E-Context Online
+
+    func testDecodingEContextOnlinePaymentMethod() throws {
+        let paymentMethod = try Coder.decode(econtextOnline) as EContextOnlinePaymentMethod
+        XCTAssertEqual(paymentMethod.name, "Online Banking")
+        XCTAssertEqual(paymentMethod.type, "econtext_online")
+    }
+
+    // MARK: - E-Context ATM
+
+    func testDecodingEContextATMPaymentMethod() throws {
+        let paymentMethod = try Coder.decode(econtextATM) as EContextATMPaymentMethod
+        XCTAssertEqual(paymentMethod.name, "Pay-easy ATM")
+        XCTAssertEqual(paymentMethod.type, "econtext_atm")
+    }
+
+    // MARK: - E-Context Stores
+
+    func testDecodingEContextStoresPaymentMethod() throws {
+        let paymentMethod = try Coder.decode(econtextStores) as EContextStoresPaymentMethod
+        XCTAssertEqual(paymentMethod.name, "Convenience Stores")
+        XCTAssertEqual(paymentMethod.type, "econtext_stores")
     }
     
     // MARK: - Stored Bancontact
