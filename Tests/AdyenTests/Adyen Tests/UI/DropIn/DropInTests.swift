@@ -98,11 +98,11 @@ class DropInTests: XCTestCase {
 
     func testOpenDropInAsList() {
         let config = DropInComponent.PaymentMethodsConfiguration(clientKey: "local_MYLOCALCLIENTKEY")
-        config.environment = .test
+        config.payment = Payment(amount: Payment.Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymenMethods, paymentMethodsConfiguration: config)
-        sut.payment = Payment(amount: Payment.Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
+        sut.environment = .test
 
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root
@@ -122,10 +122,10 @@ class DropInTests: XCTestCase {
 
     func testOpenDropInAsOneclickPayment() {
         let config = DropInComponent.PaymentMethodsConfiguration(clientKey: "local_MYLOCALCLIENTKEY")
-        config.environment = .test
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneclick.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymenMethods, paymentMethodsConfiguration: config)
+        sut.environment = .test
 
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root

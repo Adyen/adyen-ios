@@ -24,6 +24,8 @@ public protocol ViewControllerDelegate: AnyObject {
 /// :nodoc:
 @objc(ADYFormViewController)
 open class FormViewController: UIViewController, Localizable {
+
+    private let notificationCenter = NotificationCenter.default
     
     private lazy var itemManager = FormViewItemManager(itemViewDelegate: self)
     
@@ -44,6 +46,8 @@ open class FormViewController: UIViewController, Localizable {
         self.style = style
         super.init(nibName: nil, bundle: nil)
     }
+
+    deinit { notificationCenter.removeObserver(self) }
     
     @available(*, unavailable)
     public required init?(coder: NSCoder) {
@@ -137,8 +141,7 @@ open class FormViewController: UIViewController, Localizable {
         
         view.backgroundColor = style.backgroundColor
         formView.backgroundColor = style.backgroundColor
-        
-        let notificationCenter = NotificationCenter.default
+
         notificationCenter.addObserver(self,
                                        selector: #selector(keyboardWillChangeFrame(_:)),
                                        name: UIResponder.keyboardWillChangeFrameNotification,

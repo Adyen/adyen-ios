@@ -46,15 +46,13 @@ class ComponentManagerTests: XCTestCase {
 
     func testClientKeyInjectionAndProtocolConfromance() throws {
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        let payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
         let config = DropInComponent.PaymentMethodsConfiguration(clientKey: Dummy.dummyClientKey)
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
-        config.applePay.merchantIdentifier = "applePayMerchantIdentifier"
-        config.applePay.summaryItems = [
-            PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)
-        ]
+        let merchantIdentifier = "applePayMerchantIdentifier"
+        let summaryItems = [ PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final) ]
+        config.applePay = .init(summaryItems: summaryItems, merchantIdentifier: merchantIdentifier)
+        config.payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
         let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   payment: payment,
                                    configuration: config,
                                    style: DropInComponent.Style())
 
@@ -71,16 +69,14 @@ class ComponentManagerTests: XCTestCase {
     
     func testLocalizationWithCustomTableName() throws {
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        let payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
         let config = DropInComponent.PaymentMethodsConfiguration(clientKey: Dummy.dummyClientKey)
+        config.payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
-        config.applePay.merchantIdentifier = "applePayMerchantIdentifier"
-        config.applePay.summaryItems = [
-            PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)
-        ]
+        let merchantIdentifier = "applePayMerchantIdentifier"
+        let summaryItems = [ PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final) ]
+        config.applePay = .init(summaryItems: summaryItems, merchantIdentifier: merchantIdentifier)
 
         let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   payment: payment,
                                    configuration: config,
                                    style: DropInComponent.Style())
         
@@ -93,16 +89,14 @@ class ComponentManagerTests: XCTestCase {
     
     func testLocalizationWithCustomKeySeparator() throws {
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        let payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
         let config = DropInComponent.PaymentMethodsConfiguration(clientKey: Dummy.dummyClientKey)
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
-        config.applePay.merchantIdentifier = "applePayMerchantIdentifier"
-        config.applePay.summaryItems = [
-            PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)
-        ]
+        let merchantIdentifier = "applePayMerchantIdentifier"
+        let summaryItems = [ PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final) ]
+        config.applePay = .init(summaryItems: summaryItems, merchantIdentifier: merchantIdentifier)
+        config.payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
 
         let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   payment: payment,
                                    configuration: config,
                                    style: DropInComponent.Style())
         
