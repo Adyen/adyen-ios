@@ -132,10 +132,8 @@ internal final class ModalViewController: UIViewController, DynamicViewControlle
     private func arrangeConstraints() {
         let separatorHeight: CGFloat = 1.0 / UIScreen.main.scale
         let toolbarHeight = navigationBarHeight - separatorHeight
-        
-        let stackConstraints = stackView.adyen.anchore(inside: view)
-        stackConstraints.first { $0.firstAttribute == .bottom }?.priority = .defaultHigh
 
+        stackView.adyen.anchore(inside: view)
         NSLayoutConstraint.activate([
             toolbar.heightAnchor.constraint(equalToConstant: toolbarHeight),
             separator.heightAnchor.constraint(equalToConstant: separatorHeight)

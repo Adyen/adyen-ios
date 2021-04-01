@@ -45,10 +45,7 @@ internal final class FormFoldableItemView: FormItemView<FormFoldableItem>, Obser
     }
 
     private func changeState(_ isFolded: Bool) {
-        UIView.animate(withDuration: 0.25) { [weak self] in
-            self?.stackView.arrangedSubviews.forEach { $0.isHidden = isFolded }
-            self?.invalidateIntrinsicContentSize()
-        }
+        self.stackView.arrangedSubviews.forEach { $0.isHidden = isFolded }
     }
 
     override internal var intrinsicContentSize: CGSize { stackView.intrinsicContentSize }

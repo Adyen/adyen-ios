@@ -8,19 +8,20 @@ import Adyen
 import UIKit
 
 /// :nodoc:
+/// Wrapps ModalViewController and manage it conten's updates and keyboard events
 internal final class WrapperViewController: UIViewController, DynamicViewController {
 
-    /// :nodoc:
+    private var bottomConstraint: NSLayoutConstraint?
+
     internal lazy var requiresKeyboardInput: Bool = heirarchyRequiresKeyboardInput(viewController: child)
 
-    /// :nodoc:
     internal let child: ModalViewController
 
-    /// :nodoc:
     internal init(child: ModalViewController) {
         self.child = child
         super.init(nibName: nil, bundle: nil)
 
+        positionContent(child)
         child.dynamicContentDelegate = self
     }
 
@@ -42,9 +43,17 @@ internal final class WrapperViewController: UIViewController, DynamicViewControl
         guard let view = child.viewIfLoaded, let window = UIApplication.shared.keyWindow else { return }
         let frame = child.adyen.finalPresentationFrame(in: window, keyboardRect: keyboardRect)
         view.layer.removeAllAnimations()
-        UIView.animate(withDuration: animated ? 0.35 : 0.0, delay: 0.0, options: [.curveLinear], animations: {
-            view.frame = frame
-        }, completion: nil)
+        UIView.animate(withDuration: animated ? 0.35 : 0.0,
+                       delay: 0.0,
+                       options: [.curveLinear],
+                       animations: { view.frame = frame },
+                       completion: nil)
+    }
+
+    fileprivate func positionContent(_ child: ModalViewController) {
+        addChild(child)
+        view.addSubview(child.view)
+        child.didMove(toParent: self)
     }
 }
 

@@ -75,11 +75,6 @@ internal class CardViewController: FormViewController, Observer {
         }
 
         if configuration.showsAddressVerification {
-            addressFoldableItem.isFolded = true
-            observe(addressFoldableItem.$isFolded) { [weak self] _ in
-                guard let self = self else { return }
-                self.dynamicContentDelegate?.viewDidChangeContentSize(viewController: self)
-            }
             append(addressFoldableItem)
         }
 
@@ -142,7 +137,16 @@ internal class CardViewController: FormViewController, Observer {
                               color: UIColor.Adyen.componentLabel,
                               textAlignment: .center)
         let item = FormLabelItem(text: "I am here!", style: style)
-        return FormFoldableItem(item: item.withPadding(padding: .init(top: 24, left: 0, bottom: -24, right: 0)), style: style)
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "addressVerification")
+        let foldable = FormFoldableItem(item: item.withPadding(padding: .init(top: 24, left: 0, bottom: -24, right: 0)), style: style)
+        foldable.isFolded = true
+        observe(foldable.$isFolded) { [weak self] _ in
+            guard let self = self else { return }
+            self.view.setNeedsLayout()
+            self.dynamicContentDelegate?.viewDidChangeContentSize(viewController: self)
+        }
+
+        return foldable
     }()
 
     internal lazy var numberItem: FormCardNumberItem = {

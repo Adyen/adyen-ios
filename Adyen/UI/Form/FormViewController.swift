@@ -10,8 +10,6 @@ import UIKit
 /// :nodoc:
 @objc(ADYFormViewController)
 open class FormViewController: UIViewController, Localizable, DynamicViewController {
-
-    private let notificationCenter = NotificationCenter.default
     
     private lazy var itemManager = FormViewItemManager(itemViewDelegate: self)
     
@@ -32,8 +30,6 @@ open class FormViewController: UIViewController, Localizable, DynamicViewControl
         self.style = style
         super.init(nibName: nil, bundle: nil)
     }
-
-    deinit { notificationCenter.removeObserver(self) }
     
     @available(*, unavailable)
     public required init?(coder: NSCoder) {
@@ -127,11 +123,6 @@ open class FormViewController: UIViewController, Localizable, DynamicViewControl
         
         view.backgroundColor = style.backgroundColor
         formView.backgroundColor = style.backgroundColor
-
-        notificationCenter.addObserver(self,
-                                       selector: #selector(keyboardWillChangeFrame(_:)),
-                                       name: UIResponder.keyboardWillChangeFrameNotification,
-                                       object: nil)
     }
     
     /// :nodoc:
@@ -147,31 +138,10 @@ open class FormViewController: UIViewController, Localizable, DynamicViewControl
         return form
     }()
     
-    private var bottomConstraint: NSLayoutConstraint?
-    
     private func setupConstraints() {
-
-        let constraints: [NSLayoutConstraint?]
-        if #available(iOS 11.0, *) {
-            bottomConstraint = formView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-            constraints = [
-                formView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-                bottomConstraint,
-                formView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
-                formView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor)
-            ]
-        } else {
-            bottomConstraint = formView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-            constraints = [
-                formView.topAnchor.constraint(equalTo: view.topAnchor),
-                bottomConstraint,
-                formView.leftAnchor.constraint(equalTo: view.leftAnchor),
-                formView.rightAnchor.constraint(equalTo: view.rightAnchor)
-            ]
-        }
-        
+        let constraints = formView.adyen.anchore(inside: view)
+        let bottomConstraint = constraints.first { $0.firstAttribute == .bottom }
         bottomConstraint?.priority = .defaultHigh
-        NSLayoutConstraint.activate(constraints.compactMap { $0 })
     }
     
     // MARK: - Keyboard
@@ -182,18 +152,6 @@ open class FormViewController: UIViewController, Localizable, DynamicViewControl
         textItemView?.resignFirstResponder()
         
         return super.resignFirstResponder()
-    }
-    
-    @objc private func keyboardWillChangeFrame(_ notification: NSNotification) {
-        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
-        var heightOffset = keyboardFrame.origin.y - UIScreen.main.bounds.height
-        
-        if #available(iOS 11.0, *) {
-            heightOffset += min(abs(heightOffset), view.safeAreaInsets.bottom)
-        }
-        
-        bottomConstraint?.constant = heightOffset
-        self.dynamicContentDelegate?.viewDidChangeContentSize(viewController: self)
     }
     
     // MARK: - Other

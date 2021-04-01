@@ -24,10 +24,7 @@ public extension AdyenScope where Base: UIViewController {
     }
     
     private var leastPresentableHeightScale: CGFloat { 0.3 }
-    private var greatestPresentableHeightScale: CGFloat {
-        guard base.isViewLoaded else { return 1 }
-        return base.view.bounds.height < base.view.bounds.width ? 1 : 0.9
-    }
+    private var greatestPresentableHeightScale: CGFloat { 0.9 }
     
     /// Enables any `UIViewController` to recalculate it's conten's size form modal presentation ,
     /// e.g `viewController.adyen.finalPresentationFrame(in:keyboardRect:)`.
@@ -36,29 +33,23 @@ public extension AdyenScope where Base: UIViewController {
         var frame = containerView.bounds
         let smallestHeightPossible = frame.height * leastPresentableHeightScale
         let biggestHeightPossible = frame.height * greatestPresentableHeightScale
-        
-        var safeAreaInset: UIEdgeInsets = .zero
-        if #available(iOS 11.0, *) {
-            safeAreaInset = containerView.safeAreaInsets
-        }
-        
-        func calculateFrame(for expectedHeight: CGFloat) {
-            frame.origin.y += frame.size.height - expectedHeight
-            frame.size.height = expectedHeight
-        }
-        
         guard base.preferredContentSize != .zero else { return frame }
-        
-        let bottomPadding = max(keyboardRect.height, safeAreaInset.bottom)
+
+        let bottomPadding = max(abs(keyboardRect.height), containerView.safeAreaInsets.bottom)
         let expectedHeight = base.preferredContentSize.height + bottomPadding
-        
+
+        func calculateFrame(for expectedHeight: CGFloat, with bottomPadding: CGFloat) {
+            frame.origin.y += frame.size.height - expectedHeight
+            frame.size.height = expectedHeight - bottomPadding + containerView.safeAreaInsets.bottom
+        }
+
         switch expectedHeight {
         case let height where height < smallestHeightPossible:
-            calculateFrame(for: smallestHeightPossible)
+            calculateFrame(for: smallestHeightPossible, with: bottomPadding)
         case let height where height > biggestHeightPossible:
-            calculateFrame(for: biggestHeightPossible)
+            calculateFrame(for: biggestHeightPossible, with: bottomPadding)
         default:
-            calculateFrame(for: expectedHeight)
+            calculateFrame(for: expectedHeight, with: bottomPadding)
         }
         
         return frame

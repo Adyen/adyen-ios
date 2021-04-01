@@ -105,19 +105,14 @@ extension ApplePayComponent {
 
         internal func createPaymentRequest() -> PKPaymentRequest {
             let paymentRequest = PKPaymentRequest()
-
             paymentRequest.countryCode = payment.countryCode ?? ""
             paymentRequest.merchantIdentifier = merchantIdentifier
             paymentRequest.currencyCode = payment.amount.currencyCode
             paymentRequest.supportedNetworks = supportedNetworks
             paymentRequest.merchantCapabilities = .capability3DS
             paymentRequest.paymentSummaryItems = summaryItems
-
-            if #available(iOS 11.0, *) {
-                paymentRequest.requiredBillingContactFields = requiredBillingContactFields
-                paymentRequest.requiredShippingContactFields = requiredShippingContactFields
-            }
-
+            paymentRequest.requiredBillingContactFields = requiredBillingContactFields
+            paymentRequest.requiredShippingContactFields = requiredShippingContactFields
             return paymentRequest
         }
     }

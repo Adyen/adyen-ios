@@ -10,6 +10,8 @@ import UIKit
 internal final class DropInNavigationController: UINavigationController {
     
     internal typealias CancelHandler = (Bool, PresentableComponent) -> Void
+
+    private let notificationCenter = NotificationCenter.default
     
     private let cancelHandler: CancelHandler?
     
@@ -26,7 +28,7 @@ internal final class DropInNavigationController: UINavigationController {
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self)
+        notificationCenter.removeObserver(self)
     }
     
     @available(*, unavailable)
@@ -63,25 +65,25 @@ internal final class DropInNavigationController: UINavigationController {
             keyboardRect = .zero
         }
         
-        if let topViewController = topViewController as? WrapperViewController, topViewController.requiresKeyboardInput {
-            topViewController.updateFrame(keyboardRect: keyboardRect, animated: true)
-        }
+        updateTopViewControllerIfNeeded()
     }
     
     // MARK: - Private
+
+    internal func updateTopViewControllerIfNeeded() {
+        guard let topViewController = topViewController as? WrapperViewController else { return }
+
+        let keyboardRect = topViewController.requiresKeyboardInput ? self.keyboardRect : .zero
+        topViewController.updateFrame(keyboardRect: keyboardRect, animated: true)
+    }
     
     private func wrapInModalController(component: PresentableComponent, isRoot: Bool) -> WrapperViewController {
         let modal = ModalViewController(rootViewController: component.viewController,
-                                        style: style) { [weak self] modal in
-            self?.cancelHandler?(modal, component)
-        }
+                                        style: style,
+                                        cancelButtonHandler: { [weak self] in self?.cancelHandler?($0, component) })
         modal.isRoot = isRoot
         let container = WrapperViewController(child: modal)
-        container.addChild(modal)
-        container.view.addSubview(modal.view)
         container.dynamicContentDelegate = self
-        modal.didMove(toParent: container)
-        
         return container
     }
     
@@ -98,7 +100,7 @@ internal final class DropInNavigationController: UINavigationController {
     private func subscribeToKeyboardUpdates() {
         let selector = #selector(keyboardWillChangeFrame(_:))
         let notificationName = UIResponder.keyboardWillChangeFrameNotification
-        NotificationCenter.default.addObserver(self, selector: selector, name: notificationName, object: nil)
+        notificationCenter.addObserver(self, selector: selector, name: notificationName, object: nil)
     }
 }
 
@@ -121,10 +123,7 @@ extension DropInNavigationController: UIViewControllerTransitioningDelegate {
         DimmingPresentationController(presented: presented,
                                       presenting: presenting,
                                       layoutDidChanged: { [weak self] in
-                                          guard let self = self,
-                                                let viewController = self.topViewController as? WrapperViewController
-                                          else { return }
-                                          viewController.updateFrame(keyboardRect: self.keyboardRect, animated: false)
+                                          self?.updateTopViewControllerIfNeeded()
                                       })
     }
     
@@ -133,8 +132,7 @@ extension DropInNavigationController: UIViewControllerTransitioningDelegate {
 extension DropInNavigationController: DynamicViewControllerDelegate {
 
     internal func viewDidChangeContentSize(viewController: UIViewController) {
-        guard let dynamicViewController = viewController as? WrapperViewController else { return }
-        dynamicViewController.updateFrame(keyboardRect: self.keyboardRect, animated: true)
+        updateTopViewControllerIfNeeded()
     }
 
 }

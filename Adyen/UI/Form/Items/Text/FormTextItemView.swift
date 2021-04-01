@@ -294,7 +294,7 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
     /// :nodoc:
     open func textFieldDidBeginEditing(_ textField: UITextField) {
         isEditing = true
-        hideAlertLabel(true)
+        setAlertHidden(true)
         if accessory == .valid || accessory == .invalid {
             accessory = .none
         }
@@ -304,18 +304,18 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
     open func updateValidationStatus(forced: Bool = false) {
         if item.isValid() {
             accessory = .valid
-            hideAlertLabel(true)
+            setAlertHidden(true)
             highlightSeparatorView(color: tintColor)
             titleLabel.textColor = tintColor
         } else if forced || !(textField.text ?? "").isEmpty {
             accessory = .invalid
-            hideAlertLabel(false)
+            setAlertHidden(false)
             highlightSeparatorView(color: item.style.errorColor)
             titleLabel.textColor = item.style.errorColor
         }
     }
     
-    private func hideAlertLabel(_ hidden: Bool) {
+    private func setAlertHidden(_ hidden: Bool) {
         guard hidden || alertLabel.text != nil else { return }
         UIView.animateKeyframes(withDuration: 0.25,
                                 delay: 0,
