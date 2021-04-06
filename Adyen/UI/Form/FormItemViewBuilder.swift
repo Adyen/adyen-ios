@@ -36,7 +36,7 @@ public struct FormItemViewBuilder {
 
     /// Builds `FormRegionPickerItemView` from `FormRegionPickerItem`.
     /// :nodoc:
-    public func build(with item: FormRegionPickerItem) -> BaseFormValuePickerItemView<Region> {
+    public func build(with item: FormRegionPickerItem) -> BaseFormPickerItemView<Region> {
         FormRegionPickerItemView(item: item)
     }
     

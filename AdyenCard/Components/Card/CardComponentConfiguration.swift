@@ -8,6 +8,20 @@ import Adyen
 
 extension CardComponent {
 
+    /// The mode of address form of card component
+    public enum AddressFormType {
+
+        /// Display full address form
+        case full
+
+        /// Display simple form with only zip code field
+        @available(*, unavailable)
+        case zipCode
+
+        /// Do not display address form
+        case none
+    }
+
     /// Card component configuration.
     public struct Configuration {
 
@@ -20,8 +34,9 @@ extension CardComponent {
         /// Indicates whether to show the security code field at all. Defaults to true.
         public var showsSecurityCodeField: Bool
 
-        /// Indicates whether to show the address verification form for supported issuing countries. Defaults to false.
-        public var showsAddressVerification: Bool
+        /// Indicates whether to show the address verification form.
+        /// Defaults to none.
+        public var showsAddressVerification: AddressFormType
 
         /// Stored card configuration.
         public var stored: StoredCardConfiguration
@@ -34,9 +49,6 @@ extension CardComponent {
         /// Indicates the card brands excluded from the supported brands.
         internal var excludedCardTypes: Set<CardType> = [.bcmc]
 
-        /// Indicates the list of issuing countries where address verification is supported.
-        internal var addressVerificationSupportingCountryCodes: Set<String> = ["CA", "US", "GB"] // swiftlint:disable:this identifier_name
-
         /// Configuration of Card component.
         /// - Parameters:
         ///   - showsHolderNameField: Indicates if the field for entering the holder name should be displayed in the form.
@@ -45,14 +57,14 @@ extension CardComponent {
         ///   Defaults to true.
         ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
         ///   Defaults to true.
-        ///   - showsAddressVerification: Indicates whether to show the address verification form for supported issuing countries.
-        ///   Defaults to false.
+        ///   - showsAddressVerification: Indicates mode of how to dispaly the address verification form.
+        ///   Defaults to none.
         ///   - storedCardConfiguration: Stored card configuration.
         ///   - allowedCardTypes: The enforced list of allowed card types.
         public init(showsHolderNameField: Bool = false,
                     showsStorePaymentMethodField: Bool = true,
                     showsSecurityCodeField: Bool = true,
-                    showsAddressVerification: Bool = false,
+                    showsAddressVerification: AddressFormType = .none,
                     storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
                     allowedCardTypes: [CardType]? = nil) {
             self.showsHolderNameField = showsHolderNameField
@@ -69,7 +81,7 @@ extension CardComponent {
             var configuration = Configuration(showsHolderNameField: showsHolderNameField,
                                               showsStorePaymentMethodField: showsStorePaymentMethodField,
                                               showsSecurityCodeField: false,
-                                              showsAddressVerification: false,
+                                              showsAddressVerification: .none,
                                               storedCardConfiguration: storedCardConfiguration,
                                               allowedCardTypes: [.bcmc])
             configuration.excludedCardTypes = []

@@ -41,14 +41,17 @@ open class BaseFormPickerItem<ElementType: CustomStringConvertible>: FormValueIt
     /// The complete list of selectable values.
     internal let selectableValues: [BasePickerElement<ElementType>]
 
+    /// The title of the item.
+    public var title: String?
+
     /// Initializes the picker item.
     ///
     /// - Parameter selectableValues: The list of values to select from.
     /// - Parameter style: The `FormPhoneExtensionPickerItem` UI style.
-    internal init(initValue: BasePickerElement<ElementType>, selectableValues: [BasePickerElement<ElementType>], style: FormTextItemStyle) {
+    internal init(preselectedValue: BasePickerElement<ElementType>, selectableValues: [BasePickerElement<ElementType>], style: FormTextItemStyle) {
         assert(selectableValues.count > 0)
         self.selectableValues = selectableValues
-        super.init(value: initValue, style: style)
+        super.init(value: preselectedValue, style: style)
     }
 
 }

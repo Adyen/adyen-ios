@@ -7,8 +7,6 @@
 import Adyen
 import UIKit
 
-/// :nodoc:
-/// Wrapps ModalViewController and manage it conten's updates
 internal final class WrapperViewController: UIViewController {
 
     internal lazy var requiresKeyboardInput: Bool = heirarchyRequiresKeyboardInput(viewController: child)
@@ -22,7 +20,6 @@ internal final class WrapperViewController: UIViewController {
         positionContent(child)
     }
 
-    /// :nodoc:
     @available(*, unavailable)
     internal required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

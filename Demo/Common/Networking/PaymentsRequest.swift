@@ -34,6 +34,7 @@ internal struct PaymentsRequest: Request {
         try container.encode(data.shopperName, forKey: .shopperName)
         try container.encode(data.emailAddress ?? Configuration.shopperEmail, forKey: .shopperEmail)
         try container.encode(data.telephoneNumber, forKey: .telephoneNumber)
+        try container.encode(data.billingAddress, forKey: .billingAddress)
         try container.encode(Locale.current.identifier, forKey: .shopperLocale)
         try container.encodeIfPresent(data.browserInfo, forKey: .browserInfo)
         try container.encode("iOS", forKey: .channel)
@@ -62,6 +63,7 @@ internal struct PaymentsRequest: Request {
         case shopperName
         case telephoneNumber
         case shopperLocale
+        case billingAddress
     }
     
 }

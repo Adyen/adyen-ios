@@ -38,6 +38,12 @@ public struct FormComponentStyle: TintableStyle {
     public var secondaryButtonItem: FormButtonItemStyle = .secondary(font: .preferredFont(forTextStyle: .body),
                                                                      textColor: UIColor.Adyen.defaultBlue)
 
+    /// The address style generated based on other field's value.
+    public var addressStyle: AddressStyle {
+        .init(sectionHeader: sectionHeader,
+              textField: textField)
+    }
+
     /// Set tint color of form.
     /// When set, updates tint colors for all undelying styles.
     /// If value is nil, the default color would be used.

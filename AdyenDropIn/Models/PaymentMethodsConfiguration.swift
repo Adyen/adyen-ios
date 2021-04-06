@@ -50,6 +50,10 @@ public extension DropInComponent {
         /// Indicates whether to show the security code field in the form.
         public var showsSecurityCodeField = true
 
+        /// Indicates whether to show the address verification form.
+        /// Defaults to none.
+        public var showsAddressVerification: CardComponent.AddressFormType = .none
+
         /// Stored card configuration.
         public var stored = StoredCardConfiguration()
 

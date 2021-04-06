@@ -47,7 +47,8 @@ extension CardComponent {
                                       holderName: card.holder)
             
             let data = PaymentComponentData(paymentMethodDetails: details,
-                                            storePaymentMethod: cardViewController.storePayment)
+                                            storePaymentMethod: cardViewController.storePayment,
+                                            billingAddress: cardViewController.address)
 
             submit(data: data)
         } catch {

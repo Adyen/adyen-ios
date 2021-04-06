@@ -31,10 +31,10 @@ internal final class FormAddressItemView: FormItemView<AnyAddressItem> {
         let stackView = UIStackView(arrangedSubviews: childItemViews)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.preservesSuperviewLayoutMargins = true
-        stackView.axis = .horizontal
-        stackView.alignment = .top
-        stackView.distribution = .fillEqually
-        stackView.spacing = 16
+        stackView.axis = .vertical
+        stackView.alignment = .fill
+        stackView.distribution = .fill
+        stackView.spacing = 8
         return stackView
     }()
 
@@ -42,10 +42,6 @@ internal final class FormAddressItemView: FormItemView<AnyAddressItem> {
         let itemView = FormItemViewBuilder.build(item)
         itemView.preservesSuperviewLayoutMargins = true
         return itemView
-    }
-
-    private static func getViewsForAddressItemType(_ item: AnyAddressItem) -> [AnyFormItemView] {
-        return 
     }
 
 }

@@ -12,11 +12,11 @@ public typealias RegionPickerItem = BasePickerElement<Region>
 
 /// Describes a picker item.
 /// :nodoc:
-public final class FormRegionPickerItem: BaseFormValuePickerItem<Region> {
+public final class FormRegionPickerItem: BaseFormPickerItem<Region> {
 
-    internal init(initValue: Region, selectableValues: [Region], style: FormTextItemStyle) {
-        super.init(initValue: RegionPickerItem(identifier: initValue.identifier, item: initValue),
-                   selectableValues: selectableValues.map { RegionPickerItem(identifier: $0.identifier, item: $0) },
+    internal init(preselectedValue: Region, selectableValues: [Region], style: FormTextItemStyle) {
+        super.init(preselectedValue: RegionPickerItem(identifier: preselectedValue.identifier, element: preselectedValue),
+                   selectableValues: selectableValues.map { RegionPickerItem(identifier: $0.identifier, element: $0) },
                    style: style)
     }
 
@@ -26,10 +26,27 @@ public final class FormRegionPickerItem: BaseFormValuePickerItem<Region> {
     }
 }
 
-internal final class FormRegionPickerItemView: BaseFormValuePickerItemView<Region> {
+internal final class FormRegionPickerItemView: BaseFormPickerItemView<Region> {
+
+    /// :nodoc:
+    public lazy var titleLabel: UILabel = {
+        let titleLabel = UILabel()
+        titleLabel.font = item.style.title.font
+        titleLabel.adjustsFontForContentSizeCategory = true
+        titleLabel.textColor = item.style.title.color
+        titleLabel.textAlignment = item.style.title.textAlignment
+        titleLabel.backgroundColor = item.style.title.backgroundColor
+        titleLabel.text = item.title
+        titleLabel.isAccessibilityElement = false
+        titleLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel") }
+
+        return titleLabel
+    }()
 
     override internal func initialize() {
-        let stackView = UIStackView(arrangedSubviews: [inputControl])
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, inputControl])
+        stackView.axis = .vertical
+        stackView.spacing = 8
         addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.preservesSuperviewLayoutMargins = true

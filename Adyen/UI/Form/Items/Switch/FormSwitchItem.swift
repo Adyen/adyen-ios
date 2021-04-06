@@ -24,7 +24,5 @@ public final class FormSwitchItem: FormValueItem<Bool, FormSwitchItemStyle> {
     override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
-
-    public func valueDidChange() {}
     
 }
