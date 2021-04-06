@@ -8,9 +8,9 @@ import Adyen
 import UIKit
 
 /// :nodoc:
+/// Wrapps ModalViewController and manage it conten's updates and keyboard events
 internal final class WrapperViewController: UIViewController {
 
-    /// :nodoc:
     internal lazy var requiresKeyboardInput: Bool = heirarchyRequiresKeyboardInput(viewController: child)
 
     internal let child: ModalViewController
@@ -59,6 +59,7 @@ internal final class WrapperViewController: UIViewController {
         ])
         self.topConstraint = topConstraint
     }
+
 }
 
 extension ModalViewController {

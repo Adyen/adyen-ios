@@ -20,6 +20,9 @@ extension CardComponent {
         /// Indicates whether to show the security code field at all. Defaults to true.
         public var showsSecurityCodeField: Bool
 
+        /// Indicates whether to show the address verification form for supported issuing countries. Defaults to false.
+        public var showsAddressVerification: Bool
+
         /// Stored card configuration.
         public var stored: StoredCardConfiguration
 
@@ -31,6 +34,9 @@ extension CardComponent {
         /// Indicates the card brands excluded from the supported brands.
         internal var excludedCardTypes: Set<CardType> = [.bcmc]
 
+        /// Indicates the list of issuing countries where address verification is supported.
+        internal var addressVerificationSupportingCountryCodes: Set<String> = ["CA", "US", "GB"] // swiftlint:disable:this identifier_name
+
         /// Configuration of Card component.
         /// - Parameters:
         ///   - showsHolderNameField: Indicates if the field for entering the holder name should be displayed in the form.
@@ -39,11 +45,14 @@ extension CardComponent {
         ///   Defaults to true.
         ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
         ///   Defaults to true.
+        ///   - showsAddressVerification: Indicates whether to show the address verification form for supported issuing countries.
+        ///   Defaults to false.
         ///   - storedCardConfiguration: Stored card configuration.
         ///   - allowedCardTypes: The enforced list of allowed card types.
         public init(showsHolderNameField: Bool = false,
                     showsStorePaymentMethodField: Bool = true,
                     showsSecurityCodeField: Bool = true,
+                    showsAddressVerification: Bool = false,
                     storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
                     allowedCardTypes: [CardType]? = nil) {
             self.showsHolderNameField = showsHolderNameField
@@ -51,6 +60,7 @@ extension CardComponent {
             self.showsStorePaymentMethodField = showsStorePaymentMethodField
             self.stored = storedCardConfiguration
             self.allowedCardTypes = allowedCardTypes
+            self.showsAddressVerification = showsAddressVerification
         }
 
         internal func bcmcConfiguration() -> Configuration {
