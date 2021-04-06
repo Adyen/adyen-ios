@@ -31,12 +31,14 @@ public protocol AnyFormTextItemView: AnyFormItemView {
 
 /// A view representing a basic logic of text item.
 /// :nodoc:
-open class FormTextItemView<T: FormTextItem>: FormValueItemView<String, FormTextItemStyle, T>, UITextFieldDelegate, AnyFormTextItemView {
+open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, FormTextItemStyle, ItemType>,
+    UITextFieldDelegate,
+    AnyFormTextItemView {
     
     /// Initializes the text item view.
     ///
     /// - Parameter item: The item represented by the view.
-    public required init(item: T) {
+    public required init(item: ItemType) {
         super.init(item: item)
         
         addSubview(textStackView)

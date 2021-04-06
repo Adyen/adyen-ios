@@ -8,7 +8,9 @@ import UIKit
 
 /// A view representing a value item.
 /// :nodoc:
-open class FormValueItemView<T, Style, ItemType: FormValueItem<T, Style>>: FormItemView<ItemType>, AnyFormValueItemView, Observer {
+open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType, Style>>: FormItemView<ItemType>,
+                                                                                           AnyFormValueItemView,
+                                                                                           Observer {
     
     /// Initializes the value item view.
     ///

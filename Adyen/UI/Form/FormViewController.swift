@@ -86,9 +86,7 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver {
     ///
     /// - Parameters:
     ///   - item: The item to append.
-    ///   - itemViewType: Optionally, the item view type to use for this item.
-    ///                   When none is specified, the default will be used.
-    public func append<T: FormItem>(_ item: T) {
+    public func append<ItemType: FormItem>(_ item: ItemType) {
         let view = itemManager.append(item)
 
         if let view = view as? AnyFormTextItemView {
