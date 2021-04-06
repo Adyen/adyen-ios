@@ -30,7 +30,7 @@ public struct FormItemViewBuilder {
     
     /// Builds `FormPhoneExtensionPickerItemView` from `FormPhoneExtensionPickerItem`.
     /// :nodoc:
-    public func build(with item: FormPhoneExtensionPickerItem) -> BaseFormValuePickerItemView<PhoneExtensionViewModel> {
+    public func build(with item: FormPhoneExtensionPickerItem) -> BaseFormPickerItemView<PhoneExtensionViewModel> {
         FormPhoneExtensionPickerItemView(item: item)
     }
     

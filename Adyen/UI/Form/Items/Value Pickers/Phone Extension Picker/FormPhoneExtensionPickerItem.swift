@@ -27,7 +27,7 @@ public typealias PhoneExtensionPickerItem = BasePickerElement<PhoneExtensionView
 
 /// Describes a picker item.
 /// :nodoc:
-public final class FormPhoneExtensionPickerItem: BaseFormValuePickerItem<PhoneExtensionViewModel> {
+public final class FormPhoneExtensionPickerItem: BaseFormPickerItem<PhoneExtensionViewModel> {
     
     /// Initializes the picker item.
     ///

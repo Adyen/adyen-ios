@@ -36,7 +36,7 @@ open class FormValueItem<T: Equatable, StyleType: FormValueItemStyle>: FormItem 
     }
 
     open func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
-        preconditionFailure("This is abstract method. Override it on high tier object")
+        fatalError("This is an abstract class that needs to be subclassed.")
     }
 
 }

@@ -49,9 +49,9 @@ extension AdyenScope where Base: UIView {
         containerView.translatesAutoresizingMaskIntoConstraints = false
         base.translatesAutoresizingMaskIntoConstraints = false
         anchor(inside: containerView, with: UIEdgeInsets(top: insets.top,
-                                                          left: insets.left,
-                                                          bottom: insets.bottom,
-                                                          right: insets.right))
+                                                         left: insets.left,
+                                                         bottom: insets.bottom,
+                                                         right: insets.right))
         return containerView
     }
 

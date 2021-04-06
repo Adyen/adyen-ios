@@ -23,10 +23,8 @@ internal final class FormViewItemManager {
     ///
     /// - Parameters:
     ///   - item: The item to append.
-    ///   - itemViewType: Optionally, the item view type to use for this item.
-    ///                   When none is specified, the default will be used.
-    @discardableResult
-    internal func append<T: FormItem>(_ item: T) -> AnyFormItemView {
+    /// - Returns: The view instance correspondent to a selected item.
+    @discardableResult internal func append<T: FormItem>(_ item: T) -> AnyFormItemView {
         items.append(item)
         
         let itemView = newItemView(for: item)
@@ -67,8 +65,7 @@ internal final class FormViewItemManager {
     }
     
     private func newItemView<T: FormItem>(for item: T) -> AnyFormItemView {
-        let itemView = item.build(with: FormItemViewBuilder())
-        return itemView
+        item.build(with: FormItemViewBuilder())
     }
     
 }

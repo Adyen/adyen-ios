@@ -20,11 +20,11 @@ public struct BasePickerElement<T: CustomStringConvertible>: PickerElement {
 
     /// Picker item identifier.
     /// :nodoc:
-    public var identifier: String
+    public let identifier: String
 
     /// Picker item value.
     /// :nodoc:
-    public var item: T
+    public let item: T
 
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.identifier == rhs.identifier
@@ -35,14 +35,11 @@ public struct BasePickerElement<T: CustomStringConvertible>: PickerElement {
 }
 
 /// Describes a picker item.
-open class BaseFormValuePickerItem<T: CustomStringConvertible>: FormValueItem<BasePickerElement<T>, FormTextItemStyle>,
+open class BaseFormPickerItem<T: CustomStringConvertible>: FormValueItem<BasePickerElement<T>, FormTextItemStyle>,
     InputViewRequiringFormItem {
 
     /// The complete list of selectable values.
     internal let selectableValues: [BasePickerElement<T>]
-
-    /// The title of the item.
-    public var title: String?
 
     /// Initializes the picker item.
     ///

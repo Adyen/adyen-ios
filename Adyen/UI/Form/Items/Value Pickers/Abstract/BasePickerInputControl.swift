@@ -17,8 +17,8 @@ internal protocol PickerTextInputControl: UIView {
     /// Executed when the view detected tap.
     var onDidTap: (() -> Void)? { get set }
 
-    /// Controls visibility of chevrone view.
-    var showChevrone: Bool { get set }
+    /// Controls visibility of chevron view.
+    var showChevron: Bool { get set }
 
     /// Selection value lebel text
     var label: String? { get set }
@@ -50,7 +50,7 @@ internal class BasePickerInputControl: UIControl, PickerTextInputControl {
 
     internal var _inputView: UIView // swiftlint:disable:this identifier_name
 
-    internal var showChevrone: Bool {
+    internal var showChevron: Bool {
         get { !chevronView.isHidden }
         set { chevronView.isHidden = !newValue }
     }

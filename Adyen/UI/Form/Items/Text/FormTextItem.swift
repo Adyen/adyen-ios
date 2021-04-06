@@ -44,8 +44,4 @@ open class FormTextItem: FormValueItem<String, FormTextItemStyle>, ValidatableFo
         validator?.isValid(value.wrappedValue) ?? true
     }
 
-    override open func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
-        preconditionFailure("This is abstract method. Override it on high tier object")
-    }
-
 }

@@ -6,7 +6,7 @@
 
 import UIKit
 
-internal final class FormPhoneExtensionPickerItemView: BaseFormValuePickerItemView<PhoneExtensionViewModel> {
+internal final class FormPhoneExtensionPickerItemView: BaseFormPickerItemView<PhoneExtensionViewModel> {
 
     private lazy var phoneExtensionInputControl = PhoneExtensionInputControl(inputView: self.pickerView,
                                                                              style: self.item.style.text)
