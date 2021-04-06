@@ -354,7 +354,6 @@
 		F95A789325C41BB20032CF7E /* NSTextAlignmentHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95A789225C41BB20032CF7E /* NSTextAlignmentHelpers.swift */; };
 		F95A78B925C4302A0032CF7E /* AbstractVoucherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95A78B825C4302A0032CF7E /* AbstractVoucherView.swift */; };
 		F95A78CD25C43C4F0032CF7E /* VoucherSeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95A78CC25C43C4F0032CF7E /* VoucherSeparatorView.swift */; };
-		F95B6D8A2523138E002C9062 /* PhoneNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6D892523138E002C9062 /* PhoneNumberFormatter.swift */; };
 		F95B6D8C252316DA002C9062 /* PhoneNumberValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6D8B252316DA002C9062 /* PhoneNumberValidator.swift */; };
 		F95B6D8E25231715002C9062 /* RegularExpressionValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6D8D25231715002C9062 /* RegularExpressionValidator.swift */; };
 		F95B6D9025231880002C9062 /* PhoneNumberValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6D8F25231880002C9062 /* PhoneNumberValidatorTests.swift */; };
@@ -1095,7 +1094,6 @@
 		F95A789225C41BB20032CF7E /* NSTextAlignmentHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSTextAlignmentHelpers.swift; sourceTree = "<group>"; };
 		F95A78B825C4302A0032CF7E /* AbstractVoucherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractVoucherView.swift; sourceTree = "<group>"; };
 		F95A78CC25C43C4F0032CF7E /* VoucherSeparatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherSeparatorView.swift; sourceTree = "<group>"; };
-		F95B6D892523138E002C9062 /* PhoneNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberFormatter.swift; sourceTree = "<group>"; };
 		F95B6D8B252316DA002C9062 /* PhoneNumberValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberValidator.swift; sourceTree = "<group>"; };
 		F95B6D8D25231715002C9062 /* RegularExpressionValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularExpressionValidator.swift; sourceTree = "<group>"; };
 		F95B6D8F25231880002C9062 /* PhoneNumberValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberValidatorTests.swift; sourceTree = "<group>"; };
@@ -2613,7 +2611,6 @@
 				E2C0B54F22A6AA0600D3367B /* AmountFormatter.swift */,
 				E216D3C2221AEDBE0013CBCF /* Formatter.swift */,
 				E9E3DAB8221E98BD00697074 /* NumericFormatter.swift */,
-				F95B6D892523138E002C9062 /* PhoneNumberFormatter.swift */,
 				E216D3C4221AEF450013CBCF /* IBANFormatter.swift */,
 			);
 			path = Formatters;
@@ -3963,7 +3960,6 @@
 				E787C9D3246EC71B00B401E0 /* UIFontHelpers.swift in Sources */,
 				F9B018C4260A32AA001F23FC /* EContextOnlinePaymentMethod.swift in Sources */,
 				F96F44DD23BE487500871C1F /* LocalizationParameters.swift in Sources */,
-				F95B6D8A2523138E002C9062 /* PhoneNumberFormatter.swift in Sources */,
 				F9589D272601F19E00E4113F /* EmailFormItemInjector.swift in Sources */,
 				F9639B2D24DD6B370073F38A /* RetryAPIClient.swift in Sources */,
 				F9620DB323C75C19005209FC /* PaymentComponentBuilder.swift in Sources */,

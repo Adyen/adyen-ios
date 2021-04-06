@@ -30,18 +30,6 @@ internal final class FormViewItemManager {
         return itemView
     }
     
-    private func index(of item: FormItem) -> Int {
-        let index = items.firstIndex {
-            $0 === item
-        }
-        
-        if let index = index {
-            return index
-        } else {
-            fatalError("Provided item is not managed by receiver.")
-        }
-    }
-    
     // MARK: - Item Views
     
     /// The item views managed by the item manager.
@@ -50,14 +38,6 @@ internal final class FormViewItemManager {
     
     /// The item views managed by the item manager, including nested item views.
     internal var allItemViews = [AnyFormItemView]()
-    
-    /// Returns the item view for the given item.
-    ///
-    /// - Parameter item: The item to retrieve the item view for.
-    /// - Returns: The item view for the given item or nil if item not found.
-    internal func itemView<ItemType: FormItem>(for item: ItemType) -> FormItemView<ItemType>? {
-        itemViews[index(of: item)] as? FormItemView<ItemType>
-    }
     
     private func newItemView<ItemType: FormItem>(for item: ItemType) -> AnyFormItemView {
         item.build(with: FormItemViewBuilder())
