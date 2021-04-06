@@ -37,8 +37,8 @@ public final class DokuComponent: AbstractPersonalInformationComponent {
             fatalError("There seems to be an error in the BaseFormComponent configuration.")
         }
         return DokuDetails(paymentMethod: paymentMethod,
-                           firstName: firstNameItem.value.wrappedValue,
-                           lastName: lastNameItem.value.wrappedValue,
-                           emailAddress: emailItem.value.wrappedValue)
+                           firstName: firstNameItem.value,
+                           lastName: lastNameItem.value,
+                           emailAddress: emailItem.value)
     }
 }

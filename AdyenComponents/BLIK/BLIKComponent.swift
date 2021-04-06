@@ -97,7 +97,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
         guard formViewController.validate() else { return }
 
         let details = BLIKDetails(paymentMethod: paymentMethod,
-                                  blikCode: codeItem.value.wrappedValue)
+                                  blikCode: codeItem.value)
         button.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
 

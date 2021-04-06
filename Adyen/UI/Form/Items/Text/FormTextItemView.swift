@@ -122,7 +122,7 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<String, FormText
     
     // MARK: - Alert Label
     
-    private lazy var alertLabel: UILabel = {
+    internal lazy var alertLabel: UILabel = {
         let alertLabel = UILabel()
         alertLabel.font = item.style.title.font
         alertLabel.adjustsFontForContentSizeCategory = true
@@ -204,7 +204,7 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<String, FormText
         let maximumLength = item.validator?.maximumLength(for: sanitizedText) ?? .max
         sanitizedText = sanitizedText.adyen.truncate(to: maximumLength)
         
-        item.value.wrappedValue = sanitizedText
+        item.value = sanitizedText
         
         if sanitizedText.count == maximumLength {
             delegate?.didReachMaximumLength(in: self)

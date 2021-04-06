@@ -41,7 +41,7 @@ open class FormTextItem: FormValueItem<String, FormTextItemStyle>, ValidatableFo
 
     /// :nodoc:
     public func isValid() -> Bool {
-        validator?.isValid(value.wrappedValue) ?? true
+        validator?.isValid(value) ?? true
     }
 
 }

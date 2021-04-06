@@ -28,7 +28,7 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
     public required init(item: BaseFormPickerItem<T>) {
         super.init(item: item)
         initialize()
-        select(value: item.value.wrappedValue)
+        select(value: item.value)
     }
 
     /// :nodoc:
@@ -51,7 +51,7 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
     }
 
     internal func updateSelection() {
-        inputControl.label = item.value.wrappedValue.description
+        inputControl.label = item.value.description
     }
 
     internal func initialize() {
@@ -102,10 +102,10 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
     // MARK: - Private
 
     private func select(value: BasePickerElement<T>) {
-        self.item.value.wrappedValue = value
+        self.item.value = value
         updateSelection()
 
-        let selectedIndex = item.selectableValues.firstIndex(where: { $0.identifier == item.value.wrappedValue.identifier }) ?? 0
+        let selectedIndex = item.selectableValues.firstIndex(where: { $0.identifier == item.value.identifier }) ?? 0
         pickerView.selectRow(selectedIndex, inComponent: 0, animated: false)
     }
 

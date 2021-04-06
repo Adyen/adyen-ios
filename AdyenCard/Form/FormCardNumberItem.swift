@@ -41,7 +41,7 @@ internal final class FormCardNumberItem: FormTextItem, Observer {
         
         super.init(style: style)
 
-        observe(value) { [weak self] value in self?.valueDidChange(value) }
+        observe(publisher) { [weak self] value in self?.valueDidChange(value) }
         
         title = ADYLocalizedString("adyen.card.numberItem.title", localizationParameters)
         validator = CardNumberValidator()

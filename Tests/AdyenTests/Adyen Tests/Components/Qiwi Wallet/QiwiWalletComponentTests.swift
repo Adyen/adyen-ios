@@ -21,7 +21,7 @@ class QiwiWalletComponentTests: XCTestCase {
         
         let expectedSelectableValues = phoneExtensions.map {
             PhoneExtensionPickerItem(identifier: $0.countryCode,
-                                     item: .init(title: "\($0.countryDisplayName) (\($0.value))",
+                                     element: .init(title: "\($0.countryDisplayName) (\($0.value))",
                                                  phoneExtension: $0.value))
         }
         XCTAssertEqual(sut.phoneItem?.phonePrefixItem.selectableValues, expectedSelectableValues)
@@ -31,7 +31,7 @@ class QiwiWalletComponentTests: XCTestCase {
         XCTAssertEqual(sut.phoneItem?.validationFailureMessage, ADYLocalizedString("adyen.phoneNumber.invalid", sut.localizationParameters))
         XCTAssertEqual(sut.phoneItem?.prefix, "+1")
         XCTAssertEqual(sut.phoneItem?.phonePrefixItem.selectableValues, expectedSelectableValues)
-        XCTAssertEqual(sut.phoneItem?.phonePrefixItem.value.wrappedValue.identifier, "US")
+        XCTAssertEqual(sut.phoneItem?.phonePrefixItem.value.identifier, "US")
         
         XCTAssertEqual(sut.button.title, ADYLocalizedString("adyen.continueTo", sut.localizationParameters, method.name))
         XCTAssertTrue(sut.button.title!.contains(method.name))
@@ -44,8 +44,8 @@ class QiwiWalletComponentTests: XCTestCase {
         
         let expectedSelectableValues = phoneExtensions.map {
             PhoneExtensionPickerItem(identifier: $0.countryCode,
-                                     item: .init(title: "\($0.countryDisplayName) (\($0.value))",
-                                                 phoneExtension: $0.value))
+                                     element: .init(title: "\($0.countryDisplayName) (\($0.value))",
+                                                    phoneExtension: $0.value))
         }
         XCTAssertEqual(sut.phoneItem?.phonePrefixItem.selectableValues, expectedSelectableValues)
         
@@ -54,7 +54,7 @@ class QiwiWalletComponentTests: XCTestCase {
         XCTAssertEqual(sut.phoneItem?.validationFailureMessage, ADYLocalizedString("adyen_phoneNumber_invalid", sut.localizationParameters))
         XCTAssertEqual(sut.phoneItem?.prefix, "+1")
         XCTAssertEqual(sut.phoneItem?.phonePrefixItem.selectableValues, expectedSelectableValues)
-        XCTAssertEqual(sut.phoneItem?.phonePrefixItem.value.wrappedValue.identifier, "US")
+        XCTAssertEqual(sut.phoneItem?.phonePrefixItem.value.identifier, "US")
         
         XCTAssertEqual(sut.button.title, ADYLocalizedString("adyen_continueTo", sut.localizationParameters, method.name))
     }

@@ -143,8 +143,8 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         return getPhoneExtensions().map {
             let title = "\($0.countryDisplayName) (\($0.value))"
             return PhoneExtensionPickerItem(identifier: $0.countryCode,
-                                            item: .init(title: title,
-                                                        phoneExtension: $0.value))
+                                            element: .init(title: title,
+                                                           phoneExtension: $0.value))
 
         }
     }()

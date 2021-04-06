@@ -46,9 +46,9 @@ public final class FormSwitchItemView: FormValueItemView<Bool, FormSwitchItemSty
     
     // MARK: - Switch Control
     
-    private lazy var switchControl: UISwitch = {
+    internal lazy var switchControl: UISwitch = {
         let switchControl = UISwitch()
-        switchControl.isOn = item.value.wrappedValue
+        switchControl.isOn = item.value
         switchControl.onTintColor = item.style.tintColor
         switchControl.isAccessibilityElement = false
         switchControl.addTarget(self, action: #selector(switchControlValueChanged), for: .valueChanged)
@@ -60,7 +60,7 @@ public final class FormSwitchItemView: FormValueItemView<Bool, FormSwitchItemSty
     
     @objc private func switchControlValueChanged() {
         accessibilityValue = switchControl.accessibilityValue
-        item.value.wrappedValue = switchControl.isOn
+        item.value = switchControl.isOn
     }
     
     /// :nodoc:

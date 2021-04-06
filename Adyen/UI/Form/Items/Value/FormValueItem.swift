@@ -18,20 +18,26 @@ public protocol FormValueItemStyle: TintableStyle {
 
 /// An item in a form in which a value can be entered.
 /// :nodoc:
-open class FormValueItem<T: Equatable, StyleType: FormValueItemStyle>: FormItem {
+open class FormValueItem<ValueType: Equatable, StyleType: FormValueItemStyle>: FormItem {
 
     /// :nodoc:
     public var identifier: String?
 
     /// The value entered in the item.
-    public var value: Observable<T>
+    public var value: ValueType {
+        get { publisher.wrappedValue }
+        set { publisher.wrappedValue = newValue }
+    }
+
+    /// The publisher for value change updates.
+    public var publisher: Observable<ValueType>
 
     /// The style of  form item view.
     public var style: StyleType
 
     /// Create new instance of FormValueItem
-    internal init(value: T, style: StyleType) {
-        self.value = Observable(value)
+    internal init(value: ValueType, style: StyleType) {
+        self.publisher = Observable(value)
         self.style = style
     }
 

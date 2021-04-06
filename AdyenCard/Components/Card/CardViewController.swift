@@ -84,7 +84,7 @@ internal class CardViewController: FormViewController, Observer {
     internal weak var cardDelegate: CardViewControllerDelegate?
 
     internal var card: Card {
-        Card(number: numberItem.value.wrappedValue,
+        Card(number: numberItem.value,
              securityCode: configuration.showsSecurityCodeField ? securityCodeItem.nonEmptyValue : nil,
              expiryMonth: expiryDateItem.value.adyen[0...1],
              expiryYear: "20" + expiryDateItem.value.adyen[2...3],
@@ -92,7 +92,7 @@ internal class CardViewController: FormViewController, Observer {
     }
 
     internal var storePayment: Bool {
-        configuration.showsStorePaymentMethodField ? storeDetailsItem.value.wrappedValue : false
+        configuration.showsStorePaymentMethodField ? storeDetailsItem.value : false
     }
 
     /// :nodoc:
@@ -110,7 +110,7 @@ internal class CardViewController: FormViewController, Observer {
     internal func update(binInfo: BinLookupResponse) {
         self.securityCodeItem.update(cardBrands: binInfo.brands ?? [])
 
-        switch (binInfo.brands, self.numberItem.value.wrappedValue) {
+        switch (binInfo.brands, self.numberItem.value) {
         case (_, ""):
             self.numberItem.showLogos(for: self.topCardTypes)
         case let (.some(brands), _):
@@ -200,8 +200,8 @@ internal protocol CardViewControllerDelegate: AnyObject {
 
 }
 
-private extension FormValueItem where T == String {
+private extension FormValueItem where ValueType == String {
     var nonEmptyValue: String? {
-        self.value.wrappedValue.isEmpty ? nil : self.value.wrappedValue
+        self.value.isEmpty ? nil : self.value
     }
 }

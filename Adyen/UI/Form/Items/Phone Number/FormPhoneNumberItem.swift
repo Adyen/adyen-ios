@@ -15,11 +15,11 @@ public final class FormPhoneNumberItem: FormTextItem {
     
     /// The phone prefix value.
     public var prefix: String {
-        phonePrefixItem.value.wrappedValue.item.phoneExtension
+        phonePrefixItem.value.element.phoneExtension
     }
     
     public var phoneNumber: String {
-        prefix + value.wrappedValue
+        prefix + value
     }
     
     /// Initializes the phone number item.

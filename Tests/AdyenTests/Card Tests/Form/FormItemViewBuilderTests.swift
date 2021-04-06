@@ -10,8 +10,8 @@ import XCTest
 class FormItemViewBuilderTests: XCTestCase {
     
     func testFormPhoneExtensionPickerItemView() {
-        let selectableValues = [PhoneExtensionPickerItem(identifier: "test_id", item: .init(title: "test title",
-                                                                                            phoneExtension: "test extension"))]
+        let selectableValues = [PhoneExtensionPickerItem(identifier: "test_id",
+                                                         element: .init(title: "test title", phoneExtension: "test extension"))]
         let item = FormPhoneExtensionPickerItem(selectableValues: selectableValues, style: FormTextItemStyle())
         let view = item.build(with: FormItemViewBuilder())
         
@@ -41,7 +41,7 @@ class FormItemViewBuilderTests: XCTestCase {
     }
     
     func testFormPhoneNumberItemView() {
-        let selectableValues = [PhoneExtensionPickerItem(identifier: "test_id", item: .init(title: "test title", phoneExtension: "test extension"))]
+        let selectableValues = [PhoneExtensionPickerItem(identifier: "test_id", element: .init(title: "test title", phoneExtension: "test extension"))]
         let item = FormPhoneNumberItem(selectableValues: selectableValues, style: FormTextItemStyle())
         let view = item.build(with: FormItemViewBuilder())
         

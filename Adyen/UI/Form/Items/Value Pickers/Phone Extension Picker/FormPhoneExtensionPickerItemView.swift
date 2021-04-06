@@ -16,8 +16,8 @@ internal final class FormPhoneExtensionPickerItemView: BaseFormPickerItemView<Ph
     }
 
     override internal func updateSelection() {
-        phoneExtensionInputControl.label = item.value.wrappedValue.identifier
-        phoneExtensionInputControl.flagView.text = item.value.wrappedValue.identifier.countryFlag
+        phoneExtensionInputControl.label = item.value.identifier
+        phoneExtensionInputControl.flagView.text = item.value.identifier.countryFlag
     }
 
     override internal func initialize() {

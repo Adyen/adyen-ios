@@ -46,8 +46,8 @@ class FormCardNumberItemTests: XCTestCase {
         XCTAssertEqual(maestro.isHidden, false)
         
         // When typing unknown combination, all logos should be hidden.
-        item.value.wrappedValue = "5"
-        let parameters1 = CardBrandProviderParameters(bin: item.value.wrappedValue, supportedTypes: supportedCardTypes)
+        item.value = "5"
+        let parameters1 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
         cardBrandProvider.provide(for: parameters1) { response in
             let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
@@ -59,8 +59,8 @@ class FormCardNumberItemTests: XCTestCase {
         }
         
         // When typing Maestro pattern, only Maestro should be visible.
-        item.value.wrappedValue = "56"
-        let parameters2 = CardBrandProviderParameters(bin: item.value.wrappedValue, supportedTypes: supportedCardTypes)
+        item.value = "56"
+        let parameters2 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
         cardBrandProvider.provide(for: parameters2) { response in
             let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
@@ -72,8 +72,8 @@ class FormCardNumberItemTests: XCTestCase {
         }
         
         // When typing Mastercard pattern, only Mastercard should be visible.
-        item.value.wrappedValue = "55"
-        let parameters3 = CardBrandProviderParameters(bin: item.value.wrappedValue, supportedTypes: supportedCardTypes)
+        item.value = "55"
+        let parameters3 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
         cardBrandProvider.provide(for: parameters3) { response in
             let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
@@ -85,8 +85,8 @@ class FormCardNumberItemTests: XCTestCase {
         }
         
         // When continuing to type, Mastercard should remain visible.
-        item.value.wrappedValue = "5555"
-        let parameters4 = CardBrandProviderParameters(bin: item.value.wrappedValue, supportedTypes: supportedCardTypes)
+        item.value = "5555"
+        let parameters4 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
         cardBrandProvider.provide(for: parameters4) { response in
             let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
@@ -98,8 +98,8 @@ class FormCardNumberItemTests: XCTestCase {
         }
         
         // Clearing the field should bring back both logos.
-        item.value.wrappedValue = ""
-        let parameters5 = CardBrandProviderParameters(bin: item.value.wrappedValue, supportedTypes: supportedCardTypes)
+        item.value = ""
+        let parameters5 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
         cardBrandProvider.provide(for: parameters5) { response in
             let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
@@ -111,8 +111,8 @@ class FormCardNumberItemTests: XCTestCase {
         }
         
         // When typing VISA pattern, only VISA should be visible.
-        item.value.wrappedValue = "4"
-        let parameters6 = CardBrandProviderParameters(bin: item.value.wrappedValue, supportedTypes: supportedCardTypes)
+        item.value = "4"
+        let parameters6 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
         cardBrandProvider.provide(for: parameters6) { response in
             let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
@@ -124,8 +124,8 @@ class FormCardNumberItemTests: XCTestCase {
         }
         
         // When typing Amex pattern, only Amex should be visible.
-        item.value.wrappedValue = "34"
-        let parameters7 = CardBrandProviderParameters(bin: item.value.wrappedValue, supportedTypes: supportedCardTypes)
+        item.value = "34"
+        let parameters7 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
         cardBrandProvider.provide(for: parameters7) { response in
             let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
@@ -137,8 +137,8 @@ class FormCardNumberItemTests: XCTestCase {
         }
         
         // When typing common pattern, all matching cards should be visible.
-        item.value.wrappedValue = "62"
-        let parameters8 = CardBrandProviderParameters(bin: item.value.wrappedValue, supportedTypes: supportedCardTypes)
+        item.value = "62"
+        let parameters8 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
         cardBrandProvider.provide(for: parameters8) { response in
             let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
@@ -165,8 +165,8 @@ class FormCardNumberItemTests: XCTestCase {
         let cup = item.cardTypeLogos[3]
         let maestro = item.cardTypeLogos[4]
 
-        item.value.wrappedValue = "1234567890"
-        let parameters = CardBrandProviderParameters(bin: item.value.wrappedValue, supportedTypes: supportedCardTypes)
+        item.value = "1234567890"
+        let parameters = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
         cardBrandProvider.provide(for: parameters) { response in
             let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
@@ -192,8 +192,8 @@ class FormCardNumberItemTests: XCTestCase {
         let maestro = item.cardTypeLogos[4]
 
         // When entering PAN, Mastercard should remain visible.
-        item.value.wrappedValue = "5577000055770004"
-        let parameters1 = CardBrandProviderParameters(bin: item.value.wrappedValue, supportedTypes: supportedCardTypes)
+        item.value = "5577000055770004"
+        let parameters1 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
         cardBrandProvider.provide(for: parameters1) { response in
             let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
@@ -205,8 +205,8 @@ class FormCardNumberItemTests: XCTestCase {
         }
 
         // When entering too long PAN, all logos should be hidden.
-        item.value.wrappedValue = "55770000557700040"
-        let parameters2 = CardBrandProviderParameters(bin: item.value.wrappedValue, supportedTypes: supportedCardTypes)
+        item.value = "55770000557700040"
+        let parameters2 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
         cardBrandProvider.provide(for: parameters2) { response in
             let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)

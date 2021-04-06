@@ -74,8 +74,8 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
         }
         
         let details = SEPADirectDebitDetails(paymentMethod: sepaDirectDebitPaymentMethod,
-                                             iban: ibanItem.value.wrappedValue,
-                                             ownerName: nameItem.value.wrappedValue)
+                                             iban: ibanItem.value,
+                                             ownerName: nameItem.value)
         button.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
         

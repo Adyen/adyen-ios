@@ -16,7 +16,7 @@ public protocol PickerElement: Equatable, CustomStringConvertible {
 }
 
 /// :nodoc:
-public struct BasePickerElement<T: CustomStringConvertible>: PickerElement {
+public struct BasePickerElement<ElementType: CustomStringConvertible>: PickerElement {
 
     /// Picker item identifier.
     /// :nodoc:
@@ -24,28 +24,28 @@ public struct BasePickerElement<T: CustomStringConvertible>: PickerElement {
 
     /// Picker item value.
     /// :nodoc:
-    public let item: T
+    public let element: ElementType
 
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.identifier == rhs.identifier
     }
 
-    public var description: String { item.description }
+    public var description: String { element.description }
 
 }
 
 /// Describes a picker item.
-open class BaseFormPickerItem<T: CustomStringConvertible>: FormValueItem<BasePickerElement<T>, FormTextItemStyle>,
+open class BaseFormPickerItem<ElementType: CustomStringConvertible>: FormValueItem<BasePickerElement<ElementType>, FormTextItemStyle>,
     InputViewRequiringFormItem {
 
     /// The complete list of selectable values.
-    internal let selectableValues: [BasePickerElement<T>]
+    internal let selectableValues: [BasePickerElement<ElementType>]
 
     /// Initializes the picker item.
     ///
     /// - Parameter selectableValues: The list of values to select from.
     /// - Parameter style: The `FormPhoneExtensionPickerItem` UI style.
-    internal init(initValue: BasePickerElement<T>, selectableValues: [BasePickerElement<T>], style: FormTextItemStyle) {
+    internal init(initValue: BasePickerElement<ElementType>, selectableValues: [BasePickerElement<ElementType>], style: FormTextItemStyle) {
         assert(selectableValues.count > 0)
         self.selectableValues = selectableValues
         super.init(value: initValue, style: style)
