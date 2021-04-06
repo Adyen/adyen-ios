@@ -15,7 +15,7 @@ extension Optional: AdyenCompatible {}
 /// :nodoc:
 public extension AdyenScope where Base == String? {
 
-    /// Returns true is optional string not empty.
+    /// Returns true if optional string is null or not empty.
     var isNullOrEmpty: Bool {
         base == nil || base?.isEmpty == false
     }
@@ -39,9 +39,7 @@ public extension AdyenScope where Base == String {
     /// - Parameter lengths: The lengths to separate the string into.
     /// - Returns: An array of substring with the given lengths.
     func components(withLengths lengths: [Int]) -> [String] {
-        guard base.isEmpty == false else {
-            return []
-        }
+        guard !base.isEmpty else { return [] }
         
         var input = base
         var output = [String]()
