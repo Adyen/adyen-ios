@@ -7,7 +7,23 @@
 import Foundation
 
 /// :nodoc:
-public extension String {
+extension String: AdyenCompatible {}
+
+/// :nodoc:
+extension Optional: AdyenCompatible {}
+
+/// :nodoc:
+public extension AdyenScope where Base == String? {
+
+    /// Returns true is optional string not empty.
+    var isNullOrEmpty: Bool {
+        base == nil || base?.isEmpty == false
+    }
+
+}
+
+/// :nodoc:
+public extension AdyenScope where Base == String {
     
     /// Truncate the string to the specified length.
     ///
@@ -15,7 +31,7 @@ public extension String {
     ///   - length: The maximum desired length for the string.
     /// - Returns: A truncated string.
     func truncate(to length: Int) -> String {
-        (count > length) ? String(prefix(length)) : self
+        (base.count > length) ? String(base.prefix(length)) : base
     }
     
     /// Separates a string into substrings of the given lengths.
@@ -23,11 +39,11 @@ public extension String {
     /// - Parameter lengths: The lengths to separate the string into.
     /// - Returns: An array of substring with the given lengths.
     func components(withLengths lengths: [Int]) -> [String] {
-        guard isEmpty == false else {
+        guard base.isEmpty == false else {
             return []
         }
         
-        var input = self
+        var input = base
         var output = [String]()
         
         for length in lengths {
@@ -47,7 +63,7 @@ public extension String {
     /// - Parameter length: The length of each of the substrings.
     /// - Returns: An array of substrings of the given length.
     func components(withLength length: Int) -> [String] {
-        var input = self
+        var input = base
         var output = [String]()
         
         while !input.isEmpty {
@@ -63,9 +79,9 @@ public extension String {
     /// - Parameter position: The position of the desired substring.
     /// - Returns: A string with the substring of the given position.
     subscript(position: Int) -> String {
-        guard position >= 0, position < count else { return "" }
+        guard position >= 0, position < base.count else { return "" }
         
-        return String(self[index(startIndex, offsetBy: position)])
+        return String(base[base.index(base.startIndex, offsetBy: position)])
     }
     
     /// Get the substring from a given open range.
@@ -73,10 +89,10 @@ public extension String {
     /// - Parameter range: The range of the desired substring.
     /// - Returns: A string with the substring of the given range.
     subscript(range: Range<Int>) -> String {
-        let lowerBound = index(startIndex, offsetBy: range.lowerBound)
-        let upperBound = index(lowerBound, offsetBy: range.upperBound - range.lowerBound)
+        let lowerBound = base.index(base.startIndex, offsetBy: range.lowerBound)
+        let upperBound = base.index(lowerBound, offsetBy: range.upperBound - range.lowerBound)
         
-        return String(self[lowerBound..<upperBound])
+        return String(base[lowerBound..<upperBound])
     }
     
     /// Get the substring from a given closed range.
@@ -84,19 +100,22 @@ public extension String {
     /// - Parameter range: The closed range of the desired substring.
     /// - Returns: A string with the substring of the given closed range.
     subscript(range: ClosedRange<Int>) -> String {
-        let lowerBound = index(startIndex, offsetBy: range.lowerBound)
-        let upperBound = index(lowerBound, offsetBy: range.upperBound - range.lowerBound)
+        let lowerBound = base.index(base.startIndex, offsetBy: range.lowerBound)
+        let upperBound = base.index(lowerBound, offsetBy: range.upperBound - range.lowerBound)
         
-        return String(self[lowerBound...upperBound])
+        return String(base[lowerBound...upperBound])
     }
+}
+
+extension String {
     
     // MARK: - Private
     
-    private mutating func removeAndReturnFirst(_ length: Int) -> String {
+    fileprivate mutating func removeAndReturnFirst(_ length: Int) -> String {
         let end = index(startIndex, offsetBy: length, limitedBy: endIndex) ?? endIndex
         
         let substring = self[startIndex..<end]
-        removeSubrange(startIndex..<end)
+        removeSubrange(self.startIndex..<end)
         
         return String(substring)
     }

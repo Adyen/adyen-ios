@@ -10,47 +10,47 @@ import XCTest
 class StringExtensionsTests: XCTestCase {
     
     func testTruncateString() {
-        XCTAssertEqual("".truncate(to: 2), "")
-        XCTAssertEqual("a".truncate(to: 2), "a")
-        XCTAssertEqual("a".truncate(to: 0), "")
-        XCTAssertEqual("ab".truncate(to: 2), "ab")
-        XCTAssertEqual("abcde".truncate(to: 2), "ab")
+        XCTAssertEqual("".adyen.truncate(to: 2), "")
+        XCTAssertEqual("a".adyen.truncate(to: 2), "a")
+        XCTAssertEqual("a".adyen.truncate(to: 0), "")
+        XCTAssertEqual("ab".adyen.truncate(to: 2), "ab")
+        XCTAssertEqual("abcde".adyen.truncate(to: 2), "ab")
     }
     
     func testStringComponentsWithLength() {
-        XCTAssertEqual("".components(withLength: 0), [])
-        XCTAssertEqual("".components(withLength: 3), [])
-        XCTAssertEqual("a".components(withLength: 3), ["a"])
-        XCTAssertEqual("abcabc".components(withLength: 3), ["abc", "abc"])
-        XCTAssertEqual("abcabca".components(withLength: 3), ["abc", "abc", "a"])
+        XCTAssertEqual("".adyen.components(withLength: 0), [])
+        XCTAssertEqual("".adyen.components(withLength: 3), [])
+        XCTAssertEqual("a".adyen.components(withLength: 3), ["a"])
+        XCTAssertEqual("abcabc".adyen.components(withLength: 3), ["abc", "abc"])
+        XCTAssertEqual("abcabca".adyen.components(withLength: 3), ["abc", "abc", "a"])
     }
     
     func testStringComponentsWithLengths() {
-        XCTAssertEqual("".components(withLengths: [2, 1]), [])
-        XCTAssertEqual("ab".components(withLengths: [2, 1]), ["ab"])
-        XCTAssertEqual("abc".components(withLengths: [2, 1]), ["ab", "c"])
-        XCTAssertEqual("abcde".components(withLengths: [2, 1]), ["ab", "c"])
-        XCTAssertEqual("abcde".components(withLengths: [1, 1, 3]), ["a", "b", "cde"])
+        XCTAssertEqual("".adyen.components(withLengths: [2, 1]), [])
+        XCTAssertEqual("ab".adyen.components(withLengths: [2, 1]), ["ab"])
+        XCTAssertEqual("abc".adyen.components(withLengths: [2, 1]), ["ab", "c"])
+        XCTAssertEqual("abcde".adyen.components(withLengths: [2, 1]), ["ab", "c"])
+        XCTAssertEqual("abcde".adyen.components(withLengths: [1, 1, 3]), ["a", "b", "cde"])
     }
     
     func testStringSubscriptWithPostion() {
-        XCTAssertEqual(""[1], "")
-        XCTAssertEqual("abc"[4], "")
-        XCTAssertEqual("abc"[-1], "")
-        XCTAssertEqual("abc"[0], "a")
-        XCTAssertEqual("abc"[1], "b")
-        XCTAssertEqual("abc"[2], "c")
+        XCTAssertEqual("".adyen[1], "")
+        XCTAssertEqual("abc".adyen[4], "")
+        XCTAssertEqual("abc".adyen[-1], "")
+        XCTAssertEqual("abc".adyen[0], "a")
+        XCTAssertEqual("abc".adyen[1], "b")
+        XCTAssertEqual("abc".adyen[2], "c")
     }
     
     func testStringSubscriptWithOpenRange() {
-        XCTAssertEqual("abc"[0..<2], "ab")
-        XCTAssertEqual("abc"[1..<2], "b")
+        XCTAssertEqual("abc".adyen[0..<2], "ab")
+        XCTAssertEqual("abc".adyen[1..<2], "b")
     }
     
     func testStringSubscriptWithClosedRange() {
-        XCTAssertEqual("abc"[0...1], "ab")
-        XCTAssertEqual("abc"[0...2], "abc")
-        XCTAssertEqual("abc"[1...2], "bc")
+        XCTAssertEqual("abc".adyen[0...1], "ab")
+        XCTAssertEqual("abc".adyen[0...2], "abc")
+        XCTAssertEqual("abc".adyen[1...2], "bc")
     }
     
 }

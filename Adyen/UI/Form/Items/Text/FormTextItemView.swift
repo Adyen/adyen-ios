@@ -197,7 +197,7 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
         let newText = textField.text
         var sanitizedText = newText.map { item.formatter?.sanitizedValue(for: $0) ?? $0 } ?? ""
         let maximumLength = item.validator?.maximumLength(for: sanitizedText) ?? .max
-        sanitizedText = sanitizedText.truncate(to: maximumLength)
+        sanitizedText = sanitizedText.adyen.truncate(to: maximumLength)
         
         item.value = sanitizedText
         
