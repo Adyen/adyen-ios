@@ -17,7 +17,7 @@ extension IntegrationExample {
     internal func presentCardComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: CardPaymentMethod.self) else { return }
         let style = FormComponentStyle()
-        let config = CardComponent.Configuration(showsAddressVerification: .none)
+        let config = CardComponent.Configuration(billingAddress: .none)
         let component = CardComponent(paymentMethod: paymentMethod,
                                       configuration: config,
                                       clientKey: clientKey,

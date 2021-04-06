@@ -41,9 +41,6 @@ open class BaseFormPickerItem<ElementType: CustomStringConvertible>: FormValueIt
     /// The complete list of selectable values.
     internal let selectableValues: [BasePickerElement<ElementType>]
 
-    /// The title of the item.
-    public var title: String?
-
     /// Initializes the picker item.
     ///
     /// - Parameter selectableValues: The list of values to select from.

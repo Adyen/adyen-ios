@@ -27,18 +27,6 @@ public final class FormSwitchItemView: FormValueItemView<Bool, FormSwitchItemSty
         stackView.adyen.anchor(inside: self.layoutMarginsGuide)
     }
     
-    // MARK: - Title Label
-    
-    private lazy var titleLabel: UILabel = {
-        let titleLabel = UILabel(style: item.style.title)
-        titleLabel.text = item.title
-        titleLabel.numberOfLines = 0
-        titleLabel.isAccessibilityElement = false
-        titleLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel") }
-        
-        return titleLabel
-    }()
-    
     // MARK: - Switch Control
     
     internal lazy var switchControl: UISwitch = {

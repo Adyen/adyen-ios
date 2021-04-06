@@ -40,7 +40,7 @@ public struct FormComponentStyle: TintableStyle {
 
     /// The address style generated based on other field's value.
     public var addressStyle: AddressStyle {
-        .init(sectionHeader: sectionHeader,
+        .init(title: sectionHeader,
               textField: textField)
     }
 

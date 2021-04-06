@@ -13,6 +13,9 @@ public protocol FormValueItemStyle: TintableStyle {
     
     /// The color of bottom line separating form elements.
     var separatorColor: UIColor? { get }
+
+    /// The style of title label.
+    var title: TextStyle { get }
     
 }
 
@@ -34,6 +37,9 @@ open class FormValueItem<ValueType: Equatable, StyleType: FormValueItemStyle>: F
 
     /// The style of  form item view.
     public var style: StyleType
+
+    /// The title of the item.
+    public var title: String?
 
     /// Create new instance of FormValueItem
     internal init(value: ValueType, style: StyleType) {

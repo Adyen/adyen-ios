@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Describes a single text picker item in the list of selectable items.
 /// :nodoc:
@@ -27,21 +28,6 @@ public final class FormRegionPickerItem: BaseFormPickerItem<Region> {
 }
 
 internal final class FormRegionPickerItemView: BaseFormPickerItemView<Region> {
-
-    /// :nodoc:
-    public lazy var titleLabel: UILabel = {
-        let titleLabel = UILabel()
-        titleLabel.font = item.style.title.font
-        titleLabel.adjustsFontForContentSizeCategory = true
-        titleLabel.textColor = item.style.title.color
-        titleLabel.textAlignment = item.style.title.textAlignment
-        titleLabel.backgroundColor = item.style.title.backgroundColor
-        titleLabel.text = item.title
-        titleLabel.isAccessibilityElement = false
-        titleLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel") }
-
-        return titleLabel
-    }()
 
     override internal func initialize() {
         let stackView = UIStackView(arrangedSubviews: [titleLabel, inputControl])

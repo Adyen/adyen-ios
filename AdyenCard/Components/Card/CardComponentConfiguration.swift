@@ -34,9 +34,9 @@ extension CardComponent {
         /// Indicates whether to show the security code field at all. Defaults to true.
         public var showsSecurityCodeField: Bool
 
-        /// Indicates whether to show the address verification form.
+        /// Indicates the display mode of the billing address form.
         /// Defaults to none.
-        public var showsAddressVerification: AddressFormType
+        public var billingAddress: AddressFormType
 
         /// Stored card configuration.
         public var stored: StoredCardConfiguration
@@ -57,14 +57,14 @@ extension CardComponent {
         ///   Defaults to true.
         ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
         ///   Defaults to true.
-        ///   - showsAddressVerification: Indicates mode of how to dispaly the address verification form.
+        ///   - showsAddressVerification: Indicates mode of how to dispaly the billing address form.
         ///   Defaults to none.
         ///   - storedCardConfiguration: Stored card configuration.
         ///   - allowedCardTypes: The enforced list of allowed card types.
         public init(showsHolderNameField: Bool = false,
                     showsStorePaymentMethodField: Bool = true,
                     showsSecurityCodeField: Bool = true,
-                    showsAddressVerification: AddressFormType = .none,
+                    billingAddress: AddressFormType = .none,
                     storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
                     allowedCardTypes: [CardType]? = nil) {
             self.showsHolderNameField = showsHolderNameField
@@ -72,7 +72,7 @@ extension CardComponent {
             self.showsStorePaymentMethodField = showsStorePaymentMethodField
             self.stored = storedCardConfiguration
             self.allowedCardTypes = allowedCardTypes
-            self.showsAddressVerification = showsAddressVerification
+            self.billingAddress = billingAddress
         }
 
         internal func bcmcConfiguration() -> Configuration {
@@ -81,7 +81,7 @@ extension CardComponent {
             var configuration = Configuration(showsHolderNameField: showsHolderNameField,
                                               showsStorePaymentMethodField: showsStorePaymentMethodField,
                                               showsSecurityCodeField: false,
-                                              showsAddressVerification: .none,
+                                              billingAddress: .none,
                                               storedCardConfiguration: storedCardConfiguration,
                                               allowedCardTypes: [.bcmc])
             configuration.excludedCardTypes = []

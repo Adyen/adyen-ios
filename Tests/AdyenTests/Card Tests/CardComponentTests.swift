@@ -730,10 +730,79 @@ class CardComponentTests: XCTestCase {
                     expectation.fulfill()
                 }
             }}
-        wait(for: [expectation], timeout: 60)
+        wait(for: [expectation], timeout: 10)
+    }
+
+    func testAddress() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        var config = CardComponent.Configuration()
+        config.billingAddress = .full
+        let sut = CardComponent(paymentMethod: method,
+                                configuration: config,
+                                clientKey: Dummy.dummyClientKey)
+        sut.payment = .init(amount: Payment.Amount(value: 100, currencyCode: "USD"), countryCode: "US")
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+
+            let houseNumberItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FullFormAddressItem.houseNumber")
+            let countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FullFormAddressItem.country")
+            let addressItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FullFormAddressItem.address")
+            let apartmentSuiteItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FullFormAddressItem.apartmentSuite")
+            let cityItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FullFormAddressItem.city")
+            let provinceOrTerritoryItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FullFormAddressItem.provinceOrTerritory")
+            let postalCodeItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FullFormAddressItem.postalCode")
+            let headerItemView: UILabel? = sut.viewController.view.findView(with: "Adyen.FullFormAddressItem.title")
+
+            XCTAssertEqual(countryItemView!.titleLabel.text, "Country")
+            XCTAssertEqual(countryItemView!.inputControl.label, "United States")
+            XCTAssertEqual(houseNumberItemView!.titleLabel.text, "House number")
+            XCTAssertEqual(addressItemView!.titleLabel.text, "Street")
+            XCTAssertEqual(apartmentSuiteItemView!.titleLabel.text, "Apartment / Suite (optional)")
+            XCTAssertEqual(cityItemView!.titleLabel.text, "City")
+            XCTAssertEqual(provinceOrTerritoryItemView!.titleLabel.text, "Province or Territory")
+            XCTAssertEqual(postalCodeItemView!.titleLabel.text, "Postal code")
+            XCTAssertEqual(headerItemView!.text, "Billing address")
+
+            XCTAssertTrue(houseNumberItemView!.alertLabel.isHidden)
+            XCTAssertTrue(addressItemView!.alertLabel.isHidden)
+            XCTAssertTrue(apartmentSuiteItemView!.alertLabel.isHidden)
+            XCTAssertTrue(cityItemView!.alertLabel.isHidden)
+            XCTAssertTrue(provinceOrTerritoryItemView!.alertLabel.isHidden)
+            XCTAssertTrue(postalCodeItemView!.alertLabel.isHidden)
+
+            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
+            payButtonItemViewButton?.sendActions(for: .touchUpInside)
+
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+                XCTAssertFalse(houseNumberItemView!.alertLabel.isHidden)
+                XCTAssertFalse(addressItemView!.alertLabel.isHidden)
+                XCTAssertTrue(apartmentSuiteItemView!.alertLabel.isHidden)
+                XCTAssertFalse(cityItemView!.alertLabel.isHidden)
+                XCTAssertFalse(provinceOrTerritoryItemView!.alertLabel.isHidden)
+                XCTAssertFalse(postalCodeItemView!.alertLabel.isHidden)
+
+                expectation.fulfill()
+            }
+        }
+
+        wait(for: [expectation], timeout: 10)
     }
     
     private func focus<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U) {
         textItemView.textField.becomeFirstResponder()
     }
 }
+
+extension UIView {
+
+    func printForTesting(indent: String) {
+        print("\(indent) \(self.accessibilityIdentifier ?? "\(String(describing: type(of: self)))")")
+        for view in self.subviews {
+            print(view.printForTesting(indent: indent + " -"))
+        }
+    }
+
+}
+

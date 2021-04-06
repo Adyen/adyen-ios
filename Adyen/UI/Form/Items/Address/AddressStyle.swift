@@ -5,14 +5,15 @@
 //
 
 import Foundation
+import UIKit
 
 /// The style of form address
 public struct AddressStyle: FormValueItemStyle {
 
     /// The section header style.
-    public var sectionHeader = TextStyle(font: .preferredFont(forTextStyle: .headline),
-                                         color: UIColor.Adyen.componentLabel,
-                                         textAlignment: .natural)
+    public var title = TextStyle(font: .preferredFont(forTextStyle: .headline),
+                                 color: UIColor.Adyen.componentLabel,
+                                 textAlignment: .natural)
 
     /// The text field style.
     public var textField = FormTextItemStyle()

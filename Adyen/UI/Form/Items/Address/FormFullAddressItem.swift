@@ -8,7 +8,7 @@ import Foundation
 
 /// Abstract class for form item to show address form.
 /// :nodoc:
-open class AnyAddressItem: FormValueItem<AddressInfo, AddressStyle>, CompoundFormItem {
+open class AnyAddressItem: FormValueItem<AddressInfo, AddressStyle> {
 
     /// :nodoc:
     public private(set) var subitems: [FormItem] = []
@@ -57,7 +57,7 @@ public final class FullFormAddressItem: AnyAddressItem, Observer {
 
     internal lazy var headerItem: FormItem = {
         let item = FormLabelItem(text: ADYLocalizedString("adyen.billingAddressSection.title", localizationParameters),
-                                 style: style.sectionHeader)
+                                 style: style.title)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "title")
         return item.withPadding(padding: .init(top: 8, left: 0, bottom: 0, right: 0))
     }()
