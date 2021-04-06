@@ -38,7 +38,7 @@ public final class QiwiWalletComponent: AbstractPersonalInformationComponent {
         }
         return QiwiWalletDetails(paymentMethod: paymentMethod,
                                  phonePrefix: phoneItem.prefix,
-                                 phoneNumber: phoneItem.value)
+                                 phoneNumber: phoneItem.value.wrappedValue)
     }
     
 }

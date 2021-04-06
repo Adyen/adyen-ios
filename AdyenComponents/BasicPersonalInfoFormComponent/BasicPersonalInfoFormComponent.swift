@@ -39,9 +39,9 @@ public final class BasicPersonalInfoFormComponent: AbstractPersonalInformationCo
             fatalError("There seems to be an error in the BaseFormComponent configuration.")
         }
         return BasicPersonalInfoFormDetails(paymentMethod: paymentMethod,
-                                            firstName: firstNameItem.value,
-                                            lastName: lastNameItem.value,
-                                            emailAddress: emailItem.value,
+                                            firstName: firstNameItem.value.wrappedValue,
+                                            lastName: lastNameItem.value.wrappedValue,
+                                            emailAddress: emailItem.value.wrappedValue,
                                             telephoneNumber: phoneItem.phoneNumber)
     }
 }

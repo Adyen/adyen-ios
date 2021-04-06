@@ -9,15 +9,10 @@ import UIKit
 /// Manages the form items and their views.
 internal final class FormViewItemManager {
     
-    /// The delegate of the item views created by the manager.
-    internal private(set) weak var itemViewDelegate: FormItemViewDelegate?
-    
     /// Initializes the item manager.
     ///
     /// - Parameter itemViewDelegate: The delegate of the item views created by the manager.
-    internal init(itemViewDelegate: FormItemViewDelegate? = nil) {
-        self.itemViewDelegate = itemViewDelegate
-    }
+    internal init() {}
     
     // MARK: - Items
     
@@ -30,13 +25,16 @@ internal final class FormViewItemManager {
     ///   - item: The item to append.
     ///   - itemViewType: Optionally, the item view type to use for this item.
     ///                   When none is specified, the default will be used.
-    internal func append<T: FormItem>(_ item: T) {
+    @discardableResult
+    internal func append<T: FormItem>(_ item: T) -> AnyFormItemView {
         items.append(item)
         
         let itemView = newItemView(for: item)
         itemViews.append(itemView)
         allItemViews.append(itemView)
         allItemViews.append(contentsOf: itemView.childItemViews)
+
+        return itemView
     }
     
     private func index(of item: FormItem) -> Int {
@@ -70,9 +68,6 @@ internal final class FormViewItemManager {
     
     private func newItemView<T: FormItem>(for item: T) -> AnyFormItemView {
         let itemView = item.build(with: FormItemViewBuilder())
-        
-        itemView.delegate = itemViewDelegate
-        itemView.childItemViews.forEach { $0.delegate = itemViewDelegate }
         return itemView
     }
     

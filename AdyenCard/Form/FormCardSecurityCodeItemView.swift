@@ -8,7 +8,7 @@ import Adyen
 import UIKit
 
 /// A view representing a form card security code item.
-internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>, Observer {
+internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecurityCodeItem> {
     
     internal required init(item: FormCardSecurityCodeItem) {
         super.init(item: item)
@@ -19,7 +19,7 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
             self?.textField.placeholder = String(format: localization, number)
         }
 
-        bind(item.$title, to: self.titleLabel, at: \.text)
+        bind(item.$dynamicTitle, to: self.titleLabel, at: \.text)
 
         observe(item.$isCVCOptional) { [weak self] _ in
             self?.updateValidationStatus()

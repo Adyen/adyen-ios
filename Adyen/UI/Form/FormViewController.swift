@@ -11,6 +11,8 @@ import UIKit
 @objc(ADYFormViewController)
 open class FormViewController: UIViewController, Localizable, KeyboardObserver {
 
+    private lazy var itemManager = FormViewItemManager()
+
     // MARK: - Public
     
     /// :nodoc:
@@ -64,8 +66,6 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver {
     /// :nodoc:
     public var keyboardObserver: Any?
 
-    private lazy var itemManager = FormViewItemManager(itemViewDelegate: self)
-
     private func updateScrollViewInsets(keyboardHeight: CGFloat) {
         guard keyboardHeight > 0 else {
             formView.contentInset.bottom = 0
@@ -89,7 +89,11 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver {
     ///   - itemViewType: Optionally, the item view type to use for this item.
     ///                   When none is specified, the default will be used.
     public func append<T: FormItem>(_ item: T) {
-        itemManager.append(item)
+        let view = itemManager.append(item)
+
+        if let view = view as? AnyFormTextItemView {
+            view.delegate = self
+        }
         
         if isViewLoaded, let itemView = itemManager.itemView(for: item) {
             formView.appendItemView(itemView)
@@ -180,15 +184,6 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver {
         let textItemView = itemManager.itemViews.first(where: { $0.canBecomeFirstResponder })
         textItemView?.becomeFirstResponder()
     }
-}
-
-// MARK: - FormValueItemViewDelegate
-
-extension FormViewController: FormValueItemViewDelegate {
-    
-    /// :nodoc:
-    public func didChangeValue<T: FormValueItem>(in itemView: FormValueItemView<T>) {}
-    
 }
 
 // MARK: - FormTextItemViewDelegate

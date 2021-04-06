@@ -15,11 +15,11 @@ public final class FormPhoneNumberItem: FormTextItem {
     
     /// The phone prefix value.
     public var prefix: String {
-        phonePrefixItem.value.phoneExtension
+        phonePrefixItem.value.wrappedValue.item.phoneExtension
     }
     
     public var phoneNumber: String {
-        prefix + value
+        prefix + value.wrappedValue
     }
     
     /// Initializes the phone number item.
@@ -31,9 +31,9 @@ public final class FormPhoneNumberItem: FormTextItem {
                 style: FormTextItemStyle,
                 localizationParameters: LocalizationParameters? = nil) {
         phonePrefixItem = FormPhoneExtensionPickerItem(selectableValues: selectableValues, style: style)
+        super.init(style: style)
         phonePrefixItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "phoneExtensionPickerItem")
-        
-        self.style = style
+
         title = ADYLocalizedString("adyen.phoneNumber.title", localizationParameters)
         placeholder = ADYLocalizedString("adyen.phoneNumber.placeholder", localizationParameters)
         formatter = NumericFormatter()
@@ -43,7 +43,7 @@ public final class FormPhoneNumberItem: FormTextItem {
     }
     
     /// :nodoc:
-    public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+    override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
     

@@ -45,9 +45,8 @@ class FormTextItemViewTests: XCTestCase {
         }
         
         let didChangeValueExpectation = XCTestExpectation(description: "Expect delegate.didChangeValue() to be called.")
-        delegate.handleDidChangeValue = { itemView in
+        let _ = sut.item.value.addEventHandler { event in
             didChangeValueExpectation.fulfill()
-            XCTAssertTrue(itemView === self.sut)
         }
         
         validator.handleMaximumLength = { _ in 6 }
@@ -80,7 +79,7 @@ class FormTextItemViewTests: XCTestCase {
         wait(for: [formattedTextExpectation,
                    sanitizedValueExpectation], timeout: 1)
         XCTAssertEqual(sut.textField.text, "1234-56", "sut.textField.text must be the sanitized and formatted text")
-        XCTAssertEqual(item.value, "123456", "item.value must be the sanitized non-formatted text")
+        XCTAssertEqual(item.value.wrappedValue, "123456", "item.value must be the sanitized non-formatted text")
     }
     
     func tesFormatterIsCalled() {

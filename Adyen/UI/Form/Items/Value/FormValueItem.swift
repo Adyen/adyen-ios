@@ -18,25 +18,25 @@ public protocol FormValueItemStyle: TintableStyle {
 
 /// An item in a form in which a value can be entered.
 /// :nodoc:
-public protocol FormValueItem: FormItem {
-    
-    /// The type of value entered in the item.
-    associatedtype ValueType
-    
-    associatedtype StyleType: FormValueItemStyle
-    
-    /// The value entered in the item.
-    var value: ValueType { get set }
-    
-    /// The style of  form item view.
-    var style: StyleType { get }
-    
-    /// An empty method that provides an opportunity for subclasses to know when the value changed.
-    func valueDidChange()
-    
-}
+open class FormValueItem<T: Equatable, StyleType: FormValueItemStyle>: FormItem {
 
-extension FormValueItem {
     /// :nodoc:
-    public func valueDidChange() {}
+    public var identifier: String?
+
+    /// The value entered in the item.
+    public var value: Observable<T>
+
+    /// The style of  form item view.
+    public var style: StyleType
+
+    /// Create new instance of FormValueItem
+    internal init(value: T, style: StyleType) {
+        self.value = Observable(value)
+        self.style = style
+    }
+
+    open func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+        preconditionFailure("This is abstract method. Override it on high tier object")
+    }
+
 }

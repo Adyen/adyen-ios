@@ -8,7 +8,7 @@ import UIKit
 
 /// The interface of the delegate of a text item view.
 /// :nodoc:
-public protocol FormTextItemViewDelegate: FormValueItemViewDelegate {
+public protocol FormTextItemViewDelegate: AnyObject {
     
     /// Invoked when the text entered in the item view's text field has reached the maximum length.
     ///
@@ -22,9 +22,16 @@ public protocol FormTextItemViewDelegate: FormValueItemViewDelegate {
     
 }
 
+/// Defines any form text item view.
+public protocol AnyFormTextItemView: AnyFormItemView {
+
+    /// Delegate text related events.
+    var delegate: FormTextItemViewDelegate? { get set }
+}
+
 /// A view representing a basic logic of text item.
 /// :nodoc:
-open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldDelegate where T.ValueType == String {
+open class FormTextItemView<T: FormTextItem>: FormValueItemView<String, FormTextItemStyle, T>, UITextFieldDelegate, AnyFormTextItemView {
     
     /// Initializes the text item view.
     ///
@@ -33,13 +40,11 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
         super.init(item: item)
         
         addSubview(textStackView)
-        
         configureConstraints()
     }
-    
-    private var textDelegate: FormTextItemViewDelegate? {
-        delegate as? FormTextItemViewDelegate
-    }
+
+    /// Delegate text related events.
+    public weak var delegate: FormTextItemViewDelegate?
     
     // MARK: - Stack View
     
@@ -199,12 +204,10 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
         let maximumLength = item.validator?.maximumLength(for: sanitizedText) ?? .max
         sanitizedText = sanitizedText.adyen.truncate(to: maximumLength)
         
-        item.value = sanitizedText
-        
-        textDelegate?.didChangeValue(in: self)
+        item.value.wrappedValue = sanitizedText
         
         if sanitizedText.count == maximumLength {
-            textDelegate?.didReachMaximumLength(in: self)
+            delegate?.didReachMaximumLength(in: self)
         }
         
         if let formatter = item.formatter, let newText = newText {
@@ -277,7 +280,7 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
     
     /// :nodoc:
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textDelegate?.didSelectReturnKey(in: self)
+        delegate?.didSelectReturnKey(in: self)
         return true
     }
     

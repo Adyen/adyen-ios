@@ -6,19 +6,12 @@
 
 import UIKit
 
-/// The interface of the delegate of an item view.
-/// :nodoc:
-public protocol FormItemViewDelegate: AnyObject {}
-
 /// A view representing a form item.
 /// :nodoc:
 open class FormItemView<ItemType: FormItem>: UIView, AnyFormItemView {
     
     /// The item represented by the view.
     public let item: ItemType
-    
-    /// The delegate of the item view.
-    public weak var delegate: FormItemViewDelegate?
     
     /// Initializes the form item view.
     ///
@@ -48,9 +41,6 @@ open class FormItemView<ItemType: FormItem>: UIView, AnyFormItemView {
 /// A type-erased form item view.
 /// :nodoc:
 public protocol AnyFormItemView: UIView {
-    
-    /// The delegate of the item view.
-    var delegate: FormItemViewDelegate? { get set }
     
     /// The embedding item view of the current item view.
     var parentItemView: AnyFormItemView? { get }
