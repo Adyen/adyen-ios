@@ -75,7 +75,7 @@ internal class CardViewController: FormViewController {
         }
 
         if configuration.showsAddressVerification {
-            append(addressFoldableItem)
+            append(addressVerificationItem)
         }
 
         append(button.withPadding(padding: .init(top: 8, left: 0, bottom: -16, right: 0)))
@@ -126,11 +126,10 @@ internal class CardViewController: FormViewController {
 
     // MARK: Items
 
-    internal lazy var addressFoldableItem: FormContainerItem = {
-        let style = TextStyle(font: .preferredFont(forTextStyle: .headline),
-                              color: UIColor.Adyen.componentLabel,
-                              textAlignment: .center)
-        let item = FormLabelItem(text: "I am here!", style: style)
+    internal lazy var addressVerificationItem: FormContainerItem = {
+        let item = GenericFormAddressItem(initialCountry: payment?.countryCode ?? "US",
+                                          style: formStyle,
+                                          localizationParameters: localizationParameters)
         item.style.backgroundColor = UIColor.Adyen.lightGray
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "addressVerification")
         return item.withPadding(padding: .init(top: 120, left: 0, bottom: -120, right: 0))

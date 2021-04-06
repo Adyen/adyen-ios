@@ -69,6 +69,7 @@ extension CardComponent {
             var configuration = Configuration(showsHolderNameField: showsHolderNameField,
                                               showsStorePaymentMethodField: showsStorePaymentMethodField,
                                               showsSecurityCodeField: false,
+                                              showsAddressVerification: false,
                                               storedCardConfiguration: storedCardConfiguration,
                                               allowedCardTypes: [.bcmc])
             configuration.excludedCardTypes = []

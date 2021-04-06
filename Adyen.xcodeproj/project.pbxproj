@@ -97,6 +97,13 @@
 		E702BDE42602149E00280682 /* Assertion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E702BDE32602149E00280682 /* Assertion.swift */; };
 		E702BE192602525E00280682 /* AssertsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E702BE182602525E00280682 /* AssertsTests.swift */; };
 		E705F8EB2462B1B900438C3B /* FormButtonItemStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E705F8EA2462B1B900438C3B /* FormButtonItemStyle.swift */; };
+		E7085912261F1C8E00D0153B /* FormFullAddressItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085911261F1C8E00D0153B /* FormFullAddressItem.swift */; };
+		E708591F261F1CB800D0153B /* FormAddressItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E708591E261F1CB800D0153B /* FormAddressItemView.swift */; };
+		E708596826209C7300D0153B /* BaseFormPickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E708596726209C7300D0153B /* BaseFormPickerItem.swift */; };
+		E708597426209CA100D0153B /* BaseFormValuePickerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E708597326209CA100D0153B /* BaseFormValuePickerItemView.swift */; };
+		E70859942624514500D0153B /* BasePickerInputControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70859932624514500D0153B /* BasePickerInputControl.swift */; };
+		E7085A012625B4D000D0153B /* LocalisableRegionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085A002625B4D000D0153B /* LocalisableRegionRepository.swift */; };
+		E7085A422625E33800D0153B /* FormRegionPickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085A412625E33800D0153B /* FormRegionPickerItem.swift */; };
 		E7085B122628B29600D0153B /* BasePickerInputControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085B092628B29600D0153B /* BasePickerInputControl.swift */; };
 		E7085B132628B29600D0153B /* BaseFormPickerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085B0A2628B29600D0153B /* BaseFormPickerItemView.swift */; };
 		E7085B142628B29600D0153B /* BaseFormPickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085B0B2628B29600D0153B /* BaseFormPickerItem.swift */; };
@@ -148,7 +155,7 @@
 		E773EA3825221C1900119499 /* Throttler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E773EA35251E26BE00119499 /* Throttler.swift */; };
 		E773EA3A25221C4600119499 /* ThrottlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E773EA3925221C4600119499 /* ThrottlerTests.swift */; };
 		E773EA3C2523432B00119499 /* CardTypeProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E773EA3B2523432B00119499 /* CardTypeProviderMock.swift */; };
-		E774A24F25DD72D700503C40 /* LogoGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E774A23B25DD72D300503C40 /* LogoGenerator.swift */; };
+		E774A24F25DD72D700503C40 /* LogoGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E774A23B25DD72D300503C40 /* LogoGeneratorTests.swift */; };
 		E7763A1125F02BD20046371E /* GiftCardPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7763A1025F02BD20046371E /* GiftCardPaymentMethod.swift */; };
 		E7806EBD26147AB700101DBB /* ViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7806EBC26147AB700101DBB /* ViewControllerDelegate.swift */; };
 		E787C9AC24696A8900B401E0 /* CornerRadiusStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E787C9AB24696A8900B401E0 /* CornerRadiusStyle.swift */; };
@@ -899,6 +906,13 @@
 		E702BDE32602149E00280682 /* Assertion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assertion.swift; sourceTree = "<group>"; };
 		E702BE182602525E00280682 /* AssertsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssertsTests.swift; sourceTree = "<group>"; };
 		E705F8EA2462B1B900438C3B /* FormButtonItemStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormButtonItemStyle.swift; sourceTree = "<group>"; };
+		E7085911261F1C8E00D0153B /* FormFullAddressItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormFullAddressItem.swift; sourceTree = "<group>"; };
+		E708591E261F1CB800D0153B /* FormAddressItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAddressItemView.swift; sourceTree = "<group>"; };
+		E708596726209C7300D0153B /* BaseFormPickerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseFormPickerItem.swift; sourceTree = "<group>"; };
+		E708597326209CA100D0153B /* BaseFormValuePickerItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseFormValuePickerItemView.swift; sourceTree = "<group>"; };
+		E70859932624514500D0153B /* BasePickerInputControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePickerInputControl.swift; sourceTree = "<group>"; };
+		E7085A002625B4D000D0153B /* LocalisableRegionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalisableRegionRepository.swift; sourceTree = "<group>"; };
+		E7085A412625E33800D0153B /* FormRegionPickerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormRegionPickerItem.swift; sourceTree = "<group>"; };
 		E7085B092628B29600D0153B /* BasePickerInputControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasePickerInputControl.swift; sourceTree = "<group>"; };
 		E7085B0A2628B29600D0153B /* BaseFormPickerItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseFormPickerItemView.swift; sourceTree = "<group>"; };
 		E7085B0B2628B29600D0153B /* BaseFormPickerItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseFormPickerItem.swift; sourceTree = "<group>"; };
@@ -958,7 +972,7 @@
 		E773EA35251E26BE00119499 /* Throttler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Throttler.swift; sourceTree = "<group>"; };
 		E773EA3925221C4600119499 /* ThrottlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThrottlerTests.swift; sourceTree = "<group>"; };
 		E773EA3B2523432B00119499 /* CardTypeProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTypeProviderMock.swift; sourceTree = "<group>"; };
-		E774A23B25DD72D300503C40 /* LogoGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoGenerator.swift; sourceTree = "<group>"; };
+		E774A23B25DD72D300503C40 /* LogoGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoGeneratorTests.swift; sourceTree = "<group>"; };
 		E7763A1025F02BD20046371E /* GiftCardPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftCardPaymentMethod.swift; sourceTree = "<group>"; };
 		E7806EBC26147AB700101DBB /* ViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerDelegate.swift; sourceTree = "<group>"; };
 		E787C9AB24696A8900B401E0 /* CornerRadiusStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadiusStyle.swift; sourceTree = "<group>"; };
@@ -1514,6 +1528,7 @@
 				E2D12C05221ED15300EF682F /* Switch */,
 				E21895E222A7CC3B001B6EE0 /* Split */,
 				E7275BF7255012D400907CF9 /* Basic Items */,
+				E708591D261F1C9F00D0153B /* Address */,
 			);
 			path = Items;
 			sourceTree = "<group>";
@@ -1534,6 +1549,7 @@
 		E216D3C1221AEDB30013CBCF /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				E70859FF2625B46C00D0153B /* External */,
 				E702BDE22602148900280682 /* Debugging */,
 				E270FDE7225CC4A7006C2CD0 /* Observable */,
 				F96286BC256BDEB000043FE3 /* CoreBundleExtension.swift */,
@@ -1542,7 +1558,6 @@
 				E9E3DAFE2225488900697074 /* Completion.swift */,
 				E9021DA9225789B1009CF7F4 /* Localization.swift */,
 				F96F44DC23BE487500871C1F /* LocalizationParameters.swift */,
-				E9093400228C54CD00C9F04B /* LogoURLProvider.swift */,
 				F94343E723FFF9DC00AADF5F /* ISOCountry.swift */,
 				F9E441512382A0DD00D3CD48 /* ViewIdentifierBuilder.swift */,
 				F9AC61BA24374CE00062A00D /* AppLauncher.swift */,
@@ -1751,6 +1766,7 @@
 				E7E58BF725ADDF8400E869F9 /* Demo */,
 				E2C0E03422097917008616F6 /* Products */,
 				E2D12C01221ECBB000EF682F /* Frameworks */,
+				E7085CF7262DF14400D0153B /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1954,6 +1970,24 @@
 			path = Debugging;
 			sourceTree = "<group>";
 		};
+		E708591D261F1C9F00D0153B /* Address */ = {
+			isa = PBXGroup;
+			children = (
+				E7085911261F1C8E00D0153B /* FormFullAddressItem.swift */,
+				E708591E261F1CB800D0153B /* FormAddressItemView.swift */,
+			);
+			path = Address;
+			sourceTree = "<group>";
+		};
+		E70859FF2625B46C00D0153B /* External */ = {
+			isa = PBXGroup;
+			children = (
+				E9093400228C54CD00C9F04B /* LogoURLProvider.swift */,
+				E7085A002625B4D000D0153B /* LocalisableRegionRepository.swift */,
+			);
+			path = External;
+			sourceTree = "<group>";
+		};
 		E7085B062628B29600D0153B /* Value Pickers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1981,6 +2015,17 @@
 				E7085B102628B29600D0153B /* FormPhoneExtensionPickerItem.swift */,
 			);
 			path = "Phone Extension Picker";
+			sourceTree = "<group>";
+		};
+		E7085CF7262DF14400D0153B /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				E708597326209CA100D0153B /* BaseFormValuePickerItemView.swift */,
+				E708596726209C7300D0153B /* BaseFormPickerItem.swift */,
+				E70859932624514500D0153B /* BasePickerInputControl.swift */,
+				E7085A412625E33800D0153B /* FormRegionPickerItem.swift */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		E7166A5024EAC591007CCDEF /* BinLookup */ = {
@@ -2455,7 +2500,7 @@
 				F9AC61BF243750D80062A00D /* AppLauncherMock.swift */,
 				F9BA21C52474113500D36A63 /* AmountFormatterTests.swift */,
 				F923283925A49559002C5BC4 /* PhoneExtensionsRepositoryTests.swift */,
-				E774A23B25DD72D300503C40 /* LogoGenerator.swift */,
+				E774A23B25DD72D300503C40 /* LogoGeneratorTests.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -4023,6 +4068,7 @@
 				F97CCD3A2435E35E00BC560A /* UIViewControllerHelpers.swift in Sources */,
 				E216D3BE221AAB710013CBCF /* FormTextItem.swift in Sources */,
 				F9B017D42608D402001F23FC /* EContextATMPaymentMethod.swift in Sources */,
+				E7085A012625B4D000D0153B /* LocalisableRegionRepository.swift in Sources */,
 				E9021DEE225CC46D009CF7F4 /* URLHelpers.swift in Sources */,
 				F9D644DE24D2D9950059CBE3 /* MBWayPaymentMethod.swift in Sources */,
 				E7085B142628B29600D0153B /* BaseFormPickerItem.swift in Sources */,
@@ -4030,6 +4076,7 @@
 				F9B798CB23AB706D00A2103C /* ListComponentStyle.swift in Sources */,
 				E2B3C216233507030067891D /* UIColorHelpers.swift in Sources */,
 				F9AC61C624376C9B0062A00D /* AdyenScope.swift in Sources */,
+				E7085912261F1C8E00D0153B /* FormFullAddressItem.swift in Sources */,
 				F96F44D923BDEDA200871C1F /* ListItemStyle.swift in Sources */,
 				E787C9AE24698C2E00B401E0 /* UIViewRoundingHelpers.swift in Sources */,
 				E2C0E0BA220B2966008616F6 /* FormTextItemView.swift in Sources */,
@@ -4098,6 +4145,7 @@
 				E28098B3220DA7980087928F /* Component.swift in Sources */,
 				F95B6D8E25231715002C9062 /* RegularExpressionValidator.swift in Sources */,
 				F923280025A47ED5002C5BC4 /* AllCountriesPhoneExtensions.swift in Sources */,
+				E708597426209CA100D0153B /* BaseFormValuePickerItemView.swift in Sources */,
 				F926D52023F4217A00D058D3 /* DeviceDependant.swift in Sources */,
 				F9D5753123828EBB009C18B5 /* AnyCardPaymentMethod.swift in Sources */,
 				E2B317A92265EBD200C1BB30 /* EventPublisher.swift in Sources */,
@@ -4125,6 +4173,7 @@
 				F9639B3524DD97A30073F38A /* PaymentStatusResponse.swift in Sources */,
 				F9BA21C2246E82EE00D36A63 /* SizeUtilities.swift in Sources */,
 				F97C829225BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift in Sources */,
+				E708596826209C7300D0153B /* BaseFormPickerItem.swift in Sources */,
 				F939CD7725EE56BA00018DEC /* LoadingComponent.swift in Sources */,
 				E7806EBD26147AB700101DBB /* ViewControllerDelegate.swift in Sources */,
 				E749FD1E23CF4998000D18BA /* NavigationStyle.swift in Sources */,
@@ -4154,6 +4203,7 @@
 				E288EB962267652D000E960C /* Observer.swift in Sources */,
 				F9EDB7862391734200CFB3C9 /* UnknownError.swift in Sources */,
 				F924C074246C2E0B006DDAB8 /* LazyOptional.swift in Sources */,
+				E70859942624514500D0153B /* BasePickerInputControl.swift in Sources */,
 				E2C0E0C1220D7E5E008616F6 /* SubmitButton.swift in Sources */,
 				E216D3C9221AFB830013CBCF /* IBANValidator.swift in Sources */,
 				E76EC6972417F36A009C6E2F /* FormTextInputItemView.swift in Sources */,
@@ -4171,10 +4221,12 @@
 				F926D53723F6A35700D058D3 /* NumericFormatter.swift in Sources */,
 				E7085B162628B29600D0153B /* FormPhoneExtensionPickerItemView.swift in Sources */,
 				F924C079246C38E0006DDAB8 /* SecuredViewController.swift in Sources */,
+				E7085A422625E33800D0153B /* FormRegionPickerItem.swift in Sources */,
 				E7D5311A2446F525000046B4 /* FormSeparatorItem.swift in Sources */,
 				E9E3DAFD2225485400697074 /* URLSessionHelpers.swift in Sources */,
 				E71E8F3E257921D10054B03D /* StoredBLIKPaymentMethod.swift in Sources */,
 				F9B798C923AB697100A2103C /* FormComponentStyle.swift in Sources */,
+				E708591F261F1CB800D0153B /* FormAddressItemView.swift in Sources */,
 				E7275BF9255012F600907CF9 /* FormLabelItem.swift in Sources */,
 				E2D12BEF221D560800EF682F /* FormValueItem.swift in Sources */,
 				F9639B3F24E18F620073F38A /* Scheduler.swift in Sources */,
@@ -4250,7 +4302,7 @@
 				E9E3DABE221EA47800697074 /* StringExtensionsTests.swift in Sources */,
 				F95B6D9025231880002C9062 /* PhoneNumberValidatorTests.swift in Sources */,
 				F9639B5224E29E340073F38A /* PresentationDelegateMock.swift in Sources */,
-				E774A24F25DD72D700503C40 /* LogoGenerator.swift in Sources */,
+				E774A24F25DD72D700503C40 /* LogoGeneratorTests.swift in Sources */,
 				E9021E042264C55E009CF7F4 /* KeyedDecodingContainerExtensionsTests.swift in Sources */,
 				F9EDB79E2397AEF400CFB3C9 /* ComponentManagerTests.swift in Sources */,
 				F9EDB7922396603F00CFB3C9 /* PaymentMethodListComponentTests.swift in Sources */,
