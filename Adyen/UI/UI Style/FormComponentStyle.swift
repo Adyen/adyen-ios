@@ -43,12 +43,7 @@ public struct FormComponentStyle: TintableStyle {
     /// If value is nil, the default color would be used.
     public var tintColor: UIColor? {
         didSet {
-            guard let tintColor = tintColor else { return }
-            mainButtonItem.button.backgroundColor = tintColor
-            secondaryButtonItem.button.title.color = tintColor
-
-            textField = FormTextItemStyle(tintColor: tintColor)
-            `switch`.tintColor = tintColor
+            setTintColor(tintColor)
         }
     }
     
@@ -103,10 +98,19 @@ public struct FormComponentStyle: TintableStyle {
     /// Initializes the form style with the default style and custom tint for all elements.
     /// - Parameter tintColor: The color for tinting buttons. textfields, icons and switches.
     public init(tintColor: UIColor) {
-        self.tintColor = tintColor
+        setTintColor(tintColor)
     }
     
     /// Initializes the form style with the default style.
     public init() { /* public */ }
+
+    private mutating func setTintColor(_ value: UIColor?) {
+        guard let tintColor = value else { return }
+        mainButtonItem.button.backgroundColor = tintColor
+        secondaryButtonItem.button.title.color = tintColor
+
+        textField = FormTextItemStyle(tintColor: tintColor)
+        `switch`.tintColor = tintColor
+    }
     
 }

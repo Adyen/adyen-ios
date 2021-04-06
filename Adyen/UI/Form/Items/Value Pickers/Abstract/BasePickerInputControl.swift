@@ -40,7 +40,7 @@ internal class BasePickerInputControl: UIControl, PickerTextInputControl {
 
     internal var onDidTap: (() -> Void)?
 
-    override internal var inputView: UIView? { _inputView }
+    override internal var inputView: UIView? { customInputView }
 
     override internal var canBecomeFirstResponder: Bool { true }
 
@@ -48,7 +48,7 @@ internal class BasePickerInputControl: UIControl, PickerTextInputControl {
                                                     in: Bundle.coreInternalResources,
                                                     compatibleWith: nil) }
 
-    internal var _inputView: UIView // swiftlint:disable:this identifier_name
+    internal var customInputView: UIView
 
     internal var showChevron: Bool {
         get { !chevronView.isHidden }
@@ -87,7 +87,7 @@ internal class BasePickerInputControl: UIControl, PickerTextInputControl {
     /// - Parameter inputView: The input view used in place of the system keyboard.
     /// - Parameter style: The UI style.
     internal init(inputView: UIView, style: TextStyle) {
-        _inputView = inputView
+        self.customInputView = inputView
         self.style = style
         super.init(frame: CGRect.zero)
 

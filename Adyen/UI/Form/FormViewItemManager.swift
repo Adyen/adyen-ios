@@ -9,11 +9,6 @@ import UIKit
 /// Manages the form items and their views.
 internal final class FormViewItemManager {
     
-    /// Initializes the item manager.
-    ///
-    /// - Parameter itemViewDelegate: The delegate of the item views created by the manager.
-    internal init() {}
-    
     // MARK: - Items
     
     /// The items managed by the item manager.
