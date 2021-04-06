@@ -89,12 +89,10 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver {
     public func append<ItemType: FormItem>(_ item: ItemType) {
         let view = itemManager.append(item)
 
-        if let view = view as? AnyFormTextItemView {
-            view.delegate = self
-        }
-        
-        if isViewLoaded, let itemView = itemManager.itemView(for: item) {
-            formView.appendItemView(itemView)
+        view.applyIfNeeded(delegate: self)
+
+        if isViewLoaded {
+            formView.appendItemView(view)
         }
     }
     
@@ -181,6 +179,16 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver {
         guard view.isUserInteractionEnabled else { return }
         let textItemView = itemManager.itemViews.first(where: { $0.canBecomeFirstResponder })
         textItemView?.becomeFirstResponder()
+    }
+}
+
+private extension AnyFormItemView {
+    func applyIfNeeded(delegate: FormTextItemViewDelegate) {
+        if let formTextItemView = self as? AnyFormTextItemView {
+            formTextItemView.delegate = delegate
+        }
+
+        self.childItemViews.forEach { $0.applyIfNeeded(delegate: delegate) }
     }
 }
 
