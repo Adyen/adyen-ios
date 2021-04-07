@@ -13,7 +13,7 @@ internal final class ComponentsView: UIView {
         
         addSubview(tableView)
         
-        tableView.adyen.anchore(inside: self)
+        tableView.adyen.anchor(inside: self)
     }
     
     @available(*, unavailable)

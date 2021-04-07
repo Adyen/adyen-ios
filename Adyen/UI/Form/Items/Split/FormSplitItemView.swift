@@ -20,7 +20,7 @@ internal final class FormSplitItemView: FormItemView<FormSplitItem> {
         super.init(item: item)
         
         addSubview(stackView)
-        stackView.adyen.anchore(inside: self)
+        stackView.adyen.anchor(inside: self)
     }
     
     override internal var childItemViews: [AnyFormItemView] {

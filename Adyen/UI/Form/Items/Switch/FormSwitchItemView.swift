@@ -24,7 +24,7 @@ public final class FormSwitchItemView: FormValueItemView<FormSwitchItem> {
         accessibilityValue = switchControl.accessibilityValue
         
         addSubview(stackView)
-        stackView.adyen.anchore(inside: self.layoutMarginsGuide)
+        stackView.adyen.anchor(inside: self.layoutMarginsGuide)
     }
     
     private var switchDelegate: FormValueItemViewDelegate? {

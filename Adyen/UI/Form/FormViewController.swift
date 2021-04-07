@@ -150,7 +150,7 @@ open class FormViewController: UIViewController, Localizable {
     }()
     
     private func setupConstraints() {
-        let constraints = formView.adyen.anchore(inside: view.safeAreaLayoutGuide)
+        let constraints = formView.adyen.anchor(inside: view.safeAreaLayoutGuide)
         bottomConstraint = constraints.first { $0.firstAttribute == .bottom }
         bottomConstraint?.priority = .defaultHigh
     }

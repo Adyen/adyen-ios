@@ -118,7 +118,7 @@ internal class PhoneExtensionInputControl: UIControl, AnyFormItemView {
     /// :nodoc:
     private func applyConstraints() {
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.adyen.anchore(inside: self, with: .init(top: 0, left: 0, bottom: -1, right: -6))
+        stackView.adyen.anchor(inside: self, with: .init(top: 0, left: 0, bottom: -1, right: -6))
     }
     
 }

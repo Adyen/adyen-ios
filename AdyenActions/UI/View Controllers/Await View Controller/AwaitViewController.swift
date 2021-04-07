@@ -58,7 +58,7 @@ internal final class AwaitViewController: UIViewController {
             guid = view.safeAreaLayoutGuide
         }
         
-        containerView.adyen.anchore(inside: guid)
+        containerView.adyen.anchor(inside: guid)
         let constraints = [
             awaitView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
             
