@@ -22,7 +22,7 @@ public protocol APIClientProtocol: AnyObject {
 
 /// :nodoc:
 /// The Basic API Client.
-public final class APIClient: NSObject, APIClientProtocol {
+public final class APIClient: APIClientProtocol {
     
     /// :nodoc:
     public typealias CompletionHandler<T> = (Result<T, Error>) -> Void
@@ -117,7 +117,7 @@ public final class APIClient: NSObject, APIClientProtocol {
     
     /// :nodoc:
     private lazy var urlSession: URLSession = {
-        URLSession(configuration: .default, delegate: self, delegateQueue: .main)
+        URLSession(configuration: .ephemeral, delegate: self, delegateQueue: .main)
     }()
     
     /// :nodoc:
@@ -128,19 +128,6 @@ public final class APIClient: NSObject, APIClientProtocol {
         }
     }
     
-}
-
-extension APIClient: URLSessionDataDelegate {
-
-    /// :nodoc:
-    public func urlSession(
-        _ session: URLSession,
-        dataTask: URLSessionDataTask,
-        willCacheResponse proposedResponse: CachedURLResponse,
-        completionHandler: @escaping (CachedURLResponse?) -> Void
-    ) {
-        completionHandler(nil)
-    }
 }
 
 internal func printAsJSON(_ data: Data) {
