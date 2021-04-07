@@ -26,23 +26,22 @@ internal final class SlideInPresentationAnimator: NSObject, UIViewControllerAnim
         
         let containerView = transitionContext.containerView
         containerView.addSubview(toShow.view)
-        
-        let preferedFrame = toShow.child.adyen.finalPresentationFrame(in: containerView)
-        toShow.child.view.frame = preferedFrame
         toShow.view.frame.origin.y = containerView.bounds.height
+        toShow.updateFrame(keyboardRect: .zero, animated: false)
         
-        UIView.animateKeyframes(withDuration: duration, delay: 0.0, options: [], animations: {
-            UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.5) {
-                toHide.view.frame.origin.y = containerView.bounds.height
-            }
-            
-            UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.5) {
-                toShow.view.frame.origin.y = containerView.frame.origin.y
-            }
-            
-        }, completion: { finished in
-            
-            transitionContext.completeTransition(finished)
-        })
+        UIView.animateKeyframes(withDuration: duration,
+                                delay: 0.0,
+                                options: [],
+                                animations: {
+                                    UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.5) {
+                                        toHide.view.frame.origin.y = containerView.bounds.height
+                                    }
+                                    UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.5) {
+                                        toShow.view.frame.origin.y = containerView.frame.origin.y
+                                    }
+                                },
+                                completion: { finished in
+                                    transitionContext.completeTransition(finished)
+                                })
     }
 }

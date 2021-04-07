@@ -82,13 +82,9 @@ extension UIColor {
 
         /// :nodoc:
         public static var componentLoadingMessageColor: UIColor {
-            if #available(iOS 11.0, *) {
-                return UIColor(named: "awaitLoadingMessageColor",
-                               in: Bundle.coreInternalResources,
-                               compatibleWith: nil) ?? componentPlaceholderText
-            } else {
-                return componentPlaceholderText
-            }
+            return UIColor(named: "awaitLoadingMessageColor",
+                                           in: Bundle.coreInternalResources,
+                                           compatibleWith: nil) ?? componentPlaceholderText
         }
 
         /// :nodoc:

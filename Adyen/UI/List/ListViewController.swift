@@ -22,11 +22,7 @@ public final class ListViewController: UITableViewController {
     /// - Parameter style: The UI style.
     public init(style: ListComponentStyle = ListComponentStyle()) {
         self.style = style
-        if #available(iOS 11.0, *) {
-            super.init(style: .grouped)
-        } else {
-            super.init(style: .plain)
-        }
+        super.init(style: .grouped)
     }
     
     /// :nodoc:

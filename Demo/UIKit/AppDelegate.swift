@@ -17,9 +17,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         let componentsViewController = ComponentsViewController()
         
         let navigationController = UINavigationController(rootViewController: componentsViewController)
-        if #available(iOS 11.0, *) {
-            navigationController.navigationBar.prefersLargeTitles = true
-        }
+        navigationController.navigationBar.prefersLargeTitles = true
         
         #if DEBUG
             AdyenLogging.isEnabled = true

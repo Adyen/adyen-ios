@@ -17,15 +17,13 @@ internal class CardViewController: FormViewController, Observer {
 
     private let payment: Payment?
 
-    private let environment: Environment
+    private let logoProvider: LogoURLProvider
 
     private let supportedCardTypes: [CardType]
 
     private let scope: String
 
     private let maxCardsVisible = 4
-
-    private let publicBinLenght = 6
     
     private let throttler = Throttler(minimumDelay: 0.5)
 
@@ -35,16 +33,23 @@ internal class CardViewController: FormViewController, Observer {
 
     // MARK: Init view controller
 
+    /// Create new instance of CardViewController
+    /// - Parameters:
+    ///   - configuration: The configurations of the `CardComponent`.
+    ///   - formStyle: The style of form view controller.
+    ///   - payment: The payment object to visialise payment amount.
+    ///   - logoProvider: The provider for logo image URLs.
+    ///   - supportedCardTypes: The list of supported cards.
     internal init(configuration: CardComponent.Configuration,
                   formStyle: FormComponentStyle,
                   payment: Payment?,
-                  environment: Environment,
+                  logoProvider: LogoURLProvider,
                   supportedCardTypes: [CardType],
                   scope: String) {
         self.configuration = configuration
         self.formStyle = formStyle
         self.payment = payment
-        self.environment = environment
+        self.logoProvider = logoProvider
         self.supportedCardTypes = supportedCardTypes
         self.scope = scope
         super.init(style: formStyle)
@@ -113,19 +118,16 @@ internal class CardViewController: FormViewController, Observer {
         default:
             self.numberItem.showLogos(for: [])
         }
-
     }
 
     // MARK: Items
 
     internal lazy var numberItem: FormCardNumberItem = {
         let item = FormCardNumberItem(supportedCardTypes: supportedCardTypes,
-                                      environment: environment,
+                                      logoProvider: logoProvider,
                                       style: formStyle.textField,
                                       localizationParameters: localizationParameters)
-
         observe(item.$binValue) { [weak self] in self?.didReceived(bin: $0) }
-
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "numberItem")
         return item
     }()
@@ -144,8 +146,7 @@ internal class CardViewController: FormViewController, Observer {
     }()
 
     internal lazy var securityCodeItem: FormCardSecurityCodeItem = {
-        let securityCodeItem = FormCardSecurityCodeItem(environment: environment,
-                                                        style: formStyle.textField,
+        let securityCodeItem = FormCardSecurityCodeItem(style: formStyle.textField,
                                                         localizationParameters: localizationParameters)
         securityCodeItem.localizationParameters = self.localizationParameters
         securityCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "securityCodeItem")
@@ -186,8 +187,6 @@ internal class CardViewController: FormViewController, Observer {
 
     private func didReceived(bin: String) {
         self.securityCodeItem.selectedCard = supportedCardTypes.adyen.type(forCardNumber: bin)
-        self.cardDelegate?.didChangeBIN(String(bin.prefix(publicBinLenght)))
-
         throttler.throttle { [weak self] in self?.cardDelegate?.didChangeBIN(bin) }
     }
     

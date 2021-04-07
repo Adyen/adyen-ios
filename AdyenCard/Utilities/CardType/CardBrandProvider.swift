@@ -26,7 +26,7 @@ internal struct CardBrandProviderParameters {
 /// Provide cardType detection based on BinLookup API.
 internal final class CardBrandProvider: AnyCardBrandProvider {
     
-    private static let minBinLength = 6
+    private static let minBinLength = 11
     
     private let apiClient: APIClientProtocol?
 
@@ -57,7 +57,7 @@ internal final class CardBrandProvider: AnyCardBrandProvider {
     ///   - brands: Card brands supported by the merchant.
     ///   - completion:  Callback to notify about results.
     internal func provide(for parameters: CardBrandProviderParameters, completion: @escaping (BinLookupResponse) -> Void) {
-        guard parameters.bin.count > CardBrandProvider.minBinLength else {
+        guard parameters.bin.count >= CardBrandProvider.minBinLength else {
             return fallbackCardTypeProvider.provide(for: parameters,
                                                     completion: completion)
         }

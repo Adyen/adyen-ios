@@ -18,11 +18,10 @@ extension AbstractPersonalInformationComponent: LoadingComponent, TrackableCompo
     internal func didSelectSubmitButton() {
         guard formViewController.validate() else { return }
 
-        let details = createPaymentDetails()
-
         button.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
 
+        let details = createPaymentDetails()
         submit(data: PaymentComponentData(paymentMethodDetails: details))
     }
 }

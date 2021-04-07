@@ -16,13 +16,5 @@ extension UIFont {
             UIFont.preferredFont(forTextStyle: .title3).adyen.font(with: .semibold)
         }
         
-        internal static var largeTitle: UIFont {
-            if #available(iOS 11.0, *) {
-                return UIFont.preferredFont(forTextStyle: .largeTitle).adyen.font(with: .bold)
-            } else {
-                return .systemFont(ofSize: 32.0, weight: .bold)
-            }
-        }
-        
     }
 }
