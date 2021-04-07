@@ -16,9 +16,5 @@ extension UIFont {
             UIFont.preferredFont(forTextStyle: .title3).adyen.font(with: .semibold)
         }
         
-        internal static var largeTitle: UIFont {
-            UIFont.preferredFont(forTextStyle: .largeTitle).adyen.font(with: .bold)
-        }
-        
     }
 }
