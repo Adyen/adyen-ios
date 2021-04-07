@@ -9,11 +9,14 @@ import UIKit
 
 /// A view representing a split item.
 internal final class FormSplitItemView: FormItemView<FormSplitItem> {
+
+    private let views: [AnyFormItemView]
     
     /// Initializes the split item view.
     ///
     /// - Parameter item: The item represented by the view.
     internal required init(item: FormSplitItem) {
+        views = item.subitems.map(FormSplitItemView.renderItem)
         super.init(item: item)
         
         addSubview(stackView)
@@ -21,26 +24,8 @@ internal final class FormSplitItemView: FormItemView<FormSplitItem> {
     }
     
     override internal var childItemViews: [AnyFormItemView] {
-        [leftItemView, rightItemView]
+        views
     }
-    
-    // MARK: - Items
-    
-    private lazy var leftItemView: AnyFormItemView = {
-        let leftItemView = item.leftItem.build(with: FormItemViewBuilder())
-        leftItemView.accessibilityIdentifier = item.leftItem.identifier
-        leftItemView.preservesSuperviewLayoutMargins = true
-        
-        return leftItemView
-    }()
-    
-    private lazy var rightItemView: AnyFormItemView = {
-        let rightItemView = item.rightItem.build(with: FormItemViewBuilder())
-        rightItemView.accessibilityIdentifier = item.rightItem.identifier
-        rightItemView.preservesSuperviewLayoutMargins = true
-        
-        return rightItemView
-    }()
     
     // MARK: - Layout
     
@@ -54,5 +39,11 @@ internal final class FormSplitItemView: FormItemView<FormSplitItem> {
         stackView.spacing = 16
         return stackView
     }()
+
+    private static func renderItem(_ item: FormItem) -> AnyFormItemView {
+        let itemView = FormItemViewBuilder.renderItem(item)
+        itemView.preservesSuperviewLayoutMargins = true
+        return itemView
+    }
     
 }

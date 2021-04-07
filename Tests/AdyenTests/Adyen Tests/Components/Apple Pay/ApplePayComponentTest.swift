@@ -206,10 +206,8 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertEqual(paymentRequest.currencyCode, amount.currencyCode)
         XCTAssertEqual(paymentRequest.merchantIdentifier, "test_id")
         XCTAssertEqual(paymentRequest.countryCode, countryCode)
-        if #available(iOS 11.0, *) {
-            XCTAssertEqual(paymentRequest.requiredBillingContactFields, expectedRequiredBillingFields)
-            XCTAssertEqual(paymentRequest.requiredShippingContactFields, expectedRequiredShippingFields)
-        }
+        XCTAssertEqual(paymentRequest.requiredBillingContactFields, expectedRequiredBillingFields)
+        XCTAssertEqual(paymentRequest.requiredShippingContactFields, expectedRequiredShippingFields)
     }
 
     func testBrandsFiltering() {
@@ -236,12 +234,8 @@ class ApplePayComponentTest: XCTestCase {
     }
     
     private func getRandomContactFieldSet() -> Set<PKContactField> {
-        if #available(iOS 11.0, *) {
-            let contactFieldsPool: [PKContactField] = [.emailAddress, .name, .phoneNumber, .postalAddress, .phoneticName]
-            return contactFieldsPool.randomElement().map { [$0] } ?? []
-        } else {
-            return []
-        }
+        let contactFieldsPool: [PKContactField] = [.emailAddress, .name, .phoneNumber, .postalAddress, .phoneticName]
+        return contactFieldsPool.randomElement().map { [$0] } ?? []
     }
     
     private func createTestSummaryItems() -> [PKPaymentSummaryItem] {

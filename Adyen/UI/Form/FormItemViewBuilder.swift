@@ -59,4 +59,10 @@ public struct FormItemViewBuilder {
     public func build(with item: FormSeparatorItem) -> FormItemView<FormSeparatorItem> {
         FormSeparatorItemView(item: item)
     }
+
+    public static func renderItem(_ item: FormItem) -> AnyFormItemView {
+        let itemView = item.build(with: FormItemViewBuilder())
+        itemView.accessibilityIdentifier = item.identifier
+        return itemView
+    }
 }

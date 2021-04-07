@@ -11,12 +11,14 @@ import UIKit
 
 internal final class ModalViewController: UIViewController {
     
-    private let style: NavigationStyle
+    internal let style: NavigationStyle
+
     private let innerController: UIViewController
-    
-    /// :nodoc:
-    private var navigationBarHeight: CGFloat = 63.0
-    
+
+    internal weak var delegate: ViewControllerDelegate?
+
+    private let navigationBarHeight: CGFloat = 63.0
+
     // MARK: - Initializing
     
     /// Initializes the component view controller.
@@ -130,17 +132,11 @@ internal final class ModalViewController: UIViewController {
     private func arrangeConstraints() {
         let separatorHeight: CGFloat = 1.0 / UIScreen.main.scale
         let toolbarHeight = navigationBarHeight - separatorHeight
-        
-        let bottomConstraint = stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        bottomConstraint.priority = .defaultHigh
 
+        stackView.adyen.anchore(inside: view)
         NSLayoutConstraint.activate([
             toolbar.heightAnchor.constraint(equalToConstant: toolbarHeight),
-            separator.heightAnchor.constraint(equalToConstant: separatorHeight),
-            stackView.topAnchor.constraint(equalTo: view.topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            bottomConstraint
+            separator.heightAnchor.constraint(equalToConstant: separatorHeight)
         ])
     }
 }

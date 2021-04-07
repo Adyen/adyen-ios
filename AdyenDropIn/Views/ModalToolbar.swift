@@ -81,7 +81,7 @@ internal final class ModalToolbar: UIView {
     }
 
     private func setupStyle() {
-        self.backgroundColor = style.backgroundColor
+        backgroundColor = style.backgroundColor
         cancelButton.tintColor = style.tintColor
         guard let title = titleLabel.text, !title.isEmpty else { return }
         titleLabel.attributedText = NSAttributedString(string: title,
@@ -91,15 +91,8 @@ internal final class ModalToolbar: UIView {
     }
 
     private func setupLayoutForCenteredMode() {
-        let rightAnchor: NSLayoutXAxisAnchor
-        let leftAnchor: NSLayoutXAxisAnchor
-        if #available(iOS 11.0, *) {
-            rightAnchor = self.safeAreaLayoutGuide.rightAnchor
-            leftAnchor = self.safeAreaLayoutGuide.leftAnchor
-        } else {
-            rightAnchor = self.rightAnchor
-            leftAnchor = self.leftAnchor
-        }
+        let rightAnchor = safeAreaLayoutGuide.rightAnchor
+        let leftAnchor = safeAreaLayoutGuide.leftAnchor
 
         let cancePositionConstraint: NSLayoutConstraint
         if style.toolbarMode == .rightCancel {

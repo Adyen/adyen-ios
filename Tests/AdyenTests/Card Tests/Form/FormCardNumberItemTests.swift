@@ -29,7 +29,7 @@ class FormCardNumberItemTests: XCTestCase {
     }
 
     func testInternalBinLookup() {
-        let item = FormCardNumberItem(supportedCardTypes: supportedCardTypes, environment: .test)
+        let item = FormCardNumberItem(supportedCardTypes: supportedCardTypes, logoProvider: LogoURLProvider(environment: .test))
         XCTAssertEqual(item.cardTypeLogos.count, 5)
         
         let visa = item.cardTypeLogos[0]
@@ -156,7 +156,7 @@ class FormCardNumberItemTests: XCTestCase {
         apiClient.mockedResults = [.success(BinLookupResponse(brands: mockedBrands)),
                                    .success(BinLookupResponse(brands: []))]
 
-        let item = FormCardNumberItem(supportedCardTypes: supportedCardTypes, environment: .test)
+        let item = FormCardNumberItem(supportedCardTypes: supportedCardTypes, logoProvider: LogoURLProvider(environment: .test))
         XCTAssertEqual(item.cardTypeLogos.count, 5)
 
         let visa = item.cardTypeLogos[0]
@@ -182,7 +182,7 @@ class FormCardNumberItemTests: XCTestCase {
         publicKeyProvider.onFetch = { $0(.success("SOME_PUBLIC_KEY")) }
         apiClient.mockedResults = [.failure(Dummy.dummyError), .failure(Dummy.dummyError)]
 
-        let item = FormCardNumberItem(supportedCardTypes: supportedCardTypes, environment: .test)
+        let item = FormCardNumberItem(supportedCardTypes: supportedCardTypes, logoProvider: LogoURLProvider(environment: .test))
         XCTAssertEqual(item.cardTypeLogos.count, 5)
 
         let visa = item.cardTypeLogos[0]
@@ -220,7 +220,7 @@ class FormCardNumberItemTests: XCTestCase {
     
     func testLocalizationWithCustomTableName() {
         let expectedLocalizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
-        let sut = FormCardNumberItem(supportedCardTypes: [.visa, .masterCard], environment: .test, localizationParameters: expectedLocalizationParameters)
+        let sut = FormCardNumberItem(supportedCardTypes: [.visa, .masterCard], logoProvider: LogoURLProvider(environment: .test), localizationParameters: expectedLocalizationParameters)
         
         XCTAssertEqual(sut.title, ADYLocalizedString("adyen.card.numberItem.title", expectedLocalizationParameters))
         XCTAssertEqual(sut.placeholder, ADYLocalizedString("adyen.card.numberItem.placeholder", expectedLocalizationParameters))
@@ -229,7 +229,7 @@ class FormCardNumberItemTests: XCTestCase {
     
     func testLocalizationWithCustomKeySeparator() {
         let expectedLocalizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
-        let sut = FormCardNumberItem(supportedCardTypes: [.visa, .masterCard], environment: .test, localizationParameters: expectedLocalizationParameters)
+        let sut = FormCardNumberItem(supportedCardTypes: [.visa, .masterCard], logoProvider: LogoURLProvider(environment: .test), localizationParameters: expectedLocalizationParameters)
         
         XCTAssertEqual(sut.title, ADYLocalizedString("adyen_card_numberItem_title", expectedLocalizationParameters))
         XCTAssertEqual(sut.placeholder, ADYLocalizedString("adyen_card_numberItem_placeholder", expectedLocalizationParameters))

@@ -29,14 +29,13 @@ internal final class FormCardNumberItem: FormTextItem {
     
     /// Initializes the form card number item.
     internal init(supportedCardTypes: [CardType],
-                  environment: Environment,
+                  logoProvider: LogoURLProvider,
                   style: FormTextItemStyle = FormTextItemStyle(),
                   localizationParameters: LocalizationParameters? = nil) {
         self.supportedCardTypes = supportedCardTypes
         
         self.cardTypeLogos = supportedCardTypes.map {
-            CardTypeLogo(url: LogoURLProvider.logoURL(withName: $0.rawValue, environment: environment),
-                         type: $0)
+            CardTypeLogo(url: logoProvider.logoURL(withName: $0.rawValue), type: $0)
         }
         self.localizationParameters = localizationParameters
         

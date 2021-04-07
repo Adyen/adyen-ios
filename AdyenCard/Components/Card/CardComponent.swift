@@ -25,6 +25,7 @@ public protocol CardComponentDelegate: AnyObject {
 /// A component that provides a form for card payments.
 public class CardComponent: PaymentComponent, PresentableComponent, Localizable, Observer, LoadingComponent {
 
+    private let publicBinLenght = 6
     internal let cardPaymentMethod: AnyCardPaymentMethod
     internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
     internal var cardBrandProvider: AnyCardBrandProvider
@@ -130,7 +131,6 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
         if let storedCardComponent = storedCardComponent {
             return storedCardComponent.viewController
         }
-        
         return securedViewController
     }
     
@@ -171,7 +171,7 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
         let formViewController = CardViewController(configuration: configuration,
                                                     formStyle: style,
                                                     payment: payment,
-                                                    environment: environment,
+                                                    logoProvider: LogoURLProvider(environment: environment),
                                                     supportedCardTypes: supportedCardTypes,
                                                     scope: String(describing: self))
         formViewController.localizationParameters = localizationParameters
@@ -186,11 +186,10 @@ public class CardComponent: PaymentComponent, PresentableComponent, Localizable,
 extension CardComponent: CardViewControllerDelegate {
     
     func didChangeBIN(_ value: String) {
-        self.cardComponentDelegate?.didChangeBIN(value, component: self)
+        self.cardComponentDelegate?.didChangeBIN(String(value.prefix(publicBinLenght)), component: self)
         let parameters = CardBrandProviderParameters(bin: value, supportedTypes: supportedCardTypes)
         cardBrandProvider.provide(for: parameters) { [weak self] binInfo in
             guard let self = self else { return }
-
             self.cardViewController.update(binInfo: binInfo)
             self.cardComponentDelegate?.didChangeCardBrand(binInfo.brands ?? [], component: self)
         }

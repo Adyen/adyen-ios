@@ -10,6 +10,8 @@ import UIKit
 internal final class DropInNavigationController: UINavigationController {
     
     internal typealias CancelHandler = (Bool, PresentableComponent) -> Void
+
+    private let notificationCenter = NotificationCenter.default
     
     private let cancelHandler: CancelHandler?
     
@@ -26,7 +28,7 @@ internal final class DropInNavigationController: UINavigationController {
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self)
+        notificationCenter.removeObserver(self)
     }
     
     @available(*, unavailable)
@@ -63,23 +65,24 @@ internal final class DropInNavigationController: UINavigationController {
             keyboardRect = .zero
         }
         
-        if let topViewController = topViewController as? WrapperViewController, topViewController.requiresKeyboardInput {
-            topViewController.updateFrame(keyboardRect: keyboardRect, animated: true)
-        }
+        updateTopViewControllerIfNeeded()
     }
     
     // MARK: - Private
+
+    internal func updateTopViewControllerIfNeeded() {
+        guard let topViewController = topViewController as? WrapperViewController else { return }
+
+        let keyboardRect = topViewController.requiresKeyboardInput ? self.keyboardRect : .zero
+        topViewController.updateFrame(keyboardRect: keyboardRect, animated: true)
+    }
     
     private func wrapInModalController(component: PresentableComponent, isRoot: Bool) -> WrapperViewController {
         let modal = ModalViewController(rootViewController: component.viewController,
-                                        style: style) { [weak self] modal in
-            self?.cancelHandler?(modal, component)
-        }
+                                        style: style,
+                                        cancelButtonHandler: { [weak self] in self?.cancelHandler?($0, component) })
         modal.isRoot = isRoot
         let container = WrapperViewController(child: modal)
-        container.addChild(modal)
-        container.view.addSubview(modal.view)
-        modal.didMove(toParent: container)
         
         return container
     }
@@ -97,13 +100,12 @@ internal final class DropInNavigationController: UINavigationController {
     private func subscribeToKeyboardUpdates() {
         let selector = #selector(keyboardWillChangeFrame(_:))
         let notificationName = UIResponder.keyboardWillChangeFrameNotification
-        NotificationCenter.default.addObserver(self, selector: selector, name: notificationName, object: nil)
+        notificationCenter.addObserver(self, selector: selector, name: notificationName, object: nil)
     }
 }
 
 extension DropInNavigationController: UINavigationControllerDelegate {
     
-    /// :nodoc:
     internal func navigationController(_ navigationController: UINavigationController,
                                        animationControllerFor operation: UINavigationController.Operation,
                                        from fromVC: UIViewController,
@@ -114,18 +116,14 @@ extension DropInNavigationController: UINavigationControllerDelegate {
 }
 
 extension DropInNavigationController: UIViewControllerTransitioningDelegate {
-    
-    /// :nodoc:
-    public func presentationController(forPresented presented: UIViewController,
-                                       presenting: UIViewController?,
-                                       source: UIViewController) -> UIPresentationController? {
+
+    internal func presentationController(forPresented presented: UIViewController,
+                                         presenting: UIViewController?,
+                                         source: UIViewController) -> UIPresentationController? {
         DimmingPresentationController(presented: presented,
                                       presenting: presenting,
                                       layoutDidChanged: { [weak self] in
-                                          guard let self = self,
-                                                let viewController = self.topViewController as? WrapperViewController
-                                          else { return }
-                                          viewController.updateFrame(keyboardRect: self.keyboardRect, animated: false)
+                                          self?.updateTopViewControllerIfNeeded()
                                       })
     }
     

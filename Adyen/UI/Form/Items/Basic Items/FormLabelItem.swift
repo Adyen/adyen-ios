@@ -41,26 +41,10 @@ public class FormLabelItem: FormItem {
     }
 }
 
-private class ADYLabel: UILabel {}
-
-/// :nodoc:
-extension ADYLabel: AnyFormItemView {
+private class ADYLabel: UILabel, AnyFormItemView {
 
     public var childItemViews: [AnyFormItemView] { [] }
 
-    public var delegate: FormItemViewDelegate? {
-        get {
-            objc_getAssociatedObject(self, &UIViewAssociatedKeys.delegate) as? FormItemViewDelegate
-        }
-        set {
-            objc_setAssociatedObject(self,
-                                     &UIViewAssociatedKeys.delegate,
-                                     newValue,
-                                     objc_AssociationPolicy.OBJC_ASSOCIATION_ASSIGN)
-        }
-    }
-}
-
-private enum UIViewAssociatedKeys {
-    internal static var delegate = "delegate"
+    public weak var delegate: FormItemViewDelegate?
+    
 }
