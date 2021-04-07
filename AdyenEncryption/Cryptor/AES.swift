@@ -32,7 +32,7 @@ extension Cryptor {
             return (cipher?.cipherData, cipher?.tag)
         }
 
-        /// Lenght of the initial vector (nonce).
+        /// Length of the initial vector (nonce).
         /// :nodoc:
         internal var ivLength: Int {
             12
