@@ -43,7 +43,7 @@ internal final class WrapperViewController: UIViewController {
         view.layer.removeAllAnimations()
         UIView.animate(withDuration: animated ? 0.35 : 0.0,
                        delay: 0.0,
-                       options: [ .curveLinear ],
+                       options: [.curveLinear],
                        animations: { view.frame = finalFrame },
                        completion: nil)
     }
@@ -62,8 +62,6 @@ extension ModalViewController {
         UIApplication.shared.statusBarOrientation.isPortrait ? 0.9 : 1
     }
 
-    typealias FinalContent = (frame: CGRect, contentHeight: CGFloat)
-
     /// Enables any `UIViewController` to recalculate it's conten's size form modal presentation ,
     /// e.g `viewController.adyen.finalPresentationFrame(in:keyboardRect:)`.
     /// :nodoc:
@@ -76,18 +74,18 @@ extension ModalViewController {
         let bottomPadding = max(abs(keyboardRect.height), containerView.safeAreaInsets.bottom)
         let expectedHeight = preferredContentSize.height + bottomPadding
 
-        func calculateFrame(for expectedHeight: CGFloat, with bottomPadding: CGFloat) {
+        func calculateFrame(for expectedHeight: CGFloat) {
             frame.origin.y += frame.size.height - expectedHeight
             frame.size.height = expectedHeight
         }
 
         switch expectedHeight {
         case let height where height < smallestHeightPossible:
-            calculateFrame(for: smallestHeightPossible, with: bottomPadding)
+            calculateFrame(for: smallestHeightPossible)
         case let height where height > biggestHeightPossible:
-            calculateFrame(for: biggestHeightPossible, with: bottomPadding)
+            calculateFrame(for: biggestHeightPossible)
         default:
-            calculateFrame(for: expectedHeight, with: bottomPadding)
+            calculateFrame(for: expectedHeight)
         }
 
         return frame

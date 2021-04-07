@@ -73,8 +73,8 @@ internal final class DropInNavigationController: UINavigationController {
     internal func updateTopViewControllerIfNeeded() {
         guard let topViewController = topViewController as? WrapperViewController else { return }
 
-        let keyboardRect = topViewController.requiresKeyboardInput ? self.keyboardRect : .zero
-        topViewController.updateFrame(keyboardRect: keyboardRect, animated: true)
+        let frame = topViewController.requiresKeyboardInput ? self.keyboardRect : .zero
+        topViewController.updateFrame(keyboardRect: frame, animated: true)
     }
     
     private func wrapInModalController(component: PresentableComponent, isRoot: Bool) -> WrapperViewController {

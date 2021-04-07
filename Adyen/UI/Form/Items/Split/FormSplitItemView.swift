@@ -16,7 +16,7 @@ internal final class FormSplitItemView: FormItemView<FormSplitItem> {
     ///
     /// - Parameter item: The item represented by the view.
     internal required init(item: FormSplitItem) {
-        views = item.subitems.map(FormSplitItemView.renderItem)
+        views = item.subitems.map(FormSplitItemView.build)
         super.init(item: item)
         
         addSubview(stackView)
@@ -40,8 +40,8 @@ internal final class FormSplitItemView: FormItemView<FormSplitItem> {
         return stackView
     }()
 
-    private static func renderItem(_ item: FormItem) -> AnyFormItemView {
-        let itemView = FormItemViewBuilder.renderItem(item)
+    private static func build(_ item: FormItem) -> AnyFormItemView {
+        let itemView = FormItemViewBuilder.build(item)
         itemView.preservesSuperviewLayoutMargins = true
         return itemView
     }
