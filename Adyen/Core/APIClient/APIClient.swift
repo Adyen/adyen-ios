@@ -117,7 +117,7 @@ public final class APIClient: APIClientProtocol {
     
     /// :nodoc:
     private lazy var urlSession: URLSession = {
-        URLSession(configuration: .ephemeral, delegate: self, delegateQueue: .main)
+        URLSession(configuration: .ephemeral, delegate: nil, delegateQueue: .main)
     }()
     
     /// :nodoc:
