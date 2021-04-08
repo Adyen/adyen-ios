@@ -93,7 +93,7 @@ public final class SecuredViewController: UIViewController {
         childViewController.didMove(toParent: self)
         
         childViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        childViewController.view.adyen.anchore(inside: view)
+        childViewController.view.adyen.anchor(inside: view)
     }
     
     private func listenToBackgroundNotifications() {
@@ -114,7 +114,7 @@ public final class SecuredViewController: UIViewController {
         view.backgroundColor = .clear
         
         blurEffectView.translatesAutoresizingMaskIntoConstraints = false
-        blurConstraints = blurEffectView.adyen.anchore(inside: view)
+        blurConstraints = blurEffectView.adyen.anchor(inside: view)
         
         UIView.animate(withDuration: 0.2, animations: { [weak self] in
             self?.blurEffectView.effect = self?.blurEffect

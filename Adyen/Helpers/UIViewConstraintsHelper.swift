@@ -14,7 +14,7 @@ extension AdyenScope where Base: UIView {
     /// IMPORTANT: both view should be in the same hierarcy.
     /// - Parameter view: Container view
     @discardableResult
-    public func anchore(inside view: UIView, with padding: UIEdgeInsets = .zero) -> [NSLayoutConstraint] {
+    public func anchor(inside view: UIView, with padding: UIEdgeInsets = .zero) -> [NSLayoutConstraint] {
         let constraints = [
             base.topAnchor.constraint(equalTo: view.topAnchor, constant: padding.top),
             base.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: padding.bottom),
@@ -29,7 +29,7 @@ extension AdyenScope where Base: UIView {
     /// IMPORTANT: both view should be in the same hierarcy.
     /// - Parameter view: Container view
     @discardableResult
-    public func anchore(inside margines: UILayoutGuide, with padding: UIEdgeInsets = .zero) -> [NSLayoutConstraint] {
+    public func anchor(inside margines: UILayoutGuide, with padding: UIEdgeInsets = .zero) -> [NSLayoutConstraint] {
         let constraints = [
             base.topAnchor.constraint(equalTo: margines.topAnchor, constant: padding.top),
             base.bottomAnchor.constraint(equalTo: margines.bottomAnchor, constant: padding.bottom),
@@ -48,7 +48,7 @@ extension AdyenScope where Base: UIView {
         containerView.addSubview(base)
         containerView.translatesAutoresizingMaskIntoConstraints = false
         base.translatesAutoresizingMaskIntoConstraints = false
-        anchore(inside: containerView, with: UIEdgeInsets(top: insets.top,
+        anchor(inside: containerView, with: UIEdgeInsets(top: insets.top,
                                                           left: insets.left,
                                                           bottom: insets.bottom,
                                                           right: insets.right))

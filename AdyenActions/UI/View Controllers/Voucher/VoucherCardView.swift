@@ -90,7 +90,7 @@ internal class VoucherCardView: UIView {
         buildContainerLayer()
 
         addSubview(stackView)
-        stackView.adyen.anchore(inside: self, with: innerViewsInset)
+        stackView.adyen.anchor(inside: self, with: innerViewsInset)
 
         separatorView.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
         separatorView.heightAnchor.constraint(equalToConstant: 20).isActive = true

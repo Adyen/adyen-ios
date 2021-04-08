@@ -22,7 +22,7 @@ internal final class FormButtonItemView: FormItemView<FormButtonItem>, Observer 
         bind(item.$showsActivityIndicator, to: submitButton, at: \.showsActivityIndicator)
         bind(item.$enabled, to: submitButton, at: \.isEnabled)
         
-        submitButton.adyen.anchore(inside: self)
+        submitButton.adyen.anchor(inside: self)
     }
     
     // MARK: - Submit Button

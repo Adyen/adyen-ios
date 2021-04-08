@@ -74,7 +74,7 @@ internal final class ModalToolbar: UIView {
             setupLayoutForCenteredMode()
         default:
             addSubview(stackView)
-            stackView.adyen.anchore(inside: self)
+            stackView.adyen.anchor(inside: self)
         }
 
         setupStyle()

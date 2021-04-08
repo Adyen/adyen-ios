@@ -11,11 +11,11 @@ class LengthValidatorTests: XCTestCase {
     
     func testValidation() {
         XCTAssertTrue(validate("Hello World", minimumLength: 2))
-        XCTAssertTrue(validate("Hello World", minimumLength: 2, maximumLenght: 12))
-        XCTAssertTrue(validate("", maximumLenght: 10))
+        XCTAssertTrue(validate("Hello World", minimumLength: 2, maximumLength: 12))
+        XCTAssertTrue(validate("", maximumLength: 10))
         XCTAssertFalse(validate("Hello World", minimumLength: 12))
-        XCTAssertFalse(validate("Hello World", maximumLenght: 10))
-        XCTAssertFalse(validate("Hello World", minimumLength: 12, maximumLenght: 24))
+        XCTAssertFalse(validate("Hello World", maximumLength: 10))
+        XCTAssertFalse(validate("Hello World", minimumLength: 12, maximumLength: 24))
         
         XCTAssertTrue(testMaximumLength("1234", maximumLength: 4))
         XCTAssertFalse(testMaximumLength("1234", maximumLength: nil))
@@ -23,8 +23,8 @@ class LengthValidatorTests: XCTestCase {
         XCTAssertFalse(testMaximumLength("12", maximumLength: 4))
     }
     
-    func validate(_ string: String, minimumLength: Int? = nil, maximumLenght: Int? = nil) -> Bool {
-        LengthValidator(minimumLength: minimumLength, maximumLength: maximumLenght).isValid(string)
+    func validate(_ string: String, minimumLength: Int? = nil, maximumLength: Int? = nil) -> Bool {
+        LengthValidator(minimumLength: minimumLength, maximumLength: maximumLength).isValid(string)
     }
     
     func testMaximumLength(_ string: String, maximumLength: Int?) -> Bool {

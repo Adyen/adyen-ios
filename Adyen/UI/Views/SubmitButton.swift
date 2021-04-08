@@ -120,7 +120,7 @@ public final class SubmitButton: UIControl {
     }
     
     private func configureConstraints() {
-        backgroundView.adyen.anchore(inside: self)
+        backgroundView.adyen.anchor(inside: self)
         
         let constraints = [
             activityIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor),

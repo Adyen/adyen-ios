@@ -43,7 +43,7 @@ internal final class FormPhoneExtensionPickerItemView: FormValueItemView<FormPho
     
     private func configureConstraints() {
         inputControl.translatesAutoresizingMaskIntoConstraints = false
-        inputControl.adyen.anchore(inside: self)
+        inputControl.adyen.anchor(inside: self)
     }
     
     // MARK: - Private

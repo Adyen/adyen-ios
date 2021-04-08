@@ -241,7 +241,7 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
     }
     
     private func configureConstraints() {
-        textStackView.adyen.anchore(inside: self)
+        textStackView.adyen.anchor(inside: self)
         separatorView.bottomAnchor.constraint(equalTo: accessoryStackView.bottomAnchor, constant: 4).isActive = true
     }
     

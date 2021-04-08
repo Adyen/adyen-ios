@@ -29,7 +29,7 @@ internal final class DimmingPresentationController: UIPresentationController {
     
     private func attachDimmigView(to view: UIView) {
         view.insertSubview(dimmingView, at: 0)
-        dimmingView.adyen.anchore(inside: view)
+        dimmingView.adyen.anchor(inside: view)
     }
     
     override internal func containerViewWillLayoutSubviews() {
