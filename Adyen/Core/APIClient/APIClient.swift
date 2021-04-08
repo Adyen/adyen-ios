@@ -117,9 +117,16 @@ public final class APIClient: APIClientProtocol {
     
     /// :nodoc:
     private lazy var urlSession: URLSession = {
-        let conf = URLSessionConfiguration.ephemeral
-        conf.urlCache = nil
-        return URLSession(configuration: conf, delegate: nil, delegateQueue: .main)
+        let config = URLSessionConfiguration.ephemeral
+        config.urlCache = nil
+
+        if #available(iOS 13.0, *) {
+            config.tlsMinimumSupportedProtocolVersion = .TLSv12
+        } else {
+            config.tlsMinimumSupportedProtocol = .tlsProtocol12
+        }
+
+        return URLSession(configuration: config, delegate: nil, delegateQueue: .main)
     }()
     
     /// :nodoc:
