@@ -36,7 +36,7 @@ open class FormViewController: UIViewController, Localizable {
     }
 
     deinit { notificationCenter.removeObserver(self) }
-    
+
     @available(*, unavailable)
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

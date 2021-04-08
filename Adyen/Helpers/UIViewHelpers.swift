@@ -19,4 +19,23 @@ extension AdyenScope where Base: UIView {
 
         return image
     }
+
+    public func getTopMostScrollView() -> UIScrollView? {
+        if let scrollView = base as? UIScrollView {
+            return scrollView
+        }
+
+        var queue = [UIView]()
+        queue.append(contentsOf: base.subviews)
+
+        while !queue.isEmpty {
+            let currentView = queue.removeFirst()
+            if let scrollView = currentView.adyen.getTopMostScrollView() {
+                return scrollView
+            } else {
+                queue.append(contentsOf: currentView.subviews)
+            }
+        }
+        return nil
+    }
 }

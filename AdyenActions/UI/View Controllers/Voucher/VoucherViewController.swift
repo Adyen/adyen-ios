@@ -32,7 +32,7 @@ internal final class VoucherViewController: UIViewController {
     private func buildUI() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(scrollView)
-        scrollView.adyen.anchor(inside: view)
+        scrollView.adyen.anchor(inside: view.safeAreaLayoutGuide)
 
         voucherView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(voucherView)
