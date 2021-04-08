@@ -64,7 +64,7 @@ internal final class WrapperViewController: UIViewController {
 
     private lazy var topMostScrollView: UIScrollView? = {
         guard let view = child.viewIfLoaded else { return nil }
-        return view.adyen.getTopMostScrollView()
+        return view.adyen.getTopMostView()
     }()
 
     fileprivate func positionContent(_ child: ModalViewController) {
