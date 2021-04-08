@@ -54,7 +54,10 @@ internal final class WrapperViewController: UIViewController {
     private func updateTopScrollViewInsets(keyboardHeight: CGFloat,
                                            preferredContentSize: CGSize,
                                            finalHeight: CGFloat) {
-        guard keyboardHeight > 0 else { return }
+        guard keyboardHeight > 0 else {
+            topMostScrollView?.contentInset.bottom = 0
+            return
+        }
         let bottomScrollInset: CGFloat = preferredContentSize.height + keyboardHeight - finalHeight
         topMostScrollView?.contentInset.bottom = bottomScrollInset
     }
