@@ -7,24 +7,27 @@
 import UIKit
 
 /// :nodoc:
-public protocol KeyboardObserver {
+public protocol KeyboardObserver: AnyObject {
 
     /// :nodoc:
-    func subscribeToKeyboardUpdates(_ observer: @escaping (_ keyboardRect: CGRect) -> Void) -> Any
+    func startObserving()
 
     /// :nodoc:
-    func removeObserver(_ observer: Any)
+    func stopObserving()
+
+    /// :nodoc:
+    var keyboardObserver: Any? { get set }
 }
 
 /// :nodoc:
 extension KeyboardObserver {
 
     /// :nodoc:
-    public func subscribeToKeyboardUpdates(_ observer: @escaping (_ keyboardRect: CGRect) -> Void) -> Any {
+    public func startObserving(_ observer: @escaping (_ keyboardRect: CGRect) -> Void) {
         let notificationName = UIResponder.keyboardWillChangeFrameNotification
-        return NotificationCenter.default.addObserver(forName: notificationName,
-                                                      object: nil,
-                                                      queue: OperationQueue.main) { notification in
+        keyboardObserver = NotificationCenter.default.addObserver(forName: notificationName,
+                                                                  object: nil,
+                                                                  queue: OperationQueue.main) { notification in
             var keyboardRect: CGRect = .zero
             if let bounds = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
                 keyboardRect = bounds.intersection(UIScreen.main.bounds)
@@ -34,7 +37,8 @@ extension KeyboardObserver {
     }
 
     /// :nodoc:
-    public func removeObserver(_ observer: Any) {
-        NotificationCenter.default.removeObserver(observer)
+    public func stopObserving() {
+        keyboardObserver.map(NotificationCenter.default.removeObserver)
+        keyboardObserver = nil
     }
 }

@@ -8,7 +8,7 @@ import UIKit
 
 /// Displays a form for the user to enter details.
 /// :nodoc:
-internal final class FormView: UIScrollView, KeyboardAvoidingView {
+internal final class FormView: UIScrollView {
     
     /// Initializes the form view.
     internal init() {

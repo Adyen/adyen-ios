@@ -129,7 +129,7 @@ class AssertsTests: XCTestCase {
     }
 
     func testVoucherViewControllerPreferredContentSizeAssertion() {
-        let sut = VoucherViewController(voucherView: UIView())
+        let sut = VoucherViewController(voucherView: UIView(), style: VoucherComponentStyle())
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
         AdyenAssertion.listner = { message in

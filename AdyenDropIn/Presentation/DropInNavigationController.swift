@@ -15,7 +15,7 @@ internal final class DropInNavigationController: UINavigationController, Keyboar
     
     private var keyboardRect: CGRect = .zero
 
-    private var keyboardObserver: Any?
+    internal var keyboardObserver: Any?
     
     internal let style: NavigationStyle
     
@@ -24,14 +24,18 @@ internal final class DropInNavigationController: UINavigationController, Keyboar
         self.cancelHandler = cancelHandler
         super.init(nibName: nil, bundle: nil)
         setup(root: rootComponent)
-        keyboardObserver = subscribeToKeyboardUpdates { [weak self] in
-            self?.keyboardRect = $0
-            self?.updateTopViewControllerIfNeeded()
-        }
+        startObserving()
     }
     
     deinit {
-        keyboardObserver.map(removeObserver(_:))
+        stopObserving()
+    }
+
+    internal func startObserving() {
+        keyboardObserver = startObserving { [weak self] in
+            self?.keyboardRect = $0
+            self?.updateTopViewControllerIfNeeded()
+        }
     }
     
     @available(*, unavailable)

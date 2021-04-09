@@ -9,7 +9,7 @@ import UIKit
 /// Displays a form for the user to enter details.
 /// :nodoc:
 @objc(ADYFormViewController)
-open class FormViewController: UIViewController, Localizable {
+open class FormViewController: UIViewController, Localizable, KeyboardObserver {
 
     // MARK: - Public
     
@@ -29,6 +29,11 @@ open class FormViewController: UIViewController, Localizable {
     public init(style: ViewStyle) {
         self.style = style
         super.init(nibName: nil, bundle: nil)
+        startObserving()
+    }
+
+    deinit {
+        stopObserving()
     }
 
     @available(*, unavailable)
@@ -48,9 +53,27 @@ open class FormViewController: UIViewController, Localizable {
         """) }
     }
 
+    public func startObserving() {
+        keyboardObserver = startObserving { [weak self] in
+            self?.updateScrollViewInsets(keyboardHeight: $0.height)
+        }
+    }
+
     // MARK: - Private Properties
 
+    /// :nodoc:
+    public var keyboardObserver: Any?
+
     private lazy var itemManager = FormViewItemManager(itemViewDelegate: self)
+
+    private func updateScrollViewInsets(keyboardHeight: CGFloat) {
+        guard keyboardHeight > 0 else {
+            formView.contentInset.bottom = 0
+            return
+        }
+        let bottomScrollInset: CGFloat = preferredContentSize.height + keyboardHeight - formView.bounds.height
+        formView.contentInset.bottom = bottomScrollInset
+    }
     
     // MARK: - Items
     
