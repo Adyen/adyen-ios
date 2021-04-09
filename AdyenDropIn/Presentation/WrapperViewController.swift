@@ -63,8 +63,7 @@ internal final class WrapperViewController: UIViewController {
     }
 
     private lazy var topMostScrollView: KeyboardAvoidingView? = {
-        guard let view = child.viewIfLoaded else { return nil }
-        return view.adyen.getTopMostView()
+        child.viewIfLoaded.flatMap { $0.adyen.getTopMostView() }
     }()
 
     fileprivate func positionContent(_ child: ModalViewController) {
