@@ -14,7 +14,8 @@ class UIViewHelpersTests: XCTestCase {
     func testViewTreeSearch1() throws {
         let rootView = UIScrollView()
         rootView.accessibilityIdentifier = "rootView"
-        XCTAssertEqual((rootView.adyen.getTopMostView() as? UIScrollView)?.accessibilityIdentifier, "rootView")
+        let foundView: UIScrollView? = rootView.adyen.getTopMostView()
+        XCTAssertEqual(foundView?.accessibilityIdentifier, "rootView")
     }
 
     func testViewTreeSearch2() throws {

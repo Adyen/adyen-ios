@@ -22,9 +22,8 @@ extension AdyenScope where Base: UIView {
     }
 
     /// :nodoc:
-    public func getTopMostView<T: UIView>() -> T? {
-        var queue = [UIView]()
-        queue.append(base)
+    public func getTopMostView<T>() -> T? {
+        var queue: [UIView] = [base]
 
         while !queue.isEmpty {
             let currentView = queue.removeFirst()

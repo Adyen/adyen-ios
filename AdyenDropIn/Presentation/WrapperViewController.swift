@@ -62,7 +62,7 @@ internal final class WrapperViewController: UIViewController {
         topMostScrollView?.contentInset.bottom = bottomScrollInset
     }
 
-    private lazy var topMostScrollView: UIScrollView? = {
+    private lazy var topMostScrollView: KeyboardAvoidingView? = {
         guard let view = child.viewIfLoaded else { return nil }
         return view.adyen.getTopMostView()
     }()

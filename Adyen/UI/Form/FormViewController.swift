@@ -11,11 +11,7 @@ import UIKit
 @objc(ADYFormViewController)
 open class FormViewController: UIViewController, Localizable {
 
-    private var bottomConstraint: NSLayoutConstraint?
-
-    private let notificationCenter = NotificationCenter.default
-    
-    private lazy var itemManager = FormViewItemManager(itemViewDelegate: self)
+    // MARK: - Public
     
     /// :nodoc:
     public var requiresKeyboardInput: Bool { formRequiresInputView() }
@@ -35,14 +31,10 @@ open class FormViewController: UIViewController, Localizable {
         super.init(nibName: nil, bundle: nil)
     }
 
-    deinit { notificationCenter.removeObserver(self) }
-
     @available(*, unavailable)
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - Public
     
     /// :nodoc:
     override public var preferredContentSize: CGSize {
@@ -55,6 +47,10 @@ open class FormViewController: UIViewController, Localizable {
         setter - no implemented.
         """) }
     }
+
+    // MARK: - Private Properties
+
+    private lazy var itemManager = FormViewItemManager(itemViewDelegate: self)
     
     // MARK: - Items
     
@@ -121,7 +117,7 @@ open class FormViewController: UIViewController, Localizable {
     override open func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(formView)
-        setupConstraints()
+        formView.adyen.anchor(inside: view.safeAreaLayoutGuide)
         
         delegate?.viewDidLoad(viewController: self)
         
@@ -129,11 +125,6 @@ open class FormViewController: UIViewController, Localizable {
         
         view.backgroundColor = style.backgroundColor
         formView.backgroundColor = style.backgroundColor
-
-        notificationCenter.addObserver(self,
-                                       selector: #selector(keyboardWillChangeFrame(_:)),
-                                       name: UIResponder.keyboardWillChangeFrameNotification,
-                                       object: nil)
     }
     
     /// :nodoc:
@@ -148,14 +139,8 @@ open class FormViewController: UIViewController, Localizable {
         form.translatesAutoresizingMaskIntoConstraints = false
         return form
     }()
-    
-    private func setupConstraints() {
-        let constraints = formView.adyen.anchor(inside: view.safeAreaLayoutGuide)
-        bottomConstraint = constraints.first { $0.firstAttribute == .bottom }
-        bottomConstraint?.priority = .defaultHigh
-    }
-    
-    // MARK: - Keyboard
+
+    // MARK: - UIResponder
     
     @discardableResult
     override public func resignFirstResponder() -> Bool {
@@ -163,14 +148,6 @@ open class FormViewController: UIViewController, Localizable {
         textItemView?.resignFirstResponder()
         
         return super.resignFirstResponder()
-    }
-    
-    @objc private func keyboardWillChangeFrame(_ notification: NSNotification) {
-        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
-        var heightOffset = keyboardFrame.origin.y - UIScreen.main.bounds.height
-        heightOffset += min(abs(heightOffset), view.safeAreaInsets.bottom)
-
-        bottomConstraint?.constant = heightOffset
     }
     
     // MARK: - Other
