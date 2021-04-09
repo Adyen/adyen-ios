@@ -7,15 +7,15 @@
 import Adyen
 import UIKit
 
-internal final class DropInNavigationController: UINavigationController {
+internal final class DropInNavigationController: UINavigationController, KeyboardObserver {
     
     internal typealias CancelHandler = (Bool, PresentableComponent) -> Void
-
-    private let notificationCenter = NotificationCenter.default
     
     private let cancelHandler: CancelHandler?
     
     private var keyboardRect: CGRect = .zero
+
+    private var keyboardObserver: Any?
     
     internal let style: NavigationStyle
     
@@ -24,11 +24,14 @@ internal final class DropInNavigationController: UINavigationController {
         self.cancelHandler = cancelHandler
         super.init(nibName: nil, bundle: nil)
         setup(root: rootComponent)
-        subscribeToKeyboardUpdates()
+        keyboardObserver = subscribeToKeyboardUpdates { [weak self] in
+            self?.keyboardRect = $0
+            self?.updateTopViewControllerIfNeeded()
+        }
     }
     
     deinit {
-        notificationCenter.removeObserver(self)
+        keyboardObserver.map(removeObserver(_:))
     }
     
     @available(*, unavailable)
@@ -54,18 +57,6 @@ internal final class DropInNavigationController: UINavigationController {
     
     internal func present(root component: PresentableComponent) {
         pushViewController(wrapInModalController(component: component, isRoot: true), animated: true)
-    }
-    
-    // MARK: - Keyboard
-    
-    @objc private func keyboardWillChangeFrame(_ notification: NSNotification) {
-        if let bounds = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
-            keyboardRect = bounds.intersection(UIScreen.main.bounds)
-        } else {
-            keyboardRect = .zero
-        }
-        
-        updateTopViewControllerIfNeeded()
     }
     
     // MARK: - Private
@@ -95,12 +86,6 @@ internal final class DropInNavigationController: UINavigationController {
         modalPresentationStyle = .custom
         transitioningDelegate = self
         navigationBar.isHidden = true
-    }
-    
-    private func subscribeToKeyboardUpdates() {
-        let selector = #selector(keyboardWillChangeFrame(_:))
-        let notificationName = UIResponder.keyboardWillChangeFrameNotification
-        notificationCenter.addObserver(self, selector: selector, name: notificationName, object: nil)
     }
 }
 

@@ -8,7 +8,7 @@ import UIKit
 
 /// Displays a form for the user to enter details.
 /// :nodoc:
-internal final class FormView: UIScrollView {
+internal final class FormView: UIScrollView, KeyboardAvoidingView {
     
     /// Initializes the form view.
     internal init() {
@@ -16,7 +16,7 @@ internal final class FormView: UIScrollView {
         
         preservesSuperviewLayoutMargins = true
         addSubview(stackView)
-        
+
         configureConstraints()
     }
     
@@ -42,18 +42,7 @@ internal final class FormView: UIScrollView {
     internal func appendItemView(_ itemView: UIView) {
         stackView.addArrangedSubview(itemView)
     }
-    
-    override internal var contentOffset: CGPoint {
-        get {
-            super.contentOffset
-        }
-        
-        set {
-            let noNeedToScroll = contentSize.height <= frame.size.height
-            super.contentOffset = noNeedToScroll ? .zero : newValue
-        }
-    }
-    
+
     // MARK: - Stack View
     
     private lazy var stackView: UIStackView = {
