@@ -31,9 +31,7 @@ internal final class DropInNavigationController: UINavigationController, Keyboar
     }
     
     deinit {
-        if let keyboardObserver = keyboardObserver {
-            removeObserver(keyboardObserver)
-        }
+        keyboardObserver.map(removeObserver(_:))
     }
     
     @available(*, unavailable)
