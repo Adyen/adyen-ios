@@ -10,6 +10,7 @@ import UIKit
 /// :nodoc:
 extension AdyenScope where Base: UIView {
 
+    /// :nodoc:
     public func snapShot() -> UIImage? {
         UIGraphicsBeginImageContextWithOptions(base.bounds.size, false, 0.0)
         base.drawHierarchy(in: base.bounds, afterScreenUpdates: true)
@@ -20,13 +21,10 @@ extension AdyenScope where Base: UIView {
         return image
     }
 
+    /// :nodoc:
     public func getTopMostView<T: UIView>() -> T? {
-        if let foundView = base as? T {
-            return foundView
-        }
-
         var queue = [UIView]()
-        queue.append(contentsOf: base.subviews)
+        queue.append(base)
 
         while !queue.isEmpty {
             let currentView = queue.removeFirst()

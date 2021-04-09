@@ -451,6 +451,7 @@
 		F97CCD3C24360A4000BC560A /* BundleHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97CCD3B24360A4000BC560A /* BundleHelpers.swift */; };
 		F9842CD025710BF00063CE5A /* ThreeDS2ClassicActionHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9842CCF25710BF00063CE5A /* ThreeDS2ClassicActionHandlerTests.swift */; };
 		F99E7278261F6C6F00EA5B78 /* KeyboardObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99E7277261F6C6F00EA5B78 /* KeyboardObserver.swift */; };
+		F99E72992620380C00EA5B78 /* UIViewHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99E72982620380C00EA5B78 /* UIViewHelpersTests.swift */; };
 		F99F08582383EA2A00EBB948 /* ValidatorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99F08572383EA2A00EBB948 /* ValidatorMock.swift */; };
 		F99F085A2383EAC800EBB948 /* FormatterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99F08592383EAC800EBB948 /* FormatterMock.swift */; };
 		F99F08642383F2B000EBB948 /* FormTextItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99F08632383F2B000EBB948 /* FormTextItemViewTests.swift */; };
@@ -1202,6 +1203,7 @@
 		F9842CCF25710BF00063CE5A /* ThreeDS2ClassicActionHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2ClassicActionHandlerTests.swift; sourceTree = "<group>"; };
 		F99262C324EECB9F00C9A60D /* ApplePayComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayComponentExtensions.swift; sourceTree = "<group>"; };
 		F99E7277261F6C6F00EA5B78 /* KeyboardObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardObserver.swift; sourceTree = "<group>"; };
+		F99E72982620380C00EA5B78 /* UIViewHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewHelpersTests.swift; sourceTree = "<group>"; };
 		F99F08572383EA2A00EBB948 /* ValidatorMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatorMock.swift; sourceTree = "<group>"; };
 		F99F08592383EAC800EBB948 /* FormatterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterMock.swift; sourceTree = "<group>"; };
 		F99F08632383F2B000EBB948 /* FormTextItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextItemViewTests.swift; sourceTree = "<group>"; };
@@ -2106,6 +2108,7 @@
 		E97B9716229D530F00505476 /* Adyen Tests */ = {
 			isa = PBXGroup;
 			children = (
+				F99E7297262037F100EA5B78 /* Helpers */,
 				F91760A52594C5C000D653BE /* Assets */,
 				F99F085B2383EBFF00EBB948 /* UI */,
 				E97B9718229D54C600505476 /* Core */,
@@ -2920,6 +2923,14 @@
 				F97C7C5E2590EE0A00D80A54 /* AnyThreeDS2ActionHandler.swift */,
 			);
 			path = "Action handlers";
+			sourceTree = "<group>";
+		};
+		F99E7297262037F100EA5B78 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				F99E72982620380C00EA5B78 /* UIViewHelpersTests.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		F99F085B2383EBFF00EBB948 /* UI */ = {
@@ -4067,6 +4078,7 @@
 				F9B019442611E965001F23FC /* EContextATMVoucherViewControllerProviderTests.swift in Sources */,
 				E9E3DAB2221D79C800697074 /* CardNumberFormatterTests.swift in Sources */,
 				F9EDB796239663F800CFB3C9 /* PaymentComponentMock.swift in Sources */,
+				F99E72992620380C00EA5B78 /* UIViewHelpersTests.swift in Sources */,
 				E7D189B025D31936006AD3B7 /* DropInActionTests.swift in Sources */,
 				F9A781B02403ED4000E12487 /* NumericStringValidatorTests.swift in Sources */,
 				F960FB092371823A00AEF74B /* ApplePayComponentTest.swift in Sources */,
