@@ -13,8 +13,11 @@ internal final class VoucherViewController: UIViewController {
 
     private let voucherView: UIView
 
-    internal init(voucherView: UIView) {
+    private let style: ViewStyle
+
+    internal init(voucherView: UIView, style: ViewStyle) {
         self.voucherView = voucherView
+        self.style = style
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -26,7 +29,7 @@ internal final class VoucherViewController: UIViewController {
     override internal func viewDidLoad() {
         super.viewDidLoad()
         buildUI()
-        view.backgroundColor = .clear
+        view.backgroundColor = style.backgroundColor
     }
 
     private func buildUI() {

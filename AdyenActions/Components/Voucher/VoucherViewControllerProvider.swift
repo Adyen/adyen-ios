@@ -19,7 +19,7 @@ internal protocol AnyVoucherViewControllerProvider: Component, Localizable {
 
 internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProvider {
 
-    internal var style: VoucherComponentStyle
+    internal let style: VoucherComponentStyle
 
     internal var localizationParameters: LocalizationParameters?
 
@@ -51,7 +51,7 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
         let view = GenericVoucherView(model: createModel(with: action, fields: fields))
         view.delegate = delegate
         view.localizationParameters = localizationParameters
-        let viewController = VoucherViewController(voucherView: view)
+        let viewController = VoucherViewController(voucherView: view, style: style)
         view.presenter = viewController
         return viewController
     }

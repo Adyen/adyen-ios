@@ -40,9 +40,6 @@ internal final class WrapperViewController: UIViewController {
         guard let view = child.viewIfLoaded, let window = UIApplication.shared.keyWindow else { return }
         view.setNeedsLayout()
         let finalFrame = child.finalPresentationFrame(in: window, keyboardRect: keyboardRect)
-        updateTopScrollViewInsets(keyboardHeight: keyboardRect.height,
-                                  preferredContentSize: child.preferredContentSize,
-                                  finalHeight: finalFrame.height)
         view.layer.removeAllAnimations()
         UIView.animate(withDuration: animated ? 0.35 : 0.0,
                        delay: 0.0,
@@ -50,21 +47,6 @@ internal final class WrapperViewController: UIViewController {
                        animations: { view.frame = finalFrame },
                        completion: nil)
     }
-
-    private func updateTopScrollViewInsets(keyboardHeight: CGFloat,
-                                           preferredContentSize: CGSize,
-                                           finalHeight: CGFloat) {
-        guard keyboardHeight > 0 else {
-            topMostScrollView?.contentInset.bottom = 0
-            return
-        }
-        let bottomScrollInset: CGFloat = preferredContentSize.height + keyboardHeight - finalHeight
-        topMostScrollView?.contentInset.bottom = bottomScrollInset
-    }
-
-    private lazy var topMostScrollView: KeyboardAvoidingView? = {
-        child.viewIfLoaded.flatMap { $0.adyen.getTopMostView() }
-    }()
 
     fileprivate func positionContent(_ child: ModalViewController) {
         addChild(child)
