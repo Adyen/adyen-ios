@@ -95,3 +95,6 @@
 "adyen.errorFeedback.emptyField" = "Dit is een verplicht veld. Vul het in.";
 "adyen.errorFeedback.incorrectFormat" = "Ongeldige invoer";
 "adyen.field.title.optional" = "(optioneel)";
+"adyen.card.pin.title" = "PIN";
+"adyen.missingField" = "Onvolledig veld";
+"adyen.card.applyGiftcard" = "Inwisselen";

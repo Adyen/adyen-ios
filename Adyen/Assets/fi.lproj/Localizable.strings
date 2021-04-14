@@ -95,3 +95,6 @@
 "adyen.errorFeedback.emptyField" = "Vaaditut kentät, syötä sisältö.";
 "adyen.errorFeedback.incorrectFormat" = "Syöttömuoto ei ole kelvollinen.";
 "adyen.field.title.optional" = "(valinnainen)";
+"adyen.card.pin.title" = "Pin-tunnus";
+"adyen.missingField" = "Täydentämätön kenttä";
+"adyen.card.applyGiftcard" = "Lunasta";

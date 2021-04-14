@@ -66,7 +66,7 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
                 
                 let details = IssuerListDetails(paymentMethod: self.issuerListPaymentMethod,
                                                 issuer: issuer.identifier)
-                self.submit(data: PaymentComponentData(paymentMethodDetails: details))
+                self.submit(data: PaymentComponentData(paymentMethodDetails: details, amount: self.payment?.amount))
                 listViewController.startLoading(for: listItem)
             }
             

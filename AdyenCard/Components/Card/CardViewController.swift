@@ -244,8 +244,8 @@ internal protocol CardViewControllerDelegate: AnyObject {
 
 }
 
-private extension FormValueItem where ValueType == String {
-    var nonEmptyValue: String? {
+extension FormValueItem where ValueType == String {
+    internal var nonEmptyValue: String? {
         self.value.isEmpty ? nil : self.value
     }
 }

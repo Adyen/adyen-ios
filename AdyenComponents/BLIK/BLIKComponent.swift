@@ -101,7 +101,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
         button.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
 
-        submit(data: PaymentComponentData(paymentMethodDetails: details))
+        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount))
     }
 }
 

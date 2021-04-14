@@ -95,3 +95,6 @@
 "adyen.errorFeedback.emptyField" = "Kötelező mező, töltse ki.";
 "adyen.errorFeedback.incorrectFormat" = "A megadott adatok formátuma érvénytelen.";
 "adyen.field.title.optional" = "(nem kötelező)";
+"adyen.card.pin.title" = "PIN-kód";
+"adyen.missingField" = "Hiányos mező";
+"adyen.card.applyGiftcard" = "Beváltás";

@@ -20,7 +20,7 @@ public final class FormButtonItem: FormItem {
     public var identifier: String?
     
     /// The title of the button.
-    public var title: String?
+    @Observable(nil) public var title: String?
     
     /// The observable of the button indicator activity.
     @Observable(false) public var showsActivityIndicator: Bool

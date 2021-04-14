@@ -98,3 +98,6 @@
 "adyen.errorFeedback.emptyField" = "Required field, please fill it in.";
 "adyen.errorFeedback.incorrectFormat" = "Input format is not valid.";
 "adyen.field.title.optional" = "(optional)";
+"adyen.card.pin.title" = "Pin";
+"adyen.missingField" = "Incomplete field";
+"adyen.card.applyGiftcard" = "Redeem";

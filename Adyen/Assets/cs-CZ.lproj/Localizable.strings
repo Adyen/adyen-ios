@@ -95,3 +95,6 @@
 "adyen.errorFeedback.emptyField" = "Povinné pole, prosím vyplňte.";
 "adyen.errorFeedback.incorrectFormat" = "Vstupní formát není platný.";
 "adyen.field.title.optional" = "(nepovinné)";
+"adyen.card.pin.title" = "Pin";
+"adyen.missingField" = "Neúplné pole";
+"adyen.card.applyGiftcard" = "Uplatnit";

@@ -44,6 +44,17 @@ public struct DisplayInformation {
     /// The name of the logo resource.
     /// :nodoc:
     public var logoName: String
+
+    /// Initializes the Doku Wallet, Doku Alfamart, or Doku Indomaret payment method.
+    ///
+    /// - Parameter title: The title.
+    /// - Parameter subtitle: The subtitle.
+    /// - Parameter logoName: The logo name.
+    public init(title: String, subtitle: String?, logoName: String) {
+        self.title = title
+        self.subtitle = subtitle
+        self.logoName = logoName
+    }
 }
 
 /// :nodoc:

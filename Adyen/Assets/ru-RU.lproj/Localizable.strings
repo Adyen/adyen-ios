@@ -95,3 +95,6 @@
 "adyen.errorFeedback.emptyField" = "Обязательное поле; пожалуйста, заполните его.";
 "adyen.errorFeedback.incorrectFormat" = "Неверный формат ввода.";
 "adyen.field.title.optional" = "(необязательно)";
+"adyen.card.pin.title" = "PIN-код";
+"adyen.missingField" = "Незаполненное поле";
+"adyen.card.applyGiftcard" = "Использовать";

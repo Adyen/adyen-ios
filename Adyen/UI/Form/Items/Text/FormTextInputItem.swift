@@ -8,8 +8,10 @@ import Foundation
 
 /// An item for plain text input
 /// :nodoc:
-public final class FormTextInputItem: FormTextItem {
+public class FormTextInputItem: FormTextItem {
 
+    /// Inititate new instance of `FormTextInputItem`
+    /// - Parameter style: The `FormTextItemStyle` UI style.
     /// :nodoc:
     override public init(style: FormTextItemStyle = .init()) {
         super.init(style: style)

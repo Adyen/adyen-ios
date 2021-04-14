@@ -29,6 +29,7 @@ extension IntegrationExample {
                                         style: dropInComponentStyle,
                                         title: ConfigurationConstants.appName)
         component.delegate = self
+        component.partialPaymentDelegate = self
         component.environment = environment
         currentComponent = component
 
@@ -59,7 +60,8 @@ extension IntegrationExample: DropInComponentDelegate {
 
     internal func didSubmit(_ data: PaymentComponentData, for paymentMethod: PaymentMethod, from component: DropInComponent) {
         print("User did start: \(paymentMethod.name)")
-        let request = PaymentsRequest(data: data)
+        var request = PaymentsRequest(data: data)
+        request.order = data.order
         apiClient.perform(request, completionHandler: paymentResponseHandler)
     }
 

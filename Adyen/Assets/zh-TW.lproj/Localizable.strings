@@ -95,3 +95,6 @@
 "adyen.errorFeedback.emptyField" = "此為必填欄位，請務必填寫。";
 "adyen.errorFeedback.incorrectFormat" = "輸入的格式無效。";
 "adyen.field.title.optional" = "（選用）";
+"adyen.card.pin.title" = "數字密碼";
+"adyen.missingField" = "不完整欄位";
+"adyen.card.applyGiftcard" = "兌換";

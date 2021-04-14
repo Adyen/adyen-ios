@@ -95,3 +95,6 @@
 "adyen.errorFeedback.emptyField" = "Obavezno polje, popunite ga.";
 "adyen.errorFeedback.incorrectFormat" = "Format unosa nije važeći.";
 "adyen.field.title.optional" = "(neobavezno)";
+"adyen.card.pin.title" = "Pin";
+"adyen.missingField" = "Nepotpuno polje";
+"adyen.card.applyGiftcard" = "Iskoristite";

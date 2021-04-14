@@ -112,11 +112,18 @@ extension IntegrationExample {
     private func paymentResponseHandler(result: Result<PaymentsResponse, Error>) {
         switch result {
         case let .success(response):
+            // parse the order
             if let action = response.action {
                 handle(action)
             } else {
                 finish(with: response.resultCode)
             }
+
+            // if there is an order AND with remaining amount more than zero
+            // request the new payment method list
+
+        // dismiss the dropin
+        // start a new one with the new list
         case let .failure(error):
             finish(with: error)
         }
@@ -131,7 +138,8 @@ extension IntegrationExample {
 extension IntegrationExample: PaymentComponentDelegate {
 
     internal func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
-        let request = PaymentsRequest(data: data)
+        var request = PaymentsRequest(data: data)
+        request.order = order
         apiClient.perform(request, completionHandler: paymentResponseHandler)
     }
 

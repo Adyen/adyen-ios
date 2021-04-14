@@ -95,3 +95,6 @@
 "adyen.errorFeedback.emptyField" = "필수 입력란, 기재해 주세요.";
 "adyen.errorFeedback.incorrectFormat" = "입력 형식이 유효하지 않습니다.";
 "adyen.field.title.optional" = "(선택 사항)";
+"adyen.card.pin.title" = "비밀번호";
+"adyen.missingField" = "미완료 필드";
+"adyen.card.applyGiftcard" = "기프트 카드로 결제";

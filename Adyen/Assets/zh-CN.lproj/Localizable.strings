@@ -95,3 +95,6 @@
 "adyen.errorFeedback.emptyField" = "必填字段，请填写。";
 "adyen.errorFeedback.incorrectFormat" = "输入格式无效。";
 "adyen.field.title.optional" = "（可选）";
+"adyen.card.pin.title" = "Pin";
+"adyen.missingField" = "不完整字段";
+"adyen.card.applyGiftcard" = "兑换";

@@ -11,6 +11,9 @@ import Adyen
 #if canImport(AdyenActions)
     import AdyenActions
 #endif
+#if canImport(AdyenCard)
+    import AdyenCard
+#endif
 import UIKit
 
 /// A component that handles the entire flow of payment selection and payment details entry.
@@ -22,11 +25,16 @@ public final class DropInComponent: NSObject, PresentableComponent {
 
     private var selectedPaymentComponent: PaymentComponent?
 
+    private var order: PartialPaymentOrder?
+
     /// The payment methods to display.
     public let paymentMethods: PaymentMethods
     
     /// The delegate of the drop in component.
     public weak var delegate: DropInComponentDelegate?
+
+    /// The gift card component delegate.
+    public weak var partialPaymentDelegate: PartialPaymentDelegate?
     
     /// Indicates the UI configuration of the drop in component.
     public let style: Style
@@ -73,7 +81,8 @@ public final class DropInComponent: NSObject, PresentableComponent {
 
     private lazy var componentManager = ComponentManager(paymentMethods: paymentMethods,
                                                          configuration: configuration,
-                                                         style: style)
+                                                         style: style,
+                                                         partialPaymentEnabled: partialPaymentDelegate != nil)
     
     private lazy var rootComponent: PresentableComponent & ComponentLoader = {
         if let preselectedComponents = componentManager.components.stored.first {
@@ -128,8 +137,11 @@ public final class DropInComponent: NSObject, PresentableComponent {
     private func didSelect(_ component: PaymentComponent) {
         selectedPaymentComponent = component
         component.delegate = self
+        (component as? PartialPaymentComponent)?.partialPaymentDelegate = self
+        (component as? PartialPaymentComponent)?.readyToSubmitComponentDelegate = self
         component._isDropIn = true
         component.environment = environment
+        component.payment = configuration.payment
         
         switch component {
         case let component as PreApplePayComponent:
@@ -241,17 +253,12 @@ extension DropInComponent: PreselectedPaymentMethodComponentDelegate {
 
     internal func didProceed(with component: PaymentComponent) {
         rootComponent.startLoading(for: component)
-        
-        guard let storedPaymentMethod = component.paymentMethod as? StoredPaymentMethod else {
-            return didSelect(component)
+
+        if let component = component as? ReadyToSubmitPaymentComponent {
+            delegate?.didSubmit(component.paymentData, for: component.paymentMethod, from: self)
+        } else {
+            didSelect(component)
         }
-        
-        if storedPaymentMethod is StoredCardPaymentMethod {
-            return didSelect(component)
-        }
-        
-        let details = StoredPaymentDetails(paymentMethod: storedPaymentMethod)
-        self.delegate?.didSubmit(PaymentComponentData(paymentMethodDetails: details), for: storedPaymentMethod, from: self)
     }
     
     internal func didRequestAllPaymentMethods() {
@@ -263,6 +270,7 @@ extension DropInComponent: PreselectedPaymentMethodComponentDelegate {
 
 extension DropInComponent: PresentationDelegate {
 
+    /// :nodoc:
     public func present(component: PresentableComponent) {
         navigationController.present(asModal: component)
     }
@@ -276,6 +284,44 @@ extension DropInComponent: FinalizableComponent {
     public func didFinalize(with success: Bool) {
         stopLoading()
         selectedPaymentComponent?.finalizeIfNeeded(with: success)
+    }
+}
+
+extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
+
+    /// :nodoc:
+    public func showConfirmation(for component: ReadyToSubmitPaymentComponent) {
+        let newRoot = preselectedPaymentMethodComponent(for: component)
+        navigationController.present(root: newRoot)
+        rootComponent = newRoot
+    }
+}
+
+extension DropInComponent: PartialPaymentDelegate {
+
+    /// :nodoc:
+    public func requestOrder(_ data: PaymentComponentData,
+                             from component: PaymentComponent,
+                             completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
+        if let order = order {
+            completion(.success(order))
+        } else {
+            partialPaymentDelegate?.requestOrder(data, from: component, completion: completion)
+        }
+    }
+
+    /// :nodoc:
+    public func cancelOrder(_ order: PartialPaymentOrder,
+                            from component: PaymentComponent,
+                            completion: @escaping (Error?) -> Void) {
+        partialPaymentDelegate?.cancelOrder(order, from: component, completion: completion)
+    }
+
+    /// :nodoc:
+    public func checkBalance(_ data: PaymentComponentData,
+                             from component: PaymentComponent,
+                             completion: @escaping (Result<Balance, Error>) -> Void) {
+        partialPaymentDelegate?.checkBalance(data, from: component, completion: completion)
     }
 }
 

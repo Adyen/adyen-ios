@@ -20,13 +20,17 @@ internal final class ComponentManager {
     
     /// Indicates the UI configuration of the drop in component.
     private var style: DropInComponent.Style
+
+    private let partialPaymentEnabled: Bool
     
     internal init(paymentMethods: PaymentMethods,
                   configuration: DropInComponent.PaymentMethodsConfiguration,
-                  style: DropInComponent.Style) {
+                  style: DropInComponent.Style,
+                  partialPaymentEnabled: Bool = true) {
         self.paymentMethods = paymentMethods
         self.configuration = configuration
         self.style = style
+        self.partialPaymentEnabled = partialPaymentEnabled
     }
     
     // MARK: - Internal
@@ -246,6 +250,14 @@ extension ComponentManager: PaymentComponentBuilder {
     internal func build(paymentMethod: DokuPaymentMethod) -> PaymentComponent? {
         DokuComponent(paymentMethod: paymentMethod,
                       style: style.formComponent)
+    }
+
+    /// :nodoc:
+    internal func build(paymentMethod: GiftCardPaymentMethod) -> PaymentComponent? {
+        guard partialPaymentEnabled else { return nil }
+        return GiftCardComponent(paymentMethod: paymentMethod,
+                                 clientKey: configuration.clientKey,
+                                 style: style.formComponent)
     }
     
     /// :nodoc:

@@ -95,3 +95,6 @@
 "adyen.errorFeedback.emptyField" = "Obligatoriskt fält, vänligen fyll i.";
 "adyen.errorFeedback.incorrectFormat" = "Ogiltigt format på inmatning.";
 "adyen.field.title.optional" = "(valfritt)";
+"adyen.card.pin.title" = "PIN-kod";
+"adyen.missingField" = "Ofullständigt fält";
+"adyen.card.applyGiftcard" = "Lös in";

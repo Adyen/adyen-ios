@@ -17,12 +17,20 @@ public enum AdyenAssertion {
 
     /// :nodoc:
     /// Calls `assertionFailure` when not runing Tests.
-    public static func assert(message: String) {
+    public static func assert(message: @autoclosure () -> String) {
         if CommandLine.arguments.contains("-UITests") {
-            listner?(message)
+            listner?(message())
             return
         }
+        assertionFailure(message())
+    }
 
-        assertionFailure(message)
+    /// :nodoc:
+    /// Calls `assertionFailure` when not runing Tests.
+    public static func assert(message: @autoclosure () -> String, condition: @autoclosure () -> Bool) {
+        guard !condition() else {
+            return
+        }
+        assert(message: message())
     }
 }

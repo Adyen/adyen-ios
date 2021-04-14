@@ -15,6 +15,8 @@ internal struct PaymentsRequest: Request {
     internal let path = "payments"
     
     internal let data: PaymentComponentData
+
+    internal var order: PartialPaymentOrder?
     
     internal var counter: UInt = 0
     
@@ -26,8 +28,9 @@ internal struct PaymentsRequest: Request {
     
     internal func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        
+
         let currentConfiguration = ConfigurationConstants.current
+        let amount = data.amount ?? currentConfiguration.amount
         
         try container.encode(data.paymentMethod.encodable, forKey: .details)
         try container.encode(data.storePaymentMethod, forKey: .storePaymentMethod)
@@ -38,6 +41,7 @@ internal struct PaymentsRequest: Request {
         try container.encode(Locale.current.identifier, forKey: .shopperLocale)
         try container.encodeIfPresent(data.browserInfo, forKey: .browserInfo)
         try container.encode("iOS", forKey: .channel)
+        try container.encode(amount, forKey: .amount)
         try container.encode(currentConfiguration.amount, forKey: .amount)
         try container.encode(ConfigurationConstants.reference, forKey: .reference)
         try container.encode(currentConfiguration.countryCode, forKey: .countryCode)
@@ -45,6 +49,7 @@ internal struct PaymentsRequest: Request {
         try container.encode(ConfigurationConstants.shopperReference, forKey: .shopperReference)
         try container.encode(ConfigurationConstants.additionalData, forKey: .additionalData)
         try container.encode(currentConfiguration.merchantAccount, forKey: .merchantAccount)
+        try container.encodeIfPresent(order, forKey: .order)
     }
     
     private enum CodingKeys: String, CodingKey {
@@ -64,6 +69,7 @@ internal struct PaymentsRequest: Request {
         case telephoneNumber
         case shopperLocale
         case billingAddress
+        case order
     }
     
 }
@@ -73,16 +79,20 @@ internal struct PaymentsResponse: Response {
     internal let resultCode: ResultCode
     
     internal let action: Action?
+
+    internal let order: PartialPaymentOrder?
     
     internal init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.resultCode = try container.decode(ResultCode.self, forKey: .resultCode)
         self.action = try container.decodeIfPresent(Action.self, forKey: .action)
+        self.order = try container.decodeIfPresent(PartialPaymentOrder.self, forKey: .order)
     }
     
     private enum CodingKeys: String, CodingKey {
         case resultCode
         case action
+        case order
     }
     
 }

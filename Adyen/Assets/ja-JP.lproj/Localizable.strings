@@ -95,3 +95,6 @@
 "adyen.errorFeedback.emptyField" = "必須フィールドです。入力してください。";
 "adyen.errorFeedback.incorrectFormat" = "入力形式が無効です。";
 "adyen.field.title.optional" = "（任意）";
+"adyen.card.pin.title" = "PIN";
+"adyen.missingField" = "不完全なフィールド";
+"adyen.card.applyGiftcard" = "利用する";

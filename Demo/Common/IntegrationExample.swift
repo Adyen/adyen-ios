@@ -32,6 +32,8 @@ internal final class IntegrationExample: APIClientAware {
 
     internal weak var presenter: Presenter?
 
+    internal var order: PartialPaymentOrder?
+
     internal var clientKey: String {
         if CommandLine.arguments.contains("-UITests") {
             return "local_DUMMYKEYFORTESTING"
@@ -77,12 +79,11 @@ internal final class IntegrationExample: APIClientAware {
     }
 
     internal func finish(with error: Error) {
-        let isCancelled = (error as? ComponentError) == .cancelled
         currentComponent?.finalizeIfNeeded(with: false)
 
         presenter?.dismiss { [weak self] in
             // Payment is unsuccessful. Add your code here.
-            if !isCancelled { self?.presentAlert(with: error) }
+            self?.presentAlert(with: error)
         }
     }
 

@@ -95,3 +95,6 @@
 "adyen.errorFeedback.emptyField" = "Ce champ est obligatoire, veuillez le remplir.";
 "adyen.errorFeedback.incorrectFormat" = "Le format de saisie n’est pas valide.";
 "adyen.field.title.optional" = "(facultatif)";
+"adyen.card.pin.title" = "PIN";
+"adyen.missingField" = "Champ incomplet";
+"adyen.card.applyGiftcard" = "Utiliser";

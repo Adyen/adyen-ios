@@ -95,3 +95,6 @@
 "adyen.errorFeedback.emptyField" = "Pole wymagane, wypełnij.";
 "adyen.errorFeedback.incorrectFormat" = "Format danych wejściowych jest nieprawidłowy.";
 "adyen.field.title.optional" = "(opcjonalnie)";
+"adyen.card.pin.title" = "PIN";
+"adyen.missingField" = "Niekompletne dane w polu";
+"adyen.card.applyGiftcard" = "Wykorzystaj";

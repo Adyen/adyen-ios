@@ -22,7 +22,7 @@ extension AbstractPersonalInformationComponent: LoadingComponent, TrackableCompo
         formViewController.view.isUserInteractionEnabled = false
 
         let details = createPaymentDetails()
-        submit(data: PaymentComponentData(paymentMethodDetails: details))
+        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount))
     }
 }
 

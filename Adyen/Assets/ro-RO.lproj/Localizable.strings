@@ -95,3 +95,6 @@
 "adyen.errorFeedback.emptyField" = "Câmp obligatoriu, vă rugăm să îl completați.";
 "adyen.errorFeedback.incorrectFormat" = "Formatul de completare nu este acceptat.";
 "adyen.field.title.optional" = "(opțional)";
+"adyen.card.pin.title" = "PIN";
+"adyen.missingField" = "Câmp incomplet";
+"adyen.card.applyGiftcard" = "Valorificare";
