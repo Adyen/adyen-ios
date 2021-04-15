@@ -335,6 +335,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
                                     }
                                 }, completion: { _ in
                                     self.alertLabel.isHidden = hidden
+                                    self.adyen.updatePreferredContentSize()
                                 })
     }
 }

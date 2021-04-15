@@ -36,16 +36,13 @@ internal final class WrapperViewController: UIViewController {
         return viewController?.children.contains(where: { heirarchyRequiresKeyboardInput(viewController: $0) }) ?? false
     }
 
-    internal func updateFrame(keyboardRect: CGRect, animated: Bool) {
+    internal func updateFrame(keyboardRect: CGRect) {
         guard let view = child.viewIfLoaded, let window = UIApplication.shared.keyWindow else { return }
         view.setNeedsLayout()
+        view.layoutIfNeeded()
         let finalFrame = child.finalPresentationFrame(in: window, keyboardRect: keyboardRect)
         view.layer.removeAllAnimations()
-        UIView.animate(withDuration: animated ? 0.35 : 0.0,
-                       delay: 0.0,
-                       options: [.curveLinear],
-                       animations: { view.frame = finalFrame },
-                       completion: nil)
+        view.frame = finalFrame
     }
 
     fileprivate func positionContent(_ child: ModalViewController) {

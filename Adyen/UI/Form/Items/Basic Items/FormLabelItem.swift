@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -37,6 +37,7 @@ public class FormLabelItem: FormItem {
         label.textColor = style.color
         label.textAlignment = style.textAlignment
         label.backgroundColor = style.backgroundColor
+        label.adyen.round(using: style.cornerRounding)
         return label
     }
 }

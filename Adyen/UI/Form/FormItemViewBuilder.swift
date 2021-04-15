@@ -60,6 +60,12 @@ public struct FormItemViewBuilder {
         FormSeparatorItemView(item: item)
     }
 
+    /// Builds `FormErrorItemView` from `FormErrorItem`.
+    /// :nodoc:
+    public func build(with item: FormErrorItem) -> FormItemView<FormErrorItem> {
+        FormErrorItemView(item: item)
+    }
+
     public static func build(_ item: FormItem) -> AnyFormItemView {
         let itemView = item.build(with: FormItemViewBuilder())
         itemView.accessibilityIdentifier = item.identifier

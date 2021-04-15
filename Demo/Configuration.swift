@@ -34,10 +34,10 @@ internal enum Configuration {
     
     static let additionalData = ["allow3DS2": true]
 
-    static let clientKey = "{YOUR_CLIENT_KEY}"
+    static let clientKey = "test_L6HTEOAXQBCZJHKNU4NLN6EI7IE6VRRW"
 
     // swiftlint:disable:next line_length
-    static let demoServerAPIKey = "{YOUR_DEMO_SERVER_API_KEY}"
+    static let demoServerAPIKey = "AQEthmfxKo7MbhFLw0m/n3Q5qf3VfI5eGbBFVXVXyGHNhisxSHQZLQhnJZKhUXeVEMFdWw2+5HzctViMSCJMYAc=-O8kafIKemb4mkIR0MYJD/IaodYLuNXk/Bv1kGviTo3o=-E8;gsQ$.g&q5pqk2"
     
     static let applePayMerchantIdentifier = "{YOUR_APPLE_PAY_MERCHANT_IDENTIFIER}"
     

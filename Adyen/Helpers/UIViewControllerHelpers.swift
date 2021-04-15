@@ -6,9 +6,6 @@
 
 import UIKit
 
-/// :nodoc:
-extension UIViewController: AdyenCompatible {}
-
 /// Adds helper functionality to any `UIViewController` instance through the `adyen` property.
 /// :nodoc:
 public extension AdyenScope where Base: UIViewController {
@@ -23,4 +20,29 @@ public extension AdyenScope where Base: UIViewController {
         return topController
     }
     
+}
+
+extension UIResponder: AdyenCompatible {}
+
+extension AdyenScope where Base: UIResponder {
+    /// :nodoc:
+    func updatePreferredContentSize() {
+        if let consumer = base as? PreferredContentSizeConsumer {
+            consumer.willUpdatePreferredContentSize()
+        }
+        base.next?.adyen.updatePreferredContentSize()
+        if let consumer = base as? PreferredContentSizeConsumer {
+            consumer.didUpdatePreferredContentSize()
+        }
+    }
+}
+
+/// :nodoc:
+public protocol PreferredContentSizeConsumer {
+
+    /// :nodoc:
+    func didUpdatePreferredContentSize()
+
+    /// :nodoc:
+    func willUpdatePreferredContentSize()
 }

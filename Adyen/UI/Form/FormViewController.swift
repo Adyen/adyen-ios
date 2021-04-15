@@ -9,15 +9,7 @@ import UIKit
 /// Displays a form for the user to enter details.
 /// :nodoc:
 @objc(ADYFormViewController)
-open class FormViewController: UIViewController, Localizable, KeyboardObserver {
-
-    private lazy var itemManager = FormViewItemManager()
-
-    /// :nodoc:
-    public var keyboardObserver: Any?
-
-    /// :nodoc:
-    public var localizationParameters: LocalizationParameters?
+open class FormViewController: UIViewController, Localizable, KeyboardObserver, Observer, PreferredContentSizeConsumer {
 
     /// :nodoc:
     public var requiresKeyboardInput: Bool { formRequiresInputView() }
@@ -61,21 +53,37 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver {
         """) }
     }
 
+    // MARK: - KeyboardObserver
+
+    /// :nodoc:
+    public var keyboardObserver: Any?
+
+    /// :nodoc:
     public func startObserving() {
         keyboardObserver = startObserving { [weak self] in
-            self?.updateScrollViewInsets(keyboardHeight: $0.height)
+            self?.keyboardRect = $0
+            self?.didUpdatePreferredContentSize()
         }
+    }
+
+    private var keyboardRect: CGRect = .zero
+
+    private func updateScrollViewInsets(keyboardHeight: CGFloat) {
+        formView.contentInset.bottom = keyboardHeight
     }
 
     // MARK: - Private Properties
 
-    private func updateScrollViewInsets(keyboardHeight: CGFloat) {
-        guard keyboardHeight > 0 else {
-            formView.contentInset.bottom = 0
-            return
-        }
-        let bottomScrollInset: CGFloat = preferredContentSize.height + keyboardHeight - formView.bounds.height
-        formView.contentInset.bottom = bottomScrollInset
+    private lazy var itemManager = FormViewItemManager()
+
+    // MARK: - PreferredContentSizeConsumer
+
+    /// :nodoc:
+    public func willUpdatePreferredContentSize() { /* Empty implementation */ }
+
+    /// :nodoc:
+    public func didUpdatePreferredContentSize() {
+        updateScrollViewInsets(keyboardHeight: keyboardRect.height)
     }
     
     // MARK: - Items
@@ -84,15 +92,23 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver {
     ///
     /// - Parameters:
     ///   - item: The item to append.
-    public func append<ItemType: FormItem>(_ item: ItemType) {
+    public func append<T: FormItem>(_ item: T) {
         let itemView = itemManager.append(item)
 
         itemView.applyTextDelegateIfNeeded(delegate: self)
-
-        if isViewLoaded {
-            formView.appendItemView(itemView)
-        }
+        addItemView(with: item)
     }
+
+    private func addItemView<T: FormItem>(with item: T) {
+        guard isViewLoaded else { return }
+        let itemView = itemManager.append(item)
+        formView.appendItemView(itemView)
+    }
+
+    // MARK: - Localizable
+
+    /// :nodoc:
+    public var localizationParameters: LocalizationParameters?
     
     // MARK: - Validity
     
