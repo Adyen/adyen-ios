@@ -6,6 +6,11 @@
 
 import Foundation
 
+public protocol Hidable {
+    /// :nodoc:
+    var isHidden: Observable<Bool> { get }
+}
+
 /// An item in a form.
 /// :nodoc:
 public protocol FormItem: AnyObject {

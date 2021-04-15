@@ -330,6 +330,7 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
                                     }
                                 }, completion: { _ in
                                     self.alertLabel.isHidden = hidden
+                                    self.adyen.updatePreferredContentSize()
                                 })
     }
 }

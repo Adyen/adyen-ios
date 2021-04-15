@@ -8,7 +8,7 @@ import Adyen
 
 /// A form item into which a card's security code (CVC/CVV) is entered.
 internal final class FormCardSecurityCodeItem: FormTextItem {
-    
+
     /// :nodoc:
     internal var localizationParameters: LocalizationParameters?
     
@@ -20,7 +20,7 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
 
     /// :nodoc:
     @Observable(false) internal var isCVCOptional: Bool
-    
+
     /// Initializes the form card number item.
     internal init(style: FormTextItemStyle = FormTextItemStyle(),
                   localizationParameters: LocalizationParameters? = nil) {

@@ -28,8 +28,6 @@ internal final class FormViewItemManager {
     ///
     /// - Parameters:
     ///   - item: The item to append.
-    ///   - itemViewType: Optionally, the item view type to use for this item.
-    ///                   When none is specified, the default will be used.
     internal func append<T: FormItem>(_ item: T) {
         items.append(item)
         
@@ -38,7 +36,7 @@ internal final class FormViewItemManager {
         allItemViews.append(itemView)
         allItemViews.append(contentsOf: itemView.childItemViews)
     }
-    
+
     private func index(of item: FormItem) -> Int {
         let index = items.firstIndex {
             $0 === item
