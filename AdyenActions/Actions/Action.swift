@@ -31,7 +31,7 @@ public enum Action: Decodable {
     /// Indicates that a voucher is presented to the shopper.
     case voucher(VoucherAction)
     
-    /// Inticates that a QR code is presented to the shopper.
+    /// Indicates that a QR code is presented to the shopper.
     case qrCode(QRCodeAction)
     
     // MARK: - Coding

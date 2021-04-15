@@ -21,16 +21,8 @@ internal final class QRCodeViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    internal override func viewDidLoad() {
-        super.viewDidLoad()
-        buildUI()
-        view.backgroundColor = .clear
-    }
-    
-    private func buildUI() {
-        view.addSubview(qrCodeView)
-        qrCodeView.translatesAutoresizingMaskIntoConstraints = false
-        qrCodeView.adyen.anchor(inside: view)
+    internal override func loadView() {
+        view = qrCodeView
     }
     
     override internal var preferredContentSize: CGSize {

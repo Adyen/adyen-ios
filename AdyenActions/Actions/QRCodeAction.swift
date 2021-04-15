@@ -8,7 +8,6 @@ import Adyen
 import Foundation
 
 /// Indicates QR code payment methods.
-
 public enum QRCodePaymentMethod: String, Codable, CaseIterable {
 
     /// PIX

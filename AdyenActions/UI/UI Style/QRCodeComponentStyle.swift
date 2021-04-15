@@ -17,8 +17,7 @@ public struct QRCodeComponentStyle: ViewStyle {
         background: UIColor.Adyen.defaultBlue
     )
     
-    public var instructionLabel = TextStyle(font: .preferredFont(forTextStyle: .headline),
-        color: .black)
+    public var instructionLabel = TextStyle(font: .preferredFont(forTextStyle: .headline), color: UIColor.Adyen.componentLabel)
         
     /// :nodoc:
     public var backgroundColor: UIColor = UIColor.Adyen.componentBackground

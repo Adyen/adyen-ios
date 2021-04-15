@@ -8,10 +8,7 @@ import Adyen
 import UIKit
 
 /// A component that presents a QR code.
-internal final class QRCodeComponent: Component, Localizable {
-
-    /// :nodoc:
-    public let requiresModalPresentation: Bool = true
+internal final class QRCodeComponent: ActionComponent, Localizable {
     
     /// Delegates `ViewController`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?

@@ -27,6 +27,8 @@ internal final class QRCodeView: UIView, Localizable {
         super.init(frame: .zero)
         buildUI()
         backgroundColor = model.style.backgroundColor
+        
+        accessibilityIdentifier = "adyen.QRCode"
     }
     
     @available(*, unavailable)
@@ -77,7 +79,7 @@ internal final class QRCodeView: UIView, Localizable {
     }
     
     private lazy var copyButton: SubmitButton = {
-        let accessiblityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.QRCode", postfix: "copyButton")
+        let accessiblityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "copyButton")
         
         let button = SubmitButton(style: model.style.copyButton)
         button.title = ADYLocalizedString("adyen.button.copy", localizationParameters)
@@ -89,8 +91,9 @@ internal final class QRCodeView: UIView, Localizable {
     
     private lazy var logo: NetworkImageView = {
         let logo = NetworkImageView()
-        logo.widthAnchor.constraint(equalToConstant: 74.0).isActive = true
-        logo.heightAnchor.constraint(equalToConstant: 48.0).isActive = true
+        let logoSize = CGSize(width: 74.0, height: 48.0)
+        logo.widthAnchor.constraint(equalToConstant: logoSize.width).isActive = true
+        logo.heightAnchor.constraint(equalToConstant: logoSize.height).isActive = true
         
         logo.imageURL = model.logoUrl
         
