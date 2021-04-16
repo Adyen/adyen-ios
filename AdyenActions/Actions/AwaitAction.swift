@@ -17,7 +17,7 @@ public enum AwaitPaymentMethod: String, Decodable {
 }
 
 /// Describes an action in which the SDK is waiting for user action.
-public struct AwaitAction: Decodable {
+public struct AwaitAction: AnyAwaitableAction, Decodable {
     
     /// The `paymentMethodType` for which the await action is used.
     public let paymentMethodType: AwaitPaymentMethod

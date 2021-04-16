@@ -12,7 +12,7 @@ internal protocol QRCodeViewDelegate: class {
     func copyToPasteboard()
 }
 
-internal final class QRCodeView: UIView, Localizable {
+internal final class QRCodeView: UIView, Localizable, Observer {
     
     private let model: Model
     
@@ -39,6 +39,8 @@ internal final class QRCodeView: UIView, Localizable {
     private func buildUI() {
         addLogo()
         addInstructionLabel()
+        addProgressView()
+        addExpirationLabel()
         addCopyButton()
     }
     
@@ -46,6 +48,15 @@ internal final class QRCodeView: UIView, Localizable {
         super.layoutSubviews()
         
         copyButton.adyen.round(using: model.style.copyButton.cornerRounding)
+    }
+    
+    private func addLogo() {
+        addSubview(logo)
+        logo.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            logo.bottomAnchor.constraint(equalTo: topAnchor, constant: -7),
+            logo.centerXAnchor.constraint(equalTo: centerXAnchor)
+        ])
     }
     
     private func addInstructionLabel() {
@@ -58,12 +69,21 @@ internal final class QRCodeView: UIView, Localizable {
         ])
     }
     
-    private func addLogo() {
-        addSubview(logo)
-        logo.translatesAutoresizingMaskIntoConstraints = false
+    private func addProgressView() {
+        addSubview(progressView)
+        progressView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            logo.bottomAnchor.constraint(equalTo: topAnchor, constant: 10),
-            logo.centerXAnchor.constraint(equalTo: centerXAnchor)
+            progressView.topAnchor.constraint(equalTo: instructionLabel.bottomAnchor, constant: 24.0),
+            progressView.centerXAnchor.constraint(equalTo: centerXAnchor)
+        ])
+    }
+    
+    private func addExpirationLabel() {
+        addSubview(expirationLabel)
+        expirationLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            expirationLabel.topAnchor.constraint(equalTo: progressView.bottomAnchor, constant: 13.0),
+            expirationLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
     }
     
@@ -71,7 +91,7 @@ internal final class QRCodeView: UIView, Localizable {
         addSubview(copyButton)
         copyButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            copyButton.topAnchor.constraint(equalTo: instructionLabel.bottomAnchor, constant: 29),
+            copyButton.topAnchor.constraint(equalTo: expirationLabel.bottomAnchor, constant: 34),
             copyButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             copyButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             copyButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -18)
@@ -106,12 +126,36 @@ internal final class QRCodeView: UIView, Localizable {
         instructionLabel.font = style.font
         instructionLabel.adjustsFontForContentSizeCategory = true
         instructionLabel.textColor = style.color
-        instructionLabel.textAlignment = .center
+        instructionLabel.textAlignment = style.textAlignment
         instructionLabel.backgroundColor = style.backgroundColor
         instructionLabel.text = model.instruction
         instructionLabel.numberOfLines = 0
         
         return instructionLabel
+    }()
+    
+    private lazy var progressView: UIProgressView = {
+        let progressViewSize = CGSize(width: 120, height: 4)
+        let progressView = ProgressView(style: model.style.progressView, observedProgress: model.observedProgress)
+        progressView.widthAnchor.constraint(equalToConstant: progressViewSize.width).isActive = true
+        progressView.heightAnchor.constraint(equalToConstant: progressViewSize.height).isActive = true
+        
+        return progressView
+    }()
+    
+    private lazy var expirationLabel: UILabel = {
+        let expirationLabel = UILabel()
+        let style = model.style.expirationLabel
+        expirationLabel.font = style.font
+        expirationLabel.adjustsFontForContentSizeCategory = true
+        expirationLabel.textColor = style.color
+        expirationLabel.textAlignment = style.textAlignment
+        expirationLabel.backgroundColor = style.backgroundColor
+        expirationLabel.numberOfLines = 1
+
+        bind(model.expiration, to: expirationLabel, at: \.text)
+        
+        return expirationLabel
     }()
         
     @objc private func copyCode() {

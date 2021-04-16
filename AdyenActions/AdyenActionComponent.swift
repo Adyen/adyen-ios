@@ -169,6 +169,7 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
     private func perform(_ action: QRCodeAction) {
         let component = QRCodeComponent(style: QRCodeComponentStyle())
         component._isDropIn = _isDropIn
+        component.environment = environment
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
         component.localizationParameters = localizationParameters

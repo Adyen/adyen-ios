@@ -9,21 +9,41 @@ import UIKit
 
 extension QRCodeView {
     
-    internal struct Model {
-        
+    internal class Model {
+    
         internal let instruction: String
         
         internal let logoUrl: URL
+        
+        internal let observedProgress: Progress?
+        
+        internal let expiration: Observable<String?>
         
         internal let style: Style
         
         internal struct Style {
             
-            internal var copyButton: ButtonStyle
+            internal let copyButton: ButtonStyle
             
-            internal var instructionLabel: TextStyle
+            internal let instructionLabel: TextStyle
             
-            internal var backgroundColor: UIColor
+            internal let progressView: ProgressViewStyle
+            
+            internal let expirationLabel: TextStyle
+            
+            internal let backgroundColor: UIColor
+        }
+        
+        internal init(instruction: String,
+                      logoUrl: URL,
+                      observedProgress: Progress?,
+                      expiration: Observable<String?>,
+                      style: QRCodeView.Model.Style) {
+            self.instruction = instruction
+            self.logoUrl = logoUrl
+            self.observedProgress = observedProgress
+            self.expiration = expiration
+            self.style = style
         }
     
     }

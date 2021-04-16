@@ -7,13 +7,18 @@
 import Adyen
 import Foundation
 
-/// A component that handles Await action's.
-internal protocol AnyAwaitActionHandler: ActionComponent, Cancellable {
-    func handle(_ action: AwaitAction)
+///
+internal protocol AnyAwaitableAction {
+    var paymentData: String { get }
 }
 
 /// A component that handles Await action's.
-public final class AwaitComponent: AnyAwaitActionHandler {
+internal protocol AnyAwaitActionHandler: ActionComponent, Cancellable {
+    func handle(_ action: AnyAwaitableAction)
+}
+
+/// A component that handles Await action's.
+public final class AwaitComponent: ActionComponent, Cancellable {
     
     /// Delegates `ViewController`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?

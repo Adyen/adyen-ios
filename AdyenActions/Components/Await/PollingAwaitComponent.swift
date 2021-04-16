@@ -35,7 +35,7 @@ internal final class PollingAwaitComponent: AnyAwaitActionHandler {
     /// Handles await action.
     ///
     /// - Parameter action: The await action object.
-    internal func handle(_ action: AwaitAction) {
+    internal func handle(_ action: AnyAwaitableAction) {
         Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, environment: environment)
         startPolling(action)
     }
@@ -52,7 +52,7 @@ internal final class PollingAwaitComponent: AnyAwaitActionHandler {
     /// Starts polling the status end point to check the payment status.
     ///
     /// - Parameter action: The action object.
-    private func startPolling(_ action: AwaitAction) {
+    private func startPolling(_ action: AnyAwaitableAction) {
         isCancelled = false
         let request = PaymentStatusRequest(paymentData: action.paymentData)
         

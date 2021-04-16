@@ -17,7 +17,17 @@ public struct QRCodeComponentStyle: ViewStyle {
         background: UIColor.Adyen.defaultBlue
     )
     
-    public var instructionLabel = TextStyle(font: .preferredFont(forTextStyle: .headline), color: UIColor.Adyen.componentLabel)
+    /// The instruction label style.
+    public var instructionLabel = TextStyle(font: .preferredFont(forTextStyle: .subheadline), color: UIColor.Adyen.componentLabel)
+    
+    /// The progress view style.
+    public var progressView = ProgressViewStyle(
+        progressTintColor: UIColor.Adyen.defaultBlue,
+        trackTintColor: UIColor.Adyen.lightGray
+    )
+    
+    /// The expiration label style.
+    public var expirationLabel = TextStyle(font: .preferredFont(forTextStyle: .footnote), color: UIColor.Adyen.componentSecondaryLabel)
         
     /// :nodoc:
     public var backgroundColor: UIColor = UIColor.Adyen.componentBackground

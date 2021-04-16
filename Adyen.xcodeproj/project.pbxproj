@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5A1315C926296B100092366D /* ProgressViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1315C826296B100092366D /* ProgressViewStyle.swift */; };
+		5A1315D526296C3E0092366D /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1315D426296C3E0092366D /* ProgressView.swift */; };
+		5A54FFCA26299140007194B7 /* TimeIntervalHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54FFC926299140007194B7 /* TimeIntervalHelpers.swift */; };
+		5A54FFE126299602007194B7 /* TimeIntervalExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54FFD5262995F6007194B7 /* TimeIntervalExtensionsTests.swift */; };
 		5A6456D6262592B2001824F0 /* QRCodeAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6456D5262592B2001824F0 /* QRCodeAction.swift */; };
 		5A64571B2625CB87001824F0 /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A64571A2625CB87001824F0 /* QRCodeView.swift */; };
 		5A6457272625CB99001824F0 /* QRCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6457262625CB99001824F0 /* QRCodeViewModel.swift */; };
@@ -769,6 +773,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5A1315C826296B100092366D /* ProgressViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewStyle.swift; sourceTree = "<group>"; };
+		5A1315D426296C3E0092366D /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
+		5A54FFC926299140007194B7 /* TimeIntervalHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalHelpers.swift; sourceTree = "<group>"; };
+		5A54FFD5262995F6007194B7 /* TimeIntervalExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtensionsTests.swift; sourceTree = "<group>"; };
 		5A6456D5262592B2001824F0 /* QRCodeAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeAction.swift; sourceTree = "<group>"; wrapsLines = 1; };
 		5A6456E22625A1E2001824F0 /* QRCodeComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeComponent.swift; sourceTree = "<group>"; };
 		5A64570E2625CB41001824F0 /* QRCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewController.swift; sourceTree = "<group>"; };
@@ -1818,6 +1826,7 @@
 				E2C0E0C0220D7E5E008616F6 /* SubmitButton.swift */,
 				E28098C5220DCF3F0087928F /* NetworkImageView.swift */,
 				F95A788725C416A60032CF7E /* CopyLabelView.swift */,
+				5A1315D426296C3E0092366D /* ProgressView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1857,6 +1866,7 @@
 				E787C9D2246EC71B00B401E0 /* UIFontHelpers.swift */,
 				E7B3DE9E25A61B9200CA4D2B /* UIViewConstraintsHelper.swift */,
 				F97C857625C1D5BA00D7F85C /* UIViewHelpers.swift */,
+				5A54FFC926299140007194B7 /* TimeIntervalHelpers.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -2319,6 +2329,7 @@
 				E9E3DABD221EA47800697074 /* StringExtensionsTests.swift */,
 				E9021DEB225CC44C009CF7F4 /* URLExtensionsTest.swift */,
 				E9021E032264C55E009CF7F4 /* KeyedDecodingContainerExtensionsTests.swift */,
+				5A54FFD5262995F6007194B7 /* TimeIntervalExtensionsTests.swift */,
 			);
 			path = "Extension Tests";
 			sourceTree = "<group>";
@@ -2649,6 +2660,7 @@
 				F9B798CA23AB706D00A2103C /* ListComponentStyle.swift */,
 				E749FD1D23CF4998000D18BA /* NavigationStyle.swift */,
 				E787C9AB24696A8900B401E0 /* CornerRadiusStyle.swift */,
+				5A1315C826296B100092366D /* ProgressViewStyle.swift */,
 			);
 			path = "UI Style";
 			sourceTree = "<group>";
@@ -3927,6 +3939,7 @@
 				E90933FF228AFC6600C9F04B /* Environment.swift in Sources */,
 				E2D12C09221ED16600EF682F /* FormSwitchItemView.swift in Sources */,
 				F9B8C50E23FE973500C4D0FB /* FormPhoneNumberItemView.swift in Sources */,
+				5A54FFCA26299140007194B7 /* TimeIntervalHelpers.swift in Sources */,
 				F9639B2F24DD6B500073F38A /* APIEnvironment.swift in Sources */,
 				F97CCD3A2435E35E00BC560A /* UIViewControllerHelpers.swift in Sources */,
 				E216D3BE221AAB710013CBCF /* FormTextItem.swift in Sources */,
@@ -3971,11 +3984,13 @@
 				F9B018C4260A32AA001F23FC /* EContextOnlinePaymentMethod.swift in Sources */,
 				F96F44DD23BE487500871C1F /* LocalizationParameters.swift in Sources */,
 				F95B6D8A2523138E002C9062 /* PhoneNumberFormatter.swift in Sources */,
+				5A1315D526296C3E0092366D /* ProgressView.swift in Sources */,
 				F9589D272601F19E00E4113F /* EmailFormItemInjector.swift in Sources */,
 				F9639B2D24DD6B370073F38A /* RetryAPIClient.swift in Sources */,
 				F9620DB323C75C19005209FC /* PaymentComponentBuilder.swift in Sources */,
 				E700A72D2549E2F00012B64C /* BLIKPaymentMethod.swift in Sources */,
 				E270FDEB225CC4C4006C2CD0 /* Observation.swift in Sources */,
+				5A1315C926296B100092366D /* ProgressViewStyle.swift in Sources */,
 				E7CD107E25544C970057C52D /* FormContainerItem.swift in Sources */,
 				E28098C4220DC66E0087928F /* ListItemView.swift in Sources */,
 				E28098C2220DC1080087928F /* ListCell.swift in Sources */,
@@ -4108,6 +4123,7 @@
 				E9E3DABB221EA22F00697074 /* CardExpiryDateFormatterTests.swift in Sources */,
 				F9639B5624E3DB190073F38A /* PollingAwaitComponentTests.swift in Sources */,
 				F99F08642383F2B000EBB948 /* FormTextItemViewTests.swift in Sources */,
+				5A54FFE126299602007194B7 /* TimeIntervalExtensionsTests.swift in Sources */,
 				F96A25432371AB75007DBF0B /* PaymentComponentDelegateMock.swift in Sources */,
 				F9A781AE2403BD1600E12487 /* FormItemViewBuilderTests.swift in Sources */,
 				E79A64812490D98F00368E9F /* CardComponentDelegateMock.swift in Sources */,
