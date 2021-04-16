@@ -96,12 +96,11 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         let itemView = itemManager.append(item)
 
         itemView.applyTextDelegateIfNeeded(delegate: self)
-        addItemView(with: item)
+        add(itemView: itemView, with: item)
     }
 
-    private func addItemView<T: FormItem>(with item: T) {
-        guard isViewLoaded else { return }
-        let itemView = itemManager.append(item)
+    private func add<ItemType: FormItem>(itemView: AnyFormItemView, with item: ItemType) {
+        guard isViewLoaded, let itemView = itemView as? FormItemView<ItemType> else { return }
         formView.appendItemView(itemView)
         observerVisibility(of: item, and: itemView)
     }

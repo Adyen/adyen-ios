@@ -55,7 +55,6 @@ class RedirectDetailsTests: XCTestCase {
         
         XCTAssertNil(details.extractKeyValuesFromURL())
 
-        let data = try? JSONEncoder().encode(details)
         XCTAssertThrowsError(try JSONEncoder().encode(details)) { _ in }
     }
     
