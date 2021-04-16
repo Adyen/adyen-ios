@@ -14,7 +14,7 @@ internal enum QRCodeComponentError: Error {
 }
 
 /// A component that presents a QR code.
-internal final class QRCodeComponent: ActionComponent, Localizable {
+internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
     
     /// Delegates `ViewController`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
@@ -139,6 +139,11 @@ internal final class QRCodeComponent: ActionComponent, Localizable {
         
         return component
     }()
+    
+    public func didCancel() {
+        stopTimer()
+        awaitComponent.didCancel()
+    }
 }
 
 extension QRCodeComponent: ActionComponentDelegate {
