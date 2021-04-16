@@ -44,7 +44,5 @@ public class FormLabelItem: FormItem {
 private class ADYLabel: UILabel, AnyFormItemView {
 
     public var childItemViews: [AnyFormItemView] { [] }
-
-    public weak var delegate: FormItemViewDelegate?
     
 }

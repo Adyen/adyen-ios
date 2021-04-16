@@ -45,9 +45,8 @@ class FormTextItemViewTests: XCTestCase {
         }
         
         let didChangeValueExpectation = XCTestExpectation(description: "Expect delegate.didChangeValue() to be called.")
-        delegate.handleDidChangeValue = { itemView in
+        let _ = sut.item.publisher.addEventHandler { event in
             didChangeValueExpectation.fulfill()
-            XCTAssertTrue(itemView === self.sut)
         }
         
         validator.handleMaximumLength = { _ in 6 }

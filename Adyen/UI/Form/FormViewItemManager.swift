@@ -9,16 +9,6 @@ import UIKit
 /// Manages the form items and their views.
 internal final class FormViewItemManager {
     
-    /// The delegate of the item views created by the manager.
-    internal private(set) weak var itemViewDelegate: FormItemViewDelegate?
-    
-    /// Initializes the item manager.
-    ///
-    /// - Parameter itemViewDelegate: The delegate of the item views created by the manager.
-    internal init(itemViewDelegate: FormItemViewDelegate? = nil) {
-        self.itemViewDelegate = itemViewDelegate
-    }
-    
     // MARK: - Items
     
     /// The items managed by the item manager.
@@ -28,15 +18,16 @@ internal final class FormViewItemManager {
     ///
     /// - Parameters:
     ///   - item: The item to append.
-    ///   - itemViewType: Optionally, the item view type to use for this item.
-    ///                   When none is specified, the default will be used.
-    internal func append<T: FormItem>(_ item: T) {
+    /// - Returns: The view instance correspondent to a selected item.
+    @discardableResult internal func append<ItemType: FormItem>(_ item: ItemType) -> AnyFormItemView {
         items.append(item)
         
         let itemView = newItemView(for: item)
         itemViews.append(itemView)
         allItemViews.append(itemView)
         allItemViews.append(contentsOf: itemView.childItemViews)
+
+        return itemView
     }
     
     private func index(of item: FormItem) -> Int {
@@ -64,16 +55,12 @@ internal final class FormViewItemManager {
     ///
     /// - Parameter item: The item to retrieve the item view for.
     /// - Returns: The item view for the given item or nil if item not found.
-    internal func itemView<T: FormItem>(for item: T) -> FormItemView<T>? {
-        itemViews[index(of: item)] as? FormItemView<T>
+    internal func itemView<ItemType: FormItem>(for item: ItemType) -> FormItemView<ItemType>? {
+        itemViews[index(of: item)] as? FormItemView<ItemType>
     }
     
-    private func newItemView<T: FormItem>(for item: T) -> AnyFormItemView {
-        let itemView = item.build(with: FormItemViewBuilder())
-        
-        itemView.delegate = itemViewDelegate
-        itemView.childItemViews.forEach { $0.delegate = itemViewDelegate }
-        return itemView
+    private func newItemView<ItemType: FormItem>(for item: ItemType) -> AnyFormItemView {
+        item.build(with: FormItemViewBuilder())
     }
     
 }

@@ -81,6 +81,12 @@
 		E702BDE42602149E00280682 /* Assertion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E702BDE32602149E00280682 /* Assertion.swift */; };
 		E702BE192602525E00280682 /* AssertsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E702BE182602525E00280682 /* AssertsTests.swift */; };
 		E705F8EB2462B1B900438C3B /* FormButtonItemStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E705F8EA2462B1B900438C3B /* FormButtonItemStyle.swift */; };
+		E7085B122628B29600D0153B /* BasePickerInputControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085B092628B29600D0153B /* BasePickerInputControl.swift */; };
+		E7085B132628B29600D0153B /* BaseFormPickerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085B0A2628B29600D0153B /* BaseFormPickerItemView.swift */; };
+		E7085B142628B29600D0153B /* BaseFormPickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085B0B2628B29600D0153B /* BaseFormPickerItem.swift */; };
+		E7085B162628B29600D0153B /* FormPhoneExtensionPickerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085B0E2628B29600D0153B /* FormPhoneExtensionPickerItemView.swift */; };
+		E7085B172628B29600D0153B /* PhoneExtensionInputControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085B0F2628B29600D0153B /* PhoneExtensionInputControl.swift */; };
+		E7085B182628B29600D0153B /* FormPhoneExtensionPickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085B102628B29600D0153B /* FormPhoneExtensionPickerItem.swift */; };
 		E7166A5224EAC5BA007CCDEF /* BinLookupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7166A5124EAC5BA007CCDEF /* BinLookupRequest.swift */; };
 		E7166A5424EACC44007CCDEF /* BinLookupResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7166A5324EACC44007CCDEF /* BinLookupResponse.swift */; };
 		E7166A5624EAD99F007CCDEF /* CardBrandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7166A5524EAD99F007CCDEF /* CardBrandProvider.swift */; };
@@ -121,9 +127,6 @@
 		E76EC682241125F5009C6E2F /* FormCardSecurityCodeItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76EC681241125F5009C6E2F /* FormCardSecurityCodeItemView.swift */; };
 		E76EC685241127CE009C6E2F /* AdyenCardAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E76EC684241127CE009C6E2F /* AdyenCardAssets.xcassets */; };
 		E76EC6882412581E009C6E2F /* FormTextInputItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76EC6872412581E009C6E2F /* FormTextInputItem.swift */; };
-		E76EC6932417A107009C6E2F /* FormPhoneExtensionPickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76EC6902417A107009C6E2F /* FormPhoneExtensionPickerItem.swift */; };
-		E76EC6942417A107009C6E2F /* FormPhoneExtensionPickerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76EC6912417A107009C6E2F /* FormPhoneExtensionPickerItemView.swift */; };
-		E76EC6952417A107009C6E2F /* PhoneExtensionInputControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76EC6922417A107009C6E2F /* PhoneExtensionInputControl.swift */; };
 		E76EC6972417F36A009C6E2F /* FormTextInputItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76EC6962417F36A009C6E2F /* FormTextInputItemView.swift */; };
 		E773EA3825221C1900119499 /* Throttler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E773EA35251E26BE00119499 /* Throttler.swift */; };
 		E773EA3A25221C4600119499 /* ThrottlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E773EA3925221C4600119499 /* ThrottlerTests.swift */; };
@@ -860,6 +863,12 @@
 		E702BDE32602149E00280682 /* Assertion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assertion.swift; sourceTree = "<group>"; };
 		E702BE182602525E00280682 /* AssertsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssertsTests.swift; sourceTree = "<group>"; };
 		E705F8EA2462B1B900438C3B /* FormButtonItemStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormButtonItemStyle.swift; sourceTree = "<group>"; };
+		E7085B092628B29600D0153B /* BasePickerInputControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasePickerInputControl.swift; sourceTree = "<group>"; };
+		E7085B0A2628B29600D0153B /* BaseFormPickerItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseFormPickerItemView.swift; sourceTree = "<group>"; };
+		E7085B0B2628B29600D0153B /* BaseFormPickerItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseFormPickerItem.swift; sourceTree = "<group>"; };
+		E7085B0E2628B29600D0153B /* FormPhoneExtensionPickerItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormPhoneExtensionPickerItemView.swift; sourceTree = "<group>"; };
+		E7085B0F2628B29600D0153B /* PhoneExtensionInputControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneExtensionInputControl.swift; sourceTree = "<group>"; };
+		E7085B102628B29600D0153B /* FormPhoneExtensionPickerItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormPhoneExtensionPickerItem.swift; sourceTree = "<group>"; };
 		E7098D7D255D3E6D00829E73 /* sk-SK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "sk-SK"; path = "sk-SK.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		E7098D7E255D3E6D00829E73 /* ro-RO */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ro-RO"; path = "ro-RO.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		E7098D7F255D3E6E00829E73 /* el-GR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "el-GR"; path = "el-GR.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -908,9 +917,6 @@
 		E76EC681241125F5009C6E2F /* FormCardSecurityCodeItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardSecurityCodeItemView.swift; sourceTree = "<group>"; };
 		E76EC684241127CE009C6E2F /* AdyenCardAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AdyenCardAssets.xcassets; sourceTree = "<group>"; };
 		E76EC6872412581E009C6E2F /* FormTextInputItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextInputItem.swift; sourceTree = "<group>"; };
-		E76EC6902417A107009C6E2F /* FormPhoneExtensionPickerItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormPhoneExtensionPickerItem.swift; sourceTree = "<group>"; };
-		E76EC6912417A107009C6E2F /* FormPhoneExtensionPickerItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormPhoneExtensionPickerItemView.swift; sourceTree = "<group>"; };
-		E76EC6922417A107009C6E2F /* PhoneExtensionInputControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneExtensionInputControl.swift; sourceTree = "<group>"; };
 		E76EC6962417F36A009C6E2F /* FormTextInputItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextInputItemView.swift; sourceTree = "<group>"; };
 		E773EA35251E26BE00119499 /* Throttler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Throttler.swift; sourceTree = "<group>"; };
 		E773EA3925221C4600119499 /* ThrottlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThrottlerTests.swift; sourceTree = "<group>"; };
@@ -1431,10 +1437,10 @@
 			children = (
 				E216D3BB221AAB240013CBCF /* FormItem.swift */,
 				E2C0E0BB220B2976008616F6 /* FormItemView.swift */,
+				E7085B062628B29600D0153B /* Value Pickers */,
 				E7D531162446F525000046B4 /* Separator */,
 				E7D5310F24462D87000046B4 /* Button */,
 				F9B8C50A23FE960E00C4D0FB /* Phone Number */,
-				F926D54723FAE70300D058D3 /* Phone Extension Picker */,
 				E2D12BED221D55F800EF682F /* Value */,
 				E216D3B822170B360013CBCF /* Text */,
 				E2D12C05221ED15300EF682F /* Switch */,
@@ -1873,6 +1879,35 @@
 				E702BDE32602149E00280682 /* Assertion.swift */,
 			);
 			path = Debugging;
+			sourceTree = "<group>";
+		};
+		E7085B062628B29600D0153B /* Value Pickers */ = {
+			isa = PBXGroup;
+			children = (
+				E7085B082628B29600D0153B /* Abstract */,
+				E7085B0D2628B29600D0153B /* Phone Extension Picker */,
+			);
+			path = "Value Pickers";
+			sourceTree = "<group>";
+		};
+		E7085B082628B29600D0153B /* Abstract */ = {
+			isa = PBXGroup;
+			children = (
+				E7085B092628B29600D0153B /* BasePickerInputControl.swift */,
+				E7085B0A2628B29600D0153B /* BaseFormPickerItemView.swift */,
+				E7085B0B2628B29600D0153B /* BaseFormPickerItem.swift */,
+			);
+			path = Abstract;
+			sourceTree = "<group>";
+		};
+		E7085B0D2628B29600D0153B /* Phone Extension Picker */ = {
+			isa = PBXGroup;
+			children = (
+				E7085B0E2628B29600D0153B /* FormPhoneExtensionPickerItemView.swift */,
+				E7085B0F2628B29600D0153B /* PhoneExtensionInputControl.swift */,
+				E7085B102628B29600D0153B /* FormPhoneExtensionPickerItem.swift */,
+			);
+			path = "Phone Extension Picker";
 			sourceTree = "<group>";
 		};
 		E7166A5024EAC591007CCDEF /* BinLookup */ = {
@@ -2582,16 +2617,6 @@
 				E216D3C4221AEF450013CBCF /* IBANFormatter.swift */,
 			);
 			path = Formatters;
-			sourceTree = "<group>";
-		};
-		F926D54723FAE70300D058D3 /* Phone Extension Picker */ = {
-			isa = PBXGroup;
-			children = (
-				E76EC6902417A107009C6E2F /* FormPhoneExtensionPickerItem.swift */,
-				E76EC6912417A107009C6E2F /* FormPhoneExtensionPickerItemView.swift */,
-				E76EC6922417A107009C6E2F /* PhoneExtensionInputControl.swift */,
-			);
-			path = "Phone Extension Picker";
 			sourceTree = "<group>";
 		};
 		F926D55323FBF18000D058D3 /* Qiwi Wallet */ = {
@@ -3899,6 +3924,7 @@
 				F9B017D42608D402001F23FC /* EContextATMPaymentMethod.swift in Sources */,
 				E9021DEE225CC46D009CF7F4 /* URLHelpers.swift in Sources */,
 				F9D644DE24D2D9950059CBE3 /* MBWayPaymentMethod.swift in Sources */,
+				E7085B142628B29600D0153B /* BaseFormPickerItem.swift in Sources */,
 				E216D3C3221AEDBE0013CBCF /* Formatter.swift in Sources */,
 				F9B798CB23AB706D00A2103C /* ListComponentStyle.swift in Sources */,
 				E2B3C216233507030067891D /* UIColorHelpers.swift in Sources */,
@@ -3909,6 +3935,7 @@
 				E97B972322B238C400505476 /* Analytics.swift in Sources */,
 				F95B6D8C252316DA002C9062 /* PhoneNumberValidator.swift in Sources */,
 				E9021E022264C4C5009CF7F4 /* KeyedDecodingContainerHelpers.swift in Sources */,
+				E7085B182628B29600D0153B /* FormPhoneExtensionPickerItem.swift in Sources */,
 				E28098BB220DB9F30087928F /* ListViewController.swift in Sources */,
 				F97C837925BF047600D7F85C /* DokuPaymentMethod.swift in Sources */,
 				E7B3DE9F25A61B9200CA4D2B /* UIViewConstraintsHelper.swift in Sources */,
@@ -3940,9 +3967,11 @@
 				F9589D272601F19E00E4113F /* EmailFormItemInjector.swift in Sources */,
 				F9639B2D24DD6B370073F38A /* RetryAPIClient.swift in Sources */,
 				F9620DB323C75C19005209FC /* PaymentComponentBuilder.swift in Sources */,
+				E7085B122628B29600D0153B /* BasePickerInputControl.swift in Sources */,
 				E700A72D2549E2F00012B64C /* BLIKPaymentMethod.swift in Sources */,
 				E270FDEB225CC4C4006C2CD0 /* Observation.swift in Sources */,
 				E7CD107E25544C970057C52D /* FormContainerItem.swift in Sources */,
+				E7085B132628B29600D0153B /* BaseFormPickerItemView.swift in Sources */,
 				E28098C4220DC66E0087928F /* ListItemView.swift in Sources */,
 				E28098C2220DC1080087928F /* ListCell.swift in Sources */,
 				E270FDE4225CACB0006C2CD0 /* Observable.swift in Sources */,
@@ -3954,7 +3983,6 @@
 				F9589D332601F1D400E4113F /* PhoneFormItemInjector.swift in Sources */,
 				F9354BE723A7B4E200A6760B /* TextStyle.swift in Sources */,
 				F9D644E024D2E4210059CBE3 /* EmailValidator.swift in Sources */,
-				E76EC6942417A107009C6E2F /* FormPhoneExtensionPickerItemView.swift in Sources */,
 				F9639B3324DD96990073F38A /* PaymentStatusRequest.swift in Sources */,
 				F91664F023E41D7300C10738 /* AnyEncodable.swift in Sources */,
 				E7D531192446F525000046B4 /* FormSeparatorItemView.swift in Sources */,
@@ -3983,7 +4011,6 @@
 				F9D5751823799BB0009C18B5 /* AnyPaymentMethodDecoder.swift in Sources */,
 				F939DEE323C8B4C100D19249 /* EmptyPaymentDetails.swift in Sources */,
 				F96F44CD23B257D700871C1F /* Logger.swift in Sources */,
-				E76EC6952417A107009C6E2F /* PhoneExtensionInputControl.swift in Sources */,
 				E216D3BC221AAB240013CBCF /* FormItem.swift in Sources */,
 				E9093403228EDADA00C9F04B /* Payment.swift in Sources */,
 				E216D3CD221AFBB90013CBCF /* Validator.swift in Sources */,
@@ -3993,7 +4020,6 @@
 				E224088D22B0FD220058923E /* StoredPayPalPaymentMethod.swift in Sources */,
 				F9639B3524DD97A30073F38A /* PaymentStatusResponse.swift in Sources */,
 				F9BA21C2246E82EE00D36A63 /* SizeUtilities.swift in Sources */,
-				E76EC6932417A107009C6E2F /* FormPhoneExtensionPickerItem.swift in Sources */,
 				F97C829225BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift in Sources */,
 				F939CD7725EE56BA00018DEC /* LoadingComponent.swift in Sources */,
 				E7806EBD26147AB700101DBB /* ViewControllerDelegate.swift in Sources */,
@@ -4002,6 +4028,7 @@
 				F9B8C50C23FE962D00C4D0FB /* FormPhoneNumberItem.swift in Sources */,
 				E2C0E0BC220B2976008616F6 /* FormItemView.swift in Sources */,
 				E7763A1125F02BD20046371E /* GiftCardPaymentMethod.swift in Sources */,
+				E7085B172628B29600D0153B /* PhoneExtensionInputControl.swift in Sources */,
 				F926D52C23F59ABE00D058D3 /* QiwiWalletPaymentMethod.swift in Sources */,
 				F97C857725C1D5BA00D7F85C /* UIViewHelpers.swift in Sources */,
 				E95E24C022C2593900973184 /* ApplePayPaymentMethod.swift in Sources */,
@@ -4035,6 +4062,7 @@
 				F9D5752A237C6084009C18B5 /* StoredBCMCPaymentMethod.swift in Sources */,
 				E2289B3C23D0BBB1002844BF /* ListSectionHeaderStyle.swift in Sources */,
 				F926D53723F6A35700D058D3 /* NumericFormatter.swift in Sources */,
+				E7085B162628B29600D0153B /* FormPhoneExtensionPickerItemView.swift in Sources */,
 				F924C079246C38E0006DDAB8 /* SecuredViewController.swift in Sources */,
 				E7D5311A2446F525000046B4 /* FormSeparatorItem.swift in Sources */,
 				E9E3DAFD2225485400697074 /* URLSessionHelpers.swift in Sources */,

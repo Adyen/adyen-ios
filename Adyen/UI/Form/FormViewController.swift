@@ -11,6 +11,8 @@ import UIKit
 @objc(ADYFormViewController)
 open class FormViewController: UIViewController, Localizable, KeyboardObserver {
 
+    private lazy var itemManager = FormViewItemManager()
+
     // MARK: - Public
     
     /// :nodoc:
@@ -64,8 +66,6 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver {
     /// :nodoc:
     public var keyboardObserver: Any?
 
-    private lazy var itemManager = FormViewItemManager(itemViewDelegate: self)
-
     private func updateScrollViewInsets(keyboardHeight: CGFloat) {
         guard keyboardHeight > 0 else {
             formView.contentInset.bottom = 0
@@ -86,13 +86,13 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver {
     ///
     /// - Parameters:
     ///   - item: The item to append.
-    ///   - itemViewType: Optionally, the item view type to use for this item.
-    ///                   When none is specified, the default will be used.
-    public func append<T: FormItem>(_ item: T) {
-        itemManager.append(item)
-        
-        if isViewLoaded, let itemView = itemManager.itemView(for: item) {
-            formView.appendItemView(itemView)
+    public func append<ItemType: FormItem>(_ item: ItemType) {
+        let view = itemManager.append(item)
+
+        view.applyIfNeeded(delegate: self)
+
+        if isViewLoaded {
+            formView.appendItemView(view)
         }
     }
     
@@ -182,13 +182,14 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver {
     }
 }
 
-// MARK: - FormValueItemViewDelegate
+private extension AnyFormItemView {
+    func applyIfNeeded(delegate: FormTextItemViewDelegate) {
+        if let formTextItemView = self as? AnyFormTextItemView {
+            formTextItemView.delegate = delegate
+        }
 
-extension FormViewController: FormValueItemViewDelegate {
-    
-    /// :nodoc:
-    public func didChangeValue<T: FormValueItem>(in itemView: FormValueItemView<T>) {}
-    
+        self.childItemViews.forEach { $0.applyIfNeeded(delegate: delegate) }
+    }
 }
 
 // MARK: - FormTextItemViewDelegate

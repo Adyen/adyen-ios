@@ -8,7 +8,7 @@ import Adyen
 import UIKit
 
 /// A form item into which a card number is entered.
-internal final class FormCardNumberItem: FormTextItem {
+internal final class FormCardNumberItem: FormTextItem, Observer {
     
     private static let binLength = 12
 
@@ -39,7 +39,9 @@ internal final class FormCardNumberItem: FormTextItem {
         }
         self.localizationParameters = localizationParameters
         
-        self.style = style
+        super.init(style: style)
+
+        observe(publisher) { [weak self] value in self?.valueDidChange(value) }
         
         title = ADYLocalizedString("adyen.card.numberItem.title", localizationParameters)
         validator = CardNumberValidator()
@@ -51,14 +53,14 @@ internal final class FormCardNumberItem: FormTextItem {
     
     // MARK: - Value
     
-    internal func valueDidChange() {
+    internal func valueDidChange(_ value: String) {
         binValue = String(value.prefix(FormCardNumberItem.binLength))
         cardNumberFormatter.cardType = supportedCardTypes.adyen.type(forCardNumber: value)
     }
     
     // MARK: - BuildableFormItem
     
-    internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+    override internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
     

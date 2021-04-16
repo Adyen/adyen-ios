@@ -186,5 +186,61 @@ class SEPADirectDebitComponentTests: XCTestCase {
         }
         wait(for: [expectation], timeout: 5)
     }
+
+    func testEmptyFieldsValidation() {
+        let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: "bcmc", name: "Test name")
+        let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod)
+
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+
+            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.payButtonItem.button")
+            let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem")
+            let ibanItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem")
+
+            payButtonItemViewButton?.sendActions(for: .touchUpInside)
+
+            XCTAssertEqual(nameItemView?.alertLabel.text, "Holder name invalid")
+            XCTAssertEqual(ibanItemView?.alertLabel.text, "Invalid account number")
+
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 5)
+    }
+
+    func testSubmition() {
+        let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: "bcmc", name: "Test name")
+        let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod)
+
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+
+        let delegateMock = PaymentComponentDelegateMock()
+        sut.delegate = delegateMock
+        delegateMock.onDidSubmit = { data, component in
+            XCTAssertTrue(component === sut)
+            XCTAssertTrue(data.paymentMethod is SEPADirectDebitDetails)
+            let data = data.paymentMethod as! SEPADirectDebitDetails
+            XCTAssertEqual(data.iban, "NL13TEST0123456789")
+            XCTAssertEqual(data.ownerName, "A. Klaassen")
+            expectation.fulfill()
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+
+            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.payButtonItem.button")
+            let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem")
+            let ibanItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem")
+
+            self.populate(textItemView: ibanItemView!, with: "NL13TEST0123456789")
+            self.populate(textItemView: nameItemView!, with: "A. Klaassen")
+
+            payButtonItemViewButton?.sendActions(for: .touchUpInside)
+        }
+        wait(for: [expectation], timeout: 5)
+    }
     
 }
