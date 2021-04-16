@@ -17,9 +17,6 @@ internal final class FormErrorItemView: FormItemView<FormErrorItem>, Observer {
         super.init(item: item)
         bind(item.$message, to: messageLabel, at: \.text)
         bind(item.$message, to: self, at: \.accessibilityLabel)
-        observe(item.isHidden) { [weak self] isHidden in
-            self?.updateVisibility(isHidden: isHidden)
-        }
         isHidden = item.isHidden.wrappedValue
         addSubview(containerView)
         containerView.adyen.anchor(inside: safeAreaLayoutGuide, with: UIEdgeInsets(top: 16, left: 16, bottom: -16, right: -16))
@@ -31,14 +28,6 @@ internal final class FormErrorItemView: FormItemView<FormErrorItem>, Observer {
         accessibilityLabel = item.message
         accessibilityTraits = messageLabel.accessibilityTraits
         accessibilityValue = messageLabel.accessibilityValue
-    }
-
-    private func updateVisibility(isHidden: Bool) {
-        UIView.animate(withDuration: 0.35, animations: { [weak self] in
-            self?.isHidden = isHidden
-        }, completion: { [weak self] _ in
-            self?.adyen.updatePreferredContentSize()
-        })
     }
 
     // MARK: - Stack View

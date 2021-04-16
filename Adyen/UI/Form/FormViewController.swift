@@ -103,6 +103,14 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         guard isViewLoaded else { return }
         let itemView = itemManager.append(item)
         formView.appendItemView(itemView)
+        observerVisibility(of: item, and: itemView)
+    }
+
+    private func observerVisibility<T: FormItem>(of item: T, and itemView: FormItemView<T>) {
+        guard let item = item as? Hidable else { return }
+        observe(item.isHidden) { isHidden in
+            itemView.adyen.hideWithAnimation(isHidden)
+        }
     }
 
     // MARK: - Localizable
