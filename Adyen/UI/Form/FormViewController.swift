@@ -95,18 +95,17 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     ///   - item: The item to append.
     public func append<T: FormItem>(_ item: T) {
         let itemView = itemManager.append(item)
-
-        itemView.applyTextDelegateIfNeeded(delegate: self)
-        add(itemView: itemView, with: item)
-    }
-
-    private func add<ItemType: FormItem>(itemView: AnyFormItemView, with item: ItemType) {
-        guard isViewLoaded, let itemView = itemView as? FormItemView<ItemType> else { return }
-        formView.appendItemView(itemView)
         observerVisibility(of: item, and: itemView)
+        itemView.applyTextDelegateIfNeeded(delegate: self)
+        addItemViewIfNeeded(itemView)
     }
 
-    private func observerVisibility<T: FormItem>(of item: T, and itemView: FormItemView<T>) {
+    private func addItemViewIfNeeded(_ itemView: AnyFormItemView) {
+        guard isViewLoaded else { return }
+        formView.appendItemView(itemView)
+    }
+
+    private func observerVisibility<T: FormItem>(of item: T, and itemView: UIView) {
         guard let item = item as? Hidable else { return }
         observe(item.isHidden) { isHidden in
             itemView.adyen.hideWithAnimation(isHidden)
@@ -130,7 +129,7 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         // Exit when all validations passed.
         guard !isValid else { return true }
         
-        itemManager.allItemViews
+        itemManager.flatItemViews
             .compactMap { $0 as? AnyFormValueItemView }
             .forEach { $0.validate() }
         
@@ -140,17 +139,11 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     }
     
     private func getAllValidatableItems() -> [ValidatableFormItem] {
-        let flatItems = getAllFlatItems()
-        return flatItems.compactMap { $0 as? ValidatableFormItem }
+        itemManager.flatItems.compactMap { $0 as? ValidatableFormItem }
     }
     
     private func formRequiresInputView() -> Bool {
-        let flatItems = getAllFlatItems()
-        return flatItems.contains { $0 is InputViewRequiringFormItem }
-    }
-    
-    private func getAllFlatItems() -> [FormItem] {
-        itemManager.items.flatMap(\.flatSubitems)
+        itemManager.flatItems.contains { $0 is InputViewRequiringFormItem }
     }
     
     // MARK: - View
@@ -161,7 +154,7 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         addFormView()
         
         delegate?.viewDidLoad(viewController: self)
-        itemManager.itemViews.forEach(formView.appendItemView(_:))
+        itemManager.topLevelItemViews.forEach(formView.appendItemView(_:))
     }
 
     private func addFormView() {
@@ -188,7 +181,7 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     
     @discardableResult
     override public func resignFirstResponder() -> Bool {
-        let textItemView = itemManager.allItemViews.first(where: { $0.isFirstResponder })
+        let textItemView = itemManager.flatItemViews.first(where: { $0.isFirstResponder })
         textItemView?.resignFirstResponder()
         
         return super.resignFirstResponder()
@@ -198,7 +191,7 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     
     private func assignInitialFirstResponder() {
         guard view.isUserInteractionEnabled else { return }
-        let textItemView = itemManager.itemViews.first(where: { $0.canBecomeFirstResponder })
+        let textItemView = itemManager.topLevelItemViews.first(where: { $0.canBecomeFirstResponder })
         textItemView?.becomeFirstResponder()
     }
 }
@@ -228,7 +221,7 @@ extension FormViewController: FormTextItemViewDelegate {
     }
     
     private func handleReturnKey<T: FormTextItem>(from itemView: FormTextItemView<T>) {
-        let itemViews = itemManager.allItemViews
+        let itemViews = itemManager.flatItemViews
         
         // Determine the index of the current item view.
         guard let currentIndex = itemViews.firstIndex(where: { $0 === itemView }) else {
