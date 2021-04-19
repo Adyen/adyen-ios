@@ -18,7 +18,7 @@ public struct FormErrorItemStyle: ViewStyle {
     public var cornerRounding: CornerRounding = .fixed(6)
 
     /// :nodoc:
-    public var backgroundColor = UIColor.Adyen.color(hex: 0xD10244).withAlphaComponent(0.1)
+    public var backgroundColor = UIColor.Adyen.errorRed.withAlphaComponent(0.1)
 
     /// Initializes the form error item style.
     ///
