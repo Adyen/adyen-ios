@@ -8,9 +8,13 @@ import Adyen
 import UIKit
 
 /// An error that occured during the use of QRCodeComponent
-internal enum QRCodeComponentError: Error {
+internal enum QRCodeComponentError: LocalizedError {
     /// Indicates the QR code is not longer valid
     case qrCodeExpired
+    
+    public var errorDescription: String? {
+        "QR code is no longer valid"
+    }
 }
 
 /// A component that presents a QR code.
@@ -38,7 +42,6 @@ internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable 
         self.style = style
         
         self.timeLeft = timeoutInterval
-        self.progress = Progress()
         
         updateExpiration()
     }
@@ -60,12 +63,12 @@ internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable 
     }
     
     private var timeoutTimer: Timer?
-    private let progress: Progress
+    private let progress: Progress = Progress()
     @Observable(nil) private var expirationText: String?
     
     /// Default timeout is 15 min
     private let timeoutInterval: TimeInterval = 60 * 15
-    private var timeLeft: TimeInterval
+    private lazy var timeLeft: TimeInterval = timeoutInterval
     
     private func startTimer() {
         let unitCount = Int64(timeoutInterval)
@@ -128,9 +131,6 @@ internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable 
     }
     
     private lazy var awaitComponent: AnyAwaitActionHandler = {
-        let client = APIClient(environment: environment)
-        let scheduler = BackoffScheduler(queue: .main)
-        let retry = RetryAPIClient(apiClient: client, scheduler: scheduler)
         let component = PollingAwaitComponent(
             apiClient: RetryAPIClient(apiClient: APIClient(environment: environment),
                                       scheduler: BackoffScheduler(queue: .main))
