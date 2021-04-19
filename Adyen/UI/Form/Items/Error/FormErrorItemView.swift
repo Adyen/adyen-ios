@@ -69,6 +69,9 @@ internal final class FormErrorItemView: FormItemView<FormErrorItem>, Observer {
         let view = UIImageView(image: UIImage(named: item.iconName,
                                               in: Bundle.coreInternalResources,
                                               compatibleWith: nil))
+        view.accessibilityIdentifier = item.identifier.map {
+            ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "iconView")
+        }
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()

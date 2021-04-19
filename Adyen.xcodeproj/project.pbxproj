@@ -456,6 +456,7 @@
 		F99D453E2627165400880D72 /* FormErrorItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99D453D2627165400880D72 /* FormErrorItem.swift */; };
 		F99D454A262716EF00880D72 /* FormErrorItemStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99D4549262716EF00880D72 /* FormErrorItemStyle.swift */; };
 		F99D4556262717A500880D72 /* FormErrorItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99D4555262717A500880D72 /* FormErrorItemView.swift */; };
+		F99D4603262D647400880D72 /* FormErrorItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99D4602262D647400880D72 /* FormErrorItemTests.swift */; };
 		F99E7278261F6C6F00EA5B78 /* KeyboardObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99E7277261F6C6F00EA5B78 /* KeyboardObserver.swift */; };
 		F99F08582383EA2A00EBB948 /* ValidatorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99F08572383EA2A00EBB948 /* ValidatorMock.swift */; };
 		F99F085A2383EAC800EBB948 /* FormatterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99F08592383EAC800EBB948 /* FormatterMock.swift */; };
@@ -1213,6 +1214,7 @@
 		F99D453D2627165400880D72 /* FormErrorItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormErrorItem.swift; sourceTree = "<group>"; };
 		F99D4549262716EF00880D72 /* FormErrorItemStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormErrorItemStyle.swift; sourceTree = "<group>"; };
 		F99D4555262717A500880D72 /* FormErrorItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormErrorItemView.swift; sourceTree = "<group>"; };
+		F99D4602262D647400880D72 /* FormErrorItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormErrorItemTests.swift; sourceTree = "<group>"; };
 		F99E7277261F6C6F00EA5B78 /* KeyboardObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardObserver.swift; sourceTree = "<group>"; };
 		F99F08572383EA2A00EBB948 /* ValidatorMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatorMock.swift; sourceTree = "<group>"; };
 		F99F08592383EAC800EBB948 /* FormatterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterMock.swift; sourceTree = "<group>"; };
@@ -2964,6 +2966,14 @@
 			path = Error;
 			sourceTree = "<group>";
 		};
+		F99D4601262D643400880D72 /* Error Item */ = {
+			isa = PBXGroup;
+			children = (
+				F99D4602262D647400880D72 /* FormErrorItemTests.swift */,
+			);
+			path = "Error Item";
+			sourceTree = "<group>";
+		};
 		F99F085B2383EBFF00EBB948 /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -2988,6 +2998,7 @@
 		F99F08612383F29000EBB948 /* Items */ = {
 			isa = PBXGroup;
 			children = (
+				F99D4601262D643400880D72 /* Error Item */,
 				F99F08622383F29700EBB948 /* Text */,
 			);
 			path = Items;
@@ -4155,6 +4166,7 @@
 				E74D918325AF3FE600743B0C /* CardBrandProviderTests.swift in Sources */,
 				E773EA3C2523432B00119499 /* CardTypeProviderMock.swift in Sources */,
 				E9E3DB062226B3B200697074 /* CoderTests.swift in Sources */,
+				F99D4603262D647400880D72 /* FormErrorItemTests.swift in Sources */,
 				E9E3DABE221EA47800697074 /* StringExtensionsTests.swift in Sources */,
 				F95B6D9025231880002C9062 /* PhoneNumberValidatorTests.swift in Sources */,
 				F9639B5224E29E340073F38A /* PresentationDelegateMock.swift in Sources */,
