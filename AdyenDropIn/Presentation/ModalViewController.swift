@@ -35,16 +35,6 @@ internal final class ModalViewController: UIViewController {
         self.style = style
         
         super.init(nibName: nil, bundle: nil)
-
-        addChildViewController()
-    }
-
-    private func addChildViewController() {
-        innerController.willMove(toParent: self)
-        addChild(innerController)
-        view.addSubview(stackView)
-        innerController.didMove(toParent: self)
-        arrangeConstraints()
     }
     
     /// :nodoc:
@@ -64,7 +54,16 @@ internal final class ModalViewController: UIViewController {
     /// :nodoc:
     override public func viewDidLoad() {
         super.viewDidLoad()
+        addChildViewController()
         view.backgroundColor = style.backgroundColor
+    }
+
+    private func addChildViewController() {
+        innerController.willMove(toParent: self)
+        addChild(innerController)
+        view.addSubview(stackView)
+        innerController.didMove(toParent: self)
+        arrangeConstraints()
     }
     
     override internal var preferredContentSize: CGSize {

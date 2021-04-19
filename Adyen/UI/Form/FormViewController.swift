@@ -84,6 +84,7 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     /// :nodoc:
     public func didUpdatePreferredContentSize() {
         updateScrollViewInsets(keyboardHeight: keyboardRect.height)
+        view.layoutIfNeeded()
     }
     
     // MARK: - Items
@@ -153,18 +154,21 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     }
     
     // MARK: - View
-
-    override open func loadView() {
-        view = formView
-        view.backgroundColor = style.backgroundColor
-    }
     
     /// :nodoc:
     override open func viewDidLoad() {
         super.viewDidLoad()
+        addFormView()
         
         delegate?.viewDidLoad(viewController: self)
         itemManager.itemViews.forEach(formView.appendItemView(_:))
+    }
+
+    private func addFormView() {
+        view.addSubview(formView)
+        view.backgroundColor = style.backgroundColor
+        formView.backgroundColor = style.backgroundColor
+        formView.adyen.anchor(inside: view.safeAreaLayoutGuide)
     }
     
     /// :nodoc:
