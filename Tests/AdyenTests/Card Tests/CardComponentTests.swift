@@ -704,6 +704,34 @@ class CardComponentTests: XCTestCase {
         }
         waitForExpectations(timeout: 10, handler: nil)
     }
+
+    func testDateShouldPassFocusToCVC() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        let sut = CardComponent(paymentMethod: method,
+                                clientKey: Dummy.dummyClientKey)
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        let expiryDateItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
+        let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
+
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+            expiryDateItemView?.becomeFirstResponder()
+            self.append(textItemView: expiryDateItemView!, with: "3")
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
+                XCTAssertTrue(expiryDateItemView!.textField.isFirstResponder)
+                self.append(textItemView: expiryDateItemView!, with: "3")
+                self.append(textItemView: expiryDateItemView!, with: "0")
+
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+                    XCTAssertTrue(securityCodeItemView!.textField.isFirstResponder)
+                    XCTAssertFalse(expiryDateItemView!.textField.isFirstResponder)
+
+                    expectation.fulfill()
+                }
+            }}
+        wait(for: [expectation], timeout: 60)
+    }
     
     private func focus<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U) {
         textItemView.textField.becomeFirstResponder()

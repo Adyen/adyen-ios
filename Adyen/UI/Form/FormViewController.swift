@@ -13,17 +13,23 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver {
 
     private lazy var itemManager = FormViewItemManager()
 
-    // MARK: - Public
-    
+    /// :nodoc:
+    public var keyboardObserver: Any?
+
+    /// :nodoc:
+    public var localizationParameters: LocalizationParameters?
+
     /// :nodoc:
     public var requiresKeyboardInput: Bool { formRequiresInputView() }
-    
+
     /// Indicates the `FormViewController` UI styling.
     public let style: ViewStyle
-    
+
     /// :nodoc:
     /// Delegate to handle different viewController events.
     public weak var delegate: ViewControllerDelegate?
+
+    // MARK: - Public
     
     /// Initializes the FormViewController.
     ///
@@ -63,9 +69,6 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver {
 
     // MARK: - Private Properties
 
-    /// :nodoc:
-    public var keyboardObserver: Any?
-
     private func updateScrollViewInsets(keyboardHeight: CGFloat) {
         guard keyboardHeight > 0 else {
             formView.contentInset.bottom = 0
@@ -77,27 +80,19 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver {
     
     // MARK: - Items
     
-    /// The items displayed in the form.
-    public var items: [FormItem] {
-        itemManager.items
-    }
-    
     /// Appends an item to the form.
     ///
     /// - Parameters:
     ///   - item: The item to append.
     public func append<ItemType: FormItem>(_ item: ItemType) {
-        let view = itemManager.append(item)
+        let itemView = itemManager.append(item)
 
-        view.applyIfNeeded(delegate: self)
+        itemView.applyTextDelegateIfNeeded(delegate: self)
 
         if isViewLoaded {
-            formView.appendItemView(view)
+            formView.appendItemView(itemView)
         }
     }
-    
-    /// :nodoc:
-    public var localizationParameters: LocalizationParameters?
     
     // MARK: - Validity
     
@@ -135,19 +130,18 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver {
     }
     
     // MARK: - View
+
+    override open func loadView() {
+        view = formView
+        view.backgroundColor = style.backgroundColor
+    }
     
     /// :nodoc:
     override open func viewDidLoad() {
         super.viewDidLoad()
-        view.addSubview(formView)
-        formView.adyen.anchor(inside: view.safeAreaLayoutGuide)
         
         delegate?.viewDidLoad(viewController: self)
-        
         itemManager.itemViews.forEach(formView.appendItemView(_:))
-        
-        view.backgroundColor = style.backgroundColor
-        formView.backgroundColor = style.backgroundColor
     }
     
     /// :nodoc:
@@ -183,12 +177,12 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver {
 }
 
 private extension AnyFormItemView {
-    func applyIfNeeded(delegate: FormTextItemViewDelegate) {
+    func applyTextDelegateIfNeeded(delegate: FormTextItemViewDelegate) {
         if let formTextItemView = self as? AnyFormTextItemView {
             formTextItemView.delegate = delegate
         }
 
-        self.childItemViews.forEach { $0.applyIfNeeded(delegate: delegate) }
+        self.childItemViews.forEach { $0.applyTextDelegateIfNeeded(delegate: delegate) }
     }
 }
 

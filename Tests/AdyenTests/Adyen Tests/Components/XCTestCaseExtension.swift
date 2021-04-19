@@ -15,4 +15,10 @@ extension XCTestCase {
         textView.text = text
         textView.sendActions(for: .editingChanged)
     }
+
+    internal func append<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U, with text: String) {
+        let textView = textItemView.textField
+        textView.text = (textView.text ?? "") + text
+        textView.sendActions(for: .editingChanged)
+    }
 }
