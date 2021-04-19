@@ -36,22 +36,28 @@ internal final class WrapperViewController: UIViewController {
         return viewController?.children.contains(where: { heirarchyRequiresKeyboardInput(viewController: $0) }) ?? false
     }
 
-    internal func updateFrame(keyboardRect: CGRect, animated: Bool) {
+    internal func updateFrame(keyboardRect: CGRect) {
         guard let view = child.viewIfLoaded, let window = UIApplication.shared.keyWindow else { return }
-        view.setNeedsLayout()
         let finalFrame = child.finalPresentationFrame(in: window, keyboardRect: keyboardRect)
-        view.layer.removeAllAnimations()
-        UIView.animate(withDuration: animated ? 0.35 : 0.0,
-                       delay: 0.0,
-                       options: [.curveLinear],
-                       animations: { view.frame = finalFrame },
-                       completion: nil)
+        topConstraint?.constant = finalFrame.origin.y
+        view.layoutIfNeeded()
     }
+
+    private var topConstraint: NSLayoutConstraint?
 
     fileprivate func positionContent(_ child: ModalViewController) {
         addChild(child)
         view.addSubview(child.view)
         child.didMove(toParent: self)
+        child.view.translatesAutoresizingMaskIntoConstraints = false
+        let topConstraint = child.view.topAnchor.constraint(equalTo: view.topAnchor, constant: 0)
+        NSLayoutConstraint.activate([
+            child.view.leftAnchor.constraint(equalTo: view.leftAnchor),
+            child.view.rightAnchor.constraint(equalTo: view.rightAnchor),
+            child.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            topConstraint
+        ])
+        self.topConstraint = topConstraint
     }
 }
 

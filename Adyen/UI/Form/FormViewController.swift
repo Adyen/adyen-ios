@@ -9,15 +9,7 @@ import UIKit
 /// Displays a form for the user to enter details.
 /// :nodoc:
 @objc(ADYFormViewController)
-open class FormViewController: UIViewController, Localizable, KeyboardObserver {
-
-    private lazy var itemManager = FormViewItemManager()
-
-    /// :nodoc:
-    public var keyboardObserver: Any?
-
-    /// :nodoc:
-    public var localizationParameters: LocalizationParameters?
+open class FormViewController: UIViewController, Localizable, KeyboardObserver, Observer, PreferredContentSizeConsumer {
 
     /// :nodoc:
     public var requiresKeyboardInput: Bool { formRequiresInputView() }
@@ -61,21 +53,38 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver {
         """) }
     }
 
+    // MARK: - KeyboardObserver
+
+    /// :nodoc:
+    public var keyboardObserver: Any?
+
+    /// :nodoc:
     public func startObserving() {
         keyboardObserver = startObserving { [weak self] in
-            self?.updateScrollViewInsets(keyboardHeight: $0.height)
+            self?.keyboardRect = $0
+            self?.didUpdatePreferredContentSize()
         }
+    }
+
+    private var keyboardRect: CGRect = .zero
+
+    private func updateScrollViewInsets(keyboardHeight: CGFloat) {
+        formView.contentInset.bottom = keyboardHeight
     }
 
     // MARK: - Private Properties
 
-    private func updateScrollViewInsets(keyboardHeight: CGFloat) {
-        guard keyboardHeight > 0 else {
-            formView.contentInset.bottom = 0
-            return
-        }
-        let bottomScrollInset: CGFloat = preferredContentSize.height + keyboardHeight - formView.bounds.height
-        formView.contentInset.bottom = bottomScrollInset
+    private lazy var itemManager = FormViewItemManager()
+
+    // MARK: - PreferredContentSizeConsumer
+
+    /// :nodoc:
+    public func willUpdatePreferredContentSize() { /* Empty implementation */ }
+
+    /// :nodoc:
+    public func didUpdatePreferredContentSize() {
+        updateScrollViewInsets(keyboardHeight: keyboardRect.height)
+        view.layoutIfNeeded()
     }
     
     // MARK: - Items
@@ -84,15 +93,30 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver {
     ///
     /// - Parameters:
     ///   - item: The item to append.
-    public func append<ItemType: FormItem>(_ item: ItemType) {
+    public func append<T: FormItem>(_ item: T) {
         let itemView = itemManager.append(item)
 
         itemView.applyTextDelegateIfNeeded(delegate: self)
+        add(itemView: itemView, with: item)
+    }
 
-        if isViewLoaded {
-            formView.appendItemView(itemView)
+    private func add<ItemType: FormItem>(itemView: AnyFormItemView, with item: ItemType) {
+        guard isViewLoaded, let itemView = itemView as? FormItemView<ItemType> else { return }
+        formView.appendItemView(itemView)
+        observerVisibility(of: item, and: itemView)
+    }
+
+    private func observerVisibility<T: FormItem>(of item: T, and itemView: FormItemView<T>) {
+        guard let item = item as? Hidable else { return }
+        observe(item.isHidden) { isHidden in
+            itemView.adyen.hideWithAnimation(isHidden)
         }
     }
+
+    // MARK: - Localizable
+
+    /// :nodoc:
+    public var localizationParameters: LocalizationParameters?
     
     // MARK: - Validity
     
@@ -130,18 +154,21 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver {
     }
     
     // MARK: - View
-
-    override open func loadView() {
-        view = formView
-        view.backgroundColor = style.backgroundColor
-    }
     
     /// :nodoc:
     override open func viewDidLoad() {
         super.viewDidLoad()
+        addFormView()
         
         delegate?.viewDidLoad(viewController: self)
         itemManager.itemViews.forEach(formView.appendItemView(_:))
+    }
+
+    private func addFormView() {
+        view.addSubview(formView)
+        view.backgroundColor = style.backgroundColor
+        formView.backgroundColor = style.backgroundColor
+        formView.adyen.anchor(inside: view.safeAreaLayoutGuide)
     }
     
     /// :nodoc:

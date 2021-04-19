@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -27,7 +27,7 @@ internal final class SlideInPresentationAnimator: NSObject, UIViewControllerAnim
         let containerView = transitionContext.containerView
         containerView.addSubview(toShow.view)
         toShow.view.frame.origin.y = containerView.bounds.height
-        toShow.updateFrame(keyboardRect: .zero, animated: false)
+        toShow.updateFrame(keyboardRect: .zero)
         
         UIView.animateKeyframes(withDuration: duration,
                                 delay: 0.0,

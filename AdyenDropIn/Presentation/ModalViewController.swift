@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -35,8 +35,6 @@ internal final class ModalViewController: UIViewController {
         self.style = style
         
         super.init(nibName: nil, bundle: nil)
-        
-        addChild(rootViewController)
     }
     
     /// :nodoc:
@@ -54,22 +52,18 @@ internal final class ModalViewController: UIViewController {
     // MARK: - UIViewController
     
     /// :nodoc:
-    override public func loadView() {
-        super.loadView()
-        
+    override public func viewDidLoad() {
+        super.viewDidLoad()
+        addChildViewController()
+        view.backgroundColor = style.backgroundColor
+    }
+
+    private func addChildViewController() {
         innerController.willMove(toParent: self)
         addChild(innerController)
         view.addSubview(stackView)
         innerController.didMove(toParent: self)
         arrangeConstraints()
-    }
-    
-    /// :nodoc:
-    override public func viewDidLoad() {
-        super.viewDidLoad()
-        
-        innerController.view.layoutIfNeeded()
-        view.backgroundColor = style.backgroundColor
     }
     
     override internal var preferredContentSize: CGSize {
@@ -133,8 +127,7 @@ internal final class ModalViewController: UIViewController {
         let separatorHeight: CGFloat = 1.0 / UIScreen.main.scale
         let toolbarHeight = navigationBarHeight - separatorHeight
 
-        let constraints = stackView.adyen.anchor(inside: view)
-        constraints.first { $0.firstAttribute == .bottom }?.priority = .defaultHigh
+        stackView.adyen.anchor(inside: view)
         NSLayoutConstraint.activate([
             toolbar.heightAnchor.constraint(equalToConstant: toolbarHeight),
             separator.heightAnchor.constraint(equalToConstant: separatorHeight)

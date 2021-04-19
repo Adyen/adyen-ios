@@ -21,6 +21,9 @@ public struct TextStyle: ViewStyle {
     
     /// :nodoc:
     public var backgroundColor: UIColor = .clear
+
+    /// The corners style of the text item.
+    public var cornerRounding: CornerRounding = .none
     
     /// Initializes the text style.
     ///

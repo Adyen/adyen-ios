@@ -9,7 +9,7 @@ import Adyen
     import AdyenEncryption
 #endif
 
-internal class CardViewController: FormViewController, Observer {
+internal class CardViewController: FormViewController {
 
     private let configuration: CardComponent.Configuration
 

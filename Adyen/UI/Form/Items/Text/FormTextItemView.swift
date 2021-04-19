@@ -322,20 +322,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     
     private func hideAlertLabel(_ hidden: Bool) {
         guard hidden || alertLabel.text != nil else { return }
-        UIView.animateKeyframes(withDuration: 0.25,
-                                delay: 0,
-                                options: [.calculationModeLinear],
-                                animations: {
-                                    UIView.addKeyframe(withRelativeStartTime: hidden ? 0.5 : 0, relativeDuration: 0.5) {
-                                        self.alertLabel.isHidden = hidden
-                                    }
-                                    
-                                    UIView.addKeyframe(withRelativeStartTime: hidden ? 0 : 0.5, relativeDuration: 0.5) {
-                                        self.alertLabel.alpha = hidden ? 0 : 1
-                                    }
-                                }, completion: { _ in
-                                    self.alertLabel.isHidden = hidden
-                                })
+        alertLabel.adyen.hideWithAnimation(hidden)
     }
 }
 
