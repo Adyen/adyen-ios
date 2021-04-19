@@ -40,7 +40,6 @@ internal final class WrapperViewController: UIViewController {
         guard let view = child.viewIfLoaded, let window = UIApplication.shared.keyWindow else { return }
         let finalFrame = child.finalPresentationFrame(in: window, keyboardRect: keyboardRect)
         topConstraint?.constant = finalFrame.origin.y
-        view.setNeedsLayout()
         view.layoutIfNeeded()
     }
 
