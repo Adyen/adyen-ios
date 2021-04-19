@@ -66,6 +66,8 @@
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
 "adyen.pix.instructions" = "Abra o app com sua chave PIX cadastrada, escolha Pagar com Pix e escaneie o QR Code ou copie e cole o código";
+"adyen.pix.copyButton" = "Copiar código";
+"adyen.pix.expirationLabel" = "Você tem %@ para pagar ";
 "adyen.billingAddressSection.title" = "Endereço de cobrança";
 "adyen.shippingAddressSection.title" = "Endereço de entrega";
 "adyen.countryField.title" = "País";

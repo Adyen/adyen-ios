@@ -15,9 +15,9 @@ final class AwaitActionHandlerMock: AnyAwaitActionHandler {
 
     var delegate: ActionComponentDelegate?
 
-    var onHandle: ((_ action: AwaitAction) -> Void)?
+    var onHandle: ((_ action: AnyAwaitableAction) -> Void)?
 
-    func handle(_ action: AwaitAction) {
+    func handle(_ action: AnyAwaitableAction) {
         onHandle?(action)
     }
 
@@ -30,12 +30,16 @@ final class AwaitActionHandlerMock: AnyAwaitActionHandler {
 
 struct AwaitActionHandlerProviderMock: AnyAwaitActionHandlerProvider {
 
-    var onHandler: (_ paymentMethodType: AwaitPaymentMethod) -> AnyAwaitActionHandler
+    var onAwaitHandler: ((_ paymentMethodType: AwaitPaymentMethod) -> AnyAwaitActionHandler)?
+    var onQRHandler: ((_ paymentMethodType: QRCodePaymentMethod) -> AnyAwaitActionHandler)?
 
     func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyAwaitActionHandler {
-        onHandler(paymentMethodType)
+        onAwaitHandler?(paymentMethodType) ?? AwaitActionHandlerMock()
     }
-
+    
+    func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyAwaitActionHandler {
+        onQRHandler?(qrPaymentMethodType) ?? AwaitActionHandlerMock()
+    }
 }
 
 extension AwaitAction: Equatable {
@@ -86,18 +90,18 @@ class AwaitComponentTests: XCTestCase {
         let action = AwaitAction(paymentData: "data", paymentMethodType: .mbway)
 
         let handlerExpectation = expectation(description: "AwaitActionHandler.handle() must be called.")
-        let handlerProvider = AwaitActionHandlerProviderMock { type in
-
-            XCTAssertEqual(type, AwaitPaymentMethod.mbway)
-
-            let handler = AwaitActionHandlerMock()
-            handler.onHandle = {
-                XCTAssertTrue($0 == action)
-                handlerExpectation.fulfill()
-            }
-
-            return handler
-        }
+        let handlerProvider = AwaitActionHandlerProviderMock(
+            onAwaitHandler: { type in
+                XCTAssertEqual(type, AwaitPaymentMethod.mbway)
+                
+                let handler = AwaitActionHandlerMock()
+                handler.onHandle = {
+                    XCTAssertTrue($0.paymentData == action.paymentData)
+                    handlerExpectation.fulfill()
+                }
+                
+                return handler
+            }, onQRHandler: nil)
 
         let sut = AwaitComponent(awaitComponentBuilder: handlerProvider, style: style)
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)

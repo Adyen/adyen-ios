@@ -99,12 +99,10 @@ internal final class QRCodeView: UIView, Localizable, Observer {
     }
     
     private lazy var copyButton: SubmitButton = {
-        let accessiblityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "copyButton")
-        
         let button = SubmitButton(style: model.style.copyButton)
-        button.title = ADYLocalizedString("adyen.button.copy", localizationParameters)
+        button.title = ADYLocalizedString("adyen.pix.copyButton", localizationParameters)
         button.addTarget(self, action: #selector(copyCode), for: .touchUpInside)
-        button.accessibilityIdentifier = accessibilityIdentifier
+        button.accessibilityIdentifier = "copyButton"
         
         return button
     }()
@@ -130,6 +128,7 @@ internal final class QRCodeView: UIView, Localizable, Observer {
         instructionLabel.backgroundColor = style.backgroundColor
         instructionLabel.text = model.instruction
         instructionLabel.numberOfLines = 0
+        instructionLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "instructionLabel")
         
         return instructionLabel
     }()
@@ -139,6 +138,7 @@ internal final class QRCodeView: UIView, Localizable, Observer {
         let progressView = ProgressView(style: model.style.progressView, observedProgress: model.observedProgress)
         progressView.widthAnchor.constraint(equalToConstant: progressViewSize.width).isActive = true
         progressView.heightAnchor.constraint(equalToConstant: progressViewSize.height).isActive = true
+        progressView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "progressView")
         
         return progressView
     }()
@@ -152,6 +152,7 @@ internal final class QRCodeView: UIView, Localizable, Observer {
         expirationLabel.textAlignment = style.textAlignment
         expirationLabel.backgroundColor = style.backgroundColor
         expirationLabel.numberOfLines = 1
+        expirationLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "expirationLabel")
 
         bind(model.expiration, to: expirationLabel, at: \.text)
         

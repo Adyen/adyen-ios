@@ -38,9 +38,25 @@ internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable 
     /// Initializes the `QRCodeComponent`.
     ///
     /// - Parameter style: The component UI style.
-    public init(style: QRCodeComponentStyle = QRCodeComponentStyle()) {
+    public convenience init(style: QRCodeComponentStyle?) {
+        self.init(
+            style: style ?? QRCodeComponentStyle(),
+            awaitComponentBuilder: nil,
+            timeoutInterval: 60 * 15
+        )
+    }
+    
+    /// Initializes the `QRCodeComponent`.
+    ///
+    /// - Parameter style: The component UI style.
+    /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
+    /// - Parameter timeoutInterval: QR Code expiration timeout
+    internal init(style: QRCodeComponentStyle = QRCodeComponentStyle(),
+                  awaitComponentBuilder: AnyAwaitActionHandlerProvider?,
+                  timeoutInterval: TimeInterval) {
         self.style = style
-        
+        self.awaitComponentBuilder = awaitComponentBuilder
+        self.timeoutInterval = timeoutInterval
         self.timeLeft = timeoutInterval
         
         updateExpiration()
@@ -52,6 +68,11 @@ internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable 
     public func handle(_ action: QRCodeAction) {
         self.action = action
         
+        let awaitComponentBuilder = self.awaitComponentBuilder ?? AwaitActionHandlerProvider(environment: environment, apiClient: nil)
+        
+        let awaitComponent = awaitComponentBuilder.handler(for: action.paymentMethodType)
+        awaitComponent.delegate = self
+        
         presentationDelegate?.present(
             component: PresentableComponentWrapper(
                 component: self, viewController: createViewController(with: action))
@@ -62,14 +83,28 @@ internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable 
         awaitComponent.handle(action)
     }
     
+    /// :nodoc:
+    private var awaitComponentBuilder: AnyAwaitActionHandlerProvider?
+    
+    /// :nodoc:
+    private var awaitComponent: AnyAwaitActionHandler?
+    
+    /// :nodoc:
     private var timeoutTimer: Timer?
+    
+    /// :nodoc
     private let progress: Progress = Progress()
+    
+    /// :nodoc:
     @Observable(nil) private var expirationText: String?
     
-    /// Default timeout is 15 min
-    private let timeoutInterval: TimeInterval = 60 * 15
-    private lazy var timeLeft: TimeInterval = timeoutInterval
+    /// :nodoc:
+    private let timeoutInterval: TimeInterval
     
+    /// :nodoc:
+    private var timeLeft: TimeInterval
+    
+    /// :nodoc
     private func startTimer() {
         let unitCount = Int64(timeoutInterval)
         progress.totalUnitCount = unitCount
@@ -80,6 +115,7 @@ internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable 
         }
     }
     
+    /// :nodoc
     private func onTimerTick() {
         timeLeft -= 1
         
@@ -90,29 +126,34 @@ internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable 
         }
     }
     
+    /// :nodoc:
     private func updateExpiration() {
         progress.completedUnitCount = Int64(timeLeft)
-        expirationText = "You have \(timeLeft.adyen.timeLeftString()) to pay"
+        expirationText = ADYLocalizedString("adyen.pix.expirationLabel", localizationParameters, timeLeft.adyen.timeLeftString())
     }
     
+    /// :nodoc:
     private func onTimerTimeout() {
-        awaitComponent.didCancel()
+        awaitComponent?.didCancel()
         stopTimer()
         
         delegate?.didFail(with: QRCodeComponentError.qrCodeExpired, from: self)
     }
     
+    /// :nodoc:
     fileprivate func stopTimer() {
         timeoutTimer?.invalidate()
         timeoutTimer = nil
     }
     
+    /// :nodoc:
     private func createViewController(with action: QRCodeAction) -> UIViewController {
         let view = QRCodeView(model: createModel(with: action))
         view.delegate = self
         return QRCodeViewController(qrCodeView: view)
     }
     
+    /// :nodoc:
     private func createModel(with action: QRCodeAction) -> QRCodeView.Model {
         let url = LogoURLProvider.logoURL(withName: "pix", environment: .test)
         return QRCodeView.Model(
@@ -130,19 +171,10 @@ internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable 
         )
     }
     
-    private lazy var awaitComponent: AnyAwaitActionHandler = {
-        let component = PollingAwaitComponent(
-            apiClient: RetryAPIClient(apiClient: APIClient(environment: environment),
-                                      scheduler: BackoffScheduler(queue: .main))
-        )
-        component.delegate = self
-        
-        return component
-    }()
-    
+    ///: nodoc:
     public func didCancel() {
         stopTimer()
-        awaitComponent.didCancel()
+        awaitComponent?.didCancel()
     }
 }
 
@@ -150,7 +182,7 @@ extension QRCodeComponent: ActionComponentDelegate {
     
     func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
         stopTimer()
-        awaitComponent.didCancel()
+        awaitComponent?.didCancel()
         delegate?.didProvide(data, from: self)
     }
     
@@ -158,7 +190,7 @@ extension QRCodeComponent: ActionComponentDelegate {
     
     func didFail(with error: Error, from component: ActionComponent) {
         stopTimer()
-        awaitComponent.didCancel()
+        awaitComponent?.didCancel()
         delegate?.didFail(with: error, from: self)
     }
     

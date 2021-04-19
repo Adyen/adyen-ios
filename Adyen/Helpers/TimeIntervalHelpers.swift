@@ -24,8 +24,8 @@ public extension AdyenScope where Base == TimeInterval {
         let format = "%02d"
         
         return [hours > 0 ? hours : nil, minutes, seconds]
-            .compactMap{ $0 }
-            .map{ String(format: format, $0) }
+            .compactMap { $0 }
+            .map { String(format: format, $0) }
             .joined(separator: ":")
     }
     

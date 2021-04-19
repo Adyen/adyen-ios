@@ -7,7 +7,7 @@
 import Adyen
 import Foundation
 
-///
+/// Any action that expects to be waited for
 internal protocol AnyAwaitableAction {
     var paymentData: String { get }
 }

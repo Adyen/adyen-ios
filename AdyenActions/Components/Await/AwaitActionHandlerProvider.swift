@@ -12,6 +12,9 @@ internal protocol AnyAwaitActionHandlerProvider {
 
     /// :nodoc:
     func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyAwaitActionHandler
+    
+    /// :nodoc:
+    func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyAwaitActionHandler
 }
 
 /// :nodoc:
@@ -33,10 +36,24 @@ internal struct AwaitActionHandlerProvider: AnyAwaitActionHandlerProvider {
     internal func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyAwaitActionHandler {
         switch paymentMethodType {
         case .mbway, .blik:
-            let scheduler = BackoffScheduler(queue: .main)
-            let baseAPIClient = APIClient(environment: environment)
-            let apiClient = self.apiClient ?? RetryAPIClient(apiClient: baseAPIClient, scheduler: scheduler)
-            return PollingAwaitComponent(apiClient: apiClient)
+            return createPollingAwaitComponent()
         }
     }
+    
+    /// :nodoc:
+    internal func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyAwaitActionHandler {
+        switch qrPaymentMethodType {
+        case .pix:
+            return createPollingAwaitComponent()
+        }
+    }
+    
+    /// :nodoc:
+    private func createPollingAwaitComponent() -> AnyAwaitActionHandler {
+        let scheduler = BackoffScheduler(queue: .main)
+        let baseAPIClient = APIClient(environment: environment)
+        let apiClient = self.apiClient ?? RetryAPIClient(apiClient: baseAPIClient, scheduler: scheduler)
+        return PollingAwaitComponent(apiClient: apiClient)
+    }
+    
 }
