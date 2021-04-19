@@ -51,15 +51,13 @@ internal final class WrapperViewController: UIViewController {
         child.didMove(toParent: self)
         child.view.translatesAutoresizingMaskIntoConstraints = false
         let topConstraint = child.view.topAnchor.constraint(equalTo: view.topAnchor, constant: 0)
-        let bottomConstraint = child.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        let constraints = [
+        NSLayoutConstraint.activate([
             child.view.leftAnchor.constraint(equalTo: view.leftAnchor),
             child.view.rightAnchor.constraint(equalTo: view.rightAnchor),
-            bottomConstraint,
+            child.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             topConstraint
-        ]
+        ])
         self.topConstraint = topConstraint
-        NSLayoutConstraint.activate(constraints)
     }
 }
 
