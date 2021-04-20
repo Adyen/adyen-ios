@@ -18,11 +18,11 @@ internal enum Configuration {
 
     static let appName = "Adyen Demo"
 
-    static let amount = Payment.Amount(value: 17408, currencyCode: "EUR")
+    static let amount = Payment.Amount(value: 17408, currencyCode: "BRL")
 
     static let reference = "Test Order Reference - iOS UIHost"
     
-    static let countryCode = "NL"
+    static let countryCode = "BR"
 
     static let returnUrl = "ui-host://"
     

@@ -41,7 +41,7 @@ internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable 
     public convenience init(style: QRCodeComponentStyle?) {
         self.init(
             style: style ?? QRCodeComponentStyle(),
-            awaitComponentBuilder: nil,
+            pollingComponentBuilder: nil,
             timeoutInterval: 60 * 15
         )
     }
@@ -49,17 +49,16 @@ internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable 
     /// Initializes the `QRCodeComponent`.
     ///
     /// - Parameter style: The component UI style.
-    /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
+    /// - Parameter pollingComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter timeoutInterval: QR Code expiration timeout
     internal init(style: QRCodeComponentStyle = QRCodeComponentStyle(),
-                  awaitComponentBuilder: AnyAwaitActionHandlerProvider?,
+                  pollingComponentBuilder: AnyPollingHandlerProvider?,
                   timeoutInterval: TimeInterval) {
         self.style = style
-        self.awaitComponentBuilder = awaitComponentBuilder
-        self.timeoutInterval = timeoutInterval
-        self.timeLeft = timeoutInterval
+        self.pollingComponentBuilder = pollingComponentBuilder
+        self.expirationTimeout = timeoutInterval
         
-        updateExpiration()
+        updateExpiration(timeoutInterval)
     }
     
     /// Handles QR code action.
@@ -68,10 +67,10 @@ internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable 
     public func handle(_ action: QRCodeAction) {
         self.action = action
         
-        let awaitComponentBuilder = self.awaitComponentBuilder ?? AwaitActionHandlerProvider(environment: environment, apiClient: nil)
+        let pollingComponentBuilder = self.pollingComponentBuilder ?? PollingHandlerProvider(environment: environment, apiClient: nil)
         
-        let awaitComponent = awaitComponentBuilder.handler(for: action.paymentMethodType)
-        awaitComponent.delegate = self
+        let pollingComponent = pollingComponentBuilder.handler(for: action.paymentMethodType)
+        pollingComponent.delegate = self
         
         presentationDelegate?.present(
             component: PresentableComponentWrapper(
@@ -80,17 +79,17 @@ internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable 
         
         startTimer()
         
-        awaitComponent.handle(action)
+        pollingComponent.handle(action)
     }
     
     /// :nodoc:
-    private var awaitComponentBuilder: AnyAwaitActionHandlerProvider?
+    private var pollingComponentBuilder: AnyPollingHandlerProvider?
     
     /// :nodoc:
-    private var awaitComponent: AnyAwaitActionHandler?
+    private var pollingComponent: AnyPollingHandler?
     
     /// :nodoc:
-    private var timeoutTimer: Timer?
+    private var timeoutTimer: ExpirationTimer?
     
     /// :nodoc
     private let progress: Progress = Progress()
@@ -99,51 +98,32 @@ internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable 
     @Observable(nil) private var expirationText: String?
     
     /// :nodoc:
-    private let timeoutInterval: TimeInterval
-    
-    /// :nodoc:
-    private var timeLeft: TimeInterval
+    private let expirationTimeout: TimeInterval
     
     /// :nodoc
     private func startTimer() {
-        let unitCount = Int64(timeoutInterval)
+        let unitCount = Int64(expirationTimeout)
         progress.totalUnitCount = unitCount
         progress.completedUnitCount = unitCount
         
-        timeoutTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-            self?.onTimerTick()
-        }
-    }
-    
-    /// :nodoc
-    private func onTimerTick() {
-        timeLeft -= 1
-        
-        if timeLeft > 0 {
-            updateExpiration()
-        } else {
-            onTimerTimeout()
-        }
+        timeoutTimer = ExpirationTimer(
+            expirationTimeout: self.expirationTimeout,
+            onTick: { [weak self] in self?.updateExpiration($0) },
+            onExpiration: { [weak self] in self?.onTimerTimeout() })
+        timeoutTimer?.startTimer()
     }
     
     /// :nodoc:
-    private func updateExpiration() {
+    private func updateExpiration(_ timeLeft: TimeInterval) {
         progress.completedUnitCount = Int64(timeLeft)
         expirationText = ADYLocalizedString("adyen.pix.expirationLabel", localizationParameters, timeLeft.adyen.timeLeftString())
     }
     
     /// :nodoc:
     private func onTimerTimeout() {
-        awaitComponent?.didCancel()
-        stopTimer()
+        cleanup()
         
         delegate?.didFail(with: QRCodeComponentError.qrCodeExpired, from: self)
-    }
-    
-    /// :nodoc:
-    fileprivate func stopTimer() {
-        timeoutTimer?.invalidate()
-        timeoutTimer = nil
     }
     
     /// :nodoc:
@@ -171,26 +151,29 @@ internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable 
         )
     }
     
-    ///: nodoc:
+    /// :nodoc:
     public func didCancel() {
-        stopTimer()
-        awaitComponent?.didCancel()
+        cleanup()
+    }
+    
+    /// :nodoc:
+    fileprivate func cleanup() {
+        timeoutTimer?.stopTimer()
+        pollingComponent?.didCancel()
     }
 }
 
 extension QRCodeComponent: ActionComponentDelegate {
     
     func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
-        stopTimer()
-        awaitComponent?.didCancel()
+        cleanup()
         delegate?.didProvide(data, from: self)
     }
     
     func didComplete(from component: ActionComponent) { }
     
     func didFail(with error: Error, from component: ActionComponent) {
-        stopTimer()
-        awaitComponent?.didCancel()
+        cleanup()
         delegate?.didFail(with: error, from: self)
     }
     

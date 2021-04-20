@@ -9,7 +9,7 @@ import Foundation
 
 /// :nodoc:
 /// A specific await component thats keeps polling the `/status` endpoint to check the payment status.
-internal final class PollingAwaitComponent: AnyAwaitActionHandler {
+internal final class PollingComponent: AnyPollingHandler {
     
     /// :nodoc:
     internal weak var presentationDelegate: PresentationDelegate?
@@ -35,7 +35,7 @@ internal final class PollingAwaitComponent: AnyAwaitActionHandler {
     /// Handles await action.
     ///
     /// - Parameter action: The await action object.
-    internal func handle(_ action: AnyAwaitableAction) {
+    internal func handle(_ action: PaymentDataAware) {
         Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, environment: environment)
         startPolling(action)
     }
@@ -52,7 +52,7 @@ internal final class PollingAwaitComponent: AnyAwaitActionHandler {
     /// Starts polling the status end point to check the payment status.
     ///
     /// - Parameter action: The action object.
-    private func startPolling(_ action: AnyAwaitableAction) {
+    private func startPolling(_ action: PaymentDataAware) {
         isCancelled = false
         let request = PaymentStatusRequest(paymentData: action.paymentData)
         

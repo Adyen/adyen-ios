@@ -7,18 +7,28 @@
 import Adyen
 import Foundation
 
-/// :nodoc:
-internal protocol AnyAwaitActionHandlerProvider {
+/// Any action that has payment data
+internal protocol PaymentDataAware {
+    var paymentData: String { get }
+}
 
-    /// :nodoc:
-    func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyAwaitActionHandler
-    
-    /// :nodoc:
-    func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyAwaitActionHandler
+/// A component that handles Await action's.
+internal protocol AnyPollingHandler: ActionComponent, Cancellable {
+    func handle(_ action: PaymentDataAware)
 }
 
 /// :nodoc:
-internal struct AwaitActionHandlerProvider: AnyAwaitActionHandlerProvider {
+internal protocol AnyPollingHandlerProvider {
+
+    /// :nodoc:
+    func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyPollingHandler
+    
+    /// :nodoc:
+    func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyPollingHandler
+}
+
+/// :nodoc:
+internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
 
     /// :nodoc:
     private let environment: APIEnvironment
@@ -33,27 +43,27 @@ internal struct AwaitActionHandlerProvider: AnyAwaitActionHandlerProvider {
     }
 
     /// :nodoc:
-    internal func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyAwaitActionHandler {
+    internal func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyPollingHandler {
         switch paymentMethodType {
         case .mbway, .blik:
-            return createPollingAwaitComponent()
+            return createPollingComponent()
         }
     }
     
     /// :nodoc:
-    internal func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyAwaitActionHandler {
+    internal func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyPollingHandler {
         switch qrPaymentMethodType {
         case .pix:
-            return createPollingAwaitComponent()
+            return createPollingComponent()
         }
     }
     
     /// :nodoc:
-    private func createPollingAwaitComponent() -> AnyAwaitActionHandler {
+    private func createPollingComponent() -> AnyPollingHandler {
         let scheduler = BackoffScheduler(queue: .main)
         let baseAPIClient = APIClient(environment: environment)
         let apiClient = self.apiClient ?? RetryAPIClient(apiClient: baseAPIClient, scheduler: scheduler)
-        return PollingAwaitComponent(apiClient: apiClient)
+        return PollingComponent(apiClient: apiClient)
     }
     
 }

@@ -10,6 +10,7 @@
 		5A1315C926296B100092366D /* ProgressViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1315C826296B100092366D /* ProgressViewStyle.swift */; };
 		5A1315D526296C3E0092366D /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1315D426296C3E0092366D /* ProgressView.swift */; };
 		5A22C279262D688600F12D97 /* QRCodeComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A22C26D262D686200F12D97 /* QRCodeComponentTests.swift */; };
+		5A22C2AD262EF99C00F12D97 /* ExpirationTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A22C2AC262EF99C00F12D97 /* ExpirationTimer.swift */; };
 		5A54FFCA26299140007194B7 /* TimeIntervalHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54FFC926299140007194B7 /* TimeIntervalHelpers.swift */; };
 		5A54FFE126299602007194B7 /* TimeIntervalExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54FFD5262995F6007194B7 /* TimeIntervalExtensionsTests.swift */; };
 		5A6456D6262592B2001824F0 /* QRCodeAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6456D5262592B2001824F0 /* QRCodeAction.swift */; };
@@ -261,9 +262,9 @@
 		F9175FCF2594999600D653BE /* RedirectListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AFF882224CF959005A0D8D /* RedirectListener.swift */; };
 		F9175FD02594999600D653BE /* RedirectDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AFF884224D0D3B005A0D8D /* RedirectDetails.swift */; };
 		F9175FD22594999600D653BE /* RedirectComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9780B6424338DFE00CC6C73 /* RedirectComponent.swift */; };
-		F9175FE32594999C00D653BE /* PollingAwaitComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B3624E122A40073F38A /* PollingAwaitComponent.swift */; };
+		F9175FE32594999C00D653BE /* PollingComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B3624E122A40073F38A /* PollingComponent.swift */; };
 		F9175FE42594999C00D653BE /* AwaitActionDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B3C24E178300073F38A /* AwaitActionDetails.swift */; };
-		F9175FE52594999C00D653BE /* AwaitActionHandlerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B5B24E410130073F38A /* AwaitActionHandlerProvider.swift */; };
+		F9175FE52594999C00D653BE /* PollingHandlerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B5B24E410130073F38A /* PollingHandlerProvider.swift */; };
 		F9175FE62594999C00D653BE /* AwaitComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B1624DA910A0073F38A /* AwaitComponent.swift */; };
 		F9175FF9259499D500D653BE /* AwaitComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B1D24DADC300073F38A /* AwaitComponentViewModel.swift */; };
 		F9175FFA259499D500D653BE /* AwaitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B1B24DAD3380073F38A /* AwaitViewController.swift */; };
@@ -428,7 +429,7 @@
 		F9639B4D24E298C70073F38A /* SimpleSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B4C24E298C70073F38A /* SimpleSchedulerTests.swift */; };
 		F9639B5024E29D2D0073F38A /* AwaitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B4F24E29D2D0073F38A /* AwaitComponentTests.swift */; };
 		F9639B5224E29E340073F38A /* PresentationDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B5124E29E340073F38A /* PresentationDelegateMock.swift */; };
-		F9639B5624E3DB190073F38A /* PollingAwaitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B5524E3DB190073F38A /* PollingAwaitComponentTests.swift */; };
+		F9639B5624E3DB190073F38A /* PollingComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B5524E3DB190073F38A /* PollingComponentTests.swift */; };
 		F96A25432371AB75007DBF0B /* PaymentComponentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96A25422371AB75007DBF0B /* PaymentComponentDelegateMock.swift */; };
 		F96A25472372C39F007DBF0B /* ApplePayDetailsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96A25462372C39F007DBF0B /* ApplePayDetailsTest.swift */; };
 		F96AE5052603814C009F82BD /* BasicPersonalInfoFormComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96AE5042603814C009F82BD /* BasicPersonalInfoFormComponentTests.swift */; };
@@ -784,6 +785,7 @@
 		5A1315C826296B100092366D /* ProgressViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewStyle.swift; sourceTree = "<group>"; };
 		5A1315D426296C3E0092366D /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
 		5A22C26D262D686200F12D97 /* QRCodeComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeComponentTests.swift; sourceTree = "<group>"; };
+		5A22C2AC262EF99C00F12D97 /* ExpirationTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationTimer.swift; sourceTree = "<group>"; };
 		5A54FFC926299140007194B7 /* TimeIntervalHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalHelpers.swift; sourceTree = "<group>"; };
 		5A54FFD5262995F6007194B7 /* TimeIntervalExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtensionsTests.swift; sourceTree = "<group>"; };
 		5A6456D5262592B2001824F0 /* QRCodeAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeAction.swift; sourceTree = "<group>"; wrapsLines = 1; };
@@ -1175,7 +1177,7 @@
 		F9639B2E24DD6B500073F38A /* APIEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEnvironment.swift; sourceTree = "<group>"; };
 		F9639B3224DD96990073F38A /* PaymentStatusRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentStatusRequest.swift; sourceTree = "<group>"; };
 		F9639B3424DD97A30073F38A /* PaymentStatusResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentStatusResponse.swift; sourceTree = "<group>"; };
-		F9639B3624E122A40073F38A /* PollingAwaitComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingAwaitComponent.swift; sourceTree = "<group>"; };
+		F9639B3624E122A40073F38A /* PollingComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingComponent.swift; sourceTree = "<group>"; };
 		F9639B3A24E14A940073F38A /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		F9639B3C24E178300073F38A /* AwaitActionDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitActionDetails.swift; sourceTree = "<group>"; };
 		F9639B3E24E18F620073F38A /* Scheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scheduler.swift; sourceTree = "<group>"; };
@@ -1186,9 +1188,9 @@
 		F9639B4C24E298C70073F38A /* SimpleSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleSchedulerTests.swift; sourceTree = "<group>"; };
 		F9639B4F24E29D2D0073F38A /* AwaitComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitComponentTests.swift; sourceTree = "<group>"; };
 		F9639B5124E29E340073F38A /* PresentationDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationDelegateMock.swift; sourceTree = "<group>"; };
-		F9639B5524E3DB190073F38A /* PollingAwaitComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingAwaitComponentTests.swift; sourceTree = "<group>"; };
+		F9639B5524E3DB190073F38A /* PollingComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingComponentTests.swift; sourceTree = "<group>"; };
 		F9639B5724E3DB3F0073F38A /* APIClientMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientMock.swift; sourceTree = "<group>"; };
-		F9639B5B24E410130073F38A /* AwaitActionHandlerProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitActionHandlerProvider.swift; sourceTree = "<group>"; };
+		F9639B5B24E410130073F38A /* PollingHandlerProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingHandlerProvider.swift; sourceTree = "<group>"; };
 		F96A25422371AB75007DBF0B /* PaymentComponentDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentDelegateMock.swift; sourceTree = "<group>"; };
 		F96A25462372C39F007DBF0B /* ApplePayDetailsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayDetailsTest.swift; sourceTree = "<group>"; };
 		F96AE5042603814C009F82BD /* BasicPersonalInfoFormComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicPersonalInfoFormComponentTests.swift; sourceTree = "<group>"; };
@@ -1465,6 +1467,7 @@
 			isa = PBXGroup;
 			children = (
 				5A6456E22625A1E2001824F0 /* QRCodeComponent.swift */,
+				5A22C2AC262EF99C00F12D97 /* ExpirationTimer.swift */,
 			);
 			path = QRCode;
 			sourceTree = "<group>";
@@ -2888,8 +2891,8 @@
 			children = (
 				F9639B1624DA910A0073F38A /* AwaitComponent.swift */,
 				F9639B3C24E178300073F38A /* AwaitActionDetails.swift */,
-				F9639B3624E122A40073F38A /* PollingAwaitComponent.swift */,
-				F9639B5B24E410130073F38A /* AwaitActionHandlerProvider.swift */,
+				F9639B3624E122A40073F38A /* PollingComponent.swift */,
+				F9639B5B24E410130073F38A /* PollingHandlerProvider.swift */,
 			);
 			path = Await;
 			sourceTree = "<group>";
@@ -2925,7 +2928,7 @@
 			isa = PBXGroup;
 			children = (
 				F9639B4F24E29D2D0073F38A /* AwaitComponentTests.swift */,
-				F9639B5524E3DB190073F38A /* PollingAwaitComponentTests.swift */,
+				F9639B5524E3DB190073F38A /* PollingComponentTests.swift */,
 			);
 			path = "Await Component";
 			sourceTree = "<group>";
@@ -4191,7 +4194,7 @@
 				F960FB092371823A00AEF74B /* ApplePayComponentTest.swift in Sources */,
 				F9BA21C62474113500D36A63 /* AmountFormatterTests.swift in Sources */,
 				E9E3DABB221EA22F00697074 /* CardExpiryDateFormatterTests.swift in Sources */,
-				F9639B5624E3DB190073F38A /* PollingAwaitComponentTests.swift in Sources */,
+				F9639B5624E3DB190073F38A /* PollingComponentTests.swift in Sources */,
 				F99F08642383F2B000EBB948 /* FormTextItemViewTests.swift in Sources */,
 				5A54FFE126299602007194B7 /* TimeIntervalExtensionsTests.swift in Sources */,
 				F96A25432371AB75007DBF0B /* PaymentComponentDelegateMock.swift in Sources */,
@@ -4414,7 +4417,7 @@
 				5A6456D6262592B2001824F0 /* QRCodeAction.swift in Sources */,
 				F91760812594B1F400D653BE /* RedirectComponentStyle.swift in Sources */,
 				F9175FF9259499D500D653BE /* AwaitComponentViewModel.swift in Sources */,
-				F9175FE32594999C00D653BE /* PollingAwaitComponent.swift in Sources */,
+				F9175FE32594999C00D653BE /* PollingComponent.swift in Sources */,
 				F917617325A30B6A00D653BE /* ThreeDS2ClassicActionHandler.swift in Sources */,
 				F9175FB82594996000D653BE /* ThreeDS2Action.swift in Sources */,
 				F917615E25A30B6400D653BE /* AnyADYTransaction.swift in Sources */,
@@ -4439,6 +4442,7 @@
 				F9175FB92594996000D653BE /* AwaitAction.swift in Sources */,
 				F97C850125C17CCD00D7F85C /* VoucherViewControllerProvider.swift in Sources */,
 				F9175FB42594996000D653BE /* ThreeDS2FingerprintAction.swift in Sources */,
+				5A22C2AD262EF99C00F12D97 /* ExpirationTimer.swift in Sources */,
 				F917601B25949A5300D653BE /* ActionComponentData.swift in Sources */,
 				F917601A25949A5300D653BE /* ActionComponent.swift in Sources */,
 				F91760822594B1F400D653BE /* AwaitComponentStyle.swift in Sources */,
@@ -4453,7 +4457,7 @@
 				F97C84D925C178E900D7F85C /* VoucherComponent.swift in Sources */,
 				F9FE13E025CBF6870067B593 /* GenericVoucherViewModel.swift in Sources */,
 				F917618525A30B8500D653BE /* Submit3DS2FingerprintRequest.swift in Sources */,
-				F9175FE52594999C00D653BE /* AwaitActionHandlerProvider.swift in Sources */,
+				F9175FE52594999C00D653BE /* PollingHandlerProvider.swift in Sources */,
 				F917613425A30B5700D653BE /* ThreeDS2Component.swift in Sources */,
 				F917617025A30B6A00D653BE /* ThreeDS2CoreActionHandler.swift in Sources */,
 				F917615B25A30B6400D653BE /* AnyAuthenticationRequestParameters.swift in Sources */,

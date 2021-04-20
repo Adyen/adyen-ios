@@ -15,7 +15,7 @@ public enum QRCodePaymentMethod: String, Codable, CaseIterable {
 }
 
 /// Describes any QR code action.
-public struct QRCodeAction: AnyAwaitableAction, Decodable {
+public struct QRCodeAction: PaymentDataAware, Decodable {
     
     /// The `paymentMethodType` for which the QR code is presented.
     public let paymentMethodType: QRCodePaymentMethod

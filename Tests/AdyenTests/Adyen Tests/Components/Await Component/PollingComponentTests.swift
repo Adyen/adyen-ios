@@ -10,12 +10,12 @@
 @testable import AdyenActions
 import XCTest
 
-class PollingAwaitComponentTests: XCTestCase {
+class PollingComponentTests: XCTestCase {
 
     func testRetryWhenResultIsReceived() {
         let apiClient = APIClientMock()
         let retryApiClient = RetryAPIClient(apiClient: apiClient, scheduler: SimpleScheduler(maximumCount: 3))
-        let sut = PollingAwaitComponent(apiClient: retryApiClient)
+        let sut = PollingComponent(apiClient: retryApiClient)
 
         let delegate = ActionComponentDelegateMock()
         delegate.onDidFail = { _, _ in
@@ -52,7 +52,7 @@ class PollingAwaitComponentTests: XCTestCase {
     func testRetryWhenResultIsPending() {
         let apiClient = APIClientMock()
         let retryApiClient = RetryAPIClient(apiClient: apiClient, scheduler: SimpleScheduler(maximumCount: 3))
-        let sut = PollingAwaitComponent(apiClient: retryApiClient)
+        let sut = PollingComponent(apiClient: retryApiClient)
 
         let delegate = ActionComponentDelegateMock()
         delegate.onDidFail = { _, _ in
@@ -90,7 +90,7 @@ class PollingAwaitComponentTests: XCTestCase {
     func testNotRetryWhenRequestFails() {
         let apiClient = APIClientMock()
         let retryApiClient = RetryAPIClient(apiClient: apiClient, scheduler: SimpleScheduler(maximumCount: 3))
-        let sut = PollingAwaitComponent(apiClient: retryApiClient)
+        let sut = PollingComponent(apiClient: retryApiClient)
 
         let delegate = ActionComponentDelegateMock()
 
@@ -123,7 +123,7 @@ class PollingAwaitComponentTests: XCTestCase {
     func testNotRetryWhenResultIsRefused() {
         let apiClient = APIClientMock()
         let retryApiClient = RetryAPIClient(apiClient: apiClient, scheduler: SimpleScheduler(maximumCount: 3))
-        let sut = PollingAwaitComponent(apiClient: retryApiClient)
+        let sut = PollingComponent(apiClient: retryApiClient)
 
         let delegate = ActionComponentDelegateMock()
         delegate.onDidFail = { _, _ in
@@ -161,7 +161,7 @@ class PollingAwaitComponentTests: XCTestCase {
     func testNotRetryWhenResultIsCancelled() {
         let apiClient = APIClientMock()
         let retryApiClient = RetryAPIClient(apiClient: apiClient, scheduler: SimpleScheduler(maximumCount: 3))
-        let sut = PollingAwaitComponent(apiClient: retryApiClient)
+        let sut = PollingComponent(apiClient: retryApiClient)
 
         let delegate = ActionComponentDelegateMock()
         delegate.onDidFail = { _, _ in
@@ -199,7 +199,7 @@ class PollingAwaitComponentTests: XCTestCase {
     func testNotRetryWhenResultIsError() {
         let apiClient = APIClientMock()
         let retryApiClient = RetryAPIClient(apiClient: apiClient, scheduler: SimpleScheduler(maximumCount: 3))
-        let sut = PollingAwaitComponent(apiClient: retryApiClient)
+        let sut = PollingComponent(apiClient: retryApiClient)
 
         let delegate = ActionComponentDelegateMock()
         delegate.onDidFail = { _, _ in
@@ -237,7 +237,7 @@ class PollingAwaitComponentTests: XCTestCase {
     func testNotRetryWhenResultIsAuthorized() {
         let apiClient = APIClientMock()
         let retryApiClient = RetryAPIClient(apiClient: apiClient, scheduler: SimpleScheduler(maximumCount: 3))
-        let sut = PollingAwaitComponent(apiClient: retryApiClient)
+        let sut = PollingComponent(apiClient: retryApiClient)
 
         let delegate = ActionComponentDelegateMock()
         delegate.onDidFail = { _, _ in
@@ -275,7 +275,7 @@ class PollingAwaitComponentTests: XCTestCase {
     func testStopRetryingWhenUserCancels() {
         let apiClient = APIClientMock()
         let retryApiClient = RetryAPIClient(apiClient: apiClient, scheduler: SimpleScheduler(maximumCount: 3))
-        let sut = PollingAwaitComponent(apiClient: retryApiClient)
+        let sut = PollingComponent(apiClient: retryApiClient)
 
         let delegate = ActionComponentDelegateMock()
 

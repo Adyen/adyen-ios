@@ -11,13 +11,13 @@
 @testable import AdyenDropIn
 import XCTest
 
-final class AwaitActionHandlerMock: AnyAwaitActionHandler {
+final class PollingHandlerMock: AnyPollingHandler {
 
     var delegate: ActionComponentDelegate?
 
-    var onHandle: ((_ action: AnyAwaitableAction) -> Void)?
+    var onHandle: ((_ action: PaymentDataAware) -> Void)?
 
-    func handle(_ action: AnyAwaitableAction) {
+    func handle(_ action: PaymentDataAware) {
         onHandle?(action)
     }
 
@@ -28,17 +28,17 @@ final class AwaitActionHandlerMock: AnyAwaitActionHandler {
     }
 }
 
-struct AwaitActionHandlerProviderMock: AnyAwaitActionHandlerProvider {
+struct AwaitActionHandlerProviderMock: AnyPollingHandlerProvider {
 
-    var onAwaitHandler: ((_ paymentMethodType: AwaitPaymentMethod) -> AnyAwaitActionHandler)?
-    var onQRHandler: ((_ paymentMethodType: QRCodePaymentMethod) -> AnyAwaitActionHandler)?
+    var onAwaitHandler: ((_ paymentMethodType: AwaitPaymentMethod) -> AnyPollingHandler)?
+    var onQRHandler: ((_ paymentMethodType: QRCodePaymentMethod) -> AnyPollingHandler)?
 
-    func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyAwaitActionHandler {
-        onAwaitHandler?(paymentMethodType) ?? AwaitActionHandlerMock()
+    func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyPollingHandler {
+        onAwaitHandler?(paymentMethodType) ?? PollingHandlerMock()
     }
     
-    func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyAwaitActionHandler {
-        onQRHandler?(qrPaymentMethodType) ?? AwaitActionHandlerMock()
+    func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyPollingHandler {
+        onQRHandler?(qrPaymentMethodType) ?? PollingHandlerMock()
     }
 }
 
@@ -94,7 +94,7 @@ class AwaitComponentTests: XCTestCase {
             onAwaitHandler: { type in
                 XCTAssertEqual(type, AwaitPaymentMethod.mbway)
                 
-                let handler = AwaitActionHandlerMock()
+                let handler = PollingHandlerMock()
                 handler.onHandle = {
                     XCTAssertTrue($0.paymentData == action.paymentData)
                     handlerExpectation.fulfill()

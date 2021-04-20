@@ -7,16 +7,6 @@
 import Adyen
 import Foundation
 
-/// Any action that expects to be waited for
-internal protocol AnyAwaitableAction {
-    var paymentData: String { get }
-}
-
-/// A component that handles Await action's.
-internal protocol AnyAwaitActionHandler: ActionComponent, Cancellable {
-    func handle(_ action: AnyAwaitableAction)
-}
-
 /// A component that handles Await action's.
 public final class AwaitComponent: ActionComponent, Cancellable {
     
@@ -36,7 +26,7 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     public var localizationParameters: LocalizationParameters?
     
     /// :nodoc:
-    private var awaitActionHandler: AnyAwaitActionHandlerProvider?
+    private var awaitActionHandler: AnyPollingHandlerProvider?
     
     /// Initializes the `AwaitComponent`.
     ///
@@ -49,7 +39,7 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     ///
     /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter style: The Component UI style.
-    internal convenience init(awaitComponentBuilder: AnyAwaitActionHandlerProvider?,
+    internal convenience init(awaitComponentBuilder: AnyPollingHandlerProvider?,
                               style: AwaitComponentStyle?) {
         self.init(style: style)
         self.awaitActionHandler = awaitComponentBuilder
@@ -76,20 +66,20 @@ public final class AwaitComponent: ActionComponent, Cancellable {
             AdyenAssertion.assert(message: message)
         }
         
-        let awaitComponentBuilder = self.awaitActionHandler ?? AwaitActionHandlerProvider(environment: environment, apiClient: nil)
+        let awaitComponentBuilder = self.awaitActionHandler ?? PollingHandlerProvider(environment: environment, apiClient: nil)
         
-        paymentMethodSpecificAwaitComponent = awaitComponentBuilder.handler(for: action.paymentMethodType)
-        paymentMethodSpecificAwaitComponent?.delegate = delegate
+        paymentMethodSpecificPollingComponent = awaitComponentBuilder.handler(for: action.paymentMethodType)
+        paymentMethodSpecificPollingComponent?.delegate = delegate
         
-        paymentMethodSpecificAwaitComponent?.handle(action)
+        paymentMethodSpecificPollingComponent?.handle(action)
     }
     
     /// :nodoc:
     public func didCancel() {
-        paymentMethodSpecificAwaitComponent?.didCancel()
+        paymentMethodSpecificPollingComponent?.didCancel()
     }
     
     /// :nodoc:
-    private var paymentMethodSpecificAwaitComponent: AnyAwaitActionHandler?
+    private var paymentMethodSpecificPollingComponent: AnyPollingHandler?
     
 }

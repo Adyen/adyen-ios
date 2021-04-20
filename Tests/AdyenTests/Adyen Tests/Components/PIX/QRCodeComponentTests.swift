@@ -92,7 +92,7 @@ class QRCodeComponentTests: XCTestCase {
             onQRHandler: { type in
                 XCTAssertEqual(type, QRCodePaymentMethod.pix)
                 
-                let handler = AwaitActionHandlerMock()
+                let handler = PollingHandlerMock()
                 handler.onHandle = {
                     XCTAssertEqual($0.paymentData, self.action.paymentData)
                 }
@@ -101,7 +101,7 @@ class QRCodeComponentTests: XCTestCase {
             }
         )
         
-        let sut = QRCodeComponent(style: QRCodeComponentStyle(), awaitComponentBuilder: builder, timeoutInterval: 2.0)
+        let sut = QRCodeComponent(style: QRCodeComponentStyle(), pollingComponentBuilder: builder, timeoutInterval: 2.0)
         
         let componentDelegate = ActionComponentDelegateMock()
         componentDelegate.onDidFail = { (error, component) in
@@ -133,7 +133,7 @@ class QRCodeComponentTests: XCTestCase {
     func testComponentSuccess() {
         let expectationForDidProvide = expectation(description: "didProvide expectation")
         
-        let handler = AwaitActionHandlerMock()
+        let handler = PollingHandlerMock()
         let builder = AwaitActionHandlerProviderMock(
             onAwaitHandler: nil,
             onQRHandler: { type in
@@ -142,7 +142,7 @@ class QRCodeComponentTests: XCTestCase {
             })
         
         let sut = QRCodeComponent(style: QRCodeComponentStyle(),
-                                  awaitComponentBuilder: builder,
+                                  pollingComponentBuilder: builder,
                                   timeoutInterval: 2.0)
         
         handler.onHandle = {
@@ -179,7 +179,7 @@ class QRCodeComponentTests: XCTestCase {
     func testComponentFailure() {
         let expectationForDidFail = expectation(description: "didFail expectation")
         
-        let handler = AwaitActionHandlerMock()
+        let handler = PollingHandlerMock()
         let builder = AwaitActionHandlerProviderMock(
             onAwaitHandler: nil,
             onQRHandler: { type in
@@ -188,7 +188,7 @@ class QRCodeComponentTests: XCTestCase {
             })
         
         let sut = QRCodeComponent(style: QRCodeComponentStyle(),
-                                  awaitComponentBuilder: builder,
+                                  pollingComponentBuilder: builder,
                                   timeoutInterval: 2.0)
         
         handler.onHandle = {
