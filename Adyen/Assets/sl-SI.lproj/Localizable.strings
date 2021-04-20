@@ -65,7 +65,6 @@
 "adyen.voucher.readInstructions" = "Preberite navodila";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
-"adyen.pix.instructions" = "";
 "adyen.billingAddressSection.title" = "Naslov za račun";
 "adyen.shippingAddressSection.title" = "Naslov za dostavo";
 "adyen.countryField.title" = "Država";

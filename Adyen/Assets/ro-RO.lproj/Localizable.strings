@@ -65,7 +65,6 @@
 "adyen.voucher.readInstructions" = "Citiți instrucțiunile";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
-"adyen.pix.instructions" = "";
 "adyen.billingAddressSection.title" = "Adresa de facturare";
 "adyen.shippingAddressSection.title" = "Adresă de livrare";
 "adyen.countryField.title" = "Țară";

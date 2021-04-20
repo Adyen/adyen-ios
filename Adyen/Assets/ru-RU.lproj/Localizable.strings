@@ -65,7 +65,6 @@
 "adyen.voucher.readInstructions" = "Прочитайте инструкции";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
-"adyen.pix.instructions" = "";
 "adyen.billingAddressSection.title" = "Платежный адрес";
 "adyen.shippingAddressSection.title" = "Адрес доставки";
 "adyen.countryField.title" = "Страна";

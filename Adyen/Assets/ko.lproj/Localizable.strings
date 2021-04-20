@@ -31,7 +31,7 @@
 "adyen.card.stored.expires" = "만료: %@";
 "adyen.dropIn.stored.title" = "%@ 결제 확인";
 "adyen.dropIn.preselected.openAll.title" = "결제 수단 변경";
-"adyen.continueTo" = "다음으로 계속: %@";
+"adyen.continueTo" = "다음으로 계속:%@";
 "adyen.phoneNumber.title" = "전화번호";
 "adyen.phoneNumber.invalid" = "유효하지 않은 전화번호";
 "adyen.phoneNumber.placeholder" = "123–456–789";
@@ -46,7 +46,7 @@
 "adyen.blik.code" = "6자리 코드";
 "adyen.blik.help" = "뱅킹 앱에서 코드를 가져오세요.";
 "adyen.blik.placeholder" = "123–456";
-"adyen.preauthorizeWith" = "사전 승인 방법: %@";
+"adyen.preauthorizeWith" = "사전 승인 방법:%@";
 "adyen.confirmPreauthorization" = "사전 승인 확인";
 "adyen.card.cvcItem.title.optional" = "CVC / CVV (선택)";
 "adyen.confirmPurchase" = "구매 확인";
@@ -65,7 +65,6 @@
 "adyen.voucher.readInstructions" = "안내 읽기";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
-"adyen.pix.instructions" = "";
 "adyen.billingAddressSection.title" = "청구지 주소";
 "adyen.shippingAddressSection.title" = "배송 주소";
 "adyen.countryField.title" = "국가";

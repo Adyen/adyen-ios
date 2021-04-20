@@ -65,7 +65,6 @@
 "adyen.voucher.readInstructions" = "Leggi le istruzioni";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
-"adyen.pix.instructions" = "";
 "adyen.billingAddressSection.title" = "Indirizzo di fatturazione";
 "adyen.shippingAddressSection.title" = "Indirizzo di consegna";
 "adyen.countryField.title" = "Paese";

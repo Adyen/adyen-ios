@@ -65,7 +65,6 @@
 "adyen.voucher.readInstructions" = "Διαβάστε τις οδηγίες";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
-"adyen.pix.instructions" = "";
 "adyen.billingAddressSection.title" = "Διεύθυνση τιμολόγησης";
 "adyen.shippingAddressSection.title" = "Διεύθυνση παράδοσης";
 "adyen.countryField.title" = "Χώρα";

@@ -31,7 +31,7 @@
 "adyen.card.stored.expires" = "%@ 到期";
 "adyen.dropIn.stored.title" = "確認 %@ 付款";
 "adyen.dropIn.preselected.openAll.title" = "變更付款方式";
-"adyen.continueTo" = "繼續前往 %@";
+"adyen.continueTo" = "繼續前往%@";
 "adyen.phoneNumber.title" = "電話號碼";
 "adyen.phoneNumber.invalid" = "電話號碼無效";
 "adyen.phoneNumber.placeholder" = "123–456–789";
@@ -46,7 +46,7 @@
 "adyen.blik.code" = "6 位數代碼";
 "adyen.blik.help" = "從您的銀行應用程式中獲取代碼。";
 "adyen.blik.placeholder" = "123–456";
-"adyen.preauthorizeWith" = "透過以下方式進行預先授權： %@";
+"adyen.preauthorizeWith" = "透過以下方式進行預先授權：%@";
 "adyen.confirmPreauthorization" = "確認預先授權";
 "adyen.card.cvcItem.title.optional" = "CVC / CVV (可選)";
 "adyen.confirmPurchase" = "確認購買";
@@ -65,7 +65,6 @@
 "adyen.voucher.readInstructions" = "閱覽說明";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
-"adyen.pix.instructions" = "";
 "adyen.billingAddressSection.title" = "帳單地址";
 "adyen.shippingAddressSection.title" = "派送地址";
 "adyen.countryField.title" = "國家/地區";
