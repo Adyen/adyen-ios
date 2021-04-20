@@ -135,7 +135,8 @@ internal final class QRCodeView: UIView, Localizable, Observer {
     
     private lazy var progressView: UIProgressView = {
         let progressViewSize = CGSize(width: 120, height: 4)
-        let progressView = ProgressView(style: model.style.progressView, observedProgress: model.observedProgress)
+        let progressView = UIProgressView(with: model.style.progressView)
+        progressView.observedProgress = model.observedProgress
         progressView.widthAnchor.constraint(equalToConstant: progressViewSize.width).isActive = true
         progressView.heightAnchor.constraint(equalToConstant: progressViewSize.height).isActive = true
         progressView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "progressView")
