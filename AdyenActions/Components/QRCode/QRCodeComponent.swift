@@ -72,6 +72,8 @@ internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable 
         let pollingComponent = pollingComponentBuilder.handler(for: action.paymentMethodType)
         pollingComponent.delegate = self
         
+        assert(presentationDelegate != nil)
+        
         presentationDelegate?.present(
             component: PresentableComponentWrapper(
                 component: self, viewController: createViewController(with: action))
