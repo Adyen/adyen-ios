@@ -9,9 +9,9 @@ import UIKit
 
 internal final class QRCodeViewController: UIViewController {
     
-    private let qrCodeView: UIView
+    private let qrCodeView: QRCodeView
     
-    internal init(qrCodeView: UIView) {
+    internal init(qrCodeView: QRCodeView) {
         self.qrCodeView = qrCodeView
         super.init(nibName: nil, bundle: nil)
     }
