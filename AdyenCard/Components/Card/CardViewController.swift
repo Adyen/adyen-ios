@@ -9,7 +9,7 @@ import Adyen
     import AdyenEncryption
 #endif
 
-internal class CardViewController: FormViewController, Observer {
+internal class CardViewController: FormViewController {
 
     private let configuration: CardComponent.Configuration
 
@@ -86,8 +86,8 @@ internal class CardViewController: FormViewController, Observer {
     internal var card: Card {
         Card(number: numberItem.value,
              securityCode: configuration.showsSecurityCodeField ? securityCodeItem.nonEmptyValue : nil,
-             expiryMonth: expiryDateItem.value[0...1],
-             expiryYear: "20" + expiryDateItem.value[2...3],
+             expiryMonth: expiryDateItem.value.adyen[0...1],
+             expiryYear: "20" + expiryDateItem.value.adyen[2...3],
              holder: configuration.showsHolderNameField ? holderNameItem.nonEmptyValue : nil)
     }
 

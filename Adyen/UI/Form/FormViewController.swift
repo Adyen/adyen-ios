@@ -9,19 +9,19 @@ import UIKit
 /// Displays a form for the user to enter details.
 /// :nodoc:
 @objc(ADYFormViewController)
-open class FormViewController: UIViewController, Localizable, KeyboardObserver {
+open class FormViewController: UIViewController, Localizable, KeyboardObserver, Observer, PreferredContentSizeConsumer {
 
-    // MARK: - Public
-    
     /// :nodoc:
     public var requiresKeyboardInput: Bool { formRequiresInputView() }
-    
+
     /// Indicates the `FormViewController` UI styling.
     public let style: ViewStyle
-    
+
     /// :nodoc:
     /// Delegate to handle different viewController events.
     public weak var delegate: ViewControllerDelegate?
+
+    // MARK: - Public
     
     /// Initializes the FormViewController.
     ///
@@ -53,49 +53,68 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver {
         """) }
     }
 
-    public func startObserving() {
-        keyboardObserver = startObserving { [weak self] in
-            self?.updateScrollViewInsets(keyboardHeight: $0.height)
-        }
-    }
-
-    // MARK: - Private Properties
+    // MARK: - KeyboardObserver
 
     /// :nodoc:
     public var keyboardObserver: Any?
 
-    private lazy var itemManager = FormViewItemManager(itemViewDelegate: self)
+    /// :nodoc:
+    public func startObserving() {
+        keyboardObserver = startObserving { [weak self] in
+            self?.keyboardRect = $0
+            self?.didUpdatePreferredContentSize()
+        }
+    }
+
+    private var keyboardRect: CGRect = .zero
 
     private func updateScrollViewInsets(keyboardHeight: CGFloat) {
-        guard keyboardHeight > 0 else {
-            formView.contentInset.bottom = 0
-            return
-        }
-        let bottomScrollInset: CGFloat = preferredContentSize.height + keyboardHeight - formView.bounds.height
-        formView.contentInset.bottom = bottomScrollInset
+        formView.contentInset.bottom = keyboardHeight
+    }
+
+    // MARK: - Private Properties
+
+    private lazy var itemManager = FormViewItemManager()
+
+    // MARK: - PreferredContentSizeConsumer
+
+    /// :nodoc:
+    public func willUpdatePreferredContentSize() { /* Empty implementation */ }
+
+    /// :nodoc:
+    public func didUpdatePreferredContentSize() {
+        updateScrollViewInsets(keyboardHeight: keyboardRect.height)
+        view.layoutIfNeeded()
     }
     
     // MARK: - Items
-    
-    /// The items displayed in the form.
-    public var items: [FormItem] {
-        itemManager.items
-    }
     
     /// Appends an item to the form.
     ///
     /// - Parameters:
     ///   - item: The item to append.
-    ///   - itemViewType: Optionally, the item view type to use for this item.
-    ///                   When none is specified, the default will be used.
     public func append<T: FormItem>(_ item: T) {
-        itemManager.append(item)
-        
-        if isViewLoaded, let itemView = itemManager.itemView(for: item) {
-            formView.appendItemView(itemView)
+        let itemView = itemManager.append(item)
+
+        itemView.applyTextDelegateIfNeeded(delegate: self)
+        add(itemView: itemView, with: item)
+    }
+
+    private func add<ItemType: FormItem>(itemView: AnyFormItemView, with item: ItemType) {
+        guard isViewLoaded, let itemView = itemView as? FormItemView<ItemType> else { return }
+        formView.appendItemView(itemView)
+        observerVisibility(of: item, and: itemView)
+    }
+
+    private func observerVisibility<T: FormItem>(of item: T, and itemView: FormItemView<T>) {
+        guard let item = item as? Hidable else { return }
+        observe(item.isHidden) { isHidden in
+            itemView.adyen.hideWithAnimation(isHidden)
         }
     }
-    
+
+    // MARK: - Localizable
+
     /// :nodoc:
     public var localizationParameters: LocalizationParameters?
     
@@ -139,15 +158,17 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver {
     /// :nodoc:
     override open func viewDidLoad() {
         super.viewDidLoad()
-        view.addSubview(formView)
-        formView.adyen.anchor(inside: view.safeAreaLayoutGuide)
+        addFormView()
         
         delegate?.viewDidLoad(viewController: self)
-        
         itemManager.itemViews.forEach(formView.appendItemView(_:))
-        
+    }
+
+    private func addFormView() {
+        view.addSubview(formView)
         view.backgroundColor = style.backgroundColor
         formView.backgroundColor = style.backgroundColor
+        formView.adyen.anchor(inside: view.safeAreaLayoutGuide)
     }
     
     /// :nodoc:
@@ -182,13 +203,14 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver {
     }
 }
 
-// MARK: - FormValueItemViewDelegate
+private extension AnyFormItemView {
+    func applyTextDelegateIfNeeded(delegate: FormTextItemViewDelegate) {
+        if let formTextItemView = self as? AnyFormTextItemView {
+            formTextItemView.delegate = delegate
+        }
 
-extension FormViewController: FormValueItemViewDelegate {
-    
-    /// :nodoc:
-    public func didChangeValue<T: FormValueItem>(in itemView: FormValueItemView<T>) {}
-    
+        self.childItemViews.forEach { $0.applyTextDelegateIfNeeded(delegate: delegate) }
+    }
 }
 
 // MARK: - FormTextItemViewDelegate

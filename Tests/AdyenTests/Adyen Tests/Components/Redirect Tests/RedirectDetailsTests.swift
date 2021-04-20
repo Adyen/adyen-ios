@@ -17,6 +17,8 @@ class RedirectDetailsTests: XCTestCase {
         XCTAssertEqual(keyValues.count, 1)
         XCTAssertEqual(keyValues[0].0, RedirectDetails.CodingKeys.payload)
         XCTAssertEqual(keyValues[0].1, "some")
+
+        XCTAssertNotNil(try? JSONEncoder().encode(details))
     }
     
     func testRedirectResultExtractionFromURL() {
@@ -27,6 +29,8 @@ class RedirectDetailsTests: XCTestCase {
         XCTAssertEqual(keyValues.count, 1)
         XCTAssertEqual(keyValues[0].0, RedirectDetails.CodingKeys.redirectResult)
         XCTAssertEqual(keyValues[0].1, "some")
+
+        XCTAssertNotNil(try? JSONEncoder().encode(details))
     }
     
     func testPaResAndMDExtractionFromURL() {
@@ -41,6 +45,8 @@ class RedirectDetailsTests: XCTestCase {
         // MD
         XCTAssertEqual(keyValues[1].0, RedirectDetails.CodingKeys.merchantData)
         XCTAssertEqual(keyValues[1].1, "lorem")
+
+        XCTAssertNotNil(try? JSONEncoder().encode(details))
     }
     
     func testPaResExtractionWithoutMDFromURL() {
@@ -48,6 +54,8 @@ class RedirectDetailsTests: XCTestCase {
         let details = RedirectDetails(returnURL: url)
         
         XCTAssertNil(details.extractKeyValuesFromURL())
+
+        XCTAssertThrowsError(try JSONEncoder().encode(details)) { _ in }
     }
     
     func testMDExtractionWithoutPaResFromURL() {
@@ -55,6 +63,7 @@ class RedirectDetailsTests: XCTestCase {
         let details = RedirectDetails(returnURL: url)
         
         XCTAssertNil(details.extractKeyValuesFromURL())
+        XCTAssertThrowsError(try JSONEncoder().encode(details)) { _ in }
     }
     
     func testExtractionFromURLWithInvalidParameters() {
@@ -62,6 +71,7 @@ class RedirectDetailsTests: XCTestCase {
         let details = RedirectDetails(returnURL: url)
         
         XCTAssertNil(details.extractKeyValuesFromURL())
+        XCTAssertThrowsError(try JSONEncoder().encode(details)) { _ in }
     }
     
     func testRedirectResultExtractionFromURLWithEncodedParameter() {
@@ -72,6 +82,8 @@ class RedirectDetailsTests: XCTestCase {
         XCTAssertEqual(keyValues.count, 1)
         XCTAssertEqual(keyValues[0].0, RedirectDetails.CodingKeys.redirectResult)
         XCTAssertEqual(keyValues[0].1, "encoded! @ $")
+
+        XCTAssertNotNil(try? JSONEncoder().encode(details))
     }
 
     func testQueryStringExtractionFromURL() {
@@ -82,5 +94,18 @@ class RedirectDetailsTests: XCTestCase {
         XCTAssertEqual(keyValues.count, 1)
         XCTAssertEqual(keyValues[0].0, RedirectDetails.CodingKeys.queryString)
         XCTAssertEqual(keyValues[0].1, "H7j5+pwnbNk8uKpS/m67rDp/K+AiJbQ==")
+
+        XCTAssertNotNil(try? JSONEncoder().encode(details))
+    }
+
+    func testEncoding() {
+        let url = URL(string: "badURL")!
+        let details = RedirectDetails(returnURL: url)
+
+        XCTAssertThrowsError(try JSONEncoder().encode(details)) { error in
+            XCTAssertTrue(error is EncodingError)
+            XCTAssertEqual((error as! EncodingError).localizedDescription, "The data couldn’t be written because it isn’t in the correct format.")
+        }
+
     }
 }

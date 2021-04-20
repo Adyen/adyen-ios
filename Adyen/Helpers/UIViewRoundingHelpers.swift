@@ -6,10 +6,6 @@
 
 import UIKit
 
-/// So that any `UIView` instance will inherit the `adyen` scope.
-/// :nodoc:
-extension UIView: AdyenCompatible {}
-
 /// Adds helper functionality to any `UIViewController` instance through the `adyen` property.
 /// :nodoc:
 public extension AdyenScope where Base: UIView {

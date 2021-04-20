@@ -125,7 +125,6 @@ class AwaitComponentTests: XCTestCase {
                 XCTAssertEqual(view.spinnerTitleLabel.textAlignment, .left)
                 XCTAssertEqual(view.spinnerTitleLabel.font, UIFont.systemFont(ofSize: 21))
                 XCTAssertEqual(view.activityIndicatorView.color, UIColor.blue)
-
                 XCTAssertEqual(view.backgroundColor, .green)
 
                 waitExpectation.fulfill()

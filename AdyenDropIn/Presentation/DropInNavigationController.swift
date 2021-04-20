@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import Adyen
 import UIKit
 
-internal final class DropInNavigationController: UINavigationController, KeyboardObserver {
+internal final class DropInNavigationController: UINavigationController, KeyboardObserver, PreferredContentSizeConsumer {
     
     internal typealias CancelHandler = (Bool, PresentableComponent) -> Void
     
@@ -42,6 +42,12 @@ internal final class DropInNavigationController: UINavigationController, Keyboar
     internal required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    internal func willUpdatePreferredContentSize() { /* Empty implementation */ }
+
+    internal func didUpdatePreferredContentSize() {
+        updateTopViewControllerIfNeeded()
+    }
     
     internal func present(_ viewController: UIViewController, customPresentation: Bool = true) {
         if customPresentation {
@@ -69,7 +75,7 @@ internal final class DropInNavigationController: UINavigationController, Keyboar
         guard let topViewController = topViewController as? WrapperViewController else { return }
 
         let frame = topViewController.requiresKeyboardInput ? self.keyboardRect : .zero
-        topViewController.updateFrame(keyboardRect: frame, animated: true)
+        topViewController.updateFrame(keyboardRect: frame)
     }
     
     private func wrapInModalController(component: PresentableComponent, isRoot: Bool) -> WrapperViewController {

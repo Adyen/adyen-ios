@@ -32,7 +32,7 @@ extension CardComponent {
         }
         
         cardViewController.startLoading()
-        
+
         fetchCardPublicKey { [weak self] in
             self?.submitEncryptedCardData(cardPublicKey: $0)
         }

@@ -8,7 +8,7 @@ import UIKit
 
 /// A view representing a switch item.
 /// :nodoc:
-public final class FormSwitchItemView: FormValueItemView<FormSwitchItem> {
+public final class FormSwitchItemView: FormValueItemView<Bool, FormSwitchItemStyle, FormSwitchItem> {
     
     /// Initializes the switch item view.
     ///
@@ -25,10 +25,6 @@ public final class FormSwitchItemView: FormValueItemView<FormSwitchItem> {
         
         addSubview(stackView)
         stackView.adyen.anchor(inside: self.layoutMarginsGuide)
-    }
-    
-    private var switchDelegate: FormValueItemViewDelegate? {
-        delegate as? FormValueItemViewDelegate
     }
     
     // MARK: - Title Label
@@ -50,7 +46,7 @@ public final class FormSwitchItemView: FormValueItemView<FormSwitchItem> {
     
     // MARK: - Switch Control
     
-    private lazy var switchControl: UISwitch = {
+    internal lazy var switchControl: UISwitch = {
         let switchControl = UISwitch()
         switchControl.isOn = item.value
         switchControl.onTintColor = item.style.tintColor
@@ -65,8 +61,6 @@ public final class FormSwitchItemView: FormValueItemView<FormSwitchItem> {
     @objc private func switchControlValueChanged() {
         accessibilityValue = switchControl.accessibilityValue
         item.value = switchControl.isOn
-        
-        switchDelegate?.didChangeValue(in: self)
     }
     
     /// :nodoc:

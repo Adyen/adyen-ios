@@ -12,9 +12,6 @@ import UIKit
 public final class ListItemView: UIView, AnyFormItemView {
     
     /// :nodoc:
-    public weak var delegate: FormItemViewDelegate?
-    
-    /// :nodoc:
     public var childItemViews: [AnyFormItemView] = []
     
     /// Initializes the list item view.

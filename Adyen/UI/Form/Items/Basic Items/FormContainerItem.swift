@@ -41,7 +41,6 @@ public class FormContainerItem: FormItem {
     }
 
     private class FormContainerView: UIView, AnyFormItemView {
-        weak var delegate: FormItemViewDelegate?
         var childItemViews: [AnyFormItemView] = []
 
         internal func fill(with contentView: UIView, padding: UIEdgeInsets) {
