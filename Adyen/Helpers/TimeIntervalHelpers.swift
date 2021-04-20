@@ -16,17 +16,12 @@ public extension AdyenScope where Base == TimeInterval {
     
     /// Transform `TimeInterval` to a `String` with either "MM:SS" or "HH:MM:SS" depending
     /// on whether number of full hours is bigger than 0
-    func timeLeftString() -> String {
-        let intValue = Int(base)
-        let seconds = intValue % 60
-        let minutes = (intValue / 60) % 60
-        let hours = intValue / 60 / 60
-        let format = "%02d"
-        
-        return [hours > 0 ? hours : nil, minutes, seconds]
-            .compactMap { $0 }
-            .map { String(format: format, $0) }
-            .joined(separator: ":")
+    func timeLeftString() -> String? {
+        let formatter = DateComponentsFormatter()
+        formatter.zeroFormattingBehavior = .pad
+        let hasHours = base > 60 * 60
+        formatter.allowedUnits = hasHours ? [.hour, .minute, .second] : [.minute, .second]
+        return formatter.string(from: base)
     }
     
 }

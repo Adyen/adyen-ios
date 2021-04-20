@@ -116,7 +116,8 @@ internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable 
     /// :nodoc:
     private func updateExpiration(_ timeLeft: TimeInterval) {
         progress.completedUnitCount = Int64(timeLeft)
-        expirationText = ADYLocalizedString("adyen.pix.expirationLabel", localizationParameters, timeLeft.adyen.timeLeftString())
+        let timeLeftString = timeLeft.adyen.timeLeftString() ?? ""
+        expirationText = ADYLocalizedString("adyen.pix.expirationLabel", localizationParameters, timeLeftString)
     }
     
     /// :nodoc:
