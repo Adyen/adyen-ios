@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -59,6 +59,11 @@ public extension AnyFormItemView {
         let superviews = sequence(first: superview, next: { $0.superview })
         
         return superviews.first { $0 is AnyFormItemView } as? AnyFormItemView
+    }
+
+    /// The flat list of all sub-itemViews.
+    var flatSubitemViews: [AnyFormItemView] {
+        [self] + childItemViews.flatMap(\.flatSubitemViews)
     }
     
 }

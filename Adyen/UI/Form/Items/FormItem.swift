@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -18,18 +18,12 @@ public protocol FormItem: AnyObject {
     /// An identifier for the `FormItem`,
     /// that  is set to the `FormItemView.accessibilityIdentifier` when the corresponding `FormItemView` is created.
     var identifier: String? { get set }
-    
-    /// Builds the corresponding `AnyFormItemView`.
-    func build(with builder: FormItemViewBuilder) -> AnyFormItemView
-}
 
-/// An item that is composed of multiple sub items.
-/// :nodoc:
-public protocol CompoundFormItem: FormItem {
-    
     /// The list of sub-items.
     var subitems: [FormItem] { get }
     
+    /// Builds the corresponding `AnyFormItemView`.
+    func build(with builder: FormItemViewBuilder) -> AnyFormItemView
 }
 
 /// :nodoc:
@@ -37,7 +31,11 @@ public extension FormItem {
     
     /// The flat list of all sub-items.
     var flatSubitems: [FormItem] {
-        (self as? CompoundFormItem)?.subitems.flatMap(\.flatSubitems) ?? [self]
+        [self] + subitems.flatMap(\.flatSubitems)
+    }
+
+    var subitems: [FormItem] {
+        []
     }
 }
 
