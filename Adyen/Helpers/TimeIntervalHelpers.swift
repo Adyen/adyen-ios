@@ -18,9 +18,8 @@ public extension AdyenScope where Base == TimeInterval {
     /// on whether number of full hours is bigger than 0
     func timeLeftString() -> String? {
         let formatter = DateComponentsFormatter()
-        formatter.zeroFormattingBehavior = .pad
-        let hasHours = base > 60 * 60
-        formatter.allowedUnits = hasHours ? [.hour, .minute, .second] : [.minute, .second]
+        formatter.zeroFormattingBehavior = [.dropLeading, .pad]
+        formatter.allowedUnits = [.hour, .minute, .second]
         return formatter.string(from: base)
     }
     

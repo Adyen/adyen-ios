@@ -247,7 +247,6 @@ class QRCodeComponentTests: XCTestCase {
         }
         
         sut.handle(action)
-            
         waitForExpectations(timeout: 10, handler: nil)
     }
 }
