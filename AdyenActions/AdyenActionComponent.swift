@@ -26,6 +26,9 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
     /// Indicates the UI configuration of the voucher component.
     public var voucherComponentStyle: VoucherComponentStyle?
 
+    /// Indicates the UI configuration of the QR code component.
+    public var qrCodeComponentStyle: QRCodeComponentStyle?
+
     /// :nodoc:
     public var localizationParameters: LocalizationParameters?
     
@@ -53,6 +56,8 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
             perform(awaitAction)
         case let .voucher(voucher):
             perform(voucher)
+        case let .qrCode(qrCode):
+            perform(qrCode)
         }
     }
     
@@ -63,6 +68,7 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
     internal var weChatPaySDKActionComponent: AnyWeChatPaySDKActionComponent?
     private var awaitComponent: AwaitComponent?
     private var voucherComponent: VoucherComponent?
+    private var qrCodeComponent: Component?
     
     private func perform(_ action: RedirectAction) {
         let component = RedirectComponent(style: redirectComponentStyle)
@@ -159,5 +165,17 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
         component.handle(action)
         voucherComponent = component
     }
-
+    
+    private func perform(_ action: QRCodeAction) {
+        let component = QRCodeComponent(style: QRCodeComponentStyle())
+        component._isDropIn = _isDropIn
+        component.environment = environment
+        component.delegate = delegate
+        component.presentationDelegate = presentationDelegate
+        component.localizationParameters = localizationParameters
+        component.clientKey = clientKey
+        
+        component.handle(action)
+        qrCodeComponent = component
+    }
 }
