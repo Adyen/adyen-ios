@@ -111,11 +111,9 @@ public class RegionRepository {
     }
 
     internal static func localCountryFallback(for locale: NSLocale) -> [Region] {
-        allCountryCodes.compactMap {
-            guard let name = locale.displayName(forKey: .countryCode, value: $0) else {
-                return nil
-            }
-            return Region(identifier: $0, name: name)
+        NSLocale.isoCountryCodes.map { countryCode in
+            Region(identifier: countryCode,
+                   name: locale.displayName(forKey: .countryCode, value: countryCode) ?? countryCode)
         }
     }
 

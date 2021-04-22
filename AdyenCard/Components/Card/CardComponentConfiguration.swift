@@ -36,7 +36,7 @@ extension CardComponent {
 
         /// Indicates the display mode of the billing address form.
         /// Defaults to none.
-        public var billingAddress: AddressFormType
+        public var billingAddressMode: AddressFormType
 
         /// Stored card configuration.
         public var stored: StoredCardConfiguration
@@ -64,7 +64,7 @@ extension CardComponent {
         public init(showsHolderNameField: Bool = false,
                     showsStorePaymentMethodField: Bool = true,
                     showsSecurityCodeField: Bool = true,
-                    billingAddress: AddressFormType = .none,
+                    billingAddressMode: AddressFormType = .none,
                     storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
                     allowedCardTypes: [CardType]? = nil) {
             self.showsHolderNameField = showsHolderNameField
@@ -72,7 +72,7 @@ extension CardComponent {
             self.showsStorePaymentMethodField = showsStorePaymentMethodField
             self.stored = storedCardConfiguration
             self.allowedCardTypes = allowedCardTypes
-            self.billingAddress = billingAddress
+            self.billingAddressMode = billingAddressMode
         }
 
         internal func bcmcConfiguration() -> Configuration {
@@ -81,7 +81,7 @@ extension CardComponent {
             var configuration = Configuration(showsHolderNameField: showsHolderNameField,
                                               showsStorePaymentMethodField: showsStorePaymentMethodField,
                                               showsSecurityCodeField: false,
-                                              billingAddress: .none,
+                                              billingAddressMode: .none,
                                               storedCardConfiguration: storedCardConfiguration,
                                               allowedCardTypes: [.bcmc])
             configuration.excludedCardTypes = []

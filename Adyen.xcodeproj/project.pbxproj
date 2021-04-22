@@ -112,7 +112,6 @@
 		E7085C81262DD44E00D0153B /* AllCountriesPhoneExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085C7F262DD44E00D0153B /* AllCountriesPhoneExtensions.swift */; };
 		E7085C8D262DD4F800D0153B /* FormRegionPickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085C8C262DD4F800D0153B /* FormRegionPickerItem.swift */; };
 		E7085CB7262DE14A00D0153B /* AddressStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085CB6262DE14A00D0153B /* AddressStyle.swift */; };
-		E7085D71262EEA1400D0153B /* AllCountries.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085D70262EEA1400D0153B /* AllCountries.swift */; };
 		E7085D7D262EEF6200D0153B /* AllRegions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085D7C262EEF6100D0153B /* AllRegions.swift */; };
 		E7166A5224EAC5BA007CCDEF /* BinLookupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7166A5124EAC5BA007CCDEF /* BinLookupRequest.swift */; };
 		E7166A5424EACC44007CCDEF /* BinLookupResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7166A5324EACC44007CCDEF /* BinLookupResponse.swift */; };
@@ -924,7 +923,6 @@
 		E7085C7F262DD44E00D0153B /* AllCountriesPhoneExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllCountriesPhoneExtensions.swift; sourceTree = "<group>"; };
 		E7085C8C262DD4F800D0153B /* FormRegionPickerItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormRegionPickerItem.swift; sourceTree = "<group>"; };
 		E7085CB6262DE14A00D0153B /* AddressStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressStyle.swift; sourceTree = "<group>"; };
-		E7085D70262EEA1400D0153B /* AllCountries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllCountries.swift; sourceTree = "<group>"; };
 		E7085D7C262EEF6100D0153B /* AllRegions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllRegions.swift; sourceTree = "<group>"; };
 		E7098D7D255D3E6D00829E73 /* sk-SK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "sk-SK"; path = "sk-SK.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		E7098D7E255D3E6D00829E73 /* ro-RO */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ro-RO"; path = "ro-RO.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -1991,7 +1989,6 @@
 				E7085C7E262DD44D00D0153B /* PhoneExtensionsRepository.swift */,
 				E9093400228C54CD00C9F04B /* LogoURLProvider.swift */,
 				E7085A002625B4D000D0153B /* LocalizableRegionRepository.swift */,
-				E7085D70262EEA1400D0153B /* AllCountries.swift */,
 				E7085D7C262EEF6100D0153B /* AllRegions.swift */,
 			);
 			path = External;
@@ -4085,7 +4082,6 @@
 				E97B972322B238C400505476 /* Analytics.swift in Sources */,
 				F95B6D8C252316DA002C9062 /* PhoneNumberValidator.swift in Sources */,
 				E9021E022264C4C5009CF7F4 /* KeyedDecodingContainerHelpers.swift in Sources */,
-				E7085D71262EEA1400D0153B /* AllCountries.swift in Sources */,
 				E7085B182628B29600D0153B /* FormPhoneExtensionPickerItem.swift in Sources */,
 				E28098BB220DB9F30087928F /* ListViewController.swift in Sources */,
 				F97C837925BF047600D7F85C /* DokuPaymentMethod.swift in Sources */,

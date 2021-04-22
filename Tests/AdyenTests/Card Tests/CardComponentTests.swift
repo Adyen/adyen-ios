@@ -736,7 +736,7 @@ class CardComponentTests: XCTestCase {
     func testAddress() {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         var config = CardComponent.Configuration()
-        config.billingAddress = .full
+        config.billingAddressMode = .full
         let sut = CardComponent(paymentMethod: method,
                                 configuration: config,
                                 clientKey: Dummy.dummyClientKey)

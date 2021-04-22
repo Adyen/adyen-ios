@@ -5,7 +5,6 @@
 //
 
 import Adyen
-import Foundation
 import UIKit
 #if canImport(AdyenEncryption)
     import AdyenEncryption
@@ -76,7 +75,7 @@ internal class CardViewController: FormViewController {
             append(storeDetailsItem)
         }
 
-        if configuration.billingAddress == .full {
+        if configuration.billingAddressMode == .full {
             append(addressVerificationItem)
         }
 
@@ -98,7 +97,9 @@ internal class CardViewController: FormViewController {
     }
 
     internal var address: AddressInfo? {
-        guard configuration.billingAddress != .none else { return nil }
+        if configuration.billingAddressMode == .none {
+            return nil
+        }
         return addressVerificationItem.value
     }
 

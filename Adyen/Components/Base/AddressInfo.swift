@@ -37,9 +37,9 @@ public struct AddressInfo: Equatable, Encodable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        let houseNumberOrNameValue = houseNumberOrName.map {
-            apartment.adyen.isNullOrEmpty ? $0 : "\($0) \(apartment!)"
-        }
+        let houseNumberOrNameValue = [houseNumberOrName, apartment]
+            .compactMap { $0 }
+            .joined(separator: " ")
 
         try container.encode(city, forKey: .city)
         try container.encode(country, forKey: .country)
