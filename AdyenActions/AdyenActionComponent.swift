@@ -37,27 +37,27 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
     
     // MARK: - Performing Actions
     
-    /// Performs an action to complete a payment.
+    /// Handles an action to complete a payment.
     ///
-    /// - Parameter action: The action to perform.
-    public func perform(_ action: Action) {
+    /// - Parameter action: The action to handle.
+    public func handle(_ action: Action) {
         switch action {
         case let .redirect(redirectAction):
-            perform(redirectAction)
+            handle(redirectAction)
         case let .threeDS2Fingerprint(fingerprintAction):
-            perform(fingerprintAction)
+            handle(fingerprintAction)
         case let .threeDS2Challenge(challengeAction):
-            perform(challengeAction)
+            handle(challengeAction)
         case let .threeDS2(threeDS2Action):
-            perform(threeDS2Action)
+            handle(threeDS2Action)
         case let .sdk(sdkAction):
-            perform(sdkAction)
+            handle(sdkAction)
         case let .await(awaitAction):
-            perform(awaitAction)
+            handle(awaitAction)
         case let .voucher(voucher):
-            perform(voucher)
+            handle(voucher)
         case let .qrCode(qrCode):
-            perform(qrCode)
+            handle(qrCode)
         }
     }
     
@@ -70,7 +70,7 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
     private var voucherComponent: VoucherComponent?
     private var qrCodeComponent: Component?
     
-    private func perform(_ action: RedirectAction) {
+    private func handle(_ action: RedirectAction) {
         let component = RedirectComponent(style: redirectComponentStyle)
         component.delegate = delegate
         component._isDropIn = _isDropIn
@@ -82,14 +82,14 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
         component.handle(action)
     }
 
-    private func perform(_ action: ThreeDS2Action) {
+    private func handle(_ action: ThreeDS2Action) {
         let component = createThreeDS2Component()
         threeDS2Component = component
 
         component.handle(action)
     }
     
-    private func perform(_ action: ThreeDS2FingerprintAction) {
+    private func handle(_ action: ThreeDS2FingerprintAction) {
         let component = createThreeDS2Component()
         threeDS2Component = component
         
@@ -106,19 +106,19 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
         return component
     }
     
-    private func perform(_ action: ThreeDS2ChallengeAction) {
+    private func handle(_ action: ThreeDS2ChallengeAction) {
         guard let threeDS2Component = threeDS2Component else { return }
         threeDS2Component.handle(action)
     }
     
-    private func perform(_ sdkAction: SDKAction) {
+    private func handle(_ sdkAction: SDKAction) {
         switch sdkAction {
         case let .weChatPay(weChatPaySDKAction):
-            perform(weChatPaySDKAction)
+            handle(weChatPaySDKAction)
         }
     }
     
-    private func perform(_ action: WeChatPaySDKAction) {
+    private func handle(_ action: WeChatPaySDKAction) {
         guard let classObject = loadTheConcreteWeChatPaySDKActionComponentClass() else {
             delegate?.didFail(with: ComponentError.paymentMethodNotSupported, from: self)
             return
@@ -131,7 +131,7 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
         weChatPaySDKActionComponent?.handle(action)
     }
     
-    private func perform(_ action: AwaitAction) {
+    private func handle(_ action: AwaitAction) {
         guard environment.clientKey != nil else {
             AdyenAssertion.assert(message: """
             Failed to instantiate AwaitComponent because client key is not configured.
@@ -153,7 +153,7 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
         awaitComponent = component
     }
     
-    private func perform(_ action: VoucherAction) {
+    private func handle(_ action: VoucherAction) {
         let component = VoucherComponent(style: voucherComponentStyle)
         component._isDropIn = _isDropIn
         component.delegate = delegate
@@ -166,7 +166,7 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
         voucherComponent = component
     }
     
-    private func perform(_ action: QRCodeAction) {
+    private func handle(_ action: QRCodeAction) {
         let component = QRCodeComponent(style: QRCodeComponentStyle())
         component._isDropIn = _isDropIn
         component.environment = environment
