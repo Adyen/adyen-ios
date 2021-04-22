@@ -66,7 +66,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
     ///
     /// - Parameter action: The action to handle.
     public func handle(_ action: Action) {
-        actionComponent.perform(action)
+        actionComponent.handle(action)
     }
     
     // MARK: - Private

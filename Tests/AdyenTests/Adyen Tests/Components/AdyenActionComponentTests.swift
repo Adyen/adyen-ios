@@ -69,7 +69,7 @@ class AdyenActionComponentTests: XCTestCase {
         }
 
         let action = Action.redirect(RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "test_data"))
-        sut.perform(action)
+        sut.handle(action)
 
         let waitExpectation = expectation(description: "Expect in app browser to be presented and then dismissed")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
@@ -89,7 +89,7 @@ class AdyenActionComponentTests: XCTestCase {
         sut.presentationDelegate = UIViewController.findTopPresenter()
 
         let action = Action.await(AwaitAction(paymentData: "SOME_DATA", paymentMethodType: .blik))
-        sut.perform(action)
+        sut.handle(action)
 
         let waitExpectation = expectation(description: "Expect AwaitViewController to be presented")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
@@ -111,7 +111,7 @@ class AdyenActionComponentTests: XCTestCase {
         let sut = AdyenActionComponent()
 
         let sdkAction = try! JSONDecoder().decode(SDKAction.self, from: weChatActionResponse.data(using: .utf8)!)
-        sut.perform(Action.sdk(sdkAction))
+        sut.handle(Action.sdk(sdkAction))
 
         let waitExpectation = expectation(description: "Expect weChatPaySDKActionComponent to be initiated")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
@@ -126,7 +126,7 @@ class AdyenActionComponentTests: XCTestCase {
     func test3DSAction() {
         let sut = AdyenActionComponent()
         let action = try! JSONDecoder().decode(ThreeDS2Action.self, from: threeDSFingerprintAction.data(using: .utf8)!)
-        sut.perform(Action.threeDS2(action))
+        sut.handle(Action.threeDS2(action))
 
         let waitExpectation = expectation(description: "Expect in app browser to be presented and then dismissed")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
@@ -142,7 +142,7 @@ class AdyenActionComponentTests: XCTestCase {
         sut.presentationDelegate = UIViewController.findTopPresenter()
         
         let action = try! JSONDecoder().decode(VoucherAction.self, from: voucherAction.data(using: .utf8)!)
-        sut.perform(Action.voucher(action))
+        sut.handle(Action.voucher(action))
 
         let waitExpectation = expectation(description: "Expect VoucherViewController to be presented")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
