@@ -17,12 +17,7 @@ public final class CopyLabelView: UIView, Localizable {
     private let text: String
 
     private lazy var label: UILabel = {
-        let label = UILabel()
-        label.font = style.font
-        label.adjustsFontForContentSizeCategory = true
-        label.textColor = style.color
-        label.textAlignment = style.textAlignment
-        label.backgroundColor = style.backgroundColor
+        let label = UILabel(style: style)
         label.text = text
         label.isAccessibilityElement = false
         label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "textLabel")

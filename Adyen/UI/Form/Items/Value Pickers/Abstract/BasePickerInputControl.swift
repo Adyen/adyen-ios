@@ -61,16 +61,7 @@ internal class BasePickerInputControl: UIControl, PickerTextInputControl {
     }
 
     /// The phone code label.
-    internal lazy var valueLabel: UILabel = {
-        let label = UILabel()
-        label.backgroundColor = style.backgroundColor
-        label.textAlignment = style.textAlignment
-        label.textColor = style.color
-        label.font = style.font
-        label.adjustsFontForContentSizeCategory = true
-
-        return label
-    }()
+    internal lazy var valueLabel: UILabel = UILabel(style: style)
 
     override internal var accessibilityIdentifier: String? {
         didSet {

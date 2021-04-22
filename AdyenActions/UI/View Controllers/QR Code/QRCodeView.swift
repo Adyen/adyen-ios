@@ -119,13 +119,7 @@ internal final class QRCodeView: UIView, Localizable, Observer {
     }()
     
     private lazy var instructionLabel: UILabel = {
-        let instructionLabel = UILabel()
-        let style = model.style.instructionLabel
-        instructionLabel.font = style.font
-        instructionLabel.adjustsFontForContentSizeCategory = true
-        instructionLabel.textColor = style.color
-        instructionLabel.textAlignment = style.textAlignment
-        instructionLabel.backgroundColor = style.backgroundColor
+        let instructionLabel = UILabel(style: model.style.instructionLabel)
         instructionLabel.text = model.instruction
         instructionLabel.numberOfLines = 0
         instructionLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "instructionLabel")
@@ -135,7 +129,7 @@ internal final class QRCodeView: UIView, Localizable, Observer {
     
     private lazy var progressView: UIProgressView = {
         let progressViewSize = CGSize(width: 120, height: 4)
-        let progressView = UIProgressView(with: model.style.progressView)
+        let progressView = UIProgressView(style: model.style.progressView)
         progressView.observedProgress = model.observedProgress
         progressView.widthAnchor.constraint(equalToConstant: progressViewSize.width).isActive = true
         progressView.heightAnchor.constraint(equalToConstant: progressViewSize.height).isActive = true
@@ -145,13 +139,7 @@ internal final class QRCodeView: UIView, Localizable, Observer {
     }()
     
     private lazy var expirationLabel: UILabel = {
-        let expirationLabel = UILabel()
-        let style = model.style.expirationLabel
-        expirationLabel.font = style.font
-        expirationLabel.adjustsFontForContentSizeCategory = true
-        expirationLabel.textColor = style.color
-        expirationLabel.textAlignment = style.textAlignment
-        expirationLabel.backgroundColor = style.backgroundColor
+        let expirationLabel = UILabel(style: model.style.expirationLabel)
         expirationLabel.numberOfLines = 1
         expirationLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "expirationLabel")
 

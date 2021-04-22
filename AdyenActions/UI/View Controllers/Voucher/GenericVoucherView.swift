@@ -50,20 +50,12 @@ internal final class GenericVoucherView: AbstractVoucherView {
     }()
 
     private lazy var instructionButton: UIButton = {
-        let button = UIButton()
-        let style = model.instruction.style.button
+        let button = UIButton(style: model.instruction.style.button)
         button.setTitle(model.instruction.title, for: .normal)
-        button.titleLabel?.font = style.title.font
-        button.setTitleColor(style.title.color, for: .normal)
-        button.backgroundColor = style.backgroundColor
-        button.layer.borderColor = style.borderColor?.cgColor
-        button.layer.borderWidth = style.borderWidth
         button.heightAnchor.constraint(equalToConstant: 20).isActive = true
         button.widthAnchor.constraint(equalToConstant: 100).isActive = true
         button.addTarget(self, action: #selector(openInstructions), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.voucher", postfix: "instructionButton")
-        button.adyen.round(using: model.instruction.style.button.cornerRounding)
 
         return button
     }()
@@ -143,12 +135,7 @@ internal final class GenericVoucherView: AbstractVoucherView {
     }
 
     private func createLabel(with style: TextStyle, text: String?, identifier: String) -> UILabel {
-        let label = UILabel()
-        label.font = style.font
-        label.adjustsFontForContentSizeCategory = true
-        label.textColor = style.color
-        label.textAlignment = style.textAlignment
-        label.backgroundColor = style.backgroundColor
+        let label = UILabel(style: style)
         label.text = text
         label.isAccessibilityElement = false
         label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.voucher", postfix: identifier)

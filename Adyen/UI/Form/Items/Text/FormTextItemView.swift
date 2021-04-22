@@ -86,12 +86,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
 
     /// :nodoc:
     public lazy var titleLabel: UILabel = {
-        let titleLabel = UILabel()
-        titleLabel.font = item.style.title.font
-        titleLabel.adjustsFontForContentSizeCategory = true
-        titleLabel.textColor = item.style.title.color
-        titleLabel.textAlignment = item.style.title.textAlignment
-        titleLabel.backgroundColor = item.style.title.backgroundColor
+        let titleLabel = UILabel(style: item.style.title)
         titleLabel.text = item.title
         titleLabel.isAccessibilityElement = false
         titleLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel") }
@@ -125,14 +120,9 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     // MARK: - Alert Label
     
     internal lazy var alertLabel: UILabel = {
-        let alertLabel = UILabel()
-        alertLabel.font = item.style.title.font
-        alertLabel.adjustsFontForContentSizeCategory = true
-        alertLabel.textColor = item.style.errorColor
-        alertLabel.textAlignment = item.style.title.textAlignment
-        alertLabel.backgroundColor = item.style.title.backgroundColor
-        alertLabel.text = item.validationFailureMessage
+        let alertLabel = UILabel(style: item.style.title)
         alertLabel.isAccessibilityElement = false
+        alertLabel.text = item.validationFailureMessage
         alertLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "alertLabel") }
         alertLabel.isHidden = true
         

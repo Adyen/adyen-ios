@@ -40,8 +40,8 @@ public final class ListItemView: UIView, AnyFormItemView {
             
             if let style = item?.style, oldValue?.style != style {
                 updateImageView(style: style)
-                updateTitleLabel(style: style)
-                updateSubtitleLabel(style: style)
+                titleLabel.adyen.apply(style.title)
+                subtitleLabel.adyen.apply(style.subtitle)
             }
         }
     }
@@ -59,22 +59,6 @@ public final class ListItemView: UIView, AnyFormItemView {
         }
         
         imageView.imageURL = item?.imageURL
-    }
-    
-    private func updateTitleLabel(style: ListItemStyle) {
-        titleLabel.font = style.title.font
-        titleLabel.adjustsFontForContentSizeCategory = true
-        titleLabel.textColor = style.title.color
-        titleLabel.backgroundColor = style.title.backgroundColor
-        titleLabel.textAlignment = style.title.textAlignment
-    }
-    
-    private func updateSubtitleLabel(style: ListItemStyle) {
-        subtitleLabel.font = style.subtitle.font
-        subtitleLabel.adjustsFontForContentSizeCategory = true
-        subtitleLabel.textColor = style.subtitle.color
-        subtitleLabel.backgroundColor = style.subtitle.backgroundColor
-        subtitleLabel.textAlignment = style.subtitle.textAlignment
     }
     
     private func updateImageView(style: ListItemStyle) {

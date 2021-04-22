@@ -47,18 +47,12 @@ internal final class FormErrorItemView: FormItemView<FormErrorItem>, Observer {
     // MARK: - Message
 
     private lazy var messageLabel: UILabel = {
-        let messageLabel = UILabel()
-        messageLabel.font = item.style.message.font
-        messageLabel.adjustsFontForContentSizeCategory = true
-        messageLabel.textColor = item.style.message.color
-        messageLabel.textAlignment = item.style.message.textAlignment
-        messageLabel.backgroundColor = item.style.message.backgroundColor
+        let messageLabel = UILabel(style: item.style.message)
         messageLabel.numberOfLines = 0
         messageLabel.isAccessibilityElement = false
         messageLabel.accessibilityIdentifier = item.identifier.map {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "messageLabel")
         }
-        messageLabel.translatesAutoresizingMaskIntoConstraints = false
 
         return messageLabel
     }()

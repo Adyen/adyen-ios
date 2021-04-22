@@ -85,17 +85,10 @@ internal class AbstractVoucherView: UIView, Localizable {
                               image: UIImage? = nil,
                               action: Selector,
                               accessibilityIdentifier: String) -> UIButton {
-        let button = UIButton()
-        let titleStyle = style.title
+        let button = UIButton(style: style)
         button.setTitle(title, for: .normal)
-        button.titleLabel?.font = titleStyle.font
-        button.setTitleColor(titleStyle.color, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 8, left: -2, bottom: 8, right: 8)
         button.titleEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: -2)
-        button.layer.borderWidth = style.borderWidth
-        button.layer.borderColor = style.borderColor?.cgColor
-        button.layer.backgroundColor = style.backgroundColor.cgColor
-        button.adyen.round(using: style.cornerRounding)
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         button.addTarget(self, action: action, for: .touchUpInside)
         button.accessibilityIdentifier = accessibilityIdentifier
