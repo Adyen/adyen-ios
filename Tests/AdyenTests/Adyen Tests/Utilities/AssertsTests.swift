@@ -99,7 +99,7 @@ class AssertsTests: XCTestCase {
             expectation.fulfill()
         }
 
-        sut.perform(Action.await(AwaitAction(paymentData: "", paymentMethodType: .blik)))
+        sut.handle(Action.await(AwaitAction(paymentData: "", paymentMethodType: .blik)))
 
         wait(for: [expectation], timeout: 2)
 

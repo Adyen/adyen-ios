@@ -122,7 +122,7 @@ extension IntegrationExample {
     }
 
     private func handle(_ action: Action) {
-        actionComponent.perform(action)
+        actionComponent.handle(action)
     }
 
 }
