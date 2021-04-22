@@ -26,17 +26,11 @@ internal final class AwaitView: UIView {
     
     /// :nodoc:
     internal lazy var messageLabel: UILabel = {
-        let label = UILabel()
-        label.font = style.message.font
-        label.adjustsFontForContentSizeCategory = true
-        label.textAlignment = style.message.textAlignment
-        label.textColor = style.message.color
-        label.backgroundColor = style.message.backgroundColor
+        let label = UILabel(style: style.message)
         label.text = viewModel.message
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "messageLabel")
-        label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()
@@ -68,16 +62,10 @@ internal final class AwaitView: UIView {
     
     /// :nodoc:
     internal lazy var spinnerTitleLabel: UILabel = {
-        let label = UILabel()
-        label.font = style.spinnerTitle.font
-        label.adjustsFontForContentSizeCategory = true
-        label.textAlignment = style.spinnerTitle.textAlignment
-        label.textColor = style.spinnerTitle.color
-        label.backgroundColor = style.spinnerTitle.backgroundColor
+        let label = UILabel(style: style.spinnerTitle)
         label.text = viewModel.spinnerTitle
         label.numberOfLines = 1
         label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "spinnerTitleLabel")
-        label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()

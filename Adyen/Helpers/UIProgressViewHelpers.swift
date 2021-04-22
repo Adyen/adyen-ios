@@ -7,7 +7,7 @@
 import UIKit
 
 extension UIProgressView {
-    convenience public init(with style: ProgressViewStyle) {
+    convenience public init(style: ProgressViewStyle) {
         self.init()
         
         backgroundColor = style.backgroundColor

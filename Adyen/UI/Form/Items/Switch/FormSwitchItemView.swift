@@ -30,12 +30,7 @@ public final class FormSwitchItemView: FormValueItemView<Bool, FormSwitchItemSty
     // MARK: - Title Label
     
     private lazy var titleLabel: UILabel = {
-        let titleLabel = UILabel()
-        titleLabel.font = item.style.title.font
-        titleLabel.adjustsFontForContentSizeCategory = true
-        titleLabel.textColor = item.style.title.color
-        titleLabel.textAlignment = item.style.title.textAlignment
-        titleLabel.backgroundColor = item.style.title.backgroundColor
+        let titleLabel = UILabel(style: item.style.title)
         titleLabel.text = item.title
         titleLabel.numberOfLines = 0
         titleLabel.isAccessibilityElement = false

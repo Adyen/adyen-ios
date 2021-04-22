@@ -40,15 +40,9 @@ internal final class ListHeaderView: UIView {
     private let title: String
     
     private lazy var titleLabel: UILabel = {
-        let titleLabel = UILabel()
+        let titleLabel = UILabel(style: style.title)
         titleLabel.text = title.uppercased()
-        titleLabel.textColor = style.title.color
-        titleLabel.font = style.title.font
-        titleLabel.adjustsFontForContentSizeCategory = true
-        titleLabel.textAlignment = style.title.textAlignment
-        titleLabel.backgroundColor = style.title.backgroundColor
         titleLabel.accessibilityTraits = .header
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "Adyen.ListHeaderView.\(title)",
                                                                          postfix: "titleLabel")
         
