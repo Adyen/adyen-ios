@@ -65,4 +65,54 @@ class RegionRepositoryTest:  XCTestCase {
         wait(for: [expectation], timeout: 5)
     }
 
+    func testGettingListOfCountriesFallback() {
+        let sut = RegionRepository(environment: local)
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+        sut.getCountries(locale: "something") { (regions) in
+            XCTAssertEqual(regions.count, 256)
+            XCTAssertEqual(regions[16].name, "Azerbaijan")
+
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 5)
+    }
+
+    func testGettingListOfCountriesFallbackWithTranslation() {
+        let sut = RegionRepository(environment: local)
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+        sut.getCountries(locale: "ru-RU") { (regions) in
+            XCTAssertEqual(regions.count, 256)
+            XCTAssertEqual(regions[16].name, "Азербайджан")
+
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 5)
+    }
+
+    func testGettingListOfStatesNothingFound() {
+        let sut = RegionRepository(environment: local)
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+        sut.getSubRegions(for: "something", locale: "us-EN") { (regions) in
+            XCTAssertEqual(regions.count, 0)
+
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 5)
+    }
+
+    func testGettingListOfStatesBRFallback() {
+        let sut = RegionRepository(environment: local)
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+        sut.getSubRegions(for: "BR", locale: "us-EN") { (regions) in
+            XCTAssertEqual(regions.count, 27)
+
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 5)
+    }
+
 }

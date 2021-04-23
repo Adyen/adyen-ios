@@ -53,13 +53,7 @@ public class RegionRepository {
             return callback(cachedValue)
         }
         let locale = NSLocale(localeIdentifier: locale)
-        let fallbackOption: [Region] = allCountryCodes.compactMap {
-            guard let name = locale.displayName(forKey: .countryCode, value: $0) else {
-                return nil
-            }
-            return Region(identifier: $0, name: name)
-        }
-        loadResourse(from: url, fallbackOption: fallbackOption, callback: callback)
+        loadResourse(from: url, fallbackOption: RegionRepository.localCountryFallback(for: locale), callback: callback)
     }
 
     /// Request list of states or provinces for selected country, translated to a selected language.
@@ -73,7 +67,7 @@ public class RegionRepository {
             return callback(cachedValue)
         }
 
-        loadResourse(from: url, callback: callback)
+        loadResourse(from: url, fallbackOption: allRegions[countryCode] ?? [], callback: callback)
     }
 
     /// https://checkoutshopper-test.adyen.com/checkoutshopper/datasets/countries/en-US.json
