@@ -98,7 +98,7 @@
 		E702BE192602525E00280682 /* AssertsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E702BE182602525E00280682 /* AssertsTests.swift */; };
 		E705F8EB2462B1B900438C3B /* FormButtonItemStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E705F8EA2462B1B900438C3B /* FormButtonItemStyle.swift */; };
 		E7085912261F1C8E00D0153B /* FormFullAddressItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085911261F1C8E00D0153B /* FormFullAddressItem.swift */; };
-		E708591F261F1CB800D0153B /* FormAddressItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E708591E261F1CB800D0153B /* FormAddressItemView.swift */; };
+		E708591F261F1CB800D0153B /* FormVerticalStackItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E708591E261F1CB800D0153B /* FormVerticalStackItemView.swift */; };
 		E7085A012625B4D000D0153B /* LocalizableRegionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085A002625B4D000D0153B /* LocalizableRegionRepository.swift */; };
 		E7085A8D2627132B00D0153B /* AddressInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085A8C2627132B00D0153B /* AddressInfo.swift */; };
 		E7085B122628B29600D0153B /* BasePickerInputControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085B092628B29600D0153B /* BasePickerInputControl.swift */; };
@@ -909,7 +909,7 @@
 		E702BE182602525E00280682 /* AssertsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssertsTests.swift; sourceTree = "<group>"; };
 		E705F8EA2462B1B900438C3B /* FormButtonItemStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormButtonItemStyle.swift; sourceTree = "<group>"; };
 		E7085911261F1C8E00D0153B /* FormFullAddressItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormFullAddressItem.swift; sourceTree = "<group>"; };
-		E708591E261F1CB800D0153B /* FormAddressItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAddressItemView.swift; sourceTree = "<group>"; };
+		E708591E261F1CB800D0153B /* FormVerticalStackItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormVerticalStackItemView.swift; sourceTree = "<group>"; };
 		E7085A002625B4D000D0153B /* LocalizableRegionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableRegionRepository.swift; sourceTree = "<group>"; };
 		E7085A8C2627132B00D0153B /* AddressInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressInfo.swift; sourceTree = "<group>"; };
 		E7085B092628B29600D0153B /* BasePickerInputControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasePickerInputControl.swift; sourceTree = "<group>"; };
@@ -1976,7 +1976,6 @@
 			isa = PBXGroup;
 			children = (
 				E7085911261F1C8E00D0153B /* FormFullAddressItem.swift */,
-				E708591E261F1CB800D0153B /* FormAddressItemView.swift */,
 				E7085CB6262DE14A00D0153B /* AddressStyle.swift */,
 			);
 			path = Address;
@@ -2045,6 +2044,7 @@
 		E7275BF7255012D400907CF9 /* Basic Items */ = {
 			isa = PBXGroup;
 			children = (
+				E708591E261F1CB800D0153B /* FormVerticalStackItemView.swift */,
 				E7275BF8255012F600907CF9 /* FormLabelItem.swift */,
 				E7CD107D25544C970057C52D /* FormContainerItem.swift */,
 			);
@@ -4223,7 +4223,7 @@
 				E9E3DAFD2225485400697074 /* URLSessionHelpers.swift in Sources */,
 				E71E8F3E257921D10054B03D /* StoredBLIKPaymentMethod.swift in Sources */,
 				F9B798C923AB697100A2103C /* FormComponentStyle.swift in Sources */,
-				E708591F261F1CB800D0153B /* FormAddressItemView.swift in Sources */,
+				E708591F261F1CB800D0153B /* FormVerticalStackItemView.swift in Sources */,
 				E7275BF9255012F600907CF9 /* FormLabelItem.swift in Sources */,
 				E2D12BEF221D560800EF682F /* FormValueItem.swift in Sources */,
 				F9639B3F24E18F620073F38A /* Scheduler.swift in Sources */,

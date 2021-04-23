@@ -24,6 +24,9 @@ public protocol FormValueItemStyle: TintableStyle {
 open class FormValueItem<ValueType: Equatable, StyleType: FormValueItemStyle>: FormItem {
 
     /// :nodoc:
+    public var subitems: [FormItem] = []
+
+    /// :nodoc:
     public var identifier: String?
 
     /// The value entered in the item.

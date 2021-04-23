@@ -6,36 +6,15 @@
 
 import Foundation
 
-/// Abstract class for form item to show address form.
-/// :nodoc:
-open class AnyAddressItem: FormValueItem<AddressInfo, AddressStyle> {
-
-    /// :nodoc:
-    public private(set) var subitems: [FormItem] = []
-
-}
-
 /// A full address form, sutable for all countries.
 /// :nodoc:
-public final class FullFormAddressItem: AnyAddressItem, Observer {
+public final class FullFormAddressItem: FormValueItem<AddressInfo, AddressStyle>, Observer {
 
     private let localizationParameters: LocalizationParameters?
 
     private var initialCountry: String
 
     private lazy var validationMessage = ADYLocalizedString("adyen.validationAlert.title", localizationParameters)
-
-    /// :nodoc:
-    override public var subitems: [FormItem] { [
-        headerItem,
-        countrySelecItem,
-        houseNumberTextItem,
-        streetTextItem,
-        apartmentTextItem,
-        cityTextItem,
-        provinceTextItem,
-        postalCodeTextItem
-    ] }
 
     /// Initializes the split text item.
     ///
@@ -45,6 +24,17 @@ public final class FullFormAddressItem: AnyAddressItem, Observer {
         self.initialCountry = initialCountry
         self.localizationParameters = localizationParameters
         super.init(value: AddressInfo(), style: style)
+
+        self.subitems = [
+            headerItem,
+            countrySelecItem,
+            houseNumberTextItem,
+            streetTextItem,
+            apartmentTextItem,
+            cityTextItem,
+            provinceTextItem,
+            postalCodeTextItem
+        ]
 
         bind(countrySelecItem.publisher, at: \.identifier, to: self, at: \.value.country)
         bind(provinceTextItem.publisher, to: self, at: \.value.stateOrProvince)

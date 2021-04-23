@@ -7,16 +7,16 @@
 import Foundation
 import UIKit
 
-/// A view representing a address item.
-internal final class FormAddressItemView: FormItemView<AnyAddressItem> {
+/// A view representing a vertical stack of items.
+internal final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormItemType> {
 
     private let views: [AnyFormItemView]
 
     /// Initializes the split item view.
     ///
     /// - Parameter item: The item represented by the view.
-    internal required init(item: AnyAddressItem) {
-        views = item.subitems.map(FormAddressItemView.build)
+    internal required init(item: FormItemType) {
+        views = item.subitems.map(FormVerticalStackItemView.build)
         super.init(item: item)
 
         addSubview(stackView)

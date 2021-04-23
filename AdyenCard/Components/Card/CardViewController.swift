@@ -132,7 +132,7 @@ internal class CardViewController: FormViewController {
 
     // MARK: Items
 
-    internal lazy var addressVerificationItem: AnyAddressItem = {
+    internal lazy var addressVerificationItem: FullFormAddressItem = {
         let item = FullFormAddressItem(initialCountry: defaultCountryCode,
                                        style: formStyle.addressStyle,
                                        localizationParameters: localizationParameters)
