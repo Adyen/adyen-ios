@@ -13,7 +13,7 @@ extension VoucherSeparatorView {
     internal struct Model {
         internal var separatorTitle: String
 
-        internal var separatorStyle = TextStyle(font: .systemFont(ofSize: 13),
+        internal var separatorStyle = TextStyle(font: .preferredFont(forTextStyle: .footnote),
                                                 color: UIColor.Adyen.componentLabel,
                                                 textAlignment: .center)
     }
