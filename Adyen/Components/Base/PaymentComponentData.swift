@@ -74,7 +74,10 @@ public struct PaymentComponentData: ShopperInformation {
     public let browserInfo: BrowserInfo?
 
     /// The billing address information.
-    public let billingAddress: AddressInfo?
+    public var billingAddress: AddressInfo? {
+        guard let shopperInfo = paymentMethod as? ShopperInformation else { return nil }
+        return shopperInfo.billingAddress
+    }
     
     /// Initializes the payment component data.
     ///
@@ -85,11 +88,10 @@ public struct PaymentComponentData: ShopperInformation {
     ///   - storePaymentMethod: Whether the user has chosen to store the payment method.
     ///   - browserInfo: The device default browser info.
     ///   - addressInfo: The payment's billing address.
-    public init(paymentMethodDetails: PaymentMethodDetails, storePaymentMethod: Bool = false, browserInfo: BrowserInfo? = nil, billingAddress: AddressInfo? = nil) {
+    public init(paymentMethodDetails: PaymentMethodDetails, storePaymentMethod: Bool = false, browserInfo: BrowserInfo? = nil) {
         self.paymentMethod = paymentMethodDetails
         self.storePaymentMethod = storePaymentMethod
         self.browserInfo = browserInfo
-        self.billingAddress = billingAddress
     }
     
     /// Creates a new `PaymentComponentData` by populating the `browserInfo`,
@@ -101,8 +103,7 @@ public struct PaymentComponentData: ShopperInformation {
         BrowserInfo.initialize {
             completion(PaymentComponentData(paymentMethodDetails: self.paymentMethod,
                                             storePaymentMethod: self.storePaymentMethod,
-                                            browserInfo: $0,
-                                            billingAddress: self.billingAddress))
+                                            browserInfo: $0))
         }
     }
     

@@ -655,7 +655,10 @@ class CardComponentTests: XCTestCase {
         // Dummy public key
         let cardPublicKey = Dummy.dummyPublicKey
         let cardPublicKeyProvider = CardPublicKeyProvider(cardPublicKey: cardPublicKey)
+        var config = CardComponent.Configuration()
+        config.billingAddressMode = .full
         let sut = CardComponent(paymentMethod: method,
+                                configuration: config,
                                 cardPublicKeyProvider: cardPublicKeyProvider,
                                 clientKey: Dummy.dummyClientKey)
 
@@ -675,6 +678,13 @@ class CardComponentTests: XCTestCase {
 
             XCTAssertEqual(data.storePaymentMethod, true)
 
+            XCTAssertEqual(details.billingAddress?.apartment, "Appartment")
+            XCTAssertEqual(details.billingAddress?.houseNumberOrName, "House Number")
+            XCTAssertEqual(details.billingAddress?.street, "Address")
+            XCTAssertEqual(details.billingAddress?.stateOrProvince, "Province")
+            XCTAssertEqual(details.billingAddress?.city, "City")
+            XCTAssertEqual(details.billingAddress?.country, "US")
+
             sut.stopLoadingIfNeeded()
             delegateExpectation.fulfill()
             XCTAssertEqual(sut.cardViewController.view.isUserInteractionEnabled, true)
@@ -689,12 +699,26 @@ class CardComponentTests: XCTestCase {
         let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
         let storeDetailsItemView: FormSwitchItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem")
 
+        let houseNumberItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FullFormAddressItem.houseNumber")
+        let addressItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FullFormAddressItem.address")
+        let apartmentSuiteItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FullFormAddressItem.apartmentSuite")
+        let cityItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FullFormAddressItem.city")
+        let provinceOrTerritoryItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FullFormAddressItem.provinceOrTerritory")
+        let postalCodeItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FullFormAddressItem.postalCode")
+
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
 
             self.populate(textItemView: cardNumberItemView!, with: "4917 6100 0000 0000")
             self.populate(textItemView: expiryDateItemView!, with: "03/30")
             self.populate(textItemView: securityCodeItemView!, with: "737")
+
+            self.populate(textItemView: houseNumberItemView!, with: "House Number")
+            self.populate(textItemView: addressItemView!, with: "Address")
+            self.populate(textItemView: apartmentSuiteItemView!, with: "Appartment")
+            self.populate(textItemView: cityItemView!, with: "City")
+            self.populate(textItemView: provinceOrTerritoryItemView!, with: "Province")
+            self.populate(textItemView: postalCodeItemView!, with: "Postal Code")
 
             _ = storeDetailsItemView!.accessibilityActivate()
 
