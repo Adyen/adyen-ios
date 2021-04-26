@@ -119,7 +119,7 @@ internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable 
     private func updateExpiration(_ timeLeft: TimeInterval) {
         progress.completedUnitCount = Int64(timeLeft)
         let timeLeftString = timeLeft.adyen.timeLeftString() ?? ""
-        expirationText = ADYLocalizedString("adyen.pix.expirationLabel", localizationParameters, timeLeftString)
+        expirationText = ADYLocalizedString(.pixExpirationLabel, localizationParameters, timeLeftString)
     }
     
     /// :nodoc:
@@ -140,7 +140,7 @@ internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable 
     private func createModel(with action: QRCodeAction) -> QRCodeView.Model {
         let url = LogoURLProvider.logoURL(withName: "pix", environment: .test)
         return QRCodeView.Model(
-            instruction: ADYLocalizedString("adyen.pix.instructions", localizationParameters),
+            instruction: ADYLocalizedString(.pixInstructions, localizationParameters),
             logoUrl: url,
             observedProgress: progress,
             expiration: $expirationText,

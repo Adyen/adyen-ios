@@ -40,6 +40,30 @@ public func ADYLocalizedString(_ key: String, _ parameters: LocalizationParamete
     return String(format: result, arguments: arguments)
 }
 
+/// Returns a localized string for the given key, and optionally uses it as a template
+/// in which the remaining argument values are substituted.
+/// This method will try first to get the string from main bundle.
+/// If no localization is available on main bundle, it'll return from internal one.
+///
+/// :nodoc:
+///
+/// - Parameters:
+///   - key: The key used to identify the localized string.
+///   - parameters: The localization parameters.
+///   - arguments: The arguments to substitute in the templated localized string.
+/// - Returns: The localized string for the given key, or the key itself if the localized string could not be found.
+public func ADYLocalizedString(_ key: ADYLocalizationKey, _ parameters: LocalizationParameters?, _ arguments: CVarArg...) -> String {
+    let possibleInputs = buildPossibleInputs(key.key, parameters)
+
+    let result = attempt(possibleInputs) ?? fallbackLocalizedString(key: key.key)
+    
+    guard !arguments.isEmpty else {
+        return result
+    }
+    
+    return String(format: result, arguments: arguments)
+}
+
 private func fallbackLocalizedString(key: String) -> String {
     NSLocalizedString(key, tableName: nil, bundle: Bundle.coreInternalResources, comment: "")
 }
