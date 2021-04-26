@@ -31,7 +31,7 @@ extension GenericVoucherView {
             internal struct Style {
 
                 internal lazy var button: ButtonStyle = {
-                    var style = ButtonStyle(title: TextStyle(font: .systemFont(ofSize: 9),
+                    var style = ButtonStyle(title: TextStyle(font: .preferredFont(forTextStyle: .footnote),
                                                              color: UIColor.Adyen.defaultBlue),
                                             cornerRounding: .percent(0.5))
                     style.borderColor = UIColor.Adyen.defaultBlue
@@ -58,21 +58,25 @@ extension GenericVoucherView {
 
         internal struct Style {
 
-            internal var text = TextStyle(font: .systemFont(ofSize: 13),
-                                          color: UIColor.Adyen.componentLabel,
-                                          textAlignment: .center)
+            internal var text = TextStyle(
+                font: .preferredFont(forTextStyle: .footnote),
+                color: UIColor.Adyen.componentLabel,
+                textAlignment: .center)
 
-            internal var amount = TextStyle(font: .boldSystemFont(ofSize: 16),
-                                            color: UIColor.Adyen.componentLabel,
-                                            textAlignment: .center)
+            internal var amount = TextStyle(
+                font: UIFont.preferredFont(forTextStyle: .callout).adyen.font(with: .bold),
+                color: UIColor.Adyen.componentLabel,
+                textAlignment: .center)
 
-            internal var codeText = TextStyle(font: .boldSystemFont(ofSize: 24),
-                                              color: UIColor.Adyen.componentLabel,
-                                              textAlignment: .center)
+            internal var codeText = TextStyle(
+                font: UIFont.preferredFont(forTextStyle: .title1).adyen.font(with: .bold),
+                color: UIColor.Adyen.componentLabel,
+                textAlignment: .center)
 
-            internal var fieldValueText = TextStyle(font: .boldSystemFont(ofSize: 13),
-                                                    color: UIColor.Adyen.componentLabel,
-                                                    textAlignment: .center)
+            internal var fieldValueText = TextStyle(
+                font: UIFont.preferredFont(forTextStyle: .footnote).adyen.font(with: .semibold),
+                color: UIColor.Adyen.componentLabel,
+                textAlignment: .center)
 
             internal var mainButton: ButtonStyle
 
