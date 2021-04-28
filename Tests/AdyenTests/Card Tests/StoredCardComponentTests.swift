@@ -37,8 +37,8 @@ class StoredCardComponentTests: XCTestCase {
             let textField: UITextField? = sut.viewController.view.findView(by: "AdyenCard.StoredCardAlertManager.textField")
             XCTAssertNotNil(textField)
 
-            XCTAssertTrue(alertController.actions.contains { $0.title == ADYLocalizedString("adyen.cancelButton", nil) })
-            XCTAssertTrue(alertController.actions.contains { $0.title == ADYLocalizedSubmitButtonTitle(with: payemt.amount, style: .immediate, nil) })
+            XCTAssertTrue(alertController.actions.contains { $0.title == localizedString(.cancelButton, nil) })
+            XCTAssertTrue(alertController.actions.contains { $0.title == localizedSubmitButtonTitle(with: payemt.amount, style: .immediate, nil) })
 
             expectation.fulfill()
 
@@ -73,8 +73,8 @@ class StoredCardComponentTests: XCTestCase {
             let textField: UITextField? = sut.viewController.view.findView(by: "AdyenCard.StoredCardAlertManager.textField")
             XCTAssertNotNil(textField)
 
-            XCTAssertTrue(alertController.actions.contains { $0.title == ADYLocalizedString("adyen.cancelButton", nil) })
-            XCTAssertTrue(alertController.actions.contains { $0.title == ADYLocalizedSubmitButtonTitle(with: payemt.amount, style: .immediate, nil) })
+            XCTAssertTrue(alertController.actions.contains { $0.title == localizedString(.cancelButton, nil) })
+            XCTAssertTrue(alertController.actions.contains { $0.title == localizedSubmitButtonTitle(with: payemt.amount, style: .immediate, nil) })
 
             expectation.fulfill()
 
@@ -138,7 +138,7 @@ class StoredCardComponentTests: XCTestCase {
             textField?.text = "737"
             textField?.sendActions(for: .editingChanged)
 
-            let payAction = alertController.actions.first { $0.title == ADYLocalizedSubmitButtonTitle(with: payemt.amount, style: .immediate, nil) }!
+            let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payemt.amount, style: .immediate, nil) }!
 
             payAction.tap()
 
@@ -197,7 +197,7 @@ class StoredCardComponentTests: XCTestCase {
             textField?.text = "737"
             textField?.sendActions(for: .editingChanged)
 
-            let payAction = alertController.actions.first { $0.title == ADYLocalizedSubmitButtonTitle(with: payemt.amount, style: .immediate, nil) }!
+            let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payemt.amount, style: .immediate, nil) }!
 
             payAction.tap()
 
@@ -231,7 +231,7 @@ class StoredCardComponentTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             let alertController = sut.viewController as! UIAlertController
             let textField: UITextField! = sut.viewController.view.findView(by: "AdyenCard.StoredCardAlertManager.textField")
-            let payAction = alertController.actions.first { $0.title == ADYLocalizedSubmitButtonTitle(with: payemt.amount, style: .immediate, nil) }!
+            let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payemt.amount, style: .immediate, nil) }!
 
             textField.insertText("a")
             textField?.sendActions(for: .editingChanged)
@@ -288,7 +288,7 @@ class StoredCardComponentTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             let alertController = sut.viewController as! UIAlertController
             let textField: UITextField! = sut.viewController.view.findView(by: "AdyenCard.StoredCardAlertManager.textField")
-            let payAction = alertController.actions.first { $0.title == ADYLocalizedSubmitButtonTitle(with: payemt.amount, style: .immediate, nil) }!
+            let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payemt.amount, style: .immediate, nil) }!
 
             textField.text = "11"
             textField?.sendActions(for: .editingChanged)
@@ -333,7 +333,7 @@ class StoredCardComponentTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             let alertController = sut.viewController as! UIAlertController
             let textField: UITextField! = sut.viewController.view.findView(by: "AdyenCard.StoredCardAlertManager.textField")
-            let payAction = alertController.actions.first { $0.title == ADYLocalizedSubmitButtonTitle(with: payemt.amount, style: .immediate, nil) }!
+            let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payemt.amount, style: .immediate, nil) }!
 
             textField.text = "11"
             textField?.sendActions(for: .editingChanged)

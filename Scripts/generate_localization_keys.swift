@@ -13,7 +13,8 @@ let header =
 
 """
 
-let structName = "ADYLocalizationKey"
+let structName = "LocalizationKey"
+let indent = "    "
 
 func extractKey(_ line: String) -> String {
     String(line.prefix(while: { $0 != " " }))
@@ -22,6 +23,10 @@ func extractKey(_ line: String) -> String {
 
 func capitalizeFirstLetter(_ string: String) -> String {
     string.prefix(1).capitalized + string.dropFirst()
+}
+
+func indentLines(_ lines: Array<String>, with indent: String) -> Array<String> {
+    lines.map { indent.appending($0) }
 }
 
 func formatKeyToName(_ key: String) -> String {
@@ -37,8 +42,25 @@ func generate(_ name: String, _ key: String) -> String {
 
 func generateStruct(
     _ lines: Array<String>,
-    indent: String = "\n    ") -> String {
-    "/// :nodoc:\npublic struct \(structName) {\n\(indent)\(lines.joined(separator: indent))\n\(indent)internal let key: String\n\n}"
+    indent: String = indent) -> String {
+    let generatedLines: Array<Array<String>> = [
+        ["/// :nodoc:", "public struct \(structName) {", ""],
+        indentLines(lines, with: indent),
+        indentLines(["", "internal let key: String", ""], with: indent),
+        indentLines(generateInit(), with: indent),
+        ["", "}", ""]
+    ]
+    return generatedLines
+        .flatMap { $0 }
+        .joined(separator: "\n")
+}
+
+func generateInit(indent: String = indent) -> Array<String> {
+    [
+        "public init(key: String) {",
+        "\(indent)self.key = key",
+        "}",
+    ]
 }
 
 let inputPath = CommandLine.arguments[1]

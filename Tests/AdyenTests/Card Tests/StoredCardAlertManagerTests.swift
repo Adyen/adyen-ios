@@ -33,18 +33,18 @@ class StoredCardAlertManagerTests: XCTestCase {
         
         let alertController = sut.alertController
         
-        XCTAssertEqual(alertController.title, ADYLocalizedString("adyen.card.stored.title", sut.localizationParameters))
+        XCTAssertEqual(alertController.title, localizedString(.cardStoredTitle, sut.localizationParameters))
         let displayInformation = method.localizedDisplayInformation(using: sut.localizationParameters)
-        XCTAssertEqual(alertController.message, ADYLocalizedString("adyen.card.stored.message", sut.localizationParameters, displayInformation.title))
+        XCTAssertEqual(alertController.message, localizedString(.cardStoredMessage, sut.localizationParameters, displayInformation.title))
         
         XCTAssertNotNil(alertController.textFields)
         XCTAssertEqual(alertController.textFields?.count, 1)
-        XCTAssertEqual(alertController.textFields?.first?.placeholder, ADYLocalizedString("adyen.card.cvcItem.placeholder", sut.localizationParameters))
-        XCTAssertEqual(alertController.textFields?.first?.accessibilityLabel, ADYLocalizedString("adyen.card.cvcItem.title", sut.localizationParameters))
+        XCTAssertEqual(alertController.textFields?.first?.placeholder, localizedString(.cardCvcItemPlaceholder, sut.localizationParameters))
+        XCTAssertEqual(alertController.textFields?.first?.accessibilityLabel, localizedString(.cardCvcItemTitle, sut.localizationParameters))
         
         XCTAssertEqual(alertController.actions.count, 2)
-        XCTAssertEqual(alertController.actions.first?.title, ADYLocalizedString("adyen.cancelButton", sut.localizationParameters))
-        XCTAssertEqual(alertController.actions[1].title, ADYLocalizedSubmitButtonTitle(with: amount, style: .immediate, sut.localizationParameters))
+        XCTAssertEqual(alertController.actions.first?.title, localizedString(.cancelButton, sut.localizationParameters))
+        XCTAssertEqual(alertController.actions[1].title, localizedSubmitButtonTitle(with: amount, style: .immediate, sut.localizationParameters))
     }
     
     func testLocalizationWithCustomKeySeparator() throws {
@@ -55,18 +55,18 @@ class StoredCardAlertManagerTests: XCTestCase {
         
         let alertController = sut.alertController
         
-        XCTAssertEqual(alertController.title, ADYLocalizedString("adyen_card_stored_title", sut.localizationParameters))
+        XCTAssertEqual(alertController.title, localizedString(LocalizationKey(key: "adyen_card_stored_title"), sut.localizationParameters))
         let displayInformation = method.localizedDisplayInformation(using: sut.localizationParameters)
-        XCTAssertEqual(alertController.message, ADYLocalizedString("adyen_card_stored_message", sut.localizationParameters, displayInformation.title))
+        XCTAssertEqual(alertController.message, localizedString(LocalizationKey(key: "adyen_card_stored_message"), sut.localizationParameters, displayInformation.title))
         
         XCTAssertNotNil(alertController.textFields)
         XCTAssertEqual(alertController.textFields?.count, 1)
-        XCTAssertEqual(alertController.textFields?.first?.placeholder, ADYLocalizedString("adyen_card_cvcItem_placeholder", sut.localizationParameters))
-        XCTAssertEqual(alertController.textFields?.first?.accessibilityLabel, ADYLocalizedString("adyen_card_cvcItem_title", sut.localizationParameters))
+        XCTAssertEqual(alertController.textFields?.first?.placeholder, localizedString(LocalizationKey(key: "adyen_card_cvcItem_placeholder"), sut.localizationParameters))
+        XCTAssertEqual(alertController.textFields?.first?.accessibilityLabel, localizedString(LocalizationKey(key: "adyen_card_cvcItem_title"), sut.localizationParameters))
         
         XCTAssertEqual(alertController.actions.count, 2)
-        XCTAssertEqual(alertController.actions.first?.title, ADYLocalizedString("adyen_cancelButton", sut.localizationParameters))
-        XCTAssertEqual(alertController.actions[1].title, ADYLocalizedSubmitButtonTitle(with: amount, style: .immediate, sut.localizationParameters))
+        XCTAssertEqual(alertController.actions.first?.title, localizedString(LocalizationKey(key: "adyen_cancelButton"), sut.localizationParameters))
+        XCTAssertEqual(alertController.actions[1].title, localizedSubmitButtonTitle(with: amount, style: .immediate, sut.localizationParameters))
     }
     
 }

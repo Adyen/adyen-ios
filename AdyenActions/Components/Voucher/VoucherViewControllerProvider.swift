@@ -64,9 +64,9 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
         let logoUrl = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue,
                                               environment: .test,
                                               size: .medium)
-        let separatorTitle = ADYLocalizedString("adyen.voucher.paymentReferenceLabel", localizationParameters)
-        let text = ADYLocalizedString("adyen.voucher.introduction", localizationParameters)
-        let instructionTitle = ADYLocalizedString("adyen.voucher.readInstructions", localizationParameters)
+        let separatorTitle = localizedString(.voucherPaymentReferenceLabel, localizationParameters)
+        let text = localizedString(.voucherIntroduction, localizationParameters)
+        let instructionTitle = localizedString(.voucherReadInstructions, localizationParameters)
         let instructionStyle = GenericVoucherView.Model.Instruction.Style()
         let instruction = GenericVoucherView.Model.Instruction(title: instructionTitle,
                                                                url: URL(string: action.instructionsUrl),
@@ -79,8 +79,8 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
         let baseStyle = AbstractVoucherView.Model.Style(mainButtonStyle: self.style.mainButton,
                                                         secondaryButtonStyle: self.style.secondaryButton,
                                                         backgroundColor: self.style.backgroundColor)
-        let saveAsImageCopy = ADYLocalizedString("adyen.voucher.saveImage", localizationParameters)
-        let finishCopy = ADYLocalizedString("adyen.voucher.finish", localizationParameters)
+        let saveAsImageCopy = localizedString(.voucherSaveImage, localizationParameters)
+        let finishCopy = localizedString(.voucherFinish, localizationParameters)
         let baseModel = AbstractVoucherView.Model(separatorModel: .init(separatorTitle: separatorTitle),
                                                   saveButtonTitle: saveAsImageCopy,
                                                   doneButtonTitle: finishCopy,
@@ -118,31 +118,31 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         let expiration = dateFormatter.string(from: expiration)
         return GenericVoucherView.VoucherField(identifier: "expiration",
-                                               title: ADYLocalizedString("adyen.voucher.expirationDate", localizationParameters),
+                                               title: localizedString(.voucherExpirationDate, localizationParameters),
                                                value: expiration)
     }
 
     private func createShopperNameField(with name: String) -> GenericVoucherView.VoucherField {
         GenericVoucherView.VoucherField(identifier: "shopperName",
-                                        title: ADYLocalizedString("adyen.voucher.shopperName", localizationParameters),
+                                        title: localizedString(.voucherShopperName, localizationParameters),
                                         value: name)
     }
 
     private func createMerchantField(with name: String) -> GenericVoucherView.VoucherField {
         GenericVoucherView.VoucherField(identifier: "merchant",
-                                        title: ADYLocalizedString("adyen.voucher.merchantName", localizationParameters),
+                                        title: localizedString(.voucherMerchantName, localizationParameters),
                                         value: name)
     }
 
     private func createMaskedPhoneField(with phone: String) -> GenericVoucherView.VoucherField {
         GenericVoucherView.VoucherField(identifier: "maskedTelephoneNumber",
-                                        title: ADYLocalizedString("adyen.phoneNumber.title", localizationParameters),
+                                        title: localizedString(.phoneNumberTitle, localizationParameters),
                                         value: phone)
     }
 
     private func createCollectionInstitutionField(with number: String) -> GenericVoucherView.VoucherField {
         GenericVoucherView.VoucherField(identifier: "CollectionInstitutionNumber",
-                                        title: ADYLocalizedString("adyen.voucher.collectionInstitutionNumber", localizationParameters),
+                                        title: localizedString(.voucherCollectionInstitutionNumber, localizationParameters),
                                         value: number)
     }
 }

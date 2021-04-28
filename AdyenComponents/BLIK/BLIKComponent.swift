@@ -62,7 +62,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
 
     /// The helper message item.
     internal lazy var hintLabelItem: FormLabelItem = {
-        FormLabelItem(text: ADYLocalizedString("adyen.blik.help", localizationParameters),
+        FormLabelItem(text: localizedString(.blikHelp, localizationParameters),
                       style: style.hintLabel,
                       identifier: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "blikCodeHintLabel"))
     }()
@@ -70,11 +70,11 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
     /// The BLIK code item.
     internal lazy var codeItem: FormTextInputItem = {
         let item = FormTextInputItem(style: style.textField)
-        item.title = ADYLocalizedString("adyen.blik.code", localizationParameters)
-        item.placeholder = ADYLocalizedString("adyen.blik.placeholder", localizationParameters)
+        item.title = localizedString(.blikCode, localizationParameters)
+        item.placeholder = localizedString(.blikPlaceholder, localizationParameters)
         item.validator = NumericStringValidator(minimumLength: 6, maximumLength: 6)
         item.formatter = NumericFormatter()
-        item.validationFailureMessage = ADYLocalizedString("adyen.blik.invalid", localizationParameters)
+        item.validationFailureMessage = localizedString(.blikInvalid, localizationParameters)
         item.keyboardType = .numberPad
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "blikCodeItem")
         return item
@@ -84,7 +84,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
     internal lazy var button: FormButtonItem = {
         let item = FormButtonItem(style: style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
-        item.title = ADYLocalizedSubmitButtonTitle(with: payment?.amount,
+        item.title = localizedSubmitButtonTitle(with: payment?.amount,
                                                    style: .immediate,
                                                    localizationParameters)
         item.buttonSelectionHandler = { [weak self] in

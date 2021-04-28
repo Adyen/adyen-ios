@@ -86,7 +86,7 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
         let expireDate = expiryMonth + "/" + String(expiryYear.suffix(2))
         
         return DisplayInformation(title: "••••\u{00a0}" + lastFour,
-                                  subtitle: ADYLocalizedString("adyen.card.stored.expires", parameters, expireDate),
+                                  subtitle: localizedString(.cardStoredExpires, parameters, expireDate),
                                   logoName: brand)
     }
     

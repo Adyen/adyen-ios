@@ -30,9 +30,9 @@ class PaymentMethodListComponentTests: XCTestCase {
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         
         let listViewController = sut.listViewController
-        XCTAssertEqual(listViewController.title, ADYLocalizedString("adyen.paymentMethods.title", sut.localizationParameters))
+        XCTAssertEqual(listViewController.title, localizedString(.paymentMethodsTitle, sut.localizationParameters))
         XCTAssertEqual(listViewController.sections.count, 2)
-        XCTAssertEqual(listViewController.sections[1].title, ADYLocalizedString("adyen.paymentMethods.otherMethods", sut.localizationParameters))
+        XCTAssertEqual(listViewController.sections[1].title, localizedString(.paymentMethodsOtherMethods, sut.localizationParameters))
     }
     
     func testLocalizationWithCustomKeySeparator() {
@@ -41,9 +41,9 @@ class PaymentMethodListComponentTests: XCTestCase {
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         
         let listViewController = sut.listViewController
-        XCTAssertEqual(listViewController.title, ADYLocalizedString("adyen_paymentMethods_title", sut.localizationParameters))
+        XCTAssertEqual(listViewController.title, localizedString(LocalizationKey(key: "adyen_paymentMethods_title"), sut.localizationParameters))
         XCTAssertEqual(listViewController.sections.count, 2)
-        XCTAssertEqual(listViewController.sections[1].title, ADYLocalizedString("adyen_paymentMethods_otherMethods", sut.localizationParameters))
+        XCTAssertEqual(listViewController.sections[1].title, localizedString(LocalizationKey(key: "adyen_paymentMethods_otherMethods"), sut.localizationParameters))
     }
 
     func testStartStopLoading() {

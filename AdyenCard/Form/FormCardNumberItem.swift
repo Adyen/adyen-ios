@@ -43,11 +43,11 @@ internal final class FormCardNumberItem: FormTextItem, Observer {
 
         observe(publisher) { [weak self] value in self?.valueDidChange(value) }
         
-        title = ADYLocalizedString("adyen.card.numberItem.title", localizationParameters)
+        title = localizedString(.cardNumberItemTitle, localizationParameters)
         validator = CardNumberValidator()
         formatter = cardNumberFormatter
-        placeholder = ADYLocalizedString("adyen.card.numberItem.placeholder", localizationParameters)
-        validationFailureMessage = ADYLocalizedString("adyen.card.numberItem.invalid", localizationParameters)
+        placeholder = localizedString(.cardNumberItemPlaceholder, localizationParameters)
+        validationFailureMessage = localizedString(.cardNumberItemInvalid, localizationParameters)
         keyboardType = .numberPad
     }
     

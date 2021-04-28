@@ -28,7 +28,7 @@ public final class BasicPersonalInfoFormComponent: AbstractPersonalInformationCo
     }
 
     override public func submitButtonTitle() -> String {
-        ADYLocalizedString("adyen.confirmPurchase", localizationParameters)
+        localizedString(.confirmPurchase, localizationParameters)
     }
 
     override public func createPaymentDetails() -> PaymentMethodDetails {

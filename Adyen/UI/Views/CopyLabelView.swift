@@ -57,7 +57,7 @@ public final class CopyLabelView: UIView, Localizable {
         guard let superview = superview else { return }
         becomeFirstResponder()
         let menuController = UIMenuController.shared
-        let copyItem = UIMenuItem(title: ADYLocalizedString("adyen.button.copy", localizationParameters), action: #selector(handleCopy))
+        let copyItem = UIMenuItem(title: localizedString(.buttonCopy, localizationParameters), action: #selector(handleCopy))
         menuController.menuItems = [copyItem]
         menuController.setTargetRect(frame, in: superview)
         menuController.setMenuVisible(true, animated: true)

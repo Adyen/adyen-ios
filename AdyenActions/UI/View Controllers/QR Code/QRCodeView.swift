@@ -100,7 +100,7 @@ internal final class QRCodeView: UIView, Localizable, Observer {
     
     private lazy var copyButton: SubmitButton = {
         let button = SubmitButton(style: model.style.copyButton)
-        button.title = ADYLocalizedString(.pixCopyButton, localizationParameters)
+        button.title = localizedString(.pixCopyButton, localizationParameters)
         button.addTarget(self, action: #selector(copyCode), for: .touchUpInside)
         button.accessibilityIdentifier = "copyButton"
         
