@@ -50,6 +50,10 @@ public extension AdyenScope where Base: UIView {
     /// - Parameters:
     ///   - radius: The radius of each corner oval.
     func round(using rounding: CornerRounding) {
+        if #available(iOS 13.0, *) {
+            base.layer.cornerCurve = .continuous
+        }
+        
         switch rounding {
         case let .fixed(value):
             base.layer.cornerRadius = value
