@@ -10,6 +10,9 @@ import UIKit
 /// A form item that represents a separator line.
 /// :nodoc:
 public final class FormSeparatorItem: FormItem {
+
+    /// :nodoc:
+    public var subitems: [FormItem] = []
     
     /// Indicates the line color.
     public let color: UIColor

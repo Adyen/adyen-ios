@@ -112,7 +112,55 @@ class ObservableTests: XCTestCase, Observer {
         // The handler should only be called for unique values.
         XCTAssertEqual(count, 4)
     }
+
+    func testBindingProperty() {
+        let emmiter = TestObserver()
+        let receiver = TestObserver()
+        bind(emmiter.$observableString, to: receiver, at: \.stringValue)
+        bind(emmiter.$observableString, to: receiver, at: \.optionalStringValue)
+        bind(emmiter.$observableString, to: receiver, at: \.observableObject.stringValue)
+
+        emmiter.observableString = "Hello World"
+        XCTAssertEqual(emmiter.observableString, receiver.stringValue)
+        XCTAssertEqual(emmiter.observableString, receiver.optionalStringValue)
+        XCTAssertEqual(emmiter.observableString, receiver.observableObject.stringValue)
+    }
+
+    func testBindingObject() {
+        let emmiter = TestObserver()
+        let receiver = TestObserver()
+        bind(emmiter.$observableObject, at: \.stringValue, to: receiver, at: \.stringValue)
+        bind(emmiter.$observableObject, at: \.stringValue, to: receiver, at: \.optionalStringValue)
+        bind(emmiter.$observableObject, at: \.stringValue, to: receiver, at: \.observableObject.stringValue)
+
+        emmiter.observableObject.stringValue = "Hello World"
+        XCTAssertEqual(emmiter.observableObject.stringValue, receiver.stringValue)
+        XCTAssertEqual(emmiter.observableObject.stringValue, receiver.optionalStringValue)
+        XCTAssertEqual(emmiter.observableObject.stringValue, receiver.observableObject.stringValue)
+    }
+
+    func testBindingTransformation() {
+        let emmiter = TestObserver()
+        let receiver = TestObserver()
+        XCTAssertFalse(receiver.observableObject.boolValue)
+        bind(emmiter.$observableString, to: receiver, at: \.observableObject.boolValue, with: { $0.contains("Hello") })
+
+        emmiter.observableString = "Hello World"
+        XCTAssertTrue(receiver.observableObject.boolValue)
+    }
+
     
-    class TestObserver: Observer {}
-    
+    class TestObserver: Observer {
+        var stringValue: String = ""
+        var optionalStringValue: String?
+
+        @Observable("") var observableString: String
+        @Observable(OtherObject()) var observableObject: OtherObject
+
+    }
+
+    struct OtherObject: Equatable {
+        var stringValue: String = ""
+        var boolValue: Bool = false
+    }
 }

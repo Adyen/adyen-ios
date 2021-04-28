@@ -1,0 +1,61 @@
+//
+// Copyright (c) 2021 Adyen N.V.
+//
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
+//
+
+import Foundation
+
+/// The model for address data.
+public struct AddressInfo: Equatable, Encodable {
+
+    /// The name of the city.
+    public var city: String?
+
+    /// The two-character country code as defined in ISO-3166-1 alpha-2. For example, US.
+    /// If you don't know the country or are not collecting the country from the shopper, provide country as ZZ.
+    public var country: String?
+
+    /// The number or name of the house.
+    public var houseNumberOrName: String?
+
+    /// A maximum of five digits for an address in the US, or a maximum of ten characters for an address in all other countries.
+    public var postalCode: String?
+
+    /// State or province codes as defined in ISO 3166-2. For example, CA in the US or ON in Canada.
+    /// Required for the US and Canada.
+    public var stateOrProvince: String?
+
+    /// The name of the street.
+    /// The house number should not be included in this field; it should be separately provided via houseNumberOrName.
+    public var street: String?
+
+    /// The name or code of apartment. Optional.
+    /// Will be included into houseNumberOrName.
+    public var apartment: String?
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        let houseNumberOrNameValue = [houseNumberOrName, apartment]
+            .compactMap { $0 }
+            .joined(separator: " ")
+
+        try container.encode(city, forKey: .city)
+        try container.encode(country, forKey: .country)
+        try container.encode(houseNumberOrNameValue, forKey: .houseNumberOrName)
+        try container.encode(postalCode, forKey: .postalCode)
+        try container.encode(stateOrProvince, forKey: .stateOrProvince)
+        try container.encode(street, forKey: .street)
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case city
+        case country
+        case houseNumberOrName
+        case postalCode
+        case stateOrProvince
+        case street
+    }
+
+}

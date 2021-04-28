@@ -45,10 +45,10 @@ open class BaseFormPickerItem<ElementType: CustomStringConvertible>: FormValueIt
     ///
     /// - Parameter selectableValues: The list of values to select from.
     /// - Parameter style: The `FormPhoneExtensionPickerItem` UI style.
-    internal init(initValue: BasePickerElement<ElementType>, selectableValues: [BasePickerElement<ElementType>], style: FormTextItemStyle) {
+    internal init(preselectedValue: BasePickerElement<ElementType>, selectableValues: [BasePickerElement<ElementType>], style: FormTextItemStyle) {
         assert(selectableValues.count > 0)
         self.selectableValues = selectableValues
-        super.init(value: initValue, style: style)
+        super.init(value: preselectedValue, style: style)
     }
 
 }

@@ -18,6 +18,9 @@ public protocol ShopperInformation {
     /// The telephone number.
     var telephoneNumber: String? { get }
 
+    /// The billing address information.
+    var billingAddress: AddressInfo? { get }
+
 }
 
 /// Shopper name.
@@ -69,6 +72,12 @@ public struct PaymentComponentData: ShopperInformation {
     
     /// Indicates the device default browser info.
     public let browserInfo: BrowserInfo?
+
+    /// The billing address information.
+    public var billingAddress: AddressInfo? {
+        guard let shopperInfo = paymentMethod as? ShopperInformation else { return nil }
+        return shopperInfo.billingAddress
+    }
     
     /// Initializes the payment component data.
     ///
@@ -78,6 +87,7 @@ public struct PaymentComponentData: ShopperInformation {
     ///   - paymentMethodDetails: The payment method details submitted from the payment component.
     ///   - storePaymentMethod: Whether the user has chosen to store the payment method.
     ///   - browserInfo: The device default browser info.
+    ///   - addressInfo: The payment's billing address.
     public init(paymentMethodDetails: PaymentMethodDetails, storePaymentMethod: Bool = false, browserInfo: BrowserInfo? = nil) {
         self.paymentMethod = paymentMethodDetails
         self.storePaymentMethod = storePaymentMethod

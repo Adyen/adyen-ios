@@ -25,6 +25,9 @@ public final class FormErrorItem: FormItem, Hidable {
     /// :nodoc:
     public var isHidden: Observable<Bool> = Observable(true)
 
+    /// :nodoc:
+    public var subitems: [FormItem] = []
+
     /// Initializes the separator item.
     ///
     /// - Parameter message: The message.
