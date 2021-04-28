@@ -52,8 +52,7 @@ internal final class GenericVoucherView: AbstractVoucherView {
     private lazy var instructionButton: UIButton = {
         let button = UIButton(style: model.instruction.style.button)
         button.setTitle(model.instruction.title, for: .normal)
-        button.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        button.contentEdgeInsets = UIEdgeInsets(top: 5.0, left: 10.0, bottom: 5.0, right: 10.0)
         button.addTarget(self, action: #selector(openInstructions), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.voucher", postfix: "instructionButton")
 
