@@ -24,6 +24,11 @@ public extension AdyenScope where Base == String? {
 
 /// :nodoc:
 public extension AdyenScope where Base == String {
+
+    /// Returns nil string is empty or actual value.
+    var nullIfEmpty: String? {
+        base.isEmpty ? nil : base
+    }
     
     /// Truncate the string to the specified length.
     ///

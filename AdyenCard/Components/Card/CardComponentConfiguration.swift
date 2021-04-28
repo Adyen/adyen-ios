@@ -15,7 +15,6 @@ extension CardComponent {
         case full
 
         /// Display simple form with only zip code field
-        @available(*, unavailable)
         case zipCode
 
         /// Do not display address form

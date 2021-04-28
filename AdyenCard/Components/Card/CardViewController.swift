@@ -75,8 +75,13 @@ internal class CardViewController: FormViewController {
             append(storeDetailsItem)
         }
 
-        if configuration.billingAddressMode == .full {
+        switch configuration.billingAddressMode {
+        case .full:
             append(addressVerificationItem)
+        case .zipCode:
+            append(zipCodeItem)
+        case .none:
+            break
         }
 
         append(button.withPadding(padding: .init(top: 8, left: 0, bottom: -16, right: 0)))
@@ -97,10 +102,14 @@ internal class CardViewController: FormViewController {
     }
 
     internal var address: AddressInfo? {
-        if configuration.billingAddressMode == .none {
+        switch configuration.billingAddressMode {
+        case .full:
+            return addressVerificationItem.value
+        case .zipCode:
+            return AddressInfo(postalCode: zipCodeItem.value)
+        case .none:
             return nil
         }
-        return addressVerificationItem.value
     }
 
     internal var storePayment: Bool {
@@ -139,6 +148,16 @@ internal class CardViewController: FormViewController {
         item.style.backgroundColor = UIColor.Adyen.lightGray
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "addressVerification")
         return item
+    }()
+
+    internal lazy var zipCodeItem: FormTextItem = {
+        let zipCodeItem = FormTextInputItem(style: formStyle.textField)
+        zipCodeItem.title = ADYLocalizedString("adyen.postalCodeField.title", localizationParameters)
+        zipCodeItem.placeholder = ADYLocalizedString("adyen.postalCodeField.placeholder", localizationParameters)
+        zipCodeItem.validator = LengthValidator(minimumLength: 2, maximumLength: 30)
+        zipCodeItem.validationFailureMessage = ADYLocalizedString("adyen.validationAlert.title", localizationParameters)
+        zipCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "postalCode")
+        return zipCodeItem
     }()
 
     internal lazy var numberItem: FormCardNumberItem = {
