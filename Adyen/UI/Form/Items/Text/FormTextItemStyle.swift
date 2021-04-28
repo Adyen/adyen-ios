@@ -31,7 +31,11 @@ public struct FormTextItemStyle: FormValueItemStyle {
                                  contentMode: .scaleAspectFit)
     
     /// The tint color of text field and separator in focused state.
-    public var tintColor: UIColor?
+    public var tintColor: UIColor? {
+        didSet {
+            icon.tintColor = tintColor
+        }
+    }
     
     /// :nodoc:
     public var backgroundColor: UIColor = .clear

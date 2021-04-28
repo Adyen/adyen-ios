@@ -9,6 +9,9 @@ import Foundation
 /// A form item that represents a single button with a spinner.
 /// :nodoc:
 public final class FormButtonItem: FormItem {
+
+    /// :nodoc:
+    public var subitems: [FormItem] = []
     
     /// Indicates the item's UI styling.
     public let style: FormButtonItemStyle

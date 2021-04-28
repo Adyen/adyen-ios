@@ -41,6 +41,90 @@ public extension Observer {
             target[keyPath: keyPath] = newValue
         })
     }
+
+    /// Binds the value of an observable to an optional key path.
+    /// It will also set the current value of the observable to the key path.
+    ///
+    /// - Parameters:
+    ///   - observable: The observable to observe for new values.
+    ///   - target: The target of where to set the new values.
+    ///   - keyPath: The key path to set the new values.
+    /// - Returns: An observation that represents the binding. Can be used to remove the binding later.
+    @discardableResult
+    func bind<Value, Target: AnyObject>(_ observable: Observable<Value>, to target: Target, at keyPath: ReferenceWritableKeyPath<Target, Value?>) -> Observation {
+        // Set the initial value.
+        target[keyPath: keyPath] = observable.wrappedValue
+
+        return observe(observable, eventHandler: { [unowned target] newValue in
+            target[keyPath: keyPath] = newValue
+        })
+    }
+
+    /// Binds the transformed value of an observable to a key path.
+    /// It will also set the current value of the observable to the key path.
+    ///
+    /// - Parameters:
+    ///   - observable: The observable to observe for new values.
+    ///   - target: The target of where to set the new values.
+    ///   - keyPath: The key path to set the new values.
+    ///   - transformation: The transformation closure.
+    /// - Returns: An observation that represents the binding. Can be used to remove the binding later.
+    @discardableResult
+    func bind<Value, Result, Target: AnyObject>(_ observable: Observable<Value>,
+                                                to target: Target,
+                                                at keyPath: ReferenceWritableKeyPath<Target, Result>,
+                                                with transformation: @escaping ((Value) -> Result)) -> Observation {
+        // Set the initial value.
+        target[keyPath: keyPath] = transformation(observable.wrappedValue)
+
+        return observe(observable, eventHandler: { [unowned target] newValue in
+            target[keyPath: keyPath] = transformation(newValue)
+        })
+    }
+
+    /// Binds the subvalue of an observable to a key path.
+    /// It will also set the current value of the observable to the key path.
+    ///
+    /// - Parameters:
+    ///   - observable: The observable to observe for new values.
+    ///   - originKeyPath: The key path in value.
+    ///   - target: The target of where to set the new values.
+    ///   - keyPath: The key path to set the new values.
+    /// - Returns: An observation that represents the binding. Can be used to remove the binding later.
+    @discardableResult
+    func bind<Value, Result, Target: AnyObject>(_ observable: Observable<Value>,
+                                                at originKeyPath: KeyPath<Value, Result>,
+                                                to target: Target,
+                                                at keyPath: ReferenceWritableKeyPath<Target, Result>) -> Observation {
+        // Set the initial value.
+        target[keyPath: keyPath] = observable.wrappedValue[keyPath: originKeyPath]
+
+        return observe(observable, eventHandler: { [unowned target] newValue in
+            target[keyPath: keyPath] = newValue[keyPath: originKeyPath]
+        })
+    }
+
+    /// Binds the subvalue of an observable to an optional  key path.
+    /// It will also set the current value of the observable to the key path.
+    ///
+    /// - Parameters:
+    ///   - observable: The observable to observe for new values.
+    ///   - originKeyPath: The key path in value.
+    ///   - target: The target of where to set the new values.
+    ///   - keyPath: The key path to set the new values.
+    /// - Returns: An observation that represents the binding. Can be used to remove the binding later.
+    @discardableResult
+    func bind<Value, Result, Target: AnyObject>(_ observable: Observable<Value>,
+                                                at originKeyPath: KeyPath<Value, Result>,
+                                                to target: Target,
+                                                at keyPath: ReferenceWritableKeyPath<Target, Result?>) -> Observation {
+        // Set the initial value.
+        target[keyPath: keyPath] = observable.wrappedValue[keyPath: originKeyPath]
+
+        return observe(observable, eventHandler: { [unowned target] newValue in
+            target[keyPath: keyPath] = newValue[keyPath: originKeyPath]
+        })
+    }
     
     /// Removes an observation.
     ///

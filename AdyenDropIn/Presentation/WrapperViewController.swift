@@ -7,10 +7,8 @@
 import Adyen
 import UIKit
 
-/// :nodoc:
 internal final class WrapperViewController: UIViewController {
 
-    /// :nodoc:
     internal lazy var requiresKeyboardInput: Bool = heirarchyRequiresKeyboardInput(viewController: child)
 
     internal let child: ModalViewController
@@ -22,7 +20,6 @@ internal final class WrapperViewController: UIViewController {
         positionContent(child)
     }
 
-    /// :nodoc:
     @available(*, unavailable)
     internal required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -59,6 +56,7 @@ internal final class WrapperViewController: UIViewController {
         ])
         self.topConstraint = topConstraint
     }
+
 }
 
 extension ModalViewController {

@@ -82,18 +82,6 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
         return stackView
     }()
     
-    // MARK: - Title Label
-
-    /// :nodoc:
-    public lazy var titleLabel: UILabel = {
-        let titleLabel = UILabel(style: item.style.title)
-        titleLabel.text = item.title
-        titleLabel.isAccessibilityElement = false
-        titleLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel") }
-        
-        return titleLabel
-    }()
-    
     // MARK: - Text Field
     
     public lazy var textField: UITextField = {

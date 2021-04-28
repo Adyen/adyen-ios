@@ -35,8 +35,8 @@ public final class FormPhoneExtensionPickerItem: BaseFormPickerItem<PhoneExtensi
     /// - Parameter style: The `FormPhoneExtensionPickerItem` UI style.
     internal init(selectableValues: [PhoneExtensionPickerItem], style: FormTextItemStyle) {
         assert(selectableValues.count > 0)
-        let initValue = selectableValues.first(where: { $0.identifier == Locale.current.regionCode }) ?? selectableValues[0]
-        super.init(initValue: initValue, selectableValues: selectableValues, style: style)
+        let preselectedValue = selectableValues.first(where: { $0.identifier == Locale.current.regionCode }) ?? selectableValues[0]
+        super.init(preselectedValue: preselectedValue, selectableValues: selectableValues, style: style)
     }
 
     override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {

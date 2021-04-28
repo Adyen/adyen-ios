@@ -9,6 +9,10 @@ import Foundation
 /// The localization parameters to control some aspects of how localized strings are fetched,
 /// like the localization table to use and the separator of the key strings.
 public struct LocalizationParameters: Equatable {
+
+    /// The locale for external resources.
+    /// By default current locale is used.
+    public let locale: String?
     
     /// The string table to search. If tableName is nil or is an empty string,
     /// the Localizable.strings is used instead.
@@ -30,9 +34,11 @@ public struct LocalizationParameters: Equatable {
     ///   `Bundle.main` takes precedence over the custom bundle provided.
     ///   - tableName: The string table to search.
     ///   - keySeparator: The key separator string.
-    public init(bundle: Bundle? = nil, tableName: String? = nil, keySeparator: String? = nil) {
+    ///   - locale: The locale for external resources.
+    public init(bundle: Bundle? = nil, tableName: String? = nil, keySeparator: String? = nil, locale: String? = nil) {
         self.bundle = bundle
         self.tableName = tableName
         self.keySeparator = keySeparator
+        self.locale = locale
     }
 }

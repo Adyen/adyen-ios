@@ -33,6 +33,12 @@ public struct FormItemViewBuilder {
     public func build(with item: FormPhoneExtensionPickerItem) -> BaseFormPickerItemView<PhoneExtensionViewModel> {
         FormPhoneExtensionPickerItemView(item: item)
     }
+
+    /// Builds `FormRegionPickerItemView` from `FormRegionPickerItem`.
+    /// :nodoc:
+    public func build(with item: FormRegionPickerItem) -> BaseFormPickerItemView<Region> {
+        FormRegionPickerItemView(item: item)
+    }
     
     /// Builds `FormTextInputItemView` from `FormTextInputItem`.
     /// :nodoc:
@@ -64,6 +70,12 @@ public struct FormItemViewBuilder {
     /// :nodoc:
     public func build(with item: FormErrorItem) -> FormItemView<FormErrorItem> {
         FormErrorItemView(item: item)
+    }
+    
+    /// Builds `FormVerticalStackItemView` from `FormAddressItem`.
+    /// :nodoc:
+    public func build(with item: FullFormAddressItem) -> FormItemView<FullFormAddressItem> {
+        FormVerticalStackItemView(item: item)
     }
 
     public static func build(_ item: FormItem) -> AnyFormItemView {

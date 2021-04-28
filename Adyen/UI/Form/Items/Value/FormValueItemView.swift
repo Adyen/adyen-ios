@@ -9,9 +9,23 @@ import UIKit
 /// A view representing a value item.
 /// :nodoc:
 open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType, Style>>: FormItemView<ItemType>,
-                                                                                           AnyFormValueItemView,
-                                                                                           Observer {
-    
+    AnyFormValueItemView,
+    Observer {
+
+    // MARK: - Title Label
+
+    /// The top label view.
+    /// :nodoc:
+    public lazy var titleLabel: UILabel = {
+        let titleLabel = UILabel(style: item.style.title)
+        titleLabel.text = item.title
+        titleLabel.numberOfLines = 0
+        titleLabel.isAccessibilityElement = false
+        titleLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel") }
+
+        return titleLabel
+    }()
+
     /// Initializes the value item view.
     ///
     /// - Parameter item: The item represented by the view.

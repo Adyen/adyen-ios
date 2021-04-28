@@ -9,6 +9,9 @@ import Foundation
 /// A selectable item displayed in the list.
 /// :nodoc:
 public class ListItem: FormItem {
+
+    /// :nodoc:
+    public var subitems: [FormItem] = []
     
     /// The list item style.
     public let style: ListItemStyle

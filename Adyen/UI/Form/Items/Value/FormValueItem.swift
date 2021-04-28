@@ -13,12 +13,18 @@ public protocol FormValueItemStyle: TintableStyle {
     
     /// The color of bottom line separating form elements.
     var separatorColor: UIColor? { get }
+
+    /// The style of title label.
+    var title: TextStyle { get }
     
 }
 
 /// An item in a form in which a value can be entered.
 /// :nodoc:
 open class FormValueItem<ValueType: Equatable, StyleType: FormValueItemStyle>: FormItem {
+
+    /// :nodoc:
+    public var subitems: [FormItem] = []
 
     /// :nodoc:
     public var identifier: String?
@@ -34,6 +40,9 @@ open class FormValueItem<ValueType: Equatable, StyleType: FormValueItemStyle>: F
 
     /// The style of  form item view.
     public var style: StyleType
+
+    /// The title of the item.
+    public var title: String?
 
     /// Create new instance of FormValueItem
     internal init(value: ValueType, style: StyleType) {
