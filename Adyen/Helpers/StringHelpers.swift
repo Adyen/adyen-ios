@@ -26,7 +26,7 @@ public extension AdyenScope where Base == String? {
 public extension AdyenScope where Base == String {
 
     /// Returns nil string is empty or actual value.
-    var nullIfEmpty: String? {
+    var nilIfEmpty: String? {
         base.isEmpty ? nil : base
     }
     

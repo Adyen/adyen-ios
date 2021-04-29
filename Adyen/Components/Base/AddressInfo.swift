@@ -9,8 +9,8 @@ import Foundation
 /// The model for address data.
 public struct AddressInfo: Equatable, Encodable {
 
-    internal let invalidCountry = "ZZ"
-    internal let invalidValue = "N.A."
+    internal static let invalidCountry = "ZZ"
+    internal static let invalidValue = "null"
 
     /// Create new instance of AddressInfo
     public init(city: String? = nil,
@@ -60,14 +60,14 @@ public struct AddressInfo: Equatable, Encodable {
         let houseNumberOrNameValue = [houseNumberOrName, apartment]
             .compactMap { $0 }
             .joined(separator: " ")
-            .adyen.nullIfEmpty
+            .adyen.nilIfEmpty
 
-        try container.encode(city ?? invalidValue, forKey: .city)
-        try container.encode(country ?? invalidCountry, forKey: .country)
-        try container.encode(houseNumberOrNameValue ?? invalidValue, forKey: .houseNumberOrName)
-        try container.encode(postalCode ?? invalidValue, forKey: .postalCode)
-        try container.encode(stateOrProvince ?? invalidValue, forKey: .stateOrProvince)
-        try container.encode(street ?? invalidValue, forKey: .street)
+        try container.encode(city ?? AddressInfo.invalidValue, forKey: .city)
+        try container.encode(country ?? AddressInfo.invalidCountry, forKey: .country)
+        try container.encode(houseNumberOrNameValue ?? AddressInfo.invalidValue, forKey: .houseNumberOrName)
+        try container.encode(postalCode ?? AddressInfo.invalidValue, forKey: .postalCode)
+        try container.encode(stateOrProvince ?? AddressInfo.invalidValue, forKey: .stateOrProvince)
+        try container.encode(street ?? AddressInfo.invalidValue, forKey: .street)
     }
 
     private enum CodingKeys: String, CodingKey {

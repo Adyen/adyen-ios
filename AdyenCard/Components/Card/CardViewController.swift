@@ -77,9 +77,9 @@ internal class CardViewController: FormViewController {
 
         switch configuration.billingAddressMode {
         case .full:
-            append(addressVerificationItem)
-        case .zipCode:
-            append(zipCodeItem)
+            append(billingAddressItem)
+        case .postalCode:
+            append(postalCodeItem)
         case .none:
             break
         }
@@ -104,9 +104,9 @@ internal class CardViewController: FormViewController {
     internal var address: AddressInfo? {
         switch configuration.billingAddressMode {
         case .full:
-            return addressVerificationItem.value
-        case .zipCode:
-            return AddressInfo(postalCode: zipCodeItem.value)
+            return billingAddressItem.value
+        case .postalCode:
+            return AddressInfo(postalCode: postalCodeItem.value)
         case .none:
             return nil
         }
@@ -141,7 +141,7 @@ internal class CardViewController: FormViewController {
 
     // MARK: Items
 
-    internal lazy var addressVerificationItem: FullFormAddressItem = {
+    internal lazy var billingAddressItem: FullFormAddressItem = {
         let item = FullFormAddressItem(initialCountry: defaultCountryCode,
                                        style: formStyle.addressStyle,
                                        localizationParameters: localizationParameters)
@@ -150,13 +150,13 @@ internal class CardViewController: FormViewController {
         return item
     }()
 
-    internal lazy var zipCodeItem: FormTextItem = {
+    internal lazy var postalCodeItem: FormTextItem = {
         let zipCodeItem = FormTextInputItem(style: formStyle.textField)
         zipCodeItem.title = ADYLocalizedString("adyen.postalCodeField.title", localizationParameters)
         zipCodeItem.placeholder = ADYLocalizedString("adyen.postalCodeField.placeholder", localizationParameters)
         zipCodeItem.validator = LengthValidator(minimumLength: 2, maximumLength: 30)
         zipCodeItem.validationFailureMessage = ADYLocalizedString("adyen.validationAlert.title", localizationParameters)
-        zipCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "postalCode")
+        zipCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "postalCodeItem")
         return zipCodeItem
     }()
 

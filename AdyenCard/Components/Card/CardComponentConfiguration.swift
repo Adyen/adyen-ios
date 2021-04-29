@@ -15,7 +15,7 @@ extension CardComponent {
         case full
 
         /// Display simple form with only zip code field
-        case zipCode
+        case postalCode
 
         /// Do not display address form
         case none

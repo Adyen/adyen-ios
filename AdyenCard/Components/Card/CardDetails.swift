@@ -92,6 +92,7 @@ public struct CardDetails: PaymentMethodDetails, BillingAddressInformation {
         case encryptedSecurityCode
         case holderName
         case fundingSource
+        case billingAddress
     }
     
 }
