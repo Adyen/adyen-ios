@@ -2,6 +2,26 @@
 
 import Foundation
 
+print(CommandLine.arguments)
+
+if CommandLine.arguments[1] == "--help" || CommandLine.arguments[1] == "-h" {
+    print(
+"""
+OVERVIEW: Generates localization keys as constants.
+
+USAGE: ./generate_localization_keys.swift <path-to-localizable.strings> <path-to-output-file>
+
+ARGUMENTS:
+    <path-to-localizable.strings>               Relative path to Localizable.strings.
+    <path-to-output-file>                       Relative path to the result swift file.
+
+OPTIONS:
+    -h, --help                                  Show help information.
+"""
+    )
+    exit(0)
+}
+
 let header =
 """
 //
