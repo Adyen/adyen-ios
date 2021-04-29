@@ -2,8 +2,6 @@
 
 import Foundation
 
-print(CommandLine.arguments)
-
 if CommandLine.arguments[1] == "--help" || CommandLine.arguments[1] == "-h" {
     print(
 """
