@@ -81,6 +81,7 @@ internal final class ComponentManager {
         let configuration = CardComponent.Configuration(showsHolderNameField: cardConfiguration.showsHolderNameField,
                                                         showsStorePaymentMethodField: cardConfiguration.showsStorePaymentMethodField,
                                                         showsSecurityCodeField: cardConfiguration.showsSecurityCodeField,
+                                                        billingAddressMode: cardConfiguration.billingAddress,
                                                         storedCardConfiguration: cardConfiguration.stored)
 
         return CardComponent(paymentMethod: paymentMethod,

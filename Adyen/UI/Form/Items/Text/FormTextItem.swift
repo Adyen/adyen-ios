@@ -11,9 +11,6 @@ import UIKit
 /// :nodoc:
 open class FormTextItem: FormValueItem<String, FormTextItemStyle>, ValidatableFormItem, InputViewRequiringFormItem {
 
-    /// The title displayed above the text field.
-    public var title: String?
-
     /// The placeholder of the text field.
     public var placeholder: String?
 

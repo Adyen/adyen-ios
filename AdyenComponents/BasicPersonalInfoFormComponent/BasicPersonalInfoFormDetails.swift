@@ -7,7 +7,7 @@
 import Adyen
 import Foundation
 
-/// Contains the details supplied by the 7 Eleven component.
+/// Collection of the generic personal details supplied by components.
 public struct BasicPersonalInfoFormDetails: PaymentMethodDetails, ShopperInformation {
 
     /// The payment method type.
@@ -32,11 +32,14 @@ public struct BasicPersonalInfoFormDetails: PaymentMethodDetails, ShopperInforma
     /// The telephone number.
     public let telephoneNumber: String?
 
-    /// Initializes the 7 Eleven details.
+    /// The telephone number.
+    public var billingAddress: AddressInfo?
+
+    /// Initializes the  generic personal details.
     ///
     ///
     /// - Parameters:
-    ///   - paymentMethod: The 7 Eleven payment method.
+    ///   - paymentMethod: The payment method.
     ///   - firstName: The first Name.
     ///   - lastName: The last Name.
     ///   - emailAddress: The email address.

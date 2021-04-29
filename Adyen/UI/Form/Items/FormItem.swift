@@ -33,10 +33,7 @@ public extension FormItem {
     var flatSubitems: [FormItem] {
         [self] + subitems.flatMap(\.flatSubitems)
     }
-
-    var subitems: [FormItem] {
-        []
-    }
+    
 }
 
 /// A validatable form item.

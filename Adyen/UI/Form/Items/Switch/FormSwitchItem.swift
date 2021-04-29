@@ -10,9 +10,6 @@ import Foundation
 /// :nodoc:
 public final class FormSwitchItem: FormValueItem<Bool, FormSwitchItemStyle> {
     
-    /// The title displayed next to the switch.
-    public var title: String?
-    
     /// Initializes the switch item.
     ///
     /// - Parameter style: The switch item style.

@@ -49,7 +49,8 @@ struct CardNumbers {
     ]
     
     static let diners = [
-        "36006666333344" // US
+        "36006666333344", // US
+        "30000000000004"
     ]
     
     static let discover = [

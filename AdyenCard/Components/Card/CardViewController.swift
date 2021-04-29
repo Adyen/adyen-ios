@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import UIKit
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
@@ -74,6 +75,10 @@ internal class CardViewController: FormViewController {
             append(storeDetailsItem)
         }
 
+        if configuration.billingAddressMode == .full {
+            append(addressVerificationItem)
+        }
+
         append(button.withPadding(padding: .init(top: 8, left: 0, bottom: -16, right: 0)))
 
         super.viewDidLoad()
@@ -91,17 +96,22 @@ internal class CardViewController: FormViewController {
              holder: configuration.showsHolderNameField ? holderNameItem.nonEmptyValue : nil)
     }
 
+    internal var address: AddressInfo? {
+        if configuration.billingAddressMode == .none {
+            return nil
+        }
+        return addressVerificationItem.value
+    }
+
     internal var storePayment: Bool {
         configuration.showsStorePaymentMethodField ? storeDetailsItem.value : false
     }
 
-    /// :nodoc:
     internal func stopLoading() {
         button.showsActivityIndicator = false
         view.isUserInteractionEnabled = true
     }
 
-    /// :nodoc:
     internal func startLoading() {
         button.showsActivityIndicator = true
         view.isUserInteractionEnabled = false
@@ -121,6 +131,15 @@ internal class CardViewController: FormViewController {
     }
 
     // MARK: Items
+
+    internal lazy var addressVerificationItem: FullFormAddressItem = {
+        let item = FullFormAddressItem(initialCountry: defaultCountryCode,
+                                       style: formStyle.addressStyle,
+                                       localizationParameters: localizationParameters)
+        item.style.backgroundColor = UIColor.Adyen.lightGray
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "addressVerification")
+        return item
+    }()
 
     internal lazy var numberItem: FormCardNumberItem = {
         let item = FormCardNumberItem(supportedCardTypes: supportedCardTypes,
@@ -188,6 +207,10 @@ internal class CardViewController: FormViewController {
     private func didReceived(bin: String) {
         self.securityCodeItem.selectedCard = supportedCardTypes.adyen.type(forCardNumber: bin)
         throttler.throttle { [weak self] in self?.cardDelegate?.didChangeBIN(bin) }
+    }
+
+    private var defaultCountryCode: String {
+        payment?.countryCode ?? Locale.current.regionCode ?? "US"
     }
     
 }
