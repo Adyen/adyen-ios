@@ -11,7 +11,7 @@ import Adyen
 import Foundation
 
 /// Contains the details provided by the card component.
-public struct CardDetails: PaymentMethodDetails {
+public struct CardDetails: PaymentMethodDetails, BillingAddressInformation {
     
     /// The payment method type.
     public let type: String
@@ -92,6 +92,7 @@ public struct CardDetails: PaymentMethodDetails {
         case encryptedSecurityCode
         case holderName
         case fundingSource
+        case billingAddress
     }
     
 }
