@@ -66,7 +66,7 @@
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
 "adyen.billingAddressSection.title" = "Платежный адрес";
-"adyen.shippingAddressSection.title" = "Адрес доставки";
+"adyen.deliveryAddressSection.title" = "Адрес доставки";
 "adyen.countryField.title" = "Страна";
 "adyen.addressField.title" = "Адрес";
 "adyen.addressField.placeholder" = "Адрес";
@@ -76,12 +76,18 @@
 "adyen.houseNumberField.placeholder" = "Номер дома";
 "adyen.cityField.title" = "Город";
 "adyen.cityField.placeholder" = "Город";
+"adyen.cityTownField.title" = "Город";
+"adyen.cityTownField.placeholder" = "Город";
 "adyen.postalCodeField.title" = "Почтовый индекс";
 "adyen.postalCodeField.placeholder" = "Почтовый индекс";
 "adyen.zipCodeField.title" = "Почтовый индекс";
 "adyen.zipCodeField.placeholder" = "Почтовый индекс";
+"adyen.stateField.title" = "Штат";
+"adyen.stateField.placeholder" = "Штат";
+"adyen.selectStateField.placeholder" = "Выберите штат";
 "adyen.stateOrProvinceField.title" = "Регион";
 "adyen.stateOrProvinceField.placeholder" = "Регион";
+"adyen.selectStateOrProvinceField.placeholder" = "Выберите провинцию или территорию";
 "adyen.provinceOrTerritoryField.title" = "Провинция или территория";
 "adyen.provinceOrTerritoryField.placeholder" = "Провинция или территория";
 "adyen.apartmentSuiteField.title" = "Квартира";

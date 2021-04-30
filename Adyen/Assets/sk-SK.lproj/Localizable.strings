@@ -66,7 +66,7 @@
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
 "adyen.billingAddressSection.title" = "Fakturačná adresa";
-"adyen.shippingAddressSection.title" = "Dodacia adresa";
+"adyen.deliveryAddressSection.title" = "Dodacia adresa";
 "adyen.countryField.title" = "Krajina";
 "adyen.addressField.title" = "Adresa";
 "adyen.addressField.placeholder" = "Adresa";
@@ -76,12 +76,18 @@
 "adyen.houseNumberField.placeholder" = "Číslo domu";
 "adyen.cityField.title" = "Mesto";
 "adyen.cityField.placeholder" = "Mesto";
+"adyen.cityTownField.title" = "Mesto/obec";
+"adyen.cityTownField.placeholder" = "Mesto/obec";
 "adyen.postalCodeField.title" = "PSČ";
 "adyen.postalCodeField.placeholder" = "PSČ";
 "adyen.zipCodeField.title" = "PSČ";
 "adyen.zipCodeField.placeholder" = "PSČ";
+"adyen.stateField.title" = "Štát";
+"adyen.stateField.placeholder" = "Štát";
+"adyen.selectStateField.placeholder" = "Vyberte kraj";
 "adyen.stateOrProvinceField.title" = "Kraj";
 "adyen.stateOrProvinceField.placeholder" = "Kraj";
+"adyen.selectStateOrProvinceField.placeholder" = "Vyberte okres alebo územie";
 "adyen.provinceOrTerritoryField.title" = "Okres alebo územie";
 "adyen.provinceOrTerritoryField.placeholder" = "Okres alebo územie";
 "adyen.apartmentSuiteField.title" = "Byt/apartmán";

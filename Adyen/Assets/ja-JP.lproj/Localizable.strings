@@ -66,7 +66,7 @@
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
 "adyen.billingAddressSection.title" = "ご請求住所";
-"adyen.shippingAddressSection.title" = "配送先住所";
+"adyen.deliveryAddressSection.title" = "配送先住所";
 "adyen.countryField.title" = "国";
 "adyen.addressField.title" = "住所";
 "adyen.addressField.placeholder" = "住所";
@@ -76,12 +76,18 @@
 "adyen.houseNumberField.placeholder" = "部屋番号";
 "adyen.cityField.title" = "市区";
 "adyen.cityField.placeholder" = "市区";
+"adyen.cityTownField.title" = "市区町村";
+"adyen.cityTownField.placeholder" = "市区町村";
 "adyen.postalCodeField.title" = "郵便番号";
 "adyen.postalCodeField.placeholder" = "郵便番号";
 "adyen.zipCodeField.title" = "郵便番号";
 "adyen.zipCodeField.placeholder" = "郵便番号";
+"adyen.stateField.title" = "都道府県";
+"adyen.stateField.placeholder" = "都道府県";
+"adyen.selectStateField.placeholder" = "都道府県を選択してください";
 "adyen.stateOrProvinceField.title" = "都道府県";
 "adyen.stateOrProvinceField.placeholder" = "都道府県";
+"adyen.selectStateOrProvinceField.placeholder" = "州または準州を選択してください";
 "adyen.provinceOrTerritoryField.title" = "州または準州";
 "adyen.provinceOrTerritoryField.placeholder" = "州または準州";
 "adyen.apartmentSuiteField.title" = "アパート名/部屋名";

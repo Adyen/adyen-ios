@@ -66,7 +66,7 @@
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
 "adyen.billingAddressSection.title" = "账单地址";
-"adyen.shippingAddressSection.title" = "寄送地址";
+"adyen.deliveryAddressSection.title" = "寄送地址";
 "adyen.countryField.title" = "国家/地区";
 "adyen.addressField.title" = "地址";
 "adyen.addressField.placeholder" = "地址";
@@ -76,12 +76,18 @@
 "adyen.houseNumberField.placeholder" = "门牌号";
 "adyen.cityField.title" = "城市";
 "adyen.cityField.placeholder" = "城市";
+"adyen.cityTownField.title" = "市 / 镇";
+"adyen.cityTownField.placeholder" = "市 / 镇";
 "adyen.postalCodeField.title" = "邮政编码";
 "adyen.postalCodeField.placeholder" = "邮政编码";
 "adyen.zipCodeField.title" = "邮政编码";
 "adyen.zipCodeField.placeholder" = "邮政编码";
+"adyen.stateField.title" = "州";
+"adyen.stateField.placeholder" = "州";
+"adyen.selectStateField.placeholder" = "选择州";
 "adyen.stateOrProvinceField.title" = "州或省";
 "adyen.stateOrProvinceField.placeholder" = "州或省";
+"adyen.selectStateOrProvinceField.placeholder" = "选择省或地区";
 "adyen.provinceOrTerritoryField.title" = "省或地区";
 "adyen.provinceOrTerritoryField.placeholder" = "省或地区";
 "adyen.apartmentSuiteField.title" = "公寓 / 套房";

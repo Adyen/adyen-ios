@@ -69,7 +69,7 @@
 "adyen.pix.copyButton" = "Copiar código";
 "adyen.pix.expirationLabel" = "Você tem %@ para pagar ";
 "adyen.billingAddressSection.title" = "Endereço de cobrança";
-"adyen.shippingAddressSection.title" = "Endereço de entrega";
+"adyen.deliveryAddressSection.title" = "Endereço de entrega";
 "adyen.countryField.title" = "País";
 "adyen.addressField.title" = "Endereço";
 "adyen.addressField.placeholder" = "Endereço";
@@ -79,12 +79,18 @@
 "adyen.houseNumberField.placeholder" = "Número da casa";
 "adyen.cityField.title" = "Cidade";
 "adyen.cityField.placeholder" = "Cidade";
+"adyen.cityTownField.title" = "Cidade";
+"adyen.cityTownField.placeholder" = "Cidade";
 "adyen.postalCodeField.title" = "CEP";
 "adyen.postalCodeField.placeholder" = "CEP";
 "adyen.zipCodeField.title" = "Código postal";
 "adyen.zipCodeField.placeholder" = "Código postal";
+"adyen.stateField.title" = "Estado";
+"adyen.stateField.placeholder" = "Estado";
+"adyen.selectStateField.placeholder" = "Selecionar estado";
 "adyen.stateOrProvinceField.title" = "Estado ou província";
 "adyen.stateOrProvinceField.placeholder" = "Estado ou província";
+"adyen.selectStateOrProvinceField.placeholder" = "Selecionar província ou território";
 "adyen.provinceOrTerritoryField.title" = "Província ou território";
 "adyen.provinceOrTerritoryField.placeholder" = "Província ou território";
 "adyen.apartmentSuiteField.title" = "Apartamento/Conjunto";

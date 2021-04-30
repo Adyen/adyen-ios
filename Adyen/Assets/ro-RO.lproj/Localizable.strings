@@ -66,7 +66,7 @@
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
 "adyen.billingAddressSection.title" = "Adresa de facturare";
-"adyen.shippingAddressSection.title" = "Adresă de livrare";
+"adyen.deliveryAddressSection.title" = "Adresă de livrare";
 "adyen.countryField.title" = "Țară";
 "adyen.addressField.title" = "Adresă";
 "adyen.addressField.placeholder" = "Adresă";
@@ -76,12 +76,18 @@
 "adyen.houseNumberField.placeholder" = "Număr";
 "adyen.cityField.title" = "Oraș";
 "adyen.cityField.placeholder" = "Oraș";
+"adyen.cityTownField.title" = "Oraș/localitate";
+"adyen.cityTownField.placeholder" = "Oraș/localitate";
 "adyen.postalCodeField.title" = "Cod poștal";
 "adyen.postalCodeField.placeholder" = "Cod poștal";
 "adyen.zipCodeField.title" = "Cod poștal";
 "adyen.zipCodeField.placeholder" = "Cod poștal";
+"adyen.stateField.title" = "Stat";
+"adyen.stateField.placeholder" = "Stat";
+"adyen.selectStateField.placeholder" = "Selectați statul";
 "adyen.stateOrProvinceField.title" = "Județ sau provincie";
 "adyen.stateOrProvinceField.placeholder" = "Județ sau provincie";
+"adyen.selectStateOrProvinceField.placeholder" = "Selectați provincia sau teritoriul";
 "adyen.provinceOrTerritoryField.title" = "Provincie sau teritoriu";
 "adyen.provinceOrTerritoryField.placeholder" = "Provincie sau teritoriu";
 "adyen.apartmentSuiteField.title" = "Apartament";

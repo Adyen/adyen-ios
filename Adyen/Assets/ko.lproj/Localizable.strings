@@ -66,7 +66,7 @@
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
 "adyen.billingAddressSection.title" = "청구지 주소";
-"adyen.shippingAddressSection.title" = "배송 주소";
+"adyen.deliveryAddressSection.title" = "배송 주소";
 "adyen.countryField.title" = "국가";
 "adyen.addressField.title" = "주소";
 "adyen.addressField.placeholder" = "주소";
@@ -76,12 +76,18 @@
 "adyen.houseNumberField.placeholder" = "집 전화번호";
 "adyen.cityField.title" = "시";
 "adyen.cityField.placeholder" = "시";
+"adyen.cityTownField.title" = "시/구";
+"adyen.cityTownField.placeholder" = "시/구";
 "adyen.postalCodeField.title" = "우편번호";
 "adyen.postalCodeField.placeholder" = "우편번호";
 "adyen.zipCodeField.title" = "우편번호";
 "adyen.zipCodeField.placeholder" = "우편번호";
+"adyen.stateField.title" = "주";
+"adyen.stateField.placeholder" = "주";
+"adyen.selectStateField.placeholder" = "주 선택";
 "adyen.stateOrProvinceField.title" = "주/도";
 "adyen.stateOrProvinceField.placeholder" = "주/도";
+"adyen.selectStateOrProvinceField.placeholder" = "도 선택";
 "adyen.provinceOrTerritoryField.title" = "도";
 "adyen.provinceOrTerritoryField.placeholder" = "도";
 "adyen.apartmentSuiteField.title" = "아파트/건물";
