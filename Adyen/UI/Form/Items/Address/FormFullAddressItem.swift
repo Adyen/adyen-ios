@@ -14,7 +14,7 @@ public final class FullFormAddressItem: FormValueItem<AddressInfo, AddressStyle>
 
     private var initialCountry: String
 
-    private lazy var validationMessage = ADYLocalizedString("adyen.validationAlert.title", localizationParameters)
+    private lazy var validationMessage = localizedString(.validationAlertTitle, localizationParameters)
 
     /// Initializes the split text item.
     ///
@@ -46,7 +46,7 @@ public final class FullFormAddressItem: FormValueItem<AddressInfo, AddressStyle>
     }
 
     internal lazy var headerItem: FormItem = {
-        let item = FormLabelItem(text: ADYLocalizedString("adyen.billingAddressSection.title", localizationParameters),
+        let item = FormLabelItem(text: localizedString(.billingAddressSectionTitle, localizationParameters),
                                  style: style.title)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "title")
         return item.withPadding(padding: .init(top: 8, left: 0, bottom: 0, right: 0))
@@ -59,15 +59,15 @@ public final class FullFormAddressItem: FormValueItem<AddressInfo, AddressStyle>
         let item = FormRegionPickerItem(preselectedValue: defaultCountry,
                                         selectableValues: countries,
                                         style: style.textField)
-        item.title = ADYLocalizedString("adyen.countryField.title", localizationParameters)
+        item.title = localizedString(.countryFieldTitle, localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "country")
         return item
     }()
 
     internal lazy var streetTextItem: FormTextInputItem = {
         let addressTextItem = FormTextInputItem(style: style.textField)
-        addressTextItem.title = ADYLocalizedString("adyen.streetField.title", localizationParameters)
-        addressTextItem.placeholder = ADYLocalizedString("adyen.streetField.placeholder", localizationParameters)
+        addressTextItem.title = localizedString(.streetFieldTitle, localizationParameters)
+        addressTextItem.placeholder = localizedString(.streetFieldPlaceholder, localizationParameters)
         addressTextItem.validator = LengthValidator(minimumLength: 2, maximumLength: 70)
         addressTextItem.validationFailureMessage = validationMessage
         addressTextItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "address")
@@ -77,8 +77,8 @@ public final class FullFormAddressItem: FormValueItem<AddressInfo, AddressStyle>
 
     internal lazy var houseNumberTextItem: FormTextInputItem = {
         let houseNumberTextItem = FormTextInputItem(style: style.textField)
-        houseNumberTextItem.title = ADYLocalizedString("adyen.houseNumberField.title", localizationParameters)
-        houseNumberTextItem.placeholder = ADYLocalizedString("adyen.houseNumberField.placeholder", localizationParameters)
+        houseNumberTextItem.title = localizedString(.houseNumberFieldTitle, localizationParameters)
+        houseNumberTextItem.placeholder = localizedString(.houseNumberFieldPlaceholder, localizationParameters)
         houseNumberTextItem.validator = LengthValidator(minimumLength: 1, maximumLength: 30)
         houseNumberTextItem.validationFailureMessage = validationMessage
         houseNumberTextItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "houseNumber")
@@ -88,9 +88,9 @@ public final class FullFormAddressItem: FormValueItem<AddressInfo, AddressStyle>
 
     internal lazy var apartmentTextItem: FormTextInputItem = {
         let apartmentTextItem = FormTextInputItem(style: style.textField)
-        let optionalText = ADYLocalizedString("adyen.field.title.optional", localizationParameters)
-        let titleText = ADYLocalizedString("adyen.apartmentSuiteField.title", localizationParameters)
-        let placeholderText = ADYLocalizedString("adyen.apartmentSuiteField.placeholder", localizationParameters)
+        let optionalText = localizedString(.fieldTitleOptional, localizationParameters)
+        let titleText = localizedString(.apartmentSuiteFieldTitle, localizationParameters)
+        let placeholderText = localizedString(.apartmentSuiteFieldPlaceholder, localizationParameters)
         apartmentTextItem.title = "\(titleText) \(optionalText)"
         apartmentTextItem.validator = LengthValidator(minimumLength: 0, maximumLength: 70)
         apartmentTextItem.placeholder = "\(placeholderText) \(optionalText)"
@@ -101,8 +101,8 @@ public final class FullFormAddressItem: FormValueItem<AddressInfo, AddressStyle>
 
     internal lazy var cityTextItem: FormTextInputItem = {
         let cityTextItem = FormTextInputItem(style: style.textField)
-        cityTextItem.title = ADYLocalizedString("adyen.cityField.title", localizationParameters)
-        cityTextItem.placeholder = ADYLocalizedString("adyen.cityField.placeholder", localizationParameters)
+        cityTextItem.title = localizedString(.cityFieldTitle, localizationParameters)
+        cityTextItem.placeholder = localizedString(.cityFieldPlaceholder, localizationParameters)
         cityTextItem.validator = LengthValidator(minimumLength: 2, maximumLength: 70)
         cityTextItem.validationFailureMessage = validationMessage
         cityTextItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "city")
@@ -112,8 +112,8 @@ public final class FullFormAddressItem: FormValueItem<AddressInfo, AddressStyle>
 
     internal lazy var provinceTextItem: FormTextInputItem = {
         let cityTextItem = FormTextInputItem(style: style.textField)
-        cityTextItem.title = ADYLocalizedString("adyen.provinceOrTerritoryField.title", localizationParameters)
-        cityTextItem.placeholder = ADYLocalizedString("adyen.provinceOrTerritoryField.placeholder", localizationParameters)
+        cityTextItem.title = localizedString(.provinceOrTerritoryFieldTitle, localizationParameters)
+        cityTextItem.placeholder = localizedString(.provinceOrTerritoryFieldPlaceholder, localizationParameters)
         cityTextItem.validator = LengthValidator(minimumLength: 2, maximumLength: 50)
         cityTextItem.validationFailureMessage = validationMessage
         cityTextItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "provinceOrTerritory")
@@ -123,8 +123,8 @@ public final class FullFormAddressItem: FormValueItem<AddressInfo, AddressStyle>
 
     internal lazy var postalCodeTextItem: FormTextInputItem = {
         let cityTextItem = FormTextInputItem(style: style.textField)
-        cityTextItem.title = ADYLocalizedString("adyen.postalCodeField.title", localizationParameters)
-        cityTextItem.placeholder = ADYLocalizedString("adyen.postalCodeField.placeholder", localizationParameters)
+        cityTextItem.title = localizedString(.postalCodeFieldTitle, localizationParameters)
+        cityTextItem.placeholder = localizedString(.postalCodeFieldPlaceholder, localizationParameters)
         cityTextItem.validator = LengthValidator(minimumLength: 2, maximumLength: 30)
         cityTextItem.validationFailureMessage = validationMessage
         cityTextItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "postalCode")
