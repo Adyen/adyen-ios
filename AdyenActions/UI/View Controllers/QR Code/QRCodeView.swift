@@ -19,7 +19,7 @@ internal final class QRCodeView: UIView, Localizable, Observer {
     /// The delegate of the view
     internal weak var delegate: QRCodeViewDelegate?
     
-    // :nodoc:
+    /// :nodoc:
     public var localizationParameters: LocalizationParameters?
     
     internal init(model: Model) {
