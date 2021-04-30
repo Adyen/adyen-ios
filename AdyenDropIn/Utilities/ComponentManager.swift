@@ -117,38 +117,25 @@ internal final class ComponentManager {
     
     private func createApplePayComponent(with paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
         guard
-            let summaryItems = configuration.applePay.summaryItems,
-            let identfier = configuration.applePay.merchantIdentifier,
-            let payment = payment else {
+            let payment = payment,
+            let configuration = configuration.applePay.componentConfiguration()
+        else {
+            adyenPrint("Failed to instantiate ApplePayComponent because ApplePayConfiguration is missing data")
             return nil
         }
-        
-        let requiredBillingContactFields = configuration.applePay.requiredBillingContactFields
-        let requiredShippingContactFields = configuration.applePay.requiredShippingContactFields
-        let excludedCardNetworks = configuration.applePay.excludedCardNetworks
-        
-        do {
-            let configuration = ApplePayComponent.Configuration(summaryItems: summaryItems,
-                                                                merchantIdentifier: identfier,
-                                                                requiredBillingContactFields: requiredBillingContactFields,
-                                                                requiredShippingContactFields: requiredShippingContactFields,
-                                                                excludedCardNetworks: excludedCardNetworks)
-            return try ApplePayComponent(paymentMethod: paymentMethod,
-                                         payment: payment,
+
+        return try? PreApplePayComponent(payment: payment,
+                                         paymentMethod: paymentMethod,
                                          configuration: configuration)
-        } catch {
-            adyenPrint("Failed to instantiate ApplePayComponent because of error: \(error.localizedDescription)")
-            return nil
-        }
     }
     
     private func createSEPAComponent(_ paymentMethod: SEPADirectDebitPaymentMethod) -> SEPADirectDebitComponent {
-        return SEPADirectDebitComponent(paymentMethod: paymentMethod,
-                                        style: style.formComponent)
+        SEPADirectDebitComponent(paymentMethod: paymentMethod,
+                                 style: style.formComponent)
     }
     
     private func createQiwiWalletComponent(_ paymentMethod: QiwiWalletPaymentMethod) -> QiwiWalletComponent {
-        return QiwiWalletComponent(paymentMethod: paymentMethod, style: style.formComponent)
+        QiwiWalletComponent(paymentMethod: paymentMethod, style: style.formComponent)
     }
     
     private func createMBWayComponent(_ paymentMethod: MBWayPaymentMethod) -> MBWayComponent? {
@@ -209,7 +196,7 @@ extension ComponentManager: PaymentComponentBuilder {
     
     /// :nodoc:
     internal func build(paymentMethod: SEPADirectDebitPaymentMethod) -> PaymentComponent? {
-        return createSEPAComponent(paymentMethod)
+        createSEPAComponent(paymentMethod)
     }
     
     /// :nodoc:
@@ -244,4 +231,20 @@ extension ComponentManager: PaymentComponentBuilder {
         EmptyPaymentComponent(paymentMethod: paymentMethod)
     }
     
+}
+
+extension DropInComponent.PaymentMethodsConfiguration.ApplePayConfiguration {
+
+    fileprivate func componentConfiguration() -> ApplePayComponent.Configuration? {
+        guard let summaryItems = summaryItems, let merchantIdentifier = merchantIdentifier else {
+            return nil
+        }
+
+        return ApplePayComponent.Configuration(summaryItems: summaryItems,
+                                               merchantIdentifier: merchantIdentifier,
+                                               requiredBillingContactFields: requiredBillingContactFields,
+                                               requiredShippingContactFields: requiredShippingContactFields,
+                                               excludedCardNetworks: excludedCardNetworks)
+    }
+
 }

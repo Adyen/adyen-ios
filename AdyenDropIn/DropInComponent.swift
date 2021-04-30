@@ -151,11 +151,15 @@ public final class DropInComponent: NSObject, PresentableComponent {
         }
         
         switch component {
+        case let component as PreApplePayComponent:
+            component.presentationDelegate = self
+            navigationController.present(asModal: component)
         case let component as PresentableComponent where component.requiresModalPresentation:
             navigationController.present(asModal: component)
+        case let component as PresentableComponent where component.viewController is UIAlertController:
+            navigationController.present(component.viewController, customPresentation: false)
         case let component as PresentableComponent:
-            let exceptions = (component.viewController is UIAlertController) || (component is ApplePayComponent)
-            navigationController.present(component.viewController, customPresentation: !exceptions)
+            navigationController.present(component.viewController, customPresentation: true)
         case let component as EmptyPaymentComponent:
             component.initiatePayment()
         default:
@@ -272,14 +276,18 @@ extension DropInComponent: PreselectedPaymentMethodComponentDelegate {
 extension DropInComponent: PresentationDelegate {
     public func present(component: PresentableComponent, disableCloseButton: Bool) {
         paymentInProgress = disableCloseButton
-        navigationController.present(asModal: component)
+        if component.requiresModalPresentation {
+            navigationController.present(asModal: component)
+        } else {
+            navigationController.present(component.viewController, customPresentation: false)
+        }
     }
 }
 
 private extension Bundle {
     // Name of the app - title under the icon.
     var displayName: String {
-        return object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ??
+        object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ??
             object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
     }
 }

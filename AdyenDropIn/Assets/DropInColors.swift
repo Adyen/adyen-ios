@@ -24,6 +24,22 @@ extension UIColor {
                 return UIColor(white: 0.0, alpha: 0.2)
             }
         }
+
+        internal static var componentBackground: UIColor {
+            if #available(iOS 13.0, *) {
+                return .systemBackground
+            } else {
+                return .white
+            }
+        }
+
+        internal static var componentSecondaryLabel: UIColor {
+            if #available(iOS 13.0, *) {
+                return .secondaryLabel
+            } else {
+                return .darkGray
+            }
+        }
         
         internal static let defaultBlue = UIColor(hex: 0x007AFF)
         

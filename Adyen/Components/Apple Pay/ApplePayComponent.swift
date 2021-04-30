@@ -290,13 +290,20 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     }
 
     internal func dismiss(callback: (() -> Void)? = nil) {
-        paymentAuthorizationViewController?.dismiss(animated: true) { [weak self] in
-            guard let self = self else { return }
-            self.paymentAuthorizationViewController = nil
-
+        func dismiss(_ callback: (() -> Void)? = nil) {
             callback?()
             self.dismissCompletion?()
             self.dismissCompletion = nil
+        }
+
+        guard let viewController = paymentAuthorizationViewController else {
+            return dismiss(callback)
+        }
+
+        viewController.dismiss(animated: true) { [weak self] in
+            guard let self = self else { return }
+            self.paymentAuthorizationViewController = nil
+            dismiss(callback)
         }
     }
 }
