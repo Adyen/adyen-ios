@@ -9,6 +9,26 @@ import Foundation
 /// The model for address data.
 public struct AddressInfo: Equatable, Encodable {
 
+    internal static let invalidCountry = "ZZ"
+    internal static let invalidValue = "null"
+
+    /// Create new instance of AddressInfo
+    public init(city: String? = nil,
+                country: String? = nil,
+                houseNumberOrName: String? = nil,
+                postalCode: String? = nil,
+                stateOrProvince: String? = nil,
+                street: String? = nil,
+                apartment: String? = nil) {
+        self.city = city
+        self.country = country
+        self.houseNumberOrName = houseNumberOrName
+        self.postalCode = postalCode
+        self.stateOrProvince = stateOrProvince
+        self.street = street
+        self.apartment = apartment
+    }
+
     /// The name of the city.
     public var city: String?
 
@@ -40,13 +60,14 @@ public struct AddressInfo: Equatable, Encodable {
         let houseNumberOrNameValue = [houseNumberOrName, apartment]
             .compactMap { $0 }
             .joined(separator: " ")
+            .adyen.nilIfEmpty
 
-        try container.encode(city, forKey: .city)
-        try container.encode(country, forKey: .country)
-        try container.encode(houseNumberOrNameValue, forKey: .houseNumberOrName)
-        try container.encode(postalCode, forKey: .postalCode)
-        try container.encode(stateOrProvince, forKey: .stateOrProvince)
-        try container.encode(street, forKey: .street)
+        try container.encode(city ?? AddressInfo.invalidValue, forKey: .city)
+        try container.encode(country ?? AddressInfo.invalidCountry, forKey: .country)
+        try container.encode(houseNumberOrNameValue ?? AddressInfo.invalidValue, forKey: .houseNumberOrName)
+        try container.encode(postalCode ?? AddressInfo.invalidValue, forKey: .postalCode)
+        try container.encode(stateOrProvince ?? AddressInfo.invalidValue, forKey: .stateOrProvince)
+        try container.encode(street ?? AddressInfo.invalidValue, forKey: .street)
     }
 
     private enum CodingKeys: String, CodingKey {

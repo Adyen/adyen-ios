@@ -75,8 +75,13 @@ internal class CardViewController: FormViewController {
             append(storeDetailsItem)
         }
 
-        if configuration.billingAddressMode == .full {
-            append(addressVerificationItem)
+        switch configuration.billingAddressMode {
+        case .full:
+            append(billingAddressItem)
+        case .postalCode:
+            append(postalCodeItem)
+        case .none:
+            break
         }
 
         append(button.withPadding(padding: .init(top: 8, left: 0, bottom: -16, right: 0)))
@@ -97,10 +102,14 @@ internal class CardViewController: FormViewController {
     }
 
     internal var address: AddressInfo? {
-        if configuration.billingAddressMode == .none {
+        switch configuration.billingAddressMode {
+        case .full:
+            return billingAddressItem.value
+        case .postalCode:
+            return AddressInfo(postalCode: postalCodeItem.value)
+        case .none:
             return nil
         }
-        return addressVerificationItem.value
     }
 
     internal var storePayment: Bool {
@@ -132,13 +141,23 @@ internal class CardViewController: FormViewController {
 
     // MARK: Items
 
-    internal lazy var addressVerificationItem: FullFormAddressItem = {
+    internal lazy var billingAddressItem: FullFormAddressItem = {
         let item = FullFormAddressItem(initialCountry: defaultCountryCode,
                                        style: formStyle.addressStyle,
                                        localizationParameters: localizationParameters)
         item.style.backgroundColor = UIColor.Adyen.lightGray
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "addressVerification")
         return item
+    }()
+
+    internal lazy var postalCodeItem: FormTextItem = {
+        let zipCodeItem = FormTextInputItem(style: formStyle.textField)
+        zipCodeItem.title = localizedString(.postalCodeFieldTitle, localizationParameters)
+        zipCodeItem.placeholder = localizedString(.postalCodeFieldPlaceholder, localizationParameters)
+        zipCodeItem.validator = LengthValidator(minimumLength: 2, maximumLength: 30)
+        zipCodeItem.validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
+        zipCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "postalCodeItem")
+        return zipCodeItem
     }()
 
     internal lazy var numberItem: FormCardNumberItem = {
