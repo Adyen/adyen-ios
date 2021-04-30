@@ -15,8 +15,8 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         accessory = .customView(cardHintView)
         observe(item.$selectedCard) { [weak self] cardsType in
             let number = cardsType == CardType.americanExpress ? "4" : "3"
-            let localization = ADYLocalizedString("adyen.card.cvcItem.placeholder.digits", item.localizationParameters)
-            self?.textField.placeholder = String(format: localization, number)
+            let localization = localizedString(.cardCvcItemPlaceholderDigits, item.localizationParameters, number)
+            self?.textField.placeholder = localization
         }
 
         bind(item.$dynamicTitle, to: self.titleLabel, at: \.text)

@@ -34,11 +34,11 @@ public final class FormPhoneNumberItem: FormTextItem {
         super.init(style: style)
         phonePrefixItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "phoneExtensionPickerItem")
 
-        title = ADYLocalizedString("adyen.phoneNumber.title", localizationParameters)
-        placeholder = ADYLocalizedString("adyen.phoneNumber.placeholder", localizationParameters)
+        title = localizedString(.phoneNumberTitle, localizationParameters)
+        placeholder = localizedString(.phoneNumberPlaceholder, localizationParameters)
         formatter = NumericFormatter()
         validator = NumericStringValidator(minimumLength: 1, maximumLength: 15)
-        validationFailureMessage = ADYLocalizedString("adyen.phoneNumber.invalid", localizationParameters)
+        validationFailureMessage = localizedString(.phoneNumberInvalid, localizationParameters)
         keyboardType = .numberPad
     }
     

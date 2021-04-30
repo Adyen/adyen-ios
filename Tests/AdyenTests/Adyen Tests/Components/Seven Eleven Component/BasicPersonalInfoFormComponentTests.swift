@@ -20,20 +20,20 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
-        XCTAssertEqual(sut.firstNameItem?.title, ADYLocalizedString("adyen.firstName", sut.localizationParameters))
-        XCTAssertEqual(sut.firstNameItem?.placeholder, ADYLocalizedString("adyen.firstName", sut.localizationParameters))
+        XCTAssertEqual(sut.firstNameItem?.title, localizedString(.firstName, sut.localizationParameters))
+        XCTAssertEqual(sut.firstNameItem?.placeholder, localizedString(.firstName, sut.localizationParameters))
         XCTAssertNil(sut.firstNameItem?.validationFailureMessage)
 
-        XCTAssertEqual(sut.lastNameItem?.title, ADYLocalizedString("adyen.lastName", sut.localizationParameters))
-        XCTAssertEqual(sut.lastNameItem?.placeholder, ADYLocalizedString("adyen.lastName", sut.localizationParameters))
+        XCTAssertEqual(sut.lastNameItem?.title, localizedString(.lastName, sut.localizationParameters))
+        XCTAssertEqual(sut.lastNameItem?.placeholder, localizedString(.lastName, sut.localizationParameters))
         XCTAssertNil(sut.lastNameItem?.validationFailureMessage)
 
-        XCTAssertEqual(sut.emailItem?.title, ADYLocalizedString("adyen.emailItem.title", sut.localizationParameters))
-        XCTAssertEqual(sut.emailItem?.placeholder, ADYLocalizedString("adyen.emailItem.placeHolder", sut.localizationParameters))
-        XCTAssertEqual(sut.emailItem?.validationFailureMessage, ADYLocalizedString("adyen.emailItem.invalid", sut.localizationParameters))
+        XCTAssertEqual(sut.emailItem?.title, localizedString(.emailItemTitle, sut.localizationParameters))
+        XCTAssertEqual(sut.emailItem?.placeholder, localizedString(.emailItemPlaceHolder, sut.localizationParameters))
+        XCTAssertEqual(sut.emailItem?.validationFailureMessage, localizedString(.emailItemInvalid, sut.localizationParameters))
 
         XCTAssertNotNil(sut.button.title)
-        XCTAssertEqual(sut.button.title, ADYLocalizedString("adyen.confirmPurchase", sut.localizationParameters))
+        XCTAssertEqual(sut.button.title, localizedString(.confirmPurchase, sut.localizationParameters))
     }
 
     func testLocalizationWithCustomKeySeparator() {
@@ -41,20 +41,20 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
 
-        XCTAssertEqual(sut.firstNameItem?.title, ADYLocalizedString("adyen_firstName", sut.localizationParameters))
-        XCTAssertEqual(sut.firstNameItem?.placeholder, ADYLocalizedString("adyen_firstName", sut.localizationParameters))
+        XCTAssertEqual(sut.firstNameItem?.title, localizedString(LocalizationKey(key: "adyen_firstName"), sut.localizationParameters))
+        XCTAssertEqual(sut.firstNameItem?.placeholder, localizedString(LocalizationKey(key: "adyen_firstName"), sut.localizationParameters))
         XCTAssertNil(sut.firstNameItem?.validationFailureMessage)
 
-        XCTAssertEqual(sut.lastNameItem?.title, ADYLocalizedString("adyen_lastName", sut.localizationParameters))
-        XCTAssertEqual(sut.lastNameItem?.placeholder, ADYLocalizedString("adyen_lastName", sut.localizationParameters))
+        XCTAssertEqual(sut.lastNameItem?.title, localizedString(LocalizationKey(key: "adyen_lastName"), sut.localizationParameters))
+        XCTAssertEqual(sut.lastNameItem?.placeholder, localizedString(LocalizationKey(key: "adyen_lastName"), sut.localizationParameters))
         XCTAssertNil(sut.lastNameItem?.validationFailureMessage)
 
-        XCTAssertEqual(sut.emailItem?.title, ADYLocalizedString("adyen_emailItem_title", sut.localizationParameters))
-        XCTAssertEqual(sut.emailItem?.placeholder, ADYLocalizedString("adyen_emailItem_placeHolder", sut.localizationParameters))
-        XCTAssertEqual(sut.emailItem?.validationFailureMessage, ADYLocalizedString("adyen_emailItem_invalid", sut.localizationParameters))
+        XCTAssertEqual(sut.emailItem?.title, localizedString(LocalizationKey(key: "adyen_emailItem_title"), sut.localizationParameters))
+        XCTAssertEqual(sut.emailItem?.placeholder, localizedString(LocalizationKey(key: "adyen_emailItem_placeHolder"), sut.localizationParameters))
+        XCTAssertEqual(sut.emailItem?.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_emailItem_invalid"), sut.localizationParameters))
 
         XCTAssertNotNil(sut.button.title)
-        XCTAssertEqual(sut.button.title, ADYLocalizedString("adyen_confirmPurchase", sut.localizationParameters))
+        XCTAssertEqual(sut.button.title, localizedString(LocalizationKey(key: "adyen_confirmPurchase"), sut.localizationParameters))
     }
 
     func testUIConfiguration() {

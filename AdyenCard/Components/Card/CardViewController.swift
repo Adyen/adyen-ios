@@ -152,10 +152,10 @@ internal class CardViewController: FormViewController {
 
     internal lazy var postalCodeItem: FormTextItem = {
         let zipCodeItem = FormTextInputItem(style: formStyle.textField)
-        zipCodeItem.title = ADYLocalizedString("adyen.postalCodeField.title", localizationParameters)
-        zipCodeItem.placeholder = ADYLocalizedString("adyen.postalCodeField.placeholder", localizationParameters)
+        zipCodeItem.title = localizedString(.postalCodeFieldTitle, localizationParameters)
+        zipCodeItem.placeholder = localizedString(.postalCodeFieldPlaceholder, localizationParameters)
         zipCodeItem.validator = LengthValidator(minimumLength: 2, maximumLength: 30)
-        zipCodeItem.validationFailureMessage = ADYLocalizedString("adyen.validationAlert.title", localizationParameters)
+        zipCodeItem.validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
         zipCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "postalCodeItem")
         return zipCodeItem
     }()
@@ -172,11 +172,11 @@ internal class CardViewController: FormViewController {
 
     internal lazy var expiryDateItem: FormTextInputItem = {
         let expiryDateItem = FormTextInputItem(style: formStyle.textField)
-        expiryDateItem.title = ADYLocalizedString("adyen.card.expiryItem.title", localizationParameters)
-        expiryDateItem.placeholder = ADYLocalizedString("adyen.card.expiryItem.placeholder", localizationParameters)
+        expiryDateItem.title = localizedString(.cardExpiryItemTitle, localizationParameters)
+        expiryDateItem.placeholder = localizedString(.cardExpiryItemPlaceholder, localizationParameters)
         expiryDateItem.formatter = CardExpiryDateFormatter()
         expiryDateItem.validator = CardExpiryDateValidator()
-        expiryDateItem.validationFailureMessage = ADYLocalizedString("adyen.card.expiryItem.invalid", localizationParameters)
+        expiryDateItem.validationFailureMessage = localizedString(.cardExpiryItemInvalid, localizationParameters)
         expiryDateItem.keyboardType = .numberPad
         expiryDateItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "expiryDateItem")
 
@@ -193,10 +193,10 @@ internal class CardViewController: FormViewController {
 
     internal lazy var holderNameItem: FormTextInputItem = {
         let holderNameItem = FormTextInputItem(style: formStyle.textField)
-        holderNameItem.title = ADYLocalizedString("adyen.card.nameItem.title", localizationParameters)
-        holderNameItem.placeholder = ADYLocalizedString("adyen.card.nameItem.placeholder", localizationParameters)
+        holderNameItem.title = localizedString(.cardNameItemTitle, localizationParameters)
+        holderNameItem.placeholder = localizedString(.cardNameItemPlaceholder, localizationParameters)
         holderNameItem.validator = LengthValidator(minimumLength: 2)
-        holderNameItem.validationFailureMessage = ADYLocalizedString("adyen.card.nameItem.invalid", localizationParameters)
+        holderNameItem.validationFailureMessage = localizedString(.cardNameItemInvalid, localizationParameters)
         holderNameItem.autocapitalizationType = .words
         holderNameItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "holderNameItem")
 
@@ -205,7 +205,7 @@ internal class CardViewController: FormViewController {
 
     internal lazy var storeDetailsItem: FormSwitchItem = {
         let storeDetailsItem = FormSwitchItem(style: formStyle.switch)
-        storeDetailsItem.title = ADYLocalizedString("adyen.card.storeDetailsButton", localizationParameters)
+        storeDetailsItem.title = localizedString(.cardStoreDetailsButton, localizationParameters)
         storeDetailsItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "storeDetailsItem")
 
         return storeDetailsItem
@@ -214,7 +214,7 @@ internal class CardViewController: FormViewController {
     internal lazy var button: FormButtonItem = {
         let item = FormButtonItem(style: formStyle.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "payButtonItem")
-        item.title = ADYLocalizedSubmitButtonTitle(with: payment?.amount,
+        item.title = localizedSubmitButtonTitle(with: payment?.amount,
                                                    style: .immediate,
                                                    localizationParameters)
         item.buttonSelectionHandler = { [weak self] in

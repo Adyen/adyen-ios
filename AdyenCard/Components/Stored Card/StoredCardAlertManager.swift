@@ -58,21 +58,21 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Loca
     // MARK: - Alert Controller
     
     internal private(set) lazy var alertController: UIAlertController = {
-        let title = ADYLocalizedString("adyen.card.stored.title", localizationParameters)
+        let title = localizedString(.cardStoredTitle, localizationParameters)
         let displayInformation = paymentMethod.localizedDisplayInformation(using: localizationParameters)
-        let message = ADYLocalizedString("adyen.card.stored.message", localizationParameters, displayInformation.title)
+        let message = localizedString(.cardStoredMessage, localizationParameters, displayInformation.title)
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addTextField(configurationHandler: { [weak self] textField in
             textField.textAlignment = .center
             textField.keyboardType = .numberPad
-            textField.placeholder = ADYLocalizedString("adyen.card.cvcItem.placeholder", self?.localizationParameters)
-            textField.accessibilityLabel = ADYLocalizedString("adyen.card.cvcItem.title", self?.localizationParameters)
+            textField.placeholder = localizedString(.cardCvcItemPlaceholder, self?.localizationParameters)
+            textField.accessibilityLabel = localizedString(.cardCvcItemTitle, self?.localizationParameters)
             textField.accessibilityIdentifier = "AdyenCard.StoredCardAlertManager.textField"
             textField.delegate = self
         })
         
-        let cancelActionTitle = ADYLocalizedString("adyen.cancelButton", localizationParameters)
+        let cancelActionTitle = localizedString(.cancelButton, localizationParameters)
         let cancelAction = UIAlertAction(title: cancelActionTitle, style: .cancel) { _ in
             self.completionHandler?(.failure(ComponentError.cancelled))
         }
@@ -84,7 +84,7 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Loca
     }()
     
     private lazy var submitAction: UIAlertAction = {
-        let actionTitle = ADYLocalizedSubmitButtonTitle(with: amount,
+        let actionTitle = localizedSubmitButtonTitle(with: amount,
                                                         style: .immediate,
                                                         localizationParameters)
         let action = UIAlertAction(title: actionTitle, style: .default) { [unowned self] _ in

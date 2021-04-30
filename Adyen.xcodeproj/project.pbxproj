@@ -10,6 +10,7 @@
 		5A1315C926296B100092366D /* ProgressViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1315C826296B100092366D /* ProgressViewStyle.swift */; };
 		5A22C279262D688600F12D97 /* QRCodeComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A22C26D262D686200F12D97 /* QRCodeComponentTests.swift */; };
 		5A22C2AD262EF99C00F12D97 /* ExpirationTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A22C2AC262EF99C00F12D97 /* ExpirationTimer.swift */; };
+		5A27AB032636A07900EF6F89 /* LocalizationKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A27AB022636A07900EF6F89 /* LocalizationKey.swift */; };
 		5A54FFCA26299140007194B7 /* TimeIntervalHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54FFC926299140007194B7 /* TimeIntervalHelpers.swift */; };
 		5A54FFE126299602007194B7 /* TimeIntervalExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54FFD5262995F6007194B7 /* TimeIntervalExtensionsTests.swift */; };
 		5A6456D6262592B2001824F0 /* QRCodeAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6456D5262592B2001824F0 /* QRCodeAction.swift */; };
@@ -454,7 +455,7 @@
 		F96F44D923BDEDA200871C1F /* ListItemStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96F44D823BDEDA200871C1F /* ListItemStyle.swift */; };
 		F96F44DD23BE487500871C1F /* LocalizationParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96F44DC23BE487500871C1F /* LocalizationParameters.swift */; };
 		F96F44DF23BF453800871C1F /* AdyenUIHostCustomSeparator.strings in Resources */ = {isa = PBXBuildFile; fileRef = F96F44DE23BF453800871C1F /* AdyenUIHostCustomSeparator.strings */; };
-		F96F44E123BF5C2000871C1F /* ADYLocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96F44E023BF5C2000871C1F /* ADYLocalizationTests.swift */; };
+		F96F44E123BF5C2000871C1F /* LocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96F44E023BF5C2000871C1F /* LocalizationTests.swift */; };
 		F96F44E323BF5ED000871C1F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F96F44E223BF5ED000871C1F /* Localizable.strings */; };
 		F970143925D139BE007E74D9 /* VoucherComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F970143825D139BE007E74D9 /* VoucherComponentStyle.swift */; };
 		F9789C6823F18049000B4B2B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9789C6723F18048000B4B2B /* CFNetwork.framework */; };
@@ -798,6 +799,7 @@
 		5A1315C826296B100092366D /* ProgressViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewStyle.swift; sourceTree = "<group>"; };
 		5A22C26D262D686200F12D97 /* QRCodeComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeComponentTests.swift; sourceTree = "<group>"; };
 		5A22C2AC262EF99C00F12D97 /* ExpirationTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationTimer.swift; sourceTree = "<group>"; };
+		5A27AB022636A07900EF6F89 /* LocalizationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationKey.swift; sourceTree = "<group>"; };
 		5A54FFC926299140007194B7 /* TimeIntervalHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalHelpers.swift; sourceTree = "<group>"; };
 		5A54FFD5262995F6007194B7 /* TimeIntervalExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtensionsTests.swift; sourceTree = "<group>"; };
 		5A6456D5262592B2001824F0 /* QRCodeAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeAction.swift; sourceTree = "<group>"; wrapsLines = 1; };
@@ -1228,7 +1230,7 @@
 		F96F44D823BDEDA200871C1F /* ListItemStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemStyle.swift; sourceTree = "<group>"; };
 		F96F44DC23BE487500871C1F /* LocalizationParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationParameters.swift; sourceTree = "<group>"; };
 		F96F44DE23BF453800871C1F /* AdyenUIHostCustomSeparator.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = AdyenUIHostCustomSeparator.strings; sourceTree = "<group>"; };
-		F96F44E023BF5C2000871C1F /* ADYLocalizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADYLocalizationTests.swift; sourceTree = "<group>"; };
+		F96F44E023BF5C2000871C1F /* LocalizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationTests.swift; sourceTree = "<group>"; };
 		F96F44E223BF5ED000871C1F /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		F970143825D139BE007E74D9 /* VoucherComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherComponentStyle.swift; sourceTree = "<group>"; };
 		F9780B6424338DFE00CC6C73 /* RedirectComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedirectComponent.swift; sourceTree = "<group>"; };
@@ -1487,6 +1489,14 @@
 				5A22C26D262D686200F12D97 /* QRCodeComponentTests.swift */,
 			);
 			path = PIX;
+			sourceTree = "<group>";
+		};
+		5A27AB0126369EF700EF6F89 /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				5A27AB022636A07900EF6F89 /* LocalizationKey.swift */,
+			);
+			path = Generated;
 			sourceTree = "<group>";
 		};
 		5A6456E12625A1C3001824F0 /* QRCode */ = {
@@ -2228,6 +2238,7 @@
 		E9021DAB22578AA6009CF7F4 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				5A27AB0126369EF700EF6F89 /* Generated */,
 				E909346A2297E33B00C9F04B /* Localizable.strings */,
 				F94343E523FFD9A400AADF5F /* AdyenAssets.xcassets */,
 			);
@@ -2492,7 +2503,7 @@
 				F99F08572383EA2A00EBB948 /* ValidatorMock.swift */,
 				F99F08592383EAC800EBB948 /* FormatterMock.swift */,
 				F9EDB79D2397AEF400CFB3C9 /* ComponentManagerTests.swift */,
-				F96F44E023BF5C2000871C1F /* ADYLocalizationTests.swift */,
+				F96F44E023BF5C2000871C1F /* LocalizationTests.swift */,
 				F9AC61BF243750D80062A00D /* AppLauncherMock.swift */,
 				F9BA21C52474113500D36A63 /* AmountFormatterTests.swift */,
 				F923283925A49559002C5BC4 /* PhoneExtensionsRepositoryTests.swift */,
@@ -3354,6 +3365,7 @@
 			buildConfigurationList = E2C0E04722097917008616F6 /* Build configuration list for PBXNativeTarget "Adyen" */;
 			buildPhases = (
 				E2C0E02E22097917008616F6 /* Headers */,
+				5A238BB3263A881F00758FEF /* Generate localization keys */,
 				E2C0E02F22097917008616F6 /* Sources */,
 				E2C0E03022097917008616F6 /* Frameworks */,
 				E2C0E03122097917008616F6 /* Resources */,
@@ -3830,6 +3842,26 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		5A238BB3263A881F00758FEF /* Generate localization keys */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Adyen/Assets/en-US.lproj/Localizable.strings",
+			);
+			name = "Generate localization keys";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/Adyen/Assets/Generated/LocalizationKey.swift",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\n\nif (! [ -z $(git diff --name-only $SCRIPT_INPUT_FILE_0) ]) && [ -f $SRCROOT/Scripts/generate_localization_keys ]\nthen\n    echo \"Detected changes in Localizable.strings. Generating new LocalizationKey.swift\"\n    $SRCROOT/Scripts/generate_localization_keys $SCRIPT_INPUT_FILE_0 $SCRIPT_OUTPUT_FILE_0\nfi\n\n";
+		};
 		E7388FC1260B68C400291DE7 /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -4130,6 +4162,7 @@
 				E2D12C00221D91ED00EF682F /* StringHelpers.swift in Sources */,
 				F9D5751C237C0EA0009C18B5 /* BCMCPaymentMethod.swift in Sources */,
 				E27BFD9022B114DC00692E0D /* ShopperInteraction.swift in Sources */,
+				5A27AB032636A07900EF6F89 /* LocalizationKey.swift in Sources */,
 				F9589D332601F1D400E4113F /* PhoneFormItemInjector.swift in Sources */,
 				F9354BE723A7B4E200A6760B /* TextStyle.swift in Sources */,
 				F9D644E024D2E4210059CBE3 /* EmailValidator.swift in Sources */,
@@ -4324,7 +4357,7 @@
 				F9AC61C424375F510062A00D /* PresentingViewControllerMock.swift in Sources */,
 				F9BA21BF246D36AC00D36A63 /* LazyOptionalTests.swift in Sources */,
 				E9021DF2225CC6D0009CF7F4 /* RedirectDetailsTests.swift in Sources */,
-				F96F44E123BF5C2000871C1F /* ADYLocalizationTests.swift in Sources */,
+				F96F44E123BF5C2000871C1F /* LocalizationTests.swift in Sources */,
 				F9D5750E237475DB009C18B5 /* CardEncryptorCardTests.swift in Sources */,
 				F9C5F0DD25CAB8FC005A6E54 /* VoucherComponentTests.swift in Sources */,
 				5AD40F4F263157D50090E01C /* UIButtonHelpersTests.swift in Sources */,

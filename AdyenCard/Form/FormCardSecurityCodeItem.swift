@@ -31,19 +31,19 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
         self.localizationParameters = localizationParameters
         super.init(style: style)
         
-        dynamicTitle = ADYLocalizedString("adyen.card.cvcItem.title", localizationParameters)
+        dynamicTitle = localizedString(.cardCvcItemTitle, localizationParameters)
         validator = securityCodeValidator
         formatter = securityCodeFormatter
         
-        validationFailureMessage = ADYLocalizedString("adyen.card.cvcItem.invalid", localizationParameters)
+        validationFailureMessage = localizedString(.cardCvcItemInvalid, localizationParameters)
         keyboardType = .numberPad
     }
 
     internal func update(cardBrands: [CardBrand]) {
         let isCVCOptional = cardBrands.isCVCOptional
 
-        let titleFailureMessageKey = isCVCOptional ? "adyen.card.cvcItem.title.optional" : "adyen.card.cvcItem.title"
-        dynamicTitle = ADYLocalizedString(titleFailureMessageKey, localizationParameters)
+        let titleFailureMessageKey: LocalizationKey = isCVCOptional ? .cardCvcItemTitleOptional : .cardCvcItemTitle
+        dynamicTitle = localizedString(titleFailureMessageKey, localizationParameters)
         validator = isCVCOptional ? nil : securityCodeValidator
 
         self.isCVCOptional = isCVCOptional

@@ -84,7 +84,7 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     
     private lazy var submitButtonItem: FormButtonItem = {
         let item = FormButtonItem(style: style.mainButtonItem)
-        item.title = ADYLocalizedSubmitButtonTitle(with: payment?.amount,
+        item.title = localizedSubmitButtonTitle(with: payment?.amount,
                                                    style: .immediate,
                                                    localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "submitButton")
@@ -97,7 +97,7 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     
     private lazy var openAllButtonItem: FormButtonItem = {
         let item = FormButtonItem(style: style.secondaryButtonItem)
-        item.title = ADYLocalizedString("adyen.dropIn.preselected.openAll.title", localizationParameters)
+        item.title = localizedString(.dropInPreselectedOpenAllTitle, localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "openAllButton")
         item.buttonSelectionHandler = { [weak self] in
             self?.delegate?.didRequestAllPaymentMethods()

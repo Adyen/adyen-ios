@@ -88,7 +88,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         guard configuration.fields.contains(.firstName) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "firstNameItem")
         let injector = NameFormItemInjector(identifier: identifier,
-                                            localizationKey: "adyen.firstName",
+                                            localizationKey: .firstName,
                                             style: style.textField)
         injector.localizationParameters = localizationParameters
         return injector
@@ -102,7 +102,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         guard configuration.fields.contains(.lastName) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "lastNameItem")
         let injector = NameFormItemInjector(identifier: identifier,
-                                            localizationKey: "adyen.lastName",
+                                            localizationKey: .lastName,
                                             style: style.textField)
         injector.localizationParameters = localizationParameters
         return injector

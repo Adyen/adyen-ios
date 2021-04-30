@@ -27,7 +27,7 @@ public final class DokuComponent: AbstractPersonalInformationComponent {
     }
 
     override public func submitButtonTitle() -> String {
-        ADYLocalizedString("adyen.confirmPurchase", localizationParameters)
+        localizedString(.confirmPurchase, localizationParameters)
     }
 
     override public func createPaymentDetails() -> PaymentMethodDetails {

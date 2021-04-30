@@ -20,10 +20,10 @@ internal final class EmailFormItemInjector: FormItemInjector, Localizable {
     /// :nodoc:
     internal lazy var item: FormTextInputItem = {
         let item = FormTextInputItem(style: style)
-        item.title = ADYLocalizedString("adyen.emailItem.title", localizationParameters)
-        item.placeholder = ADYLocalizedString("adyen.emailItem.placeHolder", localizationParameters)
+        item.title = localizedString(.emailItemTitle, localizationParameters)
+        item.placeholder = localizedString(.emailItemPlaceHolder, localizationParameters)
         item.validator = EmailValidator()
-        item.validationFailureMessage = ADYLocalizedString("adyen.emailItem.invalid", localizationParameters)
+        item.validationFailureMessage = localizedString(.emailItemInvalid, localizationParameters)
         item.keyboardType = .emailAddress
         item.identifier = identifier
         return item

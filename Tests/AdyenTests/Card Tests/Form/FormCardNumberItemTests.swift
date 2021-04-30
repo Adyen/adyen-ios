@@ -222,18 +222,18 @@ class FormCardNumberItemTests: XCTestCase {
         let expectedLocalizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         let sut = FormCardNumberItem(supportedCardTypes: [.visa, .masterCard], logoProvider: LogoURLProvider(environment: .test), localizationParameters: expectedLocalizationParameters)
         
-        XCTAssertEqual(sut.title, ADYLocalizedString("adyen.card.numberItem.title", expectedLocalizationParameters))
-        XCTAssertEqual(sut.placeholder, ADYLocalizedString("adyen.card.numberItem.placeholder", expectedLocalizationParameters))
-        XCTAssertEqual(sut.validationFailureMessage, ADYLocalizedString("adyen.card.numberItem.invalid", expectedLocalizationParameters))
+        XCTAssertEqual(sut.title, localizedString(.cardNumberItemTitle, expectedLocalizationParameters))
+        XCTAssertEqual(sut.placeholder, localizedString(.cardNumberItemPlaceholder, expectedLocalizationParameters))
+        XCTAssertEqual(sut.validationFailureMessage, localizedString(.cardNumberItemInvalid, expectedLocalizationParameters))
     }
     
     func testLocalizationWithCustomKeySeparator() {
         let expectedLocalizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         let sut = FormCardNumberItem(supportedCardTypes: [.visa, .masterCard], logoProvider: LogoURLProvider(environment: .test), localizationParameters: expectedLocalizationParameters)
         
-        XCTAssertEqual(sut.title, ADYLocalizedString("adyen_card_numberItem_title", expectedLocalizationParameters))
-        XCTAssertEqual(sut.placeholder, ADYLocalizedString("adyen_card_numberItem_placeholder", expectedLocalizationParameters))
-        XCTAssertEqual(sut.validationFailureMessage, ADYLocalizedString("adyen_card_numberItem_invalid", expectedLocalizationParameters))
+        XCTAssertEqual(sut.title, localizedString(LocalizationKey(key: "adyen_card_numberItem_title"), expectedLocalizationParameters))
+        XCTAssertEqual(sut.placeholder, localizedString(LocalizationKey(key: "adyen_card_numberItem_placeholder"), expectedLocalizationParameters))
+        XCTAssertEqual(sut.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_card_numberItem_invalid"), expectedLocalizationParameters))
     }
     
 }

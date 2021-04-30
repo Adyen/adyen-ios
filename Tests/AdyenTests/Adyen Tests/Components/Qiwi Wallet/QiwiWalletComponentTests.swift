@@ -26,14 +26,14 @@ class QiwiWalletComponentTests: XCTestCase {
         }
         XCTAssertEqual(sut.phoneItem?.phonePrefixItem.selectableValues, expectedSelectableValues)
         
-        XCTAssertEqual(sut.phoneItem?.title, ADYLocalizedString("adyen.phoneNumber.title", sut.localizationParameters))
-        XCTAssertEqual(sut.phoneItem?.placeholder, ADYLocalizedString("adyen.phoneNumber.placeholder", sut.localizationParameters))
-        XCTAssertEqual(sut.phoneItem?.validationFailureMessage, ADYLocalizedString("adyen.phoneNumber.invalid", sut.localizationParameters))
+        XCTAssertEqual(sut.phoneItem?.title, localizedString(.phoneNumberTitle, sut.localizationParameters))
+        XCTAssertEqual(sut.phoneItem?.placeholder, localizedString(.phoneNumberPlaceholder, sut.localizationParameters))
+        XCTAssertEqual(sut.phoneItem?.validationFailureMessage, localizedString(.phoneNumberInvalid, sut.localizationParameters))
         XCTAssertEqual(sut.phoneItem?.prefix, "+1")
         XCTAssertEqual(sut.phoneItem?.phonePrefixItem.selectableValues, expectedSelectableValues)
         XCTAssertEqual(sut.phoneItem?.phonePrefixItem.value.identifier, "US")
         
-        XCTAssertEqual(sut.button.title, ADYLocalizedString("adyen.continueTo", sut.localizationParameters, method.name))
+        XCTAssertEqual(sut.button.title, localizedString(.continueTo, sut.localizationParameters, method.name))
         XCTAssertTrue(sut.button.title!.contains(method.name))
     }
     
@@ -49,14 +49,14 @@ class QiwiWalletComponentTests: XCTestCase {
         }
         XCTAssertEqual(sut.phoneItem?.phonePrefixItem.selectableValues, expectedSelectableValues)
         
-        XCTAssertEqual(sut.phoneItem?.title, ADYLocalizedString("adyen_phoneNumber_title", sut.localizationParameters))
-        XCTAssertEqual(sut.phoneItem?.placeholder, ADYLocalizedString("adyen_phoneNumber_placeholder", sut.localizationParameters))
-        XCTAssertEqual(sut.phoneItem?.validationFailureMessage, ADYLocalizedString("adyen_phoneNumber_invalid", sut.localizationParameters))
+        XCTAssertEqual(sut.phoneItem?.title, localizedString(LocalizationKey(key: "adyen_phoneNumber_title"), sut.localizationParameters))
+        XCTAssertEqual(sut.phoneItem?.placeholder, localizedString(LocalizationKey(key: "adyen_phoneNumber_placeholder"), sut.localizationParameters))
+        XCTAssertEqual(sut.phoneItem?.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_phoneNumber_invalid"), sut.localizationParameters))
         XCTAssertEqual(sut.phoneItem?.prefix, "+1")
         XCTAssertEqual(sut.phoneItem?.phonePrefixItem.selectableValues, expectedSelectableValues)
         XCTAssertEqual(sut.phoneItem?.phonePrefixItem.value.identifier, "US")
         
-        XCTAssertEqual(sut.button.title, ADYLocalizedString("adyen_continueTo", sut.localizationParameters, method.name))
+        XCTAssertEqual(sut.button.title, localizedString(LocalizationKey(key: "adyen_continueTo"), sut.localizationParameters, method.name))
     }
     
     func testUIConfiguration() {

@@ -279,7 +279,7 @@ class PaymentMethodTests: XCTestCase {
         let expireDate = method.expiryMonth + "/" + method.expiryYear.suffix(2)
         
         return DisplayInformation(title: "••••\u{00a0}" + method.lastFour,
-                                  subtitle: ADYLocalizedString("adyen.card.stored.expires", localizationParameters, expireDate),
+                                  subtitle: localizedString(.cardStoredExpires, localizationParameters, expireDate),
                                   logoName: method.brand)
     }
     
@@ -433,7 +433,7 @@ class PaymentMethodTests: XCTestCase {
         let expireDate = method.expiryMonth + "/" + method.expiryYear.suffix(2)
         
         return DisplayInformation(title: "••••\u{00a0}" + method.lastFour,
-                                  subtitle: ADYLocalizedString("adyen.card.stored.expires", localizationParameters, expireDate),
+                                  subtitle: localizedString(.cardStoredExpires, localizationParameters, expireDate),
                                   logoName: method.brand)
     }
 
