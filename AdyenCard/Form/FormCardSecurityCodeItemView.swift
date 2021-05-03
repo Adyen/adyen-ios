@@ -19,8 +19,6 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
             self?.textField.placeholder = localization
         }
 
-        bind(item.$dynamicTitle, to: self.titleLabel, at: \.text)
-
         observe(item.$isCVCOptional) { [weak self] _ in
             self?.updateValidationStatus()
         }

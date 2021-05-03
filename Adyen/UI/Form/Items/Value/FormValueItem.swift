@@ -42,7 +42,7 @@ open class FormValueItem<ValueType: Equatable, StyleType: FormValueItemStyle>: F
     public var style: StyleType
 
     /// The title of the item.
-    public var title: String?
+    @Observable(nil) public var title: String?
 
     /// Create new instance of FormValueItem
     internal init(value: ValueType, style: StyleType) {

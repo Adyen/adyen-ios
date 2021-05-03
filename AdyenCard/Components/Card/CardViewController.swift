@@ -61,7 +61,7 @@ internal class CardViewController: FormViewController {
         numberItem.showLogos(for: topCardTypes)
 
         if configuration.showsSecurityCodeField {
-            let splitTextItem = FormSplitItem(items: [expiryDateItem, securityCodeItem], style: formStyle.textField)
+            let splitTextItem = FormSplitItem(items: expiryDateItem, securityCodeItem, style: formStyle.textField)
             append(splitTextItem)
         } else {
             append(expiryDateItem)

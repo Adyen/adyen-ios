@@ -12,7 +12,7 @@ import UIKit
 open class FormTextItem: FormValueItem<String, FormTextItemStyle>, ValidatableFormItem, InputViewRequiringFormItem {
 
     /// The placeholder of the text field.
-    public var placeholder: String?
+    @Observable(nil) public var placeholder: String?
 
     /// The formatter to use for formatting the text in the text field.
     public var formatter: Formatter?

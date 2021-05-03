@@ -6,6 +6,7 @@
 
 import Foundation
 
+/// :nodoc:
 public protocol Hidable {
     /// :nodoc:
     var isHidden: Observable<Bool> { get }

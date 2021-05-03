@@ -8,9 +8,7 @@ import UIKit
 
 /// A view representing a value item.
 /// :nodoc:
-open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType, Style>>: FormItemView<ItemType>,
-    AnyFormValueItemView,
-    Observer {
+open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType, Style>>: FormItemView<ItemType>, AnyFormValueItemView {
 
     // MARK: - Title Label
 
@@ -33,6 +31,8 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         super.init(item: item)
         addSubview(separatorView)
         configureSeparatorView()
+
+        bind(item.$title, to: self.titleLabel, at: \.text)
         
         tintColor = item.style.tintColor
         backgroundColor = item.style.backgroundColor

@@ -40,6 +40,8 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     /// - Parameter item: The item represented by the view.
     public required init(item: ItemType) {
         super.init(item: item)
+
+        bind(item.$placeholder, to: textField, at: \.placeholder)
         
         addSubview(textStackView)
         configureConstraints()
