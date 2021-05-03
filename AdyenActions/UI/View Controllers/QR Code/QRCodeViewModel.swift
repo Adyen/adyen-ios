@@ -31,6 +31,8 @@ extension QRCodeView {
             
             internal let expirationLabel: TextStyle
             
+            internal let logoCornerRounding: CornerRounding
+            
             internal let backgroundColor: UIColor
         }
         

@@ -39,6 +39,8 @@ class QRCodeComponentTests: XCTestCase {
             color: .blue, textAlignment: .right
         )
         
+        style.logoCornerRounding = .fixed(10)
+        
         style.backgroundColor = UIColor.Adyen.componentSeparator
         
         let sut = QRCodeComponent(style: style)
@@ -56,6 +58,7 @@ class QRCodeComponentTests: XCTestCase {
                 let instructionLabel: UILabel? = viewController.view.findView(by: "instructionLabel")
                 let progressView: UIProgressView? = viewController.view.findView(by: "progressView")
                 let expirationLabel: UILabel? = viewController.view.findView(by: "expirationLabel")
+                let logo: UIImageView? = viewController.view.findView(by: "logo")
                 
                 // Test copy button
                 XCTAssertEqual(copyButton?.backgroundColor, style.copyButton.backgroundColor)
@@ -74,6 +77,9 @@ class QRCodeComponentTests: XCTestCase {
                 XCTAssertEqual(expirationLabel?.font, style.expirationLabel.font)
                 XCTAssertEqual(expirationLabel?.textColor, style.expirationLabel.color)
                 XCTAssertEqual(expirationLabel?.textAlignment, style.expirationLabel.textAlignment)
+                
+                // Test logo
+                XCTAssertEqual(logo?.layer.cornerRadius, 10)
                 
                 dummyExpectation.fulfill()
             }
@@ -219,7 +225,7 @@ class QRCodeComponentTests: XCTestCase {
         
         sut.handle(action)
         
-        waitForExpectations(timeout: 60, handler: nil)
+        waitForExpectations(timeout: 10, handler: nil)
     }
     
     func testCopyButton() {
