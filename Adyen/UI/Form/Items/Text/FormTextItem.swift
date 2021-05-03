@@ -42,3 +42,17 @@ open class FormTextItem: FormValueItem<String, FormTextItemStyle>, ValidatableFo
     }
 
 }
+
+/// :nodoc:
+extension AnyFormItemView {
+
+    /// :nodoc:
+    internal func applyTextDelegateIfNeeded(delegate: FormTextItemViewDelegate) {
+        if let formTextItemView = self as? AnyFormTextItemView {
+            formTextItemView.delegate = delegate
+        }
+
+        self.childItemViews.forEach { $0.applyTextDelegateIfNeeded(delegate: delegate) }
+    }
+    
+}

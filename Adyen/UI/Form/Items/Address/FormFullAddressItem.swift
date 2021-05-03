@@ -8,13 +8,23 @@ import Foundation
 
 /// A full address form, sutable for all countries.
 /// :nodoc:
-public final class FullFormAddressItem: FormValueItem<AddressInfo, AddressStyle>, Observer {
+public final class FullFormAddressItem: FormValueItem<AddressInfo, AddressStyle>, Observer, CompoundFormItem {
+
+    private var items: [FormItem] = []
 
     private let localizationParameters: LocalizationParameters?
+
+    private var observers: [AddressField: Observation] = [:]
 
     private var initialCountry: String
 
     private lazy var validationMessage = localizedString(.validationAlertTitle, localizationParameters)
+
+    private lazy var optionalMessage = localizedString(.fieldTitleOptional, localizationParameters)
+
+    internal weak var delegate: SelfRenderingFormItemDelegate?
+
+    override public var subitems: [FormItem] { items }
 
     /// Initializes the split text item.
     ///
@@ -25,24 +35,12 @@ public final class FullFormAddressItem: FormValueItem<AddressInfo, AddressStyle>
         self.localizationParameters = localizationParameters
         super.init(value: AddressInfo(), style: style)
 
-        self.subitems = [
-            headerItem,
-            countrySelecItem,
-            houseNumberTextItem,
-            streetTextItem,
-            apartmentTextItem,
-            cityTextItem,
-            provinceTextItem,
-            postalCodeTextItem
-        ]
+        update(for: initialCountry)
 
-        bind(countrySelecItem.publisher, at: \.identifier, to: self, at: \.value.country)
-        bind(provinceTextItem.publisher, to: self, at: \.value.stateOrProvince)
-        bind(cityTextItem.publisher, to: self, at: \.value.city)
-        bind(streetTextItem.publisher, to: self, at: \.value.street)
-        bind(houseNumberTextItem.publisher, to: self, at: \.value.houseNumberOrName)
-        bind(postalCodeTextItem.publisher, to: self, at: \.value.postalCode)
-        bind(apartmentTextItem.publisher, to: self, at: \.value.apartment)
+        bind(countrySelectItem.publisher, at: \.identifier, to: self, at: \.value.country)
+        observe(countrySelectItem.publisher, eventHandler: { event in
+            self.update(for: event.element.identifier)
+        })
     }
 
     internal lazy var headerItem: FormItem = {
@@ -52,9 +50,9 @@ public final class FullFormAddressItem: FormValueItem<AddressInfo, AddressStyle>
         return item.withPadding(padding: .init(top: 8, left: 0, bottom: 0, right: 0))
     }()
 
-    internal lazy var countrySelecItem: FormRegionPickerItem = {
+    internal lazy var countrySelectItem: FormRegionPickerItem = {
         let locale = localizationParameters?.locale.map { Locale(identifier: $0) } ?? Locale.current
-        let countries = RegionRepository.localCountryFallback(for: locale as NSLocale)
+        let countries = RegionRepository.localCountryFallback(for: locale as NSLocale).sorted { $0.name < $1.name }
         let defaultCountry = countries.first { $0.identifier == initialCountry } ?? countries[0]
         let item = FormRegionPickerItem(preselectedValue: defaultCountry,
                                         selectableValues: countries,
@@ -64,72 +62,91 @@ public final class FullFormAddressItem: FormValueItem<AddressInfo, AddressStyle>
         return item
     }()
 
-    internal lazy var streetTextItem: FormTextInputItem = {
-        let addressTextItem = FormTextInputItem(style: style.textField)
-        addressTextItem.title = localizedString(.streetFieldTitle, localizationParameters)
-        addressTextItem.placeholder = localizedString(.streetFieldPlaceholder, localizationParameters)
-        addressTextItem.validator = LengthValidator(minimumLength: 2, maximumLength: 70)
-        addressTextItem.validationFailureMessage = validationMessage
-        addressTextItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "address")
+    private func update(for countryCode: String) {
+        let subRegions = RegionRepository.localRegionFallback(for: countryCode, locale: NSLocale.current as NSLocale)
+        let viewModel = AddressViewModel[countryCode]
 
-        return addressTextItem
-    }()
+        items = [headerItem, countrySelectItem]
+        for field in viewModel.schema {
+            switch field {
+            case let .item(fieldType):
+                let item = create(for: fieldType, from: viewModel, subRegions: subRegions)
+                items.append(item)
+            case let .split(lhs, rhs):
+                let item = FormSplitItem(items: create(for: lhs, from: viewModel, subRegions: subRegions),
+                                         create(for: rhs, from: viewModel, subRegions: subRegions),
+                                         style: style)
+                items.append(item)
+            }
+        }
 
-    internal lazy var houseNumberTextItem: FormTextInputItem = {
-        let houseNumberTextItem = FormTextInputItem(style: style.textField)
-        houseNumberTextItem.title = localizedString(.houseNumberFieldTitle, localizationParameters)
-        houseNumberTextItem.placeholder = localizedString(.houseNumberFieldPlaceholder, localizationParameters)
-        houseNumberTextItem.validator = LengthValidator(minimumLength: 1, maximumLength: 30)
-        houseNumberTextItem.validationFailureMessage = validationMessage
-        houseNumberTextItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "houseNumber")
+        delegate?.didUpdateItems(items)
+    }
 
-        return houseNumberTextItem
-    }()
+    private func create(for field: AddressField, from viewModel: AddressViewModel, subRegions: [Region]?) -> FormItem {
+        let item: FormItem
+        if let subRegions = subRegions, field == .stateOrProvince {
+            item = createPickerItem(from: viewModel, subRegions: subRegions)
+        } else {
+            item = createTextItem(for: field, from: viewModel)
+        }
 
-    internal lazy var apartmentTextItem: FormTextInputItem = {
-        let apartmentTextItem = FormTextInputItem(style: style.textField)
-        let optionalText = localizedString(.fieldTitleOptional, localizationParameters)
-        let titleText = localizedString(.apartmentSuiteFieldTitle, localizationParameters)
-        let placeholderText = localizedString(.apartmentSuiteFieldPlaceholder, localizationParameters)
-        apartmentTextItem.title = "\(titleText) \(optionalText)"
-        apartmentTextItem.validator = LengthValidator(minimumLength: 0, maximumLength: 70)
-        apartmentTextItem.placeholder = "\(placeholderText) \(optionalText)"
-        apartmentTextItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "apartmentSuite")
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: field.rawValue)
+        return item
+    }
 
-        return apartmentTextItem
-    }()
+    private func createPickerItem(from viewModel: AddressViewModel, subRegions: [Region]) -> FormItem {
+        let defaultRegion = subRegions.first { $0.identifier == initialCountry } ?? subRegions[0]
+        let item = FormRegionPickerItem(preselectedValue: defaultRegion,
+                                        selectableValues: subRegions,
+                                        style: style.textField)
+        item.title = viewModel.labels[.stateOrProvince].map { localizedString($0, localizationParameters) }
 
-    internal lazy var cityTextItem: FormTextInputItem = {
-        let cityTextItem = FormTextInputItem(style: style.textField)
-        cityTextItem.title = localizedString(.cityFieldTitle, localizationParameters)
-        cityTextItem.placeholder = localizedString(.cityFieldPlaceholder, localizationParameters)
-        cityTextItem.validator = LengthValidator(minimumLength: 2, maximumLength: 70)
-        cityTextItem.validationFailureMessage = validationMessage
-        cityTextItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "city")
+        bind(item: item, to: .stateOrProvince)
+        return item
+    }
 
-        return cityTextItem
-    }()
+    private func createTextItem(for field: AddressField, from viewModel: AddressViewModel) -> FormItem {
+        let item = FormTextInputItem(style: style.textField)
+        item.validationFailureMessage = validationMessage
+        item.title = viewModel.labels[field].map { localizedString($0, localizationParameters) }
+        item.placeholder = viewModel.placeholder[field].map { localizedString($0, localizationParameters) }
 
-    internal lazy var provinceTextItem: FormTextInputItem = {
-        let cityTextItem = FormTextInputItem(style: style.textField)
-        cityTextItem.title = localizedString(.provinceOrTerritoryFieldTitle, localizationParameters)
-        cityTextItem.placeholder = localizedString(.provinceOrTerritoryFieldPlaceholder, localizationParameters)
-        cityTextItem.validator = LengthValidator(minimumLength: 2, maximumLength: 50)
-        cityTextItem.validationFailureMessage = validationMessage
-        cityTextItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "provinceOrTerritory")
+        if viewModel.optionalFields.contains(field) {
+            if let title = item.title {
+                item.title = title + " \(optionalMessage)"
+            }
+        } else {
+            item.validator = LengthValidator(minimumLength: 2, maximumLength: 70)
+        }
 
-        return cityTextItem
-    }()
+        bind(item: item, to: field)
+        return item
+    }
 
-    internal lazy var postalCodeTextItem: FormTextInputItem = {
-        let cityTextItem = FormTextInputItem(style: style.textField)
-        cityTextItem.title = localizedString(.postalCodeFieldTitle, localizationParameters)
-        cityTextItem.placeholder = localizedString(.postalCodeFieldPlaceholder, localizationParameters)
-        cityTextItem.validator = LengthValidator(minimumLength: 2, maximumLength: 30)
-        cityTextItem.validationFailureMessage = validationMessage
-        cityTextItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "postalCode")
-        return cityTextItem
-    }()
+    private func bind(item: FormRegionPickerItem, to field: AddressField) {
+        observers[field].map(remove)
+        observers[field] = bind(item.publisher, at: \.identifier, to: self, at: \.value.stateOrProvince)
+    }
+
+    private func bind(item: FormTextInputItem, to field: AddressField) {
+        observers[field].map(remove)
+
+        switch field {
+        case .street:
+            observers[.street] = bind(item.publisher, to: self, at: \.value.street)
+        case .houseNumberOrName:
+            observers[.houseNumberOrName] = bind(item.publisher, to: self, at: \.value.houseNumberOrName)
+        case .appartment:
+            observers[.appartment] = bind(item.publisher, to: self, at: \.value.apartment)
+        case .postalCode:
+            observers[.postalCode] = bind(item.publisher, to: self, at: \.value.postalCode)
+        case .city:
+            observers[.city] = bind(item.publisher, to: self, at: \.value.city)
+        case .stateOrProvince:
+            observers[.stateOrProvince] = bind(item.publisher, to: self, at: \.value.stateOrProvince)
+        }
+    }
 
     /// :nodoc:
     override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {

@@ -8,7 +8,7 @@ import UIKit
 
 /// A view representing a form item.
 /// :nodoc:
-open class FormItemView<ItemType: FormItem>: UIView, AnyFormItemView {
+open class FormItemView<ItemType: FormItem>: UIView, AnyFormItemView, Observer {
     
     /// The item represented by the view.
     public let item: ItemType

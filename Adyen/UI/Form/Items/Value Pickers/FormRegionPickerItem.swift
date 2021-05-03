@@ -21,12 +21,6 @@ public final class FormRegionPickerItem: BaseFormPickerItem<Region> {
                    style: style)
     }
 
-    public func updateData(_ regions: [Region]) {
-        assert(!regions.isEmpty)
-        selectableValues = regions.map(Self.pickerElement)
-        value = selectableValues[0]
-    }
-
     // :nodoc:
     override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)

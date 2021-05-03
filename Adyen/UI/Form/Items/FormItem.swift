@@ -54,3 +54,16 @@ public protocol ValidatableFormItem: FormItem {
 /// A form item that requires keyboard input or otherwise custom input view.
 /// :nodoc:
 public protocol InputViewRequiringFormItem: FormItem {}
+
+/// Delegate to the view all events that requireschange in corespondent FormView changes.
+/// :nodoc:
+internal protocol SelfRenderingFormItemDelegate: AnyObject {
+
+    /// Notify delegate that items have changed.
+    func didUpdateItems(_ items: [FormItem])
+
+}
+
+internal protocol CompoundFormItem {
+    var delegate: SelfRenderingFormItemDelegate? { get set }
+}

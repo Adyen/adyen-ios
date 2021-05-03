@@ -10,14 +10,19 @@ import UIKit
 /// A view representing a vertical stack of items.
 internal final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormItemType> {
 
-    private let views: [AnyFormItemView]
+    private var views: [AnyFormItemView] = []
 
     /// Initializes the split item view.
     ///
     /// - Parameter item: The item represented by the view.
     internal required init(item: FormItemType) {
-        views = item.subitems.map(FormVerticalStackItemView.build)
         super.init(item: item)
+
+        views = item.subitems.map(FormVerticalStackItemView.build)
+
+        if var compound = item as? CompoundFormItem {
+            compound.delegate = self
+        }
 
         addSubview(stackView)
         stackView.adyen.anchor(inside: self)
@@ -42,6 +47,18 @@ internal final class FormVerticalStackItemView<FormItemType: FormItem>: FormItem
         let itemView = FormItemViewBuilder.build(item)
         itemView.preservesSuperviewLayoutMargins = true
         return itemView
+    }
+
+}
+
+extension FormVerticalStackItemView: SelfRenderingFormItemDelegate {
+
+    internal func didUpdateItems(_ items: [FormItem]) {
+        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        views = items.map(FormVerticalStackItemView.build)
+        views.forEach(stackView.addArrangedSubview)
+        stackView.setNeedsLayout()
+        views.first { $0.canBecomeFirstResponder }?.becomeFirstResponder()
     }
 
 }

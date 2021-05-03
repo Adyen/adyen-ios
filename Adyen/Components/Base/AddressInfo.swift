@@ -54,6 +54,7 @@ public struct AddressInfo: Equatable, Encodable {
     /// Will be included into houseNumberOrName.
     public var apartment: String?
 
+    /// Encodes this address info into the given encoder.
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 

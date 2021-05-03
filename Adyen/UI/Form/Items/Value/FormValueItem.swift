@@ -24,7 +24,7 @@ public protocol FormValueItemStyle: TintableStyle {
 open class FormValueItem<ValueType: Equatable, StyleType: FormValueItemStyle>: FormItem {
 
     /// :nodoc:
-    public var subitems: [FormItem] = []
+    public private(set) var subitems: [FormItem]
 
     /// :nodoc:
     public var identifier: String?
@@ -48,6 +48,7 @@ open class FormValueItem<ValueType: Equatable, StyleType: FormValueItemStyle>: F
     internal init(value: ValueType, style: StyleType) {
         self.publisher = Observable(value)
         self.style = style
+        self.subitems = []
     }
 
     open func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
