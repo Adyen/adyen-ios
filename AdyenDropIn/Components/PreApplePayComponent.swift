@@ -6,16 +6,15 @@
 
 import UIKit
 import Adyen
-import AdyenComponents
+#if canImport(AdyenComponents)
+    import AdyenComponents
+#endif
 
 // :nodoc:
 internal final class PreApplePayComponent: Localizable, PresentableComponent, FinalizableComponent, PaymentComponent {
     
     /// :nodoc:
     internal let paymentMethod: PaymentMethod
-    
-    /// :nodoc
-    private let applePayConfiguration: DropInComponent.ApplePayConfiguration
     
     /// :nodoc:
     private let payment: Payment?
@@ -30,7 +29,7 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
     internal weak var presentationDelegate: PresentationDelegate?
     
     /// :nodoc:
-    fileprivate var applePayComponent: ApplePayComponent?
+    fileprivate let applePayComponent: ApplePayComponent
     
     /// :nodoc:
     internal lazy var viewController: UIViewController = {
@@ -48,15 +47,17 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
     internal let requiresModalPresentation: Bool = true
     
     /// :nodoc:
-    internal init(payment: Payment?, paymentMethod: PaymentMethod, configuration: DropInComponent.ApplePayConfiguration) {
-        self.payment = payment
-        self.paymentMethod = paymentMethod
-        self.applePayConfiguration = configuration
+    internal init (configuration: ApplePayComponent.Configuration) throws {
+        self.payment = configuration.payment
+        self.paymentMethod = configuration.paymentMethod
+        
+        self.applePayComponent = try ApplePayComponent(configuration: configuration)
+        self.applePayComponent.delegate = self
     }
     
     /// :nodoc
     internal func didFinalize(with success: Bool) {
-        applePayComponent?.didFinalize(with: success)
+        applePayComponent.didFinalize(with: success)
     }
     
     /// :nodoc:
@@ -74,7 +75,6 @@ extension PreApplePayComponent: PaymentComponentDelegate {
     
     internal func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         delegate?.didSubmit(data, from: self)
-        viewController.navigationController?.popViewController(animated: true)
     }
     
     internal func didFail(with error: Error, from component: PaymentComponent) {
@@ -83,48 +83,11 @@ extension PreApplePayComponent: PaymentComponentDelegate {
     
 }
 
-extension PreApplePayComponent: Cancellable {
-    
-    /// :nodoc:
-    internal func didCancel() {
-        // Hide the component if the cancel event was initiated from ApplePayComponent
-        if applePayComponent != nil {
-            applePayComponent = nil
-            viewController.navigationController?.popViewController(animated: true)
-        }
-    }
-    
-}
-
 extension PreApplePayComponent: PreApplePayViewDelegate {
     
     /// :nodoc:
     internal func pay() {
-        guard let payment = payment else {
-            adyenPrint("Failed to instantiate ApplePayComponent because payment is missing")
-            return
-        }
-        
-        guard let paymentMethod = paymentMethod as? ApplePayPaymentMethod else {
-            adyenPrint("Failed to instantiate ApplePayComponent because paymentMethod is not correct")
-            return
-        }
-    
-        let configuration = ApplePayComponent.Configuration(
-            payment: payment,
-            paymentMethod: paymentMethod,
-            summaryItems: applePayConfiguration.summaryItems,
-            merchantIdentifier: applePayConfiguration.merchantIdentifier,
-            requiredBillingContactFields: applePayConfiguration.requiredBillingContactFields,
-            requiredShippingContactFields: applePayConfiguration.requiredShippingContactFields)
-        
-        do {
-            let component = try ApplePayComponent(configuration: configuration)
-            component.delegate = self
-            applePayComponent = component
-            presentationDelegate?.present(component: component)
-        } catch {
-            adyenPrint("Failed to instantiate ApplePayComponent because of error: \(error.localizedDescription)")
-        }
+        presentationDelegate?.present(component: applePayComponent)
     }
+    
 }

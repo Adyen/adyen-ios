@@ -110,12 +110,25 @@ internal final class ComponentManager {
             return nil
         }
         
-        let component = PreApplePayComponent(
-            payment: configuration.payment,
-            paymentMethod: paymentMethod,
-            configuration: applePay)
+        guard let payment = configuration.payment else {
+            adyenPrint("Failed to instantiate ApplePayComponent because payment is missing")
+            return nil
+        }
         
-        return component
+        let configuration = ApplePayComponent.Configuration(
+            payment: payment,
+            paymentMethod: paymentMethod,
+            summaryItems: applePay.summaryItems,
+            merchantIdentifier: applePay.merchantIdentifier,
+            requiredBillingContactFields: applePay.requiredBillingContactFields,
+            requiredShippingContactFields: applePay.requiredShippingContactFields)
+        
+        do {
+            return try PreApplePayComponent(configuration: configuration)
+        } catch {
+            adyenPrint("Failed to instantiate ApplePayComponent because of error: \(error.localizedDescription)")
+            return nil
+        }
     }
     
     private func createSEPAComponent(_ paymentMethod: SEPADirectDebitPaymentMethod) -> SEPADirectDebitComponent {
