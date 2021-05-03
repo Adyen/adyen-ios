@@ -110,8 +110,11 @@ internal final class QRCodeView: UIView, Localizable, Observer {
     private lazy var logo: NetworkImageView = {
         let logo = NetworkImageView()
         let logoSize = CGSize(width: 74.0, height: 48.0)
+        logo.adyen.round(using: model.style.logoCornerRounding)
+        logo.clipsToBounds = true
         logo.widthAnchor.constraint(equalToConstant: logoSize.width).isActive = true
         logo.heightAnchor.constraint(equalToConstant: logoSize.height).isActive = true
+        logo.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "logo")
         
         logo.imageURL = model.logoUrl
         

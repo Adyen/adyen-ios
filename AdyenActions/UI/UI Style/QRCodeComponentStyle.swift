@@ -28,6 +28,9 @@ public struct QRCodeComponentStyle: ViewStyle {
     
     /// The expiration label style.
     public var expirationLabel = TextStyle(font: .preferredFont(forTextStyle: .footnote), color: UIColor.Adyen.componentSecondaryLabel)
+    
+    /// The corner rounding for the logo
+    public var logoCornerRounding: CornerRounding = .fixed(5)
         
     /// :nodoc:
     public var backgroundColor: UIColor = UIColor.Adyen.componentBackground
