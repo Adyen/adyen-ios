@@ -86,10 +86,10 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     
     internal lazy var nameItem: FormTextInputItem = {
         let nameItem = FormTextInputItem(style: style.textField)
-        nameItem.title = ADYLocalizedString("adyen.sepa.nameItem.title", localizationParameters)
-        nameItem.placeholder = ADYLocalizedString("adyen.sepa.nameItem.placeholder", localizationParameters)
+        nameItem.title = localizedString(.sepaNameItemTitle, localizationParameters)
+        nameItem.placeholder = localizedString(.sepaNameItemPlaceholder, localizationParameters)
         nameItem.validator = LengthValidator(minimumLength: 2)
-        nameItem.validationFailureMessage = ADYLocalizedString("adyen.sepa.nameItem.invalid", localizationParameters)
+        nameItem.validationFailureMessage = localizedString(.sepaNameItemInvalid, localizationParameters)
         nameItem.autocapitalizationType = .words
         nameItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "nameItem")
         return nameItem
@@ -105,11 +105,11 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
         }
         
         let ibanItem = FormTextInputItem(style: style.textField)
-        ibanItem.title = ADYLocalizedString("adyen.sepa.ibanItem.title", localizationParameters)
+        ibanItem.title = localizedString(.sepaIbanItemTitle, localizationParameters)
         ibanItem.placeholder = localizedPlaceholder()
         ibanItem.formatter = IBANFormatter()
         ibanItem.validator = IBANValidator()
-        ibanItem.validationFailureMessage = ADYLocalizedString("adyen.sepa.ibanItem.invalid", localizationParameters)
+        ibanItem.validationFailureMessage = localizedString(.sepaIbanItemInvalid, localizationParameters)
         ibanItem.autocapitalizationType = .allCharacters
         ibanItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "ibanItem")
         return ibanItem
@@ -118,7 +118,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     internal lazy var button: FormButtonItem = {
         let item = FormButtonItem(style: style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
-        item.title = ADYLocalizedSubmitButtonTitle(with: payment?.amount,
+        item.title = localizedSubmitButtonTitle(with: payment?.amount,
                                                    style: .immediate,
                                                    localizationParameters)
         item.buttonSelectionHandler = { [weak self] in

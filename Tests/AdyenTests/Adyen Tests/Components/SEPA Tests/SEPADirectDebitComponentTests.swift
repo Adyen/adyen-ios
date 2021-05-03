@@ -27,14 +27,14 @@ class SEPADirectDebitComponentTests: XCTestCase {
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         
-        XCTAssertEqual(sut.nameItem.title, ADYLocalizedString("adyen.sepa.nameItem.title", sut.localizationParameters))
-        XCTAssertEqual(sut.nameItem.placeholder, ADYLocalizedString("adyen.sepa.nameItem.placeholder", sut.localizationParameters))
-        XCTAssertEqual(sut.nameItem.validationFailureMessage, ADYLocalizedString("adyen.sepa.nameItem.invalid", sut.localizationParameters))
+        XCTAssertEqual(sut.nameItem.title, localizedString(.sepaNameItemTitle, sut.localizationParameters))
+        XCTAssertEqual(sut.nameItem.placeholder, localizedString(.sepaNameItemPlaceholder, sut.localizationParameters))
+        XCTAssertEqual(sut.nameItem.validationFailureMessage, localizedString(.sepaNameItemInvalid, sut.localizationParameters))
         
-        XCTAssertEqual(sut.ibanItem.title, ADYLocalizedString("adyen.sepa.ibanItem.title", sut.localizationParameters))
-        XCTAssertEqual(sut.ibanItem.validationFailureMessage, ADYLocalizedString("adyen.sepa.ibanItem.invalid", sut.localizationParameters))
+        XCTAssertEqual(sut.ibanItem.title, localizedString(.sepaIbanItemTitle, sut.localizationParameters))
+        XCTAssertEqual(sut.ibanItem.validationFailureMessage, localizedString(.sepaIbanItemInvalid, sut.localizationParameters))
 
-        XCTAssertEqual(sut.button.title, ADYLocalizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
+        XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
     }
 
     func testLocalizationWithZeroPayment() {
@@ -43,16 +43,16 @@ class SEPADirectDebitComponentTests: XCTestCase {
         let sut = SEPADirectDebitComponent(paymentMethod: method)
         sut.payment = payment
 
-        XCTAssertEqual(sut.nameItem.title, ADYLocalizedString("adyen.sepa.nameItem.title", sut.localizationParameters))
-        XCTAssertEqual(sut.nameItem.placeholder, ADYLocalizedString("adyen.sepa.nameItem.placeholder", sut.localizationParameters))
-        XCTAssertEqual(sut.nameItem.validationFailureMessage, ADYLocalizedString("adyen.sepa.nameItem.invalid", sut.localizationParameters))
+        XCTAssertEqual(sut.nameItem.title, localizedString(.sepaNameItemTitle, sut.localizationParameters))
+        XCTAssertEqual(sut.nameItem.placeholder, localizedString(.sepaNameItemPlaceholder, sut.localizationParameters))
+        XCTAssertEqual(sut.nameItem.validationFailureMessage, localizedString(.sepaNameItemInvalid, sut.localizationParameters))
 
-        XCTAssertEqual(sut.ibanItem.title, ADYLocalizedString("adyen.sepa.ibanItem.title", sut.localizationParameters))
-        XCTAssertEqual(sut.ibanItem.validationFailureMessage, ADYLocalizedString("adyen.sepa.ibanItem.invalid", sut.localizationParameters))
+        XCTAssertEqual(sut.ibanItem.title, localizedString(.sepaIbanItemTitle, sut.localizationParameters))
+        XCTAssertEqual(sut.ibanItem.validationFailureMessage, localizedString(.sepaIbanItemInvalid, sut.localizationParameters))
 
-        XCTAssertEqual(sut.button.title, ADYLocalizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
+        XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
 
-        XCTAssertEqual(sut.button.title, "Confirm preauthorization")
+        XCTAssertEqual(sut.button.title, localizedString(.confirmPreauthorization, sut.localizationParameters))
     }
     
     func testLocalizationWithCustomKeySeparator() {
@@ -62,14 +62,14 @@ class SEPADirectDebitComponentTests: XCTestCase {
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         
-        XCTAssertEqual(sut.nameItem.title, ADYLocalizedString("adyen_sepa_nameItem_title", sut.localizationParameters))
-        XCTAssertEqual(sut.nameItem.placeholder, ADYLocalizedString("adyen_sepa_nameItem_placeholder", sut.localizationParameters))
-        XCTAssertEqual(sut.nameItem.validationFailureMessage, ADYLocalizedString("adyen_sepa_nameItem_invalid", sut.localizationParameters))
+        XCTAssertEqual(sut.nameItem.title, localizedString(LocalizationKey(key: "adyen_sepa_nameItem_title"), sut.localizationParameters))
+        XCTAssertEqual(sut.nameItem.placeholder, localizedString(LocalizationKey(key: "adyen_sepa_nameItem_placeholder"), sut.localizationParameters))
+        XCTAssertEqual(sut.nameItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_sepa_nameItem_invalid"), sut.localizationParameters))
         
-        XCTAssertEqual(sut.ibanItem.title, ADYLocalizedString("adyen_sepa_ibanItem_title", sut.localizationParameters))
-        XCTAssertEqual(sut.ibanItem.validationFailureMessage, ADYLocalizedString("adyen_sepa_ibanItem_invalid", sut.localizationParameters))
+        XCTAssertEqual(sut.ibanItem.title, localizedString(LocalizationKey(key: "adyen_sepa_ibanItem_title"), sut.localizationParameters))
+        XCTAssertEqual(sut.ibanItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_sepa_ibanItem_invalid"), sut.localizationParameters))
         
-        XCTAssertEqual(sut.button.title, ADYLocalizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
+        XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
     }
     
     func testUIConfiguration() {

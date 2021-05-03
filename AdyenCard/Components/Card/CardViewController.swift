@@ -75,8 +75,13 @@ internal class CardViewController: FormViewController {
             append(storeDetailsItem)
         }
 
-        if configuration.billingAddressMode == .full {
-            append(addressVerificationItem)
+        switch configuration.billingAddressMode {
+        case .full:
+            append(billingAddressItem)
+        case .postalCode:
+            append(postalCodeItem)
+        case .none:
+            break
         }
 
         append(button.withPadding(padding: .init(top: 8, left: 0, bottom: -16, right: 0)))
@@ -97,10 +102,14 @@ internal class CardViewController: FormViewController {
     }
 
     internal var address: AddressInfo? {
-        if configuration.billingAddressMode == .none {
+        switch configuration.billingAddressMode {
+        case .full:
+            return billingAddressItem.value
+        case .postalCode:
+            return AddressInfo(postalCode: postalCodeItem.value)
+        case .none:
             return nil
         }
-        return addressVerificationItem.value
     }
 
     internal var storePayment: Bool {
@@ -132,13 +141,23 @@ internal class CardViewController: FormViewController {
 
     // MARK: Items
 
-    internal lazy var addressVerificationItem: FullFormAddressItem = {
+    internal lazy var billingAddressItem: FullFormAddressItem = {
         let item = FullFormAddressItem(initialCountry: defaultCountryCode,
                                        style: formStyle.addressStyle,
                                        localizationParameters: localizationParameters)
         item.style.backgroundColor = UIColor.Adyen.lightGray
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "addressVerification")
         return item
+    }()
+
+    internal lazy var postalCodeItem: FormTextItem = {
+        let zipCodeItem = FormTextInputItem(style: formStyle.textField)
+        zipCodeItem.title = localizedString(.postalCodeFieldTitle, localizationParameters)
+        zipCodeItem.placeholder = localizedString(.postalCodeFieldPlaceholder, localizationParameters)
+        zipCodeItem.validator = LengthValidator(minimumLength: 2, maximumLength: 30)
+        zipCodeItem.validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
+        zipCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "postalCodeItem")
+        return zipCodeItem
     }()
 
     internal lazy var numberItem: FormCardNumberItem = {
@@ -153,11 +172,11 @@ internal class CardViewController: FormViewController {
 
     internal lazy var expiryDateItem: FormTextInputItem = {
         let expiryDateItem = FormTextInputItem(style: formStyle.textField)
-        expiryDateItem.title = ADYLocalizedString("adyen.card.expiryItem.title", localizationParameters)
-        expiryDateItem.placeholder = ADYLocalizedString("adyen.card.expiryItem.placeholder", localizationParameters)
+        expiryDateItem.title = localizedString(.cardExpiryItemTitle, localizationParameters)
+        expiryDateItem.placeholder = localizedString(.cardExpiryItemPlaceholder, localizationParameters)
         expiryDateItem.formatter = CardExpiryDateFormatter()
         expiryDateItem.validator = CardExpiryDateValidator()
-        expiryDateItem.validationFailureMessage = ADYLocalizedString("adyen.card.expiryItem.invalid", localizationParameters)
+        expiryDateItem.validationFailureMessage = localizedString(.cardExpiryItemInvalid, localizationParameters)
         expiryDateItem.keyboardType = .numberPad
         expiryDateItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "expiryDateItem")
 
@@ -174,10 +193,10 @@ internal class CardViewController: FormViewController {
 
     internal lazy var holderNameItem: FormTextInputItem = {
         let holderNameItem = FormTextInputItem(style: formStyle.textField)
-        holderNameItem.title = ADYLocalizedString("adyen.card.nameItem.title", localizationParameters)
-        holderNameItem.placeholder = ADYLocalizedString("adyen.card.nameItem.placeholder", localizationParameters)
+        holderNameItem.title = localizedString(.cardNameItemTitle, localizationParameters)
+        holderNameItem.placeholder = localizedString(.cardNameItemPlaceholder, localizationParameters)
         holderNameItem.validator = LengthValidator(minimumLength: 2)
-        holderNameItem.validationFailureMessage = ADYLocalizedString("adyen.card.nameItem.invalid", localizationParameters)
+        holderNameItem.validationFailureMessage = localizedString(.cardNameItemInvalid, localizationParameters)
         holderNameItem.autocapitalizationType = .words
         holderNameItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "holderNameItem")
 
@@ -186,7 +205,7 @@ internal class CardViewController: FormViewController {
 
     internal lazy var storeDetailsItem: FormSwitchItem = {
         let storeDetailsItem = FormSwitchItem(style: formStyle.switch)
-        storeDetailsItem.title = ADYLocalizedString("adyen.card.storeDetailsButton", localizationParameters)
+        storeDetailsItem.title = localizedString(.cardStoreDetailsButton, localizationParameters)
         storeDetailsItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "storeDetailsItem")
 
         return storeDetailsItem
@@ -195,7 +214,7 @@ internal class CardViewController: FormViewController {
     internal lazy var button: FormButtonItem = {
         let item = FormButtonItem(style: formStyle.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "payButtonItem")
-        item.title = ADYLocalizedSubmitButtonTitle(with: payment?.amount,
+        item.title = localizedSubmitButtonTitle(with: payment?.amount,
                                                    style: .immediate,
                                                    localizationParameters)
         item.buttonSelectionHandler = { [weak self] in

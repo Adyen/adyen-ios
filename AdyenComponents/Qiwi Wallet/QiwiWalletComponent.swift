@@ -26,7 +26,7 @@ public final class QiwiWalletComponent: AbstractPersonalInformationComponent {
     }
 
     override public func submitButtonTitle() -> String {
-        ADYLocalizedString("adyen.continueTo", localizationParameters, paymentMethod.name)
+        localizedString(.continueTo, localizationParameters, paymentMethod.name)
     }
 
     override public func getPhoneExtensions() -> [PhoneExtension] { qiwiWalletPaymentMethod.phoneExtensions

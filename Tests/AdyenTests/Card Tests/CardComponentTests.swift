@@ -58,21 +58,21 @@ class CardComponentTests: XCTestCase {
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         
-        XCTAssertEqual(sut.cardViewController.expiryDateItem.title, ADYLocalizedString("adyen.card.expiryItem.title", nil))
-        XCTAssertEqual(sut.cardViewController.expiryDateItem.placeholder, ADYLocalizedString("adyen.card.expiryItem.placeholder", sut.localizationParameters))
-        XCTAssertEqual(sut.cardViewController.expiryDateItem.validationFailureMessage, ADYLocalizedString("adyen.card.expiryItem.invalid", sut.localizationParameters))
+        XCTAssertEqual(sut.cardViewController.expiryDateItem.title, localizedString(.cardExpiryItemTitle, nil))
+        XCTAssertEqual(sut.cardViewController.expiryDateItem.placeholder, localizedString(.cardExpiryItemPlaceholder, sut.localizationParameters))
+        XCTAssertEqual(sut.cardViewController.expiryDateItem.validationFailureMessage, localizedString(.cardExpiryItemInvalid, sut.localizationParameters))
         
-        XCTAssertEqual(sut.cardViewController.securityCodeItem.title, ADYLocalizedString("adyen.card.cvcItem.title", sut.localizationParameters))
+        XCTAssertEqual(sut.cardViewController.securityCodeItem.title, localizedString(.cardCvcItemTitle, sut.localizationParameters))
         XCTAssertNil(sut.cardViewController.securityCodeItem.placeholder)
-        XCTAssertEqual(sut.cardViewController.securityCodeItem.validationFailureMessage, ADYLocalizedString("adyen.card.cvcItem.invalid", sut.localizationParameters))
+        XCTAssertEqual(sut.cardViewController.securityCodeItem.validationFailureMessage, localizedString(.cardCvcItemInvalid, sut.localizationParameters))
         
-        XCTAssertEqual(sut.cardViewController.holderNameItem.title, ADYLocalizedString("adyen.card.nameItem.title", sut.localizationParameters))
-        XCTAssertEqual(sut.cardViewController.holderNameItem.placeholder, ADYLocalizedString("adyen.card.nameItem.placeholder", sut.localizationParameters))
-        XCTAssertEqual(sut.cardViewController.holderNameItem.validationFailureMessage, ADYLocalizedString("adyen.card.nameItem.invalid", sut.localizationParameters))
+        XCTAssertEqual(sut.cardViewController.holderNameItem.title, localizedString(.cardNameItemTitle, sut.localizationParameters))
+        XCTAssertEqual(sut.cardViewController.holderNameItem.placeholder, localizedString(.cardNameItemPlaceholder, sut.localizationParameters))
+        XCTAssertEqual(sut.cardViewController.holderNameItem.validationFailureMessage, localizedString(.cardNameItemInvalid, sut.localizationParameters))
         
-        XCTAssertEqual(sut.cardViewController.storeDetailsItem.title, ADYLocalizedString("adyen.card.storeDetailsButton", sut.localizationParameters))
+        XCTAssertEqual(sut.cardViewController.storeDetailsItem.title, localizedString(.cardStoreDetailsButton, sut.localizationParameters))
         
-        XCTAssertEqual(sut.cardViewController.button.title, ADYLocalizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
+        XCTAssertEqual(sut.cardViewController.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
     }
     
     func testLocalizationWithCustomKeySeparator() {
@@ -86,21 +86,21 @@ class CardComponentTests: XCTestCase {
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         
-        XCTAssertEqual(sut.cardViewController.expiryDateItem.title, ADYLocalizedString("adyen.card.expiryItem.title", nil))
-        XCTAssertEqual(sut.cardViewController.expiryDateItem.placeholder, ADYLocalizedString("adyen_card_expiryItem_placeholder", sut.localizationParameters))
-        XCTAssertEqual(sut.cardViewController.expiryDateItem.validationFailureMessage, ADYLocalizedString("adyen_card_expiryItem_invalid", sut.localizationParameters))
+        XCTAssertEqual(sut.cardViewController.expiryDateItem.title, localizedString(.cardExpiryItemTitle, nil))
+        XCTAssertEqual(sut.cardViewController.expiryDateItem.placeholder, localizedString(LocalizationKey(key: "adyen_card_expiryItem_placeholder"), sut.localizationParameters))
+        XCTAssertEqual(sut.cardViewController.expiryDateItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_card_expiryItem_invalid"), sut.localizationParameters))
         
-        XCTAssertEqual(sut.cardViewController.securityCodeItem.title, ADYLocalizedString("adyen_card_cvcItem_title", sut.localizationParameters))
+        XCTAssertEqual(sut.cardViewController.securityCodeItem.title, localizedString(LocalizationKey(key: "adyen_card_cvcItem_title"), sut.localizationParameters))
         XCTAssertNil(sut.cardViewController.securityCodeItem.placeholder)
-        XCTAssertEqual(sut.cardViewController.securityCodeItem.validationFailureMessage, ADYLocalizedString("adyen_card_cvcItem_invalid", sut.localizationParameters))
+        XCTAssertEqual(sut.cardViewController.securityCodeItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_card_cvcItem_invalid"), sut.localizationParameters))
         
-        XCTAssertEqual(sut.cardViewController.holderNameItem.title, ADYLocalizedString("adyen_card_nameItem_title", sut.localizationParameters))
-        XCTAssertEqual(sut.cardViewController.holderNameItem.placeholder, ADYLocalizedString("adyen_card_nameItem_placeholder", sut.localizationParameters))
-        XCTAssertEqual(sut.cardViewController.holderNameItem.validationFailureMessage, ADYLocalizedString("adyen_card_nameItem_invalid", sut.localizationParameters))
+        XCTAssertEqual(sut.cardViewController.holderNameItem.title, localizedString(LocalizationKey(key: "adyen_card_nameItem_title"), sut.localizationParameters))
+        XCTAssertEqual(sut.cardViewController.holderNameItem.placeholder, localizedString(LocalizationKey(key: "adyen_card_nameItem_placeholder"), sut.localizationParameters))
+        XCTAssertEqual(sut.cardViewController.holderNameItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_card_nameItem_invalid"), sut.localizationParameters))
         
-        XCTAssertEqual(sut.cardViewController.storeDetailsItem.title, ADYLocalizedString("adyen_card_storeDetailsButton", sut.localizationParameters))
+        XCTAssertEqual(sut.cardViewController.storeDetailsItem.title, localizedString(LocalizationKey(key: "adyen_card_storeDetailsButton"), sut.localizationParameters))
         
-        XCTAssertEqual(sut.cardViewController.button.title, ADYLocalizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
+        XCTAssertEqual(sut.cardViewController.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
     }
     
     func testUIConfiguration() {
@@ -678,12 +678,13 @@ class CardComponentTests: XCTestCase {
 
             XCTAssertEqual(data.storePaymentMethod, true)
 
-            XCTAssertEqual(details.billingAddress?.apartment, "Appartment")
-            XCTAssertEqual(details.billingAddress?.houseNumberOrName, "House Number")
-            XCTAssertEqual(details.billingAddress?.street, "Address")
-            XCTAssertEqual(details.billingAddress?.stateOrProvince, "Province")
-            XCTAssertEqual(details.billingAddress?.city, "City")
-            XCTAssertEqual(details.billingAddress?.country, "US")
+            XCTAssertEqual(data.billingAddress?.apartment, "Appartment")
+            XCTAssertEqual(data.billingAddress?.houseNumberOrName, "House Number")
+            XCTAssertEqual(data.billingAddress?.street, "Address")
+            XCTAssertEqual(data.billingAddress?.stateOrProvince, "Province")
+            XCTAssertEqual(data.billingAddress?.city, "City")
+            XCTAssertEqual(data.billingAddress?.country, "US")
+            XCTAssertEqual(data.billingAddress?.postalCode, "Postal Code")
 
             sut.stopLoadingIfNeeded()
             delegateExpectation.fulfill()
@@ -812,6 +813,64 @@ class CardComponentTests: XCTestCase {
         }
 
         wait(for: [expectation], timeout: 10)
+    }
+
+    func testPostalCode() {
+        let cardPublicKey = Dummy.dummyPublicKey
+        let cardPublicKeyProvider = CardPublicKeyProvider(cardPublicKey: cardPublicKey)
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        var config = CardComponent.Configuration()
+        config.billingAddressMode = .postalCode
+        let sut = CardComponent(paymentMethod: method,
+                                configuration: config,
+                                clientKey: Dummy.dummyClientKey)
+        sut.cardPublicKeyProvider = cardPublicKeyProvider
+        sut.payment = .init(amount: Payment.Amount(value: 100, currencyCode: "USD"), countryCode: "US")
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        let delegate = PaymentComponentDelegateMock()
+        sut.delegate = delegate
+
+        let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
+        delegate.onDidFail = { error, component in XCTFail("should not fail") }
+        delegate.onDidSubmit = { data, component in
+            XCTAssertTrue(component === sut)
+            XCTAssertTrue(data.paymentMethod is CardDetails)
+
+            XCTAssertNil(data.billingAddress?.apartment)
+            XCTAssertNil(data.billingAddress?.houseNumberOrName)
+            XCTAssertNil(data.billingAddress?.street)
+            XCTAssertNil(data.billingAddress?.stateOrProvince)
+            XCTAssertNil(data.billingAddress?.city)
+            XCTAssertNil(data.billingAddress?.country)
+            XCTAssertEqual(data.billingAddress?.postalCode, "12345")
+
+            sut.stopLoadingIfNeeded()
+            delegateExpectation.fulfill()
+        }
+
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+
+            let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
+            let expiryDateItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
+            let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
+            let postalCodeItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.postalCodeItem")
+            XCTAssertEqual(postalCodeItemView!.titleLabel.text, "Postal code")
+            XCTAssertTrue(postalCodeItemView!.alertLabel.isHidden)
+
+            self.populate(textItemView: cardNumberItemView!, with: "4917 6100 0000 0000")
+            self.populate(textItemView: expiryDateItemView!, with: "03/30")
+            self.populate(textItemView: securityCodeItemView!, with: "737")
+            self.populate(textItemView: postalCodeItemView!, with: "12345")
+
+            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
+            payButtonItemViewButton?.sendActions(for: .touchUpInside)
+
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 30, handler: nil)
     }
     
     private func focus<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U) {

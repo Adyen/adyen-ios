@@ -18,13 +18,13 @@ internal final class NameFormItemInjector: FormItemInjector, Localizable {
     internal var identifier: String
 
     /// :nodoc:
-    internal var localizationKey: String
+    internal var localizationKey: LocalizationKey
 
     /// :nodoc:
     internal lazy var item: FormTextInputItem = {
         let item = FormTextInputItem(style: style)
-        item.title = ADYLocalizedString(localizationKey, localizationParameters)
-        item.placeholder = ADYLocalizedString(localizationKey, localizationParameters)
+        item.title = localizedString(localizationKey, localizationParameters)
+        item.placeholder = localizedString(localizationKey, localizationParameters)
         item.validator = LengthValidator(minimumLength: 1, maximumLength: 50)
         item.validationFailureMessage = nil
         item.autocapitalizationType = .words
@@ -32,7 +32,7 @@ internal final class NameFormItemInjector: FormItemInjector, Localizable {
         return item
     }()
 
-    internal init(identifier: String, localizationKey: String, style: FormTextItemStyle) {
+    internal init(identifier: String, localizationKey: LocalizationKey, style: FormTextItemStyle) {
         self.identifier = identifier
         self.localizationKey = localizationKey
         self.style = style

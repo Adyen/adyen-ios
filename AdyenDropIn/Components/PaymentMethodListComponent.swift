@@ -57,13 +57,13 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
         }
         
         let storedSection = ListSection(items: components.stored.map(item(for:)))
-        let regularSectionTitle = components.stored.isEmpty ? nil : ADYLocalizedString("adyen.paymentMethods.otherMethods",
+        let regularSectionTitle = components.stored.isEmpty ? nil : localizedString(.paymentMethodsOtherMethods,
                                                                                        localizationParameters)
         let regularSection = ListSection(title: regularSectionTitle,
                                          items: components.regular.map(item(for:)))
         
         let listViewController = ListViewController(style: style)
-        listViewController.title = ADYLocalizedString("adyen.paymentMethods.title", localizationParameters)
+        listViewController.title = localizedString(.paymentMethodsTitle, localizationParameters)
         listViewController.sections = [storedSection, regularSection]
         
         return listViewController

@@ -28,37 +28,37 @@ class BLIKComponentTests: XCTestCase {
     func testLocalizationWithCustomTableName() {
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
-        XCTAssertEqual(sut.hintLabelItem.text, ADYLocalizedString("adyen.blik.help", sut.localizationParameters))
+        XCTAssertEqual(sut.hintLabelItem.text, localizedString(.blikHelp, sut.localizationParameters))
 
-        XCTAssertEqual(sut.codeItem.title, ADYLocalizedString("adyen.blik.code", sut.localizationParameters))
-        XCTAssertEqual(sut.codeItem.placeholder, ADYLocalizedString("adyen.blik.placeholder", sut.localizationParameters))
-        XCTAssertEqual(sut.codeItem.validationFailureMessage, ADYLocalizedString("adyen.blik.invalid", sut.localizationParameters))
+        XCTAssertEqual(sut.codeItem.title, localizedString(.blikCode, sut.localizationParameters))
+        XCTAssertEqual(sut.codeItem.placeholder, localizedString(.blikPlaceholder, sut.localizationParameters))
+        XCTAssertEqual(sut.codeItem.validationFailureMessage, localizedString(.blikInvalid, sut.localizationParameters))
 
-        XCTAssertEqual(sut.button.title, ADYLocalizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
+        XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
     }
 
     func testLocalizationWithZeroPayment() {
         let payment = Payment(amount: Payment.Amount(value: 0, currencyCode: "PLN"), countryCode: "PL")
         sut.payment = payment
-        XCTAssertEqual(sut.hintLabelItem.text, ADYLocalizedString("adyen.blik.help", sut.localizationParameters))
+        XCTAssertEqual(sut.hintLabelItem.text, localizedString(.blikHelp, sut.localizationParameters))
 
-        XCTAssertEqual(sut.codeItem.title, ADYLocalizedString("adyen.blik.code", sut.localizationParameters))
-        XCTAssertEqual(sut.codeItem.placeholder, ADYLocalizedString("adyen.blik.placeholder", sut.localizationParameters))
-        XCTAssertEqual(sut.codeItem.validationFailureMessage, ADYLocalizedString("adyen.blik.invalid", sut.localizationParameters))
+        XCTAssertEqual(sut.codeItem.title, localizedString(.blikCode, sut.localizationParameters))
+        XCTAssertEqual(sut.codeItem.placeholder, localizedString(.blikPlaceholder, sut.localizationParameters))
+        XCTAssertEqual(sut.codeItem.validationFailureMessage, localizedString(.blikInvalid, sut.localizationParameters))
 
-        XCTAssertEqual(sut.button.title, ADYLocalizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
+        XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
     }
 
     func testLocalizationWithCustomKeySeparator() {
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
 
-        XCTAssertEqual(sut.hintLabelItem.text, ADYLocalizedString("adyen_blik_help", sut.localizationParameters))
+        XCTAssertEqual(sut.hintLabelItem.text, localizedString(LocalizationKey(key: "adyen_blik_help"), sut.localizationParameters))
 
-        XCTAssertEqual(sut.codeItem.title, ADYLocalizedString("adyen_blik_code", sut.localizationParameters))
-        XCTAssertEqual(sut.codeItem.placeholder, ADYLocalizedString("adyen_blik_placeholder", sut.localizationParameters))
-        XCTAssertEqual(sut.codeItem.validationFailureMessage, ADYLocalizedString("adyen_blik_invalid", sut.localizationParameters))
+        XCTAssertEqual(sut.codeItem.title, localizedString(LocalizationKey(key: "adyen_blik_code"), sut.localizationParameters))
+        XCTAssertEqual(sut.codeItem.placeholder, localizedString(LocalizationKey(key: "adyen_blik_placeholder"), sut.localizationParameters))
+        XCTAssertEqual(sut.codeItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_blik_invalid"), sut.localizationParameters))
 
-        XCTAssertEqual(sut.button.title, ADYLocalizedString("adyen_submitButton_formatted", sut.localizationParameters, payment.amount.formatted))
+        XCTAssertEqual(sut.button.title, localizedString(LocalizationKey(key: "adyen_submitButton_formatted"), sut.localizationParameters, payment.amount.formatted))
     }
 
     func testUIConfiguration() {

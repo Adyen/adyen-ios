@@ -38,10 +38,10 @@ internal struct AwaitComponentViewModel {
                                    localizationParameters: LocalizationParameters? = nil) -> AwaitComponentViewModel {
         switch paymentMethodType {
         case .mbway, .blik:
-            let localizationString = "adyen.\(paymentMethodType.rawValue).confirmPayment"
+            let localizationKey = LocalizationKey(key: "adyen.\(paymentMethodType.rawValue).confirmPayment")
             return AwaitComponentViewModel(icon: paymentMethodType.rawValue,
-                                           message: ADYLocalizedString(localizationString, localizationParameters),
-                                           spinnerTitle: ADYLocalizedString("adyen.await.waitForConfirmation", localizationParameters))
+                                           message: localizedString(localizationKey, localizationParameters),
+                                           spinnerTitle: localizedString(.awaitWaitForConfirmation, localizationParameters))
         }
     }
     

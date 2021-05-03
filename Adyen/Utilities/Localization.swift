@@ -28,10 +28,10 @@ private struct LocalizationInput {
 ///   - parameters: The localization parameters.
 ///   - arguments: The arguments to substitute in the templated localized string.
 /// - Returns: The localized string for the given key, or the key itself if the localized string could not be found.
-public func ADYLocalizedString(_ key: String, _ parameters: LocalizationParameters?, _ arguments: CVarArg...) -> String {
-    let possibleInputs = buildPossibleInputs(key, parameters)
+public func localizedString(_ key: LocalizationKey, _ parameters: LocalizationParameters?, _ arguments: CVarArg...) -> String {
+    let possibleInputs = buildPossibleInputs(key.key, parameters)
 
-    let result = attempt(possibleInputs) ?? fallbackLocalizedString(key: key)
+    let result = attempt(possibleInputs) ?? fallbackLocalizedString(key: key.key)
     
     guard !arguments.isEmpty else {
         return result
@@ -103,26 +103,26 @@ public enum PaymentStyle {
 /// - Parameter amount: The amount to include in the submit button title.
 /// - Parameter paymentMethodName: The payment method name.
 /// - Parameter parameters: The localization parameters.
-public func ADYLocalizedSubmitButtonTitle(with amount: Payment.Amount?,
-                                          style: PaymentStyle,
-                                          _ parameters: LocalizationParameters?) -> String {
+public func localizedSubmitButtonTitle(with amount: Payment.Amount?,
+                                       style: PaymentStyle,
+                                       _ parameters: LocalizationParameters?) -> String {
     if let amount = amount, amount.value == 0 {
-        return ADYLocalizedZeroPaymentAuthorisationButtonTitle(style: style,
+        return localizedZeroPaymentAuthorisationButtonTitle(style: style,
                                                                parameters)
     }
     guard let formattedAmount = amount?.formatted else {
-        return ADYLocalizedString("adyen.submitButton", parameters)
+        return localizedString(.submitButton, parameters)
     }
     
-    return ADYLocalizedString("adyen.submitButton.formatted", parameters, formattedAmount)
+    return localizedString(.submitButtonFormatted, parameters, formattedAmount)
 }
 
-private func ADYLocalizedZeroPaymentAuthorisationButtonTitle(style: PaymentStyle,
-                                                             _ parameters: LocalizationParameters?) -> String {
+private func localizedZeroPaymentAuthorisationButtonTitle(style: PaymentStyle,
+                                                          _ parameters: LocalizationParameters?) -> String {
     switch style {
     case let .needsRedirectToThirdParty(name):
-        return ADYLocalizedString("adyen.preauthorizeWith", parameters, name)
+        return localizedString(.preauthorizeWith, parameters, name)
     case .immediate:
-        return ADYLocalizedString("adyen.confirmPreauthorization", parameters)
+        return localizedString(.confirmPreauthorization, parameters)
     }
 }
