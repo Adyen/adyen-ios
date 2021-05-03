@@ -21,4 +21,12 @@ extension XCTestCase {
         textView.text = (textView.text ?? "") + text
         textView.sendActions(for: .editingChanged)
     }
+    
+    internal func getRandomCurrencyCode() -> String {
+        NSLocale.isoCurrencyCodes.randomElement() ?? "EUR"
+    }
+    
+    internal func getRandomCountryCode() -> String {
+        NSLocale.isoCountryCodes.randomElement() ?? "DE"
+    }
 }

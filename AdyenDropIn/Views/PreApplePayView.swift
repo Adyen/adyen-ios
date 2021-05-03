@@ -57,6 +57,7 @@ internal final class PreApplePayView: UIView, Localizable {
             payButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16.0),
             payButton.heightAnchor.constraint(equalToConstant: 48.0)
         ])
+        payButton.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "applePayButton")
     }
     
     /// :nodoc:
@@ -68,6 +69,7 @@ internal final class PreApplePayView: UIView, Localizable {
             hintLabel.topAnchor.constraint(equalTo: payButton.bottomAnchor, constant: 15.0),
             hintLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
+        hintLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "hintLabel")
     }
     
     /// :nodoc:

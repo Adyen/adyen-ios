@@ -68,17 +68,6 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
                 backgroundColor: UIColor.Adyen.componentBackground))
     }
     
-    /// :nodoc:
-    private func makeViewController() -> UIViewController {
-        let viewController = UIViewController()
-        viewController.title = "Apple Pay"
-        let view = payment.map(\.amount)
-            .map(createModel(with:))
-            .map(PreApplePayView.init(model: ))
-        view?.delegate = self
-        viewController.view = view
-        return viewController
-    }
 }
 
 extension PreApplePayComponent: PaymentComponentDelegate {
@@ -96,8 +85,13 @@ extension PreApplePayComponent: PaymentComponentDelegate {
 
 extension PreApplePayComponent: Cancellable {
     
-    func didCancel() {
-        viewController.navigationController?.popViewController(animated: true)
+    /// :nodoc:
+    internal func didCancel() {
+        // Hide the component if the cancel event was initiated from ApplePayComponent
+        if applePayComponent != nil {
+            applePayComponent = nil
+            viewController.navigationController?.popViewController(animated: true)
+        }
     }
     
 }
@@ -106,11 +100,6 @@ extension PreApplePayComponent: PreApplePayViewDelegate {
     
     /// :nodoc:
     internal func pay() {
-        guard let navigationController = viewController.navigationController as? DropInNavigationController else {
-            adyenPrint("Failed to instantiate ApplePayComponent because something went wrong")
-            return
-        }
-        
         guard let payment = payment else {
             adyenPrint("Failed to instantiate ApplePayComponent because payment is missing")
             return
@@ -133,7 +122,7 @@ extension PreApplePayComponent: PreApplePayViewDelegate {
             let component = try ApplePayComponent(configuration: configuration)
             component.delegate = self
             applePayComponent = component
-            navigationController.present(asModal: component)
+            presentationDelegate?.present(component: component)
         } catch {
             adyenPrint("Failed to instantiate ApplePayComponent because of error: \(error.localizedDescription)")
         }

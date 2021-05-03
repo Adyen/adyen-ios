@@ -104,7 +104,7 @@ internal final class ComponentManager {
                              style: style.formComponent)
     }
     
-    private func createApplePayComponent(with paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
+    private func createPreApplePayComponent(with paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
         guard let applePay = configuration.applePay else {
             adyenPrint("Failed to instantiate ApplePayComponent because ApplePayConfiguration is missing")
             return nil
@@ -179,7 +179,7 @@ extension ComponentManager: PaymentComponentBuilder {
     
     /// :nodoc:
     internal func build(paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
-        createApplePayComponent(with: paymentMethod)
+        createPreApplePayComponent(with: paymentMethod)
     }
     
     /// :nodoc:
