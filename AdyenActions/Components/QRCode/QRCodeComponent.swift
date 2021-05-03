@@ -149,6 +149,7 @@ internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable 
                 instructionLabel: style.instructionLabel,
                 progressView: style.progressView,
                 expirationLabel: style.expirationLabel,
+                logoCornerRounding: style.logoCornerRounding,
                 backgroundColor: style.backgroundColor
             )
         )
