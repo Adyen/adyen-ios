@@ -29,9 +29,10 @@ private struct LocalizationInput {
 ///   - arguments: The arguments to substitute in the templated localized string.
 /// - Returns: The localized string for the given key, or the key itself if the localized string could not be found.
 public func localizedString(_ key: LocalizationKey, _ parameters: LocalizationParameters?, _ arguments: CVarArg...) -> String {
-    let possibleInputs = buildPossibleInputs(key.key, parameters)
-
-    let result = attempt(possibleInputs) ?? fallbackLocalizedString(key: key.key)
+    
+    // Use fallback in case attempt result is nil or empty
+    let result = attempt(buildPossibleInputs(key.key, parameters))
+        .flatMap(\.adyen.nilIfEmpty) ?? fallbackLocalizedString(key: key.key)
     
     guard !arguments.isEmpty else {
         return result
@@ -41,7 +42,16 @@ public func localizedString(_ key: LocalizationKey, _ parameters: LocalizationPa
 }
 
 private func fallbackLocalizedString(key: String) -> String {
-    NSLocalizedString(key, tableName: nil, bundle: Bundle.coreInternalResources, comment: "")
+    let localizedFallback = NSLocalizedString(key, tableName: nil, bundle: Bundle.coreInternalResources, comment: "")
+    
+    if localizedFallback != key && localizedFallback.isEmpty == false {
+        return localizedFallback
+    } else {
+    // Fallback to en-US
+        return Bundle.coreInternalResources.path(forResource: "en-US", ofType: "lproj")
+            .flatMap(Bundle.init(path: ))
+            .map { NSLocalizedString(key, tableName: nil, bundle: $0, comment: "") } ?? key
+    }
 }
 
 private func buildPossibleInputs(_ key: String,
