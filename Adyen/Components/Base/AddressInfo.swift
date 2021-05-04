@@ -59,7 +59,7 @@ public struct AddressInfo: Equatable, Encodable {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         let houseNumberOrNameValue = [houseNumberOrName, apartment]
-            .compactMap { $0 }
+            .compactMap { $0?.adyen.nilIfEmpty }
             .joined(separator: " ")
             .adyen.nilIfEmpty
 
