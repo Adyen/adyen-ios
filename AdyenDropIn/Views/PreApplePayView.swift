@@ -64,10 +64,10 @@ internal final class PreApplePayView: UIView, Localizable {
     private func addHintLabel() {
         addSubview(hintLabel)
         hintLabel.translatesAutoresizingMaskIntoConstraints = false
-        hintLabel.setContentHuggingPriority(.required, for: .vertical)
         NSLayoutConstraint.activate([
             hintLabel.topAnchor.constraint(equalTo: payButton.bottomAnchor, constant: 15.0),
-            hintLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
+            hintLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            hintLabel.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -24.0)
         ])
         hintLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "hintLabel")
     }

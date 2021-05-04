@@ -4,16 +4,23 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
 import UIKit
 
-internal final class QRCodeViewController: UIViewController {
+/// :nodoc:
+/// `ADYViewController` serves as a height-aware `UIViewController`
+final public class ADYViewController: UIViewController {
     
-    private let qrCodeView: QRCodeView
+    /// :nodoc:
+    private let _view: UIView
     
-    internal init(qrCodeView: QRCodeView) {
-        self.qrCodeView = qrCodeView
+    /// Initializes the `ADYViewController` instance with given view and an optinal title
+    /// - Parameters:
+    ///   - view: The instance of UIView to be displayed
+    ///   - title: The title of the `ADYViewController`
+    public init(view: UIView, title: String? = nil) {
+        self._view = view
         super.init(nibName: nil, bundle: nil)
+        self.title = title
     }
     
     @available(*, unavailable)
@@ -21,15 +28,15 @@ internal final class QRCodeViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    internal override func loadView() {
-        view = qrCodeView
+    override public func loadView() {
+        self.view = _view
     }
     
-    override internal var preferredContentSize: CGSize {
+    override public var preferredContentSize: CGSize {
         get {
             let targetSize = CGSize(width: UIScreen.main.bounds.width,
                                     height: UIView.layoutFittingCompressedSize.height)
-            return qrCodeView.systemLayoutSizeFitting(targetSize,
+            return view.systemLayoutSizeFitting(targetSize,
                                                        withHorizontalFittingPriority: .required,
                                                        verticalFittingPriority: .fittingSizeLevel)
         }

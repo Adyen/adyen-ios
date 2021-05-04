@@ -17,7 +17,10 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
     internal let paymentMethod: PaymentMethod
     
     /// :nodoc:
-    private let payment: Payment?
+    private var payment: Payment? { _payment }
+    
+    /// :nodoc:
+    private let _payment: Payment
     
     /// :nodoc:
     internal weak var delegate: PaymentComponentDelegate?
@@ -33,13 +36,10 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
     
     /// :nodoc:
     internal lazy var viewController: UIViewController = {
-        let viewController = UIViewController()
-        viewController.title = "Apple Pay"
-        let view = payment.map(\.amount)
-            .map(createModel(with:))
-            .map(PreApplePayView.init(model: ))
-        view?.delegate = self
-        viewController.view = view
+        let view = PreApplePayView(model: createModel(with: _payment.amount))
+        let viewController = ADYViewController(view: view, title: "Apple Pay")
+        view.delegate = self
+        
         return viewController
     }()
     
@@ -48,7 +48,7 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
     
     /// :nodoc:
     internal init (configuration: ApplePayComponent.Configuration) throws {
-        self.payment = configuration.payment
+        self._payment = configuration.payment
         self.paymentMethod = configuration.paymentMethod
         
         self.applePayComponent = try ApplePayComponent(configuration: configuration)

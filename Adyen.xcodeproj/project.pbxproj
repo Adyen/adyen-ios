@@ -20,8 +20,8 @@
 		5A64571B2625CB87001824F0 /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A64571A2625CB87001824F0 /* QRCodeView.swift */; };
 		5A6457272625CB99001824F0 /* QRCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6457262625CB99001824F0 /* QRCodeViewModel.swift */; };
 		5A64573F2626D2E2001824F0 /* QRCodeComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A64573E2626D2E2001824F0 /* QRCodeComponentStyle.swift */; };
-		5A64579426270ABC001824F0 /* QRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A64570E2625CB41001824F0 /* QRCodeViewController.swift */; };
 		5A6457DD26271434001824F0 /* QRCodeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6456E22625A1E2001824F0 /* QRCodeComponent.swift */; };
+		5A6745E126417A5C00E9184D /* ADYViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6745E026417A5C00E9184D /* ADYViewController.swift */; };
 		5AD40E75262F04440090E01C /* UIProgressViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD40E74262F04440090E01C /* UIProgressViewHelpers.swift */; };
 		5AD40EEF26303C830090E01C /* UIButtonHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD40EEE26303C830090E01C /* UIButtonHelpers.swift */; };
 		5AD40EFB26303D490090E01C /* UILabelHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD40EFA26303D490090E01C /* UILabelHelpers.swift */; };
@@ -810,10 +810,10 @@
 		5A54FFD5262995F6007194B7 /* TimeIntervalExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtensionsTests.swift; sourceTree = "<group>"; };
 		5A6456D5262592B2001824F0 /* QRCodeAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeAction.swift; sourceTree = "<group>"; wrapsLines = 1; };
 		5A6456E22625A1E2001824F0 /* QRCodeComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeComponent.swift; sourceTree = "<group>"; };
-		5A64570E2625CB41001824F0 /* QRCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewController.swift; sourceTree = "<group>"; };
 		5A64571A2625CB87001824F0 /* QRCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeView.swift; sourceTree = "<group>"; };
 		5A6457262625CB99001824F0 /* QRCodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewModel.swift; sourceTree = "<group>"; };
 		5A64573E2626D2E2001824F0 /* QRCodeComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeComponentStyle.swift; sourceTree = "<group>"; };
+		5A6745E026417A5C00E9184D /* ADYViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADYViewController.swift; sourceTree = "<group>"; };
 		5AD40E74262F04440090E01C /* UIProgressViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIProgressViewHelpers.swift; sourceTree = "<group>"; };
 		5AD40EEE26303C830090E01C /* UIButtonHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonHelpers.swift; sourceTree = "<group>"; };
 		5AD40EFA26303D490090E01C /* UILabelHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelHelpers.swift; sourceTree = "<group>"; };
@@ -1517,7 +1517,6 @@
 		5A64570D2625CB02001824F0 /* QR Code */ = {
 			isa = PBXGroup;
 			children = (
-				5A64570E2625CB41001824F0 /* QRCodeViewController.swift */,
 				5A64571A2625CB87001824F0 /* QRCodeView.swift */,
 				5A6457262625CB99001824F0 /* QRCodeViewModel.swift */,
 			);
@@ -2547,6 +2546,7 @@
 			children = (
 				F9175F7725948EFF00D653BE /* Secured View Controller */,
 				E7806EBC26147AB700101DBB /* ViewControllerDelegate.swift */,
+				5A6745E026417A5C00E9184D /* ADYViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -4201,6 +4201,7 @@
 				E702BDA5260108A700280682 /* ClientKeyValidator.swift in Sources */,
 				E278EB4522AA5ED600497FD5 /* SEPADirectDebitPaymentMethod.swift in Sources */,
 				F9D5751823799BB0009C18B5 /* AnyPaymentMethodDecoder.swift in Sources */,
+				5A6745E126417A5C00E9184D /* ADYViewController.swift in Sources */,
 				F939DEE323C8B4C100D19249 /* EmptyPaymentDetails.swift in Sources */,
 				F96F44CD23B257D700871C1F /* Logger.swift in Sources */,
 				E216D3BC221AAB240013CBCF /* FormItem.swift in Sources */,
@@ -4534,7 +4535,6 @@
 				F9175FB82594996000D653BE /* ThreeDS2Action.swift in Sources */,
 				F917615E25A30B6400D653BE /* AnyADYTransaction.swift in Sources */,
 				F97C855A25C1ABD700D7F85C /* VoucherCardView.swift in Sources */,
-				5A64579426270ABC001824F0 /* QRCodeViewController.swift in Sources */,
 				F97C84CD25C1761900D7F85C /* VoucherAction.swift in Sources */,
 				F97C853D25C1ABA400D7F85C /* GenericVoucherView.swift in Sources */,
 				5A64573F2626D2E2001824F0 /* QRCodeComponentStyle.swift in Sources */,
