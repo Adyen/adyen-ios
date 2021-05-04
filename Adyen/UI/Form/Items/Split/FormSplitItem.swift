@@ -11,6 +11,7 @@ import Foundation
 public final class FormSplitItem: FormItem {
 
     internal var leftItem: FormItem
+
     internal var rightItem: FormItem
     
     /// Indicates the `FormSplitItemView` UI styling.
@@ -28,7 +29,7 @@ public final class FormSplitItem: FormItem {
     ///
     /// - Parameter items: The items displayed side-by-side. Must be two.
     /// - Parameter style: The `FormSplitItemView` UI style.
-    public init(items: [FormItem], style: ViewStyle) {
+    public init(items: FormItem..., style: ViewStyle) {
         assert(items.count == 2)
         self.leftItem = items[0]
         self.rightItem = items[1]

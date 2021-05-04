@@ -28,7 +28,7 @@ class ApplePayComponentTest: XCTestCase {
                                                             paymentMethod: paymentMethod,
                                                             summaryItems: createTestSummaryItems(),
                                                             merchantIdentifier: "test_id")
-        sut = try? ApplePayComponent(configuration: configuration)
+        sut = try! ApplePayComponent(configuration: configuration)
         mockDelegate = PaymentComponentDelegateMock()
         sut.delegate = mockDelegate
     }

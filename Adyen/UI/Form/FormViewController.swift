@@ -196,16 +196,6 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     }
 }
 
-private extension AnyFormItemView {
-    func applyTextDelegateIfNeeded(delegate: FormTextItemViewDelegate) {
-        if let formTextItemView = self as? AnyFormTextItemView {
-            formTextItemView.delegate = delegate
-        }
-
-        self.childItemViews.forEach { $0.applyTextDelegateIfNeeded(delegate: delegate) }
-    }
-}
-
 // MARK: - FormTextItemViewDelegate
 
 extension FormViewController: FormTextItemViewDelegate {

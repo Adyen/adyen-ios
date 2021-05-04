@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 
 /// A view representing an error item.
-internal final class FormErrorItemView: FormItemView<FormErrorItem>, Observer {
+internal final class FormErrorItemView: FormItemView<FormErrorItem> {
 
     /// Initializes the error item view.
     ///

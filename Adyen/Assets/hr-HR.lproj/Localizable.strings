@@ -66,7 +66,7 @@
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
 "adyen.billingAddressSection.title" = "Adresa za račun";
-"adyen.shippingAddressSection.title" = "Adresa za dostavu";
+"adyen.deliveryAddressSection.title" = "Adresa za dostavu";
 "adyen.countryField.title" = "Zemlja";
 "adyen.addressField.title" = "Adresa";
 "adyen.addressField.placeholder" = "Adresa";
@@ -76,12 +76,18 @@
 "adyen.houseNumberField.placeholder" = "Kućni broj";
 "adyen.cityField.title" = "Grad";
 "adyen.cityField.placeholder" = "Grad";
+"adyen.cityTownField.title" = "Grad";
+"adyen.cityTownField.placeholder" = "Grad";
 "adyen.postalCodeField.title" = "Poštanski broj";
 "adyen.postalCodeField.placeholder" = "Poštanski broj";
 "adyen.zipCodeField.title" = "Poštanski broj";
 "adyen.zipCodeField.placeholder" = "Poštanski broj";
+"adyen.stateField.title" = "Savezna država";
+"adyen.stateField.placeholder" = "Savezna država";
+"adyen.selectStateField.placeholder" = "Odaberite saveznu državu";
 "adyen.stateOrProvinceField.title" = "Država ili pokrajina";
 "adyen.stateOrProvinceField.placeholder" = "Država ili pokrajina";
+"adyen.selectStateOrProvinceField.placeholder" = "Odaberite provinciju ili teritorij";
 "adyen.provinceOrTerritoryField.title" = "Pokrajina ili teritorij";
 "adyen.provinceOrTerritoryField.placeholder" = "Pokrajina ili teritorij";
 "adyen.apartmentSuiteField.title" = "Stan/apartman";

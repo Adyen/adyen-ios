@@ -10,9 +10,13 @@ import UIKit
 internal final class FormViewItemManager {
     
     // MARK: - Items
+
+    internal private(set) var topLevelItem: [FormItem] = []
     
-    /// The items managed by the item manager.
-    internal private(set) var flatItems = [FormItem]()
+    /// The flat list of all items managed by the item manager.
+    internal var flatItems: [FormItem] {
+        topLevelItem.flatMap(\.flatSubitems)
+    }
 
     /// Appends an item to the list of managed items.
     ///
@@ -20,11 +24,10 @@ internal final class FormViewItemManager {
     ///   - item: The item to append.
     /// - Returns: The view instance correspondent to a selected item.
     @discardableResult internal func append<ItemType: FormItem>(_ item: ItemType) -> AnyFormItemView {
-        flatItems.append(contentsOf: item.flatSubitems)
+        topLevelItem.append(item)
         
         let itemView = newItemView(for: item)
         topLevelItemViews.append(itemView)
-        flatItemViews.append(contentsOf: itemView.flatSubitemViews)
 
         return itemView
     }
@@ -33,10 +36,12 @@ internal final class FormViewItemManager {
     
     /// The item views managed by the item manager.
     /// Due to a compiler bug, we can't set this to be of type [AnyFormItem].
-    internal private(set) var topLevelItemViews = [UIView]()
+    internal private(set) var topLevelItemViews: [AnyFormItemView] = []
 
     /// The item views managed by the item manager, including nested item views.
-    internal private(set) var flatItemViews = [AnyFormItemView]()
+    internal var flatItemViews: [AnyFormItemView] {
+        topLevelItemViews.flatMap(\.flatSubitemViews)
+    }
 
     private func newItemView<ItemType: FormItem>(for item: ItemType) -> AnyFormItemView {
         item.build(with: FormItemViewBuilder())

@@ -66,7 +66,7 @@
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
 "adyen.billingAddressSection.title" = "Laskutusosoite";
-"adyen.shippingAddressSection.title" = "Toimitusosoite";
+"adyen.deliveryAddressSection.title" = "Toimitusosoite";
 "adyen.countryField.title" = "Maa";
 "adyen.addressField.title" = "Osoite";
 "adyen.addressField.placeholder" = "Osoite";
@@ -76,12 +76,18 @@
 "adyen.houseNumberField.placeholder" = "Talon numero";
 "adyen.cityField.title" = "Kaupunki";
 "adyen.cityField.placeholder" = "Kaupunki";
+"adyen.cityTownField.title" = "Kaupunki / taajama";
+"adyen.cityTownField.placeholder" = "Kaupunki / taajama";
 "adyen.postalCodeField.title" = "Postinumero";
 "adyen.postalCodeField.placeholder" = "Postinumero";
 "adyen.zipCodeField.title" = "Postinumero";
 "adyen.zipCodeField.placeholder" = "Postinumero";
+"adyen.stateField.title" = "Osavaltio";
+"adyen.stateField.placeholder" = "Osavaltio";
+"adyen.selectStateField.placeholder" = "Valitse osavaltio";
 "adyen.stateOrProvinceField.title" = "Osavaltio tai lääni";
 "adyen.stateOrProvinceField.placeholder" = "Osavaltio tai lääni";
+"adyen.selectStateOrProvinceField.placeholder" = "Valitse maakunta tai alue";
 "adyen.provinceOrTerritoryField.title" = "Maakunta tai alue";
 "adyen.provinceOrTerritoryField.placeholder" = "Maakunta tai alue";
 "adyen.apartmentSuiteField.title" = "Huoneisto / sviitti";

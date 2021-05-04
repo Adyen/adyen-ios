@@ -16,8 +16,8 @@ public typealias RegionPickerItem = BasePickerElement<Region>
 public final class FormRegionPickerItem: BaseFormPickerItem<Region> {
 
     internal init(preselectedValue: Region, selectableValues: [Region], style: FormTextItemStyle) {
-        super.init(preselectedValue: RegionPickerItem(identifier: preselectedValue.identifier, element: preselectedValue),
-                   selectableValues: selectableValues.map { RegionPickerItem(identifier: $0.identifier, element: $0) },
+        super.init(preselectedValue: Self.pickerElement(from: preselectedValue),
+                   selectableValues: selectableValues.map(Self.pickerElement),
                    style: style)
     }
 
@@ -25,6 +25,11 @@ public final class FormRegionPickerItem: BaseFormPickerItem<Region> {
     override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
+
+    private static func pickerElement(from region: Region) -> RegionPickerItem {
+        RegionPickerItem(identifier: region.identifier, element: region)
+    }
+
 }
 
 internal final class FormRegionPickerItemView: BaseFormPickerItemView<Region> {

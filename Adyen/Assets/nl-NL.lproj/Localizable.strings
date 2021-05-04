@@ -66,7 +66,7 @@
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
 "adyen.billingAddressSection.title" = "Factuuradres";
-"adyen.shippingAddressSection.title" = "Bezorgadres";
+"adyen.deliveryAddressSection.title" = "Bezorgadres";
 "adyen.countryField.title" = "Land";
 "adyen.addressField.title" = "Adres";
 "adyen.addressField.placeholder" = "Adres";
@@ -76,12 +76,18 @@
 "adyen.houseNumberField.placeholder" = "Huisnummer";
 "adyen.cityField.title" = "Stad";
 "adyen.cityField.placeholder" = "Stad";
+"adyen.cityTownField.title" = "Stad";
+"adyen.cityTownField.placeholder" = "Stad";
 "adyen.postalCodeField.title" = "Postcode";
 "adyen.postalCodeField.placeholder" = "Postcode";
 "adyen.zipCodeField.title" = "Postcode";
 "adyen.zipCodeField.placeholder" = "Postcode";
+"adyen.stateField.title" = "Staat";
+"adyen.stateField.placeholder" = "Staat";
+"adyen.selectStateField.placeholder" = "Selecteer staat";
 "adyen.stateOrProvinceField.title" = "Staat of provincie";
 "adyen.stateOrProvinceField.placeholder" = "Staat of provincie";
+"adyen.selectStateOrProvinceField.placeholder" = "Selecteer provincie of territorium";
 "adyen.provinceOrTerritoryField.title" = "Provincie of territorium";
 "adyen.provinceOrTerritoryField.placeholder" = "Provincie of territorium";
 "adyen.apartmentSuiteField.title" = "Appartement/Suite";

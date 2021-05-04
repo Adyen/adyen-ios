@@ -39,7 +39,7 @@ open class BaseFormPickerItem<ElementType: CustomStringConvertible>: FormValueIt
     InputViewRequiringFormItem {
 
     /// The complete list of selectable values.
-    internal let selectableValues: [BasePickerElement<ElementType>]
+    internal var selectableValues: [BasePickerElement<ElementType>]
 
     /// Initializes the picker item.
     ///

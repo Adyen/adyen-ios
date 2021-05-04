@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 
 /// A view representing a footer item.
-internal final class FormButtonItemView: FormItemView<FormButtonItem>, Observer {
+internal final class FormButtonItemView: FormItemView<FormButtonItem> {
     
     /// Initializes the footer item view.
     ///

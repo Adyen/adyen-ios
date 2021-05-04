@@ -66,7 +66,7 @@
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
 "adyen.billingAddressSection.title" = "Dirección de facturación";
-"adyen.shippingAddressSection.title" = "Dirección de envío";
+"adyen.deliveryAddressSection.title" = "Dirección de envío";
 "adyen.countryField.title" = "País";
 "adyen.addressField.title" = "Dirección";
 "adyen.addressField.placeholder" = "Dirección";
@@ -76,12 +76,18 @@
 "adyen.houseNumberField.placeholder" = "Número de vivienda";
 "adyen.cityField.title" = "Ciudad";
 "adyen.cityField.placeholder" = "Ciudad";
+"adyen.cityTownField.title" = "Ciudad/población";
+"adyen.cityTownField.placeholder" = "Ciudad/población";
 "adyen.postalCodeField.title" = "Código postal";
 "adyen.postalCodeField.placeholder" = "Código postal";
 "adyen.zipCodeField.title" = "Código postal";
 "adyen.zipCodeField.placeholder" = "Código postal";
+"adyen.stateField.title" = "Estado";
+"adyen.stateField.placeholder" = "Estado";
+"adyen.selectStateField.placeholder" = "Seleccione el estado";
 "adyen.stateOrProvinceField.title" = "Provincia o estado";
 "adyen.stateOrProvinceField.placeholder" = "Provincia o estado";
+"adyen.selectStateOrProvinceField.placeholder" = "Seleccione la provincia o territorio";
 "adyen.provinceOrTerritoryField.title" = "Provincia o territorio";
 "adyen.provinceOrTerritoryField.placeholder" = "Provincia o territorio";
 "adyen.apartmentSuiteField.title" = "Apartamento/suite";

@@ -16,13 +16,6 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
     @Observable(nil) internal var selectedCard: CardType?
 
     /// :nodoc:
-    @Observable(nil) internal var dynamicTitle: String? {
-        didSet {
-            title = dynamicTitle
-        }
-    }
-
-    /// :nodoc:
     @Observable(false) internal var isCVCOptional: Bool
 
     /// Initializes the form card number item.
@@ -31,7 +24,7 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
         self.localizationParameters = localizationParameters
         super.init(style: style)
         
-        dynamicTitle = localizedString(.cardCvcItemTitle, localizationParameters)
+        title = localizedString(.cardCvcItemTitle, localizationParameters)
         validator = securityCodeValidator
         formatter = securityCodeFormatter
         
@@ -43,7 +36,7 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
         let isCVCOptional = cardBrands.isCVCOptional
 
         let titleFailureMessageKey: LocalizationKey = isCVCOptional ? .cardCvcItemTitleOptional : .cardCvcItemTitle
-        dynamicTitle = localizedString(titleFailureMessageKey, localizationParameters)
+        title = localizedString(titleFailureMessageKey, localizationParameters)
         validator = isCVCOptional ? nil : securityCodeValidator
 
         self.isCVCOptional = isCVCOptional

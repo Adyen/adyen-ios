@@ -66,7 +66,7 @@
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
 "adyen.billingAddressSection.title" = "Számlázási cím";
-"adyen.shippingAddressSection.title" = "Szállítási cím";
+"adyen.deliveryAddressSection.title" = "Szállítási cím";
 "adyen.countryField.title" = "Ország";
 "adyen.addressField.title" = "Cím";
 "adyen.addressField.placeholder" = "Cím";
@@ -76,12 +76,18 @@
 "adyen.houseNumberField.placeholder" = "Házszám";
 "adyen.cityField.title" = "Város";
 "adyen.cityField.placeholder" = "Város";
+"adyen.cityTownField.title" = "Város";
+"adyen.cityTownField.placeholder" = "Város";
 "adyen.postalCodeField.title" = "Irányítószám";
 "adyen.postalCodeField.placeholder" = "Irányítószám";
 "adyen.zipCodeField.title" = "Irányítószám";
 "adyen.zipCodeField.placeholder" = "Irányítószám";
+"adyen.stateField.title" = "Állam";
+"adyen.stateField.placeholder" = "Állam";
+"adyen.selectStateField.placeholder" = "Állam kiválasztása";
 "adyen.stateOrProvinceField.title" = "Állam vagy tartomány";
 "adyen.stateOrProvinceField.placeholder" = "Állam vagy tartomány";
+"adyen.selectStateOrProvinceField.placeholder" = "Tartomány vagy terület kiválasztása";
 "adyen.provinceOrTerritoryField.title" = "Tartomány vagy terület";
 "adyen.provinceOrTerritoryField.placeholder" = "Tartomány vagy terület";
 "adyen.apartmentSuiteField.title" = "Lakás/ajtószám";

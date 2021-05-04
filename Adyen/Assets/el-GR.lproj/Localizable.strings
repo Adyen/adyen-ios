@@ -66,7 +66,7 @@
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
 "adyen.billingAddressSection.title" = "Διεύθυνση τιμολόγησης";
-"adyen.shippingAddressSection.title" = "Διεύθυνση παράδοσης";
+"adyen.deliveryAddressSection.title" = "Διεύθυνση παράδοσης";
 "adyen.countryField.title" = "Χώρα";
 "adyen.addressField.title" = "Διεύθυνση";
 "adyen.addressField.placeholder" = "Διεύθυνση";
@@ -76,12 +76,18 @@
 "adyen.houseNumberField.placeholder" = "Αριθμός οικίας";
 "adyen.cityField.title" = "Πόλη";
 "adyen.cityField.placeholder" = "Πόλη";
+"adyen.cityTownField.title" = "Πόλη / Κοινότητα";
+"adyen.cityTownField.placeholder" = "Πόλη / Κοινότητα";
 "adyen.postalCodeField.title" = "Ταχυδρομικός κωδικός";
 "adyen.postalCodeField.placeholder" = "Ταχυδρομικός κωδικός";
 "adyen.zipCodeField.title" = "Ταχυδρομικός κώδικας";
 "adyen.zipCodeField.placeholder" = "Ταχυδρομικός κώδικας";
+"adyen.stateField.title" = "Πολιτεία";
+"adyen.stateField.placeholder" = "Πολιτεία";
+"adyen.selectStateField.placeholder" = "Επιλέξτε πολιτεία";
 "adyen.stateOrProvinceField.title" = "Πολιτεία ή επαρχία";
 "adyen.stateOrProvinceField.placeholder" = "Πολιτεία ή επαρχία";
+"adyen.selectStateOrProvinceField.placeholder" = "Επιλέξτε επαρχία ή περιφέρεια";
 "adyen.provinceOrTerritoryField.title" = "Επαρχία ή περιφέρεια";
 "adyen.provinceOrTerritoryField.placeholder" = "Επαρχία ή περιφέρεια";
 "adyen.apartmentSuiteField.title" = "Διαμέρισμα/Γραφείο";

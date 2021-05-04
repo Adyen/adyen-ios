@@ -66,7 +66,7 @@
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
 "adyen.billingAddressSection.title" = "Faktureringsadress";
-"adyen.shippingAddressSection.title" = "Leveransadress";
+"adyen.deliveryAddressSection.title" = "Leveransadress";
 "adyen.countryField.title" = "Land";
 "adyen.addressField.title" = "Adress";
 "adyen.addressField.placeholder" = "Adress";
@@ -76,12 +76,18 @@
 "adyen.houseNumberField.placeholder" = "Husnummer";
 "adyen.cityField.title" = "Stad";
 "adyen.cityField.placeholder" = "Stad";
+"adyen.cityTownField.title" = "Ort";
+"adyen.cityTownField.placeholder" = "Ort";
 "adyen.postalCodeField.title" = "Postnummer";
 "adyen.postalCodeField.placeholder" = "Postnummer";
 "adyen.zipCodeField.title" = "Postnummer";
 "adyen.zipCodeField.placeholder" = "Postnummer";
+"adyen.stateField.title" = "Delstat";
+"adyen.stateField.placeholder" = "Delstat";
+"adyen.selectStateField.placeholder" = "Välj delstat";
 "adyen.stateOrProvinceField.title" = "Delstat eller region";
 "adyen.stateOrProvinceField.placeholder" = "Delstat eller region";
+"adyen.selectStateOrProvinceField.placeholder" = "Välj provins eller territorium";
 "adyen.provinceOrTerritoryField.title" = "Provins eller territorium";
 "adyen.provinceOrTerritoryField.placeholder" = "Provins eller territorium";
 "adyen.apartmentSuiteField.title" = "Lägenhetsnummer";
