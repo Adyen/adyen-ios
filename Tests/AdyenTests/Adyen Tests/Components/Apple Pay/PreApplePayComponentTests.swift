@@ -17,11 +17,12 @@ class PreApplePayComponentTests: XCTestCase {
     lazy var payment = Payment(amount: amount, countryCode: getRandomCountryCode())
     
     override func setUp() {
-        let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name", brands: nil)
-        let configuration = DropInComponent.ApplePayConfiguration(
-            summaryItems: createTestSummaryItems(), merchantIdentifier: "test_id")
-        sut = PreApplePayComponent(
-            payment: payment, paymentMethod: paymentMethod, configuration: configuration)
+        let configuration = ApplePayComponent.Configuration(
+            payment: payment,
+            paymentMethod: ApplePayPaymentMethod(type: "test_type", name: "test_name", brands: nil),
+            summaryItems: createTestSummaryItems(),
+            merchantIdentifier: "test_id")
+        sut = try! PreApplePayComponent(configuration: configuration)
     }
     
     func testUIConfiguration() {
