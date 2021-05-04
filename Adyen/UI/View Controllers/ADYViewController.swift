@@ -11,14 +11,14 @@ import UIKit
 final public class ADYViewController: UIViewController {
     
     /// :nodoc:
-    private let _view: UIView
+    private let contentView: UIView
     
     /// Initializes the `ADYViewController` instance with given view and an optinal title
     /// - Parameters:
     ///   - view: The instance of UIView to be displayed
     ///   - title: The title of the `ADYViewController`
     public init(view: UIView, title: String? = nil) {
-        self._view = view
+        self.contentView = view
         super.init(nibName: nil, bundle: nil)
         self.title = title
     }
@@ -29,16 +29,17 @@ final public class ADYViewController: UIViewController {
     }
     
     override public func loadView() {
-        self.view = _view
+        self.view = contentView
     }
     
     override public var preferredContentSize: CGSize {
         get {
             let targetSize = CGSize(width: UIScreen.main.bounds.width,
                                     height: UIView.layoutFittingCompressedSize.height)
-            return view.systemLayoutSizeFitting(targetSize,
-                                                       withHorizontalFittingPriority: .required,
-                                                       verticalFittingPriority: .fittingSizeLevel)
+            return view.systemLayoutSizeFitting(
+                targetSize,
+                withHorizontalFittingPriority: .required,
+                verticalFittingPriority: .fittingSizeLevel)
         }
 
         // swiftlint:disable:next unused_setter_value
