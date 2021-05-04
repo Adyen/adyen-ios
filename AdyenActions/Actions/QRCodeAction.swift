@@ -25,4 +25,5 @@ public struct QRCodeAction: PaymentDataAware, Decodable {
     
     /// The server-generated payment data that should be submitted to the `/payments/details` endpoint.
     public let paymentData: String
+    
 }

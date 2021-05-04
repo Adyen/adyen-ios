@@ -20,7 +20,7 @@ internal enum QRCodeComponentError: LocalizedError {
 /// A component that presents a QR code.
 internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
     
-    /// Delegates `ViewController`'s presentation.
+    /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
     
     /// The component UI style.
@@ -60,13 +60,13 @@ internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable 
         
         updateExpiration(timeoutInterval)
     }
-    
+
     /// Handles QR code action.
     ///
     /// - Parameter action: The QR code action.
     public func handle(_ action: QRCodeAction) {
         self.action = action
-        
+
         let pollingComponentBuilder = self.pollingComponentBuilder ?? PollingHandlerProvider(environment: environment, apiClient: nil)
         
         let pollingComponent = pollingComponentBuilder.handler(for: action.paymentMethodType)
@@ -76,7 +76,8 @@ internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable 
         
         presentationDelegate?.present(
             component: PresentableComponentWrapper(
-                component: self, viewController: createViewController(with: action))
+                component: self, viewController: createViewController(with: action)
+            )
         )
         
         startTimer()
@@ -94,7 +95,7 @@ internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable 
     private var timeoutTimer: ExpirationTimer?
     
     /// :nodoc
-    private let progress: Progress = Progress()
+    private let progress = Progress()
     
     /// :nodoc:
     @Observable(nil) private var expirationText: String?
@@ -111,7 +112,8 @@ internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable 
         timeoutTimer = ExpirationTimer(
             expirationTimeout: self.expirationTimeout,
             onTick: { [weak self] in self?.updateExpiration($0) },
-            onExpiration: { [weak self] in self?.onTimerTimeout() })
+            onExpiration: { [weak self] in self?.onTimerTimeout() }
+        )
         timeoutTimer?.startTimer()
     }
     
@@ -174,7 +176,7 @@ extension QRCodeComponent: ActionComponentDelegate {
         delegate?.didProvide(data, from: self)
     }
     
-    func didComplete(from component: ActionComponent) { }
+    func didComplete(from component: ActionComponent) {}
     
     func didFail(with error: Error, from component: ActionComponent) {
         cleanup()

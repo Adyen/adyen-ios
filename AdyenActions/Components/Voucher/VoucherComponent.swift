@@ -15,7 +15,7 @@ internal protocol AnyVoucherActionHandler: ActionComponent {
 /// A component that handles voucher action's.
 public final class VoucherComponent: AnyVoucherActionHandler {
 
-    /// Delegates `ViewController`'s presentation.
+    /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
 
     /// :nodoc:

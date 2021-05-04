@@ -102,6 +102,7 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
         component.delegate = delegate
         component.environment = environment
         component.clientKey = clientKey
+        component.presentationDelegate = presentationDelegate
 
         return component
     }
