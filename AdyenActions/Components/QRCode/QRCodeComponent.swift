@@ -135,7 +135,7 @@ internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable 
     private func createViewController(with action: QRCodeAction) -> UIViewController {
         let view = QRCodeView(model: createModel(with: action))
         view.delegate = self
-        return QRCodeViewController(qrCodeView: view)
+        return ADYViewController(view: view)
     }
     
     /// :nodoc:

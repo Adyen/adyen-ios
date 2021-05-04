@@ -132,11 +132,15 @@ public final class DropInComponent: NSObject, PresentableComponent {
         component.environment = environment
         
         switch component {
+        case let component as PreApplePayComponent:
+            component.presentationDelegate = self
+            navigationController.present(asModal: component)
         case let component as PresentableComponent where component.requiresModalPresentation:
             navigationController.present(asModal: component)
+        case let component as PresentableComponent where component.viewController is UIAlertController:
+            navigationController.present(component.viewController, customPresentation: false)
         case let component as PresentableComponent:
-            let exceptions = (component.viewController is UIAlertController) || (component is ApplePayComponent)
-            navigationController.present(component.viewController, customPresentation: !exceptions)
+            navigationController.present(component.viewController, customPresentation: true)
         case let component as EmptyPaymentComponent:
             component.initiatePayment()
         default:

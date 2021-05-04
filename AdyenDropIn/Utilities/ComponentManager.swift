@@ -104,25 +104,27 @@ internal final class ComponentManager {
                              style: style.formComponent)
     }
     
-    private func createApplePayComponent(with paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
+    private func createPreApplePayComponent(with paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
         guard let applePay = configuration.applePay else {
             adyenPrint("Failed to instantiate ApplePayComponent because ApplePayConfiguration is missing")
             return nil
         }
-
+        
         guard let payment = configuration.payment else {
             adyenPrint("Failed to instantiate ApplePayComponent because payment is missing")
             return nil
         }
-
+        
+        let configuration = ApplePayComponent.Configuration(
+            payment: payment,
+            paymentMethod: paymentMethod,
+            summaryItems: applePay.summaryItems,
+            merchantIdentifier: applePay.merchantIdentifier,
+            requiredBillingContactFields: applePay.requiredBillingContactFields,
+            requiredShippingContactFields: applePay.requiredShippingContactFields)
+        
         do {
-            let configuration = ApplePayComponent.Configuration(payment: payment,
-                                                                paymentMethod: paymentMethod,
-                                                                summaryItems: applePay.summaryItems,
-                                                                merchantIdentifier: applePay.merchantIdentifier,
-                                                                requiredBillingContactFields: applePay.requiredBillingContactFields,
-                                                                requiredShippingContactFields: applePay.requiredShippingContactFields)
-            return try ApplePayComponent(configuration: configuration)
+            return try PreApplePayComponent(configuration: configuration)
         } catch {
             adyenPrint("Failed to instantiate ApplePayComponent because of error: \(error.localizedDescription)")
             return nil
@@ -190,7 +192,7 @@ extension ComponentManager: PaymentComponentBuilder {
     
     /// :nodoc:
     internal func build(paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
-        createApplePayComponent(with: paymentMethod)
+        createPreApplePayComponent(with: paymentMethod)
     }
     
     /// :nodoc:

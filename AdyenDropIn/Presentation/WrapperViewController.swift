@@ -61,7 +61,7 @@ internal final class WrapperViewController: UIViewController {
 
 extension ModalViewController {
 
-    private var leastPresentableHeightScale: CGFloat { 0.3 }
+    private var leastPresentableHeightScale: CGFloat { 0.25 }
     private var greatestPresentableHeightScale: CGFloat {
         UIApplication.shared.statusBarOrientation.isPortrait ? 0.9 : 1
     }

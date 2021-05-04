@@ -225,14 +225,6 @@ class ApplePayComponentTest: XCTestCase {
         }
     }
     
-    private func getRandomCurrencyCode() -> String {
-        NSLocale.isoCurrencyCodes.randomElement() ?? "EUR"
-    }
-    
-    private func getRandomCountryCode() -> String {
-        NSLocale.isoCountryCodes.randomElement() ?? "DE"
-    }
-    
     private func getRandomContactFieldSet() -> Set<PKContactField> {
         let contactFieldsPool: [PKContactField] = [.emailAddress, .name, .phoneNumber, .postalAddress, .phoneticName]
         return contactFieldsPool.randomElement().map { [$0] } ?? []

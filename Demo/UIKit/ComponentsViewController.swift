@@ -32,11 +32,13 @@ internal final class ComponentsViewController: UIViewController, Presenter {
             ],
             [
                 ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
-                ComponentsItem(title: "ApplePay", selectionHandler: presentApplePayComponent),
                 ComponentsItem(title: "iDEAL", selectionHandler: presentIdealComponent),
                 ComponentsItem(title: "SEPA Direct Debit", selectionHandler: presentSEPADirectDebitComponent),
                 ComponentsItem(title: "MB WAY", selectionHandler: presentMBWayComponent),
                 ComponentsItem(title: "Convenience Stores", selectionHandler: presentConvenienceStore)
+            ],
+            [
+                ComponentsItem(title: "Apple Pay", selectionHandler: presentApplePayComponent)
             ]
         ]
         
