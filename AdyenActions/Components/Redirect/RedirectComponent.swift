@@ -23,7 +23,7 @@ public final class RedirectComponent: ActionComponent {
     /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
 
-    /// Delegates `ViewController`'s presentation.
+    /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
     
     /// :nodoc:

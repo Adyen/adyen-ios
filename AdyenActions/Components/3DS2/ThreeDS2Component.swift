@@ -39,6 +39,9 @@ public final class ThreeDS2Component: ActionComponent {
 
     /// `RedirectComponent` style
     public let redirectComponentStyle: RedirectComponentStyle?
+
+    /// Delegates `PresentableComponent`'s presentation.
+    public weak var presentationDelegate: PresentationDelegate?
     
     /// Initializes the 3D Secure 2 component.
     ///
@@ -171,6 +174,7 @@ public final class ThreeDS2Component: ActionComponent {
         component._isDropIn = _isDropIn
         component.environment = environment
         component.clientKey = clientKey
+        component.presentationDelegate = presentationDelegate
 
         return component
     }()
