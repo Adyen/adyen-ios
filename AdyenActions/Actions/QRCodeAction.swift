@@ -12,6 +12,7 @@ public enum QRCodePaymentMethod: String, Codable, CaseIterable {
 
     /// PIX
     case pix
+    
 }
 
 /// Describes any QR code action.
