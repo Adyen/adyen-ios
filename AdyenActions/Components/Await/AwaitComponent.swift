@@ -10,7 +10,7 @@ import Foundation
 /// A component that handles Await action's.
 public final class AwaitComponent: ActionComponent, Cancellable {
     
-    /// Delegates `ViewController`'s presentation.
+    /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
     
     /// :nodoc:
