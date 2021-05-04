@@ -138,6 +138,8 @@ public final class DropInComponent: NSObject, PresentableComponent {
         case let component as PresentableComponent where component.requiresModalPresentation:
             navigationController.present(asModal: component)
         case let component as PresentableComponent where component.viewController is UIAlertController:
+            navigationController.present(component.viewController, customPresentation: false)
+        case let component as PresentableComponent:
             navigationController.present(component.viewController, customPresentation: true)
         case let component as EmptyPaymentComponent:
             component.initiatePayment()
