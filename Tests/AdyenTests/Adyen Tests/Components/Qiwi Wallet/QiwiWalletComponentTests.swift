@@ -22,7 +22,7 @@ class QiwiWalletComponentTests: XCTestCase {
         let expectedSelectableValues = phoneExtensions.map {
             PhoneExtensionPickerItem(identifier: $0.countryCode,
                                      element: .init(title: "\($0.countryDisplayName) (\($0.value))",
-                                                 phoneExtension: $0.value))
+                                                    phoneExtension: $0.value))
         }
         XCTAssertEqual(sut.phoneItem?.phonePrefixItem.selectableValues, expectedSelectableValues)
         

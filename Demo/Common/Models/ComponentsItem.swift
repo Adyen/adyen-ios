@@ -12,7 +12,7 @@ internal struct ComponentsItem: Hashable {
     
     internal var isApplePay: Bool { title == "Apple Pay" }
     
-    internal let selectionHandler: (() -> Void)
+    internal let selectionHandler: () -> Void
     
     internal init(title: String, selectionHandler: @escaping (() -> Void)) {
         self.title = title

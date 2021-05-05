@@ -11,7 +11,7 @@ import Foundation
 public final class FormTextInputItem: FormTextItem {
 
     /// :nodoc:
-    public override init(style: FormTextItemStyle = .init()) {
+    override public init(style: FormTextItemStyle = .init()) {
         super.init(style: style)
     }
         

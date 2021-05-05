@@ -85,8 +85,8 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Loca
     
     private lazy var submitAction: UIAlertAction = {
         let actionTitle = localizedSubmitButtonTitle(with: amount,
-                                                        style: .immediate,
-                                                        localizationParameters)
+                                                     style: .immediate,
+                                                     localizationParameters)
         let action = UIAlertAction(title: actionTitle, style: .default) { [unowned self] _ in
             self.submit()
         }

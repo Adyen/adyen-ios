@@ -46,8 +46,7 @@ class CardDetailsTests: XCTestCase {
         let paymenthMethod = CardPaymentMethodMock(fundingSource: .debit, type: "test_type", name: "test name", brands: ["barnd_1", "barnd_2"])
         let sut = CardDetails(paymentMethod: paymenthMethod,
                               encryptedCard: EncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year"),
-                              billingAddress: AddressInfo(postalCode: "postal")
-        )
+                              billingAddress: AddressInfo(postalCode: "postal"))
         let data = try JSONEncoder().encode(sut)
         let dictionary = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
         

@@ -7,7 +7,7 @@
 import Adyen
 import UIKit
 
-internal protocol QRCodeViewDelegate: class {
+internal protocol QRCodeViewDelegate: AnyObject {
 
     func copyToPasteboard()
 }
@@ -44,7 +44,7 @@ internal final class QRCodeView: UIView, Localizable, Observer {
         addCopyButton()
     }
     
-    internal override func layoutSubviews() {
+    override internal func layoutSubviews() {
         super.layoutSubviews()
         
         copyButton.adyen.round(using: model.style.copyButton.cornerRounding)

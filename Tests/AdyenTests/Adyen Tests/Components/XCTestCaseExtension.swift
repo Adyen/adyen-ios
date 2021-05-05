@@ -6,8 +6,8 @@
 //  Copyright © 2021 Adyen. All rights reserved.
 //
 
-import XCTest
 @testable import Adyen
+import XCTest
 
 extension XCTestCase {
     internal func populate<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U, with text: String) {

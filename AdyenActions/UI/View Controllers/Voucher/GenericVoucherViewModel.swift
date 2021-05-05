@@ -61,22 +61,26 @@ extension GenericVoucherView {
             internal var text = TextStyle(
                 font: .preferredFont(forTextStyle: .footnote),
                 color: UIColor.Adyen.componentLabel,
-                textAlignment: .center)
+                textAlignment: .center
+            )
 
             internal var amount = TextStyle(
                 font: UIFont.preferredFont(forTextStyle: .callout).adyen.font(with: .bold),
                 color: UIColor.Adyen.componentLabel,
-                textAlignment: .center)
+                textAlignment: .center
+            )
 
             internal var codeText = TextStyle(
                 font: UIFont.preferredFont(forTextStyle: .title1).adyen.font(with: .bold),
                 color: UIColor.Adyen.componentLabel,
-                textAlignment: .center)
+                textAlignment: .center
+            )
 
             internal var fieldValueText = TextStyle(
                 font: UIFont.preferredFont(forTextStyle: .footnote).adyen.font(with: .semibold),
                 color: UIColor.Adyen.componentLabel,
-                textAlignment: .center)
+                textAlignment: .center
+            )
 
             internal var mainButton: ButtonStyle
 

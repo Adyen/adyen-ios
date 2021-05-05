@@ -9,14 +9,14 @@
 @testable import Adyen
 import XCTest
 
-class RegionRepositoryTest:  XCTestCase {
+class RegionRepositoryTest: XCTestCase {
 
     let local = Environment(baseURL: Bundle(for: RegionRepositoryTest.self).url(forResource: "JSON", withExtension: nil)!)
 
     func testGettingListOfCountriesEN() {
         let sut = RegionRepository(environment: local)
         let expectation = XCTestExpectation(description: "Dummy Expectation")
-        sut.getCountries(locale: "en-US") { (regions) in
+        sut.getCountries(locale: "en-US") { regions in
             XCTAssertEqual(regions.count, 245)
             XCTAssertEqual(regions[15].name, "Azerbaijan")
 
@@ -29,7 +29,7 @@ class RegionRepositoryTest:  XCTestCase {
     func testGettingListOfCountriesRU() {
         let sut = RegionRepository(environment: local)
         let expectation = XCTestExpectation(description: "Dummy Expectation")
-        sut.getCountries(locale: "es-ES") { (regions) in
+        sut.getCountries(locale: "es-ES") { regions in
             XCTAssertEqual(regions.count, 245)
             XCTAssertEqual(regions[15].name, "Azerbaiyán")
 
@@ -42,7 +42,7 @@ class RegionRepositoryTest:  XCTestCase {
     func testGettingListOfStatesUS() {
         let sut = RegionRepository(environment: local)
         let expectation = XCTestExpectation(description: "Dummy Expectation")
-        sut.getSubRegions(for: "US", locale: "en-US") { (regions) in
+        sut.getSubRegions(for: "US", locale: "en-US") { regions in
             XCTAssertEqual(regions.count, 51)
             XCTAssertEqual(regions[15].name, "Iowa")
 
@@ -55,7 +55,7 @@ class RegionRepositoryTest:  XCTestCase {
     func testGettingListOfStatesCA() {
         let sut = RegionRepository(environment: local)
         let expectation = XCTestExpectation(description: "Dummy Expectation")
-        sut.getSubRegions(for: "CA", locale: "en-CA") { (regions) in
+        sut.getSubRegions(for: "CA", locale: "en-CA") { regions in
             XCTAssertEqual(regions.count, 13)
             XCTAssertEqual(regions[2].name, "Manitoba")
 
@@ -68,7 +68,7 @@ class RegionRepositoryTest:  XCTestCase {
     func testGettingListOfCountriesFallback() {
         let sut = RegionRepository(environment: local)
         let expectation = XCTestExpectation(description: "Dummy Expectation")
-        sut.getCountries(locale: "something") { (regions) in
+        sut.getCountries(locale: "something") { regions in
             XCTAssertEqual(regions.count, 256)
             XCTAssertEqual(regions[16].name, "Azerbaijan")
 
@@ -81,7 +81,7 @@ class RegionRepositoryTest:  XCTestCase {
     func testGettingListOfCountriesFallbackWithTranslation() {
         let sut = RegionRepository(environment: local)
         let expectation = XCTestExpectation(description: "Dummy Expectation")
-        sut.getCountries(locale: "ru-RU") { (regions) in
+        sut.getCountries(locale: "ru-RU") { regions in
             XCTAssertEqual(regions.count, 256)
             XCTAssertEqual(regions[16].name, "Азербайджан")
 
@@ -94,7 +94,7 @@ class RegionRepositoryTest:  XCTestCase {
     func testGettingListOfStatesNothingFound() {
         let sut = RegionRepository(environment: local)
         let expectation = XCTestExpectation(description: "Dummy Expectation")
-        sut.getSubRegions(for: "something", locale: "us-EN") { (regions) in
+        sut.getSubRegions(for: "something", locale: "us-EN") { regions in
             XCTAssertEqual(regions.count, 0)
 
             expectation.fulfill()
@@ -106,7 +106,7 @@ class RegionRepositoryTest:  XCTestCase {
     func testGettingListOfStatesBRFallback() {
         let sut = RegionRepository(environment: local)
         let expectation = XCTestExpectation(description: "Dummy Expectation")
-        sut.getSubRegions(for: "BR", locale: "us-EN") { (regions) in
+        sut.getSubRegions(for: "BR", locale: "us-EN") { regions in
             XCTAssertEqual(regions.count, 27)
 
             expectation.fulfill()

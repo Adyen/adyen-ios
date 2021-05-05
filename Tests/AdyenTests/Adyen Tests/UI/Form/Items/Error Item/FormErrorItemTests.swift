@@ -6,8 +6,8 @@
 //  Copyright © 2021 Adyen. All rights reserved.
 //
 
-import XCTest
 @testable import Adyen
+import XCTest
 
 class FormErrorItemTests: XCTestCase {
 

@@ -58,7 +58,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
         
         let storedSection = ListSection(items: components.stored.map(item(for:)))
         let regularSectionTitle = components.stored.isEmpty ? nil : localizedString(.paymentMethodsOtherMethods,
-                                                                                       localizationParameters)
+                                                                                    localizationParameters)
         let regularSection = ListSection(title: regularSectionTitle,
                                          items: components.regular.map(item(for:)))
         
