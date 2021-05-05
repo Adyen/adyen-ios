@@ -7,6 +7,7 @@
 import Foundation
 
 /// View Model for a single PhoneExtension.
+/// :nodoc:
 public struct PhoneExtensionViewModel: CustomStringConvertible, Equatable {
 
     /// Picker item title.

@@ -7,6 +7,7 @@
 import Foundation
 
 /// Model for any geographic region.
+/// :nodoc:
 public struct Region: Decodable, CustomStringConvertible, Equatable {
 
     /// Unique identifier.

@@ -56,11 +56,32 @@ custom_categories:
       - DokuComponent
       - DokuDetails
       - DokuPaymentMethod
+  - name: EContext ATM Component
+    children:
+      - EContextATMComponent
+      - EContextATMPaymentMethod
+  - name: EContext Online Component
+    children:
+      - EContextOnlineComponent
+      - EContextOnlinePaymentMethod
+  - name: EContext Store Component
+    children:
+      - EContextStoreComponent
+      - EContextStoresPaymentMethod
+  - name: Seven Eleven Component
+    children:
+      - SevenElevenComponent
+      - SevenElevenPaymentMethod
   - name: Voucher Action Component
     children:
       - VoucherComponent
       - VoucherAction
       - VoucherPaymentMethod
+  - name: QR Code Component
+    children:
+      - QRCodeComponent
+      - QRCodeAction
+      - QRCodePaymentMethod
   - name: WeChat Pay
     children:
       - WeChatPaySDKActionComponent
@@ -154,8 +175,13 @@ custom_categories:
       - ThreeDS2FingerprintAction
       - ThreeDS2ChallengeAction
       - AwaitAction
+      - QRCodeAction
       - CardFundingSource
       - BrowserInfo
+      - ShopperName
+      - AddressInfo
+      - ShopperInformation
+      - BillingAddressInformation
       - LocalizationParameters
   - name: Styling
     children:
@@ -171,6 +197,7 @@ custom_categories:
       - AwaitComponentStyle
       - RedirectComponentStyle
       - VoucherComponentStyle
+      - QRCodeComponentStyle
       - NavigationStyle
       - ToolbarMode
       - ButtonStyle
@@ -179,6 +206,7 @@ custom_categories:
       - TextStyle
       - ViewStyle
       - TintableStyle
+      - ProgressViewStyle
       - CornerRounding
   - name: Other
     children:
