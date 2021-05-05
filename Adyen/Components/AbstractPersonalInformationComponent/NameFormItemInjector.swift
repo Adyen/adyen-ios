@@ -5,8 +5,11 @@
 //
 
 import Foundation
+import UIKit
 
 internal final class NameFormItemInjector: FormItemInjector, Localizable {
+
+    internal let contentType: UITextContentType
 
     /// :nodoc:
     internal var localizationParameters: LocalizationParameters?
@@ -29,13 +32,15 @@ internal final class NameFormItemInjector: FormItemInjector, Localizable {
         item.validationFailureMessage = nil
         item.autocapitalizationType = .words
         item.identifier = identifier
+        item.contentType = contentType
         return item
     }()
 
-    internal init(identifier: String, localizationKey: LocalizationKey, style: FormTextItemStyle) {
+    internal init(identifier: String, localizationKey: LocalizationKey, style: FormTextItemStyle, contentType: UITextContentType = .name) {
         self.identifier = identifier
         self.localizationKey = localizationKey
         self.style = style
+        self.contentType = contentType
     }
 
     /// :nodoc:

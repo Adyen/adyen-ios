@@ -19,6 +19,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     internal required init(item: FormCardNumberItem) {
         super.init(item: item)
         accessory = .customView(cardTypeLogosView)
+        textField.textContentType = .creditCardNumber
     }
     
     override internal func textFieldDidBeginEditing(_ text: UITextField) {
