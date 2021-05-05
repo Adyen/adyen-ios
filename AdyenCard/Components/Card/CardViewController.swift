@@ -157,6 +157,7 @@ internal class CardViewController: FormViewController {
         zipCodeItem.validator = LengthValidator(minimumLength: 2, maximumLength: 30)
         zipCodeItem.validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
         zipCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "postalCodeItem")
+        zipCodeItem.contentType = .postalCode
         return zipCodeItem
     }()
 
@@ -199,6 +200,7 @@ internal class CardViewController: FormViewController {
         holderNameItem.validationFailureMessage = localizedString(.cardNameItemInvalid, localizationParameters)
         holderNameItem.autocapitalizationType = .words
         holderNameItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "holderNameItem")
+        holderNameItem.contentType = .name
 
         return holderNameItem
     }()

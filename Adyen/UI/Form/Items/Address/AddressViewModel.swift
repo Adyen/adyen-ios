@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 internal enum AddressField: String, CaseIterable {
     case street
@@ -85,12 +86,12 @@ internal struct AddressViewModel {
 
 extension AddressField {
 
-    var contentType: UITextContentType? {
+    internal var contentType: UITextContentType? {
         switch self {
         case .street:
             return .streetAddressLine1
         case .houseNumberOrName:
-            return .streetAddressLine1
+            return .streetAddressLine2
         case .appartment:
             return nil
         case .postalCode:
@@ -98,7 +99,7 @@ extension AddressField {
         case .city:
             return .addressCity
         case .stateOrProvince:
-            return .addressCityAndState
+            return .addressState
         }
     }
 

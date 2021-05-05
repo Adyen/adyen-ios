@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 internal final class NameFormItemInjector: FormItemInjector, Localizable {
 
