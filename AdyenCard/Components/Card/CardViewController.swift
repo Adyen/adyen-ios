@@ -215,8 +215,8 @@ internal class CardViewController: FormViewController {
         let item = FormButtonItem(style: formStyle.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "payButtonItem")
         item.title = localizedSubmitButtonTitle(with: payment?.amount,
-                                                   style: .immediate,
-                                                   localizationParameters)
+                                                style: .immediate,
+                                                localizationParameters)
         item.buttonSelectionHandler = { [weak self] in
             self?.cardDelegate?.didSelectSubmitButton()
         }

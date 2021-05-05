@@ -49,7 +49,7 @@ class ComponentManagerTests: XCTestCase {
         let config = DropInComponent.PaymentMethodsConfiguration(clientKey: Dummy.dummyClientKey)
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         let merchantIdentifier = "applePayMerchantIdentifier"
-        let summaryItems = [ PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final) ]
+        let summaryItems = [PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)]
         config.applePay = .init(summaryItems: summaryItems, merchantIdentifier: merchantIdentifier)
         config.payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
         let sut = ComponentManager(paymentMethods: paymentMethods,
@@ -73,7 +73,7 @@ class ComponentManagerTests: XCTestCase {
         config.payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         let merchantIdentifier = "applePayMerchantIdentifier"
-        let summaryItems = [ PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final) ]
+        let summaryItems = [PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)]
         config.applePay = .init(summaryItems: summaryItems, merchantIdentifier: merchantIdentifier)
 
         let sut = ComponentManager(paymentMethods: paymentMethods,
@@ -92,7 +92,7 @@ class ComponentManagerTests: XCTestCase {
         let config = DropInComponent.PaymentMethodsConfiguration(clientKey: Dummy.dummyClientKey)
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         let merchantIdentifier = "applePayMerchantIdentifier"
-        let summaryItems = [ PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final) ]
+        let summaryItems = [PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)]
         config.applePay = .init(summaryItems: summaryItems, merchantIdentifier: merchantIdentifier)
         config.payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
 

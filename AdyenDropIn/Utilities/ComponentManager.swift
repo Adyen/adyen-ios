@@ -121,7 +121,8 @@ internal final class ComponentManager {
             summaryItems: applePay.summaryItems,
             merchantIdentifier: applePay.merchantIdentifier,
             requiredBillingContactFields: applePay.requiredBillingContactFields,
-            requiredShippingContactFields: applePay.requiredShippingContactFields)
+            requiredShippingContactFields: applePay.requiredShippingContactFields
+        )
         
         do {
             return try PreApplePayComponent(configuration: configuration)

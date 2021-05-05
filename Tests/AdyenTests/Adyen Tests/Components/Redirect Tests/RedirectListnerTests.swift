@@ -12,7 +12,7 @@ class RedirectListnerTests: XCTestCase {
     func testRedirectListner() {
         let dummyExpectation = expectation(description: "Dummy Expectation")
         let sampleUrl = URL(string: "www.google.com")!
-        RedirectListener.registerForURL { (url) in
+        RedirectListener.registerForURL { url in
 
             XCTAssertEqual(url, sampleUrl)
             dummyExpectation.fulfill()

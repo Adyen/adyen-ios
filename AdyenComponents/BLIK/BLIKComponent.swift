@@ -85,8 +85,8 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
         let item = FormButtonItem(style: style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = localizedSubmitButtonTitle(with: payment?.amount,
-                                                   style: .immediate,
-                                                   localizationParameters)
+                                                style: .immediate,
+                                                localizationParameters)
         item.buttonSelectionHandler = { [weak self] in
             self?.didSelectSubmitButton()
         }

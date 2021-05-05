@@ -12,7 +12,7 @@ extension UILabel {
     /// Sets `translatesAutoresizingMaskIntoConstraints` to `false`
     /// Sets `adjustsFontForContentSizeCategory` to `true`
     /// - Parameter style: `TextStyle` to be applied
-    convenience public init(style: TextStyle) {
+    public convenience init(style: TextStyle) {
         self.init()
         translatesAutoresizingMaskIntoConstraints = false
         adyen.apply(style)

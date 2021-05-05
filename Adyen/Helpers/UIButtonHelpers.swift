@@ -12,7 +12,7 @@ extension UIButton {
     /// Sets `translatesAutoresizingMaskIntoConstraints` to `false`
     /// Sets `adjustsFontForContentSizeCategory` to the `titleLabel` to `true`
     /// - Parameter style: `ButtonStyle` to be applied
-    convenience public init(style: ButtonStyle) {
+    public convenience init(style: ButtonStyle) {
         self.init()
         translatesAutoresizingMaskIntoConstraints = false
         adyen.apply(style)

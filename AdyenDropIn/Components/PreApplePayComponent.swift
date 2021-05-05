@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import UIKit
 import Adyen
+import UIKit
 #if canImport(AdyenComponents)
     import AdyenComponents
 #endif
@@ -47,7 +47,7 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
     internal let requiresModalPresentation: Bool = true
     
     /// :nodoc:
-    internal init (configuration: ApplePayComponent.Configuration) throws {
+    internal init(configuration: ApplePayComponent.Configuration) throws {
         self._payment = configuration.payment
         self.paymentMethod = configuration.paymentMethod
         
@@ -66,7 +66,9 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
             hint: amount.formatted,
             style: PreApplePayView.Model.Style(
                 hintLabel: TextStyle(font: .preferredFont(forTextStyle: .footnote), color: UIColor.Adyen.componentSecondaryLabel),
-                backgroundColor: UIColor.Adyen.componentBackground))
+                backgroundColor: UIColor.Adyen.componentBackground
+            )
+        )
     }
     
 }

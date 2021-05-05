@@ -8,7 +8,7 @@ import UIKit
 
 /// :nodoc:
 /// `ADYViewController` serves as a height-aware `UIViewController`
-final public class ADYViewController: UIViewController {
+public final class ADYViewController: UIViewController {
     
     /// :nodoc:
     private let contentView: UIView
@@ -39,7 +39,8 @@ final public class ADYViewController: UIViewController {
             return view.systemLayoutSizeFitting(
                 targetSize,
                 withHorizontalFittingPriority: .required,
-                verticalFittingPriority: .fittingSizeLevel)
+                verticalFittingPriority: .fittingSizeLevel
+            )
         }
 
         // swiftlint:disable:next unused_setter_value
