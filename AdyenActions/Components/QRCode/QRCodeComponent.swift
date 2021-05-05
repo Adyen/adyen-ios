@@ -18,7 +18,7 @@ internal enum QRCodeComponentError: LocalizedError {
 }
 
 /// A component that presents a QR code.
-internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
+public final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
     
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
@@ -169,22 +169,27 @@ internal final class QRCodeComponent: ActionComponent, Localizable, Cancellable 
     }
 }
 
+/// :nodoc:
 extension QRCodeComponent: ActionComponentDelegate {
-    
-    func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
+
+    /// :nodoc:
+    public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
         cleanup()
         delegate?.didProvide(data, from: self)
     }
-    
-    func didComplete(from component: ActionComponent) {}
-    
-    func didFail(with error: Error, from component: ActionComponent) {
+
+    /// :nodoc:
+    public func didComplete(from component: ActionComponent) {}
+
+    /// :nodoc:
+    public func didFail(with error: Error, from component: ActionComponent) {
         cleanup()
         delegate?.didFail(with: error, from: self)
     }
     
 }
 
+/// :nodoc:
 extension QRCodeComponent: QRCodeViewDelegate {
     
     func copyToPasteboard() {

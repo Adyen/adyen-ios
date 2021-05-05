@@ -7,6 +7,7 @@
 import UIKit
 
 /// Contains the styling customization options for an error item in a form.
+/// :nodoc:
 public struct FormErrorItemStyle: ViewStyle {
 
     /// The message style.

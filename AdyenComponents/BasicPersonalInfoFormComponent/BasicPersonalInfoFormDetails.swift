@@ -8,6 +8,7 @@ import Adyen
 import Foundation
 
 /// Collection of the generic personal details supplied by components.
+/// :nodoc:
 public struct BasicPersonalInfoFormDetails: PaymentMethodDetails, ShopperInformation {
 
     /// The payment method type.

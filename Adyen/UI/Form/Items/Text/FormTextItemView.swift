@@ -23,6 +23,7 @@ public protocol FormTextItemViewDelegate: AnyObject {
 }
 
 /// Defines any form text item view.
+/// :nodoc:
 public protocol AnyFormTextItemView: AnyFormItemView {
 
     /// Delegate text related events.
