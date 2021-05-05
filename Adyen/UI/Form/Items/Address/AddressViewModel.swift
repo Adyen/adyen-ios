@@ -82,3 +82,24 @@ internal struct AddressViewModel {
     }
     // swiftlint:enable function_body_length explicit_acl
 }
+
+extension AddressField {
+
+    var contentType: UITextContentType? {
+        switch self {
+        case .street:
+            return .streetAddressLine1
+        case .houseNumberOrName:
+            return .streetAddressLine1
+        case .appartment:
+            return nil
+        case .postalCode:
+            return .postalCode
+        case .city:
+            return .addressCity
+        case .stateOrProvince:
+            return .addressCityAndState
+        }
+    }
+
+}

@@ -89,7 +89,8 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "firstNameItem")
         let injector = NameFormItemInjector(identifier: identifier,
                                             localizationKey: .firstName,
-                                            style: style.textField)
+                                            style: style.textField,
+                                            contentType: .givenName)
         injector.localizationParameters = localizationParameters
         return injector
     }()
@@ -103,7 +104,8 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "lastNameItem")
         let injector = NameFormItemInjector(identifier: identifier,
                                             localizationKey: .lastName,
-                                            style: style.textField)
+                                            style: style.textField,
+                                            contentType: .familyName)
         injector.localizationParameters = localizationParameters
         return injector
     }()

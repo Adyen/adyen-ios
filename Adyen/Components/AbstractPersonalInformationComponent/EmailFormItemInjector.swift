@@ -26,6 +26,7 @@ internal final class EmailFormItemInjector: FormItemInjector, Localizable {
         item.validationFailureMessage = localizedString(.emailItemInvalid, localizationParameters)
         item.keyboardType = .emailAddress
         item.identifier = identifier
+        item.contentType = .emailAddress
         return item
     }()
 

@@ -16,6 +16,7 @@ internal final class FormPhoneNumberItemView: FormTextItemView<FormPhoneNumberIt
         super.init(item: item)
         showsSeparator = true
         applyTextFieldLeftAccessoryView(textField: textField)
+        textField.textContentType = .telephoneNumber
     }
     
     /// :nodoc:

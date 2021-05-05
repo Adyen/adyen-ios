@@ -101,6 +101,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
         textField.returnKeyType = .next
         textField.accessibilityLabel = item.title
         textField.delegate = self
+        textField.textContentType = item.contentType
         
         textField.addTarget(self, action: #selector(textDidChange(textField:)), for: .editingChanged)
         textField.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "textField") }

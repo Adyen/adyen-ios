@@ -111,6 +111,7 @@ public final class FullFormAddressItem: FormValueItem<AddressInfo, AddressStyle>
         item.validationFailureMessage = validationMessage
         item.title = viewModel.labels[field].map { localizedString($0, localizationParameters) }
         item.placeholder = viewModel.placeholder[field].map { localizedString($0, localizationParameters) }
+        item.contentType = field.contentType
 
         if viewModel.optionalFields.contains(field) {
             if let title = item.title {
