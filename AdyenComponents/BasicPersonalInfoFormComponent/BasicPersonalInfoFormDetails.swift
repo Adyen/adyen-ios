@@ -33,9 +33,6 @@ public struct BasicPersonalInfoFormDetails: PaymentMethodDetails, ShopperInforma
     /// The telephone number.
     public let telephoneNumber: String?
 
-    /// The telephone number.
-    public var billingAddress: AddressInfo?
-
     /// Initializes the  generic personal details.
     ///
     ///

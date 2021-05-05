@@ -71,10 +71,6 @@ internal class CardViewController: FormViewController {
             append(holderNameItem)
         }
 
-        if configuration.showsStorePaymentMethodField {
-            append(storeDetailsItem)
-        }
-
         switch configuration.billingAddressMode {
         case .full:
             append(billingAddressItem)
@@ -82,6 +78,10 @@ internal class CardViewController: FormViewController {
             append(postalCodeItem)
         case .none:
             break
+        }
+
+        if configuration.showsStorePaymentMethodField {
+            append(storeDetailsItem)
         }
 
         append(button.withPadding(padding: .init(top: 8, left: 0, bottom: -16, right: 0)))
