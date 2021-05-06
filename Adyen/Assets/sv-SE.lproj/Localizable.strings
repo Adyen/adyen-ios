@@ -37,6 +37,7 @@
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ siffror";
 "adyen.emailItem.title" = "E-postadress";
+"adyen.emailItem.placeHolder" = "E-postadress";
 "adyen.emailItem.invalid" = "Ogiltig e-postadress";
 "adyen.mbway.confirmPayment" = "Bekräfta din betalning i appen MB WAY";
 "adyen.await.waitForConfirmation" = "Väntar på bekräftelse";
@@ -47,3 +48,6 @@
 "adyen.blik.placeholder" = "123–456";
 "adyen.preauthorizeWith" = "Förauktorisera med %@";
 "adyen.confirmPreauthorization" = "Bekräfta förauktorisering";
+"adyen.postalCodeField.title" = "Postnummer";
+"adyen.postalCodeField.placeholder" = "Postnummer";
+"adyen.errorFeedback.incorrectFormat" = "Ogiltigt format på inmatning.";

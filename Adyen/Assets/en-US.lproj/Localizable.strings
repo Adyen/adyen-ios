@@ -47,3 +47,6 @@
 "adyen.blik.placeholder" = "123–456";
 "adyen.preauthorizeWith" = "Preauthorize with %@";
 "adyen.confirmPreauthorization" = "Confirm preauthorization";
+"adyen.postalCodeField.title" = "Postal code";
+"adyen.postalCodeField.placeholder" = "Postal code";
+"adyen.errorFeedback.incorrectFormat" = "Input format is not valid.";

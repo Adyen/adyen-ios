@@ -37,6 +37,7 @@
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ 位數";
 "adyen.emailItem.title" = "電子郵件地址";
+"adyen.emailItem.placeHolder" = "電子郵件地址";
 "adyen.emailItem.invalid" = "電子郵件地址無效";
 "adyen.mbway.confirmPayment" = "在 MB WAY 應用程式上確認您的付款";
 "adyen.await.waitForConfirmation" = "正在等候確認";
@@ -47,3 +48,6 @@
 "adyen.blik.placeholder" = "123–456";
 "adyen.preauthorizeWith" = "透過以下方式進行預先授權：%@";
 "adyen.confirmPreauthorization" = "確認預先授權";
+"adyen.postalCodeField.title" = "郵遞區號";
+"adyen.postalCodeField.placeholder" = "郵遞區號";
+"adyen.errorFeedback.incorrectFormat" = "輸入的格式無效。";

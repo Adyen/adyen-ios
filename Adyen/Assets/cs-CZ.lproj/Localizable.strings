@@ -47,3 +47,6 @@
 "adyen.blik.placeholder" = "123–456";
 "adyen.preauthorizeWith" = "Předautorizovat pomocí %@";
 "adyen.confirmPreauthorization" = "Potvrdit předautorizaci";
+"adyen.postalCodeField.title" = "PSČ";
+"adyen.postalCodeField.placeholder" = "PSČ";
+"adyen.errorFeedback.incorrectFormat" = "Vstupní formát není platný.";

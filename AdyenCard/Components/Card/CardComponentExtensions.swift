@@ -45,7 +45,8 @@ internal extension CardComponent {
                                       holderName: showsHolderNameField ? holderNameItem.value : nil)
             
             let data = PaymentComponentData(paymentMethodDetails: details,
-                                            storePaymentMethod: showsStorePaymentMethodField ? storeDetailsItem.value : false)
+                                            storePaymentMethod: showsStorePaymentMethodField ? storeDetailsItem.value : false,
+                                            billingAddress: AddressInfo(postalCode: postalCodeItem.value))
             
             submit(data: data)
         } catch {

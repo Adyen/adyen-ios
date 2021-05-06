@@ -40,6 +40,7 @@ internal struct PaymentsRequest: Request {
         try container.encode(Configuration.shopperEmail, forKey: .shopperEmail)
         try container.encode(Configuration.additionalData, forKey: .additionalData)
         try container.encode(Configuration.merchantAccount, forKey: .merchantAccount)
+        try container.encode(data.billingAddress, forKey: .billingAddress)
     }
     
     private enum CodingKeys: String, CodingKey {
@@ -55,6 +56,7 @@ internal struct PaymentsRequest: Request {
         case additionalData
         case merchantAccount
         case browserInfo
+        case billingAddress
     }
     
 }
