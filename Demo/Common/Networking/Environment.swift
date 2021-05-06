@@ -7,7 +7,7 @@
 import Adyen
 import Foundation
 
-internal enum DemoServerEnvironment: APIEnvironment {
+internal enum DemoServerEnvironment: String, APIEnvironment, CaseIterable {
     
     case beta, test, local
     
@@ -22,12 +22,12 @@ internal enum DemoServerEnvironment: APIEnvironment {
         }
     }
 
-    internal var version: Int { 67 }
+    internal var version: Int { ConfigurationConstants.current.apiVersion }
 
     internal var headers: [String: String] {
         [
             "Content-Type": "application/json",
-            "X-API-Key": Configuration.demoServerAPIKey
+            "X-API-Key": ConfigurationConstants.demoServerAPIKey
         ]
     }
 

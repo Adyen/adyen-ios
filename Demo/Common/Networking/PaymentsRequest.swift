@@ -27,24 +27,24 @@ internal struct PaymentsRequest: Request {
     internal func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
-        let amount = Payment.Amount(value: Configuration.amount.value, currencyCode: Configuration.amount.currencyCode)
+        let currentConfiguration = ConfigurationConstants.current
         
         try container.encode(data.paymentMethod.encodable, forKey: .details)
         try container.encode(data.storePaymentMethod, forKey: .storePaymentMethod)
         try container.encode(data.shopperName, forKey: .shopperName)
-        try container.encode(data.emailAddress ?? Configuration.shopperEmail, forKey: .shopperEmail)
+        try container.encode(data.emailAddress ?? ConfigurationConstants.shopperEmail, forKey: .shopperEmail)
         try container.encode(data.telephoneNumber, forKey: .telephoneNumber)
         try container.encode(data.billingAddress, forKey: .billingAddress)
         try container.encode(Locale.current.identifier, forKey: .shopperLocale)
         try container.encodeIfPresent(data.browserInfo, forKey: .browserInfo)
         try container.encode("iOS", forKey: .channel)
-        try container.encode(amount, forKey: .amount)
-        try container.encode(Configuration.reference, forKey: .reference)
-        try container.encode(Configuration.countryCode, forKey: .countryCode)
-        try container.encode(Configuration.returnUrl, forKey: .returnUrl)
-        try container.encode(Configuration.shopperReference, forKey: .shopperReference)
-        try container.encode(Configuration.additionalData, forKey: .additionalData)
-        try container.encode(Configuration.merchantAccount, forKey: .merchantAccount)
+        try container.encode(currentConfiguration.amount, forKey: .amount)
+        try container.encode(ConfigurationConstants.reference, forKey: .reference)
+        try container.encode(currentConfiguration.countryCode, forKey: .countryCode)
+        try container.encode(ConfigurationConstants.returnUrl, forKey: .returnUrl)
+        try container.encode(ConfigurationConstants.shopperReference, forKey: .shopperReference)
+        try container.encode(ConfigurationConstants.additionalData, forKey: .additionalData)
+        try container.encode(currentConfiguration.merchantAccount, forKey: .merchantAccount)
     }
     
     private enum CodingKeys: String, CodingKey {

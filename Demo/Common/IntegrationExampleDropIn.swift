@@ -18,8 +18,8 @@ extension IntegrationExample {
     internal func presentDropInComponent() {
         guard let paymentMethods = paymentMethods else { return }
         let configuration = DropInComponent.PaymentMethodsConfiguration(clientKey: clientKey)
-        configuration.applePay = .init(summaryItems: Configuration.applePaySummaryItems,
-                                       merchantIdentifier: Configuration.applePayMerchantIdentifier)
+        configuration.applePay = .init(summaryItems: ConfigurationConstants.applePaySummaryItems,
+                                       merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
         configuration.payment = payment
         configuration.card.billingAddress = .postalCode
 
@@ -27,7 +27,7 @@ extension IntegrationExample {
         let component = DropInComponent(paymentMethods: paymentMethods,
                                         paymentMethodsConfiguration: configuration,
                                         style: dropInComponentStyle,
-                                        title: Configuration.appName)
+                                        title: ConfigurationConstants.appName)
         component.delegate = self
         component.environment = environment
         currentComponent = component
@@ -64,9 +64,11 @@ extension IntegrationExample: DropInComponentDelegate {
     }
 
     internal func didProvide(_ data: ActionComponentData, from component: DropInComponent) {
-        let request = PaymentDetailsRequest(details: data.details,
-                                            paymentData: data.paymentData,
-                                            merchantAccount: Configuration.merchantAccount)
+        let request = PaymentDetailsRequest(
+            details: data.details,
+            paymentData: data.paymentData,
+            merchantAccount: ConfigurationConstants.current.merchantAccount
+        )
         apiClient.perform(request, completionHandler: paymentResponseHandler)
     }
 

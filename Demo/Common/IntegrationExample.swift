@@ -23,8 +23,9 @@ internal protocol Presenter: AnyObject {
 }
 
 internal final class IntegrationExample: APIClientAware {
-    internal let payment = Payment(amount: Configuration.amount, countryCode: Configuration.countryCode)
-    internal let environment = Configuration.componentsEnvironment
+    
+    internal var payment: Payment { ConfigurationConstants.current.payment }
+    internal let environment = ConfigurationConstants.componentsEnvironment
 
     internal var paymentMethods: PaymentMethods?
     internal var currentComponent: PresentableComponent?
@@ -35,7 +36,7 @@ internal final class IntegrationExample: APIClientAware {
         if CommandLine.arguments.contains("-UITests") {
             return "local_DUMMYKEYFORTESTING"
         }
-        return Configuration.clientKey
+        return ConfigurationConstants.clientKey
     }
 
     // MARK: - Action Handling for Components

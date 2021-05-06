@@ -56,8 +56,8 @@ extension IntegrationExample {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: ApplePayPaymentMethod.self) else { return }
         let config = ApplePayComponent.Configuration(payment: payment,
                                                      paymentMethod: paymentMethod,
-                                                     summaryItems: Configuration.applePaySummaryItems,
-                                                     merchantIdentifier: Configuration.applePayMerchantIdentifier)
+                                                     summaryItems: ConfigurationConstants.applePaySummaryItems,
+                                                     merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
         let component = try? ApplePayComponent(configuration: config)
         component?.delegate = self
         guard let presentableComponent = component else { return }
@@ -152,9 +152,11 @@ extension IntegrationExample: ActionComponentDelegate {
     }
 
     internal func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
-        let request = PaymentDetailsRequest(details: data.details,
-                                            paymentData: data.paymentData,
-                                            merchantAccount: Configuration.merchantAccount)
+        let request = PaymentDetailsRequest(
+            details: data.details,
+            paymentData: data.paymentData,
+            merchantAccount: ConfigurationConstants.current.merchantAccount
+        )
         apiClient.perform(request, completionHandler: paymentResponseHandler)
     }
 }

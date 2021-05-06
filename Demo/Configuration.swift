@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 import PassKit
 
-internal enum Configuration {
+internal enum ConfigurationConstants {
     // swiftlint:disable explicit_acl
 
     /// Please use your own web server between your app and adyen checkout API.
@@ -18,17 +18,11 @@ internal enum Configuration {
 
     static let appName = "Adyen Demo"
 
-    static let amount = Payment.Amount(value: 17408, currencyCode: "EUR")
-
     static let reference = "Test Order Reference - iOS UIHost"
-    
-    static let countryCode = "NL"
 
     static let returnUrl = "ui-host://"
     
     static let shopperReference = "iOS Checkout Shopper"
-
-    static let merchantAccount = "TestMerchantCheckout"
 
     static let shopperEmail = "checkoutshopperios@example.org"
     
@@ -41,10 +35,53 @@ internal enum Configuration {
     
     static let applePayMerchantIdentifier = "{YOUR_APPLE_PAY_MERCHANT_IDENTIFIER}"
     
-    static let applePaySummaryItems = [
-        PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)
-    ]
+    static var applePaySummaryItems: [PKPaymentSummaryItem] {
+        [
+            PKPaymentSummaryItem(
+                label: "Total",
+                amount: AmountFormatter.decimalAmount(current.amount.value, currencyCode: current.amount.currencyCode),
+                type: .final
+            )
+        ]
+    }
+    
+    static var current: Configuration = Configuration.loadConfiguration() {
+        didSet { Configuration.saveConfiguration(current) }
+    }
 
     // swiftlint:enable explicit_acl
+}
+
+internal struct Configuration: Codable {
+    private static let defaultsKey = "ConfigurationKey"
+    
+    internal let countryCode: String
+    internal let value: Int
+    internal let currencyCode: String
+    internal let apiVersion: Int
+    internal let merchantAccount: String
+    
+    internal var amount: Payment.Amount { Payment.Amount(value: value, currencyCode: currencyCode) }
+    internal var payment: Payment { Payment(amount: amount, countryCode: countryCode) }
+    
+    internal static let defaultConfiguration = Configuration(
+        countryCode: "NL",
+        value: 17408,
+        currencyCode: "EUR",
+        apiVersion: 67,
+        merchantAccount: "TestMerchantCheckout"
+    )
+    
+    fileprivate static func loadConfiguration() -> Configuration {
+        UserDefaults.standard.data(forKey: defaultsKey)
+            .flatMap { try? JSONDecoder().decode(Configuration.self, from: $0) }
+            ?? defaultConfiguration
+    }
+    
+    fileprivate static func saveConfiguration(_ configuration: Configuration) {
+        if let configurationData = try? JSONEncoder().encode(configuration) {
+            UserDefaults.standard.setValue(configurationData, forKey: defaultsKey)
+        }
+    }
     
 }
