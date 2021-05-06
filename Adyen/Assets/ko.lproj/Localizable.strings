@@ -37,7 +37,6 @@
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@자리";
 "adyen.emailItem.title" = "이메일 주소";
-"adyen.emailItem.placeHolder" = "이메일 주소";
 "adyen.emailItem.invalid" = "유효하지 않은 이메일 주소";
 "adyen.mbway.confirmPayment" = "MB WAY 앱에서 결제를 확인하십시오";
 "adyen.await.waitForConfirmation" = "확인 대기중";

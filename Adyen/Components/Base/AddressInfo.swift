@@ -13,62 +13,23 @@ public struct AddressInfo: Equatable, Encodable {
     internal static let invalidValue = "null"
 
     /// Create new instance of AddressInfo
-    public init(city: String? = nil,
-                country: String? = nil,
-                houseNumberOrName: String? = nil,
-                postalCode: String? = nil,
-                stateOrProvince: String? = nil,
-                street: String? = nil,
-                apartment: String? = nil) {
-        self.city = city
-        self.country = country
-        self.houseNumberOrName = houseNumberOrName
+    public init(postalCode: String) {
         self.postalCode = postalCode
-        self.stateOrProvince = stateOrProvince
-        self.street = street
-        self.apartment = apartment
     }
 
-    /// The name of the city.
-    public var city: String?
-
-    /// The two-character country code as defined in ISO-3166-1 alpha-2. For example, US.
-    /// If you don't know the country or are not collecting the country from the shopper, provide country as ZZ.
-    public var country: String?
-
-    /// The number or name of the house.
-    public var houseNumberOrName: String?
-
     /// A maximum of five digits for an address in the US, or a maximum of ten characters for an address in all other countries.
-    public var postalCode: String?
-
-    /// State or province codes as defined in ISO 3166-2. For example, CA in the US or ON in Canada.
-    /// Required for the US and Canada.
-    public var stateOrProvince: String?
-
-    /// The name of the street.
-    /// The house number should not be included in this field; it should be separately provided via houseNumberOrName.
-    public var street: String?
-
-    /// The name or code of apartment. Optional.
-    /// Will be included into houseNumberOrName.
-    public var apartment: String?
+    public var postalCode: String
 
     /// Encodes this address info into the given encoder.
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        let houseNumberOrNameValue = [houseNumberOrName, apartment]
-            .compactMap { $0?.nonEmpty }
-            .joined(separator: " ")
-            .nonEmpty
-
-        try container.encode(city.nonEmpty ?? AddressInfo.invalidValue, forKey: .city)
-        try container.encode(country.nonEmpty ?? AddressInfo.invalidCountry, forKey: .country)
-        try container.encode(houseNumberOrNameValue ?? AddressInfo.invalidValue, forKey: .houseNumberOrName)
-        try container.encode(postalCode.nonEmpty ?? AddressInfo.invalidValue, forKey: .postalCode)
-        try container.encode(stateOrProvince.nonEmpty ?? AddressInfo.invalidValue, forKey: .stateOrProvince)
-        try container.encode(street.nonEmpty ?? AddressInfo.invalidValue, forKey: .street)
+        try container.encode(AddressInfo.invalidValue, forKey: .city)
+        try container.encode(AddressInfo.invalidCountry, forKey: .country)
+        try container.encode(AddressInfo.invalidValue, forKey: .houseNumberOrName)
+        try container.encode(postalCode, forKey: .postalCode)
+        try container.encode(AddressInfo.invalidValue, forKey: .stateOrProvince)
+        try container.encode(AddressInfo.invalidValue, forKey: .street)
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -80,16 +41,4 @@ public struct AddressInfo: Equatable, Encodable {
         case street
     }
 
-}
-
-private extension String {
-    var nonEmpty: String? {
-        isEmpty ? nil : self
-    }
-}
-
-private extension Optional where Wrapped == String {
-    var nonEmpty: String? {
-        self?.isEmpty == true ? nil : self
-    }
 }

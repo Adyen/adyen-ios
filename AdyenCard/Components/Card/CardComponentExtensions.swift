@@ -43,10 +43,10 @@ internal extension CardComponent {
             let details = CardDetails(paymentMethod: paymentMethod as! AnyCardPaymentMethod, // swiftlint:disable:this force_cast
                                       encryptedCard: encryptedCard,
                                       holderName: showsHolderNameField ? holderNameItem.value : nil)
-            
+            let billingAddress = showsPostalCodeField ? AddressInfo(postalCode: postalCodeItem.value) : nil
             let data = PaymentComponentData(paymentMethodDetails: details,
                                             storePaymentMethod: showsStorePaymentMethodField ? storeDetailsItem.value : false,
-                                            billingAddress: AddressInfo(postalCode: postalCodeItem.value))
+                                            billingAddress: billingAddress)
             
             submit(data: data)
         } catch {

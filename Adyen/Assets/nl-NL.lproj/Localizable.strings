@@ -37,7 +37,6 @@
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ cijfers";
 "adyen.emailItem.title" = "E-mailadres";
-"adyen.emailItem.placeHolder" = "E-mailadres";
 "adyen.emailItem.invalid" = "Ongeldig e-mailadres";
 "adyen.mbway.confirmPayment" = "Bevestig uw betaling via de MB WAY-app";
 "adyen.await.waitForConfirmation" = "Wacht op bevestiging";

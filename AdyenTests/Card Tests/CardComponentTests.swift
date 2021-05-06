@@ -660,8 +660,10 @@ class CardComponentTests: XCTestCase {
     func testSubmit() {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         // Dummy public key
-        let cardPublicKey = "B8C0F|AF259DD02EC8BA094F293D89D2B06C95BCFE4D83DC397E04BB81BD02BA53B23061E88138ADB9E301CD9D3A9E4EFF7A3B78AEA6939638233AD3C93E96F2FAF1F6233F21CC182531F6AEFD1428AACF2C1552B666B6CB47081542983CCED1016E82F74FDACA61F02B20B9F11D333CE35C0C73D09D47ABBC94C3467E8574C3C617209AA44109C1F5E9A0C2C2399B8A91C7EA24FE56FDF0AA3DA5B9DE85F487B33C7FD55FAE5B39177C7DB2545F03723960702F3602D3284BB1EB3C389AB6564393DFC0412FB23573543CDCC0F6647DC15201235791323E81C416D3BC8542AC6303E2A3803E8178187556E93770903781F02A4BFD85F8D75A2229F04480211F1C00D3"
+        let cardPublicKey = Dummy.dummyPublicKey
         let sut = CardComponent.component(paymentMethod: method, publicKey: cardPublicKey)
+        sut.showsPostalCodeField = true
+        sut.showsHolderNameField = true
 
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -670,6 +672,10 @@ class CardComponentTests: XCTestCase {
         delegate.onDidSubmit = { data, component in
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is CardDetails)
+
+            XCTAssertEqual(data.billingAddress?.postalCode, "12345")
+            XCTAssertEqual(data.storePaymentMethod, true)
+            XCTAssertEqual((data.paymentMethod as! CardDetails).holderName, "Some Name")
 
             sut.stopLoading(withSuccess: true, completion: {
                 delegateExpectation.fulfill()
@@ -681,11 +687,11 @@ class CardComponentTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
-
         let expiryDateItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
-
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
-
+        let holderItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.holderNameItem")
+        let postalCodeItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.postalCodeItem")
+        let rememberMeItem: FormSwitchItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem")
         let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
@@ -694,9 +700,11 @@ class CardComponentTests: XCTestCase {
             self.populate(textItemView: cardNumberItemView!, with: "4917 6100 0000 0000")
             self.populate(textItemView: expiryDateItemView!, with: "03/30")
             self.populate(textItemView: securityCodeItemView!, with: "737")
+            self.populate(textItemView: postalCodeItemView!, with: "12345")
+            self.populate(textItemView: holderItemView!, with: "Some Name")
 
+            rememberMeItem!.accessibilityActivate()
             payButtonItemViewButton?.sendActions(for: .touchUpInside)
-
             expectation.fulfill()
         }
         waitForExpectations(timeout: 10, handler: nil)

@@ -36,5 +36,17 @@ class CardDetailsTests: XCTestCase {
         XCTAssertEqual(dictionary["encryptedSecurityCode"], "code")
         XCTAssertEqual(dictionary["encryptedExpiryMonth"], "month")
     }
+
+    func testBillingAddress() throws {
+        let data = try JSONEncoder().encode(AddressInfo(postalCode: "12345"))
+        let dictionary = try JSONSerialization.jsonObject(with: data, options: []) as! [String: String]
+
+        XCTAssertEqual(dictionary["postalCode"], "12345")
+        XCTAssertEqual(dictionary["country"], "ZZ")
+        XCTAssertEqual(dictionary["street"], "null")
+        XCTAssertEqual(dictionary["houseNumberOrName"], "null")
+        XCTAssertEqual(dictionary["city"], "null")
+        XCTAssertEqual(dictionary["stateOrProvince"], "null")
+    }
     
 }

@@ -37,7 +37,6 @@
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ 位数";
 "adyen.emailItem.title" = "电子邮件地址";
-"adyen.emailItem.placeHolder" = "电子邮件地址";
 "adyen.emailItem.invalid" = "无效的邮件地址";
 "adyen.mbway.confirmPayment" = "在 MB WAY 应用上确认您的付款";
 "adyen.await.waitForConfirmation" = "等待确认";

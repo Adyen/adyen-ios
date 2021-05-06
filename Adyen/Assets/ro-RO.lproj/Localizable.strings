@@ -37,7 +37,6 @@
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ cifre";
 "adyen.emailItem.title" = "Adresă de e-mail";
-"adyen.emailItem.placeHolder" = "Adresă de e-mail";
 "adyen.emailItem.invalid" = "Adresă de e-mail incorectă";
 "adyen.mbway.confirmPayment" = "Confirmați plata în aplicația MB WAY";
 "adyen.await.waitForConfirmation" = "Se așteaptă confirmarea";
