@@ -57,8 +57,8 @@ class ModalToolbarTests: XCTestCase {
 
         sut = ModalToolbar(title: "SomeTitle", style: style, cancelHandler: {})
 
-        XCTAssertNotNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.leadingAnchor })
-        XCTAssertNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.trailingAnchor })
+        XCTAssertNotNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.leftAnchor })
+        XCTAssertNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.rightAnchor })
     }
 
     func testRightCenteredMode() {
@@ -68,8 +68,8 @@ class ModalToolbarTests: XCTestCase {
 
         sut = ModalToolbar(title: "SomeTitle", style: style, cancelHandler: {})
 
-        XCTAssertNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.leadingAnchor })
-        XCTAssertNotNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.trailingAnchor })
+        XCTAssertNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.leftAnchor })
+        XCTAssertNotNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.rightAnchor })
     }
 
     func testLeftMode() {
@@ -80,16 +80,6 @@ class ModalToolbarTests: XCTestCase {
         sut = ModalToolbar(title: "SomeTitle", style: style, cancelHandler: {})
 
         XCTAssertEqual(sut.stackView.arrangedSubviews.first, sut.cancelButton)
-    }
-
-    func testRightMode() {
-        var style = NavigationStyle()
-        style.barTitle.textAlignment = .natural
-        style.toolbarMode = .rightCancel
-
-        sut = ModalToolbar(title: "SomeTitle", style: style, cancelHandler: {})
-
-        XCTAssertEqual(sut.stackView.arrangedSubviews.last, sut.cancelButton)
     }
 
     func testLegacyButtonStyle() {

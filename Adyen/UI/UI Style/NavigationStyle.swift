@@ -29,6 +29,9 @@ public enum ToolbarMode {
     /// Cancel button visially right aligned.
     case rightCancel
 
+    /// Cancel button left aligned for RTL locals and right aligned for LTR.
+    case natural
+
 }
 
 /// Indicates the navigation level style.
@@ -56,7 +59,7 @@ public struct NavigationStyle: TintableStyle {
     public var cancelButton = CancelButtonStyle.system
 
     /// The mode for toolbar layout. Defines positions cancel button.
-    public var toolbarMode = ToolbarMode.rightCancel
+    public var toolbarMode = ToolbarMode.natural
     
     /// Initializes the navigation style.
     public init() {}
