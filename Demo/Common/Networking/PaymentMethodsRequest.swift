@@ -20,6 +20,8 @@ internal struct PaymentMethodsRequest: Request {
     internal var headers: [String: String] = [:]
     
     internal var queryParameters: [URLQueryItem] = []
+
+    internal var order: PartialPaymentOrder?
     
     // MARK: - Encoding
     
@@ -32,6 +34,7 @@ internal struct PaymentMethodsRequest: Request {
         try container.encode(ConfigurationConstants.shopperReference, forKey: .shopperReference)
         try container.encode(currentConfiguration.merchantAccount, forKey: .merchantAccount)
         try container.encode(currentConfiguration.amount, forKey: .amount)
+        try container.encode(order, forKey: .order)
     }
     
     internal enum CodingKeys: CodingKey {
@@ -39,6 +42,7 @@ internal struct PaymentMethodsRequest: Request {
         case shopperReference
         case merchantAccount
         case amount
+        case order
     }
     
 }

@@ -26,8 +26,10 @@ internal struct BalanceCheckRequest: Request {
     internal func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
+        let configurations = ConfigurationConstants.current
+
         try container.encode(data.paymentMethod.encodable, forKey: .details)
-        try container.encode(Configuration.merchantAccount, forKey: .merchantAccount)
+        try container.encode(configurations.merchantAccount, forKey: .merchantAccount)
     }
 
     private enum CodingKeys: String, CodingKey {

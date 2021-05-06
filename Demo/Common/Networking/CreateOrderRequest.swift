@@ -31,9 +31,11 @@ internal struct CreateOrderRequest: Request {
     internal func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
+        let configurations = ConfigurationConstants.current
+
         try container.encode(amount, forKey: .amount)
         try container.encode(reference, forKey: .reference)
-        try container.encode(Configuration.merchantAccount, forKey: .merchantAccount)
+        try container.encode(configurations.merchantAccount, forKey: .merchantAccount)
     }
 
     private enum CodingKeys: String, CodingKey {
