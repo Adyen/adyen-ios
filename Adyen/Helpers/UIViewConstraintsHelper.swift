@@ -18,8 +18,8 @@ extension AdyenScope where Base: UIView {
         let constraints = [
             base.topAnchor.constraint(equalTo: view.topAnchor, constant: padding.top),
             base.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: padding.bottom),
-            base.leftAnchor.constraint(equalTo: view.leftAnchor, constant: padding.left),
-            base.rightAnchor.constraint(equalTo: view.rightAnchor, constant: padding.right)
+            base.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding.left),
+            base.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: padding.right)
         ]
         NSLayoutConstraint.activate(constraints)
         return constraints
@@ -33,8 +33,8 @@ extension AdyenScope where Base: UIView {
         let constraints = [
             base.topAnchor.constraint(equalTo: margines.topAnchor, constant: padding.top),
             base.bottomAnchor.constraint(equalTo: margines.bottomAnchor, constant: padding.bottom),
-            base.leftAnchor.constraint(equalTo: margines.leftAnchor, constant: padding.left),
-            base.rightAnchor.constraint(equalTo: margines.rightAnchor, constant: padding.right)
+            base.leadingAnchor.constraint(equalTo: margines.leadingAnchor, constant: padding.left),
+            base.trailingAnchor.constraint(equalTo: margines.trailingAnchor, constant: padding.right)
         ]
         NSLayoutConstraint.activate(constraints)
         return constraints

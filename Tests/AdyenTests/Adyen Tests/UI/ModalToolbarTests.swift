@@ -57,8 +57,8 @@ class ModalToolbarTests: XCTestCase {
 
         sut = ModalToolbar(title: "SomeTitle", style: style, cancelHandler: {})
 
-        XCTAssertNotNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.leftAnchor })
-        XCTAssertNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.rightAnchor })
+        XCTAssertNotNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.leadingAnchor })
+        XCTAssertNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.trailingAnchor })
     }
 
     func testRightCenteredMode() {
@@ -68,8 +68,8 @@ class ModalToolbarTests: XCTestCase {
 
         sut = ModalToolbar(title: "SomeTitle", style: style, cancelHandler: {})
 
-        XCTAssertNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.leftAnchor })
-        XCTAssertNotNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.rightAnchor })
+        XCTAssertNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.leadingAnchor })
+        XCTAssertNotNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.trailingAnchor })
     }
 
     func testLeftMode() {

@@ -36,6 +36,7 @@
 		<string>ro-RO</string>
 		<string>sk-SK</string>
 		<string>sl-SL</string>
+		<string>ar</string>
 	</array>
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>

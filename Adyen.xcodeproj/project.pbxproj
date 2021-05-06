@@ -1093,6 +1093,7 @@
 		F91664EF23E41D7300C10738 /* AnyEncodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyEncodable.swift; sourceTree = "<group>"; };
 		F91664F823E460CD00C10738 /* WeChatPaySDKData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeChatPaySDKData.swift; sourceTree = "<group>"; };
 		F91664FC23F1615B00C10738 /* SDKAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKAction.swift; sourceTree = "<group>"; };
+		F9172F522643DABA00985310 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F9175E55259393E800D653BE /* AdyenComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdyenComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9175E57259393E800D653BE /* AdyenComponents.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdyenComponents.h; sourceTree = "<group>"; };
 		F9175E58259393E800D653BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -3721,6 +3722,7 @@
 				"hu-HU",
 				"cs-CZ",
 				"sl-SI",
+				ar,
 			);
 			mainGroup = E2C0E02922097916008616F6;
 			packageReferences = (
@@ -4822,6 +4824,7 @@
 				E7098D81255D3E6E00829E73 /* hu-HU */,
 				E7098D82255D3E6E00829E73 /* cs-CZ */,
 				E7098D83255D3E6E00829E73 /* sl-SI */,
+				F9172F522643DABA00985310 /* ar */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

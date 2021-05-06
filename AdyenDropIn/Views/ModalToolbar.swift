@@ -91,21 +91,21 @@ internal final class ModalToolbar: UIView {
     }
 
     private func setupLayoutForCenteredMode() {
-        let rightAnchor = safeAreaLayoutGuide.rightAnchor
-        let leftAnchor = safeAreaLayoutGuide.leftAnchor
+        let trailingAnchor = safeAreaLayoutGuide.trailingAnchor
+        let leadingAnchor = safeAreaLayoutGuide.leadingAnchor
 
         let cancePositionConstraint: NSLayoutConstraint
         if style.toolbarMode == .rightCancel {
-            cancePositionConstraint = rightAnchor.constraint(equalTo: cancelButton.rightAnchor, constant: paddingWithMarginCorrection)
+            cancePositionConstraint = trailingAnchor.constraint(equalTo: cancelButton.trailingAnchor, constant: paddingWithMarginCorrection)
         } else {
-            cancePositionConstraint = leftAnchor.constraint(equalTo: cancelButton.leftAnchor, constant: -paddingWithMarginCorrection)
+            cancePositionConstraint = leadingAnchor.constraint(equalTo: cancelButton.leadingAnchor, constant: -paddingWithMarginCorrection)
         }
 
         NSLayoutConstraint.activate([
             self.topAnchor.constraint(equalTo: titleLabel.topAnchor),
             self.bottomAnchor.constraint(equalTo: titleLabel.bottomAnchor),
-            leftAnchor.constraint(equalTo: titleLabel.leftAnchor, constant: -paddingWithMarginCorrection),
-            rightAnchor.constraint(equalTo: titleLabel.rightAnchor, constant: paddingWithMarginCorrection),
+            leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor, constant: -paddingWithMarginCorrection),
+            trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor, constant: paddingWithMarginCorrection),
             
             self.centerYAnchor.constraint(equalTo: cancelButton.centerYAnchor),
             self.heightAnchor.constraint(greaterThanOrEqualTo: cancelButton.heightAnchor),

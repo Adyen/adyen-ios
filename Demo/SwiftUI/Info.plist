@@ -10,6 +10,34 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>da-DK</string>
+		<string>de-DE</string>
+		<string>en-US</string>
+		<string>es-ES</string>
+		<string>ja-JP</string>
+		<string>fr-FR</string>
+		<string>it-IT</string>
+		<string>nl-NL</string>
+		<string>pl-PL</string>
+		<string>pt-BR</string>
+		<string>ru-RU</string>
+		<string>sv-SE</string>
+		<string>zh-CN</string>
+		<string>zh-TW</string>
+		<string>ko</string>
+		<string>nb-NO</string>
+		<string>fi</string>
+		<string>cs-CZ</string>
+		<string>el-GR</string>
+		<string>hr-HR</string>
+		<string>hu-HU</string>
+		<string>ro-RO</string>
+		<string>sk-SK</string>
+		<string>sl-SL</string>
+		<string>ar</string>
+	</array>
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundlePackageType</key>
