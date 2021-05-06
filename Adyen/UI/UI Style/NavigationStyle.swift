@@ -29,7 +29,7 @@ public enum ToolbarMode {
     /// Cancel button visially right aligned.
     case rightCancel
 
-    /// Cancel button left aligned for RTL locals and right aligned for LTR.
+    /// Cancel button right aligned for RTL locales and left aligned for LTR.
     case natural
 
 }
