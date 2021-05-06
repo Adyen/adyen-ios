@@ -135,6 +135,7 @@
 		E7763A8025F10C9B0046371E /* Adyen3DS2.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E7763A7E25F10C9B0046371E /* Adyen3DS2.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E7763A8725F10CA60046371E /* Adyen3DS2.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7763A7E25F10C9B0046371E /* Adyen3DS2.xcframework */; };
 		E7763A8825F10CA60046371E /* Adyen3DS2.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E7763A7E25F10C9B0046371E /* Adyen3DS2.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E781884826441F88008E0913 /* AddressInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E781884726441F88008E0913 /* AddressInfo.swift */; };
 		E787C9AC24696A8900B401E0 /* CornerRadiusStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E787C9AB24696A8900B401E0 /* CornerRadiusStyle.swift */; };
 		E787C9AE24698C2E00B401E0 /* UIViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E787C9AD24698C2E00B401E0 /* UIViewHelpers.swift */; };
 		E787C9D1246E948F00B401E0 /* CoreFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E787C9D0246E948F00B401E0 /* CoreFonts.swift */; };
@@ -716,6 +717,7 @@
 		E773EA3B2523432B00119499 /* CardTypeProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTypeProviderMock.swift; sourceTree = "<group>"; };
 		E7763A1025F02BD20046371E /* GiftCardPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftCardPaymentMethod.swift; sourceTree = "<group>"; };
 		E7763A7E25F10C9B0046371E /* Adyen3DS2.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Adyen3DS2.xcframework; path = "Carthage/Checkouts/adyen-3ds2-ios/XCFramework/Dynamic/Adyen3DS2.xcframework"; sourceTree = "<group>"; };
+		E781884726441F88008E0913 /* AddressInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressInfo.swift; sourceTree = "<group>"; };
 		E787C9AB24696A8900B401E0 /* CornerRadiusStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadiusStyle.swift; sourceTree = "<group>"; };
 		E787C9AD24698C2E00B401E0 /* UIViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewHelpers.swift; sourceTree = "<group>"; };
 		E787C9D0246E948F00B401E0 /* CoreFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreFonts.swift; sourceTree = "<group>"; };
@@ -1274,6 +1276,7 @@
 				E9AFF886224E5872005A0D8D /* PresentableComponent.swift */,
 				E24FED0722704C9800A65122 /* ComponentError.swift */,
 				F90FB7BB2446E8C8005BFE0E /* BrowserInfo.swift */,
+				E781884726441F88008E0913 /* AddressInfo.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -2528,7 +2531,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E2C0E08E220B039B008616F6 /* Build configuration list for PBXNativeTarget "AdyenUIHost" */;
 			buildPhases = (
-				F91664F123E42D2D00C10738 /* AdyenUIHost configuration */,
 				E2C0E079220B0399008616F6 /* Sources */,
 				E2C0E07A220B0399008616F6 /* Frameworks */,
 				E2C0E07B220B0399008616F6 /* Resources */,
@@ -2571,7 +2573,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F95B6DA825274551002C9062 /* Build configuration list for PBXNativeTarget "AdyenSwiftUI" */;
 			buildPhases = (
-				F9615FBC252DE30B00FA8EDD /* AdyenSwiftUI configuration */,
 				F95B6D912527454E002C9062 /* Sources */,
 				F95B6D922527454E002C9062 /* Frameworks */,
 				F95B6D932527454E002C9062 /* Resources */,
@@ -2821,24 +2822,6 @@
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n/usr/local/bin/carthage copy-frameworks\n";
 		};
-		F91664F123E42D2D00C10738 /* AdyenUIHost configuration */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "AdyenUIHost configuration";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ -f $SRCROOT/Internal/post-commit ]; then\n   $SRCROOT/Internal/post-commit\nfi\n";
-		};
 		F95B6DD2252B1F6A002C9062 /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2856,24 +2839,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ -f $SRCROOT/Internal/format.sh ]; then\n   $SRCROOT/Internal/format.sh \"$SRCROOT/$TARGETNAME\"\nfi\n\nif [ -f $SRCROOT/Internal/swiftlint ]; then\n   cd \"$SRCROOT/$TARGETNAME\"\n   $SRCROOT/Internal/swiftlint --config \"$SRCROOT/.swiftlint.yml\"\nfi\n";
-		};
-		F9615FBC252DE30B00FA8EDD /* AdyenSwiftUI configuration */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "AdyenSwiftUI configuration";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ -f $SRCROOT/Internal/post-commit ]; then\n   $SRCROOT/Internal/post-commit\nfi\n";
 		};
 		F9620DA223C747BD005209FC /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2988,6 +2953,7 @@
 				E2D12BF6221D579000EF682F /* FormHeaderItemView.swift in Sources */,
 				F9639B2F24DD6B500073F38A /* APIEnvironment.swift in Sources */,
 				F97CCD3A2435E35E00BC560A /* UIViewControllerHelpers.swift in Sources */,
+				E781884826441F88008E0913 /* AddressInfo.swift in Sources */,
 				F9438F23243B29ED00FB9D69 /* UniversalRedirectComponent.swift in Sources */,
 				E216D3BE221AAB710013CBCF /* FormTextItem.swift in Sources */,
 				E9021DEE225CC46D009CF7F4 /* URLHelpers.swift in Sources */,

@@ -47,3 +47,6 @@
 "adyen.blik.placeholder" = "123–456";
 "adyen.preauthorizeWith" = "Vorautorisieren mit %@";
 "adyen.confirmPreauthorization" = "Vorautorisierung bestätigen";
+"adyen.postalCodeField.title" = "Postleitzahl";
+"adyen.postalCodeField.placeholder" = "Postleitzahl";
+"adyen.errorFeedback.incorrectFormat" = "Das Eingabeformat ist ungültig.";

@@ -47,3 +47,6 @@
 "adyen.blik.placeholder" = "123–456";
 "adyen.preauthorizeWith" = "Ennkkolupa käyttäjän kanssa %@";
 "adyen.confirmPreauthorization" = "Vahvista ennakkolupa";
+"adyen.postalCodeField.title" = "Postinumero";
+"adyen.postalCodeField.placeholder" = "Postinumero";
+"adyen.errorFeedback.incorrectFormat" = "Syöttömuoto ei ole kelvollinen.";

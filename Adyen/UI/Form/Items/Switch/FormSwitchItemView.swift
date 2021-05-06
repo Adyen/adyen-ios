@@ -51,7 +51,7 @@ public final class FormSwitchItemView: FormValueItemView<FormSwitchItem> {
     
     // MARK: - Switch Control
     
-    private lazy var switchControl: UISwitch = {
+    internal lazy var switchControl: UISwitch = {
         let switchControl = UISwitch()
         switchControl.isOn = item.value
         switchControl.onTintColor = item.style.tintColor

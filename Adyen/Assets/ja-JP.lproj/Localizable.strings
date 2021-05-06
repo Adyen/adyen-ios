@@ -47,3 +47,7 @@
 "adyen.blik.placeholder" = "123–456";
 "adyen.preauthorizeWith" = "次で事前認証する：%@";
 "adyen.confirmPreauthorization" = "事前承認を確認する";
+"adyen.postalCodeField.title" = "郵便番号";
+"adyen.postalCodeField.placeholder" = "郵便番号";
+"adyen.errorFeedback.incorrectFormat" = "入力形式が無効です。";
+"adyen.field.title.optional" = "（任意）";

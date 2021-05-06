@@ -102,6 +102,9 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
     
     /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
     public var showsHolderNameField = false
+
+    /// Indicates if the field for entering the postal code should be displayed in the form. Defaults to false.
+    public var showsPostalCodeField = false
     
     /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
     public var showsStorePaymentMethodField = true
@@ -260,6 +263,10 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         if showsHolderNameField {
             formViewController.append(holderNameItem)
         }
+
+        if showsPostalCodeField {
+            formViewController.append(postalCodeItem)
+        }
         
         if showsStorePaymentMethodField {
             formViewController.append(storeDetailsItem)
@@ -316,6 +323,16 @@ public final class CardComponent: PaymentComponent, PresentableComponent, Locali
         holderNameItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "holderNameItem")
         
         return holderNameItem
+    }()
+
+    internal lazy var postalCodeItem: FormTextInputItem = {
+        let zipCodeItem = FormTextInputItem(style: style.textField)
+        zipCodeItem.title = ADYLocalizedString("adyen.postalCodeField.title", localizationParameters)
+        zipCodeItem.placeholder = ADYLocalizedString("adyen.postalCodeField.placeholder", localizationParameters)
+        zipCodeItem.validator = LengthValidator(minimumLength: 2, maximumLength: 30)
+        zipCodeItem.validationFailureMessage = ADYLocalizedString("adyen.errorFeedback.incorrectFormat", localizationParameters)
+        zipCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "postalCodeItem")
+        return zipCodeItem
     }()
     
     internal lazy var storeDetailsItem: FormSwitchItem = {

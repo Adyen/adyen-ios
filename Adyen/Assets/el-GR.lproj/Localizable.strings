@@ -47,3 +47,6 @@
 "adyen.blik.placeholder" = "123–456";
 "adyen.preauthorizeWith" = "Προεξουσιοδότηση με %@";
 "adyen.confirmPreauthorization" = "Επιβεβαίωση προεξουσιοδότησης";
+"adyen.postalCodeField.title" = "Ταχυδρομικός κωδικός";
+"adyen.postalCodeField.placeholder" = "Ταχυδρομικός κωδικός";
+"adyen.errorFeedback.incorrectFormat" = "Η μορφή εισόδου δεν είναι έγκυρη.";

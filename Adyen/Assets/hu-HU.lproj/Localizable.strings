@@ -47,3 +47,6 @@
 "adyen.blik.placeholder" = "123–456";
 "adyen.preauthorizeWith" = "Előzetes meghatalmazás a következővel: %@";
 "adyen.confirmPreauthorization" = "Előzetes meghatalmazás jóváhagyása";
+"adyen.postalCodeField.title" = "Irányítószám";
+"adyen.postalCodeField.placeholder" = "Irányítószám";
+"adyen.errorFeedback.incorrectFormat" = "A megadott adatok formátuma érvénytelen.";

@@ -47,3 +47,6 @@
 "adyen.blik.placeholder" = "123–456";
 "adyen.preauthorizeWith" = "사전 승인 방법:%@";
 "adyen.confirmPreauthorization" = "사전 승인 확인";
+"adyen.postalCodeField.title" = "우편번호";
+"adyen.postalCodeField.placeholder" = "우편번호";
+"adyen.errorFeedback.incorrectFormat" = "입력 형식이 유효하지 않습니다.";

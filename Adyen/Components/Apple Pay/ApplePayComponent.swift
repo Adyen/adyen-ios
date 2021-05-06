@@ -85,7 +85,8 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     /// Apple Pay component configuration.
     private let configuration: Configuration
 
-    /// Flag to indicate that component wasn't stopped by the merchant's code. By default all cancelations assumed to be initiated by the user.
+    /// Flag to indicate that component wasn't stopped by the merchant's code.
+    /// By default all cancelations assumed to be initiated by the user.
     /// :nodoc:
     internal var isUserCancel = true
     
@@ -211,7 +212,7 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     
     /// :nodoc:
     public var viewController: UIViewController {
-        return getPaymentAuthorizationViewController() ?? errorAlertController
+        getPaymentAuthorizationViewController() ?? errorAlertController
     }
     
     /// :nodoc:
