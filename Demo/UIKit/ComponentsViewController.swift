@@ -88,13 +88,12 @@ internal final class ComponentsViewController: UIViewController, Presenter {
 
     internal func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
         let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .cancel))
 
         if let retryHandler = retryHandler {
             alertController.addAction(UIAlertAction(title: "Retry", style: .default, handler: { _ in
                 retryHandler()
             }))
-        } else {
-            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         }
 
         present(alertController, animated: true)
@@ -102,7 +101,7 @@ internal final class ComponentsViewController: UIViewController, Presenter {
 
     internal func presentAlert(withTitle title: String) {
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        alertController.addAction(UIAlertAction(title: "OK", style: .default))
 
         present(alertController, animated: true)
     }

@@ -54,7 +54,7 @@ internal final class ConfigurationViewModel: ObservableObject {
         )
     }
     
-     internal static let currencies: [CurrencyDisplayInfo] = {
+    internal static let currencies: [CurrencyDisplayInfo] = {
         let currencyCodeKey = NSLocale.Key.currencyCode.rawValue
         let uniqueCurrencies = Set(
             NSLocale.isoCurrencyCodes

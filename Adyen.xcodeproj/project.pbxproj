@@ -15,6 +15,10 @@
 		5A238C9F263BDEA200758FEF /* PreApplePayComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A238C9E263BDEA200758FEF /* PreApplePayComponentTests.swift */; };
 		5A27AB032636A07900EF6F89 /* LocalizationKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A27AB022636A07900EF6F89 /* LocalizationKey.swift */; };
 		5A545FC72642F77500724A87 /* ConfigurationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A545FC62642F77500724A87 /* ConfigurationViewModel.swift */; };
+		5A545FDC2643CF2400724A87 /* ConfigurationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A545FC62642F77500724A87 /* ConfigurationViewModel.swift */; };
+		5A545FE72643CF2700724A87 /* ConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67461F264262F000E9184D /* ConfigurationView.swift */; };
+		5A54600F264433CD00724A87 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54600E264433CD00724A87 /* SearchBar.swift */; };
+		5A546010264433CE00724A87 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54600E264433CD00724A87 /* SearchBar.swift */; };
 		5A54FFCA26299140007194B7 /* TimeIntervalHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54FFC926299140007194B7 /* TimeIntervalHelpers.swift */; };
 		5A54FFE126299602007194B7 /* TimeIntervalExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54FFD5262995F6007194B7 /* TimeIntervalExtensionsTests.swift */; };
 		5A6456D6262592B2001824F0 /* QRCodeAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6456D5262592B2001824F0 /* QRCodeAction.swift */; };
@@ -810,6 +814,7 @@
 		5A238C9E263BDEA200758FEF /* PreApplePayComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreApplePayComponentTests.swift; sourceTree = "<group>"; };
 		5A27AB022636A07900EF6F89 /* LocalizationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationKey.swift; sourceTree = "<group>"; };
 		5A545FC62642F77500724A87 /* ConfigurationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationViewModel.swift; sourceTree = "<group>"; };
+		5A54600E264433CD00724A87 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		5A54FFC926299140007194B7 /* TimeIntervalHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalHelpers.swift; sourceTree = "<group>"; };
 		5A54FFD5262995F6007194B7 /* TimeIntervalExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtensionsTests.swift; sourceTree = "<group>"; };
 		5A6456D5262592B2001824F0 /* QRCodeAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeAction.swift; sourceTree = "<group>"; wrapsLines = 1; };
@@ -1534,6 +1539,7 @@
 			children = (
 				5A67461F264262F000E9184D /* ConfigurationView.swift */,
 				5A545FC62642F77500724A87 /* ConfigurationViewModel.swift */,
+				5A54600E264433CD00724A87 /* SearchBar.swift */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -4475,6 +4481,7 @@
 				F9620D7B23C36082005209FC /* Configuration.swift in Sources */,
 				5A545FC72642F77500724A87 /* ConfigurationViewModel.swift in Sources */,
 				E24FECF5226EF9AB00A65122 /* ComponentsViewController.swift in Sources */,
+				5A54600F264433CD00724A87 /* SearchBar.swift in Sources */,
 				E24FECF7226EF9D800A65122 /* ComponentsView.swift in Sources */,
 				E7D18A0425D44610006AD3B7 /* IntegrationExampleDropIn.swift in Sources */,
 				F9A53C4D2549887F009000A7 /* PaymentDetailsRequest.swift in Sources */,
@@ -4650,8 +4657,11 @@
 				E73C560725EE8C8D00B57758 /* APIClientHelper.swift in Sources */,
 				E7D18A1125D44769006AD3B7 /* IntegrationExampleComponents.swift in Sources */,
 				E757F03A25D2ED58007C813D /* APIClientMock.swift in Sources */,
+				5A545FDC2643CF2400724A87 /* ConfigurationViewModel.swift in Sources */,
 				F95B6DB525274DFF002C9062 /* CodingHelpers.swift in Sources */,
 				F9A53C452549887F009000A7 /* DefaultAPIClient.swift in Sources */,
+				5A545FE72643CF2700724A87 /* ConfigurationView.swift in Sources */,
+				5A546010264433CE00724A87 /* SearchBar.swift in Sources */,
 				F95B6D9C2527454E002C9062 /* ComponentsView.swift in Sources */,
 				F95B6DAE25274D9C002C9062 /* PaymentsViewModel.swift in Sources */,
 			);

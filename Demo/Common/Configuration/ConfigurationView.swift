@@ -18,6 +18,14 @@ internal struct ConfigurationView: View {
     }
     
     @ObservedObject internal var viewModel: ConfigurationViewModel
+    @State private var countrySearchSting: String = ""
+    private var filteredCountries: [CountryDisplayInfo] {
+        if countrySearchSting.isEmpty {
+            return ConfigurationViewModel.countries
+        } else {
+            return ConfigurationViewModel.countries.filter { $0.matches(countrySearchSting) }
+        }
+    }
     
     internal init(viewModel: ConfigurationViewModel) {
         self.viewModel = viewModel
@@ -26,29 +34,25 @@ internal struct ConfigurationView: View {
     internal var body: some View {
         NavigationView {
             Form {
-                ForEach(ConfigurationSection.allCases, id: \.self, content: buildSection)
+                wrapInSection(view: apiVersionSection, section: .apiVersion)
+                wrapInSection(view: merchantAccountSection, section: .merchantAccount)
+                wrapInSection(view: regionSection, section: .region)
+                wrapInSection(view: paymentSection, section: .payment)
             }.navigationBarTitle("Configuration", displayMode: .inline)
             .navigationBarItems(
                 leading: Button("Default", action: viewModel.defaultTapped),
                 trailing: Button("Save", action: viewModel.doneTapped)
             )
+        }.onAppear {
+            countrySearchSting = ""
         }
     }
     
-    private func buildSection(
-        _ section: ConfigurationSection
+    private func wrapInSection<T: View>(
+        view: T,
+        section: ConfigurationSection
     ) -> some View {
-        Section(header: Text(section.rawValue.uppercased())) { getSectionView(section) }
-    }
-    
-    @ViewBuilder
-    private func getSectionView(_ section: ConfigurationSection) -> some View {
-        switch section {
-        case .apiVersion: apiVersionSection
-        case .merchantAccount: merchantAccountSection
-        case .region: regionSection
-        case .payment: paymentSection
-        }
+        Section(header: Text(section.rawValue.uppercased())) { view }
     }
     
     private var apiVersionSection: some View {
@@ -61,9 +65,18 @@ internal struct ConfigurationView: View {
     }
     
     private var regionSection: some View {
-        Picker("Country code",
-               selection: $viewModel.countryCode) {
-            ForEach(ConfigurationViewModel.countries, id: \.self) { country in
+        let selectionBinding = Binding(
+            get: { viewModel.countryCode },
+            set: { newValue in
+                viewModel.countryCode = newValue
+                countrySearchSting = ""
+            }
+        )
+        
+        return Picker("Country code",
+               selection: selectionBinding) {
+            SearchBar(searchString: $countrySearchSting, placeholder: "Search Countries")
+            ForEach(filteredCountries, id: \.self) { country in
                 ListItemView(viewModel: country.toListItemViewModel)
             }
         }
@@ -85,7 +98,7 @@ internal struct ConfigurationView: View {
 
 @available(iOS 13.0.0, *)
 private struct ListItemView<T: Hashable>: View {
-     let viewModel: ViewModel<T>
+    let viewModel: ViewModel<T>
     
     var body: some View {
         HStack {
@@ -102,15 +115,31 @@ private struct ListItemView<T: Hashable>: View {
 }
 
 @available(iOS 13.0.0, *)
-private extension CountryDisplayInfo {
-    var toListItemViewModel: ListItemView<String>.ViewModel<String> {
-        ListItemView.ViewModel(title: code, subtitle: name, tag: code)
+extension CountryDisplayInfo {
+    fileprivate var toListItemViewModel: ListItemView<String>.ViewModel<String> {
+        ListItemView.ViewModel(
+            title: "\(code) \(emojiFlag(regionCode: code))",
+            subtitle: name,
+            tag: code
+        )
+    }
+    
+    internal func matches(_ predicate: String) -> Bool {
+        code.range(of: predicate, options: [.anchored, .caseInsensitive]) != nil ||
+            name.range(of: predicate, options: [.anchored, .caseInsensitive]) != nil
+    }
+    
+    private func emojiFlag(regionCode: String) -> String {
+        regionCode.unicodeScalars
+            .compactMap { UnicodeScalar(127397 + $0.value) }
+            .map(String.init)
+            .joined()
     }
 }
 
 @available(iOS 13.0.0, *)
-private extension CurrencyDisplayInfo {
-    var toListItemViewModel: ListItemView<String>.ViewModel<String> {
+extension CurrencyDisplayInfo {
+    fileprivate var toListItemViewModel: ListItemView<String>.ViewModel<String> {
         ListItemView.ViewModel(title: code, subtitle: symbol, tag: code)
     }
 }

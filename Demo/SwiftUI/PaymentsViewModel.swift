@@ -54,6 +54,27 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
         ]
         integrationExample.requestPaymentMethods()
     }
+    
+    // MARK: - Configuration
+    
+    internal func presentConfiguration() {
+        let configurationVC = UIHostingController(rootView: ConfigurationView(viewModel: getConfigurationVM()))
+        configurationVC.isModalInPresentation = true
+        present(viewController: configurationVC, completion: nil)
+    }
+    
+    private func getConfigurationVM() -> ConfigurationViewModel {
+        ConfigurationViewModel(
+            configuration: ConfigurationConstants.current,
+            onDone: { [weak self] in self?.onConfigurationClosed($0) }
+        )
+    }
+    
+    private func onConfigurationClosed(_ configuration: Configuration) {
+        ConfigurationConstants.current = configuration
+        dismiss(completion: nil)
+        integrationExample.requestPaymentMethods()
+    }
 
     // MARK: - Presenter
 

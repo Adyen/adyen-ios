@@ -54,7 +54,7 @@ public final class AmountFormatter {
             .rounding(accordingToBehavior: roundTowardsZero).intValue
     }
     
-    /// Converts an amount in major currency unit to a decimal amount in major currency units.
+    /// Converts an amount in minor currency unit to a decimal amount in major currency units.
     ///
     /// - Parameters:
     ///   - amount: The amount in major currency units.
@@ -65,8 +65,7 @@ public final class AmountFormatter {
         defaultFormatter.maximumFractionDigits = maximumFractionDigits
         
         let decimalMinorAmount = NSDecimalNumber(value: amount)
-        let convertedAmount = decimalMinorAmount.multiplying(byPowerOf10: Int16(-maximumFractionDigits)).doubleValue
-        return NSDecimalNumber(value: convertedAmount)
+        return decimalMinorAmount.multiplying(byPowerOf10: Int16(-maximumFractionDigits))
     }
     
     private static func defaultFormatter(currencyCode: String) -> NumberFormatter {
