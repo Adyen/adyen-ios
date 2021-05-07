@@ -8,11 +8,13 @@ import Foundation
 
 internal struct ComponentsItem: Hashable {
 
-    internal var title: String
+    internal let title: String
     
-    internal var selectionHandler: (() -> Void)?
+    internal var isApplePay: Bool { title == "Apple Pay" }
     
-    internal init(title: String, selectionHandler: (() -> Void)? = nil) {
+    internal let selectionHandler: (() -> Void)
+    
+    internal init(title: String, selectionHandler: @escaping (() -> Void)) {
         self.title = title
         self.selectionHandler = selectionHandler
     }

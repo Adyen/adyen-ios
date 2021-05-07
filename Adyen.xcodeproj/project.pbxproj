@@ -136,6 +136,9 @@
 		E7763A8725F10CA60046371E /* Adyen3DS2.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7763A7E25F10C9B0046371E /* Adyen3DS2.xcframework */; };
 		E7763A8825F10CA60046371E /* Adyen3DS2.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E7763A7E25F10C9B0046371E /* Adyen3DS2.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E781884826441F88008E0913 /* AddressInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E781884726441F88008E0913 /* AddressInfo.swift */; };
+		E781887126443D29008E0913 /* PreApplePayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E781887026443D29008E0913 /* PreApplePayView.swift */; };
+		E781887F26444027008E0913 /* PreApplePayComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E781887E26444027008E0913 /* PreApplePayComponent.swift */; };
+		E781889926452C76008E0913 /* ADYViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E781889826452C76008E0913 /* ADYViewController.swift */; };
 		E787C9AC24696A8900B401E0 /* CornerRadiusStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E787C9AB24696A8900B401E0 /* CornerRadiusStyle.swift */; };
 		E787C9AE24698C2E00B401E0 /* UIViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E787C9AD24698C2E00B401E0 /* UIViewHelpers.swift */; };
 		E787C9D1246E948F00B401E0 /* CoreFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E787C9D0246E948F00B401E0 /* CoreFonts.swift */; };
@@ -718,6 +721,9 @@
 		E7763A1025F02BD20046371E /* GiftCardPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftCardPaymentMethod.swift; sourceTree = "<group>"; };
 		E7763A7E25F10C9B0046371E /* Adyen3DS2.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Adyen3DS2.xcframework; path = "Carthage/Checkouts/adyen-3ds2-ios/XCFramework/Dynamic/Adyen3DS2.xcframework"; sourceTree = "<group>"; };
 		E781884726441F88008E0913 /* AddressInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressInfo.swift; sourceTree = "<group>"; };
+		E781887026443D29008E0913 /* PreApplePayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreApplePayView.swift; sourceTree = "<group>"; };
+		E781887E26444027008E0913 /* PreApplePayComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreApplePayComponent.swift; sourceTree = "<group>"; };
+		E781889826452C76008E0913 /* ADYViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADYViewController.swift; sourceTree = "<group>"; };
 		E787C9AB24696A8900B401E0 /* CornerRadiusStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadiusStyle.swift; sourceTree = "<group>"; };
 		E787C9AD24698C2E00B401E0 /* UIViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewHelpers.swift; sourceTree = "<group>"; };
 		E787C9D0246E948F00B401E0 /* CoreFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreFonts.swift; sourceTree = "<group>"; };
@@ -1457,6 +1463,7 @@
 				E2C0E094220B04E9008616F6 /* Form */,
 				E28098B9220DB9E70087928F /* List */,
 				E2C0E0BF220D7E53008616F6 /* Views */,
+				E781889826452C76008E0913 /* ADYViewController.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1486,6 +1493,7 @@
 		E2C40D1A2285B42200DC548F /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				E781887E26444027008E0913 /* PreApplePayComponent.swift */,
 				E72DA33C23E19DE300707638 /* PreselectedPaymentMethodComponent.swift */,
 				E2D1783F22D8763400B6883E /* PaymentMethodListComponent.swift */,
 				E2D05BEF2285B92500EC279A /* EmptyPaymentComponent.swift */,
@@ -1649,6 +1657,14 @@
 				E76EC684241127CE009C6E2F /* AdyenCardAssets.xcassets */,
 			);
 			path = Assets;
+			sourceTree = "<group>";
+		};
+		E781886F26443D29008E0913 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E781887026443D29008E0913 /* PreApplePayView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		E7B6280124ED6450000CEC6E /* CardType */ = {
@@ -1843,6 +1859,7 @@
 				E7484C2523B9FDC400CCF74F /* Presentation */,
 				E2C40D1A2285B42200DC548F /* Components */,
 				E9B36CC322451C5B00EAA368 /* Utilities */,
+				E781886F26443D29008E0913 /* Views */,
 				E9B36CC122451C3000EAA368 /* Models */,
 				E9B36CAD2243B2FE00EAA368 /* AdyenDropIn.h */,
 				E9B36CAE2243B2FE00EAA368 /* Info.plist */,
@@ -3079,6 +3096,7 @@
 				E2D12BF1221D561600EF682F /* FormValueItemView.swift in Sources */,
 				F9639B3B24E14A940073F38A /* APIError.swift in Sources */,
 				E909342822969AFF00C9F04B /* PaymentComponentData.swift in Sources */,
+				E781889926452C76008E0913 /* ADYViewController.swift in Sources */,
 				E21895E422A7CC4D001B6EE0 /* FormSplitTextItem.swift in Sources */,
 				E97B971D229E83F800505476 /* ApplePayComponent.swift in Sources */,
 				F9639B2A24DD6A990073F38A /* Request.swift in Sources */,
@@ -3293,6 +3311,7 @@
 				E7620EB223C5FB9600A492C3 /* DropInColors.swift in Sources */,
 				E9B36CC722451C8300EAA368 /* PaymentMethodsConfiguration.swift in Sources */,
 				E7620EA123BF3DC800A492C3 /* ModalViewController.swift in Sources */,
+				E781887F26444027008E0913 /* PreApplePayComponent.swift in Sources */,
 				E7388D8523DB1F9A008E62B8 /* DimmingPresentationController.swift in Sources */,
 				E2D1784022D8763400B6883E /* PaymentMethodListComponent.swift in Sources */,
 				F9789C7123F1939F000B4B2B /* DropInActionComponent.swift in Sources */,
@@ -3301,6 +3320,7 @@
 				E9B36CB82243B38A00EAA368 /* DropInComponent.swift in Sources */,
 				E9B36CC522451C7100EAA368 /* ComponentManager.swift in Sources */,
 				E226F54B229803130013A463 /* DropInComponentDelegate.swift in Sources */,
+				E781887126443D29008E0913 /* PreApplePayView.swift in Sources */,
 				E2D05BF02285B92500EC279A /* EmptyPaymentComponent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

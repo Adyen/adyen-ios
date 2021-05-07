@@ -17,7 +17,7 @@ internal struct ContentView: View {
                 Section(content: {
                     ForEach(section, id: \.self) { item in
                         Button(action: {
-                            item.selectionHandler?()
+                            item.selectionHandler()
                         }, label: {
                             Text(item.title)
                                 .frame(maxWidth: .infinity)
