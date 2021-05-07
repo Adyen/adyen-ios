@@ -15,8 +15,6 @@ internal struct PaymentsRequest: Request {
     internal let path = "payments"
     
     internal let data: PaymentComponentData
-
-    internal var order: PartialPaymentOrder?
     
     internal var counter: UInt = 0
     
@@ -42,14 +40,13 @@ internal struct PaymentsRequest: Request {
         try container.encodeIfPresent(data.browserInfo, forKey: .browserInfo)
         try container.encode("iOS", forKey: .channel)
         try container.encode(amount, forKey: .amount)
-        try container.encode(currentConfiguration.amount, forKey: .amount)
         try container.encode(ConfigurationConstants.reference, forKey: .reference)
         try container.encode(currentConfiguration.countryCode, forKey: .countryCode)
         try container.encode(ConfigurationConstants.returnUrl, forKey: .returnUrl)
         try container.encode(ConfigurationConstants.shopperReference, forKey: .shopperReference)
         try container.encode(ConfigurationConstants.additionalData, forKey: .additionalData)
         try container.encode(currentConfiguration.merchantAccount, forKey: .merchantAccount)
-        try container.encodeIfPresent(order, forKey: .order)
+        try container.encodeIfPresent(data.order, forKey: .order)
     }
     
     private enum CodingKeys: String, CodingKey {

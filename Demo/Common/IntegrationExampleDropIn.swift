@@ -43,6 +43,10 @@ extension IntegrationExample {
         case let .success(response):
             if let action = response.action {
                 handle(action)
+            } else if let order = response.order,
+                      let remainingAmount = order.remainingAmount,
+                      remainingAmount.value > 0 {
+                handle(order)
             } else {
                 finish(with: response.resultCode)
             }
@@ -54,14 +58,23 @@ extension IntegrationExample {
     private func handle(_ action: Action) {
         (currentComponent as? DropInComponent)?.handle(action)
     }
+
+    private func handle(_ order: PartialPaymentOrder) {
+        requestPaymentMethods(order: order) { [weak self] paymentMethods in
+            self?.handle(order, paymentMethods)
+        }
+    }
+
+    private func handle(_ order: PartialPaymentOrder, _ paymentMethods: PaymentMethods) {
+        (currentComponent as? DropInComponent)?.handle(order, paymentMethods)
+    }
 }
 
 extension IntegrationExample: DropInComponentDelegate {
 
     internal func didSubmit(_ data: PaymentComponentData, for paymentMethod: PaymentMethod, from component: DropInComponent) {
         print("User did start: \(paymentMethod.name)")
-        var request = PaymentsRequest(data: data)
-        request.order = data.order
+        let request = PaymentsRequest(data: data)
         apiClient.perform(request, completionHandler: paymentResponseHandler)
     }
 

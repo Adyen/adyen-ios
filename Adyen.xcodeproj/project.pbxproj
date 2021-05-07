@@ -253,6 +253,7 @@
 		F91664F023E41D7300C10738 /* AnyEncodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91664EF23E41D7300C10738 /* AnyEncodable.swift */; };
 		F9172F682643E0BC00985310 /* OrderStatusRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9172F672643E0BC00985310 /* OrderStatusRequest.swift */; };
 		F9172F742643E0D200985310 /* OrderStatusResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9172F732643E0D200985310 /* OrderStatusResponse.swift */; };
+		F9172FF626452E6E00985310 /* RetryOnErrorAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9172FF526452E6E00985310 /* RetryOnErrorAPIClient.swift */; };
 		F9175E59259393E800D653BE /* AdyenComponents.h in Headers */ = {isa = PBXBuildFile; fileRef = F9175E57259393E800D653BE /* AdyenComponents.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F9175E672593944C00D653BE /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
 		F9175E822593948F00D653BE /* AdyenComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9175E55259393E800D653BE /* AdyenComponents.framework */; platformFilter = ios; };
@@ -1131,6 +1132,7 @@
 		F9172F522643DABA00985310 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F9172F672643E0BC00985310 /* OrderStatusRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderStatusRequest.swift; sourceTree = "<group>"; };
 		F9172F732643E0D200985310 /* OrderStatusResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderStatusResponse.swift; sourceTree = "<group>"; };
+		F9172FF526452E6E00985310 /* RetryOnErrorAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetryOnErrorAPIClient.swift; sourceTree = "<group>"; };
 		F9175E55259393E800D653BE /* AdyenComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdyenComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9175E57259393E800D653BE /* AdyenComponents.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdyenComponents.h; sourceTree = "<group>"; };
 		F9175E58259393E800D653BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -3067,6 +3069,7 @@
 				E7B6280724ED65D2000CEC6E /* Requests */,
 				E95E24B222C1155A00973184 /* APIClient.swift */,
 				F9639B2C24DD6B370073F38A /* RetryAPIClient.swift */,
+				F9172FF526452E6E00985310 /* RetryOnErrorAPIClient.swift */,
 				F9639B2E24DD6B500073F38A /* APIEnvironment.swift */,
 				F9639B3A24E14A940073F38A /* APIError.swift */,
 				F9639B3E24E18F620073F38A /* Scheduler.swift */,
@@ -4283,6 +4286,7 @@
 				E28098C4220DC66E0087928F /* ListItemView.swift in Sources */,
 				E28098C2220DC1080087928F /* ListCell.swift in Sources */,
 				E270FDE4225CACB0006C2CD0 /* Observable.swift in Sources */,
+				F9172FF626452E6E00985310 /* RetryOnErrorAPIClient.swift in Sources */,
 				E9E3DAFF2225488900697074 /* Completion.swift in Sources */,
 				E278EB4122AA5EBD00497FD5 /* CardPaymentMethod.swift in Sources */,
 				E2D12C00221D91ED00EF682F /* StringHelpers.swift in Sources */,

@@ -76,6 +76,44 @@ public final class DropInComponent: NSObject, PresentableComponent {
     public func handle(_ action: Action) {
         actionComponent.handle(action)
     }
+
+    // MARK: - Handling Partial Payments
+
+    /// :nodoc:
+    private lazy var apiClient: APIClientProtocol = {
+        let scheduler = SimpleScheduler(maximumCount: 3)
+        let baseAPIClient = APIClient(environment: environment)
+        let retryApiClient = RetryAPIClient(apiClient: baseAPIClient, scheduler: scheduler)
+        let apiClient = RetryOnErrorAPIClient(apiClient: retryApiClient)
+        return apiClient
+    }()
+
+    /// Handles a partial payment.
+    ///
+    /// - Parameter order: The partial payment order.
+    /// - Parameter paymentMethods: The new payment methods.
+    public func handle(_ order: PartialPaymentOrder,
+                       _ paymentMethods: PaymentMethods) {
+        let request = OrderStatusRequest(orderData: order.orderData)
+        apiClient.perform(request) { [weak self] result in
+            self?.handle(result, paymentMethods)
+        }
+    }
+
+    private func handle(_ result: Result<OrderStatusResponse, Error>,
+                        _ paymentMethods: PaymentMethods) {
+        switch result {
+        case let .failure(error) :
+            delegate?.didFail(with: error, from: self)
+        case let .success(response):
+            componentManager = ComponentManager(paymentMethods: paymentMethods,
+                                                configuration: configuration,
+                                                style: style,
+                                                partialPaymentEnabled:
+                                                    partialPaymentDelegate != nil)
+            showPaymentMethodsList()
+        }
+    }
     
     // MARK: - Private
 
@@ -262,6 +300,10 @@ extension DropInComponent: PreselectedPaymentMethodComponentDelegate {
     }
     
     internal func didRequestAllPaymentMethods() {
+        showPaymentMethodsList()
+    }
+
+    private func showPaymentMethodsList() {
         let newRoot = paymentMethodListComponent()
         navigationController.present(root: newRoot)
         rootComponent = newRoot

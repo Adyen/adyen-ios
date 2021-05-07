@@ -138,8 +138,7 @@ extension IntegrationExample {
 extension IntegrationExample: PaymentComponentDelegate {
 
     internal func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
-        var request = PaymentsRequest(data: data)
-        request.order = order
+        let request = PaymentsRequest(data: data)
         apiClient.perform(request, completionHandler: paymentResponseHandler)
     }
 
