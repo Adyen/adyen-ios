@@ -140,6 +140,34 @@ class DropInTests: XCTestCase {
         waitForExpectations(timeout: 15, handler: nil)
     }
 
+    func testOpenApplePay() {
+        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: "local_MYLOCALCLIENTKEY")
+        config.applePay = .init(summaryItems: [.init(label: "Item", amount: 100) ], merchantIdentifier: "")
+        config.payment = .init(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
+
+        let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
+        sut = DropInComponent(paymentMethods: paymenMethods, paymentMethodsConfiguration: config)
+        sut.environment = .test
+
+        let root = UIViewController()
+        UIApplication.shared.keyWindow?.rootViewController = root
+        root.present(sut.viewController, animated: true, completion: nil)
+
+        let waitExpectation = expectation(description: "Expect DropIn to open")
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
+            let topVC = self.sut.viewController.findChild(of: ListViewController.self)
+            topVC?.tableView(topVC!.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
+
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
+                let topVC = self.sut.viewController.findChild(of: ADYViewController.self)
+                XCTAssertEqual(topVC?.title, "Apple Pay")
+                waitExpectation.fulfill()
+            }
+        }
+
+        waitForExpectations(timeout: 15, handler: nil)
+    }
+
 }
 
 extension UIViewController {
