@@ -88,6 +88,7 @@ internal final class PaymentsController {
         configuration.applePay.summaryItems = Configuration.applePaySummaryItems
         configuration.environment = environment
         configuration.localizationParameters = nil
+        configuration.card.showsPostalCodeField = true
 
         let component = DropInComponent(paymentMethods: paymentMethods,
                                         paymentMethodsConfiguration: configuration,
@@ -105,6 +106,7 @@ internal final class PaymentsController {
         component.environment = environment
         component.clientKey = Configuration.clientKey
         component.cardComponentDelegate = self
+        component.showsPostalCodeField = true
         present(component)
     }
 

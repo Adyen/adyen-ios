@@ -86,6 +86,7 @@ internal final class ComponentManager {
         cardComponent?.showsStorePaymentMethodField = cardConfiguration.showsStorePaymentMethodField
         cardComponent?.showsSecurityCodeField = cardConfiguration.showsSecurityCodeField
         cardComponent?.storedCardConfiguration = cardConfiguration.stored
+        cardComponent?.showsPostalCodeField = cardConfiguration.showsPostalCodeField
         
         return cardComponent
     }
@@ -111,6 +112,7 @@ internal final class ComponentManager {
         
         component?.showsHolderNameField = cardConfiguration.showsHolderNameField
         component?.showsStorePaymentMethodField = cardConfiguration.showsStorePaymentMethodField
+        component?.showsLargeTitle = false
         
         return component
     }

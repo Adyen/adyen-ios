@@ -62,6 +62,9 @@ public extension DropInComponent {
             /// Indicates whether to show the security code field in the form.
             public var showsSecurityCodeField = true
 
+            /// Indicates if the field for entering the postal code should be displayed in the form. Defaults to false.
+            public var showsPostalCodeField = false
+
             /// Stored card configuration.
             public var stored = StoredCardConfiguration()
             
