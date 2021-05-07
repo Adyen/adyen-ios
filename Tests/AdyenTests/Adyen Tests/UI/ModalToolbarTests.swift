@@ -79,7 +79,7 @@ class ModalToolbarTests: XCTestCase {
 
         sut = ModalToolbar(title: "SomeTitle", style: style, cancelHandler: {})
 
-        XCTAssertEqual(sut.stackView.arrangedSubviews.first, sut.cancelButton)
+        XCTAssertEqual(sut.stackView.arrangedSubviews.last, sut.cancelButton)
     }
 
     func testLegacyButtonStyle() {

@@ -47,7 +47,7 @@ internal final class ModalToolbar: UIView {
     }()
 
     internal lazy var stackView: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [cancelButton, titleLabel])
+        let stack = UIStackView(arrangedSubviews: [titleLabel, cancelButton])
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.alignment = .center
         stack.distribution = .fill
@@ -65,9 +65,9 @@ internal final class ModalToolbar: UIView {
         case .natural:
             return .unspecified
         case .leftCancel:
-            return .forceLeftToRight
-        case .rightCancel:
             return .forceRightToLeft
+        case .rightCancel:
+            return .forceLeftToRight
         }
     }
 
@@ -130,11 +130,14 @@ internal final class ModalToolbar: UIView {
 
         switch style.toolbarMode {
         case .rightCancel:
-            cancelPositionConstraint = rightAnchor.constraint(equalTo: cancelButton.rightAnchor, constant: paddingWithMarginCorrection)
+            cancelPositionConstraint = rightAnchor.constraint(equalTo: cancelButton.rightAnchor,
+                                                              constant: paddingWithMarginCorrection)
         case .leftCancel:
-            cancelPositionConstraint = leftAnchor.constraint(equalTo: cancelButton.leftAnchor, constant: -paddingWithMarginCorrection)
+            cancelPositionConstraint = leftAnchor.constraint(equalTo: cancelButton.leftAnchor,
+                                                             constant: -paddingWithMarginCorrection)
         case .natural:
-            cancelPositionConstraint = leadingAnchor.constraint(equalTo: cancelButton.leadingAnchor, constant: -paddingWithMarginCorrection)
+            cancelPositionConstraint = trailingAnchor.constraint(equalTo: cancelButton.trailingAnchor,
+                                                                 constant: paddingWithMarginCorrection)
         }
 
         return cancelPositionConstraint
