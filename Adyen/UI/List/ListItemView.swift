@@ -184,13 +184,4 @@ public final class ListItemView: UIView, AnyFormItemView {
         imageView.layer.borderColor = item?.style.image.borderColor?.cgColor ?? UIColor.Adyen.componentSeparator.cgColor
     }
     
-    override public var intrinsicContentSize: CGSize {
-        let targetSize = CGSize(width: UIView.layoutFittingCompressedSize.width,
-                                height: UIView.layoutFittingCompressedSize.height)
-        let size = titleSubtitleStackView.systemLayoutSizeFitting(targetSize,
-                                                                  withHorizontalFittingPriority: .fittingSizeLevel,
-                                                                  verticalFittingPriority: .fittingSizeLevel)
-        return size + layoutMargins.size + CGSize(width: imageSize.width, height: 0)
-    }
-    
 }

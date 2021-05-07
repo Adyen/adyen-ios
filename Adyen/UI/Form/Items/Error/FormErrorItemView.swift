@@ -53,6 +53,7 @@ internal final class FormErrorItemView: FormItemView<FormErrorItem> {
         messageLabel.accessibilityIdentifier = item.identifier.map {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "messageLabel")
         }
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
 
         return messageLabel
     }()

@@ -98,8 +98,7 @@ public final class ListCell: UITableViewCell {
             itemView.topAnchor.constraint(equalTo: topAnchor),
             itemView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
             itemView.trailingAnchor.constraint(lessThanOrEqualTo: layoutGuide.trailingAnchor),
-            itemView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            itemView.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -layoutMargins.right - layoutMargins.left - 16)
+            itemView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ]
         
         NSLayoutConstraint.activate(constraints)
