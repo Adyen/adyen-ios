@@ -102,7 +102,7 @@ public extension DropInComponent.PaymentMethodsConfiguration.CardConfiguration {
             showsHolderNameField = newValue
         }
         get {
-            return showsHolderNameField
+            showsHolderNameField
         }
     }
 }
