@@ -116,17 +116,22 @@ internal final class ComponentManager {
     }
     
     private func createApplePayComponent(with paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
-        guard
-            let payment = payment,
-            let configuration = configuration.applePay.componentConfiguration()
-        else {
-            adyenPrint("Failed to instantiate ApplePayComponent because ApplePayConfiguration is missing data")
+        guard let payment = payment else {
+            adyenPrint("Failed to instantiate ApplePayComponent: no payment specified.")
             return nil
         }
 
-        return try? PreApplePayComponent(payment: payment,
-                                         paymentMethod: paymentMethod,
-                                         configuration: configuration)
+        guard let configuration = configuration.applePay.componentConfiguration() else {
+            adyenPrint("Failed to instantiate ApplePayComponent: ApplePayConfiguration is missing summary items or MerchantIden ID")
+            return nil
+        }
+
+        do {
+            return try PreApplePayComponent(payment: payment, paymentMethod: paymentMethod, configuration: configuration)
+        } catch {
+            adyenPrint("Failed to instantiate ApplePayComponent: \(error)")
+            return nil
+        }
     }
     
     private func createSEPAComponent(_ paymentMethod: SEPADirectDebitPaymentMethod) -> SEPADirectDebitComponent {

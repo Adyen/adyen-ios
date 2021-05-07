@@ -4,12 +4,12 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import UIKit
 import Adyen
 import PassKit
+import UIKit
 
 /// :nodoc
-internal protocol PreApplePayViewDelegate: class {
+internal protocol PreApplePayViewDelegate: AnyObject {
     
     func pay()
     
@@ -51,23 +51,42 @@ internal final class PreApplePayView: UIView, Localizable {
     private func addButton() {
         addSubview(payButton)
         payButton.translatesAutoresizingMaskIntoConstraints = false
+
+        let leadingAnchor: NSLayoutXAxisAnchor
+        let trailingAnchor: NSLayoutXAxisAnchor
+        if #available(iOS 11.0, *) {
+            leadingAnchor = safeAreaLayoutGuide.leadingAnchor
+            trailingAnchor = safeAreaLayoutGuide.trailingAnchor
+        } else {
+            leadingAnchor = self.leadingAnchor
+            trailingAnchor = self.trailingAnchor
+        }
         NSLayoutConstraint.activate([
             payButton.topAnchor.constraint(equalTo: topAnchor, constant: 13.0),
             payButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16.0),
             payButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16.0),
             payButton.heightAnchor.constraint(equalToConstant: 48.0)
         ])
+        payButton.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "applePayButton")
     }
     
     /// :nodoc:
     private func addHintLabel() {
         addSubview(hintLabel)
         hintLabel.translatesAutoresizingMaskIntoConstraints = false
-        hintLabel.setContentHuggingPriority(.required, for: .vertical)
+
+        let bottomAnchore: NSLayoutYAxisAnchor
+        if #available(iOS 11.0, *) {
+            bottomAnchore = safeAreaLayoutGuide.bottomAnchor
+        } else {
+            bottomAnchore = self.bottomAnchor
+        }
         NSLayoutConstraint.activate([
             hintLabel.topAnchor.constraint(equalTo: payButton.bottomAnchor, constant: 15.0),
-            hintLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
+            hintLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            hintLabel.bottomAnchor.constraint(equalTo: bottomAnchore, constant: -24.0)
         ])
+        hintLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "hintLabel")
     }
     
     /// :nodoc:

@@ -37,7 +37,7 @@ public extension AdyenScope where Base: UIViewController {
         return topController
     }
     
-    private var leastPresentableHeightScale: CGFloat { 0.3 }
+    private var leastPresentableHeightScale: CGFloat { 0.25 }
     private var greatestPresentableHeightScale: CGFloat {
         guard base.isViewLoaded else { return 1 }
         return base.view.bounds.height < base.view.bounds.width ? 1 : 0.9
