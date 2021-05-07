@@ -14,6 +14,11 @@
 		5A238C93263AEA0800758FEF /* PreApplePayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A238C92263AEA0800758FEF /* PreApplePayView.swift */; };
 		5A238C9F263BDEA200758FEF /* PreApplePayComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A238C9E263BDEA200758FEF /* PreApplePayComponentTests.swift */; };
 		5A27AB032636A07900EF6F89 /* LocalizationKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A27AB022636A07900EF6F89 /* LocalizationKey.swift */; };
+		5A545FC72642F77500724A87 /* ConfigurationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A545FC62642F77500724A87 /* ConfigurationViewModel.swift */; };
+		5A545FDC2643CF2400724A87 /* ConfigurationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A545FC62642F77500724A87 /* ConfigurationViewModel.swift */; };
+		5A545FE72643CF2700724A87 /* ConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67461F264262F000E9184D /* ConfigurationView.swift */; };
+		5A54600F264433CD00724A87 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54600E264433CD00724A87 /* SearchBar.swift */; };
+		5A546010264433CE00724A87 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54600E264433CD00724A87 /* SearchBar.swift */; };
 		5A54FFCA26299140007194B7 /* TimeIntervalHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54FFC926299140007194B7 /* TimeIntervalHelpers.swift */; };
 		5A54FFE126299602007194B7 /* TimeIntervalExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54FFD5262995F6007194B7 /* TimeIntervalExtensionsTests.swift */; };
 		5A6456D6262592B2001824F0 /* QRCodeAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6456D5262592B2001824F0 /* QRCodeAction.swift */; };
@@ -22,6 +27,7 @@
 		5A64573F2626D2E2001824F0 /* QRCodeComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A64573E2626D2E2001824F0 /* QRCodeComponentStyle.swift */; };
 		5A6457DD26271434001824F0 /* QRCodeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6456E22625A1E2001824F0 /* QRCodeComponent.swift */; };
 		5A6745E126417A5C00E9184D /* ADYViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6745E026417A5C00E9184D /* ADYViewController.swift */; };
+		5A674620264262F000E9184D /* ConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67461F264262F000E9184D /* ConfigurationView.swift */; };
 		5AD40E75262F04440090E01C /* UIProgressViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD40E74262F04440090E01C /* UIProgressViewHelpers.swift */; };
 		5AD40EEF26303C830090E01C /* UIButtonHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD40EEE26303C830090E01C /* UIButtonHelpers.swift */; };
 		5AD40EFB26303D490090E01C /* UILabelHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD40EFA26303D490090E01C /* UILabelHelpers.swift */; };
@@ -807,6 +813,8 @@
 		5A238C92263AEA0800758FEF /* PreApplePayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreApplePayView.swift; sourceTree = "<group>"; };
 		5A238C9E263BDEA200758FEF /* PreApplePayComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreApplePayComponentTests.swift; sourceTree = "<group>"; };
 		5A27AB022636A07900EF6F89 /* LocalizationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationKey.swift; sourceTree = "<group>"; };
+		5A545FC62642F77500724A87 /* ConfigurationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationViewModel.swift; sourceTree = "<group>"; };
+		5A54600E264433CD00724A87 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		5A54FFC926299140007194B7 /* TimeIntervalHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalHelpers.swift; sourceTree = "<group>"; };
 		5A54FFD5262995F6007194B7 /* TimeIntervalExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtensionsTests.swift; sourceTree = "<group>"; };
 		5A6456D5262592B2001824F0 /* QRCodeAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeAction.swift; sourceTree = "<group>"; wrapsLines = 1; };
@@ -815,6 +823,7 @@
 		5A6457262625CB99001824F0 /* QRCodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewModel.swift; sourceTree = "<group>"; };
 		5A64573E2626D2E2001824F0 /* QRCodeComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeComponentStyle.swift; sourceTree = "<group>"; };
 		5A6745E026417A5C00E9184D /* ADYViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADYViewController.swift; sourceTree = "<group>"; };
+		5A67461F264262F000E9184D /* ConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationView.swift; sourceTree = "<group>"; };
 		5AD40E74262F04440090E01C /* UIProgressViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIProgressViewHelpers.swift; sourceTree = "<group>"; };
 		5AD40EEE26303C830090E01C /* UIButtonHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonHelpers.swift; sourceTree = "<group>"; };
 		5AD40EFA26303D490090E01C /* UILabelHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelHelpers.swift; sourceTree = "<group>"; };
@@ -1524,6 +1533,16 @@
 				5A6457262625CB99001824F0 /* QRCodeViewModel.swift */,
 			);
 			path = "QR Code";
+			sourceTree = "<group>";
+		};
+		5A67461E264262CF00E9184D /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				5A67461F264262F000E9184D /* ConfigurationView.swift */,
+				5A545FC62642F77500724A87 /* ConfigurationViewModel.swift */,
+				5A54600E264433CD00724A87 /* SearchBar.swift */,
+			);
+			path = Configuration;
 			sourceTree = "<group>";
 		};
 		E2028F5A2227EF9F0007FF8B /* Data */ = {
@@ -2924,6 +2943,7 @@
 				E757F02425D2ED41007C813D /* Utils */,
 				F9EDB78723955A8400CFB3C9 /* Assets */,
 				F9A53C3D2549887F009000A7 /* Networking */,
+				5A67461E264262CF00E9184D /* Configuration */,
 				E24FED0B2270913000A65122 /* Helpers */,
 				F95B6DD3252B294C002C9062 /* IntegrationExample.swift */,
 				E7D18A0325D44610006AD3B7 /* IntegrationExampleDropIn.swift */,
@@ -4450,6 +4470,7 @@
 			files = (
 				F9A53C502549887F009000A7 /* PaymentsRequest.swift in Sources */,
 				F9A53C532549887F009000A7 /* PaymentMethodsRequest.swift in Sources */,
+				5A674620264262F000E9184D /* ConfigurationView.swift in Sources */,
 				E2C0E080220B0399008616F6 /* AppDelegate.swift in Sources */,
 				F95B6DD5252B2A8D002C9062 /* IntegrationExample.swift in Sources */,
 				E7D18A1025D44769006AD3B7 /* IntegrationExampleComponents.swift in Sources */,
@@ -4460,7 +4481,9 @@
 				E73C560625EE8C8D00B57758 /* APIClientHelper.swift in Sources */,
 				F9A53C4A2549887F009000A7 /* Environment.swift in Sources */,
 				F9620D7B23C36082005209FC /* Configuration.swift in Sources */,
+				5A545FC72642F77500724A87 /* ConfigurationViewModel.swift in Sources */,
 				E24FECF5226EF9AB00A65122 /* ComponentsViewController.swift in Sources */,
+				5A54600F264433CD00724A87 /* SearchBar.swift in Sources */,
 				E24FECF7226EF9D800A65122 /* ComponentsView.swift in Sources */,
 				E7D18A0425D44610006AD3B7 /* IntegrationExampleDropIn.swift in Sources */,
 				F9A53C4D2549887F009000A7 /* PaymentDetailsRequest.swift in Sources */,
@@ -4636,8 +4659,11 @@
 				E73C560725EE8C8D00B57758 /* APIClientHelper.swift in Sources */,
 				E7D18A1125D44769006AD3B7 /* IntegrationExampleComponents.swift in Sources */,
 				E757F03A25D2ED58007C813D /* APIClientMock.swift in Sources */,
+				5A545FDC2643CF2400724A87 /* ConfigurationViewModel.swift in Sources */,
 				F95B6DB525274DFF002C9062 /* CodingHelpers.swift in Sources */,
 				F9A53C452549887F009000A7 /* DefaultAPIClient.swift in Sources */,
+				5A545FE72643CF2700724A87 /* ConfigurationView.swift in Sources */,
+				5A546010264433CE00724A87 /* SearchBar.swift in Sources */,
 				F95B6D9C2527454E002C9062 /* ComponentsView.swift in Sources */,
 				F95B6DAE25274D9C002C9062 /* PaymentsViewModel.swift in Sources */,
 			);

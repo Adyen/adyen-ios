@@ -26,10 +26,12 @@ internal struct PaymentMethodsRequest: Request {
     internal func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
-        try container.encode(Configuration.countryCode, forKey: .countryCode)
-        try container.encode(Configuration.shopperReference, forKey: .shopperReference)
-        try container.encode(Configuration.merchantAccount, forKey: .merchantAccount)
-        try container.encode(Configuration.amount, forKey: .amount)
+        let currentConfiguration = ConfigurationConstants.current
+        
+        try container.encode(currentConfiguration.countryCode, forKey: .countryCode)
+        try container.encode(ConfigurationConstants.shopperReference, forKey: .shopperReference)
+        try container.encode(currentConfiguration.merchantAccount, forKey: .merchantAccount)
+        try container.encode(currentConfiguration.amount, forKey: .amount)
     }
     
     internal enum CodingKeys: CodingKey {

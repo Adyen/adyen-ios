@@ -5,6 +5,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 internal final class ComponentsViewController: UIViewController, Presenter {
     
@@ -42,7 +43,11 @@ internal final class ComponentsViewController: UIViewController, Presenter {
             ]
         ]
         
-        integrationExample.requestPaymentMethods()
+        requestPaymentMethods()
+        
+        if #available(iOS 13.0.0, *) {
+            addConfigurationButton()
+        }
     }
     
     // MARK: - DropIn Component
@@ -83,13 +88,12 @@ internal final class ComponentsViewController: UIViewController, Presenter {
 
     internal func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
         let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .cancel))
 
         if let retryHandler = retryHandler {
             alertController.addAction(UIAlertAction(title: "Retry", style: .default, handler: { _ in
                 retryHandler()
             }))
-        } else {
-            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         }
 
         present(alertController, animated: true)
@@ -97,7 +101,7 @@ internal final class ComponentsViewController: UIViewController, Presenter {
 
     internal func presentAlert(withTitle title: String) {
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        alertController.addAction(UIAlertAction(title: "OK", style: .default))
 
         present(alertController, animated: true)
     }
@@ -109,4 +113,40 @@ internal final class ComponentsViewController: UIViewController, Presenter {
     internal func dismiss(completion: (() -> Void)?) {
         dismiss(animated: true, completion: completion)
     }
+}
+
+// MARK: - Configuration, iOS13+
+@available(iOS 13.0.0, *)
+extension ComponentsViewController {
+    
+    private func addConfigurationButton() {
+        let image = UIImage(systemName: "gear")
+        let settingsButton = UIBarButtonItem(
+            image: image,
+            style: .plain,
+            target: self,
+            action: #selector(onSettingsTap)
+        )
+        navigationItem.rightBarButtonItem = settingsButton
+    }
+    
+    @objc private func onSettingsTap() {
+        let configurationVC = UIHostingController(rootView: ConfigurationView(viewModel: getConfigurationVM()))
+        configurationVC.isModalInPresentation = true
+        present(configurationVC, animated: true, completion: nil)
+    }
+    
+    private func getConfigurationVM() -> ConfigurationViewModel {
+        ConfigurationViewModel(
+            configuration: ConfigurationConstants.current,
+            onDone: { [weak self] in self?.onConfigurationClosed($0) }
+        )
+    }
+    
+    private func onConfigurationClosed(_ configuration: Configuration) {
+        ConfigurationConstants.current = configuration
+        dismiss(completion: nil)
+        requestPaymentMethods()
+    }
+    
 }
