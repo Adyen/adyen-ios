@@ -4,12 +4,12 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import UIKit
 import Adyen
 import PassKit
+import UIKit
 
 /// :nodoc
-internal protocol PreApplePayViewDelegate: class {
+internal protocol PreApplePayViewDelegate: AnyObject {
     
     func pay()
     

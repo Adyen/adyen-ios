@@ -32,22 +32,14 @@ class CardDetailsTests: XCTestCase {
         XCTAssertEqual(dictionary["encryptedSecurityCode"] as! String, "code")
         XCTAssertEqual(dictionary["holderName"] as! String, "holder")
 
-        let addressDictionary = dictionary["billingAddress"] as! [String: String]
-        XCTAssertEqual(addressDictionary["city"], "city")
-        XCTAssertEqual(addressDictionary["country"], "country")
-        XCTAssertEqual(addressDictionary["houseNumberOrName"], "numer apartment")
-        XCTAssertEqual(addressDictionary["postalCode"], "postal")
-        XCTAssertEqual(addressDictionary["stateOrProvince"], "state")
-        XCTAssertEqual(addressDictionary["street"], "street")
-        XCTAssertEqual(addressDictionary["apartment"], nil)
+        XCTAssertNil(dictionary["billingAddress"])
     }
     
     func testSerializeDeditCard() throws {
         let paymenthMethod = CardPaymentMethodMock(fundingSource: .debit, type: "test_type", name: "test name", brands: ["barnd_1", "barnd_2"])
         let sut = CardDetails(paymentMethod: paymenthMethod,
                               encryptedCard: EncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year"),
-                              billingAddress: AddressInfo(postalCode: "postal")
-        )
+                              billingAddress: AddressInfo(postalCode: "postal"))
         let data = try JSONEncoder().encode(sut)
         let dictionary = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
         
@@ -58,14 +50,39 @@ class CardDetailsTests: XCTestCase {
         XCTAssertEqual(dictionary["encryptedSecurityCode"] as! String, "code")
         XCTAssertEqual(dictionary["encryptedExpiryMonth"] as! String, "month")
 
-        let addressDictionary = dictionary["billingAddress"] as! [String: String]
-        XCTAssertEqual(addressDictionary["city"], "null")
-        XCTAssertEqual(addressDictionary["country"], "ZZ")
-        XCTAssertEqual(addressDictionary["houseNumberOrName"], "null")
-        XCTAssertEqual(addressDictionary["postalCode"], "postal")
-        XCTAssertEqual(addressDictionary["stateOrProvince"], "null")
-        XCTAssertEqual(addressDictionary["street"], "null")
-        XCTAssertEqual(addressDictionary["apartment"], nil)
+        XCTAssertNil(dictionary["billingAddress"])
+    }
+
+    func testEncodingFullAddress() {
+        let data = try! JSONEncoder().encode(AddressInfo(city: "city",
+                                                        country: "country",
+                                                        houseNumberOrName: "numer",
+                                                        postalCode: "postal",
+                                                        stateOrProvince: "state",
+                                                        street: "street",
+                                                        apartment: "apartment"))
+        let dictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: String]
+
+        XCTAssertEqual(dictionary["city"], "city")
+        XCTAssertEqual(dictionary["country"], "country")
+        XCTAssertEqual(dictionary["houseNumberOrName"], "numer apartment")
+        XCTAssertEqual(dictionary["postalCode"], "postal")
+        XCTAssertEqual(dictionary["stateOrProvince"], "state")
+        XCTAssertEqual(dictionary["street"], "street")
+        XCTAssertEqual(dictionary["apartment"], nil)
+    }
+
+    func testEncodingPostCode() {
+        let data = try! JSONEncoder().encode(AddressInfo(postalCode: "postal"))
+        let dictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: String]
+
+        XCTAssertEqual(dictionary["city"], "null")
+        XCTAssertEqual(dictionary["country"], "ZZ")
+        XCTAssertEqual(dictionary["houseNumberOrName"], "null")
+        XCTAssertEqual(dictionary["postalCode"], "postal")
+        XCTAssertEqual(dictionary["stateOrProvince"], "null")
+        XCTAssertEqual(dictionary["street"], "null")
+        XCTAssertEqual(dictionary["apartment"], nil)
     }
     
 }

@@ -82,16 +82,6 @@ class ModalToolbarTests: XCTestCase {
         XCTAssertEqual(sut.stackView.arrangedSubviews.first, sut.cancelButton)
     }
 
-    func testRightMode() {
-        var style = NavigationStyle()
-        style.barTitle.textAlignment = .natural
-        style.toolbarMode = .rightCancel
-
-        sut = ModalToolbar(title: "SomeTitle", style: style, cancelHandler: {})
-
-        XCTAssertEqual(sut.stackView.arrangedSubviews.last, sut.cancelButton)
-    }
-
     func testLegacyButtonStyle() {
         var style = NavigationStyle()
         style.cancelButton = .legacy

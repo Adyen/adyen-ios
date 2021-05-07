@@ -110,7 +110,7 @@ class QRCodeComponentTests: XCTestCase {
         let sut = QRCodeComponent(style: QRCodeComponentStyle(), pollingComponentBuilder: builder, timeoutInterval: 2.0)
         
         let componentDelegate = ActionComponentDelegateMock()
-        componentDelegate.onDidFail = { (error, component) in
+        componentDelegate.onDidFail = { error, component in
             if let qrError = error as? QRCodeComponentError,
                case QRCodeComponentError.qrCodeExpired = qrError { }
             else {
@@ -145,7 +145,8 @@ class QRCodeComponentTests: XCTestCase {
             onQRHandler: { type in
                 XCTAssertEqual(type, QRCodePaymentMethod.pix)
                 return handler
-            })
+            }
+        )
         
         let sut = QRCodeComponent(style: QRCodeComponentStyle(),
                                   pollingComponentBuilder: builder,
@@ -160,7 +161,7 @@ class QRCodeComponentTests: XCTestCase {
         }
         
         let componentDelegate = ActionComponentDelegateMock()
-        componentDelegate.onDidProvide = { (data, component) in
+        componentDelegate.onDidProvide = { data, component in
             XCTAssertEqual(data.paymentData, self.componentData.paymentData)
             XCTAssertTrue(component === sut)
             expectationForDidProvide.fulfill()
@@ -191,7 +192,8 @@ class QRCodeComponentTests: XCTestCase {
             onQRHandler: { type in
                 XCTAssertEqual(type, QRCodePaymentMethod.pix)
                 return handler
-            })
+            }
+        )
         
         let sut = QRCodeComponent(style: QRCodeComponentStyle(),
                                   pollingComponentBuilder: builder,
@@ -206,7 +208,7 @@ class QRCodeComponentTests: XCTestCase {
         }
         
         let componentDelegate = ActionComponentDelegateMock()
-        componentDelegate.onDidFail = { (error, component) in
+        componentDelegate.onDidFail = { error, component in
             XCTAssertTrue(error is UnknownError)
             XCTAssertTrue(component === sut)
             expectationForDidFail.fulfill()

@@ -6,9 +6,9 @@
 //  Copyright © 2021 Adyen. All rights reserved.
 //
 
-import XCTest
 @testable import Adyen
 @testable import AdyenComponents
+import XCTest
 
 class BasicPersonalInfoFormComponentTests: XCTestCase {
 

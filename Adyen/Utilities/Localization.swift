@@ -44,12 +44,12 @@ public func localizedString(_ key: LocalizationKey, _ parameters: LocalizationPa
 private func fallbackLocalizedString(key: String) -> String {
     let localizedFallback = NSLocalizedString(key, tableName: nil, bundle: Bundle.coreInternalResources, comment: "")
     
-    if localizedFallback != key && localizedFallback.isEmpty == false {
+    if localizedFallback != key, localizedFallback.isEmpty == false {
         return localizedFallback
     } else {
-    // Fallback to en-US
+        // Fallback to en-US
         return Bundle.coreInternalResources.path(forResource: "en-US", ofType: "lproj")
-            .flatMap(Bundle.init(path: ))
+            .flatMap(Bundle.init(path:))
             .map { NSLocalizedString(key, tableName: nil, bundle: $0, comment: "") } ?? key
     }
 }
@@ -118,7 +118,7 @@ public func localizedSubmitButtonTitle(with amount: Payment.Amount?,
                                        _ parameters: LocalizationParameters?) -> String {
     if let amount = amount, amount.value == 0 {
         return localizedZeroPaymentAuthorisationButtonTitle(style: style,
-                                                               parameters)
+                                                            parameters)
     }
     guard let formattedAmount = amount?.formatted else {
         return localizedString(.submitButton, parameters)

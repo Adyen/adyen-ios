@@ -31,7 +31,7 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
         
         let displayInformation = storedPaymentMethod.localizedDisplayInformation(using: localizationParameters)
         let alertController = UIAlertController(title: localizedString(.dropInStoredTitle,
-                                                                          localizationParameters, storedPaymentMethod.name),
+                                                                       localizationParameters, storedPaymentMethod.name),
                                                 message: displayInformation.title,
                                                 preferredStyle: .alert)
         
@@ -41,8 +41,8 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
         alertController.addAction(cancelAction)
         
         let submitActionTitle = localizedSubmitButtonTitle(with: payment?.amount,
-                                                              style: .immediate,
-                                                              localizationParameters)
+                                                           style: .immediate,
+                                                           localizationParameters)
         let submitAction = UIAlertAction(title: submitActionTitle, style: .default) { _ in
             let details = StoredPaymentDetails(paymentMethod: self.storedPaymentMethod)
             self.submit(data: PaymentComponentData(paymentMethodDetails: details))

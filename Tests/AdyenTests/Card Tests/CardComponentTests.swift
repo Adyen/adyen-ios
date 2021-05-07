@@ -612,7 +612,7 @@ class CardComponentTests: XCTestCase {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
                 XCTAssertEqual(cardNumberItem.cardTypeLogos.count, 3)
                 XCTAssertEqual(cardLogoView.subviews.count, 3)
-                XCTAssertTrue(cardLogoView.arrangedSubviews.allSatisfy { $0.isHidden })
+                XCTAssertTrue(cardLogoView.arrangedSubviews.allSatisfy(\.isHidden))
 
                 expectation.fulfill()
             }
@@ -750,7 +750,8 @@ class CardComponentTests: XCTestCase {
 
                     expectation.fulfill()
                 }
-            }}
+            }
+        }
         wait(for: [expectation], timeout: 10)
     }
 
@@ -998,4 +999,3 @@ extension UIView {
     }
 
 }
-

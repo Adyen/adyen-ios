@@ -47,18 +47,29 @@ internal final class ModalToolbar: UIView {
     }()
 
     internal lazy var stackView: UIStackView = {
-        let arrangement = style.toolbarMode == .rightCancel ? [titleLabel, cancelButton] : [cancelButton, titleLabel]
-        let stack = UIStackView(arrangedSubviews: arrangement)
+        let stack = UIStackView(arrangedSubviews: [cancelButton, titleLabel])
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.alignment = .center
         stack.distribution = .fill
         stack.axis = .horizontal
         stack.spacing = 16
+        stack.semanticContentAttribute = stackViewSemanticAttribute
         stack.layoutMargins = .init(top: 0, left: paddingWithMarginCorrection, bottom: 0, right: paddingWithMarginCorrection)
         stack.isLayoutMarginsRelativeArrangement = true
 
         return stack
     }()
+
+    private var stackViewSemanticAttribute: UISemanticContentAttribute {
+        switch style.toolbarMode {
+        case .natural:
+            return .unspecified
+        case .leftCancel:
+            return .forceLeftToRight
+        case .rightCancel:
+            return .forceRightToLeft
+        }
+    }
 
     @objc private func didCancel() {
         cancelHandler()
@@ -91,27 +102,43 @@ internal final class ModalToolbar: UIView {
     }
 
     private func setupLayoutForCenteredMode() {
-        let rightAnchor = safeAreaLayoutGuide.rightAnchor
-        let leftAnchor = safeAreaLayoutGuide.leftAnchor
-
-        let cancePositionConstraint: NSLayoutConstraint
-        if style.toolbarMode == .rightCancel {
-            cancePositionConstraint = rightAnchor.constraint(equalTo: cancelButton.rightAnchor, constant: paddingWithMarginCorrection)
-        } else {
-            cancePositionConstraint = leftAnchor.constraint(equalTo: cancelButton.leftAnchor, constant: -paddingWithMarginCorrection)
-        }
+        let titleLeadingAnchor = style.toolbarMode == .natural ? titleLabel.leadingAnchor : titleLabel.leftAnchor
+        let titleTrailingAnchor = style.toolbarMode == .natural ? titleLabel.trailingAnchor : titleLabel.rightAnchor
 
         NSLayoutConstraint.activate([
             self.topAnchor.constraint(equalTo: titleLabel.topAnchor),
             self.bottomAnchor.constraint(equalTo: titleLabel.bottomAnchor),
-            leftAnchor.constraint(equalTo: titleLabel.leftAnchor, constant: -paddingWithMarginCorrection),
-            rightAnchor.constraint(equalTo: titleLabel.rightAnchor, constant: paddingWithMarginCorrection),
+            safeAreaLeadingAnchor.constraint(equalTo: titleLeadingAnchor, constant: -paddingWithMarginCorrection),
+            safeAreaTrailingAnchor.constraint(equalTo: titleTrailingAnchor, constant: paddingWithMarginCorrection),
             
             self.centerYAnchor.constraint(equalTo: cancelButton.centerYAnchor),
             self.heightAnchor.constraint(greaterThanOrEqualTo: cancelButton.heightAnchor),
-            cancePositionConstraint
+            cancelPositionConstraint
         ])
     }
+
+    private lazy var safeAreaLeadingAnchor: NSLayoutXAxisAnchor = {
+        style.toolbarMode == .natural ? safeAreaLayoutGuide.leadingAnchor : safeAreaLayoutGuide.leftAnchor
+    }()
+
+    private lazy var safeAreaTrailingAnchor: NSLayoutXAxisAnchor = {
+        style.toolbarMode == .natural ? safeAreaLayoutGuide.trailingAnchor : safeAreaLayoutGuide.rightAnchor
+    }()
+
+    private lazy var cancelPositionConstraint: NSLayoutConstraint = {
+        let cancelPositionConstraint: NSLayoutConstraint
+
+        switch style.toolbarMode {
+        case .rightCancel:
+            cancelPositionConstraint = rightAnchor.constraint(equalTo: cancelButton.rightAnchor, constant: paddingWithMarginCorrection)
+        case .leftCancel:
+            cancelPositionConstraint = leftAnchor.constraint(equalTo: cancelButton.leftAnchor, constant: -paddingWithMarginCorrection)
+        case .natural:
+            cancelPositionConstraint = leadingAnchor.constraint(equalTo: cancelButton.leadingAnchor, constant: -paddingWithMarginCorrection)
+        }
+
+        return cancelPositionConstraint
+    }()
 
     // MARK: - Private methods
 

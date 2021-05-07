@@ -10,7 +10,7 @@ import Foundation
 /// :nodoc:
 public typealias AssertionListner = (String) -> Void
 
-// :nodoc:
+/// :nodoc:
 public enum AdyenAssertion {
 
     internal static var listner: AssertionListner?

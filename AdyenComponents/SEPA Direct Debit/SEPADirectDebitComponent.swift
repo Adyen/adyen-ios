@@ -119,8 +119,8 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
         let item = FormButtonItem(style: style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = localizedSubmitButtonTitle(with: payment?.amount,
-                                                   style: .immediate,
-                                                   localizationParameters)
+                                                style: .immediate,
+                                                localizationParameters)
         item.buttonSelectionHandler = { [weak self] in
             self?.didSelectSubmitButton()
         }

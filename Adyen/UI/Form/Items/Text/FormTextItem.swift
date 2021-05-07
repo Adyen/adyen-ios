@@ -32,6 +32,9 @@ open class FormTextItem: FormValueItem<String, FormTextItemStyle>, ValidatableFo
     /// The type of keyboard to use for text entry.
     public var keyboardType: UIKeyboardType = .default
 
+    /// The type of content for autofill.
+    public var contentType: UITextContentType?
+
     public init(style: FormTextItemStyle) {
         super.init(value: "", style: style)
     }

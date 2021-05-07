@@ -45,7 +45,7 @@ class FormTextItemViewTests: XCTestCase {
         }
         
         let didChangeValueExpectation = XCTestExpectation(description: "Expect delegate.didChangeValue() to be called.")
-        let _ = sut.item.publisher.addEventHandler { event in
+        _ = sut.item.publisher.addEventHandler { event in
             didChangeValueExpectation.fulfill()
         }
         

@@ -63,5 +63,13 @@ class FormItemViewBuilderTests: XCTestCase {
         XCTAssertNotNil(view as? FormVerticalStackItemView<FullFormAddressItem>)
         XCTAssertEqual(view.childItemViews.count, 8)
     }
+
+    func testFormSAddressItemViewGB() {
+        let item = FullFormAddressItem(initialCountry: "GB", style: AddressStyle())
+        let view = item.build(with: FormItemViewBuilder())
+
+        XCTAssertNotNil(view as? FormVerticalStackItemView<FullFormAddressItem>)
+        XCTAssertEqual(view.childItemViews.count, 7)
+    }
     
 }

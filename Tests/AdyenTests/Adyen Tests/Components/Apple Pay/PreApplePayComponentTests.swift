@@ -5,10 +5,10 @@
 //
 
 @testable import Adyen
-@testable import AdyenDropIn
 @testable import AdyenComponents
-import XCTest
+@testable import AdyenDropIn
 import PassKit
+import XCTest
 
 class PreApplePayComponentTests: XCTestCase {
     
@@ -21,7 +21,8 @@ class PreApplePayComponentTests: XCTestCase {
             payment: payment,
             paymentMethod: ApplePayPaymentMethod(type: "test_type", name: "test_name", brands: nil),
             summaryItems: createTestSummaryItems(),
-            merchantIdentifier: "test_id")
+            merchantIdentifier: "test_id"
+        )
         sut = try! PreApplePayComponent(configuration: configuration)
     }
     
@@ -33,7 +34,9 @@ class PreApplePayComponentTests: XCTestCase {
         let model = PreApplePayView.Model(
             hint: amount.formatted,
             style: PreApplePayView.Model.Style(
-                hintLabel: hintStyle, backgroundColor: .cyan))
+                hintLabel: hintStyle, backgroundColor: .cyan
+            )
+        )
         
         let sut = PreApplePayView(model: model)
         let viewController = UIViewController()

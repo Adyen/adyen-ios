@@ -71,10 +71,6 @@ internal class CardViewController: FormViewController {
             append(holderNameItem)
         }
 
-        if configuration.showsStorePaymentMethodField {
-            append(storeDetailsItem)
-        }
-
         switch configuration.billingAddressMode {
         case .full:
             append(billingAddressItem)
@@ -82,6 +78,10 @@ internal class CardViewController: FormViewController {
             append(postalCodeItem)
         case .none:
             break
+        }
+
+        if configuration.showsStorePaymentMethodField {
+            append(storeDetailsItem)
         }
 
         append(button.withPadding(padding: .init(top: 8, left: 0, bottom: -16, right: 0)))
@@ -157,6 +157,7 @@ internal class CardViewController: FormViewController {
         zipCodeItem.validator = LengthValidator(minimumLength: 2, maximumLength: 30)
         zipCodeItem.validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
         zipCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "postalCodeItem")
+        zipCodeItem.contentType = .postalCode
         return zipCodeItem
     }()
 
@@ -199,6 +200,7 @@ internal class CardViewController: FormViewController {
         holderNameItem.validationFailureMessage = localizedString(.cardNameItemInvalid, localizationParameters)
         holderNameItem.autocapitalizationType = .words
         holderNameItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "holderNameItem")
+        holderNameItem.contentType = .name
 
         return holderNameItem
     }()
@@ -215,8 +217,8 @@ internal class CardViewController: FormViewController {
         let item = FormButtonItem(style: formStyle.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "payButtonItem")
         item.title = localizedSubmitButtonTitle(with: payment?.amount,
-                                                   style: .immediate,
-                                                   localizationParameters)
+                                                style: .immediate,
+                                                localizationParameters)
         item.buttonSelectionHandler = { [weak self] in
             self?.cardDelegate?.didSelectSubmitButton()
         }

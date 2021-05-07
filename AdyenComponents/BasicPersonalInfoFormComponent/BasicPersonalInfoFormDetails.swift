@@ -8,6 +8,7 @@ import Adyen
 import Foundation
 
 /// Collection of the generic personal details supplied by components.
+/// :nodoc:
 public struct BasicPersonalInfoFormDetails: PaymentMethodDetails, ShopperInformation {
 
     /// The payment method type.
@@ -31,9 +32,6 @@ public struct BasicPersonalInfoFormDetails: PaymentMethodDetails, ShopperInforma
 
     /// The telephone number.
     public let telephoneNumber: String?
-
-    /// The telephone number.
-    public var billingAddress: AddressInfo?
 
     /// Initializes the  generic personal details.
     ///

@@ -149,7 +149,6 @@ class ObservableTests: XCTestCase, Observer {
         XCTAssertTrue(receiver.observableObject.boolValue)
     }
 
-    
     class TestObserver: Observer {
         var stringValue: String = ""
         var optionalStringValue: String?

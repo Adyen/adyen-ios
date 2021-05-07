@@ -8,6 +8,7 @@ import Foundation
 import UIKit
 
 /// The style of form address
+/// :nodoc:
 public struct AddressStyle: FormValueItemStyle {
 
     /// The section header style.

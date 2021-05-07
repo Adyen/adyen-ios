@@ -59,7 +59,7 @@ public enum CardEncryptor {
     /// - Throws:  `CardEncryptor.Error.invalidEncryptionArguments` when trying to encrypt a card with  card number, securityCode,
     /// expiryMonth, and expiryYear, all of them are nil.
     public static func encrypt(number: String, with publicKey: String) throws -> String {
-        guard !number.isEmpty, number.allSatisfy({ $0.isNumber }) else {
+        guard !number.isEmpty, number.allSatisfy(\.isNumber) else {
             throw Error.invalidNumber
         }
         let payload = CardPayload().add(number: number)
@@ -77,7 +77,7 @@ public enum CardEncryptor {
     /// - Throws:  `CardEncryptor.Error.invalidEncryptionArguments` when trying to encrypt a card with  card number, securityCode,
     /// expiryMonth, and expiryYear, all of them are nil.
     public static func encrypt(securityCode: String, with publicKey: String) throws -> String {
-        guard !securityCode.isEmpty, securityCode.allSatisfy({ $0.isNumber }) else {
+        guard !securityCode.isEmpty, securityCode.allSatisfy(\.isNumber) else {
             throw Error.invalidSecureCode
         }
         let payload = CardPayload().add(securityCode: securityCode)
@@ -95,7 +95,7 @@ public enum CardEncryptor {
     /// - Throws:  `CardEncryptor.Error.invalidEncryptionArguments` when trying to encrypt a card with  card number, securityCode,
     /// expiryMonth, and expiryYear, all of them are nil.
     public static func encrypt(expirationMonth: String, with publicKey: String) throws -> String {
-        guard !expirationMonth.isEmpty, expirationMonth.allSatisfy({ $0.isNumber }) else {
+        guard !expirationMonth.isEmpty, expirationMonth.allSatisfy(\.isNumber) else {
             throw Error.invalidExpiryMonth
         }
         let payload = CardPayload().add(expiryMonth: expirationMonth)
@@ -113,7 +113,7 @@ public enum CardEncryptor {
     /// - Throws:  `CardEncryptor.Error.invalidEncryptionArguments` when trying to encrypt a card with  card number, securityCode,
     /// expiryMonth, and expiryYear, all of them are nil.
     public static func encrypt(expirationYear: String, with publicKey: String) throws -> String {
-        guard !expirationYear.isEmpty, expirationYear.allSatisfy({ $0.isNumber }) else {
+        guard !expirationYear.isEmpty, expirationYear.allSatisfy(\.isNumber) else {
             throw Error.invalidExpiryYear
         }
         let payload = CardPayload().add(expiryYear: expirationYear)
@@ -130,7 +130,7 @@ public enum CardEncryptor {
     /// - Throws:  `CardEncryptor.Error.invalidEncryptionArguments` when trying to encrypt a card with  card number, securityCode,
     /// expiryMonth, and expiryYear, all of them are nil.
     public static func encrypt(bin: String, with publicKey: String) throws -> String {
-        guard !bin.isEmpty, bin.allSatisfy({ $0.isNumber }) else {
+        guard !bin.isEmpty, bin.allSatisfy(\.isNumber) else {
             throw Error.invalidBin
         }
         let payload = BinPayload().add(bin: bin)

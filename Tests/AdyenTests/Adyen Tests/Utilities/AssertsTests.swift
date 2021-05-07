@@ -115,14 +115,14 @@ class AssertsTests: XCTestCase {
         }
 
         sut.handle(VoucherAction.dokuAlfamart(DokuVoucherAction(paymentMethodType: .dokuAlfamart,
-                                                                   initialAmount: Payment.Amount(value: 100, currencyCode: ""),
-                                                                   totalAmount: Payment.Amount(value: 100, currencyCode: ""),
-                                                                   reference: "",
-                                                                   shopperEmail: "",
-                                                                   expiresAt: .distantFuture,
-                                                                   merchantName: "",
-                                                                   shopperName: "",
-                                                                   instructionsUrl: "")))
+                                                                initialAmount: Payment.Amount(value: 100, currencyCode: ""),
+                                                                totalAmount: Payment.Amount(value: 100, currencyCode: ""),
+                                                                reference: "",
+                                                                shopperEmail: "",
+                                                                expiresAt: .distantFuture,
+                                                                merchantName: "",
+                                                                shopperName: "",
+                                                                instructionsUrl: "")))
 
         wait(for: [expectation], timeout: 2)
 
@@ -173,6 +173,6 @@ class AssertsTests: XCTestCase {
 
     }
 
-    class MockComponent: Component { }
+    class MockComponent: Component {}
 
 }
