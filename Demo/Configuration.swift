@@ -45,7 +45,7 @@ internal enum ConfigurationConstants {
         ]
     }
     
-    static var current: Configuration = Configuration.loadConfiguration() {
+    static var current = Configuration.loadConfiguration() {
         didSet { Configuration.saveConfiguration(current) }
     }
 
