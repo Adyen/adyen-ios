@@ -166,7 +166,7 @@ extension CardType {
         case .dankortVISA:
             return "^(4571)[0-9]{0,12}$"
         case .diners:
-            return "^(36)[0-9]{0,12}$"
+            return "^(3[06])[0-9]{0,12}$"
         case .discover:
             return "^(6011[0-9]{0,12}|(644|645|646|647|648|649)[0-9]{0,13}|65[0-9]{0,14})$"
         case .elo:
