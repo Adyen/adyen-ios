@@ -26,7 +26,7 @@ internal class RegularExpressionValidator: LengthValidator {
     
     /// :nodoc:
     override internal func maximumLength(for value: String) -> Int {
-        return maximumLength ?? .max
+        maximumLength ?? .max
     }
     
 }

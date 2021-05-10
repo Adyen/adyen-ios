@@ -48,7 +48,7 @@ public extension Component {
     /// :nodoc:
     var clientKey: String? {
         get {
-            return objc_getAssociatedObject(self, &AssociatedKeys.clientKey) as? String
+            objc_getAssociatedObject(self, &AssociatedKeys.clientKey) as? String
         }
         set {
             objc_setAssociatedObject(self, &AssociatedKeys.clientKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)

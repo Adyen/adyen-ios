@@ -15,7 +15,7 @@ public extension String {
     ///   - length: The maximum desired length for the string.
     /// - Returns: A truncated string.
     func truncate(to length: Int) -> String {
-        return (count > length) ? String(prefix(length)) : self
+        (count > length) ? String(prefix(length)) : self
     }
     
     /// Separates a string into substrings of the given lengths.

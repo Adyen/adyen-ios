@@ -93,7 +93,7 @@ struct CardNumbers {
     ]
     
     static var valid: [String] {
-        return [
+        [
             masterCard,
             visa,
             jcb,

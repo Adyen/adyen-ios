@@ -14,12 +14,12 @@ open class NumericFormatter: Adyen.Formatter {
     
     /// :nodoc:
     open func formattedValue(for value: String) -> String {
-        return sanitizedValue(for: value)
+        sanitizedValue(for: value)
     }
     
     /// :nodoc:
     open func sanitizedValue(for value: String) -> String {
-        let sanitizedString = value.filter { $0.isNumber }
+        let sanitizedString = value.filter(\.isNumber)
         
         // Converts all non-latin digits to latin digits
         let latinString = sanitizedString.applyingTransform(StringTransform.toLatin, reverse: false) ?? sanitizedString

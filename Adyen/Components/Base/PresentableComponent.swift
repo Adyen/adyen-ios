@@ -49,7 +49,7 @@ public extension PresentableComponent {
     /// :nodoc:
     var payment: Payment? {
         get {
-            return objc_getAssociatedObject(self, &AssociatedKeys.payment) as? Payment
+            objc_getAssociatedObject(self, &AssociatedKeys.payment) as? Payment
         }
         set {
             objc_setAssociatedObject(self, &AssociatedKeys.payment, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_COPY)

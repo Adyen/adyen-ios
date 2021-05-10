@@ -64,7 +64,7 @@ public final class FormViewController: UIViewController, Localizable {
     
     /// The items displayed in the form.
     public var items: [FormItem] {
-        return itemManager.items
+        itemManager.items
     }
     
     /// Appends an item to the form.
@@ -116,7 +116,7 @@ public final class FormViewController: UIViewController, Localizable {
     }
     
     private func getAllFlatItems() -> [FormItem] {
-        itemManager.items.flatMap { $0.flatSubitems }
+        itemManager.items.flatMap(\.flatSubitems)
     }
     
     // MARK: - View

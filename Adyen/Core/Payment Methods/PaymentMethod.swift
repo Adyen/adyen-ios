@@ -52,12 +52,12 @@ public extension PaymentMethod {
     
     /// :nodoc:
     var displayInformation: DisplayInformation {
-        return DisplayInformation(title: name, subtitle: nil, logoName: type)
+        DisplayInformation(title: name, subtitle: nil, logoName: type)
     }
     
     /// :nodoc:
     func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        return DisplayInformation(title: name, subtitle: nil, logoName: type)
+        DisplayInformation(title: name, subtitle: nil, logoName: type)
     }
     
 }

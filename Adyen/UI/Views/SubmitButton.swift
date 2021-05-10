@@ -84,7 +84,7 @@ public final class SubmitButton: UIControl {
     /// Boolean value indicating whether an activity indicator should be shown.
     public var showsActivityIndicator: Bool {
         get {
-            return activityIndicatorView.isAnimating
+            activityIndicatorView.isAnimating
         }
         
         set {

@@ -619,7 +619,7 @@ class CardComponentTests: XCTestCase {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
                 XCTAssertEqual(cardNumberItem.cardTypeLogos.count, 3)
                 XCTAssertEqual(cardLogoView.subviews.count, 3)
-                XCTAssertTrue(cardLogoView.arrangedSubviews.allSatisfy { $0.isHidden })
+                XCTAssertTrue(cardLogoView.arrangedSubviews.allSatisfy(\.isHidden))
 
                 expectation.fulfill()
             }

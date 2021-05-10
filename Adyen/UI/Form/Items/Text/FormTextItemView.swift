@@ -44,7 +44,7 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
     }
     
     private var textDelegate: FormTextItemViewDelegate? {
-        return delegate as? FormTextItemViewDelegate
+        delegate as? FormTextItemViewDelegate
     }
     
     // MARK: - Stack View
@@ -258,31 +258,31 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
     }
     
     override open var lastBaselineAnchor: NSLayoutYAxisAnchor {
-        return textField.lastBaselineAnchor
+        textField.lastBaselineAnchor
     }
     
     // MARK: - Interaction
     
     /// :nodoc:
     override open var canBecomeFirstResponder: Bool {
-        return textField.canBecomeFirstResponder
+        textField.canBecomeFirstResponder
     }
     
     /// :nodoc:
     @discardableResult
     override open func becomeFirstResponder() -> Bool {
-        return textField.becomeFirstResponder()
+        textField.becomeFirstResponder()
     }
     
     /// :nodoc:
     @discardableResult
     override open func resignFirstResponder() -> Bool {
-        return textField.resignFirstResponder()
+        textField.resignFirstResponder()
     }
     
     /// :nodoc:
     override open var isFirstResponder: Bool {
-        return textField.isFirstResponder
+        textField.isFirstResponder
     }
     
     // MARK: - UITextFieldDelegate
