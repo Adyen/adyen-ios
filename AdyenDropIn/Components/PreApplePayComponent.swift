@@ -7,7 +7,7 @@
 import Adyen
 import UIKit
 
-// :nodoc:
+/// :nodoc:
 internal final class PreApplePayComponent: Localizable, PresentableComponent, PaymentComponent {
 
     /// :nodoc:
