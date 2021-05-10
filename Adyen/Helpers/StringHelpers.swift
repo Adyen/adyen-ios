@@ -14,7 +14,7 @@ public extension String {
     ///   - length: The maximum desired length for the string.
     /// - Returns: A truncated string.
     func truncate(to length: Int) -> String {
-        return (count > length) ? String(prefix(length)) : self
+        (count > length) ? String(prefix(length)) : self
     }
 
     /// Separates a string into substrings of the given lengths.
@@ -75,7 +75,7 @@ public extension String {
         let lowerBound = index(startIndex, offsetBy: range.lowerBound)
         let upperBound = index(lowerBound, offsetBy: range.upperBound - range.lowerBound)
 
-        return String(self[lowerBound ..< upperBound])
+        return String(self[lowerBound..<upperBound])
     }
 
     /// Get the substring from a given closed range.
@@ -86,7 +86,7 @@ public extension String {
         let lowerBound = index(startIndex, offsetBy: range.lowerBound)
         let upperBound = index(lowerBound, offsetBy: range.upperBound - range.lowerBound)
 
-        return String(self[lowerBound ... upperBound])
+        return String(self[lowerBound...upperBound])
     }
 
     // MARK: - Private
@@ -94,8 +94,8 @@ public extension String {
     private mutating func removeAndReturnFirst(_ length: Int) -> String {
         let end = index(startIndex, offsetBy: length, limitedBy: endIndex) ?? endIndex
 
-        let substring = self[startIndex ..< end]
-        removeSubrange(startIndex ..< end)
+        let substring = self[startIndex..<end]
+        removeSubrange(startIndex..<end)
 
         return String(substring)
     }

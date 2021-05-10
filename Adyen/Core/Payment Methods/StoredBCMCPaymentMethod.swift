@@ -29,7 +29,7 @@ public struct StoredBCMCPaymentMethod: StoredPaymentMethod {
     /// - Parameters:
     ///   - parameters: The localization parameters.
     public func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        return storedCardPaymentMethod.localizedDisplayInformation(using: parameters)
+        storedCardPaymentMethod.localizedDisplayInformation(using: parameters)
     }
 
     /// :nodoc:
@@ -54,7 +54,7 @@ public struct StoredBCMCPaymentMethod: StoredPaymentMethod {
 
     /// :nodoc:
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        return builder.build(paymentMethod: self)
+        builder.build(paymentMethod: self)
     }
 
     // MARK: - Decoding

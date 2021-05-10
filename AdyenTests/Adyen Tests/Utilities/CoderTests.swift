@@ -46,7 +46,7 @@ class CoderTests: XCTestCase {
 
     private lazy var sampleObject: SampleObject = {
         let nestedObject = NestedObject(nestedValue: "value")
-        let date = Date(timeIntervalSince1970: 1_425_159_000)
+        let date = Date(timeIntervalSince1970: 1425159000)
         return SampleObject(string: "someString", integer: 99, date: date, nestedObject: nestedObject)
     }()
 

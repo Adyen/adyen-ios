@@ -37,7 +37,7 @@ internal final class UniversalRedirectComponent: ActionComponent, DismissableCom
     /// - Returns: A boolean value indicating whether the URL was handled by the redirect component.
     @discardableResult
     internal static func applicationDidOpen(from url: URL) -> Bool {
-        return WebRedirectComponent.applicationDidOpen(from: url)
+        WebRedirectComponent.applicationDidOpen(from: url)
     }
 
     /// Handles a redirect action.

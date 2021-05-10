@@ -127,7 +127,7 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Loca
         }
 
         defer {
-            let isValidLenght = (minCharactersCount ... maxCharactersCount).contains(newString.count)
+            let isValidLenght = (minCharactersCount...maxCharactersCount).contains(newString.count)
             submitAction.isEnabled = isValidLenght
         }
 

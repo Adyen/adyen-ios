@@ -108,12 +108,12 @@ public final class ListViewController: UITableViewController {
 
     /// :nodoc:
     override public func numberOfSections(in _: UITableView) -> Int {
-        return sections.count
+        sections.count
     }
 
     /// :nodoc:
     override public func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].items.count
+        sections[section].items.count
     }
 
     /// :nodoc:
@@ -131,7 +131,7 @@ public final class ListViewController: UITableViewController {
 
     /// :nodoc:
     override public func tableView(_: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return sections[section].title == nil ? 0 : 44.0
+        sections[section].title == nil ? 0 : 44.0
     }
 
     /// :nodoc:

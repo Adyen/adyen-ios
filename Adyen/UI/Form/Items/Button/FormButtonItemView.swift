@@ -51,7 +51,7 @@ internal final class FormButtonItemView: FormItemView<FormButtonItem>, Observer 
             submitButton.topAnchor.constraint(equalTo: topAnchor),
             submitButton.leadingAnchor.constraint(equalTo: leadingAnchor),
             submitButton.trailingAnchor.constraint(equalTo: trailingAnchor),
-            submitButton.bottomAnchor.constraint(equalTo: bottomAnchor),
+            submitButton.bottomAnchor.constraint(equalTo: bottomAnchor)
         ]
 
         NSLayoutConstraint.activate(constraints)

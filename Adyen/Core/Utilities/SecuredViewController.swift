@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -101,7 +101,7 @@ public final class SecuredViewController: UIViewController {
             childViewController.view.leftAnchor.constraint(equalTo: view.leftAnchor),
             childViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
             childViewController.view.rightAnchor.constraint(equalTo: view.rightAnchor),
-            childViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            childViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ]
 
         NSLayoutConstraint.activate(constraints)
@@ -132,7 +132,7 @@ public final class SecuredViewController: UIViewController {
             blurEffectView.leftAnchor.constraint(equalTo: view.leftAnchor),
             blurEffectView.topAnchor.constraint(equalTo: view.topAnchor),
             blurEffectView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            blurEffectView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            blurEffectView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ]
 
         blurConstraints = constraints

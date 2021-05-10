@@ -114,7 +114,7 @@ extension FormCardSecurityCodeItemView {
                 hintImage.topAnchor.constraint(equalTo: topAnchor),
                 hintImage.bottomAnchor.constraint(equalTo: bottomAnchor),
                 hintImage.leftAnchor.constraint(equalTo: leftAnchor),
-                hintImage.rightAnchor.constraint(equalTo: rightAnchor),
+                hintImage.rightAnchor.constraint(equalTo: rightAnchor)
             ])
         }
 

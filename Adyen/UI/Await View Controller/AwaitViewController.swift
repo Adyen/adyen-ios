@@ -60,17 +60,17 @@ internal final class AwaitViewController: UIViewController {
 
         let constraints = [
             awaitView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
-
+            
             awaitView.topAnchor.constraint(greaterThanOrEqualTo: containerView.topAnchor),
             awaitView.bottomAnchor.constraint(lessThanOrEqualTo: containerView.bottomAnchor),
-
+            
             awaitView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             awaitView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-
+            
             containerView.topAnchor.constraint(equalTo: guid.topAnchor),
             containerView.leadingAnchor.constraint(equalTo: guid.leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: guid.trailingAnchor),
-            containerView.bottomAnchor.constraint(equalTo: guid.bottomAnchor),
+            containerView.bottomAnchor.constraint(equalTo: guid.bottomAnchor)
         ]
 
         NSLayoutConstraint.activate(constraints)

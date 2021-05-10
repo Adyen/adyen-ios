@@ -69,10 +69,10 @@ internal class PhoneExtensionInputControl: UIControl, AnyFormItemView {
     }
 
     /// The input view.
-    override internal var inputView: UIView? { return _inputView }
+    override internal var inputView: UIView? { _inputView }
 
     /// :nodoc:
-    override internal var canBecomeFirstResponder: Bool { return true }
+    override internal var canBecomeFirstResponder: Bool { true }
 
     /// :nodoc:
     override internal func resignFirstResponder() -> Bool {
@@ -121,7 +121,7 @@ internal class PhoneExtensionInputControl: UIControl, AnyFormItemView {
             stackView.topAnchor.constraint(equalTo: topAnchor),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -6),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1)
         ]
 
         NSLayoutConstraint.activate(constraints)

@@ -72,6 +72,6 @@ public final class RetryAPIClient: AnyRetryAPIClient {
     }
 
     private func schedule(_ currentCount: UInt, closure: @escaping () -> Void) -> Bool {
-        return scheduler.schedule(currentCount, closure: closure)
+        scheduler.schedule(currentCount, closure: closure)
     }
 }

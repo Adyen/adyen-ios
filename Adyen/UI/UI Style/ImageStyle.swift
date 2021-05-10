@@ -85,7 +85,7 @@ public struct ImageStyle: TintableStyle {
 
 extension ImageStyle: Equatable {
     public static func == (lhs: ImageStyle, rhs: ImageStyle) -> Bool {
-        return lhs.borderColor?.cgColor == rhs.borderColor?.cgColor &&
+        lhs.borderColor?.cgColor == rhs.borderColor?.cgColor &&
             lhs.borderWidth == rhs.borderWidth &&
             lhs.backgroundColor == rhs.backgroundColor &&
             lhs.cornerRounding == rhs.cornerRounding &&

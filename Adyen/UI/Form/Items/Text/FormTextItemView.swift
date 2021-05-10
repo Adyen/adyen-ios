@@ -41,7 +41,7 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
     }
 
     private var textDelegate: FormTextItemViewDelegate? {
-        return delegate as? FormTextItemViewDelegate
+        delegate as? FormTextItemViewDelegate
     }
 
     // MARK: - Stack View
@@ -236,7 +236,7 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
         let constraints = [
             separatorView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             separatorView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            separatorView.heightAnchor.constraint(equalToConstant: 1.0),
+            separatorView.heightAnchor.constraint(equalToConstant: 1.0)
         ]
 
         NSLayoutConstraint.activate(constraints)
@@ -248,38 +248,38 @@ open class FormTextItemView<T: FormTextItem>: FormValueItemView<T>, UITextFieldD
             textStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             textStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             textStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            separatorView.bottomAnchor.constraint(equalTo: accessoryStackView.bottomAnchor, constant: 4),
+            separatorView.bottomAnchor.constraint(equalTo: accessoryStackView.bottomAnchor, constant: 4)
         ]
 
         NSLayoutConstraint.activate(constraints)
     }
 
     override open var lastBaselineAnchor: NSLayoutYAxisAnchor {
-        return textField.lastBaselineAnchor
+        textField.lastBaselineAnchor
     }
 
     // MARK: - Interaction
 
     /// :nodoc:
     override open var canBecomeFirstResponder: Bool {
-        return textField.canBecomeFirstResponder
+        textField.canBecomeFirstResponder
     }
 
     /// :nodoc:
     @discardableResult
     override open func becomeFirstResponder() -> Bool {
-        return textField.becomeFirstResponder()
+        textField.becomeFirstResponder()
     }
 
     /// :nodoc:
     @discardableResult
     override open func resignFirstResponder() -> Bool {
-        return textField.resignFirstResponder()
+        textField.resignFirstResponder()
     }
 
     /// :nodoc:
     override open var isFirstResponder: Bool {
-        return textField.isFirstResponder
+        textField.isFirstResponder
     }
 
     // MARK: - UITextFieldDelegate

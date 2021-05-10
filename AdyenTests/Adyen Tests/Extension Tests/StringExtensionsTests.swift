@@ -42,13 +42,13 @@ class StringExtensionsTests: XCTestCase {
     }
 
     func testStringSubscriptWithOpenRange() {
-        XCTAssertEqual("abc"[0 ..< 2], "ab")
-        XCTAssertEqual("abc"[1 ..< 2], "b")
+        XCTAssertEqual("abc"[0..<2], "ab")
+        XCTAssertEqual("abc"[1..<2], "b")
     }
 
     func testStringSubscriptWithClosedRange() {
-        XCTAssertEqual("abc"[0 ... 1], "ab")
-        XCTAssertEqual("abc"[0 ... 2], "abc")
-        XCTAssertEqual("abc"[1 ... 2], "bc")
+        XCTAssertEqual("abc"[0...1], "ab")
+        XCTAssertEqual("abc"[0...2], "abc")
+        XCTAssertEqual("abc"[1...2], "bc")
     }
 }

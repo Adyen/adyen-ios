@@ -118,7 +118,7 @@ extension DropInNavigationController: UINavigationControllerDelegate {
                                        from _: UIViewController,
                                        to _: UIViewController) -> UIViewControllerAnimatedTransitioning?
     {
-        return SlideInPresentationAnimator(duration: 0.5)
+        SlideInPresentationAnimator(duration: 0.5)
     }
 }
 
@@ -128,14 +128,14 @@ extension DropInNavigationController: UIViewControllerTransitioningDelegate {
                                        presenting: UIViewController?,
                                        source _: UIViewController) -> UIPresentationController?
     {
-        return DimmingPresentationController(presented: presented,
-                                             presenting: presenting,
-                                             layoutDidChanged: { [weak self] in
-                                                 guard let self = self,
-                                                       let viewController = self.topViewController
-                                                 else { return }
-                                                 self.updateFrame(for: viewController)
-                                             })
+        DimmingPresentationController(presented: presented,
+                                      presenting: presenting,
+                                      layoutDidChanged: { [weak self] in
+                                          guard let self = self,
+                                                let viewController = self.topViewController
+                                          else { return }
+                                          self.updateFrame(for: viewController)
+                                      })
     }
 }
 

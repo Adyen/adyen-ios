@@ -68,7 +68,7 @@ public class Analytics {
             URLQueryItem(name: "flavor", value: flavor.rawValue),
             URLQueryItem(name: "system_version", value: UIDevice.current.systemVersion),
             URLQueryItem(name: "device_model", value: deviceModel),
-            URLQueryItem(name: "referer", value: Bundle.main.bundleIdentifier),
+            URLQueryItem(name: "referer", value: Bundle.main.bundleIdentifier)
         ]
 
         return components?.url

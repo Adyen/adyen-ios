@@ -40,7 +40,7 @@ internal final class FormSeparatorItemView: FormItemView<FormSeparatorItem> {
             separator.leadingAnchor.constraint(equalTo: leadingAnchor),
             separator.trailingAnchor.constraint(equalTo: trailingAnchor),
             separator.bottomAnchor.constraint(equalTo: bottomAnchor),
-            separator.heightAnchor.constraint(equalToConstant: 1 / UIScreen.main.scale),
+            separator.heightAnchor.constraint(equalToConstant: 1 / UIScreen.main.scale)
         ]
 
         NSLayoutConstraint.activate(constraints)

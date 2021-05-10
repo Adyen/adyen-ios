@@ -61,7 +61,7 @@ public final class FormViewController: UIViewController, Localizable {
 
     /// The items displayed in the form.
     public var items: [FormItem] {
-        return itemManager.items
+        itemManager.items
     }
 
     /// Appends an item to the form.
@@ -113,7 +113,7 @@ public final class FormViewController: UIViewController, Localizable {
     }
 
     private func getAllFlatItems() -> [FormItem] {
-        itemManager.items.flatMap { $0.flatSubitems }
+        itemManager.items.flatMap(\.flatSubitems)
     }
 
     // MARK: - View
@@ -160,7 +160,7 @@ public final class FormViewController: UIViewController, Localizable {
                 formView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
                 bottomConstraint,
                 formView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
-                formView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+                formView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor)
             ]
         } else {
             bottomConstraint = formView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -168,7 +168,7 @@ public final class FormViewController: UIViewController, Localizable {
                 formView.topAnchor.constraint(equalTo: view.topAnchor),
                 bottomConstraint,
                 formView.leftAnchor.constraint(equalTo: view.leftAnchor),
-                formView.rightAnchor.constraint(equalTo: view.rightAnchor),
+                formView.rightAnchor.constraint(equalTo: view.rightAnchor)
             ]
         }
 

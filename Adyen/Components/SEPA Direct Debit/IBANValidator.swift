@@ -15,7 +15,7 @@ public final class IBANValidator: Validator {
     /// :nodoc:
     public func isValid(_ value: String) -> Bool {
         let minimumLength = 4
-        guard minimumLength ... maximumLength(for: value) ~= value.count else {
+        guard minimumLength...maximumLength(for: value) ~= value.count else {
             return false
         }
 
@@ -52,7 +52,7 @@ public final class IBANValidator: Validator {
 
         let lowerBound = string.startIndex
         let upperBound = string.index(lowerBound, offsetBy: 2)
-        let range = lowerBound ..< upperBound
+        let range = lowerBound..<upperBound
 
         let countryCode = String(string[range])
 
@@ -80,7 +80,7 @@ public final class IBANValidator: Validator {
     private func numerify(_ string: String) -> String {
         let startIndex = ("A" as UnicodeScalar).value
         let endIndex = ("Z" as UnicodeScalar).value
-        let range = startIndex ... endIndex
+        let range = startIndex...endIndex
 
         let components = string.unicodeScalars.map { unicodeScalar -> String in
             guard range.contains(unicodeScalar.value) else {

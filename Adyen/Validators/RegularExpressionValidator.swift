@@ -20,11 +20,11 @@ internal class RegularExpressionValidator: LengthValidator {
     override internal func isValid(_ value: String) -> Bool {
         guard super.isValid(value) else { return false }
         guard let range = value.range(of: regularExpression, options: .regularExpression) else { return false }
-        return range == (value.startIndex ..< value.endIndex)
+        return range == (value.startIndex..<value.endIndex)
     }
 
     /// :nodoc:
     override internal func maximumLength(for _: String) -> Int {
-        return maximumLength ?? .max
+        maximumLength ?? .max
     }
 }

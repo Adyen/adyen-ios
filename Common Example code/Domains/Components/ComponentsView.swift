@@ -57,7 +57,7 @@ internal final class ComponentsView: UIView {
             tableView.topAnchor.constraint(equalTo: topAnchor),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            tableView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ]
 
         NSLayoutConstraint.activate(constraints)
@@ -82,7 +82,7 @@ internal final class ComponentsView: UIView {
             payButton.heightAnchor.constraint(equalToConstant: 48.0),
             payButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16.0),
             payButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16.0),
-            payButton.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor),
+            payButton.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor)
         ])
 
         payButton.addTarget(self, action: #selector(onApplePayButtonTap), for: .primaryActionTriggered)
@@ -91,11 +91,11 @@ internal final class ComponentsView: UIView {
 
 extension ComponentsView: UITableViewDataSource {
     internal func numberOfSections(in _: UITableView) -> Int {
-        return items.count
+        items.count
     }
 
     internal func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items[section].count
+        items[section].count
     }
 
     internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

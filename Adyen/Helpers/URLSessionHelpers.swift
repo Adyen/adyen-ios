@@ -11,13 +11,13 @@ extension URLSession: AdyenCompatible {}
 
 public extension AdyenScope where Base: URLSession {
     func dataTask(with url: URL, completion: @escaping ((Result<Data, Error>) -> Void)) -> URLSessionDataTask {
-        return base.dataTask(with: url, completionHandler: { data, response, error in
+        base.dataTask(with: url, completionHandler: { data, response, error in
             self.handle(data: data, response: response, error: error, completion: completion)
         })
     }
 
     func dataTask(with urlRequest: URLRequest, completion: @escaping ((Result<Data, Error>) -> Void)) -> URLSessionDataTask {
-        return base.dataTask(with: urlRequest, completionHandler: { data, response, error in
+        base.dataTask(with: urlRequest, completionHandler: { data, response, error in
             self.handle(data: data, response: response, error: error, completion: completion)
         })
     }
@@ -25,8 +25,7 @@ public extension AdyenScope where Base: URLSession {
     private func handle(data: Data?, response: URLResponse?, error: Error?, completion: @escaping ((Result<Data, Error>) -> Void)) {
         let httpResponse = response as? HTTPURLResponse
         if let headers = httpResponse?.allHeaderFields,
-           let path = response?.url?.path
-        {
+           let path = response?.url?.path {
             adyenPrint("---- Response Headers (/\(path)) ----")
             adyenPrint(headers)
         }
@@ -36,8 +35,7 @@ public extension AdyenScope where Base: URLSession {
         if let error = error {
             completion(.failure(error))
         } else if let statusCode = statusCode, statusCode != 200,
-                  let data = data
-        {
+                  let data = data {
             adyenPrint("---- Response (/\(String(describing: response?.url?.path))) ----")
             printAsJSON(data)
             let fallbackError = APIError(status: statusCode,

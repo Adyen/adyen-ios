@@ -42,7 +42,7 @@ internal enum Configuration {
     static let applePayMerchantIdentifier = "{YOUR_APPLE_PAY_MERCHANT_IDENTIFIER}"
 
     static let applePaySummaryItems = [
-        PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final),
+        PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)
     ]
 
     // swiftlint:enable explicit_acl

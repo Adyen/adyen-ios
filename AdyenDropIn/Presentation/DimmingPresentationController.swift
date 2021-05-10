@@ -33,7 +33,7 @@ internal final class DimmingPresentationController: UIPresentationController {
             dimmingView.topAnchor.constraint(equalTo: view.topAnchor),
             dimmingView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             dimmingView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            dimmingView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            dimmingView.leftAnchor.constraint(equalTo: view.leftAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
     }

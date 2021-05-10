@@ -68,7 +68,7 @@ internal enum Cryptor {
     }
 
     private static func aesEncrypt(data: Data, with key: Data, initVector: Data) -> Data? {
-        return AES.encrypt(data: data, withKey: key, initVector: initVector)
+        AES.encrypt(data: data, withKey: key, initVector: initVector)
     }
 
     private static func rsaEncrypt(data: Data, with keyInHex: String) -> Data? {

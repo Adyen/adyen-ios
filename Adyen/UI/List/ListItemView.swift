@@ -153,14 +153,14 @@ public final class ListItemView: UIView, AnyFormItemView {
             imageView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             imageView.widthAnchor.constraint(equalToConstant: imageSize.width),
             imageView.heightAnchor.constraint(equalToConstant: imageSize.height),
-
+            
             textStackView.topAnchor.constraint(greaterThanOrEqualTo: layoutMarginsGuide.topAnchor),
             textStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
             textStackView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 16.0),
             textStackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             textStackView.bottomAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.bottomAnchor),
-
-            heightAnchor.constraint(greaterThanOrEqualToConstant: 48),
+            
+            heightAnchor.constraint(greaterThanOrEqualToConstant: 48)
         ]
 
         NSLayoutConstraint.activate(constraints)

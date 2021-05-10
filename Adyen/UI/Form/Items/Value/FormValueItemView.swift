@@ -126,7 +126,7 @@ open class FormValueItemView<ItemType: FormValueItem>: FormItemView<ItemType>, A
             separatorView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             separatorView.trailingAnchor.constraint(equalTo: trailingAnchor),
             separatorView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            separatorView.heightAnchor.constraint(equalToConstant: 1.0),
+            separatorView.heightAnchor.constraint(equalToConstant: 1.0)
         ]
 
         NSLayoutConstraint.activate(constraints)

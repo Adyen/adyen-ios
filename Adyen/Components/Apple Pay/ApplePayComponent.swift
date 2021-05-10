@@ -108,8 +108,7 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     public init(paymentMethod: ApplePayPaymentMethod,
                 payment: Payment,
                 configuration: Configuration,
-                cancelHandler: (() -> Void)? = nil) throws
-    {
+                cancelHandler: (() -> Void)? = nil) throws {
         guard PKPaymentAuthorizationViewController.canMakePayments() else {
             throw Error.deviceDoesNotSupportApplyPay
         }
@@ -170,8 +169,7 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
                             summaryItems: [PKPaymentSummaryItem],
                             requiredBillingContactFields: Set<PKContactField> = [],
                             requiredShippingContactFields: Set<PKContactField> = [],
-                            cancelHandler _: (() -> Void)? = nil) throws
-    {
+                            cancelHandler _: (() -> Void)? = nil) throws {
         let configuration = Configuration(summaryItems: summaryItems,
                                           merchantIdentifier: merchantIdentifier,
                                           requiredBillingContactFields: requiredBillingContactFields,

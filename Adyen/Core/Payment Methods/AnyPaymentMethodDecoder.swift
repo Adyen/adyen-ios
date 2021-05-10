@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -79,7 +79,7 @@ internal enum AnyPaymentMethodDecoder {
         .qiwiWallet: QiwiWalletPaymentMethodDecoder(),
         .mbWay: MBWayPaymentMethodDecoder(),
         .blik: BLIKPaymentMethodDecoder(),
-        .giftcard: GiftcardPaymentMethodDecoder(),
+        .giftcard: GiftcardPaymentMethodDecoder()
     ]
 
     private static var defaultDecoder: PaymentMethodDecoder = RedirectPaymentMethodDecoder()

@@ -36,7 +36,7 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent {
     // MARK: - Presentable Component Protocol
 
     public var viewController: UIViewController {
-        return listViewController
+        listViewController
     }
 
     public func stopLoading(withSuccess _: Bool, completion: (() -> Void)?) {

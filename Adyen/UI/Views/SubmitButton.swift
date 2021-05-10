@@ -83,7 +83,7 @@ public final class SubmitButton: UIControl {
     /// Boolean value indicating whether an activity indicator should be shown.
     public var showsActivityIndicator: Bool {
         get {
-            return activityIndicatorView.isAnimating
+            activityIndicatorView.isAnimating
         }
 
         set {
@@ -121,18 +121,18 @@ public final class SubmitButton: UIControl {
             backgroundView.leadingAnchor.constraint(equalTo: leadingAnchor),
             backgroundView.trailingAnchor.constraint(equalTo: trailingAnchor),
             backgroundView.bottomAnchor.constraint(equalTo: bottomAnchor),
-
+            
             activityIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor),
             activityIndicatorView.centerYAnchor.constraint(equalTo: centerYAnchor),
-
+            
             titleLabel.topAnchor.constraint(greaterThanOrEqualTo: layoutMarginsGuide.topAnchor),
             titleLabel.leadingAnchor.constraint(greaterThanOrEqualTo: layoutMarginsGuide.leadingAnchor),
             titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.trailingAnchor),
             titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.bottomAnchor),
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-
-            heightAnchor.constraint(greaterThanOrEqualToConstant: 50.0),
+            
+            heightAnchor.constraint(greaterThanOrEqualToConstant: 50.0)
         ]
 
         NSLayoutConstraint.activate(constraints)

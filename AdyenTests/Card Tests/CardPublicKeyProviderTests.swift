@@ -33,7 +33,7 @@ class CardPublicKeyProviderTests: XCTestCase {
 
         let fetchExpectation = expectation(description: "CardPublicKeyProvider.fetch() completion handler must be called.")
         fetchExpectation.expectedFulfillmentCount = 10
-        try (0 ... 9).forEach { _ in
+        try (0...9).forEach { _ in
             try sut.fetch { result in
                 switch result {
                 case let .success(key):

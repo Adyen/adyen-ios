@@ -46,7 +46,7 @@ public struct ListItemStyle: ViewStyle {
 
 extension ListItemStyle: Equatable {
     public static func == (lhs: ListItemStyle, rhs: ListItemStyle) -> Bool {
-        return lhs.title == rhs.title &&
+        lhs.title == rhs.title &&
             lhs.subtitle == rhs.subtitle &&
             lhs.image == rhs.image &&
             lhs.backgroundColor.cgColor == rhs.backgroundColor.cgColor

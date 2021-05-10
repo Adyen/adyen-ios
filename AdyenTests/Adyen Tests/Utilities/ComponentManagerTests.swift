@@ -15,7 +15,7 @@ class ComponentManagerTests: XCTestCase {
             storedCreditCardDictionary,
             storedCreditCardDictionary,
             storedPayPalDictionary,
-            storedBcmcDictionary,
+            storedBcmcDictionary
         ],
         "paymentMethods": [
             creditCardDictionary,
@@ -32,8 +32,8 @@ class ComponentManagerTests: XCTestCase {
             bcmcMobileQR,
             mbway,
             blik,
-            qiwiWallet,
-        ],
+            qiwiWallet
+        ]
     ]
 
     func testClientKeyInjection() throws {

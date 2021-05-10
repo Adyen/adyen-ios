@@ -37,11 +37,11 @@ public final class CardExpiryDateFormatter: NumericFormatter {
                 formattedDate += separator
             }
         case 3:
-            month = Int(sanitizedString[0 ... 1])!
-            formattedDate = sanitizedString[0 ... 1] + separator + sanitizedString[2]
+            month = Int(sanitizedString[0...1])!
+            formattedDate = sanitizedString[0...1] + separator + sanitizedString[2]
         case 4:
-            month = Int(sanitizedString[0 ... 1])!
-            formattedDate = sanitizedString[0 ... 1] + separator + sanitizedString[2 ... 3]
+            month = Int(sanitizedString[0...1])!
+            formattedDate = sanitizedString[0...1] + separator + sanitizedString[2...3]
         default:
             break
         }

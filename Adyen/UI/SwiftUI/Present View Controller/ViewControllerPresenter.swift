@@ -48,7 +48,7 @@ import SwiftUI
         }
 
         internal func makeUIViewController(context _: UIViewControllerRepresentableContext<FullScreenView>) -> UIViewController {
-            return UIViewController()
+            UIViewController()
         }
 
         internal func makeCoordinator() -> Coordinator {

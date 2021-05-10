@@ -14,7 +14,7 @@ class ThrottlerTests: XCTestCase {
         var counter = 0
 
         let expectation = XCTestExpectation(description: "Waiting for callback")
-        for index in 0 ... 3 {
+        for index in 0...3 {
             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(index * 100)) {
                 sut.throttle { counter += 1 }
             }

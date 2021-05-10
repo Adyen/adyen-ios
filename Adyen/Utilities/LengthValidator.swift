@@ -41,6 +41,6 @@ open class LengthValidator: Validator {
 
     /// :nodoc:
     public func maximumLength(for _: String) -> Int {
-        return maximumLength ?? .max
+        maximumLength ?? .max
     }
 }

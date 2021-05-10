@@ -492,7 +492,7 @@ class CardComponentTests: XCTestCase {
                                              holderName: "holderName")
         let sut = CardComponent(paymentMethod: method,
                                 clientKey: "test_client_key")
-        sut.payment = Payment(amount: Payment.Amount(value: 123_456, currencyCode: "EUR"), countryCode: "NL")
+        sut.payment = Payment(amount: Payment.Amount(value: 123456, currencyCode: "EUR"), countryCode: "NL")
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredCardComponent)
         XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
@@ -517,7 +517,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 clientKey: "test_client_key")
         sut.storedCardConfiguration.showsSecurityCodeField = false
-        sut.payment = Payment(amount: Payment.Amount(value: 123_456, currencyCode: "EUR"), countryCode: "NL")
+        sut.payment = Payment(amount: Payment.Amount(value: 123456, currencyCode: "EUR"), countryCode: "NL")
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)
         XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
@@ -617,7 +617,7 @@ class CardComponentTests: XCTestCase {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
                 XCTAssertEqual(cardNumberItem.cardTypeLogos.count, 3)
                 XCTAssertEqual(cardLogoView.subviews.count, 3)
-                XCTAssertTrue(cardLogoView.arrangedSubviews.allSatisfy { $0.isHidden })
+                XCTAssertTrue(cardLogoView.arrangedSubviews.allSatisfy(\.isHidden))
 
                 expectation.fulfill()
             }

@@ -132,7 +132,7 @@ internal struct IBANSpecification {
         "TR": IBANSpecification(countryCode: "TR", length: 26, structure: "F05F01A16", example: "TR330006100519786457841326"),
         "UA": IBANSpecification(countryCode: "UA", length: 29, structure: "F25", example: "UA511234567890123456789012345"),
         "VG": IBANSpecification(countryCode: "VG", length: 24, structure: "U04F16", example: "VG96VPVG0000012345678901"),
-        "XK": IBANSpecification(countryCode: "XK", length: 20, structure: "F04F10F02", example: "XK051212012345678906"),
+        "XK": IBANSpecification(countryCode: "XK", length: 20, structure: "F04F10F02", example: "XK051212012345678906")
     ]
     // swiftlint:enable line_length
 }

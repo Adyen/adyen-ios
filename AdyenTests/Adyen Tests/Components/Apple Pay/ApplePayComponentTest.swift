@@ -216,8 +216,8 @@ class ApplePayComponentTest: XCTestCase {
     }
 
     private func createTestSummaryItems() -> [PKPaymentSummaryItem] {
-        var amounts = (0 ... 3).map { _ in
-            NSDecimalNumber(mantissa: UInt64.random(in: 1 ... 20), exponent: 1, isNegative: Bool.random())
+        var amounts = (0...3).map { _ in
+            NSDecimalNumber(mantissa: UInt64.random(in: 1...20), exponent: 1, isNegative: Bool.random())
         }
         // Positive Grand total
         amounts.append(NSDecimalNumber(mantissa: 20, exponent: 1, isNegative: false))
@@ -227,8 +227,8 @@ class ApplePayComponentTest: XCTestCase {
     }
 
     private func createInvalidGrandTotalTestSummaryItems() -> [PKPaymentSummaryItem] {
-        var amounts = (0 ... 3).map { _ in
-            NSDecimalNumber(mantissa: UInt64.random(in: 1 ... 20), exponent: 1, isNegative: Bool.random())
+        var amounts = (0...3).map { _ in
+            NSDecimalNumber(mantissa: UInt64.random(in: 1...20), exponent: 1, isNegative: Bool.random())
         }
         // Negative Grand total
         amounts.append(NSDecimalNumber(mantissa: 20, exponent: 1, isNegative: true))

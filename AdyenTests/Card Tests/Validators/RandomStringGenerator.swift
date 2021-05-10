@@ -8,7 +8,7 @@ import Foundation
 
 enum RandomStringGenerator {
     static func generateDummyCardPublicKey() -> String {
-        return "\(generateRandomHexadecimalString(length: 5))|\(generateRandomHexadecimalString(length: 512))"
+        "\(generateRandomHexadecimalString(length: 5))|\(generateRandomHexadecimalString(length: 512))"
     }
 
     static func generateRandomNumericString(length: Int) -> String {
@@ -22,6 +22,6 @@ enum RandomStringGenerator {
     }
 
     static func generateRandomString(length: Int, characters: [Character]) -> String {
-        return String((0 ..< length).map { _ in characters.randomElement() }.compactMap { $0 })
+        String((0..<length).map { _ in characters.randomElement() }.compactMap { $0 })
     }
 }

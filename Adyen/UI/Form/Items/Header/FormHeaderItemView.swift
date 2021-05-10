@@ -48,7 +48,7 @@ internal final class FormHeaderItemView: FormItemView<FormHeaderItem> {
             titleLabel.leadingAnchor.constraint(greaterThanOrEqualTo: layoutMarginsGuide.leadingAnchor),
             titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.trailingAnchor),
             titleLabel.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor),
-            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
         ]
 
         NSLayoutConstraint.activate(constraints)

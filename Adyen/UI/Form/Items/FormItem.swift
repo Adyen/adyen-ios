@@ -28,7 +28,7 @@ public protocol CompoundFormItem: FormItem {
 public extension FormItem {
     /// The flat list of all sub-items.
     var flatSubitems: [FormItem] {
-        return (self as? CompoundFormItem)?.subitems.flatMap { $0.flatSubitems } ?? [self]
+        (self as? CompoundFormItem)?.subitems.flatMap(\.flatSubitems) ?? [self]
     }
 }
 

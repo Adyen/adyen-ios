@@ -130,7 +130,7 @@ extension Cryptor.AES {
             AESCCM.setCounter(blockA, encodeBytesLength, 0)
             AESCCM.aesEncrypt(block: blockA, with: key, saveTo: blockS)
 
-            for index in 0 ..< authOctets {
+            for index in 0..<authOctets {
                 cipherPointer.initialize(to: UInt8(blockX[index] ^ blockS[index]))
                 cipherPointer = cipherPointer.successor()
             }
@@ -192,7 +192,7 @@ extension Cryptor.AES {
             // XORs `n` bytes byte-by-byte starting at `y` to the memory area starting at `x`.
             internal static func memxor(_ pointer: Pointer, _ bytes: MutableBytes, _ count: Int) {
                 var pointer = pointer
-                for index in 0 ..< count {
+                for index in 0..<count {
                     pointer.initialize(to: pointer.pointee ^ UInt8(bytes[index]))
                     pointer = pointer.successor()
                 }
@@ -207,7 +207,7 @@ extension Cryptor.AES {
                 blockB.memecpy(from: nonce, offset: 1, count: AESCCM.blockSize - encodeBytes)
 
                 var shift = messageLength
-                for index in 0 ..< encodeBytes {
+                for index in 0..<encodeBytes {
                     blockB[15 - index] = UInt8(shift & 0xFF)
                     shift >>= 8
                 }
@@ -249,7 +249,7 @@ extension Cryptor.AES {
                                      blockX: MutableBytes)
             {
                 var pointer = pointer
-                for index in 0 ..< length {
+                for index in 0..<length {
                     blockB[index] = blockX[index] ^ pointer.pointee
                     pointer = pointer.successor()
                 }
@@ -270,19 +270,19 @@ extension Cryptor.AES {
 
 extension UnsafeMutableBufferPointer {
     func memecpy(from source: UnsafePointer<Element>, offset: Int, count: Int) {
-        for index in offset ..< (offset + count) {
+        for index in offset..<(offset + count) {
             self[index] = source.advanced(by: index - offset).pointee
         }
     }
 
     func memecpy<T: RandomAccessCollection>(from source: T, offset: Int, count: Int) where T.Element == Element, T.Index == Int {
-        for index in offset ..< (offset + count) {
+        for index in offset..<(offset + count) {
             self[index] = source[index - offset]
         }
     }
 
     func memset(value: Element, offset: Int, count: Int) {
-        for index in offset ..< offset + count {
+        for index in offset..<offset + count {
             self[index] = value
         }
     }

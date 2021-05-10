@@ -20,7 +20,7 @@ public extension Observer {
     /// - Returns: An observation, representing the created observation. Can be used to remove the observation later.
     @discardableResult
     func observe<T: EventPublisher>(_ eventPublisher: T, eventHandler: @escaping EventHandler<T.Event>) -> Observation {
-        return observationManager.observe(eventPublisher, eventHandler: eventHandler)
+        observationManager.observe(eventPublisher, eventHandler: eventHandler)
     }
 
     /// Binds the value of an observable to a key path.

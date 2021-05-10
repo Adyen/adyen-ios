@@ -119,14 +119,14 @@ internal final class AwaitView: UIView {
         let constraints = [
             icon.topAnchor.constraint(equalTo: topAnchor, constant: 16),
             icon.centerXAnchor.constraint(equalTo: centerXAnchor),
-
+            
             messageLabel.topAnchor.constraint(equalTo: icon.bottomAnchor, constant: 25),
             messageLabel.leadingAnchor.constraint(equalTo: guid.leadingAnchor, constant: 16),
             messageLabel.trailingAnchor.constraint(equalTo: guid.trailingAnchor, constant: -16),
-
+            
             spinnerView.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 16),
             spinnerView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            spinnerView.bottomAnchor.constraint(equalTo: guid.bottomAnchor, constant: -32),
+            spinnerView.bottomAnchor.constraint(equalTo: guid.bottomAnchor, constant: -32)
         ]
 
         NSLayoutConstraint.activate(constraints)

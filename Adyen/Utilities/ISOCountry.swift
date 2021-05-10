@@ -10,7 +10,7 @@ internal extension String {
     // swiftlint:disable:next explicit_acl
     var countryFlag: String {
         guard CountryCodeValidator().isValid(self) else { return "" }
-        let base = 127_397
+        let base = 127397
         var usv = String.UnicodeScalarView()
         utf16.compactMap { UnicodeScalar(base + Int($0)) }.forEach { usv.append($0) }
         return String(usv)

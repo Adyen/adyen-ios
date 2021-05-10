@@ -201,7 +201,7 @@ class BCMCComponentTests: XCTestCase {
         let cardNumberItem = cardNumberItemView!.item
         populate(textItemView: cardNumberItemView!, with: "00000")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertTrue(cardNumberItem.cardTypeLogos.allSatisfy { $0.isHidden })
+            XCTAssertTrue(cardNumberItem.cardTypeLogos.allSatisfy(\.isHidden))
 
             expectation.fulfill()
         }

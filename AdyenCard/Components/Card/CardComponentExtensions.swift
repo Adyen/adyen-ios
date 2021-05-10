@@ -18,8 +18,8 @@ internal extension CardComponent {
     private func getEncryptedCard(publicKey: String) throws -> CardEncryptor.EncryptedCard {
         let card = CardEncryptor.Card(number: numberItem.value,
                                       securityCode: securityCodeItem.value,
-                                      expiryMonth: expiryDateItem.value[0 ... 1],
-                                      expiryYear: "20" + expiryDateItem.value[2 ... 3])
+                                      expiryMonth: expiryDateItem.value[0...1],
+                                      expiryYear: "20" + expiryDateItem.value[2...3])
         return try CardEncryptor.encryptedCard(for: card, publicKey: publicKey)
     }
 

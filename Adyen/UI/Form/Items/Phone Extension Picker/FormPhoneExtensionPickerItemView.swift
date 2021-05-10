@@ -46,7 +46,7 @@ internal final class FormPhoneExtensionPickerItemView: FormValueItemView<FormPho
             inputControl.topAnchor.constraint(equalTo: topAnchor),
             inputControl.leadingAnchor.constraint(equalTo: leadingAnchor),
             inputControl.trailingAnchor.constraint(equalTo: trailingAnchor),
-            inputControl.bottomAnchor.constraint(equalTo: bottomAnchor),
+            inputControl.bottomAnchor.constraint(equalTo: bottomAnchor)
         ]
 
         NSLayoutConstraint.activate(constraints)

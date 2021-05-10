@@ -24,7 +24,7 @@ class ApplePayDetailsTest: XCTestCase {
         let expectedJson = [
             "applePayToken": "test_token",
             "applePayCardNetwork": "test_network",
-            "type": "test_type",
+            "type": "test_type"
         ]
         XCTAssertEqual(expectedJson["applePayToken"], resultJson?["applePayToken"] as? String)
         XCTAssertEqual(expectedJson["applePayCardNetwork"], resultJson?["applePayCardNetwork"] as? String)

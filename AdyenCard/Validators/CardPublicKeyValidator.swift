@@ -14,11 +14,11 @@ internal struct CardPublicKeyValidator: Validator {
         guard let range = string.range(of: #"([0-9A-F]){5}\|([A-F]|[0-9]){512}"#, options: .regularExpression) else {
             return false
         }
-        return range == (string.startIndex ..< string.endIndex)
+        return range == (string.startIndex..<string.endIndex)
     }
 
     /// :nodoc:
     public func maximumLength(for _: String) -> Int {
-        return 518
+        518
     }
 }

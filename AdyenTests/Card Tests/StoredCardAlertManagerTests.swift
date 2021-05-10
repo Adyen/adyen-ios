@@ -20,8 +20,8 @@ class StoredCardAlertManagerTests: XCTestCase {
         "holderName": "test",
         "supportedShopperInteractions": [
             "Ecommerce",
-            "ContAuth",
-        ],
+            "ContAuth"
+        ]
     ] as [String: Any]
 
     func testLocalizationWithCustomTableName() throws {

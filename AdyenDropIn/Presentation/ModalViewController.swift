@@ -164,7 +164,7 @@ internal final class ModalViewController: UIViewController {
             view1.topAnchor.constraint(equalTo: view2.topAnchor),
             view1.bottomAnchor.constraint(equalTo: view2.bottomAnchor),
             view1.leftAnchor.constraint(equalTo: view2.leftAnchor),
-            view1.rightAnchor.constraint(equalTo: view2.rightAnchor),
+            view1.rightAnchor.constraint(equalTo: view2.rightAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -200,7 +200,7 @@ internal final class ModalViewController: UIViewController {
             stackView.topAnchor.constraint(equalTo: view.topAnchor),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            bottomConstraint,
+            bottomConstraint
         ])
     }
 }

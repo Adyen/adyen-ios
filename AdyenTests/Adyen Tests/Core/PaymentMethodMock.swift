@@ -12,6 +12,6 @@ struct PaymentMethodMock: PaymentMethod {
     var name: String
 
     func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        return builder.build(paymentMethod: self)
+        builder.build(paymentMethod: self)
     }
 }

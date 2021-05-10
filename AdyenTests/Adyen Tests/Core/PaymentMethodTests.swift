@@ -18,14 +18,14 @@ class PaymentMethodTests: XCTestCase {
                     "type": "unknown",
                     "id": "9314881977134903",
                     "name": "Stored Redirect Payment Method",
-                    "supportedShopperInteractions": ["Ecommerce"],
+                    "supportedShopperInteractions": ["Ecommerce"]
                 ],
                 [
                     "type": "unknown",
-                    "name": "Invalid Stored Payment Method",
+                    "name": "Invalid Stored Payment Method"
                 ],
                 storedBcmcDictionary,
-                storedDeditCardDictionary,
+                storedDeditCardDictionary
             ],
             "paymentMethods": [
                 creditCardDictionary,
@@ -33,10 +33,10 @@ class PaymentMethodTests: XCTestCase {
                 sepaDirectDebitDictionary,
                 [
                     "type": "unknown",
-                    "name": "Redirect Payment Method",
+                    "name": "Redirect Payment Method"
                 ],
                 [
-                    "name": "Invalid Payment Method",
+                    "name": "Invalid Payment Method"
                 ],
                 bcmcCardDictionary,
                 applePayDictionary,
@@ -52,8 +52,8 @@ class PaymentMethodTests: XCTestCase {
                 debitCardDictionary,
                 mbway,
                 blik,
-                giftCard,
-            ],
+                giftCard
+            ]
         ]
 
         // Stored payment methods
@@ -265,7 +265,7 @@ class PaymentMethodTests: XCTestCase {
 
     let sepaDirectDebitDictionary = [
         "type": "sepadirectdebit",
-        "name": "SEPA Direct Debit",
+        "name": "SEPA Direct Debit"
     ] as [String: Any]
 
     func testDecodingSEPADirectDebitPaymentMethod() throws {

@@ -37,12 +37,11 @@ extension Cryptor {
             let attributes: [String: Any] = [
                 kSecAttrKeyClass as String: kSecAttrKeyClassPublic,
                 kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
-                kSecAttrKeySizeInBits as String: RSA.keySizeInBits,
+                kSecAttrKeySizeInBits as String: RSA.keySizeInBits
             ]
 
             if let secKey = SecKeyCreateWithData(publicKey as CFData, attributes as CFDictionary, nil),
-               let encrypted = SecKeyCreateEncryptedData(secKey, .rsaEncryptionPKCS1, original as CFData, &error)
-            {
+               let encrypted = SecKeyCreateEncryptedData(secKey, .rsaEncryptionPKCS1, original as CFData, &error) {
                 return encrypted as NSData as Data
             }
 

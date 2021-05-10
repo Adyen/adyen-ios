@@ -23,7 +23,7 @@ public final class CardNumberValidator: Validator {
 
     /// :nodoc:
     public func maximumLength(for _: String) -> Int {
-        return 19
+        19
     }
 
     // MARK: - Private
@@ -39,7 +39,7 @@ public final class CardNumberValidator: Validator {
             switch (isOdd, digit) {
             case (true, 9):
                 sum += 9
-            case (true, 0 ... 8):
+            case (true, 0...8):
                 sum += (digit * 2) % 9
             default:
                 sum += digit

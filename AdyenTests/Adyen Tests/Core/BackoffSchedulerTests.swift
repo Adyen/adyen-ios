@@ -39,7 +39,7 @@ class BackoffSchedulerTests: XCTestCase {
         var sut = BackoffScheduler(queue: .main)
         sut.backoffIntevalCalculator = intervalCalculator
 
-        (0 ... 99).forEach { counter in
+        (0...99).forEach { counter in
             XCTAssertFalse(sut.schedule(counter, closure: closureToSchedule))
         }
 

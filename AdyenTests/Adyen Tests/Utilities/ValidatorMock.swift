@@ -10,11 +10,11 @@ import Foundation
 final class ValidatorMock: Validator {
     var handleIsValid: ((_ value: String) -> Bool)?
     func isValid(_ value: String) -> Bool {
-        return handleIsValid?(value) ?? true
+        handleIsValid?(value) ?? true
     }
 
     var handleMaximumLength: ((_ value: String) -> Int)?
     func maximumLength(for value: String) -> Int {
-        return handleMaximumLength?(value) ?? .max
+        handleMaximumLength?(value) ?? .max
     }
 }

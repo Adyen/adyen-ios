@@ -36,7 +36,7 @@ internal final class ListHeaderView: UIView {
             titleLabel.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.trailingAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
         ]
 
         NSLayoutConstraint.activate(constraints)

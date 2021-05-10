@@ -48,7 +48,7 @@ public final class RedirectComponent: ActionComponent, DismissableComponent {
     /// - Returns: A boolean value indicating whether the URL was handled by the redirect component.
     @discardableResult
     public static func applicationDidOpen(from url: URL) -> Bool {
-        return UniversalRedirectComponent.applicationDidOpen(from: url)
+        UniversalRedirectComponent.applicationDidOpen(from: url)
     }
 
     /// :nodoc:

@@ -22,7 +22,7 @@ public struct StoredPayPalPaymentMethod: StoredPaymentMethod {
 
     /// :nodoc:
     public var displayInformation: DisplayInformation {
-        return DisplayInformation(title: emailAddress, subtitle: nil, logoName: type)
+        DisplayInformation(title: emailAddress, subtitle: nil, logoName: type)
     }
 
     /// The email address of the PayPal account.
@@ -30,7 +30,7 @@ public struct StoredPayPalPaymentMethod: StoredPaymentMethod {
 
     /// :nodoc:
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        return builder.build(paymentMethod: self)
+        builder.build(paymentMethod: self)
     }
 
     // MARK: - Decoding

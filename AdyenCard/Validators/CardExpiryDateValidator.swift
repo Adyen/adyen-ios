@@ -29,8 +29,8 @@ public final class CardExpiryDateValidator: Validator {
     public func isValid(_ string: String) -> Bool {
         guard string.count == maximumLength(for: string) else { return false }
 
-        guard let month = Int(string[0 ... 1]) else { return false }
-        guard let year = Int("20" + string[2 ... 3]) else { return false }
+        guard let month = Int(string[0...1]) else { return false }
+        guard let year = Int("20" + string[2...3]) else { return false }
 
         guard (month >= 1 && month <= 12) || string.count < 2 else { return false }
         guard let expiryDate = calculateExpiryDate(fromYear: year, month: month) else { return false }
@@ -40,7 +40,7 @@ public final class CardExpiryDateValidator: Validator {
         let monthDiff = diffComponents.month ?? 0
         let yearDiff = diffComponents.year ?? 0
 
-        guard (0 ... Self.maxYearsDifference).contains(yearDiff), monthDiff >= -3 else { return false }
+        guard (0...Self.maxYearsDifference).contains(yearDiff), monthDiff >= -3 else { return false }
 
         return true
     }
@@ -61,6 +61,6 @@ public final class CardExpiryDateValidator: Validator {
 
     /// :nodoc:
     public func maximumLength(for _: String) -> Int {
-        return 4
+        4
     }
 }

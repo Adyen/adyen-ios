@@ -34,7 +34,7 @@ public final class ContainerView: UIView {
             body.topAnchor.constraint(equalTo: topAnchor, constant: edgeInsets.top),
             body.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -edgeInsets.bottom),
             body.leftAnchor.constraint(equalTo: leftAnchor, constant: edgeInsets.left),
-            body.rightAnchor.constraint(equalTo: rightAnchor, constant: -edgeInsets.right),
+            body.rightAnchor.constraint(equalTo: rightAnchor, constant: -edgeInsets.right)
         ]
         constraints.forEach { $0.priority = .defaultHigh }
         NSLayoutConstraint.activate(constraints)

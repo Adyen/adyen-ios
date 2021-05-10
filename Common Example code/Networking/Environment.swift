@@ -22,7 +22,7 @@ internal enum DemoServerEnvironment: APIEnvironment {
     internal var headers: [String: String] {
         [
             "Content-Type": "application/json",
-            "X-API-Key": Configuration.demoServerAPIKey,
+            "X-API-Key": Configuration.demoServerAPIKey
         ]
     }
 
