@@ -17,7 +17,8 @@ public final class CardNumberFormatter: NumericFormatter {
     /// :nodoc:
     override public func formattedValue(for value: String) -> String {
         let sanitizedCardNumber = sanitizedValue(for: value)
-        let formattedCardNumberComponents = sanitizedCardNumber.adyen.components(withLengths: cardFormatGrouping)
+        let grouping = cardFormatGrouping(for: sanitizedCardNumber.count)
+        let formattedCardNumberComponents = sanitizedCardNumber.adyen.components(withLengths: grouping)
         return formattedCardNumberComponents.joined(separator: " ")
     }
     
@@ -25,11 +26,14 @@ public final class CardNumberFormatter: NumericFormatter {
     
     private let maxCharactersInCardNumber = 19
     
-    private var cardFormatGrouping: [Int] {
-        if let cardType = cardType, cardType == .americanExpress {
+    private func cardFormatGrouping(for length: Int) -> [Int] {
+        switch cardType {
+        case .americanExpress:
             return [4, 6, 5]
+        case .diners where length < 15:
+            return [4, 6, 4]
+        default:
+            return [4, 4, 4, 4, 4]
         }
-        
-        return [4, 4, 4, 4, 4]
     }
 }
