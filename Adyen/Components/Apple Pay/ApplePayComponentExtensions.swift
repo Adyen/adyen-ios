@@ -11,20 +11,20 @@ import PassKit
 
 /// :nodoc:
 extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
-    
     /// :nodoc:
-    public func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
+    public func paymentAuthorizationViewControllerDidFinish(_: PKPaymentAuthorizationViewController) {
         if isUserCancel {
-            self.delegate?.didFail(with: ComponentError.cancelled, from: self)
+            delegate?.didFail(with: ComponentError.cancelled, from: self)
         }
     }
-    
+
     /// :nodoc:
-    public func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
+    public func paymentAuthorizationViewController(_: PKPaymentAuthorizationViewController,
                                                    didAuthorizePayment payment: PKPayment,
-                                                   completion: @escaping (PKPaymentAuthorizationStatus) -> Void) {
+                                                   completion: @escaping (PKPaymentAuthorizationStatus) -> Void)
+    {
         paymentAuthorizationCompletion = completion
-        
+
         let token = String(data: payment.token.paymentData, encoding: .utf8) ?? ""
         let network = payment.token.paymentMethod.network?.rawValue ?? ""
         let billingContact = payment.billingContact
@@ -34,35 +34,33 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
                                       network: network,
                                       billingContact: billingContact,
                                       shippingContact: shippingContact)
-        
+
         submit(data: PaymentComponentData(paymentMethodDetails: details))
     }
 }
 
 // MARK: - Apple Pay component configuration.
 
-extension ApplePayComponent {
-    
+public extension ApplePayComponent {
     /// Apple Pay component configuration.
-    public struct Configuration {
-        
+    struct Configuration {
         /// The public key used for encrypting card details.
         public var summaryItems: [PKPaymentSummaryItem]
-        
+
         /// The merchant identifier for apple pay.
         public var merchantIdentifier: String
-        
+
         /// A list of fields that you need for a billing contact in order to process the transaction.
         /// Ignored on iOS 10.*.
         public var requiredBillingContactFields: Set<PKContactField> = []
-        
+
         /// A list of fields that you need for a shipping contact in order to process the transaction.
         /// Ignored on iOS 10.*.
         public var requiredShippingContactFields: Set<PKContactField> = []
-        
+
         /// The excluded card brands.
         public var excludedCardNetworks: [PKPaymentNetwork] = []
-        
+
         /// Initializes the configuration.
         ///
         /// - Parameter summaryItems: The line items for this payment.
@@ -76,27 +74,27 @@ extension ApplePayComponent {
                     merchantIdentifier: String,
                     requiredBillingContactFields: Set<PKContactField> = [],
                     requiredShippingContactFields: Set<PKContactField> = [],
-                    excludedCardNetworks: [PKPaymentNetwork] = []) {
+                    excludedCardNetworks: [PKPaymentNetwork] = [])
+        {
             self.summaryItems = summaryItems
             self.merchantIdentifier = merchantIdentifier
             self.requiredBillingContactFields = requiredBillingContactFields
             self.requiredShippingContactFields = requiredShippingContactFields
             self.excludedCardNetworks = excludedCardNetworks
         }
-        
+
         internal var supportedNetworks: [PKPaymentNetwork] {
             var networks: [PKPaymentNetwork] = [.visa, .masterCard, .amex, .discover, .interac]
-            
+
             if #available(iOS 12.0, *) {
                 networks.append(.maestro)
             }
-            
+
             if #available(iOS 10.1, *) {
                 networks.append(.JCB)
             }
-            
+
             return networks.filter { !excludedCardNetworks.contains($0) }
         }
-        
     }
 }

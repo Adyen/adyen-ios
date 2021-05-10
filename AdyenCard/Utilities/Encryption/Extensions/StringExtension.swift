@@ -8,8 +8,7 @@ import CommonCrypto
 import Foundation
 
 extension String {
-
-    internal var hexadecimal: Data? {
+    var hexadecimal: Data? {
         var data = Data(capacity: count / 2)
         var string = self
         if string.count % 2 == 1 {
@@ -27,5 +26,4 @@ extension String {
 
         return data
     }
-
 }

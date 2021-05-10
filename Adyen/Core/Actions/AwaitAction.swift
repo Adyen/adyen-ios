@@ -13,13 +13,12 @@ public enum AwaitPaymentMethod: String, Decodable {
 
 /// Describes an action in which the SDK is waiting for user action.
 public struct AwaitAction: Decodable {
-    
     /// The `paymentMethodType` for which the await action is used.
     public let paymentMethodType: AwaitPaymentMethod
-    
+
     /// The server-generated payment data that should be submitted to the `/payments/details` endpoint.
     public let paymentData: String
-    
+
     /// Initializes a redirect action.
     ///
     /// - Parameters:
@@ -29,5 +28,4 @@ public struct AwaitAction: Decodable {
         self.paymentData = paymentData
         self.paymentMethodType = paymentMethodType
     }
-    
 }

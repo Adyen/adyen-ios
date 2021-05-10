@@ -12,15 +12,14 @@ import Foundation
 /// can never be detected with 100% accuraccy on the client side.
 @available(*, deprecated, message: "Use extension for `[CardType] instead")
 public final class CardTypeDetector {
-    
     /// The types to detect.
     public var detectableTypes: [CardType]
-    
+
     /// Initializes the card type detector.
     public init(detectableTypes: [CardType] = [.visa, .masterCard, .americanExpress]) {
         self.detectableTypes = detectableTypes
     }
-    
+
     /// Detects the type for a given card number.
     ///
     /// - Parameter cardNumber: The card number to retrieve the type of. The number is expected to be sanitized (digits only).
@@ -29,7 +28,7 @@ public final class CardTypeDetector {
     public func type(forCardNumber cardNumber: String) -> CardType? {
         return detectableTypes.adyen.type(forCardNumber: cardNumber)
     }
-    
+
     /// Detects all possible types for a given card number.
     ///
     /// - Parameter cardNumber: The card number to retrieve the types for. The number is expected to be sanitized (digits only).
@@ -38,7 +37,6 @@ public final class CardTypeDetector {
     public func types(forCardNumber cardNumber: String) -> [CardType] {
         return detectableTypes.adyen.types(forCardNumber: cardNumber)
     }
-    
 }
 
 /// So that any `Array` instance will inherit the `adyen` scope.
@@ -48,7 +46,6 @@ extension Array: AdyenCompatible {}
 /// Adds helper functionality to any `[CardType]` instance through the `adyen` property.
 /// :nodoc:
 public extension AdyenScope where Base == [CardType] {
-    
     /// Detects the type for a given card number.
     ///
     /// - Parameter cardNumber: The card number to retrieve the type of. The number is expected to be sanitized (digits only).
@@ -56,7 +53,7 @@ public extension AdyenScope where Base == [CardType] {
     func types(forCardNumber cardNumber: String) -> [CardType] {
         return base.filter { $0.matches(cardNumber: cardNumber) }
     }
-    
+
     /// Detects all possible types for a given card number.
     ///
     /// - Parameter cardNumber: The card number to retrieve the types for. The number is expected to be sanitized (digits only).

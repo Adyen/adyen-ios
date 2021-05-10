@@ -9,42 +9,41 @@ import UIKit
 
 /// A view representing a split text item.
 internal final class FormSplitTextItemView: FormItemView<FormSplitTextItem> {
-    
     /// Initializes the split text item view.
     ///
     /// - Parameter item: The item represented by the view.
     internal required init(item: FormSplitTextItem) {
         super.init(item: item)
-        
+
         addSubview(stackView)
-        
+
         configureConstraints()
     }
-    
+
     override internal var childItemViews: [AnyFormItemView] {
         [leftItemView, rightItemView]
     }
-    
+
     // MARK: - Text Items
-    
+
     private lazy var leftItemView: AnyFormItemView = {
         let leftItemView = item.leftItem.build(with: FormItemViewBuilder())
         leftItemView.accessibilityIdentifier = item.leftItem.identifier
         leftItemView.preservesSuperviewLayoutMargins = true
-        
+
         return leftItemView
     }()
-    
+
     private lazy var rightItemView: AnyFormItemView = {
         let rightItemView = item.rightItem.build(with: FormItemViewBuilder())
         rightItemView.accessibilityIdentifier = item.rightItem.identifier
         rightItemView.preservesSuperviewLayoutMargins = true
-        
+
         return rightItemView
     }()
-    
+
     // MARK: - Layout
-    
+
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: childItemViews)
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -55,16 +54,15 @@ internal final class FormSplitTextItemView: FormItemView<FormSplitTextItem> {
         stackView.spacing = 16
         return stackView
     }()
-    
+
     private func configureConstraints() {
         let constraints = [
             stackView.topAnchor.constraint(equalTo: topAnchor),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ]
-        
+
         NSLayoutConstraint.activate(constraints)
     }
-    
 }

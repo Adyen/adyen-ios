@@ -10,27 +10,26 @@ import UIKit
 /// A view representing a footer item.
 @available(*, deprecated, message: "The `FormFooterItemView` is deprecated.")
 internal final class FormFooterItemView: FormItemView<FormFooterItem>, Observer {
-    
     /// Initializes the footer item view.
     ///
     /// - Parameter item: The item represented by the view.
     internal required init(item: FormFooterItem) {
         super.init(item: item)
-        
+
         layoutMargins.top = 24.0
         layoutMargins.bottom = 24.0
-        
+
         addSubview(stackView)
-        
+
         backgroundColor = item.style.backgroundColor
-        
+
         bind(item.$showsActivityIndicator, to: submitButton, at: \.showsActivityIndicator)
-        
+
         configureConstraints()
     }
-    
+
     // MARK: - Submit Button
-    
+
     private lazy var submitButton: SubmitButton = {
         let submitButton = SubmitButton(style: item.style.button)
         submitButton.accessibilityIdentifier = item.identifier.map {
@@ -38,21 +37,21 @@ internal final class FormFooterItemView: FormItemView<FormFooterItem>, Observer 
         }
         submitButton.title = item.submitButtonTitle
         submitButton.addTarget(self, action: #selector(didSelectSubmitButton), for: .touchUpInside)
-        
+
         return submitButton
     }()
-    
+
     @objc private func didSelectSubmitButton() {
         item.submitButtonSelectionHandler?()
     }
-    
+
     // MARK: - Title Label
-    
+
     private lazy var titleLabel: UILabel? = {
         guard let title = item.title else {
             return nil
         }
-        
+
         let titleLabel = UILabel()
         titleLabel.font = item.style.title.font
         titleLabel.adjustsFontForContentSizeCategory = true
@@ -62,15 +61,15 @@ internal final class FormFooterItemView: FormItemView<FormFooterItem>, Observer 
         titleLabel.text = title
         titleLabel.numberOfLines = 0
         titleLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel") }
-        
+
         return titleLabel
     }()
-    
+
     // MARK: - Stack View
-    
+
     private lazy var stackView: UIStackView = {
         let arrangedSubviews = [submitButton, titleLabel].compactMap { $0 }
-        
+
         let stackView = UIStackView(arrangedSubviews: arrangedSubviews)
         stackView.axis = .vertical
         stackView.alignment = .fill
@@ -79,21 +78,20 @@ internal final class FormFooterItemView: FormItemView<FormFooterItem>, Observer 
         stackView.backgroundColor = item.style.backgroundColor
         stackView.preservesSuperviewLayoutMargins = true
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         return stackView
     }()
-    
+
     // MARK: - Layout
-    
+
     private func configureConstraints() {
         let constraints = [
             stackView.topAnchor.constraint(equalTo: topAnchor),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ]
-        
+
         NSLayoutConstraint.activate(constraints)
     }
-    
 }

@@ -10,17 +10,16 @@ import UIKit
 /// Contains the styling customization options for a form footer.
 @available(*, deprecated, message: "The `FormFooterStyle` property is deprecated.")
 public struct FormFooterStyle: ViewStyle {
-    
     /// The title style.
     public var title = TextStyle(font: .preferredFont(forTextStyle: .footnote),
                                  color: UIColor.AdyenCore.componentQuaternaryLabel)
-    
+
     /// The main button style.
     public var button = ButtonStyle(title: TextStyle(font: .preferredFont(forTextStyle: .headline), color: .white))
-    
+
     /// :nodoc:
     public var backgroundColor: UIColor = .clear
-    
+
     /// Initializes the form footer style
     ///
     /// - Parameter title: The title style.
@@ -29,15 +28,14 @@ public struct FormFooterStyle: ViewStyle {
         self.title = title
         self.button = button
     }
-    
+
     /// Initializes the form footer style
     ///
     /// - Parameter button: The button style.
     public init(button: ButtonStyle) {
         self.button = button
     }
-    
+
     /// Initializes the form footer style with the default style.
     public init() {}
-    
 }

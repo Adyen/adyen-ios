@@ -9,7 +9,6 @@ import UIKit
 /// :nodoc:
 /// `ADYViewController` serves as a height-aware `UIViewController`
 public final class ADYViewController: UIViewController {
-
     /// :nodoc:
     private let contentView: UIView
 
@@ -18,18 +17,18 @@ public final class ADYViewController: UIViewController {
     ///   - view: The instance of UIView to be displayed
     ///   - title: The title of the `ADYViewController`
     public init(view: UIView, title: String? = nil) {
-        self.contentView = view
+        contentView = view
         super.init(nibName: nil, bundle: nil)
         self.title = title
     }
 
     @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
+    internal required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     override public func loadView() {
-        self.view = contentView
+        view = contentView
     }
 
     override public var preferredContentSize: CGSize {

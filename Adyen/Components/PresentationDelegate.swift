@@ -8,7 +8,6 @@ import Foundation
 
 /// Delegates `ViewController`'s presentation.
 public protocol PresentationDelegate: AnyObject {
-    
     /// Asks the delegate to present a `PresentableComponent` as the `delegate` sees fit.
     func present(component: PresentableComponent, disableCloseButton: Bool)
 }

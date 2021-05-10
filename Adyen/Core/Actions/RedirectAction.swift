@@ -8,13 +8,12 @@ import Foundation
 
 /// Describes an action in which the user is redirected to a URL.
 public struct RedirectAction: Decodable {
-    
     /// The URL to which to redirect the user.
     public let url: URL
-    
+
     /// The server-generated payment data that should be submitted to the `/payments/details` endpoint.
     public let paymentData: String?
-    
+
     /// Initializes a redirect action.
     ///
     /// - Parameters:
@@ -24,5 +23,4 @@ public struct RedirectAction: Decodable {
         self.url = url
         self.paymentData = paymentData
     }
-    
 }

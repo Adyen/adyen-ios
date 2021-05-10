@@ -8,22 +8,21 @@ import Foundation
 
 /// :nodoc:
 open class NumericFormatter: Adyen.Formatter {
-    
     /// :nodoc:
     public init() { /* empty init */ }
-    
+
     /// :nodoc:
     open func formattedValue(for value: String) -> String {
         return sanitizedValue(for: value)
     }
-    
+
     /// :nodoc:
     open func sanitizedValue(for value: String) -> String {
         let sanitizedString = value.filter { $0.isNumber }
-        
+
         // Converts all non-latin digits to latin digits
         let latinString = sanitizedString.applyingTransform(StringTransform.toLatin, reverse: false) ?? sanitizedString
-        
+
         // Filters out non-ASCII digits
         return latinString.filter { $0.isASCII && $0.isNumber }
     }

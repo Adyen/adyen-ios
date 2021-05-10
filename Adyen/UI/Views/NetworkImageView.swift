@@ -9,34 +9,33 @@ import UIKit
 /// An image view that displays images from a remote location.
 /// :nodoc:
 open class NetworkImageView: UIImageView {
-    
     /// The URL of the image to display.
     public var imageURL: URL? {
         didSet {
             cancelCurrentTask()
             image = nil
-            
+
             // Only load an image when we're in a window.
             if let imageURL = imageURL, window != nil {
                 loadImage(from: imageURL)
             }
         }
     }
-    
+
     /// :nodoc:
     override open func didMoveToWindow() {
         super.didMoveToWindow()
-        
+
         // If we have an image URL and are embedded in a window, load the image if we aren't already.
         if let imageURL = imageURL, window != nil, dataTask == nil {
             loadImage(from: imageURL)
         }
     }
-    
+
     // MARK: - Private
-    
+
     private var dataTask: URLSessionDataTask?
-    
+
     private func loadImage(from url: URL) {
         let session = URLSession.shared
         let task = session.dataTask(with: url) { data, response, error in
@@ -47,20 +46,19 @@ open class NetworkImageView: UIImageView {
             else {
                 return
             }
-            
+
             DispatchQueue.main.async {
                 self.image = image
                 self.dataTask = nil
             }
         }
         task.resume()
-        
+
         dataTask = task
     }
-    
+
     private func cancelCurrentTask() {
         dataTask?.cancel()
         dataTask = nil
     }
-    
 }

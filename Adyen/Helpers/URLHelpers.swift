@@ -10,12 +10,12 @@ internal extension URL {
     var queryParameters: [String: String] { // swiftlint:disable:this explicit_acl
         let components = URLComponents(url: self, resolvingAgainstBaseURL: true)
         let queryItems = components?.queryItems ?? []
-        
+
         return Dictionary(uniqueKeysWithValues: queryItems.map {
             ($0.name, $0.value?.removingPercentEncoding ?? "")
         })
     }
-    
+
     var isHttp: Bool { // swiftlint:disable:this explicit_acl
         scheme == "http" || scheme == "https"
     }

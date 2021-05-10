@@ -8,16 +8,14 @@ import Foundation
 
 /// An Apple pay payment method.
 public struct ApplePayPaymentMethod: PaymentMethod {
-    
     /// :nodoc:
     public let type: String
-    
+
     /// :nodoc:
     public let name: String
-    
+
     /// :nodoc:
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         return builder.build(paymentMethod: self)
     }
-    
 }

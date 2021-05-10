@@ -9,10 +9,9 @@ import WebKit
 
 /// Provides the device default browser info.
 public struct BrowserInfo: Encodable {
-    
     /// The device default user-agent.
     public var userAgent: String? { BrowserInfo.cachedUserAgent }
-    
+
     /// Initializes a `BrowserInfo` instance asynchronously.
     ///
     /// - Parameters:
@@ -30,10 +29,10 @@ public struct BrowserInfo: Encodable {
             completion(BrowserInfo())
         }
     }
-    
+
     /// :nodoc:
     private static var webView: WKWebView?
-    
+
     /// :nodoc:
     private static var cachedUserAgent: String?
 }

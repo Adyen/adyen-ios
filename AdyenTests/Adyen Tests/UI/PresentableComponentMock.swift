@@ -8,16 +8,15 @@ import Adyen
 import UIKit
 
 class PresentableComponentMock: PresentableComponent {
-    
     var payment: Payment?
-    
+
     var viewController: UIViewController {
         let controll = UIViewController(nibName: nil, bundle: nil)
         controll.title = "Test"
         return controll
     }
-    
-    func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {}
-    
+
+    func stopLoading(withSuccess _: Bool, completion _: (() -> Void)?) {}
+
     var environment: Environment = .test
 }

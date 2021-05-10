@@ -9,13 +9,11 @@ import Foundation
 
 /// :nodoc:
 internal final class WeChatPayAdditionalDetails: AdditionalDetails {
-    
     /// :nodoc:
     internal let resultCode: String
-    
+
     /// :nodoc:
     internal init(resultCode: String) {
         self.resultCode = resultCode
     }
-    
 }

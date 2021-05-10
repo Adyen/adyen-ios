@@ -10,7 +10,6 @@ import UIKit
 /// Simple form item to wrap another item and provide a margin around it.
 /// :nodoc:
 public class FormContainerItem: FormItem {
-
     /// Create a new instance of FormContainerItem, that wraps `content` item with `padding`.
     /// - Parameters:
     ///   - content: The Form item to wrap.
@@ -52,7 +51,7 @@ public class FormContainerItem: FormItem {
                 contentView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor, constant: padding.top),
                 contentView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: padding.left),
                 contentView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: padding.right),
-                contentView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor, constant: padding.bottom)
+                contentView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor, constant: padding.bottom),
             ]
 
             NSLayoutConstraint.activate(constraints)
@@ -60,10 +59,8 @@ public class FormContainerItem: FormItem {
     }
 }
 
-extension FormItem {
-
-    public func withPadding(padding: UIEdgeInsets) -> FormContainerItem {
+public extension FormItem {
+    func withPadding(padding: UIEdgeInsets) -> FormContainerItem {
         return FormContainerItem(content: self, padding: padding)
     }
-
 }

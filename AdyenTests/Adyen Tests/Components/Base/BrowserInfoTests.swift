@@ -8,7 +8,6 @@
 import XCTest
 
 class BrowserInfoTests: XCTestCase {
-    
     func testBrowserInfoInitialize() {
         let browserInfoExpectation = expectation(description: "Expect the BrowserInfo.initialize() to return a valid instance")
         BrowserInfo.initialize { info in
@@ -17,7 +16,7 @@ class BrowserInfoTests: XCTestCase {
         }
         waitForExpectations(timeout: 10, handler: nil)
     }
-    
+
     func testPaymentComponentDataBrowserInfo() {
         let browserInfoExpectation = expectation(description: "Expect the BrowserInfo.initialize() to return a valid instance")
         let data = PaymentComponentData(paymentMethodDetails: EmptyPaymentDetails(type: "type"))
@@ -27,11 +26,10 @@ class BrowserInfoTests: XCTestCase {
         }
         waitForExpectations(timeout: 10, handler: nil)
     }
-    
+
     func testInitializePerformance() {
-        self.measure {
+        measure {
             BrowserInfo.initialize { _ in }
         }
     }
-    
 }

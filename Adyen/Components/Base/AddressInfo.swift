@@ -8,7 +8,6 @@ import Foundation
 
 /// The model for address data.
 public struct AddressInfo: Equatable, Encodable {
-
     internal static let invalidCountry = "ZZ"
     internal static let invalidValue = "null"
 
@@ -40,5 +39,4 @@ public struct AddressInfo: Equatable, Encodable {
         case stateOrProvince
         case street
     }
-
 }

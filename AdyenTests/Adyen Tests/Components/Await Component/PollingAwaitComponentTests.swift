@@ -10,7 +10,6 @@
 import XCTest
 
 class PollingAwaitComponentTests: XCTestCase {
-
     func testRetryWhenResultIsReceived() {
         let apiClient = APIClientMock()
         let retryApiClient = RetryAPIClient(apiClient: apiClient, scheduler: SimpleScheduler(maximumCount: 3))

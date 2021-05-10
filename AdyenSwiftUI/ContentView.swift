@@ -8,7 +8,6 @@ import Adyen
 import SwiftUI
 
 internal struct ContentView: View {
-
     @ObservedObject internal var viewModel = PaymentsViewModel()
 
     internal var body: some View {

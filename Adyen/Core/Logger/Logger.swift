@@ -18,7 +18,7 @@ public func adyenPrint(_ items: Any..., separator: String = " ", terminator: Str
     guard AdyenLogging.isEnabled else { return }
     var idx = items.startIndex
     let endIdx = items.endIndex
-    
+
     repeat {
         Swift.print(items[idx], separator: separator, terminator: idx == (endIdx - 1) ? terminator : separator)
         idx += 1

@@ -9,22 +9,21 @@ import UIKit
 
 /// Contains the styling customization options for form header.
 public struct FormHeaderStyle: ViewStyle {
-    
     /// The title style.
     public var title = TextStyle(font: UIFont.AdyenCore.largeTitle,
                                  color: UIColor.AdyenCore.componentLabel,
                                  textAlignment: .center)
-    
+
     /// :nodoc:
     public var backgroundColor: UIColor = .clear
-    
+
     /// Initializes the form header style
     ///
     /// - Parameter title: The title style.
     public init(title: TextStyle) {
         self.title = title
     }
-    
+
     /// Initializes the form header style with the default style.
     public init() {}
 }

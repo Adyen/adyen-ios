@@ -7,7 +7,6 @@
 import Foundation
 
 internal struct GiftCardPaymentMethod: PaymentMethod {
-
     internal let type: String
 
     internal let name: String
@@ -25,8 +24,7 @@ internal struct GiftCardPaymentMethod: PaymentMethod {
     }
 
     /// :nodoc:
-    internal func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    internal func localizedDisplayInformation(using _: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name, subtitle: nil, logoName: brand)
     }
-
 }

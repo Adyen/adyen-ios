@@ -9,36 +9,34 @@ import UIKit
 
 /// :nodoc:
 public final class ContainerView: UIView {
-    
     private let body: UIView
     private let edgeInsets: UIEdgeInsets
-    
+
     /// :nodoc:
     public init(body: UIView, padding: UIEdgeInsets = .zero) {
         self.body = body
-        self.edgeInsets = padding
+        edgeInsets = padding
         super.init(frame: .zero)
-        
+
         body.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(body)
+        addSubview(body)
         setupConstraints()
     }
-    
+
     @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
+    internal required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     /// :nodoc:
     public func setupConstraints() {
         let constraints = [
-            body.topAnchor.constraint(equalTo: self.topAnchor, constant: edgeInsets.top),
-            body.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -edgeInsets.bottom),
-            body.leftAnchor.constraint(equalTo: self.leftAnchor, constant: edgeInsets.left),
-            body.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -edgeInsets.right)
+            body.topAnchor.constraint(equalTo: topAnchor, constant: edgeInsets.top),
+            body.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -edgeInsets.bottom),
+            body.leftAnchor.constraint(equalTo: leftAnchor, constant: edgeInsets.left),
+            body.rightAnchor.constraint(equalTo: rightAnchor, constant: -edgeInsets.right),
         ]
         constraints.forEach { $0.priority = .defaultHigh }
         NSLayoutConstraint.activate(constraints)
     }
-    
 }

@@ -9,19 +9,18 @@ import UIKit
 
 /// A control to select a phone extension from a list.
 internal class PhoneExtensionInputControl: UIControl, AnyFormItemView {
-    
     /// :nodoc:
     internal weak var delegate: FormItemViewDelegate?
-    
+
     /// :nodoc:
     internal var childItemViews: [AnyFormItemView] = []
-    
+
     /// The country flag view.
     internal lazy var flagView = UILabel()
-    
+
     /// The chevron image view.
     internal lazy var chevronView = UIImageView(image: accessoryImage)
-    
+
     /// The phone code label.
     internal lazy var phoneExtensionLabel: UILabel = {
         let label = UILabel()
@@ -30,10 +29,10 @@ internal class PhoneExtensionInputControl: UIControl, AnyFormItemView {
         label.textColor = style.color
         label.font = style.font
         label.adjustsFontForContentSizeCategory = true
-        
+
         return label
     }()
-    
+
     override internal var accessibilityIdentifier: String? {
         didSet {
             phoneExtensionLabel.accessibilityIdentifier = accessibilityIdentifier.map {
@@ -41,16 +40,16 @@ internal class PhoneExtensionInputControl: UIControl, AnyFormItemView {
             }
         }
     }
-    
+
     /// The UI style.
     internal let style: TextStyle
-    
+
     /// Executed when the view resigns as first responder.
     internal var onDidResignFirstResponder: (() -> Void)?
-    
+
     /// Executed when the view becomes first responder.
     internal var onDidBecomeFirstResponder: (() -> Void)?
-    
+
     /// Initializes a `PhoneExtensionInputControl`.
     ///
     /// - Parameter inputView: The input view used in place of the system keyboard.
@@ -62,59 +61,59 @@ internal class PhoneExtensionInputControl: UIControl, AnyFormItemView {
         addSubview(stackView)
         applyConstraints()
     }
-    
+
     /// :nodoc:
     @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
+    internal required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     /// The input view.
     override internal var inputView: UIView? { return _inputView }
-    
+
     /// :nodoc:
     override internal var canBecomeFirstResponder: Bool { return true }
-    
+
     /// :nodoc:
     override internal func resignFirstResponder() -> Bool {
         let result = super.resignFirstResponder()
         onDidResignFirstResponder?()
         return result
     }
-    
+
     /// :nodoc:
     override internal func becomeFirstResponder() -> Bool {
         let result = super.becomeFirstResponder()
         onDidBecomeFirstResponder?()
         return result
     }
-    
+
     // MARK: - Private
-    
+
     /// The stack view.
     private lazy var stackView: UIStackView = {
         chevronView.translatesAutoresizingMaskIntoConstraints = false
         flagView.translatesAutoresizingMaskIntoConstraints = false
         phoneExtensionLabel.translatesAutoresizingMaskIntoConstraints = false
-        
+
         let stackView = UIStackView(arrangedSubviews: [flagView, chevronView, phoneExtensionLabel])
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.distribution = .fillProportionally
         stackView.spacing = 6
         stackView.isUserInteractionEnabled = false
-        
+
         return stackView
     }()
-    
+
     /// The chevron image.
     private var accessoryImage: UIImage? { UIImage(named: "chevron_down",
                                                    in: Bundle.coreInternalResources,
                                                    compatibleWith: nil) }
-    
+
     /// :nodoc:
     private var _inputView: UIView
-    
+
     /// :nodoc:
     private func applyConstraints() {
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -122,10 +121,9 @@ internal class PhoneExtensionInputControl: UIControl, AnyFormItemView {
             stackView.topAnchor.constraint(equalTo: topAnchor),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -6),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1)
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1),
         ]
-        
+
         NSLayoutConstraint.activate(constraints)
     }
-    
 }

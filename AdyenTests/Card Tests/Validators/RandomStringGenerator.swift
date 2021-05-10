@@ -10,18 +10,18 @@ enum RandomStringGenerator {
     static func generateDummyCardPublicKey() -> String {
         return "\(generateRandomHexadecimalString(length: 5))|\(generateRandomHexadecimalString(length: 512))"
     }
-    
+
     static func generateRandomNumericString(length: Int) -> String {
         let characters: [Character] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
         return generateRandomString(length: length, characters: characters)
     }
-    
+
     static func generateRandomHexadecimalString(length: Int) -> String {
         let characters: [Character] = ["A", "B", "C", "D", "E", "F", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
         return generateRandomString(length: length, characters: characters)
     }
-    
+
     static func generateRandomString(length: Int, characters: [Character]) -> String {
-        return String((0..<length).map { _ in characters.randomElement() }.compactMap { $0 })
+        return String((0 ..< length).map { _ in characters.randomElement() }.compactMap { $0 })
     }
 }

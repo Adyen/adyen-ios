@@ -10,7 +10,6 @@ import UIKit
 /// Simple form item that represent a single UILable element.
 /// :nodoc:
 public class FormLabelItem: FormItem {
-
     internal init(text: String, style: TextStyle, identifier: String? = nil) {
         self.identifier = identifier
         self.style = style
@@ -27,7 +26,7 @@ public class FormLabelItem: FormItem {
     public var text: String
 
     /// :nodoc:
-    public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+    public func build(with _: FormItemViewBuilder) -> AnyFormItemView {
         let label = ADYLabel()
         label.text = text
         label.numberOfLines = 0
@@ -44,7 +43,6 @@ private class ADYLabel: UILabel {}
 
 /// :nodoc:
 extension ADYLabel: AnyFormItemView {
-
     public var childItemViews: [AnyFormItemView] { [] }
 
     public var delegate: FormItemViewDelegate? {

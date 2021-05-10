@@ -10,13 +10,11 @@
 import UIKit
 
 extension UIColor {
-    
-    internal enum AdyenDropIn {
-        
+    enum AdyenDropIn {
         internal static var dimmBackground: UIColor {
             return componentSeparator
         }
-        
+
         internal static var componentSeparator: UIColor {
             if #available(iOS 13.0, *) {
                 return .separator
@@ -40,9 +38,7 @@ extension UIColor {
                 return .darkGray
             }
         }
-        
+
         internal static let defaultBlue = UIColor(hex: 0x007AFF)
-        
     }
-    
 }
