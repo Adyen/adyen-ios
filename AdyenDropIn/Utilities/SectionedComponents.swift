@@ -7,6 +7,7 @@
 import Adyen
 
 internal struct SectionedComponents {
+    internal var paid: [PaymentComponent]
     internal var stored: [PaymentComponent]
     internal var regular: [PaymentComponent]
 }

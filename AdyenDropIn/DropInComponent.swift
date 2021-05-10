@@ -103,14 +103,16 @@ public final class DropInComponent: NSObject, PresentableComponent {
     private func handle(_ result: Result<OrderStatusResponse, Error>,
                         _ paymentMethods: PaymentMethods) {
         switch result {
-        case let .failure(error) :
+        case let .failure(error):
             delegate?.didFail(with: error, from: self)
         case let .success(response):
+            var paymentMethods = paymentMethods
+            paymentMethods.paid = response.paymentMethods ?? []
             componentManager = ComponentManager(paymentMethods: paymentMethods,
                                                 configuration: configuration,
                                                 style: style,
                                                 partialPaymentEnabled:
-                                                    partialPaymentDelegate != nil)
+                                                partialPaymentDelegate != nil)
             showPaymentMethodsList()
         }
     }

@@ -40,8 +40,9 @@ internal final class ComponentManager {
         let storedPaymentMethods = paymentMethods.stored.filter { $0.supportedShopperInteractions.contains(.shopperPresent) }
         
         return SectionedComponents(
-            stored: storedPaymentMethods.compactMap { component(for: $0) },
-            regular: paymentMethods.regular.compactMap { component(for: $0) }
+            paid: paymentMethods.paid.compactMap(component(for:)),
+            stored: storedPaymentMethods.compactMap(component(for:)),
+            regular: paymentMethods.regular.compactMap(component(for:))
         )
     }()
     

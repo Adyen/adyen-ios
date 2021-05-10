@@ -1,9 +1,7 @@
 //
-//  OrderStatusResponse.swift
-//  Adyen
+// Copyright (c) 2021 Adyen N.V.
 //
-//  Created by Mohamed Eldoheiri on 5/6/21.
-//  Copyright © 2021 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
@@ -27,10 +25,15 @@ public struct OrderStatusResponse: Response {
 }
 
 /// :nodoc:
-public struct OrderPaymentMethod: Decodable {
+public struct OrderPaymentMethod: PaymentMethod {
 
     /// :nodoc:
-    public let lastFourDigits: String
+    public var name: String {
+        "••••\u{00a0}" + lastFour
+    }
+
+    /// :nodoc:
+    public let lastFour: String
 
     /// :nodoc:
     public let type: String
@@ -40,4 +43,27 @@ public struct OrderPaymentMethod: Decodable {
 
     /// :nodoc:
     public let amount: Payment.Amount
+
+    /// :nodoc:
+    public var displayInformation: DisplayInformation {
+        localizedDisplayInformation(using: nil)
+    }
+
+    /// :nodoc:
+    public func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+        DisplayInformation(title: name,
+                           subtitle: nil,
+                           logoName: type)
+    }
+
+    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
+        EmptyPaymentComponent(paymentMethod: self)
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case lastFour
+        case amount
+        case transactionLimit
+        case type
+    }
 }

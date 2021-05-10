@@ -7,6 +7,7 @@
 import Foundation
 
 /// A payment component for which payment data is ready to be submitted.
+/// :nodoc:
 public final class ReadyToSubmitPaymentComponent: PaymentComponent {
 
     /// The ready to submit payment data.

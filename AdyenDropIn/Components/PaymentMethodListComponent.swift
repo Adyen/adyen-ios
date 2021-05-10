@@ -55,7 +55,8 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
             
             return listItem
         }
-        
+
+        let paidSection = ListSection(items: components.paid.map(item(for:)))
         let storedSection = ListSection(items: components.stored.map(item(for:)))
         let regularSectionTitle = components.stored.isEmpty ? nil : localizedString(.paymentMethodsOtherMethods,
                                                                                     localizationParameters)
@@ -64,7 +65,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
         
         let listViewController = ListViewController(style: style)
         listViewController.title = localizedString(.paymentMethodsTitle, localizationParameters)
-        listViewController.sections = [storedSection, regularSection]
+        listViewController.sections = [paidSection, storedSection, regularSection]
         
         return listViewController
     }()
