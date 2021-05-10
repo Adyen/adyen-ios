@@ -7,6 +7,7 @@
 import Foundation
 
 /// The model for address data.
+/// :nodoc:
 public struct AddressInfo: Equatable, Encodable {
 
     internal static let invalidCountry = "ZZ"
