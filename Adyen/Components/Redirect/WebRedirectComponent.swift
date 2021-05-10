@@ -45,7 +45,7 @@ internal final class WebRedirectComponent: NSObject, PresentableComponent, Actio
     /// - Returns: A boolean value indicating whether the URL was handled by the redirect component.
     @discardableResult
     internal static func applicationDidOpen(from url: URL) -> Bool {
-        return RedirectListener.applicationDidOpen(from: url)
+        RedirectListener.applicationDidOpen(from: url)
     }
     
     // MARK: - Presentable Component

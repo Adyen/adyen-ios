@@ -47,7 +47,7 @@ public struct TextStyle: ViewStyle {
 extension TextStyle: Equatable {
     
     public static func == (lhs: TextStyle, rhs: TextStyle) -> Bool {
-        return lhs.font == rhs.font &&
+        lhs.font == rhs.font &&
             lhs.color.cgColor == rhs.color.cgColor &&
             lhs.backgroundColor == rhs.backgroundColor &&
             lhs.textAlignment == rhs.textAlignment

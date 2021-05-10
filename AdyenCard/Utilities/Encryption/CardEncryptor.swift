@@ -60,7 +60,7 @@ public enum CardEncryptor {
     ///   - publicKey: The public key to use for encryption (format "Exponent|Modulus").
     ///   - bin: BIN( Bank Identification number) is the first 6 to 12 digits of PAN.
     public static func encryptedBin(for bin: String, publicKey: String) throws -> String {
-        guard !bin.isEmpty, bin.allSatisfy({ $0.isNumber }) else {
+        guard !bin.isEmpty, bin.allSatisfy(\.isNumber) else {
             throw Error.invalidBin
         }
         
@@ -158,11 +158,11 @@ public extension CardEncryptor {
         }
 
         internal var isEmpty: Bool {
-            return [number, securityCode, expiryYear, expiryMonth].allSatisfy { $0 == nil }
+            [number, securityCode, expiryYear, expiryMonth].allSatisfy { $0 == nil }
         }
 
         public func jsonData() -> Data? {
-            return try? JSONEncoder().encode(self)
+            try? JSONEncoder().encode(self)
         }
 
         public func encode(to encoder: Encoder) throws {

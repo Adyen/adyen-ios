@@ -11,12 +11,12 @@ final class FormatterMock: Adyen.Formatter {
     
     var handleFormattedValue: ((_ value: String) -> String)?
     func formattedValue(for value: String) -> String {
-        return handleFormattedValue?(value) ?? value
+        handleFormattedValue?(value) ?? value
     }
     
     var handleSanitizedValue: ((_ value: String) -> String)?
     func sanitizedValue(for value: String) -> String {
-        return handleSanitizedValue?(value) ?? value
+        handleSanitizedValue?(value) ?? value
     }
     
 }

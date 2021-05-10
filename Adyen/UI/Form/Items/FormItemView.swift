@@ -40,7 +40,7 @@ open class FormItemView<ItemType: FormItem>: UIView, AnyFormItemView {
     /// The array of item views embedded in the current item view.
     /// Subclasses can override this to return any item views they embed.
     open var childItemViews: [AnyFormItemView] {
-        return []
+        []
     }
     
 }

@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import UIKit
 import PassKit
+import UIKit
 
 internal final class ComponentsView: UIView {
     
@@ -93,11 +93,11 @@ internal final class ComponentsView: UIView {
 extension ComponentsView: UITableViewDataSource {
     
     internal func numberOfSections(in tableView: UITableView) -> Int {
-        return items.count
+        items.count
     }
     
     internal func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items[section].count
+        items[section].count
     }
     
     internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

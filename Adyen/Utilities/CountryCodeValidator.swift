@@ -13,6 +13,6 @@ internal struct CountryCodeValidator: Validator {
     }
     
     internal func maximumLength(for value: String) -> Int {
-        return 3
+        3
     }
 }

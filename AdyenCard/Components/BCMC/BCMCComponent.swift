@@ -55,7 +55,7 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
     /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
     public var showsHolderNameField: Bool {
         get {
-            return cardComponent.showsHolderNameField
+            cardComponent.showsHolderNameField
         }
         
         set {
@@ -66,7 +66,7 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
     /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
     public var showsStorePaymentMethodField: Bool {
         get {
-            return cardComponent.showsStorePaymentMethodField
+            cardComponent.showsStorePaymentMethodField
         }
         
         set {
@@ -146,13 +146,13 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
     
     /// :nodoc:
     public var requiresModalPresentation: Bool {
-        return cardComponent.requiresModalPresentation
+        cardComponent.requiresModalPresentation
     }
     
     /// The payment information.
     public var payment: Payment? {
         get {
-            return cardComponent.payment
+            cardComponent.payment
         }
         
         set {
@@ -162,13 +162,13 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
     
     /// Returns a view controller that presents the payment details for the shopper to fill.
     public var viewController: UIViewController {
-        return cardComponent.viewController
+        cardComponent.viewController
     }
     
     /// :nodoc:
     public var localizationParameters: LocalizationParameters? {
         get {
-            return cardComponent.localizationParameters
+            cardComponent.localizationParameters
         }
         
         set {
