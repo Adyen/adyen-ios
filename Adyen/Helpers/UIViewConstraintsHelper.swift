@@ -25,16 +25,16 @@ extension AdyenScope where Base: UIView {
         return constraints
     }
 
-    /// Attach top, bottom, left and right anchores of this view to corespondent anchores inside specified view.
-    /// IMPORTANT: both view should be in the same hierarcy.
+    /// Attach top, bottom, left and right anchors of this view to corresponding anchors inside specified view.
+    /// IMPORTANT: both views should be in the same hierarcy.
     /// - Parameter view: Container view
     @discardableResult
-    public func anchor(inside margines: UILayoutGuide, with padding: UIEdgeInsets = .zero) -> [NSLayoutConstraint] {
+    public func anchor(inside margins: UILayoutGuide, with padding: UIEdgeInsets = .zero) -> [NSLayoutConstraint] {
         let constraints = [
-            base.topAnchor.constraint(equalTo: margines.topAnchor, constant: padding.top),
-            base.bottomAnchor.constraint(equalTo: margines.bottomAnchor, constant: padding.bottom),
-            base.leadingAnchor.constraint(equalTo: margines.leadingAnchor, constant: padding.left),
-            base.trailingAnchor.constraint(equalTo: margines.trailingAnchor, constant: padding.right)
+            base.topAnchor.constraint(equalTo: margins.topAnchor, constant: padding.top),
+            base.bottomAnchor.constraint(equalTo: margins.bottomAnchor, constant: padding.bottom),
+            base.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: padding.left),
+            base.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: padding.right)
         ]
         NSLayoutConstraint.activate(constraints)
         return constraints
