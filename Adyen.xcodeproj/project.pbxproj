@@ -19,6 +19,7 @@
 		5A545FE72643CF2700724A87 /* ConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67461F264262F000E9184D /* ConfigurationView.swift */; };
 		5A54600F264433CD00724A87 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54600E264433CD00724A87 /* SearchBar.swift */; };
 		5A546010264433CE00724A87 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54600E264433CD00724A87 /* SearchBar.swift */; };
+		5A546032264A5A1000724A87 /* BoletoPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A546031264A5A0F00724A87 /* BoletoPaymentMethod.swift */; };
 		5A54FFCA26299140007194B7 /* TimeIntervalHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54FFC926299140007194B7 /* TimeIntervalHelpers.swift */; };
 		5A54FFE126299602007194B7 /* TimeIntervalExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54FFD5262995F6007194B7 /* TimeIntervalExtensionsTests.swift */; };
 		5A6456D6262592B2001824F0 /* QRCodeAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6456D5262592B2001824F0 /* QRCodeAction.swift */; };
@@ -815,6 +816,7 @@
 		5A27AB022636A07900EF6F89 /* LocalizationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationKey.swift; sourceTree = "<group>"; };
 		5A545FC62642F77500724A87 /* ConfigurationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationViewModel.swift; sourceTree = "<group>"; };
 		5A54600E264433CD00724A87 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
+		5A546031264A5A0F00724A87 /* BoletoPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoletoPaymentMethod.swift; sourceTree = "<group>"; };
 		5A54FFC926299140007194B7 /* TimeIntervalHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalHelpers.swift; sourceTree = "<group>"; };
 		5A54FFD5262995F6007194B7 /* TimeIntervalExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtensionsTests.swift; sourceTree = "<group>"; };
 		5A6456D5262592B2001824F0 /* QRCodeAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeAction.swift; sourceTree = "<group>"; wrapsLines = 1; };
@@ -1683,6 +1685,7 @@
 				F9B017442604F6F9001F23FC /* EContextStoresPaymentMethod.swift */,
 				F9B017D32608D402001F23FC /* EContextATMPaymentMethod.swift */,
 				F9B018C3260A32AA001F23FC /* EContextOnlinePaymentMethod.swift */,
+				5A546031264A5A0F00724A87 /* BoletoPaymentMethod.swift */,
 			);
 			path = "Payment Methods";
 			sourceTree = "<group>";
@@ -4213,6 +4216,7 @@
 				F9E441522382A0DD00D3CD48 /* ViewIdentifierBuilder.swift in Sources */,
 				E28098B3220DA7980087928F /* Component.swift in Sources */,
 				F95B6D8E25231715002C9062 /* RegularExpressionValidator.swift in Sources */,
+				5A546032264A5A1000724A87 /* BoletoPaymentMethod.swift in Sources */,
 				F926D52023F4217A00D058D3 /* DeviceDependant.swift in Sources */,
 				F9D5753123828EBB009C18B5 /* AnyCardPaymentMethod.swift in Sources */,
 				E2B317A92265EBD200C1BB30 /* EventPublisher.swift in Sources */,
