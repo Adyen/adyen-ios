@@ -8,7 +8,26 @@ import Adyen
 import Foundation
 import UIKit
 
-/// An action handler component to perform any supported action out of the box.
+/**
+  An action handler component to perform any supported action out of the box.
+
+ - Example:
+ This example of usage of AdyenActionComponent
+
+ ```swift
+ lazy var actionComponent: AdyenActionComponent = {
+     let handler = AdyenActionComponent()
+     handler.redirectComponentStyle = RedirectComponentStyle()
+     handler.delegate = self
+     handler.presentationDelegate = self
+     handler.environment = environment
+     handler.clientKey = clientKey
+     return handler
+ }()
+
+ actionComponent.handle(action)
+ ```
+ */
 public final class AdyenActionComponent: ActionComponent, Localizable {
     
     /// :nodoc:
