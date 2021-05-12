@@ -44,7 +44,6 @@ internal final class ComponentManager {
         let storedPaymentMethods = paymentMethods.stored.filter { $0.supportedShopperInteractions.contains(.shopperPresent) }
 
         // Paid section
-        let paidComponents = paymentMethods.paid.compactMap(component(for:))
         let amountString: String = remainingAmount.flatMap {
             AmountFormatter.formatted(amount: $0.value, currencyCode: $0.currencyCode)
         } ?? "Amount"
@@ -64,19 +63,16 @@ internal final class ComponentManager {
         let regularHeader: ComponentsSectionHeader? = regularSectionTitle.map {
             ComponentsSectionHeader(title: $0, style: style.listComponent.sectionHeader)
         }
-        let regularComponents = paymentMethods.regular.compactMap(component(for:))
         let regularSection = ComponentsSection(header: regularHeader, components: regularComponents, footer: nil)
         
         return [paidSection, storedSection, regularSection]
     }()
 
-    internal var firstStoredComponent: PaymentComponent? {
-        storedComponents.first
-    }
+    internal lazy var storedComponents: [PaymentComponent] = paymentMethods.stored.compactMap(component(for:))
 
-    private lazy var storedComponents: [PaymentComponent] = {
-        paymentMethods.stored.compactMap(component(for:))
-    }()
+    internal lazy var regularComponents = paymentMethods.regular.compactMap(component(for:))
+
+    internal lazy var paidComponents = paymentMethods.paid.compactMap(component(for:))
     
     // MARK: - Private
     

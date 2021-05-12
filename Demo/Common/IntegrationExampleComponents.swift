@@ -112,18 +112,15 @@ extension IntegrationExample {
     private func paymentResponseHandler(result: Result<PaymentsResponse, Error>) {
         switch result {
         case let .success(response):
-            // parse the order
             if let action = response.action {
                 handle(action)
+            } else if let order = response.order,
+                      let remainingAmount = order.remainingAmount,
+                      remainingAmount.value > 0 {
+                handle(order)
             } else {
                 finish(with: response.resultCode)
             }
-
-            // if there is an order AND with remaining amount more than zero
-            // request the new payment method list
-
-        // dismiss the dropin
-        // start a new one with the new list
         case let .failure(error):
             finish(with: error)
         }

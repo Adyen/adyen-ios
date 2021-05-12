@@ -57,7 +57,7 @@ internal final class IntegrationExample: APIClientAware {
 
     internal func requestPaymentMethods(order: PartialPaymentOrder? = nil,
                                         completion: ((PaymentMethods) -> Void)? = nil) {
-        let request = PaymentMethodsRequest()
+        let request = PaymentMethodsRequest(order: order)
         apiClient.perform(request) { [weak self] result in
             guard let self = self else { return }
             switch result {

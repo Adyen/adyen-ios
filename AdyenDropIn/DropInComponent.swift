@@ -25,8 +25,6 @@ public final class DropInComponent: NSObject, PresentableComponent {
 
     private var selectedPaymentComponent: PaymentComponent?
 
-    private var order: PartialPaymentOrder?
-
     /// The payment methods to display.
     public private(set) var paymentMethods: PaymentMethods
     
@@ -137,7 +135,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
     }
     
     private lazy var rootComponent: PresentableComponent & ComponentLoader = {
-        if let preselectedComponents = componentManager.firstStoredComponent {
+        if let preselectedComponents = componentManager.storedComponents.first {
             return preselectedPaymentMethodComponent(for: preselectedComponents)
         } else {
             return paymentMethodListComponent()
@@ -359,11 +357,7 @@ extension DropInComponent: PartialPaymentDelegate {
     public func requestOrder(_ data: PaymentComponentData,
                              from component: PaymentComponent,
                              completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
-        if let order = order {
-            completion(.success(order))
-        } else {
-            partialPaymentDelegate?.requestOrder(data, from: component, completion: completion)
-        }
+        partialPaymentDelegate?.requestOrder(data, from: component, completion: completion)
     }
 
     /// :nodoc:

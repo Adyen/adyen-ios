@@ -56,15 +56,15 @@ class ComponentManagerTests: XCTestCase {
                                    configuration: config,
                                    style: DropInComponent.Style())
 
-        XCTAssertEqual(sut.components.stored.count, 4)
-        XCTAssertEqual(sut.components.regular.count, 15)
+        XCTAssertEqual(sut.storedComponents.count, 4)
+        XCTAssertEqual(sut.regularComponents.count, 15)
 
-        XCTAssertEqual(sut.components.stored.filter { $0.environment.clientKey == Dummy.dummyClientKey }.count, 4)
-        XCTAssertEqual(sut.components.regular.filter { $0.environment.clientKey == Dummy.dummyClientKey }.count, 15)
+        XCTAssertEqual(sut.storedComponents.filter { $0.environment.clientKey == Dummy.dummyClientKey }.count, 4)
+        XCTAssertEqual(sut.regularComponents.filter { $0.environment.clientKey == Dummy.dummyClientKey }.count, 15)
 
-        XCTAssertEqual(sut.components.regular.filter { $0 is LoadingComponent }.count, 12)
-        XCTAssertEqual(sut.components.regular.filter { $0 is Localizable }.count, 11)
-        XCTAssertEqual(sut.components.regular.filter { $0 is PresentableComponent }.count, 13)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 12)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is Localizable }.count, 11)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 13)
     }
     
     func testLocalizationWithCustomTableName() throws {
@@ -80,11 +80,11 @@ class ComponentManagerTests: XCTestCase {
                                    configuration: config,
                                    style: DropInComponent.Style())
         
-        XCTAssertEqual(sut.components.stored.count, 4)
-        XCTAssertEqual(sut.components.regular.count, 15)
+        XCTAssertEqual(sut.storedComponents.count, 4)
+        XCTAssertEqual(sut.regularComponents.count, 15)
         
-        XCTAssertEqual(sut.components.stored.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 4)
-        XCTAssertEqual(sut.components.regular.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 11)
+        XCTAssertEqual(sut.storedComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 4)
+        XCTAssertEqual(sut.regularComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 11)
     }
     
     func testLocalizationWithCustomKeySeparator() throws {
@@ -100,11 +100,11 @@ class ComponentManagerTests: XCTestCase {
                                    configuration: config,
                                    style: DropInComponent.Style())
         
-        XCTAssertEqual(sut.components.stored.count, 4)
-        XCTAssertEqual(sut.components.regular.count, 15)
+        XCTAssertEqual(sut.storedComponents.count, 4)
+        XCTAssertEqual(sut.regularComponents.count, 15)
         
-        XCTAssertEqual(sut.components.stored.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 4)
-        XCTAssertEqual(sut.components.regular.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 11)
+        XCTAssertEqual(sut.storedComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 4)
+        XCTAssertEqual(sut.regularComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 11)
     }
     
 }

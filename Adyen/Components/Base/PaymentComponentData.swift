@@ -119,9 +119,10 @@ public struct PaymentComponentData: ShopperInformation, BillingAddressInformatio
     ///   - completion: The completion closure that is called with the new `PaymentComponentData` instance.
     public func dataByAddingBrowserInfo(completion: @escaping ((_ newData: PaymentComponentData) -> Void)) {
         BrowserInfo.initialize {
-            completion(PaymentComponentData(paymentMethodDetails: self.paymentMethod,
+            completion(PaymentComponentData(paymentMethodDetails: paymentMethod,
                                             amount: amount,
-                                            storePaymentMethod: self.storePaymentMethod,
+                                            order: order,
+                                            storePaymentMethod: storePaymentMethod,
                                             browserInfo: $0))
         }
     }
