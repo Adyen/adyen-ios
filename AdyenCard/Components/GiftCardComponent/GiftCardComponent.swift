@@ -229,7 +229,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
 
     private func onReadyToPayFullAmount() -> Result<Void, Swift.Error> {
         AdyenAssertion.assert(message: "readyToSubmitComponentDelegate is nil",
-                              condition: !_isDropIn || readyToSubmitComponentDelegate != nil)
+                              condition: _isDropIn && readyToSubmitComponentDelegate == nil)
         stopLoading()
         if let readyToSubmitComponentDelegate = readyToSubmitComponentDelegate {
             showConfirmation(delegate: readyToSubmitComponentDelegate)
@@ -247,9 +247,9 @@ public final class GiftCardComponent: PartialPaymentComponent,
                                                     subtitle: nil,
                                                     logoName: giftCardPaymentMethod.brand)
 
-        let paymentMethod = PreselectedPaymentMethod(paymentMethod: giftCardPaymentMethod,
-                                                     displayInformation: displayInformation)
-        let component = ReadyToSubmitPaymentComponent(paymentData: paymentData, paymentMethod: paymentMethod)
+        let paymentMethod = CustomDisplayablePaymentMethod(paymentMethod: giftCardPaymentMethod,
+                                                           displayInformation: displayInformation)
+        let component = EmptyPaymentComponent(paymentMethod: paymentMethod, paymentData: paymentData)
         delegate.showConfirmation(for: component)
     }
 

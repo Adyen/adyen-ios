@@ -8,7 +8,7 @@ import Foundation
 
 /// An item for plain text input
 /// :nodoc:
-public class FormTextInputItem: FormTextItem {
+public final class FormTextInputItem: FormTextItem {
 
     /// Inititate new instance of `FormTextInputItem`
     /// - Parameter style: The `FormTextItemStyle` UI style.

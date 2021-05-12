@@ -303,12 +303,7 @@ extension DropInComponent: PreselectedPaymentMethodComponentDelegate {
 
     internal func didProceed(with component: PaymentComponent) {
         rootComponent.startLoading(for: component)
-
-        if let component = component as? ReadyToSubmitPaymentComponent {
-            delegate?.didSubmit(component.paymentData, for: component.paymentMethod, from: self)
-        } else {
-            didSelect(component)
-        }
+        didSelect(component)
     }
     
     internal func didRequestAllPaymentMethods() {
@@ -344,7 +339,7 @@ extension DropInComponent: FinalizableComponent {
 extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
 
     /// :nodoc:
-    public func showConfirmation(for component: ReadyToSubmitPaymentComponent) {
+    public func showConfirmation(for component: EmptyPaymentComponent) {
         let newRoot = preselectedPaymentMethodComponent(for: component)
         navigationController.present(root: newRoot)
         rootComponent = newRoot

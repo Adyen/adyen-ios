@@ -6,18 +6,20 @@
 
 import Foundation
 
-/// A payment method thats to be shown as preselected payment method that is ready to be submitted.
+/// A payment method wrapper, with custom `DisplayInformation`.
 /// :nodoc:
-public struct PreselectedPaymentMethod: PaymentMethod {
+public struct CustomDisplayablePaymentMethod: PaymentMethod {
 
     /// :nodoc:
-    public let type: String
+    public var type: String
 
     /// :nodoc:
-    public let name: String
+    public var name: String
 
     /// :nodoc:
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? { nil }
+    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
+        nil
+    }
 
     /// :nodoc:
     public var displayInformation: DisplayInformation {
@@ -31,8 +33,8 @@ public struct PreselectedPaymentMethod: PaymentMethod {
 
     /// :nodoc:
     public init(paymentMethod: PaymentMethod, displayInformation: DisplayInformation) {
-        self.type = paymentMethod.type
         self.name = paymentMethod.name
+        self.type = paymentMethod.type
         self.customDisplayInformation = displayInformation
     }
 

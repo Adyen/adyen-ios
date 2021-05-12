@@ -10,6 +10,9 @@ import Foundation
 /// :nodoc:
 public final class EmptyPaymentComponent: PaymentComponent {
 
+    /// The ready to submit payment data.
+    public let paymentData: PaymentComponentData?
+
     /// :nodoc:
     public let paymentMethod: PaymentMethod
 
@@ -17,13 +20,15 @@ public final class EmptyPaymentComponent: PaymentComponent {
     public weak var delegate: PaymentComponentDelegate?
 
     /// :nodoc:
-    public init(paymentMethod: PaymentMethod) {
+    public init(paymentMethod: PaymentMethod, paymentData: PaymentComponentData?) {
         self.paymentMethod = paymentMethod
+        self.paymentData = paymentData
     }
 
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
     public func initiatePayment() {
         let details = EmptyPaymentDetails(type: paymentMethod.type)
-        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount))
+        let paymentData = self.paymentData ?? PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount)
+        submit(data: paymentData)
     }
 }

@@ -605,8 +605,7 @@
 		F9FE25882625B40F001874BB /* CardNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAA9221C54C600697074 /* CardNumberFormatter.swift */; };
 		F9FE25A72625B448001874BB /* GiftCardComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE24552624BCEC001874BB /* GiftCardComponent.swift */; };
 		F9FE25A82625B448001874BB /* GiftCardDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE24562624BCEC001874BB /* GiftCardDetails.swift */; };
-		F9FE25B42625ECE7001874BB /* PreselectedPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE25B32625ECE7001874BB /* PreselectedPaymentMethod.swift */; };
-		F9FE25C02625FA73001874BB /* ReadyToSubmitPaymentComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE25BF2625FA73001874BB /* ReadyToSubmitPaymentComponent.swift */; };
+		F9FE25B42625ECE7001874BB /* CustomDisplayablePaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE25B32625ECE7001874BB /* CustomDisplayablePaymentMethod.swift */; };
 		F9FE25D62626CD49001874BB /* ReadyToSubmitPaymentComponentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE25D52626CD49001874BB /* ReadyToSubmitPaymentComponentDelegate.swift */; };
 /* End PBXBuildFile section */
 
@@ -1420,8 +1419,7 @@
 		F9FE25222625ADD0001874BB /* PartialPaymentOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialPaymentOrder.swift; sourceTree = "<group>"; };
 		F9FE252E2625AE8C001874BB /* PartialPaymentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialPaymentDelegate.swift; sourceTree = "<group>"; };
 		F9FE253A2625AED6001874BB /* PartialPaymentComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialPaymentComponent.swift; sourceTree = "<group>"; };
-		F9FE25B32625ECE7001874BB /* PreselectedPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreselectedPaymentMethod.swift; sourceTree = "<group>"; };
-		F9FE25BF2625FA73001874BB /* ReadyToSubmitPaymentComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadyToSubmitPaymentComponent.swift; sourceTree = "<group>"; };
+		F9FE25B32625ECE7001874BB /* CustomDisplayablePaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDisplayablePaymentMethod.swift; sourceTree = "<group>"; };
 		F9FE25D52626CD49001874BB /* ReadyToSubmitPaymentComponentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadyToSubmitPaymentComponentDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1731,7 +1729,7 @@
 				F97C837825BF047600D7F85C /* DokuPaymentMethod.swift */,
 				E700A72C2549E2F00012B64C /* BLIKPaymentMethod.swift */,
 				E7763A1025F02BD20046371E /* GiftCardPaymentMethod.swift */,
-				F9FE25B32625ECE7001874BB /* PreselectedPaymentMethod.swift */,
+				F9FE25B32625ECE7001874BB /* CustomDisplayablePaymentMethod.swift */,
 				E71E8F3D257921D10054B03D /* StoredBLIKPaymentMethod.swift */,
 				F9589C7C2600FAB800E4113F /* SevenElevenPaymentMethod.swift */,
 				F9B017442604F6F9001F23FC /* EContextStoresPaymentMethod.swift */,
@@ -1777,7 +1775,6 @@
 			isa = PBXGroup;
 			children = (
 				E28098B2220DA7980087928F /* Component.swift */,
-				F9FE25BF2625FA73001874BB /* ReadyToSubmitPaymentComponent.swift */,
 				F9FE25D52626CD49001874BB /* ReadyToSubmitPaymentComponentDelegate.swift */,
 				F9FE253A2625AED6001874BB /* PartialPaymentComponent.swift */,
 				F9FE252E2625AE8C001874BB /* PartialPaymentDelegate.swift */,
@@ -4257,7 +4254,7 @@
 				F9B8C49423FC32FB00C4D0FB /* FormItemViewBuilder.swift in Sources */,
 				F97FA024264AD5FE004AFD0C /* ListFooterView.swift in Sources */,
 				F96F44D723BDED6B00871C1F /* FormSwitchItemStyle.swift in Sources */,
-				F9FE25B42625ECE7001874BB /* PreselectedPaymentMethod.swift in Sources */,
+				F9FE25B42625ECE7001874BB /* CustomDisplayablePaymentMethod.swift in Sources */,
 				F9589C7D2600FAB800E4113F /* SevenElevenPaymentMethod.swift in Sources */,
 				E216D3CF221AFC3A0013CBCF /* IBANSpecification.swift in Sources */,
 				E224088722AFA3A80058923E /* RedirectPaymentMethod.swift in Sources */,
@@ -4343,7 +4340,6 @@
 				F9639B3524DD97A30073F38A /* PaymentStatusResponse.swift in Sources */,
 				F9BA21C2246E82EE00D36A63 /* SizeUtilities.swift in Sources */,
 				F97C829225BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift in Sources */,
-				F9FE25C02625FA73001874BB /* ReadyToSubmitPaymentComponent.swift in Sources */,
 				F939CD7725EE56BA00018DEC /* LoadingComponent.swift in Sources */,
 				E7806EBD26147AB700101DBB /* ViewControllerDelegate.swift in Sources */,
 				E749FD1E23CF4998000D18BA /* NavigationStyle.swift in Sources */,

@@ -26,9 +26,9 @@ public enum AdyenAssertion {
     }
 
     /// :nodoc:
-    /// Calls `assertionFailure` when not runing Tests.
+    /// Calls `assert(message:)` when condition is true.
     public static func assert(message: @autoclosure () -> String, condition: @autoclosure () -> Bool) {
-        guard !condition() else {
+        guard condition() else {
             return
         }
         assert(message: message())

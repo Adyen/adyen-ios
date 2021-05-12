@@ -49,11 +49,12 @@ public struct DisplayInformation {
     /// :nodoc:
     public var disclosureText: String?
 
-    /// Initializes the Doku Wallet, Doku Alfamart, or Doku Indomaret payment method.
+    /// Initializes a`DisplayInformation`.
     ///
     /// - Parameter title: The title.
     /// - Parameter subtitle: The subtitle.
     /// - Parameter logoName: The logo name.
+    /// - Parameter disclosureText: The trailing disclosure text.
     public init(title: String, subtitle: String?, logoName: String, disclosureText: String? = nil) {
         self.title = title
         self.subtitle = subtitle
