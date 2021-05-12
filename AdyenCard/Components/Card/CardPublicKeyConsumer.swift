@@ -7,11 +7,11 @@
 import Adyen
 import Foundation
 
-internal protocol CardPublicKeyFetcherProtocol: PaymentComponent {
+internal protocol CardPublicKeyConsumer: PaymentComponent {
     var cardPublicKeyProvider: AnyCardPublicKeyProvider { get set }
 }
 
-extension CardPublicKeyFetcherProtocol {
+extension CardPublicKeyConsumer {
     internal typealias CardKeySuccessHandler = (_ cardPublicKey: String) -> Void
     internal typealias CardKeyFailureHandler = (_ error: Swift.Error) -> Void
 
