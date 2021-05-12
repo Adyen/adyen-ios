@@ -17,33 +17,65 @@ import Adyen
 import Foundation
 
 internal final class ComponentManager {
-    
+
     /// Indicates the UI configuration of the drop in component.
     private var style: DropInComponent.Style
 
     private let partialPaymentEnabled: Bool
+
+    private let remainingAmount: Payment.Amount?
     
     internal init(paymentMethods: PaymentMethods,
                   configuration: DropInComponent.PaymentMethodsConfiguration,
                   style: DropInComponent.Style,
-                  partialPaymentEnabled: Bool = true) {
+                  partialPaymentEnabled: Bool = true,
+                  remainingAmount: Payment.Amount? = nil) {
         self.paymentMethods = paymentMethods
         self.configuration = configuration
         self.style = style
         self.partialPaymentEnabled = partialPaymentEnabled
+        self.remainingAmount = remainingAmount
     }
     
     // MARK: - Internal
     
-    internal lazy var components: SectionedComponents = {
+    internal lazy var sections: [ComponentsSection] = {
         // Filter out payment methods without the Ecommerce shopper interaction.
         let storedPaymentMethods = paymentMethods.stored.filter { $0.supportedShopperInteractions.contains(.shopperPresent) }
+
+        // Paid section
+        let paidComponents = paymentMethods.paid.compactMap(component(for:))
+        let amountString: String = remainingAmount.flatMap {
+            AmountFormatter.formatted(amount: $0.value, currencyCode: $0.currencyCode)
+        } ?? "Amount"
+        let footerTitle = "Select payment method for the remaining " + amountString
+        let paidFooter = ComponentsSectionFooter(title: footerTitle,
+                                                 style: style.listComponent.paidPartialPaymentFooter)
+        let paidSection = ComponentsSection(header: nil,
+                                            components: paidComponents,
+                                            footer: paidFooter)
+
+        // Stored section
+        let storedSection = ComponentsSection(components: storedComponents)
+
+        // Regular section
+        let localizedTitle = localizedString(.paymentMethodsOtherMethods, configuration.localizationParameters)
+        let regularSectionTitle = storedSection.components.isEmpty ? nil : localizedTitle
+        let regularHeader: ComponentsSectionHeader? = regularSectionTitle.map {
+            ComponentsSectionHeader(title: $0, style: style.listComponent.sectionHeader)
+        }
+        let regularComponents = paymentMethods.regular.compactMap(component(for:))
+        let regularSection = ComponentsSection(header: regularHeader, components: regularComponents, footer: nil)
         
-        return SectionedComponents(
-            paid: paymentMethods.paid.compactMap(component(for:)),
-            stored: storedPaymentMethods.compactMap(component(for:)),
-            regular: paymentMethods.regular.compactMap(component(for:))
-        )
+        return [paidSection, storedSection, regularSection]
+    }()
+
+    internal var firstStoredComponent: PaymentComponent? {
+        storedComponents.first
+    }
+
+    private lazy var storedComponents: [PaymentComponent] = {
+        paymentMethods.stored.compactMap(component(for:))
     }()
     
     // MARK: - Private

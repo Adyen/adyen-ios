@@ -30,6 +30,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
         /// Indicates any other error
         case otherError(Swift.Error)
 
+        /// :nodoc:
         public var errorDescription: String? {
             switch self {
             case .balanceCheckFailure:
@@ -45,7 +46,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
     }
 
     /// :nodoc:
-    private let giftCardPaymentMethod: GiftCardPaymentMethod
+    private var giftCardPaymentMethod: GiftCardPaymentMethod
 
     /// The gift card payment method.
     public var paymentMethod: PaymentMethod { giftCardPaymentMethod }
@@ -196,6 +197,9 @@ public final class GiftCardComponent: PartialPaymentComponent,
     }
 
     private func handle(error: Swift.Error) {
+        defer {
+            stopLoading()
+        }
         if case let Error.otherError(internalError) = error {
             delegate?.didFail(with: internalError, from: self)
         }

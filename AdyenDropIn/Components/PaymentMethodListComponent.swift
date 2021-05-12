@@ -12,7 +12,7 @@ import UIKit
 internal final class PaymentMethodListComponent: ComponentLoader, PresentableComponent, Localizable {
     
     /// The components that are displayed in the list.
-    internal let components: SectionedComponents
+    internal let components: [ComponentsSection]
     
     /// The delegate of the payment method list component.
     internal weak var delegate: PaymentMethodListComponentDelegate?
@@ -24,7 +24,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     ///
     /// - Parameter components: The components to display in the list.
     /// - Parameter style: The component's UI style.
-    internal init(components: SectionedComponents, style: ListComponentStyle = ListComponentStyle()) {
+    internal init(components: [ComponentsSection], style: ListComponentStyle = ListComponentStyle()) {
         self.components = components
         self.style = style
     }
@@ -47,6 +47,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
                                     canModifyIcon: !isProtected)
             listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
             listItem.imageURL = LogoURLProvider.logoURL(for: component.paymentMethod, environment: environment)
+            listItem.trailingText = displayInformation.disclosureText
             listItem.subtitle = displayInformation.subtitle
             listItem.showsDisclosureIndicator = showsDisclosureIndicator
             listItem.selectionHandler = { [unowned self, unowned component] in
@@ -56,16 +57,23 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
             return listItem
         }
 
-        let paidSection = ListSection(items: components.paid.map(item(for:)))
-        let storedSection = ListSection(items: components.stored.map(item(for:)))
-        let regularSectionTitle = components.stored.isEmpty ? nil : localizedString(.paymentMethodsOtherMethods,
-                                                                                    localizationParameters)
-        let regularSection = ListSection(title: regularSectionTitle,
-                                         items: components.regular.map(item(for:)))
+        let sections: [ListSection] = components.map {
+            ListSection(title: $0.header?.title,
+                        items: $0.components.map(item(for:)),
+                        footerTitle: $0.footer?.title)
+        }
+
+//        let paidItems = components.paid.map(item(for:))
+//        let paidSection = ListSection(items: paidItems, footerTitle: "Select payment method for remaining €1,000.00")
+//        let storedSection = ListSection(items: components.stored.map(item(for:)))
+//        let regularSectionTitle = components.stored.isEmpty ? nil : localizedString(.paymentMethodsOtherMethods,
+//                                                                                    localizationParameters)
+//        let regularSection = ListSection(title: regularSectionTitle,
+//                                         items: components.regular.map(item(for:)))
         
         let listViewController = ListViewController(style: style)
         listViewController.title = localizedString(.paymentMethodsTitle, localizationParameters)
-        listViewController.sections = [paidSection, storedSection, regularSection]
+        listViewController.sections = sections
         
         return listViewController
     }()
@@ -82,7 +90,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     /// - Parameter component: The component for which to start a loading animation.
     internal func startLoading(for component: PaymentComponent) {
         let allListItems = listViewController.sections.flatMap(\.items)
-        let allComponents = [components.stored, components.regular].flatMap { $0 }
+        let allComponents = components.map(\.components).flatMap { $0 }
         
         guard let index = allComponents.firstIndex(where: { $0 === component }) else {
             return

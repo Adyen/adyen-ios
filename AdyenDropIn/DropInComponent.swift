@@ -28,7 +28,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
     private var order: PartialPaymentOrder?
 
     /// The payment methods to display.
-    public let paymentMethods: PaymentMethods
+    public private(set) var paymentMethods: PaymentMethods
     
     /// The delegate of the drop in component.
     public weak var delegate: DropInComponentDelegate?
@@ -92,40 +92,52 @@ public final class DropInComponent: NSObject, PresentableComponent {
     ///
     /// - Parameter order: The partial payment order.
     /// - Parameter paymentMethods: The new payment methods.
-    public func handle(_ order: PartialPaymentOrder,
+    public func reload(with order: PartialPaymentOrder,
                        _ paymentMethods: PaymentMethods) {
-        let request = OrderStatusRequest(orderData: order.orderData)
-        apiClient.perform(request) { [weak self] result in
-            self?.handle(result, paymentMethods)
-        }
+        let paymentMethod1 = OrderPaymentMethod(lastFour: "1234", type: "giftcard", transactionLimit: .init(value: 100, currencyCode: "CAD"), amount: .init(value: 200, currencyCode: "CAD"))
+        let paymentMethod2 = OrderPaymentMethod(lastFour: "3455", type: "giftcard", transactionLimit: .init(value: 100, currencyCode: "CAD"), amount: .init(value: 100, currencyCode: "CAD"))
+        let result = OrderStatusResponse(remainingAmount: .init(value: 7408, currencyCode: "CAD"), paymentMethods: [paymentMethod1, paymentMethod2])
+        handle(result)
+//        let request = OrderStatusRequest(orderData: order.orderData)
+//        apiClient.perform(request) { [weak self] result in
+//            self?.handle(result)
+//        }
     }
 
-    private func handle(_ result: Result<OrderStatusResponse, Error>,
-                        _ paymentMethods: PaymentMethods) {
+    private func handle(_ result: Result<OrderStatusResponse, Error>) {
         switch result {
         case let .failure(error):
             delegate?.didFail(with: error, from: self)
         case let .success(response):
-            var paymentMethods = paymentMethods
-            paymentMethods.paid = response.paymentMethods ?? []
-            componentManager = ComponentManager(paymentMethods: paymentMethods,
-                                                configuration: configuration,
-                                                style: style,
-                                                partialPaymentEnabled:
-                                                partialPaymentDelegate != nil)
-            showPaymentMethodsList()
+            handle(response)
         }
+    }
+
+    private func handle(_ response: OrderStatusResponse) {
+        guard response.remainingAmount.value > 0 else {
+            delegate?.didFail(with: PartialPaymentError.zeroRemainingAmount, from: self)
+            return
+        }
+        paymentMethods.paid = response.paymentMethods ?? []
+        componentManager = createComponentManager(response.remainingAmount)
+        paymentInProgress = false
+        showPaymentMethodsList()
     }
     
     // MARK: - Private
 
-    private lazy var componentManager = ComponentManager(paymentMethods: paymentMethods,
-                                                         configuration: configuration,
-                                                         style: style,
-                                                         partialPaymentEnabled: partialPaymentDelegate != nil)
+    private lazy var componentManager = createComponentManager()
+
+    private func createComponentManager(_ remainingAmount: Payment.Amount? = nil) -> ComponentManager {
+        ComponentManager(paymentMethods: paymentMethods,
+                         configuration: configuration,
+                         style: style,
+                         partialPaymentEnabled: partialPaymentDelegate != nil,
+                         remainingAmount: remainingAmount)
+    }
     
     private lazy var rootComponent: PresentableComponent & ComponentLoader = {
-        if let preselectedComponents = componentManager.components.stored.first {
+        if let preselectedComponents = componentManager.firstStoredComponent {
             return preselectedPaymentMethodComponent(for: preselectedComponents)
         } else {
             return paymentMethodListComponent()
@@ -152,7 +164,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
     }()
     
     private func paymentMethodListComponent() -> PaymentMethodListComponent {
-        let paymentComponents = componentManager.components
+        let paymentComponents = componentManager.sections
         let component = PaymentMethodListComponent(components: paymentComponents, style: style.listComponent)
         component.localizationParameters = configuration.localizationParameters
         component.delegate = self

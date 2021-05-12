@@ -88,6 +88,20 @@ extension UIColor {
         }
 
         /// :nodoc:
+        public static var paidSectionFooterTitleColor: UIColor {
+            UIColor(named: "paidPartialPaymentSectionFooterTitleColor",
+                    in: Bundle.coreInternalResources,
+                    compatibleWith: nil) ?? orange
+        }
+
+        /// :nodoc:
+        public static var paidSectionFooterTitleBackgroundColor: UIColor {
+            UIColor(named: "paidPartialPaymentSectionFooterTitleBackgroundColor",
+                    in: Bundle.coreInternalResources,
+                    compatibleWith: nil) ?? yellow
+        }
+
+        /// :nodoc:
         public static let defaultBlue = color(hex: 0x007AFF)
 
         /// :nodoc:
@@ -98,6 +112,12 @@ extension UIColor {
 
         /// :nodoc:
         public static let lightGray = color(hex: 0xE6E9EB)
+
+        /// :nodoc:
+        private static let yellow = color(hex: 0xFFEACC)
+
+        /// :nodoc:
+        private static let orange = color(hex: 0x7F4A00)
 
         /// Create new UIColor from hex value.
         /// - Parameter hex: The hex value of color. Should be between 0 and 0xFFFFFF.

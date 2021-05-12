@@ -26,7 +26,7 @@ public class ListItem: FormItem {
     public var imageURL: URL?
 
     /// The trailing text of the item.
-    public let trailingText: String?
+    public var trailingText: String?
     
     /// A boolean value indicating whether a disclosure indicator should be shown in the item's cell.
     public var showsDisclosureIndicator: Bool

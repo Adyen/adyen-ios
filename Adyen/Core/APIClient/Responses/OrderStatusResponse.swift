@@ -18,6 +18,13 @@ public struct OrderStatusResponse: Response {
     public let paymentMethods: [OrderPaymentMethod]?
 
     /// :nodoc:
+    public init(remainingAmount: Payment.Amount,
+                paymentMethods: [OrderPaymentMethod]?) {
+        self.remainingAmount = remainingAmount
+        self.paymentMethods = paymentMethods
+    }
+
+    /// :nodoc:
     internal enum CodingKeys: String, CodingKey {
         case remainingAmount
         case paymentMethods
@@ -50,10 +57,24 @@ public struct OrderPaymentMethod: PaymentMethod {
     }
 
     /// :nodoc:
+    public init(lastFour: String,
+                type: String,
+                transactionLimit: Payment.Amount,
+                amount: Payment.Amount) {
+        self.lastFour = lastFour
+        self.type = type
+        self.transactionLimit = transactionLimit
+        self.amount = amount
+    }
+
+    /// :nodoc:
     public func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        DisplayInformation(title: name,
-                           subtitle: nil,
-                           logoName: type)
+        let disclosureText = AmountFormatter.formatted(amount: -amount.value,
+                                                       currencyCode: amount.currencyCode)
+        return DisplayInformation(title: name,
+                                  subtitle: nil,
+                                  logoName: type,
+                                  disclosureText: disclosureText)
     }
 
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {

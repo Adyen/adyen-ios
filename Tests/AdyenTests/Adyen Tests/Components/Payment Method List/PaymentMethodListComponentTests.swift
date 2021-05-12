@@ -16,7 +16,7 @@ class PaymentMethodListComponentTests: XCTestCase {
     lazy var regularComponent = PaymentComponentMock(paymentMethod: method2)
 
     func testRequiresKeyboardInput() {
-        let sectionedComponents = SectionedComponents(stored: [storedComponent], regular: [regularComponent])
+        let sectionedComponents = ComponentSectiones(stored: [storedComponent], regular: [regularComponent])
         let sut = PaymentMethodListComponent(components: sectionedComponents)
 
         let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
@@ -25,7 +25,7 @@ class PaymentMethodListComponentTests: XCTestCase {
     }
     
     func testLocalizationWithCustomTableName() {
-        let sectionedComponents = SectionedComponents(stored: [storedComponent], regular: [regularComponent])
+        let sectionedComponents = ComponentSectiones(stored: [storedComponent], regular: [regularComponent])
         let sut = PaymentMethodListComponent(components: sectionedComponents)
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         
@@ -36,7 +36,7 @@ class PaymentMethodListComponentTests: XCTestCase {
     }
     
     func testLocalizationWithCustomKeySeparator() {
-        let sectionedComponents = SectionedComponents(stored: [storedComponent], regular: [regularComponent])
+        let sectionedComponents = ComponentSectiones(stored: [storedComponent], regular: [regularComponent])
         let sut = PaymentMethodListComponent(components: sectionedComponents)
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         
@@ -47,7 +47,7 @@ class PaymentMethodListComponentTests: XCTestCase {
     }
 
     func testStartStopLoading() {
-        let sectionedComponents = SectionedComponents(stored: [storedComponent], regular: [regularComponent])
+        let sectionedComponents = ComponentSectiones(stored: [storedComponent], regular: [regularComponent])
         let sut = PaymentMethodListComponent(components: sectionedComponents)
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")

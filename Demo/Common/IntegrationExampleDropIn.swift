@@ -66,7 +66,7 @@ extension IntegrationExample {
     }
 
     private func handle(_ order: PartialPaymentOrder, _ paymentMethods: PaymentMethods) {
-        (currentComponent as? DropInComponent)?.handle(order, paymentMethods)
+        (currentComponent as? DropInComponent)?.reload(with: order, paymentMethods)
     }
 }
 
@@ -74,8 +74,9 @@ extension IntegrationExample: DropInComponentDelegate {
 
     internal func didSubmit(_ data: PaymentComponentData, for paymentMethod: PaymentMethod, from component: DropInComponent) {
         print("User did start: \(paymentMethod.name)")
-        let request = PaymentsRequest(data: data)
-        apiClient.perform(request, completionHandler: paymentResponseHandler)
+        handle(PartialPaymentOrder(pspReference: "ef2ef", orderData: "ef2f23f", reference: "e2f2f2", remainingAmount: .init(value: 7408, currencyCode: "CAD"), expiresAt: nil), paymentMethods!)
+//        let request = PaymentsRequest(data: data)
+//        apiClient.perform(request, completionHandler: paymentResponseHandler)
     }
 
     internal func didProvide(_ data: ActionComponentData, from component: DropInComponent) {

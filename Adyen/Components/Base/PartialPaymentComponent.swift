@@ -6,6 +6,21 @@
 
 import Foundation
 
+/// Indicates a partial payment related errors.
+public enum PartialPaymentError: LocalizedError {
+
+    /// Indicates that there is zero remaining amount to be paid.
+    case zeroRemainingAmount
+
+    /// :nodoc:
+    public var errorDescription: String? {
+        switch self {
+        case .zeroRemainingAmount:
+            return "There is no remaining amount to be paid."
+        }
+    }
+}
+
 /// Any component that provides partial payments.
 public protocol PartialPaymentComponent: AnyObject {
 

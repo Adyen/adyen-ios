@@ -27,11 +27,13 @@ extension IntegrationExample: PartialPaymentDelegate {
     internal func checkBalance(_ data: PaymentComponentData,
                                from component: PaymentComponent,
                                completion: @escaping (Result<Balance, Error>) -> Void) {
-//        completion(.success(Payment.Amount(value: 100000, currencyCode: "EUR")))
-        let request = BalanceCheckRequest(data: data)
-        apiClient.perform(request) { [weak self] result in
-            self?.handle(result: result, completion: completion)
-        }
+        let balance = Balance(availableAmount: Payment.Amount(value: 10000, currencyCode: "CAD"),
+                              transactionLimit: Payment.Amount(value: 100000, currencyCode: "CAD"))
+        completion(.success(balance))
+//        let request = BalanceCheckRequest(data: data)
+//        apiClient.perform(request) { [weak self] result in
+//            self?.handle(result: result, completion: completion)
+//        }
     }
 
     private func handle(result: Result<BalanceCheckResponse, Error>,
@@ -62,10 +64,12 @@ extension IntegrationExample: PartialPaymentDelegate {
     internal func requestOrder(_ data: PaymentComponentData,
                                from component: PaymentComponent,
                                completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
-        let request = CreateOrderRequest(amount: payment.amount, reference: UUID().uuidString)
-        apiClient.perform(request) { [weak self] result in
-            self?.handle(result: result, completion: completion)
-        }
+        let result = PartialPaymentOrder(pspReference: "ef2ef", orderData: "ef2f23f", reference: "e2f2f2", remainingAmount: .init(value: 7408, currencyCode: "CAD"), expiresAt: nil)
+        completion(.success(result))
+//        let request = CreateOrderRequest(amount: payment.amount, reference: UUID().uuidString)
+//        apiClient.perform(request) { [weak self] result in
+//            self?.handle(result: result, completion: completion)
+//        }
     }
 
     private func handle(result: Result<CreateOrderResponse, Error>,

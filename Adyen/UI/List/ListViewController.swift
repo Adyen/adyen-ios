@@ -129,12 +129,26 @@ public final class ListViewController: UITableViewController {
         guard let title = sections[section].title else {
             return nil
         }
-        
+
         let headerView = ListHeaderView(title: title, style: style.sectionHeader)
         headerView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "Adyen.ListViewController",
                                                                          postfix: "headerView.\(section)")
-        
+
         return headerView
+    }
+
+    override public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard let title = sections[section].footerTitle else {
+            return nil
+        }
+        let footerView = ListFooterView(title: title, style: style.paidPartialPaymentFooter)
+        footerView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "Adyen.ListViewController",
+                                                                         postfix: "footerView.\(section)")
+        return footerView
+    }
+
+    override public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        sections[section].footerTitle == nil ? 0 : 55
     }
     
     /// :nodoc:
