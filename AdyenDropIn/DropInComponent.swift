@@ -72,6 +72,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
     ///
     /// - Parameter action: The action to handle.
     public func handle(_ action: Action) {
+        rootComponent.stopLoadingIfNeeded()
         actionComponent.handle(action)
     }
 

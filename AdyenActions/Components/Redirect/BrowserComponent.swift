@@ -69,7 +69,11 @@ extension BrowserComponent: UIAdaptivePresentationControllerDelegate {
     /// Called when user drag VC down to dismiss.
     /// :nodoc:
     internal func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        delegate?.didCancel()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            if UIApplication.shared.applicationState == .active {
+                self.delegate?.didCancel()
+            }
+        }
     }
 
 }
