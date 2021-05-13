@@ -44,7 +44,7 @@ public final class ADYViewController: UIViewController {
         }
 
         // swiftlint:disable:next unused_setter_value
-        set { AdyenAssertion.assert(message: """
+        set { AdyenAssertion.assertionFailure(message: """
         PreferredContentSize is overridden for this view controller.
         getter - returns minimum possible content size.
         setter - no implemented.

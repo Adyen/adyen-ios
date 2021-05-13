@@ -96,7 +96,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
         formViewController.append(errorItem)
         formViewController.append(numberItem)
         formViewController.append(securityCodeItem)
-        formViewController.append(button.withPadding(padding: .init(top: 8, left: 0, bottom: -16, right: 0)))
+        formViewController.append(button.submitButton)
         return formViewController
     }()
 
@@ -191,8 +191,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
                 .mapError(Error.otherError)
                 .flatMap(self.check(balance:))
                 .flatMap { isBalanceEnough in isBalanceEnough ? self.onReadyToPayFullAmount() : self.requestOrder() }
-                .handleError { self.handle(error: $0) }
-                .handleSuccess { /* Do nothing.*/ }
+                .handle({ /* Do nothing.*/ }, { self.handle(error: $0) })
         }
     }
 
@@ -217,11 +216,11 @@ public final class GiftCardComponent: PartialPaymentComponent,
 
     private func check(balance: Balance) -> Result<Bool, Swift.Error> {
         guard let payment = payment else {
-            AdyenAssertion.assert(message: Error.invalidPayment.localizedDescription)
+            AdyenAssertion.assertionFailure(message: Error.invalidPayment.localizedDescription)
             return .failure(Error.invalidPayment)
         }
         do {
-            return .success(try BalanceValidator().validate(balance: balance, toPay: payment.amount))
+            return .success(try BalanceValidator().check(balance: balance, isEnoughToPay: payment.amount))
         } catch {
             return .failure(error)
         }
@@ -255,7 +254,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
 
     private func requestOrder() -> Result<Void, Swift.Error> {
         guard let partialPaymentDelegate = partialPaymentDelegate else {
-            AdyenAssertion.assert(message: Error.missingPartialPaymentDelegate.localizedDescription)
+            AdyenAssertion.assertionFailure(message: Error.missingPartialPaymentDelegate.localizedDescription)
             return .failure(Error.missingPartialPaymentDelegate)
         }
         let data = createPaymentData()
@@ -266,7 +265,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
     }
 
     private func handle(orderResult: Result<PartialPaymentOrder, Swift.Error>) {
-        orderResult.handleError { delegate?.didFail(with: $0, from: self) }.handleSuccess(submit(order:))
+        orderResult.handle(submit(order:)) { delegate?.didFail(with: $0, from: self) }
     }
 
     private func submit(order: PartialPaymentOrder) {
@@ -287,8 +286,12 @@ public final class GiftCardComponent: PartialPaymentComponent,
 
 extension Result {
 
+    func handle(_ success: (Success) -> Void, _ failure: (Failure) -> Void) {
+        handleSuccess(success).handleError(failure)
+    }
+
     @discardableResult
-    func handleSuccess(_ handler: (Success) -> Void) -> Result<Success, Failure> {
+    private func handleSuccess(_ handler: (Success) -> Void) -> Result<Success, Failure> {
         switch self {
         case let .success(success):
             handler(success)
@@ -298,7 +301,7 @@ extension Result {
     }
 
     @discardableResult
-    func handleError(_ handler: (Error) -> Void) -> Result<Success, Failure> {
+    private func handleError(_ handler: (Failure) -> Void) -> Result<Success, Failure> {
         switch self {
         case let .failure(error):
             handler(error)

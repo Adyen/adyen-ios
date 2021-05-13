@@ -67,7 +67,6 @@ internal final class ListFooterView: UIView {
         titleLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "Adyen.ListFooterView.\(title)",
                                                                          postfix: "titleLabel")
         titleLabel.text = title
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
         return titleLabel
     }()

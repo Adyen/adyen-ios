@@ -33,13 +33,6 @@ public struct GiftCardPaymentMethod: PaymentMethod {
         DisplayInformation(title: name, subtitle: nil, logoName: brand)
     }
 
-    /// :nodoc:
-    public init(type: String, name: String, brand: String) {
-        self.type = type
-        self.name = name
-        self.brand = brand
-    }
-
     // MARK: - Decoding
 
     private enum CodingKeys: String, CodingKey {

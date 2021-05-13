@@ -73,7 +73,7 @@ public extension Component {
         }
         set {
             if let newValue = newValue, !ClientKeyValidator().isValid(newValue) {
-                AdyenAssertion.assert(message: """
+                AdyenAssertion.assertionFailure(message: """
                 The key you have provided to \(String(describing: self)) is not a valid client key.
                 Check https://docs.adyen.com/user-management/client-side-authentication for more information.
                 """)

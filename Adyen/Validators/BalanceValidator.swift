@@ -31,13 +31,13 @@ public struct BalanceValidator {
     /// :nodoc:
     public init() { /* Empty initializer */ }
 
-    /// Validates a Balance against a payment amount to pay.
+    /// Check if a Balance is enough to pay an amount.
     ///
     /// - Parameters:
     ///   - balance: The balance to validate.
     ///   - amount: The amount to pay.
     /// :nodoc:
-    public func validate(balance: Balance, toPay amount: Payment.Amount) throws -> Bool {
+    public func check(balance: Balance, isEnoughToPay amount: Payment.Amount) throws -> Bool {
         guard balance.availableAmount.value > 0 else {
             throw Error.zeroBalance
         }

@@ -11,14 +11,24 @@ import Foundation
 public struct CustomDisplayablePaymentMethod: PaymentMethod {
 
     /// :nodoc:
-    public var type: String
+    public var type: String {
+        paymentMethod.type
+    }
 
     /// :nodoc:
-    public var name: String
+    public var name: String {
+        paymentMethod.name
+    }
+
+    /// :nodoc:
+    public let paymentMethod: PaymentMethod
+
+    /// :nodoc:
+    private let customDisplayInformation: DisplayInformation
 
     /// :nodoc:
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        nil
+        paymentMethod.buildComponent(using: builder)
     }
 
     /// :nodoc:
@@ -27,19 +37,20 @@ public struct CustomDisplayablePaymentMethod: PaymentMethod {
     }
 
     /// :nodoc:
-    public func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        customDisplayInformation ?? DisplayInformation(title: name, subtitle: nil, logoName: type)
+    public func localizedDisplayInformation(_: LocalizationParameters?) -> DisplayInformation {
+        customDisplayInformation
     }
 
     /// :nodoc:
     public init(paymentMethod: PaymentMethod, displayInformation: DisplayInformation) {
-        self.name = paymentMethod.name
-        self.type = paymentMethod.type
+        self.paymentMethod = paymentMethod
         self.customDisplayInformation = displayInformation
     }
 
     /// :nodoc:
-    private var customDisplayInformation: DisplayInformation?
+    public init(from decoder: Decoder) throws {
+        fatalError("This class should never be decoded.")
+    }
 
     // MARK: - Decoding
     

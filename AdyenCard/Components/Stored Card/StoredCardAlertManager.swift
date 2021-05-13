@@ -107,12 +107,8 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Loca
     private typealias CardKeyCompletion = (_ cardPublicKey: String) -> Void
     
     private func fetchCardPublicKey(successHandler: @escaping CardKeyCompletion) {
-        do {
-            try cardPublicKeyProvider.fetch { [weak self] in
-                self?.handle(result: $0, successHandler: successHandler)
-            }
-        } catch {
-            completionHandler?(.failure(error))
+        cardPublicKeyProvider.fetch { [weak self] in
+            self?.handle(result: $0, successHandler: successHandler)
         }
     }
     

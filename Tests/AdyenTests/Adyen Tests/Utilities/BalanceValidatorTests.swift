@@ -22,7 +22,7 @@ class BalanceValidatorTests: XCTestCase {
                               transactionLimit: .init(value: 1000,
                                                       currencyCode: "EUR"))
         let amount1 = Payment.Amount(value: 10, currencyCode: "EUR")
-        XCTAssertTrue(try! sut.validate(balance: balance1, toPay: amount1))
+        XCTAssertTrue(try! sut.check(balance: balance1, isEnoughToPay: amount1))
 
         // transaction limit < balance
         // amount < transaction limit
@@ -32,7 +32,7 @@ class BalanceValidatorTests: XCTestCase {
                               transactionLimit: .init(value: 100,
                                                       currencyCode: "EUR"))
         let amount2 = Payment.Amount(value: 10, currencyCode: "EUR")
-        XCTAssertTrue(try! sut.validate(balance: balance2, toPay: amount2))
+        XCTAssertTrue(try! sut.check(balance: balance2, isEnoughToPay: amount2))
 
 
         // transaction limit is nil
@@ -42,7 +42,7 @@ class BalanceValidatorTests: XCTestCase {
                                                      currencyCode: "EUR"),
                               transactionLimit: nil)
         let amount3 = Payment.Amount(value: 10, currencyCode: "EUR")
-        XCTAssertTrue(try! sut.validate(balance: balance3, toPay: amount3))
+        XCTAssertTrue(try! sut.check(balance: balance3, isEnoughToPay: amount3))
 
         // transaction limit is nil
         // amount > balance
@@ -51,7 +51,7 @@ class BalanceValidatorTests: XCTestCase {
                                                      currencyCode: "EUR"),
                               transactionLimit: nil)
         let amount4 = Payment.Amount(value: 1000, currencyCode: "EUR")
-        XCTAssertFalse(try! sut.validate(balance: balance4, toPay: amount4))
+        XCTAssertFalse(try! sut.check(balance: balance4, isEnoughToPay: amount4))
 
 
         // transaction limit > balance
@@ -62,7 +62,7 @@ class BalanceValidatorTests: XCTestCase {
                               transactionLimit: .init(value: 1000,
                                                       currencyCode: "EUR"))
         let amount5 = Payment.Amount(value: 120, currencyCode: "EUR")
-        XCTAssertFalse(try! sut.validate(balance: balance5, toPay: amount5))
+        XCTAssertFalse(try! sut.check(balance: balance5, isEnoughToPay: amount5))
 
         // transaction limit < balance
         // amount > transaction limit
@@ -72,7 +72,7 @@ class BalanceValidatorTests: XCTestCase {
                               transactionLimit: .init(value: 100,
                                                       currencyCode: "EUR"))
         let amount6 = Payment.Amount(value: 120, currencyCode: "EUR")
-        XCTAssertFalse(try! sut.validate(balance: balance6, toPay: amount6))
+        XCTAssertFalse(try! sut.check(balance: balance6, isEnoughToPay: amount6))
     }
 
     func testCurrencyMissmatch() throws {
@@ -86,7 +86,7 @@ class BalanceValidatorTests: XCTestCase {
                               transactionLimit: .init(value: 1000,
                                                       currencyCode: "USD"))
         let amount1 = Payment.Amount(value: 10, currencyCode: "EUR")
-        XCTAssertThrowsError(try sut.validate(balance: balance1, toPay: amount1), "", {
+        XCTAssertThrowsError(try sut.check(balance: balance1, isEnoughToPay: amount1), "", {
             XCTAssertEqual(($0 as? BalanceValidator.Error), BalanceValidator.Error.unexpectedCurrencyCode)
         })
 
@@ -98,7 +98,7 @@ class BalanceValidatorTests: XCTestCase {
                               transactionLimit: .init(value: 100,
                                                       currencyCode: "USD"))
         let amount2 = Payment.Amount(value: 10, currencyCode: "USD")
-        XCTAssertThrowsError(try sut.validate(balance: balance2, toPay: amount2), "", {
+        XCTAssertThrowsError(try sut.check(balance: balance2, isEnoughToPay: amount2), "", {
             XCTAssertEqual(($0 as? BalanceValidator.Error), BalanceValidator.Error.unexpectedCurrencyCode)
         })
 
@@ -111,7 +111,7 @@ class BalanceValidatorTests: XCTestCase {
                                transactionLimit: .init(value: 100,
                                                        currencyCode: "EUR"))
         let amount3 = Payment.Amount(value: 10, currencyCode: "USD")
-        XCTAssertThrowsError(try sut.validate(balance: balance3, toPay: amount3), "", {
+        XCTAssertThrowsError(try sut.check(balance: balance3, isEnoughToPay: amount3), "", {
             XCTAssertEqual(($0 as? BalanceValidator.Error), BalanceValidator.Error.unexpectedCurrencyCode)
         })
     }
@@ -127,7 +127,7 @@ class BalanceValidatorTests: XCTestCase {
                               transactionLimit: .init(value: 1000,
                                                       currencyCode: "EUR"))
         let amount1 = Payment.Amount(value: 10, currencyCode: "EUR")
-        XCTAssertThrowsError(try sut.validate(balance: balance1, toPay: amount1), "", {
+        XCTAssertThrowsError(try sut.check(balance: balance1, isEnoughToPay: amount1), "", {
             XCTAssertEqual(($0 as? BalanceValidator.Error), BalanceValidator.Error.zeroBalance)
         })
     }

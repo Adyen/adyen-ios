@@ -59,7 +59,6 @@ extension CardComponent: TrackableComponent {
     /// :nodoc:
     public func viewDidLoad(viewController: UIViewController) {
         Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
-        fetchCardPublicKey(onError: { _ in /* Do nothing, to just cache the card public key value */ },
-                           completion: { _ in /* Do nothing, to just cache the card public key value */ })
+        fetchCardPublicKey(completion: { _ in /* Do nothing, to just cache the card public key value */ })
     }
 }

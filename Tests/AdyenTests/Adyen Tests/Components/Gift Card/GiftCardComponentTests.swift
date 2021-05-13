@@ -63,8 +63,8 @@ class GiftCardComponentTests: XCTestCase {
 
         let onCheckBalanceExpectation = expectation(description: "Expect partialPaymentDelegate.onCheckBalance to be called.")
 
-        partialPaymentDelegate.onCheckBalance = {
-            $2(.failure(Dummy.dummyError))
+        partialPaymentDelegate.onCheckBalance = { _, _, completion in
+            completion(.failure(Dummy.dummyError))
             onCheckBalanceExpectation.fulfill()
         }
 
@@ -96,8 +96,8 @@ class GiftCardComponentTests: XCTestCase {
 
         let onCheckBalanceExpectation = expectation(description: "Expect partialPaymentDelegate.onCheckBalance to be called.")
         let balance = Balance(availableAmount: .init(value: 200, currencyCode: "EUR"), transactionLimit: .init(value: 1000, currencyCode: "USD"))
-        partialPaymentDelegate.onCheckBalance = {
-            $2(.success(balance))
+        partialPaymentDelegate.onCheckBalance = { _, _, completion in
+            completion(.success(balance))
             onCheckBalanceExpectation.fulfill()
         }
 
@@ -128,8 +128,8 @@ class GiftCardComponentTests: XCTestCase {
 
         let onCheckBalanceExpectation = expectation(description: "Expect partialPaymentDelegate.onCheckBalance to be called.")
         let balance = Balance(availableAmount: .init(value: 200, currencyCode: "EUR"), transactionLimit: .init(value: 1000, currencyCode: "EUR"))
-        partialPaymentDelegate.onCheckBalance = {
-            $2(.success(balance))
+        partialPaymentDelegate.onCheckBalance = { _, _, completion in
+            completion(.success(balance))
             onCheckBalanceExpectation.fulfill()
         }
 
@@ -160,8 +160,8 @@ class GiftCardComponentTests: XCTestCase {
 
         let onCheckBalanceExpectation = expectation(description: "Expect partialPaymentDelegate.onCheckBalance to be called.")
         let balance = Balance(availableAmount: .init(value: 0, currencyCode: "EUR"), transactionLimit: .init(value: 1000, currencyCode: "EUR"))
-        partialPaymentDelegate.onCheckBalance = {
-            $2(.success(balance))
+        partialPaymentDelegate.onCheckBalance = { _, _, completion in
+            completion(.success(balance))
             onCheckBalanceExpectation.fulfill()
         }
 
@@ -192,8 +192,8 @@ class GiftCardComponentTests: XCTestCase {
 
         let onCheckBalanceExpectation = expectation(description: "Expect partialPaymentDelegate.onCheckBalance to be called.")
         let balance = Balance(availableAmount: .init(value: 200, currencyCode: "EUR"), transactionLimit: .init(value: 1000, currencyCode: "EUR"))
-        partialPaymentDelegate.onCheckBalance = {
-            $2(.success(balance))
+        partialPaymentDelegate.onCheckBalance = { _, _, completion in
+            completion(.success(balance))
             onCheckBalanceExpectation.fulfill()
         }
 
@@ -225,8 +225,8 @@ class GiftCardComponentTests: XCTestCase {
 
         let onCheckBalanceExpectation = expectation(description: "Expect partialPaymentDelegate.onCheckBalance to be called.")
         let balance = Balance(availableAmount: .init(value: 200, currencyCode: "EUR"), transactionLimit: nil)
-        partialPaymentDelegate.onCheckBalance = {
-            $2(.success(balance))
+        partialPaymentDelegate.onCheckBalance = { _, _, completion in
+            completion(.success(balance))
             onCheckBalanceExpectation.fulfill()
         }
 
@@ -270,8 +270,8 @@ class GiftCardComponentTests: XCTestCase {
 
         let onCheckBalanceExpectation = expectation(description: "Expect partialPaymentDelegate.onCheckBalance to be called.")
         let balance = Balance(availableAmount: .init(value: 200, currencyCode: "EUR"), transactionLimit: nil)
-        partialPaymentDelegate.onCheckBalance = {
-            $2(.success(balance))
+        partialPaymentDelegate.onCheckBalance = { _, _, completion in
+            completion(.success(balance))
             onCheckBalanceExpectation.fulfill()
         }
 
@@ -316,8 +316,8 @@ class GiftCardComponentTests: XCTestCase {
 
         let onCheckBalanceExpectation = expectation(description: "Expect partialPaymentDelegate.onCheckBalance to be called.")
         let balance = Balance(availableAmount: .init(value: 50, currencyCode: "EUR"), transactionLimit: nil)
-        partialPaymentDelegate.onCheckBalance = {
-            $2(.success(balance))
+        partialPaymentDelegate.onCheckBalance = { _, _, completion in
+            completion(.success(balance))
             onCheckBalanceExpectation.fulfill()
         }
 
@@ -369,8 +369,8 @@ class GiftCardComponentTests: XCTestCase {
 
         let onCheckBalanceExpectation = expectation(description: "Expect partialPaymentDelegate.onCheckBalance to be called.")
         let balance = Balance(availableAmount: .init(value: 50, currencyCode: "EUR"), transactionLimit: nil)
-        partialPaymentDelegate.onCheckBalance = {
-            $2(.success(balance))
+        partialPaymentDelegate.onCheckBalance = { _, _, completion in
+            completion(.success(balance))
             onCheckBalanceExpectation.fulfill()
         }
 

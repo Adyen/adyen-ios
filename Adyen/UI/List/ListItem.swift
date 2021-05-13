@@ -46,6 +46,7 @@ public class ListItem: FormItem {
     /// - Parameters:
     ///   - title: The title of the item.
     ///   - imageURL: A URL to an image to display.
+    ///   - trailingText: The trailing text.
     ///   - style: The list item style.
     ///   - showsDisclosureIndicator: A boolean value indicating whether a disclosure indicator
     ///                               should be shown in the item's cell.

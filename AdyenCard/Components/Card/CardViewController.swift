@@ -84,7 +84,7 @@ internal class CardViewController: FormViewController {
             append(storeDetailsItem)
         }
 
-        append(button.withPadding(padding: .init(top: 8, left: 0, bottom: -16, right: 0)))
+        append(button.submitButton)
 
         super.viewDidLoad()
     }

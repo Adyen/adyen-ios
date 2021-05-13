@@ -44,9 +44,7 @@ internal final class ComponentManager {
         let storedPaymentMethods = paymentMethods.stored.filter { $0.supportedShopperInteractions.contains(.shopperPresent) }
 
         // Paid section
-        let amountString: String = remainingAmount.flatMap {
-            AmountFormatter.formatted(amount: $0.value, currencyCode: $0.currencyCode)
-        } ?? "Amount"
+        let amountString: String = remainingAmount.map(\.formatted) ?? "Amount"
         let footerTitle = "Select payment method for the remaining " + amountString
         let paidFooter = ComponentsSectionFooter(title: footerTitle,
                                                  style: style.listComponent.paidPartialPaymentFooter)
@@ -79,7 +77,7 @@ internal final class ComponentManager {
     private func component(for paymentMethod: PaymentMethod) -> PaymentComponent? {
         guard isAllowed(paymentMethod) else {
             // swiftlint:disable:next line_length
-            AdyenAssertion.assert(message: "For voucher payment methods like \(paymentMethod.name) it is required to add a suitable text for the key NSPhotoLibraryAddUsageDescription in the Application Info.plist, to enable the shopper to save the voucher to their photo library.")
+            AdyenAssertion.assertionFailure(message: "For voucher payment methods like \(paymentMethod.name) it is required to add a suitable text for the key NSPhotoLibraryAddUsageDescription in the Application Info.plist, to enable the shopper to save the voucher to their photo library.")
             return nil
         }
 

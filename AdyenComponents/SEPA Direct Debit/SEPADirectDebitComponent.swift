@@ -61,7 +61,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
         formViewController.title = paymentMethod.name
         formViewController.append(nameItem)
         formViewController.append(ibanItem)
-        formViewController.append(button.withPadding(padding: .init(top: 8, left: 0, bottom: -16, right: 0)))
+        formViewController.append(button.submitButton)
 
         return formViewController
     }()

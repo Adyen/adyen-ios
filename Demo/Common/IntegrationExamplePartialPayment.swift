@@ -14,11 +14,11 @@ import UIKit
 extension IntegrationExample: PartialPaymentDelegate {
 
     internal enum GiftCardError: Error, LocalizedError {
-        case nonBalance
+        case noBalance
 
         internal var errorDescription: String? {
             switch self {
-            case .nonBalance:
+            case .noBalance:
                 return "No Balance"
             }
         }
@@ -48,8 +48,8 @@ extension IntegrationExample: PartialPaymentDelegate {
 
     private func handle(response: BalanceCheckResponse, completion: @escaping (Result<Balance, Error>) -> Void) {
         guard let availableAmount = response.balance else {
-            finish(with: GiftCardError.nonBalance)
-            completion(.failure(GiftCardError.nonBalance))
+            finish(with: GiftCardError.noBalance)
+            completion(.failure(GiftCardError.noBalance))
             return
         }
         let balance = Balance(availableAmount: availableAmount, transactionLimit: response.transactionLimit)

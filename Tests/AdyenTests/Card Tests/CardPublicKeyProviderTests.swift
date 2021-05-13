@@ -18,9 +18,14 @@ class CardPublicKeyProviderTests: XCTestCase {
         let sut = CardPublicKeyProvider(apiClient: apiClient)
         CardPublicKeyProvider.cachedCardPublicKey = nil
 
-        XCTAssertThrowsError(try sut.fetch(completion: { _ in }), "CardPublicKeyProvider must throw an error if client key is missing") {
-            XCTAssertEqual($0 as! CardComponent.Error, CardComponent.Error.missingClientKey)
+        let expectation = XCTestExpectation(description: "Except Assertion failure.")
+        AdyenAssertion.listener = { message in
+            XCTAssertEqual(message, "ClientKey is missing.")
+            expectation.fulfill()
         }
+
+        sut.fetch(completion: { _ in })
+        wait(for: [expectation], timeout: 2, enforceOrder: true)
     }
 
     func testMultipleFetchCallsAndOneRequestDispatched() throws {
@@ -34,8 +39,8 @@ class CardPublicKeyProviderTests: XCTestCase {
 
         let fetchExpectation = expectation(description: "CardPublicKeyProvider.fetch() completion handler must be called.")
         fetchExpectation.expectedFulfillmentCount = 10
-        try (0...9).forEach { _ in
-            try sut.fetch { result in
+        (0...9).forEach { _ in
+            sut.fetch { result in
                 switch result {
                 case let .success(key):
                     XCTAssertEqual(key, "test_public_key")
@@ -58,7 +63,7 @@ class CardPublicKeyProviderTests: XCTestCase {
         sut.clientKey = Dummy.dummyClientKey
 
         let secondFetchExpectation = expectation(description: "second CardPublicKeyProvider.fetch() completion handler must be called.")
-        try sut.fetch { result in
+        sut.fetch { result in
             switch result {
             case let .success(key):
                 XCTAssertEqual(key, "test_public_key")
