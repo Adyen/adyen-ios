@@ -98,7 +98,7 @@ internal final class CardBrandProvider: AnyCardBrandProvider {
     }
     
     private func fetchBinLookupService(success: @escaping (BinLookupService) -> Void,
-                                       failure: ((Swift.Error) -> Void)? = nil) {
+                                       failure: @escaping ((Swift.Error) -> Void)) {
         if let binLookupService = privateBinLookupService {
             return success(binLookupService)
         }
@@ -115,7 +115,7 @@ internal final class CardBrandProvider: AnyCardBrandProvider {
                 self.privateBinLookupService = binLookupService
                 success(binLookupService)
             case let .failure(error):
-                failure?(error)
+                failure(error)
             }
         }
     }

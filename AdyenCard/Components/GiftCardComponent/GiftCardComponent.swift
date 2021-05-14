@@ -191,7 +191,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
                 .mapError(Error.otherError)
                 .flatMap(self.check(balance:))
                 .flatMap { isBalanceEnough in isBalanceEnough ? self.onReadyToPayFullAmount() : self.requestOrder() }
-                .handle({ /* Do nothing.*/ }, { self.handle(error: $0) })
+                .handle(success: { /* Do nothing.*/ }, failure: { self.handle(error: $0) })
         }
     }
 
@@ -265,7 +265,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
     }
 
     private func handle(orderResult: Result<PartialPaymentOrder, Swift.Error>) {
-        orderResult.handle(submit(order:)) { delegate?.didFail(with: $0, from: self) }
+        orderResult.handle(success: submit(order:), failure: { delegate?.didFail(with: $0, from: self) })
     }
 
     private func submit(order: PartialPaymentOrder) {
@@ -286,7 +286,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
 
 extension Result {
 
-    func handle(_ success: (Success) -> Void, _ failure: (Failure) -> Void) {
+    func handle(success: (Success) -> Void, failure: (Failure) -> Void) {
         handleSuccess(success).handleError(failure)
     }
 
