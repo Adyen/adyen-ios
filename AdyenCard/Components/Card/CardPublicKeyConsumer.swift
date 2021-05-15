@@ -14,18 +14,22 @@ internal protocol CardPublicKeyConsumer: PaymentComponent {
 extension CardPublicKeyConsumer {
     internal typealias CardKeySuccessHandler = (_ cardPublicKey: String) -> Void
 
-    internal func fetchCardPublicKey(completion: @escaping CardKeySuccessHandler) {
+    internal func fetchCardPublicKey(discardError: Bool, completion: @escaping CardKeySuccessHandler) {
         cardPublicKeyProvider.fetch { [weak self] in
-            self?.handle(result: $0, completion: completion)
+            self?.handle(result: $0, discardError: discardError, completion: completion)
         }
     }
 
-    private func handle(result: Result<String, Swift.Error>, completion: CardKeySuccessHandler) {
+    private func handle(result: Result<String, Swift.Error>,
+                        discardError: Bool,
+                        completion: CardKeySuccessHandler) {
         switch result {
         case let .success(key):
             completion(key)
         case let .failure(error):
-            delegate?.didFail(with: error, from: self)
+            if !discardError {
+                delegate?.didFail(with: error, from: self)
+            }
         }
     }
 }
