@@ -20,11 +20,19 @@ public protocol ShopperInformation {
 
 }
 
-/// Any object that holds shopper billing address information/
+/// Any object that holds shopper billing address information
 public protocol BillingAddressInformation {
 
     /// The billing address information.
     var billingAddress: AddressInfo? { get }
+
+}
+
+/// Any object that holds shopper social security number
+public protocol SocialSecurityNumberInformation {
+
+    /// The social security number information.
+    var socialSecurityNumber: String? { get }
 
 }
 
@@ -49,7 +57,7 @@ public struct ShopperName: Codable {
 }
 
 /// The data supplied by a payment component upon completion.
-public struct PaymentComponentData: ShopperInformation, BillingAddressInformation {
+public struct PaymentComponentData: ShopperInformation, BillingAddressInformation, SocialSecurityNumberInformation {
     
     /// The payment method details submitted by the payment component.
     public let paymentMethod: PaymentMethodDetails
@@ -82,6 +90,12 @@ public struct PaymentComponentData: ShopperInformation, BillingAddressInformatio
     public var billingAddress: AddressInfo? {
         guard let shopperInfo = paymentMethod as? BillingAddressInformation else { return nil }
         return shopperInfo.billingAddress
+    }
+    
+    /// The social security number.
+    public var socialSecurityNumber: String? {
+        guard let shopperInfo = paymentMethod as? SocialSecurityNumberInformation else { return nil }
+        return shopperInfo.socialSecurityNumber
     }
     
     /// Initializes the payment component data.

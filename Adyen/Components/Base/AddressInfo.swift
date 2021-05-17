@@ -81,3 +81,24 @@ public struct AddressInfo: Equatable, Encodable {
     }
 
 }
+
+extension AddressInfo {
+    
+    /// Returns the `AddressInfo` object transformed into a `String` ready for display
+    /// Consists of max 3 lines (subject of optional property availability)
+    /// 1. `street`, `houseNumberOrName`, `apartment`
+    /// 2. `postalCode`, `city`, `stateOrProvince`
+    /// 3. `country`
+    public var labelDescription: String {
+        [
+            [street, houseNumberOrName, apartment],
+            [postalCode, city, stateOrProvince],
+            [country]
+        ].map { line in line
+            .compactMap { $0 }
+            .filter { $0.isEmpty == false }
+            .joined(separator: ", ")
+        }.joined(separator: "\n")
+    }
+    
+}

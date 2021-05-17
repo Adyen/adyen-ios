@@ -19,9 +19,14 @@ public struct BoletoPaymentMethod: PaymentMethod {
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }
+    
+    /// :nodoc:
+    public var displayInformation: DisplayInformation {
+        DisplayInformation(title: name, subtitle: nil, logoName: type)
+    }
 
-    private enum CodingKeys: String, CodingKey {
-        case type
-        case name
+    /// :nodoc:
+    public func localizedDisplayInformation(using _: LocalizationParameters?) -> DisplayInformation {
+        DisplayInformation(title: name, subtitle: nil, logoName: type)
     }
 }

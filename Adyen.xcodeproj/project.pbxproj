@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		5A1315C926296B100092366D /* ProgressViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1315C826296B100092366D /* ProgressViewStyle.swift */; };
+		5A15D589264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A15D588264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift */; };
+		5A15D595264BC25600A8E3C7 /* AddressFormItemInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A15D594264BC25600A8E3C7 /* AddressFormItemInjector.swift */; };
+		5A15D5A1264BE1E500A8E3C7 /* ShopperInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A15D5A0264BE1E500A8E3C7 /* ShopperInfo.swift */; };
 		5A22C279262D688600F12D97 /* QRCodeComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A22C26D262D686200F12D97 /* QRCodeComponentTests.swift */; };
 		5A22C2AD262EF99C00F12D97 /* ExpirationTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A22C2AC262EF99C00F12D97 /* ExpirationTimer.swift */; };
 		5A238C69263A9C8C00758FEF /* PreApplePayComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A238C68263A9C8C00758FEF /* PreApplePayComponent.swift */; };
@@ -20,6 +23,7 @@
 		5A54600F264433CD00724A87 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54600E264433CD00724A87 /* SearchBar.swift */; };
 		5A546010264433CE00724A87 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54600E264433CD00724A87 /* SearchBar.swift */; };
 		5A546032264A5A1000724A87 /* BoletoPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A546031264A5A0F00724A87 /* BoletoPaymentMethod.swift */; };
+		5A54603F264A5CEC00724A87 /* BoletoComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54603E264A5CEC00724A87 /* BoletoComponent.swift */; };
 		5A54FFCA26299140007194B7 /* TimeIntervalHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54FFC926299140007194B7 /* TimeIntervalHelpers.swift */; };
 		5A54FFE126299602007194B7 /* TimeIntervalExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54FFD5262995F6007194B7 /* TimeIntervalExtensionsTests.swift */; };
 		5A6456D6262592B2001824F0 /* QRCodeAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6456D5262592B2001824F0 /* QRCodeAction.swift */; };
@@ -29,6 +33,7 @@
 		5A6457DD26271434001824F0 /* QRCodeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6456E22625A1E2001824F0 /* QRCodeComponent.swift */; };
 		5A6745E126417A5C00E9184D /* ADYViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6745E026417A5C00E9184D /* ADYViewController.swift */; };
 		5A674620264262F000E9184D /* ConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67461F264262F000E9184D /* ConfigurationView.swift */; };
+		5A9889C8264E71210007F4C0 /* BoletoDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9889C7264E71210007F4C0 /* BoletoDetails.swift */; };
 		5AD40E75262F04440090E01C /* UIProgressViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD40E74262F04440090E01C /* UIProgressViewHelpers.swift */; };
 		5AD40EEF26303C830090E01C /* UIButtonHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD40EEE26303C830090E01C /* UIButtonHelpers.swift */; };
 		5AD40EFB26303D490090E01C /* UILabelHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD40EFA26303D490090E01C /* UILabelHelpers.swift */; };
@@ -808,6 +813,9 @@
 
 /* Begin PBXFileReference section */
 		5A1315C826296B100092366D /* ProgressViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewStyle.swift; sourceTree = "<group>"; };
+		5A15D588264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoletoComponentExtensions.swift; sourceTree = "<group>"; };
+		5A15D594264BC25600A8E3C7 /* AddressFormItemInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressFormItemInjector.swift; sourceTree = "<group>"; };
+		5A15D5A0264BE1E500A8E3C7 /* ShopperInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopperInfo.swift; sourceTree = "<group>"; };
 		5A22C26D262D686200F12D97 /* QRCodeComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeComponentTests.swift; sourceTree = "<group>"; };
 		5A22C2AC262EF99C00F12D97 /* ExpirationTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationTimer.swift; sourceTree = "<group>"; };
 		5A238C68263A9C8C00758FEF /* PreApplePayComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreApplePayComponent.swift; sourceTree = "<group>"; };
@@ -817,6 +825,7 @@
 		5A545FC62642F77500724A87 /* ConfigurationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationViewModel.swift; sourceTree = "<group>"; };
 		5A54600E264433CD00724A87 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		5A546031264A5A0F00724A87 /* BoletoPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoletoPaymentMethod.swift; sourceTree = "<group>"; };
+		5A54603E264A5CEC00724A87 /* BoletoComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoletoComponent.swift; sourceTree = "<group>"; };
 		5A54FFC926299140007194B7 /* TimeIntervalHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalHelpers.swift; sourceTree = "<group>"; };
 		5A54FFD5262995F6007194B7 /* TimeIntervalExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtensionsTests.swift; sourceTree = "<group>"; };
 		5A6456D5262592B2001824F0 /* QRCodeAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeAction.swift; sourceTree = "<group>"; wrapsLines = 1; };
@@ -826,6 +835,7 @@
 		5A64573E2626D2E2001824F0 /* QRCodeComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeComponentStyle.swift; sourceTree = "<group>"; };
 		5A6745E026417A5C00E9184D /* ADYViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADYViewController.swift; sourceTree = "<group>"; };
 		5A67461F264262F000E9184D /* ConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationView.swift; sourceTree = "<group>"; };
+		5A9889C7264E71210007F4C0 /* BoletoDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoletoDetails.swift; sourceTree = "<group>"; };
 		5AD40E74262F04440090E01C /* UIProgressViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIProgressViewHelpers.swift; sourceTree = "<group>"; };
 		5AD40EEE26303C830090E01C /* UIButtonHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonHelpers.swift; sourceTree = "<group>"; };
 		5AD40EFA26303D490090E01C /* UILabelHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelHelpers.swift; sourceTree = "<group>"; };
@@ -1519,6 +1529,16 @@
 			path = Generated;
 			sourceTree = "<group>";
 		};
+		5A54603D264A5CD900724A87 /* Boleto */ = {
+			isa = PBXGroup;
+			children = (
+				5A54603E264A5CEC00724A87 /* BoletoComponent.swift */,
+				5A15D588264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift */,
+				5A9889C7264E71210007F4C0 /* BoletoDetails.swift */,
+			);
+			path = Boleto;
+			sourceTree = "<group>";
+		};
 		5A6456E12625A1C3001824F0 /* QRCode */ = {
 			isa = PBXGroup;
 			children = (
@@ -1733,6 +1753,7 @@
 				E24FED0722704C9800A65122 /* ComponentError.swift */,
 				F90FB7BB2446E8C8005BFE0E /* BrowserInfo.swift */,
 				E7085A8C2627132B00D0153B /* AddressInfo.swift */,
+				5A15D5A0264BE1E500A8E3C7 /* ShopperInfo.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -2549,6 +2570,7 @@
 		F9175E56259393E800D653BE /* AdyenComponents */ = {
 			isa = PBXGroup;
 			children = (
+				5A54603D264A5CD900724A87 /* Boleto */,
 				F9B018CF260A32CE001F23FC /* EContextOnlineComponent */,
 				F9B017DF2608D490001F23FC /* EContextATMComponent */,
 				F9B017502604F753001F23FC /* EContextStoreComponent */,
@@ -3062,6 +3084,7 @@
 				F9589D0E2601EF8100E4113F /* NameFormItemInjector.swift */,
 				F9589D262601F19E00E4113F /* EmailFormItemInjector.swift */,
 				F9589D322601F1D400E4113F /* PhoneFormItemInjector.swift */,
+				5A15D594264BC25600A8E3C7 /* AddressFormItemInjector.swift */,
 			);
 			path = AbstractPersonalInformationComponent;
 			sourceTree = "<group>";
@@ -4213,6 +4236,7 @@
 				E9021DFA225E2487009CF7F4 /* ListHeaderView.swift in Sources */,
 				E28098C6220DCF3F0087928F /* NetworkImageView.swift in Sources */,
 				F926D51E23F4216600D058D3 /* ParameterlessInitializable.swift in Sources */,
+				5A15D595264BC25600A8E3C7 /* AddressFormItemInjector.swift in Sources */,
 				F9E441522382A0DD00D3CD48 /* ViewIdentifierBuilder.swift in Sources */,
 				E28098B3220DA7980087928F /* Component.swift in Sources */,
 				F95B6D8E25231715002C9062 /* RegularExpressionValidator.swift in Sources */,
@@ -4227,6 +4251,7 @@
 				F9639B4124E27D0E0073F38A /* BackoffScheduler.swift in Sources */,
 				F9589D032601EE7800E4113F /* FormItemInjector.swift in Sources */,
 				F94343E823FFF9DC00AADF5F /* ISOCountry.swift in Sources */,
+				5A15D5A1264BE1E500A8E3C7 /* ShopperInfo.swift in Sources */,
 				F96F44D523BDED4400871C1F /* FormTextItemStyle.swift in Sources */,
 				E702BDA5260108A700280682 /* ClientKeyValidator.swift in Sources */,
 				E278EB4522AA5ED600497FD5 /* SEPADirectDebitPaymentMethod.swift in Sources */,
@@ -4532,14 +4557,17 @@
 				F9B018D1260A32DC001F23FC /* EContextOnlineComponent.swift in Sources */,
 				F9175E8B259394E100D653BE /* SEPADirectDebitComponent.swift in Sources */,
 				F9B017522604F76C001F23FC /* EContextStoreComponent.swift in Sources */,
+				5A15D589264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift in Sources */,
 				F9175E8A259394E100D653BE /* SEPADirectDebitDetails.swift in Sources */,
 				F9589C942600FD7A00E4113F /* SevenElevenComponent.swift in Sources */,
 				F9175EAA259394FF00D653BE /* ApplePayComponentExtensions.swift in Sources */,
 				F9B017E12608D4A8001F23FC /* EContextATMComponent.swift in Sources */,
 				F9175ED22593951800D653BE /* MBWayComponent.swift in Sources */,
 				F9175E9B259394F200D653BE /* IssuerListComponent.swift in Sources */,
+				5A9889C8264E71210007F4C0 /* BoletoDetails.swift in Sources */,
 				F97C839825BF05AB00D7F85C /* DokuDetails.swift in Sources */,
 				F9175E9A259394F200D653BE /* IssuerListDetails.swift in Sources */,
+				5A54603F264A5CEC00724A87 /* BoletoComponent.swift in Sources */,
 				F9175EE32593952600D653BE /* BLIKDetails.swift in Sources */,
 				F9B016F92604F3FF001F23FC /* BasicPersonalInfoFormComponent.swift in Sources */,
 				F9175EC32593950D00D653BE /* QiwiWalletDetails.swift in Sources */,

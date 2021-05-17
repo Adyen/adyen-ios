@@ -8,16 +8,14 @@ import Foundation
 
 /// An item for plain text input
 /// :nodoc:
-public final class FormTextInputItem: FormTextItem {
-
-    /// :nodoc:
-    override public init(style: FormTextItemStyle = .init()) {
-        super.init(style: style)
-    }
+public final class FormTextInputItem: FormTextItem, Hidable {
         
     /// :nodoc:
     override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
+    
+    /// :nodoc:
+    public var isHidden: Observable<Bool> = Observable(false)
     
 }
