@@ -82,7 +82,7 @@ class FormTextItemViewTests: XCTestCase {
         XCTAssertEqual(item.value, "123456", "item.value must be the sanitized non-formatted text")
     }
     
-    func tesFormatterIsCalled() {
+    func testFormatterIsCalled() {
         let maximumLengthExpectation = XCTestExpectation(description: "Expect validator.maximumLength() to be called.")
         validator.handleMaximumLength = { value in
             XCTAssertEqual(value, "123456")
@@ -90,7 +90,7 @@ class FormTextItemViewTests: XCTestCase {
             return 6
         }
         
-        sut.textField.text = "123456H"
+        sut.textField.text = "123456"
         sut.textField.sendActions(for: .editingChanged)
         
         wait(for: [maximumLengthExpectation], timeout: 1)

@@ -302,6 +302,11 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
             hideAlertLabel(false)
             highlightSeparatorView(color: item.style.errorColor)
             titleLabel.textColor = item.style.errorColor
+        } else {
+            accessory = .none
+            hideAlertLabel(true)
+            highlightSeparatorView(color: tintColor)
+            titleLabel.textColor = tintColor
         }
     }
     

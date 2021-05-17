@@ -20,13 +20,4 @@ public struct BoletoPaymentMethod: PaymentMethod {
         builder.build(paymentMethod: self)
     }
     
-    /// :nodoc:
-    public var displayInformation: DisplayInformation {
-        DisplayInformation(title: name, subtitle: nil, logoName: type)
-    }
-
-    /// :nodoc:
-    public func localizedDisplayInformation(using _: LocalizationParameters?) -> DisplayInformation {
-        DisplayInformation(title: name, subtitle: nil, logoName: type)
-    }
 }
