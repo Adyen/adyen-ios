@@ -49,31 +49,6 @@ class RedirectDetailsTests: XCTestCase {
         XCTAssertNotNil(try? JSONEncoder().encode(details))
     }
     
-    func testPaResExtractionWithoutMDFromURL() {
-        let url = URL(string: "url://?param1=abc&PaRes=some")!
-        let details = RedirectDetails(returnURL: url)
-        
-        XCTAssertNil(details.extractKeyValuesFromURL())
-
-        XCTAssertThrowsError(try JSONEncoder().encode(details)) { _ in }
-    }
-    
-    func testMDExtractionWithoutPaResFromURL() {
-        let url = URL(string: "url://?param1=abc&MD=some")!
-        let details = RedirectDetails(returnURL: url)
-        
-        XCTAssertNil(details.extractKeyValuesFromURL())
-        XCTAssertThrowsError(try JSONEncoder().encode(details)) { _ in }
-    }
-    
-    func testExtractionFromURLWithInvalidParameters() {
-        let url = URL(string: "url://?param1=abc&param2=3")!
-        let details = RedirectDetails(returnURL: url)
-        
-        XCTAssertNil(details.extractKeyValuesFromURL())
-        XCTAssertThrowsError(try JSONEncoder().encode(details)) { _ in }
-    }
-    
     func testRedirectResultExtractionFromURLWithEncodedParameter() {
         let url = URL(string: "url://?param1=abc&redirectResult=encoded%21%20%40%20%24&param2=3")!
         let details = RedirectDetails(returnURL: url)
@@ -93,9 +68,17 @@ class RedirectDetailsTests: XCTestCase {
 
         XCTAssertEqual(keyValues.count, 1)
         XCTAssertEqual(keyValues[0].0, RedirectDetails.CodingKeys.queryString)
-        XCTAssertEqual(keyValues[0].1, "H7j5+pwnbNk8uKpS/m67rDp/K+AiJbQ==")
+        XCTAssertEqual(keyValues[0].1, "param1=abc&pp=H7j5+pwnbNk8uKpS/m67rDp/K+AiJbQ==&param2=3")
 
         XCTAssertNotNil(try? JSONEncoder().encode(details))
+    }
+
+    func testExtrationFromURLWithoutQuery() {
+        let url = URL(string: "url://")!
+        let details = RedirectDetails(returnURL: url)
+        
+        XCTAssertNil(details.extractKeyValuesFromURL())
+        XCTAssertThrowsError(try JSONEncoder().encode(details)) { _ in }
     }
 
     func testEncoding() {
