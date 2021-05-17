@@ -73,7 +73,7 @@ class RedirectDetailsTests: XCTestCase {
         XCTAssertNotNil(try? JSONEncoder().encode(details))
     }
 
-    func testExtrationFromURLWithoutQuery() {
+    func testExtractionFromURLWithoutQuery() {
         let url = URL(string: "url://")!
         let details = RedirectDetails(returnURL: url)
         
