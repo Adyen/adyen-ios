@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import Contacts
 
 /// The model for address data.
 public struct AddressInfo: Equatable, Encodable {
@@ -84,21 +85,18 @@ public struct AddressInfo: Equatable, Encodable {
 
 extension AddressInfo {
     
-    /// Returns the `AddressInfo` object transformed into a `String` ready for display
-    /// Consists of max 3 lines (subject of optional property availability)
-    /// 1. `street`, `houseNumberOrName`, `apartment`
-    /// 2. `postalCode`, `city`, `stateOrProvince`
-    /// 3. `country`
-    public var labelDescription: String {
-        [
-            [street, houseNumberOrName, apartment],
-            [postalCode, city, stateOrProvince],
-            [country]
-        ].map { line in line
+    /// :nodoc:
+    public var formatted: String {
+        let address = CNMutablePostalAddress()
+        city.map { address.city = $0 }
+        country.map { address.isoCountryCode = $0 }
+        stateOrProvince.map { address.state = $0 }
+        postalCode.map { address.postalCode = $0 }
+        address.street = [street, houseNumberOrName]
             .compactMap { $0 }
-            .filter { $0.isEmpty == false }
-            .joined(separator: ", ")
-        }.joined(separator: "\n")
+            .joined(separator: " ")
+        
+        return CNPostalAddressFormatter.string(from: address, style: .mailingAddress)
     }
     
 }

@@ -70,7 +70,7 @@ public final class BoletoComponent: PaymentComponent, PresentableComponent, Loca
     /// :nodoc:
     internal lazy var billingAddressLabelItem: FormContainerItem = {
         FormLabelItem(
-            text: configuration.shopperInfo.billingAddress?.labelDescription ?? "",
+            text: configuration.shopperInfo.billingAddress?.formatted ?? "",
             style: style.hintLabel,
             identifier: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "preFilledBillingAddress")
         ).withPadding(padding: .init(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0))
