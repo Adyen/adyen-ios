@@ -93,10 +93,12 @@ public final class DropInComponent: NSObject, PresentableComponent {
     /// - Parameter paymentMethods: The new payment methods.
     public func reload(with order: PartialPaymentOrder,
                        _ paymentMethods: PaymentMethods) {
-        let paymentMethod1 = OrderPaymentMethod(lastFour: "1234", type: "giftcard", transactionLimit: .init(value: 100, currencyCode: "CAD"), amount: .init(value: 200, currencyCode: "CAD"))
-        let paymentMethod2 = OrderPaymentMethod(lastFour: "3455", type: "giftcard", transactionLimit: .init(value: 100, currencyCode: "CAD"), amount: .init(value: 100, currencyCode: "CAD"))
-        let result = OrderStatusResponse(remainingAmount: .init(value: 7408, currencyCode: "CAD"), paymentMethods: [paymentMethod1, paymentMethod2])
-        handle(result)
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
+            let paymentMethod1 = OrderPaymentMethod(lastFour: "1234", type: "giftcard", transactionLimit: .init(value: 100, currencyCode: "CAD"), amount: .init(value: 200, currencyCode: "CAD"))
+            let paymentMethod2 = OrderPaymentMethod(lastFour: "3455", type: "giftcard", transactionLimit: .init(value: 100, currencyCode: "CAD"), amount: .init(value: 100, currencyCode: "CAD"))
+            let result = OrderStatusResponse(remainingAmount: .init(value: 7408, currencyCode: "CAD"), paymentMethods: [paymentMethod1, paymentMethod2])
+            self.handle(result)
+        }
 //        let request = OrderStatusRequest(orderData: order.orderData)
 //        apiClient.perform(request) { [weak self] result in
 //            self?.handle(result)

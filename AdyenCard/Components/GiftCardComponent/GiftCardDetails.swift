@@ -22,9 +22,6 @@ public struct GiftCardDetails: PaymentMethodDetails {
     /// The gift card brand
     public let brand: String
 
-    /// :nodoc:
-    public var holderName: String? = "BALANCE EUR 10000"
-
     /// Initializes the card payment details.
     ///
     /// - Parameters:
@@ -44,7 +41,6 @@ public struct GiftCardDetails: PaymentMethodDetails {
         case cardNumber = "number"
         case securityCode = "cvc"
         case brand
-        case holderName
     }
 
 }

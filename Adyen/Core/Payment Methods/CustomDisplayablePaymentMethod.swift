@@ -37,7 +37,7 @@ public struct CustomDisplayablePaymentMethod: PaymentMethod {
     }
 
     /// :nodoc:
-    public func localizedDisplayInformation(_: LocalizationParameters?) -> DisplayInformation {
+    public func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         customDisplayInformation
     }
 
