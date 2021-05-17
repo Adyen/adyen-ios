@@ -149,12 +149,12 @@ public final class BoletoComponent: PaymentComponent, PresentableComponent, Loca
         }
     }
     
+    /// :nodoc:
     private func createPaymentDetails() -> PaymentMethodDetails {
         guard let firstNameItem = formComponent.firstNameItem,
               let lastNameItem = formComponent.lastNameItem,
               case let shopperName = ShopperName(firstName: firstNameItem.value, lastName: lastNameItem.value),
-              let billingAddress = configuration.shopperInfo.billingAddress ?? formComponent.addressItem?.value,
-              let email = formComponent.emailItem?.value ?? configuration.shopperInfo.emailAddress else {
+              let billingAddress = configuration.shopperInfo.billingAddress ?? formComponent.addressItem?.value else {
             fatalError("There seems to be an error in the BaseFormComponent configuration.")
         }
 
@@ -162,9 +162,22 @@ public final class BoletoComponent: PaymentComponent, PresentableComponent, Loca
             type: paymentMethod.type,
             shopperName: shopperName,
             socialSecurityNumber: socialSecurityNumberItem.value,
-            emailAddress: email,
+            emailAddress: getEmailDetails(),
             billingAddress: billingAddress
         )
+    }
+    
+    /// :nodoc:
+    /// Obtain email address depending if it was prefilled, or the checkbox was ticked
+    private func getEmailDetails() -> String? {
+        if let prefilledEmail = configuration.shopperInfo.emailAddress {
+            return prefilledEmail
+        } else if sendCopyByEmailItem.publisher.wrappedValue,
+                  let filledEmail = formComponent.emailItem?.value {
+            return filledEmail
+        } else {
+            return nil
+        }
     }
 }
 
