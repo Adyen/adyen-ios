@@ -10,6 +10,7 @@ import UIKit
 
 internal protocol BrowserComponentDelegate: AnyObject {
     func didCancel()
+    func didOpenExternalApplication()
 }
 
 /// A component that opens a URL in web browsed and presents it.
@@ -50,30 +51,35 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
         super.init()
     }
 
+    /// This allows us to assume one of the following scenarios:
+    /// - SFSafariViewController deliberately closed by user and current app still in foreground;
+    /// - SFSafariViewController finished due to a successful redirect to an external app and current app no longer in foreground.
+    private func finish() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(25)) {
+            if UIApplication.shared.applicationState == .active {
+                self.delegate?.didCancel()
+            } else {
+                self.delegate?.didOpenExternalApplication()
+            }
+        }
+    }
+
 }
 
 // MARK: - SFSafariViewControllerDelegate
 
-extension BrowserComponent: SFSafariViewControllerDelegate {
+extension BrowserComponent: SFSafariViewControllerDelegate, UIAdaptivePresentationControllerDelegate {
     
-    /// Called when user clicks "Cancel" button.
+    /// Called when user clicks "Cancel" button or Safari redirects to other app.
     /// :nodoc:
     internal func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
-        delegate?.didCancel()
+        finish()
     }
-    
-}
-
-extension BrowserComponent: UIAdaptivePresentationControllerDelegate {
 
     /// Called when user drag VC down to dismiss.
     /// :nodoc:
     internal func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            if UIApplication.shared.applicationState == .active {
-                self.delegate?.didCancel()
-            }
-        }
+        self.delegate?.didCancel()
     }
 
 }
