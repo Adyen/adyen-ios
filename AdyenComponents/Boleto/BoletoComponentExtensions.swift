@@ -12,7 +12,7 @@ extension BoletoComponent {
     /// Boleto component configuration.
     public struct Configuration {
         /// Pre-filled optional personal information about the shopper
-        internal let shopperInfo: ShopperInfo
+        internal let shopperInfo: PrefilledShopperInformation
         
         /// A Boleto payment method
         internal let boletoPaymentMethod: BoletoPaymentMethod
@@ -31,12 +31,12 @@ extension BoletoComponent {
         public init(
             boletoPaymentMethod: BoletoPaymentMethod,
             payment: Payment?,
-            shopperInfo: ShopperInfo?,
+            shopperInfo: PrefilledShopperInformation?,
             showEmailAddress: Bool
         ) {
             self.boletoPaymentMethod = boletoPaymentMethod
             self.payment = payment
-            self.shopperInfo = shopperInfo ?? ShopperInfo()
+            self.shopperInfo = shopperInfo ?? PrefilledShopperInformation()
             self.showEmailAddress = showEmailAddress
         }
         

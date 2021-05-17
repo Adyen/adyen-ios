@@ -10,7 +10,7 @@
 		5A1315C926296B100092366D /* ProgressViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1315C826296B100092366D /* ProgressViewStyle.swift */; };
 		5A15D589264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A15D588264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift */; };
 		5A15D595264BC25600A8E3C7 /* AddressFormItemInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A15D594264BC25600A8E3C7 /* AddressFormItemInjector.swift */; };
-		5A15D5A1264BE1E500A8E3C7 /* ShopperInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A15D5A0264BE1E500A8E3C7 /* ShopperInfo.swift */; };
+		5A15D5A1264BE1E500A8E3C7 /* PrefilledShopperInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A15D5A0264BE1E500A8E3C7 /* PrefilledShopperInformation.swift */; };
 		5A22C279262D688600F12D97 /* QRCodeComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A22C26D262D686200F12D97 /* QRCodeComponentTests.swift */; };
 		5A22C2AD262EF99C00F12D97 /* ExpirationTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A22C2AC262EF99C00F12D97 /* ExpirationTimer.swift */; };
 		5A238C69263A9C8C00758FEF /* PreApplePayComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A238C68263A9C8C00758FEF /* PreApplePayComponent.swift */; };
@@ -815,7 +815,7 @@
 		5A1315C826296B100092366D /* ProgressViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewStyle.swift; sourceTree = "<group>"; };
 		5A15D588264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoletoComponentExtensions.swift; sourceTree = "<group>"; };
 		5A15D594264BC25600A8E3C7 /* AddressFormItemInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressFormItemInjector.swift; sourceTree = "<group>"; };
-		5A15D5A0264BE1E500A8E3C7 /* ShopperInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopperInfo.swift; sourceTree = "<group>"; };
+		5A15D5A0264BE1E500A8E3C7 /* PrefilledShopperInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefilledShopperInformation.swift; sourceTree = "<group>"; };
 		5A22C26D262D686200F12D97 /* QRCodeComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeComponentTests.swift; sourceTree = "<group>"; };
 		5A22C2AC262EF99C00F12D97 /* ExpirationTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationTimer.swift; sourceTree = "<group>"; };
 		5A238C68263A9C8C00758FEF /* PreApplePayComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreApplePayComponent.swift; sourceTree = "<group>"; };
@@ -1753,7 +1753,7 @@
 				E24FED0722704C9800A65122 /* ComponentError.swift */,
 				F90FB7BB2446E8C8005BFE0E /* BrowserInfo.swift */,
 				E7085A8C2627132B00D0153B /* AddressInfo.swift */,
-				5A15D5A0264BE1E500A8E3C7 /* ShopperInfo.swift */,
+				5A15D5A0264BE1E500A8E3C7 /* PrefilledShopperInformation.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -4251,7 +4251,7 @@
 				F9639B4124E27D0E0073F38A /* BackoffScheduler.swift in Sources */,
 				F9589D032601EE7800E4113F /* FormItemInjector.swift in Sources */,
 				F94343E823FFF9DC00AADF5F /* ISOCountry.swift in Sources */,
-				5A15D5A1264BE1E500A8E3C7 /* ShopperInfo.swift in Sources */,
+				5A15D5A1264BE1E500A8E3C7 /* PrefilledShopperInformation.swift in Sources */,
 				F96F44D523BDED4400871C1F /* FormTextItemStyle.swift in Sources */,
 				E702BDA5260108A700280682 /* ClientKeyValidator.swift in Sources */,
 				E278EB4522AA5ED600497FD5 /* SEPADirectDebitPaymentMethod.swift in Sources */,
