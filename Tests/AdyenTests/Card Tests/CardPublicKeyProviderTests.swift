@@ -12,6 +12,11 @@ import XCTest
 
 class CardPublicKeyProviderTests: XCTestCase {
 
+    override func tearDown() {
+        super.tearDown()
+        AdyenAssertion.listener = nil
+    }
+
     func testMissingClientKey() {
         let baseApiClient = APIClientMock()
         let apiClient = RetryAPIClient(apiClient: baseApiClient, scheduler: SimpleScheduler(maximumCount: 2))

@@ -33,6 +33,13 @@ class ListViewControllerTests: XCTestCase {
         listComponentStyle.listItem.subtitle.backgroundColor = .black
         listComponentStyle.listItem.subtitle.textAlignment = .left
         listComponentStyle.listItem.subtitle.font = .systemFont(ofSize: 30)
+
+        var footerStyle = ListSectionFooterStyle()
+        footerStyle.title.color = .cyan
+        footerStyle.title.backgroundColor = .brown
+        footerStyle.title.textAlignment = .left
+        footerStyle.title.font = .systemFont(ofSize: 19)
+        footerStyle.backgroundColor = .yellow
         
         let sut = ListViewController(style: listComponentStyle)
         
@@ -40,13 +47,16 @@ class ListViewControllerTests: XCTestCase {
         item11.identifier = "11"
         let item12 = ListItem(title: "test title 12", style: listComponentStyle.listItem)
         item12.identifier = "12"
-        let section1 = ListSection(title: "section 1", items: [item11, item12])
+        let section1 = ListSection(header: ListSectionHeader(title: "section 1", style: listComponentStyle.sectionHeader),
+                                   items: [item11, item12],
+                                   footer: ListSectionFooter(title: "section 1 footer", style: footerStyle))
         
         let item21 = ListItem(title: "test title 21", style: listComponentStyle.listItem)
         item21.identifier = "21"
         let item22 = ListItem(title: "test title 22", style: listComponentStyle.listItem)
         item22.identifier = "22"
-        let section2 = ListSection(title: "section 2", items: [item21, item22])
+        let section2 = ListSection(header: ListSectionHeader(title: "section 2", style: listComponentStyle.sectionHeader),
+                                   items: [item21, item22])
         
         sut.sections = [section1, section2]
         
@@ -74,6 +84,9 @@ class ListViewControllerTests: XCTestCase {
             let headerView1TitleLabel: UILabel? = sut.view.findView(with: "Adyen.ListHeaderView.section 1.titleLabel")
             let headerView2 = sut.view.findView(with: "Adyen.ListViewController.headerView.1")
             let headerView2TitleLabel: UILabel? = sut.view.findView(with: "Adyen.ListHeaderView.section 2.titleLabel")
+
+            let footerView1 = sut.view.findView(with: "Adyen.ListViewController.footerView.0")
+            let footerView1TitleLabel: UILabel? = sut.view.findView(with: "Adyen.ListFooterView.section 1 footer.titleLabel")
             
             /// list item
             XCTAssertEqual(listCell11?.backgroundColor, .magenta)
@@ -134,6 +147,14 @@ class ListViewControllerTests: XCTestCase {
             XCTAssertEqual(headerView2TitleLabel?.textAlignment, .center)
             XCTAssertEqual(headerView2TitleLabel?.font, .systemFont(ofSize: 22))
             XCTAssertEqual(headerView2TitleLabel?.backgroundColor, .red)
+
+            /// list section footer
+            XCTAssertEqual(footerView1?.backgroundColor, .yellow)
+
+            XCTAssertEqual(footerView1TitleLabel?.textColor, .cyan)
+            XCTAssertEqual(footerView1TitleLabel?.textAlignment, .left)
+            XCTAssertEqual(footerView1TitleLabel?.font, .systemFont(ofSize: 19))
+            XCTAssertEqual(footerView1TitleLabel?.backgroundColor, .brown)
             
             /// background color
             XCTAssertEqual(sut.view.backgroundColor, .red)

@@ -8,23 +8,9 @@ import Adyen
 
 internal struct ComponentsSection {
 
-    internal var header: ComponentsSectionHeader?
+    internal var header: ListSectionHeader?
 
     internal var components: [PaymentComponent]
 
-    internal var footer: ComponentsSectionFooter?
-}
-
-internal struct ComponentsSectionHeader {
-
-    internal var title: String
-
-    internal var style: ListSectionHeaderStyle
-}
-
-internal struct ComponentsSectionFooter {
-
-    internal var title: String
-
-    internal var style: ListSectionFooterStyle
+    internal var footer: ListSectionFooter?
 }

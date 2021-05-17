@@ -12,7 +12,7 @@ import UIKit
 internal final class PaymentMethodListComponent: ComponentLoader, PresentableComponent, Localizable {
     
     /// The components that are displayed in the list.
-    internal let components: [ComponentsSection]
+    internal let componentSections: [ComponentsSection]
     
     /// The delegate of the payment method list component.
     internal weak var delegate: PaymentMethodListComponentDelegate?
@@ -25,7 +25,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     /// - Parameter components: The components to display in the list.
     /// - Parameter style: The component's UI style.
     internal init(components: [ComponentsSection], style: ListComponentStyle = ListComponentStyle()) {
-        self.components = components
+        self.componentSections = components
         self.style = style
     }
     
@@ -57,10 +57,10 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
             return listItem
         }
 
-        let sections: [ListSection] = components.map {
-            ListSection(title: $0.header?.title,
+        let sections: [ListSection] = componentSections.map {
+            ListSection(header: $0.header,
                         items: $0.components.map(item(for:)),
-                        footerTitle: $0.footer?.title)
+                        footer: $0.footer)
         }
 
 //        let paidItems = components.paid.map(item(for:))
@@ -90,7 +90,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     /// - Parameter component: The component for which to start a loading animation.
     internal func startLoading(for component: PaymentComponent) {
         let allListItems = listViewController.sections.flatMap(\.items)
-        let allComponents = components.map(\.components).flatMap { $0 }
+        let allComponents = componentSections.map(\.components).flatMap { $0 }
         
         guard let index = allComponents.firstIndex(where: { $0 === component }) else {
             return

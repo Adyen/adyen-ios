@@ -27,7 +27,7 @@ class PaymentMethodListComponentTests: XCTestCase {
     
     func testLocalizationWithCustomTableName() {
         let storedSection = ComponentsSection(components: [storedComponent])
-        let regularSectionHeader = ComponentsSectionHeader(title: "title", style: ListSectionHeaderStyle())
+        let regularSectionHeader = ListSectionHeader(title: "title", style: ListSectionHeaderStyle())
         let regularSection = ComponentsSection(header: regularSectionHeader, components: [regularComponent])
         let sut = PaymentMethodListComponent(components: [storedSection, regularSection])
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
@@ -35,12 +35,12 @@ class PaymentMethodListComponentTests: XCTestCase {
         let listViewController = sut.listViewController
         XCTAssertEqual(listViewController.title, localizedString(.paymentMethodsTitle, sut.localizationParameters))
         XCTAssertEqual(listViewController.sections.count, 2)
-        XCTAssertEqual(listViewController.sections[1].title, "title")
+        XCTAssertEqual(listViewController.sections[1].header?.title, "title")
     }
     
     func testLocalizationWithCustomKeySeparator() {
         let storedSection = ComponentsSection(components: [storedComponent])
-        let regularSectionHeader = ComponentsSectionHeader(title: "title", style: ListSectionHeaderStyle())
+        let regularSectionHeader = ListSectionHeader(title: "title", style: ListSectionHeaderStyle())
         let regularSection = ComponentsSection(header: regularSectionHeader, components: [regularComponent])
         let sut = PaymentMethodListComponent(components: [storedSection, regularSection])
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
@@ -48,7 +48,7 @@ class PaymentMethodListComponentTests: XCTestCase {
         let listViewController = sut.listViewController
         XCTAssertEqual(listViewController.title, localizedString(LocalizationKey(key: "adyen_paymentMethods_title"), sut.localizationParameters))
         XCTAssertEqual(listViewController.sections.count, 2)
-        XCTAssertEqual(listViewController.sections[1].title, "title")
+        XCTAssertEqual(listViewController.sections[1].header?.title, "title")
     }
 
     func testStartStopLoading() {

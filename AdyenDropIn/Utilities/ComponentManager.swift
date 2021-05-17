@@ -46,8 +46,8 @@ internal final class ComponentManager {
         // Paid section
         let amountString: String = remainingAmount.map(\.formatted) ?? "Amount"
         let footerTitle = "Select payment method for the remaining " + amountString
-        let paidFooter = ComponentsSectionFooter(title: footerTitle,
-                                                 style: style.listComponent.paidPartialPaymentFooter)
+        let paidFooter = ListSectionFooter(title: footerTitle,
+                                           style: style.listComponent.partialPaymentSectionFooter)
         let paidSection = ComponentsSection(header: nil,
                                             components: paidComponents,
                                             footer: paidFooter)
@@ -58,8 +58,8 @@ internal final class ComponentManager {
         // Regular section
         let localizedTitle = localizedString(.paymentMethodsOtherMethods, configuration.localizationParameters)
         let regularSectionTitle = storedSection.components.isEmpty ? nil : localizedTitle
-        let regularHeader: ComponentsSectionHeader? = regularSectionTitle.map {
-            ComponentsSectionHeader(title: $0, style: style.listComponent.sectionHeader)
+        let regularHeader: ListSectionHeader? = regularSectionTitle.map {
+            ListSectionHeader(title: $0, style: style.listComponent.sectionHeader)
         }
         let regularSection = ComponentsSection(header: regularHeader, components: regularComponents, footer: nil)
         

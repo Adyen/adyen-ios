@@ -62,3 +62,27 @@ extension CardComponent: TrackableComponent {
         fetchCardPublicKey(discardError: true) { _ in /* Do nothing, to just cache the card public key value */ }
     }
 }
+
+/// :nodoc:
+extension CardComponent {
+    internal typealias CardKeySuccessHandler = (_ cardPublicKey: String) -> Void
+
+    internal func fetchCardPublicKey(discardError: Bool, completion: @escaping CardKeySuccessHandler) {
+        cardPublicKeyProvider.fetch { [weak self] in
+            self?.handle(result: $0, discardError: discardError, completion: completion)
+        }
+    }
+
+    private func handle(result: Result<String, Swift.Error>,
+                        discardError: Bool,
+                        completion: CardKeySuccessHandler) {
+        switch result {
+        case let .success(key):
+            completion(key)
+        case let .failure(error):
+            if !discardError {
+                delegate?.didFail(with: error, from: self)
+            }
+        }
+    }
+}
