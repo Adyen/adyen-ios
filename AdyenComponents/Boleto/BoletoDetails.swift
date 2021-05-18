@@ -28,5 +28,29 @@ public struct BoletoDetails: PaymentMethodDetails,
     
     /// :nodoc:
     public let telephoneNumber: String? = nil
-
+    
+    /// Initializes the Boleto details
+    /// - Parameters:
+    ///   - type: Boleto payment method.
+    ///   - shopperName: Name of the shopper.
+    ///   - socialSecurityNumber: CPF/CNPJ of the shopper.
+    ///   - emailAddress: Optional email address of the shopper.
+    ///   - billingAddress: Billing address of the shopper.
+    public init(
+        type: String,
+        shopperName: ShopperName,
+        socialSecurityNumber: String,
+        emailAddress: String?,
+        billingAddress: AddressInfo
+    ) {
+        self.type = type
+        self.shopperName = shopperName
+        self.socialSecurityNumber = socialSecurityNumber
+        self.emailAddress = emailAddress
+        self.billingAddress = billingAddress
+    }
+    
+    public enum CodingKeys: CodingKey {
+        case type
+    }
 }
