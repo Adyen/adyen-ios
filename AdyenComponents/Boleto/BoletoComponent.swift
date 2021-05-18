@@ -89,8 +89,8 @@ public final class BoletoComponent: PaymentComponent, PresentableComponent, Loca
     }
     
     /// :nodoc:
-    private lazy var formComponent: BoletoFormComponent = {
-        let component = BoletoFormComponent(
+    private lazy var formComponent: FormComponent = {
+        let component = FormComponent(
             paymentMethod: paymentMethod,
             configuration: AbstractPersonalInformationComponent.Configuration(fields: getFormFields()),
             onCreatePaymentDetails: { [weak self] in self?.createPaymentDetails() }
@@ -132,7 +132,7 @@ public final class BoletoComponent: PaymentComponent, PresentableComponent, Loca
     
     /// :nodoc:
     /// Sets the initial values for the form fields based on configuration
-    private func setUpFields(for component: BoletoFormComponent) {
+    private func setUpFields(for component: FormComponent) {
         if let shopperName = configuration.shopperInfo.shopperName {
             component.firstNameItem?.value = shopperName.firstName
             component.lastNameItem?.value = shopperName.lastName
@@ -197,7 +197,7 @@ extension BoletoComponent: PaymentComponentDelegate {
 extension BoletoComponent {
     
     /// :nodoc:
-    fileprivate final class BoletoFormComponent: AbstractPersonalInformationComponent {
+    fileprivate final class FormComponent: AbstractPersonalInformationComponent {
         
         /// :nodoc:
         private let onCreatePaymentDetails: () -> PaymentMethodDetails?
