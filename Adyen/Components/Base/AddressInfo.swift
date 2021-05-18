@@ -92,7 +92,7 @@ extension AddressInfo {
         country.map { address.isoCountryCode = $0 }
         stateOrProvince.map { address.state = $0 }
         postalCode.map { address.postalCode = $0 }
-        address.street = [street, houseNumberOrName]
+        address.street = [street, houseNumberOrName, apartment]
             .compactMap { $0 }
             .joined(separator: " ")
         
