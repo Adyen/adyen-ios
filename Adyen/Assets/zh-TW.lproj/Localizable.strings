@@ -45,7 +45,6 @@
 "adyen.blik.invalid" = "輸入 6 個數字";
 "adyen.blik.code" = "6 位數代碼";
 "adyen.blik.help" = "從您的銀行應用程式中獲取代碼。";
-"adyen.blik.placeholder" = "123–456";
 "adyen.preauthorizeWith" = "透過以下方式進行預先授權：%@";
 "adyen.confirmPreauthorization" = "確認預先授權";
 "adyen.card.cvcItem.title.optional" = "CVC / CVV (可選)";
@@ -63,8 +62,9 @@
 "adyen.button.copy" = "複製";
 "adyen.voucher.introduction" = "多謝惠顧，請使用以下資訊完成付款。";
 "adyen.voucher.readInstructions" = "閱覽說明";
-"adyen.voucher.saveImage" = "Save as image";
-"adyen.voucher.finish" = "Finish";
+"adyen.pix.instructions" = "";
+"adyen.pix.expirationLabel" = "您有 %@ 可以支付";
+"adyen.pix.copyButton" = "";
 "adyen.billingAddressSection.title" = "帳單地址";
 "adyen.deliveryAddressSection.title" = "派送地址";
 "adyen.countryField.title" = "國家/地區";
@@ -95,3 +95,7 @@
 "adyen.errorFeedback.emptyField" = "此為必填欄位，請務必填寫。";
 "adyen.errorFeedback.incorrectFormat" = "輸入的格式無效。";
 "adyen.field.title.optional" = "（選用）";
+"adyen.boletobancario.btnLabel" = "產生 Boleto";
+"adyen.boleto.sendCopyToEmail" = "將複本傳送至我的電子郵件";
+"adyen.boleto.personalDetails" = "個人詳細資料";
+"adyen.boleto.socialSecurityNumber" = "";

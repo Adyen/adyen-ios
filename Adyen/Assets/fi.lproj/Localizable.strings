@@ -65,6 +65,9 @@
 "adyen.voucher.readInstructions" = "Lue ohjeet";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.pix.instructions" = "";
+"adyen.pix.expirationLabel" = "Sinulla on %@ maksettavana";
+"adyen.pix.copyButton" = "";
 "adyen.billingAddressSection.title" = "Laskutusosoite";
 "adyen.deliveryAddressSection.title" = "Toimitusosoite";
 "adyen.countryField.title" = "Maa";
@@ -95,3 +98,7 @@
 "adyen.errorFeedback.emptyField" = "Vaaditut kentät, syötä sisältö.";
 "adyen.errorFeedback.incorrectFormat" = "Syöttömuoto ei ole kelvollinen.";
 "adyen.field.title.optional" = "(valinnainen)";
+"adyen.boletobancario.btnLabel" = "Luo Boleto";
+"adyen.boleto.sendCopyToEmail" = "Lähetä kopio sähköpostiini";
+"adyen.boleto.personalDetails" = "Henkilötiedot";
+"adyen.boleto.socialSecurityNumber" = "";

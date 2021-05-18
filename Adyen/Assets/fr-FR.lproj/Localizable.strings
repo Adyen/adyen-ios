@@ -65,6 +65,9 @@
 "adyen.voucher.readInstructions" = "Lire les instructions";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.pix.instructions" = "";
+"adyen.pix.expirationLabel" = "Vous avez %@ pour payer cette somme";
+"adyen.pix.copyButton" = "";
 "adyen.billingAddressSection.title" = "Adresse de facturation";
 "adyen.deliveryAddressSection.title" = "Adresse de livraison";
 "adyen.countryField.title" = "Pays";
@@ -95,3 +98,7 @@
 "adyen.errorFeedback.emptyField" = "Ce champ est obligatoire, veuillez le remplir.";
 "adyen.errorFeedback.incorrectFormat" = "Le format de saisie n’est pas valide.";
 "adyen.field.title.optional" = "(facultatif)";
+"adyen.boletobancario.btnLabel" = "Générer un Boleto";
+"adyen.boleto.sendCopyToEmail" = "Envoyer une copie à mon adresse e-mail";
+"adyen.boleto.personalDetails" = "Informations personnelles";
+"adyen.boleto.socialSecurityNumber" = "";

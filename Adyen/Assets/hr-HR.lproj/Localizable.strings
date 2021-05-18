@@ -65,6 +65,9 @@
 "adyen.voucher.readInstructions" = "Pročitajte upute";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.pix.instructions" = "";
+"adyen.pix.expirationLabel" = "Imate %@ za plaćanje";
+"adyen.pix.copyButton" = "";
 "adyen.billingAddressSection.title" = "Adresa za račun";
 "adyen.deliveryAddressSection.title" = "Adresa za dostavu";
 "adyen.countryField.title" = "Zemlja";
@@ -95,3 +98,7 @@
 "adyen.errorFeedback.emptyField" = "Obavezno polje, popunite ga.";
 "adyen.errorFeedback.incorrectFormat" = "Format unosa nije važeći.";
 "adyen.field.title.optional" = "(neobavezno)";
+"adyen.boletobancario.btnLabel" = "Generiraj Boleto";
+"adyen.boleto.sendCopyToEmail" = "Pošalji kopiju na moju e-poštu";
+"adyen.boleto.personalDetails" = "Osobni podatci";
+"adyen.boleto.socialSecurityNumber" = "";

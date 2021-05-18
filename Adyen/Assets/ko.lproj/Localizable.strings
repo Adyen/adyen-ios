@@ -65,6 +65,9 @@
 "adyen.voucher.readInstructions" = "안내 읽기";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.pix.instructions" = "";
+"adyen.pix.expirationLabel" = "남은 결제 시한: %@";
+"adyen.pix.copyButton" = "";
 "adyen.billingAddressSection.title" = "청구지 주소";
 "adyen.deliveryAddressSection.title" = "배송 주소";
 "adyen.countryField.title" = "국가";
@@ -95,3 +98,7 @@
 "adyen.errorFeedback.emptyField" = "필수 입력란, 기재해 주세요.";
 "adyen.errorFeedback.incorrectFormat" = "입력 형식이 유효하지 않습니다.";
 "adyen.field.title.optional" = "(선택 사항)";
+"adyen.boletobancario.btnLabel" = "Boleto 생성";
+"adyen.boleto.sendCopyToEmail" = "내 이메일로 사본 보내기";
+"adyen.boleto.personalDetails" = "개인 정보";
+"adyen.boleto.socialSecurityNumber" = "";

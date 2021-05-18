@@ -65,6 +65,9 @@
 "adyen.voucher.readInstructions" = "Olvassa el az utasításokat";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.pix.instructions" = "";
+"adyen.pix.expirationLabel" = "Fizetéshez rendelkezésre álló idő: %@";
+"adyen.pix.copyButton" = "";
 "adyen.billingAddressSection.title" = "Számlázási cím";
 "adyen.deliveryAddressSection.title" = "Szállítási cím";
 "adyen.countryField.title" = "Ország";
@@ -95,3 +98,7 @@
 "adyen.errorFeedback.emptyField" = "Kötelező mező, töltse ki.";
 "adyen.errorFeedback.incorrectFormat" = "A megadott adatok formátuma érvénytelen.";
 "adyen.field.title.optional" = "(nem kötelező)";
+"adyen.boletobancario.btnLabel" = "Boleto létrehozása";
+"adyen.boleto.sendCopyToEmail" = "Másolat küldése az e-mail-címemre";
+"adyen.boleto.personalDetails" = "Személyes adatok";
+"adyen.boleto.socialSecurityNumber" = "";

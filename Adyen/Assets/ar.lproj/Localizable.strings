@@ -66,6 +66,8 @@
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
 "adyen.pix.instructions" = "افتح التطبيق باستخدام مفتاح PIX المسجل، واختر الدفع باستخدام PIX وامسح رمز الاستجابة السريعة ضوئيًا أو انسخ الرمز والصقه";
+"adyen.pix.expirationLabel" = "لديك %@ للدفع";
+"adyen.pix.copyButton" = "";
 "adyen.billingAddressSection.title" = "عنوان الفواتير";
 "adyen.deliveryAddressSection.title" = "عنوان التسليم";
 "adyen.countryField.title" = "البلد";
@@ -96,3 +98,7 @@
 "adyen.errorFeedback.emptyField" = "حقل مطلوب، يُرجى ملئه.";
 "adyen.errorFeedback.incorrectFormat" = "تنسيق الإدخال غير صحيح.";
 "adyen.field.title.optional" = "(اختياري)";
+"adyen.boletobancario.btnLabel" = "إنشاء طريقة دفع Boleto";
+"adyen.boleto.sendCopyToEmail" = "إرسال نسخة إلى بريدي الإلكتروني";
+"adyen.boleto.personalDetails" = "البيانات الشخصية";
+"adyen.boleto.socialSecurityNumber" = "";

@@ -66,8 +66,8 @@
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
 "adyen.pix.instructions" = "Open the app with the PIX registered key, choose Pay with PIX and scan the QR Code or copy and paste the code";
-"adyen.pix.copyButton" = "Copy code";
 "adyen.pix.expirationLabel" = "You have %@ to pay";
+"adyen.pix.copyButton" = "Copy code";
 "adyen.billingAddressSection.title" = "Billing address";
 "adyen.deliveryAddressSection.title" = "Delivery Address";
 "adyen.countryField.title" = "Country";
@@ -98,3 +98,7 @@
 "adyen.errorFeedback.emptyField" = "Required field, please fill it in.";
 "adyen.errorFeedback.incorrectFormat" = "Input format is not valid.";
 "adyen.field.title.optional" = "(optional)";
+"adyen.boletobancario.btnLabel" = "Generate Boleto";
+"adyen.boleto.sendCopyToEmail" = "Send a copy to my email";
+"adyen.boleto.personalDetails" = "Personal details";
+"adyen.boleto.socialSecurityNumber" = "CPF/CNPJ";

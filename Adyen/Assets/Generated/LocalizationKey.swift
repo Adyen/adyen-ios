@@ -75,8 +75,8 @@ public struct LocalizationKey {
     public static let voucherSaveImage = LocalizationKey(key: "adyen.voucher.saveImage")
     public static let voucherFinish = LocalizationKey(key: "adyen.voucher.finish")
     public static let pixInstructions = LocalizationKey(key: "adyen.pix.instructions")
-    public static let pixCopyButton = LocalizationKey(key: "adyen.pix.copyButton")
     public static let pixExpirationLabel = LocalizationKey(key: "adyen.pix.expirationLabel")
+    public static let pixCopyButton = LocalizationKey(key: "adyen.pix.copyButton")
     public static let billingAddressSectionTitle = LocalizationKey(key: "adyen.billingAddressSection.title")
     public static let deliveryAddressSectionTitle = LocalizationKey(key: "adyen.deliveryAddressSection.title")
     public static let countryFieldTitle = LocalizationKey(key: "adyen.countryField.title")
@@ -107,6 +107,10 @@ public struct LocalizationKey {
     public static let errorFeedbackEmptyField = LocalizationKey(key: "adyen.errorFeedback.emptyField")
     public static let errorFeedbackIncorrectFormat = LocalizationKey(key: "adyen.errorFeedback.incorrectFormat")
     public static let fieldTitleOptional = LocalizationKey(key: "adyen.field.title.optional")
+    public static let boletobancarioBtnLabel = LocalizationKey(key: "adyen.boletobancario.btnLabel")
+    public static let boletoSendCopyToEmail = LocalizationKey(key: "adyen.boleto.sendCopyToEmail")
+    public static let boletoPersonalDetails = LocalizationKey(key: "adyen.boleto.personalDetails")
+    public static let boletoSocialSecurityNumber = LocalizationKey(key: "adyen.boleto.socialSecurityNumber")
     
     internal let key: String
     

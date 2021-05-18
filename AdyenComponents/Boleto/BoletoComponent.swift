@@ -49,8 +49,8 @@ public final class BoletoComponent: PaymentComponent, PresentableComponent, Loca
     /// :nodoc:
     private lazy var socialSecurityNumberItem: FormTextInputItem = {
         let socialSecurityNumberItem = FormTextInputItem(style: style.textField)
-        socialSecurityNumberItem.title = localizedString(LocalizationKey(key: "CPF/CNPJ"), localizationParameters)
-        socialSecurityNumberItem.placeholder = localizedString(LocalizationKey(key: "CPF/CNPJ"), localizationParameters)
+        socialSecurityNumberItem.title = localizedString(.boletoSocialSecurityNumber, localizationParameters)
+        socialSecurityNumberItem.placeholder = localizedString(.boletoSocialSecurityNumber, localizationParameters)
         socialSecurityNumberItem.validator = LengthValidator(minimumLength: 1)
         socialSecurityNumberItem.autocapitalizationType = .none
         socialSecurityNumberItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "personalNumberItem")
@@ -61,7 +61,7 @@ public final class BoletoComponent: PaymentComponent, PresentableComponent, Loca
     /// :nodoc:
     internal lazy var sendCopyByEmailItem: FormSwitchItem = {
         let sendCopyToEmailItem = FormSwitchItem(style: FormSwitchItemStyle())
-        sendCopyToEmailItem.title = localizedString(LocalizationKey(key: "Enviar copia por email"), localizationParameters)
+        sendCopyToEmailItem.title = localizedString(.boletoSendCopyToEmail, localizationParameters)
         sendCopyToEmailItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "sendCopyToEmailItem")
 
         return sendCopyToEmailItem
@@ -107,7 +107,7 @@ public final class BoletoComponent: PaymentComponent, PresentableComponent, Loca
     /// Constructs the fields for the form based on the configuration
     private func getFormFields() -> [PersonalInformation] {
         var fields: [PersonalInformation] = [
-            .custom(CustomFormItemInjector(item: headerFormItem(key: LocalizationKey(key: "Dados pessoais")))),
+            .custom(CustomFormItemInjector(item: headerFormItem(key: .boletoPersonalDetails))),
             .firstName,
             .lastName,
             .custom(CustomFormItemInjector(item: socialSecurityNumberItem))
@@ -215,7 +215,7 @@ extension BoletoComponent {
         
         /// :nodoc:
         public override func submitButtonTitle() -> String {
-            localizedString(LocalizationKey(key: "Gerar Boleto"), localizationParameters)
+            localizedString(.boletobancarioBtnLabel, localizationParameters)
         }
         
         /// :nodoc:

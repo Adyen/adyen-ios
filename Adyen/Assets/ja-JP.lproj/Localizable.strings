@@ -65,6 +65,9 @@
 "adyen.voucher.readInstructions" = "手順を参照してください";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.pix.instructions" = "";
+"adyen.pix.expirationLabel" = "%@をお支払い下さい。";
+"adyen.pix.copyButton" = "";
 "adyen.billingAddressSection.title" = "ご請求住所";
 "adyen.deliveryAddressSection.title" = "配送先住所";
 "adyen.countryField.title" = "国";
@@ -95,3 +98,7 @@
 "adyen.errorFeedback.emptyField" = "必須フィールドです。入力してください。";
 "adyen.errorFeedback.incorrectFormat" = "入力形式が無効です。";
 "adyen.field.title.optional" = "（任意）";
+"adyen.boletobancario.btnLabel" = "Boletoを生成する";
+"adyen.boleto.sendCopyToEmail" = "自分のメールアドレスにコピーを送信する";
+"adyen.boleto.personalDetails" = "個人情報";
+"adyen.boleto.socialSecurityNumber" = "";
