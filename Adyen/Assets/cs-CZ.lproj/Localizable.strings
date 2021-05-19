@@ -65,9 +65,7 @@
 "adyen.voucher.readInstructions" = "Přečtěte si pokyny";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
-"adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Na zaplacení vám zbývá %@";
-"adyen.pix.copyButton" = "";
 "adyen.billingAddressSection.title" = "Fakturační adresa";
 "adyen.deliveryAddressSection.title" = "Dodací adresa";
 "adyen.countryField.title" = "Země";
@@ -101,6 +99,5 @@
 "adyen.boletobancario.btnLabel" = "Vygenerovat Boleto";
 "adyen.boleto.sendCopyToEmail" = "Poslat mi kopii na e-mail";
 "adyen.boleto.personalDetails" = "Osobní údaje";
-"adyen.boleto.socialSecurityNumber" = "";
 "adyen.giftcard.currencyError" = "Dárkové karty jsou platné jenom v měně, ve které byly vystavené";
 "adyen.giftcard.noBalance" = "Na dárkové kartě je nulový zůstatek";
