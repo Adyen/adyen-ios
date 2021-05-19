@@ -102,3 +102,6 @@
 "adyen.boleto.sendCopyToEmail" = "Pošlji kopijo na moj elektronski naslov";
 "adyen.boleto.personalDetails" = "Osebni podatki";
 "adyen.boleto.socialSecurityNumber" = "";
+"adyen.boleto.download.pdf" = "Prenos datoteke PDF";
+"adyen.giftcard.currencyError" = "Darilne kartice so veljavne samo za valuto, za katero so bile izdane";
+"adyen.giftcard.noBalance" = "Na tej darilni kartici ni sredstev";

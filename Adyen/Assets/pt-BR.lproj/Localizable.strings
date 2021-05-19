@@ -102,3 +102,6 @@
 "adyen.boleto.sendCopyToEmail" = "Enviar uma cópia por e-mail";
 "adyen.boleto.personalDetails" = "Informações pessoais";
 "adyen.boleto.socialSecurityNumber" = "";
+"adyen.boleto.download.pdf" = "Baixar PDF";
+"adyen.giftcard.currencyError" = "Os vales-presente são válidos somente na moeda em que foram emitidos";
+"adyen.giftcard.noBalance" = "Este vale-presente tem saldo zero";

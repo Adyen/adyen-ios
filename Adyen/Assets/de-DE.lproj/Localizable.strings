@@ -102,3 +102,6 @@
 "adyen.boleto.sendCopyToEmail" = "Eine Kopie an meine E-Mail-Adresse senden";
 "adyen.boleto.personalDetails" = "Persönliche Angaben";
 "adyen.boleto.socialSecurityNumber" = "";
+"adyen.boleto.download.pdf" = "PDF herunterladen";
+"adyen.giftcard.currencyError" = "Geschenkkarten sind nur in der Währung gültig, in der sie ausgestellt wurden";
+"adyen.giftcard.noBalance" = "Auf dieser Geschenkkarte ist kein Guthaben vorhanden";

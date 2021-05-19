@@ -99,3 +99,6 @@
 "adyen.boleto.sendCopyToEmail" = "將複本傳送至我的電子郵件";
 "adyen.boleto.personalDetails" = "個人詳細資料";
 "adyen.boleto.socialSecurityNumber" = "";
+"adyen.boleto.download.pdf" = "下載 PDF";
+"adyen.giftcard.currencyError" = "禮品卡只能以其簽發時所使用的貨幣進行結算";
+"adyen.giftcard.noBalance" = "此禮品卡的餘額為零";

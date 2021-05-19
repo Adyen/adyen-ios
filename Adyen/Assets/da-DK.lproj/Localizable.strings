@@ -102,3 +102,6 @@
 "adyen.boleto.sendCopyToEmail" = "Send en kopi til min e-mail";
 "adyen.boleto.personalDetails" = "Personlige oplysninger";
 "adyen.boleto.socialSecurityNumber" = "";
+"adyen.boleto.download.pdf" = "Download PDF";
+"adyen.giftcard.currencyError" = "Gavekort er kun gyldige i udstedelsesvalutaen";
+"adyen.giftcard.noBalance" = "Saldoen på gavekortet er 0";

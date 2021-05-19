@@ -102,3 +102,6 @@
 "adyen.boleto.sendCopyToEmail" = "Lähetä kopio sähköpostiini";
 "adyen.boleto.personalDetails" = "Henkilötiedot";
 "adyen.boleto.socialSecurityNumber" = "";
+"adyen.boleto.download.pdf" = "Lataa PDF";
+"adyen.giftcard.currencyError" = "Gift cards are only valid in the currency they were issued in";
+"adyen.giftcard.noBalance" = "Lahjakortin saldo on nolla";

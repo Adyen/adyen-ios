@@ -111,6 +111,9 @@ public struct LocalizationKey {
     public static let boletoSendCopyToEmail = LocalizationKey(key: "adyen.boleto.sendCopyToEmail")
     public static let boletoPersonalDetails = LocalizationKey(key: "adyen.boleto.personalDetails")
     public static let boletoSocialSecurityNumber = LocalizationKey(key: "adyen.boleto.socialSecurityNumber")
+    public static let boletoDownloadPdf = LocalizationKey(key: "adyen.boleto.download.pdf")
+    public static let giftcardCurrencyError = LocalizationKey(key: "adyen.giftcard.currencyError")
+    public static let giftcardNoBalance = LocalizationKey(key: "adyen.giftcard.noBalance")
     
     internal let key: String
     

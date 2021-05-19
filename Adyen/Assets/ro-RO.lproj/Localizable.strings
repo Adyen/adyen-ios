@@ -102,3 +102,6 @@
 "adyen.boleto.sendCopyToEmail" = "Trimite o copie la adresa mea de e-mail";
 "adyen.boleto.personalDetails" = "Informații personale";
 "adyen.boleto.socialSecurityNumber" = "";
+"adyen.boleto.download.pdf" = "Descărcați PDF";
+"adyen.giftcard.currencyError" = "Cardurile cadou sunt valabile numai în moneda în care au fost emise";
+"adyen.giftcard.noBalance" = "Acest card cadou are soldul zero";

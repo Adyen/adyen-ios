@@ -102,3 +102,6 @@
 "adyen.boleto.sendCopyToEmail" = "自分のメールアドレスにコピーを送信する";
 "adyen.boleto.personalDetails" = "個人情報";
 "adyen.boleto.socialSecurityNumber" = "";
+"adyen.boleto.download.pdf" = "PDFをダウンロード";
+"adyen.giftcard.currencyError" = "ギフトカードは、発行された通貨でのみ有効です。";
+"adyen.giftcard.noBalance" = "このギフトカードの残高はゼロです";

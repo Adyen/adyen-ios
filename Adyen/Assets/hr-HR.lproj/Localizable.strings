@@ -102,3 +102,6 @@
 "adyen.boleto.sendCopyToEmail" = "Pošalji kopiju na moju e-poštu";
 "adyen.boleto.personalDetails" = "Osobni podatci";
 "adyen.boleto.socialSecurityNumber" = "";
+"adyen.boleto.download.pdf" = "Preuzmite PDF";
+"adyen.giftcard.currencyError" = "Poklon-kartice vrijede samo u valuti u kojoj su izdane";
+"adyen.giftcard.noBalance" = "Stanje na ovoj poklon-kartici iznosi nula";

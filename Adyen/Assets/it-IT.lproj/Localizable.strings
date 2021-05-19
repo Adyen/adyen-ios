@@ -102,3 +102,6 @@
 "adyen.boleto.sendCopyToEmail" = "Invia una copia alla mia e-mail";
 "adyen.boleto.personalDetails" = "Dati personali";
 "adyen.boleto.socialSecurityNumber" = "";
+"adyen.boleto.download.pdf" = "Scarica PDF";
+"adyen.giftcard.currencyError" = "I buono regalo sono validi solo nella valuta in cui sono state emessi";
+"adyen.giftcard.noBalance" = "Questo buono regalo ha un saldo pari a zero";

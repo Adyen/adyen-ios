@@ -102,3 +102,6 @@
 "adyen.boleto.sendCopyToEmail" = "Poslat mi kopii na e-mail";
 "adyen.boleto.personalDetails" = "Osobní údaje";
 "adyen.boleto.socialSecurityNumber" = "";
+"adyen.boleto.download.pdf" = "Stáhnout PDF";
+"adyen.giftcard.currencyError" = "Dárkové karty jsou platné jenom v měně, ve které byly vystavené";
+"adyen.giftcard.noBalance" = "Na dárkové kartě je nulový zůstatek";

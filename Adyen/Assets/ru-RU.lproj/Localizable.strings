@@ -102,3 +102,6 @@
 "adyen.boleto.sendCopyToEmail" = "Отправить мне копию на эл. почту";
 "adyen.boleto.personalDetails" = "Личные данные";
 "adyen.boleto.socialSecurityNumber" = "";
+"adyen.boleto.download.pdf" = "Загрузить PDF";
+"adyen.giftcard.currencyError" = "Принимаются только подарочные карты соответствующей валюты";
+"adyen.giftcard.noBalance" = "На этой подарочной карте нет средств";
