@@ -74,15 +74,8 @@ extension IntegrationExample: DropInComponentDelegate {
 
     internal func didSubmit(_ data: PaymentComponentData, for paymentMethod: PaymentMethod, from component: DropInComponent) {
         print("User did start: \(paymentMethod.name)")
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
-            self.handle(PartialPaymentOrder(pspReference: "ef2ef",
-                                            orderData: "ef2f23f",
-                                            reference: "e2f2f2",
-                                            remainingAmount: .init(value: 7408, currencyCode: "CAD"), expiresAt: nil),
-                        self.paymentMethods!)
-        }
-//        let request = PaymentsRequest(data: data)
-//        apiClient.perform(request, completionHandler: paymentResponseHandler)
+        let request = PaymentsRequest(data: data)
+        apiClient.perform(request, completionHandler: paymentResponseHandler)
     }
 
     internal func didProvide(_ data: ActionComponentData, from component: DropInComponent) {

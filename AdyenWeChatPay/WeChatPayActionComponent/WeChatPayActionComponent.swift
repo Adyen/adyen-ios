@@ -55,6 +55,7 @@ public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionC
     
     private static func assertWeChatPayAppSchemeConfigured() {
         guard Bundle.main.adyen.isSchemeConfigured("weixin") else {
+            // swiftlint:disable:next line_length
             return AdyenAssertion.assertionFailure(message: "weixin:// scheme must be added to Info.plist under LSApplicationQueriesSchemes key.")
         }
     }
