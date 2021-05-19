@@ -118,7 +118,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
             return
         }
         paymentMethods.paid = response.paymentMethods ?? []
-        componentManager = createComponentManager(response.remainingAmount)
+        componentManager = createComponentManager(order, response.remainingAmount)
         paymentInProgress = false
         showPaymentMethodsList(onCancel: { [weak self] in
             self?.partialPaymentDelegate?.cancelOrder(order)
@@ -127,14 +127,16 @@ public final class DropInComponent: NSObject, PresentableComponent {
     
     // MARK: - Private
 
-    private lazy var componentManager = createComponentManager()
+    private lazy var componentManager = createComponentManager(order, nil)
 
-    private func createComponentManager(_ remainingAmount: Payment.Amount? = nil) -> ComponentManager {
+    private func createComponentManager(_ order: PartialPaymentOrder?,
+                                        _ remainingAmount: Payment.Amount?) -> ComponentManager {
         ComponentManager(paymentMethods: paymentMethods,
                          configuration: configuration,
                          style: style,
                          partialPaymentEnabled: partialPaymentDelegate != nil,
-                         remainingAmount: remainingAmount)
+                         remainingAmount: remainingAmount,
+                         order: order)
     }
     
     private lazy var rootComponent: PresentableComponent & ComponentLoader = {

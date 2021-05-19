@@ -56,7 +56,7 @@ internal final class StoredCardComponent: PaymentComponent, PresentableComponent
             
             switch result {
             case let .success(details):
-                self.submit(data: PaymentComponentData(paymentMethodDetails: details, amount: self.payment?.amount))
+                self.submit(data: PaymentComponentData(paymentMethodDetails: details, amount: self.payment?.amount, order: self.order))
             case let .failure(error):
                 self.delegate?.didFail(with: error, from: self)
             }

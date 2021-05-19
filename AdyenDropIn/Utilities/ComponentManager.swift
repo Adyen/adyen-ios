@@ -24,17 +24,21 @@ internal final class ComponentManager {
     private let partialPaymentEnabled: Bool
 
     private let remainingAmount: Payment.Amount?
+
+    private let order: PartialPaymentOrder?
     
     internal init(paymentMethods: PaymentMethods,
                   configuration: DropInComponent.PaymentMethodsConfiguration,
                   style: DropInComponent.Style,
                   partialPaymentEnabled: Bool = true,
-                  remainingAmount: Payment.Amount? = nil) {
+                  remainingAmount: Payment.Amount? = nil,
+                  order: PartialPaymentOrder?) {
         self.paymentMethods = paymentMethods
         self.configuration = configuration
         self.style = style
         self.partialPaymentEnabled = partialPaymentEnabled
         self.remainingAmount = remainingAmount
+        self.order = order
     }
     
     // MARK: - Internal
@@ -89,6 +93,7 @@ internal final class ComponentManager {
 
         paymentComponent.payment = configuration.payment
         paymentComponent.clientKey = configuration.clientKey
+        paymentComponent.order = order
         return paymentComponent
     }
 

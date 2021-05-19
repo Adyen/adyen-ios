@@ -253,6 +253,10 @@ public final class GiftCardComponent: PartialPaymentComponent,
     }
 
     private func requestOrder() -> Result<Void, Swift.Error> {
+        if let order = order {
+            submit(order: order)
+            return .success(())
+        }
         guard let partialPaymentDelegate = partialPaymentDelegate else {
             AdyenAssertion.assertionFailure(message: Error.missingPartialPaymentDelegate.localizedDescription)
             return .failure(Error.missingPartialPaymentDelegate)

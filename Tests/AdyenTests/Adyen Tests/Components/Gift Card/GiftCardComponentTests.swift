@@ -355,6 +355,55 @@ class GiftCardComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
 
+    func testNotAvailableBalanceOrderAlreadyExists() throws {
+        sut.payment = .init(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
+        sut.order = PartialPaymentOrder(pspReference: "pspreference", orderData: "data")
+
+        delegateMock.onDidFail = { error, component in
+            XCTFail("delegateMock.onDidFail shouldn't be reported back to merchant.")
+        }
+
+        let onCheckBalanceExpectation = expectation(description: "Expect partialPaymentDelegate.onCheckBalance to be called.")
+        let balance = Balance(availableAmount: .init(value: 50, currencyCode: "EUR"), transactionLimit: nil)
+        partialPaymentDelegate.onCheckBalance = { _, completion in
+            completion(.success(balance))
+            onCheckBalanceExpectation.fulfill()
+        }
+
+        let expectedOrder = sut.order
+        partialPaymentDelegate.onRequestOrder = { completion in
+            XCTFail("This should never be called because there is already an order")
+        }
+
+        let onSubmitExpectation = expectation(description: "Expect delegateMock.onDidSubmit to be called.")
+        delegateMock.onDidSubmit = { data, component in
+            XCTAssertEqual(data.order, expectedOrder)
+            XCTAssertEqual(data.amount, self.sut.payment!.amount)
+            onSubmitExpectation.fulfill()
+        }
+
+        readyToSubmitPaymentComponentDelegate.onShowConfirmation = { _ in
+            XCTFail("readyToSubmitPaymentComponentDelegate.onShowConfirmation must not be called")
+        }
+
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        wait(for: .seconds(1))
+
+        XCTAssertTrue(errorView!.isHidden)
+
+        populate(cardNumber: "60643650100000000000", pin: "73737")
+
+        payButtonItemViewButton?.sendActions(for: .touchUpInside)
+
+        wait(for: .seconds(1))
+
+        XCTAssertTrue(errorView!.isHidden)
+        XCTAssertNil(sut.errorItem.message)
+
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+
     func testNotAvailableBalanceRequestOrderFailure() throws {
         sut.payment = .init(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
 

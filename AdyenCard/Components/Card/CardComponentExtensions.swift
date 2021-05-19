@@ -44,6 +44,7 @@ extension CardComponent {
             
             let data = PaymentComponentData(paymentMethodDetails: details,
                                             amount: payment?.amount,
+                                            order: order,
                                             storePaymentMethod: cardViewController.storePayment)
 
             submit(data: data)

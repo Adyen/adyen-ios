@@ -102,7 +102,7 @@ public struct PaymentComponentData: ShopperInformation, BillingAddressInformatio
     ///   - browserInfo: The device default browser info.
     public init(paymentMethodDetails: PaymentMethodDetails,
                 amount: Payment.Amount?,
-                order: PartialPaymentOrder? = nil,
+                order: PartialPaymentOrder?,
                 storePaymentMethod: Bool = false,
                 browserInfo: BrowserInfo? = nil) {
         self.paymentMethod = paymentMethodDetails
