@@ -7,7 +7,7 @@
 import Foundation
 
 /// :nodoc:
-public protocol PaymentMethodAware {
+public protocol PaymentMethodAware: AnyObject {
     /// The payment method for which to gather payment details.
     var paymentMethod: PaymentMethod { get }
 }

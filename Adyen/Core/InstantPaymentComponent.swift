@@ -8,7 +8,7 @@ import Foundation
 
 /// Provides a placeholder for payment methods that don't need any payment detail to be filled.
 /// :nodoc:
-public final class EmptyPaymentComponent: PaymentComponent {
+public final class InstantPaymentComponent: PaymentComponent {
 
     /// The ready to submit payment data.
     public let paymentData: PaymentComponentData?
@@ -27,7 +27,7 @@ public final class EmptyPaymentComponent: PaymentComponent {
 
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
     public func initiatePayment() {
-        let details = EmptyPaymentDetails(type: paymentMethod.type)
+        let details = InstantPaymentDetails(type: paymentMethod.type)
         let paymentData = self.paymentData ?? PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount)
         submit(data: paymentData)
     }

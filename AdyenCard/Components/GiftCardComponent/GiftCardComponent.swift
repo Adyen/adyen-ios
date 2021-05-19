@@ -185,7 +185,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
 
         let data = createPaymentData()
 
-        partialPaymentDelegate?.checkBalance(data, from: self) { [weak self] result in
+        partialPaymentDelegate?.checkBalance(with: data) { [weak self] result in
             guard let self = self else { return }
             result
                 .mapError(Error.otherError)
@@ -203,14 +203,14 @@ public final class GiftCardComponent: PartialPaymentComponent,
             delegate?.didFail(with: internalError, from: self)
         }
         guard let error = error as? BalanceValidator.Error else {
-            showError(message: "An unknown error occurred")
+            showError(message: localizedString(.errorUnknown, localizationParameters))
             return
         }
         switch error {
         case .unexpectedCurrencyCode:
-            showError(message: "Gift cards are only valid in the currency they were issued in")
+            showError(message: localizedString(.giftcardCurrencyError, localizationParameters))
         case .zeroBalance:
-            showError(message: "This gift card has zero balance")
+            showError(message: localizedString(.giftcardNoBalance, localizationParameters))
         }
     }
 
@@ -248,7 +248,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
 
         let paymentMethod = CustomDisplayablePaymentMethod(paymentMethod: giftCardPaymentMethod,
                                                            displayInformation: displayInformation)
-        let component = EmptyPaymentComponent(paymentMethod: paymentMethod, paymentData: paymentData)
+        let component = InstantPaymentComponent(paymentMethod: paymentMethod, paymentData: paymentData)
         delegate.showConfirmation(for: component)
     }
 
@@ -257,8 +257,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
             AdyenAssertion.assertionFailure(message: Error.missingPartialPaymentDelegate.localizedDescription)
             return .failure(Error.missingPartialPaymentDelegate)
         }
-        let data = createPaymentData()
-        partialPaymentDelegate.requestOrder(data, from: self) { [weak self] result in
+        partialPaymentDelegate.requestOrder { [weak self] result in
             self?.handle(orderResult: result)
         }
         return .success(())
@@ -284,30 +283,16 @@ public final class GiftCardComponent: PartialPaymentComponent,
     }
 }
 
-extension Result {
-
+/// :nodoc:
+public extension Result {
+    /// :nodoc:
     func handle(success: (Success) -> Void, failure: (Failure) -> Void) {
-        handleSuccess(success).handleError(failure)
-    }
-
-    @discardableResult
-    private func handleSuccess(_ handler: (Success) -> Void) -> Result<Success, Failure> {
         switch self {
-        case let .success(success):
-            handler(success)
-        default: ()
-        }
-        return self
-    }
-
-    @discardableResult
-    private func handleError(_ handler: (Failure) -> Void) -> Result<Success, Failure> {
-        switch self {
+        case let .success(successObject):
+            success(successObject)
         case let .failure(error):
-            handler(error)
-        default: ()
+            failure(error)
         }
-        return self
     }
 }
 

@@ -65,6 +65,9 @@
 "adyen.voucher.readInstructions" = "Leggi le istruzioni";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.pix.instructions" = "";
+"adyen.pix.expirationLabel" = "Devi pagare %@";
+"adyen.pix.copyButton" = "";
 "adyen.billingAddressSection.title" = "Indirizzo di fatturazione";
 "adyen.deliveryAddressSection.title" = "Indirizzo di consegna";
 "adyen.countryField.title" = "Paese";
@@ -95,6 +98,9 @@
 "adyen.errorFeedback.emptyField" = "È necessario compilare il campo.";
 "adyen.errorFeedback.incorrectFormat" = "Il formato di input non è valido.";
 "adyen.field.title.optional" = "(facoltativo)";
-"adyen.card.pin.title" = "Pin";
-"adyen.missingField" = "Campo incompleto";
-"adyen.card.applyGiftcard" = "Riscatta";
+"adyen.boletobancario.btnLabel" = "Genera Boleto";
+"adyen.boleto.sendCopyToEmail" = "Invia una copia alla mia e-mail";
+"adyen.boleto.personalDetails" = "Dati personali";
+"adyen.boleto.socialSecurityNumber" = "";
+"adyen.giftcard.currencyError" = "I buono regalo sono validi solo nella valuta in cui sono state emessi";
+"adyen.giftcard.noBalance" = "Questo buono regalo ha un saldo pari a zero";

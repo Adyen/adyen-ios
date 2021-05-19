@@ -31,7 +31,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
     /// The delegate of the drop in component.
     public weak var delegate: DropInComponentDelegate?
 
-    /// The gift card component delegate.
+    /// The partial payment flow delegate.
     public weak var partialPaymentDelegate: PartialPaymentDelegate?
     
     /// Indicates the UI configuration of the drop in component.
@@ -58,6 +58,11 @@ public final class DropInComponent: NSObject, PresentableComponent {
         self.style = style
         super.init()
     }
+
+    // MARK: - PartialPaymentAware
+
+    /// :nodoc:
+    internal var order: PartialPaymentOrder?
     
     // MARK: - Presentable Component Protocol
     
@@ -94,10 +99,17 @@ public final class DropInComponent: NSObject, PresentableComponent {
     public func reload(with order: PartialPaymentOrder,
                        _ paymentMethods: PaymentMethods) {
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
-            let paymentMethod1 = OrderPaymentMethod(lastFour: "1234", type: "giftcard", transactionLimit: .init(value: 100, currencyCode: "CAD"), amount: .init(value: 200, currencyCode: "CAD"))
-            let paymentMethod2 = OrderPaymentMethod(lastFour: "3455", type: "giftcard", transactionLimit: .init(value: 100, currencyCode: "CAD"), amount: .init(value: 100, currencyCode: "CAD"))
-            let result = OrderStatusResponse(remainingAmount: .init(value: 7408, currencyCode: "CAD"), paymentMethods: [paymentMethod1, paymentMethod2])
-            self.handle(result)
+            let paymentMethod1 = OrderPaymentMethod(lastFour: "1234",
+                                                    type: "giftcard",
+                                                    transactionLimit: .init(value: 100, currencyCode: "CAD"),
+                                                    amount: .init(value: 200, currencyCode: "CAD"))
+            let paymentMethod2 = OrderPaymentMethod(lastFour: "3455",
+                                                    type: "giftcard",
+                                                    transactionLimit: .init(value: 100, currencyCode: "CAD"),
+                                                    amount: .init(value: 100, currencyCode: "CAD"))
+            let result = OrderStatusResponse(remainingAmount: .init(value: 7408, currencyCode: "CAD"),
+                                             paymentMethods: [paymentMethod1, paymentMethod2])
+            self.handle(result, order)
         }
 //        let request = OrderStatusRequest(orderData: order.orderData)
 //        apiClient.perform(request) { [weak self] result in
@@ -105,16 +117,15 @@ public final class DropInComponent: NSObject, PresentableComponent {
 //        }
     }
 
-    private func handle(_ result: Result<OrderStatusResponse, Error>) {
-        switch result {
-        case let .failure(error):
-            delegate?.didFail(with: error, from: self)
-        case let .success(response):
-            handle(response)
-        }
+    private func handle(_ result: Result<OrderStatusResponse, Error>, _ order: PartialPaymentOrder) {
+        result.handle(success: {
+            self.handle($0, order)
+        }, failure: {
+            self.delegate?.didFail(with: $0, from: self)
+        })
     }
 
-    private func handle(_ response: OrderStatusResponse) {
+    private func handle(_ response: OrderStatusResponse, _ order: PartialPaymentOrder) {
         guard response.remainingAmount.value > 0 else {
             delegate?.didFail(with: PartialPaymentError.zeroRemainingAmount, from: self)
             return
@@ -122,7 +133,9 @@ public final class DropInComponent: NSObject, PresentableComponent {
         paymentMethods.paid = response.paymentMethods ?? []
         componentManager = createComponentManager(response.remainingAmount)
         paymentInProgress = false
-        showPaymentMethodsList()
+        showPaymentMethodsList(onCancel: { [weak self] in
+            self?.partialPaymentDelegate?.cancelOrder(order)
+        })
     }
     
     // MARK: - Private
@@ -141,7 +154,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
         if let preselectedComponents = componentManager.storedComponents.first {
             return preselectedPaymentMethodComponent(for: preselectedComponents)
         } else {
-            return paymentMethodListComponent()
+            return paymentMethodListComponent(onCancel: nil)
         }
     }()
     
@@ -164,9 +177,10 @@ public final class DropInComponent: NSObject, PresentableComponent {
         return handler
     }()
     
-    private func paymentMethodListComponent() -> PaymentMethodListComponent {
+    private func paymentMethodListComponent(onCancel: (() -> Void)?) -> PaymentMethodListComponent {
         let paymentComponents = componentManager.sections
         let component = PaymentMethodListComponent(components: paymentComponents, style: style.listComponent)
+        component.onCancel = onCancel
         component.localizationParameters = configuration.localizationParameters
         component.delegate = self
         component._isDropIn = true
@@ -174,8 +188,8 @@ public final class DropInComponent: NSObject, PresentableComponent {
         return component
     }
     
-    private func preselectedPaymentMethodComponent(for storedPaymentComponent: PaymentComponent) -> PreselectedPaymentMethodComponent {
-        let component = PreselectedPaymentMethodComponent(component: storedPaymentComponent,
+    private func preselectedPaymentMethodComponent(for paymentComponent: PaymentComponent) -> PreselectedPaymentMethodComponent {
+        let component = PreselectedPaymentMethodComponent(component: paymentComponent,
                                                           title: title,
                                                           style: style.formComponent,
                                                           listItemStyle: style.listComponent.listItem)
@@ -206,7 +220,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
             navigationController.present(component.viewController, customPresentation: false)
         case let component as PresentableComponent:
             navigationController.present(component.viewController, customPresentation: true)
-        case let component as EmptyPaymentComponent:
+        case let component as InstantPaymentComponent:
             component.initiatePayment()
         default:
             break
@@ -215,12 +229,13 @@ public final class DropInComponent: NSObject, PresentableComponent {
     
     private func didSelectCancelButton(isRoot: Bool, component: PresentableComponent) {
         guard !paymentInProgress || component is Cancellable else { return }
+
+        userDidCancel(component)
         
         if isRoot {
             self.delegate?.didFail(with: ComponentError.cancelled, from: self)
         } else {
             navigationController.popViewController(animated: true)
-            userDidCancel(component)
         }
     }
 
@@ -250,6 +265,9 @@ extension DropInComponent: PaymentMethodListComponentDelegate {
         rootComponent.startLoading(for: component)
         didSelect(component)
     }
+
+    /// :nodoc:
+    internal func didCancel(_ paymentMethodListComponent: PaymentMethodListComponent) {}
     
 }
 
@@ -310,13 +328,13 @@ extension DropInComponent: PreselectedPaymentMethodComponentDelegate {
     }
     
     internal func didRequestAllPaymentMethods() {
-        showPaymentMethodsList()
+        showPaymentMethodsList(onCancel: nil)
     }
 
-    private func showPaymentMethodsList() {
-        let newRoot = paymentMethodListComponent()
-        navigationController.present(root: newRoot)
-        rootComponent = newRoot
+    private func showPaymentMethodsList(onCancel: (() -> Void)?) {
+        let newList = paymentMethodListComponent(onCancel: onCancel)
+        navigationController.present(root: newList)
+        rootComponent = newList
     }
 }
 
@@ -342,7 +360,7 @@ extension DropInComponent: FinalizableComponent {
 extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
 
     /// :nodoc:
-    public func showConfirmation(for component: EmptyPaymentComponent) {
+    public func showConfirmation(for component: InstantPaymentComponent) {
         let newRoot = preselectedPaymentMethodComponent(for: component)
         navigationController.present(root: newRoot)
         rootComponent = newRoot
@@ -352,24 +370,19 @@ extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
 extension DropInComponent: PartialPaymentDelegate {
 
     /// :nodoc:
-    public func requestOrder(_ data: PaymentComponentData,
-                             from component: PaymentComponent,
-                             completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
-        partialPaymentDelegate?.requestOrder(data, from: component, completion: completion)
+    public func requestOrder(_ completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
+        partialPaymentDelegate?.requestOrder(completion)
     }
 
     /// :nodoc:
-    public func cancelOrder(_ order: PartialPaymentOrder,
-                            from component: PaymentComponent,
-                            completion: @escaping (Error?) -> Void) {
-        partialPaymentDelegate?.cancelOrder(order, from: component, completion: completion)
+    public func cancelOrder(_ order: PartialPaymentOrder) {
+        partialPaymentDelegate?.cancelOrder(order)
     }
 
     /// :nodoc:
-    public func checkBalance(_ data: PaymentComponentData,
-                             from component: PaymentComponent,
+    public func checkBalance(with data: PaymentComponentData,
                              completion: @escaping (Result<Balance, Error>) -> Void) {
-        partialPaymentDelegate?.checkBalance(data, from: component, completion: completion)
+        partialPaymentDelegate?.checkBalance(with: data, completion: completion)
     }
 }
 

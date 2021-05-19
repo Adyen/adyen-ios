@@ -65,6 +65,9 @@
 "adyen.voucher.readInstructions" = "Læs anvisningerne";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.pix.instructions" = "";
+"adyen.pix.expirationLabel" = "Du har %@ at betale";
+"adyen.pix.copyButton" = "";
 "adyen.billingAddressSection.title" = "Faktureringsadresse";
 "adyen.deliveryAddressSection.title" = "Leveringsadresse";
 "adyen.countryField.title" = "Land";
@@ -95,6 +98,9 @@
 "adyen.errorFeedback.emptyField" = "Obligatorisk felt. Feltet skal udfyldes.";
 "adyen.errorFeedback.incorrectFormat" = "Indtastningsformatet er ugyldigt.";
 "adyen.field.title.optional" = "(valgfrit)";
-"adyen.card.pin.title" = "Pinkode";
-"adyen.missingField" = "Felt ikke udfyldt";
-"adyen.card.applyGiftcard" = "Indløs";
+"adyen.boletobancario.btnLabel" = "Generér Boleto";
+"adyen.boleto.sendCopyToEmail" = "Send en kopi til min e-mail";
+"adyen.boleto.personalDetails" = "Personlige oplysninger";
+"adyen.boleto.socialSecurityNumber" = "";
+"adyen.giftcard.currencyError" = "Gavekort er kun gyldige i udstedelsesvalutaen";
+"adyen.giftcard.noBalance" = "Saldoen på gavekortet er 0";

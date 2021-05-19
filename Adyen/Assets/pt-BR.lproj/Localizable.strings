@@ -66,8 +66,8 @@
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
 "adyen.pix.instructions" = "Abra o app com sua chave PIX cadastrada, escolha Pagar com Pix e escaneie o QR Code ou copie e cole o código";
+"adyen.pix.expirationLabel" = "Você tem %@ para pagar";
 "adyen.pix.copyButton" = "Copiar código";
-"adyen.pix.expirationLabel" = "Você tem %@ para pagar ";
 "adyen.billingAddressSection.title" = "Endereço de cobrança";
 "adyen.deliveryAddressSection.title" = "Endereço de entrega";
 "adyen.countryField.title" = "País";
@@ -98,6 +98,9 @@
 "adyen.errorFeedback.emptyField" = "Campo obrigatório, preencha.";
 "adyen.errorFeedback.incorrectFormat" = "O formato de entrada não é válido.";
 "adyen.field.title.optional" = "(opcional)";
-"adyen.card.pin.title" = "Pin";
-"adyen.missingField" = "Campo incompleto";
-"adyen.card.applyGiftcard" = "Resgatar";
+"adyen.boletobancario.btnLabel" = "Gerar Boleto";
+"adyen.boleto.sendCopyToEmail" = "Enviar uma cópia por e-mail";
+"adyen.boleto.personalDetails" = "Informações pessoais";
+"adyen.boleto.socialSecurityNumber" = "";
+"adyen.giftcard.currencyError" = "Os vales-presente são válidos somente na moeda em que foram emitidos";
+"adyen.giftcard.noBalance" = "Este vale-presente tem saldo zero";

@@ -28,7 +28,7 @@ internal struct CancelOrderRequest: Request {
 
         let configurations = ConfigurationConstants.current
 
-        try container.encode(order, forKey: .order)
+        try container.encode(order.compactOrder, forKey: .order)
         try container.encode(configurations.merchantAccount, forKey: .merchantAccount)
     }
 

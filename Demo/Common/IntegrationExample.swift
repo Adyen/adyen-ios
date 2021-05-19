@@ -32,8 +32,6 @@ internal final class IntegrationExample: APIClientAware {
 
     internal weak var presenter: Presenter?
 
-    internal var order: PartialPaymentOrder?
-
     internal var clientKey: String {
         if CommandLine.arguments.contains("-UITests") {
             return "local_DUMMYKEYFORTESTING"

@@ -9,13 +9,16 @@ import Foundation
 import UIKit
 
 /// A component that presents a list of items for each payment method with a component.
-internal final class PaymentMethodListComponent: ComponentLoader, PresentableComponent, Localizable {
+internal final class PaymentMethodListComponent: ComponentLoader, PresentableComponent, Localizable, Cancellable {
     
     /// The components that are displayed in the list.
     internal let componentSections: [ComponentsSection]
     
     /// The delegate of the payment method list component.
     internal weak var delegate: PaymentMethodListComponentDelegate?
+
+    /// Call back when the list is dismissed.
+    internal var onCancel: (() -> Void)?
     
     /// Describes the component's UI style.
     internal let style: ListComponentStyle
@@ -51,6 +54,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
             listItem.subtitle = displayInformation.subtitle
             listItem.showsDisclosureIndicator = showsDisclosureIndicator
             listItem.selectionHandler = { [unowned self, unowned component] in
+                guard !(component is AlreadyPaidPaymentComponent) else { return }
                 self.delegate?.didSelect(component, in: self)
             }
             
@@ -62,14 +66,6 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
                         items: $0.components.map(item(for:)),
                         footer: $0.footer)
         }
-
-//        let paidItems = components.paid.map(item(for:))
-//        let paidSection = ListSection(items: paidItems, footerTitle: "Select payment method for remaining €1,000.00")
-//        let storedSection = ListSection(items: components.stored.map(item(for:)))
-//        let regularSectionTitle = components.stored.isEmpty ? nil : localizedString(.paymentMethodsOtherMethods,
-//                                                                                    localizationParameters)
-//        let regularSection = ListSection(title: regularSectionTitle,
-//                                         items: components.regular.map(item(for:)))
         
         let listViewController = ListViewController(style: style)
         listViewController.title = localizedString(.paymentMethodsTitle, localizationParameters)
@@ -77,6 +73,12 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
         
         return listViewController
     }()
+
+    // MARK: - Cancellable
+
+    internal func didCancel() {
+        onCancel?()
+    }
     
     // MARK: - Localization
     
@@ -115,5 +117,11 @@ internal protocol PaymentMethodListComponentDelegate: AnyObject {
     ///   - component: The component that has been selected.
     ///   - paymentMethodListComponent: The payment method list component in which the component was selected.
     func didSelect(_ component: PaymentComponent, in paymentMethodListComponent: PaymentMethodListComponent)
+
+    /// Invoked when a component was cancel button is pressed.
+    ///
+    /// - Parameters:
+    ///   - paymentMethodListComponent: The payment method list component that was canceled.
+    func didCancel(_ paymentMethodListComponent: PaymentMethodListComponent)
     
 }

@@ -231,7 +231,7 @@ extension ComponentManager: PaymentComponentBuilder {
     internal func build(paymentMethod: WeChatPayPaymentMethod) -> PaymentComponent? {
         guard let classObject = loadTheConcreteWeChatPaySDKActionComponentClass() else { return nil }
         guard classObject.isDeviceSupported() else { return nil }
-        return EmptyPaymentComponent(paymentMethod: paymentMethod, paymentData: nil)
+        return InstantPaymentComponent(paymentMethod: paymentMethod, paymentData: nil)
     }
     
     /// :nodoc:
@@ -289,7 +289,7 @@ extension ComponentManager: PaymentComponentBuilder {
     
     /// :nodoc:
     internal func build(paymentMethod: PaymentMethod) -> PaymentComponent? {
-        EmptyPaymentComponent(paymentMethod: paymentMethod, paymentData: nil)
+        InstantPaymentComponent(paymentMethod: paymentMethod, paymentData: nil)
     }
     
 }

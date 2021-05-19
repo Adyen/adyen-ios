@@ -65,6 +65,9 @@
 "adyen.voucher.readInstructions" = "Preberite navodila";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.pix.instructions" = "";
+"adyen.pix.expirationLabel" = "Plačati morate %@";
+"adyen.pix.copyButton" = "";
 "adyen.billingAddressSection.title" = "Naslov za račun";
 "adyen.deliveryAddressSection.title" = "Naslov za dostavo";
 "adyen.countryField.title" = "Država";
@@ -95,6 +98,9 @@
 "adyen.errorFeedback.emptyField" = "Obvezno polje, izpolnite ga.";
 "adyen.errorFeedback.incorrectFormat" = "Neveljavna oblika vnosa.";
 "adyen.field.title.optional" = "(izbirno)";
-"adyen.card.pin.title" = "PIN";
-"adyen.missingField" = "Nepopolno polje";
-"adyen.card.applyGiftcard" = "Unovči";
+"adyen.boletobancario.btnLabel" = "Ustvari Boleto";
+"adyen.boleto.sendCopyToEmail" = "Pošlji kopijo na moj elektronski naslov";
+"adyen.boleto.personalDetails" = "Osebni podatki";
+"adyen.boleto.socialSecurityNumber" = "";
+"adyen.giftcard.currencyError" = "Darilne kartice so veljavne samo za valuto, za katero so bile izdane";
+"adyen.giftcard.noBalance" = "Na tej darilni kartici ni sredstev";

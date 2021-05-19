@@ -46,7 +46,7 @@ internal struct PaymentsRequest: Request {
         try container.encode(ConfigurationConstants.shopperReference, forKey: .shopperReference)
         try container.encode(ConfigurationConstants.additionalData, forKey: .additionalData)
         try container.encode(currentConfiguration.merchantAccount, forKey: .merchantAccount)
-        try container.encodeIfPresent(data.order, forKey: .order)
+        try container.encodeIfPresent(data.order?.compactOrder, forKey: .order)
     }
     
     private enum CodingKeys: String, CodingKey {

@@ -24,11 +24,10 @@ extension IntegrationExample: PartialPaymentDelegate {
         }
     }
 
-    internal func checkBalance(_ data: PaymentComponentData,
-                               from component: PaymentComponent,
+    internal func checkBalance(with data: PaymentComponentData,
                                completion: @escaping (Result<Balance, Error>) -> Void) {
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
-            let balance = Balance(availableAmount: Payment.Amount(value: 100000, currencyCode: "CAD"),
+            let balance = Balance(availableAmount: Payment.Amount(value: 10000, currencyCode: "CAD"),
                                   transactionLimit: Payment.Amount(value: 100000, currencyCode: "CAD"))
             completion(.success(balance))
 //            completion(.failure(Dummy.dummyError))
@@ -65,9 +64,7 @@ extension IntegrationExample: PartialPaymentDelegate {
         completion(.failure(error))
     }
 
-    internal func requestOrder(_ data: PaymentComponentData,
-                               from component: PaymentComponent,
-                               completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
+    internal func requestOrder(_ completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
             let result = PartialPaymentOrder(pspReference: "ef2ef", orderData: "ef2f23f", reference: "e2f2f2", remainingAmount: .init(value: 7408, currencyCode: "CAD"), expiresAt: nil)
             completion(.success(result))
@@ -82,7 +79,6 @@ extension IntegrationExample: PartialPaymentDelegate {
                         completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
         switch result {
         case let .success(response):
-            self.order = response.order
             completion(.success(response.order))
         case let .failure(error):
             finish(with: error)
@@ -90,28 +86,23 @@ extension IntegrationExample: PartialPaymentDelegate {
         }
     }
 
-    internal func cancelOrder(_ order: PartialPaymentOrder,
-                              from component: PaymentComponent,
-                              completion: @escaping (Error?) -> Void) {
+    internal func cancelOrder(_ order: PartialPaymentOrder) {
         let request = CancelOrderRequest(order: order)
         apiClient.perform(request) { [weak self] result in
-            self?.handle(result: result, with: component, completion: completion)
+            self?.handle(result: result)
         }
     }
 
-    private func handle(result: Result<CancelOrderResponse, Error>,
-                        with component: PaymentComponent,
-                        completion: @escaping (Error?) -> Void) {
-        currentComponent?.cancelIfNeeded()
-        component.cancelIfNeeded()
-        presenter?.dismiss(completion: nil)
-        order = nil
-
+    private func handle(result: Result<CancelOrderResponse, Error>) {
         switch result {
-        case .success:
-            completion(nil)
+        case let .success(response):
+            if response.resultCode == .received {
+                presentAlert(withTitle: "Order Cancelled")
+            } else {
+                presentAlert(withTitle: "Something went wrong, order is not canceled but will expire.")
+            }
         case let .failure(error):
-            completion(error)
+            finish(with: error)
         }
     }
 }

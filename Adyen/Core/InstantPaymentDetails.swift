@@ -8,7 +8,7 @@ import Foundation
 
 /// Describes a payment details that contains nothing but the payment method type name.
 /// :nodoc:
-public struct EmptyPaymentDetails: PaymentMethodDetails {
+public struct InstantPaymentDetails: PaymentMethodDetails {
     
     /// The payment method type name.
     public let type: String

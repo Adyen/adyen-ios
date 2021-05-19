@@ -10,9 +10,9 @@ import Foundation
 @testable import Adyen
 
 final class ReadyToSubmitPaymentComponentDelegateMock: ReadyToSubmitPaymentComponentDelegate {
-    var onShowConfirmation: ((EmptyPaymentComponent) -> Void)?
+    var onShowConfirmation: ((InstantPaymentComponent) -> Void)?
 
-    func showConfirmation(for component: EmptyPaymentComponent) {
+    func showConfirmation(for component: InstantPaymentComponent) {
         onShowConfirmation?(component)
     }
 }

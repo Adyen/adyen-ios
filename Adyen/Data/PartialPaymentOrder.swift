@@ -9,6 +9,19 @@ import Foundation
 /// Describes a partial payment order, for partial payments.
 public struct PartialPaymentOrder: Codable, Equatable {
 
+    /// A compact version of `PartialPaymentOrder`.
+    public struct CompactOrder: Encodable {
+
+        /// The psp reference.
+        public let pspReference: String
+
+        /// The order data.
+        public let orderData: String
+    }
+
+    /// A compact version of `PartialPaymentOrder`.
+    public let compactOrder: CompactOrder
+
     /// The psp reference.
     public let pspReference: String
 
@@ -41,5 +54,35 @@ public struct PartialPaymentOrder: Codable, Equatable {
         self.reference = reference
         self.remainingAmount = remainingAmount
         self.expiresAt = expiresAt
+        self.compactOrder = CompactOrder(pspReference: pspReference,
+                                         orderData: orderData)
+    }
+
+    /// :nodoc:
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.pspReference = try container.decode(String.self, forKey: .pspReference)
+        self.orderData = try container.decode(String.self, forKey: .orderData)
+        self.reference = try container.decodeIfPresent(String.self, forKey: .reference)
+        self.remainingAmount = try container.decodeIfPresent(Payment.Amount.self, forKey: .remainingAmount)
+        self.expiresAt = try container.decodeIfPresent(Date.self, forKey: .expiresAt)
+        self.compactOrder = CompactOrder(pspReference: pspReference,
+                                         orderData: orderData)
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case pspReference
+        case orderData
+        case reference
+        case remainingAmount
+        case expiresAt
+    }
+
+    public static func == (lhs: PartialPaymentOrder, rhs: PartialPaymentOrder) -> Bool {
+        lhs.expiresAt == rhs.expiresAt &&
+            lhs.orderData == rhs.orderData &&
+            lhs.pspReference == rhs.pspReference &&
+            lhs.reference == rhs.reference &&
+            lhs.remainingAmount == rhs.remainingAmount
     }
 }

@@ -78,7 +78,7 @@ public struct OrderPaymentMethod: PaymentMethod {
     }
 
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        EmptyPaymentComponent(paymentMethod: self, paymentData: nil)
+        AlreadyPaidPaymentComponent(paymentMethod: self)
     }
 
     private enum CodingKeys: String, CodingKey {

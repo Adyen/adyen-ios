@@ -63,7 +63,7 @@ class GiftCardComponentTests: XCTestCase {
 
         let onCheckBalanceExpectation = expectation(description: "Expect partialPaymentDelegate.onCheckBalance to be called.")
 
-        partialPaymentDelegate.onCheckBalance = { _, _, completion in
+        partialPaymentDelegate.onCheckBalance = { _, completion in
             completion(.failure(Dummy.dummyError))
             onCheckBalanceExpectation.fulfill()
         }
@@ -96,7 +96,7 @@ class GiftCardComponentTests: XCTestCase {
 
         let onCheckBalanceExpectation = expectation(description: "Expect partialPaymentDelegate.onCheckBalance to be called.")
         let balance = Balance(availableAmount: .init(value: 200, currencyCode: "EUR"), transactionLimit: .init(value: 1000, currencyCode: "USD"))
-        partialPaymentDelegate.onCheckBalance = { _, _, completion in
+        partialPaymentDelegate.onCheckBalance = { _, completion in
             completion(.success(balance))
             onCheckBalanceExpectation.fulfill()
         }
@@ -128,7 +128,7 @@ class GiftCardComponentTests: XCTestCase {
 
         let onCheckBalanceExpectation = expectation(description: "Expect partialPaymentDelegate.onCheckBalance to be called.")
         let balance = Balance(availableAmount: .init(value: 200, currencyCode: "EUR"), transactionLimit: .init(value: 1000, currencyCode: "EUR"))
-        partialPaymentDelegate.onCheckBalance = { _, _, completion in
+        partialPaymentDelegate.onCheckBalance = { _, completion in
             completion(.success(balance))
             onCheckBalanceExpectation.fulfill()
         }
@@ -160,7 +160,7 @@ class GiftCardComponentTests: XCTestCase {
 
         let onCheckBalanceExpectation = expectation(description: "Expect partialPaymentDelegate.onCheckBalance to be called.")
         let balance = Balance(availableAmount: .init(value: 0, currencyCode: "EUR"), transactionLimit: .init(value: 1000, currencyCode: "EUR"))
-        partialPaymentDelegate.onCheckBalance = { _, _, completion in
+        partialPaymentDelegate.onCheckBalance = { _, completion in
             completion(.success(balance))
             onCheckBalanceExpectation.fulfill()
         }
@@ -192,7 +192,7 @@ class GiftCardComponentTests: XCTestCase {
 
         let onCheckBalanceExpectation = expectation(description: "Expect partialPaymentDelegate.onCheckBalance to be called.")
         let balance = Balance(availableAmount: .init(value: 200, currencyCode: "EUR"), transactionLimit: .init(value: 1000, currencyCode: "EUR"))
-        partialPaymentDelegate.onCheckBalance = { _, _, completion in
+        partialPaymentDelegate.onCheckBalance = { _, completion in
             completion(.success(balance))
             onCheckBalanceExpectation.fulfill()
         }
@@ -225,13 +225,12 @@ class GiftCardComponentTests: XCTestCase {
 
         let onCheckBalanceExpectation = expectation(description: "Expect partialPaymentDelegate.onCheckBalance to be called.")
         let balance = Balance(availableAmount: .init(value: 200, currencyCode: "EUR"), transactionLimit: nil)
-        partialPaymentDelegate.onCheckBalance = { _, _, completion in
+        partialPaymentDelegate.onCheckBalance = { _, completion in
             completion(.success(balance))
             onCheckBalanceExpectation.fulfill()
         }
 
-        partialPaymentDelegate.onRequestOrder = {
-             _, _, _ in
+        partialPaymentDelegate.onRequestOrder = { _ in
             XCTFail("partialPaymentDelegate.onRequestOrder must not be called.")
         }
 
@@ -270,13 +269,12 @@ class GiftCardComponentTests: XCTestCase {
 
         let onCheckBalanceExpectation = expectation(description: "Expect partialPaymentDelegate.onCheckBalance to be called.")
         let balance = Balance(availableAmount: .init(value: 200, currencyCode: "EUR"), transactionLimit: nil)
-        partialPaymentDelegate.onCheckBalance = { _, _, completion in
+        partialPaymentDelegate.onCheckBalance = { _, completion in
             completion(.success(balance))
             onCheckBalanceExpectation.fulfill()
         }
 
-        partialPaymentDelegate.onRequestOrder = {
-             _, _, _ in
+        partialPaymentDelegate.onRequestOrder = { _ in
             XCTFail("partialPaymentDelegate.onRequestOrder must not be called.")
         }
 
@@ -316,15 +314,14 @@ class GiftCardComponentTests: XCTestCase {
 
         let onCheckBalanceExpectation = expectation(description: "Expect partialPaymentDelegate.onCheckBalance to be called.")
         let balance = Balance(availableAmount: .init(value: 50, currencyCode: "EUR"), transactionLimit: nil)
-        partialPaymentDelegate.onCheckBalance = { _, _, completion in
+        partialPaymentDelegate.onCheckBalance = { _, completion in
             completion(.success(balance))
             onCheckBalanceExpectation.fulfill()
         }
 
         let expectedOrder = PartialPaymentOrder(pspReference: "referenc", orderData: "orderData")
         let onRequestOrderExpectation = expectation(description: "Expect partialPaymentDelegate.onRequestOrder to be called.")
-        partialPaymentDelegate.onRequestOrder = {
-             _, _, completion in
+        partialPaymentDelegate.onRequestOrder = { completion in
             completion(.success(expectedOrder))
             onRequestOrderExpectation.fulfill()
         }
@@ -369,14 +366,13 @@ class GiftCardComponentTests: XCTestCase {
 
         let onCheckBalanceExpectation = expectation(description: "Expect partialPaymentDelegate.onCheckBalance to be called.")
         let balance = Balance(availableAmount: .init(value: 50, currencyCode: "EUR"), transactionLimit: nil)
-        partialPaymentDelegate.onCheckBalance = { _, _, completion in
+        partialPaymentDelegate.onCheckBalance = { _, completion in
             completion(.success(balance))
             onCheckBalanceExpectation.fulfill()
         }
 
         let onRequestOrderExpectation = expectation(description: "Expect partialPaymentDelegate.onRequestOrder to be called.")
-        partialPaymentDelegate.onRequestOrder = {
-             _, _, completion in
+        partialPaymentDelegate.onRequestOrder = { completion in
             completion(.failure(Dummy.dummyError))
             onRequestOrderExpectation.fulfill()
         }

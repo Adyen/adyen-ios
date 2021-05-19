@@ -13,28 +13,20 @@ public protocol PartialPaymentDelegate: AnyObject {
     ///
     /// - Parameters:
     ///   - data: The data supplied by the payment component.
-    ///   - component: The payment component from which the payment details were submitted.
     ///   - completion: The completion closure called when the balance is checked.
-    func checkBalance(_ data: PaymentComponentData,
-                      from component: PaymentComponent,
+    func checkBalance(with data: PaymentComponentData,
                       completion: @escaping (Result<Balance, Error>) -> Void)
 
     /// Invoked when the payment component needs a partial payment order object.
     ///
     /// - Parameters:
-    ///   - data: The data supplied by the payment component.
-    ///   - component: The payment component from which the payment details were submitted.
     ///   - completion: The completion closure called when the order object.
-    func requestOrder(_ data: PaymentComponentData,
-                      from component: PaymentComponent,
-                      completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void)
+    func requestOrder(_ completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void)
 
     /// Invoked when the payment component needs to cancel the order.
     ///
     /// - Parameters:
     ///   - order: The order object.
-    func cancelOrder(_ order: PartialPaymentOrder,
-                     from component: PaymentComponent,
-                     completion: @escaping (Error?) -> Void)
+    func cancelOrder(_ order: PartialPaymentOrder)
 
 }

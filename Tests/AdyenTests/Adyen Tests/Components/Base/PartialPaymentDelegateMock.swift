@@ -11,33 +11,23 @@ import Foundation
 
 final class PartialPaymentDelegateMock: PartialPaymentDelegate {
     var onCheckBalance: ((PaymentComponentData,
-                          PaymentComponent,
                           (Result<Balance, Error>) -> Void) -> Void)?
 
-    func checkBalance(_ data: PaymentComponentData,
-                      from component: PaymentComponent,
+    func checkBalance(with data: PaymentComponentData,
                       completion: @escaping (Result<Balance, Error>) -> Void) {
-        onCheckBalance?(data, component, completion)
+        onCheckBalance?(data, completion)
     }
 
-    var onRequestOrder: ((PaymentComponentData,
-                         PaymentComponent,
-                        (Result<PartialPaymentOrder, Error>) -> Void) -> Void)?
+    var onRequestOrder: (((Result<PartialPaymentOrder, Error>) -> Void) -> Void)?
 
-    func requestOrder(_ data: PaymentComponentData,
-                      from component: PaymentComponent,
-                      completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
-        onRequestOrder?(data, component, completion)
+    func requestOrder(_ completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
+        onRequestOrder?(completion)
     }
 
-    var onCancelOrder: ((PartialPaymentOrder,
-                        PaymentComponent,
-                        (Error?) -> Void) -> Void)?
+    var onCancelOrder: ((PartialPaymentOrder) -> Void)?
 
-    func cancelOrder(_ order: PartialPaymentOrder,
-                     from component: PaymentComponent,
-                     completion: @escaping (Error?) -> Void) {
-        onCancelOrder?(order, component, completion)
+    func cancelOrder(_ order: PartialPaymentOrder) {
+        onCancelOrder?(order)
     }
 
 
