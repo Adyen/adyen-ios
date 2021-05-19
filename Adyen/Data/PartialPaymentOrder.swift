@@ -10,7 +10,7 @@ import Foundation
 public struct PartialPaymentOrder: Codable, Equatable {
 
     /// A compact version of `PartialPaymentOrder`.
-    public struct CompactOrder: Encodable {
+    public struct CompactOrder: Encodable, Equatable {
 
         /// The psp reference.
         public let pspReference: String
@@ -76,13 +76,5 @@ public struct PartialPaymentOrder: Codable, Equatable {
         case reference
         case remainingAmount
         case expiresAt
-    }
-
-    public static func == (lhs: PartialPaymentOrder, rhs: PartialPaymentOrder) -> Bool {
-        lhs.expiresAt == rhs.expiresAt &&
-            lhs.orderData == rhs.orderData &&
-            lhs.pspReference == rhs.pspReference &&
-            lhs.reference == rhs.reference &&
-            lhs.remainingAmount == rhs.remainingAmount
     }
 }

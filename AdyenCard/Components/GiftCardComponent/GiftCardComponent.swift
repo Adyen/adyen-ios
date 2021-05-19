@@ -9,7 +9,6 @@ import UIKit
 
 /// A component that provides a form for gift card payments.
 public final class GiftCardComponent: PartialPaymentComponent,
-    PaymentComponent,
     PresentableComponent,
     Localizable,
     LoadingComponent,
@@ -46,7 +45,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
     }
 
     /// :nodoc:
-    private var giftCardPaymentMethod: GiftCardPaymentMethod
+    private let giftCardPaymentMethod: GiftCardPaymentMethod
 
     /// The gift card payment method.
     public var paymentMethod: PaymentMethod { giftCardPaymentMethod }
@@ -81,12 +80,12 @@ public final class GiftCardComponent: PartialPaymentComponent,
     // MARK: - Presentable Component Protocol
 
     /// :nodoc:
-    public var viewController: UIViewController { securedViewController }
+    public lazy var viewController: UIViewController = {
+        SecuredViewController(child: formViewController, style: style)
+    }()
 
     /// :nodoc:
     public var requiresModalPresentation: Bool { true }
-
-    private lazy var securedViewController = SecuredViewController(child: formViewController, style: style)
 
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(style: style)

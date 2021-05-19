@@ -22,11 +22,14 @@ public enum PartialPaymentError: LocalizedError {
 }
 
 /// Any component that provides partial payments.
-public protocol PartialPaymentComponent: AnyObject {
+/// :nodoc:
+public protocol PartialPaymentComponent: PaymentComponent {
 
     /// The delegate that handles partial payments.
-    var partialPaymentDelegate: PartialPaymentDelegate? { get set }
+    /// :nodoc:
+    var partialPaymentDelegate:  PartialPaymentDelegate? { get set }
 
     /// The delegate that handles shopper confirmation UI when the balance of the partial payment is sufficient to pay.
+    /// :nodoc:
     var readyToSubmitComponentDelegate: ReadyToSubmitPaymentComponentDelegate? { get set }
 }

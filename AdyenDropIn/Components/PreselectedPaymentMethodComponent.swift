@@ -48,7 +48,8 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     /// - Parameter listItemStyle: The list item UI style.
     internal init(component: PaymentComponent,
                   title: String,
-                  style: FormComponentStyle, listItemStyle: ListItemStyle) {
+                  style: FormComponentStyle,
+                  listItemStyle: ListItemStyle) {
         self.title = title
         self.style = style
         self.listItemStyle = listItemStyle
