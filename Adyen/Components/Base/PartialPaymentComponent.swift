@@ -27,7 +27,7 @@ public protocol PartialPaymentComponent: PaymentComponent {
 
     /// The delegate that handles partial payments.
     /// :nodoc:
-    var partialPaymentDelegate:  PartialPaymentDelegate? { get set }
+    var partialPaymentDelegate: PartialPaymentDelegate? { get set }
 
     /// The delegate that handles shopper confirmation UI when the balance of the partial payment is sufficient to pay.
     /// :nodoc:
