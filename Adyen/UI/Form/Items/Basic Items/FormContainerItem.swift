@@ -52,7 +52,7 @@ public class FormContainerItem: FormItem {
             preservesSuperviewLayoutMargins = true
             contentView.translatesAutoresizingMaskIntoConstraints = false
             addSubview(contentView)
-            contentView.adyen.anchor(inside: self.layoutMarginsGuide, with: padding)
+            contentView.adyen.anchor(inside: self, with: padding)
         }
     }
 }

@@ -99,5 +99,7 @@
 "adyen.boletobancario.btnLabel" = "Generera Boleto";
 "adyen.boleto.sendCopyToEmail" = "Skicka en kopia till min e-post";
 "adyen.boleto.personalDetails" = "Personuppgifter";
+"adyen.boleto.download.pdf" = "Ladda ner PDF";
 "adyen.giftcard.currencyError" = "Presentkort är endast giltiga i den valuta som de utfärdades i";
 "adyen.giftcard.noBalance" = "Saldot för detta presentkort är noll";
+"adyen.partialPayment.remainingBalance" = "Återstående saldo blir %@";

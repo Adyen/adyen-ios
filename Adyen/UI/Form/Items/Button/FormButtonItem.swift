@@ -50,7 +50,7 @@ extension FormButtonItem {
 
     /// :nodoc:
     public var submitButton: FormContainerItem {
-        withPadding(padding: .init(top: 8, left: 0, bottom: -16, right: 0))
+        withPadding(padding: .init(top: 16, left: 16, bottom: -24, right: -16))
     }
 
 }

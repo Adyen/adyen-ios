@@ -100,5 +100,7 @@
 "adyen.boletobancario.btnLabel" = "إنشاء طريقة دفع Boleto";
 "adyen.boleto.sendCopyToEmail" = "إرسال نسخة إلى بريدي الإلكتروني";
 "adyen.boleto.personalDetails" = "البيانات الشخصية";
+"adyen.boleto.download.pdf" = "تنزيل ملف PDF";
 "adyen.giftcard.currencyError" = "لا تسري بطاقات الهدايا إلا بالعملة التي صدرت بها";
 "adyen.giftcard.noBalance" = "لا يوجد رصيد ببطاقة الهدايا هذه";
+"adyen.partialPayment.remainingBalance" = "سيبلغ الرصيد المتبقي %@";
