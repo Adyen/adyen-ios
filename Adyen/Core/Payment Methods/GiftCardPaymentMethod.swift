@@ -6,27 +6,39 @@
 
 import Foundation
 
-internal struct GiftCardPaymentMethod: PaymentMethod {
-
-    internal let type: String
-
-    internal let name: String
-
-    internal let brand: String
+/// Any Gift Card payment method.
+public struct GiftCardPaymentMethod: PaymentMethod {
 
     /// :nodoc:
-    internal func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
+    public let type: String
+
+    /// :nodoc:
+    public let name: String
+
+    /// :nodoc:
+    public let brand: String
+
+    /// :nodoc:
+    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }
 
     /// :nodoc:
-    internal var displayInformation: DisplayInformation {
+    public var displayInformation: DisplayInformation {
         DisplayInformation(title: name, subtitle: nil, logoName: brand)
     }
 
     /// :nodoc:
-    internal func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    public func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name, subtitle: nil, logoName: brand)
+    }
+
+    // MARK: - Decoding
+
+    private enum CodingKeys: String, CodingKey {
+        case type
+        case name
+        case brand
     }
 
 }

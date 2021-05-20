@@ -44,6 +44,9 @@ public struct FormComponentStyle: TintableStyle {
               textField: textField)
     }
 
+    /// The error message indicator style.
+    public var errorStyle = FormErrorItemStyle()
+
     /// Set tint color of form.
     /// When set, updates tint colors for all undelying styles.
     /// If value is nil, the default color would be used.

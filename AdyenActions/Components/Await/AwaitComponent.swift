@@ -63,7 +63,7 @@ public final class AwaitComponent: ActionComponent, Cancellable {
             presentationDelegate.present(component: presentableComponent)
         } else {
             let message = "PresentationDelegate is nil. Provide a presentation delegate to AwaitComponent."
-            AdyenAssertion.assert(message: message)
+            AdyenAssertion.assertionFailure(message: message)
         }
         
         let awaitComponentBuilder = self.awaitActionHandler ?? PollingHandlerProvider(environment: environment, apiClient: nil)

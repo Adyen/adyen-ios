@@ -11,7 +11,7 @@ import WebKit
 public struct BrowserInfo: Encodable {
     
     /// The device default user-agent.
-    public var userAgent: String? { BrowserInfo.cachedUserAgent }
+    public var userAgent: String?
     
     /// Initializes a `BrowserInfo` instance asynchronously.
     ///
@@ -19,7 +19,7 @@ public struct BrowserInfo: Encodable {
     ///   - completion: A call back when the `BrowserInfo` instance is ready or when initialization fails.
     public static func initialize(completion: @escaping ((_ info: BrowserInfo?) -> Void)) {
         guard cachedUserAgent == nil else {
-            completion(BrowserInfo())
+            completion(BrowserInfo(userAgent: cachedUserAgent))
             return
         }
         webView = WKWebView()
@@ -27,7 +27,7 @@ public struct BrowserInfo: Encodable {
             webView = nil
             guard let result = result as? String else { completion(nil); return }
             BrowserInfo.cachedUserAgent = result
-            completion(BrowserInfo())
+            completion(BrowserInfo(userAgent: cachedUserAgent))
         }
     }
     

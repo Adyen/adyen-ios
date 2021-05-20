@@ -33,7 +33,7 @@ internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitt
                          paymentData: String?,
                          completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Swift.Error>) -> Void) {
         guard let clientKey = clientKey else {
-            AdyenAssertion.assert(message: "Client key is missing.")
+            AdyenAssertion.assertionFailure(message: "Client key is missing.")
             completionHandler(.failure(ThreeDS2ComponentError.missingClientKey))
             return
         }

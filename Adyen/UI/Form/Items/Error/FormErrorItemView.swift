@@ -19,10 +19,12 @@ internal final class FormErrorItemView: FormItemView<FormErrorItem> {
         bind(item.$message, to: self, at: \.accessibilityLabel)
         isHidden = item.isHidden.wrappedValue
         addSubview(containerView)
-        containerView.adyen.anchor(inside: safeAreaLayoutGuide, with: UIEdgeInsets(top: 16, left: 16, bottom: -16, right: -16))
+        containerView.adyen.anchor(inside: layoutMarginsGuide, with: UIEdgeInsets(top: 16, left: 16, bottom: -16, right: -16))
         containerView.backgroundColor = item.style.backgroundColor
         containerView.adyen.round(using: item.style.cornerRounding)
         backgroundColor = .clear
+        preservesSuperviewLayoutMargins = true
+        translatesAutoresizingMaskIntoConstraints = false
 
         isAccessibilityElement = true
         accessibilityLabel = item.message
@@ -36,10 +38,11 @@ internal final class FormErrorItemView: FormItemView<FormErrorItem> {
         let stackView = UIStackView(arrangedSubviews: [iconView, messageLabel])
         stackView.axis = .horizontal
         stackView.alignment = .center
-        stackView.distribution = .fillProportionally
+        stackView.distribution = .fill
         stackView.spacing = 16
         stackView.isUserInteractionEnabled = false
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.preservesSuperviewLayoutMargins = true
 
         return stackView.adyen.wrapped(with: UIEdgeInsets(top: 8, left: 16, bottom: -8, right: -16))
     }()
@@ -53,6 +56,7 @@ internal final class FormErrorItemView: FormItemView<FormErrorItem> {
         messageLabel.accessibilityIdentifier = item.identifier.map {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "messageLabel")
         }
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
 
         return messageLabel
     }()
@@ -67,6 +71,10 @@ internal final class FormErrorItemView: FormItemView<FormErrorItem> {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "iconView")
         }
         view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            view.widthAnchor.constraint(equalToConstant: 12),
+            view.heightAnchor.constraint(equalToConstant: 12)
+        ])
         return view
     }()
 

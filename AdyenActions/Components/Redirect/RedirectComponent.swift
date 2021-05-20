@@ -122,6 +122,11 @@ extension RedirectComponent: BrowserComponentDelegate {
             delegate?.didFail(with: ComponentError.cancelled, from: self)
         }
     }
+
+    /// :nodoc:
+    internal func didOpenExternalApplication() {
+        delegate?.didOpenExternalApplication(self)
+    }
     
 }
 

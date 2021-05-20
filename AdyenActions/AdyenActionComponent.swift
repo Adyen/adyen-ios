@@ -134,7 +134,7 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
     
     private func handle(_ action: AwaitAction) {
         guard environment.clientKey != nil else {
-            AdyenAssertion.assert(message: """
+            AdyenAssertion.assertionFailure(message: """
             Failed to instantiate AwaitComponent because client key is not configured.
             Please supply the client key:
             -  if using DropInComponent, or AdyenActionsComponent.clientKey in the PaymentMethodsConfiguration;

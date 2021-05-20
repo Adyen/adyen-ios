@@ -17,36 +17,72 @@ import Adyen
 import Foundation
 
 internal final class ComponentManager {
-    
+
     /// Indicates the UI configuration of the drop in component.
     private var style: DropInComponent.Style
+
+    private let partialPaymentEnabled: Bool
+
+    private let remainingAmount: Payment.Amount?
+
+    private let order: PartialPaymentOrder?
     
     internal init(paymentMethods: PaymentMethods,
                   configuration: DropInComponent.PaymentMethodsConfiguration,
-                  style: DropInComponent.Style) {
+                  style: DropInComponent.Style,
+                  partialPaymentEnabled: Bool = true,
+                  remainingAmount: Payment.Amount? = nil,
+                  order: PartialPaymentOrder?) {
         self.paymentMethods = paymentMethods
         self.configuration = configuration
         self.style = style
+        self.partialPaymentEnabled = partialPaymentEnabled
+        self.remainingAmount = remainingAmount
+        self.order = order
     }
     
     // MARK: - Internal
     
-    internal lazy var components: SectionedComponents = {
-        // Filter out payment methods without the Ecommerce shopper interaction.
-        let storedPaymentMethods = paymentMethods.stored.filter { $0.supportedShopperInteractions.contains(.shopperPresent) }
+    internal lazy var sections: [ComponentsSection] = {
+
+        // Paid section
+        let amountString: String = remainingAmount.map(\.formatted) ?? "Amount"
+        let footerTitle = "Select payment method for the remaining " + amountString
+        let paidFooter = ListSectionFooter(title: footerTitle,
+                                           style: style.listComponent.partialPaymentSectionFooter)
+        let paidSection = ComponentsSection(header: nil,
+                                            components: paidComponents,
+                                            footer: paidFooter)
+
+        // Stored section
+        let storedSection = ComponentsSection(components: storedComponents)
+
+        // Regular section
+        let localizedTitle = localizedString(.paymentMethodsOtherMethods, configuration.localizationParameters)
+        let regularSectionTitle = storedSection.components.isEmpty ? nil : localizedTitle
+        let regularHeader: ListSectionHeader? = regularSectionTitle.map {
+            ListSectionHeader(title: $0, style: style.listComponent.sectionHeader)
+        }
+        let regularSection = ComponentsSection(header: regularHeader, components: regularComponents, footer: nil)
         
-        return SectionedComponents(
-            stored: storedPaymentMethods.compactMap { component(for: $0) },
-            regular: paymentMethods.regular.compactMap { component(for: $0) }
-        )
+        return [paidSection, storedSection, regularSection]
     }()
+
+    // Filter out payment methods without the Ecommerce shopper interaction.
+    internal lazy var storedComponents: [PaymentComponent] = paymentMethods.stored.filter {
+        $0.supportedShopperInteractions.contains(.shopperPresent)
+    }.compactMap(component(for:))
+
+    internal lazy var regularComponents = paymentMethods.regular.compactMap(component(for:))
+
+    internal lazy var paidComponents = paymentMethods.paid.compactMap(component(for:))
     
     // MARK: - Private
     
     private func component(for paymentMethod: PaymentMethod) -> PaymentComponent? {
         guard isAllowed(paymentMethod) else {
             // swiftlint:disable:next line_length
-            AdyenAssertion.assert(message: "For voucher payment methods like \(paymentMethod.name) it is required to add a suitable text for the key NSPhotoLibraryAddUsageDescription in the Application Info.plist, to enable the shopper to save the voucher to their photo library.")
+            AdyenAssertion.assertionFailure(message: "For voucher payment methods like \(paymentMethod.name) it is required to add a suitable text for the key NSPhotoLibraryAddUsageDescription in the Application Info.plist, to enable the shopper to save the voucher to their photo library.")
             return nil
         }
 
@@ -58,6 +94,7 @@ internal final class ComponentManager {
 
         paymentComponent.payment = configuration.payment
         paymentComponent.clientKey = configuration.clientKey
+        paymentComponent.order = order
         return paymentComponent
     }
 
@@ -211,7 +248,7 @@ extension ComponentManager: PaymentComponentBuilder {
     internal func build(paymentMethod: WeChatPayPaymentMethod) -> PaymentComponent? {
         guard let classObject = loadTheConcreteWeChatPaySDKActionComponentClass() else { return nil }
         guard classObject.isDeviceSupported() else { return nil }
-        return EmptyPaymentComponent(paymentMethod: paymentMethod)
+        return InstantPaymentComponent(paymentMethod: paymentMethod, paymentData: nil)
     }
     
     /// :nodoc:
@@ -230,33 +267,23 @@ extension ComponentManager: PaymentComponentBuilder {
     }
 
     /// :nodoc:
-    internal func build(paymentMethod: SevenElevenPaymentMethod) -> PaymentComponent? {
-        SevenElevenComponent(paymentMethod: paymentMethod,
-                             style: style.formComponent)
-    }
-
-    /// :nodoc:
-    internal func build(paymentMethod: EContextStoresPaymentMethod) -> PaymentComponent? {
-        EContextStoreComponent(paymentMethod: paymentMethod,
-                               style: style.formComponent)
-    }
-
-    /// :nodoc:
-    internal func build(paymentMethod: EContextATMPaymentMethod) -> PaymentComponent? {
-        EContextATMComponent(paymentMethod: paymentMethod,
-                             style: style.formComponent)
-    }
-
-    /// :nodoc:
-    internal func build(paymentMethod: EContextOnlinePaymentMethod) -> PaymentComponent? {
-        EContextOnlineComponent(paymentMethod: paymentMethod,
-                                style: style.formComponent)
+    internal func build(paymentMethod: EContextPaymentMethod) -> PaymentComponent? {
+        BasicPersonalInfoFormComponent(paymentMethod: paymentMethod,
+                                       style: style.formComponent)
     }
 
     /// :nodoc:
     internal func build(paymentMethod: DokuPaymentMethod) -> PaymentComponent? {
         DokuComponent(paymentMethod: paymentMethod,
                       style: style.formComponent)
+    }
+
+    /// :nodoc:
+    internal func build(paymentMethod: GiftCardPaymentMethod) -> PaymentComponent? {
+        guard partialPaymentEnabled else { return nil }
+        return GiftCardComponent(paymentMethod: paymentMethod,
+                                 clientKey: configuration.clientKey,
+                                 style: style.formComponent)
     }
     
     /// :nodoc:
@@ -266,7 +293,7 @@ extension ComponentManager: PaymentComponentBuilder {
     
     /// :nodoc:
     internal func build(paymentMethod: PaymentMethod) -> PaymentComponent? {
-        EmptyPaymentComponent(paymentMethod: paymentMethod)
+        InstantPaymentComponent(paymentMethod: paymentMethod, paymentData: nil)
     }
     
 }

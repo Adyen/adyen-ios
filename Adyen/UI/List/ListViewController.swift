@@ -11,7 +11,7 @@ import UIKit
 public final class ListViewController: UITableViewController {
     
     /// Indicates the list view controller UI style.
-    public let style: ListComponentStyle
+    public let style: ViewStyle
 
     /// :nodoc:
     /// Delegate to handle different viewController events.
@@ -20,7 +20,7 @@ public final class ListViewController: UITableViewController {
     /// Initializes the list view controller.
     ///
     /// - Parameter style: The UI style.
-    public init(style: ListComponentStyle = ListComponentStyle()) {
+    public init(style: ViewStyle) {
         self.style = style
         super.init(style: .grouped)
     }
@@ -36,7 +36,7 @@ public final class ListViewController: UITableViewController {
         get { tableView.contentSize }
         
         // swiftlint:disable:next unused_setter_value
-        set { AdyenAssertion.assert(message: """
+        set { AdyenAssertion.assertionFailure(message: """
         PreferredContentSize is overridden for this view controller.
         getter - returns content size of scroll view.
         setter - no implemented.
@@ -126,20 +126,34 @@ public final class ListViewController: UITableViewController {
     
     /// :nodoc:
     override public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let title = sections[section].title else {
+        guard let header = sections[section].header else {
             return nil
         }
-        
-        let headerView = ListHeaderView(title: title, style: style.sectionHeader)
+
+        let headerView = ListHeaderView(title: header.title, style: header.style)
         headerView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "Adyen.ListViewController",
                                                                          postfix: "headerView.\(section)")
-        
+
         return headerView
+    }
+
+    override public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard let footer = sections[section].footer else {
+            return nil
+        }
+        let footerView = ListFooterView(title: footer.title, style: footer.style)
+        footerView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "Adyen.ListViewController",
+                                                                         postfix: "footerView.\(section)")
+        return footerView
+    }
+
+    override public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        sections[section].footer == nil ? 0 : 55
     }
     
     /// :nodoc:
     override public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        sections[section].title == nil ? 0 : 44.0
+        sections[section].header == nil ? 0 : 44.0
     }
     
     /// :nodoc:

@@ -139,11 +139,14 @@ custom_categories:
       - PaymentComponentData
       - PaymentComponentDelegate
       - PresentationDelegate
+      - PartialPaymentDelegate
+      - PartialPaymentComponent
       - ActionComponent
       - ActionComponentData
       - ActionComponentDelegate
       - PresentableComponent
       - Details
+      - PaymentOrder
       - PaymentMethodDetails
       - AdditionalDetails
       - ComponentError

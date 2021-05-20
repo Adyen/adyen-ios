@@ -10,7 +10,7 @@ final class CardPublicKeyProviderMock: AnyCardPublicKeyProvider {
 
     var onFetch: ((_ completion: @escaping CompletionHandler) -> Void)?
 
-    func fetch(completion: @escaping CompletionHandler) throws {
+    func fetch(completion: @escaping CompletionHandler) {
         onFetch?(completion)
     }
 }

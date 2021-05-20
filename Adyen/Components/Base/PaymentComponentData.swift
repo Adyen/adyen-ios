@@ -65,6 +65,12 @@ public struct PaymentComponentData: ShopperInformation, BillingAddressInformatio
     /// Indicates whether the user has chosen to store the payment method.
     public let storePaymentMethod: Bool
 
+    /// The partial payment order if any.
+    public let order: PartialPaymentOrder?
+
+    /// The payment amount.
+    public let amount: Payment.Amount?
+
     /// Shopper name.
     public var shopperName: ShopperName? {
         guard let shopperInfo = paymentMethod as? ShopperInformation else { return nil }
@@ -104,13 +110,20 @@ public struct PaymentComponentData: ShopperInformation, BillingAddressInformatio
     ///
     /// - Parameters:
     ///   - paymentMethodDetails: The payment method details submitted from the payment component.
+    ///   - amount: The payment amount.
+    ///   - order: The partial payment order if any.
     ///   - storePaymentMethod: Whether the user has chosen to store the payment method.
     ///   - browserInfo: The device default browser info.
-    ///   - addressInfo: The payment's billing address.
-    public init(paymentMethodDetails: PaymentMethodDetails, storePaymentMethod: Bool = false, browserInfo: BrowserInfo? = nil) {
+    public init(paymentMethodDetails: PaymentMethodDetails,
+                amount: Payment.Amount?,
+                order: PartialPaymentOrder?,
+                storePaymentMethod: Bool = false,
+                browserInfo: BrowserInfo? = nil) {
         self.paymentMethod = paymentMethodDetails
         self.storePaymentMethod = storePaymentMethod
         self.browserInfo = browserInfo
+        self.order = order
+        self.amount = amount
     }
     
     /// Creates a new `PaymentComponentData` by populating the `browserInfo`,
@@ -120,8 +133,10 @@ public struct PaymentComponentData: ShopperInformation, BillingAddressInformatio
     ///   - completion: The completion closure that is called with the new `PaymentComponentData` instance.
     public func dataByAddingBrowserInfo(completion: @escaping ((_ newData: PaymentComponentData) -> Void)) {
         BrowserInfo.initialize {
-            completion(PaymentComponentData(paymentMethodDetails: self.paymentMethod,
-                                            storePaymentMethod: self.storePaymentMethod,
+            completion(PaymentComponentData(paymentMethodDetails: paymentMethod,
+                                            amount: amount,
+                                            order: order,
+                                            storePaymentMethod: storePaymentMethod,
                                             browserInfo: $0))
         }
     }

@@ -65,7 +65,7 @@ extension IntegrationExample {
     }
 
     internal func presentConvenienceStore() {
-        guard let paymentMethod = paymentMethods?.paymentMethod(ofType: EContextStoresPaymentMethod.self) else { return }
+        guard let paymentMethod = paymentMethods?.paymentMethod(ofType: EContextPaymentMethod.self) else { return }
         let component = EContextStoreComponent(paymentMethod: paymentMethod)
         component.delegate = self
         present(component)
@@ -114,6 +114,10 @@ extension IntegrationExample {
         case let .success(response):
             if let action = response.action {
                 handle(action)
+            } else if let order = response.order,
+                      let remainingAmount = order.remainingAmount,
+                      remainingAmount.value > 0 {
+                handle(order)
             } else {
                 finish(with: response.resultCode)
             }

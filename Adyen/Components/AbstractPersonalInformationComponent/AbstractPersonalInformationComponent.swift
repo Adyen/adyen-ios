@@ -63,7 +63,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         configuration.fields.forEach { field in
             self.add(field, into: formViewController)
         }
-        formViewController.append(button.withPadding(padding: .init(top: 8, left: 0, bottom: -16, right: 0)))
+        formViewController.append(button.submitButton)
     }
 
     /// :nodoc:

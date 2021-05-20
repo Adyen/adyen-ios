@@ -8,6 +8,9 @@ import Foundation
 
 /// A collection of available payment methods.
 public struct PaymentMethods: Decodable {
+
+    /// The already paid payment methods, in case of partial payments.
+    public var paid: [PaymentMethod] = []
     
     /// The regular payment methods.
     public let regular: [PaymentMethod]
@@ -73,9 +76,9 @@ internal enum AnyPaymentMethod: Decodable {
     case giftcard(GiftCardPaymentMethod)
     case doku(DokuPaymentMethod)
     case sevenEleven(SevenElevenPaymentMethod)
-    case econtextStores(EContextStoresPaymentMethod)
-    case econtextATM(EContextATMPaymentMethod)
-    case econtextOnline(EContextOnlinePaymentMethod)
+    case econtextStores(EContextPaymentMethod)
+    case econtextATM(EContextPaymentMethod)
+    case econtextOnline(EContextPaymentMethod)
     case boleto(BoletoPaymentMethod)
     
     case none

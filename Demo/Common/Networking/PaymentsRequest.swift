@@ -26,26 +26,28 @@ internal struct PaymentsRequest: Request {
     
     internal func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        
+
         let currentConfiguration = ConfigurationConstants.current
+        let amount = data.amount ?? currentConfiguration.amount
         
         try container.encode(data.paymentMethod.encodable, forKey: .details)
         try container.encode(data.storePaymentMethod, forKey: .storePaymentMethod)
-        try container.encode(data.shopperName, forKey: .shopperName)
-        try container.encode(data.emailAddress ?? ConfigurationConstants.shopperEmail, forKey: .shopperEmail)
-        try container.encode(data.telephoneNumber, forKey: .telephoneNumber)
-        try container.encode(data.billingAddress, forKey: .billingAddress)
-        try container.encode(data.socialSecurityNumber, forKey: .socialSecurityNumber)
+        try container.encodeIfPresent(data.shopperName, forKey: .shopperName)
+        try container.encodeIfPresent(data.emailAddress ?? ConfigurationConstants.shopperEmail, forKey: .shopperEmail)
+        try container.encodeIfPresent(data.telephoneNumber, forKey: .telephoneNumber)
+        try container.encodeIfPresent(data.billingAddress, forKey: .billingAddress)
+        try container.encodeIfPresent(data.socialSecurityNumber, forKey: .socialSecurityNumber)
         try container.encode(Locale.current.identifier, forKey: .shopperLocale)
         try container.encodeIfPresent(data.browserInfo, forKey: .browserInfo)
         try container.encode("iOS", forKey: .channel)
-        try container.encode(currentConfiguration.amount, forKey: .amount)
+        try container.encode(amount, forKey: .amount)
         try container.encode(ConfigurationConstants.reference, forKey: .reference)
         try container.encode(currentConfiguration.countryCode, forKey: .countryCode)
         try container.encode(ConfigurationConstants.returnUrl, forKey: .returnUrl)
         try container.encode(ConfigurationConstants.shopperReference, forKey: .shopperReference)
         try container.encode(ConfigurationConstants.additionalData, forKey: .additionalData)
         try container.encode(currentConfiguration.merchantAccount, forKey: .merchantAccount)
+        try container.encodeIfPresent(data.order?.compactOrder, forKey: .order)
     }
     
     private enum CodingKeys: String, CodingKey {
@@ -66,6 +68,7 @@ internal struct PaymentsRequest: Request {
         case shopperLocale
         case billingAddress
         case socialSecurityNumber
+        case order
     }
     
 }
@@ -75,16 +78,20 @@ internal struct PaymentsResponse: Response {
     internal let resultCode: ResultCode
     
     internal let action: Action?
+
+    internal let order: PartialPaymentOrder?
     
     internal init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.resultCode = try container.decode(ResultCode.self, forKey: .resultCode)
         self.action = try container.decodeIfPresent(Action.self, forKey: .action)
+        self.order = try container.decodeIfPresent(PartialPaymentOrder.self, forKey: .order)
     }
     
     private enum CodingKeys: String, CodingKey {
         case resultCode
         case action
+        case order
     }
     
 }

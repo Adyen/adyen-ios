@@ -55,7 +55,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
 
         formViewController.append(hintLabelItem.withPadding(padding: .init(top: 7, left: 0, bottom: -7, right: 0)))
         formViewController.append(codeItem)
-        formViewController.append(button.withPadding(padding: .init(top: 8, left: 0, bottom: -16, right: 0)))
+        formViewController.append(button.submitButton)
 
         return formViewController
     }()
@@ -101,7 +101,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
         button.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
 
-        submit(data: PaymentComponentData(paymentMethodDetails: details))
+        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
     }
 }
 

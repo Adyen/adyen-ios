@@ -21,11 +21,6 @@ extension CardComponent {
 
 extension CardComponent {
     
-    internal func isPublicKeyValid(key: String) -> Bool {
-        let validator = CardPublicKeyValidator()
-        return validator.isValid(key)
-    }
-    
     internal func didSelectSubmitButton() {
         guard cardViewController.validate() else {
             return
@@ -33,7 +28,7 @@ extension CardComponent {
         
         cardViewController.startLoading()
 
-        fetchCardPublicKey { [weak self] in
+        fetchCardPublicKey(discardError: false) { [weak self] in
             self?.submitEncryptedCardData(cardPublicKey: $0)
         }
     }
@@ -48,44 +43,13 @@ extension CardComponent {
                                       billingAddress: cardViewController.address)
             
             let data = PaymentComponentData(paymentMethodDetails: details,
+                                            amount: payment?.amount,
+                                            order: order,
                                             storePaymentMethod: cardViewController.storePayment)
 
             submit(data: data)
         } catch {
             delegate?.didFail(with: error, from: self)
-        }
-    }
-}
-
-extension CardComponent {
-
-    internal typealias CardKeySuccessHandler = (_ cardPublicKey: String) -> Void
-    internal typealias CardKeyFailureHandler = (_ error: Swift.Error) -> Void
-    
-    internal func fetchCardPublicKey(onError: CardKeyFailureHandler? = nil, completion: @escaping CardKeySuccessHandler) {
-        do {
-            try cardPublicKeyProvider.fetch { [weak self] in
-                self?.handle(result: $0, onError: onError, completion: completion)
-            }
-        } catch {
-            if let onError = onError {
-                onError(error)
-            } else {
-                delegate?.didFail(with: error, from: self)
-            }
-        }
-    }
-    
-    private func handle(result: Result<String, Swift.Error>, onError: CardKeyFailureHandler? = nil, completion: CardKeySuccessHandler) {
-        switch result {
-        case let .success(key):
-            completion(key)
-        case let .failure(error):
-            if let onError = onError {
-                onError(error)
-            } else {
-                delegate?.didFail(with: error, from: self)
-            }
         }
     }
 }
@@ -96,7 +60,30 @@ extension CardComponent: TrackableComponent {
     /// :nodoc:
     public func viewDidLoad(viewController: UIViewController) {
         Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
-        fetchCardPublicKey(onError: { _ in /* Do nothing, to just cache the card public key value */ },
-                           completion: { _ in /* Do nothing, to just cache the card public key value */ })
+        fetchCardPublicKey(discardError: true) { _ in /* Do nothing, to just cache the card public key value */ }
+    }
+}
+
+/// :nodoc:
+extension CardComponent {
+    internal typealias CardKeySuccessHandler = (_ cardPublicKey: String) -> Void
+
+    internal func fetchCardPublicKey(discardError: Bool, completion: @escaping CardKeySuccessHandler) {
+        cardPublicKeyProvider.fetch { [weak self] in
+            self?.handle(result: $0, discardError: discardError, completion: completion)
+        }
+    }
+
+    private func handle(result: Result<String, Swift.Error>,
+                        discardError: Bool,
+                        completion: CardKeySuccessHandler) {
+        switch result {
+        case let .success(key):
+            completion(key)
+        case let .failure(error):
+            if !discardError {
+                delegate?.didFail(with: error, from: self)
+            }
+        }
     }
 }

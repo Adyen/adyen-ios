@@ -29,6 +29,7 @@ extension IntegrationExample {
                                         style: dropInComponentStyle,
                                         title: ConfigurationConstants.appName)
         component.delegate = self
+        component.partialPaymentDelegate = self
         component.environment = environment
         currentComponent = component
 
@@ -42,6 +43,10 @@ extension IntegrationExample {
         case let .success(response):
             if let action = response.action {
                 handle(action)
+            } else if let order = response.order,
+                      let remainingAmount = order.remainingAmount,
+                      remainingAmount.value > 0 {
+                handle(order)
             } else {
                 finish(with: response.resultCode)
             }
@@ -52,6 +57,16 @@ extension IntegrationExample {
 
     private func handle(_ action: Action) {
         (currentComponent as? DropInComponent)?.handle(action)
+    }
+
+    internal func handle(_ order: PartialPaymentOrder) {
+        requestPaymentMethods(order: order) { [weak self] paymentMethods in
+            self?.handle(order, paymentMethods)
+        }
+    }
+
+    private func handle(_ order: PartialPaymentOrder, _ paymentMethods: PaymentMethods) {
+        (currentComponent as? DropInComponent)?.reload(with: order, paymentMethods)
     }
 }
 

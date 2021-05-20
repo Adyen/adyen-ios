@@ -9,7 +9,7 @@ import Foundation
 /// An item for plain text input
 /// :nodoc:
 public final class FormTextInputItem: FormTextItem, Hidable {
-    
+
     /// :nodoc:
     public var isHidden: Observable<Bool> = Observable(false)
         
@@ -18,10 +18,13 @@ public final class FormTextInputItem: FormTextItem, Hidable {
         builder.build(with: self)
     }
     
+    /// Inititate new instance of `FormTextInputItem`
+    /// - Parameter style: The `FormTextItemStyle` UI style.
     public override init(style: FormTextItemStyle = FormTextItemStyle()) {
         super.init(style: style)
     }
     
+    /// :nodoc:
     public override func isValid() -> Bool {
         isHidden.wrappedValue ? true : super.isValid()
     }

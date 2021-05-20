@@ -54,17 +54,18 @@ class ComponentManagerTests: XCTestCase {
         config.payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: config,
-                                   style: DropInComponent.Style())
+                                   style: DropInComponent.Style(),
+                                   order: nil)
 
-        XCTAssertEqual(sut.components.stored.count, 4)
-        XCTAssertEqual(sut.components.regular.count, 15)
+        XCTAssertEqual(sut.storedComponents.count, 4)
+        XCTAssertEqual(sut.regularComponents.count, 15)
 
-        XCTAssertEqual(sut.components.stored.filter { $0.environment.clientKey == Dummy.dummyClientKey }.count, 4)
-        XCTAssertEqual(sut.components.regular.filter { $0.environment.clientKey == Dummy.dummyClientKey }.count, 15)
+        XCTAssertEqual(sut.storedComponents.filter { $0.environment.clientKey == Dummy.dummyClientKey }.count, 4)
+        XCTAssertEqual(sut.regularComponents.filter { $0.environment.clientKey == Dummy.dummyClientKey }.count, 15)
 
-        XCTAssertEqual(sut.components.regular.filter { $0 is LoadingComponent }.count, 12)
-        XCTAssertEqual(sut.components.regular.filter { $0 is Localizable }.count, 11)
-        XCTAssertEqual(sut.components.regular.filter { $0 is PresentableComponent }.count, 13)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 12)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is Localizable }.count, 11)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 13)
     }
     
     func testLocalizationWithCustomTableName() throws {
@@ -78,13 +79,14 @@ class ComponentManagerTests: XCTestCase {
 
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: config,
-                                   style: DropInComponent.Style())
+                                   style: DropInComponent.Style(),
+                                   order: nil)
         
-        XCTAssertEqual(sut.components.stored.count, 4)
-        XCTAssertEqual(sut.components.regular.count, 15)
+        XCTAssertEqual(sut.storedComponents.count, 4)
+        XCTAssertEqual(sut.regularComponents.count, 15)
         
-        XCTAssertEqual(sut.components.stored.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 4)
-        XCTAssertEqual(sut.components.regular.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 11)
+        XCTAssertEqual(sut.storedComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 4)
+        XCTAssertEqual(sut.regularComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 11)
     }
     
     func testLocalizationWithCustomKeySeparator() throws {
@@ -98,13 +100,49 @@ class ComponentManagerTests: XCTestCase {
 
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: config,
-                                   style: DropInComponent.Style())
+                                   style: DropInComponent.Style(),
+                                   order: nil)
         
-        XCTAssertEqual(sut.components.stored.count, 4)
-        XCTAssertEqual(sut.components.regular.count, 15)
+        XCTAssertEqual(sut.storedComponents.count, 4)
+        XCTAssertEqual(sut.regularComponents.count, 15)
         
-        XCTAssertEqual(sut.components.stored.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 4)
-        XCTAssertEqual(sut.components.regular.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 11)
+        XCTAssertEqual(sut.storedComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 4)
+        XCTAssertEqual(sut.regularComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 11)
+    }
+
+    func testOrderInjection() throws {
+        var paymentMethods = try Coder.decode(dictionary) as PaymentMethods
+        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: Dummy.dummyClientKey)
+        let merchantIdentifier = "applePayMerchantIdentifier"
+        let summaryItems = [PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)]
+        config.applePay = .init(summaryItems: summaryItems, merchantIdentifier: merchantIdentifier)
+        config.payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
+
+        let order = PartialPaymentOrder(pspReference: "test pspRef", orderData: "test order data")
+
+        paymentMethods.paid = [
+            OrderPaymentMethod(lastFour: "1234",
+                               type: "type-1",
+                               transactionLimit: Payment.Amount(value: 123, currencyCode: "EUR"),
+                               amount: Payment.Amount(value: 1234, currencyCode: "EUR")),
+            OrderPaymentMethod(lastFour: "1234",
+                               type: "type-2",
+                               transactionLimit: Payment.Amount(value: 123, currencyCode: "EUR"),
+                               amount: Payment.Amount(value: 1234, currencyCode: "EUR"))
+        ]
+
+        let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   configuration: config,
+                                   style: DropInComponent.Style(),
+                                   order: order)
+
+        XCTAssertEqual(sut.paidComponents.count, 2)
+        XCTAssertEqual(sut.storedComponents.count, 4)
+        XCTAssertEqual(sut.regularComponents.count, 15)
+
+        XCTAssertEqual(sut.paidComponents.filter { $0.order == order }.count, 2)
+        XCTAssertEqual(sut.storedComponents.filter { $0.order == order }.count, 4)
+        XCTAssertEqual(sut.regularComponents.filter { $0.order == order }.count, 15)
     }
     
 }

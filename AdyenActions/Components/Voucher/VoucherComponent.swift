@@ -70,7 +70,7 @@ public final class VoucherComponent: AnyVoucherActionHandler {
             presentationDelegate.present(component: presentableComponent)
         } else {
             let message = "PresentationDelegate is nil. Provide a presentation delegate to VoucherAction."
-            AdyenAssertion.assert(message: message)
+            AdyenAssertion.assertionFailure(message: message)
         }
     }
 

@@ -34,16 +34,33 @@ public struct DisplayInformation {
     /// The title for the payment method, adapted for displaying in a list.
     /// In the case of stored payment methods, this will include information identifying the stored payment method.
     /// For example, this could be the last 4 digits of the card number, or the used email address.
-    public var title: String
+    public let title: String
     
     /// The subtitle for the payment method, adapted for displaying in a list.
     /// This property represents optional data that can help identify a payment method.
     /// For example, this could be the expiration date of a stored credit card.
-    public var subtitle: String?
+    public let subtitle: String?
     
     /// The name of the logo resource.
     /// :nodoc:
-    public var logoName: String
+    public let logoName: String
+
+    /// The trailing disclosure text.
+    /// :nodoc:
+    public let disclosureText: String?
+
+    /// Initializes a`DisplayInformation`.
+    ///
+    /// - Parameter title: The title.
+    /// - Parameter subtitle: The subtitle.
+    /// - Parameter logoName: The logo name.
+    /// - Parameter disclosureText: The trailing disclosure text.
+    public init(title: String, subtitle: String?, logoName: String, disclosureText: String? = nil) {
+        self.title = title
+        self.subtitle = subtitle
+        self.logoName = logoName
+        self.disclosureText = disclosureText
+    }
 }
 
 /// :nodoc:

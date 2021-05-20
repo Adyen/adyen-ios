@@ -20,7 +20,7 @@ public final class FormButtonItem: FormItem {
     public var identifier: String?
     
     /// The title of the button.
-    public var title: String?
+    @Observable(nil) public var title: String?
     
     /// The observable of the button indicator activity.
     @Observable(false) public var showsActivityIndicator: Bool
@@ -43,4 +43,14 @@ public final class FormButtonItem: FormItem {
         builder.build(with: self)
     }
     
+}
+
+/// :nodoc:
+extension FormButtonItem {
+
+    /// :nodoc:
+    public var submitButton: FormContainerItem {
+        withPadding(padding: .init(top: 8, left: 0, bottom: -16, right: 0))
+    }
+
 }

@@ -226,7 +226,7 @@ extension BoletoComponent {
         
         /// :nodoc:
         public override func createPaymentDetails() -> PaymentMethodDetails {
-            onCreatePaymentDetails() ?? EmptyPaymentDetails(type: paymentMethod.type)
+            onCreatePaymentDetails() ?? InstantPaymentDetails(type: paymentMethod.type)
         }
     }
     

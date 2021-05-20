@@ -30,10 +30,18 @@ public struct TextStyle: ViewStyle {
     /// - Parameter font: The font used to display the text.
     /// - Parameter color: The color of the text.
     /// - Parameter textAlignment: The technique to use for aligning the text.
-    public init(font: UIFont, color: UIColor, textAlignment: NSTextAlignment) {
+    /// - Parameter cornerRounding: The corners style of the text item.
+    /// - Parameter backgroundColor: The background color.
+    public init(font: UIFont,
+                color: UIColor,
+                textAlignment: NSTextAlignment,
+                cornerRounding: CornerRounding = .none,
+                backgroundColor: UIColor = .clear) {
         self.font = font
         self.color = color
         self.textAlignment = textAlignment
+        self.cornerRounding = cornerRounding
+        self.backgroundColor = backgroundColor
     }
     
     /// Initializes the text style.

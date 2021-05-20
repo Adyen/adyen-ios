@@ -265,19 +265,19 @@ private struct SevenElevenPaymentMethodDecoder: PaymentMethodDecoder {
 
 private struct EContextStoresPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
-        .econtextStores(try EContextStoresPaymentMethod(from: decoder))
+        .econtextStores(try EContextPaymentMethod(from: decoder))
     }
 }
 
 private struct EContextATMPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
-        .econtextATM(try EContextATMPaymentMethod(from: decoder))
+        .econtextATM(try EContextPaymentMethod(from: decoder))
     }
 }
 
 private struct EContextOnlinePaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
-        .econtextOnline(try EContextOnlinePaymentMethod(from: decoder))
+        .econtextOnline(try EContextPaymentMethod(from: decoder))
     }
 }
 

@@ -32,7 +32,7 @@ internal enum ConfigurationConstants {
 
     // swiftlint:disable:next line_length
     static let demoServerAPIKey = "{YOUR_DEMO_SERVER_API_KEY}"
-    
+
     static let applePayMerchantIdentifier = "{YOUR_APPLE_PAY_MERCHANT_IDENTIFIER}"
     
     static var applePaySummaryItems: [PKPaymentSummaryItem] {
