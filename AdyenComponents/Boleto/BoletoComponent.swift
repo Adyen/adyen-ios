@@ -9,7 +9,11 @@ import Foundation
 import UIKit
 
 /// A component that provides a form for Boleto payment.
-public final class BoletoComponent: PaymentComponent, PresentableComponent, Localizable, Observer {
+public final class BoletoComponent: PaymentComponent, LoadingComponent, PresentableComponent, Localizable, Observer {
+    
+    public func stopLoading() {
+        formComponent.stopLoading()
+    }
     
     /// :nodoc:
     public weak var delegate: PaymentComponentDelegate?
@@ -53,14 +57,15 @@ public final class BoletoComponent: PaymentComponent, PresentableComponent, Loca
         socialSecurityNumberItem.placeholder = localizedString(.boletoSocialSecurityNumber, localizationParameters)
         socialSecurityNumberItem.validator = LengthValidator(minimumLength: 1)
         socialSecurityNumberItem.autocapitalizationType = .none
-        socialSecurityNumberItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "personalNumberItem")
+        socialSecurityNumberItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "socialSecurityNumberItem")
         
         return socialSecurityNumberItem
     }()
     
     /// :nodoc:
     internal lazy var sendCopyByEmailItem: FormSwitchItem = {
-        let sendCopyToEmailItem = FormSwitchItem(style: FormSwitchItemStyle())
+        let sendCopyToEmailItem = FormSwitchItem(style: style.switch)
+        sendCopyToEmailItem.value = false
         sendCopyToEmailItem.title = localizedString(.boletoSendCopyToEmail, localizationParameters)
         sendCopyToEmailItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "sendCopyToEmailItem")
 
@@ -93,7 +98,8 @@ public final class BoletoComponent: PaymentComponent, PresentableComponent, Loca
         let component = FormComponent(
             paymentMethod: paymentMethod,
             configuration: AbstractPersonalInformationComponent.Configuration(fields: getFormFields()),
-            onCreatePaymentDetails: { [weak self] in self?.createPaymentDetails() }
+            onCreatePaymentDetails: { [weak self] in self?.createPaymentDetails() },
+            style: style
         )
         setUpFields(for: component)
         component.delegate = self

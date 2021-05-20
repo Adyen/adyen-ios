@@ -21,6 +21,9 @@ public enum VoucherPaymentMethod: String, Codable, CaseIterable {
 
     /// E-Context ATM
     case econtextATM = "econtext_atm"
+    
+    /// Boleto Bancairo Santander
+    case boletoBancairoSantander = "boletobancario_santander"
 }
 
 /// Describes any Voucher action.
@@ -37,6 +40,9 @@ public enum VoucherAction: Decodable {
 
     /// Indicates an EContext ATM Voucher type.
     case econtextATM(EContextATMVoucherAction)
+    
+    /// Indicates a Boleto Bancairo Santander Voucher type.
+    case boletoBancairoSantander(BoletoVoucherAction)
 
     /// :nodoc:
     public init(from decoder: Decoder) throws {
@@ -52,6 +58,8 @@ public enum VoucherAction: Decodable {
             self = .econtextStores(try EContextStoresVoucherAction(from: decoder))
         case .econtextATM:
             self = .econtextATM(try EContextATMVoucherAction(from: decoder))
+        case .boletoBancairoSantander:
+            self = .boletoBancairoSantander(try BoletoVoucherAction(from: decoder))
         }
     }
 
@@ -76,7 +84,7 @@ public class GenericVoucherAction: Decodable {
     /// The payment reference.
     public let reference: String
 
-    /// Expirey Date.
+    /// Expiry Date.
     public let expiresAt: Date
 
     /// Merchant Name.

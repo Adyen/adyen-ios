@@ -717,7 +717,7 @@ class CardComponentTests: XCTestCase {
             self.populate(textItemView: cityItemView!, with: "City")
             self.populate(textItemView: postalCodeItemView!, with: "Postal Code")
 
-            _ = storeDetailsItemView!.accessibilityActivate()
+            storeDetailsItemView!.accessibilityActivate()
 
             payButtonItemViewButton?.sendActions(for: .touchUpInside)
 

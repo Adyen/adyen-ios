@@ -87,4 +87,10 @@ extension VoucherComponent: VoucherViewDelegate {
         activityViewController.popoverPresentationController?.sourceView = voucherView
         presentingViewController.present(activityViewController, animated: true, completion: nil)
     }
+    
+    func download(url: URL, voucherView: UIView, presentingViewController: UIViewController) {
+        let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = voucherView
+        presentingViewController.present(activityViewController, animated: true, completion: nil)
+    }
 }

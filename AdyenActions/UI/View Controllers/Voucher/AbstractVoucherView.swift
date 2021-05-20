@@ -12,6 +12,8 @@ internal protocol VoucherViewDelegate: AnyObject {
     func didComplete(presentingViewController: UIViewController)
 
     func saveAsImage(voucherView: UIView, presentingViewController: UIViewController)
+    
+    func download(url: URL, voucherView: UIView, presentingViewController: UIViewController)
 }
 
 internal class AbstractVoucherView: UIView, Localizable {
@@ -19,10 +21,20 @@ internal class AbstractVoucherView: UIView, Localizable {
     internal weak var delegate: VoucherViewDelegate?
 
     internal struct Model {
+        
+        internal enum ShareButton {
+            
+            case saveImage
+            
+            case download(URL)
+            
+        }
 
         internal let separatorModel: VoucherSeparatorView.Model
+        
+        internal let shareButton: ShareButton
 
-        internal let saveButtonTitle: String
+        internal let shareButtonTitle: String
 
         internal let doneButtonTitle: String
 
@@ -65,8 +77,8 @@ internal class AbstractVoucherView: UIView, Localizable {
     private lazy var saveButton: UIButton = {
         let accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.voucher", postfix: "saveButton")
 
-        return createButton(with: model.style.secondaryButtonStyle,
-                            title: model.saveButtonTitle,
+        return createButton(with: model.style.mainButtonStyle,
+                            title: model.shareButtonTitle,
                             action: #selector(shareVoucher),
                             accessibilityIdentifier: accessibilityIdentifier)
     }()
@@ -74,7 +86,7 @@ internal class AbstractVoucherView: UIView, Localizable {
     private lazy var doneButton: UIButton = {
         let accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.voucher", postfix: "doneButton")
 
-        return createButton(with: model.style.mainButtonStyle,
+        return createButton(with: model.style.secondaryButtonStyle,
                             title: model.doneButtonTitle,
                             action: #selector(done),
                             accessibilityIdentifier: accessibilityIdentifier)
@@ -135,8 +147,8 @@ internal class AbstractVoucherView: UIView, Localizable {
     }
 
     private func updateLayout() {
-        saveButton.adyen.round(using: model.style.secondaryButtonStyle.cornerRounding)
-        doneButton.adyen.round(using: model.style.mainButtonStyle.cornerRounding)
+        saveButton.adyen.round(using: model.style.mainButtonStyle.cornerRounding)
+        doneButton.adyen.round(using: model.style.secondaryButtonStyle.cornerRounding)
     }
 
     private func addVoucherView() {
@@ -166,7 +178,12 @@ internal class AbstractVoucherView: UIView, Localizable {
     }
 
     @objc private func shareVoucher() {
-        delegate?.saveAsImage(voucherView: voucherView, presentingViewController: fakeViewController)
+        switch model.shareButton {
+        case .saveImage:
+            delegate?.saveAsImage(voucherView: voucherView, presentingViewController: fakeViewController)
+        case .download(let url):
+            delegate?.download(url: url, voucherView: voucherView, presentingViewController: fakeViewController)
+        }
     }
 
     @objc private func done() {

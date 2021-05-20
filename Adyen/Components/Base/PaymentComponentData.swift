@@ -37,7 +37,7 @@ public protocol SocialSecurityNumberInformation {
 }
 
 /// Shopper name.
-public struct ShopperName: Codable {
+public struct ShopperName: Codable, Equatable {
     
     /// The first Name.
     public let firstName: String
