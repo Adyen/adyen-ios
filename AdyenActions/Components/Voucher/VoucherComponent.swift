@@ -76,21 +76,44 @@ public final class VoucherComponent: AnyVoucherActionHandler {
 
 }
 
+/// :nodoc:
 extension VoucherComponent: VoucherViewDelegate {
+    
+    /// :nodoc:
     internal func didComplete(presentingViewController: UIViewController) {
         delegate?.didComplete(from: self)
     }
 
+    /// :nodoc:
     internal func saveAsImage(voucherView: UIView, presentingViewController: UIViewController) {
         guard let image = voucherView.adyen.snapShot() else { return }
-        let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
-        activityViewController.popoverPresentationController?.sourceView = voucherView
-        presentingViewController.present(activityViewController, animated: true, completion: nil)
+        
+        presentSharePopover(
+            with: image,
+            presentingViewController: presentingViewController,
+            sourceView: voucherView
+        )
     }
     
-    func download(url: URL, voucherView: UIView, presentingViewController: UIViewController) {
-        let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-        activityViewController.popoverPresentationController?.sourceView = voucherView
+    /// :nodoc:
+    internal func download(url: URL, voucherView: UIView, presentingViewController: UIViewController) {
+        presentSharePopover(
+            with: url,
+            presentingViewController: presentingViewController,
+            sourceView: voucherView
+        )
+    }
+    
+    private func presentSharePopover(
+        with item: Any,
+        presentingViewController: UIViewController,
+        sourceView: UIView
+    ) {
+        let activityViewController = UIActivityViewController(
+            activityItems: [item],
+            applicationActivities: nil
+        )
+        activityViewController.popoverPresentationController?.sourceView = sourceView
         presentingViewController.present(activityViewController, animated: true, completion: nil)
     }
 }
