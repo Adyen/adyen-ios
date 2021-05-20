@@ -175,6 +175,7 @@
 		E787C9AE24698C2E00B401E0 /* UIViewRoundingHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E787C9AD24698C2E00B401E0 /* UIViewRoundingHelpers.swift */; };
 		E787C9D1246E948F00B401E0 /* CoreFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E787C9D0246E948F00B401E0 /* CoreFonts.swift */; };
 		E787C9D3246EC71B00B401E0 /* UIFontHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E787C9D2246EC71B00B401E0 /* UIFontHelpers.swift */; };
+		E788A3B2265565DF00089448 /* EContextPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E788A3B1265565DF00089448 /* EContextPaymentMethod.swift */; };
 		E795A27626404E9400321C48 /* AddressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E795A27526404E9400321C48 /* AddressViewModel.swift */; };
 		E79A64812490D98F00368E9F /* CardComponentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79A64802490D98F00368E9F /* CardComponentDelegateMock.swift */; };
 		E7B3DE9F25A61B9200CA4D2B /* UIViewConstraintsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B3DE9E25A61B9200CA4D2B /* UIViewConstraintsHelper.swift */; };
@@ -381,8 +382,6 @@
 		F95899CA25FA524100E4113F /* AdyenSwiftUI.h in Headers */ = {isa = PBXBuildFile; fileRef = F95899C825FA524100E4113F /* AdyenSwiftUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F95899D825FA526A00E4113F /* AdyenSwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F95899C625FA524100E4113F /* AdyenSwiftUI.framework */; };
 		F95899D925FA526A00E4113F /* AdyenSwiftUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F95899C625FA524100E4113F /* AdyenSwiftUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		F9589C7D2600FAB800E4113F /* SevenElevenPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589C7C2600FAB800E4113F /* SevenElevenPaymentMethod.swift */; };
-		F9589C942600FD7A00E4113F /* SevenElevenComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589C932600FD7A00E4113F /* SevenElevenComponent.swift */; };
 		F9589D032601EE7800E4113F /* FormItemInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589D022601EE7800E4113F /* FormItemInjector.swift */; };
 		F9589D0F2601EF8100E4113F /* NameFormItemInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589D0E2601EF8100E4113F /* NameFormItemInjector.swift */; };
 		F9589D272601F19E00E4113F /* EmailFormItemInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9589D262601F19E00E4113F /* EmailFormItemInjector.swift */; };
@@ -532,15 +531,9 @@
 		F9AC61C624376C9B0062A00D /* AdyenScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AC61C524376C9B0062A00D /* AdyenScope.swift */; };
 		F9B016F92604F3FF001F23FC /* BasicPersonalInfoFormComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B016F82604F3FF001F23FC /* BasicPersonalInfoFormComponent.swift */; };
 		F9B017252604F49C001F23FC /* BasicPersonalInfoFormDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B017242604F49C001F23FC /* BasicPersonalInfoFormDetails.swift */; };
-		F9B017452604F6F9001F23FC /* EContextStoresPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B017442604F6F9001F23FC /* EContextStoresPaymentMethod.swift */; };
-		F9B017522604F76C001F23FC /* EContextStoreComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B017512604F76C001F23FC /* EContextStoreComponent.swift */; };
-		F9B017D42608D402001F23FC /* EContextATMPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B017D32608D402001F23FC /* EContextATMPaymentMethod.swift */; };
-		F9B017E12608D4A8001F23FC /* EContextATMComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B017E02608D4A8001F23FC /* EContextATMComponent.swift */; };
 		F9B017F72608F4FE001F23FC /* DokuVoucherAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B017F62608F4FE001F23FC /* DokuVoucherAction.swift */; };
 		F9B018032608F648001F23FC /* EContextStoresVoucherAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B018022608F648001F23FC /* EContextStoresVoucherAction.swift */; };
 		F9B018B8260A2DB2001F23FC /* EContextATMVoucherAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B018B7260A2DB2001F23FC /* EContextATMVoucherAction.swift */; };
-		F9B018C4260A32AA001F23FC /* EContextOnlinePaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B018C3260A32AA001F23FC /* EContextOnlinePaymentMethod.swift */; };
-		F9B018D1260A32DC001F23FC /* EContextOnlineComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B018D0260A32DC001F23FC /* EContextOnlineComponent.swift */; };
 		F9B019442611E965001F23FC /* EContextATMVoucherViewControllerProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B019432611E965001F23FC /* EContextATMVoucherViewControllerProviderTests.swift */; };
 		F9B0195A2611ED94001F23FC /* EContextStoresVoucherViewControllerProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B019592611ED94001F23FC /* EContextStoresVoucherViewControllerProviderTests.swift */; };
 		F9B798C923AB697100A2103C /* FormComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B798C823AB697100A2103C /* FormComponentStyle.swift */; };
@@ -1030,6 +1023,7 @@
 		E787C9AD24698C2E00B401E0 /* UIViewRoundingHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewRoundingHelpers.swift; sourceTree = "<group>"; };
 		E787C9D0246E948F00B401E0 /* CoreFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreFonts.swift; sourceTree = "<group>"; };
 		E787C9D2246EC71B00B401E0 /* UIFontHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontHelpers.swift; sourceTree = "<group>"; };
+		E788A3B1265565DF00089448 /* EContextPaymentMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EContextPaymentMethod.swift; sourceTree = "<group>"; };
 		E795A27526404E9400321C48 /* AddressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressViewModel.swift; sourceTree = "<group>"; };
 		E79A64802490D98F00368E9F /* CardComponentDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardComponentDelegateMock.swift; sourceTree = "<group>"; };
 		E7AA1096252DCCFB00AAD3C0 /* RSA.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RSA.swift; sourceTree = "<group>"; };
@@ -1191,8 +1185,6 @@
 		F95899C625FA524100E4113F /* AdyenSwiftUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdyenSwiftUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F95899C825FA524100E4113F /* AdyenSwiftUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdyenSwiftUI.h; sourceTree = "<group>"; };
 		F95899C925FA524100E4113F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F9589C7C2600FAB800E4113F /* SevenElevenPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SevenElevenPaymentMethod.swift; sourceTree = "<group>"; };
-		F9589C932600FD7A00E4113F /* SevenElevenComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SevenElevenComponent.swift; sourceTree = "<group>"; };
 		F9589D022601EE7800E4113F /* FormItemInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormItemInjector.swift; sourceTree = "<group>"; };
 		F9589D0E2601EF8100E4113F /* NameFormItemInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameFormItemInjector.swift; sourceTree = "<group>"; };
 		F9589D262601F19E00E4113F /* EmailFormItemInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailFormItemInjector.swift; sourceTree = "<group>"; };
@@ -1353,15 +1345,9 @@
 		F9AC61C524376C9B0062A00D /* AdyenScope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenScope.swift; sourceTree = "<group>"; };
 		F9B016F82604F3FF001F23FC /* BasicPersonalInfoFormComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicPersonalInfoFormComponent.swift; sourceTree = "<group>"; };
 		F9B017242604F49C001F23FC /* BasicPersonalInfoFormDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicPersonalInfoFormDetails.swift; sourceTree = "<group>"; };
-		F9B017442604F6F9001F23FC /* EContextStoresPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EContextStoresPaymentMethod.swift; sourceTree = "<group>"; };
-		F9B017512604F76C001F23FC /* EContextStoreComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EContextStoreComponent.swift; sourceTree = "<group>"; };
-		F9B017D32608D402001F23FC /* EContextATMPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EContextATMPaymentMethod.swift; sourceTree = "<group>"; };
-		F9B017E02608D4A8001F23FC /* EContextATMComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EContextATMComponent.swift; sourceTree = "<group>"; };
 		F9B017F62608F4FE001F23FC /* DokuVoucherAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuVoucherAction.swift; sourceTree = "<group>"; };
 		F9B018022608F648001F23FC /* EContextStoresVoucherAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EContextStoresVoucherAction.swift; sourceTree = "<group>"; };
 		F9B018B7260A2DB2001F23FC /* EContextATMVoucherAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EContextATMVoucherAction.swift; sourceTree = "<group>"; };
-		F9B018C3260A32AA001F23FC /* EContextOnlinePaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EContextOnlinePaymentMethod.swift; sourceTree = "<group>"; };
-		F9B018D0260A32DC001F23FC /* EContextOnlineComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EContextOnlineComponent.swift; sourceTree = "<group>"; };
 		F9B019432611E965001F23FC /* EContextATMVoucherViewControllerProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EContextATMVoucherViewControllerProviderTests.swift; sourceTree = "<group>"; };
 		F9B019592611ED94001F23FC /* EContextStoresVoucherViewControllerProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EContextStoresVoucherViewControllerProviderTests.swift; sourceTree = "<group>"; };
 		F9B798C823AB697100A2103C /* FormComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormComponentStyle.swift; sourceTree = "<group>"; };
@@ -1658,6 +1644,7 @@
 				F924C073246C2E0B006DDAB8 /* LazyOptional.swift */,
 				F9BA21C1246E82EE00D36A63 /* SizeUtilities.swift */,
 				F99E7277261F6C6F00EA5B78 /* KeyboardObserver.swift */,
+				E216D3CE221AFC3A0013CBCF /* IBANSpecification.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -1733,10 +1720,7 @@
 				E7763A1025F02BD20046371E /* GiftCardPaymentMethod.swift */,
 				F9FE25B32625ECE7001874BB /* CustomDisplayablePaymentMethod.swift */,
 				E71E8F3D257921D10054B03D /* StoredBLIKPaymentMethod.swift */,
-				F9589C7C2600FAB800E4113F /* SevenElevenPaymentMethod.swift */,
-				F9B017442604F6F9001F23FC /* EContextStoresPaymentMethod.swift */,
-				F9B017D32608D402001F23FC /* EContextATMPaymentMethod.swift */,
-				F9B018C3260A32AA001F23FC /* EContextOnlinePaymentMethod.swift */,
+				E788A3B1265565DF00089448 /* EContextPaymentMethod.swift */,
 			);
 			path = "Payment Methods";
 			sourceTree = "<group>";
@@ -1768,7 +1752,6 @@
 				F97C81AD25BAC8CF00D7F85C /* AbstractPersonalInformationComponent */,
 				F957A9C7255050DB0099AD73 /* Stored Payment Method */,
 				E28098B1220DA7910087928F /* Base */,
-				E216D3CE221AFC3A0013CBCF /* IBANSpecification.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2602,11 +2585,7 @@
 		F9175E56259393E800D653BE /* AdyenComponents */ = {
 			isa = PBXGroup;
 			children = (
-				F9B018CF260A32CE001F23FC /* EContextOnlineComponent */,
-				F9B017DF2608D490001F23FC /* EContextATMComponent */,
-				F9B017502604F753001F23FC /* EContextStoreComponent */,
 				F9B016F72604F388001F23FC /* BasicPersonalInfoFormComponent */,
-				F9589C882600FD5D00E4113F /* 7 Eleven */,
 				F97C836E25BF03C500D7F85C /* Doku */,
 				E700A7342549E9FC0012B64C /* BLIK */,
 				F9D644DA24D2D9340059CBE3 /* MB Way */,
@@ -2923,14 +2902,6 @@
 				F95899C925FA524100E4113F /* Info.plist */,
 			);
 			path = AdyenSwiftUI;
-			sourceTree = "<group>";
-		};
-		F9589C882600FD5D00E4113F /* 7 Eleven */ = {
-			isa = PBXGroup;
-			children = (
-				F9589C932600FD7A00E4113F /* SevenElevenComponent.swift */,
-			);
-			path = "7 Eleven";
 			sourceTree = "<group>";
 		};
 		F95B6D962527454E002C9062 /* SwiftUI */ = {
@@ -3293,30 +3264,6 @@
 				F9B017242604F49C001F23FC /* BasicPersonalInfoFormDetails.swift */,
 			);
 			path = BasicPersonalInfoFormComponent;
-			sourceTree = "<group>";
-		};
-		F9B017502604F753001F23FC /* EContextStoreComponent */ = {
-			isa = PBXGroup;
-			children = (
-				F9B017512604F76C001F23FC /* EContextStoreComponent.swift */,
-			);
-			path = EContextStoreComponent;
-			sourceTree = "<group>";
-		};
-		F9B017DF2608D490001F23FC /* EContextATMComponent */ = {
-			isa = PBXGroup;
-			children = (
-				F9B017E02608D4A8001F23FC /* EContextATMComponent.swift */,
-			);
-			path = EContextATMComponent;
-			sourceTree = "<group>";
-		};
-		F9B018CF260A32CE001F23FC /* EContextOnlineComponent */ = {
-			isa = PBXGroup;
-			children = (
-				F9B018D0260A32DC001F23FC /* EContextOnlineComponent.swift */,
-			);
-			path = EContextOnlineComponent;
 			sourceTree = "<group>";
 		};
 		F9B8C50A23FE960E00C4D0FB /* Phone Number */ = {
@@ -4219,6 +4166,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E788A3B2265565DF00089448 /* EContextPaymentMethod.swift in Sources */,
 				E216D3C5221AEF450013CBCF /* IBANFormatter.swift in Sources */,
 				E9AFF87A224A4C9C005A0D8D /* PaymentComponent.swift in Sources */,
 				E216D3C0221AD0620013CBCF /* FormViewItemManager.swift in Sources */,
@@ -4234,7 +4182,6 @@
 				F9639B2F24DD6B500073F38A /* APIEnvironment.swift in Sources */,
 				F97CCD3A2435E35E00BC560A /* UIViewControllerHelpers.swift in Sources */,
 				E216D3BE221AAB710013CBCF /* FormTextItem.swift in Sources */,
-				F9B017D42608D402001F23FC /* EContextATMPaymentMethod.swift in Sources */,
 				E7085A012625B4D000D0153B /* LocalizableRegionRepository.swift in Sources */,
 				E9021DEE225CC46D009CF7F4 /* URLHelpers.swift in Sources */,
 				F9D644DE24D2D9950059CBE3 /* MBWayPaymentMethod.swift in Sources */,
@@ -4266,7 +4213,6 @@
 				F97FA024264AD5FE004AFD0C /* ListFooterView.swift in Sources */,
 				F96F44D723BDED6B00871C1F /* FormSwitchItemStyle.swift in Sources */,
 				F9FE25B42625ECE7001874BB /* CustomDisplayablePaymentMethod.swift in Sources */,
-				F9589C7D2600FAB800E4113F /* SevenElevenPaymentMethod.swift in Sources */,
 				E216D3CF221AFC3A0013CBCF /* IBANSpecification.swift in Sources */,
 				E224088722AFA3A80058923E /* RedirectPaymentMethod.swift in Sources */,
 				E262128F22A90D8800F2B133 /* PaymentMethod.swift in Sources */,
@@ -4283,7 +4229,6 @@
 				F9EDB782239149AF00CFB3C9 /* CountryCodeValidator.swift in Sources */,
 				E9021DAA225789B1009CF7F4 /* Localization.swift in Sources */,
 				E787C9D3246EC71B00B401E0 /* UIFontHelpers.swift in Sources */,
-				F9B018C4260A32AA001F23FC /* EContextOnlinePaymentMethod.swift in Sources */,
 				F96F44DD23BE487500871C1F /* LocalizationParameters.swift in Sources */,
 				E7085A8D2627132B00D0153B /* AddressInfo.swift in Sources */,
 				F9589D272601F19E00E4113F /* EmailFormItemInjector.swift in Sources */,
@@ -4370,7 +4315,6 @@
 				E270FDE9225CC4B1006C2CD0 /* ObservationManager.swift in Sources */,
 				F99D453E2627165400880D72 /* FormErrorItem.swift in Sources */,
 				E2D12BF1221D561600EF682F /* FormValueItemView.swift in Sources */,
-				F9B017452604F6F9001F23FC /* EContextStoresPaymentMethod.swift in Sources */,
 				F9639B3B24E14A940073F38A /* APIError.swift in Sources */,
 				E909342822969AFF00C9F04B /* PaymentComponentData.swift in Sources */,
 				F99D454A262716EF00880D72 /* FormErrorItemStyle.swift in Sources */,
@@ -4649,13 +4593,9 @@
 				F9175ED32593951900D653BE /* MBWayDetails.swift in Sources */,
 				F9175EAB259394FF00D653BE /* ApplePayDetails.swift in Sources */,
 				F9175EE22593952600D653BE /* BLIKComponent.swift in Sources */,
-				F9B018D1260A32DC001F23FC /* EContextOnlineComponent.swift in Sources */,
 				F9175E8B259394E100D653BE /* SEPADirectDebitComponent.swift in Sources */,
-				F9B017522604F76C001F23FC /* EContextStoreComponent.swift in Sources */,
 				F9175E8A259394E100D653BE /* SEPADirectDebitDetails.swift in Sources */,
-				F9589C942600FD7A00E4113F /* SevenElevenComponent.swift in Sources */,
 				F9175EAA259394FF00D653BE /* ApplePayComponentExtensions.swift in Sources */,
-				F9B017E12608D4A8001F23FC /* EContextATMComponent.swift in Sources */,
 				F9175ED22593951800D653BE /* MBWayComponent.swift in Sources */,
 				F9175E9B259394F200D653BE /* IssuerListComponent.swift in Sources */,
 				F97C839825BF05AB00D7F85C /* DokuDetails.swift in Sources */,

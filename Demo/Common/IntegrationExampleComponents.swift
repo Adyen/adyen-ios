@@ -65,7 +65,7 @@ extension IntegrationExample {
     }
 
     internal func presentConvenienceStore() {
-        guard let paymentMethod = paymentMethods?.paymentMethod(ofType: EContextStoresPaymentMethod.self) else { return }
+        guard let paymentMethod = paymentMethods?.paymentMethod(ofType: EContextPaymentMethod.self) else { return }
         let component = EContextStoreComponent(paymentMethod: paymentMethod)
         component.delegate = self
         present(component)

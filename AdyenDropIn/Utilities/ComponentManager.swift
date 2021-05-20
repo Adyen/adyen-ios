@@ -256,27 +256,9 @@ extension ComponentManager: PaymentComponentBuilder {
     }
 
     /// :nodoc:
-    internal func build(paymentMethod: SevenElevenPaymentMethod) -> PaymentComponent? {
-        SevenElevenComponent(paymentMethod: paymentMethod,
-                             style: style.formComponent)
-    }
-
-    /// :nodoc:
-    internal func build(paymentMethod: EContextStoresPaymentMethod) -> PaymentComponent? {
-        EContextStoreComponent(paymentMethod: paymentMethod,
-                               style: style.formComponent)
-    }
-
-    /// :nodoc:
-    internal func build(paymentMethod: EContextATMPaymentMethod) -> PaymentComponent? {
-        EContextATMComponent(paymentMethod: paymentMethod,
-                             style: style.formComponent)
-    }
-
-    /// :nodoc:
-    internal func build(paymentMethod: EContextOnlinePaymentMethod) -> PaymentComponent? {
-        EContextOnlineComponent(paymentMethod: paymentMethod,
-                                style: style.formComponent)
+    internal func build(paymentMethod: EContextPaymentMethod) -> PaymentComponent? {
+        BasicPersonalInfoFormComponent(paymentMethod: paymentMethod,
+                                       style: style.formComponent)
     }
 
     /// :nodoc:
