@@ -55,7 +55,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
 
         formViewController.append(hintLabelItem.withPadding(padding: .init(top: 7, left: 16, bottom: -7, right: -16)))
         formViewController.append(codeItem)
-        formViewController.append(button.submitButton)
+        formViewController.append(button.withPadding(padding: UIEdgeInsets.Adyen.submitButtonPadding))
 
         return formViewController
     }()

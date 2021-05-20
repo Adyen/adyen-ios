@@ -95,7 +95,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
         formViewController.append(errorItem)
         formViewController.append(numberItem)
         formViewController.append(securityCodeItem)
-        formViewController.append(button.submitButton)
+        formViewController.append(button.withPadding(padding: UIEdgeInsets.Adyen.submitButtonPadding))
         return formViewController
     }()
 
@@ -252,7 +252,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
         let footnote = localizedString(.partialPaymentRemainingBalance,
                                        localizationParameters,
                                        remainingAmount.formatted)
-        let displayInformation = DisplayInformation(title: "••••\u{00a0}" + lastFourDigits,
+        let displayInformation = DisplayInformation(title: String.Adyen.maskedString + lastFourDigits,
                                                     subtitle: nil,
                                                     logoName: giftCardPaymentMethod.brand,
                                                     footnoteText: footnote)

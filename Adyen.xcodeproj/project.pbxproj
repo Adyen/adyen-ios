@@ -521,6 +521,7 @@
 		F9A53D6325499B13009000A7 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9620D7A23C36082005209FC /* Configuration.swift */; };
 		F9A6C41D26550B7100D8CD3E /* AlreadyPaidPaymentComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A6C41C26550B7100D8CD3E /* AlreadyPaidPaymentComponent.swift */; };
 		F9A6C453265640E000D8CD3E /* InstantPaymentComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A6C452265640E000D8CD3E /* InstantPaymentComponentTests.swift */; };
+		F9A6C47C2656DDDB00D8CD3E /* UIEdgeInsetsHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A6C47B2656DDDB00D8CD3E /* UIEdgeInsetsHelpers.swift */; };
 		F9A781AE2403BD1600E12487 /* FormItemViewBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A781AD2403BD1600E12487 /* FormItemViewBuilderTests.swift */; };
 		F9A781B02403ED4000E12487 /* NumericStringValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A781AF2403ED4000E12487 /* NumericStringValidatorTests.swift */; };
 		F9AC61BB24374CE00062A00D /* AppLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AC61BA24374CE00062A00D /* AppLauncher.swift */; };
@@ -1331,6 +1332,7 @@
 		F9A53C432549887F009000A7 /* PaymentMethodsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentMethodsRequest.swift; sourceTree = "<group>"; };
 		F9A6C41C26550B7100D8CD3E /* AlreadyPaidPaymentComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlreadyPaidPaymentComponent.swift; sourceTree = "<group>"; };
 		F9A6C452265640E000D8CD3E /* InstantPaymentComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstantPaymentComponentTests.swift; sourceTree = "<group>"; };
+		F9A6C47B2656DDDB00D8CD3E /* UIEdgeInsetsHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIEdgeInsetsHelpers.swift; sourceTree = "<group>"; };
 		F9A781AD2403BD1600E12487 /* FormItemViewBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormItemViewBuilderTests.swift; sourceTree = "<group>"; };
 		F9A781AF2403ED4000E12487 /* NumericStringValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumericStringValidatorTests.swift; sourceTree = "<group>"; };
 		F9A7AC5A2554066300012EBC /* AnyAuthenticationRequestParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyAuthenticationRequestParameters.swift; sourceTree = "<group>"; };
@@ -2002,6 +2004,7 @@
 				5AD40E74262F04440090E01C /* UIProgressViewHelpers.swift */,
 				5AD40EEE26303C830090E01C /* UIButtonHelpers.swift */,
 				5AD40EFA26303D490090E01C /* UILabelHelpers.swift */,
+				F9A6C47B2656DDDB00D8CD3E /* UIEdgeInsetsHelpers.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -4344,6 +4347,7 @@
 				E2289B3C23D0BBB1002844BF /* ListSectionHeaderStyle.swift in Sources */,
 				F926D53723F6A35700D058D3 /* NumericFormatter.swift in Sources */,
 				E7085B162628B29600D0153B /* FormPhoneExtensionPickerItemView.swift in Sources */,
+				F9A6C47C2656DDDB00D8CD3E /* UIEdgeInsetsHelpers.swift in Sources */,
 				F924C079246C38E0006DDAB8 /* SecuredViewController.swift in Sources */,
 				E7D5311A2446F525000046B4 /* FormSeparatorItem.swift in Sources */,
 				E9E3DAFD2225485400697074 /* URLSessionHelpers.swift in Sources */,

@@ -63,7 +63,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         configuration.fields.forEach { field in
             self.add(field, into: formViewController)
         }
-        formViewController.append(button.submitButton)
+        formViewController.append(button.withPadding(padding: UIEdgeInsets.Adyen.submitButtonPadding))
     }
 
     /// :nodoc:
