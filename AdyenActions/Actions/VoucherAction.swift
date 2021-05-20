@@ -104,12 +104,13 @@ public class GenericVoucherAction: Decodable {
         instructionsUrl = try container.decode(String.self, forKey: .instructionsUrl)
 
         let expiresAtString = try container.decode(String.self, forKey: .expiresAt)
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        let date = dateFormatter.date(from: expiresAtString)
+        let dateFormatter = ISO8601DateFormatter()
+        dateFormatter.formatOptions = [
+            .withYear, .withMonth, .withDay, .withTime,
+            .withDashSeparatorInDate, .withColonSeparatorInTime
+        ]
 
-        if let date = date {
+        if let date = dateFormatter.date(from: expiresAtString) {
             expiresAt = date
         } else {
             let codingPath = [CodingKeys.expiresAt]
