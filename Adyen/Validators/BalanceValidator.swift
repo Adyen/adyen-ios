@@ -54,7 +54,7 @@ public struct BalanceValidator {
             throw Error.unexpectedCurrencyCode
         }
 
-        return expendableLimit.value >= amount.value
+        return expendableLimit >= amount
     }
 
     private func validateTransactionLimit(of balance: Balance) -> Bool {

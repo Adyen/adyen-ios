@@ -254,9 +254,6 @@ extension DropInComponent: PaymentMethodListComponentDelegate {
         rootComponent.startLoading(for: component)
         didSelect(component)
     }
-
-    /// :nodoc:
-    internal func didCancel(_ paymentMethodListComponent: PaymentMethodListComponent) {}
     
 }
 

@@ -176,6 +176,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
     // MARK: - Submitting the form
 
     internal func didSelectSubmitButton() {
+        hideError()
         guard formViewController.validate() else {
             return
         }

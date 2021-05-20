@@ -44,8 +44,6 @@ internal final class ComponentManager {
     // MARK: - Internal
     
     internal lazy var sections: [ComponentsSection] = {
-        // Filter out payment methods without the Ecommerce shopper interaction.
-        let storedPaymentMethods = paymentMethods.stored.filter { $0.supportedShopperInteractions.contains(.shopperPresent) }
 
         // Paid section
         let amountString: String = remainingAmount.map(\.formatted) ?? "Amount"
@@ -70,7 +68,10 @@ internal final class ComponentManager {
         return [paidSection, storedSection, regularSection]
     }()
 
-    internal lazy var storedComponents: [PaymentComponent] = paymentMethods.stored.compactMap(component(for:))
+    // Filter out payment methods without the Ecommerce shopper interaction.
+    internal lazy var storedComponents: [PaymentComponent] = paymentMethods.stored.filter {
+        $0.supportedShopperInteractions.contains(.shopperPresent)
+    }.compactMap(component(for:))
 
     internal lazy var regularComponents = paymentMethods.regular.compactMap(component(for:))
 

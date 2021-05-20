@@ -117,11 +117,5 @@ internal protocol PaymentMethodListComponentDelegate: AnyObject {
     ///   - component: The component that has been selected.
     ///   - paymentMethodListComponent: The payment method list component in which the component was selected.
     func didSelect(_ component: PaymentComponent, in paymentMethodListComponent: PaymentMethodListComponent)
-
-    /// Invoked when a component was cancel button is pressed.
-    ///
-    /// - Parameters:
-    ///   - paymentMethodListComponent: The payment method list component that was canceled.
-    func didCancel(_ paymentMethodListComponent: PaymentMethodListComponent)
     
 }
