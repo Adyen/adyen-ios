@@ -11,10 +11,6 @@ import UIKit
 /// A component that provides a form for Boleto payment.
 public final class BoletoComponent: PaymentComponent, LoadingComponent, PresentableComponent, Localizable, Observer {
     
-    public func stopLoading() {
-        formComponent.stopLoading()
-    }
-    
     /// :nodoc:
     public weak var delegate: PaymentComponentDelegate?
     
@@ -101,7 +97,7 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
             onCreatePaymentDetails: { [weak self] in self?.createPaymentDetails() },
             style: style
         )
-        setUpFields(for: component)
+        prefillFields(for: component)
         component.delegate = self
         return component
     }()
@@ -138,7 +134,7 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     
     /// :nodoc:
     /// Sets the initial values for the form fields based on configuration
-    private func setUpFields(for component: FormComponent) {
+    private func prefillFields(for component: FormComponent) {
         if let shopperName = configuration.shopperInfo.shopperName {
             component.firstNameItem?.value = shopperName.firstName
             component.lastNameItem?.value = shopperName.lastName
@@ -159,10 +155,11 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     private func createPaymentDetails() -> PaymentMethodDetails {
         guard let firstNameItem = formComponent.firstNameItem,
               let lastNameItem = formComponent.lastNameItem,
-              case let shopperName = ShopperName(firstName: firstNameItem.value, lastName: lastNameItem.value),
               let billingAddress = configuration.shopperInfo.billingAddress ?? formComponent.addressItem?.value else {
             fatalError("There seems to be an error in the BaseFormComponent configuration.")
         }
+        
+        let shopperName = ShopperName(firstName: firstNameItem.value, lastName: lastNameItem.value)
 
         return BoletoDetails(
             type: paymentMethod.type,
@@ -184,6 +181,11 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
         } else {
             return nil
         }
+    }
+    
+    /// :nodoc:
+    public func stopLoading() {
+        formComponent.stopLoading()
     }
 }
 

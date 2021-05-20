@@ -75,7 +75,7 @@ public extension PaymentMethod {
     }
     
     /// :nodoc:
-    func localizedDisplayInformation(using _: LocalizationParameters?) -> DisplayInformation {
+    func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name, subtitle: nil, logoName: type)
     }
     
