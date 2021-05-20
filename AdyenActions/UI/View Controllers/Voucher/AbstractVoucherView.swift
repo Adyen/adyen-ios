@@ -99,8 +99,6 @@ internal class AbstractVoucherView: UIView, Localizable {
                               accessibilityIdentifier: String) -> UIButton {
         let button = UIButton(style: style)
         button.setTitle(title, for: .normal)
-        button.imageEdgeInsets = UIEdgeInsets(top: 8, left: -2, bottom: 8, right: 8)
-        button.titleEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: -2)
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         button.addTarget(self, action: action, for: .touchUpInside)
         button.accessibilityIdentifier = accessibilityIdentifier
@@ -162,7 +160,6 @@ internal class AbstractVoucherView: UIView, Localizable {
 
     private func addShareButton() {
         addSubview(saveButton)
-        saveButton.translatesAutoresizingMaskIntoConstraints = false
         saveButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 18).isActive = true
         saveButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -18).isActive = true
         saveButton.topAnchor.constraint(equalTo: voucherView.bottomAnchor, constant: 30).isActive = true
@@ -170,8 +167,7 @@ internal class AbstractVoucherView: UIView, Localizable {
 
     private func addDoneButton() {
         addSubview(doneButton)
-        doneButton.translatesAutoresizingMaskIntoConstraints = false
-        doneButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -60).isActive = true
+        doneButton.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor, constant: -24).isActive = true
         doneButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 18).isActive = true
         doneButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -18).isActive = true
         doneButton.topAnchor.constraint(equalTo: saveButton.bottomAnchor, constant: 16).isActive = true
