@@ -194,15 +194,15 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethods.regular[16].name, "7-Eleven")
         XCTAssertEqual(paymentMethods.regular[16].type, "econtext_seven_eleven")
 
-        XCTAssertTrue(paymentMethods.regular[17] is EContextATMPaymentMethod)
+        XCTAssertTrue(paymentMethods.regular[17] is EContextPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[17].name, "Pay-easy ATM")
         XCTAssertEqual(paymentMethods.regular[17].type, "econtext_atm")
 
-        XCTAssertTrue(paymentMethods.regular[18] is EContextStoresPaymentMethod)
+        XCTAssertTrue(paymentMethods.regular[18] is EContextPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[18].name, "Convenience Stores")
         XCTAssertEqual(paymentMethods.regular[18].type, "econtext_stores")
 
-        XCTAssertTrue(paymentMethods.regular[19] is EContextOnlinePaymentMethod)
+        XCTAssertTrue(paymentMethods.regular[19] is EContextPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[19].name, "Online Banking")
         XCTAssertEqual(paymentMethods.regular[19].type, "econtext_online")
 
@@ -372,7 +372,7 @@ class PaymentMethodTests: XCTestCase {
     // MARK: - E-Context Online
 
     func testDecodingEContextOnlinePaymentMethod() throws {
-        let paymentMethod = try Coder.decode(econtextOnline) as EContextOnlinePaymentMethod
+        let paymentMethod = try Coder.decode(econtextOnline) as EContextPaymentMethod
         XCTAssertEqual(paymentMethod.name, "Online Banking")
         XCTAssertEqual(paymentMethod.type, "econtext_online")
     }
@@ -380,7 +380,7 @@ class PaymentMethodTests: XCTestCase {
     // MARK: - E-Context ATM
 
     func testDecodingEContextATMPaymentMethod() throws {
-        let paymentMethod = try Coder.decode(econtextATM) as EContextATMPaymentMethod
+        let paymentMethod = try Coder.decode(econtextATM) as EContextPaymentMethod
         XCTAssertEqual(paymentMethod.name, "Pay-easy ATM")
         XCTAssertEqual(paymentMethod.type, "econtext_atm")
     }
@@ -388,7 +388,7 @@ class PaymentMethodTests: XCTestCase {
     // MARK: - E-Context Stores
 
     func testDecodingEContextStoresPaymentMethod() throws {
-        let paymentMethod = try Coder.decode(econtextStores) as EContextStoresPaymentMethod
+        let paymentMethod = try Coder.decode(econtextStores) as EContextPaymentMethod
         XCTAssertEqual(paymentMethod.name, "Convenience Stores")
         XCTAssertEqual(paymentMethod.type, "econtext_stores")
     }

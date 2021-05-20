@@ -76,9 +76,9 @@ internal enum AnyPaymentMethod: Decodable {
     case giftcard(GiftCardPaymentMethod)
     case doku(DokuPaymentMethod)
     case sevenEleven(SevenElevenPaymentMethod)
-    case econtextStores(EContextStoresPaymentMethod)
-    case econtextATM(EContextATMPaymentMethod)
-    case econtextOnline(EContextOnlinePaymentMethod)
+    case econtextStores(EContextPaymentMethod)
+    case econtextATM(EContextPaymentMethod)
+    case econtextOnline(EContextPaymentMethod)
     
     case none
     
