@@ -1644,6 +1644,7 @@
 				F924C073246C2E0B006DDAB8 /* LazyOptional.swift */,
 				F9BA21C1246E82EE00D36A63 /* SizeUtilities.swift */,
 				F99E7277261F6C6F00EA5B78 /* KeyboardObserver.swift */,
+				E216D3CE221AFC3A0013CBCF /* IBANSpecification.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -1751,7 +1752,6 @@
 				F97C81AD25BAC8CF00D7F85C /* AbstractPersonalInformationComponent */,
 				F957A9C7255050DB0099AD73 /* Stored Payment Method */,
 				E28098B1220DA7910087928F /* Base */,
-				E216D3CE221AFC3A0013CBCF /* IBANSpecification.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
