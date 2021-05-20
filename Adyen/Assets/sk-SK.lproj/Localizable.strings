@@ -65,6 +65,7 @@
 "adyen.voucher.readInstructions" = "Prečítajte si pokyny";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.pix.expirationLabel" = "Na zaplatenie máte %@";
 "adyen.billingAddressSection.title" = "Fakturačná adresa";
 "adyen.deliveryAddressSection.title" = "Dodacia adresa";
 "adyen.countryField.title" = "Krajina";
@@ -95,3 +96,8 @@
 "adyen.errorFeedback.emptyField" = "Toto pole musíte vyplniť.";
 "adyen.errorFeedback.incorrectFormat" = "Vstupný formát je neplatný.";
 "adyen.field.title.optional" = "(voliteľné)";
+"adyen.boletobancario.btnLabel" = "Generovať Boleto";
+"adyen.boleto.sendCopyToEmail" = "Zaslať kópiu na môj e-mail";
+"adyen.boleto.personalDetails" = "Osobné údaje";
+"adyen.giftcard.currencyError" = "Darčekové karty sú platné iba v mene, v ktorej boli vydané";
+"adyen.giftcard.noBalance" = "Táto darčeková karta má nulový zostatok";

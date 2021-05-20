@@ -53,15 +53,19 @@ internal final class IntegrationExample: APIClientAware {
 
     // MARK: - Networking
 
-    internal func requestPaymentMethods() {
-        let request = PaymentMethodsRequest()
+    internal func requestPaymentMethods(order: PartialPaymentOrder? = nil,
+                                        completion: ((PaymentMethods) -> Void)? = nil) {
+        let request = PaymentMethodsRequest(order: order)
         apiClient.perform(request) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case let .success(response):
                 self.paymentMethods = response.paymentMethods
+                completion?(response.paymentMethods)
             case let .failure(error):
-                self.presentAlert(with: error, retryHandler: self.requestPaymentMethods)
+                self.presentAlert(with: error) { [weak self] in
+                    self?.requestPaymentMethods(order: order, completion: completion)
+                }
             }
         }
     }
@@ -77,12 +81,11 @@ internal final class IntegrationExample: APIClientAware {
     }
 
     internal func finish(with error: Error) {
-        let isCancelled = (error as? ComponentError) == .cancelled
         currentComponent?.finalizeIfNeeded(with: false)
 
         presenter?.dismiss { [weak self] in
             // Payment is unsuccessful. Add your code here.
-            if !isCancelled { self?.presentAlert(with: error) }
+            self?.presentAlert(with: error)
         }
     }
 

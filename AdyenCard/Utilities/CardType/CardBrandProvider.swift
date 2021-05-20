@@ -98,29 +98,25 @@ internal final class CardBrandProvider: AnyCardBrandProvider {
     }
     
     private func fetchBinLookupService(success: @escaping (BinLookupService) -> Void,
-                                       failure: ((Swift.Error) -> Void)? = nil) {
+                                       failure: @escaping ((Swift.Error) -> Void)) {
         if let binLookupService = privateBinLookupService {
             return success(binLookupService)
         }
         
         let localApiClient = self.apiClient ?? APIClient(environment: self.environment)
         
-        do {
-            try cardPublicKeyProvider.fetch { [weak self] result in
-                guard let self = self else { return }
-                
-                switch result {
-                case let .success(publicKey):
-                    let binLookupService = BinLookupService(publicKey: publicKey,
-                                                            apiClient: localApiClient)
-                    self.privateBinLookupService = binLookupService
-                    success(binLookupService)
-                case let .failure(error):
-                    failure?(error)
-                }
+        cardPublicKeyProvider.fetch { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case let .success(publicKey):
+                let binLookupService = BinLookupService(publicKey: publicKey,
+                                                        apiClient: localApiClient)
+                self.privateBinLookupService = binLookupService
+                success(binLookupService)
+            case let .failure(error):
+                failure(error)
             }
-        } catch {
-            failure?(error)
         }
     }
 }

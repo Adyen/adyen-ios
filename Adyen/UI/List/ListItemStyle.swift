@@ -19,6 +19,11 @@ public struct ListItemStyle: ViewStyle {
     public var subtitle = TextStyle(font: .preferredFont(forTextStyle: .footnote),
                                     color: UIColor.Adyen.componentSecondaryLabel,
                                     textAlignment: .natural)
+
+    /// The trailing title style.
+    public var trailingText = TextStyle(font: .preferredFont(forTextStyle: .body),
+                                        color: UIColor.Adyen.componentLabel,
+                                        textAlignment: .natural)
     
     /// The image style.
     public var image = ImageStyle(borderColor: UIColor.Adyen.componentSeparator,

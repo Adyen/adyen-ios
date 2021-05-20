@@ -97,7 +97,7 @@ public final class ListCell: UITableViewCell {
         let constraints = [
             itemView.topAnchor.constraint(equalTo: topAnchor),
             itemView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
-            itemView.trailingAnchor.constraint(lessThanOrEqualTo: layoutGuide.trailingAnchor),
+            itemView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
             itemView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ]
         

@@ -21,6 +21,7 @@ internal final class FormButtonItemView: FormItemView<FormButtonItem> {
         
         bind(item.$showsActivityIndicator, to: submitButton, at: \.showsActivityIndicator)
         bind(item.$enabled, to: submitButton, at: \.isEnabled)
+        bind(item.$title, to: submitButton, at: \.title)
         
         submitButton.adyen.anchor(inside: self)
     }
@@ -28,10 +29,8 @@ internal final class FormButtonItemView: FormItemView<FormButtonItem> {
     // MARK: - Submit Button
     
     internal lazy var submitButton: SubmitButton = {
-        
         let submitButton = SubmitButton(style: item.style.button)
-        
-        submitButton.title = item.title
+
         submitButton.addTarget(self, action: #selector(didSelectSubmitButton), for: .touchUpInside)
         submitButton.accessibilityIdentifier = item.identifier.map {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "button")

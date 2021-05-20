@@ -65,6 +65,7 @@
 "adyen.voucher.readInstructions" = "Przeczytaj instrukcje";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.pix.expirationLabel" = "Masz do zapłacenia %@";
 "adyen.billingAddressSection.title" = "Adres rozliczeniowy";
 "adyen.deliveryAddressSection.title" = "Adres dostawy";
 "adyen.countryField.title" = "Kraj";
@@ -95,3 +96,8 @@
 "adyen.errorFeedback.emptyField" = "Pole wymagane, wypełnij.";
 "adyen.errorFeedback.incorrectFormat" = "Format danych wejściowych jest nieprawidłowy.";
 "adyen.field.title.optional" = "(opcjonalnie)";
+"adyen.boletobancario.btnLabel" = "Wygeneruj płatność Boleto";
+"adyen.boleto.sendCopyToEmail" = "Wyślij kopię na mój e-mail";
+"adyen.boleto.personalDetails" = "Dane osobowe";
+"adyen.giftcard.currencyError" = "Karty podarunkowe są ważne tylko w walucie, w której zostały wydane";
+"adyen.giftcard.noBalance" = "Saldo karty podarunkowej jest puste";

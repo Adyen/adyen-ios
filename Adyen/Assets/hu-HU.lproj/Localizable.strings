@@ -65,6 +65,7 @@
 "adyen.voucher.readInstructions" = "Olvassa el az utasításokat";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.pix.expirationLabel" = "Fizetéshez rendelkezésre álló idő: %@";
 "adyen.billingAddressSection.title" = "Számlázási cím";
 "adyen.deliveryAddressSection.title" = "Szállítási cím";
 "adyen.countryField.title" = "Ország";
@@ -95,3 +96,8 @@
 "adyen.errorFeedback.emptyField" = "Kötelező mező, töltse ki.";
 "adyen.errorFeedback.incorrectFormat" = "A megadott adatok formátuma érvénytelen.";
 "adyen.field.title.optional" = "(nem kötelező)";
+"adyen.boletobancario.btnLabel" = "Boleto létrehozása";
+"adyen.boleto.sendCopyToEmail" = "Másolat küldése az e-mail-címemre";
+"adyen.boleto.personalDetails" = "Személyes adatok";
+"adyen.giftcard.currencyError" = "Az ajándékkártyák csak abban a pénznemben érvényesek, amelyre kiállították azokat";
+"adyen.giftcard.noBalance" = "Az ajándékkártya egyenlege nulla";

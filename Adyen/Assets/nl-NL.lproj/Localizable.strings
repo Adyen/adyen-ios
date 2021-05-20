@@ -65,6 +65,7 @@
 "adyen.voucher.readInstructions" = "Instructies lezen";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.pix.expirationLabel" = "U heeft %@ om te betalen";
 "adyen.billingAddressSection.title" = "Factuuradres";
 "adyen.deliveryAddressSection.title" = "Bezorgadres";
 "adyen.countryField.title" = "Land";
@@ -95,3 +96,8 @@
 "adyen.errorFeedback.emptyField" = "Dit is een verplicht veld. Vul het in.";
 "adyen.errorFeedback.incorrectFormat" = "Ongeldige invoer";
 "adyen.field.title.optional" = "(optioneel)";
+"adyen.boletobancario.btnLabel" = "Boleto genereren";
+"adyen.boleto.sendCopyToEmail" = "Stuur een kopie naar mijn e-mailadres";
+"adyen.boleto.personalDetails" = "Persoonlijke gegevens";
+"adyen.giftcard.currencyError" = "Cadeaukaarten zijn alleen geldig in de valuta waarin ze zijn uitgegeven";
+"adyen.giftcard.noBalance" = "Deze cadeaukaart heeft geen saldo";

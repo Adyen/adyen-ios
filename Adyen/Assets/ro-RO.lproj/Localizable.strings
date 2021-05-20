@@ -65,6 +65,7 @@
 "adyen.voucher.readInstructions" = "Citiți instrucțiunile";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.pix.expirationLabel" = "Trebuie să achitați %@";
 "adyen.billingAddressSection.title" = "Adresa de facturare";
 "adyen.deliveryAddressSection.title" = "Adresă de livrare";
 "adyen.countryField.title" = "Țară";
@@ -95,3 +96,8 @@
 "adyen.errorFeedback.emptyField" = "Câmp obligatoriu, vă rugăm să îl completați.";
 "adyen.errorFeedback.incorrectFormat" = "Formatul de completare nu este acceptat.";
 "adyen.field.title.optional" = "(opțional)";
+"adyen.boletobancario.btnLabel" = "Generare Boleto";
+"adyen.boleto.sendCopyToEmail" = "Trimite o copie la adresa mea de e-mail";
+"adyen.boleto.personalDetails" = "Informații personale";
+"adyen.giftcard.currencyError" = "Cardurile cadou sunt valabile numai în moneda în care au fost emise";
+"adyen.giftcard.noBalance" = "Acest card cadou are soldul zero";

@@ -14,7 +14,7 @@ internal protocol AnyCardPublicKeyProvider: Component {
     typealias CompletionHandler = (Result<String, Error>) -> Void
     
     /// :nodoc:
-    func fetch(completion: @escaping CompletionHandler) throws
+    func fetch(completion: @escaping CompletionHandler)
 }
 
 /// :nodoc:
@@ -36,7 +36,7 @@ internal class CardPublicKeyProvider: AnyCardPublicKeyProvider {
     }
     
     /// :nodoc:
-    internal func fetch(completion: @escaping CompletionHandler) throws {
+    internal func fetch(completion: @escaping CompletionHandler) {
         waitingList.append(completion)
         if let cardPublicKey = Self.cachedCardPublicKey {
             deliver(.success(cardPublicKey))
@@ -44,7 +44,9 @@ internal class CardPublicKeyProvider: AnyCardPublicKeyProvider {
         }
         
         guard let clientKey = clientKey else {
-            throw CardComponent.Error.missingClientKey
+            AdyenAssertion.assertionFailure(message: "ClientKey is missing.")
+            completion(.failure(CardComponent.Error.missingClientKey))
+            return
         }
         
         guard waitingList.count == 1 else { return }

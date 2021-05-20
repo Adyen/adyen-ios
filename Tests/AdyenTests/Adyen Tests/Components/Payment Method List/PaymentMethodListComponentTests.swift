@@ -16,7 +16,8 @@ class PaymentMethodListComponentTests: XCTestCase {
     lazy var regularComponent = PaymentComponentMock(paymentMethod: method2)
 
     func testRequiresKeyboardInput() {
-        let sectionedComponents = SectionedComponents(stored: [storedComponent], regular: [regularComponent])
+        let section = ComponentsSection(components: [storedComponent])
+        let sectionedComponents = [section]
         let sut = PaymentMethodListComponent(components: sectionedComponents)
 
         let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
@@ -25,30 +26,34 @@ class PaymentMethodListComponentTests: XCTestCase {
     }
     
     func testLocalizationWithCustomTableName() {
-        let sectionedComponents = SectionedComponents(stored: [storedComponent], regular: [regularComponent])
-        let sut = PaymentMethodListComponent(components: sectionedComponents)
+        let storedSection = ComponentsSection(components: [storedComponent])
+        let regularSectionHeader = ListSectionHeader(title: "title", style: ListSectionHeaderStyle())
+        let regularSection = ComponentsSection(header: regularSectionHeader, components: [regularComponent])
+        let sut = PaymentMethodListComponent(components: [storedSection, regularSection])
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         
         let listViewController = sut.listViewController
         XCTAssertEqual(listViewController.title, localizedString(.paymentMethodsTitle, sut.localizationParameters))
         XCTAssertEqual(listViewController.sections.count, 2)
-        XCTAssertEqual(listViewController.sections[1].title, localizedString(.paymentMethodsOtherMethods, sut.localizationParameters))
+        XCTAssertEqual(listViewController.sections[1].header?.title, "title")
     }
     
     func testLocalizationWithCustomKeySeparator() {
-        let sectionedComponents = SectionedComponents(stored: [storedComponent], regular: [regularComponent])
-        let sut = PaymentMethodListComponent(components: sectionedComponents)
+        let storedSection = ComponentsSection(components: [storedComponent])
+        let regularSectionHeader = ListSectionHeader(title: "title", style: ListSectionHeaderStyle())
+        let regularSection = ComponentsSection(header: regularSectionHeader, components: [regularComponent])
+        let sut = PaymentMethodListComponent(components: [storedSection, regularSection])
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         
         let listViewController = sut.listViewController
         XCTAssertEqual(listViewController.title, localizedString(LocalizationKey(key: "adyen_paymentMethods_title"), sut.localizationParameters))
         XCTAssertEqual(listViewController.sections.count, 2)
-        XCTAssertEqual(listViewController.sections[1].title, localizedString(LocalizationKey(key: "adyen_paymentMethods_otherMethods"), sut.localizationParameters))
+        XCTAssertEqual(listViewController.sections[1].header?.title, "title")
     }
 
     func testStartStopLoading() {
-        let sectionedComponents = SectionedComponents(stored: [storedComponent], regular: [regularComponent])
-        let sut = PaymentMethodListComponent(components: sectionedComponents)
+        let section = ComponentsSection(components: [storedComponent])
+        let sut = PaymentMethodListComponent(components: [section])
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         UIApplication.shared.keyWindow?.rootViewController = sut.listViewController

@@ -55,7 +55,8 @@ public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionC
     
     private static func assertWeChatPayAppSchemeConfigured() {
         guard Bundle.main.adyen.isSchemeConfigured("weixin") else {
-            return AdyenAssertion.assert(message: "weixin:// scheme must be added to Info.plist under LSApplicationQueriesSchemes key.")
+            // swiftlint:disable:next line_length
+            return AdyenAssertion.assertionFailure(message: "weixin:// scheme must be added to Info.plist under LSApplicationQueriesSchemes key.")
         }
     }
     
@@ -67,7 +68,7 @@ extension WeChatPaySDKActionComponent: WXApiDelegate {
     /// :nodoc:
     public func onResp(_ resp: BaseResp) {
         guard let currentlyHandledAction = currentlyHandledAction else {
-            return AdyenAssertion.assert(message: "no WeChatPaySDKAction were handled")
+            return AdyenAssertion.assertionFailure(message: "no WeChatPaySDKAction were handled")
         }
         let additionalData = WeChatPayAdditionalDetails(resultCode: String(resp.errCode))
         let actionData = ActionComponentData(details: additionalData, paymentData: currentlyHandledAction.paymentData)

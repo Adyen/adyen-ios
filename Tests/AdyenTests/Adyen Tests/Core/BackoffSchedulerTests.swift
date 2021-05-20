@@ -11,13 +11,13 @@ import XCTest
 
 extension XCTestCase {
     func wait(for interval: DispatchTimeInterval) {
-        let dummyExpectation = expectation(description: "wait for a few seconds.")
+        let dummyExpectation = XCTestExpectation(description: "wait for a few seconds.")
 
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + interval) {
             dummyExpectation.fulfill()
         }
 
-        waitForExpectations(timeout: 10, handler: nil)
+        wait(for: [dummyExpectation], timeout: 100)
     }
 }
 

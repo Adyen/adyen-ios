@@ -65,6 +65,7 @@
 "adyen.voucher.readInstructions" = "Прочитайте инструкции";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.pix.expirationLabel" = "У вас %@ на оплату";
 "adyen.billingAddressSection.title" = "Платежный адрес";
 "adyen.deliveryAddressSection.title" = "Адрес доставки";
 "adyen.countryField.title" = "Страна";
@@ -95,3 +96,8 @@
 "adyen.errorFeedback.emptyField" = "Обязательное поле; пожалуйста, заполните его.";
 "adyen.errorFeedback.incorrectFormat" = "Неверный формат ввода.";
 "adyen.field.title.optional" = "(необязательно)";
+"adyen.boletobancario.btnLabel" = "Создать Boleto";
+"adyen.boleto.sendCopyToEmail" = "Отправить мне копию на эл. почту";
+"adyen.boleto.personalDetails" = "Личные данные";
+"adyen.giftcard.currencyError" = "Принимаются только подарочные карты соответствующей валюты";
+"adyen.giftcard.noBalance" = "На этой подарочной карте нет средств";

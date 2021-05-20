@@ -10,6 +10,8 @@ import Foundation
 /// :nodoc:
 public final class FormTextInputItem: FormTextItem {
 
+    /// Inititate new instance of `FormTextInputItem`
+    /// - Parameter style: The `FormTextItemStyle` UI style.
     /// :nodoc:
     override public init(style: FormTextItemStyle = .init()) {
         super.init(style: style)

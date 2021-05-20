@@ -6,11 +6,35 @@
 
 import Foundation
 
+/// :nodoc:
+extension Payment.Amount: Comparable {
+
+    /// :nodoc:
+    public static func < (lhs: Payment.Amount, rhs: Payment.Amount) -> Bool {
+        lhs.value < rhs.value
+    }
+
+    /// :nodoc:
+    public static func <= (lhs: Payment.Amount, rhs: Payment.Amount) -> Bool {
+        lhs.value <= rhs.value
+    }
+
+    /// :nodoc:
+    public static func >= (lhs: Payment.Amount, rhs: Payment.Amount) -> Bool {
+        lhs.value >= rhs.value
+    }
+
+    /// :nodoc:
+    public static func > (lhs: Payment.Amount, rhs: Payment.Amount) -> Bool {
+        lhs.value > rhs.value
+    }
+}
+
 /// Describes the current payment.
 public struct Payment {
     
     /// Describes the amount of a payment.
-    public struct Amount: Codable {
+    public struct Amount: Codable, Equatable {
         
         /// The value of the amount in minor units.
         public var value: Int

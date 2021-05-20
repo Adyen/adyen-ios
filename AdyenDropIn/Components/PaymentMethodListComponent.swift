@@ -9,13 +9,16 @@ import Foundation
 import UIKit
 
 /// A component that presents a list of items for each payment method with a component.
-internal final class PaymentMethodListComponent: ComponentLoader, PresentableComponent, Localizable {
+internal final class PaymentMethodListComponent: ComponentLoader, PresentableComponent, Localizable, Cancellable {
     
     /// The components that are displayed in the list.
-    internal let components: SectionedComponents
+    internal let componentSections: [ComponentsSection]
     
     /// The delegate of the payment method list component.
     internal weak var delegate: PaymentMethodListComponentDelegate?
+
+    /// Call back when the list is dismissed.
+    internal var onCancel: (() -> Void)?
     
     /// Describes the component's UI style.
     internal let style: ListComponentStyle
@@ -24,8 +27,8 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     ///
     /// - Parameter components: The components to display in the list.
     /// - Parameter style: The component's UI style.
-    internal init(components: SectionedComponents, style: ListComponentStyle = ListComponentStyle()) {
-        self.components = components
+    internal init(components: [ComponentsSection], style: ListComponentStyle = ListComponentStyle()) {
+        self.componentSections = components
         self.style = style
     }
     
@@ -47,27 +50,35 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
                                     canModifyIcon: !isProtected)
             listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
             listItem.imageURL = LogoURLProvider.logoURL(for: component.paymentMethod, environment: environment)
+            listItem.trailingText = displayInformation.disclosureText
             listItem.subtitle = displayInformation.subtitle
             listItem.showsDisclosureIndicator = showsDisclosureIndicator
             listItem.selectionHandler = { [unowned self, unowned component] in
+                guard !(component is AlreadyPaidPaymentComponent) else { return }
                 self.delegate?.didSelect(component, in: self)
             }
             
             return listItem
         }
-        
-        let storedSection = ListSection(items: components.stored.map(item(for:)))
-        let regularSectionTitle = components.stored.isEmpty ? nil : localizedString(.paymentMethodsOtherMethods,
-                                                                                    localizationParameters)
-        let regularSection = ListSection(title: regularSectionTitle,
-                                         items: components.regular.map(item(for:)))
+
+        let sections: [ListSection] = componentSections.map {
+            ListSection(header: $0.header,
+                        items: $0.components.map(item(for:)),
+                        footer: $0.footer)
+        }
         
         let listViewController = ListViewController(style: style)
         listViewController.title = localizedString(.paymentMethodsTitle, localizationParameters)
-        listViewController.sections = [storedSection, regularSection]
+        listViewController.sections = sections
         
         return listViewController
     }()
+
+    // MARK: - Cancellable
+
+    internal func didCancel() {
+        onCancel?()
+    }
     
     // MARK: - Localization
     
@@ -81,7 +92,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     /// - Parameter component: The component for which to start a loading animation.
     internal func startLoading(for component: PaymentComponent) {
         let allListItems = listViewController.sections.flatMap(\.items)
-        let allComponents = [components.stored, components.regular].flatMap { $0 }
+        let allComponents = componentSections.map(\.components).flatMap { $0 }
         
         guard let index = allComponents.firstIndex(where: { $0 === component }) else {
             return

@@ -12,14 +12,14 @@ import XCTest
 class AssertsTests: XCTestCase {
 
     override func tearDown() {
-        AdyenAssertion.listner = nil
+        AdyenAssertion.listener = nil
     }
 
     func testClientKeyValidationAssertion() {
         let sut = MockComponent()
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
-        AdyenAssertion.listner = { message in
+        AdyenAssertion.listener = { message in
             XCTAssertEqual(message, "The key you have provided to AdyenUIKitTests.AssertsTests.MockComponent is not a valid client key.\nCheck https://docs.adyen.com/user-management/client-side-authentication for more information.")
             expectation.fulfill()
         }
@@ -34,7 +34,7 @@ class AssertsTests: XCTestCase {
         let sut = ListViewController(style: ListComponentStyle())
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
-        AdyenAssertion.listner = { message in
+        AdyenAssertion.listener = { message in
             XCTAssertEqual(message, "PreferredContentSize is overridden for this view controller.\ngetter - returns content size of scroll view.\nsetter - no implemented.")
             expectation.fulfill()
         }
@@ -49,7 +49,7 @@ class AssertsTests: XCTestCase {
         let sut = FormViewController(style: FormComponentStyle())
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
-        AdyenAssertion.listner = { message in
+        AdyenAssertion.listener = { message in
             XCTAssertEqual(message, "PreferredContentSize is overridden for this view controller.\ngetter - returns minimum possible content size.\nsetter - no implemented.")
             expectation.fulfill()
         }
@@ -64,7 +64,7 @@ class AssertsTests: XCTestCase {
         let sut = AwaitViewController(viewModel: AwaitComponentViewModel(icon: "", message: "", spinnerTitle: ""))
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
-        AdyenAssertion.listner = { message in
+        AdyenAssertion.listener = { message in
             XCTAssertEqual(message, "PreferredContentSize is overridden for this view controller.\ngetter - returns minimum possible content size.\nsetter - no implemented.")
             expectation.fulfill()
         }
@@ -79,7 +79,7 @@ class AssertsTests: XCTestCase {
         let sut = AwaitComponent(style: nil)
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
-        AdyenAssertion.listner = { message in
+        AdyenAssertion.listener = { message in
             XCTAssertEqual(message, "PresentationDelegate is nil. Provide a presentation delegate to AwaitComponent.")
             expectation.fulfill()
         }
@@ -94,7 +94,7 @@ class AssertsTests: XCTestCase {
         let sut = AdyenActionComponent()
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
-        AdyenAssertion.listner = { message in
+        AdyenAssertion.listener = { message in
             XCTAssertEqual(message, "Failed to instantiate AwaitComponent because client key is not configured.\nPlease supply the client key:\n-  if using DropInComponent, or AdyenActionsComponent.clientKey in the PaymentMethodsConfiguration;\n-  if using AdyenActionsComponent separately in AdyenActionsComponent.clientKey.")
             expectation.fulfill()
         }
@@ -109,7 +109,7 @@ class AssertsTests: XCTestCase {
         let sut = VoucherComponent(style: nil)
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
-        AdyenAssertion.listner = { message in
+        AdyenAssertion.listener = { message in
             XCTAssertEqual(message, "PresentationDelegate is nil. Provide a presentation delegate to VoucherAction.")
             expectation.fulfill()
         }
@@ -132,7 +132,7 @@ class AssertsTests: XCTestCase {
         let sut = VoucherViewController(voucherView: UIView(), style: VoucherComponentStyle())
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
-        AdyenAssertion.listner = { message in
+        AdyenAssertion.listener = { message in
             XCTAssertEqual(message, "PreferredContentSize is overridden for this view controller.\ngetter - returns minimum possible content size.\nsetter - no implemented.")
             expectation.fulfill()
         }
@@ -147,7 +147,7 @@ class AssertsTests: XCTestCase {
         let sut = ModalViewController(rootViewController: UIViewController())
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
-        AdyenAssertion.listner = { message in
+        AdyenAssertion.listener = { message in
             XCTAssertEqual(message, "PreferredContentSize is overridden for this view controller.\ngetter - returns combined size of an inner content and navigation bar.\nsetter - no implemented.")
             expectation.fulfill()
         }
@@ -162,7 +162,7 @@ class AssertsTests: XCTestCase {
         let sut = ThreeDS2FingerprintSubmitter()
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
-        AdyenAssertion.listner = { message in
+        AdyenAssertion.listener = { message in
             XCTAssertEqual(message, "Client key is missing.")
             expectation.fulfill()
         }

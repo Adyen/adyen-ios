@@ -65,6 +65,7 @@
 "adyen.voucher.readInstructions" = "Leer instrucciones";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.pix.expirationLabel" = "Tiene %@ para pagar";
 "adyen.billingAddressSection.title" = "Dirección de facturación";
 "adyen.deliveryAddressSection.title" = "Dirección de envío";
 "adyen.countryField.title" = "País";
@@ -95,3 +96,8 @@
 "adyen.errorFeedback.emptyField" = "Campo obligatorio, por favor complételo.";
 "adyen.errorFeedback.incorrectFormat" = "El formato no es válido";
 "adyen.field.title.optional" = "(opcional)";
+"adyen.boletobancario.btnLabel" = "Generar Boleto";
+"adyen.boleto.sendCopyToEmail" = "Enviar copia a mi correo electrónico";
+"adyen.boleto.personalDetails" = "Datos personales";
+"adyen.giftcard.currencyError" = "Las tarjetas regalo solo son válidas en la moneda en que fueron emitidas";
+"adyen.giftcard.noBalance" = "Esta tarjeta regalo no tiene saldo";

@@ -15,6 +15,9 @@ public struct ListComponentStyle: ViewStyle {
     
     /// The style of any of the section headers in the list.
     public var sectionHeader = ListSectionHeaderStyle()
+
+    /// The style of partial payment section footer.
+    public var partialPaymentSectionFooter = ListSectionFooterStyle()
     
     /// :nodoc:
     public var backgroundColor = UIColor.Adyen.componentBackground

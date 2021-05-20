@@ -8,6 +8,9 @@ import Foundation
 
 /// A collection of available payment methods.
 public struct PaymentMethods: Decodable {
+
+    /// The already paid payment methods, in case of partial payments.
+    public var paid: [PaymentMethod] = []
     
     /// The regular payment methods.
     public let regular: [PaymentMethod]

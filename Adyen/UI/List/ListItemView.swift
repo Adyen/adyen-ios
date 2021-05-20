@@ -19,7 +19,8 @@ public final class ListItemView: UIView, AnyFormItemView {
         super.init(frame: .zero)
         
         addSubview(imageView)
-        addSubview(textStackView)
+        addSubview(titleSubtitleStackView)
+        addSubview(trailingTextLabel)
         
         preservesSuperviewLayoutMargins = true
         configureConstraints()
@@ -42,6 +43,7 @@ public final class ListItemView: UIView, AnyFormItemView {
                 updateImageView(style: style)
                 titleLabel.adyen.apply(style.title)
                 subtitleLabel.adyen.apply(style.subtitle)
+                trailingTextLabel.adyen.apply(style.trailingText)
             }
         }
     }
@@ -56,6 +58,12 @@ public final class ListItemView: UIView, AnyFormItemView {
         subtitleLabel.isHidden = item?.subtitle?.isEmpty ?? true
         subtitleLabel.accessibilityIdentifier = item?.identifier.map {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "subtitleLabel")
+        }
+
+        trailingTextLabel.text = item?.trailingText
+        trailingTextLabel.isHidden = item?.trailingText?.isEmpty ?? true
+        trailingTextLabel.accessibilityIdentifier = item?.identifier.map {
+            ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "trailingTextLabel")
         }
         
         imageView.imageURL = item?.imageURL
@@ -110,10 +118,18 @@ public final class ListItemView: UIView, AnyFormItemView {
         
         return subtitleLabel
     }()
+
+    private lazy var trailingTextLabel: UILabel = {
+        let trailingTextLabel = UILabel()
+        trailingTextLabel.translatesAutoresizingMaskIntoConstraints = false
+        trailingTextLabel.isHidden = true
+
+        return trailingTextLabel
+    }()
     
     // MARK: - Text Stack View
     
-    private lazy var textStackView: UIStackView = {
+    private lazy var titleSubtitleStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [titleLabel, subtitleLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.setContentHuggingPriority(.required, for: .vertical)
@@ -136,14 +152,21 @@ public final class ListItemView: UIView, AnyFormItemView {
             imageView.widthAnchor.constraint(equalToConstant: imageSize.width),
             imageView.heightAnchor.constraint(equalToConstant: imageSize.height),
             
-            textStackView.topAnchor.constraint(greaterThanOrEqualTo: layoutMarginsGuide.topAnchor),
-            textStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            textStackView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 16.0),
-            textStackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            textStackView.bottomAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.bottomAnchor),
+            trailingTextLabel.leadingAnchor.constraint(equalTo: titleSubtitleStackView.trailingAnchor),
+            trailingTextLabel.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
+            trailingTextLabel.topAnchor.constraint(greaterThanOrEqualTo: layoutMarginsGuide.topAnchor),
+            trailingTextLabel.bottomAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.bottomAnchor),
+            trailingTextLabel.centerYAnchor.constraint(equalTo: titleSubtitleStackView.centerYAnchor),
+            
+            titleSubtitleStackView.topAnchor.constraint(greaterThanOrEqualTo: layoutMarginsGuide.topAnchor),
+            titleSubtitleStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            titleSubtitleStackView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 16.0),
+            titleSubtitleStackView.bottomAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.bottomAnchor),
             
             self.heightAnchor.constraint(greaterThanOrEqualToConstant: 48)
         ]
+
+        trailingTextLabel.setContentHuggingPriority(.required, for: .horizontal)
         
         NSLayoutConstraint.activate(constraints)
     }
@@ -159,15 +182,6 @@ public final class ListItemView: UIView, AnyFormItemView {
         }
 
         imageView.layer.borderColor = item?.style.image.borderColor?.cgColor ?? UIColor.Adyen.componentSeparator.cgColor
-    }
-    
-    override public var intrinsicContentSize: CGSize {
-        let targetSize = CGSize(width: UIView.layoutFittingCompressedSize.width,
-                                height: UIView.layoutFittingCompressedSize.height)
-        let size = textStackView.systemLayoutSizeFitting(targetSize,
-                                                         withHorizontalFittingPriority: .fittingSizeLevel,
-                                                         verticalFittingPriority: .fittingSizeLevel)
-        return size + layoutMargins.size + CGSize(width: imageSize.width, height: 0)
     }
     
 }

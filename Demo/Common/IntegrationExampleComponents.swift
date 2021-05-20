@@ -114,6 +114,10 @@ extension IntegrationExample {
         case let .success(response):
             if let action = response.action {
                 handle(action)
+            } else if let order = response.order,
+                      let remainingAmount = order.remainingAmount,
+                      remainingAmount.value > 0 {
+                handle(order)
             } else {
                 finish(with: response.resultCode)
             }

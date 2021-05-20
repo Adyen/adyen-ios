@@ -8,21 +8,29 @@ import Foundation
 
 /// A typealias for a closure that handles a URL through which the application was opened.
 /// :nodoc:
-public typealias AssertionListner = (String) -> Void
+public typealias AssertionListener = (String) -> Void
 
 /// :nodoc:
 public enum AdyenAssertion {
 
-    internal static var listner: AssertionListner?
+    internal static var listener: AssertionListener?
 
     /// :nodoc:
     /// Calls `assertionFailure` when not runing Tests.
-    public static func assert(message: String) {
+    public static func assertionFailure(message: @autoclosure () -> String) {
         if CommandLine.arguments.contains("-UITests") {
-            listner?(message)
+            listener?(message())
             return
         }
+        Swift.assertionFailure(message())
+    }
 
-        assertionFailure(message)
+    /// :nodoc:
+    /// Calls `assertFailure(message:)` when condition is true.
+    public static func assert(message: @autoclosure () -> String, condition: @autoclosure () -> Bool) {
+        guard condition() else {
+            return
+        }
+        assertionFailure(message: message())
     }
 }
