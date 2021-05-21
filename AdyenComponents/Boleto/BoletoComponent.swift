@@ -156,7 +156,7 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
         guard let firstNameItem = formComponent.firstNameItem,
               let lastNameItem = formComponent.lastNameItem,
               let billingAddress = configuration.shopperInfo.billingAddress ?? formComponent.addressItem?.value else {
-            fatalError("There seems to be an error in the BaseFormComponent configuration.")
+            fatalError("There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
         }
         
         let shopperName = ShopperName(firstName: firstNameItem.value, lastName: lastNameItem.value)

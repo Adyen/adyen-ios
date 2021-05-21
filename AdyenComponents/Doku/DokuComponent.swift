@@ -34,7 +34,7 @@ public final class DokuComponent: AbstractPersonalInformationComponent {
         guard let firstNameItem = firstNameItem,
               let lastNameItem = lastNameItem,
               let emailItem = emailItem else {
-            fatalError("There seems to be an error in the BaseFormComponent configuration.")
+            fatalError("There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
         }
         return DokuDetails(paymentMethod: paymentMethod,
                            firstName: firstNameItem.value,
