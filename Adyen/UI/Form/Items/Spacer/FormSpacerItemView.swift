@@ -17,13 +17,12 @@ public final class FormSpacerItemView: FormItemView<FormSpacerItem> {
     internal required init(item: FormSpacerItem) {
         super.init(item: item)
         addSubview(stackView)
-        let constraints = [
+        NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
             stackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 0),
             stackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: 0)
-        ]
-        NSLayoutConstraint.activate(constraints)
+        ])
     }
 
     // MARK: - Stack View
@@ -33,7 +32,7 @@ public final class FormSpacerItemView: FormItemView<FormSpacerItem> {
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.distribution = .fillEqually
-        stackView.spacing = self.layoutMargins.top
+        stackView.spacing = 0
         stackView.isUserInteractionEnabled = false
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.preservesSuperviewLayoutMargins = true
@@ -53,18 +52,17 @@ public final class FormSpacerItemView: FormItemView<FormSpacerItem> {
             containerView.translatesAutoresizingMaskIntoConstraints = false
             view.translatesAutoresizingMaskIntoConstraints = false
 
-            let constraints = [
+            NSLayoutConstraint.activate([
                 view.topAnchor.constraint(equalTo: containerView.layoutMarginsGuide.topAnchor, constant: 0),
                 view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 0),
                 view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 0),
                 view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: 0)
-            ]
-            NSLayoutConstraint.activate(constraints)
+            ])
 
             return containerView
         }
 
-        return (1...item.numberOfSpaces).map(createView(_:))
+        return (1...item.standardSpaceMultiplier).map(createView(_:))
     }()
 
 }

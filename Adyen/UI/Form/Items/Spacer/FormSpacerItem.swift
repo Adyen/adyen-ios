@@ -18,14 +18,14 @@ public final class FormSpacerItem: FormItem {
 
     /// Indicates number of layout margins.
     /// :nodoc:
-    public let numberOfSpaces: Int
+    public let standardSpaceMultiplier: Int
 
     /// Initializes a `FormSpacerItem`.
     ///
-    /// - Parameter numberOfSpaces: The number of layout margins.
+    /// - Parameter standardSpaceMultiplier: The number of layout margins.
     /// :nodoc:
     public init(numberOfSpaces: Int = 1) {
-        self.numberOfSpaces = numberOfSpaces
+        self.standardSpaceMultiplier = numberOfSpaces
     }
 
     /// :nodoc:
