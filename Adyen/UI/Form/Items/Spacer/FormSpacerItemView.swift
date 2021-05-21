@@ -42,7 +42,7 @@ public final class FormSpacerItemView: FormItemView<FormSpacerItem> {
 
     private lazy var arrangedSubviews: [UIView] = {
 
-        func createView(_ index: Int) -> UIView {
+        func createView(_: Int) -> UIView {
             let view = UIView()
             view.heightAnchor.constraint(equalToConstant: 0).isActive = true
 
@@ -62,7 +62,7 @@ public final class FormSpacerItemView: FormItemView<FormSpacerItem> {
             return containerView
         }
 
-        return (1...item.standardSpaceMultiplier).map(createView(_:))
+        return (0..<item.standardSpaceMultiplier).map(createView(_:))
     }()
 
 }

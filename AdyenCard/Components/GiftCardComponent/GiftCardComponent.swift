@@ -252,7 +252,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
         let footnote = localizedString(.partialPaymentRemainingBalance,
                                        localizationParameters,
                                        remainingAmount.formatted)
-        let displayInformation = DisplayInformation(title: String.Adyen.maskedString + lastFourDigits,
+        let displayInformation = DisplayInformation(title: String.Adyen.securedString + lastFourDigits,
                                                     subtitle: nil,
                                                     logoName: giftCardPaymentMethod.brand,
                                                     footnoteText: footnote)

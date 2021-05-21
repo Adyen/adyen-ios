@@ -13,7 +13,7 @@ extension String: AdyenCompatible {
     public enum Adyen {
 
         /// :nodoc:
-        public static let maskedString: String = "••••\u{00a0}"
+        public static let securedString: String = "••••\u{00a0}"
     }
 }
 
