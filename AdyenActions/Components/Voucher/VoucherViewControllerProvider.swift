@@ -30,28 +30,21 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
     }
 
     internal func provide(with action: VoucherAction) -> UIViewController {
+        let view: GenericVoucherView
         switch action {
         case let .dokuIndomaret(action):
-            return createGenericViewController(
-                with: createGenericView(with: action, fields: createDokuVoucherFields(for: action))
-            )
+            view = createGenericView(with: action, fields: createDokuVoucherFields(for: action))
         case let .dokuAlfamart(action):
-            return createGenericViewController(
-                with: createGenericView(with: action, fields: createDokuVoucherFields(for: action))
-            )
+            view = createGenericView(with: action, fields: createDokuVoucherFields(for: action))
         case let .econtextStores(action):
-            return createGenericViewController(
-                with: createGenericView(with: action, fields: createEContextStoresVoucherFields(for: action))
-            )
+            view = createGenericView(with: action, fields: createEContextStoresVoucherFields(for: action))
         case let .econtextATM(action):
-            return createGenericViewController(
-                with: createGenericView(with: action, fields: createEContextATMVoucherFields(for: action))
-                )
+            view = createGenericView(with: action, fields: createEContextATMVoucherFields(for: action))
         case let .boletoBancairoSantander(action):
-            return createGenericViewController(
-                with: createGenericView(with: action, fields: createBoletoVoucherfields(for: action))
-            )
+            view = createBoletoView(with: action)
         }
+        
+        return createGenericViewController(with: view)
     }
     
     private func createGenericView(
@@ -70,9 +63,8 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
         )
     }
     
-    private func createGenericView(
-        with boletoAction: BoletoVoucherAction,
-        fields: [GenericVoucherView.VoucherField]
+    private func createBoletoView(
+        with boletoAction: BoletoVoucherAction
     ) -> GenericVoucherView {
         GenericVoucherView(
             model: createModel(
@@ -81,7 +73,7 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
                 instructionsUrl: boletoAction.downloadUrl.absoluteString,
                 reference: boletoAction.reference,
                 shareButton: .download(boletoAction.downloadUrl),
-                fields: fields
+                fields: createBoletoVoucherfields(for: boletoAction)
             )
         )
     }
