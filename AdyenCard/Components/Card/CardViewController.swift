@@ -84,7 +84,7 @@ internal class CardViewController: FormViewController {
             append(storeDetailsItem)
         }
 
-        append(button.withPadding(padding: UIEdgeInsets.Adyen.submitButtonPadding))
+        append(button)
 
         super.viewDidLoad()
     }

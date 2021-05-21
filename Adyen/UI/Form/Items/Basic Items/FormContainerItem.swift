@@ -52,7 +52,7 @@ public class FormContainerItem: FormItem {
             preservesSuperviewLayoutMargins = true
             contentView.translatesAutoresizingMaskIntoConstraints = false
             addSubview(contentView)
-            contentView.adyen.anchor(inside: self, with: padding)
+            contentView.adyen.anchor(inside: self.layoutMarginsGuide, with: padding)
         }
     }
 }
@@ -61,8 +61,8 @@ public class FormContainerItem: FormItem {
 extension FormItem {
 
     /// :nodoc:
-    public func withPadding(padding: UIEdgeInsets) -> FormContainerItem {
-        FormContainerItem(content: self, padding: padding)
+    public func wrapped() -> FormContainerItem {
+        FormContainerItem(content: self, padding: .zero)
     }
 
 }

@@ -53,9 +53,11 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
 
         formViewController.title = paymentMethod.name.uppercased()
 
-        formViewController.append(hintLabelItem.withPadding(padding: .init(top: 7, left: 16, bottom: -7, right: -16)))
+        formViewController.append(FormSpacerItem())
+        formViewController.append(hintLabelItem.wrapped())
+        formViewController.append(FormSpacerItem())
         formViewController.append(codeItem)
-        formViewController.append(button.withPadding(padding: UIEdgeInsets.Adyen.submitButtonPadding))
+        formViewController.append(button)
 
         return formViewController
     }()

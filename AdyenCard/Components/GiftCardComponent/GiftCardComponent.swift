@@ -95,7 +95,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
         formViewController.append(errorItem)
         formViewController.append(numberItem)
         formViewController.append(securityCodeItem)
-        formViewController.append(button.withPadding(padding: UIEdgeInsets.Adyen.submitButtonPadding))
+        formViewController.append(button)
         return formViewController
     }()
 

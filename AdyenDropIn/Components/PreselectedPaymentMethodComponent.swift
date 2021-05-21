@@ -64,12 +64,14 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
         formViewController.delegate = self
         
         formViewController.append(listItem)
-        formViewController.append(submitButtonItem.withPadding(padding: .init(top: 0, left: 16, bottom: -8, right: -16)))
+        formViewController.append(submitButtonItem)
         if let footnoteItem = footnoteItem {
-            formViewController.append(footnoteItem.withPadding(padding: .init(top: 4, left: 16, bottom: -4, right: -16)))
+            formViewController.append(footnoteItem.wrapped())
         }
-        formViewController.append(separator.withPadding(padding: .init(top: 8, left: 0, bottom: -8, right: 0)))
-        formViewController.append(openAllButtonItem.withPadding(padding: .init(top: 0, left: 16, bottom: -14, right: -16)))
+        formViewController.append(FormSpacerItem())
+        formViewController.append(separator)
+        formViewController.append(openAllButtonItem)
+        formViewController.append(FormSpacerItem(numberOfSpaces: 2))
         
         formViewController.title = title
         return formViewController
