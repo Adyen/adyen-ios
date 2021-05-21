@@ -47,7 +47,7 @@ public final class FullFormAddressItem: FormValueItem<AddressInfo, AddressStyle>
         let item = FormLabelItem(text: localizedString(.billingAddressSectionTitle, localizationParameters),
                                  style: style.title)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "title")
-        return item.withPadding(padding: .init(top: 8, left: 0, bottom: 0, right: 0))
+        return item.addingDefaultMargins()
     }()
 
     internal lazy var countrySelectItem: FormRegionPickerItem = {
@@ -66,7 +66,7 @@ public final class FullFormAddressItem: FormValueItem<AddressInfo, AddressStyle>
         let subRegions = RegionRepository.localRegionFallback(for: countryCode, locale: NSLocale.current as NSLocale)
         let viewModel = AddressViewModel[countryCode]
 
-        items = [headerItem, countrySelectItem]
+        items = [FormSpacerItem(), headerItem, countrySelectItem]
         for field in viewModel.schema {
             switch field {
             case let .item(fieldType):

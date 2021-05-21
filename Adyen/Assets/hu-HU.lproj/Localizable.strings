@@ -99,5 +99,7 @@
 "adyen.boletobancario.btnLabel" = "Boleto létrehozása";
 "adyen.boleto.sendCopyToEmail" = "Másolat küldése az e-mail-címemre";
 "adyen.boleto.personalDetails" = "Személyes adatok";
+"adyen.boleto.download.pdf" = "PDF letöltése";
 "adyen.giftcard.currencyError" = "Az ajándékkártyák csak abban a pénznemben érvényesek, amelyre kiállították azokat";
 "adyen.giftcard.noBalance" = "Az ajándékkártya egyenlege nulla";
+"adyen.partialPayment.remainingBalance" = "A fennmaradó egyenleg %@ lesz";

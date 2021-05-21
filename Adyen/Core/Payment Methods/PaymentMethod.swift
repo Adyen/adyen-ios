@@ -49,17 +49,27 @@ public struct DisplayInformation {
     /// :nodoc:
     public let disclosureText: String?
 
+    /// The footnote if any.
+    /// :nodoc:
+    public let footnoteText: String?
+
     /// Initializes a`DisplayInformation`.
     ///
     /// - Parameter title: The title.
     /// - Parameter subtitle: The subtitle.
     /// - Parameter logoName: The logo name.
     /// - Parameter disclosureText: The trailing disclosure text.
-    public init(title: String, subtitle: String?, logoName: String, disclosureText: String? = nil) {
+    /// - Parameter footnoteText: The footnote text if any.
+    public init(title: String,
+                subtitle: String?,
+                logoName: String,
+                disclosureText: String? = nil,
+                footnoteText: String? = nil) {
         self.title = title
         self.subtitle = subtitle
         self.logoName = logoName
         self.disclosureText = disclosureText
+        self.footnoteText = footnoteText
     }
 }
 

@@ -95,7 +95,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
         formViewController.append(errorItem)
         formViewController.append(numberItem)
         formViewController.append(securityCodeItem)
-        formViewController.append(button.submitButton)
+        formViewController.append(button)
         return formViewController
     }()
 
@@ -190,7 +190,13 @@ public final class GiftCardComponent: PartialPaymentComponent,
             result
                 .mapError(Error.otherError)
                 .flatMap(self.check(balance:))
-                .flatMap { isBalanceEnough in isBalanceEnough ? self.onReadyToPayFullAmount() : self.requestOrder() }
+                .flatMap { balanceCheckResult in
+                    if balanceCheckResult.isBalanceEnough {
+                        return self.onReadyToPayFullAmount(remainingAmount: balanceCheckResult.remainingAmount)
+                    } else {
+                        return self.requestOrder()
+                    }
+                }
                 .handle(success: { /* Do nothing.*/ }, failure: { self.handle(error: $0) })
         }
     }
@@ -202,7 +208,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
         if case let Error.otherError(internalError) = error {
             delegate?.didFail(with: internalError, from: self)
         }
-        guard let error = error as? BalanceValidator.Error else {
+        guard let error = error as? BalanceChecker.Error else {
             showError(message: localizedString(.errorUnknown, localizationParameters))
             return
         }
@@ -214,24 +220,24 @@ public final class GiftCardComponent: PartialPaymentComponent,
         }
     }
 
-    private func check(balance: Balance) -> Result<Bool, Swift.Error> {
+    private func check(balance: Balance) -> Result<BalanceChecker.Result, Swift.Error> {
         guard let payment = payment else {
             AdyenAssertion.assertionFailure(message: Error.invalidPayment.localizedDescription)
             return .failure(Error.invalidPayment)
         }
         do {
-            return .success(try BalanceValidator().check(balance: balance, isEnoughToPay: payment.amount))
+            return .success(try BalanceChecker().check(balance: balance, isEnoughToPay: payment.amount))
         } catch {
             return .failure(error)
         }
     }
 
-    private func onReadyToPayFullAmount() -> Result<Void, Swift.Error> {
+    private func onReadyToPayFullAmount(remainingAmount: Payment.Amount) -> Result<Void, Swift.Error> {
         AdyenAssertion.assert(message: "readyToSubmitComponentDelegate is nil",
                               condition: _isDropIn && readyToSubmitComponentDelegate == nil)
         stopLoading()
         if let readyToSubmitComponentDelegate = readyToSubmitComponentDelegate {
-            showConfirmation(delegate: readyToSubmitComponentDelegate)
+            showConfirmation(delegate: readyToSubmitComponentDelegate, remainingAmount: remainingAmount)
         } else {
             let paymentData = createPaymentData()
             delegate?.didSubmit(paymentData, from: self)
@@ -239,12 +245,17 @@ public final class GiftCardComponent: PartialPaymentComponent,
         return .success(())
     }
 
-    private func showConfirmation(delegate: ReadyToSubmitPaymentComponentDelegate) {
+    private func showConfirmation(delegate: ReadyToSubmitPaymentComponentDelegate,
+                                  remainingAmount: Payment.Amount) {
         let paymentData = createPaymentData()
         let lastFourDigits = String(numberItem.value.suffix(4))
-        let displayInformation = DisplayInformation(title: "••••\u{00a0}" + lastFourDigits,
+        let footnote = localizedString(.partialPaymentRemainingBalance,
+                                       localizationParameters,
+                                       remainingAmount.formatted)
+        let displayInformation = DisplayInformation(title: String.Adyen.securedString + lastFourDigits,
                                                     subtitle: nil,
-                                                    logoName: giftCardPaymentMethod.brand)
+                                                    logoName: giftCardPaymentMethod.brand,
+                                                    footnoteText: footnote)
 
         let paymentMethod = CustomDisplayablePaymentMethod(paymentMethod: giftCardPaymentMethod,
                                                            displayInformation: displayInformation)

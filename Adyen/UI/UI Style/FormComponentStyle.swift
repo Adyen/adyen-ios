@@ -28,6 +28,11 @@ public struct FormComponentStyle: TintableStyle {
     public var hintLabel = TextStyle(font: .preferredFont(forTextStyle: .body),
                                      color: UIColor.Adyen.componentLabel,
                                      textAlignment: .natural)
+
+    /// The foot note text style.
+    public var footnoteLabel = TextStyle(font: .preferredFont(forTextStyle: .footnote),
+                                         color: UIColor.Adyen.componentSecondaryLabel,
+                                         textAlignment: .center)
     
     /// The main button style.
     public var mainButtonItem: FormButtonItemStyle = .main(font: .preferredFont(forTextStyle: .headline),

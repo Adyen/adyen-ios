@@ -53,7 +53,7 @@ class FormItemViewBuilderTests: XCTestCase {
         let view = item.build(with: FormItemViewBuilder())
 
         XCTAssertNotNil(view as? FormVerticalStackItemView<FullFormAddressItem>)
-        XCTAssertEqual(view.childItemViews.count, 6)
+        XCTAssertEqual(view.childItemViews.count, 7)
     }
 
     func testFormSAddressItemViewNL() {
@@ -61,7 +61,7 @@ class FormItemViewBuilderTests: XCTestCase {
         let view = item.build(with: FormItemViewBuilder())
 
         XCTAssertNotNil(view as? FormVerticalStackItemView<FullFormAddressItem>)
-        XCTAssertEqual(view.childItemViews.count, 8)
+        XCTAssertEqual(view.childItemViews.count, 9)
     }
 
     func testFormSAddressItemViewGB() {
@@ -69,7 +69,7 @@ class FormItemViewBuilderTests: XCTestCase {
         let view = item.build(with: FormItemViewBuilder())
 
         XCTAssertNotNil(view as? FormVerticalStackItemView<FullFormAddressItem>)
-        XCTAssertEqual(view.childItemViews.count, 7)
+        XCTAssertEqual(view.childItemViews.count, 8)
     }
     
 }

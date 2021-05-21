@@ -7,7 +7,7 @@
 import Foundation
 
 /// :nodoc:
-public struct BalanceValidator {
+public struct BalanceChecker {
 
     /// Indicates balance related errors.
     public enum Error: LocalizedError {
@@ -29,6 +29,19 @@ public struct BalanceValidator {
     }
 
     /// :nodoc:
+    /// The balance check result.
+    public struct Result {
+
+        /// :nodoc:
+        /// Indicates whether the balance is enough to pay a certain amount.
+        public let isBalanceEnough: Bool
+
+        /// :nodoc:
+        /// The remaining amount in the balance after payment. it is negative in case the `isBalanceEnough` is false.
+        public let remainingAmount: Payment.Amount
+    }
+
+    /// :nodoc:
     public init() { /* Empty initializer */ }
 
     /// Check if a Balance is enough to pay an amount.
@@ -36,8 +49,11 @@ public struct BalanceValidator {
     /// - Parameters:
     ///   - balance: The balance to validate.
     ///   - amount: The amount to pay.
+    /// - Throws: `Error.zeroBalance` in case the balance has zero available amount
+    /// - Throws: `Error.unexpectedCurrencyCode` in case there is inconsistencies regarding currency codes.
+    /// - Returns: an instance of `BalanceValidator.Result`.
     /// :nodoc:
-    public func check(balance: Balance, isEnoughToPay amount: Payment.Amount) throws -> Bool {
+    public func check(balance: Balance, isEnoughToPay amount: Payment.Amount) throws -> Result {
         guard balance.availableAmount.value > 0 else {
             throw Error.zeroBalance
         }
@@ -54,7 +70,8 @@ public struct BalanceValidator {
             throw Error.unexpectedCurrencyCode
         }
 
-        return expendableLimit >= amount
+        return Result(isBalanceEnough: expendableLimit >= amount,
+                      remainingAmount: balance.availableAmount - amount)
     }
 
     private func validateTransactionLimit(of balance: Balance) -> Bool {
@@ -74,4 +91,9 @@ public struct BalanceValidator {
         }
         return result
     }
+}
+
+/// :nodoc:
+private func - (lhs: Payment.Amount, rhs: Payment.Amount) -> Payment.Amount {
+    Payment.Amount(value: lhs.value - rhs.value, currencyCode: lhs.currencyCode)
 }

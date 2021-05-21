@@ -278,7 +278,7 @@ class PaymentMethodTests: XCTestCase {
     public func expectedStoredCardPaymentMethodDisplayInfo(method: StoredCardPaymentMethod, localizationParameters: LocalizationParameters?) -> DisplayInformation {
         let expireDate = method.expiryMonth + "/" + method.expiryYear.suffix(2)
         
-        return DisplayInformation(title: "••••\u{00a0}" + method.lastFour,
+        return DisplayInformation(title: String.Adyen.securedString + method.lastFour,
                                   subtitle: localizedString(.cardStoredExpires, localizationParameters, expireDate),
                                   logoName: method.brand)
     }
@@ -432,7 +432,7 @@ class PaymentMethodTests: XCTestCase {
     public func expectedBancontactCardDisplayInfo(method: StoredBCMCPaymentMethod, localizationParameters: LocalizationParameters?) -> DisplayInformation {
         let expireDate = method.expiryMonth + "/" + method.expiryYear.suffix(2)
         
-        return DisplayInformation(title: "••••\u{00a0}" + method.lastFour,
+        return DisplayInformation(title: String.Adyen.securedString + method.lastFour,
                                   subtitle: localizedString(.cardStoredExpires, localizationParameters, expireDate),
                                   logoName: method.brand)
     }

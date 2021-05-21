@@ -99,5 +99,7 @@
 "adyen.boletobancario.btnLabel" = "Wygeneruj płatność Boleto";
 "adyen.boleto.sendCopyToEmail" = "Wyślij kopię na mój e-mail";
 "adyen.boleto.personalDetails" = "Dane osobowe";
+"adyen.boleto.download.pdf" = "Pobierz PDF";
 "adyen.giftcard.currencyError" = "Karty podarunkowe są ważne tylko w walucie, w której zostały wydane";
 "adyen.giftcard.noBalance" = "Saldo karty podarunkowej jest puste";
+"adyen.partialPayment.remainingBalance" = "Pozostałe saldo wynosi %(kwota}";
