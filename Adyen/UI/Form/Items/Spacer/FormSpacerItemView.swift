@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// A space form item in terms of number of layout margins.
 /// :nodoc:
