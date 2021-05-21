@@ -104,6 +104,7 @@ extension VoucherComponent: VoucherViewDelegate {
         )
     }
     
+    /// :nodoc:
     private func presentSharePopover(
         with item: Any,
         presentingViewController: UIViewController,

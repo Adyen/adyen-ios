@@ -175,7 +175,7 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     private func getEmailDetails() -> String? {
         if let prefilledEmail = configuration.shopperInfo.emailAddress {
             return prefilledEmail
-        } else if sendCopyByEmailItem.publisher.wrappedValue,
+        } else if sendCopyByEmailItem.value,
                   let filledEmail = formComponent.emailItem?.value {
             return filledEmail
         } else {
