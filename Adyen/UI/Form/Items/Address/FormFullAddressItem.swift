@@ -47,7 +47,7 @@ public final class FullFormAddressItem: FormValueItem<AddressInfo, AddressStyle>
         let item = FormLabelItem(text: localizedString(.billingAddressSectionTitle, localizationParameters),
                                  style: style.title)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "title")
-        return item.wrapped()
+        return item.addingDefaultMargins()
     }()
 
     internal lazy var countrySelectItem: FormRegionPickerItem = {

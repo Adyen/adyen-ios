@@ -61,7 +61,7 @@ public class FormContainerItem: FormItem {
 extension FormItem {
 
     /// :nodoc:
-    public func wrapped() -> FormContainerItem {
+    public func addingDefaultMargins() -> FormContainerItem {
         FormContainerItem(content: self, padding: .zero)
     }
 
