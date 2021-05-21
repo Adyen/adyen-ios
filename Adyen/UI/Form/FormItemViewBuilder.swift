@@ -74,7 +74,7 @@ public struct FormItemViewBuilder {
     
     /// Builds `FormVerticalStackItemView` from `FormAddressItem`.
     /// :nodoc:
-    public func build(with item: FullFormAddressItem) -> FormItemView<FullFormAddressItem> {
+    public func build(with item: FormAddressItem) -> FormItemView<FormAddressItem> {
         FormVerticalStackItemView(item: item)
     }
 

@@ -33,6 +33,15 @@ public extension AdyenScope where Base == String? {
 /// :nodoc:
 public extension AdyenScope where Base == String {
 
+    /// Return flag emoji if string is a country code; otherwise returns emty string.
+    var countryFlag: String {
+        guard CountryCodeValidator().isValid(base) else { return "" }
+        let baseIndex = 127397
+        var usv = String.UnicodeScalarView()
+        base.utf16.compactMap { UnicodeScalar(baseIndex + Int($0)) }.forEach { usv.append($0) }
+        return String(usv)
+    }
+
     /// Returns nil string is empty or actual value.
     var nilIfEmpty: String? {
         base.isEmpty ? nil : base

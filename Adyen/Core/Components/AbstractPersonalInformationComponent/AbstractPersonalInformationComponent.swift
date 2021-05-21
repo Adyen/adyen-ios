@@ -156,8 +156,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     public var phoneItem: FormPhoneNumberItem? { phoneItemInjector?.item }
 
     private lazy var selectableValues: [PhoneExtensionPickerItem] = {
-        let query = PhoneExtensionsQuery(paymentMethod: PhoneNumberPaymentMethod.mbWay)
-        return getPhoneExtensions().map {
+        getPhoneExtensions().map {
             let title = "\($0.countryDisplayName) (\($0.value))"
             return PhoneExtensionPickerItem(identifier: $0.countryCode,
                                             element: .init(title: title,

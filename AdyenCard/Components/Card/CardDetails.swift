@@ -38,7 +38,7 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
     public let fundingSource: CardFundingSource?
 
     /// The billing address information.
-    public var billingAddress: AddressInfo?
+    public var billingAddress: PostalAddress?
     
     /// Initializes the card payment details.
     ///
@@ -51,7 +51,7 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
     public init(paymentMethod: AnyCardPaymentMethod,
                 encryptedCard: EncryptedCard,
                 holderName: String? = nil,
-                billingAddress: AddressInfo? = nil) {
+                billingAddress: PostalAddress? = nil) {
         self.type = paymentMethod.type
         self.encryptedCardNumber = encryptedCard.number
         self.encryptedExpiryMonth = encryptedCard.expiryMonth

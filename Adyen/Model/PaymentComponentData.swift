@@ -61,8 +61,13 @@ public struct ShopperName: Codable, Equatable {
     }
 }
 
-/// The data supplied by a payment component upon completion.
-public struct PaymentComponentData: ShopperInformation {
+/**
+ The data supplied by a payment component upon completion.
+
+ - SeeAlso:
+ [API Reference](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__example_payments-klarna)
+ */
+public struct PaymentComponentData {
     
     /// The payment method details submitted by the payment component.
     public let paymentMethod: PaymentMethodDetails
@@ -74,7 +79,7 @@ public struct PaymentComponentData: ShopperInformation {
     public let order: PartialPaymentOrder?
 
     /// The payment amount.
-    public let amount: Payment.Amount?
+    public let amount: Amount?
 
     /// Shopper name.
     public var shopperName: ShopperName? {
@@ -98,7 +103,7 @@ public struct PaymentComponentData: ShopperInformation {
     public let browserInfo: BrowserInfo?
 
     /// The billing address information.
-    public var billingAddress: AddressInfo? {
+    public var billingAddress: PostalAddress? {
         guard let shopperInfo = paymentMethod as? ShopperInformation else { return nil }
         return shopperInfo.billingAddress
     }
@@ -120,7 +125,7 @@ public struct PaymentComponentData: ShopperInformation {
     ///   - storePaymentMethod: Whether the user has chosen to store the payment method.
     ///   - browserInfo: The device default browser info.
     public init(paymentMethodDetails: PaymentMethodDetails,
-                amount: Payment.Amount?,
+                amount: Amount?,
                 order: PartialPaymentOrder?,
                 storePaymentMethod: Bool = false,
                 browserInfo: BrowserInfo? = nil) {

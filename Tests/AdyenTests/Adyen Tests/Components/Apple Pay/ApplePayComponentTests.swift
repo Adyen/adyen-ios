@@ -13,7 +13,7 @@ class ApplePayComponentTest: XCTestCase {
 
     var mockDelegate: PaymentComponentDelegateMock!
     var sut: ApplePayComponent!
-    lazy var amount = Payment.Amount(value: 2, currencyCode: getRandomCurrencyCode())
+    lazy var amount = Amount(value: 2, currencyCode: getRandomCurrencyCode())
     lazy var payment = Payment(amount: amount, countryCode: getRandomCountryCode())
 
     private var emptyVC: UIViewController {
@@ -111,7 +111,7 @@ class ApplePayComponentTest: XCTestCase {
 
     func testInvalidCurrencyCode() {
         let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name", brands: nil)
-        let amount = Payment.Amount(value: 2, currencyCode: "wqedf")
+        let amount = Amount(value: 2, currencyCode: "wqedf")
         let payment = Payment(amount: amount, countryCode: getRandomCountryCode())
         let configuration = ApplePayComponent.Configuration(payment: payment,
                                                             paymentMethod: paymentMethod,

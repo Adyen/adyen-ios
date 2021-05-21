@@ -13,7 +13,7 @@ import XCTest
 class BLIKComponentTests: XCTestCase {
 
     lazy var method = BLIKPaymentMethod(type: "test_type", name: "test_name")
-    let payment = Payment(amount: Payment.Amount(value: 2, currencyCode: "PLN"), countryCode: "PL")
+    let payment = Payment(amount: Amount(value: 2, currencyCode: "PLN"), countryCode: "PL")
     var sut: BLIKComponent!
 
     override func setUp() {
@@ -38,7 +38,7 @@ class BLIKComponentTests: XCTestCase {
     }
 
     func testLocalizationWithZeroPayment() {
-        let payment = Payment(amount: Payment.Amount(value: 0, currencyCode: "PLN"), countryCode: "PL")
+        let payment = Payment(amount: Amount(value: 0, currencyCode: "PLN"), countryCode: "PL")
         sut.payment = payment
         XCTAssertEqual(sut.hintLabelItem.text, localizedString(.blikHelp, sut.localizationParameters))
 

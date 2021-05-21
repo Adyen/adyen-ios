@@ -101,12 +101,12 @@ internal class CardViewController: FormViewController {
              holder: configuration.showsHolderNameField ? holderNameItem.nonEmptyValue : nil)
     }
 
-    internal var address: AddressInfo? {
+    internal var address: PostalAddress? {
         switch configuration.billingAddressMode {
         case .full:
             return billingAddressItem.value
         case .postalCode:
-            return AddressInfo(postalCode: postalCodeItem.value)
+            return PostalAddress(postalCode: postalCodeItem.value)
         case .none:
             return nil
         }
@@ -141,8 +141,8 @@ internal class CardViewController: FormViewController {
 
     // MARK: Items
 
-    internal lazy var billingAddressItem: FullFormAddressItem = {
-        let item = FullFormAddressItem(initialCountry: defaultCountryCode,
+    internal lazy var billingAddressItem: FormAddressItem = {
+        let item = FormAddressItem(initialCountry: defaultCountryCode,
                                        style: formStyle.addressStyle,
                                        localizationParameters: localizationParameters)
         item.style.backgroundColor = UIColor.Adyen.lightGray

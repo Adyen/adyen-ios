@@ -13,7 +13,7 @@ import XCTest
 class DokuComponentTests: XCTestCase {
 
     lazy var method = DokuPaymentMethod(type: "test_type", name: "test_name")
-    let payment = Payment(amount: Payment.Amount(value: 2, currencyCode: "IDR"), countryCode: "ID")
+    let payment = Payment(amount: Amount(value: 2, currencyCode: "IDR"), countryCode: "ID")
 
     func testLocalizationWithCustomTableName() {
         let sut = DokuComponent(paymentMethod: method)

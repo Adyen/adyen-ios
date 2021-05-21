@@ -13,7 +13,7 @@ import XCTest
 class PreApplePayComponentTests: XCTestCase {
     
     var sut: PreApplePayComponent!
-    lazy var amount = Payment.Amount(value: 2, currencyCode: getRandomCurrencyCode())
+    lazy var amount = Amount(value: 2, currencyCode: getRandomCurrencyCode())
     lazy var payment = Payment(amount: amount, countryCode: getRandomCountryCode())
     
     override func setUp() {

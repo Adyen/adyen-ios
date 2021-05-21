@@ -6,6 +6,7 @@
 
 import UIKit
 
+/// :nodoc:
 extension UIButton {
     
     /// Initializes UIButton with given `ButtonStyle`

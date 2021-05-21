@@ -6,7 +6,12 @@
 
 import Foundation
 
-/// A collection of available payment methods.
+/**
+  A collection of available payment methods.
+
+  - SeeAlso:
+  [API Reference](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/paymentMethods__section_resParams)
+ */
 public struct PaymentMethods: Decodable {
 
     /// The already paid payment methods, in case of partial payments.

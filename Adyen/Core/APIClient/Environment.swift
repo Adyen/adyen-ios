@@ -6,6 +6,7 @@
 
 import Foundation
 
+/// :nodoc:
 /// Struct that defines the environment to retrieve resources from.
 public struct Environment: APIEnvironment {
     

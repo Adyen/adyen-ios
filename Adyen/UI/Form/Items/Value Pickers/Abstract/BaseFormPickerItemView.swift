@@ -6,6 +6,7 @@
 
 import UIKit
 
+/// :nodoc:
 /// Represents a picker item view.
 open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormValueItemView<BasePickerElement<T>,
     FormTextItemStyle,

@@ -8,12 +8,12 @@ import Foundation
 import Contacts
 
 /// The model for address data.
-public struct AddressInfo: Equatable, Encodable {
+public struct PostalAddress: Equatable, Encodable {
 
     internal static let invalidCountry = "ZZ"
     internal static let invalidValue = "null"
 
-    /// Create new instance of AddressInfo
+    /// Create new instance of postal address.
     public init(city: String? = nil,
                 country: String? = nil,
                 houseNumberOrName: String? = nil,
@@ -64,12 +64,12 @@ public struct AddressInfo: Equatable, Encodable {
             .joined(separator: " ")
             .adyen.nilIfEmpty
 
-        try container.encode(city ?? AddressInfo.invalidValue, forKey: .city)
-        try container.encode(country ?? AddressInfo.invalidCountry, forKey: .country)
-        try container.encode(houseNumberOrNameValue ?? AddressInfo.invalidValue, forKey: .houseNumberOrName)
-        try container.encode(postalCode ?? AddressInfo.invalidValue, forKey: .postalCode)
-        try container.encode(stateOrProvince ?? AddressInfo.invalidValue, forKey: .stateOrProvince)
-        try container.encode(street ?? AddressInfo.invalidValue, forKey: .street)
+        try container.encode(city ?? PostalAddress.invalidValue, forKey: .city)
+        try container.encode(country ?? PostalAddress.invalidCountry, forKey: .country)
+        try container.encode(houseNumberOrNameValue ?? PostalAddress.invalidValue, forKey: .houseNumberOrName)
+        try container.encode(postalCode ?? PostalAddress.invalidValue, forKey: .postalCode)
+        try container.encode(stateOrProvince ?? PostalAddress.invalidValue, forKey: .stateOrProvince)
+        try container.encode(street ?? PostalAddress.invalidValue, forKey: .street)
     }
 
     private enum CodingKeys: String, CodingKey {

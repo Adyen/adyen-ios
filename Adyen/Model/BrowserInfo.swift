@@ -25,7 +25,9 @@ public struct BrowserInfo: Encodable {
         webView = WKWebView()
         webView?.evaluateJavaScript("navigator.userAgent") { result, _ in
             webView = nil
-            guard let result = result as? String else { completion(nil); return }
+            guard let result = result as? String else {
+                return completion(nil)
+            }
             BrowserInfo.cachedUserAgent = result
             completion(BrowserInfo(userAgent: cachedUserAgent))
         }

@@ -6,6 +6,7 @@
 
 import UIKit
 
+/// :nodoc:
 extension UILabel {
     
     /// Initializes UILabel with given `TextStyle`

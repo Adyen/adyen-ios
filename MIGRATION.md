@@ -23,7 +23,7 @@ func didFail(with error: Error, from component: PaymentComponent) {
   let isCancelled = (error as? ComponentError) == .cancelled
 }
 ```
-- In `Adyen` Module, object `Payment.Amount` now implements `Codable`.
+- In `Adyen` Module, object `Amount` now implements `Codable`.
 - Method `present(component: PresentableComponent, disableCloseButton: Bool)` simplified into `present(component: PresentableComponent)` in `PresentationDelegate`.
 - To proccess voucher payments your app's Info.plist must contain `NSPhotoLibraryAddUsageDescription`.
 - ApplePayComponent returns token in Base64 format. To get information out of it - decode Base64 data in UTF8 string and treat as JSON. For reference, Adyen API expects `applePayToken` in one of 3 following formats: Base64 string; escaped JSON string; JSON object.

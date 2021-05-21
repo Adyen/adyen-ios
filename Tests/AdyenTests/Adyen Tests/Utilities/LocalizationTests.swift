@@ -11,9 +11,9 @@ class LocalizationTests: XCTestCase {
     // MARK: - Button title
 
     func testLocalizationWitZeroPayment() {
-        XCTAssertEqual(localizedSubmitButtonTitle(with: Payment.Amount(value: 0, currencyCode: "EUR"), style: .needsRedirectToThirdParty("test_name"), nil), "Preauthorize with test_name")
+        XCTAssertEqual(localizedSubmitButtonTitle(with: Amount(value: 0, currencyCode: "EUR"), style: .needsRedirectToThirdParty("test_name"), nil), "Preauthorize with test_name")
 
-        XCTAssertEqual(localizedSubmitButtonTitle(with: Payment.Amount(value: 0, currencyCode: "EUR"), style: .immediate, nil), "Confirm preauthorization")
+        XCTAssertEqual(localizedSubmitButtonTitle(with: Amount(value: 0, currencyCode: "EUR"), style: .immediate, nil), "Confirm preauthorization")
     }
     
     // MARK: - Custom Recognized TableName

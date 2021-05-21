@@ -14,7 +14,7 @@ internal struct CreateOrderRequest: Request {
 
     internal typealias ResponseType = CreateOrderResponse
 
-    internal let amount: Payment.Amount
+    internal let amount: Amount
 
     internal let reference: String
 
@@ -58,7 +58,7 @@ internal struct CreateOrderResponse: Response {
 
     internal let reference: String
 
-    internal let remainingAmount: Payment.Amount
+    internal let remainingAmount: Amount
 
     internal let expiresAt: String
 

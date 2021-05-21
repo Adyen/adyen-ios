@@ -26,8 +26,8 @@ public final class DokuVoucherAction: GenericVoucherAction {
 
     /// :nodoc:
     internal init(paymentMethodType: VoucherPaymentMethod,
-                  initialAmount: Payment.Amount,
-                  totalAmount: Payment.Amount,
+                  initialAmount: Amount,
+                  totalAmount: Amount,
                   reference: String,
                   shopperEmail: String,
                   expiresAt: Date,

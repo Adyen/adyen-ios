@@ -15,6 +15,13 @@ public protocol ActionComponent: Component {
     
 }
 
+/// Represents any structure/class that can be initialized without any parameters.
+/// :nodoc:
+public protocol ParameterlessInitializable {
+    /// Parameterless initializer.
+    init()
+}
+
 /// Describes the expected interface from any ActionComponent that handles WeChat Pay sdk action.
 /// :nodoc:
 public protocol AnyWeChatPaySDKActionComponent: ActionComponent, DeviceDependant, ParameterlessInitializable {

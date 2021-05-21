@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 /// A component that provides a form consisting of first name, last name, phone, and email.
-/// Used for E-context (ATM, Store, Online) or 7eleven payment methods.
 /// :nodoc:
 public final class BasicPersonalInfoFormComponent: AbstractPersonalInformationComponent {
 

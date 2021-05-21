@@ -14,7 +14,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
     func testLocalizationWithCustomTableName() {
         let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: "test_type", name: "test_name")
         let sut = StoredPaymentMethodComponent(paymentMethod: method)
-        let payment = Payment(amount: Payment.Amount(value: 34, currencyCode: "EUR"), countryCode: "DE")
+        let payment = Payment(amount: Amount(value: 34, currencyCode: "EUR"), countryCode: "DE")
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         
@@ -28,7 +28,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
     func testLocalizationWithZeroPayment() {
         let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: "test_type", name: "test_name")
         let sut = StoredPaymentMethodComponent(paymentMethod: method)
-        let payment = Payment(amount: Payment.Amount(value: 0, currencyCode: "EUR"), countryCode: "DE")
+        let payment = Payment(amount: Amount(value: 0, currencyCode: "EUR"), countryCode: "DE")
         sut.payment = payment
 
         let viewController = sut.viewController as? UIAlertController
@@ -43,7 +43,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
     func testLocalizationWithCustomKeySeparator() {
         let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: "test_type", name: "test_name")
         let sut = StoredPaymentMethodComponent(paymentMethod: method)
-        let payment = Payment(amount: Payment.Amount(value: 34, currencyCode: "EUR"), countryCode: "DE")
+        let payment = Payment(amount: Amount(value: 34, currencyCode: "EUR"), countryCode: "DE")
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         
@@ -80,7 +80,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         }
         sut.delegate = delegate
 
-        let payemt = Payment(amount: Payment.Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
+        let payemt = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payemt
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)

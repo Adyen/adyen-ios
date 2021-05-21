@@ -25,7 +25,7 @@ class InstantPaymentComponentTests: XCTestCase {
 
     func testCustomPaymentData() throws {
         let details = GiftCardDetails(paymentMethod: paymentMethod, encryptedCardNumber: "card", encryptedSecurityCode: "cvc")
-        let amount = Payment.Amount(value: 34, currencyCode: "EUR")
+        let amount = Amount(value: 34, currencyCode: "EUR")
         let paymentData = PaymentComponentData(paymentMethodDetails: details, amount: amount, order: nil)
         delegate = PaymentComponentDelegateMock()
         sut = InstantPaymentComponent(paymentMethod: paymentMethod, paymentData: paymentData)

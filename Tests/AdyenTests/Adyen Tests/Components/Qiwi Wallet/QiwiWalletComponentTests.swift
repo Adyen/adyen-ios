@@ -12,7 +12,7 @@ class QiwiWalletComponentTests: XCTestCase {
     
     lazy var phoneExtensions = [PhoneExtension(value: "+1", countryCode: "US"), PhoneExtension(value: "+3", countryCode: "UK")]
     lazy var method = QiwiWalletPaymentMethod(type: "test_type", name: "test_name", phoneExtensions: phoneExtensions)
-    let payment = Payment(amount: Payment.Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
+    let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
     
     func testLocalizationWithCustomTableName() {
         let sut = QiwiWalletComponent(paymentMethod: method)

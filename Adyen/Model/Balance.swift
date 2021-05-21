@@ -10,11 +10,11 @@ import Foundation
 public struct Balance {
 
     /// Indicates the available balance.
-    public let availableAmount: Payment.Amount
+    public let availableAmount: Amount
 
     /// Indicates the maximum spendable balance for a single transaction,
     /// as mandated by the account issuer, regardless of the account balance.
-    public let transactionLimit: Payment.Amount?
+    public let transactionLimit: Amount?
 
     /// Initializes a Balance.
     ///
@@ -22,7 +22,7 @@ public struct Balance {
     ///   - availableAmount: The available balance.
     ///   - transactionLimit: The maximum spendable balance for a single transaction as mandated by the account issuer,
     ///    regardless of the account balance.
-    public init(availableAmount: Payment.Amount, transactionLimit: Payment.Amount?) {
+    public init(availableAmount: Amount, transactionLimit: Amount?) {
         self.availableAmount = availableAmount
         self.transactionLimit = transactionLimit
     }

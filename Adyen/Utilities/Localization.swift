@@ -113,7 +113,7 @@ public enum PaymentStyle {
 /// - Parameter amount: The amount to include in the submit button title.
 /// - Parameter paymentMethodName: The payment method name.
 /// - Parameter parameters: The localization parameters.
-public func localizedSubmitButtonTitle(with amount: Payment.Amount?,
+public func localizedSubmitButtonTitle(with amount: Amount?,
                                        style: PaymentStyle,
                                        _ parameters: LocalizationParameters?) -> String {
     if let amount = amount, amount.value == 0 {

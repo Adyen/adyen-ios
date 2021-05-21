@@ -8,7 +8,7 @@ import Foundation
 
 /// A full address form, sutable for all countries.
 /// :nodoc:
-public final class FullFormAddressItem: FormValueItem<AddressInfo, AddressStyle>, Observer, CompoundFormItem {
+public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, Observer, CompoundFormItem {
 
     private var items: [FormItem] = []
 
@@ -33,7 +33,7 @@ public final class FullFormAddressItem: FormValueItem<AddressInfo, AddressStyle>
     public init(initialCountry: String, style: AddressStyle, localizationParameters: LocalizationParameters? = nil) {
         self.initialCountry = initialCountry
         self.localizationParameters = localizationParameters
-        super.init(value: AddressInfo(), style: style)
+        super.init(value: PostalAddress(), style: style)
 
         update(for: initialCountry)
 
