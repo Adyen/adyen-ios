@@ -8,12 +8,12 @@ import UIKit
 
 /// A view representing a switch item.
 /// :nodoc:
-public final class FormSwitchItemView: FormValueItemView<Bool, FormSwitchItemStyle, FormSwitchItem> {
+public final class FormToggleItemView: FormValueItemView<Bool, FormToggleItemStyle, FormToggleItem> {
     
     /// Initializes the switch item view.
     ///
     /// - Parameter item: The item represented by the view.
-    public required init(item: FormSwitchItem) {
+    public required init(item: FormToggleItem) {
         super.init(item: item)
         
         showsSeparator = false

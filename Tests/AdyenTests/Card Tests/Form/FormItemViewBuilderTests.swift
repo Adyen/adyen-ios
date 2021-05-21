@@ -25,11 +25,11 @@ class FormItemViewBuilderTests: XCTestCase {
         XCTAssertNotNil(view as? FormTextItemView<FormTextInputItem>)
     }
     
-    func testFormSwitchItemView() {
-        let item = FormSwitchItem()
+    func testFormToggleItemView() {
+        let item = FormToggleItem()
         let view = item.build(with: FormItemViewBuilder())
         
-        XCTAssertNotNil(view as? FormSwitchItemView)
+        XCTAssertNotNil(view as? FormToggleItemView)
     }
     
     func testFormSplitItemView() {

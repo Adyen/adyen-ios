@@ -143,8 +143,8 @@ internal class CardViewController: FormViewController {
 
     internal lazy var billingAddressItem: FormAddressItem = {
         let item = FormAddressItem(initialCountry: defaultCountryCode,
-                                       style: formStyle.addressStyle,
-                                       localizationParameters: localizationParameters)
+                                   style: formStyle.addressStyle,
+                                   localizationParameters: localizationParameters)
         item.style.backgroundColor = UIColor.Adyen.lightGray
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "addressVerification")
         return item
@@ -205,8 +205,8 @@ internal class CardViewController: FormViewController {
         return holderNameItem
     }()
 
-    internal lazy var storeDetailsItem: FormSwitchItem = {
-        let storeDetailsItem = FormSwitchItem(style: formStyle.switch)
+    internal lazy var storeDetailsItem: FormToggleItem = {
+        let storeDetailsItem = FormToggleItem(style: formStyle.toggle)
         storeDetailsItem.title = localizedString(.cardStoreDetailsButton, localizationParameters)
         storeDetailsItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "storeDetailsItem")
 

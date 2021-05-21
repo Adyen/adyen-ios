@@ -10,10 +10,10 @@ import Foundation
 /// :nodoc:
 public struct FormItemViewBuilder {
     
-    /// Builds `FormSwitchItemView` from `FormSwitchItem`.
+    /// Builds `FormToggleItemView` from `FormToggleItem`.
     /// :nodoc:
-    public func build(with item: FormSwitchItem) -> FormItemView<FormSwitchItem> {
-        FormSwitchItemView(item: item)
+    public func build(with item: FormToggleItem) -> FormItemView<FormToggleItem> {
+        FormToggleItemView(item: item)
     }
     
     /// Builds `FormSplitItemView` from `FormSplitItem`.

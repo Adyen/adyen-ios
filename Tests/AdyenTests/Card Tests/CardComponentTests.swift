@@ -127,11 +127,11 @@ class CardComponentTests: XCTestCase {
         cardComponentStyle.textField.backgroundColor = .blue
         
         /// Switch
-        cardComponentStyle.switch.title.backgroundColor = .green
-        cardComponentStyle.switch.title.color = .yellow
-        cardComponentStyle.switch.title.font = .systemFont(ofSize: 5)
-        cardComponentStyle.switch.title.textAlignment = .left
-        cardComponentStyle.switch.backgroundColor = .magenta
+        cardComponentStyle.toggle.title.backgroundColor = .green
+        cardComponentStyle.toggle.title.color = .yellow
+        cardComponentStyle.toggle.title.font = .systemFont(ofSize: 5)
+        cardComponentStyle.toggle.title.textAlignment = .left
+        cardComponentStyle.toggle.backgroundColor = .magenta
         
         let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["any_test_brand_name"])
         var configuration = CardComponent.Configuration()
@@ -162,7 +162,7 @@ class CardComponentTests: XCTestCase {
             let securityCodeItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem.textField")
             let securityCodeCvvHint: UIView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem.cvvHintIcon")
             
-            let storeDetailsItemView: FormSwitchItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem")
+            let storeDetailsItemView: FormToggleItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem")
             let storeDetailsItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem.titleLabel")
             
             let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
@@ -698,7 +698,7 @@ class CardComponentTests: XCTestCase {
         let expiryDateItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
         let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
-        let storeDetailsItemView: FormSwitchItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem")
+        let storeDetailsItemView: FormToggleItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem")
 
         let houseNumberItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.houseNumberOrName")
         let addressItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.street")
