@@ -104,3 +104,6 @@
 "adyen.giftcard.currencyError" = "禮品卡只能以其簽發時所使用的貨幣進行結算";
 "adyen.giftcard.noBalance" = "此禮品卡的餘額為零";
 "adyen.partialPayment.remainingBalance" = "餘額將為 %@";
+"spin.add_card" = "新增卡片";
+"spin.payment_authorize" = "我授權 Spin 依照 Spin 條款，向我的發卡金融機構收取款項。";
+"spin.spin_terms" = "Spin 條款";

@@ -75,6 +75,19 @@ public final class SubmitButton: UIControl {
             }
         }
     }
+	
+	public override var isEnabled: Bool {
+		didSet {
+			if !isEnabled {
+				/// we need to set the background directly here, setting `isHighlighted` on `self` won't work because that state is a combination of bits in a mask in `UIControl` and will always be `false` if `isEnabled` is also `false` and also depends on touch tracking
+				backgroundView.isHighlighted = true
+				titleLabel.alpha = 0.2
+			} else {
+				backgroundView.isHighlighted = false
+				titleLabel.alpha = 1.0
+			}
+		}
+	}
     
     // MARK: - Activity Indicator View
     

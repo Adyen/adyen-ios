@@ -106,3 +106,6 @@
 "adyen.giftcard.currencyError" = "ギフトカードは、発行された通貨でのみ有効です。";
 "adyen.giftcard.noBalance" = "このギフトカードの残高はゼロです";
 "adyen.partialPayment.remainingBalance" = "残りの残高は%@になります";
+"spin.add_card" = "Add Card";
+"spin.payment_authorize" = "I authorize Spin to take payments from the financial institution that issued my card in accordance with the terms of my agreement with Spin Terms.";
+"spin.spin_terms" = "Spin Terms";

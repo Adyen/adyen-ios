@@ -207,7 +207,12 @@ internal class CardViewController: FormViewController {
 
     internal lazy var storeDetailsItem: FormToggleItem = {
         let storeDetailsItem = FormToggleItem(style: formStyle.toggle)
-        storeDetailsItem.title = localizedString(.cardStoreDetailsButton, localizationParameters)
+		
+		observe(storeDetailsItem.publisher) { [weak self] isEnabled in
+			self?.button.enabled = isEnabled
+		}
+		
+        storeDetailsItem.title = localizedString(.payment_authorize, localizationParameters)
         storeDetailsItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "storeDetailsItem")
 
         return storeDetailsItem
@@ -222,6 +227,12 @@ internal class CardViewController: FormViewController {
         item.buttonSelectionHandler = { [weak self] in
             self?.cardDelegate?.didSelectSubmitButton()
         }
+		
+		// is this necessary?
+		if !configuration.showsStorePaymentMethodField {
+			item.enabled = false
+		}
+		
         return item
     }()
 

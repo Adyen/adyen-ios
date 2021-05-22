@@ -114,17 +114,9 @@ public enum PaymentStyle {
 /// - Parameter paymentMethodName: The payment method name.
 /// - Parameter parameters: The localization parameters.
 public func localizedSubmitButtonTitle(with amount: Amount?,
-                                       style: PaymentStyle,
-                                       _ parameters: LocalizationParameters?) -> String {
-    if let amount = amount, amount.value == 0 {
-        return localizedZeroPaymentAuthorisationButtonTitle(style: style,
-                                                            parameters)
-    }
-    guard let formattedAmount = amount?.formatted else {
-        return localizedString(.submitButton, parameters)
-    }
-    
-    return localizedString(.submitButtonFormatted, parameters, formattedAmount)
+									   style: PaymentStyle,
+									   _ parameters: LocalizationParameters?) -> String {
+	return localizedString(.add_card, parameters)
 }
 
 private func localizedZeroPaymentAuthorisationButtonTitle(style: PaymentStyle,

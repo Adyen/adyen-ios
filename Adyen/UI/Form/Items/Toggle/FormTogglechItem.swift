@@ -14,7 +14,7 @@ public final class FormToggleItem: FormValueItem<Bool, FormToggleItemStyle> {
     ///
     /// - Parameter style: The switch item style.
     public init(style: FormToggleItemStyle = FormToggleItemStyle()) {
-        super.init(value: false, style: style)
+        super.init(value: true, style: style)
     }
     
     /// :nodoc:

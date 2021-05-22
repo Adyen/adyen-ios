@@ -106,3 +106,6 @@
 "adyen.giftcard.currencyError" = "Karty podarunkowe są ważne tylko w walucie, w której zostały wydane";
 "adyen.giftcard.noBalance" = "Saldo karty podarunkowej jest puste";
 "adyen.partialPayment.remainingBalance" = "Pozostałe saldo wynosi %(kwota}";
+"spin.add_card" = "Add Card";
+"spin.payment_authorize" = "I authorize Spin to take payments from the financial institution that issued my card in accordance with the terms of my agreement with Spin Terms.";
+"spin.spin_terms" = "Spin Terms";

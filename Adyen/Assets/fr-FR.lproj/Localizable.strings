@@ -106,3 +106,6 @@
 "adyen.giftcard.currencyError" = "Les cartes cadeaux sont valables uniquement dans la devise dans laquelle elles ont été émises";
 "adyen.giftcard.noBalance" = "Aucun solde n'est disponible sur cette carte cadeau";
 "adyen.partialPayment.remainingBalance" = "Le solde restant sera de %@";
+"spin.add_card" = "Ajouter une carte";
+"spin.payment_authorize" = "J’autorise Spin à prélever des paiements auprès de l’institution financière qui a émis ma carte conformément aux modalités de mon acceptation des conditions générales de Spin.";
+"spin.spin_terms" = "conditions générales de Spin";

@@ -106,3 +106,6 @@
 "adyen.giftcard.currencyError" = "Gavekort er kun gyldige i udstedelsesvalutaen";
 "adyen.giftcard.noBalance" = "Saldoen på gavekortet er 0";
 "adyen.partialPayment.remainingBalance" = "Restbeløbet vil være %@";
+"spin.add_card" = "Add Card";
+"spin.payment_authorize" = "I authorize Spin to take payments from the financial institution that issued my card in accordance with the terms of my agreement with Spin Terms.";
+"spin.spin_terms" = "Spin Terms";

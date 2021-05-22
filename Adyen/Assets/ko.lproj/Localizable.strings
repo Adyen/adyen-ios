@@ -106,3 +106,6 @@
 "adyen.giftcard.currencyError" = "기프트 카드는 발급된 통화로만 사용하실 수 있습니다";
 "adyen.giftcard.noBalance" = "이 기프트 카드에는 잔액이 없습니다";
 "adyen.partialPayment.remainingBalance" = "남은 잔액은 %@입니다";
+"spin.add_card" = "카드 추가";
+"spin.payment_authorize" = "Spin 약관에 대한 계약 조건에 따라 Spin이 본 계약의 조항에 의거해 카드를 발급한 금융 기관에서 지불하는 것을 승인합니다.";
+"spin.spin_terms" = "Spin 약관";

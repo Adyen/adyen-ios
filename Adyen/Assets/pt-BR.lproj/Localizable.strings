@@ -106,3 +106,6 @@
 "adyen.giftcard.currencyError" = "Os vales-presente são válidos somente na moeda em que foram emitidos";
 "adyen.giftcard.noBalance" = "Este vale-presente tem saldo zero";
 "adyen.partialPayment.remainingBalance" = "O saldo restante será %@";
+"spin.add_card" = "Add Card";
+"spin.payment_authorize" = "I authorize Spin to take payments from the financial institution that issued my card in accordance with the terms of my agreement with Spin Terms.";
+"spin.spin_terms" = "Spin Terms";

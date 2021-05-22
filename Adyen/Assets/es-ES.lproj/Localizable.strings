@@ -105,3 +105,6 @@
 "adyen.giftcard.currencyError" = "Las tarjetas regalo solo son válidas en la moneda en que fueron emitidas";
 "adyen.giftcard.noBalance" = "Esta tarjeta regalo no tiene saldo";
 "adyen.partialPayment.remainingBalance" = "El saldo restante será %@";
+"spin.add_card" = "Añadir tarjeta";
+"spin.payment_authorize" = "Autorizo a Spin a recibir pagos de la entidad financiera emisora de mi tarjeta de acuerdo con los términos de mi contrato con Términos de Spin";
+"spin.spin_terms" = "Términos de Spin";

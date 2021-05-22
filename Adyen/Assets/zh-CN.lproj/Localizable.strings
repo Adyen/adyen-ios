@@ -106,3 +106,6 @@
 "adyen.giftcard.currencyError" = "礼品卡仅以其发行的货币为有效货币";
 "adyen.giftcard.noBalance" = "礼品卡余额为零";
 "adyen.partialPayment.remainingBalance" = "剩余额度为 %@";
+"spin.add_card" = "添加卡片";
+"spin.payment_authorize" = "本人授权 Spin 根据本人同意的Spin 条款，通过本人卡片的发卡金融机构接收付款。";
+"spin.spin_terms" = "Spin 条款";

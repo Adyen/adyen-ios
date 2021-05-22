@@ -17,7 +17,8 @@ extension IntegrationExample {
     internal func presentCardComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: CardPaymentMethod.self) else { return }
         let component = CardComponent(paymentMethod: paymentMethod,
-                                      apiContext: apiContext)
+                                      apiContext: apiContext,
+									  configuration: .init(billingAddressMode: .postalCode))
         component.cardComponentDelegate = self
         present(component)
     }

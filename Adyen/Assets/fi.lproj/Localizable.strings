@@ -106,3 +106,6 @@
 "adyen.giftcard.currencyError" = "Gift cards are only valid in the currency they were issued in";
 "adyen.giftcard.noBalance" = "Lahjakortin saldo on nolla";
 "adyen.partialPayment.remainingBalance" = "Jäljellä oleva saldo on% {summa}";
+"spin.add_card" = "Add Card";
+"spin.payment_authorize" = "I authorize Spin to take payments from the financial institution that issued my card in accordance with the terms of my agreement with Spin Terms.";
+"spin.spin_terms" = "Spin Terms";

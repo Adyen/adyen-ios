@@ -65,6 +65,7 @@ public final class APIClient: APIClientProtocol {
     }
 
     private func log<R: Request>(urlRequest: URLRequest, request: R) {
+		adyenPrint(" ---- Request URL (\(String(describing: urlRequest.url?.absoluteURL))) ----")
         adyenPrint("---- Request (/\(request.path)) ----")
 
         if let body = urlRequest.httpBody {

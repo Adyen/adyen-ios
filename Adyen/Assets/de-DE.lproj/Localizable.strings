@@ -106,3 +106,6 @@
 "adyen.giftcard.currencyError" = "Geschenkkarten sind nur in der Währung gültig, in der sie ausgestellt wurden";
 "adyen.giftcard.noBalance" = "Auf dieser Geschenkkarte ist kein Guthaben vorhanden";
 "adyen.partialPayment.remainingBalance" = "Es verbleibt ein Restbetrag von %@";
+"spin.add_card" = "Karte hinzufügen";
+"spin.payment_authorize" = "Ich gestatte Spin, Zahlungen von dem Kreditinstitut entgegenzunehmen, das meine Karte ausgestellt hat – gemäß den Bedingungen meiner Zustimmung zu den Geschäftsbedingungen von Spin";
+"spin.spin_terms" = "Geschäftsbedingungen von Spin";
