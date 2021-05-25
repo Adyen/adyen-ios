@@ -34,8 +34,8 @@ public extension AdyenScope where Base == String? {
 public extension AdyenScope where Base == String {
 
     /// Return flag emoji if string is a country code; otherwise returns emty string.
-    var countryFlag: String {
-        guard CountryCodeValidator().isValid(base) else { return "" }
+    var countryFlag: String? {
+        guard CountryCodeValidator().isValid(base) else { return nil }
         let baseIndex = 127397
         var usv = String.UnicodeScalarView()
         base.utf16.compactMap { UnicodeScalar(baseIndex + Int($0)) }.forEach { usv.append($0) }

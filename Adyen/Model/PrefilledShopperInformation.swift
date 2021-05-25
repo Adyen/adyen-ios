@@ -19,7 +19,7 @@ public struct PrefilledShopperInformation: ShopperInformation {
     public var telephoneNumber: String?
     
     /// The billing address information.
-    public var billingAddress: AddressInfo?
+    public var billingAddress: PostalAddress?
     
     /// The social secuity number
     public var socialSecurityNumber: String?
@@ -35,7 +35,7 @@ public struct PrefilledShopperInformation: ShopperInformation {
         shopperName: ShopperName? = nil,
         emailAddress: String? = nil,
         telephoneNumber: String? = nil,
-        billingAddress: AddressInfo? = nil,
+        billingAddress: PostalAddress? = nil,
         socialSecurityNumber: String? = nil
     ) {
         self.shopperName = shopperName

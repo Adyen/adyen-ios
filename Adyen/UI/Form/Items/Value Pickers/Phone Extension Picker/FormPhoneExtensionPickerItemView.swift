@@ -6,7 +6,7 @@
 
 import UIKit
 
-internal final class FormPhoneExtensionPickerItemView: BaseFormPickerItemView<PhoneExtensionViewModel> {
+internal final class FormPhoneExtensionPickerItemView: BaseFormPickerItemView<PhoneExtension> {
 
     private lazy var phoneExtensionInputControl = PhoneExtensionInputControl(inputView: self.pickerView,
                                                                              style: self.item.style.text)
@@ -16,7 +16,7 @@ internal final class FormPhoneExtensionPickerItemView: BaseFormPickerItemView<Ph
     }
 
     override internal func updateSelection() {
-        phoneExtensionInputControl.label = item.value.element.phoneExtension
+        phoneExtensionInputControl.label = item.value.element.value
         phoneExtensionInputControl.flagView.text = item.value.identifier.adyen.countryFlag
     }
 

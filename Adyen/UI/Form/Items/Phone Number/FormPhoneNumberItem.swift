@@ -15,7 +15,7 @@ public final class FormPhoneNumberItem: FormTextItem {
     
     /// The phone prefix value.
     public var prefix: String {
-        phonePrefixItem.value.element.phoneExtension
+        phonePrefixItem.value.element.value
     }
     
     public var phoneNumber: String {

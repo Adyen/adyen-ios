@@ -6,7 +6,7 @@
 
 import Foundation
 
-/// Any object that holds shopper personal information, like first name, last name, email, and phone number.
+/// Any object that holds shopper personal information.
 public protocol ShopperInformation {
 
     /// Shopper name.
@@ -17,20 +17,33 @@ public protocol ShopperInformation {
 
     /// The telephone number.
     var telephoneNumber: String? { get }
+    
+    /// The billing address information.
+    var billingAddress: PostalAddress? { get }
+    
+    /// The social security number information.
+    var socialSecurityNumber: String? { get }
 
 }
 
-/// Any object that holds shopper billing address information/
-public protocol BillingAddressInformation {
+/// :nodoc:
+public extension ShopperInformation {
+    
+    var shopperName: ShopperName? { nil }
 
-    /// The billing address information.
-    var billingAddress: PostalAddress? { get }
+    var emailAddress: String? { nil }
 
+    var telephoneNumber: String? { nil }
+    
+    var billingAddress: PostalAddress? { nil }
+
+    var socialSecurityNumber: String? { nil }
+    
 }
 
 /// Shopper name.
-public struct ShopperName: Codable {
-
+public struct ShopperName: Codable, Equatable {
+    
     /// The first Name.
     public let firstName: String
 

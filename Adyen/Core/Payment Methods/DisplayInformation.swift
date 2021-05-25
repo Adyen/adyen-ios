@@ -7,7 +7,7 @@
 import Foundation
 
 /// Describes a payment method display information.
-public struct DisplayInformation {
+public struct DisplayInformation: Equatable {
 
     /// The title for the payment method, adapted for displaying in a list.
     /// In the case of stored payment methods, this will include information identifying the stored payment method.
@@ -50,6 +50,3 @@ public struct DisplayInformation {
         self.footnoteText = footnoteText
     }
 }
-
-/// :nodoc:
-extension DisplayInformation: Equatable {}

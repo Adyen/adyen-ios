@@ -87,7 +87,7 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
     }
 
     // swiftlint:disable:next function_parameter_count
-    private func createModel(totalAmount: Payment.Amount,
+    private func createModel(totalAmount: Amount,
                              paymentMethodName: String,
                              instructionsUrl: String,
                              reference: String,

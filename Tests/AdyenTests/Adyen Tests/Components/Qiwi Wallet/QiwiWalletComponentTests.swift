@@ -19,11 +19,7 @@ class QiwiWalletComponentTests: XCTestCase {
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         
-        let expectedSelectableValues = phoneExtensions.map {
-            PhoneExtensionPickerItem(identifier: $0.countryCode,
-                                     element: .init(title: "\($0.countryDisplayName) (\($0.value))",
-                                                    phoneExtension: $0.value))
-        }
+        let expectedSelectableValues = phoneExtensions.map { PhoneExtensionPickerItem(identifier: $0.countryCode, element: $0) }
         XCTAssertEqual(sut.phoneItem?.phonePrefixItem.selectableValues, expectedSelectableValues)
         
         XCTAssertEqual(sut.phoneItem?.title, localizedString(.phoneNumberTitle, sut.localizationParameters))
@@ -42,11 +38,7 @@ class QiwiWalletComponentTests: XCTestCase {
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         
-        let expectedSelectableValues = phoneExtensions.map {
-            PhoneExtensionPickerItem(identifier: $0.countryCode,
-                                     element: .init(title: "\($0.countryDisplayName) (\($0.value))",
-                                                    phoneExtension: $0.value))
-        }
+        let expectedSelectableValues = phoneExtensions.map { PhoneExtensionPickerItem(identifier: $0.countryCode, element: $0) }
         XCTAssertEqual(sut.phoneItem?.phonePrefixItem.selectableValues, expectedSelectableValues)
         
         XCTAssertEqual(sut.phoneItem?.title, localizedString(LocalizationKey(key: "adyen_phoneNumber_title"), sut.localizationParameters))

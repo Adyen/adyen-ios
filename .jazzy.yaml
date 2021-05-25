@@ -182,9 +182,8 @@ custom_categories:
       - CardFundingSource
       - BrowserInfo
       - ShopperName
-      - AddressInfo
+      - PostalAddress
       - ShopperInformation
-      - BillingAddressInformation
       - LocalizationParameters
   - name: Styling
     children:
@@ -192,7 +191,7 @@ custom_categories:
       - FormHeaderStyle
       - FormFooterStyle
       - FormTextItemStyle
-      - FormSwitchItemStyle
+      - FormToggleItemStyle
       - FormButtonItemStyle
       - ListComponentStyle
       - ListSectionHeaderStyle

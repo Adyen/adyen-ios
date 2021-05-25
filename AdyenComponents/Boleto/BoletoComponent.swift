@@ -59,8 +59,8 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     }()
     
     /// :nodoc:
-    internal lazy var sendCopyByEmailItem: FormSwitchItem = {
-        let sendCopyToEmailItem = FormSwitchItem(style: style.switch)
+    internal lazy var sendCopyByEmailItem: FormToggleItem = {
+        let sendCopyToEmailItem = FormToggleItem(style: style.toggle)
         sendCopyToEmailItem.value = false
         sendCopyToEmailItem.title = localizedString(.boletoSendCopyToEmail, localizationParameters)
         sendCopyToEmailItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "sendCopyToEmailItem")
@@ -125,7 +125,7 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
         }
         
         if configuration.showEmailAddress {
-            fields.append( .custom(CustomFormItemInjector(item: sendCopyByEmailItem)))
+            fields.append(.custom(CustomFormItemInjector(item: sendCopyByEmailItem)))
             fields.append(.email)
         }
         
@@ -215,19 +215,20 @@ extension BoletoComponent {
             paymentMethod: PaymentMethod,
             configuration: AbstractPersonalInformationComponent.Configuration,
             onCreatePaymentDetails: @escaping () -> PaymentMethodDetails?,
-            style: FormComponentStyle = FormComponentStyle()) {
+            style: FormComponentStyle = FormComponentStyle()
+        ) {
             self.onCreatePaymentDetails = onCreatePaymentDetails
             
             super.init(paymentMethod: paymentMethod, configuration: configuration, style: style)
         }
         
         /// :nodoc:
-        public override func submitButtonTitle() -> String {
+        override public func submitButtonTitle() -> String {
             localizedString(.boletobancarioBtnLabel, localizationParameters)
         }
         
         /// :nodoc:
-        public override func createPaymentDetails() -> PaymentMethodDetails {
+        override public func createPaymentDetails() -> PaymentMethodDetails {
             onCreatePaymentDetails() ?? InstantPaymentDetails(type: paymentMethod.type)
         }
     }

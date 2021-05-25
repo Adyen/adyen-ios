@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
 import Contacts
+import Foundation
 
 /// The model for address data.
 public struct PostalAddress: Equatable, Encodable {
@@ -83,7 +83,7 @@ public struct PostalAddress: Equatable, Encodable {
 
 }
 
-extension AddressInfo {
+extension PostalAddress {
     
     /// :nodoc:
     public var formatted: String {

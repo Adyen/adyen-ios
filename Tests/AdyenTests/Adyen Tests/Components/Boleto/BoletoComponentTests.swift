@@ -46,12 +46,12 @@ class BoletoComponentTests: XCTestCase {
             icon: imageStyle
         )
         
-        var switchStyle = FormSwitchItemStyle(title: textStyle)
+        var switchStyle = FormToggleItemStyle(title: textStyle)
         switchStyle.tintColor = UIColor.red
         switchStyle.separatorColor = UIColor.yellow
         switchStyle.backgroundColor = UIColor.blue
         
-        style.switch = switchStyle
+        style.toggle = switchStyle
         
         style.hintLabel = textStyle
         
@@ -243,7 +243,7 @@ class BoletoComponentTests: XCTestCase {
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             
-            let emailSwitchItem: FormSwitchItemView? = sutVC.view.findView(by: "sendCopyToEmailItem") as? FormSwitchItemView
+            let emailSwitchItem: FormToggleItemView? = sutVC.view.findView(by: "sendCopyToEmailItem") as? FormToggleItemView
             
             XCTAssertNotNil(emailSwitchItem)
             
@@ -340,7 +340,7 @@ class BoletoComponentTests: XCTestCase {
         waitForExpectations(timeout: 15, handler: nil)
     }
     
-    private let dummyAddress = AddressInfo(
+    private let dummyAddress = PostalAddress(
         city: "São Paulo",
         country: "BR",
         houseNumberOrName: "952",
@@ -373,7 +373,7 @@ class BoletoComponentTests: XCTestCase {
         BoletoComponent.Configuration(
             boletoPaymentMethod:
                 BoletoPaymentMethod(type: "boletobancario_santander_test", name: "Boleto Bancario"),
-            payment: Payment(amount: Payment.Amount(value: 25000, currencyCode: "BRL"), countryCode: "BR"),
+            payment: Payment(amount: Amount(value: 25000, currencyCode: "BRL"), countryCode: "BR"),
             shopperInfo: shopperInfo,
             showEmailAddress: showEmailAddress
         )

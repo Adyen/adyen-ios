@@ -23,7 +23,7 @@ public struct BoletoDetails: PaymentMethodDetails, ShopperInformation {
     public let emailAddress: String?
 
     /// The billing address of the shopper.
-    public let billingAddress: AddressInfo?
+    public let billingAddress: PostalAddress?
     
     /// :nodoc:
     public let telephoneNumber: String? = nil
@@ -40,7 +40,7 @@ public struct BoletoDetails: PaymentMethodDetails, ShopperInformation {
         shopperName: ShopperName,
         socialSecurityNumber: String,
         emailAddress: String?,
-        billingAddress: AddressInfo
+        billingAddress: PostalAddress
     ) {
         self.type = type
         self.shopperName = shopperName

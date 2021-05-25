@@ -48,11 +48,11 @@ public extension Amount {
     ///
     /// :nodoc:
     var formatted: String {
-        guard let formattedAmount = AmountFormatter.formatted(amount: value, currencyCode: currencyCode) else {
-            return String(value) + " " + currencyCode
+        if let formattedAmount = AmountFormatter.formatted(amount: value, currencyCode: currencyCode) {
+            return formattedAmount
         }
 
-        return formattedAmount
+        return String(value) + " " + currencyCode
     }
 
 }
