@@ -103,3 +103,4 @@
 "adyen.boleto.download.pdf" = "下載 PDF";
 "adyen.giftcard.currencyError" = "禮品卡只能以其簽發時所使用的貨幣進行結算";
 "adyen.giftcard.noBalance" = "此禮品卡的餘額為零";
+"adyen.partialPayment.remainingBalance" = "餘額將為 %@";

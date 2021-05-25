@@ -44,13 +44,3 @@ public final class FormButtonItem: FormItem {
     }
     
 }
-
-/// :nodoc:
-extension FormButtonItem {
-
-    /// :nodoc:
-    public var submitButton: FormContainerItem {
-        withPadding(padding: .init(top: 8, left: 0, bottom: -16, right: 0))
-    }
-
-}

@@ -85,7 +85,7 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
     public func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let expireDate = expiryMonth + "/" + String(expiryYear.suffix(2))
         
-        return DisplayInformation(title: "••••\u{00a0}" + lastFour,
+        return DisplayInformation(title: String.Adyen.securedString + lastFour,
                                   subtitle: localizedString(.cardStoredExpires, parameters, expireDate),
                                   logoName: brand)
     }

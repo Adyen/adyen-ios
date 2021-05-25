@@ -105,3 +105,4 @@
 "adyen.boleto.download.pdf" = "Pobierz PDF";
 "adyen.giftcard.currencyError" = "Karty podarunkowe są ważne tylko w walucie, w której zostały wydane";
 "adyen.giftcard.noBalance" = "Saldo karty podarunkowej jest puste";
+"adyen.partialPayment.remainingBalance" = "Pozostałe saldo wynosi %(kwota}";

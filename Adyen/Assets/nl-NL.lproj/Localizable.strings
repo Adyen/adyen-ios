@@ -105,3 +105,4 @@
 "adyen.boleto.download.pdf" = "PDF downloaden";
 "adyen.giftcard.currencyError" = "Cadeaukaarten zijn alleen geldig in de valuta waarin ze zijn uitgegeven";
 "adyen.giftcard.noBalance" = "Deze cadeaukaart heeft geen saldo";
+"adyen.partialPayment.remainingBalance" = "Het resterende saldo is %@";

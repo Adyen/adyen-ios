@@ -84,7 +84,7 @@ internal class CardViewController: FormViewController {
             append(storeDetailsItem)
         }
 
-        append(button.submitButton)
+        append(button)
 
         super.viewDidLoad()
     }

@@ -7,7 +7,15 @@
 import Foundation
 
 /// :nodoc:
-extension String: AdyenCompatible {}
+extension String: AdyenCompatible {
+
+    /// :nodoc:
+    public enum Adyen {
+
+        /// :nodoc:
+        public static let securedString: String = "••••\u{00a0}"
+    }
+}
 
 /// :nodoc:
 extension Optional: AdyenCompatible {}

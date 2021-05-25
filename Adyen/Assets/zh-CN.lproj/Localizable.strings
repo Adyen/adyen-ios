@@ -105,3 +105,4 @@
 "adyen.boleto.download.pdf" = "下载 PDF 文件";
 "adyen.giftcard.currencyError" = "礼品卡仅以其发行的货币为有效货币";
 "adyen.giftcard.noBalance" = "礼品卡余额为零";
+"adyen.partialPayment.remainingBalance" = "剩余额度为 %@";

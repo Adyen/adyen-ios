@@ -105,3 +105,4 @@
 "adyen.boleto.download.pdf" = "Scarica PDF";
 "adyen.giftcard.currencyError" = "I buono regalo sono validi solo nella valuta in cui sono state emessi";
 "adyen.giftcard.noBalance" = "Questo buono regalo ha un saldo pari a zero";
+"adyen.partialPayment.remainingBalance" = "Il saldo rimanente sarà di %@";

@@ -78,6 +78,12 @@ public struct FormItemViewBuilder {
         FormVerticalStackItemView(item: item)
     }
 
+    /// Builds `FormSpacerItemView` from `FormSpacerItem`.
+    /// :nodoc:
+    public func build(with item: FormSpacerItem) -> FormItemView<FormSpacerItem> {
+        FormSpacerItemView(item: item)
+    }
+
     public static func build(_ item: FormItem) -> AnyFormItemView {
         let itemView = item.build(with: FormItemViewBuilder())
         itemView.accessibilityIdentifier = item.identifier

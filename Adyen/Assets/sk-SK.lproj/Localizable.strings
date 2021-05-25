@@ -105,3 +105,4 @@
 "adyen.boleto.download.pdf" = "Stiahnuť vo formáte PDF";
 "adyen.giftcard.currencyError" = "Darčekové karty sú platné iba v mene, v ktorej boli vydané";
 "adyen.giftcard.noBalance" = "Táto darčeková karta má nulový zostatok";
+"adyen.partialPayment.remainingBalance" = "Zvyšný zostatok bude %@";

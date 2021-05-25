@@ -105,3 +105,4 @@
 "adyen.boleto.download.pdf" = "Last ned PDF";
 "adyen.giftcard.currencyError" = "Gavekort er kun gyldige i den valutaen de ble utstedt i";
 "adyen.giftcard.noBalance" = "Dette gavekortet har en saldo på null";
+"adyen.partialPayment.remainingBalance" = "Gjenværende saldo vil være %@";

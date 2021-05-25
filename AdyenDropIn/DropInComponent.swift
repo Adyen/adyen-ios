@@ -28,12 +28,6 @@ public final class DropInComponent: NSObject, PresentableComponent {
     /// The payment methods to display.
     public private(set) var paymentMethods: PaymentMethods
     
-    /// The delegate of the drop in component.
-    public weak var delegate: DropInComponentDelegate?
-
-    /// The partial payment flow delegate.
-    public weak var partialPaymentDelegate: PartialPaymentDelegate?
-    
     /// Indicates the UI configuration of the drop in component.
     public let style: Style
     
@@ -59,10 +53,16 @@ public final class DropInComponent: NSObject, PresentableComponent {
         super.init()
     }
 
-    // MARK: - PartialPaymentAware
+    // MARK: - Delegates
 
-    /// :nodoc:
-    internal var order: PartialPaymentOrder?
+    /// The delegate of the drop in component.
+    public weak var delegate: DropInComponentDelegate?
+
+    /// The partial payment flow delegate.
+    public weak var partialPaymentDelegate: PartialPaymentDelegate?
+
+    /// The delegate for user activity on card component.
+    public weak var cardComponentDelegate: CardComponentDelegate?
     
     // MARK: - Presentable Component Protocol
     
@@ -127,7 +127,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
     
     // MARK: - Private
 
-    private lazy var componentManager = createComponentManager(order, nil)
+    private lazy var componentManager = createComponentManager(nil, nil)
 
     private func createComponentManager(_ order: PartialPaymentOrder?,
                                         _ remainingAmount: Payment.Amount?) -> ComponentManager {
@@ -193,7 +193,8 @@ public final class DropInComponent: NSObject, PresentableComponent {
     private func didSelect(_ component: PaymentComponent) {
         selectedPaymentComponent = component
         component.delegate = self
-        (component as? PartialPaymentComponent)?.partialPaymentDelegate = self
+        (component as? CardComponent)?.cardComponentDelegate = cardComponentDelegate
+        (component as? PartialPaymentComponent)?.partialPaymentDelegate = partialPaymentDelegate
         (component as? PartialPaymentComponent)?.readyToSubmitComponentDelegate = self
         component._isDropIn = true
         component.environment = environment
@@ -350,25 +351,6 @@ extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
         let newRoot = preselectedPaymentMethodComponent(for: component)
         navigationController.present(root: newRoot)
         rootComponent = newRoot
-    }
-}
-
-extension DropInComponent: PartialPaymentDelegate {
-
-    /// :nodoc:
-    public func requestOrder(_ completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
-        partialPaymentDelegate?.requestOrder(completion)
-    }
-
-    /// :nodoc:
-    public func cancelOrder(_ order: PartialPaymentOrder) {
-        partialPaymentDelegate?.cancelOrder(order)
-    }
-
-    /// :nodoc:
-    public func checkBalance(with data: PaymentComponentData,
-                             completion: @escaping (Result<Balance, Error>) -> Void) {
-        partialPaymentDelegate?.checkBalance(with: data, completion: completion)
     }
 }
 

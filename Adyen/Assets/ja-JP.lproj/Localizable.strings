@@ -105,3 +105,4 @@
 "adyen.boleto.download.pdf" = "PDFをダウンロード";
 "adyen.giftcard.currencyError" = "ギフトカードは、発行された通貨でのみ有効です。";
 "adyen.giftcard.noBalance" = "このギフトカードの残高はゼロです";
+"adyen.partialPayment.remainingBalance" = "残りの残高は%@になります";

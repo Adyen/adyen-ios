@@ -105,3 +105,4 @@
 "adyen.boleto.download.pdf" = "Descărcați PDF";
 "adyen.giftcard.currencyError" = "Cardurile cadou sunt valabile numai în moneda în care au fost emise";
 "adyen.giftcard.noBalance" = "Acest card cadou are soldul zero";
+"adyen.partialPayment.remainingBalance" = "Soldul rămas va fi de %@";

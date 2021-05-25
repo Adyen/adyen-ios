@@ -36,7 +36,7 @@ public struct OrderPaymentMethod: PaymentMethod {
 
     /// :nodoc:
     public var name: String {
-        "••••\u{00a0}" + lastFour
+        String.Adyen.securedString + lastFour
     }
 
     /// :nodoc:

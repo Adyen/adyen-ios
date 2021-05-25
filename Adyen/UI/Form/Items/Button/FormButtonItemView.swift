@@ -18,12 +18,14 @@ internal final class FormButtonItemView: FormItemView<FormButtonItem> {
         backgroundColor = item.style.backgroundColor
         
         addSubview(submitButton)
+
+        preservesSuperviewLayoutMargins = true
         
         bind(item.$showsActivityIndicator, to: submitButton, at: \.showsActivityIndicator)
         bind(item.$enabled, to: submitButton, at: \.isEnabled)
         bind(item.$title, to: submitButton, at: \.title)
         
-        submitButton.adyen.anchor(inside: self)
+        submitButton.adyen.anchor(inside: self.layoutMarginsGuide)
     }
     
     // MARK: - Submit Button

@@ -105,3 +105,4 @@
 "adyen.boleto.download.pdf" = "تنزيل ملف PDF";
 "adyen.giftcard.currencyError" = "لا تسري بطاقات الهدايا إلا بالعملة التي صدرت بها";
 "adyen.giftcard.noBalance" = "لا يوجد رصيد ببطاقة الهدايا هذه";
+"adyen.partialPayment.remainingBalance" = "سيبلغ الرصيد المتبقي %@";

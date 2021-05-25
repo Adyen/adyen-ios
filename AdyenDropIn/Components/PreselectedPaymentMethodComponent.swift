@@ -64,9 +64,14 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
         formViewController.delegate = self
         
         formViewController.append(listItem)
-        formViewController.append(submitButtonItem.withPadding(padding: .init(top: 0, left: 0, bottom: -8, right: 0)))
+        formViewController.append(submitButtonItem)
+        if let footnoteItem = footnoteItem {
+            formViewController.append(footnoteItem.addingDefaultMargins())
+        }
+        formViewController.append(FormSpacerItem())
         formViewController.append(separator)
-        formViewController.append(openAllButtonItem.withPadding(padding: .init(top: 0, left: 0, bottom: -14, right: 0)))
+        formViewController.append(openAllButtonItem)
+        formViewController.append(FormSpacerItem(numberOfSpaces: 2))
         
         formViewController.title = title
         return formViewController
@@ -108,6 +113,13 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
         item.buttonSelectionHandler = { [weak self] in
             self?.delegate?.didRequestAllPaymentMethods()
         }
+        return item
+    }()
+
+    private lazy var footnoteItem: FormLabelItem? = {
+        guard let footnoteText = paymentMethod.displayInformation.footnoteText else { return nil }
+        let item = FormLabelItem(text: footnoteText, style: style.footnoteLabel)
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "footnote")
         return item
     }()
     
