@@ -74,7 +74,7 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
             text: configuration.shopperInfo.billingAddress?.formatted ?? "",
             style: style.hintLabel,
             identifier: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "preFilledBillingAddress")
-        ).withPadding(padding: .init(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0))
+        ).addingDefaultMargins()
     }()
     
     /// :nodoc:
@@ -86,7 +86,7 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
                 scopeInstance: self,
                 postfix: localizedString(key, localizationParameters)
             )
-        ).withPadding(padding: .init(top: 8, left: 0, bottom: 0, right: 0))
+        ).addingDefaultMargins()
     }
     
     /// :nodoc:
