@@ -11,7 +11,14 @@ import Adyen
 import Foundation
 
 /// Contains the details provided by the card component.
-public struct CardDetails: PaymentMethodDetails, BillingAddressInformation {
+public struct CardDetails: PaymentMethodDetails, ShopperInformation {
+    public var shopperName: ShopperName?
+    
+    public var emailAddress: String?
+    
+    public var telephoneNumber: String?
+    
+    public var socialSecurityNumber: String?
     
     /// The payment method type.
     public let type: String

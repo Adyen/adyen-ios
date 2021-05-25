@@ -1813,7 +1813,6 @@
 				E24FED0722704C9800A65122 /* ComponentError.swift */,
 				F90FB7BB2446E8C8005BFE0E /* BrowserInfo.swift */,
 				E7085A8C2627132B00D0153B /* AddressInfo.swift */,
-				5A15D5A0264BE1E500A8E3C7 /* PrefilledShopperInformation.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -2467,6 +2466,7 @@
 			children = (
 				E9093402228EDADA00C9F04B /* Payment.swift */,
 				F9838D382631AD1900963483 /* Balance.swift */,
+				5A15D5A0264BE1E500A8E3C7 /* PrefilledShopperInformation.swift */,
 				F9EDB7852391734200CFB3C9 /* UnknownError.swift */,
 				F9620DB123C75886005209FC /* PaymentComponentBuilder.swift */,
 				F939DEE223C8B4C100D19249 /* InstantPaymentDetails.swift */,

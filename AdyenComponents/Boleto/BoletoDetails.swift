@@ -8,8 +8,7 @@ import Adyen
 import Foundation
 
 /// Contains the details supplied by the Boleto component.
-public struct BoletoDetails: PaymentMethodDetails,
-                             ShopperInformation, BillingAddressInformation, SocialSecurityNumberInformation {
+public struct BoletoDetails: PaymentMethodDetails, ShopperInformation {
 
     /// The type of the payment method
     public let type: String

@@ -7,7 +7,7 @@
 import Foundation
 
 /// A structure that contains information about the shopper
-public struct PrefilledShopperInformation: ShopperInformation, BillingAddressInformation, SocialSecurityNumberInformation {
+public struct PrefilledShopperInformation: ShopperInformation {
 
     /// The name of the shopper.
     public var shopperName: ShopperName?
