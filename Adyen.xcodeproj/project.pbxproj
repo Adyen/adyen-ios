@@ -36,6 +36,7 @@
 		5A988B652653D9370007F4C0 /* BoletoComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A988B642653D9370007F4C0 /* BoletoComponentTests.swift */; };
 		5A988B7B2653F1750007F4C0 /* BoletoVoucherAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A988B7A2653F1750007F4C0 /* BoletoVoucherAction.swift */; };
 		5A988BF6265675ED0007F4C0 /* BoletoPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A988BF5265675ED0007F4C0 /* BoletoPaymentMethod.swift */; };
+		5A988C342657D5290007F4C0 /* BoletoVoucherViewControllerProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A988C332657D5290007F4C0 /* BoletoVoucherViewControllerProviderTests.swift */; };
 		5AD40E75262F04440090E01C /* UIProgressViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD40E74262F04440090E01C /* UIProgressViewHelpers.swift */; };
 		5AD40EEF26303C830090E01C /* UIButtonHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD40EEE26303C830090E01C /* UIButtonHelpers.swift */; };
 		5AD40EFB26303D490090E01C /* UILabelHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD40EFA26303D490090E01C /* UILabelHelpers.swift */; };
@@ -861,6 +862,7 @@
 		5A988B642653D9370007F4C0 /* BoletoComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoletoComponentTests.swift; sourceTree = "<group>"; };
 		5A988B7A2653F1750007F4C0 /* BoletoVoucherAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoletoVoucherAction.swift; sourceTree = "<group>"; };
 		5A988BF5265675ED0007F4C0 /* BoletoPaymentMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoletoPaymentMethod.swift; sourceTree = "<group>"; };
+		5A988C332657D5290007F4C0 /* BoletoVoucherViewControllerProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoletoVoucherViewControllerProviderTests.swift; sourceTree = "<group>"; };
 		5AD40E74262F04440090E01C /* UIProgressViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIProgressViewHelpers.swift; sourceTree = "<group>"; };
 		5AD40EEE26303C830090E01C /* UIButtonHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonHelpers.swift; sourceTree = "<group>"; };
 		5AD40EFA26303D490090E01C /* UILabelHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelHelpers.swift; sourceTree = "<group>"; };
@@ -3339,6 +3341,7 @@
 				F9FE13F325CC0E3C0067B593 /* DokuVoucherViewControllerProviderTests.swift */,
 				F9B019432611E965001F23FC /* EContextATMVoucherViewControllerProviderTests.swift */,
 				F9B019592611ED94001F23FC /* EContextStoresVoucherViewControllerProviderTests.swift */,
+				5A988C332657D5290007F4C0 /* BoletoVoucherViewControllerProviderTests.swift */,
 			);
 			path = "Voucher Component";
 			sourceTree = "<group>";
@@ -4453,6 +4456,7 @@
 				F9C5F0F125CAB917005A6E54 /* VoucherViewControllerProviderMock.swift in Sources */,
 				F96AE51B26038602009F82BD /* XCTestCaseExtension.swift in Sources */,
 				F9EDB78D2395643A00CFB3C9 /* CardComponentTests.swift in Sources */,
+				5A988C342657D5290007F4C0 /* BoletoVoucherViewControllerProviderTests.swift in Sources */,
 				F9842CD025710BF00063CE5A /* ThreeDS2ClassicActionHandlerTests.swift in Sources */,
 				F9D57535238291A1009C18B5 /* BCMCComponentTests.swift in Sources */,
 				F9D57526237C3576009C18B5 /* RandomStringGenerator.swift in Sources */,
