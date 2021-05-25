@@ -20,11 +20,11 @@ public struct VoucherComponentStyle: ViewStyle {
     /// The secondary button style.
     public var secondaryButton = ButtonStyle(title: TextStyle(font: .preferredFont(forTextStyle: .headline),
                                                               color: UIColor.Adyen.defaultBlue),
-                                             cornerRadius: 0,
+                                             cornerRadius: 8,
                                              background: UIColor.Adyen.componentBackground)
 
     /// :nodoc:
-    public var backgroundColor = UIColor.Adyen.componentBackground
+    public var backgroundColor = UIColor.Adyen.secondaryComponentBackground
 
     /// Initializes the voucher component style with the default style.
     public init() {}

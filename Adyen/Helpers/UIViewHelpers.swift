@@ -20,9 +20,18 @@ extension AdyenScope where Base: UIView {
 
         return image
     }
+    
+    /// :nodoc:
+    public func hide(hidden: Bool, animated: Bool) {
+        if animated {
+            hideWithAnimation(hidden)
+        } else {
+            hideWithoutAnimation(hidden)
+        }
+    }
 
     /// :nodoc:
-    public func hideWithAnimation(_ hidden: Bool) {
+    private func hideWithAnimation(_ hidden: Bool) {
         UIView.animateKeyframes(withDuration: 0.35,
                                 delay: 0,
                                 options: [.calculationModeCubicPaced, .beginFromCurrentState],
@@ -38,5 +47,13 @@ extension AdyenScope where Base: UIView {
                                     self.base.isHidden = hidden
                                     self.base.adyen.updatePreferredContentSize()
                                 })
+    }
+    
+    /// :nodoc:
+    private func hideWithoutAnimation(_ hidden: Bool) {
+        guard base.isHidden != hidden else { return }
+        
+        base.isHidden = hidden
+        base.adyen.updatePreferredContentSize()
     }
 }

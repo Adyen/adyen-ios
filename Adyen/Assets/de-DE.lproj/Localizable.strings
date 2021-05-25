@@ -65,7 +65,9 @@
 "adyen.voucher.readInstructions" = "Anweisungen lesen";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Sie haben noch %@ um zu zahlen";
+"adyen.pix.copyButton" = "";
 "adyen.billingAddressSection.title" = "Rechnungsadresse";
 "adyen.deliveryAddressSection.title" = "Lieferadresse";
 "adyen.countryField.title" = "Land";
@@ -99,6 +101,7 @@
 "adyen.boletobancario.btnLabel" = "Boleto generieren";
 "adyen.boleto.sendCopyToEmail" = "Eine Kopie an meine E-Mail-Adresse senden";
 "adyen.boleto.personalDetails" = "Persönliche Angaben";
+"adyen.boleto.socialSecurityNumber" = "";
 "adyen.boleto.download.pdf" = "PDF herunterladen";
 "adyen.giftcard.currencyError" = "Geschenkkarten sind nur in der Währung gültig, in der sie ausgestellt wurden";
 "adyen.giftcard.noBalance" = "Auf dieser Geschenkkarte ist kein Guthaben vorhanden";

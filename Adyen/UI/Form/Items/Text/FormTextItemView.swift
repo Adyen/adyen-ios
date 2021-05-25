@@ -44,6 +44,8 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
 
         bind(item.$placeholder, to: textField, at: \.placeholder)
         
+        updateValidationStatus()
+        
         addSubview(textStackView)
         configureConstraints()
     }
@@ -94,6 +96,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
         textField.textColor = item.style.text.color
         textField.textAlignment = item.style.text.textAlignment
         textField.backgroundColor = item.style.backgroundColor
+        textField.text = item.value
         setPlaceHolderText(to: textField)
         textField.autocorrectionType = item.autocorrectionType
         textField.autocapitalizationType = item.autocapitalizationType
@@ -299,12 +302,21 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
             hideAlertLabel(false)
             highlightSeparatorView(color: item.style.errorColor)
             titleLabel.textColor = item.style.errorColor
+        } else {
+            if case .customView = accessory {
+                /* Do nothing */
+            } else {
+                accessory = .none
+            }
+            hideAlertLabel(true)
+            highlightSeparatorView(color: tintColor)
+            titleLabel.textColor = item.style.title.color
         }
     }
     
     private func hideAlertLabel(_ hidden: Bool) {
         guard hidden || alertLabel.text != nil else { return }
-        alertLabel.adyen.hideWithAnimation(hidden)
+        alertLabel.adyen.hide(hidden: hidden, animated: true)
     }
 }
 

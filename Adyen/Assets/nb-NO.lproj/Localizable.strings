@@ -65,7 +65,9 @@
 "adyen.voucher.readInstructions" = "Les instruksjoner";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Du har %@ igjen til å betale";
+"adyen.pix.copyButton" = "";
 "adyen.billingAddressSection.title" = "Faktureringsadresse";
 "adyen.deliveryAddressSection.title" = "Leveringsadresse";
 "adyen.countryField.title" = "Land";
@@ -99,6 +101,7 @@
 "adyen.boletobancario.btnLabel" = "Generer Boleto";
 "adyen.boleto.sendCopyToEmail" = "Send meg en kopi på e-post";
 "adyen.boleto.personalDetails" = "Personopplysninger";
+"adyen.boleto.socialSecurityNumber" = "";
 "adyen.boleto.download.pdf" = "Last ned PDF";
 "adyen.giftcard.currencyError" = "Gavekort er kun gyldige i den valutaen de ble utstedt i";
 "adyen.giftcard.noBalance" = "Dette gavekortet har en saldo på null";

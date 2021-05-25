@@ -76,21 +76,21 @@ class EContextATMVoucherViewControllerProviderTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = viewController
 
-        let saveButton: UIButton! = viewController.view.findView(by: "adyen.voucher.saveButton")
-        XCTAssertEqual(saveButton.titleColor(for: .normal), UIColor.white)
-        XCTAssertEqual(saveButton.layer.backgroundColor, UIColor.red.cgColor)
-        XCTAssertEqual(saveButton.titleLabel?.font, .systemFont(ofSize: 34))
-        XCTAssertEqual(saveButton.layer.borderWidth, 2)
-        XCTAssertEqual(saveButton.layer.borderColor, UIColor.blue.cgColor)
-        XCTAssertEqual(saveButton.layer.cornerRadius, 12)
-
         let doneButton: UIButton! = viewController.view.findView(by: "adyen.voucher.doneButton")
-        XCTAssertEqual(doneButton.titleColor(for: .normal), UIColor.black)
-        XCTAssertEqual(doneButton.layer.backgroundColor, UIColor.cyan.cgColor)
-        XCTAssertEqual(doneButton.titleLabel?.font, .systemFont(ofSize: 23))
-        XCTAssertEqual(doneButton.layer.borderWidth, 3)
-        XCTAssertEqual(doneButton.layer.borderColor, UIColor.red.cgColor)
-        XCTAssertEqual(doneButton.layer.cornerRadius, 6)
+        XCTAssertEqual(doneButton.titleColor(for: .normal), UIColor.white)
+        XCTAssertEqual(doneButton.layer.backgroundColor, UIColor.red.cgColor)
+        XCTAssertEqual(doneButton.titleLabel?.font, .systemFont(ofSize: 34))
+        XCTAssertEqual(doneButton.layer.borderWidth, 2)
+        XCTAssertEqual(doneButton.layer.borderColor, UIColor.blue.cgColor)
+        XCTAssertEqual(doneButton.layer.cornerRadius, 12)
+
+        let saveButton: UIButton! = viewController.view.findView(by: "adyen.voucher.saveButton")
+        XCTAssertEqual(saveButton.titleColor(for: .normal), UIColor.black)
+        XCTAssertEqual(saveButton.layer.backgroundColor, UIColor.cyan.cgColor)
+        XCTAssertEqual(saveButton.titleLabel?.font, .systemFont(ofSize: 23))
+        XCTAssertEqual(saveButton.layer.borderWidth, 3)
+        XCTAssertEqual(saveButton.layer.borderColor, UIColor.red.cgColor)
+        XCTAssertEqual(saveButton.layer.cornerRadius, 6)
     }
 
 }

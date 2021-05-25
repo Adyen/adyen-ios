@@ -22,6 +22,9 @@ public extension DropInComponent {
         /// The Apple Pay configuration.
         public var applePay: ApplePayConfiguration?
         
+        /// Shopper related information
+        public var shopper: PrefilledShopperInformation?
+        
         /// The client key that corresponds to the webservice user you will use for initiating the payment.
         /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
         public var clientKey: String

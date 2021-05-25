@@ -47,6 +47,7 @@ public final class FormSwitchItemView: FormValueItemView<Bool, FormSwitchItemSty
     }
     
     /// :nodoc:
+    @discardableResult
     override public func accessibilityActivate() -> Bool {
         switchControl.isOn = !switchControl.isOn
         switchControlValueChanged()

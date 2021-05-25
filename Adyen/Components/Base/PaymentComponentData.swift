@@ -6,7 +6,7 @@
 
 import Foundation
 
-/// Any object that holds shopper personal information, like first name, last name, email, and phone number.
+/// Any object that holds shopper personal information.
 public protocol ShopperInformation {
 
     /// Shopper name.
@@ -17,19 +17,32 @@ public protocol ShopperInformation {
 
     /// The telephone number.
     var telephoneNumber: String? { get }
+    
+    /// The billing address information.
+    var billingAddress: AddressInfo? { get }
+    
+    /// The social security number information.
+    var socialSecurityNumber: String? { get }
 
 }
 
-/// Any object that holds shopper billing address information/
-public protocol BillingAddressInformation {
+/// :nodoc:
+public extension ShopperInformation {
+    
+    var shopperName: ShopperName? { nil }
 
-    /// The billing address information.
-    var billingAddress: AddressInfo? { get }
+    var emailAddress: String? { nil }
 
+    var telephoneNumber: String? { nil }
+    
+    var billingAddress: AddressInfo? { nil }
+
+    var socialSecurityNumber: String? { nil }
+    
 }
 
 /// Shopper name.
-public struct ShopperName: Codable {
+public struct ShopperName: Codable, Equatable {
     
     /// The first Name.
     public let firstName: String
@@ -49,7 +62,7 @@ public struct ShopperName: Codable {
 }
 
 /// The data supplied by a payment component upon completion.
-public struct PaymentComponentData: ShopperInformation, BillingAddressInformation {
+public struct PaymentComponentData: ShopperInformation {
     
     /// The payment method details submitted by the payment component.
     public let paymentMethod: PaymentMethodDetails
@@ -86,8 +99,14 @@ public struct PaymentComponentData: ShopperInformation, BillingAddressInformatio
 
     /// The billing address information.
     public var billingAddress: AddressInfo? {
-        guard let shopperInfo = paymentMethod as? BillingAddressInformation else { return nil }
+        guard let shopperInfo = paymentMethod as? ShopperInformation else { return nil }
         return shopperInfo.billingAddress
+    }
+    
+    /// The social security number.
+    public var socialSecurityNumber: String? {
+        guard let shopperInfo = paymentMethod as? ShopperInformation else { return nil }
+        return shopperInfo.socialSecurityNumber
     }
     
     /// Initializes the payment component data.

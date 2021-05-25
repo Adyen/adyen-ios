@@ -30,25 +30,55 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
     }
 
     internal func provide(with action: VoucherAction) -> UIViewController {
+        let view: GenericVoucherView
         switch action {
         case let .dokuIndomaret(action):
-            let fields = createDokuVoucherFields(for: action)
-            return createGenericViewController(with: action, fields: fields)
+            view = createGenericView(with: action, fields: createDokuVoucherFields(for: action))
         case let .dokuAlfamart(action):
-            let fields = createDokuVoucherFields(for: action)
-            return createGenericViewController(with: action, fields: fields)
+            view = createGenericView(with: action, fields: createDokuVoucherFields(for: action))
         case let .econtextStores(action):
-            let fields = createEContextStoresVoucherFields(for: action)
-            return createGenericViewController(with: action, fields: fields)
+            view = createGenericView(with: action, fields: createEContextStoresVoucherFields(for: action))
         case let .econtextATM(action):
-            let fields = createEContextATMVoucherFields(for: action)
-            return createGenericViewController(with: action, fields: fields)
+            view = createGenericView(with: action, fields: createEContextATMVoucherFields(for: action))
+        case let .boletoBancairoSantander(action):
+            view = createBoletoView(with: action)
         }
+        
+        return createGenericViewController(with: view)
+    }
+    
+    private func createGenericView(
+        with action: GenericVoucherAction,
+        fields: [GenericVoucherView.VoucherField]
+    ) -> GenericVoucherView {
+        GenericVoucherView(
+            model: createModel(
+                totalAmount: action.totalAmount,
+                paymentMethodName: action.paymentMethodType.rawValue,
+                instructionsUrl: action.instructionsUrl,
+                reference: action.reference,
+                shareButton: .saveImage,
+                fields: fields
+            )
+        )
+    }
+    
+    private func createBoletoView(
+        with boletoAction: BoletoVoucherAction
+    ) -> GenericVoucherView {
+        GenericVoucherView(
+            model: createModel(
+                totalAmount: boletoAction.totalAmount,
+                paymentMethodName: boletoAction.paymentMethodType.rawValue,
+                instructionsUrl: boletoAction.downloadUrl.absoluteString,
+                reference: boletoAction.reference,
+                shareButton: .download(boletoAction.downloadUrl),
+                fields: createBoletoVoucherfields(for: boletoAction)
+            )
+        )
     }
 
-    private func createGenericViewController(with action: GenericVoucherAction,
-                                             fields: [GenericVoucherView.VoucherField]) -> UIViewController {
-        let view = GenericVoucherView(model: createModel(with: action, fields: fields))
+    private func createGenericViewController(with view: GenericVoucherView) -> UIViewController {
         view.delegate = delegate
         view.localizationParameters = localizationParameters
         let viewController = VoucherViewController(voucherView: view, style: style)
@@ -56,12 +86,17 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
         return viewController
     }
 
-    private func createModel(with action: GenericVoucherAction,
+    // swiftlint:disable:next function_parameter_count
+    private func createModel(totalAmount: Payment.Amount,
+                             paymentMethodName: String,
+                             instructionsUrl: String,
+                             reference: String,
+                             shareButton: AbstractVoucherView.Model.ShareButton,
                              fields: [GenericVoucherView.VoucherField]) -> GenericVoucherView.Model {
-        let amountString = AmountFormatter.formatted(amount: action.totalAmount.value,
-                                                     currencyCode: action.totalAmount.currencyCode)
+        let amountString = AmountFormatter.formatted(amount: totalAmount.value,
+                                                     currencyCode: totalAmount.currencyCode)
 
-        let logoUrl = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue,
+        let logoUrl = LogoURLProvider.logoURL(withName: paymentMethodName,
                                               environment: .test,
                                               size: .medium)
         let separatorTitle = localizedString(.voucherPaymentReferenceLabel, localizationParameters)
@@ -69,7 +104,7 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
         let instructionTitle = localizedString(.voucherReadInstructions, localizationParameters)
         let instructionStyle = GenericVoucherView.Model.Instruction.Style()
         let instruction = GenericVoucherView.Model.Instruction(title: instructionTitle,
-                                                               url: URL(string: action.instructionsUrl),
+                                                               url: URL(string: instructionsUrl),
                                                                style: instructionStyle)
 
         let style = GenericVoucherView.Model.Style(mainButton: self.style.mainButton,
@@ -79,20 +114,28 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
         let baseStyle = AbstractVoucherView.Model.Style(mainButtonStyle: self.style.mainButton,
                                                         secondaryButtonStyle: self.style.secondaryButton,
                                                         backgroundColor: self.style.backgroundColor)
-        let saveAsImageCopy = localizedString(.voucherSaveImage, localizationParameters)
-        let finishCopy = localizedString(.voucherFinish, localizationParameters)
-        let baseModel = AbstractVoucherView.Model(separatorModel: .init(separatorTitle: separatorTitle),
-                                                  saveButtonTitle: saveAsImageCopy,
-                                                  doneButtonTitle: finishCopy,
-                                                  style: baseStyle)
+        let baseModel = AbstractVoucherView.Model(
+            separatorModel: .init(separatorTitle: separatorTitle),
+            shareButton: shareButton,
+            shareButtonTitle: localizedString(shareButtonCopy(shareButton), localizationParameters),
+            doneButtonTitle: localizedString(.voucherFinish, localizationParameters),
+            style: baseStyle
+        )
         return GenericVoucherView.Model(text: text,
                                         amount: amountString,
                                         instruction: instruction,
-                                        code: action.reference,
+                                        code: reference,
                                         fields: fields,
                                         logoUrl: logoUrl,
                                         style: style,
                                         baseViewModel: baseModel)
+    }
+    
+    private func shareButtonCopy(_ button: AbstractVoucherView.Model.ShareButton) -> LocalizationKey {
+        switch button {
+        case .saveImage: return .voucherSaveImage
+        case .download: return .boletoDownloadPdf
+        }
     }
 
     private func createEContextStoresVoucherFields(for action: EContextStoresVoucherAction) -> [GenericVoucherView.VoucherField] {
@@ -110,6 +153,10 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
         [createExpirationField(with: action.expiresAt),
          createShopperNameField(with: action.shopperName),
          createMerchantField(with: action.merchantName)]
+    }
+    
+    private func createBoletoVoucherfields(for action: BoletoVoucherAction) -> [GenericVoucherView.VoucherField] {
+        [createExpirationField(with: action.expiresAt)]
     }
 
     private func createExpirationField(with expiration: Date) -> GenericVoucherView.VoucherField {

@@ -65,7 +65,9 @@
 "adyen.voucher.readInstructions" = "阅读说明";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "您需要支付 %@";
+"adyen.pix.copyButton" = "";
 "adyen.billingAddressSection.title" = "账单地址";
 "adyen.deliveryAddressSection.title" = "寄送地址";
 "adyen.countryField.title" = "国家/地区";
@@ -99,6 +101,7 @@
 "adyen.boletobancario.btnLabel" = "生成 Boleto";
 "adyen.boleto.sendCopyToEmail" = "将副本发送到我的电子邮箱";
 "adyen.boleto.personalDetails" = "个人详细信息";
+"adyen.boleto.socialSecurityNumber" = "";
 "adyen.boleto.download.pdf" = "下载 PDF 文件";
 "adyen.giftcard.currencyError" = "礼品卡仅以其发行的货币为有效货币";
 "adyen.giftcard.noBalance" = "礼品卡余额为零";

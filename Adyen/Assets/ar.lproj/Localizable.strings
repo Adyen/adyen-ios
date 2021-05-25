@@ -67,6 +67,7 @@
 "adyen.voucher.finish" = "Finish";
 "adyen.pix.instructions" = "افتح التطبيق باستخدام مفتاح PIX المسجل، واختر الدفع باستخدام PIX وامسح رمز الاستجابة السريعة ضوئيًا أو انسخ الرمز والصقه";
 "adyen.pix.expirationLabel" = "لديك %@ للدفع";
+"adyen.pix.copyButton" = "";
 "adyen.billingAddressSection.title" = "عنوان الفواتير";
 "adyen.deliveryAddressSection.title" = "عنوان التسليم";
 "adyen.countryField.title" = "البلد";
@@ -100,6 +101,7 @@
 "adyen.boletobancario.btnLabel" = "إنشاء طريقة دفع Boleto";
 "adyen.boleto.sendCopyToEmail" = "إرسال نسخة إلى بريدي الإلكتروني";
 "adyen.boleto.personalDetails" = "البيانات الشخصية";
+"adyen.boleto.socialSecurityNumber" = "";
 "adyen.boleto.download.pdf" = "تنزيل ملف PDF";
 "adyen.giftcard.currencyError" = "لا تسري بطاقات الهدايا إلا بالعملة التي صدرت بها";
 "adyen.giftcard.noBalance" = "لا يوجد رصيد ببطاقة الهدايا هذه";

@@ -186,6 +186,17 @@ internal final class ComponentManager {
         BLIKComponent(paymentMethod: paymentMethod, style: style.formComponent)
     }
     
+    private func createBoletoComponent(_ paymentMethod: BoletoPaymentMethod) -> BoletoComponent {
+        BoletoComponent(
+            configuration: BoletoComponent.Configuration(
+                boletoPaymentMethod: paymentMethod,
+                payment: configuration.payment,
+                shopperInfo: configuration.shopper,
+                showEmailAddress: true
+            )
+        )
+    }
+    
 }
 
 // MARK: - PaymentComponentBuilder
@@ -273,6 +284,11 @@ extension ComponentManager: PaymentComponentBuilder {
         return GiftCardComponent(paymentMethod: paymentMethod,
                                  clientKey: configuration.clientKey,
                                  style: style.formComponent)
+    }
+    
+    /// :nodoc:
+    internal func build(paymentMethod: BoletoPaymentMethod) -> PaymentComponent? {
+        createBoletoComponent(paymentMethod)
     }
     
     /// :nodoc:

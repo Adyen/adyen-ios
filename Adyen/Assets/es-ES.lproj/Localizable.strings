@@ -65,7 +65,9 @@
 "adyen.voucher.readInstructions" = "Leer instrucciones";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Tiene %@ para pagar";
+"adyen.pix.copyButton" = "";
 "adyen.billingAddressSection.title" = "Dirección de facturación";
 "adyen.deliveryAddressSection.title" = "Dirección de envío";
 "adyen.countryField.title" = "País";

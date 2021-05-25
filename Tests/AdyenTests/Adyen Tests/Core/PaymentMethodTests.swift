@@ -446,6 +446,16 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.displayInformation.logoName, "genericgiftcard")
         XCTAssertEqual(paymentMethod.localizedDisplayInformation(using: nil).logoName, "genericgiftcard")
     }
+    
+    // MARK: - Boleto
+    
+    func testDecodingBoletoPaymentMethod() throws {
+        let paymentMethod = try Coder.decode(boleto) as BoletoPaymentMethod
+        XCTAssertEqual(paymentMethod.type, "boletobancario_santander")
+        XCTAssertEqual(paymentMethod.name, "Boleto Bancario")
+        XCTAssertEqual(paymentMethod.displayInformation.logoName, "boletobancario_santander")
+        XCTAssertEqual(paymentMethod.localizedDisplayInformation(using: nil).logoName, "boletobancario_santander")
+    }
 }
 
 internal extension Coder {

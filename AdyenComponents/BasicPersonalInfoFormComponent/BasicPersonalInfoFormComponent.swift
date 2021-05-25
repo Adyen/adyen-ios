@@ -38,7 +38,7 @@ public final class BasicPersonalInfoFormComponent: AbstractPersonalInformationCo
               let lastNameItem = lastNameItem,
               let emailItem = emailItem,
               let phoneItem = phoneItem else {
-            fatalError("There seems to be an error in the BaseFormComponent configuration.")
+            fatalError("There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
         }
         return BasicPersonalInfoFormDetails(paymentMethod: paymentMethod,
                                             firstName: firstNameItem.value,
