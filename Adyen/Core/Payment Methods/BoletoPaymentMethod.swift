@@ -6,7 +6,7 @@
 
 import Foundation
 
-/// An E-context Online payment method.
+/// A Boleto payment method.
 public struct BoletoPaymentMethod: PaymentMethod {
 
     /// :nodoc:

@@ -79,12 +79,10 @@ public final class VoucherComponent: AnyVoucherActionHandler {
 /// :nodoc:
 extension VoucherComponent: VoucherViewDelegate {
     
-    /// :nodoc:
     internal func didComplete(presentingViewController: UIViewController) {
         delegate?.didComplete(from: self)
     }
 
-    /// :nodoc:
     internal func saveAsImage(voucherView: UIView, presentingViewController: UIViewController) {
         guard let image = voucherView.adyen.snapShot() else { return }
         
@@ -95,7 +93,6 @@ extension VoucherComponent: VoucherViewDelegate {
         )
     }
     
-    /// :nodoc:
     internal func download(url: URL, voucherView: UIView, presentingViewController: UIViewController) {
         presentSharePopover(
             with: url,
@@ -104,7 +101,6 @@ extension VoucherComponent: VoucherViewDelegate {
         )
     }
     
-    /// :nodoc:
     private func presentSharePopover(
         with item: Any,
         presentingViewController: UIViewController,
