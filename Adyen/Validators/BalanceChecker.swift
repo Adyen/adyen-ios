@@ -37,7 +37,8 @@ public struct BalanceChecker {
         public let isBalanceEnough: Bool
 
         /// :nodoc:
-        /// The remaining amount in the balance after payment. it is negative in case the `isBalanceEnough` is false.
+        /// The remaining amount in the balance after payment.
+        /// it is at minimum zero when the available amount is less than the amount to pay.
         public let remainingAmount: Payment.Amount
     }
 
@@ -70,8 +71,10 @@ public struct BalanceChecker {
             throw Error.unexpectedCurrencyCode
         }
 
+        let amountToPay = min(expendableLimit, amount)
+
         return Result(isBalanceEnough: expendableLimit >= amount,
-                      remainingAmount: balance.availableAmount - amount)
+                      remainingAmount: balance.availableAmount - amountToPay)
     }
 
     private func validateTransactionLimit(of balance: Balance) -> Bool {
@@ -94,6 +97,8 @@ public struct BalanceChecker {
 }
 
 /// :nodoc:
-private func - (lhs: Payment.Amount, rhs: Payment.Amount) -> Payment.Amount {
-    Payment.Amount(value: lhs.value - rhs.value, currencyCode: lhs.currencyCode)
+internal func - (lhs: Payment.Amount?, rhs: Payment.Amount?) -> Payment.Amount {
+    let lhs = lhs ?? .init(value: 0, currencyCode: "EUR")
+    let rhs = rhs ?? .init(value: 0, currencyCode: "EUR")
+    return Payment.Amount(value: lhs.value - rhs.value, currencyCode: lhs.currencyCode)
 }
