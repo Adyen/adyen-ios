@@ -35,27 +35,10 @@ public final class DropInComponent: NSObject, PresentableComponent {
     public let title: String
 
     /// :nodoc:
-    public var environment: Environment {
-        get {
-            configuration.environment
-        }
-
-        set {
-            configuration.environment = newValue
-        }
-    }
+    public let environment: Environment
 
     /// :nodoc:
-    public var clientKey: String? {
-        get {
-            configuration.clientKey
-        }
-
-        set {
-            guard let newValue = newValue else { return }
-            configuration.clientKey = newValue
-        }
-    }
+    public let clientKey: String?
     
     /// Initializes the drop in component.
     ///
@@ -73,6 +56,8 @@ public final class DropInComponent: NSObject, PresentableComponent {
         self.configuration = paymentMethodsConfiguration
         self.paymentMethods = paymentMethods
         self.style = style
+        self.clientKey = configuration.clientKey
+        self.environment = configuration.environment
         super.init()
     }
 
