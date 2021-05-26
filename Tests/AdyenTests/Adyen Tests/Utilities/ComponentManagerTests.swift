@@ -46,7 +46,7 @@ class ComponentManagerTests: XCTestCase {
 
     func testClientKeyInjectionAndProtocolConfromance() throws {
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: Dummy.dummyClientKey)
+        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: Dummy.dummyClientKey, environment: .test)
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         let merchantIdentifier = "applePayMerchantIdentifier"
         let summaryItems = [PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)]
@@ -70,7 +70,7 @@ class ComponentManagerTests: XCTestCase {
     
     func testLocalizationWithCustomTableName() throws {
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: Dummy.dummyClientKey)
+        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: Dummy.dummyClientKey, environment: .test)
         config.payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         let merchantIdentifier = "applePayMerchantIdentifier"
@@ -91,7 +91,7 @@ class ComponentManagerTests: XCTestCase {
     
     func testLocalizationWithCustomKeySeparator() throws {
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: Dummy.dummyClientKey)
+        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: Dummy.dummyClientKey, environment: .test)
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         let merchantIdentifier = "applePayMerchantIdentifier"
         let summaryItems = [PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)]
@@ -112,7 +112,7 @@ class ComponentManagerTests: XCTestCase {
 
     func testOrderInjection() throws {
         var paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: Dummy.dummyClientKey)
+        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: Dummy.dummyClientKey, environment: .test)
         let merchantIdentifier = "applePayMerchantIdentifier"
         let summaryItems = [PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)]
         config.applePay = .init(summaryItems: summaryItems, merchantIdentifier: merchantIdentifier)

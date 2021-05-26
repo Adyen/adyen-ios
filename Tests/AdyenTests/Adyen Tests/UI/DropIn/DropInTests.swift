@@ -97,12 +97,11 @@ class DropInTests: XCTestCase {
     }
 
     func testOpenDropInAsList() {
-        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: "local_MYLOCALCLIENTKEY")
+        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: "local_MYLOCALCLIENTKEY", environment: .test)
         config.payment = Payment(amount: Payment.Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymenMethods, paymentMethodsConfiguration: config)
-        sut.environment = .test
 
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root
@@ -121,11 +120,10 @@ class DropInTests: XCTestCase {
     }
 
     func testOpenDropInAsOneclickPayment() {
-        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: "local_MYLOCALCLIENTKEY")
+        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: "local_MYLOCALCLIENTKEY", environment: .test)
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneclick.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymenMethods, paymentMethodsConfiguration: config)
-        sut.environment = .test
 
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root
@@ -141,13 +139,12 @@ class DropInTests: XCTestCase {
     }
 
     func testOpenApplePay() {
-        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: "local_MYLOCALCLIENTKEY")
+        let config = DropInComponent.PaymentMethodsConfiguration(clientKey: "local_MYLOCALCLIENTKEY", environment: .test)
         config.applePay = .init(summaryItems: [.init(label: "Item", amount: 100) ], merchantIdentifier: "")
         config.payment = .init(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymenMethods, paymentMethodsConfiguration: config)
-        sut.environment = .test
 
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root

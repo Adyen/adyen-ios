@@ -396,7 +396,7 @@ class GiftCardComponentTests: XCTestCase {
         let onSubmitExpectation = expectation(description: "Expect delegateMock.onDidSubmit to be called.")
         delegateMock.onDidSubmit = { data, component in
             XCTAssertEqual(data.order, expectedOrder)
-            XCTAssertEqual(data.amount, self.sut.payment!.amount)
+            XCTAssertEqual(data.amount, .init(value: 50, currencyCode: "EUR"))
             onSubmitExpectation.fulfill()
         }
 
@@ -453,7 +453,7 @@ class GiftCardComponentTests: XCTestCase {
         let onSubmitExpectation = expectation(description: "Expect delegateMock.onDidSubmit to be called.")
         delegateMock.onDidSubmit = { data, component in
             XCTAssertEqual(data.order, expectedOrder)
-            XCTAssertEqual(data.amount, self.sut.payment!.amount)
+            XCTAssertEqual(data.amount, .init(value: 50, currencyCode: "EUR"))
             onSubmitExpectation.fulfill()
         }
 
