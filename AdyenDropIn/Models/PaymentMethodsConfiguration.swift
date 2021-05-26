@@ -47,6 +47,9 @@ public extension DropInComponent {
         public var payment: Adyen.Payment?
         
         /// Initializes the drop in configuration.
+        /// - Parameters:
+        ///   - clientKey: The client key that corresponds to the webservice user you will use for initiating the payment.
+        ///   - environment: The API environment to use.
         public init(clientKey: String, environment: Environment) {
             self.clientKey = clientKey
             self.environment = environment
