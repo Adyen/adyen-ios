@@ -39,7 +39,11 @@ public struct BalanceChecker {
         /// :nodoc:
         /// The remaining amount in the balance after payment.
         /// it is at minimum zero when the available amount is less than the amount to pay.
-        public let remainingAmount: Payment.Amount
+        public let remainingBalanceAmount: Payment.Amount
+
+        /// :nodoc:
+        /// The amount that can be paid.
+        public let amountToPay: Payment.Amount
     }
 
     /// :nodoc:
@@ -74,7 +78,8 @@ public struct BalanceChecker {
         let amountToPay = min(expendableLimit, amount)
 
         return Result(isBalanceEnough: expendableLimit >= amount,
-                      remainingAmount: balance.availableAmount - amountToPay)
+                      remainingBalanceAmount: balance.availableAmount - amountToPay,
+                      amountToPay: amountToPay)
     }
 
     private func validateTransactionLimit(of balance: Balance) -> Bool {

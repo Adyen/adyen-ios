@@ -5,10 +5,14 @@
 //
 
 import Adyen
+#if canImport(AdyenEncryption)
+    import AdyenEncryption
+#endif
 import UIKit
 
 /// A component that provides a form for gift card payments.
 public final class GiftCardComponent: PartialPaymentComponent,
+    CardPublicKeyConsumer,
     PresentableComponent,
     Localizable,
     LoadingComponent,
@@ -26,6 +30,9 @@ public final class GiftCardComponent: PartialPaymentComponent,
         /// Indicates that the `partialPaymentDelegate` is nil.
         case missingPartialPaymentDelegate
 
+        /// Indicates that card details encryption failed.
+        case cardEncryptionFailed
+
         /// Indicates any other error
         case otherError(Swift.Error)
 
@@ -38,6 +45,8 @@ public final class GiftCardComponent: PartialPaymentComponent,
                 return "For gift card flow to work, you need to provide the Payment object to the component."
             case .missingPartialPaymentDelegate:
                 return "Please provide a `PartialPaymentDelegate` object"
+            case .cardEncryptionFailed:
+                return "Card details encryption failed."
             case let .otherError(error):
                 return error.localizedDescription
             }
@@ -46,6 +55,9 @@ public final class GiftCardComponent: PartialPaymentComponent,
 
     /// :nodoc:
     private let giftCardPaymentMethod: GiftCardPaymentMethod
+
+    /// :nodoc:
+    internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
 
     /// The gift card payment method.
     public var paymentMethod: PaymentMethod { giftCardPaymentMethod }
@@ -62,6 +74,14 @@ public final class GiftCardComponent: PartialPaymentComponent,
     /// The delegate that handles shopper confirmation UI when the balance of the gift card is sufficient to pay.
     public weak var readyToSubmitComponentDelegate: ReadyToSubmitPaymentComponentDelegate?
 
+    /// :nodoc:
+    public var clientKey: String? {
+        didSet {
+            environment.clientKey = clientKey
+            cardPublicKeyProvider.clientKey = clientKey
+        }
+    }
+
     /// Initializes the card component.
     ///
     /// - Parameters:
@@ -74,6 +94,8 @@ public final class GiftCardComponent: PartialPaymentComponent,
                 style: FormComponentStyle = FormComponentStyle()) {
         self.giftCardPaymentMethod = paymentMethod
         self.style = style
+        self.cardPublicKeyProvider = CardPublicKeyProvider()
+        self.cardPublicKeyProvider.clientKey = clientKey
         self.environment.clientKey = clientKey
     }
 
@@ -183,23 +205,35 @@ public final class GiftCardComponent: PartialPaymentComponent,
 
         startLoading()
 
-        let data = createPaymentData()
+        fetchCardPublicKey(discardError: false) { [weak self] cardPublicKey in
+            guard let self = self else { return }
+            let paymentDataResult = self.createPaymentData(order: self.order, cardPublicKey: cardPublicKey)
+            paymentDataResult
+                .mapError(Error.otherError)
+                .handle(success: self.startFlow(with:), failure: self.handle(error:))
+        }
+    }
 
-        partialPaymentDelegate?.checkBalance(with: data) { [weak self] result in
+    private func startFlow(with paymentData: PaymentComponentData) {
+        partialPaymentDelegate?.checkBalance(with: paymentData) { [weak self] result in
             guard let self = self else { return }
             result
                 .mapError(Error.otherError)
                 .flatMap(self.check(balance:))
                 .flatMap { balanceCheckResult in
                     if balanceCheckResult.isBalanceEnough {
-                        return self.onReadyToPayFullAmount(remainingAmount: balanceCheckResult.remainingAmount)
+                        return self.onReadyToPayFullAmount(remainingAmount: balanceCheckResult.remainingBalanceAmount,
+                                                           paymentData: paymentData)
                     } else {
-                        return self.requestOrder()
+                        let newPaymentData = paymentData.replacingAmount(with: balanceCheckResult.amountToPay)
+                        return self.startPartialPaymentFlow(paymentData: newPaymentData)
                     }
                 }
                 .handle(success: { /* Do nothing.*/ }, failure: { self.handle(error: $0) })
         }
     }
+
+    // MARK: - Error handling
 
     private func handle(error: Swift.Error) {
         defer {
@@ -220,6 +254,8 @@ public final class GiftCardComponent: PartialPaymentComponent,
         }
     }
 
+    // MARK: - Balance check
+
     private func check(balance: Balance) -> Result<BalanceChecker.Result, Swift.Error> {
         guard let payment = payment else {
             AdyenAssertion.assertionFailure(message: Error.invalidPayment.localizedDescription)
@@ -232,22 +268,25 @@ public final class GiftCardComponent: PartialPaymentComponent,
         }
     }
 
-    private func onReadyToPayFullAmount(remainingAmount: Payment.Amount) -> Result<Void, Swift.Error> {
+    // MARK: - Ready to pay full amount
+
+    private func onReadyToPayFullAmount(remainingAmount: Payment.Amount, paymentData: PaymentComponentData) -> Result<Void, Swift.Error> {
         AdyenAssertion.assert(message: "readyToSubmitComponentDelegate is nil",
                               condition: _isDropIn && readyToSubmitComponentDelegate == nil)
         stopLoading()
         if let readyToSubmitComponentDelegate = readyToSubmitComponentDelegate {
-            showConfirmation(delegate: readyToSubmitComponentDelegate, remainingAmount: remainingAmount)
+            showConfirmation(delegate: readyToSubmitComponentDelegate,
+                             remainingAmount: remainingAmount,
+                             paymentData: paymentData)
         } else {
-            let paymentData = createPaymentData()
             delegate?.didSubmit(paymentData, from: self)
         }
         return .success(())
     }
 
     private func showConfirmation(delegate: ReadyToSubmitPaymentComponentDelegate,
-                                  remainingAmount: Payment.Amount) {
-        let paymentData = createPaymentData()
+                                  remainingAmount: Payment.Amount,
+                                  paymentData: PaymentComponentData) {
         let lastFourDigits = String(numberItem.value.suffix(4))
         let footnote = localizedString(.partialPaymentRemainingBalance,
                                        localizationParameters,
@@ -263,9 +302,11 @@ public final class GiftCardComponent: PartialPaymentComponent,
         delegate.showConfirmation(for: component)
     }
 
-    private func requestOrder() -> Result<Void, Swift.Error> {
+    // MARK: - Partial Payment flow
+
+    private func startPartialPaymentFlow(paymentData: PaymentComponentData) -> Result<Void, Swift.Error> {
         if let order = order {
-            submit(order: order)
+            submit(order: order, paymentData: paymentData)
             return .success(())
         }
         guard let partialPaymentDelegate = partialPaymentDelegate else {
@@ -273,28 +314,47 @@ public final class GiftCardComponent: PartialPaymentComponent,
             return .failure(Error.missingPartialPaymentDelegate)
         }
         partialPaymentDelegate.requestOrder { [weak self] result in
-            self?.handle(orderResult: result)
+            self?.handle(orderResult: result, paymentData: paymentData)
         }
         return .success(())
     }
 
-    private func handle(orderResult: Result<PartialPaymentOrder, Swift.Error>) {
-        orderResult.handle(success: submit(order:), failure: { delegate?.didFail(with: $0, from: self) })
+    private func handle(orderResult: Result<PartialPaymentOrder, Swift.Error>,
+                        paymentData: PaymentComponentData) {
+        orderResult.handle(success: {
+            submit(order: $0, paymentData: paymentData)
+        }, failure: {
+            delegate?.didFail(with: $0, from: self)
+        })
     }
 
-    private func submit(order: PartialPaymentOrder) {
-        delegate?.didSubmit(createPaymentData(order: order), from: self)
+    // MARK: - Submit payment
+
+    private func submit(order: PartialPaymentOrder, paymentData: PaymentComponentData) {
+        self.delegate?.didSubmit(paymentData.replacingOrder(with: order), from: self)
     }
 
-    private func createPaymentData(order: PartialPaymentOrder? = nil) -> PaymentComponentData {
-        let details = GiftCardDetails(paymentMethod: giftCardPaymentMethod,
-                                      cardNumber: numberItem.value,
-                                      securityCode: securityCodeItem.value)
+    // MARK: - PaymentData creation
 
-        return PaymentComponentData(paymentMethodDetails: details,
-                                    amount: payment?.amount,
-                                    order: order,
-                                    storePaymentMethod: false)
+    private func createPaymentData(order: PartialPaymentOrder?, cardPublicKey: String) -> Result<PaymentComponentData, Swift.Error> {
+        do {
+            let card = Card(number: numberItem.value, securityCode: securityCodeItem.value)
+            let encryptedCard = try CardEncryptor.encrypt(card: card, with: cardPublicKey)
+
+            guard let number = encryptedCard.number,
+                  let securityCode = encryptedCard.securityCode else { throw Error.cardEncryptionFailed }
+
+            let details = GiftCardDetails(paymentMethod: giftCardPaymentMethod,
+                                          encryptedCardNumber: number,
+                                          encryptedSecurityCode: securityCode)
+
+            return .success(PaymentComponentData(paymentMethodDetails: details,
+                                                 amount: payment?.amount,
+                                                 order: order,
+                                                 storePaymentMethod: false))
+        } catch {
+            return .failure(error)
+        }
     }
 }
 
@@ -312,4 +372,10 @@ public extension Result {
 }
 
 /// :nodoc:
-extension GiftCardComponent: TrackableComponent {}
+extension GiftCardComponent: TrackableComponent {
+    /// :nodoc:
+    public func viewDidLoad(viewController: UIViewController) {
+        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
+        fetchCardPublicKey(discardError: true) { _ in /* Do nothing, to just cache the card public key value */ }
+    }
+}

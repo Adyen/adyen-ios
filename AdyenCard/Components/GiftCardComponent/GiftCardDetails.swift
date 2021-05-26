@@ -14,32 +14,33 @@ public struct GiftCardDetails: PaymentMethodDetails {
     public let type: String
 
     /// The encrypted card number.
-    public let cardNumber: String
+    public let encryptedCardNumber: String
 
     /// The encrypted security code.
-    public let securityCode: String
+    public let encryptedSecurityCode: String
 
-    /// The gift card brand
+    /// The gift card brand.
     public let brand: String
 
     /// Initializes the card payment details.
     ///
     /// - Parameters:
     ///   - paymentMethod: The used gift card payment method.
-    ///   - card: The card to read the details from.
-    public init(paymentMethod: GiftCardPaymentMethod, cardNumber: String, securityCode: String) {
+    ///   - encryptedCardNumber: The encrypted card number.
+    ///   - encryptedSecurityCode: The encrypted security code.
+    public init(paymentMethod: GiftCardPaymentMethod, encryptedCardNumber: String, encryptedSecurityCode: String) {
         self.type = paymentMethod.type
         self.brand = paymentMethod.brand
-        self.cardNumber = cardNumber
-        self.securityCode = securityCode
+        self.encryptedCardNumber = encryptedCardNumber
+        self.encryptedSecurityCode = encryptedSecurityCode
     }
 
     // MARK: - Encoding
 
     private enum CodingKeys: String, CodingKey {
         case type
-        case cardNumber = "number"
-        case securityCode = "cvc"
+        case encryptedCardNumber
+        case encryptedSecurityCode
         case brand
     }
 

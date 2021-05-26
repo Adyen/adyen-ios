@@ -19,7 +19,7 @@ import UIKit
 /// A component that handles the entire flow of payment selection and payment details entry.
 public final class DropInComponent: NSObject, PresentableComponent {
 
-    private let configuration: PaymentMethodsConfiguration
+    private var configuration: PaymentMethodsConfiguration
 
     private var paymentInProgress: Bool = false
 
@@ -33,6 +33,29 @@ public final class DropInComponent: NSObject, PresentableComponent {
     
     /// The title text on the first page of drop in component.
     public let title: String
+
+    /// :nodoc:
+    public var environment: Environment {
+        get {
+            configuration.environment
+        }
+
+        set {
+            configuration.environment = newValue
+        }
+    }
+
+    /// :nodoc:
+    public var clientKey: String? {
+        get {
+            configuration.clientKey
+        }
+
+        set {
+            guard let newValue = newValue else { return }
+            configuration.clientKey = newValue
+        }
+    }
     
     /// Initializes the drop in component.
     ///
@@ -86,7 +109,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
     /// :nodoc:
     private lazy var apiClient: APIClientProtocol = {
         let scheduler = SimpleScheduler(maximumCount: 3)
-        let baseAPIClient = APIClient(environment: environment)
+        let baseAPIClient = APIClient(environment: configuration.environment)
         let retryApiClient = RetryAPIClient(apiClient: baseAPIClient, scheduler: scheduler)
         let apiClient = RetryOnErrorAPIClient(apiClient: retryApiClient)
         return apiClient

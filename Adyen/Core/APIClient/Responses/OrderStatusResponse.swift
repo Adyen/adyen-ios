@@ -46,7 +46,7 @@ public struct OrderPaymentMethod: PaymentMethod {
     public let type: String
 
     /// :nodoc:
-    public let transactionLimit: Payment.Amount
+    public let transactionLimit: Payment.Amount?
 
     /// :nodoc:
     public let amount: Payment.Amount
@@ -59,7 +59,7 @@ public struct OrderPaymentMethod: PaymentMethod {
     /// :nodoc:
     public init(lastFour: String,
                 type: String,
-                transactionLimit: Payment.Amount,
+                transactionLimit: Payment.Amount?,
                 amount: Payment.Amount) {
         self.lastFour = lastFour
         self.type = type

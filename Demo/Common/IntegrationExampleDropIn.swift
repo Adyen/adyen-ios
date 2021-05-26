@@ -17,7 +17,7 @@ extension IntegrationExample {
 
     internal func presentDropInComponent() {
         guard let paymentMethods = paymentMethods else { return }
-        let configuration = DropInComponent.PaymentMethodsConfiguration(clientKey: clientKey)
+        let configuration = DropInComponent.PaymentMethodsConfiguration(clientKey: clientKey, environment: environment)
         configuration.applePay = .init(summaryItems: ConfigurationConstants.applePaySummaryItems,
                                        merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
         configuration.payment = payment
@@ -30,7 +30,6 @@ extension IntegrationExample {
                                         title: ConfigurationConstants.appName)
         component.delegate = self
         component.partialPaymentDelegate = self
-        component.environment = environment
         currentComponent = component
 
         presenter?.present(viewController: component.viewController, completion: nil)

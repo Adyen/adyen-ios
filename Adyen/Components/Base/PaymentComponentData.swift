@@ -111,6 +111,24 @@ public struct PaymentComponentData: ShopperInformation, BillingAddressInformatio
         self.order = order
         self.amount = amount
     }
+
+    /// :nodoc:
+    public func replacingOrder(with order: PartialPaymentOrder) -> PaymentComponentData {
+        PaymentComponentData(paymentMethodDetails: self.paymentMethod,
+                             amount: self.amount,
+                             order: order,
+                             storePaymentMethod: self.storePaymentMethod,
+                             browserInfo: self.browserInfo)
+    }
+
+    /// :nodoc:
+    public func replacingAmount(with amount: Payment.Amount) -> PaymentComponentData {
+        PaymentComponentData(paymentMethodDetails: self.paymentMethod,
+                             amount: amount,
+                             order: self.order,
+                             storePaymentMethod: self.storePaymentMethod,
+                             browserInfo: self.browserInfo)
+    }
     
     /// Creates a new `PaymentComponentData` by populating the `browserInfo`,
     /// in case the browser info like the user-agent is needed, but its not needed for mobile payments.

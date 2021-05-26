@@ -24,7 +24,18 @@ public extension DropInComponent {
         
         /// The client key that corresponds to the webservice user you will use for initiating the payment.
         /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
-        public var clientKey: String
+        public var clientKey: String {
+            didSet {
+                environment.clientKey = clientKey
+            }
+        }
+
+        /// The API environment to use.
+        public var environment: Environment {
+            didSet {
+                environment.clientKey = clientKey
+            }
+        }
         
         /// Indicates the localization parameters, leave it nil to use the default parameters.
         public var localizationParameters: LocalizationParameters?
@@ -33,8 +44,10 @@ public extension DropInComponent {
         public var payment: Adyen.Payment?
         
         /// Initializes the drop in configuration.
-        public init(clientKey: String) {
+        public init(clientKey: String, environment: Environment) {
             self.clientKey = clientKey
+            self.environment = environment
+            self.environment.clientKey = clientKey
         }
     }
 

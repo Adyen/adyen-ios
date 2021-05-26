@@ -18,6 +18,8 @@ class GiftCardComponentTests: XCTestCase {
 
     var delegateMock: PaymentComponentDelegateMock!
 
+    var cardPublicKeyProvider: CardPublicKeyProviderMock!
+
     var sut: GiftCardComponent!
 
     var paymentMethod: GiftCardPaymentMethod!
@@ -49,9 +51,18 @@ class GiftCardComponentTests: XCTestCase {
         sut.partialPaymentDelegate = partialPaymentDelegate
         readyToSubmitPaymentComponentDelegate = ReadyToSubmitPaymentComponentDelegateMock()
         sut.readyToSubmitComponentDelegate = readyToSubmitPaymentComponentDelegate
+        cardPublicKeyProvider = CardPublicKeyProviderMock()
+        sut.cardPublicKeyProvider = cardPublicKeyProvider
     }
 
     func testCheckBalanceFailure() throws {
+
+        let cardPublicKeyProviderExpectation = expectation(description: "Expect cardPublicKeyProvider to be called.")
+        cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
+        cardPublicKeyProvider.onFetch = { completion in
+            cardPublicKeyProviderExpectation.fulfill()
+            completion(.success(Dummy.dummyPublicKey))
+        }
 
         let didFailExpectation = expectation(description: "Expect delegateMock.onDidFail to be called.")
         didFailExpectation.assertForOverFulfill = true
@@ -88,6 +99,14 @@ class GiftCardComponentTests: XCTestCase {
 
 
     func testBalanceAndTransactionLimitCurrencyMissmatch() throws {
+
+        let cardPublicKeyProviderExpectation = expectation(description: "Expect cardPublicKeyProvider to be called.")
+        cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
+        cardPublicKeyProvider.onFetch = { completion in
+            cardPublicKeyProviderExpectation.fulfill()
+            completion(.success(Dummy.dummyPublicKey))
+        }
+
         sut.payment = .init(amount: .init(value: 10, currencyCode: "EUR"), countryCode: "NL")
 
         delegateMock.onDidFail = { error, component in
@@ -120,6 +139,14 @@ class GiftCardComponentTests: XCTestCase {
     }
 
     func testPaymentAndBalanceCurrencyMissmatch() throws {
+
+        let cardPublicKeyProviderExpectation = expectation(description: "Expect cardPublicKeyProvider to be called.")
+        cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
+        cardPublicKeyProvider.onFetch = { completion in
+            cardPublicKeyProviderExpectation.fulfill()
+            completion(.success(Dummy.dummyPublicKey))
+        }
+
         sut.payment = .init(amount: .init(value: 10, currencyCode: "USD"), countryCode: "US")
 
         delegateMock.onDidFail = { error, component in
@@ -152,6 +179,14 @@ class GiftCardComponentTests: XCTestCase {
     }
 
     func testZeroBalance() throws {
+
+        let cardPublicKeyProviderExpectation = expectation(description: "Expect cardPublicKeyProvider to be called.")
+        cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
+        cardPublicKeyProvider.onFetch = { completion in
+            cardPublicKeyProviderExpectation.fulfill()
+            completion(.success(Dummy.dummyPublicKey))
+        }
+
         sut.payment = .init(amount: .init(value: 10, currencyCode: "EUR"), countryCode: "US")
 
         delegateMock.onDidFail = { error, component in
@@ -184,6 +219,14 @@ class GiftCardComponentTests: XCTestCase {
     }
 
     func testMissingPaymentObject() throws {
+
+        let cardPublicKeyProviderExpectation = expectation(description: "Expect cardPublicKeyProvider to be called.")
+        cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
+        cardPublicKeyProvider.onFetch = { completion in
+            cardPublicKeyProviderExpectation.fulfill()
+            completion(.success(Dummy.dummyPublicKey))
+        }
+
         sut.payment = nil // Missing Payment object
 
         delegateMock.onDidFail = { error, component in
@@ -216,6 +259,14 @@ class GiftCardComponentTests: XCTestCase {
     }
 
     func testEnoughBalanceIsAvailableWithNilReadyToSubmitDelegate() throws {
+
+        let cardPublicKeyProviderExpectation = expectation(description: "Expect cardPublicKeyProvider to be called.")
+        cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
+        cardPublicKeyProvider.onFetch = { completion in
+            cardPublicKeyProviderExpectation.fulfill()
+            completion(.success(Dummy.dummyPublicKey))
+        }
+
         sut.payment = .init(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
         sut.readyToSubmitComponentDelegate = nil
 
@@ -261,6 +312,14 @@ class GiftCardComponentTests: XCTestCase {
     }
 
     func testEnoughBalanceIsAvailableWithReadyToSubmitDelegate() throws {
+
+        let cardPublicKeyProviderExpectation = expectation(description: "Expect cardPublicKeyProvider to be called.")
+        cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
+        cardPublicKeyProvider.onFetch = { completion in
+            cardPublicKeyProviderExpectation.fulfill()
+            completion(.success(Dummy.dummyPublicKey))
+        }
+
         sut.payment = .init(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
 
         delegateMock.onDidFail = { error, component in
@@ -306,6 +365,14 @@ class GiftCardComponentTests: XCTestCase {
     }
 
     func testNotAvailableBalanceRequestOrderSuccess() throws {
+
+        let cardPublicKeyProviderExpectation = expectation(description: "Expect cardPublicKeyProvider to be called.")
+        cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
+        cardPublicKeyProvider.onFetch = { completion in
+            cardPublicKeyProviderExpectation.fulfill()
+            completion(.success(Dummy.dummyPublicKey))
+        }
+
         sut.payment = .init(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
 
         delegateMock.onDidFail = { error, component in
@@ -356,6 +423,14 @@ class GiftCardComponentTests: XCTestCase {
     }
 
     func testNotAvailableBalanceOrderAlreadyExists() throws {
+
+        let cardPublicKeyProviderExpectation = expectation(description: "Expect cardPublicKeyProvider to be called.")
+        cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
+        cardPublicKeyProvider.onFetch = { completion in
+            cardPublicKeyProviderExpectation.fulfill()
+            completion(.success(Dummy.dummyPublicKey))
+        }
+
         sut.payment = .init(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
         sut.order = PartialPaymentOrder(pspReference: "pspreference", orderData: "data")
 
@@ -405,6 +480,14 @@ class GiftCardComponentTests: XCTestCase {
     }
 
     func testNotAvailableBalanceRequestOrderFailure() throws {
+
+        let cardPublicKeyProviderExpectation = expectation(description: "Expect cardPublicKeyProvider to be called.")
+        cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
+        cardPublicKeyProvider.onFetch = { completion in
+            cardPublicKeyProviderExpectation.fulfill()
+            completion(.success(Dummy.dummyPublicKey))
+        }
+
         sut.payment = .init(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
 
         let onDidFailExpectation = expectation(description: "Expect delegateMock.onDidFail to be called.")

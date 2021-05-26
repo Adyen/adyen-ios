@@ -14,7 +14,7 @@
 - `CardComponent` configuration properies like `showsSecurityCodeField`, `showsStorePaymentMethodField`, `showsSecurityCodeField`, `stored`, and `excludedCardTypes` are moved to `CardComponent.Configuration` object.
 - Property `payment` moved from `PresentableComponent` to `PaymentComponent`.
 - `DropInActionComponent` renamed into `AdyenActionComponent` and moved to `AdyenActions` module. It could be used outside of `AdyenDropIn`.
-- Parameter `clientKey` is required for `DropInComponent.PaymentMethodsConfiguration` constructor.
+- Parameter `clientKey` and `environment` are required and immutable for `DropInComponent.PaymentMethodsConfiguration` constructor.
 - Add new method `didComplete(from component: DropInComponent)` to `DropInComponentDelegate` and `ActionComponentDelegate`.
 - Method `didCancel(component: PresentableComponent, from dropInComponent: DropInComponent)` changed to `didCancel(component: PaymentComponent, from dropInComponent: DropInComponent)` in `DropInComponentDelegate`.
 - Remove `cancelCallback` from `ApplePayComponent`, implement `PaymentComponentDelegate.didFail(error:component:)` instead:

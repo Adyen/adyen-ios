@@ -523,6 +523,7 @@
 		F9A6C453265640E000D8CD3E /* InstantPaymentComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A6C452265640E000D8CD3E /* InstantPaymentComponentTests.swift */; };
 		F9A6C4BB2657AFF600D8CD3E /* FormSpacerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A6C4BA2657AFF600D8CD3E /* FormSpacerItem.swift */; };
 		F9A6C4D12657B0D700D8CD3E /* FormSpacerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A6C4D02657B0D700D8CD3E /* FormSpacerItemView.swift */; };
+		F9A6C602265E507300D8CD3E /* CardPublicKeyConsumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A6C601265E507300D8CD3E /* CardPublicKeyConsumer.swift */; };
 		F9A781AE2403BD1600E12487 /* FormItemViewBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A781AD2403BD1600E12487 /* FormItemViewBuilderTests.swift */; };
 		F9A781B02403ED4000E12487 /* NumericStringValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A781AF2403ED4000E12487 /* NumericStringValidatorTests.swift */; };
 		F9AC61BB24374CE00062A00D /* AppLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AC61BA24374CE00062A00D /* AppLauncher.swift */; };
@@ -1335,6 +1336,7 @@
 		F9A6C452265640E000D8CD3E /* InstantPaymentComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstantPaymentComponentTests.swift; sourceTree = "<group>"; };
 		F9A6C4BA2657AFF600D8CD3E /* FormSpacerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSpacerItem.swift; sourceTree = "<group>"; };
 		F9A6C4D02657B0D700D8CD3E /* FormSpacerItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSpacerItemView.swift; sourceTree = "<group>"; };
+		F9A6C601265E507300D8CD3E /* CardPublicKeyConsumer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPublicKeyConsumer.swift; sourceTree = "<group>"; };
 		F9A781AD2403BD1600E12487 /* FormItemViewBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormItemViewBuilderTests.swift; sourceTree = "<group>"; };
 		F9A781AF2403ED4000E12487 /* NumericStringValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumericStringValidatorTests.swift; sourceTree = "<group>"; };
 		F9A7AC5A2554066300012EBC /* AnyAuthenticationRequestParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyAuthenticationRequestParameters.swift; sourceTree = "<group>"; };
@@ -2729,6 +2731,7 @@
 			children = (
 				E9E3DAA5221C431A00697074 /* CardComponent.swift */,
 				F919DF9424E6D7BC0027976E /* CardComponentExtensions.swift */,
+				F9A6C601265E507300D8CD3E /* CardPublicKeyConsumer.swift */,
 				E2028F5D222805E20007FF8B /* CardDetails.swift */,
 				E7451A042600EC8D000BDCCF /* CardComponentConfiguration.swift */,
 				E745175425FB6A59000BDCCF /* CardViewController.swift */,
@@ -4513,6 +4516,7 @@
 				F9FE25A82625B448001874BB /* GiftCardDetails.swift in Sources */,
 				E9E3DAAF221D5C5E00697074 /* CardType.swift in Sources */,
 				F9D5751E237C106A009C18B5 /* BCMCComponent.swift in Sources */,
+				F9A6C602265E507300D8CD3E /* CardPublicKeyConsumer.swift in Sources */,
 				E7166A5424EACC44007CCDEF /* BinLookupResponse.swift in Sources */,
 				E9E3DAB4221D988200697074 /* CardNumberValidator.swift in Sources */,
 				F92329DD25AD049E002C5BC4 /* FallbackCardBrandProvider.swift in Sources */,

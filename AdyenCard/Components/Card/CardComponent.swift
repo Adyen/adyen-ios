@@ -23,7 +23,11 @@ public protocol CardComponentDelegate: AnyObject {
 }
 
 /// A component that provides a form for card payments.
-public class CardComponent: PaymentComponent, PresentableComponent, Localizable, Observer, LoadingComponent {
+public class CardComponent: CardPublicKeyConsumer,
+    PresentableComponent,
+    Localizable,
+    Observer,
+    LoadingComponent {
 
     private let publicBinLength = 6
     internal let cardPaymentMethod: AnyCardPaymentMethod
