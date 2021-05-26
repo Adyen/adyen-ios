@@ -65,7 +65,9 @@
 "adyen.voucher.readInstructions" = "Διαβάστε τις οδηγίες";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Έχετε στη διάθεσή σας %@ για την πληρωμή";
+"adyen.pix.copyButton" = "";
 "adyen.billingAddressSection.title" = "Διεύθυνση τιμολόγησης";
 "adyen.deliveryAddressSection.title" = "Διεύθυνση παράδοσης";
 "adyen.countryField.title" = "Χώρα";
@@ -99,6 +101,7 @@
 "adyen.boletobancario.btnLabel" = "Δημιουργία Boleto";
 "adyen.boleto.sendCopyToEmail" = "Αποστολή αντιγράφου στη διεύθυνση email μου";
 "adyen.boleto.personalDetails" = "Προσωπικά στοιχεία";
+"adyen.boleto.socialSecurityNumber" = "";
 "adyen.boleto.download.pdf" = "Λήψη PDF";
 "adyen.giftcard.currencyError" = "Οι δωροκάρτες ισχύουν μόνο για το νόμισμα στο οποίο εκδόθηκαν";
 "adyen.giftcard.noBalance" = "Η συγκεκριμένη δωροκάρτα έχει μηδενικό υπόλοιπο";

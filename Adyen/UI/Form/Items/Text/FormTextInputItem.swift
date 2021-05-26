@@ -8,18 +8,25 @@ import Foundation
 
 /// An item for plain text input
 /// :nodoc:
-public final class FormTextInputItem: FormTextItem {
+public final class FormTextInputItem: FormTextItem, Hidable {
 
-    /// Inititate new instance of `FormTextInputItem`
-    /// - Parameter style: The `FormTextItemStyle` UI style.
     /// :nodoc:
-    override public init(style: FormTextItemStyle = .init()) {
-        super.init(style: style)
-    }
+    public var isHidden: Observable<Bool> = Observable(false)
         
     /// :nodoc:
     override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
+    }
+    
+    /// Inititate new instance of `FormTextInputItem`
+    /// - Parameter style: The `FormTextItemStyle` UI style.
+    public override init(style: FormTextItemStyle = FormTextItemStyle()) {
+        super.init(style: style)
+    }
+    
+    /// :nodoc:
+    public override func isValid() -> Bool {
+        isHidden.wrappedValue ? true : super.isValid()
     }
     
 }

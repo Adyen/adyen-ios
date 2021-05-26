@@ -65,7 +65,9 @@
 "adyen.voucher.readInstructions" = "Läs instruktionerna";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Du har %@ att betala";
+"adyen.pix.copyButton" = "";
 "adyen.billingAddressSection.title" = "Faktureringsadress";
 "adyen.deliveryAddressSection.title" = "Leveransadress";
 "adyen.countryField.title" = "Land";
@@ -99,6 +101,7 @@
 "adyen.boletobancario.btnLabel" = "Generera Boleto";
 "adyen.boleto.sendCopyToEmail" = "Skicka en kopia till min e-post";
 "adyen.boleto.personalDetails" = "Personuppgifter";
+"adyen.boleto.socialSecurityNumber" = "";
 "adyen.boleto.download.pdf" = "Ladda ner PDF";
 "adyen.giftcard.currencyError" = "Presentkort är endast giltiga i den valuta som de utfärdades i";
 "adyen.giftcard.noBalance" = "Saldot för detta presentkort är noll";

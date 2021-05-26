@@ -47,14 +47,14 @@ internal final class VoucherSeparatorView: UIView {
     }
 
     private var rightSeparatorLayerFrame: CGRect {
-        let xCoordinate = bounds.size.width - arcLayerSize.width - halfSeparatorBreadth
+        let xCoordinate = bounds.size.width - arcLayerSize.width - halfSeparatorBreadth - halfSeparatorLineWidth
         return CGRect(origin: CGPoint(x: xCoordinate,
                                       y: bounds.height / 2 - halfSeparatorLineWidth / 2),
                       size: CGSize(width: halfSeparatorBreadth, height: halfSeparatorLineWidth))
     }
 
     private var leftSeparatorLayerFrame: CGRect {
-        CGRect(origin: CGPoint(x: arcLayerSize.width,
+        CGRect(origin: CGPoint(x: arcLayerSize.width + halfSeparatorLineWidth,
                                y: bounds.height / 2 - halfSeparatorLineWidth / 2),
                size: CGSize(width: halfSeparatorBreadth, height: halfSeparatorLineWidth))
     }

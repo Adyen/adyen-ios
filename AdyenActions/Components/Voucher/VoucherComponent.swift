@@ -76,15 +76,41 @@ public final class VoucherComponent: AnyVoucherActionHandler {
 
 }
 
+/// :nodoc:
 extension VoucherComponent: VoucherViewDelegate {
+    
     internal func didComplete(presentingViewController: UIViewController) {
         delegate?.didComplete(from: self)
     }
 
     internal func saveAsImage(voucherView: UIView, presentingViewController: UIViewController) {
         guard let image = voucherView.adyen.snapShot() else { return }
-        let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
-        activityViewController.popoverPresentationController?.sourceView = voucherView
+        
+        presentSharePopover(
+            with: image,
+            presentingViewController: presentingViewController,
+            sourceView: voucherView
+        )
+    }
+    
+    internal func download(url: URL, voucherView: UIView, presentingViewController: UIViewController) {
+        presentSharePopover(
+            with: url,
+            presentingViewController: presentingViewController,
+            sourceView: voucherView
+        )
+    }
+    
+    private func presentSharePopover(
+        with item: Any,
+        presentingViewController: UIViewController,
+        sourceView: UIView
+    ) {
+        let activityViewController = UIActivityViewController(
+            activityItems: [item],
+            applicationActivities: nil
+        )
+        activityViewController.popoverPresentationController?.sourceView = sourceView
         presentingViewController.present(activityViewController, animated: true, completion: nil)
     }
 }

@@ -19,6 +19,7 @@ public final class CopyLabelView: UIView, Localizable {
     private lazy var label: UILabel = {
         let label = UILabel(style: style)
         label.text = text
+        label.lineBreakMode = .byTruncatingMiddle
         label.isAccessibilityElement = false
         label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "textLabel")
 
@@ -32,7 +33,7 @@ public final class CopyLabelView: UIView, Localizable {
         super.init(frame: .zero)
         addSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.adyen.anchor(inside: self)
+        label.adyen.anchor(inside: layoutMarginsGuide)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         addGestureRecognizer(tapGesture)
 

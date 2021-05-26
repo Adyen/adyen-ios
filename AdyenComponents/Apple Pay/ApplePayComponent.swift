@@ -25,7 +25,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     public weak var delegate: PaymentComponentDelegate?
     
     /// Initializes the component.
-    /// - Warning: didFInalize() must be called before dismissing this component.
+    /// - Warning: didFinalize() must be called before dismissing this component.
     ///
     /// - Parameter configuration: Apple Pay component configuration
     /// - Throws: `ApplePayComponent.Error.userCannotMakePayment`.

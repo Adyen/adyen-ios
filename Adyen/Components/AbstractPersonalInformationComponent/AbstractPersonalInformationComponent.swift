@@ -78,6 +78,8 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
             lastNameItemInjector?.inject(into: formViewController)
         case .phone:
             phoneItemInjector?.inject(into: formViewController)
+        case .address:
+            addressItemInjector?.inject(into: formViewController)
         case let .custom(injector):
             injector.inject(into: formViewController)
         }
@@ -125,6 +127,19 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
 
     /// :nodoc:
     public var emailItem: FormTextInputItem? { emailItemInjector?.item }
+    
+    /// :nodoc:
+    internal lazy var addressItemInjector: AddressFormItemInjector? = {
+        guard configuration.fields.contains(.address) else { return nil }
+        return AddressFormItemInjector(
+            identifier: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "addressItem"),
+            initialCountry: defaultCountryCode,
+            style: style.addressStyle
+        )
+    }()
+    
+    /// :nodoc:
+    public var addressItem: FullFormAddressItem? { addressItemInjector?.item }
 
     /// :nodoc:
     internal lazy var phoneItemInjector: PhoneFormItemInjector? = {
@@ -175,6 +190,11 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     /// :nodoc:
     open func getPhoneExtensions() -> [PhoneExtension] {
         fatalError("This is an abstract class that needs to be subclassed.")
+    }
+
+    /// :nodoc:
+    private var defaultCountryCode: String {
+        payment?.countryCode ?? Locale.current.regionCode ?? "US"
     }
 
 }

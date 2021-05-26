@@ -296,6 +296,22 @@ let econtextATMAction: [String: Any] = [
     "type": "voucher"
 ]
 
+let boletoAction: [String: Any] = [
+    "reference" : "03399.33335 33852.193698 57889.001020 3 86360000017408",
+    "initialAmount" : [
+      "currency" : "BRL",
+      "value" : 17408
+    ],
+    "downloadUrl" : "https://test.adyen.com/hpp/generationBoleto.shtml?data=BQABAQCGgaWQP0LNLQ0",
+    "paymentMethodType" : "boletobancario_santander",
+    "totalAmount" : [
+      "currency" : "BRL",
+      "value" : 17408
+    ],
+    "expiresAt" : "2021-05-30T00:00:00",
+    "type" : "voucher"
+]
+
 let weChatMiniProgramDictionary = [
     "name": "WeChat Pay",
     "supportsRecurring": true,
@@ -382,3 +398,8 @@ let giftCard = [
     "name": "Generic GiftCard",
     "type": "giftcard"
 ] as [String: Any]
+
+let boleto = [
+    "name": "Boleto Bancario",
+    "type": "boletobancario_santander"
+]

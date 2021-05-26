@@ -36,6 +36,7 @@ internal struct PaymentsRequest: Request {
         try container.encodeIfPresent(data.emailAddress ?? ConfigurationConstants.shopperEmail, forKey: .shopperEmail)
         try container.encodeIfPresent(data.telephoneNumber, forKey: .telephoneNumber)
         try container.encodeIfPresent(data.billingAddress, forKey: .billingAddress)
+        try container.encodeIfPresent(data.socialSecurityNumber, forKey: .socialSecurityNumber)
         try container.encode(Locale.current.identifier, forKey: .shopperLocale)
         try container.encodeIfPresent(data.browserInfo, forKey: .browserInfo)
         try container.encode("iOS", forKey: .channel)
@@ -66,6 +67,7 @@ internal struct PaymentsRequest: Request {
         case telephoneNumber
         case shopperLocale
         case billingAddress
+        case socialSecurityNumber
         case order
     }
     

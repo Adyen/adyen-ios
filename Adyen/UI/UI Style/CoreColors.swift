@@ -25,6 +25,15 @@ extension UIColor {
                 return .white
             }
         }
+        
+        /// :nodoc:
+        public static var secondaryComponentBackground: UIColor {
+            if #available(iOS 13.0, *) {
+                return .secondarySystemBackground
+            } else {
+                return color(hex: 0xF8F9F9)
+            }
+        }
 
         /// :nodoc:
         public static var componentLabel: UIColor {

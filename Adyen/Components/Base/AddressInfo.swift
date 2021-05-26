@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import Contacts
 
 /// The model for address data.
 public struct AddressInfo: Equatable, Encodable {
@@ -80,4 +81,22 @@ public struct AddressInfo: Equatable, Encodable {
         case street
     }
 
+}
+
+extension AddressInfo {
+    
+    /// :nodoc:
+    public var formatted: String {
+        let address = CNMutablePostalAddress()
+        city.map { address.city = $0 }
+        country.map { address.isoCountryCode = $0 }
+        stateOrProvince.map { address.state = $0 }
+        postalCode.map { address.postalCode = $0 }
+        address.street = [street, houseNumberOrName, apartment]
+            .compactMap { $0 }
+            .joined(separator: " ")
+        
+        return CNPostalAddressFormatter.string(from: address, style: .mailingAddress)
+    }
+    
 }
