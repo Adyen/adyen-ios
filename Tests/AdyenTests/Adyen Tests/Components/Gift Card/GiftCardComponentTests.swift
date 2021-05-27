@@ -529,8 +529,8 @@ class GiftCardComponentTests: XCTestCase {
 
         wait(for: .seconds(1))
 
-        XCTAssertTrue(errorView!.isHidden)
-        XCTAssertNil(sut.errorItem.message)
+        XCTAssertFalse(errorView!.isHidden)
+        XCTAssertEqual(sut.errorItem.message, "An unknown error occurred")
 
         waitForExpectations(timeout: 10, handler: nil)
     }
