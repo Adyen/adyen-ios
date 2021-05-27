@@ -43,7 +43,7 @@ extension CardComponent {
                                       billingAddress: cardViewController.address)
             
             let data = PaymentComponentData(paymentMethodDetails: details,
-                                            amount: payment?.amount,
+                                            amount: amountToPay,
                                             order: order,
                                             storePaymentMethod: cardViewController.storePayment)
 

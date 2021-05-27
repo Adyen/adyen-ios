@@ -18,41 +18,6 @@ public final class GiftCardComponent: PartialPaymentComponent,
     LoadingComponent,
     Observer {
 
-    /// Indicates Gift card related errors.
-    public enum Error: LocalizedError {
-
-        /// Indicates that the balance check failed for some reason.
-        case balanceCheckFailure
-
-        /// Indicates the payment object passed to the `GiftCardComponent` is nil or invalid.
-        case invalidPayment
-
-        /// Indicates that the `partialPaymentDelegate` is nil.
-        case missingPartialPaymentDelegate
-
-        /// Indicates that card details encryption failed.
-        case cardEncryptionFailed
-
-        /// Indicates any other error
-        case otherError(Swift.Error)
-
-        /// :nodoc:
-        public var errorDescription: String? {
-            switch self {
-            case .balanceCheckFailure:
-                return "Due to a network issue we couldn’t retrieve the balance. Please try again."
-            case .invalidPayment:
-                return "For gift card flow to work, you need to provide the Payment object to the component."
-            case .missingPartialPaymentDelegate:
-                return "Please provide a `PartialPaymentDelegate` object"
-            case .cardEncryptionFailed:
-                return "Card details encryption failed."
-            case let .otherError(error):
-                return error.localizedDescription
-            }
-        }
-    }
-
     /// :nodoc:
     private let giftCardPaymentMethod: GiftCardPaymentMethod
 
@@ -134,7 +99,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
         let item = FormTextInputItem(style: style.textField)
 
         item.title = localizedString(.cardNumberItemTitle, localizationParameters)
-        item.validator = NumericStringValidator(minimumLength: 16)
+        item.validator = NumericStringValidator(minimumLength: 15, maximumLength: 32)
         item.formatter = CardNumberFormatter()
         item.placeholder = localizedString(.cardNumberItemPlaceholder, localizationParameters)
         item.validationFailureMessage = localizedString(.cardNumberItemInvalid, localizationParameters)
@@ -146,7 +111,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
     internal lazy var securityCodeItem: FormTextInputItem = {
         let item = FormTextInputItem(style: style.textField)
         item.title = localizedString(.cardPinTitle, localizationParameters)
-        item.validator = NumericStringValidator(minimumLength: 3)
+        item.validator = NumericStringValidator(minimumLength: 3, maximumLength: 10)
         item.formatter = NumericFormatter()
         item.placeholder = localizedString(.cardCvcItemPlaceholder, localizationParameters)
 
@@ -207,8 +172,8 @@ public final class GiftCardComponent: PartialPaymentComponent,
 
         fetchCardPublicKey(discardError: false) { [weak self] cardPublicKey in
             guard let self = self else { return }
-            let paymentDataResult = self.createPaymentData(order: self.order, cardPublicKey: cardPublicKey)
-            paymentDataResult
+            self.createPaymentData(order: self.order,
+                                   cardPublicKey: cardPublicKey)
                 .mapError(Error.otherError)
                 .handle(success: self.startFlow(with:), failure: self.handle(error:))
         }
@@ -219,7 +184,9 @@ public final class GiftCardComponent: PartialPaymentComponent,
             guard let self = self else { return }
             result
                 .mapError(Error.otherError)
-                .flatMap(self.check(balance:))
+                .flatMap {
+                    self.check(balance: $0, toPay: paymentData.amount)
+                }
                 .flatMap { balanceCheckResult in
                     if balanceCheckResult.isBalanceEnough {
                         return self.onReadyToPayFullAmount(remainingAmount: balanceCheckResult.remainingBalanceAmount,
@@ -256,13 +223,13 @@ public final class GiftCardComponent: PartialPaymentComponent,
 
     // MARK: - Balance check
 
-    private func check(balance: Balance) -> Result<BalanceChecker.Result, Swift.Error> {
-        guard let payment = payment else {
+    private func check(balance: Balance, toPay amount: Payment.Amount?) -> Result<BalanceChecker.Result, Swift.Error> {
+        guard let amount = amount else {
             AdyenAssertion.assertionFailure(message: Error.invalidPayment.localizedDescription)
             return .failure(Error.invalidPayment)
         }
         do {
-            return .success(try BalanceChecker().check(balance: balance, isEnoughToPay: payment.amount))
+            return .success(try BalanceChecker().check(balance: balance, isEnoughToPay: amount))
         } catch {
             return .failure(error)
         }
@@ -321,17 +288,17 @@ public final class GiftCardComponent: PartialPaymentComponent,
 
     private func handle(orderResult: Result<PartialPaymentOrder, Swift.Error>,
                         paymentData: PaymentComponentData) {
-        orderResult.handle(success: {
-            submit(order: $0, paymentData: paymentData)
-        }, failure: {
-            delegate?.didFail(with: $0, from: self)
-        })
+        orderResult
+            .mapError(Error.otherError)
+            .handle(success: {
+                submit(order: $0, paymentData: paymentData)
+            }, failure: handle(error:))
     }
 
     // MARK: - Submit payment
 
     private func submit(order: PartialPaymentOrder, paymentData: PaymentComponentData) {
-        self.delegate?.didSubmit(paymentData.replacingOrder(with: order), from: self)
+        submit(data: paymentData.replacingOrder(with: order), component: self)
     }
 
     // MARK: - PaymentData creation
@@ -349,7 +316,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
                                           encryptedSecurityCode: securityCode)
 
             return .success(PaymentComponentData(paymentMethodDetails: details,
-                                                 amount: payment?.amount,
+                                                 amount: amountToPay,
                                                  order: order,
                                                  storePaymentMethod: false))
         } catch {
@@ -368,14 +335,5 @@ public extension Result {
         case let .failure(error):
             failure(error)
         }
-    }
-}
-
-/// :nodoc:
-extension GiftCardComponent: TrackableComponent {
-    /// :nodoc:
-    public func viewDidLoad(viewController: UIViewController) {
-        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
-        fetchCardPublicKey(discardError: true) { _ in /* Do nothing, to just cache the card public key value */ }
     }
 }

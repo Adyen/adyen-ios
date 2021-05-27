@@ -464,6 +464,7 @@
 		F9639B5624E3DB190073F38A /* PollingComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B5524E3DB190073F38A /* PollingComponentTests.swift */; };
 		F96A25432371AB75007DBF0B /* PaymentComponentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96A25422371AB75007DBF0B /* PaymentComponentDelegateMock.swift */; };
 		F96A25472372C39F007DBF0B /* ApplePayDetailsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96A25462372C39F007DBF0B /* ApplePayDetailsTest.swift */; };
+		F96A2882265F9C2B00E718BD /* GiftCardComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96A2881265F9C2B00E718BD /* GiftCardComponentExtensions.swift */; };
 		F96AE5052603814C009F82BD /* BasicPersonalInfoFormComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96AE5042603814C009F82BD /* BasicPersonalInfoFormComponentTests.swift */; };
 		F96AE51B26038602009F82BD /* XCTestCaseExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96AE51A26038602009F82BD /* XCTestCaseExtension.swift */; };
 		F96F44CD23B257D700871C1F /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96F44CC23B257D700871C1F /* Logger.swift */; };
@@ -1283,6 +1284,7 @@
 		F9639B5B24E410130073F38A /* PollingHandlerProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingHandlerProvider.swift; sourceTree = "<group>"; };
 		F96A25422371AB75007DBF0B /* PaymentComponentDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentDelegateMock.swift; sourceTree = "<group>"; };
 		F96A25462372C39F007DBF0B /* ApplePayDetailsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayDetailsTest.swift; sourceTree = "<group>"; };
+		F96A2881265F9C2B00E718BD /* GiftCardComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftCardComponentExtensions.swift; sourceTree = "<group>"; };
 		F96AE5042603814C009F82BD /* BasicPersonalInfoFormComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicPersonalInfoFormComponentTests.swift; sourceTree = "<group>"; };
 		F96AE51A26038602009F82BD /* XCTestCaseExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestCaseExtension.swift; sourceTree = "<group>"; };
 		F96F44CC23B257D700871C1F /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -3412,6 +3414,7 @@
 			isa = PBXGroup;
 			children = (
 				F9FE24552624BCEC001874BB /* GiftCardComponent.swift */,
+				F96A2881265F9C2B00E718BD /* GiftCardComponentExtensions.swift */,
 				F9FE24562624BCEC001874BB /* GiftCardDetails.swift */,
 			);
 			path = GiftCardComponent;
@@ -4592,6 +4595,7 @@
 				E76EC680241125E0009C6E2F /* FormCardSecurityCodeItem.swift in Sources */,
 				E7166A5624EAD99F007CCDEF /* CardBrandProvider.swift in Sources */,
 				E2028F5E222805E20007FF8B /* CardDetails.swift in Sources */,
+				F96A2882265F9C2B00E718BD /* GiftCardComponentExtensions.swift in Sources */,
 				E9E3DAD1221EEE2100697074 /* CardExpiryDateValidator.swift in Sources */,
 				F9D5751223756BD0009C18B5 /* CardPublicKeyValidator.swift in Sources */,
 			);

@@ -38,7 +38,7 @@ public struct BalanceChecker {
 
         /// :nodoc:
         /// The remaining amount in the balance after payment.
-        /// it is at minimum zero when the available amount is less than the amount to pay.
+        /// it is at minimum zero when the whole available balance amount can be paid to cover part or all the amount to be paid.
         public let remainingBalanceAmount: Payment.Amount
 
         /// :nodoc:
