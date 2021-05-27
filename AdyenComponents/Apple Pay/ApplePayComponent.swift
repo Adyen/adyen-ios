@@ -43,7 +43,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         guard PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: configuration.supportedNetworks) else {
             throw Error.userCannotMakePayment
         }
-        guard let countryCode = configuration.payment.countryCode, CountryCodeValidator().isValid(countryCode) else {
+        guard CountryCodeValidator().isValid(configuration.payment.countryCode) else {
             throw Error.invalidCountryCode
         }
         guard CurrencyCodeValidator().isValid(configuration.payment.amount.currencyCode) else {

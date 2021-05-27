@@ -37,8 +37,9 @@ public extension AdyenScope where Base == String {
     var countryFlag: String? {
         guard CountryCodeValidator().isValid(base) else { return nil }
         let baseIndex = 127397
-        var usv = String.UnicodeScalarView()
-        base.utf16.compactMap { UnicodeScalar(baseIndex + Int($0)) }.forEach { usv.append($0) }
+        let usv = base.utf16
+            .compactMap { UnicodeScalar(baseIndex + Int($0)) }
+            .reduce(into: String.UnicodeScalarView()) { usv, scalar in usv.append(scalar) }
         return String(usv)
     }
 

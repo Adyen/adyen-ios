@@ -7,15 +7,17 @@
 import Foundation
 
 /// :nodoc:
+/// Validates three-character ISO standard 4217 currency codes.
 public struct CurrencyCodeValidator: Validator {
 
+    private static let allCurrencyCodes = Set(Locale.isoCurrencyCodes)
+
     /// :nodoc:
-    public init() { /* Empty initializer */ }
+    public init() {}
 
     /// :nodoc:
     public func isValid(_ value: String) -> Bool {
-        let allCurrencyCodes = Locale.isoCurrencyCodes
-        return allCurrencyCodes.contains(value)
+        CurrencyCodeValidator.allCurrencyCodes.contains(value)
     }
 
     /// :nodoc:

@@ -10,10 +10,10 @@ import Foundation
 public struct Amount: Codable, Equatable {
 
     /// The value of the amount in minor units.
-    public var value: Int
+    public let value: Int
 
     /// The code of the currency in which the amount's value is specified.
-    public var currencyCode: String
+    public let currencyCode: String
 
     /// Initializes an Amount.
     ///
@@ -21,6 +21,7 @@ public struct Amount: Codable, Equatable {
     ///   - value: The value in minor units.
     ///   - currencyCode: The code of the currency.
     public init(value: Int, currencyCode: String) {
+        assert(CurrencyCodeValidator().isValid(currencyCode), "Currency code should be in ISO-4217 format. For example: USD.")
         self.value = value
         self.currencyCode = currencyCode
     }
@@ -31,8 +32,14 @@ public struct Amount: Codable, Equatable {
     ///   - value: The value in major units.
     ///   - currencyCode: The code of the currency.
     public init(value: Decimal, currencyCode: String) {
-        self.value = AmountFormatter.minorUnitAmount(from: value, currencyCode: currencyCode)
-        self.currencyCode = currencyCode
+        let minorUnit = AmountFormatter.minorUnitAmount(from: value, currencyCode: currencyCode)
+        self.init(value: minorUnit, currencyCode: currencyCode)
+    }
+
+    /// :nodoc:
+    internal init(value: Int, unsafeCurrencyCode: String) {
+        self.value = value
+        self.currencyCode = unsafeCurrencyCode
     }
 
     private enum CodingKeys: String, CodingKey {

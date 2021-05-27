@@ -43,15 +43,7 @@ public extension PresentableComponent {
 }
 
 /// :nodoc:
-public protocol TrackableComponent: Component, PaymentMethodAware, ViewControllerDelegate {
-
-    /// :nodoc:
-    func viewDidLoad(viewController: UIViewController)
-
-    /// :nodoc:
-    func viewDidAppear(viewController: UIViewController)
-
-}
+public protocol TrackableComponent: Component, PaymentMethodAware, ViewControllerDelegate {}
 
 /// :nodoc:
 extension TrackableComponent {

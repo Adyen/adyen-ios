@@ -111,7 +111,7 @@ class ApplePayComponentTest: XCTestCase {
 
     func testInvalidCurrencyCode() {
         let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name", brands: nil)
-        let amount = Amount(value: 2, currencyCode: "wqedf")
+        let amount = Amount(value: 2, unsafeCurrencyCode: "ZZZ")
         let payment = Payment(amount: amount, countryCode: getRandomCountryCode())
         let configuration = ApplePayComponent.Configuration(payment: payment,
                                                             paymentMethod: paymentMethod,
@@ -126,7 +126,7 @@ class ApplePayComponentTest: XCTestCase {
     
     func testInvalidCountryCode() {
         let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name", brands: nil)
-        let payment = Payment(amount: amount, countryCode: "asda")
+        let payment = Payment(amount: amount, unsafeCountryCode: "ZZ")
         let configuration = ApplePayComponent.Configuration(payment: payment,
                                                             paymentMethod: paymentMethod,
                                                             summaryItems: createTestSummaryItems(),

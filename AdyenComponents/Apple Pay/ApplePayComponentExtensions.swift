@@ -105,7 +105,7 @@ extension ApplePayComponent {
 
         internal func createPaymentRequest() -> PKPaymentRequest {
             let paymentRequest = PKPaymentRequest()
-            paymentRequest.countryCode = payment.countryCode ?? ""
+            paymentRequest.countryCode = payment.countryCode
             paymentRequest.merchantIdentifier = merchantIdentifier
             paymentRequest.currencyCode = payment.amount.currencyCode
             paymentRequest.supportedNetworks = supportedNetworks

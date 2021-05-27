@@ -115,8 +115,8 @@ class AssertsTests: XCTestCase {
         }
 
         sut.handle(VoucherAction.dokuAlfamart(DokuVoucherAction(paymentMethodType: .dokuAlfamart,
-                                                                initialAmount: Amount(value: 100, currencyCode: ""),
-                                                                totalAmount: Amount(value: 100, currencyCode: ""),
+                                                                initialAmount: Amount(value: 100, currencyCode: "USD"),
+                                                                totalAmount: Amount(value: 100, currencyCode: "USD"),
                                                                 reference: "",
                                                                 shopperEmail: "",
                                                                 expiresAt: .distantFuture,
