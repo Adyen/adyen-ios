@@ -65,7 +65,11 @@ extension IntegrationExample {
     }
 
     private func handle(_ order: PartialPaymentOrder, _ paymentMethods: PaymentMethods) {
-        (currentComponent as? DropInComponent)?.reload(with: order, paymentMethods)
+        do {
+            try (currentComponent as? DropInComponent)?.reload(with: order, paymentMethods)
+        } catch {
+            finish(with: error)
+        }
     }
 }
 

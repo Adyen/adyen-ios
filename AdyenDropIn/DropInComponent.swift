@@ -100,13 +100,15 @@ public final class DropInComponent: NSObject, PresentableComponent {
         return apiClient
     }()
 
-    /// Handles a partial payment.
+    /// Reloads the DropIn with a partial payment order and a new `PaymentMethods` object.
     ///
     /// - Parameter order: The partial payment order.
     /// - Parameter paymentMethods: The new payment methods.
+    /// - Throws: `PartialPaymentError.missingOrderData` in case `order.orderData` is `nil`.
     public func reload(with order: PartialPaymentOrder,
-                       _ paymentMethods: PaymentMethods) {
-        let request = OrderStatusRequest(orderData: order.orderData)
+                       _ paymentMethods: PaymentMethods) throws {
+        guard let orderData = order.orderData else { throw PartialPaymentError.missingOrderData }
+        let request = OrderStatusRequest(orderData: orderData)
         apiClient.perform(request) { [weak self] result in
             self?.handle(result, order)
         }

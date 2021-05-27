@@ -16,7 +16,7 @@ public struct PartialPaymentOrder: Codable, Equatable {
         public let pspReference: String
 
         /// The order data.
-        public let orderData: String
+        public let orderData: String?
     }
 
     /// A compact version of `PartialPaymentOrder`.
@@ -26,10 +26,13 @@ public struct PartialPaymentOrder: Codable, Equatable {
     public let pspReference: String
 
     /// The order data.
-    public let orderData: String
+    public let orderData: String?
 
     /// A unique reference to the payment.
     public let reference: String?
+
+    /// The initial amount of the order.
+    public let amount: Payment.Amount?
 
     /// The remaining amount to be paid.
     public let remainingAmount: Payment.Amount?
@@ -42,16 +45,19 @@ public struct PartialPaymentOrder: Codable, Equatable {
     /// - Parameter pspReference: The psp reference.
     /// - Parameter orderData: The order data.
     /// - Parameter reference: A unique reference to the payment.
+    /// - Parameter amount: The initial amount of the order.
     /// - Parameter remainingAmount: The remaining amount to be paid.
     /// - Parameter expiresAt: The expirey date.
     public init(pspReference: String,
-                orderData: String,
+                orderData: String?,
                 reference: String? = nil,
+                amount: Payment.Amount? = nil,
                 remainingAmount: Payment.Amount? = nil,
                 expiresAt: Date? = nil) {
         self.pspReference = pspReference
         self.orderData = orderData
         self.reference = reference
+        self.amount = amount
         self.remainingAmount = remainingAmount
         self.expiresAt = expiresAt
         self.compactOrder = CompactOrder(pspReference: pspReference,
@@ -62,8 +68,9 @@ public struct PartialPaymentOrder: Codable, Equatable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.pspReference = try container.decode(String.self, forKey: .pspReference)
-        self.orderData = try container.decode(String.self, forKey: .orderData)
+        self.orderData = try container.decodeIfPresent(String.self, forKey: .orderData)
         self.reference = try container.decodeIfPresent(String.self, forKey: .reference)
+        self.amount = try container.decodeIfPresent(Payment.Amount.self, forKey: .amount)
         self.remainingAmount = try container.decodeIfPresent(Payment.Amount.self, forKey: .remainingAmount)
         self.expiresAt = try container.decodeIfPresent(Date.self, forKey: .expiresAt)
         self.compactOrder = CompactOrder(pspReference: pspReference,
@@ -74,6 +81,7 @@ public struct PartialPaymentOrder: Codable, Equatable {
         case pspReference
         case orderData
         case reference
+        case amount
         case remainingAmount
         case expiresAt
     }
