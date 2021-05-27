@@ -25,7 +25,7 @@ class CardPublicKeyProviderTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Except Assertion failure.")
         AdyenAssertion.listener = { message in
-            XCTAssertEqual(message, "ClientKey is missing.")
+            XCTAssertEqual(message, "ClientKey is missing or invalid.")
             expectation.fulfill()
         }
 
