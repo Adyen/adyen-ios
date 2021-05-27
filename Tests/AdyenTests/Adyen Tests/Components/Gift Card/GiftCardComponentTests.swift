@@ -98,7 +98,7 @@ class GiftCardComponentTests: XCTestCase {
     }
 
 
-    func testBalanceAndTransactionLimitCurrencyMissmatch() throws {
+    func testBalanceAndTransactionLimitCurrencyMismatch() throws {
 
         let cardPublicKeyProviderExpectation = expectation(description: "Expect cardPublicKeyProvider to be called.")
         cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2

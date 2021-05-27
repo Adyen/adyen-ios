@@ -172,3 +172,10 @@ class BalanceCheckerTests: XCTestCase {
     }
 
 }
+
+/// :nodoc:
+fileprivate func - (lhs: Payment.Amount?, rhs: Payment.Amount?) -> Payment.Amount {
+    let lhs = lhs ?? .init(value: 0, currencyCode: "EUR")
+    let rhs = rhs ?? .init(value: 0, currencyCode: "EUR")
+    return Payment.Amount(value: lhs.value - rhs.value, currencyCode: lhs.currencyCode)
+}

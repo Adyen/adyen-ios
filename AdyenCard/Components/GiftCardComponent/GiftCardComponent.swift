@@ -42,8 +42,14 @@ public final class GiftCardComponent: PartialPaymentComponent,
     /// :nodoc:
     public var clientKey: String? {
         didSet {
-            environment.clientKey = clientKey
-            cardPublicKeyProvider.clientKey = clientKey
+            updateEnvironment()
+        }
+    }
+
+    /// :nodoc:
+    public var environment: Environment = .live {
+        didSet {
+            updateEnvironment()
         }
     }
 
@@ -59,9 +65,18 @@ public final class GiftCardComponent: PartialPaymentComponent,
                 style: FormComponentStyle = FormComponentStyle()) {
         self.giftCardPaymentMethod = paymentMethod
         self.style = style
+        self.clientKey = clientKey
         self.cardPublicKeyProvider = CardPublicKeyProvider()
         self.cardPublicKeyProvider.clientKey = clientKey
         self.environment.clientKey = clientKey
+    }
+
+    // MARK: - Update environment
+
+    private func updateEnvironment() {
+        environment.clientKey = clientKey
+        cardPublicKeyProvider.environment = environment
+        cardPublicKeyProvider.clientKey = clientKey
     }
 
     // MARK: - Presentable Component Protocol

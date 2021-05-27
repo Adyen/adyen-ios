@@ -5,7 +5,7 @@
 //
 
 import Adyen
-import Foundation
+import UIKit
 
 /// :nodoc:
 extension GiftCardComponent: TrackableComponent {

@@ -38,7 +38,7 @@ public struct BalanceChecker {
 
         /// :nodoc:
         /// The remaining amount in the balance after payment.
-        /// it is at minimum zero when the whole available balance covers part or all the amount to be paid.
+        /// It is at minimum zero when the whole available balance covers part or all the amount to be paid.
         public let remainingBalanceAmount: Payment.Amount
 
         /// :nodoc:
@@ -102,8 +102,6 @@ public struct BalanceChecker {
 }
 
 /// :nodoc:
-internal func - (lhs: Payment.Amount?, rhs: Payment.Amount?) -> Payment.Amount {
-    let lhs = lhs ?? .init(value: 0, currencyCode: "EUR")
-    let rhs = rhs ?? .init(value: 0, currencyCode: "EUR")
-    return Payment.Amount(value: lhs.value - rhs.value, currencyCode: lhs.currencyCode)
+internal func - (lhs: Payment.Amount, rhs: Payment.Amount) -> Payment.Amount {
+    Payment.Amount(value: lhs.value - rhs.value, currencyCode: lhs.currencyCode)
 }

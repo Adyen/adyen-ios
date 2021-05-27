@@ -6,11 +6,12 @@
 
 import Foundation
 
+/// :nodoc:
 /// Validates a client key https://docs.adyen.com/user-management/client-side-authentication
-internal class ClientKeyValidator: RegularExpressionValidator {
+public final class ClientKeyValidator: RegularExpressionValidator {
 
-    internal init() {
-
+    /// :nodoc:
+    public init() {
         let regex = #"^[a-z]{4,8}_[a-zA-Z0-9]{8,128}$"#
         super.init(regularExpression: regex, minimumLength: 13, maximumLength: 140)
     }

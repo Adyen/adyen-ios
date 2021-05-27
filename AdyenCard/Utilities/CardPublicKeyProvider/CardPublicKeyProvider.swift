@@ -18,7 +18,7 @@ internal protocol AnyCardPublicKeyProvider: Component {
 }
 
 /// :nodoc:
-internal class CardPublicKeyProvider: AnyCardPublicKeyProvider {
+internal final class CardPublicKeyProvider: AnyCardPublicKeyProvider {
     
     /// :nodoc:
     internal static var cachedCardPublicKey: String?
@@ -43,8 +43,9 @@ internal class CardPublicKeyProvider: AnyCardPublicKeyProvider {
             return
         }
         
-        guard let clientKey = clientKey else {
-            AdyenAssertion.assertionFailure(message: "ClientKey is missing.")
+        guard let clientKey = clientKey,
+              ClientKeyValidator().isValid(clientKey) else {
+            AdyenAssertion.assertionFailure(message: "ClientKey is missing or invalid.")
             completion(.failure(CardComponent.Error.missingClientKey))
             return
         }
