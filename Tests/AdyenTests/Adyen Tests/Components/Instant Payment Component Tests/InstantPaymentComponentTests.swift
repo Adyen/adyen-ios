@@ -24,7 +24,7 @@ class InstantPaymentComponentTests: XCTestCase {
     }
 
     func testCustomPaymentData() throws {
-        let details = GiftCardDetails(paymentMethod: paymentMethod, cardNumber: "card", securityCode: "cvc")
+        let details = GiftCardDetails(paymentMethod: paymentMethod, encryptedCardNumber: "card", encryptedSecurityCode: "cvc")
         let amount = Payment.Amount(value: 34, currencyCode: "EUR")
         let paymentData = PaymentComponentData(paymentMethodDetails: details, amount: amount, order: nil)
         delegate = PaymentComponentDelegateMock()
@@ -36,8 +36,8 @@ class InstantPaymentComponentTests: XCTestCase {
             XCTAssertTrue(component === self.sut)
             let details = data.paymentMethod as! GiftCardDetails
             XCTAssertEqual(details.brand, "brand")
-            XCTAssertEqual(details.cardNumber, "card")
-            XCTAssertEqual(details.securityCode, "cvc")
+            XCTAssertEqual(details.encryptedCardNumber, "card")
+            XCTAssertEqual(details.encryptedSecurityCode, "cvc")
             delegateExpectation.fulfill()
         }
 

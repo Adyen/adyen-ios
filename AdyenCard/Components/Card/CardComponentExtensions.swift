@@ -43,7 +43,7 @@ extension CardComponent {
                                       billingAddress: cardViewController.address)
             
             let data = PaymentComponentData(paymentMethodDetails: details,
-                                            amount: payment?.amount,
+                                            amount: amountToPay,
                                             order: order,
                                             storePaymentMethod: cardViewController.storePayment)
 
@@ -61,29 +61,5 @@ extension CardComponent: TrackableComponent {
     public func viewDidLoad(viewController: UIViewController) {
         Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
         fetchCardPublicKey(discardError: true) { _ in /* Do nothing, to just cache the card public key value */ }
-    }
-}
-
-/// :nodoc:
-extension CardComponent {
-    internal typealias CardKeySuccessHandler = (_ cardPublicKey: String) -> Void
-
-    internal func fetchCardPublicKey(discardError: Bool, completion: @escaping CardKeySuccessHandler) {
-        cardPublicKeyProvider.fetch { [weak self] in
-            self?.handle(result: $0, discardError: discardError, completion: completion)
-        }
-    }
-
-    private func handle(result: Result<String, Swift.Error>,
-                        discardError: Bool,
-                        completion: CardKeySuccessHandler) {
-        switch result {
-        case let .success(key):
-            completion(key)
-        case let .failure(error):
-            if !discardError {
-                delegate?.didFail(with: error, from: self)
-            }
-        }
     }
 }

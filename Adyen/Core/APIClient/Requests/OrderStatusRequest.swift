@@ -25,7 +25,7 @@ public struct OrderStatusRequest: Request {
     public let queryParameters: [URLQueryItem] = []
 
     /// :nodoc:
-    public let method: HTTPMethod = .get
+    public let method: HTTPMethod = .post
 
     /// :nodoc:
     public let orderData: String

@@ -28,7 +28,7 @@ public final class InstantPaymentComponent: PaymentComponent {
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
     public func initiatePayment() {
         let details = InstantPaymentDetails(type: paymentMethod.type)
-        let paymentData = self.paymentData ?? PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order)
+        let paymentData = self.paymentData ?? PaymentComponentData(paymentMethodDetails: details, amount: amountToPay, order: order)
         submit(data: paymentData)
     }
 }

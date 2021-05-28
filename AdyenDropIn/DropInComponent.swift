@@ -19,7 +19,7 @@ import UIKit
 /// A component that handles the entire flow of payment selection and payment details entry.
 public final class DropInComponent: NSObject, PresentableComponent {
 
-    private let configuration: PaymentMethodsConfiguration
+    private var configuration: PaymentMethodsConfiguration
 
     private var paymentInProgress: Bool = false
 
@@ -33,6 +33,12 @@ public final class DropInComponent: NSObject, PresentableComponent {
     
     /// The title text on the first page of drop in component.
     public let title: String
+
+    /// :nodoc:
+    public let environment: Environment
+
+    /// :nodoc:
+    public let clientKey: String?
     
     /// Initializes the drop in component.
     ///
@@ -50,6 +56,8 @@ public final class DropInComponent: NSObject, PresentableComponent {
         self.configuration = paymentMethodsConfiguration
         self.paymentMethods = paymentMethods
         self.style = style
+        self.clientKey = configuration.clientKey
+        self.environment = configuration.environment
         super.init()
     }
 
@@ -86,19 +94,21 @@ public final class DropInComponent: NSObject, PresentableComponent {
     /// :nodoc:
     private lazy var apiClient: APIClientProtocol = {
         let scheduler = SimpleScheduler(maximumCount: 3)
-        let baseAPIClient = APIClient(environment: environment)
+        let baseAPIClient = APIClient(environment: configuration.environment)
         let retryApiClient = RetryAPIClient(apiClient: baseAPIClient, scheduler: scheduler)
         let apiClient = RetryOnErrorAPIClient(apiClient: retryApiClient)
         return apiClient
     }()
 
-    /// Handles a partial payment.
+    /// Reloads the DropIn with a partial payment order and a new `PaymentMethods` object.
     ///
     /// - Parameter order: The partial payment order.
     /// - Parameter paymentMethods: The new payment methods.
+    /// - Throws: `PartialPaymentError.missingOrderData` in case `order.orderData` is `nil`.
     public func reload(with order: PartialPaymentOrder,
-                       _ paymentMethods: PaymentMethods) {
-        let request = OrderStatusRequest(orderData: order.orderData)
+                       _ paymentMethods: PaymentMethods) throws {
+        guard let orderData = order.orderData else { throw PartialPaymentError.missingOrderData }
+        let request = OrderStatusRequest(orderData: orderData)
         apiClient.perform(request) { [weak self] result in
             self?.handle(result, order)
         }
@@ -141,7 +151,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
     
     private lazy var rootComponent: PresentableComponent & ComponentLoader = {
         if let preselectedComponents = componentManager.storedComponents.first {
-            return preselectedPaymentMethodComponent(for: preselectedComponents)
+            return preselectedPaymentMethodComponent(for: preselectedComponents, onCancel: nil)
         } else {
             return paymentMethodListComponent(onCancel: nil)
         }
@@ -177,7 +187,8 @@ public final class DropInComponent: NSObject, PresentableComponent {
         return component
     }
     
-    private func preselectedPaymentMethodComponent(for paymentComponent: PaymentComponent) -> PreselectedPaymentMethodComponent {
+    private func preselectedPaymentMethodComponent(for paymentComponent: PaymentComponent,
+                                                   onCancel: (() -> Void)?) -> PreselectedPaymentMethodComponent {
         let component = PreselectedPaymentMethodComponent(component: paymentComponent,
                                                           title: title,
                                                           style: style.formComponent,
@@ -185,6 +196,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
         component.payment = configuration.payment
         component.localizationParameters = configuration.localizationParameters
         component.delegate = self
+        component.onCancel = onCancel
         component._isDropIn = true
         component.environment = environment
         return component
@@ -347,8 +359,11 @@ extension DropInComponent: FinalizableComponent {
 extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
 
     /// :nodoc:
-    public func showConfirmation(for component: InstantPaymentComponent) {
-        let newRoot = preselectedPaymentMethodComponent(for: component)
+    public func showConfirmation(for component: InstantPaymentComponent, with order: PartialPaymentOrder?) {
+        let newRoot = preselectedPaymentMethodComponent(for: component, onCancel: { [weak self] in
+            guard let order = order else { return }
+            self?.partialPaymentDelegate?.cancelOrder(order)
+        })
         navigationController.present(root: newRoot)
         rootComponent = newRoot
     }

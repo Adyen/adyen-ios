@@ -12,11 +12,16 @@ public enum PartialPaymentError: LocalizedError {
     /// Indicates that there is zero remaining amount to be paid.
     case zeroRemainingAmount
 
+    /// Indicates that the order data is missing where its required.
+    case missingOrderData
+
     /// :nodoc:
     public var errorDescription: String? {
         switch self {
         case .zeroRemainingAmount:
             return "There is no remaining amount to be paid."
+        case .missingOrderData:
+            return "Order data is missing"
         }
     }
 }

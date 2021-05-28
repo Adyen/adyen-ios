@@ -47,7 +47,12 @@ internal struct CreateOrderRequest: Request {
 
 internal struct CreateOrderResponse: Response {
 
-    internal let resultCode: PaymentsResponse.ResultCode
+    internal enum ResultCode: String, Decodable {
+        case failed = "Failed"
+        case success = "Success"
+    }
+
+    internal let resultCode: ResultCode
 
     internal let pspReference: String
 

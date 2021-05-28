@@ -42,6 +42,23 @@ internal struct BalanceCheckResponse: Response {
 
     internal enum ResultCode: String, Decodable {
         case failed = "Failed"
+        case notEnoughBalance = "NotEnoughBalance"
+        case cancelled = "Cancelled"
+        case acquirerFraud = "AcquirerFraud"
+        case declined = "Declined"
+        case blockCard = "BlockCard"
+        case cardExpired = "CardExpired"
+        case invalidAmount = "InvalidAmount"
+        case invalidCard = "InvalidCard"
+        case notSupported = "NotSupported"
+        case error = "Error"
+        case invalidPin = "InvalidPin"
+        case pinTriesExceeded = "PinTriesExceeded"
+        case issuerUnavailable = "IssuerUnavailable"
+        case withdrawalAmountExceeded = "WithdrawalAmountExceeded"
+        case withdrawalCountExceeded = "WithdrawalCountExceeded"
+        case allowPartialAuth = "AllowPartialAuth"
+        case success = "Success"
     }
 
     internal let resultCode: ResultCode
