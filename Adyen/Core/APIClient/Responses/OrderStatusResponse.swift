@@ -11,14 +11,14 @@ public struct OrderStatusResponse: Response {
 
     /// The remaining amount to be paid.
     /// :nodoc:
-    public let remainingAmount: Payment.Amount
+    public let remainingAmount: Amount
 
     /// The payment methods already used to partially pay.
     /// :nodoc:
     public let paymentMethods: [OrderPaymentMethod]?
 
     /// :nodoc:
-    public init(remainingAmount: Payment.Amount,
+    public init(remainingAmount: Amount,
                 paymentMethods: [OrderPaymentMethod]?) {
         self.remainingAmount = remainingAmount
         self.paymentMethods = paymentMethods
@@ -46,10 +46,10 @@ public struct OrderPaymentMethod: PaymentMethod {
     public let type: String
 
     /// :nodoc:
-    public let transactionLimit: Payment.Amount?
+    public let transactionLimit: Amount?
 
     /// :nodoc:
-    public let amount: Payment.Amount
+    public let amount: Amount
 
     /// :nodoc:
     public var displayInformation: DisplayInformation {
@@ -59,8 +59,8 @@ public struct OrderPaymentMethod: PaymentMethod {
     /// :nodoc:
     public init(lastFour: String,
                 type: String,
-                transactionLimit: Payment.Amount?,
-                amount: Payment.Amount) {
+                transactionLimit: Amount?,
+                amount: Amount) {
         self.lastFour = lastFour
         self.type = type
         self.transactionLimit = transactionLimit

@@ -11,7 +11,7 @@ class FormItemViewBuilderTests: XCTestCase {
     
     func testFormPhoneExtensionPickerItemView() {
         let selectableValues = [PhoneExtensionPickerItem(identifier: "test_id",
-                                                         element: .init(title: "test title", phoneExtension: "test extension"))]
+                                                         element: .init(value: "test title", countryCode: "test extension"))]
         let item = FormPhoneExtensionPickerItem(selectableValues: selectableValues, style: FormTextItemStyle())
         let view = item.build(with: FormItemViewBuilder())
         
@@ -25,11 +25,11 @@ class FormItemViewBuilderTests: XCTestCase {
         XCTAssertNotNil(view as? FormTextItemView<FormTextInputItem>)
     }
     
-    func testFormSwitchItemView() {
-        let item = FormSwitchItem()
+    func testFormToggleItemView() {
+        let item = FormToggleItem()
         let view = item.build(with: FormItemViewBuilder())
         
-        XCTAssertNotNil(view as? FormSwitchItemView)
+        XCTAssertNotNil(view as? FormToggleItemView)
     }
     
     func testFormSplitItemView() {
@@ -41,7 +41,7 @@ class FormItemViewBuilderTests: XCTestCase {
     }
     
     func testFormPhoneNumberItemView() {
-        let selectableValues = [PhoneExtensionPickerItem(identifier: "test_id", element: .init(title: "test title", phoneExtension: "test extension"))]
+        let selectableValues = [PhoneExtensionPickerItem(identifier: "test_id", element: .init(value: "test title", countryCode: "test extension"))]
         let item = FormPhoneNumberItem(selectableValues: selectableValues, style: FormTextItemStyle())
         let view = item.build(with: FormItemViewBuilder())
         
@@ -49,26 +49,26 @@ class FormItemViewBuilderTests: XCTestCase {
     }
 
     func testFormSAddressItemViewUS() {
-        let item = FullFormAddressItem(initialCountry: "US", style: AddressStyle())
+        let item = FormAddressItem(initialCountry: "US", style: AddressStyle())
         let view = item.build(with: FormItemViewBuilder())
 
-        XCTAssertNotNil(view as? FormVerticalStackItemView<FullFormAddressItem>)
+        XCTAssertNotNil(view as? FormVerticalStackItemView<FormAddressItem>)
         XCTAssertEqual(view.childItemViews.count, 7)
     }
 
     func testFormSAddressItemViewNL() {
-        let item = FullFormAddressItem(initialCountry: "NL", style: AddressStyle())
+        let item = FormAddressItem(initialCountry: "NL", style: AddressStyle())
         let view = item.build(with: FormItemViewBuilder())
 
-        XCTAssertNotNil(view as? FormVerticalStackItemView<FullFormAddressItem>)
+        XCTAssertNotNil(view as? FormVerticalStackItemView<FormAddressItem>)
         XCTAssertEqual(view.childItemViews.count, 9)
     }
 
     func testFormSAddressItemViewGB() {
-        let item = FullFormAddressItem(initialCountry: "GB", style: AddressStyle())
+        let item = FormAddressItem(initialCountry: "GB", style: AddressStyle())
         let view = item.build(with: FormItemViewBuilder())
 
-        XCTAssertNotNil(view as? FormVerticalStackItemView<FullFormAddressItem>)
+        XCTAssertNotNil(view as? FormVerticalStackItemView<FormAddressItem>)
         XCTAssertEqual(view.childItemViews.count, 8)
     }
     

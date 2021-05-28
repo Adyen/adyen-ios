@@ -27,7 +27,7 @@ class PreselectedPaymentComponentDelegateMock: PreselectedPaymentMethodComponent
 
 class PreselectedPaymentComponentTests: XCTestCase {
     
-    let payment = Payment(amount: Payment.Amount(value: 4200, currencyCode: "EUR"), countryCode: "DE")
+    let payment = Payment(amount: Amount(value: 4200, currencyCode: "EUR"), countryCode: "DE")
     var sut: PreselectedPaymentMethodComponent!
     var component: StoredPaymentMethodComponent!
     var delegate: PreselectedPaymentComponentDelegateMock!

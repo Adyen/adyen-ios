@@ -6,29 +6,20 @@
 
 import Foundation
 
-/// View Model for a single PhoneExtension.
-/// :nodoc:
-public struct PhoneExtensionViewModel: CustomStringConvertible, Equatable {
-
-    /// Picker item title.
-    /// :nodoc:
-    public let title: String
-
-    /// Country phone extension.
-    /// :nodoc:
-    public let phoneExtension: String
+extension PhoneExtension: CustomStringConvertible {
 
     /// :nodoc:
-    public var description: String { title }
+    public var description: String { "\(countryDisplayName) (\(value))" }
+
 }
 
 /// Describes a single phone extension picker item in the list of selectable items.
 /// :nodoc:
-public typealias PhoneExtensionPickerItem = BasePickerElement<PhoneExtensionViewModel>
+public typealias PhoneExtensionPickerItem = BasePickerElement<PhoneExtension>
 
 /// Describes a picker item.
 /// :nodoc:
-public final class FormPhoneExtensionPickerItem: BaseFormPickerItem<PhoneExtensionViewModel> {
+public final class FormPhoneExtensionPickerItem: BaseFormPickerItem<PhoneExtension> {
     
     /// Initializes the picker item.
     ///

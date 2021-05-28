@@ -6,6 +6,7 @@
 
 import UIKit
 
+/// :nodoc:
 internal protocol PickerTextInputControl: UIView {
 
     /// Executed when the view resigns as first responder.
@@ -25,6 +26,7 @@ internal protocol PickerTextInputControl: UIView {
     
 }
 
+/// :nodoc:
 /// A control to select a phone extension from a list.
 internal class BasePickerInputControl: UIControl, PickerTextInputControl {
 

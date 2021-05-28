@@ -51,7 +51,7 @@ class ComponentManagerTests: XCTestCase {
         let merchantIdentifier = "applePayMerchantIdentifier"
         let summaryItems = [PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)]
         config.applePay = .init(summaryItems: summaryItems, merchantIdentifier: merchantIdentifier)
-        config.payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
+        config.payment = Payment(amount: Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: config,
                                    style: DropInComponent.Style(),
@@ -71,7 +71,7 @@ class ComponentManagerTests: XCTestCase {
     func testLocalizationWithCustomTableName() throws {
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
         let config = DropInComponent.PaymentMethodsConfiguration(clientKey: Dummy.dummyClientKey, environment: .test)
-        config.payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
+        config.payment = Payment(amount: Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         let merchantIdentifier = "applePayMerchantIdentifier"
         let summaryItems = [PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)]
@@ -96,7 +96,7 @@ class ComponentManagerTests: XCTestCase {
         let merchantIdentifier = "applePayMerchantIdentifier"
         let summaryItems = [PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)]
         config.applePay = .init(summaryItems: summaryItems, merchantIdentifier: merchantIdentifier)
-        config.payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
+        config.payment = Payment(amount: Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
 
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: config,
@@ -116,19 +116,19 @@ class ComponentManagerTests: XCTestCase {
         let merchantIdentifier = "applePayMerchantIdentifier"
         let summaryItems = [PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)]
         config.applePay = .init(summaryItems: summaryItems, merchantIdentifier: merchantIdentifier)
-        config.payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
+        config.payment = Payment(amount: Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
 
         let order = PartialPaymentOrder(pspReference: "test pspRef", orderData: "test order data")
 
         paymentMethods.paid = [
             OrderPaymentMethod(lastFour: "1234",
                                type: "type-1",
-                               transactionLimit: Payment.Amount(value: 123, currencyCode: "EUR"),
-                               amount: Payment.Amount(value: 1234, currencyCode: "EUR")),
+                               transactionLimit: Amount(value: 123, currencyCode: "EUR"),
+                               amount: Amount(value: 1234, currencyCode: "EUR")),
             OrderPaymentMethod(lastFour: "1234",
                                type: "type-2",
-                               transactionLimit: Payment.Amount(value: 123, currencyCode: "EUR"),
-                               amount: Payment.Amount(value: 1234, currencyCode: "EUR"))
+                               transactionLimit: Amount(value: 123, currencyCode: "EUR"),
+                               amount: Amount(value: 1234, currencyCode: "EUR"))
         ]
 
         let sut = ComponentManager(paymentMethods: paymentMethods,

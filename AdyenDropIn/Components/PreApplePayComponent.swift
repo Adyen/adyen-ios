@@ -61,7 +61,7 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
     }
     
     /// :nodoc:
-    private func createModel(with amount: Payment.Amount) -> PreApplePayView.Model {
+    private func createModel(with amount: Amount) -> PreApplePayView.Model {
         PreApplePayView.Model(
             hint: amount.formatted,
             style: PreApplePayView.Model.Style(

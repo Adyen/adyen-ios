@@ -26,7 +26,7 @@ class StoredCardComponentTests: XCTestCase {
         let sut = StoredCardComponent(storedCardPaymentMethod: method)
         sut.clientKey = Dummy.dummyClientKey
 
-        let payemt = Payment(amount: Payment.Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
+        let payemt = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payemt
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
@@ -62,7 +62,7 @@ class StoredCardComponentTests: XCTestCase {
         sut.clientKey = nil
         CardPublicKeyProvider.cachedCardPublicKey = Dummy.dummyClientKey
 
-        let payemt = Payment(amount: Payment.Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
+        let payemt = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payemt
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
@@ -97,7 +97,7 @@ class StoredCardComponentTests: XCTestCase {
         let sut = StoredCardComponent(storedCardPaymentMethod: method)
         sut.clientKey = Dummy.dummyClientKey
 
-        let payemt = Payment(amount: Payment.Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
+        let payemt = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payemt
 
         let delegateExpectation = expectation(description: "expect delegate to be called.")
@@ -163,7 +163,7 @@ class StoredCardComponentTests: XCTestCase {
         let sut = StoredCardComponent(storedCardPaymentMethod: method)
         sut.clientKey = Dummy.dummyClientKey
 
-        let payemt = Payment(amount: Payment.Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
+        let payemt = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payemt
 
         let delegate = PaymentComponentDelegateMock()
@@ -222,7 +222,7 @@ class StoredCardComponentTests: XCTestCase {
         let sut = StoredCardComponent(storedCardPaymentMethod: method)
         sut.clientKey = Dummy.dummyClientKey
 
-        let payemt = Payment(amount: Payment.Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
+        let payemt = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payemt
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
@@ -279,7 +279,7 @@ class StoredCardComponentTests: XCTestCase {
         let sut = StoredCardComponent(storedCardPaymentMethod: method)
         sut.clientKey = Dummy.dummyClientKey
 
-        let payemt = Payment(amount: Payment.Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
+        let payemt = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payemt
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
@@ -324,7 +324,7 @@ class StoredCardComponentTests: XCTestCase {
         let sut = StoredCardComponent(storedCardPaymentMethod: method)
         sut.clientKey = Dummy.dummyClientKey
 
-        let payemt = Payment(amount: Payment.Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
+        let payemt = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payemt
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)

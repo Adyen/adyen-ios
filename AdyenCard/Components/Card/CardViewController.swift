@@ -101,12 +101,12 @@ internal class CardViewController: FormViewController {
              holder: configuration.showsHolderNameField ? holderNameItem.nonEmptyValue : nil)
     }
 
-    internal var address: AddressInfo? {
+    internal var address: PostalAddress? {
         switch configuration.billingAddressMode {
         case .full:
             return billingAddressItem.value
         case .postalCode:
-            return AddressInfo(postalCode: postalCodeItem.value)
+            return PostalAddress(postalCode: postalCodeItem.value)
         case .none:
             return nil
         }
@@ -141,10 +141,10 @@ internal class CardViewController: FormViewController {
 
     // MARK: Items
 
-    internal lazy var billingAddressItem: FullFormAddressItem = {
-        let item = FullFormAddressItem(initialCountry: defaultCountryCode,
-                                       style: formStyle.addressStyle,
-                                       localizationParameters: localizationParameters)
+    internal lazy var billingAddressItem: FormAddressItem = {
+        let item = FormAddressItem(initialCountry: defaultCountryCode,
+                                   style: formStyle.addressStyle,
+                                   localizationParameters: localizationParameters)
         item.style.backgroundColor = UIColor.Adyen.lightGray
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "addressVerification")
         return item
@@ -205,8 +205,8 @@ internal class CardViewController: FormViewController {
         return holderNameItem
     }()
 
-    internal lazy var storeDetailsItem: FormSwitchItem = {
-        let storeDetailsItem = FormSwitchItem(style: formStyle.switch)
+    internal lazy var storeDetailsItem: FormToggleItem = {
+        let storeDetailsItem = FormToggleItem(style: formStyle.toggle)
         storeDetailsItem.title = localizedString(.cardStoreDetailsButton, localizationParameters)
         storeDetailsItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "storeDetailsItem")
 

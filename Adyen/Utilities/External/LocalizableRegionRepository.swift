@@ -29,6 +29,7 @@ public struct Region: Decodable, CustomStringConvertible, Equatable {
 }
 
 /// Fetch localized geographic regions from external.
+/// :nodoc:
 public class RegionRepository {
 
     private let environment: Environment

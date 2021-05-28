@@ -10,7 +10,7 @@ import XCTest
 
 class QRCodeComponentTests: XCTestCase {
     lazy var method = RedirectPaymentMethod(type: "pix", name: "pix")
-    let payment = Payment(amount: Payment.Amount(value: 2, currencyCode: "BRL"), countryCode: "BR")
+    let payment = Payment(amount: Amount(value: 2, currencyCode: "BRL"), countryCode: "BR")
     let action = QRCodeAction(paymentMethodType: .pix, qrCodeData: "DummyData", paymentData: "DummyData")
     let componentData = ActionComponentData(details: AwaitActionDetails(payload: "DummyPayload"), paymentData: "DummyData")
     

@@ -98,7 +98,7 @@ class DropInTests: XCTestCase {
 
     func testOpenDropInAsList() {
         let config = DropInComponent.PaymentMethodsConfiguration(clientKey: "local_MYLOCALCLIENTKEY", environment: .test)
-        config.payment = Payment(amount: Payment.Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
+        config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymenMethods, paymentMethodsConfiguration: config)

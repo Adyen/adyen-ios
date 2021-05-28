@@ -6,63 +6,13 @@
 
 import Foundation
 
-/// Any object that holds shopper personal information.
-public protocol ShopperInformation {
+/**
+ The data supplied by a payment component upon completion.
 
-    /// Shopper name.
-    var shopperName: ShopperName? { get }
-
-    /// The email address.
-    var emailAddress: String? { get }
-
-    /// The telephone number.
-    var telephoneNumber: String? { get }
-    
-    /// The billing address information.
-    var billingAddress: AddressInfo? { get }
-    
-    /// The social security number information.
-    var socialSecurityNumber: String? { get }
-
-}
-
-/// :nodoc:
-public extension ShopperInformation {
-    
-    var shopperName: ShopperName? { nil }
-
-    var emailAddress: String? { nil }
-
-    var telephoneNumber: String? { nil }
-    
-    var billingAddress: AddressInfo? { nil }
-
-    var socialSecurityNumber: String? { nil }
-    
-}
-
-/// Shopper name.
-public struct ShopperName: Codable, Equatable {
-    
-    /// The first Name.
-    public let firstName: String
-
-    /// The last Name.
-    public let lastName: String
-
-    /// Initializes a `ShopperName` object.
-    ///
-    /// - Parameters:
-    ///   - firstName: The first Name.
-    ///   - lastName: The last Name.
-    public init(firstName: String, lastName: String) {
-        self.firstName = firstName
-        self.lastName = lastName
-    }
-}
-
-/// The data supplied by a payment component upon completion.
-public struct PaymentComponentData: ShopperInformation {
+ - SeeAlso:
+ [API Reference](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__example_payments-klarna)
+ */
+public struct PaymentComponentData {
     
     /// The payment method details submitted by the payment component.
     public let paymentMethod: PaymentMethodDetails
@@ -74,7 +24,7 @@ public struct PaymentComponentData: ShopperInformation {
     public let order: PartialPaymentOrder?
 
     /// The payment amount.
-    public let amount: Payment.Amount?
+    public let amount: Amount?
 
     /// Shopper name.
     public var shopperName: ShopperName? {
@@ -98,7 +48,7 @@ public struct PaymentComponentData: ShopperInformation {
     public let browserInfo: BrowserInfo?
 
     /// The billing address information.
-    public var billingAddress: AddressInfo? {
+    public var billingAddress: PostalAddress? {
         guard let shopperInfo = paymentMethod as? ShopperInformation else { return nil }
         return shopperInfo.billingAddress
     }
@@ -120,7 +70,7 @@ public struct PaymentComponentData: ShopperInformation {
     ///   - storePaymentMethod: Whether the user has chosen to store the payment method.
     ///   - browserInfo: The device default browser info.
     public init(paymentMethodDetails: PaymentMethodDetails,
-                amount: Payment.Amount?,
+                amount: Amount?,
                 order: PartialPaymentOrder?,
                 storePaymentMethod: Bool = false,
                 browserInfo: BrowserInfo? = nil) {
@@ -141,7 +91,7 @@ public struct PaymentComponentData: ShopperInformation {
     }
 
     /// :nodoc:
-    public func replacingAmount(with amount: Payment.Amount) -> PaymentComponentData {
+    public func replacingAmount(with amount: Amount) -> PaymentComponentData {
         PaymentComponentData(paymentMethodDetails: self.paymentMethod,
                              amount: amount,
                              order: self.order,

@@ -139,7 +139,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     }()
     
     /// :nodoc:
-    public var addressItem: FullFormAddressItem? { addressItemInjector?.item }
+    public var addressItem: FormAddressItem? { addressItemInjector?.item }
 
     /// :nodoc:
     internal lazy var phoneItemInjector: PhoneFormItemInjector? = {
@@ -156,13 +156,8 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     public var phoneItem: FormPhoneNumberItem? { phoneItemInjector?.item }
 
     private lazy var selectableValues: [PhoneExtensionPickerItem] = {
-        let query = PhoneExtensionsQuery(paymentMethod: PhoneNumberPaymentMethod.mbWay)
-        return getPhoneExtensions().map {
-            let title = "\($0.countryDisplayName) (\($0.value))"
-            return PhoneExtensionPickerItem(identifier: $0.countryCode,
-                                            element: .init(title: title,
-                                                           phoneExtension: $0.value))
-
+        getPhoneExtensions().map {
+            PhoneExtensionPickerItem(identifier: $0.countryCode, element: $0)
         }
     }()
 

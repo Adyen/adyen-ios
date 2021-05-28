@@ -15,7 +15,7 @@ class CardDetailsTests: XCTestCase {
         let sut = CardDetails(paymentMethod: paymenthMethod,
                               encryptedCard: EncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year"),
                               holderName: "holder",
-                              billingAddress: AddressInfo(city: "city",
+                              billingAddress: PostalAddress(city: "city",
                                                           country: "country",
                                                           houseNumberOrName: "numer",
                                                           postalCode: "postal",
@@ -39,7 +39,7 @@ class CardDetailsTests: XCTestCase {
         let paymenthMethod = CardPaymentMethodMock(fundingSource: .debit, type: "test_type", name: "test name", brands: ["barnd_1", "barnd_2"])
         let sut = CardDetails(paymentMethod: paymenthMethod,
                               encryptedCard: EncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year"),
-                              billingAddress: AddressInfo(postalCode: "postal"))
+                              billingAddress: PostalAddress(postalCode: "postal"))
         let data = try JSONEncoder().encode(sut)
         let dictionary = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
         
@@ -54,7 +54,7 @@ class CardDetailsTests: XCTestCase {
     }
 
     func testEncodingFullAddress() {
-        let data = try! JSONEncoder().encode(AddressInfo(city: "city",
+        let data = try! JSONEncoder().encode(PostalAddress(city: "city",
                                                         country: "country",
                                                         houseNumberOrName: "numer",
                                                         postalCode: "postal",
@@ -73,7 +73,7 @@ class CardDetailsTests: XCTestCase {
     }
 
     func testEncodingPostCode() {
-        let data = try! JSONEncoder().encode(AddressInfo(postalCode: "postal"))
+        let data = try! JSONEncoder().encode(PostalAddress(postalCode: "postal"))
         let dictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: String]
 
         XCTAssertEqual(dictionary["city"], "null")

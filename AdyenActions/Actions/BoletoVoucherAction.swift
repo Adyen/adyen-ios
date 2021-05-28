@@ -14,7 +14,7 @@ public final class BoletoVoucherAction: Decodable {
     public let paymentMethodType: VoucherPaymentMethod
 
     /// The totalAmount  amount.
-    public let totalAmount: Payment.Amount
+    public let totalAmount: Amount
 
     /// The payment reference.
     public let reference: String
@@ -30,7 +30,7 @@ public final class BoletoVoucherAction: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         paymentMethodType = try container.decode(VoucherPaymentMethod.self, forKey: .paymentMethodType)
-        totalAmount = try container.decode(Payment.Amount.self, forKey: .totalAmount)
+        totalAmount = try container.decode(Amount.self, forKey: .totalAmount)
         reference = try container.decode(String.self, forKey: .reference)
         downloadUrl = try container.decode(URL.self, forKey: .downloadUrl)
         
@@ -52,7 +52,7 @@ public final class BoletoVoucherAction: Decodable {
     
     /// :nodoc:
     internal init(paymentMethodType: VoucherPaymentMethod,
-                  totalAmount: Payment.Amount,
+                  totalAmount: Amount,
                   reference: String,
                   expiresAt: Date,
                   downloadUrl: URL) {

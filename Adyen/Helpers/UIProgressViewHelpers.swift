@@ -6,7 +6,9 @@
 
 import UIKit
 
+/// :nodoc:
 extension UIProgressView {
+    
     public convenience init(style: ProgressViewStyle) {
         self.init()
         

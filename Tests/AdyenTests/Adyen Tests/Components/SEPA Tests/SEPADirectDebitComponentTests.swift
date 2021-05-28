@@ -22,7 +22,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
     
     func testLocalizationWithCustomTableName() {
         let method = SEPADirectDebitPaymentMethod(type: "test_type", name: "test_name")
-        let payment = Payment(amount: Payment.Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
+        let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
         let sut = SEPADirectDebitComponent(paymentMethod: method)
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
@@ -39,7 +39,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
 
     func testLocalizationWithZeroPayment() {
         let method = SEPADirectDebitPaymentMethod(type: "test_type", name: "test_name")
-        let payment = Payment(amount: Payment.Amount(value: 0, currencyCode: "EUR"), countryCode: "DE")
+        let payment = Payment(amount: Amount(value: 0, currencyCode: "EUR"), countryCode: "DE")
         let sut = SEPADirectDebitComponent(paymentMethod: method)
         sut.payment = payment
 
@@ -57,7 +57,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
     
     func testLocalizationWithCustomKeySeparator() {
         let method = SEPADirectDebitPaymentMethod(type: "test_type", name: "test_name")
-        let payment = Payment(amount: Payment.Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
+        let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
         let sut = SEPADirectDebitComponent(paymentMethod: method)
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")

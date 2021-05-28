@@ -12,18 +12,14 @@ class QiwiWalletComponentTests: XCTestCase {
     
     lazy var phoneExtensions = [PhoneExtension(value: "+1", countryCode: "US"), PhoneExtension(value: "+3", countryCode: "UK")]
     lazy var method = QiwiWalletPaymentMethod(type: "test_type", name: "test_name", phoneExtensions: phoneExtensions)
-    let payment = Payment(amount: Payment.Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
+    let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
     
     func testLocalizationWithCustomTableName() {
         let sut = QiwiWalletComponent(paymentMethod: method)
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         
-        let expectedSelectableValues = phoneExtensions.map {
-            PhoneExtensionPickerItem(identifier: $0.countryCode,
-                                     element: .init(title: "\($0.countryDisplayName) (\($0.value))",
-                                                    phoneExtension: $0.value))
-        }
+        let expectedSelectableValues = phoneExtensions.map { PhoneExtensionPickerItem(identifier: $0.countryCode, element: $0) }
         XCTAssertEqual(sut.phoneItem?.phonePrefixItem.selectableValues, expectedSelectableValues)
         
         XCTAssertEqual(sut.phoneItem?.title, localizedString(.phoneNumberTitle, sut.localizationParameters))
@@ -42,11 +38,7 @@ class QiwiWalletComponentTests: XCTestCase {
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         
-        let expectedSelectableValues = phoneExtensions.map {
-            PhoneExtensionPickerItem(identifier: $0.countryCode,
-                                     element: .init(title: "\($0.countryDisplayName) (\($0.value))",
-                                                    phoneExtension: $0.value))
-        }
+        let expectedSelectableValues = phoneExtensions.map { PhoneExtensionPickerItem(identifier: $0.countryCode, element: $0) }
         XCTAssertEqual(sut.phoneItem?.phonePrefixItem.selectableValues, expectedSelectableValues)
         
         XCTAssertEqual(sut.phoneItem?.title, localizedString(LocalizationKey(key: "adyen_phoneNumber_title"), sut.localizationParameters))

@@ -8,12 +8,12 @@ import Foundation
 
 /// An item in which a switch is toggled, producing a boolean value.
 /// :nodoc:
-public final class FormSwitchItem: FormValueItem<Bool, FormSwitchItemStyle> {
+public final class FormToggleItem: FormValueItem<Bool, FormToggleItemStyle> {
     
     /// Initializes the switch item.
     ///
     /// - Parameter style: The switch item style.
-    public init(style: FormSwitchItemStyle = FormSwitchItemStyle()) {
+    public init(style: FormToggleItemStyle = FormToggleItemStyle()) {
         super.init(value: false, style: style)
     }
     

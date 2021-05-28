@@ -65,7 +65,7 @@ internal struct BalanceCheckResponse: Response {
 
     internal let pspReference: String
 
-    internal let balance: Payment.Amount?
+    internal let balance: Amount?
 
-    internal let transactionLimit: Payment.Amount?
+    internal let transactionLimit: Amount?
 }

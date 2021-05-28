@@ -13,7 +13,7 @@ import XCTest
 class BasicPersonalInfoFormComponentTests: XCTestCase {
 
     lazy var method = SevenElevenPaymentMethod(type: "test_type", name: "test_name")
-    let payment = Payment(amount: Payment.Amount(value: 2, currencyCode: "IDR"), countryCode: "ID")
+    let payment = Payment(amount: Amount(value: 2, currencyCode: "IDR"), countryCode: "ID")
 
     func testLocalizationWithCustomTableName() {
         let sut = SevenElevenComponent(paymentMethod: method)

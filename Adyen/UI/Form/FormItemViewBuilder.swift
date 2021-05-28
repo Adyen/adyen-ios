@@ -10,10 +10,10 @@ import Foundation
 /// :nodoc:
 public struct FormItemViewBuilder {
     
-    /// Builds `FormSwitchItemView` from `FormSwitchItem`.
+    /// Builds `FormToggleItemView` from `FormToggleItem`.
     /// :nodoc:
-    public func build(with item: FormSwitchItem) -> FormItemView<FormSwitchItem> {
-        FormSwitchItemView(item: item)
+    public func build(with item: FormToggleItem) -> FormItemView<FormToggleItem> {
+        FormToggleItemView(item: item)
     }
     
     /// Builds `FormSplitItemView` from `FormSplitItem`.
@@ -30,7 +30,7 @@ public struct FormItemViewBuilder {
     
     /// Builds `FormPhoneExtensionPickerItemView` from `FormPhoneExtensionPickerItem`.
     /// :nodoc:
-    public func build(with item: FormPhoneExtensionPickerItem) -> BaseFormPickerItemView<PhoneExtensionViewModel> {
+    public func build(with item: FormPhoneExtensionPickerItem) -> BaseFormPickerItemView<PhoneExtension> {
         FormPhoneExtensionPickerItemView(item: item)
     }
 
@@ -74,7 +74,7 @@ public struct FormItemViewBuilder {
     
     /// Builds `FormVerticalStackItemView` from `FormAddressItem`.
     /// :nodoc:
-    public func build(with item: FullFormAddressItem) -> FormItemView<FullFormAddressItem> {
+    public func build(with item: FormAddressItem) -> FormItemView<FormAddressItem> {
         FormVerticalStackItemView(item: item)
     }
 

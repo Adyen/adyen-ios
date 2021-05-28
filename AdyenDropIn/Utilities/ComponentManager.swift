@@ -23,7 +23,7 @@ internal final class ComponentManager {
 
     private let partialPaymentEnabled: Bool
 
-    private let remainingAmount: Payment.Amount?
+    private let remainingAmount: Amount?
 
     private let order: PartialPaymentOrder?
     
@@ -31,7 +31,7 @@ internal final class ComponentManager {
                   configuration: DropInComponent.PaymentMethodsConfiguration,
                   style: DropInComponent.Style,
                   partialPaymentEnabled: Bool = true,
-                  remainingAmount: Payment.Amount? = nil,
+                  remainingAmount: Amount? = nil,
                   order: PartialPaymentOrder?) {
         self.paymentMethods = paymentMethods
         self.configuration = configuration

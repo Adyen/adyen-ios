@@ -7,6 +7,7 @@
 import Foundation
 import UIKit
 
+/// :nodoc:
 /// Contains the styling customization options for any views.
 public protocol ViewStyle {
     
@@ -15,6 +16,7 @@ public protocol ViewStyle {
     
 }
 
+/// :nodoc:
 /// Contains the styling customization options for views with acent color.
 public protocol TintableStyle: ViewStyle {
     

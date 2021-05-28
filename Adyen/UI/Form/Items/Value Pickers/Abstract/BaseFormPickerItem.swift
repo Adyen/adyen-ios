@@ -35,6 +35,7 @@ public struct BasePickerElement<ElementType: CustomStringConvertible>: PickerEle
 }
 
 /// Describes a picker item.
+/// :nodoc:
 open class BaseFormPickerItem<ElementType: CustomStringConvertible>: FormValueItem<BasePickerElement<ElementType>, FormTextItemStyle>,
     InputViewRequiringFormItem {
 

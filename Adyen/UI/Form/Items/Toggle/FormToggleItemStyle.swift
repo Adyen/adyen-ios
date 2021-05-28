@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 
 /// Contains the styling customization options for a switch item in a form.
-public struct FormSwitchItemStyle: FormValueItemStyle {
+public struct FormToggleItemStyle: FormValueItemStyle {
     
     /// The title style.
     public var title = TextStyle(font: .preferredFont(forTextStyle: .body),

@@ -22,6 +22,7 @@ public extension AdyenScope where Base: UIViewController {
     
 }
 
+/// :nodoc:
 extension UIResponder: AdyenCompatible {}
 
 extension AdyenScope where Base: UIResponder {

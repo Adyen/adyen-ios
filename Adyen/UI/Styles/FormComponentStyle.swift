@@ -21,8 +21,8 @@ public struct FormComponentStyle: TintableStyle {
     /// The text field style.
     public var textField = FormTextItemStyle()
     
-    /// The switch style.
-    public var `switch` = FormSwitchItemStyle()
+    /// The toggle style.
+    public var toggle = FormToggleItemStyle()
 
     /// The helper message style.
     public var hintLabel = TextStyle(font: .preferredFont(forTextStyle: .body),
@@ -67,26 +67,26 @@ public struct FormComponentStyle: TintableStyle {
     public var separatorColor: UIColor? {
         didSet {
             textField.separatorColor = textField.separatorColor ?? separatorColor
-            `switch`.separatorColor = `switch`.separatorColor ?? separatorColor
+            toggle.separatorColor = toggle.separatorColor ?? separatorColor
         }
     }
     
     /// Initializes the Form UI style.
     ///
     /// - Parameter textField: The text field style.
-    /// - Parameter switch: The switch style.
+    /// - Parameter toggle: The toggle style.
     /// - Parameter mainButton: The main button style.
     /// - Parameter secondaryButton: The secondary button style.
     /// - Parameter helper: The helper message style.
     /// - Parameter sectionHeader: The section header style.
     public init(textField: FormTextItemStyle,
-                switch: FormSwitchItemStyle,
+                toggle: FormToggleItemStyle,
                 mainButton: FormButtonItemStyle,
                 secondaryButton: FormButtonItemStyle,
                 helper: TextStyle,
                 sectionHeader: TextStyle) {
         self.textField = textField
-        self.switch = `switch`
+        self.toggle = toggle
         self.mainButtonItem = mainButton
         self.secondaryButtonItem = secondaryButton
         self.hintLabel = helper
@@ -96,15 +96,15 @@ public struct FormComponentStyle: TintableStyle {
     /// Initializes the Form UI style.
     ///
     /// - Parameter textField: The text field style.
-    /// - Parameter switch: The switch style.
+    /// - Parameter toggle: The toggle style.
     /// - Parameter mainButton: The main button style.
     /// - Parameter secondaryButton: The secondary button style.
     public init(textField: FormTextItemStyle,
-                switch: FormSwitchItemStyle,
+                toggle: FormToggleItemStyle,
                 mainButton: ButtonStyle,
                 secondaryButton: ButtonStyle) {
         self.textField = textField
-        self.switch = `switch`
+        self.toggle = toggle
         self.mainButtonItem = FormButtonItemStyle(button: mainButton)
         self.secondaryButtonItem = FormButtonItemStyle(button: secondaryButton)
     }
@@ -124,7 +124,7 @@ public struct FormComponentStyle: TintableStyle {
         secondaryButtonItem.button.title.color = tintColor
 
         textField = FormTextItemStyle(tintColor: tintColor)
-        `switch`.tintColor = tintColor
+        toggle.tintColor = tintColor
     }
     
 }

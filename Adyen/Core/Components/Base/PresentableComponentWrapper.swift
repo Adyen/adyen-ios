@@ -7,8 +7,8 @@
 import Foundation
 import UIKit
 
-/// :nodoc:
 /// A component that wraps any `Component` to make it a `PresentableComponent`.
+/// :nodoc:
 public final class PresentableComponentWrapper: PresentableComponent,
     Cancellable,
     FinalizableComponent,

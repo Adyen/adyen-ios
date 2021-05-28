@@ -237,7 +237,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
 
     // MARK: - Balance check
 
-    private func check(balance: Balance, toPay amount: Payment.Amount?) -> Result<BalanceChecker.Result, Swift.Error> {
+    private func check(balance: Balance, toPay amount: Amount?) -> Result<BalanceChecker.Result, Swift.Error> {
         guard let amount = amount else {
             AdyenAssertion.assertionFailure(message: Error.invalidPayment.localizedDescription)
             return .failure(Error.invalidPayment)
@@ -251,7 +251,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
 
     // MARK: - Ready to pay full amount
 
-    private func onReadyToPayFullAmount(remainingAmount: Payment.Amount, paymentData: PaymentComponentData) -> Result<Void, Swift.Error> {
+    private func onReadyToPayFullAmount(remainingAmount: Amount, paymentData: PaymentComponentData) -> Result<Void, Swift.Error> {
         AdyenAssertion.assert(message: "readyToSubmitComponentDelegate is nil",
                               condition: _isDropIn && readyToSubmitComponentDelegate == nil)
         stopLoading()
@@ -266,7 +266,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
     }
 
     private func showConfirmation(delegate: ReadyToSubmitPaymentComponentDelegate,
-                                  remainingAmount: Payment.Amount,
+                                  remainingAmount: Amount,
                                   paymentData: PaymentComponentData) {
         let lastFourDigits = String(numberItem.value.suffix(4))
         let footnote = localizedString(.partialPaymentRemainingBalance,

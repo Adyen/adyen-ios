@@ -13,19 +13,19 @@ import UIKit
 internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Localizable {
     
     private let paymentMethod: StoredCardPaymentMethod
-    private let amount: Payment.Amount?
+    private let amount: Amount?
 
     internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
     internal var completionHandler: Completion<Result<CardDetails, Error>>?
     internal var localizationParameters: LocalizationParameters?
     
-    internal init(paymentMethod: StoredCardPaymentMethod, publicKey: String, amount: Payment.Amount?) {
+    internal init(paymentMethod: StoredCardPaymentMethod, publicKey: String, amount: Amount?) {
         self.paymentMethod = paymentMethod
         self.cardPublicKeyProvider = CardPublicKeyProvider(cardPublicKey: publicKey)
         self.amount = amount
     }
     
-    internal init(paymentMethod: StoredCardPaymentMethod, clientKey: String, environment: Environment, amount: Payment.Amount?) {
+    internal init(paymentMethod: StoredCardPaymentMethod, clientKey: String, environment: Environment, amount: Amount?) {
         self.paymentMethod = paymentMethod
         self.cardPublicKeyProvider = CardPublicKeyProvider()
         self.amount = amount

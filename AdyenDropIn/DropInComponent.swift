@@ -16,7 +16,12 @@ import Adyen
 #endif
 import UIKit
 
-/// A component that handles the entire flow of payment selection and payment details entry.
+/**
+ A component that handles the entire flow of payment selection and payment details entry.
+
+ - SeeAlso:
+ [Implementation Reference](https://docs.adyen.com/online-payments/ios/drop-in)
+ */
 public final class DropInComponent: NSObject, PresentableComponent {
 
     private var configuration: PaymentMethodsConfiguration
@@ -140,7 +145,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
     private lazy var componentManager = createComponentManager(nil, nil)
 
     private func createComponentManager(_ order: PartialPaymentOrder?,
-                                        _ remainingAmount: Payment.Amount?) -> ComponentManager {
+                                        _ remainingAmount: Amount?) -> ComponentManager {
         ComponentManager(paymentMethods: paymentMethods,
                          configuration: configuration,
                          style: style,
@@ -252,7 +257,6 @@ public final class DropInComponent: NSObject, PresentableComponent {
         paymentInProgress = false
     }
 
-    /// :nodoc:
     private func stopLoading() {
         rootComponent.stopLoading()
         selectedPaymentComponent?.stopLoadingIfNeeded()
