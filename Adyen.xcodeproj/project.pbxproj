@@ -17,6 +17,8 @@
 		5A238C9F263BDEA200758FEF /* PreApplePayComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A238C9E263BDEA200758FEF /* PreApplePayComponentTests.swift */; };
 		5A27AB032636A07900EF6F89 /* LocalizationKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A27AB022636A07900EF6F89 /* LocalizationKey.swift */; };
 		5A4702182664E9440023F264 /* APIContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4702172664E9440023F264 /* APIContext.swift */; };
+		5A4633AA265FBAEB005FE0D8 /* VoucherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4633A9265FBAEB005FE0D8 /* VoucherView.swift */; };
+		5A4633B6265FBE88005FE0D8 /* VoucherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4633B5265FBE88005FE0D8 /* VoucherViewModel.swift */; };
 		5A545FC72642F77500724A87 /* ConfigurationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A545FC62642F77500724A87 /* ConfigurationViewModel.swift */; };
 		5A545FDC2643CF2400724A87 /* ConfigurationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A545FC62642F77500724A87 /* ConfigurationViewModel.swift */; };
 		5A545FE72643CF2700724A87 /* ConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67461F264262F000E9184D /* ConfigurationView.swift */; };
@@ -852,6 +854,8 @@
 		5A238C9E263BDEA200758FEF /* PreApplePayComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreApplePayComponentTests.swift; sourceTree = "<group>"; };
 		5A27AB022636A07900EF6F89 /* LocalizationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationKey.swift; sourceTree = "<group>"; };
 		5A4702172664E9440023F264 /* APIContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIContext.swift; sourceTree = "<group>"; };
+		5A4633A9265FBAEB005FE0D8 /* VoucherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherView.swift; sourceTree = "<group>"; };
+		5A4633B5265FBE88005FE0D8 /* VoucherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherViewModel.swift; sourceTree = "<group>"; };
 		5A545FC62642F77500724A87 /* ConfigurationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationViewModel.swift; sourceTree = "<group>"; };
 		5A54600E264433CD00724A87 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		5A54603E264A5CEC00724A87 /* BoletoComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoletoComponent.swift; sourceTree = "<group>"; };
@@ -3182,6 +3186,8 @@
 				F9B997C925C949AC00891084 /* VoucherCardLayer.swift */,
 				F95A78CC25C43C4F0032CF7E /* VoucherSeparatorView.swift */,
 				F95A78B825C4302A0032CF7E /* AbstractVoucherView.swift */,
+				5A4633A9265FBAEB005FE0D8 /* VoucherView.swift */,
+				5A4633B5265FBE88005FE0D8 /* VoucherViewModel.swift */,
 			);
 			path = Voucher;
 			sourceTree = "<group>";
@@ -4702,8 +4708,10 @@
 				F917617325A30B6A00D653BE /* ThreeDS2ClassicActionHandler.swift in Sources */,
 				F9175FB82594996000D653BE /* ThreeDS2Action.swift in Sources */,
 				F917615E25A30B6400D653BE /* AnyADYTransaction.swift in Sources */,
+				5A4633B6265FBE88005FE0D8 /* VoucherViewModel.swift in Sources */,
 				F97C855A25C1ABD700D7F85C /* VoucherCardView.swift in Sources */,
 				F97C84CD25C1761900D7F85C /* VoucherAction.swift in Sources */,
+				5A4633AA265FBAEB005FE0D8 /* VoucherView.swift in Sources */,
 				F97C853D25C1ABA400D7F85C /* GenericVoucherView.swift in Sources */,
 				5A64573F2626D2E2001824F0 /* QRCodeComponentStyle.swift in Sources */,
 				E73C54E425EBD2DC00B57758 /* BrowserComponent.swift in Sources */,

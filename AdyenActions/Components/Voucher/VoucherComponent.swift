@@ -70,15 +70,40 @@ public final class VoucherComponent: AnyVoucherActionHandler {
         viewControllerProvider.localizationParameters = localizationParameters
         viewControllerProvider.delegate = self
 
-        let viewController = viewControllerProvider.provide(with: action)
+        let view = VoucherView(model: viewModel())
+        let viewController = ADYViewController(view: view)
 
         if let presentationDelegate = presentationDelegate {
-            let presentableComponent = PresentableComponentWrapper(component: self, viewController: viewController)
+            let presentableComponent = PresentableComponentWrapper(
+                component: self,
+                viewController: viewController,
+                showSeparator: false
+            )
             presentationDelegate.present(component: presentableComponent)
         } else {
             let message = "PresentationDelegate is nil. Provide a presentation delegate to VoucherAction."
             AdyenAssertion.assertionFailure(message: message)
         }
+    }
+    
+    private func viewModel() -> VoucherView.Model {
+        let viewStyle = VoucherView.Model.Style(
+            actionButton: style.mainButton,
+            closeButton: style.secondaryButton,
+            amountLabel: style.amountLabel,
+            currencyLabel: style.currencyLabel,
+            logoCornerRounding: .fixed(5),
+            backgroundColor: style.backgroundColor
+        )
+        
+        return VoucherView.Model(
+            amount: "17.400",
+            currency: "$",
+            logoUrl: LogoURLProvider.logoURL(withName: "doku_indomaret", environment: apiContext.environment, size: .medium),
+            primaryButtonTitle: localizedString(.pixCopyButton, localizationParameters),
+            secondaryButtonTitle: localizedString(.boletoDownloadPdf, localizationParameters),
+            style: viewStyle
+        )
     }
 
 }

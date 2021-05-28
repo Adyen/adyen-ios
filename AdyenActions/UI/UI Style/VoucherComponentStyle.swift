@@ -10,6 +10,18 @@ import UIKit
 
 /// Contains the styling customization options for the voucher component.
 public struct VoucherComponentStyle: ViewStyle {
+    
+    /// The amount label style.
+    public var amountLabel = TextStyle(
+        font: .preferredFont(forTextStyle: .largeTitle),
+        color: UIColor.Adyen.componentLabel
+    )
+    
+    /// The currency label style.
+    public var currencyLabel = TextStyle(
+        font: .preferredFont(forTextStyle: .headline),
+        color: UIColor.Adyen.componentLabel
+    )
 
     /// The main button style.
     public var mainButton = ButtonStyle(title: TextStyle(font: .preferredFont(forTextStyle: .headline),
@@ -24,7 +36,7 @@ public struct VoucherComponentStyle: ViewStyle {
                                              background: UIColor.Adyen.componentBackground)
 
     /// :nodoc:
-    public var backgroundColor = UIColor.Adyen.secondaryComponentBackground
+    public var backgroundColor = UIColor.Adyen.componentBackground
 
     /// Initializes the voucher component style with the default style.
     public init() {}

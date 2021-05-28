@@ -20,6 +20,7 @@ public final class SubmitButton: UIControl {
         self.style = style
         super.init(frame: .zero)
         
+        translatesAutoresizingMaskIntoConstraints = false
         isAccessibilityElement = true
         accessibilityTraits = .button
         
@@ -51,7 +52,7 @@ public final class SubmitButton: UIControl {
     }()
     
     // MARK: - Title Label
-    
+     
     /// The title of the submit button.
     public var title: String? {
         didSet {
@@ -116,21 +117,26 @@ public final class SubmitButton: UIControl {
     private func configureConstraints() {
         backgroundView.adyen.anchor(inside: self)
         
+        let height = heightAnchor.constraint(equalToConstant: 50.0)
+        height.priority = .required
+        height.isActive = true
+        
         let constraints = [
-            activityIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            activityIndicatorView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            
-            titleLabel.topAnchor.constraint(greaterThanOrEqualTo: layoutMarginsGuide.topAnchor),
-            titleLabel.leadingAnchor.constraint(greaterThanOrEqualTo: layoutMarginsGuide.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.trailingAnchor),
-            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.bottomAnchor),
-            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            
-            heightAnchor.constraint(greaterThanOrEqualToConstant: 50.0)
-        ]
+            titleLabel.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
+        ].map { (const: NSLayoutConstraint) -> NSLayoutConstraint in
+            const.priority = .defaultHigh
+            return const
+        }
         
         NSLayoutConstraint.activate(constraints)
+        NSLayoutConstraint.activate([
+            activityIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            activityIndicatorView.centerYAnchor.constraint(equalTo: centerYAnchor)
+            
+        ])
     }
     
     // MARK: - State

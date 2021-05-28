@@ -39,7 +39,6 @@ internal final class FormButtonItemView: FormItemView<FormButtonItem> {
         }
         
         submitButton.preservesSuperviewLayoutMargins = true
-        submitButton.translatesAutoresizingMaskIntoConstraints = false
         return submitButton
     }()
     

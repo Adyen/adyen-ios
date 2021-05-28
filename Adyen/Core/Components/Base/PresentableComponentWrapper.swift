@@ -26,13 +26,17 @@ public final class PresentableComponentWrapper: PresentableComponent,
     /// :nodoc:
     public var requiresModalPresentation: Bool = true
     
+    /// :nodoc:
+    public var showSeparator: Bool = true
+    
     /// Initializes the wrapper component.
     ///
     /// - Parameter component: The wrapped component.
     /// - Parameter viewController: The `ViewController` used as the UI of the `PresentableComponent`.
-    public init(component: Component, viewController: UIViewController) {
+    public init(component: Component, viewController: UIViewController, showSeparator: Bool = true) {
         self.component = component
         self.viewController = viewController
+        self.showSeparator = showSeparator
     }
     
     /// :nodoc:

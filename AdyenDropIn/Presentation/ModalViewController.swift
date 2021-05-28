@@ -18,6 +18,8 @@ internal final class ModalViewController: UIViewController {
     internal weak var delegate: ViewControllerDelegate?
 
     private let navigationBarHeight: CGFloat = 63.0
+    
+    private let showSeparator: Bool
 
     // MARK: - Initializing
     
@@ -29,10 +31,12 @@ internal final class ModalViewController: UIViewController {
     /// - Parameter isDropInRoot: Defines if this controller is a root controller of DropIn.
     internal init(rootViewController: UIViewController,
                   style: NavigationStyle = NavigationStyle(),
+                  showSeparator: Bool = true,
                   cancelButtonHandler: ((Bool) -> Void)? = nil) {
-        self.cancelButtonHandler = cancelButtonHandler
         self.innerController = rootViewController
+        self.showSeparator = showSeparator
         self.style = style
+        self.cancelButtonHandler = cancelButtonHandler
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -92,7 +96,7 @@ internal final class ModalViewController: UIViewController {
     
     internal lazy var separator: UIView = {
         let separator = UIView(frame: .zero)
-        separator.backgroundColor = style.separatorColor ?? UIColor.Adyen.componentSeparator
+        separator.backgroundColor = separatorColor()
         return separator
     }()
     
@@ -132,5 +136,13 @@ internal final class ModalViewController: UIViewController {
             toolbar.heightAnchor.constraint(equalToConstant: toolbarHeight),
             separator.heightAnchor.constraint(equalToConstant: separatorHeight)
         ])
+    }
+    
+    private func separatorColor() -> UIColor {
+        if showSeparator {
+            return style.separatorColor ?? UIColor.Adyen.componentSeparator
+        } else {
+            return style.backgroundColor
+        }
     }
 }

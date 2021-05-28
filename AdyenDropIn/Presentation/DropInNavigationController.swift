@@ -81,6 +81,7 @@ internal final class DropInNavigationController: UINavigationController, Keyboar
     private func wrapInModalController(component: PresentableComponent, isRoot: Bool) -> WrapperViewController {
         let modal = ModalViewController(rootViewController: component.viewController,
                                         style: style,
+                                        showSeparator: component.showSeparator,
                                         cancelButtonHandler: { [weak self] in self?.cancelHandler?($0, component) })
         modal.isRoot = isRoot
         let container = WrapperViewController(child: modal)
