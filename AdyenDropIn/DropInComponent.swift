@@ -151,7 +151,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
     
     private lazy var rootComponent: PresentableComponent & ComponentLoader = {
         if let preselectedComponents = componentManager.storedComponents.first {
-            return preselectedPaymentMethodComponent(for: preselectedComponents)
+            return preselectedPaymentMethodComponent(for: preselectedComponents, onCancel: nil)
         } else {
             return paymentMethodListComponent(onCancel: nil)
         }
@@ -187,7 +187,8 @@ public final class DropInComponent: NSObject, PresentableComponent {
         return component
     }
     
-    private func preselectedPaymentMethodComponent(for paymentComponent: PaymentComponent) -> PreselectedPaymentMethodComponent {
+    private func preselectedPaymentMethodComponent(for paymentComponent: PaymentComponent,
+                                                   onCancel: (() -> Void)?) -> PreselectedPaymentMethodComponent {
         let component = PreselectedPaymentMethodComponent(component: paymentComponent,
                                                           title: title,
                                                           style: style.formComponent,
@@ -195,6 +196,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
         component.payment = configuration.payment
         component.localizationParameters = configuration.localizationParameters
         component.delegate = self
+        component.onCancel = onCancel
         component._isDropIn = true
         component.environment = environment
         return component
@@ -357,8 +359,11 @@ extension DropInComponent: FinalizableComponent {
 extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
 
     /// :nodoc:
-    public func showConfirmation(for component: InstantPaymentComponent) {
-        let newRoot = preselectedPaymentMethodComponent(for: component)
+    public func showConfirmation(for component: InstantPaymentComponent, with order: PartialPaymentOrder?) {
+        let newRoot = preselectedPaymentMethodComponent(for: component, onCancel: { [weak self] in
+            guard let order = order else { return }
+            self?.partialPaymentDelegate?.cancelOrder(order)
+        })
         navigationController.present(root: newRoot)
         rootComponent = newRoot
     }

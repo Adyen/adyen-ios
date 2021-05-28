@@ -74,7 +74,6 @@ public final class GiftCardComponent: PartialPaymentComponent,
     // MARK: - Update environment
 
     private func updateEnvironment() {
-        environment.clientKey = clientKey
         cardPublicKeyProvider.environment = environment
         cardPublicKeyProvider.clientKey = clientKey
     }
@@ -281,7 +280,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
         let paymentMethod = CustomDisplayablePaymentMethod(paymentMethod: giftCardPaymentMethod,
                                                            displayInformation: displayInformation)
         let component = InstantPaymentComponent(paymentMethod: paymentMethod, paymentData: paymentData)
-        delegate.showConfirmation(for: component)
+        delegate.showConfirmation(for: component, with: paymentData.order)
     }
 
     // MARK: - Partial Payment flow

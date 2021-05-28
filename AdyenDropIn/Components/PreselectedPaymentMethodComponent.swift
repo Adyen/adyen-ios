@@ -22,7 +22,8 @@ internal protocol PreselectedPaymentMethodComponentDelegate: AnyObject {
 internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     PresentableComponent,
     PaymentAwareComponent,
-    Localizable {
+    Localizable,
+    Cancellable {
     
     private let title: String
     private let defaultComponent: PaymentComponent
@@ -38,6 +39,9 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     
     /// Describes the list item's UI style.
     internal let listItemStyle: ListItemStyle
+
+    /// Call back when the list is dismissed.
+    internal var onCancel: (() -> Void)?
     
     /// Initializes the list component.
     ///
@@ -54,6 +58,12 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
         self.style = style
         self.listItemStyle = listItemStyle
         self.defaultComponent = component
+    }
+
+    // MARK: - Cancellable
+
+    internal func didCancel() {
+        onCancel?()
     }
     
     // MARK: - View Controller

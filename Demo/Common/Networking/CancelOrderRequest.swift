@@ -40,7 +40,11 @@ internal struct CancelOrderRequest: Request {
 
 internal struct CancelOrderResponse: Response {
 
-    internal let resultCode: PaymentsResponse.ResultCode
+    internal enum ResultCode: String, Decodable {
+        case received = "Received"
+    }
+
+    internal let resultCode: ResultCode
 
     internal let pspReference: String
 }

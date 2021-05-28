@@ -342,7 +342,8 @@ class GiftCardComponentTests: XCTestCase {
         }
 
         let onShowConfirmationExpectation = expectation(description: "Expect readyToSubmitPaymentComponentDelegate.onShowConfirmation to be called.")
-        readyToSubmitPaymentComponentDelegate.onShowConfirmation = { _ in
+        readyToSubmitPaymentComponentDelegate.onShowConfirmation = { _, order in
+            XCTAssertNil(order)
             onShowConfirmationExpectation.fulfill()
         }
 
@@ -400,7 +401,7 @@ class GiftCardComponentTests: XCTestCase {
             onSubmitExpectation.fulfill()
         }
 
-        readyToSubmitPaymentComponentDelegate.onShowConfirmation = { _ in
+        readyToSubmitPaymentComponentDelegate.onShowConfirmation = {_, _ in
             XCTFail("readyToSubmitPaymentComponentDelegate.onShowConfirmation must not be called")
         }
 
@@ -457,7 +458,7 @@ class GiftCardComponentTests: XCTestCase {
             onSubmitExpectation.fulfill()
         }
 
-        readyToSubmitPaymentComponentDelegate.onShowConfirmation = { _ in
+        readyToSubmitPaymentComponentDelegate.onShowConfirmation = { _, _ in
             XCTFail("readyToSubmitPaymentComponentDelegate.onShowConfirmation must not be called")
         }
 
@@ -513,7 +514,7 @@ class GiftCardComponentTests: XCTestCase {
             XCTFail("delegateMock.onDidSubmit must not be called")
         }
 
-        readyToSubmitPaymentComponentDelegate.onShowConfirmation = { _ in
+        readyToSubmitPaymentComponentDelegate.onShowConfirmation = { _, _ in
             XCTFail("readyToSubmitPaymentComponentDelegate.onShowConfirmation must not be called")
         }
 

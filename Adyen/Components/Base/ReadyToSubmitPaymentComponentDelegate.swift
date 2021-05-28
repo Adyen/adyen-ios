@@ -11,5 +11,8 @@ public protocol ReadyToSubmitPaymentComponentDelegate: AnyObject {
 
     /// Called when the payment component is ready to submit shopper details,
     /// and the delegate needs to show a confirmation screen to the shopper.
-    func showConfirmation(for component: InstantPaymentComponent)
+    /// - Parameters:
+    ///   - component: The `InstantPaymentComponent`
+    ///   - order: The partial payment order if any.
+    func showConfirmation(for component: InstantPaymentComponent, with order: PartialPaymentOrder?)
 }
