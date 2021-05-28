@@ -237,7 +237,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
 
     // MARK: - Balance check
 
-    private func check(balance: Balance, toPay amount: Payment.Amount?) -> Result<BalanceChecker.Result, Swift.Error> {
+    private func check(balance: Balance, toPay amount: Amount?) -> Result<BalanceChecker.Result, Swift.Error> {
         guard let amount = amount else {
             AdyenAssertion.assertionFailure(message: Error.invalidPayment.localizedDescription)
             return .failure(Error.invalidPayment)

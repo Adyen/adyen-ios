@@ -88,7 +88,7 @@ extension PaymentAwareComponent {
     }
 
     /// :nodoc:
-    public var amountToPay: Payment.Amount? {
+    public var amountToPay: Amount? {
         order?.remainingAmount ?? payment?.amount
     }
 }

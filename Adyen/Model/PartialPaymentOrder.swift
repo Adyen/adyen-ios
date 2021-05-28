@@ -32,7 +32,7 @@ public struct PartialPaymentOrder: Codable, Equatable {
     public let reference: String?
 
     /// The initial amount of the order.
-    public let amount: Payment.Amount?
+    public let amount: Amount?
 
     /// The remaining amount to be paid.
     public let remainingAmount: Amount?

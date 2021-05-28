@@ -91,7 +91,7 @@ public struct PaymentComponentData {
     }
 
     /// :nodoc:
-    public func replacingAmount(with amount: Payment.Amount) -> PaymentComponentData {
+    public func replacingAmount(with amount: Amount) -> PaymentComponentData {
         PaymentComponentData(paymentMethodDetails: self.paymentMethod,
                              amount: amount,
                              order: self.order,
