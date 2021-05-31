@@ -16,12 +16,29 @@ private extension Encodable {
     
 }
 
+/// :nodoc:
+public protocol OpaqueEncodable: Encodable {
+
+    /// :nodoc:
+    /// Provides a concrete and opaque encodable object.
+    var encodable: AnyEncodable { get }
+}
+
+/// :nodoc:
+public extension OpaqueEncodable {
+
+    /// :nodoc:
+    var encodable: AnyEncodable {
+        AnyEncodable(value: self)
+    }
+}
+
 /// Provides a concrete encodable object to easily encode any `Encodable` conforming object, without exposing the concrete type.
 /// :nodoc:
 public struct AnyEncodable: Encodable {
     
     private let value: Encodable
-    
+
     internal init(value: Encodable) {
         self.value = value
     }
