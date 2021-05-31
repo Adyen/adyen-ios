@@ -16,10 +16,10 @@ public protocol FormItemInjector {
 }
 
 /// Injects a custom `FormItem` into a `FormViewController`.
-/// :nodoc
+/// :nodoc:
 public struct CustomFormItemInjector<T: FormItem>: FormItemInjector {
     
-    /// :nodoc
+    /// :nodoc:
     private let item: T
     
     /// Initializes a `CustomFormItemInjector` with a custom `FormItem`
