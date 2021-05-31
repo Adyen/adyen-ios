@@ -61,6 +61,7 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
                 instructionsUrl: action.instructionsUrl,
                 reference: action.reference,
                 shareButton: .saveImage,
+                action: action,
                 fields: fields
             )
         )
@@ -76,6 +77,7 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
                 instructionsUrl: boletoAction.downloadUrl.absoluteString,
                 reference: boletoAction.reference,
                 shareButton: .download(boletoAction.downloadUrl),
+                action: boletoAction,
                 fields: createBoletoVoucherfields(for: boletoAction)
             )
         )
@@ -95,6 +97,7 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
                              instructionsUrl: String,
                              reference: String,
                              shareButton: AbstractVoucherView.Model.ShareButton,
+                             action: OpaqueEncodable,
                              fields: [GenericVoucherView.VoucherField]) -> GenericVoucherView.Model {
         let amountString = AmountFormatter.formatted(amount: totalAmount.value,
                                                      currencyCode: totalAmount.currencyCode)
@@ -122,6 +125,7 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
             shareButton: shareButton,
             shareButtonTitle: localizedString(shareButtonCopy(shareButton), localizationParameters),
             doneButtonTitle: localizedString(.voucherFinish, localizationParameters),
+            action: action,
             style: baseStyle
         )
         return GenericVoucherView.Model(text: text,

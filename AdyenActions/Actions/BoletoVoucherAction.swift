@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 
 /// Describes an action in which a Boleto voucher is presented to the shopper.
-public final class BoletoVoucherAction: Decodable {
+public final class BoletoVoucherAction: Codable, OpaqueEncodable {
     
     /// The `paymentMethodType` for which the voucher is presented.
     public let paymentMethodType: VoucherPaymentMethod
@@ -48,6 +48,23 @@ public final class BoletoVoucherAction: Decodable {
             let context = DecodingError.Context(codingPath: codingPath, debugDescription: "expiresAt is in the wrong format")
             throw DecodingError.dataCorrupted(context)
         }
+    }
+
+    /// :nodoc:
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(paymentMethodType, forKey: .paymentMethodType)
+        try container.encode(totalAmount, forKey: .totalAmount)
+        try container.encode(reference, forKey: .reference)
+        try container.encode(downloadUrl, forKey: .downloadUrl)
+
+        let dateFormatter = ISO8601DateFormatter()
+        dateFormatter.formatOptions = [
+            .withYear, .withMonth, .withDay, .withTime,
+            .withDashSeparatorInDate, .withColonSeparatorInTime
+        ]
+
+        try container.encode(dateFormatter.string(from: self.expiresAt), forKey: .expiresAt)
     }
     
     /// :nodoc:

@@ -107,6 +107,8 @@ extension VoucherComponent: VoucherViewDelegate {
             sourceView: voucherView
         )
     }
+
+    internal func addToAppleWallet(action: OpaqueEncodable, presentingViewController: UIViewController) {}
     
     private func presentSharePopover(
         with item: Any,
