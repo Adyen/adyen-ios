@@ -46,6 +46,16 @@ custom_categories:
       - BLIKDetails
       - BLIKPaymentMethod
       - StoredBLIKPaymentMethod
+  - name: Boleto Component
+    children:
+      - BoletoComponent
+      - BoletoPaymentMethod
+      - BoletoDetails
+  - name: Gift Card Component
+    children:
+      - GiftCardComponent
+      - GiftCardDetails
+      - GiftCardPaymentMethod
   - name: Await Action Component
     children:
       - AwaitComponent
@@ -141,6 +151,7 @@ custom_categories:
       - PresentationDelegate
       - PartialPaymentDelegate
       - PartialPaymentComponent
+      - ReadyToSubmitPaymentComponentDelegate
       - ActionComponent
       - ActionComponentData
       - ActionComponentDelegate
@@ -150,6 +161,7 @@ custom_categories:
       - PaymentMethodDetails
       - AdditionalDetails
       - ComponentError
+      - PartialPaymentError
       - SecuredViewController
       - Localizable
   - name: Models
@@ -167,12 +179,17 @@ custom_categories:
       - ApplePayPaymentMethod
       - BCMCPaymentMethod
       - SEPADirectDebitPaymentMethod
+      - EContextPaymentMethod
       - ShopperInteraction
       - DisplayInformation
       - Payment
       - Action
       - RedirectAction
       - GenericVoucherAction
+      - BoletoVoucherAction
+      - DokuVoucherAction
+      - EContextATMVoucherAction
+      - EContextStoresVoucherAction
       - ThreeDS2Action
       - SDKAction
       - ThreeDS2FingerprintAction
@@ -184,6 +201,10 @@ custom_categories:
       - ShopperName
       - PostalAddress
       - ShopperInformation
+      - PrefilledShopperInformation
+      - PartialPaymentOrder
+      - Amount
+      - Balance
       - LocalizationParameters
   - name: Styling
     children:
@@ -195,6 +216,7 @@ custom_categories:
       - FormButtonItemStyle
       - ListComponentStyle
       - ListSectionHeaderStyle
+      - ListSectionFooterStyle
       - ListItemStyle
       - AwaitComponentStyle
       - RedirectComponentStyle
