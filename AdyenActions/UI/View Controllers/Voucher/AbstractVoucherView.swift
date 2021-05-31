@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import PassKit
 import UIKit
 
 internal protocol VoucherViewDelegate: AnyObject {
@@ -14,6 +15,8 @@ internal protocol VoucherViewDelegate: AnyObject {
     func saveAsImage(voucherView: UIView, presentingViewController: UIViewController)
     
     func download(url: URL, voucherView: UIView, presentingViewController: UIViewController)
+
+    func addToAppleWallet(action: OpaqueEncodable, presentingViewController: UIViewController)
 }
 
 internal class AbstractVoucherView: UIView, Localizable {
@@ -37,6 +40,8 @@ internal class AbstractVoucherView: UIView, Localizable {
         internal let shareButtonTitle: String
 
         internal let doneButtonTitle: String
+
+        internal let action: OpaqueEncodable
 
         internal let style: Style
 
@@ -72,6 +77,12 @@ internal class AbstractVoucherView: UIView, Localizable {
         return VoucherCardView(model: model.separatorModel,
                                topView: topView,
                                bottomView: bottomView)
+    }()
+
+    private lazy var appleWalletButton: UIButton = {
+        let button = PKAddPassButton(addPassButtonStyle: .black)
+        button.addTarget(self, action: #selector(self.appleWalletButtonPressed), for: .touchUpInside)
+        return button
     }()
 
     private lazy var saveButton: UIButton = {
@@ -119,6 +130,7 @@ internal class AbstractVoucherView: UIView, Localizable {
         addVoucherView()
         addShareButton()
         addDoneButton()
+        addAppleWalletButton()
     }
 
     @available(*, unavailable)
@@ -167,10 +179,18 @@ internal class AbstractVoucherView: UIView, Localizable {
 
     private func addDoneButton() {
         addSubview(doneButton)
-        doneButton.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor, constant: -24).isActive = true
+        doneButton.bottomAnchor.constraint(equalTo: appleWalletButton.topAnchor, constant: -24).isActive = true
         doneButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 18).isActive = true
         doneButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -18).isActive = true
         doneButton.topAnchor.constraint(equalTo: saveButton.bottomAnchor, constant: 16).isActive = true
+    }
+
+    private func addAppleWalletButton() {
+        addSubview(appleWalletButton)
+        appleWalletButton.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor, constant: -24).isActive = true
+        appleWalletButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 18).isActive = true
+        appleWalletButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -18).isActive = true
+//        appleWalletButton.topAnchor.constraint(equalTo: saveButton.bottomAnchor, constant: 16).isActive = true
     }
 
     @objc private func shareVoucher() {
@@ -180,6 +200,10 @@ internal class AbstractVoucherView: UIView, Localizable {
         case let .download(url):
             delegate?.download(url: url, voucherView: voucherView, presentingViewController: fakeViewController)
         }
+    }
+
+    @objc private func appleWalletButtonPressed() {
+        delegate?.addToAppleWallet(action: model.action, presentingViewController: fakeViewController)
     }
 
     @objc private func done() {
