@@ -7,16 +7,7 @@
 import Foundation
 
 /// A component provides payment method-specific UI and handling.
-public protocol Component: AnyObject {
-    
-    /// Defines the environment used to make networking requests.
-    var environment: Environment { get set }
-    
-    /// The client key that corresponds to the webservice user you will use for initiating the payment.
-    /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
-    var clientKey: String? { get set }
-    
-}
+public protocol Component: APIContextAware { }
 
 /// :nodoc:
 extension Component {
@@ -50,38 +41,6 @@ public protocol FinalizableComponent: Component {
 }
 
 public extension Component {
-    
-    /// :nodoc:
-    var environment: Environment {
-        get {
-            guard let value = objc_getAssociatedObject(self, &AssociatedKeys.environment) as? Environment else {
-                return Environment.live
-            }
-            return value
-        }
-        set {
-            var newValue = newValue
-            newValue.clientKey = clientKey
-            objc_setAssociatedObject(self, &AssociatedKeys.environment, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-    }
-    
-    /// :nodoc:
-    var clientKey: String? {
-        get {
-            objc_getAssociatedObject(self, &AssociatedKeys.clientKey) as? String
-        }
-        set {
-            if let newValue = newValue, !ClientKeyValidator().isValid(newValue) {
-                AdyenAssertion.assertionFailure(message: """
-                The key you have provided to \(String(describing: self)) is not a valid client key.
-                Check https://docs.adyen.com/user-management/client-side-authentication for more information.
-                """)
-            }
-            objc_setAssociatedObject(self, &AssociatedKeys.clientKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            environment.clientKey = newValue
-        }
-    }
     
     /// :nodoc:
     var _isDropIn: Bool { // swiftlint:disable:this identifier_name

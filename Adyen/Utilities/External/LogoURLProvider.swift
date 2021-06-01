@@ -10,11 +10,11 @@ import UIKit
 /// Struct with helper functions to build logo URL's.
 public final class LogoURLProvider {
 
-    private let environment: Environment
+    private let environment: AnyAPIEnvironment
 
     /// Create new instance of LogoURLProvider.
     /// - Parameter environment: The environment to reach out for logos.
-    public init(environment: Environment) {
+    public init(environment: AnyAPIEnvironment) {
         self.environment = environment
     }
 
@@ -52,7 +52,7 @@ public final class LogoURLProvider {
     /// - Parameter environment: The environemnt to be used.
     /// - Returns: The URL for the payment method logo.
     public static func logoURL(for paymentMethod: PaymentMethod,
-                               environment: Environment,
+                               environment: AnyAPIEnvironment,
                                size: Size = .small) -> URL {
         logoURL(withName: paymentMethod.displayInformation.logoName,
                 environment: environment,
@@ -65,7 +65,7 @@ public final class LogoURLProvider {
     /// - Parameter paymentMethod: The issuer payment method.
     /// - Parameter environment: The environemnt to be used.
     /// - Returns: The URL for the issuer logo.
-    public static func logoURL(for issuer: IssuerListPaymentMethod.Issuer, paymentMethod: IssuerListPaymentMethod, environment: Environment) -> URL {
+    public static func logoURL(for issuer: IssuerListPaymentMethod.Issuer, paymentMethod: IssuerListPaymentMethod, environment: AnyAPIEnvironment) -> URL {
         LogoURLProvider(environment: environment).url(for: [paymentMethod.displayInformation.logoName, issuer.identifier])
     }
     
@@ -75,7 +75,7 @@ public final class LogoURLProvider {
     /// - Parameter environment: The environemnt to be used.
     /// - Returns: The URL for the named resource logo.
     public static func logoURL(withName name: String,
-                               environment: Environment,
+                               environment: AnyAPIEnvironment,
                                size: Size = .small) -> URL {
         LogoURLProvider(environment: environment).url(for: [name], size: size)
     }

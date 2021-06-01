@@ -18,9 +18,6 @@ public enum ThreeDS2ComponentError: Error {
 
     /// Indicates that the Checkout API returned an unexpected `Action` during processing the 3DS2 flow.
     case unexpectedAction
-
-    /// ClientKey is required for `ThreeDS2Component` to work, and this error is thrown in case its nil.
-    case missingClientKey
     
 }
 
@@ -30,6 +27,9 @@ internal protocol AnyRedirectComponent: ActionComponent {
 
 /// Handles the 3D Secure 2 fingerprint and challenge.
 public final class ThreeDS2Component: ActionComponent {
+    
+    /// :nodoc:
+    public let apiContext: AnyAPIContext
 
     /// The appearance configuration of the 3D Secure 2 challenge UI.
     public let appearanceConfiguration = ADYAppearanceConfiguration()
@@ -46,7 +46,9 @@ public final class ThreeDS2Component: ActionComponent {
     /// Initializes the 3D Secure 2 component.
     ///
     /// - Parameter redirectComponentStyle: `RedirectComponent` style
-    public init(redirectComponentStyle: RedirectComponentStyle? = nil) {
+    public init(apiContext: AnyAPIContext,
+                redirectComponentStyle: RedirectComponentStyle? = nil) {
+        self.apiContext = apiContext
         self.redirectComponentStyle = redirectComponentStyle
     }
 
@@ -57,14 +59,14 @@ public final class ThreeDS2Component: ActionComponent {
     /// - Parameter redirectComponent: The redirect component.
     /// - Parameter redirectComponentStyle: `RedirectComponent` style.
     /// :nodoc:
-    internal convenience init(threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler,
+    internal convenience init(apiContext: AnyAPIContext,
+                              threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler,
                               threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler,
                               redirectComponent: AnyRedirectComponent,
                               redirectComponentStyle: RedirectComponentStyle? = nil) {
-        self.init(redirectComponentStyle: redirectComponentStyle)
+        self.init(apiContext: redirectComponent.apiContext, redirectComponentStyle: redirectComponentStyle)
         self.threeDS2CompactFlowHandler = threeDS2CompactFlowHandler
         self.threeDS2ClassicFlowHandler = threeDS2ClassicFlowHandler
-        self.redirectComponent = redirectComponent
     }
 
     // MARK: - 3D Secure 2 action
@@ -148,32 +150,26 @@ public final class ThreeDS2Component: ActionComponent {
     }
 
     private lazy var threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler = {
-        let handler = ThreeDS2CompactActionHandler(appearanceConfiguration: appearanceConfiguration)
+        let handler = ThreeDS2CompactActionHandler(apiContext: apiContext, appearanceConfiguration: appearanceConfiguration)
 
         handler._isDropIn = _isDropIn
-        handler.environment = environment
-        handler.clientKey = clientKey
 
         return handler
     }()
 
     private lazy var threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler = {
-        let handler = ThreeDS2ClassicActionHandler(appearanceConfiguration: appearanceConfiguration)
+        let handler = ThreeDS2ClassicActionHandler(apiContext: apiContext, appearanceConfiguration: appearanceConfiguration)
 
         handler._isDropIn = _isDropIn
-        handler.environment = environment
-        handler.clientKey = clientKey
 
         return handler
     }()
 
     private lazy var redirectComponent: AnyRedirectComponent = {
-        let component = RedirectComponent(style: redirectComponentStyle)
+        let component = RedirectComponent(apiContext: apiContext, style: redirectComponentStyle)
 
         component.delegate = self
         component._isDropIn = _isDropIn
-        component.environment = environment
-        component.clientKey = clientKey
         component.presentationDelegate = presentationDelegate
 
         return component

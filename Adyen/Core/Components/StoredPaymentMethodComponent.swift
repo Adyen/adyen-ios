@@ -11,14 +11,19 @@ import UIKit
 public final class StoredPaymentMethodComponent: PaymentComponent, PresentableComponent, Localizable {
 
     /// :nodoc:
+    public let apiContext: AnyAPIContext
+    
+    /// :nodoc:
     public var paymentMethod: PaymentMethod { storedPaymentMethod }
 
     /// :nodoc:
     public weak var delegate: PaymentComponentDelegate?
 
     /// :nodoc:
-    public init(paymentMethod: StoredPaymentMethod) {
+    public init(paymentMethod: StoredPaymentMethod,
+                apiContext: AnyAPIContext) {
         self.storedPaymentMethod = paymentMethod
+        self.apiContext = apiContext
     }
     
     private let storedPaymentMethod: StoredPaymentMethod
@@ -27,7 +32,11 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
 
     /// :nodoc:
     public lazy var viewController: UIViewController = {
-        Analytics.sendEvent(component: storedPaymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
+        Analytics.sendEvent(
+            component: storedPaymentMethod.type,
+            flavor: _isDropIn ? .dropin : .components,
+            environment: apiContext.environment
+        )
         
         let displayInformation = storedPaymentMethod.localizedDisplayInformation(using: localizationParameters)
         let alertController = UIAlertController(title: localizedString(.dropInStoredTitle,

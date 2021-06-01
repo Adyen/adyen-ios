@@ -7,7 +7,7 @@
 import Adyen
 import Foundation
 
-internal enum DemoServerEnvironment: String, APIEnvironment, CaseIterable {
+internal enum DemoServerEnvironment: String, AnyAPIEnvironment, CaseIterable {
     
     case beta, test, local
     

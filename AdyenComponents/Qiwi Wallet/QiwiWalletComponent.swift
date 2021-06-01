@@ -17,11 +17,14 @@ public final class QiwiWalletComponent: AbstractPersonalInformationComponent {
     ///
     /// - Parameter paymentMethod: The Qiwi Wallet payment method.
     /// - Parameter style: The Component's UI style.
-    public init(paymentMethod: QiwiWalletPaymentMethod, style: FormComponentStyle = FormComponentStyle()) {
+    public init(paymentMethod: QiwiWalletPaymentMethod,
+                apiContext: AnyAPIContext,
+                style: FormComponentStyle = FormComponentStyle()) {
         self.qiwiWalletPaymentMethod = paymentMethod
         let configuration = Configuration(fields: [.phone])
         super.init(paymentMethod: paymentMethod,
                    configuration: configuration,
+                   apiContext: apiContext,
                    style: style)
     }
 

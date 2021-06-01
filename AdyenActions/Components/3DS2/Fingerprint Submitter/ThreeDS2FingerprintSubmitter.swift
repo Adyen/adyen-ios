@@ -16,28 +16,26 @@ internal protocol AnyThreeDS2FingerprintSubmitter {
 }
 
 /// :nodoc:
-internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitter, Component {
+internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitter {
+    
+    /// :nodoc:
+    private let apiClient: APIClientProtocol
+    
+    /// :nodoc:
+    private let apiContext: AnyAPIContext
 
     /// :nodoc:
-    private lazy var apiClient: APIClientProtocol = APIClient(environment: environment)
-
-    /// :nodoc:
-    internal init(apiClient: APIClientProtocol? = nil) {
-        if let apiClient = apiClient {
-            self.apiClient = apiClient
-        }
+    internal init(apiContext: AnyAPIContext, apiClient: APIClientProtocol? = nil) {
+        self.apiContext = apiContext
+        self.apiClient = apiClient ?? APIClient(apiContext: apiContext)
     }
 
     /// :nodoc:
     internal func submit(fingerprint: String,
                          paymentData: String?,
                          completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Swift.Error>) -> Void) {
-        guard let clientKey = clientKey else {
-            AdyenAssertion.assertionFailure(message: "Client key is missing.")
-            completionHandler(.failure(ThreeDS2ComponentError.missingClientKey))
-            return
-        }
-        let request = Submit3DS2FingerprintRequest(clientKey: clientKey,
+
+        let request = Submit3DS2FingerprintRequest(clientKey: apiContext.clientKey,
                                                    fingerprint: fingerprint,
                                                    paymentData: paymentData)
 

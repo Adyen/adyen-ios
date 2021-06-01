@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 import UIKit
 
-internal protocol AnyVoucherViewControllerProvider: Component, Localizable {
+internal protocol AnyVoucherViewControllerProvider: Localizable {
 
     var style: VoucherComponentStyle { get }
 
@@ -24,9 +24,12 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
     internal var localizationParameters: LocalizationParameters?
 
     internal weak var delegate: VoucherViewDelegate?
+    
+    private let environment: AnyAPIEnvironment
 
-    internal init(style: VoucherComponentStyle) {
+    internal init(style: VoucherComponentStyle, environment: AnyAPIEnvironment) {
         self.style = style
+        self.environment = environment
     }
 
     internal func provide(with action: VoucherAction) -> UIViewController {
@@ -97,7 +100,7 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
                                                      currencyCode: totalAmount.currencyCode)
 
         let logoUrl = LogoURLProvider.logoURL(withName: paymentMethodName,
-                                              environment: .test,
+                                              environment: environment,
                                               size: .medium)
         let separatorTitle = localizedString(.voucherPaymentReferenceLabel, localizationParameters)
         let text = localizedString(.voucherIntroduction, localizationParameters)

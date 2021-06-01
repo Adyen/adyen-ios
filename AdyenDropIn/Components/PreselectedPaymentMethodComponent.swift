@@ -27,6 +27,9 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     
     private let title: String
     private let defaultComponent: PaymentComponent
+    
+    /// :nodoc:
+    internal var apiContext: AnyAPIContext { defaultComponent.apiContext }
 
     /// :nodoc:
     internal var paymentMethod: PaymentMethod { defaultComponent.paymentMethod }
@@ -97,7 +100,7 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
         let paymentMethod = defaultComponent.paymentMethod
         let displayInformation = paymentMethod.localizedDisplayInformation(using: localizationParameters)
         var listItem = ListItem(title: displayInformation.title, style: self.listItemStyle)
-        listItem.imageURL = LogoURLProvider.logoURL(for: paymentMethod, environment: environment)
+        listItem.imageURL = LogoURLProvider.logoURL(for: paymentMethod, environment: apiContext.environment)
         listItem.subtitle = displayInformation.subtitle
         listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "defaultComponent")
         return listItem

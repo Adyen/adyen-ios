@@ -16,6 +16,7 @@
 		5A238C93263AEA0800758FEF /* PreApplePayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A238C92263AEA0800758FEF /* PreApplePayView.swift */; };
 		5A238C9F263BDEA200758FEF /* PreApplePayComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A238C9E263BDEA200758FEF /* PreApplePayComponentTests.swift */; };
 		5A27AB032636A07900EF6F89 /* LocalizationKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A27AB022636A07900EF6F89 /* LocalizationKey.swift */; };
+		5A4702182664E9440023F264 /* AnyAPIContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4702172664E9440023F264 /* AnyAPIContext.swift */; };
 		5A545FC72642F77500724A87 /* ConfigurationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A545FC62642F77500724A87 /* ConfigurationViewModel.swift */; };
 		5A545FDC2643CF2400724A87 /* ConfigurationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A545FC62642F77500724A87 /* ConfigurationViewModel.swift */; };
 		5A545FE72643CF2700724A87 /* ConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67461F264262F000E9184D /* ConfigurationView.swift */; };
@@ -449,7 +450,6 @@
 		F9639B2A24DD6A990073F38A /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95E24AE22C1155A00973184 /* Request.swift */; };
 		F9639B2B24DD6A9C0073F38A /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95E24B222C1155A00973184 /* APIClient.swift */; };
 		F9639B2D24DD6B370073F38A /* RetryAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B2C24DD6B370073F38A /* RetryAPIClient.swift */; };
-		F9639B2F24DD6B500073F38A /* APIEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B2E24DD6B500073F38A /* APIEnvironment.swift */; };
 		F9639B3324DD96990073F38A /* PaymentStatusRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B3224DD96990073F38A /* PaymentStatusRequest.swift */; };
 		F9639B3524DD97A30073F38A /* PaymentStatusResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B3424DD97A30073F38A /* PaymentStatusResponse.swift */; };
 		F9639B3B24E14A940073F38A /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B3A24E14A940073F38A /* APIError.swift */; };
@@ -849,6 +849,7 @@
 		5A238C92263AEA0800758FEF /* PreApplePayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreApplePayView.swift; sourceTree = "<group>"; };
 		5A238C9E263BDEA200758FEF /* PreApplePayComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreApplePayComponentTests.swift; sourceTree = "<group>"; };
 		5A27AB022636A07900EF6F89 /* LocalizationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationKey.swift; sourceTree = "<group>"; };
+		5A4702172664E9440023F264 /* AnyAPIContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyAPIContext.swift; sourceTree = "<group>"; };
 		5A545FC62642F77500724A87 /* ConfigurationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationViewModel.swift; sourceTree = "<group>"; };
 		5A54600E264433CD00724A87 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		5A54603E264A5CEC00724A87 /* BoletoComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoletoComponent.swift; sourceTree = "<group>"; };
@@ -1265,7 +1266,6 @@
 		F9639B2324DC38460073F38A /* PresentationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationDelegate.swift; sourceTree = "<group>"; };
 		F9639B2524DD3DA30073F38A /* AwaitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitView.swift; sourceTree = "<group>"; };
 		F9639B2C24DD6B370073F38A /* RetryAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetryAPIClient.swift; sourceTree = "<group>"; };
-		F9639B2E24DD6B500073F38A /* APIEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEnvironment.swift; sourceTree = "<group>"; };
 		F9639B3224DD96990073F38A /* PaymentStatusRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentStatusRequest.swift; sourceTree = "<group>"; };
 		F9639B3424DD97A30073F38A /* PaymentStatusResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentStatusResponse.swift; sourceTree = "<group>"; };
 		F9639B3624E122A40073F38A /* PollingComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingComponent.swift; sourceTree = "<group>"; };
@@ -3088,11 +3088,11 @@
 				E95E24B222C1155A00973184 /* APIClient.swift */,
 				F9639B2C24DD6B370073F38A /* RetryAPIClient.swift */,
 				F9172FF526452E6E00985310 /* RetryOnErrorAPIClient.swift */,
-				F9639B2E24DD6B500073F38A /* APIEnvironment.swift */,
 				F9639B3E24E18F620073F38A /* Scheduler.swift */,
 				F9639B4024E27D0E0073F38A /* BackoffScheduler.swift */,
 				F9639B4224E27FAE0073F38A /* SimpleScheduler.swift */,
 				E90933FE228AFC6600C9F04B /* Environment.swift */,
+				5A4702172664E9440023F264 /* AnyAPIContext.swift */,
 			);
 			path = APIClient;
 			sourceTree = "<group>";
@@ -4223,6 +4223,7 @@
 			files = (
 				E788A3B2265565DF00089448 /* EContextPaymentMethod.swift in Sources */,
 				E216D3C5221AEF450013CBCF /* IBANFormatter.swift in Sources */,
+				5A4702182664E9440023F264 /* AnyAPIContext.swift in Sources */,
 				E9AFF87A224A4C9C005A0D8D /* PaymentComponent.swift in Sources */,
 				E216D3C0221AD0620013CBCF /* FormViewItemManager.swift in Sources */,
 				F9589D0F2601EF8100E4113F /* NameFormItemInjector.swift in Sources */,
@@ -4234,7 +4235,6 @@
 				5A54FFCA26299140007194B7 /* TimeIntervalHelpers.swift in Sources */,
 				F9FE25232625ADD0001874BB /* PartialPaymentOrder.swift in Sources */,
 				E7085C80262DD44E00D0153B /* PhoneExtensionsRepository.swift in Sources */,
-				F9639B2F24DD6B500073F38A /* APIEnvironment.swift in Sources */,
 				F97CCD3A2435E35E00BC560A /* UIViewControllerHelpers.swift in Sources */,
 				E216D3BE221AAB710013CBCF /* FormTextItem.swift in Sources */,
 				E7085A012625B4D000D0153B /* LocalizableRegionRepository.swift in Sources */,

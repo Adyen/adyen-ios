@@ -25,10 +25,10 @@ public class Analytics {
         public var flavor: Flavor
 
         /// :nodoc:
-        public var environment: Environment
+        public var environment: AnyAPIEnvironment
 
         /// :nodoc:
-        public init(component: String, flavor: Flavor, environment: Environment) {
+        public init(component: String, flavor: Flavor, environment: AnyAPIEnvironment) {
             self.component = component
             self.flavor = flavor
             self.environment = environment
@@ -39,7 +39,7 @@ public class Analytics {
     public static var isEnabled = true
     
     /// :nodoc:
-    public static func sendEvent(component: String, flavor: Flavor, environment: Environment) {
+    public static func sendEvent(component: String, flavor: Flavor, environment: AnyAPIEnvironment) {
         guard isEnabled, let url = urlFor(component: component, flavor: flavor, environment: environment) else {
             return
         }
@@ -76,7 +76,7 @@ public class Analytics {
         }
     }()
     
-    private static func urlFor(component: String, flavor: Flavor, environment: Environment) -> URL? {
+    private static func urlFor(component: String, flavor: Flavor, environment: AnyAPIEnvironment) -> URL? {
         var components = URLComponents(url: environment.baseURL, resolvingAgainstBaseURL: true)
         components?.path = "/checkoutshopper/images/analytics.png"
         

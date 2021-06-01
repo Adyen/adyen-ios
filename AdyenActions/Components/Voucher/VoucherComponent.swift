@@ -14,6 +14,9 @@ internal protocol AnyVoucherActionHandler: ActionComponent {
 
 /// A component that handles voucher action's.
 public final class VoucherComponent: AnyVoucherActionHandler {
+    
+    /// :nodoc:
+    public let apiContext: AnyAPIContext
 
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
@@ -35,18 +38,21 @@ public final class VoucherComponent: AnyVoucherActionHandler {
 
     /// Initializes the `AwaitComponent`.
     ///
+    /// - Parameter apiContext: The API context.
     /// - Parameter style: The Component UI style.
-    public init(style: VoucherComponentStyle?) {
+    public init(apiContext: AnyAPIContext, style: VoucherComponentStyle?) {
+        self.apiContext = apiContext
         self.style = style ?? VoucherComponentStyle()
     }
 
     /// Initializes the `AwaitComponent`.
-    ///
+    /// - Parameter apiContext: The API context.
     /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter style: The Component UI style.
-    internal convenience init(voucherViewControllerProvider: AnyVoucherViewControllerProvider?,
+    internal convenience init(apiContext: AnyAPIContext,
+                              voucherViewControllerProvider: AnyVoucherViewControllerProvider?,
                               style: VoucherComponentStyle? = nil) {
-        self.init(style: style)
+        self.init(apiContext: apiContext, style: style)
         self.voucherViewControllerProvider = voucherViewControllerProvider
     }
 
@@ -57,9 +63,10 @@ public final class VoucherComponent: AnyVoucherActionHandler {
     ///
     /// - Parameter action: The await action object.
     public func handle(_ action: VoucherAction) {
-        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, environment: environment)
+        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, environment: apiContext.environment)
 
-        var viewControllerProvider = voucherViewControllerProvider ?? VoucherViewControllerProvider(style: style)
+        var viewControllerProvider = voucherViewControllerProvider
+            ?? VoucherViewControllerProvider(style: style, environment: apiContext.environment)
         viewControllerProvider.localizationParameters = localizationParameters
         viewControllerProvider.delegate = self
 

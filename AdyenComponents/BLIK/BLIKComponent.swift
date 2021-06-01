@@ -10,6 +10,10 @@ import UIKit
 
 /// A component that provides a form for BLIK payments.
 public final class BLIKComponent: PaymentComponent, PresentableComponent, Localizable, LoadingComponent {
+    
+    /// :nodoc:
+    public let apiContext: AnyAPIContext
+    
     /// :nodoc:
     public var paymentMethod: PaymentMethod { blikPaymentMethod }
 
@@ -34,10 +38,14 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
     /// Initializes the BLIK component.
     ///
     /// - Parameter paymentMethod: The BLIK payment method.
+    /// - Parameter apiContext: The API context.
     /// - Parameter style: The Component's UI style.
-    public init(paymentMethod: BLIKPaymentMethod, style: FormComponentStyle = FormComponentStyle()) {
+    public init(paymentMethod: BLIKPaymentMethod,
+                apiContext: AnyAPIContext,
+                style: FormComponentStyle = FormComponentStyle()) {
         self.blikPaymentMethod = paymentMethod
         self.style = style
+        self.apiContext = apiContext
     }
 
     /// :nodoc:

@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 
 /// :nodoc:
-internal protocol AnyCardBrandProvider: Component {
+internal protocol AnyCardBrandProvider {
     /// :nodoc:
     func provide(for parameters: CardBrandProviderParameters, completion: @escaping (BinLookupResponse) -> Void)
 }
@@ -28,6 +28,9 @@ internal final class CardBrandProvider: AnyCardBrandProvider {
     
     private static let minBinLength = 11
     
+    /// :nodoc:
+    internal let apiContext: AnyAPIContext
+    
     private let apiClient: APIClientProtocol?
 
     private var privateBinLookupService: BinLookupService?
@@ -44,9 +47,11 @@ internal final class CardBrandProvider: AnyCardBrandProvider {
     ///   - fallbackCardTypeProvider: Any instance of `AnyCardBrandProvider` to be used as a fallback
     ///   if API not available or BIN too short.
     internal init(cardPublicKeyProvider: AnyCardPublicKeyProvider,
+                  apiContext: AnyAPIContext,
                   apiClient: APIClientProtocol? = nil,
                   fallbackCardTypeProvider: AnyCardBrandProvider = FallbackCardBrandProvider()) {
         self.apiClient = apiClient
+        self.apiContext = apiContext
         self.cardPublicKeyProvider = cardPublicKeyProvider
         self.fallbackCardTypeProvider = fallbackCardTypeProvider
     }
@@ -103,7 +108,7 @@ internal final class CardBrandProvider: AnyCardBrandProvider {
             return success(binLookupService)
         }
         
-        let localApiClient = self.apiClient ?? APIClient(environment: self.environment)
+        let localApiClient = self.apiClient ?? APIClient(apiContext: apiContext)
         
         cardPublicKeyProvider.fetch { [weak self] result in
             guard let self = self else { return }

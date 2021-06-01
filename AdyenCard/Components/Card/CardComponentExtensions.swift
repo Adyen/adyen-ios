@@ -14,8 +14,9 @@ extension CardComponent {
 
     /// Card Component errors.
     public enum Error: Swift.Error {
-        /// ClientKey is required for `CardPublicKeyProvider` to work, and this error is thrown in case its nil.
-        case missingClientKey
+        /// A valid client key is required for `CardPublicKeyProvider` to work.
+        /// This error is thrown in case it is not valid.
+        case invalidClientKey
     }
 }
 
@@ -59,7 +60,7 @@ extension CardComponent: TrackableComponent {
     
     /// :nodoc:
     public func viewDidLoad(viewController: UIViewController) {
-        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
+        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: apiContext.environment)
         fetchCardPublicKey(discardError: true) { _ in /* Do nothing, to just cache the card public key value */ }
     }
 }

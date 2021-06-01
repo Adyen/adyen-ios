@@ -19,7 +19,7 @@ public protocol ActionComponent: Component {
 /// :nodoc:
 public protocol ParameterlessInitializable {
     /// Parameterless initializer.
-    init()
+    init(apiContext: AnyAPIContext)
 }
 
 /// Describes the expected interface from any ActionComponent that handles WeChat Pay sdk action.

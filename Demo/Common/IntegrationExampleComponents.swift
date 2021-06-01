@@ -20,7 +20,7 @@ extension IntegrationExample {
         let config = CardComponent.Configuration(billingAddressMode: .postalCode)
         let component = CardComponent(paymentMethod: paymentMethod,
                                       configuration: config,
-                                      clientKey: clientKey,
+                                      apiContext: apiContext,
                                       style: style)
         component.cardComponentDelegate = self
         present(component)
@@ -30,6 +30,7 @@ extension IntegrationExample {
         let style = ListComponentStyle()
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: IssuerListPaymentMethod.self) else { return }
         let component = IdealComponent(paymentMethod: paymentMethod,
+                                       apiContext: apiContext,
                                        style: style)
         present(component)
     }
@@ -38,6 +39,7 @@ extension IntegrationExample {
         let style = FormComponentStyle()
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: SEPADirectDebitPaymentMethod.self) else { return }
         let component = SEPADirectDebitComponent(paymentMethod: paymentMethod,
+                                                 apiContext: apiContext,
                                                  style: style)
         component.delegate = self
         present(component)
@@ -47,6 +49,7 @@ extension IntegrationExample {
         let style = FormComponentStyle()
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: MBWayPaymentMethod.self) else { return }
         let component = MBWayComponent(paymentMethod: paymentMethod,
+                                       apiContext: apiContext,
                                        style: style)
         component.delegate = self
         present(component)
@@ -58,7 +61,7 @@ extension IntegrationExample {
                                                      paymentMethod: paymentMethod,
                                                      summaryItems: ConfigurationConstants.applePaySummaryItems,
                                                      merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
-        let component = try? ApplePayComponent(configuration: config)
+        let component = try? ApplePayComponent(configuration: config, apiContext: apiContext)
         component?.delegate = self
         guard let presentableComponent = component else { return }
         present(presentableComponent)
@@ -66,7 +69,7 @@ extension IntegrationExample {
 
     internal func presentConvenienceStore() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: EContextPaymentMethod.self) else { return }
-        let component = EContextStoreComponent(paymentMethod: paymentMethod)
+        let component = EContextStoreComponent(paymentMethod: paymentMethod, apiContext: apiContext)
         component.delegate = self
         present(component)
     }
@@ -74,9 +77,6 @@ extension IntegrationExample {
     // MARK: - Presentation
 
     private func present(_ component: PresentableComponent) {
-        component.environment = environment
-        component.clientKey = clientKey
-
         if let component = component as? PaymentAwareComponent {
             component.payment = payment
         }

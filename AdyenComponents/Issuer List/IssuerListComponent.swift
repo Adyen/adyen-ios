@@ -12,6 +12,9 @@ import UIKit
 /// This component will provide a list in which the user can select their issuer.
 public final class IssuerListComponent: PaymentComponent, PresentableComponent, LoadingComponent {
     
+    /// :nodoc:
+    public let apiContext: AnyAPIContext
+    
     /// The issuer list payment method.
     public var paymentMethod: PaymentMethod {
         issuerListPaymentMethod
@@ -28,8 +31,10 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
     /// - Parameter paymentMethod: The issuer list payment method.
     /// - Parameter style: The Component's UI style..
     public init(paymentMethod: IssuerListPaymentMethod,
+                apiContext: AnyAPIContext,
                 style: ListComponentStyle = ListComponentStyle()) {
         self.issuerListPaymentMethod = paymentMethod
+        self.apiContext = apiContext
         self.style = style
     }
     
@@ -59,7 +64,7 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
             listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
             listItem.imageURL = LogoURLProvider.logoURL(for: issuer,
                                                         paymentMethod: issuerListPaymentMethod,
-                                                        environment: environment)
+                                                        environment: apiContext.environment)
             listItem.showsDisclosureIndicator = false
             listItem.selectionHandler = { [weak self] in
                 guard let self = self else { return }

@@ -15,10 +15,18 @@ import Foundation
 public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionComponent {
     
     /// :nodoc:
+    public let apiContext: AnyAPIContext
+    
+    /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
     
     /// :nodoc:
     private var currentlyHandledAction: WeChatPaySDKAction?
+    
+    /// :nodoc:
+    public init(apiContext: AnyAPIContext) {
+        self.apiContext = apiContext
+    }
     
     /// :nodoc:
     public func handle(_ action: WeChatPaySDKAction) {
@@ -32,7 +40,7 @@ public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionC
          Handling multiple WeChatPaySDKAction's in parallel is not supported.
         """)
         
-        Analytics.sendEvent(component: "wechatpaySDK", flavor: _isDropIn ? .dropin : .components, environment: environment)
+        Analytics.sendEvent(component: "wechatpaySDK", flavor: _isDropIn ? .dropin : .components, environment: apiContext.environment)
         
         currentlyHandledAction = action
         

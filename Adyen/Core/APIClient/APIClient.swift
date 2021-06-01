@@ -28,25 +28,25 @@ public final class APIClient: APIClientProtocol {
     public typealias CompletionHandler<T> = (Result<T, Error>) -> Void
     
     /// :nodoc:
-    /// The API environment.
-    public let environment: APIEnvironment
+    /// The API context.
+    public let apiContext: AnyAPIContext
     
     /// :nodoc:
     /// Initializes the API client.
     ///
     /// - Parameters:
     ///   - environment: The API environment.
-    public init(environment: APIEnvironment) {
-        self.environment = environment
+    public init(apiContext: AnyAPIContext) {
+        self.apiContext = apiContext
     }
     
     /// :nodoc:
     public func perform<R: Request>(_ request: R, completionHandler: @escaping CompletionHandler<R.ResponseType>) {
-        let url = environment.baseURL.appendingPathComponent(request.path)
+        let url = apiContext.environment.baseURL.appendingPathComponent(request.path)
 
-        var urlRequest = URLRequest(url: add(queryParameters: request.queryParameters + environment.queryParameters, to: url))
+        var urlRequest = URLRequest(url: add(queryParameters: request.queryParameters + apiContext.queryParameters, to: url))
         urlRequest.httpMethod = request.method.rawValue
-        urlRequest.allHTTPHeaderFields = request.headers.merging(environment.headers, uniquingKeysWith: { key1, _ in key1 })
+        urlRequest.allHTTPHeaderFields = request.headers.merging(apiContext.headers, uniquingKeysWith: { key1, _ in key1 })
         if request.method == .post {
             do {
                 urlRequest.httpBody = try Coder.encode(request)

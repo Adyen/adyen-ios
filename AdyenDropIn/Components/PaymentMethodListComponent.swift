@@ -11,6 +11,9 @@ import UIKit
 /// A component that presents a list of items for each payment method with a component.
 internal final class PaymentMethodListComponent: ComponentLoader, PresentableComponent, Localizable, Cancellable {
     
+    /// :nodoc:
+    internal let apiContext: AnyAPIContext
+    
     /// The components that are displayed in the list.
     internal let componentSections: [ComponentsSection]
     
@@ -27,7 +30,10 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     ///
     /// - Parameter components: The components to display in the list.
     /// - Parameter style: The component's UI style.
-    internal init(components: [ComponentsSection], style: ListComponentStyle = ListComponentStyle()) {
+    internal init(apiContext: AnyAPIContext,
+                  components: [ComponentsSection],
+                  style: ListComponentStyle = ListComponentStyle()) {
+        self.apiContext = apiContext
         self.componentSections = components
         self.style = style
     }
@@ -49,7 +55,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
                                     style: style.listItem,
                                     canModifyIcon: !isProtected)
             listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
-            listItem.imageURL = LogoURLProvider.logoURL(for: component.paymentMethod, environment: environment)
+            listItem.imageURL = LogoURLProvider.logoURL(for: component.paymentMethod, environment: apiContext.environment)
             listItem.trailingText = displayInformation.disclosureText
             listItem.subtitle = displayInformation.subtitle
             listItem.showsDisclosureIndicator = showsDisclosureIndicator

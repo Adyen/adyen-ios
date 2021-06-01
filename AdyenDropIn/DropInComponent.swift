@@ -40,10 +40,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
     public let title: String
 
     /// :nodoc:
-    public let environment: Environment
-
-    /// :nodoc:
-    public let clientKey: String?
+    public let apiContext: AnyAPIContext
     
     /// Initializes the drop in component.
     ///
@@ -61,8 +58,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
         self.configuration = paymentMethodsConfiguration
         self.paymentMethods = paymentMethods
         self.style = style
-        self.clientKey = configuration.clientKey
-        self.environment = configuration.environment
+        self.apiContext = paymentMethodsConfiguration.apiContext
         super.init()
     }
 
@@ -99,7 +95,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
     /// :nodoc:
     private lazy var apiClient: APIClientProtocol = {
         let scheduler = SimpleScheduler(maximumCount: 3)
-        let baseAPIClient = APIClient(environment: configuration.environment)
+        let baseAPIClient = APIClient(apiContext: apiContext)
         let retryApiClient = RetryAPIClient(apiClient: baseAPIClient, scheduler: scheduler)
         let apiClient = RetryOnErrorAPIClient(apiClient: retryApiClient)
         return apiClient
@@ -170,10 +166,8 @@ public final class DropInComponent: NSObject, PresentableComponent {
                                                                        })
 
     private lazy var actionComponent: AdyenActionComponent = {
-        let handler = AdyenActionComponent()
+        let handler = AdyenActionComponent(apiContext: apiContext)
         handler._isDropIn = true
-        handler.environment = environment
-        handler.clientKey = configuration.clientKey
         handler.redirectComponentStyle = style.redirectComponent
         handler.delegate = self
         handler.presentationDelegate = self
@@ -183,12 +177,13 @@ public final class DropInComponent: NSObject, PresentableComponent {
     
     private func paymentMethodListComponent(onCancel: (() -> Void)?) -> PaymentMethodListComponent {
         let paymentComponents = componentManager.sections
-        let component = PaymentMethodListComponent(components: paymentComponents, style: style.listComponent)
+        let component = PaymentMethodListComponent(apiContext: apiContext,
+                                                   components: paymentComponents,
+                                                   style: style.listComponent)
         component.onCancel = onCancel
         component.localizationParameters = configuration.localizationParameters
         component.delegate = self
         component._isDropIn = true
-        component.environment = environment
         return component
     }
     
@@ -203,7 +198,6 @@ public final class DropInComponent: NSObject, PresentableComponent {
         component.delegate = self
         component.onCancel = onCancel
         component._isDropIn = true
-        component.environment = environment
         return component
     }
     
@@ -214,7 +208,6 @@ public final class DropInComponent: NSObject, PresentableComponent {
         (component as? PartialPaymentComponent)?.partialPaymentDelegate = partialPaymentDelegate
         (component as? PartialPaymentComponent)?.readyToSubmitComponentDelegate = self
         component._isDropIn = true
-        component.environment = environment
         component.payment = configuration.payment
         
         switch component {

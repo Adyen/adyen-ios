@@ -78,7 +78,7 @@ public struct OrderPaymentMethod: PaymentMethod {
     }
 
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        AlreadyPaidPaymentComponent(paymentMethod: self)
+        AlreadyPaidPaymentComponent(paymentMethod: self, apiContext: builder.apiContext)
     }
 
     private enum CodingKeys: String, CodingKey {

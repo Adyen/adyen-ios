@@ -12,6 +12,9 @@ import UIKit
 public final class AdyenActionComponent: ActionComponent, Localizable {
     
     /// :nodoc:
+    public let apiContext: AnyAPIContext
+    
+    /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
     
     /// :nodoc:
@@ -33,7 +36,9 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
     public var localizationParameters: LocalizationParameters?
     
     /// :nodoc:
-    public init() {}
+    public init(apiContext: AnyAPIContext) {
+        self.apiContext = apiContext
+    }
     
     // MARK: - Performing Actions
     
@@ -71,11 +76,9 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
     private var qrCodeComponent: Component?
     
     private func handle(_ action: RedirectAction) {
-        let component = RedirectComponent(style: redirectComponentStyle)
+        let component = RedirectComponent(apiContext: apiContext, style: redirectComponentStyle)
         component.delegate = delegate
         component._isDropIn = _isDropIn
-        component.environment = environment
-        component.clientKey = clientKey
         component.presentationDelegate = presentationDelegate
         redirectComponent = component
         
@@ -97,11 +100,9 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
     }
 
     private func createThreeDS2Component() -> ThreeDS2Component {
-        let component = ThreeDS2Component()
+        let component = ThreeDS2Component(apiContext: apiContext)
         component._isDropIn = _isDropIn
         component.delegate = delegate
-        component.environment = environment
-        component.clientKey = clientKey
         component.presentationDelegate = presentationDelegate
 
         return component
@@ -124,57 +125,40 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
             delegate?.didFail(with: ComponentError.paymentMethodNotSupported, from: self)
             return
         }
-        weChatPaySDKActionComponent = classObject.init()
+        weChatPaySDKActionComponent = classObject.init(apiContext: apiContext)
         weChatPaySDKActionComponent?._isDropIn = _isDropIn
-        weChatPaySDKActionComponent?.environment = environment
-        weChatPaySDKActionComponent?.clientKey = clientKey
         weChatPaySDKActionComponent?.delegate = delegate
         weChatPaySDKActionComponent?.handle(action)
     }
     
     private func handle(_ action: AwaitAction) {
-        guard environment.clientKey != nil else {
-            AdyenAssertion.assertionFailure(message: """
-            Failed to instantiate AwaitComponent because client key is not configured.
-            Please supply the client key:
-            -  if using DropInComponent, or AdyenActionsComponent.clientKey in the PaymentMethodsConfiguration;
-            -  if using AdyenActionsComponent separately in AdyenActionsComponent.clientKey.
-            """)
-            return
-        }
-        let component = AwaitComponent(style: awaitComponentStyle)
+        let component = AwaitComponent(apiContext: apiContext, style: awaitComponentStyle)
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
-        component.environment = environment
         component.localizationParameters = localizationParameters
-        component.clientKey = clientKey
         
         component.handle(action)
         awaitComponent = component
     }
     
     private func handle(_ action: VoucherAction) {
-        let component = VoucherComponent(style: voucherComponentStyle)
+        let component = VoucherComponent(apiContext: apiContext, style: voucherComponentStyle)
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
-        component.environment = environment
         component.localizationParameters = localizationParameters
-        component.clientKey = clientKey
 
         component.handle(action)
         voucherComponent = component
     }
     
     private func handle(_ action: QRCodeAction) {
-        let component = QRCodeComponent(style: QRCodeComponentStyle())
+        let component = QRCodeComponent(apiContext: apiContext, style: QRCodeComponentStyle())
         component._isDropIn = _isDropIn
-        component.environment = environment
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
         component.localizationParameters = localizationParameters
-        component.clientKey = clientKey
         
         component.handle(action)
         qrCodeComponent = component

@@ -23,30 +23,14 @@ internal protocol AnyThreeDS2ActionHandler {
 internal protocol ComponentWrapper: Component {
 
     var wrappedComponent: Component { get }
+    
 }
 
 /// :nodoc:
 extension ComponentWrapper {
-    internal var environment: Environment {
-        get {
-            wrappedComponent.environment
-        }
-
-        set {
-            wrappedComponent.environment = newValue
-        }
-    }
 
     /// :nodoc:
-    internal var clientKey: String? {
-        get {
-            wrappedComponent.clientKey
-        }
-
-        set {
-            wrappedComponent.clientKey = newValue
-        }
-    }
+    internal var apiContext: AnyAPIContext { wrappedComponent.apiContext }
 
     /// :nodoc:
     internal var _isDropIn: Bool { // swiftlint:disable:this identifier_name

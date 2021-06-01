@@ -10,6 +10,9 @@ import Foundation
 /// A component that handles Await action's.
 public final class AwaitComponent: ActionComponent, Cancellable {
     
+    /// :nodoc:
+    public let apiContext: AnyAPIContext
+    
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
     
@@ -30,18 +33,22 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     
     /// Initializes the `AwaitComponent`.
     ///
+    /// - Parameter apiContext: The API context.
     /// - Parameter style: The Component UI style.
-    public init(style: AwaitComponentStyle?) {
+    public init(apiContext: AnyAPIContext, style: AwaitComponentStyle?) {
+        self.apiContext = apiContext
         self.style = style ?? AwaitComponentStyle()
     }
     
     /// Initializes the `AwaitComponent`.
     ///
+    /// - Parameter apiContext: The API context.
     /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter style: The Component UI style.
-    internal convenience init(awaitComponentBuilder: AnyPollingHandlerProvider?,
+    internal convenience init(apiContext: AnyAPIContext,
+                              awaitComponentBuilder: AnyPollingHandlerProvider?,
                               style: AwaitComponentStyle?) {
-        self.init(style: style)
+        self.init(apiContext: apiContext, style: style)
         self.awaitActionHandler = awaitComponentBuilder
     }
     
@@ -52,7 +59,7 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     ///
     /// - Parameter action: The await action object.
     public func handle(_ action: AwaitAction) {
-        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, environment: environment)
+        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, environment: apiContext.environment)
         
         let viewModel = AwaitComponentViewModel.viewModel(with: action.paymentMethodType,
                                                           localizationParameters: localizationParameters)
@@ -66,7 +73,7 @@ public final class AwaitComponent: ActionComponent, Cancellable {
             AdyenAssertion.assertionFailure(message: message)
         }
         
-        let awaitComponentBuilder = self.awaitActionHandler ?? PollingHandlerProvider(environment: environment, apiClient: nil)
+        let awaitComponentBuilder = self.awaitActionHandler ?? PollingHandlerProvider(apiContext: apiContext, apiClient: nil)
         
         paymentMethodSpecificPollingComponent = awaitComponentBuilder.handler(for: action.paymentMethodType)
         paymentMethodSpecificPollingComponent?.delegate = delegate

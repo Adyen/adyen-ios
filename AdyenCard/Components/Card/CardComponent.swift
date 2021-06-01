@@ -33,6 +33,9 @@ public class CardComponent: CardPublicKeyConsumer,
     Localizable,
     Observer,
     LoadingComponent {
+    
+    /// :nodoc:
+    public let apiContext: AnyAPIContext
 
     private let publicBinLength = 6
     internal let cardPaymentMethod: AnyCardPaymentMethod
@@ -68,41 +71,20 @@ public class CardComponent: CardPublicKeyConsumer,
         }
     }
     
-    /// :nodoc:
-    public var environment: Environment = .live {
-        didSet {
-            environment.clientKey = clientKey
-            cardPublicKeyProvider.environment = environment
-            storedCardComponent?.environment = environment
-            cardBrandProvider.environment = environment
-        }
-    }
-    
-    /// :nodoc:
-    public var clientKey: String? {
-        didSet {
-            environment.clientKey = clientKey
-            cardPublicKeyProvider.clientKey = clientKey
-            storedCardComponent?.clientKey = clientKey
-            cardBrandProvider.clientKey = clientKey
-        }
-    }
-    
     /// Initializes the card component.
     ///
     /// - Parameters:
     ///   - paymentMethod: The card payment method.
-    ///   -  clientKey: The client key that corresponds to the webservice user you will use for initiating the payment.
-    /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
-    ///   -  style: The Component's UI style.
+    ///   - apiContext: The API context.
+    ///   - style: The Component's UI style.
     public convenience init(paymentMethod: AnyCardPaymentMethod,
                             configuration: Configuration,
-                            clientKey: String,
+                            apiContext: AnyAPIContext,
                             style: FormComponentStyle = FormComponentStyle()) {
         self.init(paymentMethod: paymentMethod,
                   configuration: configuration,
-                  cardPublicKeyProvider: CardPublicKeyProvider(),
-                  clientKey: clientKey,
+                  apiContext: apiContext,
+                  cardPublicKeyProvider: CardPublicKeyProvider(apiContext: apiContext),
                   style: style)
     }
     
@@ -111,26 +93,24 @@ public class CardComponent: CardPublicKeyConsumer,
     ///
     /// - Parameters:
     ///   - paymentMethod: The card payment method.
+    ///   - apiContext: The API context.
     ///   - cardPublicKeyProvider: The card public key provider
     ///   - style: The Component's UI style.
     internal init(paymentMethod: AnyCardPaymentMethod,
                   configuration: Configuration = Configuration(),
-                  cardPublicKeyProvider: AnyCardPublicKeyProvider = CardPublicKeyProvider(),
-                  clientKey: String,
+                  apiContext: AnyAPIContext,
+                  cardPublicKeyProvider: AnyCardPublicKeyProvider? = nil,
                   style: FormComponentStyle = FormComponentStyle()) {
-        self.clientKey = clientKey
+        self.apiContext = apiContext
         self.cardPaymentMethod = paymentMethod
         self.configuration = configuration
-        self.cardPublicKeyProvider = cardPublicKeyProvider
+        self.cardPublicKeyProvider = cardPublicKeyProvider ?? CardPublicKeyProvider(apiContext: apiContext)
         let paymentMethodCardTypes = paymentMethod.brands.compactMap(CardType.init)
         let excludedCardTypes = configuration.excludedCardTypes
         let allowedCardTypes = configuration.allowedCardTypes ?? paymentMethodCardTypes
         self.supportedCardTypes = allowedCardTypes.minus(excludedCardTypes)
         self.style = style
-        self.cardBrandProvider = CardBrandProvider(cardPublicKeyProvider: cardPublicKeyProvider)
-        self.cardPublicKeyProvider.clientKey = clientKey
-        self.cardBrandProvider.clientKey = clientKey
-        self.environment.clientKey = clientKey
+        self.cardBrandProvider = CardBrandProvider(cardPublicKeyProvider: self.cardPublicKeyProvider, apiContext: apiContext)
     }
     
     // MARK: - Presentable Component Protocol
@@ -162,12 +142,10 @@ public class CardComponent: CardPublicKeyConsumer,
         }
         var component: PaymentComponent & PresentableComponent
         if configuration.stored.showsSecurityCodeField {
-            component = StoredCardComponent(storedCardPaymentMethod: paymentMethod)
+            component = StoredCardComponent(storedCardPaymentMethod: paymentMethod, apiContext: apiContext)
         } else {
-            component = StoredPaymentMethodComponent(paymentMethod: paymentMethod)
+            component = StoredPaymentMethodComponent(paymentMethod: paymentMethod, apiContext: apiContext)
         }
-        component.clientKey = clientKey
-        component.environment = environment
         component.payment = payment
         return component
     }()
@@ -177,12 +155,14 @@ public class CardComponent: CardPublicKeyConsumer,
     private lazy var securedViewController = SecuredViewController(child: cardViewController, style: style)
     
     internal lazy var cardViewController: CardViewController = {
-        let formViewController = CardViewController(configuration: configuration,
-                                                    formStyle: style,
-                                                    payment: payment,
-                                                    logoProvider: LogoURLProvider(environment: environment),
-                                                    supportedCardTypes: supportedCardTypes,
-                                                    scope: String(describing: self))
+        let formViewController = CardViewController(
+            configuration: configuration,
+            formStyle: style,
+            payment: payment,
+            logoProvider: LogoURLProvider(environment: apiContext.environment),
+            supportedCardTypes: supportedCardTypes,
+            scope: String(describing: self)
+        )
         formViewController.localizationParameters = localizationParameters
         formViewController.delegate = self
         formViewController.cardDelegate = self

@@ -38,16 +38,19 @@ internal final class IntegrationExample: APIClientAware {
         }
         return ConfigurationConstants.clientKey
     }
+    
+    internal lazy var apiContext: APIContext = APIContext(
+        environment: ConfigurationConstants.componentsEnvironment,
+        clientKey: clientKey
+    )
 
     // MARK: - Action Handling for Components
 
     internal lazy var actionComponent: AdyenActionComponent = {
-        let handler = AdyenActionComponent()
+        let handler = AdyenActionComponent(apiContext: apiContext)
         handler.redirectComponentStyle = RedirectComponentStyle()
         handler.delegate = self
         handler.presentationDelegate = self
-        handler.environment = environment
-        handler.clientKey = clientKey
         return handler
     }()
 

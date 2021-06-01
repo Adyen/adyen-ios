@@ -12,6 +12,9 @@ import Foundation
 internal final class PollingComponent: AnyPollingHandler {
     
     /// :nodoc:
+    internal let apiContext: AnyAPIContext
+    
+    /// :nodoc:
     internal weak var presentationDelegate: PresentationDelegate?
     
     /// :nodoc:
@@ -26,8 +29,11 @@ internal final class PollingComponent: AnyPollingHandler {
     /// :nodoc:
     /// Initializes the Polling Await component.
     ///
+    /// - Parameter apiContext: The API context.
     /// - Parameter apiClient: The API client.
-    internal init(apiClient: AnyRetryAPIClient) {
+    internal init(apiContext: AnyAPIContext,
+                  apiClient: AnyRetryAPIClient) {
+        self.apiContext = apiContext
         self.apiClient = apiClient
     }
     
@@ -36,7 +42,7 @@ internal final class PollingComponent: AnyPollingHandler {
     ///
     /// - Parameter action: The await action object.
     internal func handle(_ action: PaymentDataAware) {
-        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, environment: environment)
+        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, environment: apiContext.environment)
         startPolling(action)
     }
     

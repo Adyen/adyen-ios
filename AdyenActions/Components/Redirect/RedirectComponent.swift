@@ -21,6 +21,9 @@ public final class RedirectComponent: ActionComponent {
     }
     
     /// :nodoc:
+    public let apiContext: AnyAPIContext
+    
+    /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
 
     /// Delegates `PresentableComponent`'s presentation.
@@ -34,8 +37,11 @@ public final class RedirectComponent: ActionComponent {
     
     /// Initializes the component.
     ///
+    /// - Parameter apiContext: The API context.
     /// - Parameter style: The component's UI style.
-    public init(style: RedirectComponentStyle? = nil) {
+    public init(apiContext: AnyAPIContext,
+                style: RedirectComponentStyle? = nil) {
+        self.apiContext = apiContext
         self.style = style
     }
     
@@ -43,7 +49,7 @@ public final class RedirectComponent: ActionComponent {
     ///
     /// - Parameter action: The redirect action object.
     public func handle(_ action: RedirectAction) {
-        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, environment: environment)
+        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, environment: apiContext.environment)
         
         if action.url.isHttp {
             openHttpSchemeUrl(action)
@@ -79,7 +85,7 @@ public final class RedirectComponent: ActionComponent {
     }
 
     private func openInAppBrowser(_ action: RedirectAction) {
-        let component = BrowserComponent(url: action.url, style: style)
+        let component = BrowserComponent(url: action.url, apiContext: apiContext, style: style)
         component.delegate = self
         browserComponent = component
         presentationDelegate?.present(component: component)

@@ -11,6 +11,9 @@ import Foundation
 /// Handles the 3D Secure 2 fingerprint and challenge actions separately.
 /// :nodoc:
 internal class ThreeDS2CoreActionHandler: Component {
+    
+    /// :nodoc:
+    internal let apiContext: AnyAPIContext
 
     /// The appearance configuration of the 3D Secure 2 challenge UI.
     /// :nodoc:
@@ -24,17 +27,21 @@ internal class ThreeDS2CoreActionHandler: Component {
 
     /// Initializes the 3D Secure 2 action handler.
     ///
+    /// - Parameter apiContext: The API context.
     /// - Parameter service: The 3DS2 Service.
     /// - Parameter appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
     /// :nodoc:
-    internal convenience init(service: AnyADYService,
+    internal convenience init(apiContext: AnyAPIContext,
+                              service: AnyADYService,
                               appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration()) {
-        self.init(appearanceConfiguration: appearanceConfiguration)
+        self.init(apiContext: apiContext, appearanceConfiguration: appearanceConfiguration)
         self.service = service
     }
 
     /// Initializes the 3D Secure 2 action handler.
-    internal init(appearanceConfiguration: ADYAppearanceConfiguration) {
+    internal init(apiContext: AnyAPIContext,
+                  appearanceConfiguration: ADYAppearanceConfiguration) {
+        self.apiContext = apiContext
         self.appearanceConfiguration = appearanceConfiguration
     }
 
