@@ -96,8 +96,11 @@ custom_categories:
       - VoucherComponent
       - QRCodeComponent
       - AwaitComponent
+      - AwaitActionDetails
       - RedirectComponent
+      - RedirectDetails
       - WeChatPaySDKActionComponent
+            
       
   - name: Card Component
     children:
@@ -216,16 +219,20 @@ custom_categories:
       - DokuComponent
       - DokuDetails
       
-  - name: Core Component
+  - name: Public Protocols
     children:
       - Component
+      - ComponentError
       - PaymentComponent
       - PresentableComponent
       - ActionComponent
       - FinalizableComponent
       - PaymentAwareComponent
       - PartialPaymentComponent
-      - BasicPersonalInfoFormComponent
+      - PartialPaymentError
+      - Details
+      - AdditionalDetails
+      - PaymentMethodDetails
       
   - name: Public delegates
     children:
@@ -236,58 +243,29 @@ custom_categories:
       
   - name: Models
     children:
+      - APIContext
       - Payment
       - Amount
       - Balance
-      - Details
       - PaymentOrder
       - ShopperName
       - PostalAddress
-      - PaymentMethodDetails
-      - AdditionalDetails
       - ShopperInteraction
       - DisplayInformation
-      - PaymentComponentData
       - CardFundingSource
       - BrowserInfo
+      - ShopperName
       - ShopperInformation
       - PrefilledShopperInformation
       - PartialPaymentOrder
-      - LocalizationParameters
+      - PaymentComponentData
       - ActionComponentData
-      
-  - name: Errors
-    children:
-      - ComponentError
-      - PartialPaymentError
-      - ThreeDS2ComponentError
       
   - name: Encryption
     children:
       - CardEncryptor
       - Card
       - EncryptedCard
-      
-  - name: API Reference
-    children:
-      - Payment
-      - PaymentComponentData
-      - PaymentMethod
-      - PaymentMethods
-      - StoredPaymentMethod
-      - ShopperInteraction
-      - ShopperInformation
-      - DisplayInformation
-      - BillingAddressInformation
-      - CardFundingSource
-      - BrowserInfo
-      - AddressInfo
-      - ShopperName
-      - Details
-      - PaymentMethodDetails
-      - RedirectDetails
-      - AdditionalDetails
-      - AwaitActionDetails
       
   - name: Utilities
     children:

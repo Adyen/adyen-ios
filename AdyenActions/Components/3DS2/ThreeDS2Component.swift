@@ -8,19 +8,6 @@ import Adyen
 import Adyen3DS2
 import Foundation
 
-/// An error that occurred during the use of the 3D Secure 2 component.
-public enum ThreeDS2ComponentError: Error {
-    
-    /// Indicates that the challenge action was provided while no 3D Secure transaction was active.
-    /// This is likely the result of calling handle(_:) with a challenge action after the challenge was already completed,
-    /// or before a fingerprint action was provided.
-    case missingTransaction
-
-    /// Indicates that the Checkout API returned an unexpected `Action` during processing the 3DS2 flow.
-    case unexpectedAction
-    
-}
-
 internal protocol AnyRedirectComponent: ActionComponent {
     func handle(_ action: RedirectAction)
 }
@@ -112,7 +99,7 @@ public final class ThreeDS2Component: ActionComponent {
     
     // MARK: - Private
 
-    private func didReceive(_ result: Result<ThreeDSActionHandlerResult, Error>, paymentData: String?) {
+    private func didReceive(_ result: Result<ThreeDSActionHandlerResult, Swift.Error>, paymentData: String?) {
         switch result {
         case let .success(result):
             didReceive(result, paymentData: paymentData)
@@ -138,7 +125,7 @@ public final class ThreeDS2Component: ActionComponent {
         case let .threeDS2(threeDS2Action):
             handle(threeDS2Action)
         default:
-            didFail(with: ThreeDS2ComponentError.unexpectedAction)
+            didFail(with: Error.unexpectedAction)
         }
     }
 
@@ -146,7 +133,7 @@ public final class ThreeDS2Component: ActionComponent {
         delegate?.didProvide(data, from: self)
     }
 
-    private func didFail(with error: Error) {
+    private func didFail(with error: Swift.Error) {
         delegate?.didFail(with: error, from: self)
     }
 
@@ -191,7 +178,25 @@ extension ThreeDS2Component: ActionComponentDelegate {
         delegate?.didComplete(from: self)
     }
 
-    public func didFail(with error: Error, from component: ActionComponent) {
+    public func didFail(with error: Swift.Error, from component: ActionComponent) {
         delegate?.didFail(with: error, from: self)
     }
+
+}
+
+extension ThreeDS2Component {
+
+    /// An error that occurred during the use of the 3D Secure 2 component.
+    public enum Error: Swift.Error {
+
+        /// Indicates that the challenge action was provided while no 3D Secure transaction was active.
+        /// This is likely the result of calling handle(_:) with a challenge action after the challenge was already completed,
+        /// or before a fingerprint action was provided.
+        case missingTransaction
+
+        /// Indicates that the Checkout API returned an unexpected `Action` during processing the 3DS2 flow.
+        case unexpectedAction
+
+    }
+
 }

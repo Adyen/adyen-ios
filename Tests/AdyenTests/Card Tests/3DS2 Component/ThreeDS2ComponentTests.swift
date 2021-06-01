@@ -167,7 +167,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         delegate.onDidFail = { error, component in
             XCTAssertTrue(component === sut)
 
-            let error = error as! ThreeDS2ComponentError
+            let error = error as! ThreeDS2Component.Error
             XCTAssertEqual(error, .unexpectedAction)
             delegateExpectation.fulfill()
         }
