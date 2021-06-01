@@ -31,13 +31,13 @@ internal protocol AnyPollingHandlerProvider {
 internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
 
     /// :nodoc:
-    private let apiContext: AnyAPIContext
+    private let apiContext: APIContext
 
     /// :nodoc:
     private let apiClient: AnyRetryAPIClient?
 
     /// :nodoc:
-    internal init(apiContext: AnyAPIContext, apiClient: AnyRetryAPIClient?) {
+    internal init(apiContext: APIContext, apiClient: AnyRetryAPIClient?) {
         self.apiContext = apiContext
         self.apiClient = apiClient
     }

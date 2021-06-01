@@ -11,7 +11,7 @@ import Foundation
 public final class AwaitComponent: ActionComponent, Cancellable {
     
     /// :nodoc:
-    public let apiContext: AnyAPIContext
+    public let apiContext: APIContext
     
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
@@ -35,7 +35,7 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     ///
     /// - Parameter apiContext: The API context.
     /// - Parameter style: The Component UI style.
-    public init(apiContext: AnyAPIContext, style: AwaitComponentStyle?) {
+    public init(apiContext: APIContext, style: AwaitComponentStyle?) {
         self.apiContext = apiContext
         self.style = style ?? AwaitComponentStyle()
     }
@@ -45,7 +45,7 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     /// - Parameter apiContext: The API context.
     /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter style: The Component UI style.
-    internal convenience init(apiContext: AnyAPIContext,
+    internal convenience init(apiContext: APIContext,
                               awaitComponentBuilder: AnyPollingHandlerProvider?,
                               style: AwaitComponentStyle?) {
         self.init(apiContext: apiContext, style: style)

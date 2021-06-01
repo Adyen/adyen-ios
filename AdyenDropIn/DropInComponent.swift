@@ -40,7 +40,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
     public let title: String
 
     /// :nodoc:
-    public let apiContext: AnyAPIContext
+    public let apiContext: APIContext
     
     /// Initializes the drop in component.
     ///

@@ -12,7 +12,7 @@ import Foundation
 internal final class PollingComponent: AnyPollingHandler {
     
     /// :nodoc:
-    internal let apiContext: AnyAPIContext
+    internal let apiContext: APIContext
     
     /// :nodoc:
     internal weak var presentationDelegate: PresentationDelegate?
@@ -31,7 +31,7 @@ internal final class PollingComponent: AnyPollingHandler {
     ///
     /// - Parameter apiContext: The API context.
     /// - Parameter apiClient: The API client.
-    internal init(apiContext: AnyAPIContext,
+    internal init(apiContext: APIContext,
                   apiClient: AnyRetryAPIClient) {
         self.apiContext = apiContext
         self.apiClient = apiClient

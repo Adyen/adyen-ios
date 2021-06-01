@@ -11,7 +11,7 @@ import Foundation
 public final class AlreadyPaidPaymentComponent: PaymentComponent {
     
     /// :nodoc:
-    public let apiContext: AnyAPIContext
+    public let apiContext: APIContext
 
     /// :nodoc:
     public let paymentMethod: PaymentMethod
@@ -21,7 +21,7 @@ public final class AlreadyPaidPaymentComponent: PaymentComponent {
 
     /// :nodoc:
     public init(paymentMethod: PaymentMethod,
-                apiContext: AnyAPIContext) {
+                apiContext: APIContext) {
         self.paymentMethod = paymentMethod
         self.apiContext = apiContext
     }

@@ -21,13 +21,13 @@ internal protocol AnyCardPublicKeyProvider: Component {
 internal final class CardPublicKeyProvider: AnyCardPublicKeyProvider {
     
     /// :nodoc:
-    internal let apiContext: AnyAPIContext
+    internal let apiContext: APIContext
     
     /// :nodoc:
     internal static var cachedCardPublicKey: String?
     
     /// :nodoc:
-    internal init(apiContext: AnyAPIContext,
+    internal init(apiContext: APIContext,
                   apiClient: AnyRetryAPIClient? = nil) {
         self.apiContext = apiContext
         if let apiClient = apiClient {

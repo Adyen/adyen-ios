@@ -35,7 +35,7 @@ public class CardComponent: CardPublicKeyConsumer,
     LoadingComponent {
     
     /// :nodoc:
-    public let apiContext: AnyAPIContext
+    public let apiContext: APIContext
 
     private let publicBinLength = 6
     internal let cardPaymentMethod: AnyCardPaymentMethod
@@ -79,7 +79,7 @@ public class CardComponent: CardPublicKeyConsumer,
     ///   - style: The Component's UI style.
     public convenience init(paymentMethod: AnyCardPaymentMethod,
                             configuration: Configuration,
-                            apiContext: AnyAPIContext,
+                            apiContext: APIContext,
                             style: FormComponentStyle = FormComponentStyle()) {
         self.init(paymentMethod: paymentMethod,
                   configuration: configuration,
@@ -98,7 +98,7 @@ public class CardComponent: CardPublicKeyConsumer,
     ///   - style: The Component's UI style.
     internal init(paymentMethod: AnyCardPaymentMethod,
                   configuration: Configuration = Configuration(),
-                  apiContext: AnyAPIContext,
+                  apiContext: APIContext,
                   cardPublicKeyProvider: AnyCardPublicKeyProvider? = nil,
                   style: FormComponentStyle = FormComponentStyle()) {
         self.apiContext = apiContext

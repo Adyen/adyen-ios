@@ -14,7 +14,7 @@ public final class BCMCComponent: CardComponent {
     /// :nodoc:
     public init(paymentMethod: BCMCPaymentMethod,
                 configuration: CardComponent.Configuration = CardComponent.Configuration(),
-                apiContext: AnyAPIContext,
+                apiContext: APIContext,
                 style: FormComponentStyle = FormComponentStyle()) {
         let configuration = configuration.bcmcConfiguration()
         

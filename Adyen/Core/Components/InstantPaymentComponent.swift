@@ -11,7 +11,7 @@ import Foundation
 public final class InstantPaymentComponent: PaymentComponent {
     
     /// :nodoc:
-    public let apiContext: AnyAPIContext
+    public let apiContext: APIContext
 
     /// The ready to submit payment data.
     public let paymentData: PaymentComponentData?
@@ -25,7 +25,7 @@ public final class InstantPaymentComponent: PaymentComponent {
     /// :nodoc:
     public init(paymentMethod: PaymentMethod,
                 paymentData: PaymentComponentData?,
-                apiContext: AnyAPIContext) {
+                apiContext: APIContext) {
         self.paymentMethod = paymentMethod
         self.paymentData = paymentData
         self.apiContext = apiContext

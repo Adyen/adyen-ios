@@ -16,7 +16,7 @@ internal protocol BrowserComponentDelegate: AnyObject {
 /// A component that opens a URL in web browsed and presents it.
 internal final class BrowserComponent: NSObject, PresentableComponent {
 
-    internal let apiContext: AnyAPIContext
+    internal let apiContext: APIContext
     private let url: URL
     private let style: RedirectComponentStyle?
     private let componentName = "browser"
@@ -47,7 +47,7 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
     /// - Parameter url: The URL to where the user should be redirected
     /// - Parameter apiContext: The API context.
     /// - Parameter style: The component's UI style.
-    internal init(url: URL, apiContext: AnyAPIContext, style: RedirectComponentStyle? = nil) {
+    internal init(url: URL, apiContext: APIContext, style: RedirectComponentStyle? = nil) {
         self.url = url
         self.apiContext = apiContext
         self.style = style

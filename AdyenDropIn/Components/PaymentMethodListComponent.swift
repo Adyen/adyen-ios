@@ -12,7 +12,7 @@ import UIKit
 internal final class PaymentMethodListComponent: ComponentLoader, PresentableComponent, Localizable, Cancellable {
     
     /// :nodoc:
-    internal let apiContext: AnyAPIContext
+    internal let apiContext: APIContext
     
     /// The components that are displayed in the list.
     internal let componentSections: [ComponentsSection]
@@ -30,7 +30,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     ///
     /// - Parameter components: The components to display in the list.
     /// - Parameter style: The component's UI style.
-    internal init(apiContext: AnyAPIContext,
+    internal init(apiContext: APIContext,
                   components: [ComponentsSection],
                   style: ListComponentStyle = ListComponentStyle()) {
         self.apiContext = apiContext

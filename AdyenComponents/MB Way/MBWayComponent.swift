@@ -19,7 +19,7 @@ public final class MBWayComponent: AbstractPersonalInformationComponent {
     /// - Parameter paymentMethod: The MB Way payment method.
     /// - Parameter style: The Component's UI style.
     public init(paymentMethod: MBWayPaymentMethod,
-                apiContext: AnyAPIContext,
+                apiContext: APIContext,
                 style: FormComponentStyle = FormComponentStyle()) {
         self.mbWayPaymentMethod = paymentMethod
         let configuration = Configuration(fields: [.phone])

@@ -27,7 +27,7 @@ internal final class ComponentManager {
 
     private let order: PartialPaymentOrder?
     
-    internal let apiContext: AnyAPIContext
+    internal let apiContext: APIContext
     
     internal init(paymentMethods: PaymentMethods,
                   configuration: DropInComponent.PaymentMethodsConfiguration,

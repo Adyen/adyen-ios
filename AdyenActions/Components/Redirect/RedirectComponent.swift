@@ -21,7 +21,7 @@ public final class RedirectComponent: ActionComponent {
     }
     
     /// :nodoc:
-    public let apiContext: AnyAPIContext
+    public let apiContext: APIContext
     
     /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
@@ -39,7 +39,7 @@ public final class RedirectComponent: ActionComponent {
     ///
     /// - Parameter apiContext: The API context.
     /// - Parameter style: The component's UI style.
-    public init(apiContext: AnyAPIContext,
+    public init(apiContext: APIContext,
                 style: RedirectComponentStyle? = nil) {
         self.apiContext = apiContext
         self.style = style

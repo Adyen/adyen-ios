@@ -22,10 +22,10 @@ internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitt
     private let apiClient: APIClientProtocol
     
     /// :nodoc:
-    private let apiContext: AnyAPIContext
+    private let apiContext: APIContext
 
     /// :nodoc:
-    internal init(apiContext: AnyAPIContext, apiClient: APIClientProtocol? = nil) {
+    internal init(apiContext: APIContext, apiClient: APIClientProtocol? = nil) {
         self.apiContext = apiContext
         self.apiClient = apiClient ?? APIClient(apiContext: apiContext)
     }

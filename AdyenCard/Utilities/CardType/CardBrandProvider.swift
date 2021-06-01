@@ -29,7 +29,7 @@ internal final class CardBrandProvider: AnyCardBrandProvider {
     private static let minBinLength = 11
     
     /// :nodoc:
-    internal let apiContext: AnyAPIContext
+    internal let apiContext: APIContext
     
     private let apiClient: APIClientProtocol?
 
@@ -47,7 +47,7 @@ internal final class CardBrandProvider: AnyCardBrandProvider {
     ///   - fallbackCardTypeProvider: Any instance of `AnyCardBrandProvider` to be used as a fallback
     ///   if API not available or BIN too short.
     internal init(cardPublicKeyProvider: AnyCardPublicKeyProvider,
-                  apiContext: AnyAPIContext,
+                  apiContext: APIContext,
                   apiClient: APIClientProtocol? = nil,
                   fallbackCardTypeProvider: AnyCardBrandProvider = FallbackCardBrandProvider()) {
         self.apiClient = apiClient

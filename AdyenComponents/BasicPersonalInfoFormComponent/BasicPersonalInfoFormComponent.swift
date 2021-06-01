@@ -18,7 +18,7 @@ public final class BasicPersonalInfoFormComponent: AbstractPersonalInformationCo
     /// - Parameter style: The Component's UI style.
     public init(
         paymentMethod: PaymentMethod,
-        apiContext: AnyAPIContext,
+        apiContext: APIContext,
         style: FormComponentStyle = FormComponentStyle()
     ) {
         let configuration = Configuration(fields: [.firstName, .lastName, .phone, .email])

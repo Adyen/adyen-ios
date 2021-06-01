@@ -21,7 +21,7 @@ internal enum QRCodeComponentError: LocalizedError {
 public final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
     
     /// :nodoc:
-    public let apiContext: AnyAPIContext
+    public let apiContext: APIContext
     
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
@@ -41,7 +41,7 @@ public final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
     /// Initializes the `QRCodeComponent`.
     ///
     /// - Parameter style: The component UI style.
-    public convenience init(apiContext: AnyAPIContext, style: QRCodeComponentStyle?) {
+    public convenience init(apiContext: APIContext, style: QRCodeComponentStyle?) {
         self.init(
             apiContext: apiContext,
             style: style ?? QRCodeComponentStyle(),
@@ -55,7 +55,7 @@ public final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
     /// - Parameter style: The component UI style.
     /// - Parameter pollingComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter timeoutInterval: QR Code expiration timeout
-    internal init(apiContext: AnyAPIContext,
+    internal init(apiContext: APIContext,
                   style: QRCodeComponentStyle = QRCodeComponentStyle(),
                   pollingComponentBuilder: AnyPollingHandlerProvider?,
                   timeoutInterval: TimeInterval) {

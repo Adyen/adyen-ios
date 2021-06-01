@@ -19,7 +19,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
     Observer {
     
     /// :nodoc:
-    public let apiContext: AnyAPIContext
+    public let apiContext: APIContext
 
     /// :nodoc:
     private let giftCardPaymentMethod: GiftCardPaymentMethod
@@ -50,7 +50,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
     /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
     ///   -  style: The Component's UI style.
     public init(paymentMethod: GiftCardPaymentMethod,
-                apiContext: AnyAPIContext,
+                apiContext: APIContext,
                 style: FormComponentStyle = FormComponentStyle()) {
         self.giftCardPaymentMethod = paymentMethod
         self.style = style

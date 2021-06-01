@@ -36,7 +36,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     /// - Parameter service: The 3DS2 Service.
     /// - Parameter appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
     /// :nodoc:
-    internal convenience init(apiContext: AnyAPIContext,
+    internal convenience init(apiContext: APIContext,
                               fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter? = nil,
                               service: AnyADYService,
                               appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration()) {
@@ -48,7 +48,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     }
 
     /// Initializes the 3D Secure 2 action handler.
-    internal init(apiContext: AnyAPIContext, appearanceConfiguration: ADYAppearanceConfiguration) {
+    internal init(apiContext: APIContext, appearanceConfiguration: ADYAppearanceConfiguration) {
         self.coreActionHandler = ThreeDS2CoreActionHandler(apiContext: apiContext, appearanceConfiguration: appearanceConfiguration)
     }
 

@@ -26,7 +26,7 @@ public extension DropInComponent {
         public var shopper: PrefilledShopperInformation?
         
         /// API context used to retrieve internal resources.
-        public let apiContext: AnyAPIContext
+        public let apiContext: APIContext
         
         /// Indicates the localization parameters, leave it nil to use the default parameters.
         public var localizationParameters: LocalizationParameters?
@@ -37,7 +37,7 @@ public extension DropInComponent {
         /// Initializes the drop in configuration.
         /// - Parameters:
         ///   - apiContext: The API context used to retrieve internal resources.
-        public init(apiContext: AnyAPIContext) {
+        public init(apiContext: APIContext) {
             self.apiContext = apiContext
         }
     }

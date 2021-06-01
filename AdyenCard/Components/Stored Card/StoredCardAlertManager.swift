@@ -12,7 +12,7 @@ import UIKit
 
 internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, APIContextAware, Localizable {
     
-    internal let apiContext: AnyAPIContext
+    internal let apiContext: APIContext
     private let paymentMethod: StoredCardPaymentMethod
     private let amount: Amount?
 
@@ -21,7 +21,7 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, APIC
     internal var localizationParameters: LocalizationParameters?
     
     internal init(paymentMethod: StoredCardPaymentMethod,
-                  apiContext: AnyAPIContext,
+                  apiContext: APIContext,
                   amount: Amount?) {
         self.apiContext = apiContext
         self.paymentMethod = paymentMethod

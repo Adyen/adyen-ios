@@ -12,7 +12,7 @@ import UIKit
 public final class AdyenActionComponent: ActionComponent, Localizable {
     
     /// :nodoc:
-    public let apiContext: AnyAPIContext
+    public let apiContext: APIContext
     
     /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
@@ -36,7 +36,7 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
     public var localizationParameters: LocalizationParameters?
     
     /// :nodoc:
-    public init(apiContext: AnyAPIContext) {
+    public init(apiContext: APIContext) {
         self.apiContext = apiContext
     }
     

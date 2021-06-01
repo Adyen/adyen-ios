@@ -15,7 +15,7 @@ import Foundation
 public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionComponent {
     
     /// :nodoc:
-    public let apiContext: AnyAPIContext
+    public let apiContext: APIContext
     
     /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
@@ -24,7 +24,7 @@ public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionC
     private var currentlyHandledAction: WeChatPaySDKAction?
     
     /// :nodoc:
-    public init(apiContext: AnyAPIContext) {
+    public init(apiContext: APIContext) {
         self.apiContext = apiContext
     }
     

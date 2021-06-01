@@ -12,7 +12,7 @@ import UIKit
 public final class BoletoComponent: PaymentComponent, LoadingComponent, PresentableComponent, Localizable, Observer {
     
     /// :nodoc:
-    public let apiContext: AnyAPIContext
+    public let apiContext: APIContext
     
     /// :nodoc:
     public weak var delegate: PaymentComponentDelegate?
@@ -41,7 +41,7 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     ///   - style: The Component's UI style.
     public init(
         configuration: Configuration,
-        apiContext: AnyAPIContext,
+        apiContext: APIContext,
         style: FormComponentStyle = FormComponentStyle()
     ) {
         self.configuration = configuration
@@ -220,7 +220,7 @@ extension BoletoComponent {
         fileprivate init(
             paymentMethod: PaymentMethod,
             configuration: AbstractPersonalInformationComponent.Configuration,
-            apiContext: AnyAPIContext,
+            apiContext: APIContext,
             onCreatePaymentDetails: @escaping () -> PaymentMethodDetails?,
             style: FormComponentStyle = FormComponentStyle()
         ) {

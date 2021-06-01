@@ -12,7 +12,7 @@ import UIKit
 public final class BLIKComponent: PaymentComponent, PresentableComponent, Localizable, LoadingComponent {
     
     /// :nodoc:
-    public let apiContext: AnyAPIContext
+    public let apiContext: APIContext
     
     /// :nodoc:
     public var paymentMethod: PaymentMethod { blikPaymentMethod }
@@ -41,7 +41,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
     /// - Parameter apiContext: The API context.
     /// - Parameter style: The Component's UI style.
     public init(paymentMethod: BLIKPaymentMethod,
-                apiContext: AnyAPIContext,
+                apiContext: APIContext,
                 style: FormComponentStyle = FormComponentStyle()) {
         self.blikPaymentMethod = paymentMethod
         self.style = style

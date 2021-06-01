@@ -13,7 +13,7 @@ import UIKit
 open class AbstractPersonalInformationComponent: PaymentComponent, PresentableComponent, Localizable {
 
     /// :nodoc:
-    public let apiContext: AnyAPIContext
+    public let apiContext: APIContext
     
     /// :nodoc:
     public let paymentMethod: PaymentMethod
@@ -43,7 +43,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     /// - Parameter style: The Component's UI style.
     public init(paymentMethod: PaymentMethod,
                 configuration: Configuration,
-                apiContext: AnyAPIContext,
+                apiContext: APIContext,
                 style: FormComponentStyle = FormComponentStyle()) {
         self.paymentMethod = paymentMethod
         self.configuration = configuration

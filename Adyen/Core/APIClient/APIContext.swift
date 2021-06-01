@@ -16,37 +16,15 @@ public protocol APIContextAware: AnyObject {
     
 }
 
-/// :nodoc:
-/// An API context that defines parameters for retrieving internal resources
-public protocol APIContext {
-    
-    /// :nodoc:
-    /// The environment to retrieve internal resources from.
-    var environment: AnyAPIEnvironment { get }
-    
-    /// :nodoc:
-    /// The HTTP headers.
-    var headers: [String: String] { get }
-    
-    /// :nodoc:
-    /// The query parameters.
-    var queryParameters: [URLQueryItem] { get }
-    
-    /// :nodoc:
-    /// The client key.
-    var clientKey: String { get }
-
-}
-
 /// Struct that defines API context for retrieving internal resources.
-public struct APIContext: APIContext {
+public struct APIContext {
     
-    /// :nodoc:
+    /// The query parameters.
     public var queryParameters: [URLQueryItem] {
         [URLQueryItem(name: "clientKey", value: clientKey)]
     }
     
-    /// :nodoc:
+    /// The HTTP headers.
     public let headers: [String: String] = ["Content-Type": "application/json"]
 
     /// Environment to retrieve internal resources from.

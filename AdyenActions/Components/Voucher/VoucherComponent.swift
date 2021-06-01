@@ -16,7 +16,7 @@ internal protocol AnyVoucherActionHandler: ActionComponent {
 public final class VoucherComponent: AnyVoucherActionHandler {
     
     /// :nodoc:
-    public let apiContext: AnyAPIContext
+    public let apiContext: APIContext
 
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
@@ -40,7 +40,7 @@ public final class VoucherComponent: AnyVoucherActionHandler {
     ///
     /// - Parameter apiContext: The API context.
     /// - Parameter style: The Component UI style.
-    public init(apiContext: AnyAPIContext, style: VoucherComponentStyle?) {
+    public init(apiContext: APIContext, style: VoucherComponentStyle?) {
         self.apiContext = apiContext
         self.style = style ?? VoucherComponentStyle()
     }
@@ -49,7 +49,7 @@ public final class VoucherComponent: AnyVoucherActionHandler {
     /// - Parameter apiContext: The API context.
     /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter style: The Component UI style.
-    internal convenience init(apiContext: AnyAPIContext,
+    internal convenience init(apiContext: APIContext,
                               voucherViewControllerProvider: AnyVoucherViewControllerProvider?,
                               style: VoucherComponentStyle? = nil) {
         self.init(apiContext: apiContext, style: style)

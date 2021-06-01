@@ -11,7 +11,7 @@ import UIKit
 public final class StoredPaymentMethodComponent: PaymentComponent, PresentableComponent, Localizable {
 
     /// :nodoc:
-    public let apiContext: AnyAPIContext
+    public let apiContext: APIContext
     
     /// :nodoc:
     public var paymentMethod: PaymentMethod { storedPaymentMethod }
@@ -21,7 +21,7 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
 
     /// :nodoc:
     public init(paymentMethod: StoredPaymentMethod,
-                apiContext: AnyAPIContext) {
+                apiContext: APIContext) {
         self.storedPaymentMethod = paymentMethod
         self.apiContext = apiContext
     }

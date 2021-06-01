@@ -13,7 +13,7 @@ import UIKit
 public final class IssuerListComponent: PaymentComponent, PresentableComponent, LoadingComponent {
     
     /// :nodoc:
-    public let apiContext: AnyAPIContext
+    public let apiContext: APIContext
     
     /// The issuer list payment method.
     public var paymentMethod: PaymentMethod {
@@ -31,7 +31,7 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
     /// - Parameter paymentMethod: The issuer list payment method.
     /// - Parameter style: The Component's UI style..
     public init(paymentMethod: IssuerListPaymentMethod,
-                apiContext: AnyAPIContext,
+                apiContext: APIContext,
                 style: ListComponentStyle = ListComponentStyle()) {
         self.issuerListPaymentMethod = paymentMethod
         self.apiContext = apiContext

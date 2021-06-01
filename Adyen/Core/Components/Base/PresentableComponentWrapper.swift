@@ -15,7 +15,7 @@ public final class PresentableComponentWrapper: PresentableComponent,
     LoadingComponent {
     
     /// :nodoc:
-    public var apiContext: AnyAPIContext { component.apiContext }
+    public var apiContext: APIContext { component.apiContext }
     
     /// :nodoc:
     public let viewController: UIViewController

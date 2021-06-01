@@ -30,7 +30,7 @@ internal protocol ComponentWrapper: Component {
 extension ComponentWrapper {
 
     /// :nodoc:
-    internal var apiContext: AnyAPIContext { wrappedComponent.apiContext }
+    internal var apiContext: APIContext { wrappedComponent.apiContext }
 
     /// :nodoc:
     internal var _isDropIn: Bool { // swiftlint:disable:this identifier_name

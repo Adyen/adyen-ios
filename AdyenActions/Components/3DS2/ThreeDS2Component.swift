@@ -29,7 +29,7 @@ internal protocol AnyRedirectComponent: ActionComponent {
 public final class ThreeDS2Component: ActionComponent {
     
     /// :nodoc:
-    public let apiContext: AnyAPIContext
+    public let apiContext: APIContext
 
     /// The appearance configuration of the 3D Secure 2 challenge UI.
     public let appearanceConfiguration = ADYAppearanceConfiguration()
@@ -46,7 +46,7 @@ public final class ThreeDS2Component: ActionComponent {
     /// Initializes the 3D Secure 2 component.
     ///
     /// - Parameter redirectComponentStyle: `RedirectComponent` style
-    public init(apiContext: AnyAPIContext,
+    public init(apiContext: APIContext,
                 redirectComponentStyle: RedirectComponentStyle? = nil) {
         self.apiContext = apiContext
         self.redirectComponentStyle = redirectComponentStyle
@@ -59,7 +59,7 @@ public final class ThreeDS2Component: ActionComponent {
     /// - Parameter redirectComponent: The redirect component.
     /// - Parameter redirectComponentStyle: `RedirectComponent` style.
     /// :nodoc:
-    internal convenience init(apiContext: AnyAPIContext,
+    internal convenience init(apiContext: APIContext,
                               threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler,
                               threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler,
                               redirectComponent: AnyRedirectComponent,

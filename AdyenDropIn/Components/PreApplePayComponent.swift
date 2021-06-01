@@ -14,7 +14,7 @@ import UIKit
 internal final class PreApplePayComponent: Localizable, PresentableComponent, FinalizableComponent, PaymentComponent {
     
     /// :nodoc:
-    internal let apiContext: AnyAPIContext
+    internal let apiContext: APIContext
     
     /// :nodoc:
     internal let paymentMethod: PaymentMethod
@@ -50,7 +50,7 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
     internal let requiresModalPresentation: Bool = true
     
     /// :nodoc:
-    internal init(apiContext: AnyAPIContext,
+    internal init(apiContext: APIContext,
                   configuration: ApplePayComponent.Configuration) throws {
         self.apiContext = apiContext
         self._payment = configuration.payment
