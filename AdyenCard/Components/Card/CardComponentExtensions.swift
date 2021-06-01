@@ -11,16 +11,6 @@ import Adyen
 import UIKit
 
 extension CardComponent {
-
-    /// Card Component errors.
-    public enum Error: Swift.Error {
-        /// A valid client key is required for `CardPublicKeyProvider` to work.
-        /// This error is thrown in case it is not valid.
-        case invalidClientKey
-    }
-}
-
-extension CardComponent {
     
     internal func didSelectSubmitButton() {
         guard cardViewController.validate() else {

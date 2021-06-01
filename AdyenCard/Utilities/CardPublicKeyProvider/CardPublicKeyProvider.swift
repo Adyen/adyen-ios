@@ -43,12 +43,6 @@ internal final class CardPublicKeyProvider: AnyCardPublicKeyProvider {
             return
         }
         
-        guard ClientKeyValidator().isValid(apiContext.clientKey) else {
-            AdyenAssertion.assertionFailure(message: "ClientKey is invalid.")
-            completion(.failure(CardComponent.Error.invalidClientKey))
-            return
-        }
-        
         guard waitingList.count == 1 else { return }
         
         let request = ClientKeyRequest(clientKey: apiContext.clientKey)
