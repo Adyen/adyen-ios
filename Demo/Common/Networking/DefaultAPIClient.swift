@@ -10,9 +10,7 @@ import Foundation
 internal final class DefaultAPIClient: AnyRetryAPIClient {
     
     internal let apiClient = RetryAPIClient(
-        apiClient: APIClient(apiContext: APIContext(
-                                environment: ConfigurationConstants.demoServerEnvironment,
-                                clientKey: ConfigurationConstants.clientKey)),
+        apiClient: APIClient(apiContext: ConfigurationConstants.apiContext),
         scheduler: SimpleScheduler(maximumCount: 2))
     
     internal func perform<R>(_ request: R, completionHandler: @escaping (Result<R.ResponseType, Error>) -> Void) where R: Request {
