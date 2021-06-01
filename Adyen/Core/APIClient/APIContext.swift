@@ -12,13 +12,13 @@ public protocol APIContextAware: AnyObject {
     
     /// :nodoc:
     /// The API context
-    var apiContext: AnyAPIContext { get }
+    var apiContext: APIContext { get }
     
 }
 
 /// :nodoc:
 /// An API context that defines parameters for retrieving internal resources
-public protocol AnyAPIContext {
+public protocol APIContext {
     
     /// :nodoc:
     /// The environment to retrieve internal resources from.
@@ -39,7 +39,7 @@ public protocol AnyAPIContext {
 }
 
 /// Struct that defines API context for retrieving internal resources.
-public struct APIContext: AnyAPIContext {
+public struct APIContext: APIContext {
     
     /// :nodoc:
     public var queryParameters: [URLQueryItem] {
@@ -61,6 +61,10 @@ public struct APIContext: AnyAPIContext {
     ///   - environment: The environment to retrieve internal resources from.
     ///   - clientKey: The client key that corresponds to the webservice user you will use for initiating the payment.
     public init(environment: AnyAPIEnvironment, clientKey: String) {
+        guard ClientKeyValidator().isValid(clientKey) else {
+            fatalError("ClientKey is invalid.")
+        }
+
         self.environment = environment
         self.clientKey = clientKey
     }
