@@ -8,7 +8,7 @@ import Foundation
 
 /// :nodoc:
 /// Used for testing code that causes fatalError
-public func fatalError(
+internal func fatalError(
     _ message: @autoclosure () -> String = "",
     file: StaticString = #file,
     line: UInt = #line
