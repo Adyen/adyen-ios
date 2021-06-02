@@ -49,7 +49,7 @@ public final class RedirectComponent: ActionComponent {
     ///
     /// - Parameter action: The redirect action object.
     public func handle(_ action: RedirectAction) {
-        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, environment: apiContext.environment)
+        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: apiContext)
         
         if action.url.isHttp {
             openHttpSchemeUrl(action)

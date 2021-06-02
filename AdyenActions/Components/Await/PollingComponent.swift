@@ -42,7 +42,7 @@ internal final class PollingComponent: AnyPollingHandler {
     ///
     /// - Parameter action: The await action object.
     internal func handle(_ action: PaymentDataAware) {
-        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, environment: apiContext.environment)
+        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: apiContext)
         startPolling(action)
     }
     

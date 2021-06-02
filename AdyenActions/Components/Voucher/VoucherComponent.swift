@@ -63,7 +63,7 @@ public final class VoucherComponent: AnyVoucherActionHandler {
     ///
     /// - Parameter action: The await action object.
     public func handle(_ action: VoucherAction) {
-        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, environment: apiContext.environment)
+        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: apiContext)
 
         var viewControllerProvider = voucherViewControllerProvider
             ?? VoucherViewControllerProvider(style: style, environment: apiContext.environment)

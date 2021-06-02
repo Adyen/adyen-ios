@@ -59,7 +59,7 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     ///
     /// - Parameter action: The await action object.
     public func handle(_ action: AwaitAction) {
-        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, environment: apiContext.environment)
+        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: apiContext)
         
         let viewModel = AwaitComponentViewModel.viewModel(with: action.paymentMethodType,
                                                           localizationParameters: localizationParameters)

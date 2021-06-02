@@ -56,7 +56,7 @@ internal class ThreeDS2CoreActionHandler: Component {
     internal func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
                          event: Analytics.Event,
                          completionHandler: @escaping (Result<String, Error>) -> Void) {
-        Analytics.sendEvent(component: event.component, flavor: event.flavor, environment: event.environment)
+        Analytics.sendEvent(event)
 
         createFingerprint(fingerprintAction) { [weak self] result in
             switch result {
@@ -120,7 +120,7 @@ internal class ThreeDS2CoreActionHandler: Component {
             return didFail(with: ThreeDS2ComponentError.missingTransaction, completionHandler: completionHandler)
         }
 
-        Analytics.sendEvent(component: event.component, flavor: event.flavor, environment: event.environment)
+        Analytics.sendEvent(event)
 
         let token: ThreeDS2Component.ChallengeToken
         do {

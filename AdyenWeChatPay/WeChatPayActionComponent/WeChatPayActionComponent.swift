@@ -40,7 +40,7 @@ public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionC
          Handling multiple WeChatPaySDKAction's in parallel is not supported.
         """)
         
-        Analytics.sendEvent(component: "wechatpaySDK", flavor: _isDropIn ? .dropin : .components, environment: apiContext.environment)
+        Analytics.sendEvent(component: "wechatpaySDK", flavor: _isDropIn ? .dropin : .components, context: apiContext)
         
         currentlyHandledAction = action
         

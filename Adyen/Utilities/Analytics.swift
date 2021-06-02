@@ -19,19 +19,26 @@ public class Analytics {
     public struct Event {
 
         /// :nodoc:
-        public var component: String
+        fileprivate var component: String
 
         /// :nodoc:
-        public var flavor: Flavor
+        fileprivate var flavor: Flavor
 
         /// :nodoc:
-        public var environment: AnyAPIEnvironment
+        fileprivate var environment: AnyAPIEnvironment
 
         /// :nodoc:
         public init(component: String, flavor: Flavor, environment: AnyAPIEnvironment) {
             self.component = component
             self.flavor = flavor
             self.environment = environment
+        }
+        
+        /// :nodoc
+        public init(component: String, flavor: Flavor, context: APIContext) {
+            self.init(component: component,
+                      flavor: flavor,
+                      environment: context.environment)
         }
     }
     
@@ -45,6 +52,16 @@ public class Analytics {
         }
         
         urlSession.dataTask(with: url).resume()
+    }
+    
+    /// :nodoc:
+    public static func sendEvent(component: String, flavor: Flavor, context: APIContext) {
+        sendEvent(component: component, flavor: flavor, environment: context.environment)
+    }
+    
+    /// :nodoc:
+    public static func sendEvent(_ event: Event) {
+        sendEvent(component: event.component, flavor: event.flavor, environment: event.environment)
     }
     
     // MARK: - Private

@@ -35,7 +35,7 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
         Analytics.sendEvent(
             component: storedPaymentMethod.type,
             flavor: _isDropIn ? .dropin : .components,
-            environment: apiContext.environment
+            context: apiContext
         )
         
         let displayInformation = storedPaymentMethod.localizedDisplayInformation(using: localizationParameters)

@@ -46,7 +46,7 @@ internal final class StoredCardComponent: PaymentComponent, PresentableComponent
         Analytics.sendEvent(
             component: paymentMethod.type,
             flavor: _isDropIn ? .dropin : .components,
-            environment: apiContext.environment
+            context: apiContext
         )
         
         let manager = StoredCardAlertManager(paymentMethod: storedCardPaymentMethod,

@@ -49,7 +49,7 @@ public protocol TrackableComponent: Component, PaymentMethodAware, ViewControlle
 extension TrackableComponent {
     /// :nodoc:
     public func viewDidLoad(viewController: UIViewController) {
-        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: apiContext.environment)
+        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, context: apiContext)
     }
 
     /// :nodoc:
