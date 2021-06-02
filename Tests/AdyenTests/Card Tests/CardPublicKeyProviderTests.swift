@@ -17,22 +17,6 @@ class CardPublicKeyProviderTests: XCTestCase {
         AdyenAssertion.listener = nil
     }
 
-    func testMissingClientKey() {
-        let baseApiClient = APIClientMock()
-        let apiClient = RetryAPIClient(apiClient: baseApiClient, scheduler: SimpleScheduler(maximumCount: 2))
-        let sut = CardPublicKeyProvider(apiContext: Dummy.context, apiClient: apiClient)
-        CardPublicKeyProvider.cachedCardPublicKey = nil
-
-        let expectation = XCTestExpectation(description: "Except Assertion failure.")
-        AdyenAssertion.listener = { message in
-            XCTAssertEqual(message, "ClientKey is missing or invalid.")
-            expectation.fulfill()
-        }
-
-        sut.fetch(completion: { _ in })
-        wait(for: [expectation], timeout: 2, enforceOrder: true)
-    }
-
     func testMultipleFetchCallsAndOneRequestDispatched() throws {
         var baseApiClient = APIClientMock()
         var apiClient = RetryAPIClient(apiClient: baseApiClient, scheduler: SimpleScheduler(maximumCount: 2))

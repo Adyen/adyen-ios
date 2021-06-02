@@ -275,7 +275,7 @@ class BoletoComponentTests: XCTestCase {
     
         }
         
-        waitForExpectations(timeout: 30, handler: nil)
+        waitForExpectations(timeout: 10, handler: nil)
     }
     
     func testPaymentDataProvided() {

@@ -965,7 +965,7 @@ class CardComponentTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 30, handler: nil)
+        waitForExpectations(timeout: 10, handler: nil)
     }
     
     private func focus<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U) {

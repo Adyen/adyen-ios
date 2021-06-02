@@ -57,7 +57,7 @@ class ThreeDS2ComponentTests: XCTestCase {
 
         sut.handle(ThreeDS2Action.fingerprint(ThreeDS2FingerprintAction(fingerprintToken: "token", authorisationToken: "AuthToken", paymentData: "data")))
 
-        waitForExpectations(timeout: 30, handler: nil)
+        waitForExpectations(timeout: 10, handler: nil)
     }
 
     func testFullFlowRedirectFailure() throws {
