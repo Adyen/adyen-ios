@@ -16,7 +16,7 @@ class CardBrandProviderTests: XCTestCase {
     override func setUp() {
         cardPublicKeyProvider = CardPublicKeyProviderMock()
         apiClientMock = APIClientMock()
-        sut = CardBrandProvider(cardPublicKeyProvider: cardPublicKeyProvider, apiClient: apiClientMock)
+        sut = CardBrandProvider(cardPublicKeyProvider: cardPublicKeyProvider, apiContext: Dummy.context, apiClient: apiClientMock)
     }
 
     override func tearDown() {
@@ -28,7 +28,7 @@ class CardBrandProviderTests: XCTestCase {
     func testLocalCardTypeFetch() {
         cardPublicKeyProvider.onFetch = {
             XCTFail("Shoul not call APIClient")
-            $0(.success(Dummy.dummyPublicKey))
+            $0(.success(Dummy.publicKey))
         }
         apiClientMock.onExecute = {
             XCTFail("Shoul not call APIClient")
@@ -40,7 +40,7 @@ class CardBrandProviderTests: XCTestCase {
     }
 
     func testRemoteCardTypeFetch() {
-        cardPublicKeyProvider.onFetch = { $0(.success(Dummy.dummyPublicKey)) }
+        cardPublicKeyProvider.onFetch = { $0(.success(Dummy.publicKey)) }
         let mockedBrands = [CardBrand(type: .solo)]
         apiClientMock.mockedResults = [.success(BinLookupResponse(brands: mockedBrands))]
         let parameters = CardBrandProviderParameters(bin: "5656565656565656", supportedTypes: [.masterCard, .visa, .maestro])
@@ -50,7 +50,7 @@ class CardBrandProviderTests: XCTestCase {
     }
 
     func testLocalCardTypeFetchWhenPublicKeyFailure() {
-        cardPublicKeyProvider.onFetch = { $0(.failure(Dummy.dummyError)) }
+        cardPublicKeyProvider.onFetch = { $0(.failure(Dummy.error)) }
         apiClientMock.onExecute = { XCTFail("Shoul not call APIClient") }
         let parameters = CardBrandProviderParameters(bin: "56", supportedTypes: [.masterCard, .visa, .maestro])
         sut.provide(for: parameters) { result in
@@ -59,7 +59,7 @@ class CardBrandProviderTests: XCTestCase {
     }
 
     func testRemoteCardTypeFetchWhenPublicKeyFailure() {
-        cardPublicKeyProvider.onFetch = { $0(.failure(Dummy.dummyError)) }
+        cardPublicKeyProvider.onFetch = { $0(.failure(Dummy.error)) }
         apiClientMock.onExecute = { XCTFail("Shoul not call APIClient") }
         let parameters = CardBrandProviderParameters(bin: "5656565656565656", supportedTypes: [.masterCard, .visa, .maestro])
         sut.provide(for: parameters) { result in

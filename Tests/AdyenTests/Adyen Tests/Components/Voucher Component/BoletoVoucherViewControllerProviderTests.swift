@@ -11,7 +11,10 @@ import XCTest
 class BoletoVoucherViewControllerProviderTests: XCTestCase {
 
     func testBoletoBancairoVoucher() throws {
-        let viewControllerProvider = VoucherViewControllerProvider(style: VoucherComponentStyle())
+        let viewControllerProvider = VoucherViewControllerProvider(
+            style: VoucherComponentStyle(),
+            environment: Dummy.context.environment
+        )
 
         let boletoDecoded = try Coder.decode(boletoAction) as BoletoVoucherAction
         let action: VoucherAction = .boletoBancairoSantander(boletoDecoded)

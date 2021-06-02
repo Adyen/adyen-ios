@@ -18,7 +18,7 @@ class PaymentMethodListComponentTests: XCTestCase {
     func testRequiresKeyboardInput() {
         let section = ComponentsSection(components: [storedComponent])
         let sectionedComponents = [section]
-        let sut = PaymentMethodListComponent(components: sectionedComponents)
+        let sut = PaymentMethodListComponent(apiContext: Dummy.context, components: sectionedComponents)
 
         let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
 
@@ -29,7 +29,7 @@ class PaymentMethodListComponentTests: XCTestCase {
         let storedSection = ComponentsSection(components: [storedComponent])
         let regularSectionHeader = ListSectionHeader(title: "title", style: ListSectionHeaderStyle())
         let regularSection = ComponentsSection(header: regularSectionHeader, components: [regularComponent])
-        let sut = PaymentMethodListComponent(components: [storedSection, regularSection])
+        let sut = PaymentMethodListComponent(apiContext: Dummy.context, components: [storedSection, regularSection])
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         
         let listViewController = sut.listViewController
@@ -42,7 +42,7 @@ class PaymentMethodListComponentTests: XCTestCase {
         let storedSection = ComponentsSection(components: [storedComponent])
         let regularSectionHeader = ListSectionHeader(title: "title", style: ListSectionHeaderStyle())
         let regularSection = ComponentsSection(header: regularSectionHeader, components: [regularComponent])
-        let sut = PaymentMethodListComponent(components: [storedSection, regularSection])
+        let sut = PaymentMethodListComponent(apiContext: Dummy.context, components: [storedSection, regularSection])
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         
         let listViewController = sut.listViewController
@@ -53,7 +53,7 @@ class PaymentMethodListComponentTests: XCTestCase {
 
     func testStartStopLoading() {
         let section = ComponentsSection(components: [storedComponent])
-        let sut = PaymentMethodListComponent(components: [section])
+        let sut = PaymentMethodListComponent(apiContext: Dummy.context, components: [section])
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         UIApplication.shared.keyWindow?.rootViewController = sut.listViewController

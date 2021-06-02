@@ -15,7 +15,10 @@ class DokuVoucherViewControllerProviderTests: XCTestCase {
         let dokuAction = try Coder.decode(dokuIndomaretAction) as DokuVoucherAction
         let action: VoucherAction = .dokuIndomaret(dokuAction)
 
-        let sut = VoucherViewControllerProvider(style: VoucherComponentStyle())
+        let sut = VoucherViewControllerProvider(
+            style: VoucherComponentStyle(),
+            environment: Dummy.context.environment
+        )
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost")
 
         let viewController = sut.provide(with: action) as! VoucherViewController
@@ -69,7 +72,7 @@ class DokuVoucherViewControllerProviderTests: XCTestCase {
         style.secondaryButton.cornerRounding = .fixed(12)
         style.secondaryButton.title.color = UIColor.white
         style.secondaryButton.title.font = .systemFont(ofSize: 34)
-        let sut = VoucherViewControllerProvider(style: style)
+        let sut = VoucherViewControllerProvider(style: style, environment: Dummy.context.environment)
 
         let viewController = sut.provide(with: action) as! VoucherViewController
 

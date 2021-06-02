@@ -11,6 +11,8 @@
 import Foundation
 
 final class AnyRedirectComponentMock: AnyRedirectComponent {
+    
+    let apiContext: APIContext = APIContext(environment: Environment.test, clientKey: "local_DUMMYKEYFORTESTING")
 
     var delegate: ActionComponentDelegate?
 

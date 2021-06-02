@@ -42,6 +42,8 @@
 		5AD40EFB26303D490090E01C /* UILabelHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD40EFA26303D490090E01C /* UILabelHelpers.swift */; };
 		5AD40F43263150F90090E01C /* UILabelHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD40F42263150F90090E01C /* UILabelHelpersTests.swift */; };
 		5AD40F4F263157D50090E01C /* UIButtonHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD40F4E263157D50090E01C /* UIButtonHelpersTests.swift */; };
+		5AF730DE2667C1ED0091C573 /* FatalErrorUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF730DD2667C1ED0091C573 /* FatalErrorUtil.swift */; };
+		5AF730EA2667C3F10091C573 /* APIContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF730E92667C3F10091C573 /* APIContextTests.swift */; };
 		E2028F5C2227F1930007FF8B /* Details.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2028F5B2227F1930007FF8B /* Details.swift */; };
 		E2028F5E222805E20007FF8B /* CardDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2028F5D222805E20007FF8B /* CardDetails.swift */; };
 		E216D3BC221AAB240013CBCF /* FormItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E216D3BB221AAB240013CBCF /* FormItem.swift */; };
@@ -872,6 +874,8 @@
 		5AD40EFA26303D490090E01C /* UILabelHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelHelpers.swift; sourceTree = "<group>"; };
 		5AD40F42263150F90090E01C /* UILabelHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelHelpersTests.swift; sourceTree = "<group>"; };
 		5AD40F4E263157D50090E01C /* UIButtonHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonHelpersTests.swift; sourceTree = "<group>"; };
+		5AF730DD2667C1ED0091C573 /* FatalErrorUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FatalErrorUtil.swift; sourceTree = "<group>"; };
+		5AF730E92667C3F10091C573 /* APIContextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIContextTests.swift; sourceTree = "<group>"; };
 		E2028F5B2227F1930007FF8B /* Details.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Details.swift; sourceTree = "<group>"; };
 		E2028F5D222805E20007FF8B /* CardDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetails.swift; sourceTree = "<group>"; };
 		E216D3BB221AAB240013CBCF /* FormItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormItem.swift; sourceTree = "<group>"; };
@@ -2080,6 +2084,7 @@
 			children = (
 				F96F44CC23B257D700871C1F /* Logger.swift */,
 				E702BDE32602149E00280682 /* Assertion.swift */,
+				5AF730DD2667C1ED0091C573 /* FatalErrorUtil.swift */,
 			);
 			path = Debugging;
 			sourceTree = "<group>";
@@ -2621,6 +2626,7 @@
 			isa = PBXGroup;
 			children = (
 				E702BE182602525E00280682 /* AssertsTests.swift */,
+				5AF730E92667C3F10091C573 /* APIContextTests.swift */,
 				E9E3DB052226B3B200697074 /* CoderTests.swift */,
 				E270FDE5225CB40A006C2CD0 /* ObservableTests.swift */,
 				E2B317A12265BC9400C1BB30 /* LengthValidatorTests.swift */,
@@ -4342,6 +4348,7 @@
 				5A6745E126417A5C00E9184D /* ADYViewController.swift in Sources */,
 				E7D0DAAE265E66D70013A5F3 /* AddressFormItemInjector.swift in Sources */,
 				F96F44CD23B257D700871C1F /* Logger.swift in Sources */,
+				5AF730DE2667C1ED0091C573 /* FatalErrorUtil.swift in Sources */,
 				E216D3BC221AAB240013CBCF /* FormItem.swift in Sources */,
 				E9093403228EDADA00C9F04B /* Payment.swift in Sources */,
 				E216D3CD221AFBB90013CBCF /* Validator.swift in Sources */,
@@ -4539,6 +4546,7 @@
 				E77377D72631695000BCE511 /* RegionRepositoryTest.swift in Sources */,
 				F9639B4D24E298C70073F38A /* SimpleSchedulerTests.swift in Sources */,
 				F9D644E724D40C7C0059CBE3 /* MBWayComponentTests.swift in Sources */,
+				5AF730EA2667C3F10091C573 /* APIContextTests.swift in Sources */,
 				E767F4DC25A603A50077029E /* ModalToolbarTests.swift in Sources */,
 				E7D3ED84243B667500E73F59 /* FormCardNumberItemViewTests.swift in Sources */,
 				F957AAA62552FDC10099AD73 /* ThreeDS2CompactActionHandlerTests.swift in Sources */,

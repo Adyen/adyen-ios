@@ -16,7 +16,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
     let payment = Payment(amount: Amount(value: 2, currencyCode: "IDR"), countryCode: "ID")
 
     func testLocalizationWithCustomTableName() {
-        let sut = SevenElevenComponent(paymentMethod: method)
+        let sut = SevenElevenComponent(paymentMethod: method, apiContext: Dummy.context)
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
@@ -37,7 +37,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
     }
 
     func testLocalizationWithCustomKeySeparator() {
-        let sut = SevenElevenComponent(paymentMethod: method)
+        let sut = SevenElevenComponent(paymentMethod: method, apiContext: Dummy.context)
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
 
@@ -83,7 +83,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         style.textField.title.textAlignment = .center
         style.textField.backgroundColor = .red
 
-        let sut = SevenElevenComponent(paymentMethod: method, style: style)
+        let sut = SevenElevenComponent(paymentMethod: method, apiContext: Dummy.context, style: style)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -159,7 +159,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
     }
 
     func testSubmitForm() {
-        let sut = SevenElevenComponent(paymentMethod: method)
+        let sut = SevenElevenComponent(paymentMethod: method, apiContext: Dummy.context)
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         sut.payment = payment
@@ -206,7 +206,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
     }
 
     func testBigTitle() {
-        let sut = SevenElevenComponent(paymentMethod: method)
+        let sut = SevenElevenComponent(paymentMethod: method, apiContext: Dummy.context)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -221,7 +221,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
 
     func testRequiresModalPresentation() {
         let paymentMethod = SevenElevenPaymentMethod(type: "test_type", name: "Test name")
-        let sut = SevenElevenComponent(paymentMethod: paymentMethod)
+        let sut = SevenElevenComponent(paymentMethod: paymentMethod, apiContext: Dummy.context)
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 

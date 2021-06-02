@@ -15,21 +15,6 @@ class AssertsTests: XCTestCase {
         AdyenAssertion.listener = nil
     }
 
-    func testClientKeyValidationAssertion() {
-        let sut = MockComponent()
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-
-        AdyenAssertion.listener = { message in
-            XCTAssertEqual(message, "The key you have provided to AdyenUIKitTests.AssertsTests.MockComponent is not a valid client key.\nCheck https://docs.adyen.com/user-management/client-side-authentication for more information.")
-            expectation.fulfill()
-        }
-
-        sut.clientKey = "invalidClientKey"
-
-        wait(for: [expectation], timeout: 2)
-
-    }
-
     func testListViewControllerPreferredContentSizeAssertion() {
         let sut = ListViewController(style: ListComponentStyle())
         let expectation = XCTestExpectation(description: "Dummy Expectation")
@@ -76,7 +61,7 @@ class AssertsTests: XCTestCase {
     }
 
     func testAwaitVComponentPresentationDelegateAssertion() {
-        let sut = AwaitComponent(style: nil)
+        let sut = AwaitComponent(apiContext: Dummy.context, style: nil)
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
         AdyenAssertion.listener = { message in
@@ -90,23 +75,8 @@ class AssertsTests: XCTestCase {
 
     }
 
-    func testActionComponentAwaitActionNoClientKeyAssertion() {
-        let sut = AdyenActionComponent()
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-
-        AdyenAssertion.listener = { message in
-            XCTAssertEqual(message, "Failed to instantiate AwaitComponent because client key is not configured.\nPlease supply the client key:\n-  if using DropInComponent, or AdyenActionsComponent.clientKey in the PaymentMethodsConfiguration;\n-  if using AdyenActionsComponent separately in AdyenActionsComponent.clientKey.")
-            expectation.fulfill()
-        }
-
-        sut.handle(Action.await(AwaitAction(paymentData: "", paymentMethodType: .blik)))
-
-        wait(for: [expectation], timeout: 2)
-
-    }
-
     func testVoucherComponentPresentationDelegateAssertion() {
-        let sut = VoucherComponent(style: nil)
+        let sut = VoucherComponent(apiContext: Dummy.context, style: nil)
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
         AdyenAssertion.listener = { message in
@@ -158,21 +128,12 @@ class AssertsTests: XCTestCase {
 
     }
 
-    func testThreeDS2FingerprintSubmitterAssertion() {
-        let sut = ThreeDS2FingerprintSubmitter()
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-
-        AdyenAssertion.listener = { message in
-            XCTAssertEqual(message, "Client key is missing.")
-            expectation.fulfill()
+    class MockComponent: Component {
+        let apiContext: APIContext
+        
+        init(apiContext: APIContext = Dummy.context) {
+            self.apiContext = apiContext
         }
-
-        sut.submit(fingerprint: "", paymentData: nil, completionHandler: { _ in })
-
-        wait(for: [expectation], timeout: 2)
-
     }
-
-    class MockComponent: Component {}
 
 }

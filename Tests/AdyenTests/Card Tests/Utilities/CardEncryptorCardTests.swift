@@ -26,7 +26,7 @@ class CardEncryptorCardTests: XCTestCase {
     func testEncryptCardWIthOneFIeldShouldSucceed() {
         var card = Card()
         card.number = "1233467890"
-        let key = Dummy.dummyPublicKey
+        let key = Dummy.publicKey
         XCTAssertNotNil(try CardEncryptor.encrypt(card: card, with: key))
     }
 
@@ -39,14 +39,14 @@ class CardEncryptorCardTests: XCTestCase {
     }
 
     func testEncryptCardShouldEncrypt() {
-        let key = Dummy.dummyPublicKey
+        let key = Dummy.publicKey
         XCTAssertNotNil(try CardEncryptor.encrypt(card: correctCard, with: key))
     }
 
     // MARK: - Test encrypting Card number
 
     func testEncryptNumberShouldEncrypt() {
-        let key = Dummy.dummyPublicKey
+        let key = Dummy.publicKey
         XCTAssertNotNil(try CardEncryptor.encrypt(number: "12345678", with: key))
     }
     
@@ -68,7 +68,7 @@ class CardEncryptorCardTests: XCTestCase {
     // MARK: - Test encrypting Security Code
     
     func testEncryptSecureCodeShouldEncrypt() {
-        let key = Dummy.dummyPublicKey
+        let key = Dummy.publicKey
         XCTAssertNotNil(try CardEncryptor.encrypt(securityCode: "123", with: key))
     }
 
@@ -90,7 +90,7 @@ class CardEncryptorCardTests: XCTestCase {
     // MARK: - Test encrypting Expiry Month
     
     func testEncryptExpirationMonthShouldEncrypt() {
-        let key = Dummy.dummyPublicKey
+        let key = Dummy.publicKey
         XCTAssertNotNil(try CardEncryptor.encrypt(expirationMonth: "123", with: key))
     }
 
@@ -112,7 +112,7 @@ class CardEncryptorCardTests: XCTestCase {
     // MARK: - Test encrypting Expiry Year
     
     func testEncryptExpirationYearShouldEncrypt() {
-        let key = Dummy.dummyPublicKey
+        let key = Dummy.publicKey
         XCTAssertNotNil(try CardEncryptor.encrypt(expirationYear: "123", with: key))
     }
 
@@ -134,7 +134,7 @@ class CardEncryptorCardTests: XCTestCase {
     // MARK: - Test encrypting encryptedToToken function
     
     func testEncryptTokenShouldEncrypt() {
-        let key = Dummy.dummyPublicKey
+        let key = Dummy.publicKey
         XCTAssertNotNil(try CardEncryptor.encryptToken(from: correctCard, with: key))
     }
 
@@ -156,7 +156,7 @@ class CardEncryptorCardTests: XCTestCase {
     func testEncryptToTokenWIthOneFIeldShouldSucceed() {
         var card = Card()
         card.number = "1233467890"
-        let key = Dummy.dummyPublicKey
+        let key = Dummy.publicKey
         XCTAssertNotNil(try CardEncryptor.encryptToken(from: card, with: key))
     }
 
@@ -188,7 +188,7 @@ class CardEncryptorCardTests: XCTestCase {
     }
 
     func testEncryptBIN() {
-        let ecrypted = try! CardEncryptor.encrypt(bin: "55000000", with: Dummy.dummyPublicKey)
+        let ecrypted = try! CardEncryptor.encrypt(bin: "55000000", with: Dummy.publicKey)
         XCTAssertNotNil(ecrypted)
         XCTAssertTrue(ecrypted.hasPrefix("adyenio_0_1_25$"))
     }

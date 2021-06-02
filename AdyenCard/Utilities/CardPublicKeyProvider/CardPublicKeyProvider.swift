@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 
 /// :nodoc:
-internal protocol AnyCardPublicKeyProvider: Component {
+internal protocol AnyCardPublicKeyProvider: APIContextAware {
     
     /// :nodoc:
     typealias CompletionHandler = (Result<String, Error>) -> Void

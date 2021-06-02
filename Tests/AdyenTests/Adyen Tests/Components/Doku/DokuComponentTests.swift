@@ -16,7 +16,7 @@ class DokuComponentTests: XCTestCase {
     let payment = Payment(amount: Amount(value: 2, currencyCode: "IDR"), countryCode: "ID")
 
     func testLocalizationWithCustomTableName() {
-        let sut = DokuComponent(paymentMethod: method)
+        let sut = DokuComponent(paymentMethod: method, apiContext: Dummy.context)
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
@@ -37,7 +37,7 @@ class DokuComponentTests: XCTestCase {
     }
 
     func testLocalizationWithCustomKeySeparator() {
-        let sut = DokuComponent(paymentMethod: method)
+        let sut = DokuComponent(paymentMethod: method, apiContext: Dummy.context)
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
 
@@ -82,7 +82,7 @@ class DokuComponentTests: XCTestCase {
         style.textField.title.textAlignment = .center
         style.textField.backgroundColor = .red
 
-        let sut = DokuComponent(paymentMethod: method, style: style)
+        let sut = DokuComponent(paymentMethod: method, apiContext: Dummy.context, style: style)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -143,7 +143,7 @@ class DokuComponentTests: XCTestCase {
     }
 
     func testSubmitForm() {
-        let sut = DokuComponent(paymentMethod: method)
+        let sut = DokuComponent(paymentMethod: method, apiContext: Dummy.context)
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         sut.payment = payment
@@ -186,7 +186,7 @@ class DokuComponentTests: XCTestCase {
     }
 
     func testBigTitle() {
-        let sut = DokuComponent(paymentMethod: method)
+        let sut = DokuComponent(paymentMethod: method, apiContext: Dummy.context)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -201,7 +201,7 @@ class DokuComponentTests: XCTestCase {
 
     func testRequiresModalPresentation() {
         let dokuPaymentMethod = DokuPaymentMethod(type: "doku_wallet", name: "Test name")
-        let sut = DokuComponent(paymentMethod: dokuPaymentMethod)
+        let sut = DokuComponent(paymentMethod: dokuPaymentMethod, apiContext: Dummy.context)
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 

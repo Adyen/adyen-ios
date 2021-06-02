@@ -28,7 +28,7 @@ class InstantPaymentComponentTests: XCTestCase {
         let amount = Amount(value: 34, currencyCode: "EUR")
         let paymentData = PaymentComponentData(paymentMethodDetails: details, amount: amount, order: nil)
         delegate = PaymentComponentDelegateMock()
-        sut = InstantPaymentComponent(paymentMethod: paymentMethod, paymentData: paymentData)
+        sut = InstantPaymentComponent(paymentMethod: paymentMethod, paymentData: paymentData, apiContext: Dummy.context)
         sut.delegate = delegate
 
         let delegateExpectation = expectation(description: "expect delegate to be called.")

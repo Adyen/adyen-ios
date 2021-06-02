@@ -23,7 +23,7 @@ class BCMCComponentTests: XCTestCase {
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 configuration: CardComponent.Configuration(),
-                                clientKey: Dummy.dummyClientKey)
+                                apiContext: Dummy.context)
 
         let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
 
@@ -35,7 +35,7 @@ class BCMCComponentTests: XCTestCase {
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 configuration: CardComponent.Configuration(),
-                                clientKey: Dummy.dummyClientKey)
+                                apiContext: Dummy.context)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         XCTAssertEqual(sut.configuration.allowedCardTypes, [.bcmc])
@@ -60,7 +60,7 @@ class BCMCComponentTests: XCTestCase {
         configuration.showsHolderNameField = true
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 configuration: configuration,
-                                clientKey: Dummy.dummyClientKey)
+                                apiContext: Dummy.context)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         XCTAssertEqual(sut.configuration.allowedCardTypes, [.bcmc])
@@ -85,7 +85,7 @@ class BCMCComponentTests: XCTestCase {
         configuration.showsStorePaymentMethodField = false
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 configuration: configuration,
-                                clientKey: Dummy.dummyClientKey)
+                                apiContext: Dummy.context)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         XCTAssertEqual(sut.configuration.allowedCardTypes, [.bcmc])
@@ -107,7 +107,7 @@ class BCMCComponentTests: XCTestCase {
         let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["any_test_brand_name"])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
-                                clientKey: Dummy.dummyClientKey)
+                                apiContext: Dummy.context)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         let expectation = XCTestExpectation(description: "Dummy Expectation")
@@ -120,7 +120,7 @@ class BCMCComponentTests: XCTestCase {
             
             let cardNumberItem = cardNumberItemView!.item
             XCTAssertEqual(cardNumberItem.cardTypeLogos.count, 1)
-            XCTAssertEqual(cardNumberItem.cardTypeLogos.first?.url, LogoURLProvider.logoURL(withName: "bcmc", environment: sut.environment))
+            XCTAssertEqual(cardNumberItem.cardTypeLogos.first?.url, LogoURLProvider.logoURL(withName: "bcmc", environment: sut.apiContext.environment))
             XCTAssertEqual(cardNumberItem.cardTypeLogos.first?.isHidden, false)
             XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberItem.cardTypeLogos"))
             
@@ -133,7 +133,7 @@ class BCMCComponentTests: XCTestCase {
         let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["any_test_brand_name"])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
-                                clientKey: Dummy.dummyClientKey)
+                                apiContext: Dummy.context)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         let expectation = XCTestExpectation(description: "Dummy Expectation")
@@ -155,8 +155,8 @@ class BCMCComponentTests: XCTestCase {
         let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["any_test_brand_name"])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
-                                clientKey: Dummy.dummyClientKey)
-        CardPublicKeyProvider.cachedCardPublicKey = Dummy.dummyPublicKey
+                                apiContext: Dummy.context)
+        CardPublicKeyProvider.cachedCardPublicKey = Dummy.publicKey
         sut.delegate = delegate
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -210,7 +210,7 @@ class BCMCComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["any_test_brand_name"])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
-                                clientKey: Dummy.dummyClientKey)
+                                apiContext: Dummy.context)
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -235,7 +235,7 @@ class BCMCComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["any_test_brand_name"])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
-                                clientKey: Dummy.dummyClientKey)
+                                apiContext: Dummy.context)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -258,7 +258,7 @@ class BCMCComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["any_test_brand_name"])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
-                                clientKey: Dummy.dummyClientKey)
+                                apiContext: Dummy.context)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -281,7 +281,7 @@ class BCMCComponentTests: XCTestCase {
         let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["any_test_brand_name"])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
-                                clientKey: Dummy.dummyClientKey)
+                                apiContext: Dummy.context)
         sut.delegate = delegate
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -326,7 +326,7 @@ class BCMCComponentTests: XCTestCase {
         let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["any_test_brand_name"])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
-                                clientKey: Dummy.dummyClientKey)
+                                apiContext: Dummy.context)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         

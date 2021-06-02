@@ -67,6 +67,7 @@ public final class ThreeDS2Component: ActionComponent {
         self.init(apiContext: redirectComponent.apiContext, redirectComponentStyle: redirectComponentStyle)
         self.threeDS2CompactFlowHandler = threeDS2CompactFlowHandler
         self.threeDS2ClassicFlowHandler = threeDS2ClassicFlowHandler
+        self.redirectComponent = redirectComponent
     }
 
     // MARK: - 3D Secure 2 action

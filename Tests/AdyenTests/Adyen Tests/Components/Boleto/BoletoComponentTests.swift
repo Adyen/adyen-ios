@@ -67,6 +67,7 @@ class BoletoComponentTests: XCTestCase {
         
         sut = BoletoComponent(
             configuration: getConfiguration(with: nil, showEmailAddress: true),
+            apiContext: Dummy.context,
             style: style
         )
         
@@ -131,7 +132,8 @@ class BoletoComponentTests: XCTestCase {
         let prefilledInformation = dummyFullPrefilledInformation
         
         sut = BoletoComponent(
-            configuration: getConfiguration(with: prefilledInformation, showEmailAddress: true)
+            configuration: getConfiguration(with: prefilledInformation, showEmailAddress: true),
+            apiContext: Dummy.context
         )
         
         let sutVC = sut.viewController
@@ -171,7 +173,8 @@ class BoletoComponentTests: XCTestCase {
         let dummyExpectation = expectation(description: "Dummy Expectation")
         
         sut = BoletoComponent(
-            configuration: getConfiguration(with: nil, showEmailAddress: true)
+            configuration: getConfiguration(with: nil, showEmailAddress: true),
+            apiContext: Dummy.context
         )
         
         let sutVC = sut.viewController
@@ -209,7 +212,10 @@ class BoletoComponentTests: XCTestCase {
     func testNoEmailSection() {
         let dummyExpectation = expectation(description: "Dummy Expectation")
         
-        sut = BoletoComponent(configuration: getConfiguration(with: nil, showEmailAddress: false))
+        sut = BoletoComponent(
+            configuration: getConfiguration(with: nil, showEmailAddress: false),
+            apiContext: Dummy.context
+        )
         
         let sutVC = sut.viewController
         
@@ -235,7 +241,9 @@ class BoletoComponentTests: XCTestCase {
     func testEmailFieldHiding() {
         let dummyExpectation = expectation(description: "Dummy Expectation")
         
-        sut = BoletoComponent(configuration: getConfiguration(with: dummyFullPrefilledInformation, showEmailAddress: true))
+        sut = BoletoComponent(
+            configuration: getConfiguration(with: dummyFullPrefilledInformation, showEmailAddress: true),
+            apiContext: Dummy.context)
         
         let sutVC = sut.viewController
         
@@ -290,7 +298,7 @@ class BoletoComponentTests: XCTestCase {
             dummyExpectation.fulfill()
         }
         
-        sut = BoletoComponent(configuration: mockConfiguration)
+        sut = BoletoComponent(configuration: mockConfiguration, apiContext: Dummy.context)
         sut.delegate = mockDelegate
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -324,7 +332,7 @@ class BoletoComponentTests: XCTestCase {
             dummyExpectation.fulfill()
         }
 
-        sut = BoletoComponent(configuration: mockConfiguration)
+        sut = BoletoComponent(configuration: mockConfiguration, apiContext: Dummy.context)
         sut.delegate = mockDelegate
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController

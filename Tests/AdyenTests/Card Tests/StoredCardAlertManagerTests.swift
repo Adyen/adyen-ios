@@ -28,7 +28,7 @@ class StoredCardAlertManagerTests: XCTestCase {
     func testLocalizationWithCustomTableName() throws {
         let method = try Coder.decode(storedCardDictionary) as StoredCardPaymentMethod
         let amount = Amount(value: 3, currencyCode: "EUR")
-        let sut = StoredCardAlertManager(paymentMethod: method, publicKey: RandomStringGenerator.generateDummyCardPublicKey(), amount: amount)
+        let sut = StoredCardAlertManager(paymentMethod: method, apiContext: Dummy.context, amount: amount)
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         
         let alertController = sut.alertController
@@ -50,7 +50,7 @@ class StoredCardAlertManagerTests: XCTestCase {
     func testLocalizationWithCustomKeySeparator() throws {
         let method = try Coder.decode(storedCardDictionary) as StoredCardPaymentMethod
         let amount = Amount(value: 3, currencyCode: "EUR")
-        let sut = StoredCardAlertManager(paymentMethod: method, publicKey: RandomStringGenerator.generateDummyCardPublicKey(), amount: amount)
+        let sut = StoredCardAlertManager(paymentMethod: method, apiContext: Dummy.context, amount: amount)
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         
         let alertController = sut.alertController
