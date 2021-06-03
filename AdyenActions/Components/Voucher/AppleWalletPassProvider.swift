@@ -20,6 +20,14 @@ internal final class AppleWalletPassProvider: AnyAppleWalletPassProvider,
     internal init(apiContext: APIContext) {
         self.apiContext = apiContext
     }
+    
+    /// :nodoc:
+    internal init(apiContext: APIContext, apiClient: AnyRetryAPIClient? = nil) {
+        self.apiContext = apiContext
+        if let apiClient = apiClient {
+            self.retryApiClient = apiClient
+        }
+    }
 
     private lazy var apiClient: UniqueAssetAPIClient<AppleWalletPassResponse> = {
         let retryOnErrorApiClient = retryApiClient.retryOnError()

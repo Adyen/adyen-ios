@@ -490,6 +490,7 @@
 		F97BC22C2667768B00F1D242 /* AppleWalletPassProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97BC22B2667768B00F1D242 /* AppleWalletPassProvider.swift */; };
 		F97BC2382667949100F1D242 /* UniqueAssetAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97BC2372667949100F1D242 /* UniqueAssetAPIClient.swift */; };
 		F97BC2792668BEE200F1D242 /* AppleWalletError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97BC2782668BEE200F1D242 /* AppleWalletError.swift */; };
+		F97BC2AD2668C63200F1D242 /* AppleWalletPassProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97BC2AC2668C63200F1D242 /* AppleWalletPassProviderTests.swift */; };
 		F97C81AF25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C81AE25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift */; };
 		F97C829225BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C829125BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift */; };
 		F97C837925BF047600D7F85C /* DokuPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C837825BF047600D7F85C /* DokuPaymentMethod.swift */; };
@@ -1326,6 +1327,7 @@
 		F97BC2372667949100F1D242 /* UniqueAssetAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniqueAssetAPIClient.swift; sourceTree = "<group>"; };
 		F97BC2432667A7BF00F1D242 /* AppleWalletError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleWalletError.swift; sourceTree = "<group>"; };
 		F97BC2782668BEE200F1D242 /* AppleWalletError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleWalletError.swift; sourceTree = "<group>"; };
+		F97BC2AC2668C63200F1D242 /* AppleWalletPassProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleWalletPassProviderTests.swift; sourceTree = "<group>"; };
 		F97C7C502590C56E00D80A54 /* ThreeDS2CoreActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2CoreActionHandler.swift; sourceTree = "<group>"; };
 		F97C7C5E2590EE0A00D80A54 /* AnyThreeDS2ActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyThreeDS2ActionHandler.swift; sourceTree = "<group>"; };
 		F97C81AE25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractPersonalInformationComponent.swift; sourceTree = "<group>"; };
@@ -2471,6 +2473,7 @@
 				F9639B5724E3DB3F0073F38A /* APIClientMock.swift */,
 				F919DFA124ED599D0027976E /* AdyenActionComponentTests.swift */,
 				F96AE51A26038602009F82BD /* XCTestCaseExtension.swift */,
+				F97BC2AC2668C63200F1D242 /* AppleWalletPassProviderTests.swift */,
 				5AF8CD4C26691D3A00102339 /* Dummy.swift */,
 			);
 			path = Components;
@@ -4507,6 +4510,7 @@
 				F9EDB794239663C200CFB3C9 /* PaymentMethodMock.swift in Sources */,
 				E9E3DAC8221EDDAF00697074 /* CardNumbers.swift in Sources */,
 				E9E3DACF221EEB5300697074 /* CardSecurityCodeValidatorTests.swift in Sources */,
+				F97BC2AD2668C63200F1D242 /* AppleWalletPassProviderTests.swift in Sources */,
 				E270FDE6225CB40A006C2CD0 /* ObservableTests.swift in Sources */,
 				F957AA6A2552D98E0099AD73 /* AnyThreeDS2FingerprintSubmitterMock.swift in Sources */,
 				F99F085A2383EAC800EBB948 /* FormatterMock.swift in Sources */,
