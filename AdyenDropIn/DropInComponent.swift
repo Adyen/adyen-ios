@@ -40,7 +40,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
     public let title: String
 
     /// :nodoc:
-    public let apiContext: APIContext
+    public var apiContext: APIContext { configuration.apiContext }
     
     /// Initializes the drop in component.
     ///
@@ -58,7 +58,6 @@ public final class DropInComponent: NSObject, PresentableComponent {
         self.configuration = paymentMethodsConfiguration
         self.paymentMethods = paymentMethods
         self.style = style
-        self.apiContext = paymentMethodsConfiguration.apiContext
         super.init()
     }
 
