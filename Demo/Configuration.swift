@@ -12,9 +12,9 @@ internal enum ConfigurationConstants {
     // swiftlint:disable explicit_acl
 
     /// Please use your own web server between your app and adyen checkout API.
-    static let demoServerEnvironment = DemoServerEnvironment.test
+    static let demoServerEnvironment = DemoServerEnvironment.local
 
-    static let componentsEnvironment = Environment.test
+    static let componentsEnvironment = Environment(baseURL: URL(string: "http://localhost:8080/")!)
 
     static let appName = "Adyen Demo"
 
@@ -27,13 +27,13 @@ internal enum ConfigurationConstants {
     static let shopperEmail = "checkoutshopperios@example.org"
     
     static let additionalData = ["allow3DS2": true]
-
-    static let clientKey = "{YOUR_CLIENT_KEY}"
+    
+    static let clientKey = "devl_F73CCZ4Y7NHFRLC3OMVZHDIVQY47VWFL"
     
     static let apiContext = APIContext(environment: componentsEnvironment, clientKey: clientKey)
 
     // swiftlint:disable:next line_length
-    static let demoServerAPIKey = "{YOUR_DEMO_SERVER_API_KEY}"
+    static let demoServerAPIKey = "AQEmhmfuXNWTK0Qc+iSEl3cshOuWWIpDFNWZ7BldpzFgqjaFCkrORCwQwV1bDb7kfNy1WIxIIkxgBw==-3YcmHFltObXoxB00Qd/TNqph2ohOoIucx00nLRbI21E=-0000000000000000"
 
     static let applePayMerchantIdentifier = "{YOUR_APPLE_PAY_MERCHANT_IDENTIFIER}"
     

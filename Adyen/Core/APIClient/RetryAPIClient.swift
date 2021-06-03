@@ -19,6 +19,15 @@ public protocol AnyRetryAPIClient: APIClientProtocol {
 }
 
 /// :nodoc:
+extension AnyRetryAPIClient {
+
+    /// :nodoc:
+    public func retryOnError() -> APIClientProtocol {
+        RetryOnErrorAPIClient(apiClient: self)
+    }
+}
+
+/// :nodoc:
 /// An API Client that enables retying request on the basis of a closure or a retry count.
 public final class RetryAPIClient: AnyRetryAPIClient {
     

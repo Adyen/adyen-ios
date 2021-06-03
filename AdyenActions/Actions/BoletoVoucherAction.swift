@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 
 /// Describes an action in which a Boleto voucher is presented to the shopper.
-public final class BoletoVoucherAction: Codable, OpaqueEncodable {
+public final class BoletoVoucherAction: Codable, AnyVoucherAction {
     
     /// The `paymentMethodType` for which the voucher is presented.
     public let paymentMethodType: VoucherPaymentMethod
@@ -24,6 +24,9 @@ public final class BoletoVoucherAction: Codable, OpaqueEncodable {
     
     /// Download URL
     public let downloadUrl: URL
+
+    /// :nodoc:
+    public let passCreationToken: String?
     
     /// :nodoc:
     public required init(from decoder: Decoder) throws {
@@ -33,6 +36,7 @@ public final class BoletoVoucherAction: Codable, OpaqueEncodable {
         totalAmount = try container.decode(Amount.self, forKey: .totalAmount)
         reference = try container.decode(String.self, forKey: .reference)
         downloadUrl = try container.decode(URL.self, forKey: .downloadUrl)
+        passCreationToken = try container.decodeIfPresent(String.self, forKey: .passCreationToken)
         
         let expiresAtString = try container.decode(String.self, forKey: .expiresAt)
         let dateFormatter = ISO8601DateFormatter()
@@ -57,6 +61,7 @@ public final class BoletoVoucherAction: Codable, OpaqueEncodable {
         try container.encode(totalAmount, forKey: .totalAmount)
         try container.encode(reference, forKey: .reference)
         try container.encode(downloadUrl, forKey: .downloadUrl)
+        try container.encodeIfPresent(passCreationToken, forKey: .passCreationToken)
 
         let dateFormatter = ISO8601DateFormatter()
         dateFormatter.formatOptions = [
@@ -72,12 +77,14 @@ public final class BoletoVoucherAction: Codable, OpaqueEncodable {
                   totalAmount: Amount,
                   reference: String,
                   expiresAt: Date,
-                  downloadUrl: URL) {
+                  downloadUrl: URL,
+                  passCreationToken: String? = nil) {
         self.paymentMethodType = paymentMethodType
         self.totalAmount = totalAmount
         self.reference = reference
         self.expiresAt = expiresAt
         self.downloadUrl = downloadUrl
+        self.passCreationToken = passCreationToken
     }
     
     private enum CodingKeys: String, CodingKey {
@@ -85,7 +92,8 @@ public final class BoletoVoucherAction: Codable, OpaqueEncodable {
              totalAmount,
              reference,
              expiresAt,
-             downloadUrl
+             downloadUrl,
+             passCreationToken
     }
     
 }

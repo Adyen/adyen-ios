@@ -31,11 +31,17 @@ public struct AppleWalletPassRequest: Request {
     public let platform: String = "apple"
 
     /// :nodoc:
-    public init() {}
+    public let passToken: String
+
+    /// :nodoc:
+    public init(passToken: String) {
+        self.passToken = passToken
+    }
 
     /// :nodoc:
     public enum CodingKeys: CodingKey {
         case platform
+        case passToken
     }
 
 }
