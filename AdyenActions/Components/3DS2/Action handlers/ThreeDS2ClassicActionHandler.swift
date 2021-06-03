@@ -11,6 +11,9 @@ import Foundation
 /// Handles the 3D Secure 2 fingerprint and challenge actions separately.
 /// :nodoc:
 internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, ComponentWrapper {
+    
+    /// :nodoc:
+    internal let apiContext: APIContext
 
     /// :nodoc:
     internal var wrappedComponent: Component { coreActionHandler }
@@ -31,18 +34,21 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
 
     /// Initializes the 3D Secure 2 action handler.
     ///
+    /// - Parameter apiContext: The API context.
     /// - Parameter service: The 3DS2 Service.
     /// - Parameter appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
     /// :nodoc:
-    internal convenience init(service: AnyADYService,
+    internal convenience init(apiContext: APIContext,
+                              service: AnyADYService,
                               appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration()) {
-        self.init(appearanceConfiguration: appearanceConfiguration)
+        self.init(apiContext: apiContext, appearanceConfiguration: appearanceConfiguration)
         self.coreActionHandler.service = service
     }
 
     /// Initializes the 3D Secure 2 action handler.
-    internal init(appearanceConfiguration: ADYAppearanceConfiguration) {
-        self.coreActionHandler = ThreeDS2CoreActionHandler(appearanceConfiguration: appearanceConfiguration)
+    internal init(apiContext: APIContext, appearanceConfiguration: ADYAppearanceConfiguration) {
+        self.apiContext = apiContext
+        self.coreActionHandler = ThreeDS2CoreActionHandler(apiContext: apiContext, appearanceConfiguration: appearanceConfiguration)
     }
 
     // MARK: - Fingerprint
@@ -54,7 +60,11 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     /// :nodoc:
     internal func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
                          completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
-        let event = Analytics.Event(component: fingerprintEventName, flavor: _isDropIn ? .dropin : .components, environment: environment)
+        let event = Analytics.Event(
+            component: fingerprintEventName,
+            flavor: _isDropIn ? .dropin : .components,
+            environment: apiContext.environment
+        )
         coreActionHandler.handle(fingerprintAction, event: event) { result in
             switch result {
             case let .success(encodedFingerprint):
@@ -76,7 +86,11 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     /// :nodoc:
     internal func handle(_ challengeAction: ThreeDS2ChallengeAction,
                          completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
-        let event = Analytics.Event(component: challengeEventName, flavor: _isDropIn ? .dropin : .components, environment: environment)
+        let event = Analytics.Event(
+            component: challengeEventName,
+            flavor: _isDropIn ? .dropin : .components,
+            environment: apiContext.environment
+        )
         coreActionHandler.handle(challengeAction, event: event) { [weak self] result in
             switch result {
             case let .success(result):

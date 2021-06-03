@@ -10,6 +10,9 @@ import PassKit
 
 /// A component that handles Apple Pay payments.
 public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent, Localizable, FinalizableComponent {
+    
+    /// :nodoc:
+    public let apiContext: APIContext
 
     /// The Apple Pay payment method.
     public var paymentMethod: PaymentMethod {
@@ -36,7 +39,8 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// - Throws: `ApplePayComponent.Error.invalidSummaryItem` if at least one of the summary items has an invalid amount.
     /// - Throws: `ApplePayComponent.Error.invalidCountryCode` if the `payment.countryCode` is not a valid ISO country code.
     /// - Throws: `ApplePayComponent.Error.invalidCurrencyCode` if the `Amount.currencyCode` is not a valid ISO currency code.
-    public init(configuration: Configuration) throws {
+    public init(configuration: Configuration,
+                apiContext: APIContext) throws {
         guard PKPaymentAuthorizationViewController.canMakePayments() else {
             throw Error.deviceDoesNotSupportApplyPay
         }
@@ -66,6 +70,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         }
 
         self.configuration = configuration
+        self.apiContext = apiContext
         self.paymentAuthorizationViewController = paymentAuthorizationViewController
         super.init()
 

@@ -15,7 +15,7 @@ class EContextATMVoucherViewControllerProviderTests: XCTestCase {
         let econtextAction = try Coder.decode(econtextATMAction) as EContextATMVoucherAction
         let action: VoucherAction = .econtextATM(econtextAction)
 
-        let sut = VoucherViewControllerProvider(style: VoucherComponentStyle())
+        let sut = VoucherViewControllerProvider(style: VoucherComponentStyle(), environment: Dummy.context.environment)
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost")
 
         let viewController = sut.provide(with: action) as! VoucherViewController
@@ -70,7 +70,7 @@ class EContextATMVoucherViewControllerProviderTests: XCTestCase {
         style.secondaryButton.cornerRounding = .fixed(12)
         style.secondaryButton.title.color = UIColor.white
         style.secondaryButton.title.font = .systemFont(ofSize: 34)
-        let sut = VoucherViewControllerProvider(style: style)
+        let sut = VoucherViewControllerProvider(style: style, environment: Dummy.context.environment)
 
         let viewController = sut.provide(with: action) as! VoucherViewController
 

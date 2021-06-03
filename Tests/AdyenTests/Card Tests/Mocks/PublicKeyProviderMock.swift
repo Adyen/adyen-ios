@@ -7,6 +7,8 @@
 @testable import AdyenCard
 
 final class CardPublicKeyProviderMock: AnyCardPublicKeyProvider {
+    
+    let apiContext: APIContext = Dummy.context
 
     var onFetch: ((_ completion: @escaping CompletionHandler) -> Void)?
 

@@ -10,6 +10,7 @@
 import XCTest
 
 extension XCTestCase {
+    
     internal func populate<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U, with text: String) {
         let textView = textItemView.textField
         textView.text = text
@@ -29,4 +30,5 @@ extension XCTestCase {
     internal func getRandomCountryCode() -> String {
         NSLocale.isoCountryCodes.randomElement() ?? "DE"
     }
+    
 }

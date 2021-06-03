@@ -23,8 +23,7 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method)
-        sut.clientKey = Dummy.dummyClientKey
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
 
         let payemt = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payemt
@@ -58,9 +57,8 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method)
-        sut.clientKey = nil
-        CardPublicKeyProvider.cachedCardPublicKey = Dummy.dummyClientKey
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
+        CardPublicKeyProvider.cachedCardPublicKey = Dummy.publicKey
 
         let payemt = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payemt
@@ -94,8 +92,7 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method)
-        sut.clientKey = Dummy.dummyClientKey
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
 
         let payemt = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payemt
@@ -123,7 +120,7 @@ class StoredCardComponentTests: XCTestCase {
         let cardPublicKeyProvider = CardPublicKeyProviderMock()
         cardPublicKeyProvider.onFetch = { completion in
             cardPublicKeyProviderExpectation.fulfill()
-            completion(.success(Dummy.dummyPublicKey))
+            completion(.success(Dummy.publicKey))
         }
         sut.storedCardAlertManager.cardPublicKeyProvider = cardPublicKeyProvider
 
@@ -160,11 +157,10 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method)
-        sut.clientKey = Dummy.dummyClientKey
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
 
-        let payemt = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
-        sut.payment = payemt
+        let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
+        sut.payment = payment
 
         let delegate = PaymentComponentDelegateMock()
         delegate.onDidSubmit = { _, _ in
@@ -172,7 +168,7 @@ class StoredCardComponentTests: XCTestCase {
         }
         let delegateExpectation = expectation(description: "expect delegate to be called.")
         delegate.onDidFail = { error, component in
-            XCTAssertTrue(error as? Dummy == Dummy.dummyError)
+            XCTAssertTrue(error as? Dummy == Dummy.error)
             XCTAssertTrue(component === sut)
             delegateExpectation.fulfill()
         }
@@ -182,7 +178,7 @@ class StoredCardComponentTests: XCTestCase {
         let cardPublicKeyProvider = CardPublicKeyProviderMock()
         cardPublicKeyProvider.onFetch = { completion in
             cardPublicKeyProviderExpectation.fulfill()
-            completion(.failure(Dummy.dummyError))
+            completion(.failure(Dummy.error))
         }
         sut.storedCardAlertManager.cardPublicKeyProvider = cardPublicKeyProvider
 
@@ -197,7 +193,7 @@ class StoredCardComponentTests: XCTestCase {
             textField?.text = "737"
             textField?.sendActions(for: .editingChanged)
 
-            let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payemt.amount, style: .immediate, nil) }!
+            let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) }!
 
             payAction.tap()
 
@@ -219,11 +215,10 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method)
-        sut.clientKey = Dummy.dummyClientKey
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
 
-        let payemt = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
-        sut.payment = payemt
+        let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
+        sut.payment = payment
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
 
@@ -231,7 +226,7 @@ class StoredCardComponentTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             let alertController = sut.viewController as! UIAlertController
             let textField: UITextField! = sut.viewController.view.findView(by: "AdyenCard.StoredCardAlertManager.textField")
-            let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payemt.amount, style: .immediate, nil) }!
+            let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) }!
 
             textField.insertText("a")
             textField?.sendActions(for: .editingChanged)
@@ -276,11 +271,10 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method)
-        sut.clientKey = Dummy.dummyClientKey
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
 
-        let payemt = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
-        sut.payment = payemt
+        let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
+        sut.payment = payment
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
 
@@ -288,7 +282,7 @@ class StoredCardComponentTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             let alertController = sut.viewController as! UIAlertController
             let textField: UITextField! = sut.viewController.view.findView(by: "AdyenCard.StoredCardAlertManager.textField")
-            let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payemt.amount, style: .immediate, nil) }!
+            let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) }!
 
             textField.text = "11"
             textField?.sendActions(for: .editingChanged)
@@ -321,11 +315,10 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method)
-        sut.clientKey = Dummy.dummyClientKey
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
 
-        let payemt = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
-        sut.payment = payemt
+        let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
+        sut.payment = payment
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
 
@@ -333,7 +326,7 @@ class StoredCardComponentTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             let alertController = sut.viewController as! UIAlertController
             let textField: UITextField! = sut.viewController.view.findView(by: "AdyenCard.StoredCardAlertManager.textField")
-            let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payemt.amount, style: .immediate, nil) }!
+            let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) }!
 
             textField.text = "11"
             textField?.sendActions(for: .editingChanged)

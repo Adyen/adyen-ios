@@ -23,7 +23,7 @@ class VoucherComponentTests: XCTestCase {
         super.setUp()
         viewControllerProvider = VoucherViewControllerProviderMock()
         presentationDelegate = PresentationDelegateMock()
-        sut = VoucherComponent(voucherViewControllerProvider: viewControllerProvider)
+        sut = VoucherComponent(apiContext: Dummy.context, voucherViewControllerProvider: viewControllerProvider)
         sut.localizationParameters = LocalizationParameters(tableName: "test_table")
         sut.presentationDelegate = presentationDelegate
 

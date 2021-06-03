@@ -31,14 +31,14 @@ internal protocol AnyPollingHandlerProvider {
 internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
 
     /// :nodoc:
-    private let environment: APIEnvironment
+    private let apiContext: APIContext
 
     /// :nodoc:
     private let apiClient: AnyRetryAPIClient?
 
     /// :nodoc:
-    internal init(environment: APIEnvironment, apiClient: AnyRetryAPIClient?) {
-        self.environment = environment
+    internal init(apiContext: APIContext, apiClient: AnyRetryAPIClient?) {
+        self.apiContext = apiContext
         self.apiClient = apiClient
     }
 
@@ -61,9 +61,9 @@ internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
     /// :nodoc:
     private func createPollingComponent() -> AnyPollingHandler {
         let scheduler = BackoffScheduler(queue: .main)
-        let baseAPIClient = APIClient(environment: environment)
-        let apiClient = self.apiClient ?? RetryAPIClient(apiClient: baseAPIClient, scheduler: scheduler)
-        return PollingComponent(apiClient: apiClient)
+        let apiClient = self.apiClient
+            ?? RetryAPIClient(apiClient: APIClient(apiContext: apiContext), scheduler: scheduler)
+        return PollingComponent(apiContext: apiContext, apiClient: apiClient)
     }
     
 }

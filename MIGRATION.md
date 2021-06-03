@@ -8,6 +8,8 @@
 - When shopper cancels a component flow,  merchants must call `cancelIfNeeded()`.
 - All deprecated api's are deleted.
 - SDK dropped support for iOS 10.
+- All internal SDK calls are handled using `APIContext`. It is created with a `clientKey` and a specific `Environment`.
+- When creating a component (a `DropInComponent` or a standalone component) an `APIContext` needs to be passed into the initializer.
 - `RedirectComponent` requires `RedirectComponent.presentationDelegate` to be set.  `presentationDelegate` handles presenting the component UI on behalf of the component.
 - `ApplePayComponent` needs a `ApplePayComponent.Configuration` object to be injected to configure the component.  Old `ApplePayComponent.paymentMethod`, `ApplePayComponent.summaryItems`, `ApplePayComponent.requiredBillingContactFields`, `ApplePayComponent.merchantIdentifier`, and `ApplePayComponent.requiredShippingContactFields` are now moved to the `ApplePayComponent.Configuration` object.
 - Parameter `payment` moved from constuctor of `ApplePayComponent` to constructor of `ApplePayComponent.Configuration`.

@@ -14,7 +14,7 @@ import PassKit
 public extension DropInComponent {
     
     /// Contains the configuration for the drop in component and the embedded payment method components.
-    final class PaymentMethodsConfiguration {
+    final class PaymentMethodsConfiguration: APIContextAware {
         
         /// Card component related configuration.
         public var card = CardConfiguration()
@@ -25,12 +25,8 @@ public extension DropInComponent {
         /// Shopper related information
         public var shopper: PrefilledShopperInformation?
         
-        /// The client key that corresponds to the webservice user you will use for initiating the payment.
-        /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
-        public let clientKey: String
-
-        /// The API environment to use.
-        public private(set) var environment: Environment
+        /// API context used to retrieve internal resources.
+        public let apiContext: APIContext
         
         /// Indicates the localization parameters, leave it nil to use the default parameters.
         public var localizationParameters: LocalizationParameters?
@@ -40,12 +36,9 @@ public extension DropInComponent {
         
         /// Initializes the drop in configuration.
         /// - Parameters:
-        ///   - clientKey: The client key that corresponds to the webservice user you will use for initiating the payment.
-        ///   - environment: The API environment to use.
-        public init(clientKey: String, environment: Environment) {
-            self.clientKey = clientKey
-            self.environment = environment
-            self.environment.clientKey = clientKey
+        ///   - apiContext: The API context used to retrieve internal resources.
+        public init(apiContext: APIContext) {
+            self.apiContext = apiContext
         }
     }
 

@@ -42,12 +42,10 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
     }
 
     func testWrappedComponent() {
-        let sut = ThreeDS2ClassicActionHandler(appearanceConfiguration: ADYAppearanceConfiguration())
-        sut.clientKey = Dummy.dummyClientKey
-        XCTAssertEqual(sut.wrappedComponent.clientKey, Dummy.dummyClientKey)
-
-        sut.environment = .live
-        XCTAssertEqual(sut.wrappedComponent.environment.baseURL, Environment.live.baseURL)
+        let sut = ThreeDS2ClassicActionHandler(apiContext: Dummy.context, appearanceConfiguration: ADYAppearanceConfiguration())
+        XCTAssertEqual(sut.wrappedComponent.apiContext.clientKey, Dummy.context.clientKey)
+        
+        XCTAssertEqual(sut.wrappedComponent.apiContext.environment.baseURL, Dummy.context.environment.baseURL)
 
         sut._isDropIn = false
         XCTAssertEqual(sut.wrappedComponent._isDropIn, false)
@@ -67,7 +65,7 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
         let expectedFingerprint = try Coder.encodeBase64(fingerprint)
         
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
-        let sut = ThreeDS2ClassicActionHandler(service: service)
+        let sut = ThreeDS2ClassicActionHandler(apiContext: Dummy.context, service: service)
         sut.handle(fingerprintAction) { fingerprintResult in
             switch fingerprintResult {
             case let .success(result):
@@ -107,7 +105,7 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
                                                           paymentData: "paymentData")
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
-        let sut = ThreeDS2ClassicActionHandler(service: service)
+        let sut = ThreeDS2ClassicActionHandler(apiContext: Dummy.context, service: service)
         sut.handle(fingerprintAction) { result in
             switch result {
             case .success:
@@ -138,7 +136,7 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
         service.mockedTransaction = transaction
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
-        let sut = ThreeDS2ClassicActionHandler(service: service)
+        let sut = ThreeDS2ClassicActionHandler(apiContext: Dummy.context, service: service)
         sut.transaction = transaction
         sut.handle(challengeAction) { challengeResult in
             switch challengeResult {
@@ -176,10 +174,10 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
         service.mockedTransaction = mockedTransaction
 
         mockedTransaction.onPerformChallenge = { parameters, completion in
-            completion(nil, Dummy.dummyError)
+            completion(nil, Dummy.error)
         }
 
-        let sut = ThreeDS2ClassicActionHandler(service: service)
+        let sut = ThreeDS2ClassicActionHandler(apiContext: Dummy.context, service: service)
         sut.transaction = mockedTransaction
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
@@ -190,7 +188,7 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
                 XCTFail()
             case let .failure(error):
                 let error = error as! Dummy
-                XCTAssertEqual(error, Dummy.dummyError)
+                XCTAssertEqual(error, Dummy.error)
             }
             resultExpectation.fulfill()
         }
@@ -201,7 +199,7 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
     func testChallengeFlowMissingTransaction() throws {
         let service = AnyADYServiceMock()
 
-        let sut = ThreeDS2ClassicActionHandler(service: service)
+        let sut = ThreeDS2ClassicActionHandler(apiContext: Dummy.context, service: service)
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
         sut.handle(challengeAction) { result in
@@ -233,7 +231,7 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
             XCTFail()
         }
 
-        let sut = ThreeDS2ClassicActionHandler(service: service)
+        let sut = ThreeDS2ClassicActionHandler(apiContext: Dummy.context, service: service)
         sut.transaction = mockedTransaction
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")

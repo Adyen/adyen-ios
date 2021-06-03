@@ -43,7 +43,7 @@ class QRCodeComponentTests: XCTestCase {
         
         style.backgroundColor = UIColor.Adyen.componentSeparator
         
-        let sut = QRCodeComponent(style: style)
+        let sut = QRCodeComponent(apiContext: Dummy.context, style: style)
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
         
@@ -107,7 +107,7 @@ class QRCodeComponentTests: XCTestCase {
             }
         )
         
-        let sut = QRCodeComponent(style: QRCodeComponentStyle(), pollingComponentBuilder: builder, timeoutInterval: 2.0)
+        let sut = QRCodeComponent(apiContext: Dummy.context, style: QRCodeComponentStyle(), pollingComponentBuilder: builder, timeoutInterval: 2.0)
         
         let componentDelegate = ActionComponentDelegateMock()
         componentDelegate.onDidFail = { error, component in
@@ -148,7 +148,7 @@ class QRCodeComponentTests: XCTestCase {
             }
         )
         
-        let sut = QRCodeComponent(style: QRCodeComponentStyle(),
+        let sut = QRCodeComponent(apiContext: Dummy.context, style: QRCodeComponentStyle(),
                                   pollingComponentBuilder: builder,
                                   timeoutInterval: 2.0)
         
@@ -195,7 +195,7 @@ class QRCodeComponentTests: XCTestCase {
             }
         )
         
-        let sut = QRCodeComponent(style: QRCodeComponentStyle(),
+        let sut = QRCodeComponent(apiContext: Dummy.context, style: QRCodeComponentStyle(),
                                   pollingComponentBuilder: builder,
                                   timeoutInterval: 2.0)
         
@@ -233,7 +233,7 @@ class QRCodeComponentTests: XCTestCase {
     func testCopyButton() {
         let dummyExpectation = expectation(description: "Dummy Expectation")
         
-        let sut = QRCodeComponent(style: QRCodeComponentStyle())
+        let sut = QRCodeComponent(apiContext: Dummy.context, style: QRCodeComponentStyle())
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
         

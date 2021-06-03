@@ -12,6 +12,9 @@ import UIKit
 public final class BoletoComponent: PaymentComponent, LoadingComponent, PresentableComponent, Localizable, Observer {
     
     /// :nodoc:
+    public let apiContext: APIContext
+    
+    /// :nodoc:
     public weak var delegate: PaymentComponentDelegate?
     
     /// :nodoc:
@@ -38,9 +41,11 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     ///   - style: The Component's UI style.
     public init(
         configuration: Configuration,
+        apiContext: APIContext,
         style: FormComponentStyle = FormComponentStyle()
     ) {
         self.configuration = configuration
+        self.apiContext = apiContext
         self.style = style
         
         socialSecurityNumberItem.isHidden.wrappedValue = false
@@ -94,6 +99,7 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
         let component = FormComponent(
             paymentMethod: paymentMethod,
             configuration: AbstractPersonalInformationComponent.Configuration(fields: getFormFields()),
+            apiContext: apiContext,
             onCreatePaymentDetails: { [weak self] in self?.createPaymentDetails() },
             style: style
         )
@@ -214,12 +220,16 @@ extension BoletoComponent {
         fileprivate init(
             paymentMethod: PaymentMethod,
             configuration: AbstractPersonalInformationComponent.Configuration,
+            apiContext: APIContext,
             onCreatePaymentDetails: @escaping () -> PaymentMethodDetails?,
             style: FormComponentStyle = FormComponentStyle()
         ) {
             self.onCreatePaymentDetails = onCreatePaymentDetails
             
-            super.init(paymentMethod: paymentMethod, configuration: configuration, style: style)
+            super.init(paymentMethod: paymentMethod,
+                       configuration: configuration,
+                       apiContext: apiContext,
+                       style: style)
         }
         
         /// :nodoc:

@@ -17,6 +17,9 @@ public final class GiftCardComponent: PartialPaymentComponent,
     Localizable,
     LoadingComponent,
     Observer {
+    
+    /// :nodoc:
+    public let apiContext: APIContext
 
     /// :nodoc:
     private let giftCardPaymentMethod: GiftCardPaymentMethod
@@ -39,20 +42,6 @@ public final class GiftCardComponent: PartialPaymentComponent,
     /// The delegate that handles shopper confirmation UI when the balance of the gift card is sufficient to pay.
     public weak var readyToSubmitComponentDelegate: ReadyToSubmitPaymentComponentDelegate?
 
-    /// :nodoc:
-    public var clientKey: String? {
-        didSet {
-            updateEnvironment()
-        }
-    }
-
-    /// :nodoc:
-    public var environment: Environment = .live {
-        didSet {
-            updateEnvironment()
-        }
-    }
-
     /// Initializes the card component.
     ///
     /// - Parameters:
@@ -61,21 +50,12 @@ public final class GiftCardComponent: PartialPaymentComponent,
     /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
     ///   -  style: The Component's UI style.
     public init(paymentMethod: GiftCardPaymentMethod,
-                clientKey: String,
+                apiContext: APIContext,
                 style: FormComponentStyle = FormComponentStyle()) {
         self.giftCardPaymentMethod = paymentMethod
         self.style = style
-        self.clientKey = clientKey
-        self.cardPublicKeyProvider = CardPublicKeyProvider()
-        self.cardPublicKeyProvider.clientKey = clientKey
-        self.environment.clientKey = clientKey
-    }
-
-    // MARK: - Update environment
-
-    private func updateEnvironment() {
-        cardPublicKeyProvider.environment = environment
-        cardPublicKeyProvider.clientKey = clientKey
+        self.apiContext = apiContext
+        self.cardPublicKeyProvider = CardPublicKeyProvider(apiContext: apiContext)
     }
 
     // MARK: - Presentable Component Protocol
@@ -279,7 +259,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
 
         let paymentMethod = CustomDisplayablePaymentMethod(paymentMethod: giftCardPaymentMethod,
                                                            displayInformation: displayInformation)
-        let component = InstantPaymentComponent(paymentMethod: paymentMethod, paymentData: paymentData)
+        let component = InstantPaymentComponent(paymentMethod: paymentMethod, paymentData: paymentData, apiContext: apiContext)
         delegate.showConfirmation(for: component, with: paymentData.order)
     }
 

@@ -11,7 +11,7 @@ import XCTest
 class DokuVoucherUITests: XCTestCase {
 
     func testDokuIndomaretVoucherCustomLocalization() throws {
-        let viewControllerProvider = VoucherViewControllerProvider(style: VoucherComponentStyle())
+        let viewControllerProvider = VoucherViewControllerProvider(style: VoucherComponentStyle(), environment: Dummy.context.environment)
         viewControllerProvider.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
         let dokuAction = try Coder.decode(dokuIndomaretAction) as DokuVoucherAction
@@ -51,7 +51,7 @@ class DokuVoucherUITests: XCTestCase {
     }
 
     func testDokuIndomaretVoucher() throws {
-        let viewControllerProvider = VoucherViewControllerProvider(style: VoucherComponentStyle())
+        let viewControllerProvider = VoucherViewControllerProvider(style: VoucherComponentStyle(), environment: Dummy.context.environment)
 
         let dokuAction = try Coder.decode(dokuIndomaretAction) as DokuVoucherAction
         let action: VoucherAction = .dokuIndomaret(dokuAction)
@@ -90,7 +90,7 @@ class DokuVoucherUITests: XCTestCase {
     }
 
     func testDokuAlfamartVoucher() throws {
-        let viewControllerProvider = VoucherViewControllerProvider(style: VoucherComponentStyle())
+        let viewControllerProvider = VoucherViewControllerProvider(style: VoucherComponentStyle(), environment: Dummy.context.environment)
 
         let dokuAction = try Coder.decode(dokuAlfamartAction) as DokuVoucherAction
         let action: VoucherAction = .dokuAlfamart(dokuAction)

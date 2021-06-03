@@ -18,11 +18,14 @@ public final class DokuComponent: AbstractPersonalInformationComponent {
     ///
     /// - Parameter paymentMethod: The Doku Wallet, Doku Alfamart, or Doku Indomaret payment method.
     /// - Parameter style: The Component's UI style.
-    public init(paymentMethod: DokuPaymentMethod, style: FormComponentStyle = FormComponentStyle()) {
+    public init(paymentMethod: DokuPaymentMethod,
+                apiContext: APIContext,
+                style: FormComponentStyle = FormComponentStyle()) {
         self.dokuPaymentMethod = paymentMethod
         let configuration = Configuration(fields: [.firstName, .lastName, .email])
         super.init(paymentMethod: paymentMethod,
                    configuration: configuration,
+                   apiContext: apiContext,
                    style: style)
     }
 

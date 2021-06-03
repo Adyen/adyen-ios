@@ -20,6 +20,9 @@ internal enum QRCodeComponentError: LocalizedError {
 /// A component that presents a QR code.
 public final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
     
+    /// :nodoc:
+    public let apiContext: APIContext
+    
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
     
@@ -38,8 +41,9 @@ public final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
     /// Initializes the `QRCodeComponent`.
     ///
     /// - Parameter style: The component UI style.
-    public convenience init(style: QRCodeComponentStyle?) {
+    public convenience init(apiContext: APIContext, style: QRCodeComponentStyle?) {
         self.init(
+            apiContext: apiContext,
             style: style ?? QRCodeComponentStyle(),
             pollingComponentBuilder: nil,
             timeoutInterval: 60 * 15
@@ -51,9 +55,11 @@ public final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
     /// - Parameter style: The component UI style.
     /// - Parameter pollingComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter timeoutInterval: QR Code expiration timeout
-    internal init(style: QRCodeComponentStyle = QRCodeComponentStyle(),
+    internal init(apiContext: APIContext,
+                  style: QRCodeComponentStyle = QRCodeComponentStyle(),
                   pollingComponentBuilder: AnyPollingHandlerProvider?,
                   timeoutInterval: TimeInterval) {
+        self.apiContext = apiContext
         self.style = style
         self.pollingComponentBuilder = pollingComponentBuilder
         self.expirationTimeout = timeoutInterval
@@ -67,7 +73,8 @@ public final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
     public func handle(_ action: QRCodeAction) {
         self.action = action
 
-        let pollingComponentBuilder = self.pollingComponentBuilder ?? PollingHandlerProvider(environment: environment, apiClient: nil)
+        let pollingComponentBuilder = self.pollingComponentBuilder ??
+            PollingHandlerProvider(apiContext: apiContext, apiClient: nil)
         
         let pollingComponent = pollingComponentBuilder.handler(for: action.paymentMethodType)
         pollingComponent.delegate = self
@@ -140,7 +147,7 @@ public final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
     
     /// :nodoc:
     private func createModel(with action: QRCodeAction) -> QRCodeView.Model {
-        let url = LogoURLProvider.logoURL(withName: "pix", environment: .test)
+        let url = LogoURLProvider.logoURL(withName: "pix", environment: apiContext.environment)
         return QRCodeView.Model(
             instruction: localizedString(.pixInstructions, localizationParameters),
             logoUrl: url,

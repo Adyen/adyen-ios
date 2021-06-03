@@ -8,7 +8,7 @@ import Foundation
 
 /// Builds a certain `PaymentComponent` based on the concrete `PaymentMethod`.
 /// :nodoc:
-public protocol PaymentComponentBuilder {
+public protocol PaymentComponentBuilder: APIContextAware {
     
     /// Builds a certain `PaymentComponent` based on a `StoredCardPaymentMethod`.
     func build(paymentMethod: StoredCardPaymentMethod) -> PaymentComponent?

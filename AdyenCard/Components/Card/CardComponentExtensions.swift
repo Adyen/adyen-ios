@@ -11,15 +11,6 @@ import Adyen
 import UIKit
 
 extension CardComponent {
-
-    /// Card Component errors.
-    public enum Error: Swift.Error {
-        /// ClientKey is required for `CardPublicKeyProvider` to work, and this error is thrown in case its nil.
-        case missingClientKey
-    }
-}
-
-extension CardComponent {
     
     internal func didSelectSubmitButton() {
         guard cardViewController.validate() else {
@@ -59,7 +50,7 @@ extension CardComponent: TrackableComponent {
     
     /// :nodoc:
     public func viewDidLoad(viewController: UIViewController) {
-        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
+        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, context: apiContext)
         fetchCardPublicKey(discardError: true) { _ in /* Do nothing, to just cache the card public key value */ }
     }
 }

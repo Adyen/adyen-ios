@@ -14,13 +14,14 @@ public final class BCMCComponent: CardComponent {
     /// :nodoc:
     public init(paymentMethod: BCMCPaymentMethod,
                 configuration: CardComponent.Configuration = CardComponent.Configuration(),
-                clientKey: String,
+                apiContext: APIContext,
                 style: FormComponentStyle = FormComponentStyle()) {
         let configuration = configuration.bcmcConfiguration()
+        
         super.init(paymentMethod: paymentMethod,
                    configuration: configuration,
-                   cardPublicKeyProvider: CardPublicKeyProvider(),
-                   clientKey: clientKey,
+                   apiContext: apiContext,
+                   cardPublicKeyProvider: CardPublicKeyProvider(apiContext: apiContext),
                    style: style)
     }
 

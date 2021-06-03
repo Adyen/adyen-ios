@@ -9,6 +9,9 @@ import Foundation
 /// Provides a placeholder for payment methods that don't need any payment detail to be filled.
 /// :nodoc:
 public final class InstantPaymentComponent: PaymentComponent {
+    
+    /// :nodoc:
+    public let apiContext: APIContext
 
     /// The ready to submit payment data.
     public let paymentData: PaymentComponentData?
@@ -20,9 +23,12 @@ public final class InstantPaymentComponent: PaymentComponent {
     public weak var delegate: PaymentComponentDelegate?
 
     /// :nodoc:
-    public init(paymentMethod: PaymentMethod, paymentData: PaymentComponentData?) {
+    public init(paymentMethod: PaymentMethod,
+                paymentData: PaymentComponentData?,
+                apiContext: APIContext) {
         self.paymentMethod = paymentMethod
         self.paymentData = paymentData
+        self.apiContext = apiContext
     }
 
     /// Generate the payment details and invoke PaymentsComponentDelegate method.

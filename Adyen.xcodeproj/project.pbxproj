@@ -16,6 +16,7 @@
 		5A238C93263AEA0800758FEF /* PreApplePayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A238C92263AEA0800758FEF /* PreApplePayView.swift */; };
 		5A238C9F263BDEA200758FEF /* PreApplePayComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A238C9E263BDEA200758FEF /* PreApplePayComponentTests.swift */; };
 		5A27AB032636A07900EF6F89 /* LocalizationKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A27AB022636A07900EF6F89 /* LocalizationKey.swift */; };
+		5A4702182664E9440023F264 /* APIContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4702172664E9440023F264 /* APIContext.swift */; };
 		5A545FC72642F77500724A87 /* ConfigurationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A545FC62642F77500724A87 /* ConfigurationViewModel.swift */; };
 		5A545FDC2643CF2400724A87 /* ConfigurationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A545FC62642F77500724A87 /* ConfigurationViewModel.swift */; };
 		5A545FE72643CF2700724A87 /* ConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67461F264262F000E9184D /* ConfigurationView.swift */; };
@@ -41,6 +42,8 @@
 		5AD40EFB26303D490090E01C /* UILabelHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD40EFA26303D490090E01C /* UILabelHelpers.swift */; };
 		5AD40F43263150F90090E01C /* UILabelHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD40F42263150F90090E01C /* UILabelHelpersTests.swift */; };
 		5AD40F4F263157D50090E01C /* UIButtonHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD40F4E263157D50090E01C /* UIButtonHelpersTests.swift */; };
+		5AF730EA2667C3F10091C573 /* APIContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF730E92667C3F10091C573 /* APIContextTests.swift */; };
+		5AF8CD4D26691D3A00102339 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF8CD4C26691D3A00102339 /* Dummy.swift */; };
 		E2028F5C2227F1930007FF8B /* Details.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2028F5B2227F1930007FF8B /* Details.swift */; };
 		E2028F5E222805E20007FF8B /* CardDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2028F5D222805E20007FF8B /* CardDetails.swift */; };
 		E216D3BC221AAB240013CBCF /* FormItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E216D3BB221AAB240013CBCF /* FormItem.swift */; };
@@ -449,7 +452,6 @@
 		F9639B2A24DD6A990073F38A /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95E24AE22C1155A00973184 /* Request.swift */; };
 		F9639B2B24DD6A9C0073F38A /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95E24B222C1155A00973184 /* APIClient.swift */; };
 		F9639B2D24DD6B370073F38A /* RetryAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B2C24DD6B370073F38A /* RetryAPIClient.swift */; };
-		F9639B2F24DD6B500073F38A /* APIEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B2E24DD6B500073F38A /* APIEnvironment.swift */; };
 		F9639B3324DD96990073F38A /* PaymentStatusRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B3224DD96990073F38A /* PaymentStatusRequest.swift */; };
 		F9639B3524DD97A30073F38A /* PaymentStatusResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B3424DD97A30073F38A /* PaymentStatusResponse.swift */; };
 		F9639B3B24E14A940073F38A /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B3A24E14A940073F38A /* APIError.swift */; };
@@ -849,6 +851,7 @@
 		5A238C92263AEA0800758FEF /* PreApplePayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreApplePayView.swift; sourceTree = "<group>"; };
 		5A238C9E263BDEA200758FEF /* PreApplePayComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreApplePayComponentTests.swift; sourceTree = "<group>"; };
 		5A27AB022636A07900EF6F89 /* LocalizationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationKey.swift; sourceTree = "<group>"; };
+		5A4702172664E9440023F264 /* APIContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIContext.swift; sourceTree = "<group>"; };
 		5A545FC62642F77500724A87 /* ConfigurationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationViewModel.swift; sourceTree = "<group>"; };
 		5A54600E264433CD00724A87 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		5A54603E264A5CEC00724A87 /* BoletoComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoletoComponent.swift; sourceTree = "<group>"; };
@@ -871,6 +874,8 @@
 		5AD40EFA26303D490090E01C /* UILabelHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelHelpers.swift; sourceTree = "<group>"; };
 		5AD40F42263150F90090E01C /* UILabelHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelHelpersTests.swift; sourceTree = "<group>"; };
 		5AD40F4E263157D50090E01C /* UIButtonHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonHelpersTests.swift; sourceTree = "<group>"; };
+		5AF730E92667C3F10091C573 /* APIContextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIContextTests.swift; sourceTree = "<group>"; };
+		5AF8CD4C26691D3A00102339 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 		E2028F5B2227F1930007FF8B /* Details.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Details.swift; sourceTree = "<group>"; };
 		E2028F5D222805E20007FF8B /* CardDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetails.swift; sourceTree = "<group>"; };
 		E216D3BB221AAB240013CBCF /* FormItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormItem.swift; sourceTree = "<group>"; };
@@ -1265,7 +1270,6 @@
 		F9639B2324DC38460073F38A /* PresentationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationDelegate.swift; sourceTree = "<group>"; };
 		F9639B2524DD3DA30073F38A /* AwaitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitView.swift; sourceTree = "<group>"; };
 		F9639B2C24DD6B370073F38A /* RetryAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetryAPIClient.swift; sourceTree = "<group>"; };
-		F9639B2E24DD6B500073F38A /* APIEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEnvironment.swift; sourceTree = "<group>"; };
 		F9639B3224DD96990073F38A /* PaymentStatusRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentStatusRequest.swift; sourceTree = "<group>"; };
 		F9639B3424DD97A30073F38A /* PaymentStatusResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentStatusResponse.swift; sourceTree = "<group>"; };
 		F9639B3624E122A40073F38A /* PollingComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingComponent.swift; sourceTree = "<group>"; };
@@ -2437,6 +2441,7 @@
 				F9639B5724E3DB3F0073F38A /* APIClientMock.swift */,
 				F919DFA124ED599D0027976E /* AdyenActionComponentTests.swift */,
 				F96AE51A26038602009F82BD /* XCTestCaseExtension.swift */,
+				5AF8CD4C26691D3A00102339 /* Dummy.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2621,6 +2626,7 @@
 			isa = PBXGroup;
 			children = (
 				E702BE182602525E00280682 /* AssertsTests.swift */,
+				5AF730E92667C3F10091C573 /* APIContextTests.swift */,
 				E9E3DB052226B3B200697074 /* CoderTests.swift */,
 				E270FDE5225CB40A006C2CD0 /* ObservableTests.swift */,
 				E2B317A12265BC9400C1BB30 /* LengthValidatorTests.swift */,
@@ -3088,11 +3094,11 @@
 				E95E24B222C1155A00973184 /* APIClient.swift */,
 				F9639B2C24DD6B370073F38A /* RetryAPIClient.swift */,
 				F9172FF526452E6E00985310 /* RetryOnErrorAPIClient.swift */,
-				F9639B2E24DD6B500073F38A /* APIEnvironment.swift */,
 				F9639B3E24E18F620073F38A /* Scheduler.swift */,
 				F9639B4024E27D0E0073F38A /* BackoffScheduler.swift */,
 				F9639B4224E27FAE0073F38A /* SimpleScheduler.swift */,
 				E90933FE228AFC6600C9F04B /* Environment.swift */,
+				5A4702172664E9440023F264 /* APIContext.swift */,
 			);
 			path = APIClient;
 			sourceTree = "<group>";
@@ -4223,6 +4229,7 @@
 			files = (
 				E788A3B2265565DF00089448 /* EContextPaymentMethod.swift in Sources */,
 				E216D3C5221AEF450013CBCF /* IBANFormatter.swift in Sources */,
+				5A4702182664E9440023F264 /* APIContext.swift in Sources */,
 				E9AFF87A224A4C9C005A0D8D /* PaymentComponent.swift in Sources */,
 				E216D3C0221AD0620013CBCF /* FormViewItemManager.swift in Sources */,
 				F9589D0F2601EF8100E4113F /* NameFormItemInjector.swift in Sources */,
@@ -4234,7 +4241,6 @@
 				5A54FFCA26299140007194B7 /* TimeIntervalHelpers.swift in Sources */,
 				F9FE25232625ADD0001874BB /* PartialPaymentOrder.swift in Sources */,
 				E7085C80262DD44E00D0153B /* PhoneExtensionsRepository.swift in Sources */,
-				F9639B2F24DD6B500073F38A /* APIEnvironment.swift in Sources */,
 				F97CCD3A2435E35E00BC560A /* UIViewControllerHelpers.swift in Sources */,
 				E216D3BE221AAB710013CBCF /* FormTextItem.swift in Sources */,
 				E7085A012625B4D000D0153B /* LocalizableRegionRepository.swift in Sources */,
@@ -4515,6 +4521,7 @@
 				F924C072246BEEF0006DDAB8 /* CardDetailsTests.swift in Sources */,
 				F96A25472372C39F007DBF0B /* ApplePayDetailsTest.swift in Sources */,
 				F9AC61C424375F510062A00D /* PresentingViewControllerMock.swift in Sources */,
+				5AF8CD4D26691D3A00102339 /* Dummy.swift in Sources */,
 				F9BA21BF246D36AC00D36A63 /* LazyOptionalTests.swift in Sources */,
 				E9021DF2225CC6D0009CF7F4 /* RedirectDetailsTests.swift in Sources */,
 				F96F44E123BF5C2000871C1F /* LocalizationTests.swift in Sources */,
@@ -4539,6 +4546,7 @@
 				E77377D72631695000BCE511 /* RegionRepositoryTest.swift in Sources */,
 				F9639B4D24E298C70073F38A /* SimpleSchedulerTests.swift in Sources */,
 				F9D644E724D40C7C0059CBE3 /* MBWayComponentTests.swift in Sources */,
+				5AF730EA2667C3F10091C573 /* APIContextTests.swift in Sources */,
 				E767F4DC25A603A50077029E /* ModalToolbarTests.swift in Sources */,
 				E7D3ED84243B667500E73F59 /* FormCardNumberItemViewTests.swift in Sources */,
 				F957AAA62552FDC10099AD73 /* ThreeDS2CompactActionHandlerTests.swift in Sources */,

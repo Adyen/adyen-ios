@@ -46,7 +46,9 @@ internal struct Submit3DS2FingerprintRequest: Request {
 
     /// :nodoc:
     internal enum CodingKeys: String, CodingKey {
-        case fingerprint = "fingerprintResult", paymentData, clientKey
+        case fingerprint = "fingerprintResult"
+        case paymentData
+        case clientKey
     }
 
 }

@@ -11,6 +11,9 @@ import UIKit
 /// A component that provides a form for stored card payments.
 internal final class StoredCardComponent: PaymentComponent, PresentableComponent, Localizable {
     
+    /// :nodoc:
+    internal let apiContext: APIContext
+    
     /// The card payment method.
     internal var paymentMethod: PaymentMethod { storedCardPaymentMethod }
     
@@ -27,8 +30,10 @@ internal final class StoredCardComponent: PaymentComponent, PresentableComponent
     private let storedCardPaymentMethod: StoredCardPaymentMethod
     
     /// :nodoc:
-    internal init(storedCardPaymentMethod: StoredCardPaymentMethod) {
+    internal init(storedCardPaymentMethod: StoredCardPaymentMethod,
+                  apiContext: APIContext) {
         self.storedCardPaymentMethod = storedCardPaymentMethod
+        self.apiContext = apiContext
     }
     
     /// :nodoc:
@@ -38,17 +43,15 @@ internal final class StoredCardComponent: PaymentComponent, PresentableComponent
     
     /// :nodoc:
     internal lazy var storedCardAlertManager: StoredCardAlertManager = {
-        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
+        Analytics.sendEvent(
+            component: paymentMethod.type,
+            flavor: _isDropIn ? .dropin : .components,
+            context: apiContext
+        )
         
-        var manager: StoredCardAlertManager
-        
-        if let clientKey = clientKey {
-            manager = createStoredCardAlertManager(withClientKey: clientKey)
-        } else if let publicKey = CardPublicKeyProvider.cachedCardPublicKey {
-            manager = createStoredCardAlertManager(withClientKey: publicKey)
-        } else {
-            fatalError("Either card public key or client key must to be configure.")
-        }
+        let manager = StoredCardAlertManager(paymentMethod: storedCardPaymentMethod,
+                                             apiContext: apiContext,
+                                             amount: payment?.amount)
         
         manager.localizationParameters = localizationParameters
         manager.completionHandler = { [weak self] result in
@@ -64,17 +67,5 @@ internal final class StoredCardComponent: PaymentComponent, PresentableComponent
         
         return manager
     }()
-    
-    private func createStoredCardAlertManager(withClientKey clientKey: String) -> StoredCardAlertManager {
-        StoredCardAlertManager(paymentMethod: storedCardPaymentMethod,
-                               clientKey: clientKey,
-                               environment: environment,
-                               amount: payment?.amount)
-    }
-    
-    private func createStoredCardAlertManager(withPublicKey publicKey: String) -> StoredCardAlertManager {
-        StoredCardAlertManager(paymentMethod: storedCardPaymentMethod,
-                               publicKey: publicKey,
-                               amount: payment?.amount)
-    }
+
 }

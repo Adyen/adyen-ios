@@ -16,7 +16,7 @@ class MBWayComponentTests: XCTestCase {
     let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
 
     func testLocalizationWithCustomTableName() {
-        let sut = MBWayComponent(paymentMethod: method)
+        let sut = MBWayComponent(paymentMethod: method, apiContext: Dummy.context)
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
@@ -30,7 +30,7 @@ class MBWayComponentTests: XCTestCase {
     }
 
     func testLocalizationWithCustomKeySeparator() {
-        let sut = MBWayComponent(paymentMethod: method)
+        let sut = MBWayComponent(paymentMethod: method, apiContext: Dummy.context)
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
 
@@ -67,7 +67,7 @@ class MBWayComponentTests: XCTestCase {
         style.textField.title.textAlignment = .center
         style.textField.backgroundColor = .red
 
-        let sut = MBWayComponent(paymentMethod: method, style: style)
+        let sut = MBWayComponent(paymentMethod: method, apiContext: Dummy.context, style: style)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -104,7 +104,7 @@ class MBWayComponentTests: XCTestCase {
     }
 
     func testSubmitForm() {
-        let sut = MBWayComponent(paymentMethod: method)
+        let sut = MBWayComponent(paymentMethod: method, apiContext: Dummy.context)
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         sut.payment = payment
@@ -139,7 +139,7 @@ class MBWayComponentTests: XCTestCase {
     }
 
     func testBigTitle() {
-        let sut = MBWayComponent(paymentMethod: method)
+        let sut = MBWayComponent(paymentMethod: method, apiContext: Dummy.context)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -154,7 +154,7 @@ class MBWayComponentTests: XCTestCase {
 
     func testRequiresModalPresentation() {
         let mbWayPaymentMethod = MBWayPaymentMethod(type: "mbway", name: "Test name")
-        let sut = MBWayComponent(paymentMethod: mbWayPaymentMethod)
+        let sut = MBWayComponent(paymentMethod: mbWayPaymentMethod, apiContext: Dummy.context)
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 

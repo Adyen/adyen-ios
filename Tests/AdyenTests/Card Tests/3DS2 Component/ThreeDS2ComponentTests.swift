@@ -35,13 +35,12 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTAssertEqual(action, mockedAction)
 
             redirectComponent.delegate?.didProvide(mockedData, from: redirectComponent)
-
         }
 
-        let sut = ThreeDS2Component(threeDS2CompactFlowHandler: threeDSActionHandler,
+        let sut = ThreeDS2Component(apiContext: Dummy.context,
+                                    threeDS2CompactFlowHandler: threeDSActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     redirectComponent: redirectComponent)
-        sut.clientKey = Dummy.dummyClientKey
         redirectComponent.delegate = sut
 
         let delegate = ActionComponentDelegateMock()
@@ -58,7 +57,7 @@ class ThreeDS2ComponentTests: XCTestCase {
 
         sut.handle(ThreeDS2Action.fingerprint(ThreeDS2FingerprintAction(fingerprintToken: "token", authorisationToken: "AuthToken", paymentData: "data")))
 
-        waitForExpectations(timeout: 2, handler: nil)
+        waitForExpectations(timeout: 10, handler: nil)
     }
 
     func testFullFlowRedirectFailure() throws {
@@ -73,21 +72,21 @@ class ThreeDS2ComponentTests: XCTestCase {
 
             XCTAssertEqual(action, mockedAction)
 
-            redirectComponent.delegate?.didFail(with: Dummy.dummyError, from: redirectComponent)
+            redirectComponent.delegate?.didFail(with: Dummy.error, from: redirectComponent)
 
         }
 
-        let sut = ThreeDS2Component(threeDS2CompactFlowHandler: threeDS2ActionHandler,
+        let sut = ThreeDS2Component(apiContext: Dummy.context,
+                                    threeDS2CompactFlowHandler: threeDS2ActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     redirectComponent: redirectComponent)
-        sut.clientKey = Dummy.dummyClientKey
         redirectComponent.delegate = sut
 
         let delegate = ActionComponentDelegateMock()
         let delegateExpectation = expectation(description: "Expect delegate didProvide(_:from:) function to be called.")
         delegate.onDidFail = { error, component in
             XCTAssertTrue(component === sut)
-            XCTAssertEqual(error as? Dummy, Dummy.dummyError)
+            XCTAssertEqual(error as? Dummy, Dummy.error)
 
             delegateExpectation.fulfill()
         }
@@ -115,10 +114,10 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTFail("RedirectComponent should never be invoked.")
         }
 
-        let sut = ThreeDS2Component(threeDS2CompactFlowHandler: threeDS2ActionHandler,
+        let sut = ThreeDS2Component(apiContext: Dummy.context,
+                                    threeDS2CompactFlowHandler: threeDS2ActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     redirectComponent: redirectComponent)
-        sut.clientKey = Dummy.dummyClientKey
         redirectComponent.delegate = sut
 
         let delegate = ActionComponentDelegateMock()
@@ -154,10 +153,10 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTFail("RedirectComponent should never be invoked.")
         }
 
-        let sut = ThreeDS2Component(threeDS2CompactFlowHandler: threeDS2ActionHandler,
+        let sut = ThreeDS2Component(apiContext: Dummy.context,
+                                    threeDS2CompactFlowHandler: threeDS2ActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     redirectComponent: redirectComponent)
-        sut.clientKey = Dummy.dummyClientKey
         redirectComponent.delegate = sut
 
         let delegate = ActionComponentDelegateMock()
@@ -187,24 +186,24 @@ class ThreeDS2ComponentTests: XCTestCase {
 
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
         threeDS2ActionHandler.mockedFingerprintResult = .success(.action(.threeDS2(.challenge(mockedAction))))
-        threeDS2ActionHandler.mockedChallengeResult = .failure(Dummy.dummyError)
+        threeDS2ActionHandler.mockedChallengeResult = .failure(Dummy.error)
 
         let redirectComponent = AnyRedirectComponentMock()
         redirectComponent.onHandle = { action in
             XCTFail("RedirectComponent should never be invoked.")
         }
 
-        let sut = ThreeDS2Component(threeDS2CompactFlowHandler: threeDS2ActionHandler,
+        let sut = ThreeDS2Component(apiContext: Dummy.context,
+                                    threeDS2CompactFlowHandler: threeDS2ActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     redirectComponent: redirectComponent)
-        sut.clientKey = Dummy.dummyClientKey
         redirectComponent.delegate = sut
 
         let delegate = ActionComponentDelegateMock()
         let delegateExpectation = expectation(description: "Expect delegate didProvide(_:from:) function to be called.")
         delegate.onDidFail = { error, component in
             XCTAssertTrue(component === sut)
-            XCTAssertEqual(error as? Dummy, Dummy.dummyError)
+            XCTAssertEqual(error as? Dummy, Dummy.error)
 
             delegateExpectation.fulfill()
         }
@@ -218,24 +217,24 @@ class ThreeDS2ComponentTests: XCTestCase {
     func testFullFlowFingerprintFailure() throws {
 
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
-        threeDS2ActionHandler.mockedFingerprintResult = .failure(Dummy.dummyError)
+        threeDS2ActionHandler.mockedFingerprintResult = .failure(Dummy.error)
 
         let redirectComponent = AnyRedirectComponentMock()
         redirectComponent.onHandle = { action in
             XCTFail("RedirectComponent should never be invoked.")
         }
 
-        let sut = ThreeDS2Component(threeDS2CompactFlowHandler: threeDS2ActionHandler,
+        let sut = ThreeDS2Component(apiContext: Dummy.context,
+                                    threeDS2CompactFlowHandler: threeDS2ActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     redirectComponent: redirectComponent)
-        sut.clientKey = Dummy.dummyClientKey
         redirectComponent.delegate = sut
 
         let delegate = ActionComponentDelegateMock()
         let delegateExpectation = expectation(description: "Expect delegate didProvide(_:from:) function to be called.")
         delegate.onDidFail = { error, component in
             XCTAssertTrue(component === sut)
-            XCTAssertEqual(error as? Dummy, Dummy.dummyError)
+            XCTAssertEqual(error as? Dummy, Dummy.error)
 
             delegateExpectation.fulfill()
         }
@@ -259,10 +258,10 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTFail("RedirectComponent should never be invoked.")
         }
 
-        let sut = ThreeDS2Component(threeDS2CompactFlowHandler: AnyThreeDS2ActionHandlerMock(),
+        let sut = ThreeDS2Component(apiContext: Dummy.context,
+                                    threeDS2CompactFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     threeDS2ClassicFlowHandler: threeDS2ActionHandler,
                                     redirectComponent: redirectComponent)
-        sut.clientKey = Dummy.dummyClientKey
         redirectComponent.delegate = sut
 
         let delegate = ActionComponentDelegateMock()
@@ -302,10 +301,10 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTFail("RedirectComponent should never be invoked.")
         }
 
-        let sut = ThreeDS2Component(threeDS2CompactFlowHandler: AnyThreeDS2ActionHandlerMock(),
+        let sut = ThreeDS2Component(apiContext: Dummy.context,
+                                    threeDS2CompactFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     threeDS2ClassicFlowHandler: threeDS2ActionHandler,
                                     redirectComponent: redirectComponent)
-        sut.clientKey = Dummy.dummyClientKey
         redirectComponent.delegate = sut
 
         let delegate = ActionComponentDelegateMock()
@@ -347,10 +346,10 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTFail("RedirectComponent should never be invoked.")
         }
 
-        let sut = ThreeDS2Component(threeDS2CompactFlowHandler: threeDS2ActionHandler,
+        let sut = ThreeDS2Component(apiContext: Dummy.context,
+                                    threeDS2CompactFlowHandler: threeDS2ActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     redirectComponent: redirectComponent)
-        sut.clientKey = Dummy.dummyClientKey
         redirectComponent.delegate = sut
 
         let delegate = ActionComponentDelegateMock()

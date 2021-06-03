@@ -27,6 +27,8 @@ internal final class ComponentManager {
 
     private let order: PartialPaymentOrder?
     
+    internal let apiContext: APIContext
+    
     internal init(paymentMethods: PaymentMethods,
                   configuration: DropInComponent.PaymentMethodsConfiguration,
                   style: DropInComponent.Style,
@@ -35,6 +37,7 @@ internal final class ComponentManager {
                   order: PartialPaymentOrder?) {
         self.paymentMethods = paymentMethods
         self.configuration = configuration
+        self.apiContext = configuration.apiContext
         self.style = style
         self.partialPaymentEnabled = partialPaymentEnabled
         self.remainingAmount = remainingAmount
@@ -93,7 +96,6 @@ internal final class ComponentManager {
         }
 
         paymentComponent.payment = configuration.payment
-        paymentComponent.clientKey = configuration.clientKey
         paymentComponent.order = order
         return paymentComponent
     }
@@ -114,7 +116,6 @@ internal final class ComponentManager {
     
     private func createCardComponent(with paymentMethod: AnyCardPaymentMethod) -> PaymentComponent? {
         let cardConfiguration = configuration.card
-        let clientKey = configuration.clientKey
         let configuration = CardComponent.Configuration(showsHolderNameField: cardConfiguration.showsHolderNameField,
                                                         showsStorePaymentMethodField: cardConfiguration.showsStorePaymentMethodField,
                                                         showsSecurityCodeField: cardConfiguration.showsSecurityCodeField,
@@ -123,13 +124,12 @@ internal final class ComponentManager {
 
         return CardComponent(paymentMethod: paymentMethod,
                              configuration: configuration,
-                             clientKey: clientKey,
+                             apiContext: apiContext,
                              style: style.formComponent)
     }
     
     private func createBancontactComponent(with paymentMethod: BCMCPaymentMethod) -> PaymentComponent? {
         let cardConfiguration = configuration.card
-        let clientKey = configuration.clientKey
         let configuration = CardComponent.Configuration(showsHolderNameField: cardConfiguration.showsHolderNameField,
                                                         showsStorePaymentMethodField: cardConfiguration.showsStorePaymentMethodField,
                                                         showsSecurityCodeField: cardConfiguration.showsSecurityCodeField,
@@ -137,7 +137,7 @@ internal final class ComponentManager {
 
         return BCMCComponent(paymentMethod: paymentMethod,
                              configuration: configuration,
-                             clientKey: clientKey,
+                             apiContext: apiContext,
                              style: style.formComponent)
     }
     
@@ -162,7 +162,7 @@ internal final class ComponentManager {
         )
         
         do {
-            return try PreApplePayComponent(configuration: configuration)
+            return try PreApplePayComponent(apiContext: apiContext, configuration: configuration)
         } catch {
             adyenPrint("Failed to instantiate ApplePayComponent because of error: \(error.localizedDescription)")
             return nil
@@ -171,19 +171,26 @@ internal final class ComponentManager {
     
     private func createSEPAComponent(_ paymentMethod: SEPADirectDebitPaymentMethod) -> SEPADirectDebitComponent {
         SEPADirectDebitComponent(paymentMethod: paymentMethod,
+                                 apiContext: apiContext,
                                  style: style.formComponent)
     }
     
     private func createQiwiWalletComponent(_ paymentMethod: QiwiWalletPaymentMethod) -> QiwiWalletComponent {
-        QiwiWalletComponent(paymentMethod: paymentMethod, style: style.formComponent)
+        QiwiWalletComponent(paymentMethod: paymentMethod,
+                            apiContext: apiContext,
+                            style: style.formComponent)
     }
     
     private func createMBWayComponent(_ paymentMethod: MBWayPaymentMethod) -> MBWayComponent? {
-        MBWayComponent(paymentMethod: paymentMethod, style: style.formComponent)
+        MBWayComponent(paymentMethod: paymentMethod,
+                       apiContext: apiContext,
+                       style: style.formComponent)
     }
 
     private func createBLIKComponent(_ paymentMethod: BLIKPaymentMethod) -> BLIKComponent? {
-        BLIKComponent(paymentMethod: paymentMethod, style: style.formComponent)
+        BLIKComponent(paymentMethod: paymentMethod,
+                      apiContext: apiContext,
+                      style: style.formComponent)
     }
     
     private func createBoletoComponent(_ paymentMethod: BoletoPaymentMethod) -> BoletoComponent {
@@ -193,7 +200,8 @@ internal final class ComponentManager {
                 payment: configuration.payment,
                 shopperInfo: configuration.shopper,
                 showEmailAddress: true
-            )
+            ),
+            apiContext: apiContext
         )
     }
     
@@ -210,12 +218,12 @@ extension ComponentManager: PaymentComponentBuilder {
     
     /// :nodoc:
     internal func build(paymentMethod: StoredPaymentMethod) -> PaymentComponent? {
-        StoredPaymentMethodComponent(paymentMethod: paymentMethod)
+        StoredPaymentMethodComponent(paymentMethod: paymentMethod, apiContext: apiContext)
     }
     
     /// :nodoc:
     internal func build(paymentMethod: StoredBCMCPaymentMethod) -> PaymentComponent? {
-        StoredPaymentMethodComponent(paymentMethod: paymentMethod)
+        StoredPaymentMethodComponent(paymentMethod: paymentMethod, apiContext: apiContext)
     }
     
     /// :nodoc:
@@ -231,6 +239,7 @@ extension ComponentManager: PaymentComponentBuilder {
     /// :nodoc:
     internal func build(paymentMethod: IssuerListPaymentMethod) -> PaymentComponent? {
         IssuerListComponent(paymentMethod: paymentMethod,
+                            apiContext: apiContext,
                             style: style.listComponent)
     }
     
@@ -248,7 +257,9 @@ extension ComponentManager: PaymentComponentBuilder {
     internal func build(paymentMethod: WeChatPayPaymentMethod) -> PaymentComponent? {
         guard let classObject = loadTheConcreteWeChatPaySDKActionComponentClass() else { return nil }
         guard classObject.isDeviceSupported() else { return nil }
-        return InstantPaymentComponent(paymentMethod: paymentMethod, paymentData: nil)
+        return InstantPaymentComponent(paymentMethod: paymentMethod,
+                                       paymentData: nil,
+                                       apiContext: apiContext)
     }
     
     /// :nodoc:
@@ -269,12 +280,14 @@ extension ComponentManager: PaymentComponentBuilder {
     /// :nodoc:
     internal func build(paymentMethod: EContextPaymentMethod) -> PaymentComponent? {
         BasicPersonalInfoFormComponent(paymentMethod: paymentMethod,
+                                       apiContext: apiContext,
                                        style: style.formComponent)
     }
 
     /// :nodoc:
     internal func build(paymentMethod: DokuPaymentMethod) -> PaymentComponent? {
         DokuComponent(paymentMethod: paymentMethod,
+                      apiContext: apiContext,
                       style: style.formComponent)
     }
 
@@ -282,7 +295,7 @@ extension ComponentManager: PaymentComponentBuilder {
     internal func build(paymentMethod: GiftCardPaymentMethod) -> PaymentComponent? {
         guard partialPaymentEnabled else { return nil }
         return GiftCardComponent(paymentMethod: paymentMethod,
-                                 clientKey: configuration.clientKey,
+                                 apiContext: apiContext,
                                  style: style.formComponent)
     }
     
@@ -293,7 +306,9 @@ extension ComponentManager: PaymentComponentBuilder {
     
     /// :nodoc:
     internal func build(paymentMethod: PaymentMethod) -> PaymentComponent? {
-        InstantPaymentComponent(paymentMethod: paymentMethod, paymentData: nil)
+        InstantPaymentComponent(paymentMethod: paymentMethod,
+                                paymentData: nil,
+                                apiContext: apiContext)
     }
     
 }

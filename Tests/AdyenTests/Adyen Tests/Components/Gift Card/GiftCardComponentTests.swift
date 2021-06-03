@@ -43,7 +43,7 @@ class GiftCardComponentTests: XCTestCase {
     override func setUp() {
         super.setUp()
         paymentMethod = GiftCardPaymentMethod(type: "testType", name: "testName", brand: "testBrand")
-        sut = GiftCardComponent(paymentMethod: paymentMethod, clientKey: Dummy.dummyClientKey)
+        sut = GiftCardComponent(paymentMethod: paymentMethod, apiContext: Dummy.context)
         sut.payment = nil // Missing Payment object
         delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
@@ -61,7 +61,7 @@ class GiftCardComponentTests: XCTestCase {
         cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
         cardPublicKeyProvider.onFetch = { completion in
             cardPublicKeyProviderExpectation.fulfill()
-            completion(.success(Dummy.dummyPublicKey))
+            completion(.success(Dummy.publicKey))
         }
 
         let didFailExpectation = expectation(description: "Expect delegateMock.onDidFail to be called.")
@@ -75,7 +75,7 @@ class GiftCardComponentTests: XCTestCase {
         let onCheckBalanceExpectation = expectation(description: "Expect partialPaymentDelegate.onCheckBalance to be called.")
 
         partialPaymentDelegate.onCheckBalance = { _, completion in
-            completion(.failure(Dummy.dummyError))
+            completion(.failure(Dummy.error))
             onCheckBalanceExpectation.fulfill()
         }
 
@@ -104,7 +104,7 @@ class GiftCardComponentTests: XCTestCase {
         cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
         cardPublicKeyProvider.onFetch = { completion in
             cardPublicKeyProviderExpectation.fulfill()
-            completion(.success(Dummy.dummyPublicKey))
+            completion(.success(Dummy.publicKey))
         }
 
         sut.payment = .init(amount: .init(value: 10, currencyCode: "EUR"), countryCode: "NL")
@@ -144,7 +144,7 @@ class GiftCardComponentTests: XCTestCase {
         cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
         cardPublicKeyProvider.onFetch = { completion in
             cardPublicKeyProviderExpectation.fulfill()
-            completion(.success(Dummy.dummyPublicKey))
+            completion(.success(Dummy.publicKey))
         }
 
         sut.payment = .init(amount: .init(value: 10, currencyCode: "USD"), countryCode: "US")
@@ -184,7 +184,7 @@ class GiftCardComponentTests: XCTestCase {
         cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
         cardPublicKeyProvider.onFetch = { completion in
             cardPublicKeyProviderExpectation.fulfill()
-            completion(.success(Dummy.dummyPublicKey))
+            completion(.success(Dummy.publicKey))
         }
 
         sut.payment = .init(amount: .init(value: 10, currencyCode: "EUR"), countryCode: "US")
@@ -224,7 +224,7 @@ class GiftCardComponentTests: XCTestCase {
         cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
         cardPublicKeyProvider.onFetch = { completion in
             cardPublicKeyProviderExpectation.fulfill()
-            completion(.success(Dummy.dummyPublicKey))
+            completion(.success(Dummy.publicKey))
         }
 
         sut.payment = nil // Missing Payment object
@@ -264,7 +264,7 @@ class GiftCardComponentTests: XCTestCase {
         cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
         cardPublicKeyProvider.onFetch = { completion in
             cardPublicKeyProviderExpectation.fulfill()
-            completion(.success(Dummy.dummyPublicKey))
+            completion(.success(Dummy.publicKey))
         }
 
         sut.payment = .init(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
@@ -317,7 +317,7 @@ class GiftCardComponentTests: XCTestCase {
         cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
         cardPublicKeyProvider.onFetch = { completion in
             cardPublicKeyProviderExpectation.fulfill()
-            completion(.success(Dummy.dummyPublicKey))
+            completion(.success(Dummy.publicKey))
         }
 
         sut.payment = .init(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
@@ -371,7 +371,7 @@ class GiftCardComponentTests: XCTestCase {
         cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
         cardPublicKeyProvider.onFetch = { completion in
             cardPublicKeyProviderExpectation.fulfill()
-            completion(.success(Dummy.dummyPublicKey))
+            completion(.success(Dummy.publicKey))
         }
 
         sut.payment = .init(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
@@ -429,7 +429,7 @@ class GiftCardComponentTests: XCTestCase {
         cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
         cardPublicKeyProvider.onFetch = { completion in
             cardPublicKeyProviderExpectation.fulfill()
-            completion(.success(Dummy.dummyPublicKey))
+            completion(.success(Dummy.publicKey))
         }
 
         sut.payment = .init(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
@@ -486,14 +486,14 @@ class GiftCardComponentTests: XCTestCase {
         cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
         cardPublicKeyProvider.onFetch = { completion in
             cardPublicKeyProviderExpectation.fulfill()
-            completion(.success(Dummy.dummyPublicKey))
+            completion(.success(Dummy.publicKey))
         }
 
         sut.payment = .init(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
 
         let onDidFailExpectation = expectation(description: "Expect delegateMock.onDidFail to be called.")
         delegateMock.onDidFail = { error, component in
-            XCTAssertEqual(error as? Dummy, .dummyError)
+            XCTAssertEqual(error as? Dummy, .error)
             onDidFailExpectation.fulfill()
         }
 
@@ -506,7 +506,7 @@ class GiftCardComponentTests: XCTestCase {
 
         let onRequestOrderExpectation = expectation(description: "Expect partialPaymentDelegate.onRequestOrder to be called.")
         partialPaymentDelegate.onRequestOrder = { completion in
-            completion(.failure(Dummy.dummyError))
+            completion(.failure(Dummy.error))
             onRequestOrderExpectation.fulfill()
         }
 

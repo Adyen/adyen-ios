@@ -23,7 +23,7 @@ class PreApplePayComponentTests: XCTestCase {
             summaryItems: createTestSummaryItems(),
             merchantIdentifier: "test_id"
         )
-        sut = try! PreApplePayComponent(configuration: configuration)
+        sut = try! PreApplePayComponent(apiContext: Dummy.context, configuration: configuration)
     }
     
     func testUIConfiguration() {

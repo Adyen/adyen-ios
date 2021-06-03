@@ -7,39 +7,41 @@
 import Foundation
 
 /// :nodoc:
+public protocol AnyAPIEnvironment {
+    
+    /// :nodoc:
+    /// The base url.
+    var baseURL: URL { get }
+    
+}
+    
+/// :nodoc:
 /// Struct that defines the environment to retrieve resources from.
-public struct Environment: APIEnvironment {
+public struct Environment: AnyAPIEnvironment {
     
     /// :nodoc:
     public var baseURL: URL
-    
-    /// :nodoc:
-    public var headers: [String: String] = ["Content-Type": "application/json"]
-    
-    /// :nodoc:
-    public var queryParameters: [URLQueryItem] {
-        guard let clientKey = clientKey else { return [] }
-        return [URLQueryItem(name: "clientKey", value: clientKey)]
-    }
-    
-    /// :nodoc:
-    public var clientKey: String?
 
+    /// :nodoc:
     /// Adyen's test environment.
     public static let test = Environment(baseURL: URL(string: "https://checkoutshopper-test.adyen.com/")!)
 
     /// :nodoc:
     public static let beta = Environment(baseURL: URL(string: "https://checkoutshopper-beta.adyen.com/")!)
     
+    /// :nodoc:
     /// Adyen's default live environment.
-    public static let live = Environment(baseURL: Environment.defaultLiveBaseURL)
+    public static let live = Environment(baseURL: URL(string: "https://checkoutshopper-live.adyen.com/")!)
     
+    /// :nodoc:
     /// Adyen's European live environment.
     public static let liveEurope = Environment.live
     
+    /// :nodoc:
     /// Adyen's Australian live environment.
     public static let liveAustralia = Environment(baseURL: URL(string: "https://checkoutshopper-live-au.adyen.com/")!)
     
+    /// :nodoc:
     /// Adyen's United States live environment.
     public static let liveUnitedStates = Environment(baseURL: URL(string: "https://checkoutshopper-live-us.adyen.com/")!)
 
@@ -47,11 +49,8 @@ public struct Environment: APIEnvironment {
     ///
     /// - Parameters:
     ///   - baseURL: The environment base url.
-    public init(baseURL: URL? = nil) {
-        self.baseURL = baseURL ?? Environment.defaultLiveBaseURL
+    public init(baseURL: URL) {
+        self.baseURL = baseURL
     }
-    
-    // MARK: - Private
-    
-    private static let defaultLiveBaseURL = URL(string: "https://checkoutshopper-live.adyen.com/")!
+
 }

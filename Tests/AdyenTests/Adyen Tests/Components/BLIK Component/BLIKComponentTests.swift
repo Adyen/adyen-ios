@@ -17,7 +17,7 @@ class BLIKComponentTests: XCTestCase {
     var sut: BLIKComponent!
 
     override func setUp() {
-        sut = BLIKComponent(paymentMethod: method)
+        sut = BLIKComponent(paymentMethod: method, apiContext: Dummy.context)
         sut.payment = payment
     }
 
@@ -91,7 +91,7 @@ class BLIKComponentTests: XCTestCase {
         style.textField.title.textAlignment = .center
         style.textField.backgroundColor = .red
 
-        sut = BLIKComponent(paymentMethod: method, style: style)
+        sut = BLIKComponent(paymentMethod: method, apiContext: Dummy.context, style: style)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -182,7 +182,7 @@ class BLIKComponentTests: XCTestCase {
 
     func testRequiresModalPresentation() {
         let blikPaymentMethod = BLIKPaymentMethod(type: "blik", name: "Test name")
-        let sut = BLIKComponent(paymentMethod: blikPaymentMethod)
+        let sut = BLIKComponent(paymentMethod: blikPaymentMethod, apiContext: Dummy.context)
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 

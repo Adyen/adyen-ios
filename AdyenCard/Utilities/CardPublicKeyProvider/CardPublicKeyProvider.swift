@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 
 /// :nodoc:
-internal protocol AnyCardPublicKeyProvider: Component {
+internal protocol AnyCardPublicKeyProvider: APIContextAware {
     
     /// :nodoc:
     typealias CompletionHandler = (Result<String, Error>) -> Void
@@ -21,18 +21,18 @@ internal protocol AnyCardPublicKeyProvider: Component {
 internal final class CardPublicKeyProvider: AnyCardPublicKeyProvider {
     
     /// :nodoc:
+    internal let apiContext: APIContext
+    
+    /// :nodoc:
     internal static var cachedCardPublicKey: String?
     
     /// :nodoc:
-    internal init(apiClient: AnyRetryAPIClient? = nil) {
+    internal init(apiContext: APIContext,
+                  apiClient: AnyRetryAPIClient? = nil) {
+        self.apiContext = apiContext
         if let apiClient = apiClient {
             self.apiClient = apiClient
         }
-    }
-    
-    /// :nodoc:
-    internal init(cardPublicKey: String) {
-        Self.cachedCardPublicKey = cardPublicKey
     }
     
     /// :nodoc:
@@ -43,16 +43,9 @@ internal final class CardPublicKeyProvider: AnyCardPublicKeyProvider {
             return
         }
         
-        guard let clientKey = clientKey,
-              ClientKeyValidator().isValid(clientKey) else {
-            AdyenAssertion.assertionFailure(message: "ClientKey is missing or invalid.")
-            completion(.failure(CardComponent.Error.missingClientKey))
-            return
-        }
-        
         guard waitingList.count == 1 else { return }
         
-        let request = ClientKeyRequest(clientKey: clientKey)
+        let request = ClientKeyRequest(clientKey: apiContext.clientKey)
         
         apiClient.perform(request, shouldRetry: { [weak self] result in
             self?.shouldRetry(result) ?? false
@@ -62,7 +55,7 @@ internal final class CardPublicKeyProvider: AnyCardPublicKeyProvider {
     }
     
     /// :nodoc:
-    private lazy var apiClient: AnyRetryAPIClient = RetryAPIClient(apiClient: APIClient(environment: environment),
+    private lazy var apiClient: AnyRetryAPIClient = RetryAPIClient(apiClient: APIClient(apiContext: apiContext),
                                                                    scheduler: SimpleScheduler(maximumCount: 2))
     
     /// :nodoc:
