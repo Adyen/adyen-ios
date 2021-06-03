@@ -30,7 +30,7 @@ internal enum ConfigurationConstants {
 
     static let clientKey = "{YOUR_CLIENT_KEY}"
     
-    static let apiContext = APIContext(environment: demoServerEnvironment, clientKey: clientKey)
+    static let apiContext = APIContext(environment: componentsEnvironment, clientKey: clientKey)
 
     // swiftlint:disable:next line_length
     static let demoServerAPIKey = "{YOUR_DEMO_SERVER_API_KEY}"

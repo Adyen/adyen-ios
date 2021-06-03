@@ -7,6 +7,19 @@
 import Adyen
 import Foundation
 
+internal struct DemoAPIContext: AnyAPIContext {
+    
+    internal let environment: AnyAPIEnvironment = ConfigurationConstants.demoServerEnvironment
+    
+    internal let headers: [String: String] = [
+        "Content-Type": "application/json",
+        "X-API-Key": ConfigurationConstants.demoServerAPIKey
+    ]
+    
+    internal let queryParameters: [URLQueryItem] = []
+    
+}
+
 internal enum DemoServerEnvironment: String, AnyAPIEnvironment, CaseIterable {
     
     case beta, test, local
@@ -23,14 +36,5 @@ internal enum DemoServerEnvironment: String, AnyAPIEnvironment, CaseIterable {
     }
 
     internal var version: Int { ConfigurationConstants.current.apiVersion }
-
-    internal var headers: [String: String] {
-        [
-            "Content-Type": "application/json",
-            "X-API-Key": ConfigurationConstants.demoServerAPIKey
-        ]
-    }
-
-    /// :nodoc:
-    internal var queryParameters: [URLQueryItem] { [] }
+    
 }

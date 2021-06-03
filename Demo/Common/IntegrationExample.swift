@@ -25,7 +25,6 @@ internal protocol Presenter: AnyObject {
 internal final class IntegrationExample: APIClientAware {
     
     internal var payment: Payment { ConfigurationConstants.current.payment }
-    internal let environment = ConfigurationConstants.componentsEnvironment
 
     internal var paymentMethods: PaymentMethods?
     internal var currentComponent: PresentableComponent?
@@ -39,7 +38,10 @@ internal final class IntegrationExample: APIClientAware {
         return ConfigurationConstants.clientKey
     }
     
-    internal lazy var apiContext: APIContext = ConfigurationConstants.apiContext
+    internal lazy var apiContext: APIContext = APIContext(
+        environment: ConfigurationConstants.componentsEnvironment,
+        clientKey: clientKey
+    )
 
     // MARK: - Action Handling for Components
 

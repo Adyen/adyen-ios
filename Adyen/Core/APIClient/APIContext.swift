@@ -16,8 +16,23 @@ public protocol APIContextAware: AnyObject {
     
 }
 
+/// :nodoc:
+/// Protocol that describes an API context used for retrieving internal resources
+public protocol AnyAPIContext {
+    
+    /// :nodoc:
+    var environment: AnyAPIEnvironment { get }
+    
+    /// :nodoc:
+    var headers: [String: String] { get }
+    
+    /// :nodoc:
+    var queryParameters: [URLQueryItem] { get }
+    
+}
+
 /// Struct that defines API context for retrieving internal resources.
-public struct APIContext {
+public struct APIContext: AnyAPIContext {
     
     /// The query parameters.
     public var queryParameters: [URLQueryItem] {

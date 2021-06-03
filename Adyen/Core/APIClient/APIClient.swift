@@ -29,14 +29,14 @@ public final class APIClient: APIClientProtocol {
     
     /// :nodoc:
     /// The API context.
-    public let apiContext: APIContext
+    public let apiContext: AnyAPIContext
     
     /// :nodoc:
     /// Initializes the API client.
     ///
     /// - Parameters:
     ///   - environment: The API environment.
-    public init(apiContext: APIContext) {
+    public init(apiContext: AnyAPIContext) {
         self.apiContext = apiContext
     }
     
