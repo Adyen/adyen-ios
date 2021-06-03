@@ -21,6 +21,15 @@ public protocol APIClientProtocol: AnyObject {
 }
 
 /// :nodoc:
+extension APIClientProtocol {
+
+    /// :nodoc:
+    public func retryAPIClient(with scheduler: Scheduler) -> AnyRetryAPIClient {
+        RetryAPIClient(apiClient: self, scheduler: scheduler)
+    }
+}
+
+/// :nodoc:
 /// The Basic API Client.
 public final class APIClient: APIClientProtocol {
     
