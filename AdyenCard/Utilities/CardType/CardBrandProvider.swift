@@ -31,7 +31,7 @@ internal final class CardBrandProvider: AnyCardBrandProvider {
     /// :nodoc:
     internal let apiContext: APIContext
     
-    private let apiClient: APIClientProtocol?
+    private let apiClient: APIClientProtocol
 
     private var privateBinLookupService: BinLookupService?
     
@@ -50,8 +50,8 @@ internal final class CardBrandProvider: AnyCardBrandProvider {
                   apiContext: APIContext,
                   apiClient: APIClientProtocol? = nil,
                   fallbackCardTypeProvider: AnyCardBrandProvider = FallbackCardBrandProvider()) {
-        self.apiClient = apiClient
         self.apiContext = apiContext
+        self.apiClient = apiClient ?? APIClient(apiContext: apiContext)
         self.cardPublicKeyProvider = cardPublicKeyProvider
         self.fallbackCardTypeProvider = fallbackCardTypeProvider
     }
@@ -108,15 +108,13 @@ internal final class CardBrandProvider: AnyCardBrandProvider {
             return success(binLookupService)
         }
         
-        let localApiClient = self.apiClient ?? APIClient(apiContext: apiContext)
-        
         cardPublicKeyProvider.fetch { [weak self] result in
             guard let self = self else { return }
 
             switch result {
             case let .success(publicKey):
                 let binLookupService = BinLookupService(publicKey: publicKey,
-                                                        apiClient: localApiClient)
+                                                        apiClient: self.apiClient)
                 self.privateBinLookupService = binLookupService
                 success(binLookupService)
             case let .failure(error):
