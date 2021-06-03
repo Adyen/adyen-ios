@@ -20,9 +20,18 @@ class APIContextTests: XCTestCase {
     }
     
     func testInvalidClientKey() {
-        expectFatalError(expectedMessage: "ClientKey is invalid.") {
-            let _ = APIContext(environment: Dummy.context.environment, clientKey: "invalid_client_key")
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+        
+        AdyenAssertion.listener = { message in
+            XCTAssertEqual(message, "ClientKey is invalid.")
+            expectation.fulfill()
+            
+            AdyenAssertion.listener = nil
         }
+        
+        let _ = APIContext(environment: Dummy.context.environment, clientKey: "invalid_client_key")
+        
+        wait(for: [expectation], timeout: 2)
     }
     
     func testQueryParameters() {
