@@ -8,7 +8,7 @@
 
 final class CardPublicKeyProviderMock: AnyCardPublicKeyProvider {
     
-    let apiContext: APIContext = APIContext(environment: Environment.test, clientKey: "local_DUMMYKEYFORTESTING")
+    let apiContext: APIContext = Dummy.context
 
     var onFetch: ((_ completion: @escaping CompletionHandler) -> Void)?
 
