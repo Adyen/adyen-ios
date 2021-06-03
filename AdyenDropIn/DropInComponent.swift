@@ -92,10 +92,9 @@ public final class DropInComponent: NSObject, PresentableComponent {
     /// :nodoc:
     private lazy var apiClient: APIClientProtocol = {
         let scheduler = SimpleScheduler(maximumCount: 3)
-        let baseAPIClient = APIClient(apiContext: apiContext)
-        let retryApiClient = RetryAPIClient(apiClient: baseAPIClient, scheduler: scheduler)
-        let apiClient = RetryOnErrorAPIClient(apiClient: retryApiClient)
-        return apiClient
+        return APIClient(apiContext: apiContext)
+            .retryAPIClient(with: scheduler)
+            .retryOnError()
     }()
 
     /// Reloads the DropIn with a partial payment order and a new `PaymentMethods` object.

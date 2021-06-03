@@ -31,60 +31,43 @@ internal final class CardPublicKeyProvider: AnyCardPublicKeyProvider {
                   apiClient: AnyRetryAPIClient? = nil) {
         self.apiContext = apiContext
         if let apiClient = apiClient {
-            self.apiClient = apiClient
+            self.retryApiClient = apiClient
         }
     }
     
     /// :nodoc:
     internal func fetch(completion: @escaping CompletionHandler) {
-        waitingList.append(completion)
         if let cardPublicKey = Self.cachedCardPublicKey {
-            deliver(.success(cardPublicKey))
+            completion(.success(cardPublicKey))
             return
         }
         
-        guard waitingList.count == 1 else { return }
-        
         let request = ClientKeyRequest(clientKey: apiContext.clientKey)
         
-        apiClient.perform(request, shouldRetry: { [weak self] result in
-            self?.shouldRetry(result) ?? false
-        }, completionHandler: { [weak self] result in
-            self?.handle(result)
+        apiClient.perform(request, completionHandler: { [weak self] result in
+            self?.handle(result, completion: completion)
         })
     }
     
     /// :nodoc:
-    private lazy var apiClient: AnyRetryAPIClient = RetryAPIClient(apiClient: APIClient(apiContext: apiContext),
-                                                                   scheduler: SimpleScheduler(maximumCount: 2))
-    
-    /// :nodoc:
-    private var waitingList: [CompletionHandler] = []
-    
-    /// :nodoc:
-    private func shouldRetry(_ result: Result<ClientKeyResponse, Swift.Error>) -> Bool {
-        if case Result.success = result {
-            return false
-        }
-        return true
-    }
-    
-    /// :nodoc:
-    private func handle(_ result: Result<ClientKeyResponse, Swift.Error>) {
+    private func handle(_ result: Result<ClientKeyResponse, Swift.Error>, completion: @escaping CompletionHandler) {
         switch result {
         case let .success(response):
             Self.cachedCardPublicKey = response.cardPublicKey
-            deliver(.success(response.cardPublicKey))
+            completion(.success(response.cardPublicKey))
         case let .failure(error):
-            deliver(.failure(error))
+            completion(.failure(error))
         }
     }
-    
+
     /// :nodoc:
-    private func deliver(_ result: Result<String, Swift.Error>) {
-        waitingList.forEach {
-            $0(result)
-        }
-        waitingList = []
-    }
+    private lazy var apiClient: UniqueAssetAPIClient<ClientKeyResponse> = {
+        let retryOnErrorApiClient = retryApiClient.retryOnError()
+        return UniqueAssetAPIClient<ClientKeyResponse>(apiClient: retryApiClient)
+    }()
+
+    private lazy var retryApiClient: AnyRetryAPIClient = {
+        RetryAPIClient(apiClient: APIClient(apiContext: apiContext),
+                       scheduler: SimpleScheduler(maximumCount: 2))
+    }()
 }
