@@ -98,13 +98,21 @@ public final class SubmitButton: UIControl {
     }
     
     private lazy var activityIndicatorView: UIActivityIndicatorView = {
-        let activityIndicatorView = UIActivityIndicatorView(style: .white)
+        let activityIndicatorView = UIActivityIndicatorView(style: activityIndicatorStyle)
         activityIndicatorView.color = titleLabel.textColor
         activityIndicatorView.backgroundColor = .clear
         activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         activityIndicatorView.hidesWhenStopped = true
         return activityIndicatorView
     }()
+    
+    private var activityIndicatorStyle: UIActivityIndicatorView.Style {
+        if #available(iOS 13.0, *) {
+            return .medium
+        } else {
+            return .white
+        }
+    }
     
     // MARK: - Layout
     

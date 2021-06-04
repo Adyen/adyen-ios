@@ -103,8 +103,11 @@ internal class AbstractVoucherView: UIView, Localizable {
         let button = PKAddPassButton(addPassButtonStyle: .black)
         button.addTarget(self, action: #selector(self.appleWalletButtonPressed), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.voucher", postfix: "appleWalletButton")
+        
         let view = LoadingView(contentView: button)
         view.translatesAutoresizingMaskIntoConstraints = false
+        
         return view
     }()
 

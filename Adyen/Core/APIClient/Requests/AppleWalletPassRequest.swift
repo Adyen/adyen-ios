@@ -13,7 +13,7 @@ public struct AppleWalletPassRequest: Request {
     public typealias ResponseType = AppleWalletPassResponse
 
     /// :nodoc:
-    public var path: String { "checkoutshopper/v1/createVoucherPass" }
+    public let path: String = "checkoutshopper/v1/createVoucherPass"
 
     /// :nodoc:
     public var counter: UInt = 0

@@ -30,8 +30,7 @@ internal final class AppleWalletPassProvider: AnyAppleWalletPassProvider,
     }
 
     private lazy var apiClient: UniqueAssetAPIClient<AppleWalletPassResponse> = {
-        let retryOnErrorApiClient = retryApiClient.retryOnError()
-        return UniqueAssetAPIClient<AppleWalletPassResponse>(apiClient: retryApiClient)
+        UniqueAssetAPIClient<AppleWalletPassResponse>(apiClient: retryApiClient.retryOnErrorAPIClient())
     }()
 
     private lazy var retryApiClient: AnyRetryAPIClient = {
@@ -50,12 +49,7 @@ internal final class AppleWalletPassProvider: AnyAppleWalletPassProvider,
                         completion: @escaping CompletionHandler) {
         switch result {
         case let .success(response):
-            var response = response
-            if let passData = response.passData {
-                completion(.success(passData))
-            } else {
-                completion(.failure(AppleWalletError.failedToAddToAppleWallet))
-            }
+            completion(.success(response.passData))
         case let .failure(error):
             completion(.failure(error))
         }

@@ -22,7 +22,7 @@ public protocol AnyRetryAPIClient: APIClientProtocol {
 extension AnyRetryAPIClient {
 
     /// :nodoc:
-    public func retryOnError() -> APIClientProtocol {
+    public func retryOnErrorAPIClient() -> APIClientProtocol {
         RetryOnErrorAPIClient(apiClient: self)
     }
 }

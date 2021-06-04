@@ -62,7 +62,7 @@ internal final class CardPublicKeyProvider: AnyCardPublicKeyProvider {
 
     /// :nodoc:
     private lazy var apiClient: UniqueAssetAPIClient<ClientKeyResponse> = {
-        let retryOnErrorApiClient = retryApiClient.retryOnError()
+        let retryOnErrorApiClient = retryApiClient.retryOnErrorAPIClient()
         return UniqueAssetAPIClient<ClientKeyResponse>(apiClient: retryApiClient)
     }()
 

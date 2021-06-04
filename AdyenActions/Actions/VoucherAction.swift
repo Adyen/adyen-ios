@@ -86,7 +86,7 @@ public enum VoucherAction: Decodable, AnyVoucherAction {
 }
 
 /// Describes an action in which a voucher is presented to the shopper.
-public class GenericVoucherAction: Codable, AnyVoucherAction {
+public class GenericVoucherAction: Decodable, AnyVoucherAction {
 
     /// The `paymentMethodType` for which the voucher is presented.
     public let paymentMethodType: VoucherPaymentMethod
@@ -137,26 +137,6 @@ public class GenericVoucherAction: Codable, AnyVoucherAction {
             let context = DecodingError.Context(codingPath: codingPath, debugDescription: "expiresAt is in the wrong format")
             throw DecodingError.dataCorrupted(context)
         }
-    }
-
-    /// :nodoc:
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(paymentMethodType, forKey: .paymentMethodType)
-        try container.encode(initialAmount, forKey: .initialAmount)
-        try container.encode(totalAmount, forKey: .totalAmount)
-        try container.encode(reference, forKey: .reference)
-        try container.encode(merchantName, forKey: .merchantName)
-        try container.encode(instructionsUrl, forKey: .instructionsUrl)
-        try container.encodeIfPresent(passCreationToken, forKey: .passCreationToken)
-
-        let dateFormatter = ISO8601DateFormatter()
-        dateFormatter.formatOptions = [
-            .withYear, .withMonth, .withDay, .withTime,
-            .withDashSeparatorInDate, .withColonSeparatorInTime
-        ]
-
-        try container.encode(dateFormatter.string(from: self.expiresAt), forKey: .expiresAt)
     }
 
     /// :nodoc:
