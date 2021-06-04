@@ -491,6 +491,8 @@
 		F97BC2382667949100F1D242 /* UniqueAssetAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97BC2372667949100F1D242 /* UniqueAssetAPIClient.swift */; };
 		F97BC2792668BEE200F1D242 /* AppleWalletError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97BC2782668BEE200F1D242 /* AppleWalletError.swift */; };
 		F97BC2AD2668C63200F1D242 /* AppleWalletPassProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97BC2AC2668C63200F1D242 /* AppleWalletPassProviderTests.swift */; };
+		F97BC2CE2668EB4500F1D242 /* VoucherViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97BC2B82668EAFD00F1D242 /* VoucherViewDelegateMock.swift */; };
+		F97BC2D92668EB4800F1D242 /* VoucherViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97BC2B82668EAFD00F1D242 /* VoucherViewDelegateMock.swift */; };
 		F97C81AF25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C81AE25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift */; };
 		F97C829225BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C829125BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift */; };
 		F97C837925BF047600D7F85C /* DokuPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C837825BF047600D7F85C /* DokuPaymentMethod.swift */; };
@@ -610,7 +612,7 @@
 		F9EDB79E2397AEF400CFB3C9 /* ComponentManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB79D2397AEF400CFB3C9 /* ComponentManagerTests.swift */; };
 		F9EDB7A02397BD8500CFB3C9 /* TestPaymentMethodsJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB79F2397BD8500CFB3C9 /* TestPaymentMethodsJson.swift */; };
 		F9FE13E025CBF6870067B593 /* GenericVoucherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE13DF25CBF6870067B593 /* GenericVoucherViewModel.swift */; };
-		F9FE13F425CC0E3C0067B593 /* DokuVoucherViewControllerProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE13F325CC0E3C0067B593 /* DokuVoucherViewControllerProviderTests.swift */; };
+		F9FE13F425CC0E3C0067B593 /* VoucherViewControllerProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE13F325CC0E3C0067B593 /* VoucherViewControllerProviderTests.swift */; };
 		F9FE24AD2625913C001874BB /* CancelOrderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE248326258F6E001874BB /* CancelOrderRequest.swift */; };
 		F9FE24C32625913F001874BB /* CancelOrderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE248326258F6E001874BB /* CancelOrderRequest.swift */; };
 		F9FE24D926259267001874BB /* CreateOrderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE24D826259267001874BB /* CreateOrderRequest.swift */; };
@@ -1328,6 +1330,7 @@
 		F97BC2432667A7BF00F1D242 /* AppleWalletError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleWalletError.swift; sourceTree = "<group>"; };
 		F97BC2782668BEE200F1D242 /* AppleWalletError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleWalletError.swift; sourceTree = "<group>"; };
 		F97BC2AC2668C63200F1D242 /* AppleWalletPassProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleWalletPassProviderTests.swift; sourceTree = "<group>"; };
+		F97BC2B82668EAFD00F1D242 /* VoucherViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherViewDelegateMock.swift; sourceTree = "<group>"; };
 		F97C7C502590C56E00D80A54 /* ThreeDS2CoreActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2CoreActionHandler.swift; sourceTree = "<group>"; };
 		F97C7C5E2590EE0A00D80A54 /* AnyThreeDS2ActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyThreeDS2ActionHandler.swift; sourceTree = "<group>"; };
 		F97C81AE25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractPersonalInformationComponent.swift; sourceTree = "<group>"; };
@@ -1451,7 +1454,7 @@
 		F9EDB79D2397AEF400CFB3C9 /* ComponentManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentManagerTests.swift; sourceTree = "<group>"; };
 		F9EDB79F2397BD8500CFB3C9 /* TestPaymentMethodsJson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPaymentMethodsJson.swift; sourceTree = "<group>"; };
 		F9FE13DF25CBF6870067B593 /* GenericVoucherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericVoucherViewModel.swift; sourceTree = "<group>"; };
-		F9FE13F325CC0E3C0067B593 /* DokuVoucherViewControllerProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuVoucherViewControllerProviderTests.swift; sourceTree = "<group>"; };
+		F9FE13F325CC0E3C0067B593 /* VoucherViewControllerProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherViewControllerProviderTests.swift; sourceTree = "<group>"; };
 		F9FE24552624BCEC001874BB /* GiftCardComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiftCardComponent.swift; sourceTree = "<group>"; };
 		F9FE24562624BCEC001874BB /* GiftCardDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiftCardDetails.swift; sourceTree = "<group>"; };
 		F9FE248326258F6E001874BB /* CancelOrderRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelOrderRequest.swift; sourceTree = "<group>"; };
@@ -3397,8 +3400,9 @@
 			isa = PBXGroup;
 			children = (
 				F9C5F0DC25CAB8FC005A6E54 /* VoucherComponentTests.swift */,
+				F97BC2B82668EAFD00F1D242 /* VoucherViewDelegateMock.swift */,
 				F9C5F0F025CAB917005A6E54 /* VoucherViewControllerProviderMock.swift */,
-				F9FE13F325CC0E3C0067B593 /* DokuVoucherViewControllerProviderTests.swift */,
+				F9FE13F325CC0E3C0067B593 /* VoucherViewControllerProviderTests.swift */,
 				F9B019432611E965001F23FC /* EContextATMVoucherViewControllerProviderTests.swift */,
 				F9B019592611ED94001F23FC /* EContextStoresVoucherViewControllerProviderTests.swift */,
 				5A988C332657D5290007F4C0 /* BoletoVoucherViewControllerProviderTests.swift */,
@@ -4558,8 +4562,9 @@
 				E773EA3A25221C4600119499 /* ThrottlerTests.swift in Sources */,
 				F9838CCC26315E6E00963483 /* PartialPaymentDelegateMock.swift in Sources */,
 				F96AE5052603814C009F82BD /* BasicPersonalInfoFormComponentTests.swift in Sources */,
-				F9FE13F425CC0E3C0067B593 /* DokuVoucherViewControllerProviderTests.swift in Sources */,
+				F9FE13F425CC0E3C0067B593 /* VoucherViewControllerProviderTests.swift in Sources */,
 				F9EDB78F23964FC000CFB3C9 /* StoredCardAlertManagerTests.swift in Sources */,
+				F97BC2CE2668EB4500F1D242 /* VoucherViewDelegateMock.swift in Sources */,
 				F9AC61C2243751A70062A00D /* ActionComponentDelegateMock.swift in Sources */,
 				E759E24C25CB3BB700B1F8DC /* DropInTests.swift in Sources */,
 				F957AA462552C3D20099AD73 /* ThreeDS2FingerprintSubmitterTests.swift in Sources */,
@@ -4871,6 +4876,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F97BC2D92668EB4800F1D242 /* VoucherViewDelegateMock.swift in Sources */,
 				F9615FB2252DDA4800FA8EDD /* AdyenSwiftUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
