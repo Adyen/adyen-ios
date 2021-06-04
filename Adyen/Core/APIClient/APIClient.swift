@@ -79,6 +79,9 @@ public final class APIClient: APIClientProtocol {
         if let body = urlRequest.httpBody {
             printAsJSON(body)
         }
+        
+        adyenPrint("---- Request base url (/\(request.path)) ----")
+        adyenPrint(apiContext.environment.baseURL)
 
         if let headers = urlRequest.allHTTPHeaderFields {
             adyenPrint("---- Request Headers (/\(request.path)) ----")
