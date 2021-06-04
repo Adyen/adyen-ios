@@ -11,13 +11,13 @@ import Foundation
 public final class UniqueAssetAPIClient<ResponseType: Response> {
 
     /// :nodoc:
-    public typealias CompletionHandler<T> = (Result<T, Error>) -> Void
+    public typealias CompletionHandler = (Result<ResponseType, Error>) -> Void
 
     /// :nodoc:
     private let apiClient: APIClientProtocol
 
     /// :nodoc:
-    private var waitingList: [(Result<ResponseType, Error>) -> Void] = []
+    private var waitingList: [CompletionHandler] = []
 
     /// :nodoc:
     private var cachedResponse: ResponseType?
@@ -32,12 +32,16 @@ public final class UniqueAssetAPIClient<ResponseType: Response> {
     }
 
     /// :nodoc:
-    public func perform<R>(_ request: R, completionHandler: @escaping CompletionHandler<R.ResponseType>) where R: Request, R.ResponseType == ResponseType {
-        waitingList.append(completionHandler)
+    public func perform<R>(
+        _ request: R,
+        completionHandler: @escaping CompletionHandler
+    ) where R: Request, R.ResponseType == ResponseType {
         if let cachedResponse = cachedResponse {
-            deliver(.success(cachedResponse))
+            completionHandler(.success(cachedResponse))
             return
         }
+        
+        waitingList.append(completionHandler)
 
         guard waitingList.count == 1 else { return }
         apiClient.perform(request) { [weak self] result in

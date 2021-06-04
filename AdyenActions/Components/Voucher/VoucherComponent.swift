@@ -42,7 +42,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, Cancellable {
         let scheduler = SimpleScheduler(maximumCount: 3)
         return APIClient(apiContext: apiContext)
             .retryAPIClient(with: scheduler)
-            .retryOnError()
+            .retryOnErrorAPIClient()
     }()
 
     /// :nodoc:

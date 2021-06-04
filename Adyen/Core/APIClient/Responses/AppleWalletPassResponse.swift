@@ -10,14 +10,25 @@ import Foundation
 public struct AppleWalletPassResponse: Response {
 
     /// :nodoc:
-    public let passBase64String: String
+    public let passData: Data
 
     /// :nodoc:
-    public lazy var passData: Data? = Data(base64Encoded: passBase64String)
-
-    /// :nodoc:
-    public init(passBase64String: String) {
-        self.passBase64String = passBase64String
+    public init(passBase64String: String) throws {
+        guard let passData = Data(base64Encoded: passBase64String) else {
+            throw AppleWalletError.failedToAddToAppleWallet
+        }
+        self.passData = passData
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let passBase64String = try container.decode(String.self, forKey: .passBase64String)
+        
+        guard let passData = Data(base64Encoded: passBase64String) else {
+            throw AppleWalletError.failedToAddToAppleWallet
+        }
+        
+        self.passData = passData
     }
 
     /// :nodoc:
