@@ -29,15 +29,16 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     public var localizationParameters: LocalizationParameters?
     
     /// :nodoc:
-    private var awaitActionHandler: AnyPollingHandlerProvider?
+    private let awaitComponentBuilder: AnyPollingHandlerProvider
     
     /// Initializes the `AwaitComponent`.
     ///
     /// - Parameter apiContext: The API context.
     /// - Parameter style: The Component UI style.
-    public init(apiContext: APIContext, style: AwaitComponentStyle?) {
-        self.apiContext = apiContext
-        self.style = style ?? AwaitComponentStyle()
+    public convenience init(apiContext: APIContext, style: AwaitComponentStyle?) {
+        self.init(apiContext: apiContext,
+                  awaitComponentBuilder: PollingHandlerProvider(apiContext: apiContext),
+                  style: style)
     }
     
     /// Initializes the `AwaitComponent`.
@@ -45,11 +46,12 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     /// - Parameter apiContext: The API context.
     /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter style: The Component UI style.
-    internal convenience init(apiContext: APIContext,
-                              awaitComponentBuilder: AnyPollingHandlerProvider?,
-                              style: AwaitComponentStyle?) {
-        self.init(apiContext: apiContext, style: style)
-        self.awaitActionHandler = awaitComponentBuilder
+    internal init(apiContext: APIContext,
+                  awaitComponentBuilder: AnyPollingHandlerProvider,
+                  style: AwaitComponentStyle?) {
+        self.apiContext = apiContext
+        self.style = style ?? AwaitComponentStyle()
+        self.awaitComponentBuilder = awaitComponentBuilder
     }
     
     /// :nodoc:
@@ -72,8 +74,6 @@ public final class AwaitComponent: ActionComponent, Cancellable {
             let message = "PresentationDelegate is nil. Provide a presentation delegate to AwaitComponent."
             AdyenAssertion.assertionFailure(message: message)
         }
-        
-        let awaitComponentBuilder = self.awaitActionHandler ?? PollingHandlerProvider(apiContext: apiContext, apiClient: nil)
         
         paymentMethodSpecificPollingComponent = awaitComponentBuilder.handler(for: action.paymentMethodType)
         paymentMethodSpecificPollingComponent?.delegate = delegate

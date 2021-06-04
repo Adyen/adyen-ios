@@ -38,6 +38,24 @@ public final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
     /// :nodoc:
     public var localizationParameters: LocalizationParameters?
     
+    /// :nodoc:
+    private let pollingComponentBuilder: AnyPollingHandlerProvider
+    
+    /// :nodoc:
+    private var pollingComponent: AnyPollingHandler?
+    
+    /// :nodoc:
+    private var timeoutTimer: ExpirationTimer?
+    
+    /// :nodoc
+    private let progress = Progress()
+    
+    /// :nodoc:
+    @Observable(nil) private var expirationText: String?
+    
+    /// :nodoc:
+    private let expirationTimeout: TimeInterval
+    
     /// Initializes the `QRCodeComponent`.
     ///
     /// - Parameter style: The component UI style.
@@ -45,7 +63,7 @@ public final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
         self.init(
             apiContext: apiContext,
             style: style ?? QRCodeComponentStyle(),
-            pollingComponentBuilder: nil,
+            pollingComponentBuilder: PollingHandlerProvider(apiContext: apiContext),
             timeoutInterval: 60 * 15
         )
     }
@@ -57,7 +75,7 @@ public final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
     /// - Parameter timeoutInterval: QR Code expiration timeout
     internal init(apiContext: APIContext,
                   style: QRCodeComponentStyle = QRCodeComponentStyle(),
-                  pollingComponentBuilder: AnyPollingHandlerProvider?,
+                  pollingComponentBuilder: AnyPollingHandlerProvider,
                   timeoutInterval: TimeInterval) {
         self.apiContext = apiContext
         self.style = style
@@ -72,9 +90,6 @@ public final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
     /// - Parameter action: The QR code action.
     public func handle(_ action: QRCodeAction) {
         self.action = action
-
-        let pollingComponentBuilder = self.pollingComponentBuilder ??
-            PollingHandlerProvider(apiContext: apiContext, apiClient: nil)
         
         let pollingComponent = pollingComponentBuilder.handler(for: action.paymentMethodType)
         pollingComponent.delegate = self
@@ -91,24 +106,6 @@ public final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
         
         pollingComponent.handle(action)
     }
-    
-    /// :nodoc:
-    private var pollingComponentBuilder: AnyPollingHandlerProvider?
-    
-    /// :nodoc:
-    private var pollingComponent: AnyPollingHandler?
-    
-    /// :nodoc:
-    private var timeoutTimer: ExpirationTimer?
-    
-    /// :nodoc
-    private let progress = Progress()
-    
-    /// :nodoc:
-    @Observable(nil) private var expirationText: String?
-    
-    /// :nodoc:
-    private let expirationTimeout: TimeInterval
     
     /// :nodoc
     private func startTimer() {
