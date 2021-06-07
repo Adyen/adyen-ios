@@ -76,10 +76,11 @@ public class CardComponent: CardPublicKeyConsumer,
     /// - Parameters:
     ///   - paymentMethod: The card payment method.
     ///   - apiContext: The API context.
+    ///   - configuration: The configuration of the component.
     ///   - style: The Component's UI style.
     public convenience init(paymentMethod: AnyCardPaymentMethod,
-                            configuration: Configuration,
                             apiContext: APIContext,
+                            configuration: Configuration = Configuration(),
                             style: FormComponentStyle = FormComponentStyle()) {
         self.init(paymentMethod: paymentMethod,
                   configuration: configuration,

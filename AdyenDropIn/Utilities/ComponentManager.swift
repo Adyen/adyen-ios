@@ -126,8 +126,8 @@ internal final class ComponentManager {
                                                         storedCardConfiguration: cardConfiguration.stored)
 
         return CardComponent(paymentMethod: paymentMethod,
-                             configuration: configuration,
                              apiContext: apiContext,
+                             configuration: configuration,
                              style: style.formComponent)
     }
     
