@@ -24,7 +24,7 @@ import UIKit
  */
 public final class DropInComponent: NSObject, PresentableComponent {
 
-    private var configuration: PaymentMethodsConfiguration
+    private var configuration: Configuration
 
     private var paymentInProgress: Bool = false
 
@@ -51,7 +51,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
     ///   - title: Name of the application. To be displayed on a firstpayment page.
     ///            If no external value provided, the Main Bundle's name would be used.
     public init(paymentMethods: PaymentMethods,
-                paymentMethodsConfiguration: PaymentMethodsConfiguration,
+                paymentMethodsConfiguration: Configuration,
                 style: Style = Style(),
                 title: String? = nil) {
         self.title = title ?? Bundle.main.displayName

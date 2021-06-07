@@ -97,7 +97,7 @@ class DropInTests: XCTestCase {
     }
 
     func testOpenDropInAsList() {
-        let config = DropInComponent.PaymentMethodsConfiguration(apiContext: Dummy.context)
+        let config = DropInComponent.Configuration(apiContext: Dummy.context)
         config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
@@ -120,7 +120,7 @@ class DropInTests: XCTestCase {
     }
 
     func testOpenDropInAsOneclickPayment() {
-        let config = DropInComponent.PaymentMethodsConfiguration(apiContext: Dummy.context)
+        let config = DropInComponent.Configuration(apiContext: Dummy.context)
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneclick.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymenMethods, paymentMethodsConfiguration: config)
@@ -139,7 +139,7 @@ class DropInTests: XCTestCase {
     }
 
     func testOpenApplePay() {
-        let config = DropInComponent.PaymentMethodsConfiguration(apiContext: Dummy.context)
+        let config = DropInComponent.Configuration(apiContext: Dummy.context)
         config.applePay = .init(summaryItems: [.init(label: "Item", amount: 100) ], merchantIdentifier: "")
         config.payment = .init(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
 

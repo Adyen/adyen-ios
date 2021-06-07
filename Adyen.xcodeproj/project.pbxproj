@@ -243,7 +243,7 @@
 		E9B36CBD2243DA1400EAA368 /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
 		E9B36CBF2243DA1400EAA368 /* AdyenCard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E05F220982AE008616F6 /* AdyenCard.framework */; };
 		E9B36CC522451C7100EAA368 /* ComponentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B36CC422451C7100EAA368 /* ComponentManager.swift */; };
-		E9B36CC722451C8300EAA368 /* PaymentMethodsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B36CC622451C8300EAA368 /* PaymentMethodsConfiguration.swift */; };
+		E9B36CC722451C8300EAA368 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B36CC622451C8300EAA368 /* Configuration.swift */; };
 		E9E3DAAF221D5C5E00697074 /* CardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAAE221D5C5E00697074 /* CardType.swift */; };
 		E9E3DAB2221D79C800697074 /* CardNumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAB1221D79C800697074 /* CardNumberFormatterTests.swift */; };
 		E9E3DAB3221D988200697074 /* CardComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAA5221C431A00697074 /* CardComponent.swift */; };
@@ -1122,7 +1122,7 @@
 		E9B36CAE2243B2FE00EAA368 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E9B36CB72243B38A00EAA368 /* DropInComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInComponent.swift; sourceTree = "<group>"; };
 		E9B36CC422451C7100EAA368 /* ComponentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentManager.swift; sourceTree = "<group>"; };
-		E9B36CC622451C8300EAA368 /* PaymentMethodsConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsConfiguration.swift; sourceTree = "<group>"; };
+		E9B36CC622451C8300EAA368 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		E9E3DAA5221C431A00697074 /* CardComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardComponent.swift; sourceTree = "<group>"; };
 		E9E3DAA7221C54BA00697074 /* CardNumberValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardNumberValidator.swift; sourceTree = "<group>"; };
 		E9E3DAA9221C54C600697074 /* CardNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardNumberFormatter.swift; sourceTree = "<group>"; };
@@ -2514,7 +2514,7 @@
 		E9B36CC122451C3000EAA368 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				E9B36CC622451C8300EAA368 /* PaymentMethodsConfiguration.swift */,
+				E9B36CC622451C8300EAA368 /* Configuration.swift */,
 				F96F44CE23BDEC0200871C1F /* DropInComponentStyle.swift */,
 			);
 			path = Models;
@@ -4640,7 +4640,7 @@
 				E9021DFC2260D626009CF7F4 /* ComponentSections.swift in Sources */,
 				E7484C2723B9FDF000CCF74F /* SlideInPresentationAnimator.swift in Sources */,
 				5A238C93263AEA0800758FEF /* PreApplePayView.swift in Sources */,
-				E9B36CC722451C8300EAA368 /* PaymentMethodsConfiguration.swift in Sources */,
+				E9B36CC722451C8300EAA368 /* Configuration.swift in Sources */,
 				E7620EA123BF3DC800A492C3 /* ModalViewController.swift in Sources */,
 				E7388D8523DB1F9A008E62B8 /* DimmingPresentationController.swift in Sources */,
 				E2D1784022D8763400B6883E /* PaymentMethodListComponent.swift in Sources */,
