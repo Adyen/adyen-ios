@@ -23,7 +23,7 @@ class DropInActionsTests: XCTestCase {
         config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
-        sut = DropInComponent(paymentMethods: paymenMethods, paymentMethodsConfiguration: config)
+        sut = DropInComponent(paymentMethods: paymenMethods, configuration: config)
 
         let waitExpectation = expectation(description: "Expect SafariViewController to open")
         let root = UIViewController()

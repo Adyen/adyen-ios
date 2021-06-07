@@ -46,16 +46,16 @@ public final class DropInComponent: NSObject, PresentableComponent {
     ///
     /// - Parameters:
     ///   - paymentMethods: The payment methods to display.
-    ///   - paymentMethodsConfiguration: The payment method specific configuration.
+    ///   - configuration: The payment method specific configuration.
     ///   - style: The UI styles of the components.
     ///   - title: Name of the application. To be displayed on a firstpayment page.
     ///            If no external value provided, the Main Bundle's name would be used.
     public init(paymentMethods: PaymentMethods,
-                paymentMethodsConfiguration: Configuration,
+                configuration: Configuration,
                 style: Style = Style(),
                 title: String? = nil) {
         self.title = title ?? Bundle.main.displayName
-        self.configuration = paymentMethodsConfiguration
+        self.configuration = configuration
         self.paymentMethods = paymentMethods
         self.style = style
         super.init()

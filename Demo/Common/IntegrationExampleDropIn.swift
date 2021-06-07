@@ -25,7 +25,7 @@ extension IntegrationExample {
 
         let dropInComponentStyle = DropInComponent.Style()
         let component = DropInComponent(paymentMethods: paymentMethods,
-                                        paymentMethodsConfiguration: configuration,
+                                        configuration: configuration,
                                         style: dropInComponentStyle,
                                         title: ConfigurationConstants.appName)
         component.delegate = self

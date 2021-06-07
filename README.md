@@ -108,17 +108,17 @@ The Drop-in requires the response of the `/paymentMethods` endpoint to be initia
 let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: response)
 ```
 
-Some payment methods need additional configuration. For example `ApplePayComponent`. These payment method specific configuration parameters can be set in an instance of `DropInComponent.PaymentmethodsConfiguration`:
+Some payment methods need additional configuration. For example `ApplePayComponent`. These payment method specific configuration parameters can be set in an instance of `DropInComponent.Configuration`:
 
 ```swift
-let configuration = DropInComponent.PaymentMethodsConfiguration()
+let configuration = DropInComponent.Configuration(apiContext: apiContext)
 configuration.applePay.summaryItems = "..." // Apple Pay summary items.
 configuration.applePay.merchantIdentifier = "..." // Apple Pay merchant identifier.
 ```
 All Payment Components needs a client key, please read more [here](https://docs.adyen.com/development-resources/client-side-authentication) about the client key and how to get it.
 
 ```swift
-let configuration = DropInComponent.PaymentMethodsConfiguration()
+let configuration = DropInComponent.Configuration(apiContext: apiContext)
 configuration.clientKey = "..." // Your client key, retrieved from the Customer Area.
 ```
 
@@ -127,8 +127,7 @@ Also for voucher payment methods like Doku variants, in order for the `DokuCompo
 After serializing the payment methods and creating the configuration, the Drop-in is ready to be initialized. Assign a `delegate` and use the `viewController` property to present the Drop-in on the screen:
 
 ```swift
-let dropInComponent = DropInComponent(paymentMethods: paymentMethods,
-paymentMethodsConfiguration: configuration)
+let dropInComponent = DropInComponent(paymentMethods: paymentMethods, configuration: configuration)
 dropInComponent.delegate = self
 present(dropInComponent.viewController, animated: true)
 ```
@@ -140,7 +139,7 @@ To handle the results of the Drop-in, the following methods of `DropInComponentD
 ---
 
 ```swift
-func didSubmit(_ data: PaymentComponentData, from component: DropInComponent)
+func didSubmit(_ data: PaymentComponentData, for paymentMethod: PaymentMethod, from component: DropInComponent)
 ```
 
 This method is invoked when the customer has selected a payment method and entered its payment details. The payment details can be read from `data.paymentMethod` and can be submitted as-is to `/payments`.
@@ -164,7 +163,7 @@ This method is invoked when an error occurred during the use of the Drop-in. Dis
 ---
 
 ```swift
-func didCancel(component: PresentableComponent, from dropInComponent: DropInComponent)
+func didCancel(component: PaymentComponent, from dropInComponent: DropInComponent)
 ```
 
 This method is invoked when user closes a payment component managed by Drop-in.
@@ -233,7 +232,7 @@ style.formComponent.textField.title.color = .red
 style.formComponent.footer.button.backgroundColor = .purple
 
 let dropInComponent = DropInComponent(paymentMethods: paymentMethods,
-                                      paymentMethodsConfiguration: configuration,
+                                      configuration: configuration,
                                       style: style)
 ```
 
