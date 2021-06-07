@@ -97,11 +97,11 @@ class DropInTests: XCTestCase {
     }
 
     func testOpenDropInAsList() {
-        let config = DropInComponent.PaymentMethodsConfiguration(apiContext: Dummy.context)
+        let config = DropInComponent.Configuration(apiContext: Dummy.context)
         config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
-        sut = DropInComponent(paymentMethods: paymenMethods, paymentMethodsConfiguration: config)
+        sut = DropInComponent(paymentMethods: paymenMethods, configuration: config)
 
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root
@@ -120,10 +120,10 @@ class DropInTests: XCTestCase {
     }
 
     func testOpenDropInAsOneclickPayment() {
-        let config = DropInComponent.PaymentMethodsConfiguration(apiContext: Dummy.context)
+        let config = DropInComponent.Configuration(apiContext: Dummy.context)
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneclick.data(using: .utf8)!)
-        sut = DropInComponent(paymentMethods: paymenMethods, paymentMethodsConfiguration: config)
+        sut = DropInComponent(paymentMethods: paymenMethods, configuration: config)
 
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root
@@ -139,12 +139,12 @@ class DropInTests: XCTestCase {
     }
 
     func testOpenApplePay() {
-        let config = DropInComponent.PaymentMethodsConfiguration(apiContext: Dummy.context)
+        let config = DropInComponent.Configuration(apiContext: Dummy.context)
         config.applePay = .init(summaryItems: [.init(label: "Item", amount: 100) ], merchantIdentifier: "")
         config.payment = .init(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
-        sut = DropInComponent(paymentMethods: paymenMethods, paymentMethodsConfiguration: config)
+        sut = DropInComponent(paymentMethods: paymenMethods, configuration: config)
 
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root
@@ -160,6 +160,40 @@ class DropInTests: XCTestCase {
                 XCTAssertEqual(topVC?.title, "Apple Pay")
                 waitExpectation.fulfill()
             }
+        }
+
+        waitForExpectations(timeout: 15, handler: nil)
+    }
+
+    func testGiftCard() {
+        let config = DropInComponent.Configuration(apiContext: Dummy.context)
+        config.payment = Payment(amount: Amount(value: 10000, currencyCode: "CNY"), countryCode: "CN")
+
+        var paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
+        paymentMethods.paid = [
+            OrderPaymentMethod(lastFour: "1234",
+                               type: "type-1",
+                               transactionLimit: Amount(value: 2000, currencyCode: "CNY"),
+                               amount: Amount(value: 2000, currencyCode: "CNY")),
+            OrderPaymentMethod(lastFour: "1234",
+                               type: "type-2",
+                               transactionLimit: Amount(value: 3000, currencyCode: "CNY"),
+                               amount: Amount(value: 3000, currencyCode: "CNY"))
+        ]
+        sut = DropInComponent(paymentMethods: paymentMethods, configuration: config)
+
+        let root = UIViewController()
+        UIApplication.shared.keyWindow?.rootViewController = root
+        root.present(sut.viewController, animated: true, completion: nil)
+
+        let waitExpectation = expectation(description: "Expect DropIn to open")
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
+            let topVC = self.sut.viewController.findChild(of: ListViewController.self)
+            XCTAssertNotNil(topVC)
+            XCTAssertEqual(topVC!.sections.count, 2)
+            XCTAssertEqual(topVC!.sections[0].items.count, 2)
+            XCTAssertTrue(topVC!.sections[0].footer!.title.contains("Select payment method for the remaining amount"))
+            waitExpectation.fulfill()
         }
 
         waitForExpectations(timeout: 15, handler: nil)

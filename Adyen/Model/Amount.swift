@@ -69,22 +69,31 @@ extension Amount: Comparable {
 
     /// :nodoc:
     public static func < (lhs: Amount, rhs: Amount) -> Bool {
-        lhs.value < rhs.value
+        assert(lhs.currencyCode == rhs.currencyCode, "Currencies should match to compate")
+        return lhs.value < rhs.value
     }
 
     /// :nodoc:
     public static func <= (lhs: Amount, rhs: Amount) -> Bool {
-        lhs.value <= rhs.value
+        assert(lhs.currencyCode == rhs.currencyCode, "Currencies should match to compate")
+        return lhs.value <= rhs.value
     }
 
     /// :nodoc:
     public static func >= (lhs: Amount, rhs: Amount) -> Bool {
-        lhs.value >= rhs.value
+        assert(lhs.currencyCode == rhs.currencyCode, "Currencies should match to compate")
+        return lhs.value >= rhs.value
     }
 
     /// :nodoc:
     public static func > (lhs: Amount, rhs: Amount) -> Bool {
-        lhs.value > rhs.value
+        assert(lhs.currencyCode == rhs.currencyCode, "Currencies should match to compate")
+        return lhs.value > rhs.value
+    }
+
+    internal static func - (lhs: Amount, rhs: Amount) -> Amount {
+        assert(lhs.currencyCode == rhs.currencyCode, "Currencies should match to substract")
+        return Amount(value: lhs.value - rhs.value, currencyCode: lhs.currencyCode)
     }
 
 }

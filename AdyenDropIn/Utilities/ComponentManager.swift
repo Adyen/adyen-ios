@@ -30,7 +30,7 @@ internal final class ComponentManager {
     internal let apiContext: APIContext
     
     internal init(paymentMethods: PaymentMethods,
-                  configuration: DropInComponent.PaymentMethodsConfiguration,
+                  configuration: DropInComponent.Configuration,
                   style: DropInComponent.Style,
                   partialPaymentEnabled: Bool = true,
                   remainingAmount: Amount? = nil,
@@ -115,7 +115,7 @@ internal final class ComponentManager {
     // MARK: - Private
     
     private let paymentMethods: PaymentMethods
-    private let configuration: DropInComponent.PaymentMethodsConfiguration
+    private let configuration: DropInComponent.Configuration
     
     private func createCardComponent(with paymentMethod: AnyCardPaymentMethod) -> PaymentComponent? {
         let cardConfiguration = configuration.card

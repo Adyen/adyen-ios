@@ -14,7 +14,7 @@ import PassKit
 public extension DropInComponent {
     
     /// Contains the configuration for the drop in component and the embedded payment method components.
-    final class PaymentMethodsConfiguration: APIContextAware {
+    final class Configuration: APIContextAware {
         
         /// Card component related configuration.
         public var card = CardConfiguration()
