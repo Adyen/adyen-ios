@@ -69,27 +69,30 @@ extension Amount: Comparable {
 
     /// :nodoc:
     public static func < (lhs: Amount, rhs: Amount) -> Bool {
-        lhs.value < rhs.value
+        assert(lhs.currencyCode == rhs.currencyCode, "Currencies should match to compate")
+        return lhs.value < rhs.value
     }
 
     /// :nodoc:
     public static func <= (lhs: Amount, rhs: Amount) -> Bool {
-        lhs.value <= rhs.value
+        assert(lhs.currencyCode == rhs.currencyCode, "Currencies should match to compate")
+        return lhs.value <= rhs.value
     }
 
     /// :nodoc:
     public static func >= (lhs: Amount, rhs: Amount) -> Bool {
-        lhs.value >= rhs.value
+        assert(lhs.currencyCode == rhs.currencyCode, "Currencies should match to compate")
+        return lhs.value >= rhs.value
     }
 
     /// :nodoc:
     public static func > (lhs: Amount, rhs: Amount) -> Bool {
-        lhs.value > rhs.value
+        assert(lhs.currencyCode == rhs.currencyCode, "Currencies should match to compate")
+        return lhs.value > rhs.value
     }
 
-    public static func - (lhs: Amount, rhs: Amount) -> Amount {
-        AdyenAssertion.assert(message: "Currency should match to compare",
-                              condition: lhs.currencyCode != rhs.currencyCode)
+    internal static func - (lhs: Amount, rhs: Amount) -> Amount {
+        assert(lhs.currencyCode == rhs.currencyCode, "Currencies should match to substract")
         return Amount(value: lhs.value - rhs.value, currencyCode: lhs.currencyCode)
     }
 
