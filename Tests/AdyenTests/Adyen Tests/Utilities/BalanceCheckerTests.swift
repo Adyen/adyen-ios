@@ -86,7 +86,7 @@ class BalanceCheckerTests: XCTestCase {
         let result6 = try! sut.check(balance: balance6, isEnoughToPay: amount6)
         XCTAssertEqual(result6.amountToPay, balance6.transactionLimit)
         XCTAssertFalse(result6.isBalanceEnough)
-        XCTAssertEqual(result6.remainingBalanceAmount, balance6.availableAmount - balance6.transactionLimit)
+        XCTAssertEqual(result6.remainingBalanceAmount, balance6.availableAmount - balance6.transactionLimit!)
 
 
         // transaction limit < balance < amount
@@ -99,7 +99,7 @@ class BalanceCheckerTests: XCTestCase {
         let result7 = try! sut.check(balance: balance7, isEnoughToPay: amount7)
         XCTAssertEqual(result7.amountToPay, balance7.transactionLimit)
         XCTAssertFalse(result7.isBalanceEnough)
-        XCTAssertEqual(result7.remainingBalanceAmount, balance7.availableAmount - balance7.transactionLimit)
+        XCTAssertEqual(result7.remainingBalanceAmount, balance7.availableAmount - balance7.transactionLimit!)
 
         // balance < transaction limit < amount
         // return false
@@ -171,11 +171,4 @@ class BalanceCheckerTests: XCTestCase {
         })
     }
 
-}
-
-/// :nodoc:
-fileprivate func - (lhs: Amount?, rhs: Amount?) -> Amount {
-    let lhs = lhs ?? .init(value: 0, currencyCode: "EUR")
-    let rhs = rhs ?? .init(value: 0, currencyCode: "EUR")
-    return Amount(value: lhs.value - rhs.value, currencyCode: lhs.currencyCode)
 }

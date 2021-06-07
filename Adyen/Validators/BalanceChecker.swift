@@ -100,8 +100,3 @@ public struct BalanceChecker {
         return result
     }
 }
-
-/// :nodoc:
-internal func - (lhs: Amount, rhs: Amount) -> Amount {
-    Amount(value: lhs.value - rhs.value, currencyCode: lhs.currencyCode)
-}

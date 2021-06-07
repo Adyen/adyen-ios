@@ -87,4 +87,10 @@ extension Amount: Comparable {
         lhs.value > rhs.value
     }
 
+    public static func - (lhs: Amount, rhs: Amount) -> Amount {
+        AdyenAssertion.assert(message: "Currency should match to compare",
+                              condition: lhs.currencyCode != rhs.currencyCode)
+        return Amount(value: lhs.value - rhs.value, currencyCode: lhs.currencyCode)
+    }
+
 }
