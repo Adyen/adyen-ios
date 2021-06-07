@@ -118,17 +118,10 @@ internal final class ComponentManager {
     private let configuration: DropInComponent.Configuration
     
     private func createCardComponent(with paymentMethod: AnyCardPaymentMethod) -> PaymentComponent? {
-        let cardConfiguration = configuration.card
-        let configuration = CardComponent.Configuration(showsHolderNameField: cardConfiguration.showsHolderNameField,
-                                                        showsStorePaymentMethodField: cardConfiguration.showsStorePaymentMethodField,
-                                                        showsSecurityCodeField: cardConfiguration.showsSecurityCodeField,
-                                                        billingAddressMode: cardConfiguration.billingAddress,
-                                                        storedCardConfiguration: cardConfiguration.stored)
-
-        return CardComponent(paymentMethod: paymentMethod,
-                             apiContext: apiContext,
-                             configuration: configuration,
-                             style: style.formComponent)
+        CardComponent(paymentMethod: paymentMethod,
+                      apiContext: apiContext,
+                      configuration: configuration.card,
+                      style: style.formComponent)
     }
     
     private func createBancontactComponent(with paymentMethod: BCMCPaymentMethod) -> PaymentComponent? {
