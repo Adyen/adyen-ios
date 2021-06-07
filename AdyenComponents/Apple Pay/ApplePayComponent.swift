@@ -10,14 +10,16 @@ import PassKit
 
 /// A component that handles Apple Pay payments.
 public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent, Localizable, FinalizableComponent {
-    
+
+    private let request: PKPaymentRequest
+
+    internal let applePayPaymentMethod: ApplePayPaymentMethod
+
     /// :nodoc:
     public let apiContext: APIContext
 
     /// The Apple Pay payment method.
-    public var paymentMethod: PaymentMethod {
-        configuration.paymentMethod
-    }
+    public var paymentMethod: PaymentMethod { applePayPaymentMethod }
 
     /// Apple Pay component configuration.
     internal let configuration: Configuration
@@ -39,18 +41,21 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// - Throws: `ApplePayComponent.Error.invalidSummaryItem` if at least one of the summary items has an invalid amount.
     /// - Throws: `ApplePayComponent.Error.invalidCountryCode` if the `payment.countryCode` is not a valid ISO country code.
     /// - Throws: `ApplePayComponent.Error.invalidCurrencyCode` if the `Amount.currencyCode` is not a valid ISO currency code.
-    public init(configuration: Configuration,
-                apiContext: APIContext) throws {
+    public init(paymentMethod: ApplePayPaymentMethod,
+                apiContext: APIContext,
+                payment: Payment,
+                configuration: Configuration) throws {
         guard PKPaymentAuthorizationViewController.canMakePayments() else {
             throw Error.deviceDoesNotSupportApplyPay
         }
-        guard PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: configuration.supportedNetworks) else {
+        let supportedNetworks = Self.supportedNetworks(for: paymentMethod)
+        guard PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: supportedNetworks) else {
             throw Error.userCannotMakePayment
         }
-        guard CountryCodeValidator().isValid(configuration.payment.countryCode) else {
+        guard CountryCodeValidator().isValid(payment.countryCode) else {
             throw Error.invalidCountryCode
         }
-        guard CurrencyCodeValidator().isValid(configuration.payment.amount.currencyCode) else {
+        guard CurrencyCodeValidator().isValid(payment.amount.currencyCode) else {
             throw Error.invalidCurrencyCode
         }
         guard configuration.summaryItems.count > 0 else {
@@ -62,7 +67,10 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         guard configuration.summaryItems.filter({ $0.amount.isEqual(to: NSDecimalNumber.notANumber) }).count == 0 else {
             throw Error.invalidSummaryItem
         }
-        let request: PKPaymentRequest = configuration.createPaymentRequest()
+
+        self.request = Self.createPaymentRequest(payment: payment,
+                                                 supportedNetworks: supportedNetworks,
+                                                 config: configuration)
         guard let paymentAuthorizationViewController = ApplePayComponent.createPaymentAuthorizationViewController(from: request) else {
             throw UnknownError(
                 errorDescription: "Failed to instantiate PKPaymentAuthorizationViewController because of unknown error"
@@ -72,6 +80,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         self.configuration = configuration
         self.apiContext = apiContext
         self.paymentAuthorizationViewController = paymentAuthorizationViewController
+        self.applePayPaymentMethod = paymentMethod
         super.init()
 
         paymentAuthorizationViewController.delegate = self
@@ -105,7 +114,6 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     
     private func getPaymentAuthorizationViewController() -> PKPaymentAuthorizationViewController {
         if paymentAuthorizationViewController == nil {
-            let request = configuration.createPaymentRequest()
             paymentAuthorizationViewController = ApplePayComponent.createPaymentAuthorizationViewController(from: request)
             paymentAuthorizationViewController?.delegate = self
             paymentAuthorizationCompletion = nil

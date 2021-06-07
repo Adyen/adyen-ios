@@ -47,11 +47,12 @@ extension IntegrationExample {
 
     internal func presentApplePayComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: ApplePayPaymentMethod.self) else { return }
-        let config = ApplePayComponent.Configuration(payment: payment,
-                                                     paymentMethod: paymentMethod,
-                                                     summaryItems: ConfigurationConstants.applePaySummaryItems,
+        let config = ApplePayComponent.Configuration(summaryItems: ConfigurationConstants.applePaySummaryItems,
                                                      merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
-        let component = try? ApplePayComponent(configuration: config, apiContext: apiContext)
+        let component = try? ApplePayComponent(paymentMethod: paymentMethod,
+                                               apiContext: apiContext,
+                                               payment: payment,
+                                               configuration: config)
         guard let presentableComponent = component else { return }
         present(presentableComponent)
     }

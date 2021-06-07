@@ -12,32 +12,23 @@ import UIKit
 
 // :nodoc:
 internal final class PreApplePayComponent: Localizable, PresentableComponent, FinalizableComponent, PaymentComponent {
-    
-    /// :nodoc:
-    internal let apiContext: APIContext
-    
-    /// :nodoc:
+
     internal let paymentMethod: PaymentMethod
-    
-    /// :nodoc:
+
+    internal let apiContext: APIContext
+
     private var payment: Payment? { _payment }
     
-    /// :nodoc:
     private let _payment: Payment
     
-    /// :nodoc:
     internal weak var delegate: PaymentComponentDelegate?
     
-    /// :nodoc:
     internal var localizationParameters: LocalizationParameters?
     
-    /// :nodoc:
     internal weak var presentationDelegate: PresentationDelegate?
     
-    /// :nodoc:
     fileprivate let applePayComponent: ApplePayComponent
     
-    /// :nodoc:
     internal lazy var viewController: UIViewController = {
         let view = PreApplePayView(model: createModel(with: _payment.amount))
         let viewController = ADYViewController(view: view, title: "Apple Pay")
@@ -46,26 +37,27 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
         return viewController
     }()
     
-    /// :nodoc:
     internal let requiresModalPresentation: Bool = true
     
-    /// :nodoc:
-    internal init(apiContext: APIContext,
+    internal init(paymentMethod: ApplePayPaymentMethod,
+                  apiContext: APIContext,
+                  payment: Payment,
                   configuration: ApplePayComponent.Configuration) throws {
         self.apiContext = apiContext
-        self._payment = configuration.payment
-        self.paymentMethod = configuration.paymentMethod
-        
-        self.applePayComponent = try ApplePayComponent(configuration: configuration, apiContext: apiContext)
+        self._payment = payment
+        self.paymentMethod = paymentMethod
+
+        self.applePayComponent = try ApplePayComponent(paymentMethod: paymentMethod,
+                                                       apiContext: apiContext,
+                                                       payment: payment,
+                                                       configuration: configuration)
         self.applePayComponent.delegate = self
     }
     
-    /// :nodoc
     internal func didFinalize(with success: Bool) {
         applePayComponent.didFinalize(with: success)
     }
     
-    /// :nodoc:
     private func createModel(with amount: Amount) -> PreApplePayView.Model {
         PreApplePayView.Model(
             hint: amount.formatted,
