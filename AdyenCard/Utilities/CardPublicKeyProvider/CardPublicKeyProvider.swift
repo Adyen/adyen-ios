@@ -32,6 +32,10 @@ internal final class CardPublicKeyProvider: AnyCardPublicKeyProvider {
         self.apiContext = apiContext
         if let apiClient = apiClient {
             self.retryApiClient = apiClient
+        } else {
+            let scheduler = SimpleScheduler(maximumCount: 2)
+            self.retryApiClient = APIClient(apiContext: apiContext)
+                .retryAPIClient(with: scheduler)
         }
     }
     
@@ -49,6 +53,17 @@ internal final class CardPublicKeyProvider: AnyCardPublicKeyProvider {
         })
     }
     
+    // MARK: - Private
+    
+    /// :nodoc:
+    private lazy var apiClient: UniqueAssetAPIClient<ClientKeyResponse> = {
+        let retryOnErrorApiClient = retryApiClient.retryOnErrorAPIClient()
+        return UniqueAssetAPIClient<ClientKeyResponse>(apiClient: retryApiClient)
+    }()
+
+    /// :nodoc:
+    private let retryApiClient: AnyRetryAPIClient
+    
     /// :nodoc:
     private func handle(_ result: Result<ClientKeyResponse, Swift.Error>, completion: @escaping CompletionHandler) {
         switch result {
@@ -59,15 +74,4 @@ internal final class CardPublicKeyProvider: AnyCardPublicKeyProvider {
             completion(.failure(error))
         }
     }
-
-    /// :nodoc:
-    private lazy var apiClient: UniqueAssetAPIClient<ClientKeyResponse> = {
-        let retryOnErrorApiClient = retryApiClient.retryOnErrorAPIClient()
-        return UniqueAssetAPIClient<ClientKeyResponse>(apiClient: retryApiClient)
-    }()
-
-    private lazy var retryApiClient: AnyRetryAPIClient = {
-        RetryAPIClient(apiClient: APIClient(apiContext: apiContext),
-                       scheduler: SimpleScheduler(maximumCount: 2))
-    }()
 }
