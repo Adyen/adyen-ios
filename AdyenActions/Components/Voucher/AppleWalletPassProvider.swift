@@ -7,18 +7,25 @@
 import Adyen
 import Foundation
 
+/// :nodoc:
 internal protocol AnyAppleWalletPassProvider {
+    /// :nodoc:
     typealias CompletionHandler = (Result<Data, Error>) -> Void
 
+    /// :nodoc:
     func provide(with passToken: String, completion: @escaping CompletionHandler)
 }
 
+/// :nodoc:
 internal final class AppleWalletPassProvider: AnyAppleWalletPassProvider,
     APIContextAware {
+    
+    /// :nodoc:
     internal let apiContext: APIContext
     
-    internal init(apiContext: APIContext) {
-        self.apiContext = apiContext
+    /// :nodoc:
+    internal convenience init(apiContext: APIContext) {
+        self.init(apiContext: apiContext, apiClient: nil)
     }
     
     /// :nodoc:
@@ -26,25 +33,33 @@ internal final class AppleWalletPassProvider: AnyAppleWalletPassProvider,
         self.apiContext = apiContext
         if let apiClient = apiClient {
             self.retryApiClient = apiClient
+        } else {
+            let scheduler = SimpleScheduler(maximumCount: 2)
+            self.retryApiClient = APIClient(apiContext: apiContext)
+                .retryAPIClient(with: scheduler)
         }
     }
 
-    private lazy var apiClient: UniqueAssetAPIClient<AppleWalletPassResponse> = {
-        UniqueAssetAPIClient<AppleWalletPassResponse>(apiClient: retryApiClient.retryOnErrorAPIClient())
-    }()
-
-    private lazy var retryApiClient: AnyRetryAPIClient = {
-        let scheduler = SimpleScheduler(maximumCount: 2)
-        return APIClient(apiContext: apiContext).retryAPIClient(with: scheduler)
-    }()
-
+    /// :nodoc:
     internal func provide(with passToken: String, completion: @escaping CompletionHandler) {
         let request = AppleWalletPassRequest(passToken: passToken)
         apiClient.perform(request) { [weak self] result in
             self?.handle(result, completion: completion)
         }
     }
+    
+    // MARK: - Private
+    
+    /// :nodoc:
+    private lazy var apiClient: UniqueAssetAPIClient<AppleWalletPassResponse> = {
+        let retryOnErrorApiClient = retryApiClient.retryOnErrorAPIClient()
+        return UniqueAssetAPIClient<AppleWalletPassResponse>(apiClient: retryOnErrorApiClient)
+    }()
 
+    /// :nodoc:
+    private let retryApiClient: AnyRetryAPIClient
+
+    /// :nodoc:
     private func handle(_ result: Result<AppleWalletPassResponse, Swift.Error>,
                         completion: @escaping CompletionHandler) {
         switch result {
