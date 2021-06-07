@@ -115,6 +115,8 @@ public struct LocalizationKey {
     public static let giftcardCurrencyError = LocalizationKey(key: "adyen.giftcard.currencyError")
     public static let giftcardNoBalance = LocalizationKey(key: "adyen.giftcard.noBalance")
     public static let partialPaymentRemainingBalance = LocalizationKey(key: "adyen.partialPayment.remainingBalance")
+    public static let partialPaymentPayRemainingAmount = LocalizationKey(key: "adyen.partialPayment.payRemainingAmount")
+    public static let amount = LocalizationKey(key: "adyen.amount")
     
     internal let key: String
     

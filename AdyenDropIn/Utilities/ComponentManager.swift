@@ -49,8 +49,11 @@ internal final class ComponentManager {
     internal lazy var sections: [ComponentsSection] = {
 
         // Paid section
-        let amountString: String = remainingAmount.map(\.formatted) ?? "Amount"
-        let footerTitle = "Select payment method for the remaining " + amountString
+        let amountString: String = remainingAmount.map(\.formatted) ??
+            localizedString(.amount, configuration.localizationParameters)
+        let footerTitle = localizedString(.partialPaymentPayRemainingAmount,
+                                          configuration.localizationParameters,
+                                          amountString)
         let paidFooter = ListSectionFooter(title: footerTitle,
                                            style: style.listComponent.partialPaymentSectionFooter)
         let paidSection = ComponentsSection(header: nil,
