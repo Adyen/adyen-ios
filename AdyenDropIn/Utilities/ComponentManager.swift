@@ -148,17 +148,11 @@ internal final class ComponentManager {
             return nil
         }
         
-        let configuration = ApplePayComponent.Configuration(
-            payment: payment,
-            paymentMethod: paymentMethod,
-            summaryItems: applePay.summaryItems,
-            merchantIdentifier: applePay.merchantIdentifier,
-            requiredBillingContactFields: applePay.requiredBillingContactFields,
-            requiredShippingContactFields: applePay.requiredShippingContactFields
-        )
-        
         do {
-            return try PreApplePayComponent(apiContext: apiContext, configuration: configuration)
+            return try PreApplePayComponent(paymentMethod: paymentMethod,
+                                            apiContext: apiContext,
+                                            payment: payment,
+                                            configuration: applePay)
         } catch {
             adyenPrint("Failed to instantiate ApplePayComponent because of error: \(error.localizedDescription)")
             return nil
