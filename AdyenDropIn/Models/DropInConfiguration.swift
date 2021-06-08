@@ -17,7 +17,7 @@ public extension DropInComponent {
     final class Configuration: APIContextAware {
         
         /// Card component related configuration.
-        public var card = CardConfiguration()
+        public var card = CardComponent.Configuration()
         
         /// The Apple Pay configuration.
         public var applePay: ApplePayConfiguration?
@@ -40,27 +40,6 @@ public extension DropInComponent {
         public init(apiContext: APIContext) {
             self.apiContext = apiContext
         }
-    }
-
-    /// Card component related configuration.
-    final class CardConfiguration {
-
-        /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
-        public var showsHolderNameField = false
-
-        /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
-        public var showsStorePaymentMethodField = true
-
-        /// Indicates whether to show the security code field in the form.
-        public var showsSecurityCodeField = true
-
-        /// Indicates the display mode of the billing address form.
-        /// Defaults to none.
-        public var billingAddress: CardComponent.AddressFormType = .none
-
-        /// Stored card configuration.
-        public var stored = StoredCardConfiguration()
-
     }
 
     /// Apple Pay component configuration.
