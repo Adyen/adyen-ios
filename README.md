@@ -108,18 +108,21 @@ The Drop-in requires the response of the `/paymentMethods` endpoint to be initia
 let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: response)
 ```
 
+All Components need an `APIContext`. An instance of `APIContext` wraps your client key and an environment.
+Please read more [here](https://docs.adyen.com/development-resources/client-side-authentication) about the client key and how to get.
+Use **Environment.test** for environment. When you're ready to accept live payments, change the value to one of our [live environments](https://adyen.github.io/adyen-ios/Docs/Structs/Environment.html)
+
+```swift
+let apiContext = APIContext(clientKey: clientKey, environment: Environment.test)
+let configuration = DropInComponent.Configuration(apiContext: apiContext)
+```
+
 Some payment methods need additional configuration. For example `ApplePayComponent`. These payment method specific configuration parameters can be set in an instance of `DropInComponent.Configuration`:
 
 ```swift
 let configuration = DropInComponent.Configuration(apiContext: apiContext)
 configuration.applePay.summaryItems = "..." // Apple Pay summary items.
 configuration.applePay.merchantIdentifier = "..." // Apple Pay merchant identifier.
-```
-All Payment Components needs a client key, please read more [here](https://docs.adyen.com/development-resources/client-side-authentication) about the client key and how to get it.
-
-```swift
-let configuration = DropInComponent.Configuration(apiContext: apiContext)
-configuration.clientKey = "..." // Your client key, retrieved from the Customer Area.
 ```
 
 Also for voucher payment methods like Doku variants, in order for the `DokuComponent` to enable the shopper to save the voucher, access to the shopper photos is requested, so a suitable text need to be added to key  `NSPhotoLibraryAddUsageDescription` in the application Info.plist.
@@ -246,7 +249,7 @@ style.textField.text.color = .white
 style.switch.title.color = .white
 
 let component = CardComponent(paymentMethod: paymentMethod,
-                              publicKey: Configuration.cardPublicKey,
+                              apiContext: apiContext,
                               style: style)
 ```
 
