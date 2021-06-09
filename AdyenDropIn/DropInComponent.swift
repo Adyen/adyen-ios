@@ -290,6 +290,7 @@ extension DropInComponent: ActionComponentDelegate {
     /// :nodoc:
     public func didOpenExternalApplication(_ component: ActionComponent) {
         stopLoading()
+        delegate?.didOpenExternalApplication(self)
     }
 
     /// :nodoc:
