@@ -8,6 +8,9 @@ import Adyen
 #if canImport(AdyenCard)
     import AdyenCard
 #endif
+#if canImport(AdyenComponents)
+    import AdyenComponents
+#endif
 import Foundation
 import PassKit
 
@@ -20,7 +23,7 @@ public extension DropInComponent {
         public var card = CardComponent.Configuration()
         
         /// The Apple Pay configuration.
-        public var applePay: ApplePayConfiguration?
+        public var applePay: ApplePayComponent.Configuration?
         
         /// Shopper related information
         public var shopper: PrefilledShopperInformation?
