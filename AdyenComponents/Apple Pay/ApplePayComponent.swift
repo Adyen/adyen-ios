@@ -34,6 +34,9 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// Initializes the component.
     /// - Warning: didFinalize() must be called before dismissing this component.
     ///
+    /// - Parameter paymentMethod: The Apple Pay payment method. Must include country code.
+    /// - Parameter apiContext: The API environment and credentials.
+    /// - Parameter payment: The describes the current payment.
     /// - Parameter configuration: Apple Pay component configuration
     /// - Throws: `ApplePayComponent.Error.userCannotMakePayment`.
     /// if user can't make payments on any of the payment request’s supported networks.

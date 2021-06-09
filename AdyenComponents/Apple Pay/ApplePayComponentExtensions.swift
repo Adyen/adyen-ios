@@ -66,7 +66,6 @@ extension ApplePayComponent {
 
         /// Initializes the configuration.
         ///
-        /// - Parameter paymentMethod: The Apple Pay payment method. Must include country code.
         /// - Parameter summaryItems: The line items for this payment.
         /// - Parameter merchantIdentifier: The merchant identifier.
         /// - Parameter requiredBillingContactFields:
@@ -74,14 +73,17 @@ extension ApplePayComponent {
         /// - Parameter requiredShippingContactFields:
         /// A list of fields that you need for a shipping contact in order to process the transaction. Ignored on iOS 10.*.
         /// - Parameter requiredShippingContactFields: The excluded card brands.
+        /// - Parameter billingContact: A prepopulated billing address.
         public init(summaryItems: [PKPaymentSummaryItem],
                     merchantIdentifier: String,
                     requiredBillingContactFields: Set<PKContactField> = [],
-                    requiredShippingContactFields: Set<PKContactField> = []) {
+                    requiredShippingContactFields: Set<PKContactField> = [],
+                    billingContact: PKContact? = nil) {
             self.summaryItems = summaryItems
             self.merchantIdentifier = merchantIdentifier
             self.requiredBillingContactFields = requiredBillingContactFields
             self.requiredShippingContactFields = requiredShippingContactFields
+            self.billingContact = billingContact
         }
 
         internal func createPaymentRequest(payment: Payment,
@@ -98,19 +100,6 @@ extension ApplePayComponent {
             paymentRequest.billingContact = billingContact
             return paymentRequest
         }
-    }
-
-}
-
-extension ApplePayPaymentMethod {
-
-    internal var supportedNetworks: [PKPaymentNetwork] {
-        var networks = ApplePayPaymentMethod.defaultNetworks
-        if let brands = brands {
-            let brandsSet = Set(brands)
-            networks = networks.filter { brandsSet.contains($0.adyenName) }
-        }
-        return networks
     }
 
     // Adyen supports: interac, visa, mc, electron, maestro, amex, jcb, discover, elodebit, elo.
@@ -131,6 +120,19 @@ extension ApplePayPaymentMethod {
             networks.append(.electron)
         }
 
+        return networks
+    }
+
+}
+
+extension ApplePayPaymentMethod {
+
+    internal var supportedNetworks: [PKPaymentNetwork] {
+        var networks = ApplePayComponent.defaultNetworks
+        if let brands = brands {
+            let brandsSet = Set(brands)
+            networks = networks.filter { brandsSet.contains($0.adyenName) }
+        }
         return networks
     }
 
