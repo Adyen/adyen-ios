@@ -8,7 +8,7 @@ import Adyen
 
 class PaymentComponentMock: PaymentComponent {
     
-    let apiContext: APIContext = APIContext(environment: Environment.test, clientKey: "local_DUMMYKEYFORTESTING")
+    let apiContext = APIContext(environment: Environment.test, clientKey: "local_DUMMYKEYFORTESTING")
     
     var paymentMethod: PaymentMethod
     

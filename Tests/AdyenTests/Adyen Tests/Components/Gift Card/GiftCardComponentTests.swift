@@ -6,9 +6,9 @@
 //  Copyright © 2021 Adyen. All rights reserved.
 //
 
-import XCTest
 @testable import Adyen
 @testable import AdyenCard
+import XCTest
 
 class GiftCardComponentTests: XCTestCase {
 
@@ -96,7 +96,6 @@ class GiftCardComponentTests: XCTestCase {
 
         waitForExpectations(timeout: 10, handler: nil)
     }
-
 
     func testBalanceAndTransactionLimitCurrencyMismatch() throws {
 
@@ -401,7 +400,7 @@ class GiftCardComponentTests: XCTestCase {
             onSubmitExpectation.fulfill()
         }
 
-        readyToSubmitPaymentComponentDelegate.onShowConfirmation = {_, _ in
+        readyToSubmitPaymentComponentDelegate.onShowConfirmation = { _, _ in
             XCTFail("readyToSubmitPaymentComponentDelegate.onShowConfirmation must not be called")
         }
 

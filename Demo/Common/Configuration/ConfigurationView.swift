@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import SwiftUI
 import Adyen
+import SwiftUI
 
 @available(iOS 13.0.0, *)
 internal struct ConfigurationView: View {
@@ -39,10 +39,10 @@ internal struct ConfigurationView: View {
                 wrapInSection(view: regionSection, section: .region)
                 wrapInSection(view: paymentSection, section: .payment)
             }.navigationBarTitle("Configuration", displayMode: .inline)
-            .navigationBarItems(
-                leading: Button("Default", action: viewModel.defaultTapped),
-                trailing: Button("Save", action: viewModel.doneTapped)
-            )
+                .navigationBarItems(
+                    leading: Button("Default", action: viewModel.defaultTapped),
+                    trailing: Button("Save", action: viewModel.doneTapped)
+                )
         }.onAppear {
             countrySearchSting = ""
         }
@@ -57,7 +57,7 @@ internal struct ConfigurationView: View {
     
     private var apiVersionSection: some View {
         TextField(ConfigurationSection.apiVersion.rawValue, text: $viewModel.apiVersion)
-                .keyboardType(.numberPad)
+            .keyboardType(.numberPad)
     }
     
     private var merchantAccountSection: some View {
@@ -74,7 +74,7 @@ internal struct ConfigurationView: View {
         )
         
         return Picker("Country code",
-               selection: selectionBinding) {
+                      selection: selectionBinding) {
             SearchBar(searchString: $countrySearchSting, placeholder: "Search Countries")
             ForEach(filteredCountries, id: \.self) { country in
                 ListItemView(viewModel: country.toListItemViewModel)

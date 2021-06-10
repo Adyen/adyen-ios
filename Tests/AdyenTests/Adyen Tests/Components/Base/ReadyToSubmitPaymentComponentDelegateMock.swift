@@ -6,8 +6,8 @@
 //  Copyright © 2021 Adyen. All rights reserved.
 //
 
-import Foundation
 @testable import Adyen
+import Foundation
 
 final class ReadyToSubmitPaymentComponentDelegateMock: ReadyToSubmitPaymentComponentDelegate {
     var onShowConfirmation: ((InstantPaymentComponent, PartialPaymentOrder?) -> Void)?
