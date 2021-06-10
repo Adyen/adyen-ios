@@ -6,9 +6,9 @@
 //  Copyright © 2021 Adyen. All rights reserved.
 //
 
-import XCTest
 @testable import Adyen
 @testable import AdyenCard
+import XCTest
 
 class InstantPaymentComponentTests: XCTestCase {
 
