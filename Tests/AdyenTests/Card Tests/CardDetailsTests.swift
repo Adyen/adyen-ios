@@ -16,12 +16,12 @@ class CardDetailsTests: XCTestCase {
                               encryptedCard: EncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year"),
                               holderName: "holder",
                               billingAddress: PostalAddress(city: "city",
-                                                          country: "country",
-                                                          houseNumberOrName: "numer",
-                                                          postalCode: "postal",
-                                                          stateOrProvince: "state",
-                                                          street: "street",
-                                                          apartment: "apartment"))
+                                                            country: "country",
+                                                            houseNumberOrName: "numer",
+                                                            postalCode: "postal",
+                                                            stateOrProvince: "state",
+                                                            street: "street",
+                                                            apartment: "apartment"))
         let data = try JSONEncoder().encode(sut)
         let dictionary = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
         
@@ -55,12 +55,12 @@ class CardDetailsTests: XCTestCase {
 
     func testEncodingFullAddress() {
         let data = try! JSONEncoder().encode(PostalAddress(city: "city",
-                                                        country: "country",
-                                                        houseNumberOrName: "numer",
-                                                        postalCode: "postal",
-                                                        stateOrProvince: "state",
-                                                        street: "street",
-                                                        apartment: "apartment"))
+                                                           country: "country",
+                                                           houseNumberOrName: "numer",
+                                                           postalCode: "postal",
+                                                           stateOrProvince: "state",
+                                                           street: "street",
+                                                           apartment: "apartment"))
         let dictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: String]
 
         XCTAssertEqual(dictionary["city"], "city")

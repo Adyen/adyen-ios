@@ -231,7 +231,6 @@ class BoletoComponentTests: XCTestCase {
             // Test that email field does not exist
             XCTAssertNil(emailField)
 
-            
             dummyExpectation.fulfill()
         }
         
@@ -243,7 +242,8 @@ class BoletoComponentTests: XCTestCase {
         
         sut = BoletoComponent(
             configuration: getConfiguration(with: dummyFullPrefilledInformation, showEmailAddress: true),
-            apiContext: Dummy.context)
+            apiContext: Dummy.context
+        )
         
         let sutVC = sut.viewController
         
@@ -380,7 +380,7 @@ class BoletoComponentTests: XCTestCase {
     ) -> BoletoComponent.Configuration {
         BoletoComponent.Configuration(
             boletoPaymentMethod:
-                BoletoPaymentMethod(type: "boletobancario_santander_test", name: "Boleto Bancario"),
+            BoletoPaymentMethod(type: "boletobancario_santander_test", name: "Boleto Bancario"),
             payment: Payment(amount: Amount(value: 25000, currencyCode: "BRL"), countryCode: "BR"),
             shopperInfo: shopperInfo,
             showEmailAddress: showEmailAddress
