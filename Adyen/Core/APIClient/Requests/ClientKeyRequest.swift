@@ -35,7 +35,6 @@ public struct ClientKeyRequest: Request {
         self.clientKey = clientKey
     }
     
-    /// :nodoc:
-    public enum CodingKeys: CodingKey {}
+    private enum CodingKeys: CodingKey {}
     
 }

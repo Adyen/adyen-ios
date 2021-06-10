@@ -75,9 +75,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
     // MARK: - Presentable Component Protocol
     
     /// :nodoc:
-    public var viewController: UIViewController {
-        navigationController
-    }
+    public var viewController: UIViewController { navigationController }
 
     // MARK: - Handling Actions
 

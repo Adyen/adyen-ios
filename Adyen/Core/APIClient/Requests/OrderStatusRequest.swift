@@ -35,8 +35,7 @@ public struct OrderStatusRequest: Request {
         self.orderData = orderData
     }
 
-    /// :nodoc:
-    public enum CodingKeys: CodingKey {
+    private enum CodingKeys: CodingKey {
         case orderData
     }
 

@@ -8,7 +8,12 @@ import Adyen
 import Foundation
 import UIKit
 
-/// An action handler component to perform any supported action out of the box.
+/**
+  An action handler component to perform any supported action out of the box.
+
+ - SeeAlso:
+ [Implementation Reference](https://github.com/Adyen/adyen-ios#handling-an-action)
+ */
 public final class AdyenActionComponent: ActionComponent, Localizable {
     
     /// :nodoc:
