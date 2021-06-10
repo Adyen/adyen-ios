@@ -38,7 +38,7 @@ internal final class IntegrationExample: APIClientAware {
         return ConfigurationConstants.clientKey
     }
     
-    internal lazy var apiContext: APIContext = APIContext(
+    internal lazy var apiContext = APIContext(
         environment: ConfigurationConstants.componentsEnvironment,
         clientKey: clientKey
     )

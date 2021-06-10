@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import UIKit
 import SwiftUI
+import UIKit
 
 internal final class ComponentsViewController: UIViewController, Presenter {
     
@@ -116,6 +116,7 @@ internal final class ComponentsViewController: UIViewController, Presenter {
 }
 
 // MARK: - Configuration, iOS13+
+
 @available(iOS 13.0.0, *)
 extension ComponentsViewController {
     

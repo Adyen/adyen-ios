@@ -177,7 +177,7 @@ internal class AbstractVoucherView: UIView, Localizable {
         switch model.shareButton {
         case .saveImage:
             delegate?.saveAsImage(voucherView: voucherView, presentingViewController: fakeViewController)
-        case .download(let url):
+        case let .download(url):
             delegate?.download(url: url, voucherView: voucherView, presentingViewController: fakeViewController)
         }
     }
