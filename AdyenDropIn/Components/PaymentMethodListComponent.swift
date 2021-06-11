@@ -15,7 +15,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     internal let apiContext: APIContext
     
     /// The components that are displayed in the list.
-    internal let componentSections: [ComponentsSection]
+    internal let paymentMethodSections: [PaymentMethodsSection]
     
     /// The delegate of the payment method list component.
     internal weak var delegate: PaymentMethodListComponentDelegate?
@@ -28,13 +28,13 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     
     /// Initializes the list component.
     ///
-    /// - Parameter components: The components to display in the list.
+    /// - Parameter paymentMethods: The payment methods to display in the list.
     /// - Parameter style: The component's UI style.
     internal init(apiContext: APIContext,
-                  components: [ComponentsSection],
+                  paymentMethods: [PaymentMethodsSection],
                   style: ListComponentStyle = ListComponentStyle()) {
         self.apiContext = apiContext
-        self.componentSections = components
+        self.paymentMethodSections = paymentMethods
         self.style = style
     }
     
@@ -46,30 +46,28 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     private let brandProtectedComponents: Set = ["applepay"]
     
     internal lazy var listViewController: ListViewController = {
-        func item(for component: PaymentComponent) -> ListItem {
-            let showsDisclosureIndicator = (component as? PresentableComponent)?.requiresModalPresentation == true
-            
-            let displayInformation = component.paymentMethod.localizedDisplayInformation(using: localizationParameters)
-            let isProtected = brandProtectedComponents.contains(component.paymentMethod.type)
+        func item(for paymentMethod: PaymentMethod) -> ListItem {
+            let displayInformation = paymentMethod.localizedDisplayInformation(using: localizationParameters)
+            let isProtected = brandProtectedComponents.contains(paymentMethod.type)
             let listItem = ListItem(title: displayInformation.title,
                                     style: style.listItem,
                                     canModifyIcon: !isProtected)
             listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
-            listItem.imageURL = LogoURLProvider.logoURL(for: component.paymentMethod, environment: apiContext.environment)
+            listItem.imageURL = LogoURLProvider.logoURL(for: paymentMethod, environment: apiContext.environment)
             listItem.trailingText = displayInformation.disclosureText
             listItem.subtitle = displayInformation.subtitle
-            listItem.showsDisclosureIndicator = showsDisclosureIndicator
-            listItem.selectionHandler = { [unowned self, unowned component] in
-                guard !(component is AlreadyPaidPaymentComponent) else { return }
-                self.delegate?.didSelect(component, in: self)
+
+            listItem.selectionHandler = { [unowned self] in
+                guard !(paymentMethod is OrderPaymentMethod) else { return }
+                self.delegate?.didSelect(paymentMethod, in: self)
             }
             
             return listItem
         }
 
-        let sections: [ListSection] = componentSections.map {
+        let sections: [ListSection] = paymentMethodSections.map {
             ListSection(header: $0.header,
-                        items: $0.components.map(item(for:)),
+                        items: $0.paymentMethods.map(item(for:)),
                         footer: $0.footer)
         }
         
@@ -97,12 +95,13 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     ///
     /// - Parameter component: The component for which to start a loading animation.
     internal func startLoading(for component: PaymentComponent) {
-        let allListItems = listViewController.sections.flatMap(\.items)
-        let allComponents = componentSections.map(\.components).flatMap { $0 }
+        let allPaymentMethods = paymentMethodSections.map(\.paymentMethods).flatMap { $0 }
         
-        guard let index = allComponents.firstIndex(where: { $0 === component }) else {
+        guard let index = allPaymentMethods.firstIndex(where: { $0.type == component.paymentMethod.type }) else {
             return
         }
+        
+        let allListItems = listViewController.sections.flatMap(\.items)
         
         listViewController.startLoading(for: allListItems[index])
     }
@@ -122,6 +121,6 @@ internal protocol PaymentMethodListComponentDelegate: AnyObject {
     /// - Parameters:
     ///   - component: The component that has been selected.
     ///   - paymentMethodListComponent: The payment method list component in which the component was selected.
-    func didSelect(_ component: PaymentComponent, in paymentMethodListComponent: PaymentMethodListComponent)
+    func didSelect(_ paymentMethod: PaymentMethod, in paymentMethodListComponent: PaymentMethodListComponent)
     
 }

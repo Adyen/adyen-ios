@@ -52,4 +52,14 @@ public protocol StoredPaymentMethod: PaymentMethod {
     /// The supported types of shopper interaction.
     var supportedShopperInteractions: [ShopperInteraction] { get }
     
+    /// Indicates whether the shopper is present.
+    var isShopperPresent: Bool { get }
+    
+}
+
+/// :nodoc:
+public extension StoredPaymentMethod {
+    
+    var isShopperPresent: Bool { supportedShopperInteractions.contains(.shopperPresent) }
+
 }

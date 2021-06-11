@@ -6,11 +6,11 @@
 
 import Adyen
 
-internal struct ComponentsSection {
+internal struct PaymentMethodsSection {
 
-    internal var header: ListSectionHeader?
+    internal let header: ListSectionHeader?
 
-    internal var components: [PaymentComponent]
+    internal let paymentMethods: [PaymentMethod]
 
-    internal var footer: ListSectionFooter?
+    internal let footer: ListSectionFooter?
 }

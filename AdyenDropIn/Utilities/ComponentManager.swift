@@ -46,8 +46,7 @@ internal final class ComponentManager {
     
     // MARK: - Internal
     
-    internal lazy var sections: [ComponentsSection] = {
-
+    internal lazy var sections: [PaymentMethodsSection] = {
         // Paid section
         let amountString: String = remainingAmount.map(\.formatted) ??
             localizedString(.amount, configuration.localizationParameters)
@@ -56,36 +55,32 @@ internal final class ComponentManager {
                                           amountString)
         let paidFooter = ListSectionFooter(title: footerTitle,
                                            style: style.listComponent.partialPaymentSectionFooter)
-        let paidSection = ComponentsSection(header: nil,
-                                            components: paidComponents,
-                                            footer: paidFooter)
+        let paidSection = PaymentMethodsSection(header: nil,
+                                                paymentMethods: paymentMethods.paid,
+                                                footer: paidFooter)
 
         // Stored section
-        let storedSection = ComponentsSection(components: storedComponents)
+        // Filter out payment methods without the Ecommerce shopper interaction.
+        let storedSection = PaymentMethodsSection(header: nil,
+                                                  paymentMethods: paymentMethods.stored.filter(\.isShopperPresent),
+                                                  footer: nil)
 
         // Regular section
         let localizedTitle = localizedString(.paymentMethodsOtherMethods, configuration.localizationParameters)
-        let regularSectionTitle = storedSection.components.isEmpty ? nil : localizedTitle
+        let regularSectionTitle = storedSection.paymentMethods.isEmpty ? nil : localizedTitle
         let regularHeader: ListSectionHeader? = regularSectionTitle.map {
             ListSectionHeader(title: $0, style: style.listComponent.sectionHeader)
         }
-        let regularSection = ComponentsSection(header: regularHeader, components: regularComponents, footer: nil)
+        let regularSection = PaymentMethodsSection(header: regularHeader,
+                                                   paymentMethods: paymentMethods.regular,
+                                                   footer: nil)
         
         return [paidSection, storedSection, regularSection]
     }()
-
-    // Filter out payment methods without the Ecommerce shopper interaction.
-    internal lazy var storedComponents: [PaymentComponent] = paymentMethods.stored.filter {
-        $0.supportedShopperInteractions.contains(.shopperPresent)
-    }.compactMap(component(for:))
-
-    internal lazy var regularComponents = paymentMethods.regular.compactMap(component(for:))
-
-    internal lazy var paidComponents = paymentMethods.paid.compactMap(component(for:))
     
     // MARK: - Private
     
-    private func component(for paymentMethod: PaymentMethod) -> PaymentComponent? {
+    internal func component(for paymentMethod: PaymentMethod) -> PaymentComponent? {
         guard isAllowed(paymentMethod) else {
             // swiftlint:disable:next line_length
             AdyenAssertion.assertionFailure(message: "For voucher payment methods like \(paymentMethod.name) it is required to add a suitable text for the key NSPhotoLibraryAddUsageDescription in the Application Info.plist, to enable the shopper to save the voucher to their photo library.")
@@ -114,7 +109,7 @@ internal final class ComponentManager {
     
     // MARK: - Private
     
-    private let paymentMethods: PaymentMethods
+    internal let paymentMethods: PaymentMethods
     private let configuration: DropInComponent.Configuration
     
     private func createCardComponent(with paymentMethod: AnyCardPaymentMethod) -> PaymentComponent? {

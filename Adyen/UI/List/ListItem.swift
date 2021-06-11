@@ -28,9 +28,6 @@ public class ListItem: FormItem {
     /// The trailing text of the item.
     public var trailingText: String?
     
-    /// A boolean value indicating whether a disclosure indicator should be shown in the item's cell.
-    public var showsDisclosureIndicator: Bool
-    
     /// The handler to invoke when the item is selected.
     public var selectionHandler: (() -> Void)?
     
@@ -48,7 +45,6 @@ public class ListItem: FormItem {
     ///   - imageURL: A URL to an image to display.
     ///   - trailingText: The trailing text.
     ///   - style: The list item style.
-    ///   - showsDisclosureIndicator: A boolean value indicating whether a disclosure indicator
     ///                               should be shown in the item's cell.
     ///   - selectionHandler: The closure to execute when an item is selected.
     ///   - canModifyIcon: The flag to indicate that image could be tampered.
@@ -56,14 +52,12 @@ public class ListItem: FormItem {
                 imageURL: URL? = nil,
                 trailingText: String? = nil,
                 style: ListItemStyle = ListItemStyle(),
-                showsDisclosureIndicator: Bool = true,
                 selectionHandler: (() -> Void)? = nil,
                 canModifyIcon: Bool = true) {
         self.title = title
         self.imageURL = imageURL
         self.trailingText = trailingText
         self.style = style
-        self.showsDisclosureIndicator = showsDisclosureIndicator
         self.selectionHandler = selectionHandler
         self.canModifyIcon = canModifyIcon
     }

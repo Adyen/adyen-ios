@@ -16,7 +16,7 @@ class PaymentMethodListComponentTests: XCTestCase {
     lazy var regularComponent = PaymentComponentMock(paymentMethod: method2)
 
     func testRequiresKeyboardInput() {
-        let section = ComponentsSection(components: [storedComponent])
+        let section = PaymentMethodsSection(components: [storedComponent])
         let sectionedComponents = [section]
         let sut = PaymentMethodListComponent(apiContext: Dummy.context, components: sectionedComponents)
 
@@ -26,9 +26,9 @@ class PaymentMethodListComponentTests: XCTestCase {
     }
     
     func testLocalizationWithCustomTableName() {
-        let storedSection = ComponentsSection(components: [storedComponent])
+        let storedSection = PaymentMethodsSection(components: [storedComponent])
         let regularSectionHeader = ListSectionHeader(title: "title", style: ListSectionHeaderStyle())
-        let regularSection = ComponentsSection(header: regularSectionHeader, components: [regularComponent])
+        let regularSection = PaymentMethodsSection(header: regularSectionHeader, components: [regularComponent])
         let sut = PaymentMethodListComponent(apiContext: Dummy.context, components: [storedSection, regularSection])
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         
@@ -39,9 +39,9 @@ class PaymentMethodListComponentTests: XCTestCase {
     }
     
     func testLocalizationWithCustomKeySeparator() {
-        let storedSection = ComponentsSection(components: [storedComponent])
+        let storedSection = PaymentMethodsSection(components: [storedComponent])
         let regularSectionHeader = ListSectionHeader(title: "title", style: ListSectionHeaderStyle())
-        let regularSection = ComponentsSection(header: regularSectionHeader, components: [regularComponent])
+        let regularSection = PaymentMethodsSection(header: regularSectionHeader, components: [regularComponent])
         let sut = PaymentMethodListComponent(apiContext: Dummy.context, components: [storedSection, regularSection])
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         
@@ -52,7 +52,7 @@ class PaymentMethodListComponentTests: XCTestCase {
     }
 
     func testStartStopLoading() {
-        let section = ComponentsSection(components: [storedComponent])
+        let section = PaymentMethodsSection(components: [storedComponent])
         let sut = PaymentMethodListComponent(apiContext: Dummy.context, components: [section])
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")

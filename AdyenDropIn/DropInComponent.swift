@@ -148,8 +148,9 @@ public final class DropInComponent: NSObject, PresentableComponent {
     }
     
     private lazy var rootComponent: PresentableComponent & ComponentLoader = {
-        if let preselectedComponents = componentManager.storedComponents.first {
-            return preselectedPaymentMethodComponent(for: preselectedComponents, onCancel: nil)
+        if let preselectedMethod = componentManager.paymentMethods.stored.first,
+           let component = componentManager.component(for: preselectedMethod) {
+            return preselectedPaymentMethodComponent(for: component, onCancel: nil)
         } else {
             return paymentMethodListComponent(onCancel: nil)
         }
@@ -163,9 +164,8 @@ public final class DropInComponent: NSObject, PresentableComponent {
                                                                        })
 
     private lazy var actionComponent: AdyenActionComponent = {
-        let handler = AdyenActionComponent(apiContext: apiContext)
+        let handler = AdyenActionComponent(apiContext: apiContext, style: style.actionComponents)
         handler._isDropIn = true
-        handler.redirectComponentStyle = style.redirectComponent
         handler.delegate = self
         handler.presentationDelegate = self
         handler.localizationParameters = configuration.localizationParameters
@@ -173,9 +173,8 @@ public final class DropInComponent: NSObject, PresentableComponent {
     }()
     
     private func paymentMethodListComponent(onCancel: (() -> Void)?) -> PaymentMethodListComponent {
-        let paymentComponents = componentManager.sections
         let component = PaymentMethodListComponent(apiContext: apiContext,
-                                                   components: paymentComponents,
+                                                   paymentMethods: componentManager.sections,
                                                    style: style.listComponent)
         component.onCancel = onCancel
         component.localizationParameters = configuration.localizationParameters
@@ -257,7 +256,8 @@ public final class DropInComponent: NSObject, PresentableComponent {
 extension DropInComponent: PaymentMethodListComponentDelegate {
     
     /// :nodoc:
-    internal func didSelect(_ component: PaymentComponent, in paymentMethodListComponent: PaymentMethodListComponent) {
+    internal func didSelect(_ paymentMethod: PaymentMethod, in paymentMethodListComponent: PaymentMethodListComponent) {
+        guard let component = componentManager.component(for: paymentMethod) else { return }
         rootComponent.startLoading(for: component)
         didSelect(component)
     }

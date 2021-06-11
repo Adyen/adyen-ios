@@ -67,7 +67,6 @@ public final class ListCell: UITableViewCell {
     
     private func resetAccessoryView() {
         accessoryView = nil
-        accessoryType = item?.showsDisclosureIndicator == true ? .disclosureIndicator : .none
     }
     
     private var activityIndicatorViewStyle: UIActivityIndicatorView.Style {
