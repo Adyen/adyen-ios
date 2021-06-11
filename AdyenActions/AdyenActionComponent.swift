@@ -102,7 +102,10 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
     }
     
     private func handle(_ action: ThreeDS2ChallengeAction) {
-        guard let threeDS2Component = currentActionComponent as? ThreeDS2Component else { return }
+        guard let threeDS2Component = currentActionComponent as? ThreeDS2Component else {
+            AdyenAssertion.assertionFailure(message: "Trying to handle a 3DS2Challenge, but current component is not a ThreeDS2Component")
+            return
+        }
         threeDS2Component.handle(action)
     }
 

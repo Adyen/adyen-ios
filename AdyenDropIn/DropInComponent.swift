@@ -257,7 +257,10 @@ extension DropInComponent: PaymentMethodListComponentDelegate {
     
     /// :nodoc:
     internal func didSelect(_ paymentMethod: PaymentMethod, in paymentMethodListComponent: PaymentMethodListComponent) {
-        guard let component = componentManager.component(for: paymentMethod) else { return }
+        guard let component = componentManager.component(for: paymentMethod) else {
+            AdyenAssertion.assertionFailure(message: "Error creating a component for \(paymentMethod.name) payment method")
+            return
+        }
         rootComponent.startLoading(for: component)
         didSelect(component)
     }
