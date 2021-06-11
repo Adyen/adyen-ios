@@ -34,7 +34,7 @@ Adyen Components for iOS are available through either [CocoaPods](http://cocoapo
 
 You can install all modules or add individual modules, depending on your needs and integration type.
 The `Adyen/WeChatPay` module needs to be explicitly added to support WeChat Pay.
-The `Adyen/SwiftUI` module needs to be explicitly added to use the SwiftUI specific helpers..
+The `Adyen/SwiftUI` module needs to be explicitly added to use the SwiftUI specific helpers.
 
 ```
 pod 'Adyen'               // Add DropIn with all modules except WeChat Pay and SwiftUI.
@@ -173,18 +173,26 @@ This method is invoked when an error occurred during the use of the Drop-in. Dis
 ---
 
 ```swift
-func didCancel(component: PaymentComponent, from dropInComponent: DropInComponent)
+func didComplete(from component: DropInComponent)
 ```
 
-This method is invoked when user closes a payment component managed by Drop-in.
+This method is invoked when the action component finishes, without any further steps needed by the application, for example in case of voucher payment methods. The application just needs to dismiss the `DropInComponent`.
 
 ---
 
 ```swift
-func didComplete(from component: DropInComponent)
+func didCancel(component: PaymentComponent, from dropInComponent: DropInComponent)
 ```
 
-This method is invoked when the action component finishes, without any further steps needed by the application, for example in case of voucher payment methods. The application just needs to dismiss the `DropInComponent`..
+This optional method is invoked when user closes a payment component managed by Drop-in.
+
+---
+
+```swift
+func didOpenExternalApplication(_ component: DropInComponent)
+```
+
+This optional method is invoked after a redirect to an external application has occurred.
 
 ---
 
