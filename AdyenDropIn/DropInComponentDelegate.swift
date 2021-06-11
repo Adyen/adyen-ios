@@ -49,6 +49,13 @@ public protocol DropInComponentDelegate: AnyObject {
     ///   - component: The component that the user closed.
     ///   - dropInComponent: The drop in component that owns the `component`.
     func didCancel(component: PaymentComponent, from dropInComponent: DropInComponent)
+
+    /// Invoked when payment component redirected to external app.
+    ///
+    /// - Parameters:
+    ///   - component: The component that the user closed.
+    ///   - dropInComponent: The drop in component that owns the `component`.
+    func didOpenExternalApplication(_ component: DropInComponent)
     
 }
 
@@ -57,4 +64,7 @@ public extension DropInComponentDelegate {
     
     /// :nodoc:
     func didCancel(component: PaymentComponent, from dropInComponent: DropInComponent) {}
+
+    /// :nodoc:
+    func didOpenExternalApplication(_ component: DropInComponent) {}
 }
