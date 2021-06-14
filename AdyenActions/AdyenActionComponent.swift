@@ -26,7 +26,7 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
     public weak var presentationDelegate: PresentationDelegate?
     
     /// :nodoc:
-    public let style: AdyenActionComponentStyle
+    public let style: ActionComponentStyle
 
     /// :nodoc:
     public var localizationParameters: LocalizationParameters?
@@ -36,7 +36,7 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
     
     /// :nodoc:
     public init(apiContext: APIContext,
-                style: AdyenActionComponentStyle = AdyenActionComponentStyle()) {
+                style: ActionComponentStyle = ActionComponentStyle()) {
         self.apiContext = apiContext
         self.style = style
     }

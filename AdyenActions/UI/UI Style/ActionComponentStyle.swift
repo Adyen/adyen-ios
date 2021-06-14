@@ -8,7 +8,7 @@ import Adyen
 import UIKit
 
 /// /// Contains the styling customization options for various Action Components.
-public struct AdyenActionComponentStyle {
+public struct ActionComponentStyle {
     
     /// Indicates the UI configuration of the redirect component.
     public var redirectComponentStyle: RedirectComponentStyle
