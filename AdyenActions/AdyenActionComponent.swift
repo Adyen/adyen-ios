@@ -32,6 +32,9 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
     public var localizationParameters: LocalizationParameters?
     
     /// :nodoc:
+    public var currentActionComponent: Component?
+    
+    /// :nodoc:
     public init(apiContext: APIContext,
                 style: AdyenActionComponentStyle = AdyenActionComponentStyle()) {
         self.apiContext = apiContext
@@ -65,8 +68,6 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
     }
     
     // MARK: - Private
-    
-    private var currentActionComponent: Component?
     
     private func handle(_ action: RedirectAction) {
         let component = RedirectComponent(apiContext: apiContext, style: style.redirectComponentStyle)

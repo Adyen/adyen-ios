@@ -26,7 +26,7 @@ public extension DropInComponent {
         public var formComponent = FormComponentStyle()
         
         /// Indicates the UI configuration of Action Components
-        public var actionComponents = AdyenActionComponentStyle()
+        public var actionComponent = AdyenActionComponentStyle()
         
         /// The color for separator element.
         /// When set, updates separator colors for all undelying styles unless the value were set previously.
