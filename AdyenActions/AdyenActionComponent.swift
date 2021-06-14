@@ -103,7 +103,13 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
     }
     
     private func handle(_ action: ThreeDS2ChallengeAction) {
-        guard let threeDS2Component = currentActionComponent as? ThreeDS2Component else { return }
+        guard let threeDS2Component = currentActionComponent as? ThreeDS2Component else {
+            AdyenAssertion.assertionFailure(
+                // swiftlint:disable:next line_length
+                message: "ThreeDS2Component is nil. There must be a ThreeDS2FingerprintAction action preceding a ThreeDS2ChallengeAction action"
+            )
+            return
+        }
         threeDS2Component.handle(action)
     }
 
