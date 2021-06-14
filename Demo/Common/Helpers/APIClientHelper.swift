@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import Foundation
 
 internal protocol APIClientAware {
     var apiClient: APIClientProtocol { get }

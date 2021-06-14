@@ -29,15 +29,31 @@ targets:
       base:
         INFOPLIST_FILE: Source/UIKit/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: com.adyen.$PROJECT_NAME
-    dependency:
+    dependencies:
       - package: Adyen
-      - package: AdyenActions
-      - package: AdyenComponents
-      - package: AdyenEncryption
-      - package: AdyenDropIn
-      - package: AdyenCard
-      - package: AdyenSwiftUI
-      - package: AdyenWeChatPay
+        product: Adyen
+        embed: true
+      - package: Adyen
+        product: AdyenActions
+        embed: true
+      - package: Adyen
+        product: AdyenComponents
+        embed: true
+      - package: Adyen
+        product: AdyenCard
+        embed: true
+      - package: Adyen
+        product: AdyenDropIn
+        embed: true
+      - package: Adyen
+        product: AdyenEncryption
+        embed: true
+      - package: Adyen
+        product: AdyenWeChatPay
+        embed: true
+      - package: Adyen
+        product: AdyenSwiftUI
+        embed: true
   UITests:
     type: bundle.ui-testing
     platform: iOS

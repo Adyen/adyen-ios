@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import Foundation
 
 internal typealias MockedResult = Result<Response, Error>
 
