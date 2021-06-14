@@ -47,8 +47,6 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     
     internal lazy var listViewController: ListViewController = {
         func item(for component: PaymentComponent) -> ListItem {
-            let showsDisclosureIndicator = (component as? PresentableComponent)?.requiresModalPresentation == true
-            
             let displayInformation = component.paymentMethod.localizedDisplayInformation(using: localizationParameters)
             let isProtected = brandProtectedComponents.contains(component.paymentMethod.type)
             let listItem = ListItem(title: displayInformation.title,
