@@ -58,7 +58,6 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
             listItem.imageURL = LogoURLProvider.logoURL(for: component.paymentMethod, environment: apiContext.environment)
             listItem.trailingText = displayInformation.disclosureText
             listItem.subtitle = displayInformation.subtitle
-            listItem.showsDisclosureIndicator = showsDisclosureIndicator
             listItem.selectionHandler = { [unowned self, unowned component] in
                 guard !(component is AlreadyPaidPaymentComponent) else { return }
                 self.delegate?.didSelect(component, in: self)

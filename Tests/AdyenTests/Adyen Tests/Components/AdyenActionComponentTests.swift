@@ -6,6 +6,7 @@
 
 import Adyen
 @testable import AdyenActions
+import AdyenWeChatPay
 import SafariServices
 import XCTest
 
@@ -115,7 +116,7 @@ class AdyenActionComponentTests: XCTestCase {
         let waitExpectation = expectation(description: "Expect weChatPaySDKActionComponent to be initiated")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
 
-            XCTAssertNotNil(sut.weChatPaySDKActionComponent)
+            XCTAssertNotNil(sut.currentActionComponent as? WeChatPaySDKActionComponent)
             waitExpectation.fulfill()
         }
 
@@ -129,7 +130,7 @@ class AdyenActionComponentTests: XCTestCase {
 
         let waitExpectation = expectation(description: "Expect in app browser to be presented and then dismissed")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
-            XCTAssertNotNil(sut.threeDS2Component)
+            XCTAssertNotNil(sut.currentActionComponent as? ThreeDS2Component)
             waitExpectation.fulfill()
         }
 

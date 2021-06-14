@@ -25,14 +25,8 @@ public extension DropInComponent {
         /// Indicates any form component UI style.
         public var formComponent = FormComponentStyle()
         
-        /// Indicates any `RedirectComponent` UI style.
-        public var redirectComponent: RedirectComponentStyle?
-        
-        /// Indicates the await action component UI style.
-        public var awaitComponent = AwaitComponentStyle()
-
-        /// Indicates the voucher action component UI style.
-        public var voucherComponent = VoucherComponentStyle()
+        /// Indicates the UI configuration of Action Components
+        public var actionComponent = AdyenActionComponentStyle()
         
         /// The color for separator element.
         /// When set, updates separator colors for all undelying styles unless the value were set previously.
