@@ -16,6 +16,7 @@
 		5A238C93263AEA0800758FEF /* PreApplePayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A238C92263AEA0800758FEF /* PreApplePayView.swift */; };
 		5A238C9F263BDEA200758FEF /* PreApplePayComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A238C9E263BDEA200758FEF /* PreApplePayComponentTests.swift */; };
 		5A27AB032636A07900EF6F89 /* LocalizationKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A27AB022636A07900EF6F89 /* LocalizationKey.swift */; };
+		5A2D1951267368580082BCE9 /* ActionComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2D1950267368580082BCE9 /* ActionComponentStyle.swift */; };
 		5A4702182664E9440023F264 /* APIContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4702172664E9440023F264 /* APIContext.swift */; };
 		5A545FC72642F77500724A87 /* ConfigurationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A545FC62642F77500724A87 /* ConfigurationViewModel.swift */; };
 		5A545FDC2643CF2400724A87 /* ConfigurationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A545FC62642F77500724A87 /* ConfigurationViewModel.swift */; };
@@ -852,6 +853,7 @@
 		5A238C92263AEA0800758FEF /* PreApplePayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreApplePayView.swift; sourceTree = "<group>"; };
 		5A238C9E263BDEA200758FEF /* PreApplePayComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreApplePayComponentTests.swift; sourceTree = "<group>"; };
 		5A27AB022636A07900EF6F89 /* LocalizationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationKey.swift; sourceTree = "<group>"; };
+		5A2D1950267368580082BCE9 /* ActionComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionComponentStyle.swift; sourceTree = "<group>"; };
 		5A4702172664E9440023F264 /* APIContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIContext.swift; sourceTree = "<group>"; };
 		5A545FC62642F77500724A87 /* ConfigurationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationViewModel.swift; sourceTree = "<group>"; };
 		5A54600E264433CD00724A87 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
@@ -2755,6 +2757,7 @@
 				F9639B1F24DBEB990073F38A /* AwaitComponentStyle.swift */,
 				F970143825D139BE007E74D9 /* VoucherComponentStyle.swift */,
 				5A64573E2626D2E2001824F0 /* QRCodeComponentStyle.swift */,
+				5A2D1950267368580082BCE9 /* ActionComponentStyle.swift */,
 			);
 			path = "UI Style";
 			sourceTree = "<group>";
@@ -4754,6 +4757,7 @@
 				F917613825A30B5700D653BE /* ThreeDS2ComponentFingerprint.swift in Sources */,
 				F970143925D139BE007E74D9 /* VoucherComponentStyle.swift in Sources */,
 				F917613925A30B5700D653BE /* ThreeDS2ComponentFingerprintToken.swift in Sources */,
+				5A2D1951267368580082BCE9 /* ActionComponentStyle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -65,7 +65,6 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
             listItem.imageURL = LogoURLProvider.logoURL(for: issuer,
                                                         paymentMethod: issuerListPaymentMethod,
                                                         environment: apiContext.environment)
-            listItem.showsDisclosureIndicator = false
             listItem.selectionHandler = { [weak self] in
                 guard let self = self else { return }
                 

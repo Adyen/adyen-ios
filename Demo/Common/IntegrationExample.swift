@@ -47,7 +47,6 @@ internal final class IntegrationExample: APIClientAware {
 
     internal lazy var actionComponent: AdyenActionComponent = {
         let handler = AdyenActionComponent(apiContext: apiContext)
-        handler.redirectComponentStyle = RedirectComponentStyle()
         handler.delegate = self
         handler.presentationDelegate = self
         return handler

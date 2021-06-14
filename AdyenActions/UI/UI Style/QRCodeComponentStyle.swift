@@ -7,7 +7,7 @@
 import Adyen
 import UIKit
 
-/// Contains the styleing customization options for the QR code component.
+/// Contains the styling customization options for the QR code component.
 public struct QRCodeComponentStyle: ViewStyle {
     
     /// The copy button style.

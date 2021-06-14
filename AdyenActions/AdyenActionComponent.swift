@@ -25,24 +25,20 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
     /// :nodoc:
     public weak var presentationDelegate: PresentationDelegate?
     
-    /// Indicates the UI configuration of the redirect component.
-    public var redirectComponentStyle: RedirectComponentStyle?
-    
-    /// Indicates the UI configuration of the await component.
-    public var awaitComponentStyle: AwaitComponentStyle?
-
-    /// Indicates the UI configuration of the voucher component.
-    public var voucherComponentStyle: VoucherComponentStyle?
-
-    /// Indicates the UI configuration of the QR code component.
-    public var qrCodeComponentStyle: QRCodeComponentStyle?
+    /// :nodoc:
+    public let style: ActionComponentStyle
 
     /// :nodoc:
     public var localizationParameters: LocalizationParameters?
     
     /// :nodoc:
-    public init(apiContext: APIContext) {
+    public var currentActionComponent: Component?
+    
+    /// :nodoc:
+    public init(apiContext: APIContext,
+                style: ActionComponentStyle = ActionComponentStyle()) {
         self.apiContext = apiContext
+        self.style = style
     }
     
     // MARK: - Performing Actions
@@ -73,33 +69,26 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
     
     // MARK: - Private
     
-    private var redirectComponent: RedirectComponent?
-    internal var threeDS2Component: ThreeDS2Component?
-    internal var weChatPaySDKActionComponent: AnyWeChatPaySDKActionComponent?
-    private var awaitComponent: AwaitComponent?
-    private var voucherComponent: VoucherComponent?
-    private var qrCodeComponent: Component?
-    
     private func handle(_ action: RedirectAction) {
-        let component = RedirectComponent(apiContext: apiContext, style: redirectComponentStyle)
+        let component = RedirectComponent(apiContext: apiContext, style: style.redirectComponentStyle)
         component.delegate = delegate
         component._isDropIn = _isDropIn
         component.presentationDelegate = presentationDelegate
-        redirectComponent = component
+        currentActionComponent = component
         
         component.handle(action)
     }
 
     private func handle(_ action: ThreeDS2Action) {
         let component = createThreeDS2Component()
-        threeDS2Component = component
+        currentActionComponent = component
 
         component.handle(action)
     }
     
     private func handle(_ action: ThreeDS2FingerprintAction) {
         let component = createThreeDS2Component()
-        threeDS2Component = component
+        currentActionComponent = component
         
         component.handle(action)
     }
@@ -114,10 +103,16 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
     }
     
     private func handle(_ action: ThreeDS2ChallengeAction) {
-        guard let threeDS2Component = threeDS2Component else { return }
+        guard let threeDS2Component = currentActionComponent as? ThreeDS2Component else {
+            AdyenAssertion.assertionFailure(
+                // swiftlint:disable:next line_length
+                message: "ThreeDS2Component is nil. There must be a ThreeDS2FingerprintAction action preceding a ThreeDS2ChallengeAction action"
+            )
+            return
+        }
         threeDS2Component.handle(action)
     }
-    
+
     private func handle(_ sdkAction: SDKAction) {
         switch sdkAction {
         case let .weChatPay(weChatPaySDKAction):
@@ -130,42 +125,45 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
             delegate?.didFail(with: ComponentError.paymentMethodNotSupported, from: self)
             return
         }
-        weChatPaySDKActionComponent = classObject.init(apiContext: apiContext)
-        weChatPaySDKActionComponent?._isDropIn = _isDropIn
-        weChatPaySDKActionComponent?.delegate = delegate
-        weChatPaySDKActionComponent?.handle(action)
+        
+        let weChatPaySDKActionComponent = classObject.init(apiContext: apiContext)
+        weChatPaySDKActionComponent._isDropIn = _isDropIn
+        weChatPaySDKActionComponent.delegate = delegate
+        weChatPaySDKActionComponent.handle(action)
+        
+        currentActionComponent = weChatPaySDKActionComponent
     }
     
     private func handle(_ action: AwaitAction) {
-        let component = AwaitComponent(apiContext: apiContext, style: awaitComponentStyle)
+        let component = AwaitComponent(apiContext: apiContext, style: style.awaitComponentStyle)
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
         component.localizationParameters = localizationParameters
         
         component.handle(action)
-        awaitComponent = component
+        currentActionComponent = component
     }
     
     private func handle(_ action: VoucherAction) {
-        let component = VoucherComponent(apiContext: apiContext, style: voucherComponentStyle)
+        let component = VoucherComponent(apiContext: apiContext, style: style.voucherComponentStyle)
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
         component.localizationParameters = localizationParameters
 
         component.handle(action)
-        voucherComponent = component
+        currentActionComponent = component
     }
     
     private func handle(_ action: QRCodeAction) {
-        let component = QRCodeComponent(apiContext: apiContext, style: QRCodeComponentStyle())
+        let component = QRCodeComponent(apiContext: apiContext, style: style.qrCodeComponentStyle)
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
         component.localizationParameters = localizationParameters
         
         component.handle(action)
-        qrCodeComponent = component
+        currentActionComponent = component
     }
 }
