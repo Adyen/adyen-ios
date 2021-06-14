@@ -2,70 +2,96 @@
 
 set -e # Any subsequent(*) commands which fail will cause the shell script to exit immediately
 
+function echo_header {
+  echo " "
+  echo "#############   $1   ###############"
+}
+
 PROJECT_NAME=TempProject
 
-# Clean up.
+echo_header "Clean up $PROJECT_NAME"
 rm -rf $PROJECT_NAME
-
 mkdir -p $PROJECT_NAME && cd $PROJECT_NAME
 
-# Create the package.
-swift package init
+echo_header "Create a new Xcode project."
+echo "
+name: $PROJECT_NAME
+packages:
+  Adyen:
+    path: ../
+targets:
+  $PROJECT_NAME:
+    type: application
+    platform: iOS
+    sources: Source
+    testTargets: [UITests,UnitTests]
+    settings:
+      base:
+        INFOPLIST_FILE: Source/UIKit/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.adyen.$PROJECT_NAME
+    dependency:
+      - package: Adyen
+      - package: AdyenActions
+      - package: AdyenComponents
+      - package: AdyenEncryption
+      - package: AdyenDropIn
+      - package: AdyenCard
+      - package: AdyenSwiftUI
+      - package: AdyenWeChatPay
+  UITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: UITests
+    dependency: $PROJECT_NAME
+  UnitTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: UnitTests
+    dependency: $PROJECT_NAME
+schemes:
+  App:
+    build:
+      targets:
+        $PROJECT_NAME: all
+        UITests: [test]
+        UnitTests: [test]
+    test:
+      commandLineArguments: "-UITests"
+      targets:
+        - UITests
+        - UnitTests
 
-# Create the Package.swift.
-echo "// swift-tools-version:5.3
-// The swift-tools-version declares the minimum version of Swift required to build this package.
+" > project.yml
 
-import PackageDescription
+mkdir -p UITests
+mkdir -p UnitTests
+mkdir -p Source
 
-let package = Package(
-    name: \"TempProject\",
-    defaultLocalization: \"en-US\",
-    platforms: [
-        .iOS(.v11)
-    ],
-    products: [
-        .library(
-            name: \"TempProject\",
-            targets: [\"TempProject\"]
-        )
-    ],
-    dependencies: [
-        .package(name: \"Adyen\", path: \"../\"),
-    ],
-    targets: [
-        .target(
-            name: \"TempProject\",
-            dependencies: [
-                .product(name: \"Adyen\", package: \"Adyen\"),
-                .product(name: \"AdyenActions\", package: \"Adyen\"),
-                .product(name: \"AdyenCard\", package: \"Adyen\"),
-                .product(name: \"AdyenComponents\", package: \"Adyen\"),
-                .product(name: \"AdyenDropIn\", package: \"Adyen\"),
-                .product(name: \"AdyenWeChatPay\", package: \"Adyen\"),
-                .product(name: \"AdyenSwiftUI\", package: \"Adyen\")])
-    ]
-)
-" > Package.swift
+cp "../Tests/AdyenTests/Adyen Tests/DropIn/DropInTests.swift" UITests/DropInTests.swift
+cp "../Tests/AdyenTests/Adyen Tests/Components/Dummy.swift" UITests/Dummy.swift
+cp "../Tests/AdyenTests/Adyen Tests/Assets/AssetsAccessTests.swift" UnitTests/AssetsAccessTests.swift
+cp -a "../Demo/Common" Source/
+cp -a "../Demo/UIKit" Source/
+cp "../Demo/Configuration.swift" Source/Configuration.swift
 
-swift package update
+xcodegen generate
 
-# Archive for generic iOS device
-echo '############# Archive for generic iOS device ###############'
-xcodebuild archive -scheme TempProject -destination 'generic/platform=iOS'
+echo_header "Run tests"
+xcodebuild build test -project $PROJECT_NAME.xcodeproj -scheme App -destination "name=iPhone 11" | xcpretty && exit ${PIPESTATUS[0]}
 
-# Build for generic iOS device
-echo '############# Build for generic iOS device ###############'
-xcodebuild build -scheme TempProject -destination 'generic/platform=iOS'
 
-# Archive for x86_64 simulator
-echo '############# Archive for x86_64 simulator ###############'
-xcodebuild archive -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64
+echo_header "Archive for generic iOS device"
+xcodebuild archive -project $PROJECT_NAME.xcodeproj -scheme App -destination 'generic/platform=iOS' | xcpretty && exit ${PIPESTATUS[0]}
 
-# Build for x86_64 simulator
-echo '############# Build for x86_64 simulator ###############'
-xcodebuild build -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64
+echo_header "Build for generic iOS device"
+xcodebuild clean build -project $PROJECT_NAME.xcodeproj -scheme App -destination 'generic/platform=iOS' | xcpretty && exit ${PIPESTATUS[0]}
 
-# Clean up.
+echo_header "Archive for simulator"
+xcodebuild archive -project $PROJECT_NAME.xcodeproj -scheme App -destination 'generic/platform=iOS Simulator' | xcpretty && exit ${PIPESTATUS[0]}
+
+echo_header "Build for x86_64 simulator"
+xcodebuild clean build -project $PROJECT_NAME.xcodeproj -scheme App -destination 'generic/platform=iOS Simulator' | xcpretty && exit ${PIPESTATUS[0]}
+
+echo_header "Clean up"
 cd ../
 rm -rf $PROJECT_NAME
