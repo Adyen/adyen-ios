@@ -30,12 +30,14 @@ targets:
     type: bundle.ui-testing
     platform: iOS
     sources: UITests
-    dependency: $PROJECT_NAME
+    dependencies:
+      - target: $PROJECT_NAME
   UnitTests:
     type: bundle.unit-test
     platform: iOS
     sources: UnitTests
-    dependency: $PROJECT_NAME
+    dependencies:
+      - target: $PROJECT_NAME
 schemes:
   App:
     build:
@@ -44,7 +46,7 @@ schemes:
         UITests: [test]
         UnitTests: [test]
     test:
-      commandLineArguments: "-UITests"
+      commandLineArguments: "-UITests true"
       targets:
         - UITests
         - UnitTests

@@ -82,7 +82,7 @@ schemes:
         UITests: [test]
         UnitTests: [test]
     test:
-      commandLineArguments: "-UITests"
+      commandLineArguments: "-UITests true"
       targets:
         - UITests
         - UnitTests
