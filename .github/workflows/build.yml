@@ -22,6 +22,8 @@ jobs:
           scheme: AdyenUIHost
         - destination: 'name=iPhone-X,OS=12.4'
           scheme: AdyenUIKitTests
+        - destination: 'name=iPhone 8,OS=13.7'
+          scheme: AdyenUIHost
     steps:
     - uses: actions/checkout@v2
     - uses: n1hility/cancel-previous-runs@v2
@@ -31,6 +33,13 @@ jobs:
     - name: Prepare custom devices
       run: |
         sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
+        
+    - name: Prepare iOS 11.4 simulator
+      if: contains(matrix.destination, 'OS=11.4')
+      run: |
+        xcversion simulators --install='iOS 11.4'
+        xcrun simctl create iPhone-6 "iPhone 6" "com.apple.CoreSimulator.SimRuntime.iOS-11-4"
+        xcrun simctl list devices 11.4
 
     - name: Prepare iOS 12.4 simulator
       if: contains(matrix.destination, 'OS=12.4')
@@ -38,13 +47,13 @@ jobs:
         xcversion simulators --install='iOS 12.4'
         xcrun simctl create iPhone-X "iPhone X" "com.apple.CoreSimulator.SimRuntime.iOS-12-4"
         xcrun simctl list devices 12.4
-
-    - name: Prepare iOS 11.4 simulator
-      if: contains(matrix.destination, 'OS=11.4')
+        
+    - name: Prepare iOS 13.7 simulator
+      if: contains(matrix.destination, 'OS=13.7')
       run: |
-        xcversion simulators --install='iOS 11.4'
-        xcrun simctl create iPhone-6 "iPhone 6" "com.apple.CoreSimulator.SimRuntime.iOS-11-4"
-        xcrun simctl list devices 11.4
+        xcversion simulators --install='iOS 13.7'
+        xcrun simctl create iPhone-6 "iPhone X" "com.apple.CoreSimulator.SimRuntime.iOS-13-7"
+        xcrun simctl list devices 13.7
 
     - name: Build and test
       run: |
