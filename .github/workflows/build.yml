@@ -22,7 +22,7 @@ jobs:
           scheme: AdyenUIHost
         - destination: 'name=iPhone-X,OS=12.4'
           scheme: AdyenUIKitTests
-        - destination: 'name=iPhone-X,OS=13.7'
+        - destination: 'name=iPhone 8,OS=13.7'
           scheme: AdyenUIHost
     steps:
     - uses: actions/checkout@v2
