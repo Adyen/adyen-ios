@@ -54,8 +54,8 @@ internal final class QRCodeView: UIView, Localizable, Observer {
         addSubview(logo)
         logo.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            logo.bottomAnchor.constraint(equalTo: topAnchor, constant: -7),
-            logo.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor)
+            logo.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
+            logo.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor)
         ])
     }
     
@@ -63,9 +63,9 @@ internal final class QRCodeView: UIView, Localizable, Observer {
         addSubview(instructionLabel)
         instructionLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            instructionLabel.topAnchor.constraint(equalTo: logo.bottomAnchor, constant: 24),
-            instructionLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 37),
-            instructionLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -37.0)
+            instructionLabel.topAnchor.constraint(equalTo: logo.bottomAnchor, constant: 20),
+            instructionLabel.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 37),
+            instructionLabel.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -37.0)
         ])
     }
     
@@ -74,7 +74,7 @@ internal final class QRCodeView: UIView, Localizable, Observer {
         progressView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             progressView.topAnchor.constraint(equalTo: instructionLabel.bottomAnchor, constant: 24.0),
-            progressView.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor)
+            progressView.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor)
         ])
     }
     
@@ -83,7 +83,7 @@ internal final class QRCodeView: UIView, Localizable, Observer {
         expirationLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             expirationLabel.topAnchor.constraint(equalTo: progressView.bottomAnchor, constant: 13.0),
-            expirationLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor)
+            expirationLabel.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor)
         ])
     }
     
@@ -91,10 +91,11 @@ internal final class QRCodeView: UIView, Localizable, Observer {
         addSubview(copyButton)
         copyButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
+            copyButton.heightAnchor.constraint(equalToConstant: 50.0),
             copyButton.topAnchor.constraint(equalTo: expirationLabel.bottomAnchor, constant: 34),
-            copyButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            copyButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            copyButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -18)
+            copyButton.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 16),
+            copyButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -16),
+            copyButton.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
         ])
     }
     

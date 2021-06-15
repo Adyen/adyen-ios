@@ -33,6 +33,7 @@
 		5A6457DD26271434001824F0 /* QRCodeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6456E22625A1E2001824F0 /* QRCodeComponent.swift */; };
 		5A6745E126417A5C00E9184D /* ADYViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6745E026417A5C00E9184D /* ADYViewController.swift */; };
 		5A674620264262F000E9184D /* ConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67461F264262F000E9184D /* ConfigurationView.swift */; };
+		5A93438326779D3900F8CCD1 /* QRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A93438226779D3900F8CCD1 /* QRCodeViewController.swift */; };
 		5A9889C8264E71210007F4C0 /* BoletoDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9889C7264E71210007F4C0 /* BoletoDetails.swift */; };
 		5A988B652653D9370007F4C0 /* BoletoComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A988B642653D9370007F4C0 /* BoletoComponentTests.swift */; };
 		5A988B7B2653F1750007F4C0 /* BoletoVoucherAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A988B7A2653F1750007F4C0 /* BoletoVoucherAction.swift */; };
@@ -867,6 +868,7 @@
 		5A64573E2626D2E2001824F0 /* QRCodeComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeComponentStyle.swift; sourceTree = "<group>"; };
 		5A6745E026417A5C00E9184D /* ADYViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADYViewController.swift; sourceTree = "<group>"; };
 		5A67461F264262F000E9184D /* ConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationView.swift; sourceTree = "<group>"; };
+		5A93438226779D3900F8CCD1 /* QRCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewController.swift; sourceTree = "<group>"; };
 		5A9889C7264E71210007F4C0 /* BoletoDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoletoDetails.swift; sourceTree = "<group>"; };
 		5A988B642653D9370007F4C0 /* BoletoComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoletoComponentTests.swift; sourceTree = "<group>"; };
 		5A988B7A2653F1750007F4C0 /* BoletoVoucherAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoletoVoucherAction.swift; sourceTree = "<group>"; };
@@ -1613,6 +1615,7 @@
 			children = (
 				5A64571A2625CB87001824F0 /* QRCodeView.swift */,
 				5A6457262625CB99001824F0 /* QRCodeViewModel.swift */,
+				5A93438226779D3900F8CCD1 /* QRCodeViewController.swift */,
 			);
 			path = "QR Code";
 			sourceTree = "<group>";
@@ -4695,6 +4698,7 @@
 				F9175FD02594999600D653BE /* RedirectDetails.swift in Sources */,
 				F9B018B8260A2DB2001F23FC /* EContextATMVoucherAction.swift in Sources */,
 				F917613625A30B5700D653BE /* ThreeDS2ComponentChallengeToken.swift in Sources */,
+				5A93438326779D3900F8CCD1 /* QRCodeViewController.swift in Sources */,
 				F9175FBC2594996000D653BE /* WeChatPaySDKData.swift in Sources */,
 				F9175FB62594996000D653BE /* WeChatPaySDKAction.swift in Sources */,
 				F917613725A30B5700D653BE /* ThreeDSResult.swift in Sources */,

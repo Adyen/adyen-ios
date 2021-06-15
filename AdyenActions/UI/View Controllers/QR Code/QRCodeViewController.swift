@@ -8,29 +8,24 @@ import Adyen
 import Foundation
 import UIKit
 
-/// A `UIViewController` that shows the await action UI.
-internal final class AwaitViewController: UIViewController {
+/// A `UIViewController` that shows the QR code action UI.
+internal final class QRCodeViewController: UIViewController {
     
     /// The view model.
-    private let viewModel: AwaitComponentViewModel
-    
-    /// The UI style.
-    private let style: AwaitComponentStyle
+    private let viewModel: QRCodeView.Model
     
     /// :nodoc:
-    internal lazy var awaitView = AwaitView(viewModel: viewModel, style: style)
+    internal lazy var qrCodeView = QRCodeView(model: viewModel)
     
     /// :nodoc:
     private lazy var containerView = UIView(frame: .zero)
     
-    /// Initializes the `AwaitViewController`.
+    /// Initializes the `QRCodeViewController`.
     ///
     /// - Parameter viewModel: The view model.
     /// - Parameter style: The UI style.
-    internal init(viewModel: AwaitComponentViewModel,
-                  style: AwaitComponentStyle = AwaitComponentStyle()) {
+    internal init(viewModel: QRCodeView.Model) {
         self.viewModel = viewModel
-        self.style = style
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -43,26 +38,26 @@ internal final class AwaitViewController: UIViewController {
     /// :nodoc:
     override internal func viewDidLoad() {
         super.viewDidLoad()
-        containerView.addSubview(awaitView)
+        containerView.addSubview(qrCodeView)
         view.addSubview(containerView)
         configureConstraints()
-        view.backgroundColor = style.backgroundColor
+        view.backgroundColor = viewModel.style.backgroundColor
     }
     
     /// :nodoc:
     private func configureConstraints() {
-        awaitView.translatesAutoresizingMaskIntoConstraints = false
+        qrCodeView.translatesAutoresizingMaskIntoConstraints = false
         containerView.translatesAutoresizingMaskIntoConstraints = false
         
         containerView.adyen.anchor(inside: view.safeAreaLayoutGuide)
         let constraints = [
-            awaitView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            qrCodeView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
             
-            awaitView.topAnchor.constraint(greaterThanOrEqualTo: containerView.topAnchor),
-            awaitView.bottomAnchor.constraint(lessThanOrEqualTo: containerView.bottomAnchor),
+            qrCodeView.topAnchor.constraint(greaterThanOrEqualTo: containerView.topAnchor),
+            qrCodeView.bottomAnchor.constraint(lessThanOrEqualTo: containerView.bottomAnchor),
             
-            awaitView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            awaitView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
+            qrCodeView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            qrCodeView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
         ]
         
         NSLayoutConstraint.activate(constraints)
