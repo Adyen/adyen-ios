@@ -25,7 +25,7 @@ class ModalToolbarTests: XCTestCase {
             XCTAssertEqual(self.sut.cancelButton.tintColor.cgColor, UIColor.Adyen.defaultBlue.cgColor)
         }
         XCTAssertEqual(self.sut.titleLabel.textColor, UIColor.Adyen.componentLabel)
-        XCTAssertEqual(self.sut.titleLabel.font, UIFont.AdyenCore.barTitle)
+        XCTAssertEqual(self.sut.titleLabel.font, UIFont.Adyen.barTitle)
         XCTAssertEqual(self.sut.titleLabel.textAlignment, .natural)
         if !ProcessInfo().isOperatingSystemAtLeast(OperatingSystemVersion(majorVersion: 13, minorVersion: 0, patchVersion: 0)) {
             XCTAssertEqual(self.sut.tintColor.cgColor, UIColor.Adyen.defaultBlue.cgColor)

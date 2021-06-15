@@ -160,8 +160,8 @@
 		E7451A112600EDE0000BDCCF /* StoredCardConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7451A102600EDE0000BDCCF /* StoredCardConfiguration.swift */; };
 		E745256925C1C9E1006A941F /* AdyenActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C6F23F1924B000B4B2B /* AdyenActionComponent.swift */; };
 		E7484C2723B9FDF000CCF74F /* SlideInPresentationAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7484C2623B9FDF000CCF74F /* SlideInPresentationAnimator.swift */; };
-		E749FD1E23CF4998000D18BA /* NavigationStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E749FD1D23CF4998000D18BA /* NavigationStyle.swift */; };
 		E74CE3DF26727EB1008231D2 /* DropInDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74CE3DE26727EB1008231D2 /* DropInDelegateMock.swift */; };
+		E74CE44E26789590008231D2 /* NavigationStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E749FD1D23CF4998000D18BA /* NavigationStyle.swift */; };
 		E74D918325AF3FE600743B0C /* CardBrandProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D918225AF3FE600743B0C /* CardBrandProviderTests.swift */; };
 		E757EFFE25D2ECDB007C813D /* APIClientMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B5724E3DB3F0073F38A /* APIClientMock.swift */; };
 		E757F03925D2ED57007C813D /* APIClientMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E757F02525D2ED4C007C813D /* APIClientMock.swift */; };
@@ -2523,6 +2523,7 @@
 		E9B36CC122451C3000EAA368 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E749FD1D23CF4998000D18BA /* NavigationStyle.swift */,
 				E9B36CC622451C8300EAA368 /* DropInConfiguration.swift */,
 				F96F44CE23BDEC0200871C1F /* DropInComponentStyle.swift */,
 			);
@@ -2907,7 +2908,6 @@
 				F9354BE823A7B5AC00A6760B /* ViewStyle.swift */,
 				F9B798C823AB697100A2103C /* FormComponentStyle.swift */,
 				F9B798CA23AB706D00A2103C /* ListComponentStyle.swift */,
-				E749FD1D23CF4998000D18BA /* NavigationStyle.swift */,
 				E787C9AB24696A8900B401E0 /* CornerRadiusStyle.swift */,
 				5A1315C826296B100092366D /* ProgressViewStyle.swift */,
 			);
@@ -4371,7 +4371,6 @@
 				F97C829225BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift in Sources */,
 				F939CD7725EE56BA00018DEC /* LoadingComponent.swift in Sources */,
 				E7806EBD26147AB700101DBB /* ViewControllerDelegate.swift in Sources */,
-				E749FD1E23CF4998000D18BA /* NavigationStyle.swift in Sources */,
 				F9354BED23A7C34D00A6760B /* ButtonStyle.swift in Sources */,
 				F9B8C50C23FE962D00C4D0FB /* FormPhoneNumberItem.swift in Sources */,
 				E2C0E0BC220B2976008616F6 /* FormItemView.swift in Sources */,
@@ -4655,6 +4654,7 @@
 				E7388D8523DB1F9A008E62B8 /* DimmingPresentationController.swift in Sources */,
 				E2D1784022D8763400B6883E /* PaymentMethodListComponent.swift in Sources */,
 				E72DA33F23E19DE300707638 /* PreselectedPaymentMethodComponent.swift in Sources */,
+				E74CE44E26789590008231D2 /* NavigationStyle.swift in Sources */,
 				E72DA34123E1BE5300707638 /* DropInNavigationController.swift in Sources */,
 				E9B36CB82243B38A00EAA368 /* DropInComponent.swift in Sources */,
 				5A238C69263A9C8C00758FEF /* PreApplePayComponent.swift in Sources */,

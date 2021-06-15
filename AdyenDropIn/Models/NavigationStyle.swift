@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
+import Adyen
 import UIKit
 
 /// The style of "Cancel" button.
@@ -51,7 +51,7 @@ public struct NavigationStyle: TintableStyle {
     public var cornerRadius: CGFloat = 10
     
     /// Indicates the bar title text style.
-    public var barTitle = TextStyle(font: UIFont.AdyenCore.barTitle,
+    public var barTitle = TextStyle(font: UIFont.Adyen.barTitle,
                                     color: UIColor.Adyen.componentLabel,
                                     textAlignment: .natural)
 

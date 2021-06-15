@@ -10,9 +10,10 @@ import UIKit
 extension UIFont {
     
     /// :nodoc:
-    internal enum AdyenCore {
-        
-        internal static var barTitle: UIFont {
+    public enum Adyen {
+
+        /// :nodoc:
+        public static var barTitle: UIFont {
             UIFont.preferredFont(forTextStyle: .title3).adyen.font(with: .semibold)
         }
         
