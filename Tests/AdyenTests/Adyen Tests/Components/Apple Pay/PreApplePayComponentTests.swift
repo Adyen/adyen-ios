@@ -57,6 +57,7 @@ class PreApplePayComponentTests: XCTestCase {
     }
     
     func testApplePayPresented() {
+        guard Available.iOS12 else { return }
         let dummyExpectation = expectation(description: "Dummy Expectation")
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -75,7 +76,7 @@ class PreApplePayComponentTests: XCTestCase {
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             XCTAssertTrue(UIApplication.shared.keyWindow?.rootViewController?.presentedViewController is PKPaymentAuthorizationViewController)
-            
+            UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismiss(animated: false, completion: nil)
             dummyExpectation.fulfill()
         }
         
