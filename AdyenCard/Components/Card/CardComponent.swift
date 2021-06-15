@@ -8,6 +8,10 @@ import Adyen
 import Foundation
 import UIKit
 
+public protocol ClearableComponent {
+    func clear()
+}
+
 /// Delegate for observing user's activity on `CardComponent`.
 public protocol CardComponentDelegate: AnyObject {
     
@@ -32,7 +36,8 @@ public class CardComponent: CardPublicKeyConsumer,
     PresentableComponent,
     Localizable,
     Observer,
-    LoadingComponent {
+    LoadingComponent,
+    ClearableComponent {
     
     /// :nodoc:
     public let apiContext: APIContext
@@ -170,7 +175,13 @@ public class CardComponent: CardPublicKeyConsumer,
         formViewController.title = paymentMethod.name
         return formViewController
     }()
-
+    
+    // MARK: - ClearProtocol
+    
+    public func clear() {
+        // TODO: - Add clear logic
+        print("CLEAR INPUT FIELDS")
+    }
 }
 
 extension CardComponent: CardViewControllerDelegate {
