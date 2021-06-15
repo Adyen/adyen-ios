@@ -26,14 +26,11 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
         safariViewController.delegate = self
         safariViewController.modalPresentationStyle = style?.modalPresentationStyle ?? .formSheet
         safariViewController.presentationController?.delegate = self
+        safariViewController.dismissButtonStyle = .cancel
 
         style.map {
             safariViewController.preferredBarTintColor = $0.preferredBarTintColor
             safariViewController.preferredControlTintColor = $0.preferredControlTintColor
-        }
-
-        if #available(iOS 11, *) {
-            safariViewController.dismissButtonStyle = .cancel
         }
 
         return safariViewController
