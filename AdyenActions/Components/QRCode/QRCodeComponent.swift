@@ -137,14 +137,14 @@ public final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
     
     /// :nodoc:
     private func createViewController(with action: QRCodeAction) -> UIViewController {
-        let view = QRCodeView(model: createModel(with: action))
-        view.delegate = self
-        return ADYViewController(view: view)
+        let viewController = QRCodeViewController(viewModel: createModel(with: action))
+        viewController.qrCodeView.delegate = self
+        return viewController
     }
     
     /// :nodoc:
     private func createModel(with action: QRCodeAction) -> QRCodeView.Model {
-        let url = LogoURLProvider.logoURL(withName: "pix", environment: apiContext.environment)
+        let url = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: apiContext.environment)
         return QRCodeView.Model(
             instruction: localizedString(.pixInstructions, localizationParameters),
             logoUrl: url,

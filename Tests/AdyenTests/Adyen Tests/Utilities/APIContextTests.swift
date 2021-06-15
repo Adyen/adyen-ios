@@ -29,7 +29,7 @@ class APIContextTests: XCTestCase {
             AdyenAssertion.listener = nil
         }
         
-        let _ = APIContext(environment: Dummy.context.environment, clientKey: "invalid_client_key")
+        _ = APIContext(environment: Dummy.context.environment, clientKey: "invalid_client_key")
         
         wait(for: [expectation], timeout: 2)
     }

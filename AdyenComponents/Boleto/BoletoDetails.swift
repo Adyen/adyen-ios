@@ -49,7 +49,7 @@ public struct BoletoDetails: PaymentMethodDetails, ShopperInformation {
         self.billingAddress = billingAddress
     }
     
-    public enum CodingKeys: CodingKey {
+    private enum CodingKeys: CodingKey {
         case type
     }
 }

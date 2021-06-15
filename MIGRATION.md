@@ -33,3 +33,4 @@ func didFail(with error: Error, from component: PaymentComponent) {
 - Add assert check on `Amount` init to validate currency code.
 - Make `countryCode` non-optional for `Payment`.
 - Add assert check on `Payment` init to validate country code.
+- Move individual `ActionComponent` styles into one struct `ActionComponentStyle`, which is an instance variable in `DropInComponent.Style`.

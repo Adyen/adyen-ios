@@ -11,203 +11,19 @@ skip_undocumented: false
 hide_documentation_coverage: true
 
 custom_categories:
+  
   - name: Drop In Component
     children:
       - DropInComponent
       - DropInComponentDelegate
-  - name: Card Component
-    children:
-      - CardComponent
-      - CardDetails
-      - CardEncryptor
-      - CardType
-      - CardExpiryDateFormatter
-      - CardExpiryDateValidator
-      - CardSecurityCodeFormatter
-      - CardSecurityCodeValidator
-      - CardNumberFormatter
-      - CardNumberValidator
-      - CardComponentDelegate
-      - StoredCardConfiguration
-      - CardBrand
-  - name: Qiwi Wallet Component
-    children:
-      - QiwiWalletComponent
-      - QiwiWalletDetails
-      - QiwiWalletPaymentMethod
-  - name: MB Way Component
-    children:
-      - MBWayComponent
-      - MBWayDetails
-      - MBWayPaymentMethod
-  - name: BLIK Component
-    children:
-      - BLIKComponent
-      - BLIKDetails
-      - BLIKPaymentMethod
-      - StoredBLIKPaymentMethod
-  - name: Boleto Component
-    children:
-      - BoletoComponent
-      - BoletoPaymentMethod
-      - BoletoDetails
-  - name: Gift Card Component
-    children:
-      - GiftCardComponent
-      - GiftCardDetails
-      - GiftCardPaymentMethod
-  - name: Await Action Component
-    children:
-      - AwaitComponent
-      - AwaitActionDetails
-      - AwaitPaymentMethod
-  - name: Doku Component
-    children:
-      - DokuComponent
-      - DokuDetails
-      - DokuPaymentMethod
-  - name: EContext ATM Component
-    children:
-      - EContextATMComponent
-      - EContextATMPaymentMethod
-  - name: EContext Online Component
-    children:
-      - EContextOnlineComponent
-      - EContextOnlinePaymentMethod
-  - name: EContext Store Component
-    children:
-      - EContextStoreComponent
-      - EContextStoresPaymentMethod
-  - name: Seven Eleven Component
-    children:
-      - SevenElevenComponent
-      - SevenElevenPaymentMethod
-  - name: Voucher Action Component
-    children:
-      - VoucherComponent
-      - VoucherAction
-      - VoucherPaymentMethod
-  - name: QR Code Component
-    children:
-      - QRCodeComponent
-      - QRCodeAction
-      - QRCodePaymentMethod
-  - name: WeChat Pay
-    children:
-      - WeChatPaySDKActionComponent
-      - WeChatPayPaymentMethod
-      - WeChatPaySDKAction
-      - WeChatPaySDKData
-  - name: 3D Secure 2 Component
-    children:
-      - ThreeDS2Component
-      - ThreeDS2ComponentError
-      - ThreeDS2Details
-  - name: Apple Pay Component
-    children:
-      - ApplePayComponent
-      - ApplePayDetails
-  - name: BCMC Component
-    children:
-      - BCMCComponent
-  - name: SEPA Direct Debit Component
-    children:
-      - SEPADirectDebitComponent
-      - SEPADirectDebitDetails
-      - IBANFormatter
-      - IBANValidator
-  - name: Issuer List Component
-    children:
-      - IssuerListComponent
-      - IssuerListDetails
-      - IdealComponent
-      - IdealDetails
-      - MOLPayComponent
-      - MOLPayDetails
-      - DotpayComponent
-      - DotpayDetails
-      - EPSComponent
-      - EPSDetails
-      - EntercashComponent
-      - EntercashDetails
-      - OpenBankingComponent
-      - OpenBankingDetails
-  - name: Adyen Action Component
-    children:
-      - AdyenActionComponent
-  - name: Redirect Component
-    children:
-      - RedirectComponent
-      - RedirectDetails
-  - name: Base Component
-    children:
-      - Component
-      - PaymentComponent
-      - FinalizableComponent
-      - PaymentAwareComponent
-      - TrackableComponent
-      - PaymentComponentData
-      - PaymentComponentDelegate
-      - PresentationDelegate
-      - PartialPaymentDelegate
-      - PartialPaymentComponent
-      - ReadyToSubmitPaymentComponentDelegate
-      - ActionComponent
-      - ActionComponentData
-      - ActionComponentDelegate
-      - PresentableComponent
-      - Details
-      - PaymentOrder
-      - PaymentMethodDetails
-      - AdditionalDetails
-      - ComponentError
-      - PartialPaymentError
-      - SecuredViewController
-      - Localizable
-  - name: Models
-    children:
-      - PaymentMethods
-      - PaymentMethod
-      - StoredPaymentMethod
-      - StoredCardPaymentMethod
-      - StoredBCMCPaymentMethod
-      - StoredPayPalPaymentMethod
-      - StoredBLIKPaymentMethod
-      - AnyCardPaymentMethod
-      - CardPaymentMethod
-      - IssuerListPaymentMethod
-      - ApplePayPaymentMethod
-      - BCMCPaymentMethod
-      - SEPADirectDebitPaymentMethod
-      - EContextPaymentMethod
-      - ShopperInteraction
-      - DisplayInformation
-      - Payment
-      - Action
-      - RedirectAction
-      - GenericVoucherAction
-      - BoletoVoucherAction
-      - DokuVoucherAction
-      - EContextATMVoucherAction
-      - EContextStoresVoucherAction
-      - ThreeDS2Action
-      - SDKAction
-      - ThreeDS2FingerprintAction
-      - ThreeDS2ChallengeAction
-      - AwaitAction
-      - QRCodeAction
-      - CardFundingSource
-      - BrowserInfo
-      - ShopperName
-      - PostalAddress
-      - ShopperInformation
-      - PrefilledShopperInformation
-      - PartialPaymentOrder
-      - Amount
-      - Balance
-      - LocalizationParameters
+      
   - name: Styling
     children:
+      - TextStyle
+      - ButtonStyle
+      - ImageStyle
+      - CornerRounding
+      - ToolbarMode
       - FormComponentStyle
       - FormHeaderStyle
       - FormFooterStyle
@@ -223,16 +39,235 @@ custom_categories:
       - VoucherComponentStyle
       - QRCodeComponentStyle
       - NavigationStyle
-      - ToolbarMode
-      - ButtonStyle
       - CancelButtonStyle
-      - ImageStyle
-      - TextStyle
-      - ViewStyle
-      - TintableStyle
       - ProgressViewStyle
-      - CornerRounding
-  - name: Other
+
+  - name: Payment Methods
+    children:
+      - PaymentMethod
+      - PaymentMethods
+      - StoredPaymentMethod
+      - StoredCardPaymentMethod
+      - StoredBCMCPaymentMethod
+      - StoredPayPalPaymentMethod
+      - StoredBLIKPaymentMethod
+      - StoredPayPalPaymentMethod
+      - AnyCardPaymentMethod
+      - CardPaymentMethod
+      - BCMCPaymentMethod
+      - IssuerListPaymentMethod
+      - ApplePayPaymentMethod
+      - SEPADirectDebitPaymentMethod
+      - QiwiWalletPaymentMethod
+      - AwaitPaymentMethod
+      - MBWayPaymentMethod
+      - BLIKPaymentMethod
+      - VoucherPaymentMethod
+      - DokuPaymentMethod
+      - EContextPaymentMethod
+      - SevenElevenPaymentMethod
+      - QRCodePaymentMethod
+      - WeChatPayPaymentMethod
+      
+  - name: Actions
+    children:
+      - Action
+      - RedirectAction
+      - ThreeDS2Action
+      - ThreeDS2FingerprintAction
+      - ThreeDS2ChallengeAction
+      - AwaitAction
+      - GenericVoucherAction
+      - VoucherAction
+      - DokuVoucherAction
+      - EContextATMVoucherAction
+      - EContextStoresVoucherAction
+      - QRCodeAction
+      - SDKAction
+      - WeChatPaySDKAction
+      - BoletoVoucherAction
+      - DokuVoucherAction
+      - EContextATMVoucherAction
+      - EContextStoresVoucherAction
+      
+  - name: Action-handling components
+    children:
+      - AdyenActionComponent
+      - VoucherComponent
+      - QRCodeComponent
+      - AwaitComponent
+      - AwaitActionDetails
+      - RedirectComponent
+      - RedirectDetails
+      - WeChatPaySDKActionComponent
+            
+      
+  - name: Card Component
+    children:
+      - AnyCardPaymentMethod
+      - CardPaymentMethod
+      - BCMCPaymentMethod
+      - StoredCardPaymentMethod
+      - StoredBCMCPaymentMethod
+      - CardComponent
+      - BCMCComponent
+      - CardDetails
+      - CardFundingSource
+      - CardType
+      - CardBrand
+      - CardExpiryDateFormatter
+      - CardExpiryDateValidator
+      - CardSecurityCodeFormatter
+      - CardSecurityCodeValidator
+      - CardNumberFormatter
+      - CardNumberValidator
+      - CardComponentDelegate
+      - StoredCardConfiguration
+      
+  - name: 3D Secure 2 Component
+    children:
+      - ThreeDS2Component
+      - ThreeDS2Details
+      - ThreeDS2Action
+      - ThreeDS2FingerprintAction
+      - ThreeDS2ChallengeAction
+
+  - name: Apple Pay Component
+    children:
+      - ApplePayPaymentMethod
+      - ApplePayComponent
+      - ApplePayDetails
+      
+  - name: Gift Card Component
+    children:
+      - GiftCardComponent
+      - GiftCardDetails
+      - GiftCardPaymentMethod
+      
+  - name: SEPA Direct Debit Component
+    children:
+      - SEPADirectDebitPaymentMethod
+      - SEPADirectDebitComponent
+      - SEPADirectDebitDetails
+      - IBANFormatter
+      - IBANValidator
+      
+  - name: Qiwi Wallet Component
+    children:
+      - QiwiWalletPaymentMethod
+      - QiwiWalletComponent
+      - QiwiWalletDetails
+      
+  - name: BLIK Component
+    children:
+      - BLIKPaymentMethod
+      - StoredBLIKPaymentMethod
+      - BLIKComponent
+      - BLIKDetails
+            
+  - name: Boleto Component
+    children:
+      - BoletoComponent
+      - BoletoPaymentMethod
+      - BoletoDetails
+      
+  - name: MBWay Component
+    children:
+      - MBWayPaymentMethod
+      - MBWayComponent
+      - MBWayDetails
+      
+  - name: WeChat Pay
+    children:
+      - WeChatPaySDKData
+      - WeChatPayPaymentMethod
+      - WeChatPaySDKActionComponent
+      - WeChatPaySDKAction
+      
+  - name: Issuer List Component
+    children:
+      - IssuerListComponent
+      - IdealComponent
+      - MOLPayComponent
+      - DotpayComponent
+      - EPSComponent
+      - EntercashComponent
+      - OpenBankingComponent
+      - EntercashDetails
+      - OpenBankingDetails
+      - EPSDetails
+      - DotpayDetails
+      - MOLPayDetails
+      - IdealDetails
+      - IssuerListDetails
+      
+  - name: EContext Component
+    children:
+      - EContextPaymentMethod
+      - EContextATMComponent
+      - EContextOnlineComponent
+      - EContextStoreComponent
+      - EContextATMVoucherAction
+      - EContextStoresVoucherAction
+      - SevenElevenPaymentMethod
+      - SevenElevenComponent
+
+  - name: Doku Component
+    children:
+      - VoucherPaymentMethod
+      - DokuPaymentMethod
+      - DokuComponent
+      - DokuDetails
+      
+  - name: Public Protocols
+    children:
+      - Component
+      - ComponentError
+      - PaymentComponent
+      - PresentableComponent
+      - ActionComponent
+      - FinalizableComponent
+      - PaymentAwareComponent
+      - PartialPaymentComponent
+      - PartialPaymentError
+      - Details
+      - AdditionalDetails
+      - PaymentMethodDetails
+      
+  - name: Public delegates
+    children:
+      - ActionComponentDelegate
+      - PaymentComponentDelegate
+      - PresentationDelegate
+      - PartialPaymentDelegate
+      
+  - name: Models
+    children:
+      - APIContext
+      - Payment
+      - Amount
+      - Balance
+      - PaymentOrder
+      - ShopperName
+      - PostalAddress
+      - ShopperInteraction
+      - DisplayInformation
+      - CardFundingSource
+      - BrowserInfo
+      - ShopperName
+      - ShopperInformation
+      - PrefilledShopperInformation
+      - PartialPaymentOrder
+      - PaymentComponentData
+      - ActionComponentData
+      
+  - name: Encryption
+    children:
+      - CardEncryptor
+      - Card
+      - EncryptedCard
+      
+  - name: Utilities
     children:
       - AdyenLogging
       - Formatter
@@ -240,8 +275,6 @@ custom_categories:
       - LengthValidator
       - Environment
       - LogoURLProvider
-  - name: Encryption
-    children:
-      - CardEncryptor
-      - Card
-      - EncryptedCard
+      - SecuredViewController
+      - Localizable
+      - LocalizationParameters

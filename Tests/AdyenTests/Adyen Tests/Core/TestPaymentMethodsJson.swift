@@ -297,19 +297,19 @@ let econtextATMAction: [String: Any] = [
 ]
 
 let boletoAction: [String: Any] = [
-    "reference" : "03399.33335 33852.193698 57889.001020 3 86360000017408",
-    "initialAmount" : [
-      "currency" : "BRL",
-      "value" : 17408
+    "reference": "03399.33335 33852.193698 57889.001020 3 86360000017408",
+    "initialAmount": [
+        "currency": "BRL",
+        "value": 17408
     ],
-    "downloadUrl" : "https://test.adyen.com/hpp/generationBoleto.shtml?data=BQABAQCGgaWQP0LNLQ0",
-    "paymentMethodType" : "boletobancario_santander",
-    "totalAmount" : [
-      "currency" : "BRL",
-      "value" : 17408
+    "downloadUrl": "https://test.adyen.com/hpp/generationBoleto.shtml?data=BQABAQCGgaWQP0LNLQ0",
+    "paymentMethodType": "boletobancario_santander",
+    "totalAmount": [
+        "currency": "BRL",
+        "value": 17408
     ],
-    "expiresAt" : "2021-05-30T00:00:00",
-    "type" : "voucher"
+    "expiresAt": "2021-05-30T00:00:00",
+    "type": "voucher"
 ]
 
 let weChatMiniProgramDictionary = [

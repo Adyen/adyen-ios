@@ -117,7 +117,7 @@ internal class ThreeDS2CoreActionHandler: Component {
                          event: Analytics.Event,
                          completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
         guard let transaction = transaction else {
-            return didFail(with: ThreeDS2ComponentError.missingTransaction, completionHandler: completionHandler)
+            return didFail(with: ThreeDS2Component.Error.missingTransaction, completionHandler: completionHandler)
         }
 
         Analytics.sendEvent(event)

@@ -50,13 +50,18 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
     internal let requiresModalPresentation: Bool = true
     
     /// :nodoc:
-    internal init(apiContext: APIContext,
+    internal init(paymentMethod: ApplePayPaymentMethod,
+                  apiContext: APIContext,
+                  payment: Payment,
                   configuration: ApplePayComponent.Configuration) throws {
         self.apiContext = apiContext
-        self._payment = configuration.payment
-        self.paymentMethod = configuration.paymentMethod
-        
-        self.applePayComponent = try ApplePayComponent(configuration: configuration, apiContext: apiContext)
+        self._payment = payment
+        self.paymentMethod = paymentMethod
+
+        self.applePayComponent = try ApplePayComponent(paymentMethod: paymentMethod,
+                                                       apiContext: apiContext,
+                                                       payment: payment,
+                                                       configuration: configuration)
         self.applePayComponent.delegate = self
     }
     

@@ -41,4 +41,29 @@ class DropInActionsTests: XCTestCase {
         waitForExpectations(timeout: 15, handler: nil)
     }
 
+    func testOpenExternalApp() {
+        let config = DropInComponent.Configuration(apiContext: Dummy.context)
+        config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
+
+        let waitExpectation = expectation(description: "Expect a callback")
+        let mock = DropInDelegateMock()
+
+        let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
+        sut = DropInComponent(paymentMethods: paymenMethods, configuration: config)
+        sut.delegate = mock
+
+        mock.didOpenExternalApplicationHandler = { _ in
+            waitExpectation.fulfill()
+        }
+
+        let root = UIViewController()
+        UIApplication.shared.keyWindow?.rootViewController = root
+
+        root.present(sut.viewController, animated: true) {
+            self.sut.didOpenExternalApplication(RedirectComponent(apiContext: Dummy.context))
+        }
+
+        waitForExpectations(timeout: 15, handler: nil)
+    }
+
 }
