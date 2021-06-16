@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Balance Structure Reference</title>
+    <title>ActionComponentStyle Structure Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -14,9 +14,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Struct/Balance" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Struct/ActionComponentStyle" class="dashAnchor"></a>
 
-    <a title="Balance Structure Reference"></a>
+    <a title="ActionComponentStyle Structure Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -44,7 +44,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html">Adyen Reference</a>
       <img class="carat" src="../img/carat.png" />
-      Balance Structure Reference
+      ActionComponentStyle Structure Reference
     </p>
 
     <div class="content-wrapper">
@@ -714,15 +714,15 @@
 
         <section class="section">
           <div class="section-content top-matter">
-            <h1>Balance</h1>
+            <h1>ActionComponentStyle</h1>
               <div class="declaration">
                 <div class="language">
                   
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Balance</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ActionComponentStyle</span></code></pre>
 
                 </div>
               </div>
-            <p>Describes an account balance.</p>
+            <p>/// Contains the styling customization options for various Action Components.</p>
 
           </div>
         </section>
@@ -734,9 +734,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:5Adyen7BalanceV15availableAmountAA0D0Vvp"></a>
-                    <a name="//apple_ref/swift/Property/availableAmount" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen7BalanceV15availableAmountAA0D0Vvp">availableAmount</a>
+                    <a name="/s:5Adyen20ActionComponentStyleV08redirectcD0AA08RedirectcD0Vvp"></a>
+                    <a name="//apple_ref/swift/Property/redirectComponentStyle" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen20ActionComponentStyleV08redirectcD0AA08RedirectcD0Vvp">redirectComponentStyle</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -744,14 +744,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Indicates the available balance.</p>
+                        <p>Indicates the UI configuration of the redirect component.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">availableAmount</span><span class="p">:</span> <span class="kt"><a href="../Structs/Amount.html">Amount</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">redirectComponentStyle</span><span class="p">:</span> <span class="kt"><a href="../Structs/RedirectComponentStyle.html">RedirectComponentStyle</a></span></code></pre>
 
                         </div>
                       </div>
@@ -761,9 +761,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:5Adyen7BalanceV16transactionLimitAA6AmountVSgvp"></a>
-                    <a name="//apple_ref/swift/Property/transactionLimit" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen7BalanceV16transactionLimitAA6AmountVSgvp">transactionLimit</a>
+                    <a name="/s:5Adyen20ActionComponentStyleV05awaitcD0AA05AwaitcD0Vvp"></a>
+                    <a name="//apple_ref/swift/Property/awaitComponentStyle" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen20ActionComponentStyleV05awaitcD0AA05AwaitcD0Vvp">awaitComponentStyle</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -771,15 +771,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Indicates the maximum spendable balance for a single transaction,
-as mandated by the account issuer, regardless of the account balance.</p>
+                        <p>Indicates the UI configuration of the await component.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">transactionLimit</span><span class="p">:</span> <span class="kt"><a href="../Structs/Amount.html">Amount</a></span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">awaitComponentStyle</span><span class="p">:</span> <span class="kt"><a href="../Structs/AwaitComponentStyle.html">AwaitComponentStyle</a></span></code></pre>
 
                         </div>
                       </div>
@@ -789,9 +788,9 @@ as mandated by the account issuer, regardless of the account balance.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:5Adyen7BalanceV15availableAmount16transactionLimitAcA0D0V_AGSgtcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(availableAmount:transactionLimit:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen7BalanceV15availableAmount16transactionLimitAcA0D0V_AGSgtcfc">init(availableAmount:<wbr>transactionLimit:<wbr>)</a>
+                    <a name="/s:5Adyen20ActionComponentStyleV07vouchercD0AA07VouchercD0Vvp"></a>
+                    <a name="//apple_ref/swift/Property/voucherComponentStyle" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen20ActionComponentStyleV07vouchercD0AA07VouchercD0Vvp">voucherComponentStyle</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -799,14 +798,73 @@ as mandated by the account issuer, regardless of the account balance.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Initializes a Balance.</p>
+                        <p>Indicates the UI configuration of the voucher component.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">availableAmount</span><span class="p">:</span> <span class="kt"><a href="../Structs/Amount.html">Amount</a></span><span class="p">,</span> <span class="nv">transactionLimit</span><span class="p">:</span> <span class="kt"><a href="../Structs/Amount.html">Amount</a></span><span class="p">?)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">voucherComponentStyle</span><span class="p">:</span> <span class="kt"><a href="../Structs/VoucherComponentStyle.html">VoucherComponentStyle</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen20ActionComponentStyleV06qrCodecD0AA06QRCodecD0Vvp"></a>
+                    <a name="//apple_ref/swift/Property/qrCodeComponentStyle" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen20ActionComponentStyleV06qrCodecD0AA06QRCodecD0Vvp">qrCodeComponentStyle</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Indicates the UI configuration of the QR code component.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">qrCodeComponentStyle</span><span class="p">:</span> <span class="kt"><a href="../Structs/QRCodeComponentStyle.html">QRCodeComponentStyle</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen20ActionComponentStyleV08redirectcD005awaitcD007vouchercD006qrCodecD0AcA08RedirectcD0V_AA05AwaitcD0VAA07VouchercD0VAA06QRCodecD0Vtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(redirectComponentStyle:awaitComponentStyle:voucherComponentStyle:qrCodeComponentStyle:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen20ActionComponentStyleV08redirectcD005awaitcD007vouchercD006qrCodecD0AcA08RedirectcD0V_AA05AwaitcD0VAA07VouchercD0VAA06QRCodecD0Vtcfc">init(redirectComponentStyle:<wbr>awaitComponentStyle:<wbr>voucherComponentStyle:<wbr>qrCodeComponentStyle:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initializes the</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span>
+    <span class="nv">redirectComponentStyle</span><span class="p">:</span> <span class="kt"><a href="../Structs/RedirectComponentStyle.html">RedirectComponentStyle</a></span> <span class="o">=</span> <span class="kt"><a href="../Structs/RedirectComponentStyle.html">RedirectComponentStyle</a></span><span class="p">(),</span>
+    <span class="nv">awaitComponentStyle</span><span class="p">:</span> <span class="kt"><a href="../Structs/AwaitComponentStyle.html">AwaitComponentStyle</a></span> <span class="o">=</span> <span class="kt"><a href="../Structs/AwaitComponentStyle.html">AwaitComponentStyle</a></span><span class="p">(),</span>
+    <span class="nv">voucherComponentStyle</span><span class="p">:</span> <span class="kt"><a href="../Structs/VoucherComponentStyle.html">VoucherComponentStyle</a></span> <span class="o">=</span> <span class="kt"><a href="../Structs/VoucherComponentStyle.html">VoucherComponentStyle</a></span><span class="p">(),</span>
+    <span class="nv">qrCodeComponentStyle</span><span class="p">:</span> <span class="kt"><a href="../Structs/QRCodeComponentStyle.html">QRCodeComponentStyle</a></span> <span class="o">=</span> <span class="kt"><a href="../Structs/QRCodeComponentStyle.html">QRCodeComponentStyle</a></span><span class="p">()</span>
+<span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -817,25 +875,48 @@ as mandated by the account issuer, regardless of the account balance.</p>
                             <tr>
                               <td>
                                 <code>
-                                <em>availableAmount</em>
+                                <em>redirectComponentStyle</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The available balance.</p>
+                                  <p>The UI configuration of the redirect component.</p>
                                 </div>
                               </td>
                             </tr>
                             <tr>
                               <td>
                                 <code>
-                                <em>transactionLimit</em>
+                                <em>awaitComponentStyle</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The maximum spendable balance for a single transaction as mandated by the account issuer,
-regardless of the account balance.</p>
+                                  <p>The UI configuration of the await component.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>voucherComponentStyle</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The UI configuration of the voucher component.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>qrCodeComponentStyle</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The UI configuration of the QR code component.</p>
                                 </div>
                               </td>
                             </tr>
