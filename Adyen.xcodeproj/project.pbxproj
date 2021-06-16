@@ -629,6 +629,7 @@
 		F9FE25A82625B448001874BB /* GiftCardDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE24562624BCEC001874BB /* GiftCardDetails.swift */; };
 		F9FE25B42625ECE7001874BB /* CustomDisplayablePaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE25B32625ECE7001874BB /* CustomDisplayablePaymentMethod.swift */; };
 		F9FE25D62626CD49001874BB /* ReadyToSubmitPaymentComponentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE25D52626CD49001874BB /* ReadyToSubmitPaymentComponentDelegate.swift */; };
+		F9FE39E32679E09200F02A9B /* LoadingViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE39E22679E09200F02A9B /* LoadingViewTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1465,6 +1466,7 @@
 		F9FE253A2625AED6001874BB /* PartialPaymentComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialPaymentComponent.swift; sourceTree = "<group>"; };
 		F9FE25B32625ECE7001874BB /* CustomDisplayablePaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDisplayablePaymentMethod.swift; sourceTree = "<group>"; };
 		F9FE25D52626CD49001874BB /* ReadyToSubmitPaymentComponentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadyToSubmitPaymentComponentDelegate.swift; sourceTree = "<group>"; };
+		F9FE39E22679E09200F02A9B /* LoadingViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3131,7 +3133,7 @@
 				E95E24B222C1155A00973184 /* APIClient.swift */,
 				F9639B2C24DD6B370073F38A /* RetryAPIClient.swift */,
 				F9172FF526452E6E00985310 /* RetryOnErrorAPIClient.swift */,
-        F97BC2372667949100F1D242 /* UniqueAssetAPIClient.swift */,
+				F97BC2372667949100F1D242 /* UniqueAssetAPIClient.swift */,
 				F9639B3E24E18F620073F38A /* Scheduler.swift */,
 				F9639B4024E27D0E0073F38A /* BackoffScheduler.swift */,
 				F9639B4224E27FAE0073F38A /* SimpleScheduler.swift */,
@@ -3279,6 +3281,7 @@
 				E7620EAC23C3466B00A492C3 /* ModalViewControllerTests.swift */,
 				E7D5311B2447065B000046B4 /* PreselectedPaymentComponentTests.swift */,
 				E767F4DB25A603A50077029E /* ModalToolbarTests.swift */,
+				F9FE39E22679E09200F02A9B /* LoadingViewTests.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -4573,6 +4576,7 @@
 				F9639B5024E29D2D0073F38A /* AwaitComponentTests.swift in Sources */,
 				F97C83F725BF0C2800D7F85C /* DokuComponentTests.swift in Sources */,
 				F924C072246BEEF0006DDAB8 /* CardDetailsTests.swift in Sources */,
+				F9FE39E32679E09200F02A9B /* LoadingViewTests.swift in Sources */,
 				F96A25472372C39F007DBF0B /* ApplePayDetailsTest.swift in Sources */,
 				F9AC61C424375F510062A00D /* PresentingViewControllerMock.swift in Sources */,
 				5AF8CD4D26691D3A00102339 /* Dummy.swift in Sources */,
