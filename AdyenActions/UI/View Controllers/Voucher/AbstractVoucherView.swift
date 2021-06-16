@@ -99,16 +99,13 @@ internal class AbstractVoucherView: UIView, Localizable {
         return buttons
     }()
 
-    private lazy var appleWalletButton: LoadingView = {
+    private lazy var appleWalletButton: PKAddPassButton = {
         let button = PKAddPassButton(addPassButtonStyle: .black)
         button.addTarget(self, action: #selector(self.appleWalletButtonPressed), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.voucher", postfix: "appleWalletButton")
         
-        let view = LoadingView(contentView: button)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return view
+        return button
     }()
 
     private lazy var saveButton: UIButton = {
@@ -144,6 +141,10 @@ internal class AbstractVoucherView: UIView, Localizable {
     }
 
     private let model: Model
+    
+    private lazy var containerView = UIView()
+    
+    private lazy var loadingView = LoadingView(contentView: containerView)
 
     internal init(model: Model) {
         self.model = model
@@ -153,6 +154,9 @@ internal class AbstractVoucherView: UIView, Localizable {
     }
 
     private func buildUI() {
+        loadingView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(loadingView)
+        loadingView.adyen.anchor(inside: self)
         addVoucherView()
         addButtonsStackView()
     }
@@ -187,19 +191,19 @@ internal class AbstractVoucherView: UIView, Localizable {
 
     private func addVoucherView() {
         voucherView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(voucherView)
+        containerView.addSubview(voucherView)
 
-        voucherView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true
-        voucherView.topAnchor.constraint(equalTo: topAnchor, constant: 20).isActive = true
-        voucherView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
+        voucherView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20).isActive = true
+        voucherView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 20).isActive = true
+        voucherView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20).isActive = true
     }
 
     private func addButtonsStackView() {
-        addSubview(buttonsStackView)
-        buttonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 18).isActive = true
-        buttonsStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -18).isActive = true
+        containerView.addSubview(buttonsStackView)
+        buttonsStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 18).isActive = true
+        buttonsStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -18).isActive = true
         buttonsStackView.topAnchor.constraint(equalTo: voucherView.bottomAnchor, constant: 30).isActive = true
-        buttonsStackView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor, constant: -24).isActive = true
+        buttonsStackView.bottomAnchor.constraint(equalTo: containerView.layoutMarginsGuide.bottomAnchor, constant: -24).isActive = true
     }
 
     @objc private func shareVoucher() {
@@ -213,9 +217,9 @@ internal class AbstractVoucherView: UIView, Localizable {
 
     @objc private func appleWalletButtonPressed() {
         guard let passToken = model.passToken else { return }
-        appleWalletButton.showsActivityIndicator = true
+        loadingView.showsActivityIndicator = true
         delegate?.addToAppleWallet(passToken: passToken, presentingViewController: fakeViewController) { [weak self] _ in
-            self?.appleWalletButton.showsActivityIndicator = false
+            self?.loadingView.showsActivityIndicator = false
         }
     }
 

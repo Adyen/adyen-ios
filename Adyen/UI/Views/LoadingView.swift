@@ -21,18 +21,25 @@ public final class LoadingView: UIControl {
     
     private var activityIndicatorStyle: UIActivityIndicatorView.Style {
         if #available(iOS 13.0, *) {
-            return .medium
+            return .large
         } else {
-            return .white
+            return .whiteLarge
         }
     }
 
     private let contentView: UIView
+    
+    /// :nodoc:
+    public var disableUserInteractionWhileLoading: Bool = false
+    
+    /// :nodoc:
+    public var spinnerAppearanceDelay: DispatchTimeInterval = .seconds(1)
 
     /// :nodoc:
     public init(contentView: UIView) {
         self.contentView = contentView
         super.init(frame: .zero)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(contentView)
         addSubview(activityIndicatorView)
         contentView.adyen.anchor(inside: self)
@@ -57,14 +64,37 @@ public final class LoadingView: UIControl {
 
         set {
             if newValue {
-                activityIndicatorView.startAnimating()
-                isEnabled = false
-                isUserInteractionEnabled = false
+                startAnimating(after: spinnerAppearanceDelay)
             } else {
-                activityIndicatorView.stopAnimating()
-                isEnabled = true
-                isUserInteractionEnabled = true
+                stopAnimating()
             }
         }
+    }
+    
+    internal var workItem: DispatchWorkItem?
+    
+    private func startAnimating(after delay: DispatchTimeInterval) {
+        guard !activityIndicatorView.isAnimating else { return }
+        workItem?.cancel()
+        workItem = nil
+        let workItem = DispatchWorkItem { [weak self] in
+            self?.startAnimating()
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: workItem)
+        self.workItem = workItem
+    }
+    
+    private func startAnimating() {
+        activityIndicatorView.startAnimating()
+        isEnabled = !disableUserInteractionWhileLoading
+        isUserInteractionEnabled = !disableUserInteractionWhileLoading
+    }
+    
+    private func stopAnimating() {
+        workItem?.cancel()
+        workItem = nil
+        activityIndicatorView.stopAnimating()
+        isEnabled = true
+        isUserInteractionEnabled = true
     }
 }
