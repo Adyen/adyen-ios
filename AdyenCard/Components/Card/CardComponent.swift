@@ -180,7 +180,9 @@ public class CardComponent: CardPublicKeyConsumer,
     
     public func clear() {
         // TODO: - Add clear logic
+        cardViewController.numberItem.value = ""
         print("CLEAR INPUT FIELDS")
+        
     }
 }
 
