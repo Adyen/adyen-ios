@@ -27,7 +27,7 @@ public enum VoucherPaymentMethod: String, Codable, CaseIterable {
 }
 
 /// Describes any Voucher action.
-public enum VoucherAction: Decodable {
+public enum VoucherAction: Decodable, AnyVoucherAction {
 
     /// Indicates Doku Indomaret Voucher type.
     case dokuIndomaret(DokuVoucherAction)
@@ -67,10 +67,26 @@ public enum VoucherAction: Decodable {
     private enum CodingKeys: String, CodingKey {
         case paymentMethodType
     }
+
+    /// :nodoc:
+    public var passCreationToken: String? {
+        switch self {
+        case let .boletoBancairoSantander(action):
+            return action.passCreationToken
+        case let .dokuAlfamart(action):
+            return action.passCreationToken
+        case let .dokuIndomaret(action):
+            return action.passCreationToken
+        case let .econtextATM(action):
+            return action.passCreationToken
+        case let .econtextStores(action):
+            return action.passCreationToken
+        }
+    }
 }
 
 /// Describes an action in which a voucher is presented to the shopper.
-public class GenericVoucherAction: Decodable {
+public class GenericVoucherAction: Decodable, AnyVoucherAction {
 
     /// The `paymentMethodType` for which the voucher is presented.
     public let paymentMethodType: VoucherPaymentMethod
@@ -94,6 +110,9 @@ public class GenericVoucherAction: Decodable {
     public let instructionsUrl: String
 
     /// :nodoc:
+    public let passCreationToken: String?
+
+    /// :nodoc:
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         paymentMethodType = try container.decode(VoucherPaymentMethod.self, forKey: .paymentMethodType)
@@ -102,6 +121,7 @@ public class GenericVoucherAction: Decodable {
         reference = try container.decode(String.self, forKey: .reference)
         merchantName = try container.decode(String.self, forKey: .merchantName)
         instructionsUrl = try container.decode(String.self, forKey: .instructionsUrl)
+        passCreationToken = try container.decodeIfPresent(String.self, forKey: .passCreationToken)
 
         let expiresAtString = try container.decode(String.self, forKey: .expiresAt)
         let dateFormatter = ISO8601DateFormatter()
@@ -126,7 +146,8 @@ public class GenericVoucherAction: Decodable {
                   reference: String,
                   expiresAt: Date,
                   merchantName: String,
-                  instructionsUrl: String) {
+                  instructionsUrl: String,
+                  passCreationToken: String? = nil) {
         self.paymentMethodType = paymentMethodType
         self.initialAmount = initialAmount
         self.totalAmount = totalAmount
@@ -134,6 +155,7 @@ public class GenericVoucherAction: Decodable {
         self.expiresAt = expiresAt
         self.merchantName = merchantName
         self.instructionsUrl = instructionsUrl
+        self.passCreationToken = passCreationToken
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -145,7 +167,8 @@ public class GenericVoucherAction: Decodable {
              merchantName,
              shopperName,
              instructionsUrl,
-             expiresAt
+             expiresAt,
+             passCreationToken
 
     }
 }

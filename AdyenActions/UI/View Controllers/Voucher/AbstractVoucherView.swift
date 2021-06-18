@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import PassKit
 import UIKit
 
 internal protocol VoucherViewDelegate: AnyObject {
@@ -14,6 +15,8 @@ internal protocol VoucherViewDelegate: AnyObject {
     func saveAsImage(voucherView: UIView, presentingViewController: UIViewController)
     
     func download(url: URL, voucherView: UIView, presentingViewController: UIViewController)
+
+    func addToAppleWallet(passToken: String, presentingViewController: UIViewController, completion: ((Bool) -> Void)?)
 }
 
 internal class AbstractVoucherView: UIView, Localizable {
@@ -37,6 +40,8 @@ internal class AbstractVoucherView: UIView, Localizable {
         internal let shareButtonTitle: String
 
         internal let doneButtonTitle: String
+
+        internal let passToken: String?
 
         internal let style: Style
 
@@ -74,6 +79,35 @@ internal class AbstractVoucherView: UIView, Localizable {
                                bottomView: bottomView)
     }()
 
+    private lazy var buttonsStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: buttons)
+        stackView.axis = .vertical
+        stackView.alignment = .fill
+        stackView.spacing = 20
+        stackView.preservesSuperviewLayoutMargins = true
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+
+    private lazy var buttons: [UIView] = {
+        var buttons = [UIView]()
+        if model.passToken != nil {
+            buttons.append(appleWalletButton)
+        }
+        buttons.append(saveButton)
+        buttons.append(doneButton)
+        return buttons
+    }()
+
+    private lazy var appleWalletButton: PKAddPassButton = {
+        let button = PKAddPassButton(addPassButtonStyle: .black)
+        button.addTarget(self, action: #selector(self.appleWalletButtonPressed), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.voucher", postfix: "appleWalletButton")
+        
+        return button
+    }()
+
     private lazy var saveButton: UIButton = {
         let accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.voucher", postfix: "saveButton")
 
@@ -107,6 +141,10 @@ internal class AbstractVoucherView: UIView, Localizable {
     }
 
     private let model: Model
+    
+    private lazy var containerView = UIView()
+    
+    private lazy var loadingView = LoadingView(contentView: containerView)
 
     internal init(model: Model) {
         self.model = model
@@ -116,9 +154,11 @@ internal class AbstractVoucherView: UIView, Localizable {
     }
 
     private func buildUI() {
+        loadingView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(loadingView)
+        loadingView.adyen.anchor(inside: self)
         addVoucherView()
-        addShareButton()
-        addDoneButton()
+        addButtonsStackView()
     }
 
     @available(*, unavailable)
@@ -151,26 +191,19 @@ internal class AbstractVoucherView: UIView, Localizable {
 
     private func addVoucherView() {
         voucherView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(voucherView)
+        containerView.addSubview(voucherView)
 
-        voucherView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true
-        voucherView.topAnchor.constraint(equalTo: topAnchor, constant: 20).isActive = true
-        voucherView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
+        voucherView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20).isActive = true
+        voucherView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 20).isActive = true
+        voucherView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20).isActive = true
     }
 
-    private func addShareButton() {
-        addSubview(saveButton)
-        saveButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 18).isActive = true
-        saveButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -18).isActive = true
-        saveButton.topAnchor.constraint(equalTo: voucherView.bottomAnchor, constant: 30).isActive = true
-    }
-
-    private func addDoneButton() {
-        addSubview(doneButton)
-        doneButton.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor, constant: -24).isActive = true
-        doneButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 18).isActive = true
-        doneButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -18).isActive = true
-        doneButton.topAnchor.constraint(equalTo: saveButton.bottomAnchor, constant: 16).isActive = true
+    private func addButtonsStackView() {
+        containerView.addSubview(buttonsStackView)
+        buttonsStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 18).isActive = true
+        buttonsStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -18).isActive = true
+        buttonsStackView.topAnchor.constraint(equalTo: voucherView.bottomAnchor, constant: 30).isActive = true
+        buttonsStackView.bottomAnchor.constraint(equalTo: containerView.layoutMarginsGuide.bottomAnchor, constant: -24).isActive = true
     }
 
     @objc private func shareVoucher() {
@@ -179,6 +212,14 @@ internal class AbstractVoucherView: UIView, Localizable {
             delegate?.saveAsImage(voucherView: voucherView, presentingViewController: fakeViewController)
         case let .download(url):
             delegate?.download(url: url, voucherView: voucherView, presentingViewController: fakeViewController)
+        }
+    }
+
+    @objc private func appleWalletButtonPressed() {
+        guard let passToken = model.passToken else { return }
+        loadingView.showsActivityIndicator = true
+        delegate?.addToAppleWallet(passToken: passToken, presentingViewController: fakeViewController) { [weak self] _ in
+            self?.loadingView.showsActivityIndicator = false
         }
     }
 
