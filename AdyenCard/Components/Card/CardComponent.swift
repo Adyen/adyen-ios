@@ -180,7 +180,17 @@ public class CardComponent: CardPublicKeyConsumer,
     
     public func clear() {
         // TODO: - Add clear logic
+        
+        // 1. Clear logic
+        cardViewController.postalCodeItem.value = ""
         cardViewController.numberItem.value = ""
+        cardViewController.expiryDateItem.value = ""
+        cardViewController.securityCodeItem.value = ""
+        cardViewController.holderNameItem.value = ""
+        cardViewController.storeDetailsItem.value = false
+        
+        // 2. Move logic to VC
+        
         print("CLEAR INPUT FIELDS")
         
     }
