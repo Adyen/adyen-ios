@@ -91,7 +91,7 @@ internal class AbstractVoucherView: UIView, Localizable {
 
     private lazy var buttons: [UIView] = {
         var buttons = [UIView]()
-        if let passToken = model.passToken {
+        if model.passToken != nil {
             buttons.append(appleWalletButton)
         }
         buttons.append(saveButton)
