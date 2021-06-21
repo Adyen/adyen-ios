@@ -7,8 +7,8 @@
 //
 
 import Adyen
-import AdyenDropIn
 import AdyenActions
+import AdyenDropIn
 
 class DropInDelegateMock: DropInComponentDelegate {
 

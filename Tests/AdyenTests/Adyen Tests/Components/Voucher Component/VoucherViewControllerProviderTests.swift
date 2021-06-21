@@ -7,9 +7,10 @@
 import Adyen
 @testable import AdyenActions
 import UIKit
+import PassKit
 import XCTest
 
-class DokuVoucherViewControllerProviderTests: XCTestCase {
+class VoucherViewControllerProviderTests: XCTestCase {
 
     func testCustomLocalization() throws {
         let dokuAction = try Coder.decode(dokuIndomaretAction) as DokuVoucherAction
@@ -55,8 +56,8 @@ class DokuVoucherViewControllerProviderTests: XCTestCase {
     }
 
     func testCustomUI() throws {
-        let dokuAction = try Coder.decode(dokuIndomaretAction) as DokuVoucherAction
-        let action: VoucherAction = .dokuIndomaret(dokuAction)
+        let econtextAction = try Coder.decode(econtextStoresAction) as EContextStoresVoucherAction
+        let action: VoucherAction = .econtextStores(econtextAction)
 
         var style = VoucherComponentStyle()
         style.mainButton.backgroundColor = UIColor.cyan
@@ -93,6 +94,102 @@ class DokuVoucherViewControllerProviderTests: XCTestCase {
         XCTAssertEqual(saveButton.layer.borderWidth, 3)
         XCTAssertEqual(saveButton.layer.borderColor, UIColor.red.cgColor)
         XCTAssertEqual(saveButton.layer.cornerRadius, 6)
+    }
+    
+    func testDownloadButton() {
+        let sut = VoucherViewControllerProvider(style: VoucherComponentStyle(),
+                                                environment: Dummy.context.environment)
+        let voucherViewDelegate = VoucherViewDelegateMock()
+        sut.delegate = voucherViewDelegate
+        
+        let onDownloadExpectation = expectation(description: "Expect delegate to be called")
+        voucherViewDelegate.onDownload = { _, _, _ in
+            onDownloadExpectation.fulfill()
+        }
+        let action = try! Coder.decode(boletoAction) as VoucherAction
+        let viewController = sut.provide(with: action)
+        
+        UIApplication.shared.keyWindow?.rootViewController = viewController
+        
+        wait(for: .seconds(1))
+        
+        let saveButton: UIButton! = viewController.view.findView(by: "saveButton")
+        
+        saveButton.sendActions(for: .touchUpInside)
+        
+        waitForExpectations(timeout: 2, handler: nil)
+    }
+    
+    func testSaveAsImageButton() {
+        let sut = VoucherViewControllerProvider(style: VoucherComponentStyle(),
+                                                environment: Dummy.context.environment)
+        let voucherViewDelegate = VoucherViewDelegateMock()
+        sut.delegate = voucherViewDelegate
+        
+        let onSaveExpectation = expectation(description: "Expect delegate to be called")
+        voucherViewDelegate.onSaveAsImage = { _, _ in
+            onSaveExpectation.fulfill()
+        }
+        let action = try! Coder.decode(dokuAlfamartAction) as VoucherAction
+        let viewController = sut.provide(with: action)
+        
+        UIApplication.shared.keyWindow?.rootViewController = viewController
+        
+        wait(for: .seconds(1))
+        
+        let saveButton: UIButton! = viewController.view.findView(by: "saveButton")
+        
+        saveButton.sendActions(for: .touchUpInside)
+        
+        waitForExpectations(timeout: 2, handler: nil)
+    }
+    
+    func testAppleWalletPassButton() {
+        let sut = VoucherViewControllerProvider(style: VoucherComponentStyle(),
+                                                environment: Dummy.context.environment)
+        let voucherViewDelegate = VoucherViewDelegateMock()
+        sut.delegate = voucherViewDelegate
+        
+        let onAddToAppleWalletExpectation = expectation(description: "Expect delegate to be called")
+        voucherViewDelegate.onAddToAppleWallet = { _, _, _ in
+            onAddToAppleWalletExpectation.fulfill()
+        }
+        let action = try! Coder.decode(dokuIndomaretAction) as VoucherAction
+        let viewController = sut.provide(with: action)
+        
+        UIApplication.shared.keyWindow?.rootViewController = viewController
+        
+        wait(for: .seconds(1))
+        
+        let appleWalletPassButton: PKAddPassButton! = viewController.view.findView(by: "appleWalletButton")
+        
+        appleWalletPassButton.sendActions(for: .touchUpInside)
+        
+        waitForExpectations(timeout: 2, handler: nil)
+    }
+    
+    func testDoneButton() {
+        let sut = VoucherViewControllerProvider(style: VoucherComponentStyle(),
+                                                environment: Dummy.context.environment)
+        let voucherViewDelegate = VoucherViewDelegateMock()
+        sut.delegate = voucherViewDelegate
+        
+        let onDoneExpectation = expectation(description: "Expect delegate to be called")
+        voucherViewDelegate.onDidComplete = { _ in
+            onDoneExpectation.fulfill()
+        }
+        let action = try! Coder.decode(econtextATMAction) as VoucherAction
+        let viewController = sut.provide(with: action)
+        
+        UIApplication.shared.keyWindow?.rootViewController = viewController
+        
+        wait(for: .seconds(1))
+        
+        let doneButton: UIButton! = viewController.view.findView(by: "doneButton")
+        
+        doneButton.sendActions(for: .touchUpInside)
+        
+        waitForExpectations(timeout: 2, handler: nil)
     }
 
 }

@@ -7,14 +7,7 @@
 import Foundation
 
 /// Contains details supplied by a component. These details are used to initiate or complete a payment.
-public protocol Details: Encodable {}
-
-public extension Details {
-    
-    /// Provides a concrete encodable object to easily encode any `Details` conforming object.
-    var encodable: AnyEncodable { AnyEncodable(value: self) }
-    
-}
+public protocol Details: OpaqueEncodable {}
 
 /// Contains the payment details entered by the user to complete payment with chosen payment method.
 public protocol PaymentMethodDetails: Details {}

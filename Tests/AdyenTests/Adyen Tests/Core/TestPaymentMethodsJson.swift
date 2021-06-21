@@ -237,7 +237,8 @@ let dokuIndomaretAction: [String: Any] = [
     "expiresAt": "2021-02-02T22:00:00",
     "merchantName": "Adyen Demo Shop",
     "shopperName": "Qwfqwew Gewgewf",
-    "type": "voucher"
+    "type": "voucher",
+    "passCreationToken": "test token".data(using: .utf8)?.base64EncodedString() ?? ""
 ]
 
 let dokuAlfamartAction: [String: Any] = [
@@ -256,7 +257,8 @@ let dokuAlfamartAction: [String: Any] = [
     "expiresAt": "2021-02-02T22:58:00",
     "merchantName": "Adyen Demo Shop",
     "shopperName": "Qwodihqw Wqodihq",
-    "type": "voucher"
+    "type": "voucher",
+    "passCreationToken": "test token".data(using: .utf8)?.base64EncodedString() ?? ""
 ]
 
 let econtextStoresAction: [String: Any] = [
@@ -274,7 +276,8 @@ let econtextStoresAction: [String: Any] = [
     "maskedTelephoneNumber": "11******89",
     "expiresAt": "2021-04-02T18:46:00",
     "merchantName": "TestMerchantCheckout",
-    "type": "voucher"
+    "type": "voucher",
+    "passCreationToken": "test token".data(using: .utf8)?.base64EncodedString() ?? ""
 ]
 
 let econtextATMAction: [String: Any] = [
@@ -293,7 +296,8 @@ let econtextATMAction: [String: Any] = [
     "maskedTelephoneNumber": "11******89",
     "expiresAt": "2021-04-02T18:48:00",
     "merchantName": "TestMerchantCheckout",
-    "type": "voucher"
+    "type": "voucher",
+    "passCreationToken": "test token".data(using: .utf8)?.base64EncodedString() ?? ""
 ]
 
 let boletoAction: [String: Any] = [
@@ -308,8 +312,9 @@ let boletoAction: [String: Any] = [
         "currency": "BRL",
         "value": 17408
     ],
-    "expiresAt": "2021-05-30T00:00:00",
-    "type": "voucher"
+    "expiresAt" : "2021-05-30T00:00:00",
+    "type" : "voucher",
+    "passCreationToken": "test token".data(using: .utf8)?.base64EncodedString() ?? ""
 ]
 
 let weChatMiniProgramDictionary = [

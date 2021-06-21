@@ -27,7 +27,7 @@ internal enum ConfigurationConstants {
     static let shopperEmail = "checkoutshopperios@example.org"
     
     static let additionalData = ["allow3DS2": true]
-
+    
     static let clientKey = "{YOUR_CLIENT_KEY}"
     
     static let apiContext = APIContext(environment: componentsEnvironment, clientKey: clientKey)
