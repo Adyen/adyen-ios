@@ -174,6 +174,12 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         assignInitialFirstResponder()
     }
     
+    /// :nodoc:
+    open override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        resignFirstResponder()
+    }
+    
     private lazy var formView: FormView = {
         let form = FormView()
         form.translatesAutoresizingMaskIntoConstraints = false
