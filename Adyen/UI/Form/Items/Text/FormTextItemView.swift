@@ -44,6 +44,12 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
 
         bind(item.$placeholder, to: textField, at: \.placeholder)
         bind(item.publisher, to: textField, at: \.text)
+
+        observe(item.publisher) { [weak self] value in
+            if value.isEmpty {
+                self?.resetValidationStatus()
+            }
+        }
         
         updateValidationStatus()
         
@@ -315,6 +321,12 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
             highlightSeparatorView(color: defaultSeparatorColor)
             titleLabel.textColor = item.style.title.color
         }
+    }
+    
+    private func resetValidationStatus() {
+        accessory = .none
+        hideAlertLabel(true)
+        highlightSeparatorView(color: tintColor)
     }
     
     private func hideAlertLabel(_ hidden: Bool) {

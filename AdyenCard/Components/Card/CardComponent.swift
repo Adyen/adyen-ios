@@ -188,7 +188,7 @@ public class CardComponent: CardPublicKeyConsumer,
         cardViewController.securityCodeItem.value = ""
         cardViewController.holderNameItem.value = ""
         cardViewController.storeDetailsItem.value = false
-        
+                
         // 2. Move logic to VC
         
         print("CLEAR INPUT FIELDS")
