@@ -11,12 +11,12 @@ class CardBrandProviderTests: XCTestCase {
 
     var cardPublicKeyProvider: CardPublicKeyProviderMock!
     var apiClientMock: APIClientMock!
-    var sut: CardBrandProvider!
+    var sut: BinInfoProvider!
 
     override func setUp() {
         cardPublicKeyProvider = CardPublicKeyProviderMock()
         apiClientMock = APIClientMock()
-        sut = CardBrandProvider(cardPublicKeyProvider: cardPublicKeyProvider, apiContext: Dummy.context, apiClient: apiClientMock)
+        sut = BinInfoProvider(apiClient: apiClientMock, cardPublicKeyProvider: cardPublicKeyProvider)
     }
 
     override func tearDown() {
@@ -33,8 +33,8 @@ class CardBrandProviderTests: XCTestCase {
         apiClientMock.onExecute = {
             XCTFail("Shoul not call APIClient")
         }
-        let parameters = CardBrandProviderParameters(bin: "56", supportedTypes: [.masterCard, .visa, .maestro])
-        sut.provide(for: parameters) { result in
+
+        sut.provideInfo(for: "56", supportedTypes: [.masterCard, .visa, .maestro]) { result in
             XCTAssertEqual(result.brands!.map(\.type), [.maestro])
         }
     }
@@ -43,8 +43,8 @@ class CardBrandProviderTests: XCTestCase {
         cardPublicKeyProvider.onFetch = { $0(.success(Dummy.publicKey)) }
         let mockedBrands = [CardBrand(type: .solo)]
         apiClientMock.mockedResults = [.success(BinLookupResponse(brands: mockedBrands))]
-        let parameters = CardBrandProviderParameters(bin: "5656565656565656", supportedTypes: [.masterCard, .visa, .maestro])
-        sut.provide(for: parameters) { result in
+
+        sut.provideInfo(for: "5656565656565656", supportedTypes: [.masterCard, .visa, .maestro]) { result in
             XCTAssertEqual(result.brands!.map(\.type), [.solo])
         }
     }
@@ -52,8 +52,7 @@ class CardBrandProviderTests: XCTestCase {
     func testLocalCardTypeFetchWhenPublicKeyFailure() {
         cardPublicKeyProvider.onFetch = { $0(.failure(Dummy.error)) }
         apiClientMock.onExecute = { XCTFail("Shoul not call APIClient") }
-        let parameters = CardBrandProviderParameters(bin: "56", supportedTypes: [.masterCard, .visa, .maestro])
-        sut.provide(for: parameters) { result in
+        sut.provideInfo(for: "56", supportedTypes: [.masterCard, .visa, .maestro]) { result in
             XCTAssertEqual(result.brands!.map(\.type), [.maestro])
         }
     }
@@ -61,8 +60,8 @@ class CardBrandProviderTests: XCTestCase {
     func testRemoteCardTypeFetchWhenPublicKeyFailure() {
         cardPublicKeyProvider.onFetch = { $0(.failure(Dummy.error)) }
         apiClientMock.onExecute = { XCTFail("Shoul not call APIClient") }
-        let parameters = CardBrandProviderParameters(bin: "5656565656565656", supportedTypes: [.masterCard, .visa, .maestro])
-        sut.provide(for: parameters) { result in
+
+        sut.provideInfo(for: "5656565656565656", supportedTypes: [.masterCard, .visa, .maestro]) { result in
             XCTAssertEqual(result.brands!.map(\.type), [.maestro])
         }
     }

@@ -8,14 +8,13 @@ import Foundation
 
 /// Fall back to local regex-based detector if API not available or BIN too short.
 /// :nodoc:
-internal final class FallbackCardBrandProvider: AnyCardBrandProvider {
+internal final class FallbackBinInfoProvider: AnyBinInfoProvider {
 
     /// :nodoc:
-    internal func provide(for parameters: CardBrandProviderParameters, completion: @escaping (BinLookupResponse) -> Void) {
-        let result: [CardBrand] = parameters.supportedTypes.adyen.types(forCardNumber: parameters.bin).map { brand in
+    internal func provideInfo(for bin: String, supportedTypes: [CardType], completion: @escaping (BinLookupResponse) -> Void) {
+        let result: [CardBrand] = supportedTypes.adyen.types(forCardNumber: bin).map { brand in
 
-            var cvcPolicy: CardBrand.CVCPolicy = .required
-
+            let cvcPolicy: CardBrand.CVCPolicy
             switch brand {
             case .laser,
                  .bcmc,
@@ -29,8 +28,7 @@ internal final class FallbackCardBrandProvider: AnyCardBrandProvider {
                 cvcPolicy = .required
             }
 
-            return CardBrand(type: brand,
-                             cvcPolicy: cvcPolicy)
+            return CardBrand(type: brand, cvcPolicy: cvcPolicy)
         }
         completion(BinLookupResponse(brands: result))
     }

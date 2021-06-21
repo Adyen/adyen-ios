@@ -8,20 +8,6 @@ import Adyen
 import Foundation
 import UIKit
 
-/// Delegate for observing user's activity on `CardComponent`.
-public protocol CardComponentDelegate: AnyObject {
-    
-    /// Called when user enters PAN in `CardComponent`.
-    /// - Parameter value: Up to 6 first digits in entered PAN.
-    /// - Parameter component: The `CardComponent` instance.
-    func didChangeBIN(_ value: String, component: CardComponent)
-    
-    /// Called when `CardComponent` detected card type(s) in entered PAN.
-    /// - Parameter value: Array of card types matching entered value. Null - if no data entered.
-    /// - Parameter component: The `CardComponent` instance.
-    func didChangeCardBrand(_ value: [CardBrand]?, component: CardComponent)
-}
-
 /**
  /// A component that provides a form for card payments.
 
@@ -41,7 +27,7 @@ public class CardComponent: CardPublicKeyConsumer,
     private let publicBinLength = 6
     internal let cardPaymentMethod: AnyCardPaymentMethod
     internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
-    internal var cardBrandProvider: AnyCardBrandProvider
+    internal var binInfoProvider: AnyBinInfoProvider
     
     /// Describes the component's UI style.
     public let style: FormComponentStyle
@@ -83,11 +69,15 @@ public class CardComponent: CardPublicKeyConsumer,
                             apiContext: APIContext,
                             configuration: Configuration = Configuration(),
                             style: FormComponentStyle = FormComponentStyle()) {
+        let cardPublicKeyProvider = CardPublicKeyProvider(apiContext: apiContext)
+        let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: apiContext),
+                                              cardPublicKeyProvider: cardPublicKeyProvider)
         self.init(paymentMethod: paymentMethod,
                   configuration: configuration,
                   apiContext: apiContext,
-                  cardPublicKeyProvider: CardPublicKeyProvider(apiContext: apiContext),
-                  style: style)
+                  cardPublicKeyProvider: cardPublicKeyProvider,
+                  style: style,
+                  binProvider: binInfoProvider)
     }
     
     /// :nodoc:
@@ -99,20 +89,21 @@ public class CardComponent: CardPublicKeyConsumer,
     ///   - cardPublicKeyProvider: The card public key provider
     ///   - style: The Component's UI style.
     internal init(paymentMethod: AnyCardPaymentMethod,
-                  configuration: Configuration = Configuration(),
+                  configuration: Configuration,
                   apiContext: APIContext,
-                  cardPublicKeyProvider: AnyCardPublicKeyProvider? = nil,
-                  style: FormComponentStyle = FormComponentStyle()) {
+                  cardPublicKeyProvider: AnyCardPublicKeyProvider,
+                  style: FormComponentStyle,
+                  binProvider: AnyBinInfoProvider) {
         self.apiContext = apiContext
         self.cardPaymentMethod = paymentMethod
         self.configuration = configuration
-        self.cardPublicKeyProvider = cardPublicKeyProvider ?? CardPublicKeyProvider(apiContext: apiContext)
+        self.cardPublicKeyProvider = cardPublicKeyProvider
         let paymentMethodCardTypes = paymentMethod.brands.compactMap(CardType.init)
         let excludedCardTypes = configuration.excludedCardTypes
         let allowedCardTypes = configuration.allowedCardTypes ?? paymentMethodCardTypes
         self.supportedCardTypes = allowedCardTypes.minus(excludedCardTypes)
         self.style = style
-        self.cardBrandProvider = CardBrandProvider(cardPublicKeyProvider: self.cardPublicKeyProvider, apiContext: apiContext)
+        self.binInfoProvider = binProvider
     }
     
     // MARK: - Presentable Component Protocol
@@ -184,8 +175,7 @@ extension CardComponent: CardViewControllerDelegate {
     
     func didChangeBIN(_ value: String) {
         self.cardComponentDelegate?.didChangeBIN(String(value.prefix(publicBinLength)), component: self)
-        let parameters = CardBrandProviderParameters(bin: value, supportedTypes: supportedCardTypes)
-        cardBrandProvider.provide(for: parameters) { [weak self] binInfo in
+        binInfoProvider.provideInfo(for: value, supportedTypes: supportedCardTypes) { [weak self] binInfo in
             guard let self = self else { return }
             self.cardViewController.update(binInfo: binInfo)
             self.cardComponentDelegate?.didChangeCardBrand(binInfo.brands ?? [], component: self)
