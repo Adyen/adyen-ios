@@ -106,3 +106,9 @@
 "adyen.giftcard.currencyError" = "I buono regalo sono validi solo nella valuta in cui sono state emessi";
 "adyen.giftcard.noBalance" = "Questo buono regalo ha un saldo pari a zero";
 "adyen.partialPayment.remainingBalance" = "Il saldo rimanente sarà di %@";
+"adyen.card.taxNumber.label" = "Data di nascita del titolare della carta (AAMMGG) o numero di registrazione aziendale (10 cifre)";
+"adyen.card.taxNumber.placeholder" = "AAMMGG/0123456789";
+"adyen.card.taxNumber.invalid" = "Data di nascita del titolare della carta o numero di registrazione aziendale non validi";
+"adyen.card.encryptedPassword.label" = "Prime 2 cifre della password della carta";
+"adyen.card.encryptedPassword.placeholder" = "12";
+"adyen.card.encryptedPassword.invalid" = "Password non valida";

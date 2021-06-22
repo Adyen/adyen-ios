@@ -106,3 +106,9 @@
 "adyen.giftcard.currencyError" = "Les cartes cadeaux sont valables uniquement dans la devise dans laquelle elles ont été émises";
 "adyen.giftcard.noBalance" = "Aucun solde n'est disponible sur cette carte cadeau";
 "adyen.partialPayment.remainingBalance" = "Le solde restant sera de %@";
+"adyen.card.taxNumber.label" = "Date de naissance du porteur de carte (au format AAMMJJ) ou numéro d'identification de l'entreprise (à 10 chiffres)";
+"adyen.card.taxNumber.placeholder" = "AAMMJJ / 0123456789";
+"adyen.card.taxNumber.invalid" = "Date de naissance du porteur de carte ou numéro d'identification de l'entreprise incorrect(e)";
+"adyen.card.encryptedPassword.label" = "Les deux premiers chiffres du code de votre carte";
+"adyen.card.encryptedPassword.placeholder" = "12";
+"adyen.card.encryptedPassword.invalid" = "Code incorrect";
