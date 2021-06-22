@@ -160,4 +160,10 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
+    
+    
+    /// Resets the address item.
+    public func reset() {
+        value = PostalAddress()
+    }
 }

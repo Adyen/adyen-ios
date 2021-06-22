@@ -21,7 +21,7 @@ extension IntegrationExample {
         configuration.applePay = .init(summaryItems: ConfigurationConstants.applePaySummaryItems,
                                        merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
         configuration.payment = payment
-        configuration.card.billingAddressMode = .postalCode
+        configuration.card.billingAddressMode = .full
 
         let dropInComponentStyle = DropInComponent.Style()
         let component = DropInComponent(paymentMethods: paymentMethods,
