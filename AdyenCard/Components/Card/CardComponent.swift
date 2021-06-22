@@ -182,6 +182,7 @@ public class CardComponent: CardPublicKeyConsumer,
         // TODO: - Add clear logic
         
         // 1. Clear logic
+        cardViewController.billingAddressItem.value = PostalAddress()
         cardViewController.postalCodeItem.value = ""
         cardViewController.numberItem.value = ""
         cardViewController.expiryDateItem.value = ""

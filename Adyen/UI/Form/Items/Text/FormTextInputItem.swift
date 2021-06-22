@@ -28,5 +28,4 @@ public final class FormTextInputItem: FormTextItem, Hidable {
     public override func isValid() -> Bool {
         isHidden.wrappedValue ? true : super.isValid()
     }
-    
 }
