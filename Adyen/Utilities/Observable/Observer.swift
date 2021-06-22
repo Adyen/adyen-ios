@@ -33,7 +33,9 @@ public extension Observer {
     ///   - keyPath: The key path to set the new values.
     /// - Returns: An observation that represents the binding. Can be used to remove the binding later.
     @discardableResult
-    func bind<Value, Target: AnyObject>(_ observable: Observable<Value>, to target: Target, at keyPath: ReferenceWritableKeyPath<Target, Value>) -> Observation {
+    func bind<Value, Target: AnyObject>(_ observable: Observable<Value>,
+                                        to target: Target,
+                                        at keyPath: ReferenceWritableKeyPath<Target, Value>) -> Observation {
         // Set the initial value.
         target[keyPath: keyPath] = observable.wrappedValue
         
@@ -51,7 +53,9 @@ public extension Observer {
     ///   - keyPath: The key path to set the new values.
     /// - Returns: An observation that represents the binding. Can be used to remove the binding later.
     @discardableResult
-    func bind<Value, Target: AnyObject>(_ observable: Observable<Value>, to target: Target, at keyPath: ReferenceWritableKeyPath<Target, Value?>) -> Observation {
+    func bind<Value, Target: AnyObject>(_ observable: Observable<Value>,
+                                        to target: Target,
+                                        at keyPath: ReferenceWritableKeyPath<Target, Value?>) -> Observation {
         // Set the initial value.
         target[keyPath: keyPath] = observable.wrappedValue
 
