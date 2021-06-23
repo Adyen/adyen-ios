@@ -138,6 +138,20 @@ public final class VoucherComponent: AnyVoucherActionHandler, Cancellable {
         AppleWalletPassProvider(apiContext: apiContext)
     }
 
+    private func fetchAndCacheAppleWalletPassIfNeeded(with action: VoucherAction) {
+        if let passToken = action.passCreationToken {
+            passProvider = createPassProvider()
+
+            passProvider?.provide(with: passToken, completion: { _ in /* Do nothting, this is just to cache the response */ })
+        } else {
+            passProvider = nil
+        }
+    }
+
+    private func createPassProvider() -> AnyAppleWalletPassProvider {
+        AppleWalletPassProvider(apiContext: apiContext)
+    }
+
 }
 
 /// :nodoc:

@@ -85,41 +85,36 @@ class DokuComponentTests: XCTestCase {
         let sut = DokuComponent(paymentMethod: method, apiContext: Dummy.context, style: style)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        wait(for: .seconds(1))
+        
+        /// Test firstName field
+        self.assertTextInputUI("AdyenComponents.DokuComponent.firstNameItem",
+                               view: sut.viewController.view,
+                               style: style.textField,
+                               isFirstField: true)
 
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+        /// Test lastName field
+        self.assertTextInputUI("AdyenComponents.DokuComponent.lastNameItem",
+                               view: sut.viewController.view,
+                               style: style.textField,
+                               isFirstField: false)
 
-            /// Test firstName field
-            self.assertTextInputUI("AdyenComponents.DokuComponent.firstNameItem",
-                                   view: sut.viewController.view,
-                                   style: style.textField,
-                                   isFirstField: true)
+        /// Test email field
+        self.assertTextInputUI("AdyenComponents.DokuComponent.emailItem",
+                               view: sut.viewController.view,
+                               style: style.textField,
+                               isFirstField: false)
 
-            /// Test lastName field
-            self.assertTextInputUI("AdyenComponents.DokuComponent.lastNameItem",
-                                   view: sut.viewController.view,
-                                   style: style.textField,
-                                   isFirstField: false)
+        /// Test submit button
+        let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.DokuComponent.payButtonItem.button")
+        let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.DokuComponent.payButtonItem.button.titleLabel")
 
-            /// Test email field
-            self.assertTextInputUI("AdyenComponents.DokuComponent.emailItem",
-                                   view: sut.viewController.view,
-                                   style: style.textField,
-                                   isFirstField: false)
-
-            /// Test submit button
-            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.DokuComponent.payButtonItem.button")
-            let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.DokuComponent.payButtonItem.button.titleLabel")
-
-            XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
-            XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
-            XCTAssertEqual(payButtonItemViewButtonTitle?.textAlignment, .center)
-            XCTAssertEqual(payButtonItemViewButtonTitle?.textColor, .white)
-            XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
-
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 5)
+        XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
+        XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
+        XCTAssertEqual(payButtonItemViewButtonTitle?.textAlignment, .center)
+        XCTAssertEqual(payButtonItemViewButtonTitle?.textColor, .white)
+        XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
     }
 
     private func assertTextInputUI(_ identifier: String,

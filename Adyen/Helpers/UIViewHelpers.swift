@@ -45,6 +45,7 @@ extension AdyenScope where Base: UIView {
                                     }
                                 }, completion: { _ in
                                     self.base.isHidden = hidden
+                                    self.base.alpha = hidden ? 0 : 1
                                     self.base.adyen.updatePreferredContentSize()
                                 })
     }
@@ -54,6 +55,7 @@ extension AdyenScope where Base: UIView {
         guard base.isHidden != hidden else { return }
         
         base.isHidden = hidden
+        base.alpha = hidden ? 0 : 1
         base.adyen.updatePreferredContentSize()
     }
 }
