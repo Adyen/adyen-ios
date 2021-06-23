@@ -292,12 +292,13 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
 
     /// :nodoc:
     open func updateValidationStatus(forced: Bool = false) {
-        if item.isValid() {
+        let forceShowValidationStatus = forced || !(textField.text ?? "").isEmpty
+        if item.isValid(), forceShowValidationStatus {
             accessory = .valid
             hideAlertLabel(true)
             highlightSeparatorView(color: tintColor)
             titleLabel.textColor = tintColor
-        } else if forced || !(textField.text ?? "").isEmpty {
+        } else if forceShowValidationStatus {
             accessory = .invalid
             hideAlertLabel(false)
             highlightSeparatorView(color: item.style.errorColor)
@@ -309,7 +310,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
                 accessory = .none
             }
             hideAlertLabel(true)
-            highlightSeparatorView(color: tintColor)
+            highlightSeparatorView(color: defaultSeparatorColor)
             titleLabel.textColor = item.style.title.color
         }
     }

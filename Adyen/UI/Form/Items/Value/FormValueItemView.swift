@@ -63,7 +63,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     
     @objc internal func didChangeEditingStatus() {
         guard showsSeparator else { return }
-        isEditing ? highlightSeparatorView(color: tintColor) : unhighlightSeparatorView()
+        isEditing ? highlightSeparatorView(color: defaultSeparatorColor) : unhighlightSeparatorView()
     }
     
     // MARK: - Validation
@@ -83,12 +83,17 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     
     internal lazy var separatorView: UIView = {
         let separatorView = UIView()
-        separatorView.backgroundColor = item.style.separatorColor ?? UIColor.Adyen.componentSeparator
+        separatorView.backgroundColor = defaultSeparatorColor
         separatorView.isUserInteractionEnabled = false
         separatorView.translatesAutoresizingMaskIntoConstraints = false
         
         return separatorView
     }()
+    
+    internal var defaultSeparatorColor: UIColor {
+        guard !isFirstResponder else { return tintColor }
+        return item.style.separatorColor ?? UIColor.Adyen.componentSeparator
+    }
     
     internal func highlightSeparatorView(color: UIColor) {
         let transitionView = UIView()
@@ -111,7 +116,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         transitionView.frame = separatorView.frame
         addSubview(transitionView)
         
-        separatorView.backgroundColor = item.style.separatorColor ?? UIColor.Adyen.componentSeparator
+        separatorView.backgroundColor = defaultSeparatorColor
         
         UIView.animate(withDuration: 0.25, delay: 0.0, options: [.curveEaseInOut], animations: {
             transitionView.frame.size.width = 0.0
