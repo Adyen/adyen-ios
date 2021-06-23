@@ -53,6 +53,8 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
 
     internal func updateSelection() {
         inputControl.label = item.value.description
+        pickerView.endEditing(true)
+        inputControl.endEditing(true)
     }
 
     internal func initialize() {
