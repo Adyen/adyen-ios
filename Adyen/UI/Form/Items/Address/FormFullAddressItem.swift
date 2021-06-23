@@ -161,9 +161,15 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         builder.build(with: self)
     }
     
-    
     /// Resets the address item.
     public func reset() {
+        
+        let locale = localizationParameters?.locale.map { Locale(identifier: $0) } ?? Locale.current
+        let countries = RegionRepository.localCountryFallback(for: locale as NSLocale).sorted { $0.name < $1.name }
+        let defaultCountry = countries.first { $0.identifier == initialCountry } ?? countries[0]
+        countrySelectItem.value = BasePickerElement(identifier: defaultCountry.identifier,
+                                                    element: Region(identifier: defaultCountry.identifier,
+                                                                    name: defaultCountry.name))
         value = PostalAddress()
     }
 }
