@@ -91,8 +91,11 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     }()
     
     internal var defaultSeparatorColor: UIColor {
-        guard !isFirstResponder else { return tintColor }
-        return item.style.separatorColor ?? UIColor.Adyen.componentSeparator
+        if isFirstResponder {
+            return tintColor
+        } else {
+            return item.style.separatorColor ?? UIColor.Adyen.componentSeparator
+        }
     }
     
     internal func highlightSeparatorView(color: UIColor) {

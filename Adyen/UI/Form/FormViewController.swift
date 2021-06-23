@@ -132,11 +132,11 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         // Exit when all validations passed.
         guard !isValid else { return true }
         
+        resignFirstResponder()
+        
         itemManager.flatItemViews
             .compactMap { $0 as? AnyFormValueItemView }
             .forEach { $0.validate() }
-        
-        resignFirstResponder()
         
         return false
     }

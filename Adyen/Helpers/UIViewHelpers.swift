@@ -55,7 +55,7 @@ extension AdyenScope where Base: UIView {
         guard base.isHidden != hidden else { return }
         
         base.isHidden = hidden
-        base.alpha = hidden ? 0.0 : 1.0
+        base.alpha = hidden ? 0 : 1
         base.adyen.updatePreferredContentSize()
     }
 }

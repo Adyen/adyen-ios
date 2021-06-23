@@ -292,7 +292,8 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
 
     /// :nodoc:
     open func updateValidationStatus(forced: Bool = false) {
-        let forceShowValidationStatus = forced || !(textField.text ?? "").isEmpty
+        let hasText = textField.text.map(\.isEmpty) == false
+        let forceShowValidationStatus = forced || hasText
         if item.isValid(), forceShowValidationStatus {
             accessory = .valid
             hideAlertLabel(true)
