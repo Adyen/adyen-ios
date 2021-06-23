@@ -63,7 +63,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     
     @objc internal func didChangeEditingStatus() {
         guard showsSeparator else { return }
-        isEditing ? highlightSeparatorView(color: defaultSeparatorColor) : unhighlightSeparatorView()
+        isEditing ? highlightSeparatorView(color: tintColor) : unhighlightSeparatorView()
     }
     
     // MARK: - Validation
