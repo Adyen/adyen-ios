@@ -33,6 +33,9 @@ extension CardComponent {
         /// Indicates whether to show the security code field at all. Defaults to true.
         public var showsSecurityCodeField: Bool
 
+        /// Indicates whether to show the security fields for South Korea issued cards. Defaults to false.
+        public var showsKoreanAuthentication: Bool
+
         /// Indicates the display mode of the billing address form.
         /// Defaults to none.
         public var billingAddressMode: AddressFormType
@@ -56,13 +59,16 @@ extension CardComponent {
         ///   Defaults to true.
         ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
         ///   Defaults to true.
-        ///   - showsAddressVerification: Indicates mode of how to dispaly the billing address form.
+        ///   - showsKoreanAuthentication: Indicates whether to show the security fields for South Korea issued cards. Defaults to false.
+        ///   Defaults to false.
+        ///   - billingAddressMode: Indicates mode of how to dispaly the billing address form.
         ///   Defaults to none.
         ///   - storedCardConfiguration: Stored card configuration.
         ///   - allowedCardTypes: The enforced list of allowed card types.
         public init(showsHolderNameField: Bool = false,
                     showsStorePaymentMethodField: Bool = true,
                     showsSecurityCodeField: Bool = true,
+                    showsKoreanAuthentication: Bool = false,
                     billingAddressMode: AddressFormType = .none,
                     storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
                     allowedCardTypes: [CardType]? = nil) {
@@ -72,6 +78,7 @@ extension CardComponent {
             self.stored = storedCardConfiguration
             self.allowedCardTypes = allowedCardTypes
             self.billingAddressMode = billingAddressMode
+            self.showsKoreanAuthentication = showsKoreanAuthentication
         }
 
         internal func bcmcConfiguration() -> Configuration {
@@ -85,6 +92,10 @@ extension CardComponent {
                                               allowedCardTypes: [.bcmc])
             configuration.excludedCardTypes = []
             return configuration
+        }
+
+        internal func showAdditionalAuthenticationFields(for issuingCountryCode: String?) -> Bool {
+            self.showsKoreanAuthentication && issuingCountryCode == "KR"
         }
     }
 

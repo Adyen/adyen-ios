@@ -70,7 +70,10 @@ internal class CardViewController: FormViewController {
         if configuration.showsHolderNameField {
             append(holderNameItem)
         }
-        
+
+        append(additionalAuthCodeItem)
+        append(additionalAuthPasswordItem)
+
         switch configuration.billingAddressMode {
         case .full:
             append(billingAddressItem)
@@ -127,16 +130,20 @@ internal class CardViewController: FormViewController {
     }
     
     internal func update(binInfo: BinLookupResponse) {
-        self.securityCodeItem.update(cardBrands: binInfo.brands ?? [])
-        
-        switch (binInfo.brands, self.numberItem.value) {
+        securityCodeItem.update(cardBrands: binInfo.brands ?? [])
+
+        switch (binInfo.brands, numberItem.value) {
         case (_, ""):
-            self.numberItem.showLogos(for: self.topCardTypes)
+            numberItem.showLogos(for: topCardTypes)
         case let (.some(brands), _):
-            self.numberItem.showLogos(for: brands.map(\.type))
+            numberItem.showLogos(for: brands.map(\.type))
         default:
-            self.numberItem.showLogos(for: [])
+            numberItem.showLogos(for: [])
         }
+
+        let shouldShow = configuration.showAdditionalAuthenticationFields(for: binInfo.issuingCountryCode)
+        additionalAuthPasswordItem.isHidden.wrappedValue = !shouldShow
+        additionalAuthCodeItem.isHidden.wrappedValue = !shouldShow
     }
     
     internal func resetItems() {
@@ -216,7 +223,35 @@ internal class CardViewController: FormViewController {
         
         return holderNameItem
     }()
-    
+
+    internal lazy var additionalAuthCodeItem: FormTextInputItem = {
+        let additionalItem = FormTextInputItem(style: formStyle.textField)
+        additionalItem.title = "Birthday or Corporate registration number" // localizedString(.cardTaxNumberLabel, localizationParameters)
+        additionalItem.placeholder = localizedString(.cardTaxNumberPlaceholder, localizationParameters)
+        additionalItem.validator = LengthValidator(minimumLength: 6, maximumLength: 10)
+        additionalItem.validationFailureMessage = localizedString(.cardTaxNumberInvalid, localizationParameters)
+        additionalItem.autocapitalizationType = .none
+        additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthCodeItem")
+        additionalItem.keyboardType = .numberPad
+        additionalItem.isHidden.wrappedValue = true
+
+        return additionalItem
+    }()
+
+    internal lazy var additionalAuthPasswordItem: FormTextInputItem = {
+        let additionalItem = FormTextInputItem(style: formStyle.textField)
+        additionalItem.title = localizedString(.cardEncryptedPasswordLabel, localizationParameters)
+        additionalItem.placeholder = localizedString(.cardEncryptedPasswordPlaceholder, localizationParameters)
+        additionalItem.validator = LengthValidator(minimumLength: 2, maximumLength: 2)
+        additionalItem.validationFailureMessage = localizedString(.cardEncryptedPasswordInvalid, localizationParameters)
+        additionalItem.autocapitalizationType = .none
+        additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthPasswordItem")
+        additionalItem.keyboardType = .numberPad
+        additionalItem.isHidden.wrappedValue = true
+
+        return additionalItem
+    }()
+
     internal lazy var storeDetailsItem: FormToggleItem = {
         let storeDetailsItem = FormToggleItem(style: formStyle.toggle)
         storeDetailsItem.title = localizedString(.cardStoreDetailsButton, localizationParameters)
@@ -239,7 +274,11 @@ internal class CardViewController: FormViewController {
     
     private func didReceived(bin: String) {
         self.securityCodeItem.selectedCard = supportedCardTypes.adyen.type(forCardNumber: bin)
-        throttler.throttle { [weak self] in self?.cardDelegate?.didChangeBIN(bin) }
+        throttler.throttle { [weak self] in
+            self?.cardDelegate?.didChangeBIN(bin)
+            self?.additionalAuthPasswordItem.isHidden.wrappedValue = true
+            self?.additionalAuthCodeItem.isHidden.wrappedValue = true
+        }
     }
     
     private var defaultCountryCode: String {
