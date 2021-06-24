@@ -10,7 +10,7 @@ import Adyen
 @testable import AdyenActions
 import UIKit
 
-internal final class VoucherViewControllerProviderMock: AnyVoucherViewControllerProvider {
+internal final class VoucherViewControllerProviderMock: AnyVoucherShareableViewProvider {
 
     internal var style = VoucherComponentStyle()
 

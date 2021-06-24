@@ -27,16 +27,21 @@ public final class PresentableComponentWrapper: PresentableComponent,
     public var requiresModalPresentation: Bool = true
     
     /// :nodoc:
-    public var showSeparator: Bool = true
+    public var navBarType: NavigationBarType
     
     /// Initializes the wrapper component.
     ///
     /// - Parameter component: The wrapped component.
     /// - Parameter viewController: The `ViewController` used as the UI of the `PresentableComponent`.
-    public init(component: Component, viewController: UIViewController, showSeparator: Bool = true) {
+    /// - Parameter navBarType: Type of the navigation bar to use.
+    public init(
+        component: Component,
+        viewController: UIViewController,
+        navBarType: NavigationBarType = .regular
+    ) {
         self.component = component
         self.viewController = viewController
-        self.showSeparator = showSeparator
+        self.navBarType = navBarType
     }
     
     /// :nodoc:

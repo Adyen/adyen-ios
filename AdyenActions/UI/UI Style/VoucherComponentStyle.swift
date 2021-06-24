@@ -22,18 +22,46 @@ public struct VoucherComponentStyle: ViewStyle {
         font: .preferredFont(forTextStyle: .headline),
         color: UIColor.Adyen.componentLabel
     )
+    
+    /// The edit button style.
+    public var editButton = ButtonStyle(
+        title: TextStyle(font: .preferredFont(forTextStyle: .headline),
+                         color: UIColor.Adyen.defaultBlue),
+        cornerRounding: .none,
+        background: UIColor.clear
+    )
+    
+    /// The edit button style.
+    public var doneButton = ButtonStyle(
+        title: TextStyle(font: .preferredFont(forTextStyle: .headline),
+                         color: UIColor.Adyen.defaultBlue),
+        cornerRounding: .none,
+        background: UIColor.clear
+    )
 
     /// The main button style.
-    public var mainButton = ButtonStyle(title: TextStyle(font: .preferredFont(forTextStyle: .headline),
-                                                         color: .white),
-                                        cornerRadius: 8,
-                                        background: UIColor.Adyen.defaultBlue)
+    public var mainButton = ButtonStyle(
+        title: TextStyle(font: .preferredFont(forTextStyle: .headline),
+                         color: .white),
+        cornerRadius: 8,
+        background: UIColor.Adyen.defaultBlue
+    )
+    
+    /// The main button style when the code is short enough to be shown.
+    public var mainButtonWithCode = ButtonStyle(
+        title: TextStyle(font: .preferredFont(forTextStyle: .headline),
+                         color: UIColor.Adyen.defaultBlue),
+        cornerRadius: 8,
+        background: UIColor.Adyen.secondaryComponentBackground
+    )
 
     /// The secondary button style.
-    public var secondaryButton = ButtonStyle(title: TextStyle(font: .preferredFont(forTextStyle: .headline),
-                                                              color: UIColor.Adyen.defaultBlue),
-                                             cornerRadius: 8,
-                                             background: UIColor.Adyen.componentBackground)
+    public var secondaryButton = ButtonStyle(
+        title: TextStyle(font: .preferredFont(forTextStyle: .headline),
+                         color: UIColor.Adyen.defaultBlue),
+        cornerRadius: 8,
+        background: UIColor.Adyen.componentBackground
+    )
 
     /// :nodoc:
     public var backgroundColor = UIColor.Adyen.componentBackground

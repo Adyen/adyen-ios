@@ -19,7 +19,7 @@ internal final class ModalViewController: UIViewController {
 
     private let navigationBarHeight: CGFloat = 63.0
     
-    private let showSeparator: Bool
+    private let navBarType: NavigationBarType
 
     // MARK: - Initializing
     
@@ -27,14 +27,14 @@ internal final class ModalViewController: UIViewController {
     ///
     /// - Parameter rootViewController: The root view controller to be displayed.
     /// - Parameter style: The navigation level UI style.
+    /// - Parameter navBarType: The type of the navigation bar.
     /// - Parameter cancelButtonHandler: An optional callback for the cancel button.
-    /// - Parameter isDropInRoot: Defines if this controller is a root controller of DropIn.
     internal init(rootViewController: UIViewController,
                   style: NavigationStyle = NavigationStyle(),
-                  showSeparator: Bool = true,
+                  navBarType: NavigationBarType,
                   cancelButtonHandler: ((Bool) -> Void)? = nil) {
         self.innerController = rootViewController
-        self.showSeparator = showSeparator
+        self.navBarType = navBarType
         self.style = style
         self.cancelButtonHandler = cancelButtonHandler
         
@@ -96,20 +96,41 @@ internal final class ModalViewController: UIViewController {
     
     internal lazy var separator: UIView = {
         let separator = UIView(frame: .zero)
-        separator.backgroundColor = separatorColor()
+        separator.backgroundColor = getSeparatorColor()
         return separator
     }()
     
-    internal lazy var toolbar: UIView = {
-        let toolbar = ModalToolbar(title: self.innerController.title,
-                                   style: style,
-                                   cancelHandler: { [weak self] in self?.didCancel() })
-        toolbar.translatesAutoresizingMaskIntoConstraints = false
-        return toolbar
+    private func getSeparatorColor() -> UIColor {
+        switch navBarType {
+        case .regular:
+            return style.separatorColor ?? UIColor.Adyen.componentSeparator
+        case .custom:
+            return style.backgroundColor
+        }
+    }
+    
+    internal lazy var navBar: UIView = {
+        let navBar: UIView
+        
+        switch navBarType {
+        case .regular:
+            navBar = getRegularNavBar()
+        case .custom(let customNavbar):
+            navBar = customNavbar
+        }
+        
+        navBar.translatesAutoresizingMaskIntoConstraints = false
+        return navBar
     }()
     
+    private func getRegularNavBar() -> UIView {
+        ModalToolbar(title: self.innerController.title,
+                     style: style,
+                     cancelHandler: { [weak self] in self?.didCancel() })
+    }
+    
     internal lazy var stackView: UIStackView = {
-        let views = [toolbar, separator, innerController.view]
+        let views = [navBar, separator, innerController.view]
         let stackView = UIStackView(arrangedSubviews: views.compactMap { $0 })
         stackView.axis = .vertical
         stackView.distribution = .fill
@@ -133,16 +154,8 @@ internal final class ModalViewController: UIViewController {
 
         stackView.adyen.anchor(inside: view)
         NSLayoutConstraint.activate([
-            toolbar.heightAnchor.constraint(equalToConstant: toolbarHeight),
+            navBar.heightAnchor.constraint(equalToConstant: toolbarHeight),
             separator.heightAnchor.constraint(equalToConstant: separatorHeight)
         ])
-    }
-    
-    private func separatorColor() -> UIColor {
-        if showSeparator {
-            return style.separatorColor ?? UIColor.Adyen.componentSeparator
-        } else {
-            return style.backgroundColor
-        }
     }
 }

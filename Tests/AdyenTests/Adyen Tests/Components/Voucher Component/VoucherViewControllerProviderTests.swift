@@ -16,7 +16,7 @@ class VoucherViewControllerProviderTests: XCTestCase {
         let dokuAction = try Coder.decode(dokuIndomaretAction) as DokuVoucherAction
         let action: VoucherAction = .dokuIndomaret(dokuAction)
 
-        let sut = VoucherViewControllerProvider(
+        let sut = VoucherShareableViewProvider(
             style: VoucherComponentStyle(),
             environment: Dummy.context.environment
         )
@@ -73,7 +73,7 @@ class VoucherViewControllerProviderTests: XCTestCase {
         style.secondaryButton.cornerRounding = .fixed(12)
         style.secondaryButton.title.color = UIColor.white
         style.secondaryButton.title.font = .systemFont(ofSize: 34)
-        let sut = VoucherViewControllerProvider(style: style, environment: Dummy.context.environment)
+        let sut = VoucherShareableViewProvider(style: style, environment: Dummy.context.environment)
 
         let viewController = sut.provide(with: action) as! VoucherViewController
 
@@ -97,7 +97,7 @@ class VoucherViewControllerProviderTests: XCTestCase {
     }
     
     func testDownloadButton() {
-        let sut = VoucherViewControllerProvider(style: VoucherComponentStyle(),
+        let sut = VoucherShareableViewProvider(style: VoucherComponentStyle(),
                                                 environment: Dummy.context.environment)
         let voucherViewDelegate = VoucherViewDelegateMock()
         sut.delegate = voucherViewDelegate
@@ -121,7 +121,7 @@ class VoucherViewControllerProviderTests: XCTestCase {
     }
     
     func testSaveAsImageButton() {
-        let sut = VoucherViewControllerProvider(style: VoucherComponentStyle(),
+        let sut = VoucherShareableViewProvider(style: VoucherComponentStyle(),
                                                 environment: Dummy.context.environment)
         let voucherViewDelegate = VoucherViewDelegateMock()
         sut.delegate = voucherViewDelegate
@@ -145,7 +145,7 @@ class VoucherViewControllerProviderTests: XCTestCase {
     }
     
     func testAppleWalletPassButton() {
-        let sut = VoucherViewControllerProvider(style: VoucherComponentStyle(),
+        let sut = VoucherShareableViewProvider(style: VoucherComponentStyle(),
                                                 environment: Dummy.context.environment)
         let voucherViewDelegate = VoucherViewDelegateMock()
         sut.delegate = voucherViewDelegate
@@ -169,7 +169,7 @@ class VoucherViewControllerProviderTests: XCTestCase {
     }
     
     func testDoneButton() {
-        let sut = VoucherViewControllerProvider(style: VoucherComponentStyle(),
+        let sut = VoucherShareableViewProvider(style: VoucherComponentStyle(),
                                                 environment: Dummy.context.environment)
         let voucherViewDelegate = VoucherViewDelegateMock()
         sut.delegate = voucherViewDelegate

@@ -17,17 +17,23 @@ extension VoucherView {
         
         internal let logoUrl: URL
         
-        internal let primaryButtonTitle: String
+        internal let mainButton: String
         
         internal let secondaryButtonTitle: String
+        
+        internal let passToken: String?
         
         internal let style: Style
         
         internal struct Style {
             
-            internal let actionButton: ButtonStyle
+            internal let editButton: ButtonStyle
             
-            internal let closeButton: ButtonStyle
+            internal let doneButton: ButtonStyle
+            
+            internal let mainButton: ButtonStyle
+            
+            internal let secondaryButton: ButtonStyle
             
             internal let amountLabel: TextStyle
             

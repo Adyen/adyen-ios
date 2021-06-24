@@ -58,6 +58,13 @@ internal final class DropInNavigationController: UINavigationController, Keyboar
     }
     
     internal func present(asModal component: PresentableComponent) {
+        switch component.navBarType {
+        case .custom(let navBar):
+            navBar.onCancelHandler = { [weak self] in self?.cancelHandler?(false, component) }
+        case .regular:
+            break
+        }
+        
         if component.requiresModalPresentation {
             pushViewController(wrapInModalController(component: component, isRoot: false), animated: true)
         } else {
@@ -79,10 +86,12 @@ internal final class DropInNavigationController: UINavigationController, Keyboar
     }
     
     private func wrapInModalController(component: PresentableComponent, isRoot: Bool) -> WrapperViewController {
-        let modal = ModalViewController(rootViewController: component.viewController,
-                                        style: style,
-                                        showSeparator: component.showSeparator,
-                                        cancelButtonHandler: { [weak self] in self?.cancelHandler?($0, component) })
+        let modal = ModalViewController(
+            rootViewController: component.viewController,
+            style: style,
+            navBarType: component.navBarType,
+            cancelButtonHandler: { [weak self] in self?.cancelHandler?($0, component) }
+        )
         modal.isRoot = isRoot
         let container = WrapperViewController(child: modal)
         

@@ -98,7 +98,8 @@ public final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
         
         presentationDelegate?.present(
             component: PresentableComponentWrapper(
-                component: self, viewController: createViewController(with: action), showSeparator: false
+                component: self,
+                viewController: createViewController(with: action)
             )
         )
         
