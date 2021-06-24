@@ -161,7 +161,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         builder.build(with: self)
     }
     
-    /// Resets the address item.
+    /// Resets the item's value to an empty `PostalAddress`.
     public func reset() {
         value = PostalAddress()
     }

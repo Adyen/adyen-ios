@@ -8,10 +8,6 @@ import Adyen
 import Foundation
 import UIKit
 
-public protocol ClearableComponent {
-    func clear()
-}
-
 /// Delegate for observing user's activity on `CardComponent`.
 public protocol CardComponentDelegate: AnyObject {
     
@@ -176,11 +172,11 @@ public class CardComponent: CardPublicKeyConsumer,
         return formViewController
     }()
     
-    // MARK: - ClearProtocol
+    // MARK: - ClearableComponent
     
+    /// :nodoc:
     public func clear() {
-        // TODO: - Add clear logic
-        cardViewController.clear()
+        cardViewController.resetItems()
     }
 }
 

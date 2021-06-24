@@ -139,7 +139,7 @@ internal class CardViewController: FormViewController {
         }
     }
     
-    internal func clear() {
+    internal func resetItems() {
         billingAddressItem.reset()
 
         [postalCodeItem,
