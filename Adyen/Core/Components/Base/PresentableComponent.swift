@@ -34,6 +34,12 @@ public protocol PresentableComponent: Component {
     var viewController: UIViewController { get }
 }
 
+/// A component that provides an interface to reset and assign default values to its items.
+public protocol ClearableComponent {
+    /// Resets all the item values from the component.
+    func clear()
+}
+
 /// :nodoc:
 public extension PresentableComponent {
     
