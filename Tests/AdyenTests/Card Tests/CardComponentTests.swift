@@ -1076,6 +1076,26 @@ class CardComponentTests: XCTestCase {
         XCTAssertFalse(sut.cardViewController.storeDetailsItem.value)
     }
     
+    func testClear_shouldAssignEmptyPostalAddressToBillingAddressItem() throws {
+        // Given
+        let expectedPostalAddress = PostalAddress()
+        let method = CardPaymentMethod(type: "bcmc",
+                                       name: "Test name",
+                                       fundingSource: .credit,
+                                       brands: ["visa", "amex", "mc"])
+        var config = CardComponent.Configuration()
+        config.billingAddressMode = .postalCode
+        let sut = CardComponent(paymentMethod: method,
+                                configuration: config,
+                                apiContext: Dummy.context)
+        // When
+        sut.clear()
+
+        // Then
+        let postalAddress = sut.cardViewController.billingAddressItem.value
+        XCTAssertEqual(expectedPostalAddress, postalAddress)
+    }
+    
     private func focus<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U) {
         textItemView.textField.becomeFirstResponder()
     }
