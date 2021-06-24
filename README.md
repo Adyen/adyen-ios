@@ -34,7 +34,7 @@ Adyen Components for iOS are available through either [CocoaPods](http://cocoapo
 
 You can install all modules or add individual modules, depending on your needs and integration type.
 The `Adyen/WeChatPay` module needs to be explicitly added to support WeChat Pay.
-The `Adyen/SwiftUI` module needs to be explicitly added to use the SwiftUI specific helpers..
+The `Adyen/SwiftUI` module needs to be explicitly added to use the SwiftUI specific helpers.
 
 ```
 pod 'Adyen'               // Add DropIn with all modules except WeChat Pay and SwiftUI.
@@ -108,18 +108,28 @@ The Drop-in requires the response of the `/paymentMethods` endpoint to be initia
 let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: response)
 ```
 
+All Components need an `APIContext`. An instance of `APIContext` wraps your client key and an environment.
+Please read more [here](https://docs.adyen.com/development-resources/client-side-authentication) about the client key and how to get.
+Use **Environment.test** for environment. When you're ready to accept live payments, change the value to one of our [live environments](https://adyen.github.io/adyen-ios/Docs/Structs/Environment.html)
+
+```swift
+let apiContext = APIContext(clientKey: clientKey, environment: Environment.test)
+let configuration = DropInComponent.Configuration(apiContext: apiContext)
+```
+
 Some payment methods need additional configuration. For example `ApplePayComponent`. These payment method specific configuration parameters can be set in an instance of `DropInComponent.Configuration`:
 
 ```swift
-let configuration = DropInComponent.Configuration(apiContext: apiContext)
-configuration.applePay.summaryItems = "..." // Apple Pay summary items.
-configuration.applePay.merchantIdentifier = "..." // Apple Pay merchant identifier.
-```
-All Payment Components needs a client key, please read more [here](https://docs.adyen.com/development-resources/client-side-authentication) about the client key and how to get it.
+let summaryItems = [
+                      PKPaymentSummaryItem(label: "Item A", amount: 75, type: .final),
+                      PKPaymentSummaryItem(label: "Item B", amount: 25, type: .final),
+                      PKPaymentSummaryItem(label: "Total", amount: 100, type: .final)
+                   ]
 
-```swift
 let configuration = DropInComponent.Configuration(apiContext: apiContext)
-configuration.clientKey = "..." // Your client key, retrieved from the Customer Area.
+configuration.payment = payment
+configuration.applePay = .init(summaryItems: summaryItems,
+                               merchantIdentifier: "merchant.com.adyen.MY_MERCHANT_ID")
 ```
 
 Also for voucher payment methods like Doku variants, in order for the `DokuComponent` to enable the shopper to save the voucher, access to the shopper photos is requested, so a suitable text need to be added to key  `NSPhotoLibraryAddUsageDescription` in the application Info.plist.
@@ -163,35 +173,69 @@ This method is invoked when an error occurred during the use of the Drop-in. Dis
 ---
 
 ```swift
-func didCancel(component: PaymentComponent, from dropInComponent: DropInComponent)
+func didComplete(from component: DropInComponent)
 ```
 
-This method is invoked when user closes a payment component managed by Drop-in.
+This method is invoked when the action component finishes, without any further steps needed by the application, for example in case of voucher payment methods. The application just needs to dismiss the `DropInComponent`.
 
 ---
 
 ```swift
-func didComplete(from component: DropInComponent)
+func didCancel(component: PaymentComponent, from dropInComponent: DropInComponent)
 ```
 
-This method is invoked when the action component finishes, without any further steps needed by the application, for example in case of voucher payment methods. The application just needs to dismiss the `DropInComponent`..
+This optional method is invoked when user closes a payment component managed by Drop-in.
+
+---
+
+```swift
+func didOpenExternalApplication(_ component: DropInComponent)
+```
+
+This optional method is invoked after a redirect to an external application has occurred.
 
 ---
 
 #### Handling an action
 
-When `/payments` or `/payments/details` responds with a non-final result and an `action`, you can use the Drop-in to handle the action:
+When `/payments` or `/payments/details` responds with a non-final result and an `action`, you can use one of the following techniques.
+
+##### Using Drop-in
+
+In case of Drop-in integration you must use build-in action handler on the current instance of `DropInComponent`:
 
 ```swift
 let action = try JSONDecoder().decode(Action.self, from: actionData)
 dropInComponent.handle(action)
 ```
 
-In case the customer is redirected to an external URL, make sure to let the Drop-in know when the user returns to your app. Do this by implementing the following in your `UIApplicationDelegate`:
+##### Using components
+
+In case of using individual components - not Drop-in -, create and persist an instance of `AdyenActionComponent`:
+
+```swift
+lazy var actionComponent: AdyenActionComponent = {
+    let handler = AdyenActionComponent(apiContext: apiContext)
+    handler.delegate = self
+    handler.presentationDelegate = self
+    return handler
+}()
+```
+
+Than use it to handle the action:
+
+```swift
+let action = try JSONDecoder().decode(Action.self, from: actionData)
+actionComponent.handle(action)
+```
+
+##### Receiving redirect
+
+In case the customer is redirected to an external URL or App, make sure to let the `RedirectComponent` know when the user returns to your app. Do this by implementing the following in your `UIApplicationDelegate`:
 
 ```swift
 func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {
-    Adyen.applicationDidOpen(url)
+    RedirectComponent.applicationDidOpen(from: url)
 
     return true
 }
@@ -220,16 +264,18 @@ In order to have more flexibility over the checkout flow, you can use our Compon
 - [MB Way Component][reference.mbWayComponent]
 - [BLIK Component][reference.BLIKComponent]
 - [Doku Component][reference.DokuComponent]
+- [Boleto Component][reference.BoletoComponent]
 
 ## Customization
 
 Both the Drop-in and the Components offer a number of customization options to allow you to match the appearance of your app.
-For example, to change the section header titles and form field titles in the Drop-in to red, and turn the submit button's background to blue:
+For example, to change the section header titles and form field titles in the Drop-in to red, and turn the submit button's background to black with white foreground:
 ```swift
 var style = DropInComponent.Style()
 style.listComponent.sectionHeader.title.color = .red
 style.formComponent.textField.title.color = .red
-style.formComponent.footer.button.backgroundColor = .purple
+style.formComponent.mainButtonItem.button.backgroundColor = .black
+style.formComponent.mainButtonItem.button.title.color = .white
 
 let dropInComponent = DropInComponent(paymentMethods: paymentMethods,
                                       configuration: configuration,
@@ -246,7 +292,7 @@ style.textField.text.color = .white
 style.switch.title.color = .white
 
 let component = CardComponent(paymentMethod: paymentMethod,
-                              publicKey: Configuration.cardPublicKey,
+                              apiContext: apiContext,
                               style: style)
 ```
 
@@ -295,6 +341,7 @@ This repository is open source and available under the MIT license. For more inf
 [reference.mbWayComponent]: https://adyen.github.io/adyen-ios/Docs/Classes/MBWayComponent.html
 [reference.BLIKComponent]: https://adyen.github.io/adyen-ios/Docs/Classes/BLIKComponent.html
 [reference.DokuComponent]:  https://adyen.github.io/adyen-ios/Docs/Classes/DokuComponent.html
+[reference.BoletoComponent]:  https://adyen.github.io/adyen-ios/Docs/Classes/BoletoComponent.html
 [reference.styles]: https://adyen.github.io/adyen-ios/Docs/Styling.html
 [apiExplorer.paymentMethods]: https://docs.adyen.com/api-explorer/#/PaymentSetupAndVerificationService/v46/paymentMethods
 [apiExplorer.payments]: https://docs.adyen.com/api-explorer/#/PaymentSetupAndVerificationService/v46/payments

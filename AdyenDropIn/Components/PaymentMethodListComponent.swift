@@ -47,8 +47,6 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     
     internal lazy var listViewController: ListViewController = {
         func item(for component: PaymentComponent) -> ListItem {
-            let showsDisclosureIndicator = (component as? PresentableComponent)?.requiresModalPresentation == true
-            
             let displayInformation = component.paymentMethod.localizedDisplayInformation(using: localizationParameters)
             let isProtected = brandProtectedComponents.contains(component.paymentMethod.type)
             let listItem = ListItem(title: displayInformation.title,
@@ -58,7 +56,6 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
             listItem.imageURL = LogoURLProvider.logoURL(for: component.paymentMethod, environment: apiContext.environment)
             listItem.trailingText = displayInformation.disclosureText
             listItem.subtitle = displayInformation.subtitle
-            listItem.showsDisclosureIndicator = showsDisclosureIndicator
             listItem.selectionHandler = { [unowned self, unowned component] in
                 guard !(component is AlreadyPaidPaymentComponent) else { return }
                 self.delegate?.didSelect(component, in: self)

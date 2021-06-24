@@ -68,10 +68,12 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
         view.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "inputControl") }
         view.onDidBecomeFirstResponder = { [weak self] in
             self?.isEditing = true
+            self?.titleLabel.textColor = self?.tintColor
         }
 
         view.onDidResignFirstResponder = { [weak self] in
             self?.isEditing = false
+            self?.titleLabel.textColor = self?.item.style.title.color
         }
 
         view.onDidTap = { [weak self] in

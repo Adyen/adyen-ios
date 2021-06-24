@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import SwiftUI
 import Adyen
+import SwiftUI
 
 @available(iOS 13.0.0, *)
 internal struct ConfigurationView: View {
@@ -27,6 +27,15 @@ internal struct ConfigurationView: View {
         }
     }
     
+    @State private var currencySearchString: String = ""
+    private var filteredCurrencies: [CurrencyDisplayInfo] {
+        if currencySearchString.isEmpty {
+            return ConfigurationViewModel.currencies
+        } else {
+            return ConfigurationViewModel.currencies.filter { $0.matches(currencySearchString) }
+        }
+    }
+    
     internal init(viewModel: ConfigurationViewModel) {
         self.viewModel = viewModel
     }
@@ -39,12 +48,13 @@ internal struct ConfigurationView: View {
                 wrapInSection(view: regionSection, section: .region)
                 wrapInSection(view: paymentSection, section: .payment)
             }.navigationBarTitle("Configuration", displayMode: .inline)
-            .navigationBarItems(
-                leading: Button("Default", action: viewModel.defaultTapped),
-                trailing: Button("Save", action: viewModel.doneTapped)
-            )
+                .navigationBarItems(
+                    leading: Button("Default", action: viewModel.defaultTapped),
+                    trailing: Button("Save", action: viewModel.doneTapped)
+                )
         }.onAppear {
             countrySearchSting = ""
+            currencySearchString = ""
         }
     }
     
@@ -57,7 +67,7 @@ internal struct ConfigurationView: View {
     
     private var apiVersionSection: some View {
         TextField(ConfigurationSection.apiVersion.rawValue, text: $viewModel.apiVersion)
-                .keyboardType(.numberPad)
+            .keyboardType(.numberPad)
     }
     
     private var merchantAccountSection: some View {
@@ -73,25 +83,60 @@ internal struct ConfigurationView: View {
             }
         )
         
-        return Picker("Country code",
-               selection: selectionBinding) {
-            SearchBar(searchString: $countrySearchSting, placeholder: "Search Countries")
-            ForEach(filteredCountries, id: \.self) { country in
-                ListItemView(viewModel: country.toListItemViewModel)
-            }
-        }
+        return pickerWithSearchBar(
+            with: selectionBinding,
+            title: "Country code",
+            searchString: $countrySearchSting,
+            rows: filteredCountries,
+            transform: { ListItemView(viewModel: $0.toListItemViewModel) }
+        )
     }
     
     private var paymentSection: some View {
-        Group {
-            Picker("Currency code", selection: $viewModel.currencyCode) {
-                ForEach(ConfigurationViewModel.currencies, id: \.self) { currency in
-                    ListItemView(viewModel: currency.toListItemViewModel)
-                }
+        let selectionBinding = Binding(
+            get: { viewModel.currencyCode },
+            set: { newValue in
+                viewModel.currencyCode = newValue
+                currencySearchString = ""
             }
+        )
+        
+        return Group {
+            Button("Set to country currency", action: setToCountryCurrency)
+            pickerWithSearchBar(
+                with: selectionBinding,
+                title: "Currency code",
+                searchString: $currencySearchString,
+                rows: filteredCurrencies,
+                transform: { ListItemView(viewModel: $0.toListItemViewModel) }
+            )
             TextField("Amount", text: $viewModel.value)
                 .keyboardType(.numberPad)
         }
+    }
+    
+    private func pickerWithSearchBar<T: Hashable, P: Hashable>(
+        with selectionBinding: Binding<String>,
+        title: String,
+        searchString: Binding<String>,
+        rows: [T],
+        transform: @escaping (T) -> ListItemView<P>
+    ) -> some View {
+        Picker(title, selection: selectionBinding) {
+            SearchBar(searchString: searchString, placeholder: "Search...")
+            ForEach(rows, id: \.self, content: transform)
+        }
+    }
+    
+    private func setToCountryCurrency() {
+        let locale = Locale(
+            identifier: NSLocale.localeIdentifier(
+                fromComponents: [NSLocale.Key.countryCode.rawValue: viewModel.countryCode]
+            )
+        )
+        guard let currencyCode = locale.currencyCode else { return }
+        
+        viewModel.currencyCode = currencyCode
     }
     
 }
@@ -141,5 +186,10 @@ extension CountryDisplayInfo {
 extension CurrencyDisplayInfo {
     fileprivate var toListItemViewModel: ListItemView<String>.ViewModel<String> {
         ListItemView.ViewModel(title: code, subtitle: symbol, tag: code)
+    }
+    
+    internal func matches(_ predicate: String) -> Bool {
+        code.range(of: predicate, options: [.anchored, .caseInsensitive]) != nil ||
+            symbol.range(of: predicate, options: [.anchored, .caseInsensitive]) != nil
     }
 }

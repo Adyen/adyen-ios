@@ -6,6 +6,7 @@
 
 import Adyen
 @testable import AdyenActions
+import AdyenWeChatPay
 import SafariServices
 import XCTest
 
@@ -89,18 +90,19 @@ class AdyenActionComponentTests: XCTestCase {
 
         let action = Action.await(AwaitAction(paymentData: "SOME_DATA", paymentMethodType: .blik))
         sut.handle(action)
-
+        
+        wait(for: .seconds(2))
+        
         let waitExpectation = expectation(description: "Expect AwaitViewController to be presented")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
+        
+        let topPresentedViewController = UIViewController.findTopPresenter()
+        XCTAssertNotNil(topPresentedViewController as? AdyenActions.AwaitViewController)
+
+        (sut.presentationDelegate as! UIViewController).dismiss(animated: true) {
             let topPresentedViewController = UIViewController.findTopPresenter()
-            XCTAssertNotNil(topPresentedViewController as? AdyenActions.AwaitViewController)
+            XCTAssertNil(topPresentedViewController as? AdyenActions.AwaitViewController)
 
-            (sut.presentationDelegate as! UIViewController).dismiss(animated: true) {
-                let topPresentedViewController = UIViewController.findTopPresenter()
-                XCTAssertNil(topPresentedViewController as? AdyenActions.AwaitViewController)
-
-                waitExpectation.fulfill()
-            }
+            waitExpectation.fulfill()
         }
 
         waitForExpectations(timeout: 10, handler: nil)
@@ -115,7 +117,7 @@ class AdyenActionComponentTests: XCTestCase {
         let waitExpectation = expectation(description: "Expect weChatPaySDKActionComponent to be initiated")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
 
-            XCTAssertNotNil(sut.weChatPaySDKActionComponent)
+            XCTAssertNotNil(sut.currentActionComponent as? WeChatPaySDKActionComponent)
             waitExpectation.fulfill()
         }
 
@@ -129,7 +131,7 @@ class AdyenActionComponentTests: XCTestCase {
 
         let waitExpectation = expectation(description: "Expect in app browser to be presented and then dismissed")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
-            XCTAssertNotNil(sut.threeDS2Component)
+            XCTAssertNotNil(sut.currentActionComponent as? ThreeDS2Component)
             waitExpectation.fulfill()
         }
 
@@ -142,18 +144,18 @@ class AdyenActionComponentTests: XCTestCase {
         
         let action = try! JSONDecoder().decode(VoucherAction.self, from: voucherAction.data(using: .utf8)!)
         sut.handle(Action.voucher(action))
-
+        
+        wait(for: .seconds(2))
+        
         let waitExpectation = expectation(description: "Expect VoucherViewController to be presented")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
+        let topPresentedViewController = UIViewController.findTopPresenter()
+        XCTAssertNotNil(topPresentedViewController as? VoucherViewController)
+
+        (sut.presentationDelegate as! UIViewController).dismiss(animated: true) {
             let topPresentedViewController = UIViewController.findTopPresenter()
-            XCTAssertNotNil(topPresentedViewController as? VoucherViewController)
+            XCTAssertNil(topPresentedViewController as? VoucherViewController)
 
-            (sut.presentationDelegate as! UIViewController).dismiss(animated: true) {
-                let topPresentedViewController = UIViewController.findTopPresenter()
-                XCTAssertNil(topPresentedViewController as? VoucherViewController)
-
-                waitExpectation.fulfill()
-            }
+            waitExpectation.fulfill()
         }
 
         waitForExpectations(timeout: 10, handler: nil)

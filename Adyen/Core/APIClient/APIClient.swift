@@ -21,6 +21,15 @@ public protocol APIClientProtocol: AnyObject {
 }
 
 /// :nodoc:
+extension APIClientProtocol {
+
+    /// :nodoc:
+    public func retryAPIClient(with scheduler: Scheduler) -> AnyRetryAPIClient {
+        RetryAPIClient(apiClient: self, scheduler: scheduler)
+    }
+}
+
+/// :nodoc:
 /// The Basic API Client.
 public final class APIClient: APIClientProtocol {
     
@@ -70,6 +79,9 @@ public final class APIClient: APIClientProtocol {
         if let body = urlRequest.httpBody {
             printAsJSON(body)
         }
+        
+        adyenPrint("---- Request base url (/\(request.path)) ----")
+        adyenPrint(apiContext.environment.baseURL)
 
         if let headers = urlRequest.allHTTPHeaderFields {
             adyenPrint("---- Request Headers (/\(request.path)) ----")

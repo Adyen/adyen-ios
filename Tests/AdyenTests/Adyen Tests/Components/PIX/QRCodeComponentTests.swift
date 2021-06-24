@@ -48,8 +48,8 @@ class QRCodeComponentTests: XCTestCase {
         sut.presentationDelegate = presentationDelegate
         
         presentationDelegate.doPresent = { component in
-            XCTAssertNotNil(component.viewController as? ADYViewController)
-            let viewController = component.viewController as! ADYViewController
+            XCTAssertNotNil(component.viewController as? QRCodeViewController)
+            let viewController = component.viewController as! QRCodeViewController
             
             UIApplication.shared.keyWindow?.rootViewController = viewController
             
@@ -122,8 +122,8 @@ class QRCodeComponentTests: XCTestCase {
         
         let presentationDelegate = PresentationDelegateMock()
         presentationDelegate.doPresent = { component in
-            XCTAssertNotNil(component.viewController as? ADYViewController)
-            let viewController = component.viewController as! ADYViewController
+            XCTAssertNotNil(component.viewController as? QRCodeViewController)
+            let viewController = component.viewController as! QRCodeViewController
             
             UIApplication.shared.keyWindow?.rootViewController = viewController
         }
@@ -169,8 +169,8 @@ class QRCodeComponentTests: XCTestCase {
         
         let presentationDelegate = PresentationDelegateMock()
         presentationDelegate.doPresent = { component in
-            XCTAssertNotNil(component.viewController as? ADYViewController)
-            let viewController = component.viewController as! ADYViewController
+            XCTAssertNotNil(component.viewController as? QRCodeViewController)
+            let viewController = component.viewController as! QRCodeViewController
             
             UIApplication.shared.keyWindow?.rootViewController = viewController
         }
@@ -216,8 +216,8 @@ class QRCodeComponentTests: XCTestCase {
         
         let presentationDelegate = PresentationDelegateMock()
         presentationDelegate.doPresent = { component in
-            XCTAssertNotNil(component.viewController as? ADYViewController)
-            let viewController = component.viewController as! ADYViewController
+            XCTAssertNotNil(component.viewController as? QRCodeViewController)
+            let viewController = component.viewController as! QRCodeViewController
             
             UIApplication.shared.keyWindow?.rootViewController = viewController
         }
@@ -238,8 +238,8 @@ class QRCodeComponentTests: XCTestCase {
         sut.presentationDelegate = presentationDelegate
         
         presentationDelegate.doPresent = { component in
-            XCTAssertNotNil(component.viewController as? ADYViewController)
-            let viewController = component.viewController as! ADYViewController
+            XCTAssertNotNil(component.viewController as? QRCodeViewController)
+            let viewController = component.viewController as! QRCodeViewController
             
             UIApplication.shared.keyWindow?.rootViewController = viewController
             

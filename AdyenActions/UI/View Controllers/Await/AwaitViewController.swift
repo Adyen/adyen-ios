@@ -53,12 +53,8 @@ internal final class AwaitViewController: UIViewController {
     private func configureConstraints() {
         awaitView.translatesAutoresizingMaskIntoConstraints = false
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        var guid = view.layoutMarginsGuide
-        if #available(iOS 11, *) {
-            guid = view.safeAreaLayoutGuide
-        }
         
-        containerView.adyen.anchor(inside: guid)
+        containerView.adyen.anchor(inside: view.safeAreaLayoutGuide)
         let constraints = [
             awaitView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
             

@@ -7,6 +7,7 @@
 import Foundation
 
 /// The delegate that handles shopper confirmation UI when the balance of the gift card is sufficient to pay.
+/// :nodoc:
 public protocol ReadyToSubmitPaymentComponentDelegate: AnyObject {
 
     /// Called when the payment component is ready to submit shopper details,

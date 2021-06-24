@@ -17,13 +17,11 @@ class PreApplePayComponentTests: XCTestCase {
     lazy var payment = Payment(amount: amount, countryCode: getRandomCountryCode())
     
     override func setUp() {
-        let configuration = ApplePayComponent.Configuration(
-            payment: payment,
-            paymentMethod: ApplePayPaymentMethod(type: "test_type", name: "test_name", brands: nil),
-            summaryItems: createTestSummaryItems(),
-            merchantIdentifier: "test_id"
-        )
-        sut = try! PreApplePayComponent(apiContext: Dummy.context, configuration: configuration)
+        let configuration = ApplePayComponent.Configuration(summaryItems: createTestSummaryItems(), merchantIdentifier: "test_id")
+        sut = try! PreApplePayComponent(paymentMethod: ApplePayPaymentMethod(type: "test_type", name: "test_name", brands: nil),
+                                        apiContext: Dummy.context,
+                                        payment: payment,
+                                        configuration: configuration)
     }
     
     func testUIConfiguration() {
@@ -59,6 +57,7 @@ class PreApplePayComponentTests: XCTestCase {
     }
     
     func testApplePayPresented() {
+        guard Available.iOS12 else { return }
         let dummyExpectation = expectation(description: "Dummy Expectation")
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -77,7 +76,7 @@ class PreApplePayComponentTests: XCTestCase {
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             XCTAssertTrue(UIApplication.shared.keyWindow?.rootViewController?.presentedViewController is PKPaymentAuthorizationViewController)
-            
+            UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismiss(animated: false, completion: nil)
             dummyExpectation.fulfill()
         }
         

@@ -6,8 +6,8 @@
 //  Copyright © 2021 Adyen. All rights reserved.
 //
 
-import Foundation
 @testable import Adyen
+import Foundation
 
 final class PartialPaymentDelegateMock: PartialPaymentDelegate {
     var onCheckBalance: ((PaymentComponentData,
@@ -29,6 +29,5 @@ final class PartialPaymentDelegateMock: PartialPaymentDelegate {
     func cancelOrder(_ order: PartialPaymentOrder) {
         onCancelOrder?(order)
     }
-
 
 }
