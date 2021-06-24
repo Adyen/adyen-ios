@@ -968,6 +968,114 @@ class CardComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
+    func testClear_shouldResetPostalCodeItemToEmptyValue() throws {
+        // Given
+        let method = CardPaymentMethod(type: "bcmc",
+                                       name: "Test name",
+                                       fundingSource: .credit,
+                                       brands: ["visa", "amex", "mc"])
+        var config = CardComponent.Configuration()
+        config.billingAddressMode = .postalCode
+        let sut = CardComponent(paymentMethod: method,
+                                configuration: config,
+                                apiContext: Dummy.context)
+        // When
+        sut.clear()
+        
+        // Then
+        XCTAssertTrue(sut.cardViewController.postalCodeItem.value.isEmpty)
+    }
+    
+    func testClear_shouldResetNumberItemToEmptyValue() throws {
+        // Given
+        let method = CardPaymentMethod(type: "bcmc",
+                                       name: "Test name",
+                                       fundingSource: .credit,
+                                       brands: ["visa", "amex", "mc"])
+        var config = CardComponent.Configuration()
+        config.billingAddressMode = .postalCode
+        let sut = CardComponent(paymentMethod: method,
+                                configuration: config,
+                                apiContext: Dummy.context)
+        // When
+        sut.clear()
+        
+        // Then
+        XCTAssertTrue(sut.cardViewController.numberItem.value.isEmpty)
+    }
+    
+    func testClear_shouldResetExpiryDateItemToEmptyValue() throws {
+        // Given
+        let method = CardPaymentMethod(type: "bcmc",
+                                       name: "Test name",
+                                       fundingSource: .credit,
+                                       brands: ["visa", "amex", "mc"])
+        var config = CardComponent.Configuration()
+        config.billingAddressMode = .postalCode
+        let sut = CardComponent(paymentMethod: method,
+                                configuration: config,
+                                apiContext: Dummy.context)
+        // When
+        sut.clear()
+        
+        // Then
+        XCTAssertTrue(sut.cardViewController.expiryDateItem.value.isEmpty)
+    }
+    
+    func testClear_shouldResetSecurityCodeItemToEmptyValue() throws {
+        // Given
+        let method = CardPaymentMethod(type: "bcmc",
+                                       name: "Test name",
+                                       fundingSource: .credit,
+                                       brands: ["visa", "amex", "mc"])
+        var config = CardComponent.Configuration()
+        config.billingAddressMode = .postalCode
+        let sut = CardComponent(paymentMethod: method,
+                                configuration: config,
+                                apiContext: Dummy.context)
+        // When
+        sut.clear()
+        
+        // Then
+        XCTAssertTrue(sut.cardViewController.securityCodeItem.value.isEmpty)
+    }
+    
+    func testClear_shouldResetHolderNameItemToEmptyValue() throws {
+        // Given
+        let method = CardPaymentMethod(type: "bcmc",
+                                       name: "Test name",
+                                       fundingSource: .credit,
+                                       brands: ["visa", "amex", "mc"])
+        var config = CardComponent.Configuration()
+        config.billingAddressMode = .postalCode
+        let sut = CardComponent(paymentMethod: method,
+                                configuration: config,
+                                apiContext: Dummy.context)
+        // When
+        sut.clear()
+        
+        // Then
+        XCTAssertTrue(sut.cardViewController.holderNameItem.value.isEmpty)
+    }
+    
+    func testClear_shouldDisableStoreDetailsItem() throws {
+        // Given
+        let method = CardPaymentMethod(type: "bcmc",
+                                       name: "Test name",
+                                       fundingSource: .credit,
+                                       brands: ["visa", "amex", "mc"])
+        var config = CardComponent.Configuration()
+        config.billingAddressMode = .postalCode
+        let sut = CardComponent(paymentMethod: method,
+                                configuration: config,
+                                apiContext: Dummy.context)
+        // When
+        sut.clear()
+        
+        // Then
+        XCTAssertFalse(sut.cardViewController.storeDetailsItem.value)
+    }
+    
     private func focus<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U) {
         textItemView.textField.becomeFirstResponder()
     }
@@ -981,5 +1089,4 @@ extension UIView {
             print(view.printForTesting(indent: indent + " -"))
         }
     }
-
 }
