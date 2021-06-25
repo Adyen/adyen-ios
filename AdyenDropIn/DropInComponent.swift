@@ -158,8 +158,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
         rootComponent: rootComponent,
         style: style.navigation,
         cancelHandler: { [weak self] isRoot, component in
-            self?.didSelectCancelButton(isRoot: isRoot,
-                                        component: component)
+            self?.didSelectCancelButton(isRoot: isRoot, component: component)
         }
     )
 

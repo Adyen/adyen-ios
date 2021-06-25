@@ -58,13 +58,6 @@ internal final class DropInNavigationController: UINavigationController, Keyboar
     }
     
     internal func present(asModal component: PresentableComponent) {
-        switch component.navBarType {
-        case .custom(let navBar):
-            navBar.onCancelHandler = { [weak self] in self?.cancelHandler?(false, component) }
-        case .regular:
-            break
-        }
-        
         if component.requiresModalPresentation {
             pushViewController(wrapInModalController(component: component, isRoot: false), animated: true)
         } else {

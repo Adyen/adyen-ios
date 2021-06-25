@@ -110,7 +110,7 @@ internal final class ModalViewController: UIViewController {
     }
     
     internal lazy var navBar: UIView = {
-        let navBar: UIView
+        let navBar: AnyNavigationBar
         
         switch navBarType {
         case .regular:
@@ -119,14 +119,13 @@ internal final class ModalViewController: UIViewController {
             navBar = customNavbar
         }
         
+        navBar.onCancelHandler = { [weak self] in self?.didCancel() }
         navBar.translatesAutoresizingMaskIntoConstraints = false
         return navBar
     }()
     
-    private func getRegularNavBar() -> UIView {
-        ModalToolbar(title: self.innerController.title,
-                     style: style,
-                     cancelHandler: { [weak self] in self?.didCancel() })
+    private func getRegularNavBar() -> AnyNavigationBar {
+        ModalToolbar(title: self.innerController.title, style: style)
     }
     
     internal lazy var stackView: UIStackView = {
