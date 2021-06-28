@@ -62,7 +62,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     
     @objc internal func didChangeEditingStatus() {
         guard showsSeparator else { return }
-        isEditing ? highlightSeparatorView(color: tintColor) : unhighlightSeparatorView()
+        highlightSeparatorView(color: defaultSeparatorColor)
     }
     
     // MARK: - Validation
@@ -112,37 +112,19 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         transitionView.frame.size.width = 0.0
         addSubview(transitionView)
         
-        adyen.animate(animationKey: "separator_highlighting",
-                      withDuration: 0.25,
-                      delay: 0.0,
-                      options: [.curveEaseInOut],
-                      animations: {
-                          transitionView.frame = self.separatorView.frame
-                      },
-                      completion: { _ in
-                          self.separatorView.backgroundColor = color
-                          transitionView.removeFromSuperview()
-                      })
-    }
-    
-    internal func unhighlightSeparatorView() {
-        let transitionView = UIView()
-        transitionView.backgroundColor = tintColor
-        transitionView.frame = separatorView.frame
-        addSubview(transitionView)
+        let context = AnimationContext(animationKey: "separator_highlighting",
+                                       duration: 0.25,
+                                       delay: 0.0,
+                                       options: [.curveEaseInOut],
+                                       animations: {
+                                           transitionView.frame = self.separatorView.frame
+                                       },
+                                       completion: { _ in
+                                           self.separatorView.backgroundColor = color
+                                           transitionView.removeFromSuperview()
+                                       })
         
-        separatorView.backgroundColor = defaultSeparatorColor
-        
-        adyen.animate(animationKey: "separator_unhighlighting",
-                      withDuration: 0.25,
-                      delay: 0.9,
-                      options: [.curveEaseInOut],
-                      animations: {
-                          transitionView.frame.size.width = 0.0
-                      },
-                      completion: { _ in
-                          transitionView.removeFromSuperview()
-                      })
+        animate(context: context)
     }
     
     // MARK: - Layout
