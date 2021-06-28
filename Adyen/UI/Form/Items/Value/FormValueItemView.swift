@@ -55,8 +55,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
             }
             
             if isEditing != oldValue {
-                Self.cancelPreviousPerformRequests(withTarget: self)
-                perform(#selector(didChangeEditingStatus), with: nil, afterDelay: 0.1)
+                didChangeEditingStatus()
             }
         }
     }
@@ -91,10 +90,18 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     }()
     
     internal var defaultSeparatorColor: UIColor {
-        if isFirstResponder {
+        if isEditing {
             return tintColor
         } else {
             return item.style.separatorColor ?? UIColor.Adyen.componentSeparator
+        }
+    }
+    
+    internal var defaultTitleColor: UIColor {
+        if isEditing {
+            return tintColor
+        } else {
+            return item.style.title.color
         }
     }
     
@@ -105,12 +112,17 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         transitionView.frame.size.width = 0.0
         addSubview(transitionView)
         
-        UIView.animate(withDuration: 0.25, delay: 0.0, options: [.curveEaseInOut], animations: {
-            transitionView.frame = self.separatorView.frame
-        }, completion: { _ in
-            self.separatorView.backgroundColor = color
-            transitionView.removeFromSuperview()
-        })
+        adyen.animate(animationKey: "separator_highlighting",
+                      withDuration: 0.25,
+                      delay: 0.0,
+                      options: [.curveEaseInOut],
+                      animations: {
+                          transitionView.frame = self.separatorView.frame
+                      },
+                      completion: { _ in
+                          self.separatorView.backgroundColor = color
+                          transitionView.removeFromSuperview()
+                      })
     }
     
     internal func unhighlightSeparatorView() {
@@ -121,11 +133,16 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         
         separatorView.backgroundColor = defaultSeparatorColor
         
-        UIView.animate(withDuration: 0.25, delay: 0.0, options: [.curveEaseInOut], animations: {
-            transitionView.frame.size.width = 0.0
-        }, completion: { _ in
-            transitionView.removeFromSuperview()
-        })
+        adyen.animate(animationKey: "separator_unhighlighting",
+                      withDuration: 0.25,
+                      delay: 0.9,
+                      options: [.curveEaseInOut],
+                      animations: {
+                          transitionView.frame.size.width = 0.0
+                      },
+                      completion: { _ in
+                          transitionView.removeFromSuperview()
+                      })
     }
     
     // MARK: - Layout

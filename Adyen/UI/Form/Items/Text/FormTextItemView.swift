@@ -116,6 +116,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     
     internal lazy var alertLabel: UILabel = {
         let alertLabel = UILabel(style: item.style.title)
+        alertLabel.textColor = item.style.errorColor
         alertLabel.isAccessibilityElement = false
         alertLabel.text = item.validationFailureMessage
         alertLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "alertLabel") }
@@ -212,9 +213,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     // MARK: - Editing
     
     override internal func didChangeEditingStatus() {
-        super.didChangeEditingStatus()
-        let customColor = (accessory == .invalid) ? item.style.errorColor : item.style.title.color
-        titleLabel.textColor = isEditing ? tintColor : customColor
+        updateValidationStatus()
     }
     
     // MARK: - Layout
@@ -284,10 +283,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     /// :nodoc:
     open func textFieldDidBeginEditing(_ textField: UITextField) {
         isEditing = true
-        hideAlertLabel(true)
-        if accessory == .valid || accessory == .invalid {
-            accessory = .none
-        }
+        updateValidationStatus()
     }
 
     /// :nodoc:
@@ -312,13 +308,13 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
             }
             hideAlertLabel(true)
             highlightSeparatorView(color: defaultSeparatorColor)
-            titleLabel.textColor = item.style.title.color
+            titleLabel.textColor = defaultTitleColor
         }
     }
     
     private func hideAlertLabel(_ hidden: Bool) {
         guard hidden || alertLabel.text != nil else { return }
-        alertLabel.adyen.hide(hidden: hidden, animated: true)
+        alertLabel.adyen.hide(animationKey: "hide_alertLabl", hidden: hidden, animated: true)
     }
 }
 
