@@ -103,6 +103,7 @@ class FormTextItemViewTests: XCTestCase {
             return false
         }
         
+        sut.isEditing = true
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
         
         wait(for: [validationExpectation], timeout: 5)
@@ -116,6 +117,7 @@ class FormTextItemViewTests: XCTestCase {
             return false
         }
         
+        sut.isEditing = true
         sut.textField.text = "123456H"
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
         
@@ -130,6 +132,7 @@ class FormTextItemViewTests: XCTestCase {
             return true
         }
         
+        sut.isEditing = true
         sut.textField.text = "123456H"
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
         
