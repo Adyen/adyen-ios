@@ -312,7 +312,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     
     private func hideAlertLabel(_ hidden: Bool) {
         guard hidden || alertLabel.text != nil else { return }
-        alertLabel.adyen.hide(animationKey: "hide_alertLabl", hidden: hidden, animated: true)
+        alertLabel.adyen.hide(animationKey: "hide_alertLabel", hidden: hidden, animated: true)
     }
 }
 
