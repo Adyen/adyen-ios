@@ -60,9 +60,9 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         }
     }
     
-    @objc internal func didChangeEditingStatus() {
+    internal func didChangeEditingStatus() {
         guard showsSeparator else { return }
-        highlightSeparatorView(color: defaultSeparatorColor)
+        isEditing ? highlightSeparatorView(color: tintColor) : unhighlightSeparatorView()
     }
     
     // MARK: - Validation
@@ -112,7 +112,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         transitionView.frame.size.width = 0.0
         addSubview(transitionView)
         
-        let context = AnimationContext(animationKey: "separator_highlighting",
+        let context = AnimationContext(animationKey: separatorHighlightingAnimationKey,
                                        duration: 0.25,
                                        delay: 0.0,
                                        options: [.curveEaseInOut],
@@ -125,6 +125,23 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
                                        })
         
         animate(context: context)
+    }
+    
+    private let separatorHighlightingAnimationKey = "separator_highlighting"
+    
+    internal func unhighlightSeparatorView() {
+        let context = AnimationContext(animationKey: separatorHighlightingAnimationKey,
+                                       duration: 0.0,
+                                       delay: 0.0,
+                                       animations: {
+                                           self.separatorView.backgroundColor = self.item.style.separatorColor
+                                       },
+                                       completion: { _ in
+                                           self.separatorView.backgroundColor = self.item.style.separatorColor
+                                       })
+        
+        animate(context: context)
+        
     }
     
     // MARK: - Layout

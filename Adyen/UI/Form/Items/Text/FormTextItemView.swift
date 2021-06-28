@@ -275,7 +275,6 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     /// :nodoc:
     open func textFieldDidEndEditing(_ textField: UITextField) {
         isEditing = false
-        updateValidationStatus()
     }
     
     /// This method hides validation accessories icons.
@@ -283,13 +282,12 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     /// :nodoc:
     open func textFieldDidBeginEditing(_ textField: UITextField) {
         isEditing = true
-        updateValidationStatus()
     }
 
     /// :nodoc:
     open func updateValidationStatus(forced: Bool = false) {
         let textFieldNotEmpty = textField.text.map(\.isEmpty) == false
-        let forceShowValidationStatus = forced || textFieldNotEmpty
+        let forceShowValidationStatus = (forced || textFieldNotEmpty) && !isEditing
         if item.isValid(), forceShowValidationStatus {
             accessory = .valid
             hideAlertLabel(true)
@@ -307,7 +305,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
                 accessory = .none
             }
             hideAlertLabel(true)
-            highlightSeparatorView(color: defaultSeparatorColor)
+            isEditing ? highlightSeparatorView(color: tintColor) : unhighlightSeparatorView()
             titleLabel.textColor = defaultTitleColor
         }
     }

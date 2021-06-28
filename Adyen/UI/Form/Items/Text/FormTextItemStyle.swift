@@ -45,7 +45,7 @@ public struct FormTextItemStyle: FormValueItemStyle {
     
     /// The color for separator element.
     /// If value is nil, the default color would be used.
-    public var separatorColor: UIColor?
+    public var separatorColor: UIColor? = UIColor.Adyen.componentSeparator
     
     /// Initializes the form text item style.
     ///
