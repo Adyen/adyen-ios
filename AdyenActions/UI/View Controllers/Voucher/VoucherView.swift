@@ -174,6 +174,7 @@ internal final class VoucherView: UIView, Localizable {
     
     private lazy var mainButton: SubmitButton = {
         let button = SubmitButton(style: model.style.mainButton)
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.title = model.mainButton
         button.addTarget(self, action: #selector(onMainButtonTap), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "mainButton")
@@ -184,6 +185,7 @@ internal final class VoucherView: UIView, Localizable {
     
     private lazy var secondaryButton: UIButton = {
         let button = UIButton(style: model.style.secondaryButton)
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(model.secondaryButtonTitle, for: .normal)
         button.addTarget(self, action: #selector(onSecondaryButtonTap), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "secondaryButton")
@@ -193,7 +195,7 @@ internal final class VoucherView: UIView, Localizable {
     }()
     
     private lazy var appleWalletButton: PKAddPassButton = {
-        let button = PKAddPassButton(addPassButtonStyle: .black)
+        let button = PKAddPassButton(addPassButtonStyle: .blackOutline)
         button.addTarget(self, action: #selector(self.appleWalletButtonPressed), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.voucher", postfix: "appleWalletButton")

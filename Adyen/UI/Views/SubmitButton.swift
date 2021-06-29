@@ -20,7 +20,6 @@ public final class SubmitButton: UIControl {
         self.style = style
         super.init(frame: .zero)
         
-        translatesAutoresizingMaskIntoConstraints = false
         isAccessibilityElement = true
         accessibilityTraits = .button
         
@@ -125,25 +124,27 @@ public final class SubmitButton: UIControl {
     private func configureConstraints() {
         backgroundView.adyen.anchor(inside: self)
         
-        let height = heightAnchor.constraint(equalToConstant: 50.0)
-        height.priority = .required
-        height.isActive = true
+        let heightConstraint = heightAnchor.constraint(equalToConstant: 50.0)
+        heightConstraint.priority = .required
         
-        let constraints = [
-            titleLabel.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
+        let labelConstraints = [
+            titleLabel.topAnchor.constraint(equalTo: topAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
         ].map { (const: NSLayoutConstraint) -> NSLayoutConstraint in
             const.priority = .defaultHigh
             return const
         }
         
-        NSLayoutConstraint.activate(constraints)
-        NSLayoutConstraint.activate([
+        let spinnerConstraints = [
             activityIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor),
             activityIndicatorView.centerYAnchor.constraint(equalTo: centerYAnchor)
-        ])
+        ]
+        
+        let allConstraints = labelConstraints + spinnerConstraints + [heightConstraint]
+        
+        NSLayoutConstraint.activate(allConstraints)
     }
     
     // MARK: - State
