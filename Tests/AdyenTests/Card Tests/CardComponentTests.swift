@@ -979,6 +979,8 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 configuration: config,
                                 apiContext: Dummy.context)
+        sut.cardViewController.postalCodeItem.value = "1501 NH"
+        
         // When
         sut.clear()
         
@@ -997,6 +999,8 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 configuration: config,
                                 apiContext: Dummy.context)
+        sut.cardViewController.numberItem.value = "4111 1111 1111 1111"
+        
         // When
         sut.clear()
         
@@ -1015,6 +1019,8 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 configuration: config,
                                 apiContext: Dummy.context)
+        sut.cardViewController.expiryDateItem.value = "03/24"
+
         // When
         sut.clear()
         
@@ -1033,6 +1039,8 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 configuration: config,
                                 apiContext: Dummy.context)
+        sut.cardViewController.securityCodeItem.value = "935"
+
         // When
         sut.clear()
         
@@ -1051,6 +1059,8 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 configuration: config,
                                 apiContext: Dummy.context)
+        sut.cardViewController.holderNameItem.value = "Katrina del Mar"
+
         // When
         sut.clear()
         
@@ -1069,6 +1079,8 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 configuration: config,
                                 apiContext: Dummy.context)
+        sut.cardViewController.storeDetailsItem.value = true
+        
         // When
         sut.clear()
         
