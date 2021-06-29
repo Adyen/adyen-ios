@@ -9,6 +9,11 @@ import UIKit
 
 internal final class WrapperViewController: UIViewController {
 
+    private var topConstraint: NSLayoutConstraint?
+    private var bottomConstraint: NSLayoutConstraint?
+    private var rightConstraint: NSLayoutConstraint?
+    private var leftConstraint: NSLayoutConstraint?
+
     internal lazy var requiresKeyboardInput: Bool = heirarchyRequiresKeyboardInput(viewController: child)
 
     internal let child: ModalViewController
@@ -37,10 +42,10 @@ internal final class WrapperViewController: UIViewController {
         guard let view = child.viewIfLoaded, let window = UIApplication.shared.keyWindow else { return }
         let finalFrame = child.finalPresentationFrame(in: window, keyboardRect: keyboardRect)
         topConstraint?.constant = finalFrame.origin.y
+        leftConstraint?.constant = finalFrame.origin.x
+        rightConstraint?.constant = -finalFrame.origin.x
         view.layoutIfNeeded()
     }
-
-    private var topConstraint: NSLayoutConstraint?
 
     fileprivate func positionContent(_ child: ModalViewController) {
         addChild(child)
@@ -48,13 +53,19 @@ internal final class WrapperViewController: UIViewController {
         child.didMove(toParent: self)
         child.view.translatesAutoresizingMaskIntoConstraints = false
         let topConstraint = child.view.topAnchor.constraint(equalTo: view.topAnchor, constant: 0)
+        let bottomConstraint = child.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        let leftConstraint = child.view.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+        let rightConstraint = child.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         NSLayoutConstraint.activate([
-            child.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            child.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            child.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            leftConstraint,
+            rightConstraint,
+            bottomConstraint,
             topConstraint
         ])
         self.topConstraint = topConstraint
+        self.bottomConstraint = bottomConstraint
+        self.leftConstraint = leftConstraint
+        self.rightConstraint = rightConstraint
     }
 
 }
@@ -71,6 +82,13 @@ extension ModalViewController {
     /// :nodoc:
     func finalPresentationFrame(in containerView: UIView, keyboardRect: CGRect = .zero) -> CGRect {
         var frame = containerView.bounds
+
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            let width = min(frame.width * 0.85, 375 * UIScreen.main.scale)
+            frame.origin.x = (frame.width - width) / 2
+            frame.size.width = width
+        }
+
         let smallestHeightPossible = frame.height * leastPresentableHeightScale
         let biggestHeightPossible = frame.height * greatestPresentableHeightScale
         guard preferredContentSize != .zero else { return frame }

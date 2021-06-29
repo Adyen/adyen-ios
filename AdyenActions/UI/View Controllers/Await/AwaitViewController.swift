@@ -71,11 +71,7 @@ internal final class AwaitViewController: UIViewController {
     /// :nodoc:
     override internal var preferredContentSize: CGSize {
         get {
-            let targetSize = CGSize(width: UIScreen.main.bounds.width,
-                                    height: UIView.layoutFittingCompressedSize.height)
-            return containerView.systemLayoutSizeFitting(targetSize,
-                                                         withHorizontalFittingPriority: .required,
-                                                         verticalFittingPriority: .fittingSizeLevel)
+            containerView.adyen.getMinimalSize
         }
         
         // swiftlint:disable:next unused_setter_value
