@@ -62,7 +62,7 @@ extension UIView {
     
     /// :nodoc:
     @objc internal func animate(context: AnimationContext) {
-        if animationsMap[context.animationKey] == true {
+        if animationsMap.contains(context.animationKey) {
             perform(#selector(animate(context:)), with: context, afterDelay: 0.1)
             return
         }
@@ -71,7 +71,7 @@ extension UIView {
     
     /// :nodoc:
     @objc internal func animateKeyframes(context: KeyFrameAnimationContext) {
-        if animationsMap[context.animationKey] == true {
+        if animationsMap.contains(context.animationKey) {
             perform(#selector(animateKeyframes(context:)), with: context, afterDelay: 0.1)
             return
         }
@@ -79,19 +79,19 @@ extension UIView {
     }
     
     @objc private func animateSynchronized(context: AnimationContext) {
-        animationsMap[context.animationKey] = true
+        animationsMap.insert(context.animationKey)
         UIView.animate(withDuration: context.duration,
                        delay: context.delay,
                        options: context.options,
                        animations: context.animations,
                        completion: {
                            context.completion?($0)
-                           self.animationsMap[context.animationKey] = false
+                           self.animationsMap.remove(context.animationKey)
                        })
     }
     
     @objc private func animateKeyframesSynchronized(context: KeyFrameAnimationContext) {
-        animationsMap[context.animationKey] = true
+        animationsMap.insert(context.animationKey)
         
         UIView.animateKeyframes(withDuration: context.duration,
                                 delay: context.delay,
@@ -99,15 +99,15 @@ extension UIView {
                                 animations: context.animations,
                                 completion: {
                                     context.completion?($0)
-                                    self.animationsMap[context.animationKey] = false
+                                    self.animationsMap.remove(context.animationKey)
                                 })
     }
     
     /// :nodoc:
-    private var animationsMap: [String: Bool] {
+    private var animationsMap: Set<String> {
         get {
-            guard let value = objc_getAssociatedObject(self, &AssociatedKeys.animations) as? [String: Bool] else {
-                return [String: Bool]()
+            guard let value = objc_getAssociatedObject(self, &AssociatedKeys.animations) as? Set<String> else {
+                return Set<String>()
             }
             return value
         }
