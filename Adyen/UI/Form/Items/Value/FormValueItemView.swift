@@ -55,13 +55,12 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
             }
             
             if isEditing != oldValue {
-                Self.cancelPreviousPerformRequests(withTarget: self)
-                perform(#selector(didChangeEditingStatus), with: nil, afterDelay: 0.1)
+                didChangeEditingStatus()
             }
         }
     }
     
-    @objc internal func didChangeEditingStatus() {
+    internal func didChangeEditingStatus() {
         guard showsSeparator else { return }
         isEditing ? highlightSeparatorView(color: tintColor) : unhighlightSeparatorView()
     }
@@ -91,10 +90,18 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     }()
     
     internal var defaultSeparatorColor: UIColor {
-        if isFirstResponder {
+        if isEditing {
             return tintColor
         } else {
             return item.style.separatorColor ?? UIColor.Adyen.componentSeparator
+        }
+    }
+    
+    internal var defaultTitleColor: UIColor {
+        if isEditing {
+            return tintColor
+        } else {
+            return item.style.title.color
         }
     }
     
@@ -105,27 +112,38 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         transitionView.frame.size.width = 0.0
         addSubview(transitionView)
         
-        UIView.animate(withDuration: 0.25, delay: 0.0, options: [.curveEaseInOut], animations: {
-            transitionView.frame = self.separatorView.frame
-        }, completion: { _ in
-            self.separatorView.backgroundColor = color
-            transitionView.removeFromSuperview()
-        })
+        let context = AnimationContext(animationKey: Animation.separatorHighlighting.rawValue,
+                                       duration: 0.25,
+                                       delay: 0.0,
+                                       options: [.curveEaseInOut],
+                                       animations: {
+                                           transitionView.frame = self.separatorView.frame
+                                       },
+                                       completion: { _ in
+                                           self.separatorView.backgroundColor = color
+                                           transitionView.removeFromSuperview()
+                                       })
+        
+        animate(context: context)
+    }
+    
+    private enum Animation: String {
+        case separatorHighlighting = "separator_highlighting"
     }
     
     internal func unhighlightSeparatorView() {
-        let transitionView = UIView()
-        transitionView.backgroundColor = tintColor
-        transitionView.frame = separatorView.frame
-        addSubview(transitionView)
+        let context = AnimationContext(animationKey: Animation.separatorHighlighting.rawValue,
+                                       duration: 0.0,
+                                       delay: 0.0,
+                                       animations: {
+                                           self.separatorView.backgroundColor = self.item.style.separatorColor
+                                       },
+                                       completion: { _ in
+                                           self.separatorView.backgroundColor = self.item.style.separatorColor
+                                       })
         
-        separatorView.backgroundColor = defaultSeparatorColor
+        animate(context: context)
         
-        UIView.animate(withDuration: 0.25, delay: 0.0, options: [.curveEaseInOut], animations: {
-            transitionView.frame.size.width = 0.0
-        }, completion: { _ in
-            transitionView.removeFromSuperview()
-        })
     }
     
     // MARK: - Layout
