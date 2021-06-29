@@ -15,7 +15,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     private let localizationParameters: LocalizationParameters?
     
     private var observers: [AddressField: Observation] = [:]
-    private var publisherObservations: [AddressField: Observation] = [:]
+    private var publisherObservers: [AddressField: Observation] = [:]
     
     private var initialCountry: String
     
@@ -133,28 +133,28 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     private func bind(item: FormTextInputItem, to field: AddressField) {
         observers[field].map(remove)
-        publisherObservations[field].map(remove)
+        publisherObservers[field].map(remove)
         
         let item = item
         switch field {
         case .street:
             observers[.street] = bind(item.publisher, to: self, at: \.value.street)
-            publisherObservations[.street] = observe(publisher) { item.value = $0.street ?? "" }
+            publisherObservers[.street] = observe(publisher) { item.value = $0.street ?? "" }
         case .houseNumberOrName:
             observers[.houseNumberOrName] = bind(item.publisher, to: self, at: \.value.houseNumberOrName)
-            publisherObservations[.houseNumberOrName] = observe(publisher) { item.value = $0.houseNumberOrName ?? "" }
+            publisherObservers[.houseNumberOrName] = observe(publisher) { item.value = $0.houseNumberOrName ?? "" }
         case .apartment:
             observers[.apartment] = bind(item.publisher, to: self, at: \.value.apartment)
-            publisherObservations[.apartment] = observe(publisher) { item.value = $0.apartment ?? "" }
+            publisherObservers[.apartment] = observe(publisher) { item.value = $0.apartment ?? "" }
         case .postalCode:
             observers[.postalCode] = bind(item.publisher, to: self, at: \.value.postalCode)
-            publisherObservations[.postalCode] = observe(publisher) { item.value = $0.postalCode ?? "" }
+            publisherObservers[.postalCode] = observe(publisher) { item.value = $0.postalCode ?? "" }
         case .city:
             observers[.city] = bind(item.publisher, to: self, at: \.value.city)
-            publisherObservations[.city] = observe(publisher) { item.value = $0.city ?? "" }
+            publisherObservers[.city] = observe(publisher) { item.value = $0.city ?? "" }
         case .stateOrProvince:
             observers[.stateOrProvince] = bind(item.publisher, to: self, at: \.value.stateOrProvince)
-            publisherObservations[.stateOrProvince] = observe(publisher) { item.value = $0.stateOrProvince ?? "" }
+            publisherObservers[.stateOrProvince] = observe(publisher) { item.value = $0.stateOrProvince ?? "" }
         }
     }
     
