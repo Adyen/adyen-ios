@@ -112,7 +112,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         transitionView.frame.size.width = 0.0
         addSubview(transitionView)
         
-        let context = AnimationContext(animationKey: separatorHighlightingAnimationKey,
+        let context = AnimationContext(animationKey: Animation.separatorHighlighting.rawValue,
                                        duration: 0.25,
                                        delay: 0.0,
                                        options: [.curveEaseInOut],
@@ -127,10 +127,12 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         animate(context: context)
     }
     
-    private let separatorHighlightingAnimationKey = "separator_highlighting"
+    private enum Animation: String {
+        case separatorHighlighting = "separator_highlighting"
+    }
     
     internal func unhighlightSeparatorView() {
-        let context = AnimationContext(animationKey: separatorHighlightingAnimationKey,
+        let context = AnimationContext(animationKey: Animation.separatorHighlighting.rawValue,
                                        duration: 0.0,
                                        delay: 0.0,
                                        animations: {
