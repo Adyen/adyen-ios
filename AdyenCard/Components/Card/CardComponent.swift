@@ -32,7 +32,8 @@ public class CardComponent: CardPublicKeyConsumer,
     PresentableComponent,
     Localizable,
     Observer,
-    LoadingComponent {
+    LoadingComponent,
+    ClearableComponent {
     
     /// :nodoc:
     public let apiContext: APIContext
@@ -170,7 +171,13 @@ public class CardComponent: CardPublicKeyConsumer,
         formViewController.title = paymentMethod.name
         return formViewController
     }()
-
+    
+    // MARK: - ClearableComponent
+    
+    /// :nodoc:
+    public func clear() {
+        cardViewController.resetItems()
+    }
 }
 
 extension CardComponent: CardViewControllerDelegate {
