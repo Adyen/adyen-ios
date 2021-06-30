@@ -172,6 +172,7 @@
 		E767F3F525A4CFAF0077029E /* WrapperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E767F34D25A4865A0077029E /* WrapperViewController.swift */; };
 		E767F49B25A5E9740077029E /* ModalToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E767F49A25A5E9740077029E /* ModalToolbar.swift */; };
 		E767F4DC25A603A50077029E /* ModalToolbarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E767F4DB25A603A50077029E /* ModalToolbarTests.swift */; };
+		E76A4D3A2684F39A001BEAC3 /* KCPDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76A4D392684F39A001BEAC3 /* KCPDetails.swift */; };
 		E76EC680241125E0009C6E2F /* FormCardSecurityCodeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76EC67F241125E0009C6E2F /* FormCardSecurityCodeItem.swift */; };
 		E76EC682241125F5009C6E2F /* FormCardSecurityCodeItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76EC681241125F5009C6E2F /* FormCardSecurityCodeItemView.swift */; };
 		E76EC685241127CE009C6E2F /* AdyenCardAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E76EC684241127CE009C6E2F /* AdyenCardAssets.xcassets */; };
@@ -1051,6 +1052,7 @@
 		E767F34D25A4865A0077029E /* WrapperViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WrapperViewController.swift; sourceTree = "<group>"; };
 		E767F49A25A5E9740077029E /* ModalToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalToolbar.swift; sourceTree = "<group>"; };
 		E767F4DB25A603A50077029E /* ModalToolbarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalToolbarTests.swift; sourceTree = "<group>"; };
+		E76A4D392684F39A001BEAC3 /* KCPDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KCPDetails.swift; sourceTree = "<group>"; };
 		E76EC67F241125E0009C6E2F /* FormCardSecurityCodeItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardSecurityCodeItem.swift; sourceTree = "<group>"; };
 		E76EC681241125F5009C6E2F /* FormCardSecurityCodeItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardSecurityCodeItemView.swift; sourceTree = "<group>"; };
 		E76EC684241127CE009C6E2F /* AdyenCardAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AdyenCardAssets.xcassets; sourceTree = "<group>"; };
@@ -2306,6 +2308,7 @@
 				E788A4FA2658034400089448 /* ShopperInformation.swift */,
 				E788A5062658045D00089448 /* Amount.swift */,
 				5A15D5A0264BE1E500A8E3C7 /* PrefilledShopperInformation.swift */,
+				E76A4D392684F39A001BEAC3 /* KCPDetails.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -4476,6 +4479,7 @@
 				E9E3DAFD2225485400697074 /* URLSessionHelpers.swift in Sources */,
 				E71E8F3E257921D10054B03D /* StoredBLIKPaymentMethod.swift in Sources */,
 				F9B798C923AB697100A2103C /* FormComponentStyle.swift in Sources */,
+				E76A4D3A2684F39A001BEAC3 /* KCPDetails.swift in Sources */,
 				E708591F261F1CB800D0153B /* FormVerticalStackItemView.swift in Sources */,
 				E7275BF9255012F600907CF9 /* FormLabelItem.swift in Sources */,
 				E2D12BEF221D560800EF682F /* FormValueItem.swift in Sources */,

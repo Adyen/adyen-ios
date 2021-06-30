@@ -14,6 +14,7 @@ internal class CardPayload: Payload {
     private var expiryMonth: String?
     private var expiryYear: String?
     private var holder: String?
+    private var password: String?
 
     private enum CodingKeys: String, CodingKey {
         case number
@@ -22,6 +23,7 @@ internal class CardPayload: Payload {
         case expiryMonth
         case expiryYear
         case timestamp = "generationtime"
+        case password
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -41,6 +43,9 @@ internal class CardPayload: Payload {
         }
         if let expiryYear = expiryYear {
             try container.encode(expiryYear, forKey: .expiryYear)
+        }
+        if let password = password {
+            try container.encode(password, forKey: .password)
         }
 
         let timestampString = ISO8601DateFormatter().string(from: Date())
@@ -69,6 +74,11 @@ internal class CardPayload: Payload {
 
     internal func add(holder: String?) -> Self {
         self.holder = holder
+        return self
+    }
+
+    internal func add(password: String?) -> Self {
+        self.password = password
         return self
     }
 }

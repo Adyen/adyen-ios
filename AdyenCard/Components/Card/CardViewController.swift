@@ -114,7 +114,17 @@ internal class CardViewController: FormViewController {
             return nil
         }
     }
-    
+
+    internal var kcpDetails: KCPDetails? {
+        guard
+            configuration.showsKoreanAuthentication,
+            let taxNumber = additionalAuthCodeItem.nonEmptyValue,
+            let password = additionalAuthPasswordItem.nonEmptyValue
+        else { return nil }
+
+        return KCPDetails(taxNumber: taxNumber, password: password)
+    }
+
     internal var storePayment: Bool {
         configuration.showsStorePaymentMethodField ? storeDetailsItem.value : false
     }
@@ -226,7 +236,7 @@ internal class CardViewController: FormViewController {
 
     internal lazy var additionalAuthCodeItem: FormTextInputItem = {
         let additionalItem = FormTextInputItem(style: formStyle.textField)
-        additionalItem.title = "Birthday or Corporate registration number" // localizedString(.cardTaxNumberLabel, localizationParameters)
+        additionalItem.title = localizedString(.cardTaxNumberLabelShort, localizationParameters)
         additionalItem.placeholder = localizedString(.cardTaxNumberPlaceholder, localizationParameters)
         additionalItem.validator = LengthValidator(minimumLength: 6, maximumLength: 10)
         additionalItem.validationFailureMessage = localizedString(.cardTaxNumberInvalid, localizationParameters)
@@ -276,8 +286,10 @@ internal class CardViewController: FormViewController {
         self.securityCodeItem.selectedCard = supportedCardTypes.adyen.type(forCardNumber: bin)
         throttler.throttle { [weak self] in
             self?.cardDelegate?.didChangeBIN(bin)
-            self?.additionalAuthPasswordItem.isHidden.wrappedValue = true
-            self?.additionalAuthCodeItem.isHidden.wrappedValue = true
+
+            let binIsLong = bin.count >= BinInfoProvider.minBinLength
+            self?.additionalAuthPasswordItem.isHidden.wrappedValue.setTrueUnless(binIsLong)
+            self?.additionalAuthCodeItem.isHidden.wrappedValue.setTrueUnless(binIsLong)
         }
     }
     
@@ -299,4 +311,12 @@ extension FormValueItem where ValueType == String {
     internal var nonEmptyValue: String? {
         self.value.isEmpty ? nil : self.value
     }
+}
+
+extension Bool {
+
+    fileprivate mutating func setTrueUnless(_ needed: Bool) {
+        self = !(self == false && needed)
+    }
+
 }

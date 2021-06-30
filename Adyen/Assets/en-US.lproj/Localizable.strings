@@ -114,3 +114,4 @@
 "adyen.card.encryptedPassword.label" = "First 2 digits of card password";
 "adyen.card.encryptedPassword.placeholder" = "12";
 "adyen.card.encryptedPassword.invalid" = "Invalid password";
+"adyen.card.taxNumber.label.short" = "Birthday or Corporate registration number";

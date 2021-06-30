@@ -112,3 +112,4 @@
 "adyen.card.encryptedPassword.label" = "카드 비밀번호 첫 2자리";
 "adyen.card.encryptedPassword.placeholder" = "12";
 "adyen.card.encryptedPassword.invalid" = "유효하지 않은 번호";
+"adyen.card.taxNumber.label.short" = "생년월일 또는 법인등록번호";

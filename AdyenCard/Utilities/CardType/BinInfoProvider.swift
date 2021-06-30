@@ -16,7 +16,7 @@ internal protocol AnyBinInfoProvider {
 /// Provide cardType detection based on BinLookup API.
 internal final class BinInfoProvider: AnyBinInfoProvider {
     
-    private static let minBinLength = 11
+    internal static let minBinLength = 11
     
     /// :nodoc:
     internal let apiClient: APIClientProtocol

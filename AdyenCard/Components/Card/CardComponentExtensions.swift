@@ -28,10 +28,12 @@ extension CardComponent {
         do {
             let card = cardViewController.card
             let encryptedCard = try CardEncryptor.encrypt(card: card, with: cardPublicKey)
+            let kcpDetails = try cardViewController.kcpDetails?.encrypt(with: cardPublicKey)
             let details = CardDetails(paymentMethod: cardPaymentMethod,
                                       encryptedCard: encryptedCard,
                                       holderName: card.holder,
-                                      billingAddress: cardViewController.address)
+                                      billingAddress: cardViewController.address,
+                                      kcpDetails: kcpDetails)
             
             let data = PaymentComponentData(paymentMethodDetails: details,
                                             amount: amountToPay,
@@ -53,4 +55,13 @@ extension CardComponent: TrackableComponent {
         Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, context: apiContext)
         fetchCardPublicKey(discardError: true) { _ in /* Do nothing, to just cache the card public key value */ }
     }
+}
+
+extension KCPDetails {
+
+    func encrypt(with publicKey: String) throws -> KCPDetails {
+        KCPDetails(taxNumber: taxNumber,
+                   password: try CardEncryptor.encrypt(password: password, with: publicKey))
+    }
+
 }
