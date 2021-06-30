@@ -56,9 +56,7 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
     ///   - encryptedCard: The encrypted card to read the details from.
     ///   - holderName: The holder name if available.
     ///   - billingAddress: The billing address information.
-    ///   - taxNumber: The cardholder Birtdate (6 digits in a YYMMDD format) for private cards
-    /// or Corporate registration number (10 digits) for corporate cards.
-    ///   - password: The card password (2 digits)
+    ///   - kcpDetails: The additional details for KCP authentication.
     public init(paymentMethod: AnyCardPaymentMethod,
                 encryptedCard: EncryptedCard,
                 holderName: String? = nil,

@@ -284,12 +284,13 @@ internal class CardViewController: FormViewController {
     
     private func didReceived(bin: String) {
         self.securityCodeItem.selectedCard = supportedCardTypes.adyen.type(forCardNumber: bin)
+        let shouldShow = configuration.showsKoreanAuthentication
         throttler.throttle { [weak self] in
             self?.cardDelegate?.didChangeBIN(bin)
 
             let binIsLong = bin.count >= BinInfoProvider.minBinLength
-            self?.additionalAuthPasswordItem.isHidden.wrappedValue.setTrueUnless(binIsLong)
-            self?.additionalAuthCodeItem.isHidden.wrappedValue.setTrueUnless(binIsLong)
+            self?.additionalAuthPasswordItem.isHidden.wrappedValue.setTrueUnless(binIsLong && shouldShow)
+            self?.additionalAuthCodeItem.isHidden.wrappedValue.setTrueUnless(binIsLong && shouldShow)
         }
     }
     
