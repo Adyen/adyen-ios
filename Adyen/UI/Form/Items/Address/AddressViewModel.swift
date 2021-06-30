@@ -10,7 +10,7 @@ import UIKit
 internal enum AddressField: String, CaseIterable {
     case street
     case houseNumberOrName
-    case appartment
+    case apartment
     case postalCode
     case city
     case stateOrProvince
@@ -35,14 +35,14 @@ internal struct AddressViewModel {
                                                   .street: .streetFieldTitle,
                                                   .stateOrProvince: .provinceOrTerritoryFieldTitle,
                                                   .postalCode: .postalCodeFieldTitle,
-                                                  .appartment: .apartmentSuiteFieldTitle],
+                                                  .apartment: .apartmentSuiteFieldTitle],
                                          placeholder: [.city: .cityFieldPlaceholder,
                                                        .houseNumberOrName: .houseNumberFieldPlaceholder,
                                                        .street: .streetFieldPlaceholder,
                                                        .stateOrProvince: .provinceOrTerritoryFieldPlaceholder,
                                                        .postalCode: .postalCodeFieldPlaceholder,
-                                                       .appartment: .apartmentSuiteFieldPlaceholder],
-                                         optionalFields: [.appartment],
+                                                       .apartment: .apartmentSuiteFieldPlaceholder],
+                                         optionalFields: [.apartment],
                                          schema: AddressField.allCases.map { .item($0) })
         switch countryCode {
         case "BR":
@@ -92,7 +92,7 @@ extension AddressField {
             return .streetAddressLine1
         case .houseNumberOrName:
             return .streetAddressLine2
-        case .appartment:
+        case .apartment:
             return nil
         case .postalCode:
             return .postalCode

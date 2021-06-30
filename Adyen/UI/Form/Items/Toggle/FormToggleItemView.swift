@@ -23,6 +23,10 @@ public final class FormToggleItemView: FormValueItemView<Bool, FormToggleItemSty
         accessibilityTraits = switchControl.accessibilityTraits
         accessibilityValue = switchControl.accessibilityValue
         
+        observe(item.publisher) { [weak self] value in
+            self?.switchControl.isOn = value
+        }
+        
         addSubview(stackView)
         stackView.adyen.anchor(inside: self.layoutMarginsGuide)
     }

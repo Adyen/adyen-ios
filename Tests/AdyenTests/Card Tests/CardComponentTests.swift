@@ -755,7 +755,7 @@ class CardComponentTests: XCTestCase {
             let houseNumberItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.houseNumberOrName")
             let countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.country")
             let addressItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.street")
-            let apartmentSuiteItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.appartment")
+            let apartmentSuiteItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.apartment")
             let cityItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.city")
             let provinceOrTerritoryItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.stateOrProvince")
             let postalCodeItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.postalCode")
@@ -812,7 +812,7 @@ class CardComponentTests: XCTestCase {
             let houseNumberItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.houseNumberOrName")
             let countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.country")
             let addressItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.street")
-            let apartmentSuiteItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.appartment")
+            let apartmentSuiteItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.apartment")
             let cityItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.city")
             let provinceOrTerritoryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.stateOrProvince")
             let postalCodeItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.postalCode")
@@ -866,7 +866,7 @@ class CardComponentTests: XCTestCase {
             var houseNumberItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.houseNumberOrName")
             var countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.country")
             var addressItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.street")
-            var apartmentSuiteItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.appartment")
+            var apartmentSuiteItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.apartment")
             var cityItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.city")
             var provinceOrTerritoryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.stateOrProvince")
             var postalCodeItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.postalCode")
@@ -889,7 +889,7 @@ class CardComponentTests: XCTestCase {
                 houseNumberItemView = sut.viewController.view.findView(with: "Adyen.FormAddressItem.houseNumberOrName")
                 countryItemView = sut.viewController.view.findView(with: "Adyen.FormAddressItem.country")
                 addressItemView = sut.viewController.view.findView(with: "Adyen.FormAddressItem.street")
-                apartmentSuiteItemView = sut.viewController.view.findView(with: "Adyen.FormAddressItem.appartment")
+                apartmentSuiteItemView = sut.viewController.view.findView(with: "Adyen.FormAddressItem.apartment")
                 cityItemView = sut.viewController.view.findView(with: "Adyen.FormAddressItem.city")
                 provinceOrTerritoryItemView = sut.viewController.view.findView(with: "Adyen.FormAddressItem.stateOrProvince")
                 postalCodeItemView = sut.viewController.view.findView(with: "Adyen.FormAddressItem.postalCode")
@@ -968,6 +968,146 @@ class CardComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
+    func testClear_shouldResetPostalCodeItemToEmptyValue() throws {
+        // Given
+        let method = CardPaymentMethod(type: "bcmc",
+                                       name: "Test name",
+                                       fundingSource: .credit,
+                                       brands: ["visa", "amex", "mc"])
+        var config = CardComponent.Configuration()
+        config.billingAddressMode = .postalCode
+        let sut = CardComponent(paymentMethod: method,
+                                configuration: config,
+                                apiContext: Dummy.context)
+        sut.cardViewController.postalCodeItem.value = "1501 NH"
+        
+        // When
+        sut.clear()
+        
+        // Then
+        XCTAssertTrue(sut.cardViewController.postalCodeItem.value.isEmpty)
+    }
+    
+    func testClear_shouldResetNumberItemToEmptyValue() throws {
+        // Given
+        let method = CardPaymentMethod(type: "bcmc",
+                                       name: "Test name",
+                                       fundingSource: .credit,
+                                       brands: ["visa", "amex", "mc"])
+        var config = CardComponent.Configuration()
+        config.billingAddressMode = .postalCode
+        let sut = CardComponent(paymentMethod: method,
+                                configuration: config,
+                                apiContext: Dummy.context)
+        sut.cardViewController.numberItem.value = "4111 1111 1111 1111"
+        
+        // When
+        sut.clear()
+        
+        // Then
+        XCTAssertTrue(sut.cardViewController.numberItem.value.isEmpty)
+    }
+    
+    func testClear_shouldResetExpiryDateItemToEmptyValue() throws {
+        // Given
+        let method = CardPaymentMethod(type: "bcmc",
+                                       name: "Test name",
+                                       fundingSource: .credit,
+                                       brands: ["visa", "amex", "mc"])
+        var config = CardComponent.Configuration()
+        config.billingAddressMode = .postalCode
+        let sut = CardComponent(paymentMethod: method,
+                                configuration: config,
+                                apiContext: Dummy.context)
+        sut.cardViewController.expiryDateItem.value = "03/24"
+
+        // When
+        sut.clear()
+        
+        // Then
+        XCTAssertTrue(sut.cardViewController.expiryDateItem.value.isEmpty)
+    }
+    
+    func testClear_shouldResetSecurityCodeItemToEmptyValue() throws {
+        // Given
+        let method = CardPaymentMethod(type: "bcmc",
+                                       name: "Test name",
+                                       fundingSource: .credit,
+                                       brands: ["visa", "amex", "mc"])
+        var config = CardComponent.Configuration()
+        config.billingAddressMode = .postalCode
+        let sut = CardComponent(paymentMethod: method,
+                                configuration: config,
+                                apiContext: Dummy.context)
+        sut.cardViewController.securityCodeItem.value = "935"
+
+        // When
+        sut.clear()
+        
+        // Then
+        XCTAssertTrue(sut.cardViewController.securityCodeItem.value.isEmpty)
+    }
+    
+    func testClear_shouldResetHolderNameItemToEmptyValue() throws {
+        // Given
+        let method = CardPaymentMethod(type: "bcmc",
+                                       name: "Test name",
+                                       fundingSource: .credit,
+                                       brands: ["visa", "amex", "mc"])
+        var config = CardComponent.Configuration()
+        config.billingAddressMode = .postalCode
+        let sut = CardComponent(paymentMethod: method,
+                                configuration: config,
+                                apiContext: Dummy.context)
+        sut.cardViewController.holderNameItem.value = "Katrina del Mar"
+
+        // When
+        sut.clear()
+        
+        // Then
+        XCTAssertTrue(sut.cardViewController.holderNameItem.value.isEmpty)
+    }
+    
+    func testClear_shouldDisableStoreDetailsItem() throws {
+        // Given
+        let method = CardPaymentMethod(type: "bcmc",
+                                       name: "Test name",
+                                       fundingSource: .credit,
+                                       brands: ["visa", "amex", "mc"])
+        var config = CardComponent.Configuration()
+        config.billingAddressMode = .postalCode
+        let sut = CardComponent(paymentMethod: method,
+                                configuration: config,
+                                apiContext: Dummy.context)
+        sut.cardViewController.storeDetailsItem.value = true
+        
+        // When
+        sut.clear()
+        
+        // Then
+        XCTAssertFalse(sut.cardViewController.storeDetailsItem.value)
+    }
+    
+    func testClear_shouldAssignEmptyPostalAddressToBillingAddressItem() throws {
+        // Given
+        let expectedPostalAddress = PostalAddress()
+        let method = CardPaymentMethod(type: "bcmc",
+                                       name: "Test name",
+                                       fundingSource: .credit,
+                                       brands: ["visa", "amex", "mc"])
+        var config = CardComponent.Configuration()
+        config.billingAddressMode = .postalCode
+        let sut = CardComponent(paymentMethod: method,
+                                configuration: config,
+                                apiContext: Dummy.context)
+        // When
+        sut.clear()
+
+        // Then
+        let postalAddress = sut.cardViewController.billingAddressItem.value
+        XCTAssertEqual(expectedPostalAddress, postalAddress)
+    }
+    
     private func focus<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U) {
         textItemView.textField.becomeFirstResponder()
     }
@@ -981,5 +1121,4 @@ extension UIView {
             print(view.printForTesting(indent: indent + " -"))
         }
     }
-
 }
