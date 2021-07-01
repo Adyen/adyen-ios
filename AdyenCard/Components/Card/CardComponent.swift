@@ -25,9 +25,12 @@ public class CardComponent: CardPublicKeyConsumer,
     public let apiContext: APIContext
 
     private let publicBinLength = 6
+
     internal let cardPaymentMethod: AnyCardPaymentMethod
+
     internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
-    internal var binInfoProvider: AnyBinInfoProvider
+
+    internal let binInfoProvider: AnyBinInfoProvider
     
     /// Describes the component's UI style.
     public let style: FormComponentStyle
@@ -175,7 +178,7 @@ extension CardComponent: CardViewControllerDelegate {
     
     func didChangeBIN(_ value: String) {
         self.cardComponentDelegate?.didChangeBIN(String(value.prefix(publicBinLength)), component: self)
-        binInfoProvider.provideInfo(for: value, supportedTypes: supportedCardTypes) { [weak self] binInfo in
+        binInfoProvider.provide(for: value, supportedTypes: supportedCardTypes) { [weak self] binInfo in
             guard let self = self else { return }
             self.cardViewController.update(binInfo: binInfo)
             self.cardComponentDelegate?.didChangeCardBrand(binInfo.brands ?? [], component: self)

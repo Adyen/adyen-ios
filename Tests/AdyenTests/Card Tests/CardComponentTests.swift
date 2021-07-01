@@ -288,15 +288,17 @@ class CardComponentTests: XCTestCase {
     
     func testDelegateCalled() {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["visa", "amex"])
-        let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context)
-
         let cardTypeProviderMock = CardTypeProviderMock()
         cardTypeProviderMock.onFetch = {
             $0(BinLookupResponse(brands: [CardBrand(type: .americanExpress)]))
         }
 
-        sut.binInfoProvider = cardTypeProviderMock
+        let sut = CardComponent(paymentMethod: method,
+                                configuration: .init(),
+                                apiContext: Dummy.context,
+                                style: .init(),
+                                cardPublicKeyProvider: CardPublicKeyProviderMock(),
+                                binProvider: cardTypeProviderMock)
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         

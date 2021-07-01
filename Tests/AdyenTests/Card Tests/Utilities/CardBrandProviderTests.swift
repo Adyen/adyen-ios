@@ -34,7 +34,7 @@ class CardBrandProviderTests: XCTestCase {
             XCTFail("Shoul not call APIClient")
         }
 
-        sut.provideInfo(for: "56", supportedTypes: [.masterCard, .visa, .maestro]) { result in
+        sut.provide(for: "56", supportedTypes: [.masterCard, .visa, .maestro]) { result in
             XCTAssertEqual(result.brands!.map(\.type), [.maestro])
         }
     }
@@ -44,7 +44,7 @@ class CardBrandProviderTests: XCTestCase {
         let mockedBrands = [CardBrand(type: .solo)]
         apiClientMock.mockedResults = [.success(BinLookupResponse(brands: mockedBrands))]
 
-        sut.provideInfo(for: "5656565656565656", supportedTypes: [.masterCard, .visa, .maestro]) { result in
+        sut.provide(for: "5656565656565656", supportedTypes: [.masterCard, .visa, .maestro]) { result in
             XCTAssertEqual(result.brands!.map(\.type), [.solo])
         }
     }
@@ -52,7 +52,7 @@ class CardBrandProviderTests: XCTestCase {
     func testLocalCardTypeFetchWhenPublicKeyFailure() {
         cardPublicKeyProvider.onFetch = { $0(.failure(Dummy.error)) }
         apiClientMock.onExecute = { XCTFail("Shoul not call APIClient") }
-        sut.provideInfo(for: "56", supportedTypes: [.masterCard, .visa, .maestro]) { result in
+        sut.provide(for: "56", supportedTypes: [.masterCard, .visa, .maestro]) { result in
             XCTAssertEqual(result.brands!.map(\.type), [.maestro])
         }
     }
@@ -61,7 +61,7 @@ class CardBrandProviderTests: XCTestCase {
         cardPublicKeyProvider.onFetch = { $0(.failure(Dummy.error)) }
         apiClientMock.onExecute = { XCTFail("Shoul not call APIClient") }
 
-        sut.provideInfo(for: "5656565656565656", supportedTypes: [.masterCard, .visa, .maestro]) { result in
+        sut.provide(for: "5656565656565656", supportedTypes: [.masterCard, .visa, .maestro]) { result in
             XCTAssertEqual(result.brands!.map(\.type), [.maestro])
         }
     }

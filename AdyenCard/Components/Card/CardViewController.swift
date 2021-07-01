@@ -7,7 +7,7 @@
 import Adyen
 import UIKit
 #if canImport(AdyenEncryption)
-import AdyenEncryption
+    import AdyenEncryption
 #endif
 
 internal class CardViewController: FormViewController {
@@ -142,8 +142,8 @@ internal class CardViewController: FormViewController {
     internal func update(binInfo: BinLookupResponse) {
         securityCodeItem.update(cardBrands: binInfo.brands ?? [])
 
-        switch (binInfo.brands, numberItem.value) {
-        case (_, ""):
+        switch (binInfo.brands, numberItem.value.isEmpty) {
+        case (_, true):
             numberItem.showLogos(for: topCardTypes)
         case let (.some(brands), _):
             numberItem.showLogos(for: brands.map(\.type))
@@ -195,7 +195,7 @@ internal class CardViewController: FormViewController {
                                       logoProvider: logoProvider,
                                       style: formStyle.textField,
                                       localizationParameters: localizationParameters)
-        observe(item.$binValue) { [weak self] in self?.didReceived(bin: $0) }
+        observe(item.$binValue) { [weak self] in self?.didReceive(bin: $0) }
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "numberItem")
         return item
     }()
@@ -282,16 +282,20 @@ internal class CardViewController: FormViewController {
         return item
     }()
     
-    private func didReceived(bin: String) {
+    private func didReceive(bin: String) {
         self.securityCodeItem.selectedCard = supportedCardTypes.adyen.type(forCardNumber: bin)
-        let shouldShow = configuration.showsKoreanAuthentication
         throttler.throttle { [weak self] in
-            self?.cardDelegate?.didChangeBIN(bin)
-
-            let binIsLong = bin.count >= BinInfoProvider.minBinLength
-            self?.additionalAuthPasswordItem.isHidden.wrappedValue.setTrueUnless(binIsLong && shouldShow)
-            self?.additionalAuthCodeItem.isHidden.wrappedValue.setTrueUnless(binIsLong && shouldShow)
+            self?.apply(bin: bin)
         }
+    }
+
+    private func apply(bin: String) {
+        cardDelegate?.didChangeBIN(bin)
+        let shouldShow = configuration.showsKoreanAuthentication
+        let binIsLong = bin.count >= BinInfoProvider.minBinLength
+        let isHidden = additionalAuthPasswordItem.isHidden.wrappedValue ? true : !(binIsLong && shouldShow)
+        additionalAuthPasswordItem.isHidden.wrappedValue = isHidden
+        additionalAuthCodeItem.isHidden.wrappedValue = isHidden
     }
     
     private var defaultCountryCode: String {
@@ -312,12 +316,4 @@ extension FormValueItem where ValueType == String {
     internal var nonEmptyValue: String? {
         self.value.isEmpty ? nil : self.value
     }
-}
-
-extension Bool {
-
-    fileprivate mutating func setTrueUnless(_ needed: Bool) {
-        self = !(self == false && needed)
-    }
-
 }

@@ -10,7 +10,7 @@ import Foundation
 /// :nodoc:
 internal protocol AnyBinInfoProvider {
     /// :nodoc:
-    func provideInfo(for bin: String, supportedTypes: [CardType], completion: @escaping (BinLookupResponse) -> Void)
+    func provide(for bin: String, supportedTypes: [CardType], completion: @escaping (BinLookupResponse) -> Void)
 }
 
 /// Provide cardType detection based on BinLookup API.
@@ -46,59 +46,46 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
     ///   - bin: Card's BIN number. If longer than `minBinLength` - calls API, otherwise check local Regex.
     ///   - supportedTypes: Card brands supported by the merchant.
     ///   - completion:  Callback to notify about results.
-    internal func provideInfo(for bin: String, supportedTypes: [CardType], completion: @escaping (BinLookupResponse) -> Void) {
-        guard bin.count >= BinInfoProvider.minBinLength else {
-            return fallbackCardTypeProvider.provideInfo(for: bin,
-                                                        supportedTypes: supportedTypes,
-                                                        completion: completion)
+    internal func provide(for bin: String, supportedTypes: [CardType], completion: @escaping (BinLookupResponse) -> Void) {
+        let fallback: () -> Void = {
+            self.fallbackCardTypeProvider.provide(for: bin,
+                                                  supportedTypes: supportedTypes,
+                                                  completion: completion)
+        }
+
+        let bin = String(bin.prefix(BinInfoProvider.minBinLength))
+        guard bin.count == BinInfoProvider.minBinLength else {
+            return fallback()
+        }
+
+        let useService: (BinLookupService) -> Void = { service in
+            service.requestCardType(for: bin, supportedCardTypes: supportedTypes) { result in
+                switch result {
+                case let .success(response):
+                    completion(response)
+                case .failure:
+                    fallback()
+                }
+            }
         }
         
-        fetchBinLookupService(
-            success: { [weak self] service in
-                self?.use(binLookupService: service,
-                          for: bin,
-                          supportedTypes: supportedTypes,
-                          completion: completion)
-            },
-            failure: { [weak self] _ in
-                self?.fallbackCardTypeProvider.provideInfo(for: bin, supportedTypes: supportedTypes, completion: completion)
-            }
-        )
-    }
-
-    private func use(binLookupService: BinLookupService,
-                     for bin: String,
-                     supportedTypes: [CardType],
-                     completion: @escaping (BinLookupResponse) -> Void) {
-        binLookupService.requestCardType(for: bin, supportedCardTypes: supportedTypes) { [weak self] result in
-            switch result {
-            case let .success(response):
-                completion(response)
-            case .failure:
-                self?.fallbackCardTypeProvider.provideInfo(for: bin,
-                                                           supportedTypes: supportedTypes,
-                                                           completion: completion)
+        if let service = privateBinLookupService {
+            useService(service)
+        } else {
+            fetchBinLookupService { result in
+                switch result {
+                case let .success(service):
+                    useService(service)
+                case .failure:
+                    fallback()
+                }
             }
         }
     }
-    
-    private func fetchBinLookupService(success: @escaping (BinLookupService) -> Void,
-                                       failure: @escaping ((Swift.Error) -> Void)) {
-        if let binLookupService = privateBinLookupService {
-            return success(binLookupService)
-        }
 
-        let apiClient = apiClient
-        cardPublicKeyProvider.fetch { [weak self] result in
-            switch result {
-            case let .success(publicKey):
-                let binLookupService = BinLookupService(publicKey: publicKey,
-                                                        apiClient: apiClient)
-                self?.privateBinLookupService = binLookupService
-                success(binLookupService)
-            case let .failure(error):
-                failure(error)
-            }
+    private func fetchBinLookupService(completion: @escaping (Result<BinLookupService, Swift.Error>) -> Void) {
+        cardPublicKeyProvider.fetch { [apiClient] result in
+            completion(result.map { BinLookupService(publicKey: $0, apiClient: apiClient) })
         }
     }
 }

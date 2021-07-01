@@ -4,12 +4,13 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import Foundation
 
 /// The additional details for Korean Cards Payment.
 public struct KCPDetails: AdditionalDetails {
 
-    /// Cardholder Birthdate (private card) or the Corporate registration number (corporate card).
+    /// The date of birth of the cardholder (private card) or the Corporate registration number (corporate card).
     public let taxNumber: String
 
     /// The two-digit password.
