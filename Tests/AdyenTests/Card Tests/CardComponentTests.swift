@@ -633,8 +633,8 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 configuration: config,
                                 apiContext: Dummy.context,
-                                cardPublicKeyProvider: cardPublicKeyProvider,
                                 style: FormComponentStyle(),
+                                cardPublicKeyProvider: cardPublicKeyProvider,
                                 binProvider: BinInfoProvider(apiClient: APIClientMock(), cardPublicKeyProvider: cardPublicKeyProvider))
 
         let delegate = PaymentComponentDelegateMock()
@@ -968,8 +968,8 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
-                                configuration: config,
-                                apiContext: Dummy.context)
+                                apiContext: Dummy.context,
+                                configuration: config)
         sut.cardViewController.postalCodeItem.value = "1501 NH"
         
         // When
@@ -988,8 +988,8 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
-                                configuration: config,
-                                apiContext: Dummy.context)
+                                apiContext: Dummy.context,
+                                configuration: config)
         sut.cardViewController.numberItem.value = "4111 1111 1111 1111"
         
         // When
@@ -1008,8 +1008,8 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
-                                configuration: config,
-                                apiContext: Dummy.context)
+                                apiContext: Dummy.context,
+                                configuration: config)
         sut.cardViewController.expiryDateItem.value = "03/24"
 
         // When
@@ -1028,8 +1028,8 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
-                                configuration: config,
-                                apiContext: Dummy.context)
+                                apiContext: Dummy.context,
+                                configuration: config)
         sut.cardViewController.securityCodeItem.value = "935"
 
         // When
@@ -1048,8 +1048,8 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
-                                configuration: config,
-                                apiContext: Dummy.context)
+                                apiContext: Dummy.context,
+                                configuration: config)
         sut.cardViewController.holderNameItem.value = "Katrina del Mar"
 
         // When
@@ -1068,8 +1068,8 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
-                                configuration: config,
-                                apiContext: Dummy.context)
+                                apiContext: Dummy.context,
+                                configuration: config)
         sut.cardViewController.storeDetailsItem.value = true
         
         // When
@@ -1089,8 +1089,8 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
-                                configuration: config,
-                                apiContext: Dummy.context)
+                                apiContext: Dummy.context,
+                                configuration: config)
         // When
         sut.clear()
 

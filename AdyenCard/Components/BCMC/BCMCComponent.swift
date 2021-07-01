@@ -24,8 +24,8 @@ public final class BCMCComponent: CardComponent {
         super.init(paymentMethod: paymentMethod,
                    configuration: configuration,
                    apiContext: apiContext,
-                   cardPublicKeyProvider: cardPublicKeyProvider,
                    style: style,
+                   cardPublicKeyProvider: cardPublicKeyProvider,
                    binProvider: binInfoProvider)
     }
 

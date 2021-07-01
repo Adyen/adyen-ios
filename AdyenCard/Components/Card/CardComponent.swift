@@ -75,8 +75,8 @@ public class CardComponent: CardPublicKeyConsumer,
         self.init(paymentMethod: paymentMethod,
                   configuration: configuration,
                   apiContext: apiContext,
-                  cardPublicKeyProvider: cardPublicKeyProvider,
                   style: style,
+                  cardPublicKeyProvider: cardPublicKeyProvider,
                   binProvider: binInfoProvider)
     }
     
@@ -91,8 +91,8 @@ public class CardComponent: CardPublicKeyConsumer,
     internal init(paymentMethod: AnyCardPaymentMethod,
                   configuration: Configuration,
                   apiContext: APIContext,
-                  cardPublicKeyProvider: AnyCardPublicKeyProvider,
                   style: FormComponentStyle,
+                  cardPublicKeyProvider: AnyCardPublicKeyProvider,
                   binProvider: AnyBinInfoProvider) {
         self.apiContext = apiContext
         self.cardPaymentMethod = paymentMethod
