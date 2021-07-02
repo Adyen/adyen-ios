@@ -46,6 +46,9 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
     /// The cardholder Birtdate (6 digits in a YYMMDD format) for private cards
     /// or Corporate registration number (10 digits) for corporate cards.
     public let taxNumber: String?
+    
+    /// The 3DS2 SDK version.
+    public let threeDS2SDKVersion: String = threeDS2SdkVersion
 
     /// Initializes the card payment details.
     ///
@@ -109,6 +112,7 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
         case fundingSource
         case taxNumber
         case password = "encryptedPassword"
+        case threeDS2SDKVersion
     }
     
 }
