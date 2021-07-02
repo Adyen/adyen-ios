@@ -36,6 +36,7 @@ class FormCardNumberItemViewTests: XCTestCase {
             return false
         }
         
+        sut.isEditing = true
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
         
         wait(for: [validationExpectation], timeout: 5)
@@ -52,6 +53,7 @@ class FormCardNumberItemViewTests: XCTestCase {
             return false
         }
         
+        sut.isEditing = true
         sut.textField.text = "123456"
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
         
@@ -66,6 +68,7 @@ class FormCardNumberItemViewTests: XCTestCase {
             return true
         }
         
+        sut.isEditing = true
         sut.textField.text = "5454545454545454"
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
         

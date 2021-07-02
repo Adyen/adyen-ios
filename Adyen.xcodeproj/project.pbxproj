@@ -582,6 +582,7 @@
 		F9C5F07925C968FE005A6E54 /* Adyen3DS2 in Frameworks */ = {isa = PBXBuildFile; productRef = F9C5F07825C968FE005A6E54 /* Adyen3DS2 */; };
 		F9C5F0DD25CAB8FC005A6E54 /* VoucherComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C5F0DC25CAB8FC005A6E54 /* VoucherComponentTests.swift */; };
 		F9C5F0F125CAB917005A6E54 /* VoucherViewControllerProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C5F0F025CAB917005A6E54 /* VoucherViewControllerProviderMock.swift */; };
+		F9D5453F26872CFE00C9DF41 /* UIViewAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D5453E26872CFE00C9DF41 /* UIViewAnimation.swift */; };
 		F9D5750E237475DB009C18B5 /* CardEncryptorCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D5750D237475DB009C18B5 /* CardEncryptorCardTests.swift */; };
 		F9D5751223756BD0009C18B5 /* CardPublicKeyValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D5751123756BD0009C18B5 /* CardPublicKeyValidator.swift */; };
 		F9D5751423757013009C18B5 /* CardPublicKeyValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D5751323757013009C18B5 /* CardPublicKeyValidatorTests.swift */; };
@@ -1425,6 +1426,7 @@
 		F9BA21C52474113500D36A63 /* AmountFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountFormatterTests.swift; sourceTree = "<group>"; };
 		F9C5F0DC25CAB8FC005A6E54 /* VoucherComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherComponentTests.swift; sourceTree = "<group>"; };
 		F9C5F0F025CAB917005A6E54 /* VoucherViewControllerProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherViewControllerProviderMock.swift; sourceTree = "<group>"; };
+		F9D5453E26872CFE00C9DF41 /* UIViewAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewAnimation.swift; sourceTree = "<group>"; };
 		F9D5750D237475DB009C18B5 /* CardEncryptorCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardEncryptorCardTests.swift; sourceTree = "<group>"; };
 		F9D5751123756BD0009C18B5 /* CardPublicKeyValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPublicKeyValidator.swift; sourceTree = "<group>"; };
 		F9D5751323757013009C18B5 /* CardPublicKeyValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPublicKeyValidatorTests.swift; sourceTree = "<group>"; };
@@ -2071,6 +2073,7 @@
 				E787C9D2246EC71B00B401E0 /* UIFontHelpers.swift */,
 				E7B3DE9E25A61B9200CA4D2B /* UIViewConstraintsHelper.swift */,
 				F97C857625C1D5BA00D7F85C /* UIViewHelpers.swift */,
+				F9D5453E26872CFE00C9DF41 /* UIViewAnimation.swift */,
 				5A54FFC926299140007194B7 /* TimeIntervalHelpers.swift */,
 				5AD40E74262F04440090E01C /* UIProgressViewHelpers.swift */,
 				5AD40EEE26303C830090E01C /* UIButtonHelpers.swift */,
@@ -4346,6 +4349,7 @@
 				F9838D452631AD3700963483 /* BalanceChecker.swift in Sources */,
 				E2C0B55022A6AA0700D3367B /* AmountFormatter.swift in Sources */,
 				F9EDB782239149AF00CFB3C9 /* CountryCodeValidator.swift in Sources */,
+				F9D5453F26872CFE00C9DF41 /* UIViewAnimation.swift in Sources */,
 				E9021DAA225789B1009CF7F4 /* Localization.swift in Sources */,
 				E787C9D3246EC71B00B401E0 /* UIFontHelpers.swift in Sources */,
 				F96F44DD23BE487500871C1F /* LocalizationParameters.swift in Sources */,

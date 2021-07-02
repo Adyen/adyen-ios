@@ -108,10 +108,12 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     private func observerVisibility<T: FormItem>(of item: T, and itemView: UIView) {
         guard let item = item as? Hidable else { return }
         
-        itemView.adyen.hide(hidden: item.isHidden.wrappedValue, animated: false)
+        itemView.adyen.hide(animationKey: String(describing: itemView),
+                            hidden: item.isHidden.wrappedValue, animated: false)
         
         observe(item.isHidden) { isHidden in
-            itemView.adyen.hide(hidden: isHidden, animated: true)
+            itemView.adyen.hide(animationKey: String(describing: itemView),
+                                hidden: isHidden, animated: true)
         }
     }
 
@@ -172,6 +174,12 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         super.viewDidAppear(animated)
         delegate?.viewDidAppear(viewController: self)
         assignInitialFirstResponder()
+    }
+    
+    /// :nodoc:
+    open override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        resignFirstResponder()
     }
     
     private lazy var formView: FormView = {

@@ -242,6 +242,10 @@ public final class DropInComponent: NSObject, PresentableComponent {
         if let component = (component as? PaymentComponent) ?? selectedPaymentComponent, paymentInProgress {
             delegate?.didCancel(component: component, from: self)
         }
+        
+        if let component = (component as? ClearableComponent) {
+            component.clear()
+        }
 
         paymentInProgress = false
     }
