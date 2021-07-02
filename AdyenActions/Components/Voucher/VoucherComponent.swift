@@ -15,9 +15,6 @@ internal protocol AnyVoucherActionHandler: ActionComponent, Cancellable {
 
 /// A component that handles voucher action's.
 public final class VoucherComponent: AnyVoucherActionHandler {
-    
-    /// :nodoc:
-    private static let maximumDisplayedCodeLength = 10
 
     /// :nodoc:
     public let apiContext: APIContext
@@ -38,10 +35,10 @@ public final class VoucherComponent: AnyVoucherActionHandler {
     public var localizationParameters: LocalizationParameters?
 
     /// :nodoc:
-    private var viewControllerProvider: AnyVoucherShareableViewProvider
+    internal var voucherShareableViewProvider: AnyVoucherShareableViewProvider
     
     /// :nodoc:
-    private var action: VoucherAction?
+    internal var action: VoucherAction?
 
     /// :nodoc:
     private lazy var apiClient: APIClientProtocol = {
@@ -50,12 +47,17 @@ public final class VoucherComponent: AnyVoucherActionHandler {
             .retryAPIClient(with: scheduler)
             .retryOnErrorAPIClient()
     }()
+    
+    /// :nodoc:
+    internal var canAddPasses: Bool {
+        PKAddPassesViewController.canAddPasses() && action.flatMap(\.anyAction.passCreationToken) != nil
+    }
 
     /// :nodoc:
     private let componentName = "voucher"
 
     /// :nodoc:
-    private let passProvider: AnyAppleWalletPassProvider
+    internal let passProvider: AnyAppleWalletPassProvider
 
     /// Initializes the `AwaitComponent`.
     ///
@@ -64,7 +66,7 @@ public final class VoucherComponent: AnyVoucherActionHandler {
     public convenience init(apiContext: APIContext, style: VoucherComponentStyle?) {
         self.init(
             apiContext: apiContext,
-            voucherViewControllerProvider: nil,
+            voucherShareableViewProvider: nil,
             style: style ?? VoucherComponentStyle(),
             passProvider: AppleWalletPassProvider(apiContext: apiContext)
         )
@@ -76,13 +78,13 @@ public final class VoucherComponent: AnyVoucherActionHandler {
     /// - Parameter style: The Component UI style.
     internal init(
         apiContext: APIContext,
-        voucherViewControllerProvider: AnyVoucherShareableViewProvider?,
+        voucherShareableViewProvider: AnyVoucherShareableViewProvider?,
         style: VoucherComponentStyle,
         passProvider: AnyAppleWalletPassProvider?
     ) {
         self.apiContext = apiContext
         self.style = style
-        self.viewControllerProvider = voucherViewControllerProvider ??
+        self.voucherShareableViewProvider = voucherShareableViewProvider ??
             VoucherShareableViewProvider(style: style, environment: apiContext.environment)
         self.passProvider = passProvider ?? AppleWalletPassProvider(apiContext: apiContext)
     }
@@ -99,12 +101,13 @@ public final class VoucherComponent: AnyVoucherActionHandler {
         Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: apiContext)
         fetchAndCacheAppleWalletPassIfNeeded(with: action.anyAction)
 
-        viewControllerProvider.localizationParameters = localizationParameters
+        voucherShareableViewProvider.localizationParameters = localizationParameters
 
         let view = VoucherView(model: viewModel(with: action))
         view.delegate = self
         let viewController = ADYViewController(view: view)
-        view.presenter = viewController
+        
+        setUpPresenterViewController(parentViewController: viewController)
 
         if let presentationDelegate = presentationDelegate {
             let presentableComponent = PresentableComponentWrapper(
@@ -114,11 +117,24 @@ public final class VoucherComponent: AnyVoucherActionHandler {
             )
             presentationDelegate.present(component: presentableComponent)
         } else {
-            let message = "PresentationDelegate is nil. Provide a presentation delegate to VoucherComponent."
-            AdyenAssertion.assertionFailure(message: message)
+            AdyenAssertion.assertionFailure(
+                message: "PresentationDelegate is nil. Provide a presentation delegate to VoucherComponent."
+            )
         }
     }
     
+    internal let presenterViewController = UIViewController()
+    
+    private func setUpPresenterViewController(parentViewController: UIViewController) {
+        // Ugly hack to work around the following bug
+        // https://stackoverflow.com/questions/59413850/uiactivityviewcontroller-dismissing-current-view-controller-after-sharing-file
+        
+        parentViewController.addChild(presenterViewController)
+        parentViewController.view.insertSubview(presenterViewController.view, at: 0)
+        presenterViewController.view.frame = .zero
+        presenterViewController.didMove(toParent: parentViewController)
+    }
+        
     private func getNavBarType() -> NavigationBarType {
         let bundle = Bundle(for: UIBarButtonItem.self)
         let localizedEdit = bundle.localizedString(forKey: "Edit", value: "Edit", table: nil)
@@ -145,7 +161,7 @@ public final class VoucherComponent: AnyVoucherActionHandler {
         let viewStyle = VoucherView.Model.Style(
             editButton: style.editButton,
             doneButton: style.doneButton,
-            mainButton: getPrimaryButtonStyle(with: anyAction),
+            mainButton: style.mainButton,
             secondaryButton: style.secondaryButton,
             amountLabel: style.amountLabel,
             currencyLabel: style.currencyLabel,
@@ -166,25 +182,20 @@ public final class VoucherComponent: AnyVoucherActionHandler {
                 environment: apiContext.environment,
                 size: .medium
             ),
-            mainButton: getPrimaryButtonTitle(with: anyAction),
-            secondaryButtonTitle: getSecondaryButtonTitle(with: action),
-            passToken: anyAction.passCreationToken,
+            mainButton: getPrimaryButtonTitle(with: action),
+            secondaryButtonTitle: "More options",
+            mainButtonType: canAddPasses ? .addToAppleWallet : .save,
             style: viewStyle
         )
     }
     
-    private func getPrimaryButtonTitle(with action: AnyVoucherAction) -> String {
-        return localizedString(.voucherSaveImage, localizationParameters)
-    }
-    
-    private func getPrimaryButtonStyle(with action: AnyVoucherAction) -> ButtonStyle {
-        // TODO: Display depending on the payment method type
-        return style.mainButton
-    }
-    
-    private func getSecondaryButtonTitle(with action: VoucherAction) -> String {
-        // TODO: Display depending on the payment method type
-        return localizedString(.boletoDownloadPdf, localizationParameters)
+    private func getPrimaryButtonTitle(with action: VoucherAction) -> String {
+        switch action {
+        case .dokuIndomaret, .dokuAlfamart, .econtextStores, .econtextATM:
+            return localizedString(.voucherSaveImage, localizationParameters )
+        case .boletoBancairoSantander:
+            return localizedString(.boletoDownloadPdf, localizationParameters)
+        }
     }
 
     private func fetchAndCacheAppleWalletPassIfNeeded(with action: AnyVoucherAction) {
@@ -194,93 +205,4 @@ public final class VoucherComponent: AnyVoucherActionHandler {
         }
     }
 
-}
-
-/// :nodoc:
-extension VoucherComponent: VoucherViewDelegate {
-    
-    internal func didComplete(presentingViewController: UIViewController) {
-        delegate?.didComplete(from: self)
-    }
-
-    internal func saveAsImage(voucherView: UIView, presentingViewController: UIViewController) {
-        guard let action = action else { return }
-        
-        let view = viewControllerProvider.provideView(with: action)
-        view.frame = UIScreen.main.bounds
-        
-        guard let image = view.adyen.snapShot() else { return }
-        
-        presentSharePopover(
-            with: image,
-            presentingViewController: presentingViewController,
-            sourceView: voucherView
-        )
-    }
-    
-    internal func download(url: URL, voucherView: UIView, presentingViewController: UIViewController) {
-        presentSharePopover(
-            with: url,
-            presentingViewController: presentingViewController,
-            sourceView: voucherView
-        )
-    }
-
-    internal func addToAppleWallet(passToken: String,
-                                   presentingViewController: UIViewController,
-                                   completion: ((Bool) -> Void)?) {
-        passProvider.provide(with: passToken) { [weak self] result in
-            self?.handle(
-                result: result,
-                presentingViewController: presentingViewController,
-                completion: completion
-            )
-        }
-    }
-
-    private func handle(result: Result<Data, Swift.Error>,
-                        presentingViewController: UIViewController,
-                        completion: ((Bool) -> Void)?) {
-        switch result {
-        case let .failure(error):
-            delegate?.didFail(with: error, from: self)
-        case let .success(data):
-            showAppleWallet(passData: data,
-                            presentingViewController: presentingViewController,
-                            completion: completion)
-        }
-    }
-
-    private func presentSharePopover(
-        with item: Any,
-        presentingViewController: UIViewController,
-        sourceView: UIView
-    ) {
-        let activityViewController = UIActivityViewController(
-            activityItems: [item],
-            applicationActivities: nil
-        )
-        activityViewController.popoverPresentationController?.sourceView = sourceView
-        presentingViewController.present(activityViewController, animated: true, completion: nil)
-    }
-
-    private func showAppleWallet(passData: Data?,
-                                 presentingViewController: UIViewController,
-                                 completion: ((Bool) -> Void)?) {
-        do {
-            guard let data = passData else { throw AppleWalletError.failedToAddToAppleWallet }
-
-            let pass = try PKPass(data: data)
-            if let viewController = PKAddPassesViewController(pass: pass) {
-                presentingViewController.present(viewController, animated: true) {
-                    completion?(true)
-                }
-            } else {
-                throw AppleWalletError.failedToAddToAppleWallet
-            }
-        } catch {
-            completion?(false)
-            delegate?.didFail(with: error, from: self)
-        }
-    }
 }

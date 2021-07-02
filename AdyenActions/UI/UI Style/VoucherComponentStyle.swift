@@ -46,21 +46,13 @@ public struct VoucherComponentStyle: ViewStyle {
         cornerRadius: 8,
         background: UIColor.Adyen.defaultBlue
     )
-    
-    /// The main button style when the code is short enough to be shown.
-    public var mainButtonWithCode = ButtonStyle(
-        title: TextStyle(font: .preferredFont(forTextStyle: .headline),
-                         color: UIColor.Adyen.defaultBlue),
-        cornerRadius: 8,
-        background: UIColor.Adyen.secondaryComponentBackground
-    )
 
     /// The secondary button style.
     public var secondaryButton = ButtonStyle(
         title: TextStyle(font: .preferredFont(forTextStyle: .headline),
                          color: UIColor.Adyen.defaultBlue),
         cornerRadius: 8,
-        background: UIColor.Adyen.componentBackground
+        background: .clear
     )
 
     /// :nodoc:

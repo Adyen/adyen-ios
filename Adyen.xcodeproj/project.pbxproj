@@ -47,6 +47,7 @@
 		5AD40EFB26303D490090E01C /* UILabelHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD40EFA26303D490090E01C /* UILabelHelpers.swift */; };
 		5AD40F43263150F90090E01C /* UILabelHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD40F42263150F90090E01C /* UILabelHelpersTests.swift */; };
 		5AD40F4F263157D50090E01C /* UIButtonHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD40F4E263157D50090E01C /* UIButtonHelpersTests.swift */; };
+		5AD755DB268E11DA0040B919 /* VoucherComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD755DA268E11DA0040B919 /* VoucherComponentExtensions.swift */; };
 		5AF730EA2667C3F10091C573 /* APIContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF730E92667C3F10091C573 /* APIContextTests.swift */; };
 		5AF8CD4D26691D3A00102339 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF8CD4C26691D3A00102339 /* Dummy.swift */; };
 		E2028F5C2227F1930007FF8B /* Details.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2028F5B2227F1930007FF8B /* Details.swift */; };
@@ -894,6 +895,7 @@
 		5AD40EFA26303D490090E01C /* UILabelHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelHelpers.swift; sourceTree = "<group>"; };
 		5AD40F42263150F90090E01C /* UILabelHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelHelpersTests.swift; sourceTree = "<group>"; };
 		5AD40F4E263157D50090E01C /* UIButtonHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonHelpersTests.swift; sourceTree = "<group>"; };
+		5AD755DA268E11DA0040B919 /* VoucherComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherComponentExtensions.swift; sourceTree = "<group>"; };
 		5AF730E92667C3F10091C573 /* APIContextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIContextTests.swift; sourceTree = "<group>"; };
 		5AF8CD4C26691D3A00102339 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 		E2028F5B2227F1930007FF8B /* Details.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Details.swift; sourceTree = "<group>"; };
@@ -3217,6 +3219,7 @@
 			isa = PBXGroup;
 			children = (
 				F97C84D825C178E900D7F85C /* VoucherComponent.swift */,
+				5AD755DA268E11DA0040B919 /* VoucherComponentExtensions.swift */,
 				F97BC22B2667768B00F1D242 /* AppleWalletPassProvider.swift */,
 				F97C850025C17CCD00D7F85C /* VoucherShareableViewProvider.swift */,
 			);
@@ -4759,6 +4762,7 @@
 				F9B017F72608F4FE001F23FC /* DokuVoucherAction.swift in Sources */,
 				F917617225A30B6A00D653BE /* AnyThreeDS2ActionHandler.swift in Sources */,
 				5A6456D6262592B2001824F0 /* QRCodeAction.swift in Sources */,
+				5AD755DB268E11DA0040B919 /* VoucherComponentExtensions.swift in Sources */,
 				F91760812594B1F400D653BE /* RedirectComponentStyle.swift in Sources */,
 				F9175FF9259499D500D653BE /* AwaitComponentViewModel.swift in Sources */,
 				F9175FE32594999C00D653BE /* PollingComponent.swift in Sources */,

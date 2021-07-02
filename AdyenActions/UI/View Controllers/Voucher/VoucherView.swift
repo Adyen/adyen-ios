@@ -10,13 +10,13 @@ import PassKit
 
 internal protocol VoucherViewDelegate: AnyObject {
     
-    func didComplete(presentingViewController: UIViewController)
+    func didComplete()
     
-    func saveAsImage(voucherView: UIView, presentingViewController: UIViewController)
+    func mainButtonTap(sourceView: UIView)
     
-    func download(url: URL, voucherView: UIView, presentingViewController: UIViewController)
+    func addToAppleWallet(completion: @escaping () -> Void)
     
-    func addToAppleWallet(passToken: String, presentingViewController: UIViewController, completion: ((Bool) -> Void)?)
+    func secondaryButtonTap(sourceView: UIView)
 }
 
 internal final class VoucherView: UIView, Localizable {
@@ -49,20 +49,7 @@ internal final class VoucherView: UIView, Localizable {
     
     internal var spacerPortraitConstraint: NSLayoutConstraint?
     internal var spacerLandscapeConstraint: NSLayoutConstraint?
-    
-    internal weak var presenter: UIViewController?
-    
-    /// Ugly hack to work around the following bug
-    /// https://stackoverflow.com/questions/59413850/uiactivityviewcontroller-dismissing-current-view-controller-after-sharing-file
-    private lazy var fakeViewController: UIViewController = {
-        let viewController = UIViewController()
-        presenter?.addChild(viewController)
-        presenter?.view.insertSubview(viewController.view, at: 0)
-        viewController.view.frame = .zero
-        viewController.didMove(toParent: presenter)
-        return viewController
-    }()
-    
+
     private func buildUI() {
         loadingView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(loadingView)
@@ -113,19 +100,21 @@ internal final class VoucherView: UIView, Localizable {
     }
     
     private func updateSpacerConstraints() {
-        spacerPortraitConstraint?.isActive = UIDevice.current.orientation.isPortrait
-        spacerLandscapeConstraint?.isActive = UIDevice.current.orientation.isPortrait == false
+        spacerPortraitConstraint?.isActive = UIApplication.shared.statusBarOrientation.isPortrait
+        spacerLandscapeConstraint?.isActive = UIApplication.shared.statusBarOrientation.isPortrait == false
+    }
+    
+    private func mainButton(for type: Model.Button) -> UIControl {
+        switch type {
+        case .addToAppleWallet: return appleWalletButton
+        case .save: return mainButton
+        }
     }
     
     private lazy var buttonsStackView: UIStackView = {
-        let buttons: [UIView]
-        if model.passToken != nil, PKAddPassesViewController.canAddPasses() {
-            buttons = [appleWalletButton, secondaryButton]
-        } else {
-            buttons = [mainButton, secondaryButton]
-        }
-        
-        let stackView = UIStackView(arrangedSubviews: buttons)
+        let stackView = UIStackView(
+            arrangedSubviews: [mainButton(for: model.mainButtonType), secondaryButton]
+        )
         stackView.axis = .vertical
         stackView.alignment = .fill
         stackView.spacing = 10
@@ -136,7 +125,7 @@ internal final class VoucherView: UIView, Localizable {
     
     private lazy var logo: NetworkImageView = {
         let logo = NetworkImageView()
-        let logoSize = CGSize(width: 97.0, height: 56.0)
+        let logoSize = CGSize(width: 77.0, height: 50.0)
         logo.contentMode = .scaleAspectFit
         logo.clipsToBounds = true
         logo.adyen.round(using: model.style.logoCornerRounding)
@@ -179,6 +168,7 @@ internal final class VoucherView: UIView, Localizable {
         button.addTarget(self, action: #selector(onMainButtonTap), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "mainButton")
         button.preservesSuperviewLayoutMargins = true
+        button.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
         
         return button
     }()
@@ -190,6 +180,7 @@ internal final class VoucherView: UIView, Localizable {
         button.addTarget(self, action: #selector(onSecondaryButtonTap), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "secondaryButton")
         button.preservesSuperviewLayoutMargins = true
+        button.setContentHuggingPriority(.required, for: .vertical)
         
         return button
     }()
@@ -205,23 +196,16 @@ internal final class VoucherView: UIView, Localizable {
     }()
     
     @objc private func onMainButtonTap() {
-        delegate?.saveAsImage(
-            voucherView: UIView(),
-            presentingViewController: fakeViewController
-        )
+        delegate?.mainButtonTap(sourceView: mainButton)
     }
     
     @objc private func onSecondaryButtonTap() {
-        
+        delegate?.secondaryButtonTap(sourceView: secondaryButton)
     }
     
     @objc private func appleWalletButtonPressed() {
-        guard let passToken = model.passToken else { return }
         loadingView.showsActivityIndicator = true
-        delegate?.addToAppleWallet(
-            passToken: passToken,
-            presentingViewController: fakeViewController
-        ) { [weak self] _ in
+        delegate?.addToAppleWallet { [weak self] in
             self?.loadingView.showsActivityIndicator = false
         }
     }

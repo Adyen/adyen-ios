@@ -21,7 +21,7 @@ extension VoucherView {
         
         internal let secondaryButtonTitle: String
         
-        internal let passToken: String?
+        internal let mainButtonType: Button
         
         internal let style: Style
         
@@ -43,6 +43,11 @@ extension VoucherView {
             
             internal let backgroundColor: UIColor
             
+        }
+        
+        internal enum Button {
+            case addToAppleWallet
+            case save
         }
         
     }
