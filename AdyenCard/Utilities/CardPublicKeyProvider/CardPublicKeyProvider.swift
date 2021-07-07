@@ -21,7 +21,7 @@ internal protocol AnyCardPublicKeyProvider: AnyObject {
 internal final class CardPublicKeyProvider: AnyCardPublicKeyProvider {
 
     /// :nodoc:
-    private let clientKey: String
+    private let request: ClientKeyRequest
 
     /// :nodoc:
     private let retryApiClient: AnyRetryAPIClient
@@ -30,17 +30,18 @@ internal final class CardPublicKeyProvider: AnyCardPublicKeyProvider {
     internal static var cachedCardPublicKey: String?
     
     /// :nodoc:
-    internal init(apiContext: APIContext) {
+    internal convenience init(apiContext: APIContext) {
         let scheduler = SimpleScheduler(maximumCount: 2)
-        self.retryApiClient = APIClient(apiContext: apiContext)
-            .retryAPIClient(with: scheduler)
-        self.clientKey = apiContext.clientKey
+        self.init(apiClient: APIClient(apiContext: apiContext)
+            .retryAPIClient(with: scheduler),
+            request: ClientKeyRequest(clientKey: apiContext.clientKey))
     }
 
     /// :nodoc:
-    internal init(apiClient: AnyRetryAPIClient, clientKey: String) {
+    /// For testing only
+    internal init(apiClient: AnyRetryAPIClient, request: ClientKeyRequest) {
         self.retryApiClient = apiClient
-        self.clientKey = clientKey
+        self.request = request
     }
     
     /// :nodoc:
@@ -49,8 +50,6 @@ internal final class CardPublicKeyProvider: AnyCardPublicKeyProvider {
             completion(.success(cardPublicKey))
             return
         }
-        
-        let request = ClientKeyRequest(clientKey: clientKey)
         
         apiClient.perform(request, completionHandler: { [weak self] result in
             self?.handle(result, completion: completion)

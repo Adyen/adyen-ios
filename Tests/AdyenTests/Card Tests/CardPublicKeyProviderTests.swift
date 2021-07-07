@@ -20,7 +20,7 @@ class CardPublicKeyProviderTests: XCTestCase {
     func testMultipleFetchCallsAndOneRequestDispatched() throws {
         var baseApiClient = APIClientMock()
         var apiClient = RetryAPIClient(apiClient: baseApiClient, scheduler: SimpleScheduler(maximumCount: 2))
-        var sut = CardPublicKeyProvider(apiClient: apiClient, clientKey: "")
+        var sut = CardPublicKeyProvider(apiClient: apiClient, request: ClientKeyRequest(clientKey: "") )
         CardPublicKeyProvider.cachedCardPublicKey = nil
 
         baseApiClient.mockedResults = [.success(ClientKeyResponse(cardPublicKey: "test_public_key"))]
@@ -47,7 +47,7 @@ class CardPublicKeyProviderTests: XCTestCase {
 
         baseApiClient = APIClientMock()
         apiClient = RetryAPIClient(apiClient: baseApiClient, scheduler: SimpleScheduler(maximumCount: 2))
-        sut = CardPublicKeyProvider(apiClient: apiClient, clientKey: "")
+        sut = CardPublicKeyProvider(apiClient: apiClient, request: ClientKeyRequest(clientKey: ""))
 
         let secondFetchExpectation = expectation(description: "second CardPublicKeyProvider.fetch() completion handler must be called.")
         sut.fetch { result in

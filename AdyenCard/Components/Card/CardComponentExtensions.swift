@@ -59,7 +59,7 @@ extension CardComponent: TrackableComponent {
 
 extension KCPDetails {
 
-    func encrypt(with publicKey: String) throws -> KCPDetails {
+    fileprivate func encrypt(with publicKey: String) throws -> KCPDetails {
         KCPDetails(taxNumber: taxNumber,
                    password: try CardEncryptor.encrypt(password: password, with: publicKey))
     }
