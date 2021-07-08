@@ -17,9 +17,8 @@ internal protocol AnyBinInfoProvider {
 internal final class BinInfoProvider: AnyBinInfoProvider {
     
     internal static let minBinLength = 11
-    
-    /// :nodoc:
-    internal let apiClient: APIClientProtocol
+
+    private let apiClient: APIClientProtocol
 
     private var privateBinLookupService: BinLookupService?
     
@@ -72,9 +71,11 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
         if let service = privateBinLookupService {
             useService(service)
         } else {
-            fetchBinLookupService { result in
+            cardPublicKeyProvider.fetch { [weak self, apiClient] result in
                 switch result {
-                case let .success(service):
+                case let .success(publicKey):
+                    let service = BinLookupService(publicKey: publicKey, apiClient: apiClient)
+                    self?.privateBinLookupService = service
                     useService(service)
                 case .failure:
                     fallback()
@@ -83,9 +84,4 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
         }
     }
 
-    private func fetchBinLookupService(completion: @escaping (Result<BinLookupService, Swift.Error>) -> Void) {
-        cardPublicKeyProvider.fetch { [apiClient] result in
-            completion(result.map { BinLookupService(publicKey: $0, apiClient: apiClient) })
-        }
-    }
 }

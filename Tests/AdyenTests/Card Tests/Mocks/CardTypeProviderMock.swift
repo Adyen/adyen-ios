@@ -6,7 +6,7 @@
 
 @testable import AdyenCard
 
-final class CardTypeProviderMock: AnyBinInfoProvider {
+final class BinInfoProviderMock: AnyBinInfoProvider {
     func provide(for bin: String, supportedTypes: [CardType], completion: @escaping (BinLookupResponse) -> Void) {
         onFetch?(completion)
     }

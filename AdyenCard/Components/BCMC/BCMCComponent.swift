@@ -22,8 +22,8 @@ public final class BCMCComponent: CardComponent {
         let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: apiContext),
                                               cardPublicKeyProvider: cardPublicKeyProvider)
         super.init(paymentMethod: paymentMethod,
-                   configuration: configuration,
                    apiContext: apiContext,
+                   configuration: configuration,
                    style: style,
                    cardPublicKeyProvider: cardPublicKeyProvider,
                    binProvider: binInfoProvider)

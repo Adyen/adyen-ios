@@ -32,9 +32,8 @@ internal final class CardPublicKeyProvider: AnyCardPublicKeyProvider {
     /// :nodoc:
     internal convenience init(apiContext: APIContext) {
         let scheduler = SimpleScheduler(maximumCount: 2)
-        self.init(apiClient: APIClient(apiContext: apiContext)
-            .retryAPIClient(with: scheduler),
-            request: ClientKeyRequest(clientKey: apiContext.clientKey))
+        self.init(apiClient: APIClient(apiContext: apiContext).retryAPIClient(with: scheduler),
+                  request: ClientKeyRequest(clientKey: apiContext.clientKey))
     }
 
     /// :nodoc:

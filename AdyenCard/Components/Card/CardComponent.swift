@@ -76,8 +76,8 @@ public class CardComponent: CardPublicKeyConsumer,
         let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: apiContext),
                                               cardPublicKeyProvider: cardPublicKeyProvider)
         self.init(paymentMethod: paymentMethod,
-                  configuration: configuration,
                   apiContext: apiContext,
+                  configuration: configuration,
                   style: style,
                   cardPublicKeyProvider: cardPublicKeyProvider,
                   binProvider: binInfoProvider)
@@ -92,8 +92,8 @@ public class CardComponent: CardPublicKeyConsumer,
     ///   - cardPublicKeyProvider: The card public key provider
     ///   - style: The Component's UI style.
     internal init(paymentMethod: AnyCardPaymentMethod,
-                  configuration: Configuration,
                   apiContext: APIContext,
+                  configuration: Configuration,
                   style: FormComponentStyle,
                   cardPublicKeyProvider: AnyCardPublicKeyProvider,
                   binProvider: AnyBinInfoProvider) {

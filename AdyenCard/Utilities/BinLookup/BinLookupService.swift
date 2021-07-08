@@ -34,6 +34,10 @@ internal final class BinLookupService: AnyBinLookupService {
     }
     
     internal func requestCardType(for bin: String, supportedCardTypes: [CardType], caller: @escaping CompletionHandler) {
+        if let cached = cache[bin] {
+            return caller(.success(cached))
+        }
+
         let encryptedBin: String
         do {
             encryptedBin = try CardEncryptor.encrypt(bin: bin, with: publicKey)
@@ -42,10 +46,6 @@ internal final class BinLookupService: AnyBinLookupService {
         }
         
         let request = BinLookupRequest(encryptedBin: encryptedBin, supportedBrands: supportedCardTypes)
-        if let cached = cache[bin] {
-            return caller(.success(cached))
-        }
-
         apiClient.perform(request) { [weak self] result in
             switch result {
             case let .success(response):

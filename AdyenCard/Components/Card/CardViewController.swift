@@ -117,7 +117,7 @@ internal class CardViewController: FormViewController {
 
     internal var kcpDetails: KCPDetails? {
         guard
-            configuration.showsKoreanAuthentication,
+            configuration.showsKoreanAuthentication != .hide,
             let taxNumber = additionalAuthCodeItem.nonEmptyValue,
             let password = additionalAuthPasswordItem.nonEmptyValue
         else { return nil }
@@ -243,7 +243,7 @@ internal class CardViewController: FormViewController {
         additionalItem.autocapitalizationType = .none
         additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthCodeItem")
         additionalItem.keyboardType = .numberPad
-        additionalItem.isHidden.wrappedValue = true
+        additionalItem.isHidden.wrappedValue = !(configuration.showsKoreanAuthentication == .show)
 
         return additionalItem
     }()
@@ -257,7 +257,7 @@ internal class CardViewController: FormViewController {
         additionalItem.autocapitalizationType = .none
         additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthPasswordItem")
         additionalItem.keyboardType = .numberPad
-        additionalItem.isHidden.wrappedValue = true
+        additionalItem.isHidden.wrappedValue = !(configuration.showsKoreanAuthentication == .show)
 
         return additionalItem
     }()
@@ -291,9 +291,17 @@ internal class CardViewController: FormViewController {
 
     private func apply(bin: String) {
         cardDelegate?.didChangeBIN(bin)
-        let shouldShow = configuration.showsKoreanAuthentication
-        let binIsLong = bin.count >= BinInfoProvider.minBinLength
-        let isHidden = additionalAuthPasswordItem.isHidden.wrappedValue ? true : !(binIsLong && shouldShow)
+        let isHidden: Bool
+        switch configuration.showsKoreanAuthentication {
+        case .show:
+            isHidden = true
+        case .hide:
+            isHidden = false
+        case .auto:
+            let binIsLong = bin.count >= BinInfoProvider.minBinLength
+            isHidden = additionalAuthPasswordItem.isHidden.wrappedValue ? true : !binIsLong
+        }
+
         additionalAuthPasswordItem.isHidden.wrappedValue = isHidden
         additionalAuthCodeItem.isHidden.wrappedValue = isHidden
     }
