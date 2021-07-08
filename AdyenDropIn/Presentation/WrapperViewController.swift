@@ -74,7 +74,7 @@ extension ModalViewController {
 
     private var leastPresentableHeightScale: CGFloat { 0.25 }
     private var greatestPresentableHeightScale: CGFloat {
-        UIApplication.shared.statusBarOrientation.isPortrait ? 0.9 : 1
+        UIDevice.current.userInterfaceIdiom == .phone && UIDevice.current.orientation.isPortrait ? 1 : 0.9
     }
 
     /// Enables any `UIViewController` to recalculate it's conten's size form modal presentation ,
