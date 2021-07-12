@@ -13,14 +13,13 @@ class FormCardNumberItemTests: XCTestCase {
     var apiClient: APIClientMock!
     var publicKeyProvider: CardPublicKeyProviderMock!
     let supportedCardTypes: [CardType] = [.visa, .masterCard, .americanExpress, .chinaUnionPay, .maestro]
-    var cardBrandProvider: CardBrandProvider!
+    var cardBrandProvider: BinInfoProvider!
 
     override func setUp() {
         apiClient = APIClientMock()
         publicKeyProvider = CardPublicKeyProviderMock()
-        cardBrandProvider = CardBrandProvider(cardPublicKeyProvider: publicKeyProvider,
-                                              apiContext: Dummy.context,
-                                              apiClient: apiClient)
+        cardBrandProvider = BinInfoProvider(apiClient: apiClient,
+                                            cardPublicKeyProvider: publicKeyProvider)
     }
 
     override func tearDown() {
@@ -48,8 +47,7 @@ class FormCardNumberItemTests: XCTestCase {
         
         // When typing unknown combination, all logos should be hidden.
         item.value = "5"
-        let parameters1 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
-        cardBrandProvider.provide(for: parameters1) { response in
+        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
             let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
             XCTAssertEqual(visa.isHidden, true)
@@ -61,8 +59,7 @@ class FormCardNumberItemTests: XCTestCase {
         
         // When typing Maestro pattern, only Maestro should be visible.
         item.value = "56"
-        let parameters2 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
-        cardBrandProvider.provide(for: parameters2) { response in
+        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
             let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
             XCTAssertEqual(visa.isHidden, true)
@@ -74,8 +71,7 @@ class FormCardNumberItemTests: XCTestCase {
         
         // When typing Mastercard pattern, only Mastercard should be visible.
         item.value = "55"
-        let parameters3 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
-        cardBrandProvider.provide(for: parameters3) { response in
+        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
             let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
             XCTAssertEqual(visa.isHidden, true)
@@ -87,8 +83,7 @@ class FormCardNumberItemTests: XCTestCase {
         
         // When continuing to type, Mastercard should remain visible.
         item.value = "5555"
-        let parameters4 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
-        cardBrandProvider.provide(for: parameters4) { response in
+        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
             let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
             XCTAssertEqual(visa.isHidden, true)
@@ -100,8 +95,7 @@ class FormCardNumberItemTests: XCTestCase {
         
         // Clearing the field should bring back both logos.
         item.value = ""
-        let parameters5 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
-        cardBrandProvider.provide(for: parameters5) { response in
+        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
             let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
             XCTAssertEqual(visa.isHidden, true)
@@ -113,8 +107,7 @@ class FormCardNumberItemTests: XCTestCase {
         
         // When typing VISA pattern, only VISA should be visible.
         item.value = "4"
-        let parameters6 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
-        cardBrandProvider.provide(for: parameters6) { response in
+        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
             let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
             XCTAssertEqual(visa.isHidden, false)
@@ -126,8 +119,7 @@ class FormCardNumberItemTests: XCTestCase {
         
         // When typing Amex pattern, only Amex should be visible.
         item.value = "34"
-        let parameters7 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
-        cardBrandProvider.provide(for: parameters7) { response in
+        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
             let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
             XCTAssertEqual(visa.isHidden, true)
@@ -139,8 +131,7 @@ class FormCardNumberItemTests: XCTestCase {
         
         // When typing common pattern, all matching cards should be visible.
         item.value = "62"
-        let parameters8 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
-        cardBrandProvider.provide(for: parameters8) { response in
+        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
             let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
             XCTAssertEqual(visa.isHidden, true)
@@ -167,8 +158,7 @@ class FormCardNumberItemTests: XCTestCase {
         let maestro = item.cardTypeLogos[4]
 
         item.value = "1234567890"
-        let parameters = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
-        cardBrandProvider.provide(for: parameters) { response in
+        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
             let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
             XCTAssertEqual(visa.isHidden, true)
@@ -194,8 +184,7 @@ class FormCardNumberItemTests: XCTestCase {
 
         // When entering PAN, Mastercard should remain visible.
         item.value = "5577000055770004"
-        let parameters1 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
-        cardBrandProvider.provide(for: parameters1) { response in
+        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
             let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
             XCTAssertEqual(visa.isHidden, true)
@@ -207,8 +196,7 @@ class FormCardNumberItemTests: XCTestCase {
 
         // When entering too long PAN, all logos should be hidden.
         item.value = "55770000557700040"
-        let parameters2 = CardBrandProviderParameters(bin: item.value, supportedTypes: supportedCardTypes)
-        cardBrandProvider.provide(for: parameters2) { response in
+        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
             let brands = response.brands!.map(\.type)
             item.showLogos(for: brands)
             XCTAssertEqual(visa.isHidden, true)

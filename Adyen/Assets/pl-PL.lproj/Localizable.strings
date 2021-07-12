@@ -106,3 +106,9 @@
 "adyen.giftcard.currencyError" = "Karty podarunkowe są ważne tylko w walucie, w której zostały wydane";
 "adyen.giftcard.noBalance" = "Saldo karty podarunkowej jest puste";
 "adyen.partialPayment.remainingBalance" = "Pozostałe saldo wynosi %(kwota}";
+"adyen.card.taxNumber.label" = "Data urodzenia posiadacza karty (RRMMDD) lub firmowy numer rejestracyjny (10 cyfr)";
+"adyen.card.taxNumber.placeholder" = "RRMMDD / 0123456789";
+"adyen.card.taxNumber.invalid" = "Nieprawidłowa data urodzenia posiadacza karty lub nieprawidłowy firmowy numer rejestracyjny";
+"adyen.card.encryptedPassword.label" = "Pierwsze 2 cyfry hasła karty";
+"adyen.card.encryptedPassword.placeholder" = "12";
+"adyen.card.encryptedPassword.invalid" = "Nieprawidłowe hasło";

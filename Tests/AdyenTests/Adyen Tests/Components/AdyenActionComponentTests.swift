@@ -121,7 +121,7 @@ class AdyenActionComponentTests: XCTestCase {
             waitExpectation.fulfill()
         }
 
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 15, handler: nil)
     }
 
     func test3DSAction() {

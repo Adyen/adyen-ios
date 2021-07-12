@@ -106,3 +106,9 @@
 "adyen.giftcard.currencyError" = "Az ajándékkártyák csak abban a pénznemben érvényesek, amelyre kiállították azokat";
 "adyen.giftcard.noBalance" = "Az ajándékkártya egyenlege nulla";
 "adyen.partialPayment.remainingBalance" = "A fennmaradó egyenleg %@ lesz";
+"adyen.card.taxNumber.label" = "Kártyatulajdonos születési dátuma (ÉÉHHNN) vagy cégjegyzékszám (10 számjegyű)";
+"adyen.card.taxNumber.placeholder" = "ÉÉHHNN / 0123456789";
+"adyen.card.taxNumber.invalid" = "A kártyatulajdonos születési dátuma vagy a cégjegyzékszám érvénytelen";
+"adyen.card.encryptedPassword.label" = "Kártya jelszavának első 2 számjegye";
+"adyen.card.encryptedPassword.placeholder" = "12";
+"adyen.card.encryptedPassword.invalid" = "Érvénytelen jelszó";

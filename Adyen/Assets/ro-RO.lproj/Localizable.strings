@@ -106,3 +106,9 @@
 "adyen.giftcard.currencyError" = "Cardurile cadou sunt valabile numai în moneda în care au fost emise";
 "adyen.giftcard.noBalance" = "Acest card cadou are soldul zero";
 "adyen.partialPayment.remainingBalance" = "Soldul rămas va fi de %@";
+"adyen.card.taxNumber.label" = "Data de naștere a posesorului de card (AALLZZ) sau numărul de înregistrare al societății (10 cifre).";
+"adyen.card.taxNumber.placeholder" = "AALLZZ / 0123456789";
+"adyen.card.taxNumber.invalid" = "Data de naștere a posesorului de card sau numărul de înregistrare al societății este incorect";
+"adyen.card.encryptedPassword.label" = "Primele 2 cifre ale parolei aferente cardului";
+"adyen.card.encryptedPassword.placeholder" = "12";
+"adyen.card.encryptedPassword.invalid" = "Parolă incorectă";
