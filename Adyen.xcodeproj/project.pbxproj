@@ -3617,11 +3617,11 @@
 			buildConfigurationList = E2C0E064220982AE008616F6 /* Build configuration list for PBXNativeTarget "AdyenCard" */;
 			buildPhases = (
 				E2C0E05A220982AE008616F6 /* Headers */,
+				F9885544268F4DCF00C601FB /* Validate 3DS2 SDK version */,
 				E2C0E05B220982AE008616F6 /* Sources */,
 				E2C0E05C220982AE008616F6 /* Frameworks */,
 				E2C0E05D220982AE008616F6 /* Resources */,
 				F9A4A302237323DE00D774E8 /* Format and lint */,
-				F9885544268F4DCF00C601FB /* Validate 3DS2 SDK version */,
 			);
 			buildRules = (
 			);
@@ -3638,13 +3638,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E2C0E08E220B039B008616F6 /* Build configuration list for PBXNativeTarget "AdyenUIHost" */;
 			buildPhases = (
+				F9885543268F4D4800C601FB /* Validate 3DS2 SDK version */,
 				F91664F123E42D2D00C10738 /* AdyenUIHost configuration */,
 				E2C0E079220B0399008616F6 /* Sources */,
 				E2C0E07A220B0399008616F6 /* Frameworks */,
 				E2C0E07B220B0399008616F6 /* Resources */,
 				E2C0E0A8220B0827008616F6 /* Embed Frameworks */,
 				F9A4A304237323EE00D774E8 /* Format and lint */,
-				F9885543268F4D4800C601FB /* Validate 3DS2 SDK version */,
 			);
 			buildRules = (
 			);
