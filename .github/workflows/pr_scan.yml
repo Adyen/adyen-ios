@@ -30,6 +30,10 @@ jobs:
         brew install sonar-scanner
         gem install slather
 
+    - name: Validate 3DS2 SDK version
+      run: |
+        Scripts/validate-3ds2-SDK-version.sh
+
     - name: Build and test
       run: |
         xcodebuild -version
