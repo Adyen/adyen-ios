@@ -3617,7 +3617,6 @@
 			buildConfigurationList = E2C0E064220982AE008616F6 /* Build configuration list for PBXNativeTarget "AdyenCard" */;
 			buildPhases = (
 				E2C0E05A220982AE008616F6 /* Headers */,
-				F9885544268F4DCF00C601FB /* Validate 3DS2 SDK version */,
 				E2C0E05B220982AE008616F6 /* Sources */,
 				E2C0E05C220982AE008616F6 /* Frameworks */,
 				E2C0E05D220982AE008616F6 /* Resources */,
@@ -3638,7 +3637,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E2C0E08E220B039B008616F6 /* Build configuration list for PBXNativeTarget "AdyenUIHost" */;
 			buildPhases = (
-				F9885543268F4D4800C601FB /* Validate 3DS2 SDK version */,
 				F91664F123E42D2D00C10738 /* AdyenUIHost configuration */,
 				E2C0E079220B0399008616F6 /* Sources */,
 				E2C0E07A220B0399008616F6 /* Frameworks */,
@@ -4219,42 +4217,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ -f $SRCROOT/Internal/format.sh ]; then\n   $SRCROOT/Internal/format.sh \"$SRCROOT/$TARGETNAME\"\nfi\n\nif [ -f $SRCROOT/Internal/swiftlint ]; then\n   cd \"$SRCROOT/$TARGETNAME\"\n   $SRCROOT/Internal/swiftlint --config \"$SRCROOT/.swiftlint.yml\"\nfi\n";
-		};
-		F9885543268F4D4800C601FB /* Validate 3DS2 SDK version */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Validate 3DS2 SDK version";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "$SRCROOT/Scripts/validate-3ds2-SDK-version.sh\n";
-		};
-		F9885544268F4DCF00C601FB /* Validate 3DS2 SDK version */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Validate 3DS2 SDK version";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "$SRCROOT/Scripts/validate-3ds2-SDK-version.sh\n";
 		};
 		F9A4A3012373235800D774E8 /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
