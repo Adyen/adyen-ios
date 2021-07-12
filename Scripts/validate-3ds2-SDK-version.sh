@@ -3,7 +3,7 @@
 cardDetails3DS2SDKVersion=$(sed -rn 's/^.*public.*let.*threeDS2SdkVersion.*:.*String.*=.*"([0-9]+.[0-9].[0-9]+)".*$/\1/p' AdyenCard/Components/Card/ThreeDS2SdkVersion.swift)
 cocoapods3DS2SDKVersion=$(sed -rn "s/^.*dependency.*\'Adyen3DS2'.*,.*'([0-9]+.[0-9].[0-9]+)'.*$/\1/p" Adyen.podspec)
 carthage3DS2SDKVersion=$(sed -rn 's/^.*github.*"adyen\/adyen-3ds2-ios".*==.*([0-9]+.[0-9].[0-9]+).*$/\1/p' Cartfile)
-swiftPackageManager3DS2SDKVersion=$(pcregrep -M --om-separator='.' --only-matching=1 --only-matching=2 --only-matching=3 '^[\n\s]*name:[\n\s]*"Adyen3DS2"[\n\s]*,[\n\s]*url[\n\s]*:[\n\s]*"https:\/\/github.com\/Adyen\/adyen\-3ds2\-ios"[\n\s]*,[\n\s]*\.exact\(Version\(([0-9]+)[\n\s]*,[\n\s]*([0-9]+)[\n\s]*,[\n\s]+([0-9]+)\)\)[\n\s]*$' Package.swift)
+swiftPackageManager3DS2SDKVersion=$(cat Package.swift | tr -d '[[:blank:]]\n\r' | sed -rn 's/.*name:"Adyen3DS2",url:"https:\/\/github\.com\/Adyen\/adyen\-3ds2\-ios",\.exact\(Version\(([0-9]+),([0-9]+),([0-9]+)\)\).*/\1.\2.\3/p')
 
 echo '\n'
 echo '-----------------------------------------------------'
