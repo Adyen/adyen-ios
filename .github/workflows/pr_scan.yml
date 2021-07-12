@@ -24,11 +24,11 @@ jobs:
       run: |
         brew install sonar-scanner
         gem install slather
-        
+
     - name: Build and test
       run: |
         xcodebuild -version
-        xcodebuild build test -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}" | xcpretty && exit ${PIPESTATUS[0]}
+        xcodebuild clean build test -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}" | xcpretty && exit ${PIPESTATUS[0]}
       env:
         project: 'Adyen.xcodeproj'
         params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES'
