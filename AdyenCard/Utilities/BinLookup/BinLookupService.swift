@@ -47,13 +47,8 @@ internal final class BinLookupService: AnyBinLookupService {
         
         let request = BinLookupRequest(encryptedBin: encryptedBin, supportedBrands: supportedCardTypes)
         apiClient.perform(request) { [weak self] result in
-            switch result {
-            case let .success(response):
-                self?.cache[bin] = response
-                caller(.success(response))
-            case let .failure(error):
-                caller(.failure(error))
-            }
+            _ = result.map { self?.cache[bin] = $0 }
+            caller(result)
         }
     }
 }

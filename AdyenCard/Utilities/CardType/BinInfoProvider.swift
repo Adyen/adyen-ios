@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 
 /// :nodoc:
-internal protocol AnyBinInfoProvider {
+internal protocol AnyBinInfoProvider: AnyObject {
     /// :nodoc:
     func provide(for bin: String, supportedTypes: [CardType], completion: @escaping (BinLookupResponse) -> Void)
 }
@@ -20,7 +20,7 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
 
     private let apiClient: APIClientProtocol
 
-    private var privateBinLookupService: BinLookupService?
+    private var binLookupService: BinLookupService?
     
     private let cardPublicKeyProvider: AnyCardPublicKeyProvider
 
@@ -46,10 +46,10 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
     ///   - supportedTypes: Card brands supported by the merchant.
     ///   - completion:  Callback to notify about results.
     internal func provide(for bin: String, supportedTypes: [CardType], completion: @escaping (BinLookupResponse) -> Void) {
-        let fallback: () -> Void = {
-            self.fallbackCardTypeProvider.provide(for: bin,
-                                                  supportedTypes: supportedTypes,
-                                                  completion: completion)
+        let fallback: () -> Void = { [weak fallbackCardTypeProvider] in
+            fallbackCardTypeProvider?.provide(for: bin,
+                                              supportedTypes: supportedTypes,
+                                              completion: completion)
         }
 
         let bin = String(bin.prefix(BinInfoProvider.minBinLength))
@@ -68,14 +68,14 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
             }
         }
         
-        if let service = privateBinLookupService {
+        if let service = binLookupService {
             useService(service)
         } else {
             cardPublicKeyProvider.fetch { [weak self, apiClient] result in
                 switch result {
                 case let .success(publicKey):
                     let service = BinLookupService(publicKey: publicKey, apiClient: apiClient)
-                    self?.privateBinLookupService = service
+                    self?.binLookupService = service
                     useService(service)
                 case .failure:
                     fallback()

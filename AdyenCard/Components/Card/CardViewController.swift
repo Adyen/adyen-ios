@@ -117,7 +117,7 @@ internal class CardViewController: FormViewController {
 
     internal var kcpDetails: KCPDetails? {
         guard
-            configuration.showsKoreanAuthentication != .hide,
+            configuration.koreanAuthenticationMode != .hide,
             let taxNumber = additionalAuthCodeItem.nonEmptyValue,
             let password = additionalAuthPasswordItem.nonEmptyValue
         else { return nil }
@@ -243,7 +243,7 @@ internal class CardViewController: FormViewController {
         additionalItem.autocapitalizationType = .none
         additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthCodeItem")
         additionalItem.keyboardType = .numberPad
-        additionalItem.isHidden.wrappedValue = !(configuration.showsKoreanAuthentication == .show)
+        additionalItem.isHidden.wrappedValue = !(configuration.koreanAuthenticationMode == .show)
 
         return additionalItem
     }()
@@ -257,7 +257,7 @@ internal class CardViewController: FormViewController {
         additionalItem.autocapitalizationType = .none
         additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthPasswordItem")
         additionalItem.keyboardType = .numberPad
-        additionalItem.isHidden.wrappedValue = !(configuration.showsKoreanAuthentication == .show)
+        additionalItem.isHidden.wrappedValue = !(configuration.koreanAuthenticationMode == .show)
 
         return additionalItem
     }()
@@ -292,7 +292,7 @@ internal class CardViewController: FormViewController {
     private func apply(bin: String) {
         cardDelegate?.didChangeBIN(bin)
         let isHidden: Bool
-        switch configuration.showsKoreanAuthentication {
+        switch configuration.koreanAuthenticationMode {
         case .show:
             isHidden = true
         case .hide:

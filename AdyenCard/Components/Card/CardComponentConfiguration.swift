@@ -21,8 +21,8 @@ extension CardComponent {
         case none
     }
 
-    /// The mode of imput field on Component UI
-    public enum FieldMode {
+    /// The mode of input field on Component UI
+    public enum FieldVisibility {
 
         /// Always show the field.
         case show
@@ -46,8 +46,9 @@ extension CardComponent {
         /// Indicates whether to show the security code field at all. Defaults to true.
         public var showsSecurityCodeField: Bool
 
-        /// Indicates whether to show the security fields for South Korea issued cards. Defaults to .auto.
-        public var showsKoreanAuthentication: FieldMode
+        /// Indicates whether to show the security fields for South Korea issued cards. Defaults to `auto`.
+        /// In AUTO mode the field will appear only for card issued in "KR" (South Korea).
+        public var koreanAuthenticationMode: FieldVisibility
 
         /// Indicates the display mode of the billing address form. Defaults to none.
         public var billingAddressMode: AddressFormType
@@ -71,7 +72,7 @@ extension CardComponent {
         ///   Defaults to true.
         ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
         ///   Defaults to true.
-        ///   - showsKoreanAuthentication: Indicates whether to show the security fields for South Korea issued cards.
+        ///   - koreanAuthenticationMode: Indicates whether to show the security fields for South Korea issued cards.
         ///   Defaults to .auto.
         ///   - billingAddressMode: Indicates mode of how to dispaly the billing address form.
         ///   Defaults to none.
@@ -80,7 +81,7 @@ extension CardComponent {
         public init(showsHolderNameField: Bool = false,
                     showsStorePaymentMethodField: Bool = true,
                     showsSecurityCodeField: Bool = true,
-                    showsKoreanAuthentication: FieldMode = .auto,
+                    koreanAuthenticationMode: FieldVisibility = .auto,
                     billingAddressMode: AddressFormType = .none,
                     storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
                     allowedCardTypes: [CardType]? = nil) {
@@ -90,7 +91,7 @@ extension CardComponent {
             self.stored = storedCardConfiguration
             self.allowedCardTypes = allowedCardTypes
             self.billingAddressMode = billingAddressMode
-            self.showsKoreanAuthentication = showsKoreanAuthentication
+            self.koreanAuthenticationMode = koreanAuthenticationMode
         }
 
         internal func bcmcConfiguration() -> Configuration {
@@ -107,7 +108,7 @@ extension CardComponent {
         }
 
         internal func showAdditionalAuthenticationFields(for issuingCountryCode: String?) -> Bool {
-            self.showsKoreanAuthentication != .hide && issuingCountryCode == "KR"
+            koreanAuthenticationMode != .hide && issuingCountryCode == "KR"
         }
     }
 

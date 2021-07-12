@@ -961,7 +961,7 @@ class CardComponentTests: XCTestCase {
 
     func testKCP() {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "korean_local_card"])
-        let config = CardComponent.Configuration(showsKoreanAuthentication: .auto)
+        let config = CardComponent.Configuration(koreanAuthenticationMode: .auto)
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
             $0(BinLookupResponse(brands: [CardBrand(type: .koreanLocalCard)],

@@ -91,6 +91,8 @@ public class CardComponent: CardPublicKeyConsumer,
     ///   - apiContext: The API context.
     ///   - cardPublicKeyProvider: The card public key provider
     ///   - style: The Component's UI style.
+    ///   - configuration: The Card component configuration.
+    ///   - binProvider:Any object capable to provide a BinInfo.
     internal init(paymentMethod: AnyCardPaymentMethod,
                   apiContext: APIContext,
                   configuration: Configuration,
