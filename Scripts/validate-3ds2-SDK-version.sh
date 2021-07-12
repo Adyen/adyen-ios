@@ -20,6 +20,6 @@ declare -a uniq=($(echo "${array[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' '))
 if [ ${#uniq[@]} -ne 1 ]; then
   RED='\033[0;31m'
   NC='\033[0m'
-  echo "[ERROR] : ${RED}3DS2 SDK version in Package.swift, Cartfile, Adyen.podspec, and ThreeDS2SdkVersion.swift files donot match, please fix the conflict and try to commit again.${NC}"
+  echo "[ERROR] : ${RED}3DS2 SDK version in Package.swift, Cartfile, Adyen.podspec, and ThreeDS2SdkVersion.swift files do not match, please fix the conflict and try to commit again.${NC}"
   exit 1
 fi
