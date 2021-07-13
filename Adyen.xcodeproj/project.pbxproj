@@ -519,6 +519,7 @@
 		F9838D392631AD1900963483 /* Balance.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9838D382631AD1900963483 /* Balance.swift */; };
 		F9838D452631AD3700963483 /* BalanceChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9838D442631AD3700963483 /* BalanceChecker.swift */; };
 		F9842CD025710BF00063CE5A /* ThreeDS2ClassicActionHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9842CCF25710BF00063CE5A /* ThreeDS2ClassicActionHandlerTests.swift */; };
+		F9885541268E0A9E00C601FB /* ThreeDS2SdkVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9885540268E0A9E00C601FB /* ThreeDS2SdkVersion.swift */; };
 		F99D2EFE2661363D00BB5B2F /* AppleWalletPassRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99D2EFD2661363D00BB5B2F /* AppleWalletPassRequest.swift */; };
 		F99D2F0A266136A700BB5B2F /* AppleWalletPassResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99D2F09266136A700BB5B2F /* AppleWalletPassResponse.swift */; };
 		F99D2F702664EDC900BB5B2F /* AnyVoucherAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99D2F6F2664EDC900BB5B2F /* AnyVoucherAction.swift */; };
@@ -1366,6 +1367,7 @@
 		F9842C66256D7A010063CE5A /* ThreeDSActionHandlerResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSActionHandlerResult.swift; sourceTree = "<group>"; };
 		F9842C9E256EBF5F0063CE5A /* ThreeDS2ClassicActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2ClassicActionHandler.swift; sourceTree = "<group>"; };
 		F9842CCF25710BF00063CE5A /* ThreeDS2ClassicActionHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2ClassicActionHandlerTests.swift; sourceTree = "<group>"; };
+		F9885540268E0A9E00C601FB /* ThreeDS2SdkVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2SdkVersion.swift; sourceTree = "<group>"; };
 		F99262C324EECB9F00C9A60D /* ApplePayComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayComponentExtensions.swift; sourceTree = "<group>"; };
 		F99D2EFD2661363D00BB5B2F /* AppleWalletPassRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleWalletPassRequest.swift; sourceTree = "<group>"; };
 		F99D2F09266136A700BB5B2F /* AppleWalletPassResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleWalletPassResponse.swift; sourceTree = "<group>"; };
@@ -2836,6 +2838,7 @@
 				F919DF9424E6D7BC0027976E /* CardComponentExtensions.swift */,
 				F9A6C601265E507300D8CD3E /* CardPublicKeyConsumer.swift */,
 				E2028F5D222805E20007FF8B /* CardDetails.swift */,
+				F9885540268E0A9E00C601FB /* ThreeDS2SdkVersion.swift */,
 				E7451A042600EC8D000BDCCF /* CardComponentConfiguration.swift */,
 				E745175425FB6A59000BDCCF /* CardViewController.swift */,
 				E76EEDA6267CEA3F00BEB3C6 /* CardComponentDelegate.swift */,
@@ -4674,6 +4677,7 @@
 				E76EC680241125E0009C6E2F /* FormCardSecurityCodeItem.swift in Sources */,
 				E7166A5624EAD99F007CCDEF /* BinInfoProvider.swift in Sources */,
 				E2028F5E222805E20007FF8B /* CardDetails.swift in Sources */,
+				F9885541268E0A9E00C601FB /* ThreeDS2SdkVersion.swift in Sources */,
 				F96A2882265F9C2B00E718BD /* GiftCardComponentExtensions.swift in Sources */,
 				E9E3DAD1221EEE2100697074 /* CardExpiryDateValidator.swift in Sources */,
 				F9D5751223756BD0009C18B5 /* CardPublicKeyValidator.swift in Sources */,
