@@ -39,7 +39,6 @@ extension BoletoComponent {
             self.shopperInfo = shopperInfo ?? PrefilledShopperInformation()
             self.showEmailAddress = showEmailAddress
         }
-        
     }
     
 }

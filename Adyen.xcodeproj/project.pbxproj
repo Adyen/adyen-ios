@@ -46,6 +46,8 @@
 		5AD40F4F263157D50090E01C /* UIButtonHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD40F4E263157D50090E01C /* UIButtonHelpersTests.swift */; };
 		5AF730EA2667C3F10091C573 /* APIContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF730E92667C3F10091C573 /* APIContextTests.swift */; };
 		5AF8CD4D26691D3A00102339 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF8CD4C26691D3A00102339 /* Dummy.swift */; };
+		C982FFD826946F0800AED849 /* AffirmComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFD726946F0800AED849 /* AffirmComponent.swift */; };
+		C982FFDC2694792F00AED849 /* AffirmPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */; };
 		E2028F5C2227F1930007FF8B /* Details.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2028F5B2227F1930007FF8B /* Details.swift */; };
 		E2028F5E222805E20007FF8B /* CardDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2028F5D222805E20007FF8B /* CardDetails.swift */; };
 		E216D3BC221AAB240013CBCF /* FormItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E216D3BB221AAB240013CBCF /* FormItem.swift */; };
@@ -893,6 +895,8 @@
 		5AD40F4E263157D50090E01C /* UIButtonHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonHelpersTests.swift; sourceTree = "<group>"; };
 		5AF730E92667C3F10091C573 /* APIContextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIContextTests.swift; sourceTree = "<group>"; };
 		5AF8CD4C26691D3A00102339 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
+		C982FFD726946F0800AED849 /* AffirmComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponent.swift; sourceTree = "<group>"; };
+		C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmPaymentMethod.swift; sourceTree = "<group>"; };
 		E2028F5B2227F1930007FF8B /* Details.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Details.swift; sourceTree = "<group>"; };
 		E2028F5D222805E20007FF8B /* CardDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetails.swift; sourceTree = "<group>"; };
 		E216D3BB221AAB240013CBCF /* FormItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormItem.swift; sourceTree = "<group>"; };
@@ -1662,6 +1666,14 @@
 			path = Boleto;
 			sourceTree = "<group>";
 		};
+		C982FFD626945FCE00AED849 /* Affirm */ = {
+			isa = PBXGroup;
+			children = (
+				C982FFD726946F0800AED849 /* AffirmComponent.swift */,
+			);
+			path = Affirm;
+			sourceTree = "<group>";
+		};
 		E216D3B42217096E0013CBCF /* Items */ = {
 			isa = PBXGroup;
 			children = (
@@ -1768,30 +1780,31 @@
 		E278EB3C22AA5E8700497FD5 /* Payment Methods */ = {
 			isa = PBXGroup;
 			children = (
-				E788A4EE2658030100089448 /* DisplayInformation.swift */,
-				E9B36C9C223FDE4F00EAA368 /* PaymentMethods.swift */,
-				F9D5751723799BB0009C18B5 /* AnyPaymentMethodDecoder.swift */,
-				E262128E22A90D8800F2B133 /* PaymentMethod.swift */,
+				C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */,
 				F9D5753023828EBB009C18B5 /* AnyCardPaymentMethod.swift */,
-				E278EB4022AA5EBD00497FD5 /* CardPaymentMethod.swift */,
-				F9D5751B237C0EA0009C18B5 /* BCMCPaymentMethod.swift */,
-				F9D57529237C6084009C18B5 /* StoredBCMCPaymentMethod.swift */,
-				E278EB4222AA5EC800497FD5 /* IssuerListPaymentMethod.swift */,
-				E278EB4422AA5ED600497FD5 /* SEPADirectDebitPaymentMethod.swift */,
-				E224088C22B0FD220058923E /* StoredPayPalPaymentMethod.swift */,
-				E224088622AFA3A80058923E /* RedirectPaymentMethod.swift */,
-				E27BFD8F22B114DC00692E0D /* ShopperInteraction.swift */,
+				F9D5751723799BB0009C18B5 /* AnyPaymentMethodDecoder.swift */,
 				E95E24BF22C2593900973184 /* ApplePayPaymentMethod.swift */,
-				F9620D9E23C7457F005209FC /* WeChatPayPaymentMethod.swift */,
-				F926D52B23F59ABE00D058D3 /* QiwiWalletPaymentMethod.swift */,
-				F9D644DD24D2D9950059CBE3 /* MBWayPaymentMethod.swift */,
-				F97C837825BF047600D7F85C /* DokuPaymentMethod.swift */,
+				F9D5751B237C0EA0009C18B5 /* BCMCPaymentMethod.swift */,
 				E700A72C2549E2F00012B64C /* BLIKPaymentMethod.swift */,
-				E7763A1025F02BD20046371E /* GiftCardPaymentMethod.swift */,
-				F9FE25B32625ECE7001874BB /* CustomDisplayablePaymentMethod.swift */,
-				E71E8F3D257921D10054B03D /* StoredBLIKPaymentMethod.swift */,
-				E788A3B1265565DF00089448 /* EContextPaymentMethod.swift */,
 				5A988BF5265675ED0007F4C0 /* BoletoPaymentMethod.swift */,
+				E278EB4022AA5EBD00497FD5 /* CardPaymentMethod.swift */,
+				F9FE25B32625ECE7001874BB /* CustomDisplayablePaymentMethod.swift */,
+				E788A4EE2658030100089448 /* DisplayInformation.swift */,
+				F97C837825BF047600D7F85C /* DokuPaymentMethod.swift */,
+				E788A3B1265565DF00089448 /* EContextPaymentMethod.swift */,
+				E7763A1025F02BD20046371E /* GiftCardPaymentMethod.swift */,
+				E278EB4222AA5EC800497FD5 /* IssuerListPaymentMethod.swift */,
+				F9D644DD24D2D9950059CBE3 /* MBWayPaymentMethod.swift */,
+				E262128E22A90D8800F2B133 /* PaymentMethod.swift */,
+				E9B36C9C223FDE4F00EAA368 /* PaymentMethods.swift */,
+				F926D52B23F59ABE00D058D3 /* QiwiWalletPaymentMethod.swift */,
+				E224088622AFA3A80058923E /* RedirectPaymentMethod.swift */,
+				E278EB4422AA5ED600497FD5 /* SEPADirectDebitPaymentMethod.swift */,
+				E27BFD8F22B114DC00692E0D /* ShopperInteraction.swift */,
+				F9D57529237C6084009C18B5 /* StoredBCMCPaymentMethod.swift */,
+				E71E8F3D257921D10054B03D /* StoredBLIKPaymentMethod.swift */,
+				E224088C22B0FD220058923E /* StoredPayPalPaymentMethod.swift */,
+				F9620D9E23C7457F005209FC /* WeChatPayPaymentMethod.swift */,
 			);
 			path = "Payment Methods";
 			sourceTree = "<group>";
@@ -2688,17 +2701,18 @@
 		F9175E56259393E800D653BE /* AdyenComponents */ = {
 			isa = PBXGroup;
 			children = (
-				5A54603D264A5CD900724A87 /* Boleto */,
+				F9175E57259393E800D653BE /* AdyenComponents.h */,
+				C982FFD626945FCE00AED849 /* Affirm */,
+				E97B971B229E83E300505476 /* Apple Pay */,
 				F9B016F72604F388001F23FC /* BasicPersonalInfoFormComponent */,
-				F97C836E25BF03C500D7F85C /* Doku */,
 				E700A7342549E9FC0012B64C /* BLIK */,
+				5A54603D264A5CD900724A87 /* Boleto */,
+				F97C836E25BF03C500D7F85C /* Doku */,
+				F9175E58259393E800D653BE /* Info.plist */,
+				E28098BC220DBA9D0087928F /* Issuer List */,
 				F9D644DA24D2D9340059CBE3 /* MB Way */,
 				F926D52D23F5A2EC00D058D3 /* Qiwi Wallet */,
-				E97B971B229E83E300505476 /* Apple Pay */,
-				E28098BC220DBA9D0087928F /* Issuer List */,
 				E28098B4220DA79C0087928F /* SEPA Direct Debit */,
-				F9175E57259393E800D653BE /* AdyenComponents.h */,
-				F9175E58259393E800D653BE /* Info.plist */,
 			);
 			path = AdyenComponents;
 			sourceTree = "<group>";
@@ -4472,6 +4486,7 @@
 				E7D5311A2446F525000046B4 /* FormSeparatorItem.swift in Sources */,
 				E9E3DAFD2225485400697074 /* URLSessionHelpers.swift in Sources */,
 				E71E8F3E257921D10054B03D /* StoredBLIKPaymentMethod.swift in Sources */,
+				C982FFDC2694792F00AED849 /* AffirmPaymentMethod.swift in Sources */,
 				F9B798C923AB697100A2103C /* FormComponentStyle.swift in Sources */,
 				E708591F261F1CB800D0153B /* FormVerticalStackItemView.swift in Sources */,
 				E7275BF9255012F600907CF9 /* FormLabelItem.swift in Sources */,
@@ -4732,6 +4747,7 @@
 				5A15D589264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift in Sources */,
 				F9175E8A259394E100D653BE /* SEPADirectDebitDetails.swift in Sources */,
 				F9175EAA259394FF00D653BE /* ApplePayComponentExtensions.swift in Sources */,
+				C982FFD826946F0800AED849 /* AffirmComponent.swift in Sources */,
 				F9175ED22593951800D653BE /* MBWayComponent.swift in Sources */,
 				F9175E9B259394F200D653BE /* IssuerListComponent.swift in Sources */,
 				5A9889C8264E71210007F4C0 /* BoletoDetails.swift in Sources */,
