@@ -86,7 +86,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent {
     
     // MARK: - Private
     
-    private static var fields: [PersonalInformation] {
-        return []
-    }
+//    private static var fields: [PersonalInformation] {
+//        return []
+//    }
 }

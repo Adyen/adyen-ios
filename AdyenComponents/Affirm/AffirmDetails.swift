@@ -54,7 +54,7 @@ public struct AffirmDetails: PaymentMethodDetails, ShopperInformation {
     
     // MARK: - Private
     
-    private enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: CodingKey {
         case type
     }
 }
