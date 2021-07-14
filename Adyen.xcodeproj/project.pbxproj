@@ -46,6 +46,7 @@
 		5AD40F4F263157D50090E01C /* UIButtonHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD40F4E263157D50090E01C /* UIButtonHelpersTests.swift */; };
 		5AF730EA2667C3F10091C573 /* APIContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF730E92667C3F10091C573 /* APIContextTests.swift */; };
 		5AF8CD4D26691D3A00102339 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF8CD4C26691D3A00102339 /* Dummy.swift */; };
+		C930FB6E269D79E0006A26D2 /* AffirmDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = C930FB6D269D79E0006A26D2 /* AffirmDetails.swift */; };
 		C982FFD826946F0800AED849 /* AffirmComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFD726946F0800AED849 /* AffirmComponent.swift */; };
 		C982FFDC2694792F00AED849 /* AffirmPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */; };
 		E2028F5C2227F1930007FF8B /* Details.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2028F5B2227F1930007FF8B /* Details.swift */; };
@@ -895,6 +896,7 @@
 		5AD40F4E263157D50090E01C /* UIButtonHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonHelpersTests.swift; sourceTree = "<group>"; };
 		5AF730E92667C3F10091C573 /* APIContextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIContextTests.swift; sourceTree = "<group>"; };
 		5AF8CD4C26691D3A00102339 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
+		C930FB6D269D79E0006A26D2 /* AffirmDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmDetails.swift; sourceTree = "<group>"; };
 		C982FFD726946F0800AED849 /* AffirmComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponent.swift; sourceTree = "<group>"; };
 		C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmPaymentMethod.swift; sourceTree = "<group>"; };
 		E2028F5B2227F1930007FF8B /* Details.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Details.swift; sourceTree = "<group>"; };
@@ -1670,6 +1672,7 @@
 			isa = PBXGroup;
 			children = (
 				C982FFD726946F0800AED849 /* AffirmComponent.swift */,
+				C930FB6D269D79E0006A26D2 /* AffirmDetails.swift */,
 			);
 			path = Affirm;
 			sourceTree = "<group>";
@@ -4753,6 +4756,7 @@
 				5A9889C8264E71210007F4C0 /* BoletoDetails.swift in Sources */,
 				F97C839825BF05AB00D7F85C /* DokuDetails.swift in Sources */,
 				F9175E9A259394F200D653BE /* IssuerListDetails.swift in Sources */,
+				C930FB6E269D79E0006A26D2 /* AffirmDetails.swift in Sources */,
 				5A54603F264A5CEC00724A87 /* BoletoComponent.swift in Sources */,
 				F9175EE32593952600D653BE /* BLIKDetails.swift in Sources */,
 				F9B016F92604F3FF001F23FC /* BasicPersonalInfoFormComponent.swift in Sources */,
