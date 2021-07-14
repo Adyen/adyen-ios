@@ -78,7 +78,7 @@ public enum Action: Decodable {
         case threeDS2
         case sdk
         case qrCode
-        case await
+        case `await`
         case voucher
     }
 
