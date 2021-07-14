@@ -16,16 +16,16 @@ public struct AffirmDetails: PaymentMethodDetails, ShopperInformation {
     public let type: String
     
     /// The shopper's first and last name.
-    public let shopperName: ShopperName
+    public let shopperName: ShopperName?
     
     /// The shopper's telephone number.
-    public let telephoneNumber: String
+    public let telephoneNumber: String?
     
     /// The shopper's email adress.
-    public let emailAddress: String
+    public let emailAddress: String?
     
     /// The shopper's billing address.
-    public let billingAddress: PostalAddress
+    public let billingAddress: PostalAddress?
     
     /// The shopper's delivery address.
     public let deliveryAddress: PostalAddress?
