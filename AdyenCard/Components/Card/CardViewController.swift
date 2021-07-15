@@ -71,8 +71,10 @@ internal class CardViewController: FormViewController {
             append(holderNameItem)
         }
 
-        append(additionalAuthCodeItem)
-        append(additionalAuthPasswordItem)
+        if configuration.koreanAuthenticationMode != .hide {
+            append(additionalAuthCodeItem)
+            append(additionalAuthPasswordItem)
+        }
 
         switch configuration.billingAddressMode {
         case .full:
@@ -139,8 +141,8 @@ internal class CardViewController: FormViewController {
         view.isUserInteractionEnabled = false
     }
     
-    internal func update(binInfo: BinLookupResponse) {
-        securityCodeItem.update(cardBrands: binInfo.brands ?? [])
+    internal func update(bin: String, binInfo: BinLookupResponse) {
+        securityCodeItem.update(with: binInfo)
 
         switch (binInfo.brands, numberItem.value.isEmpty) {
         case (_, true):
@@ -151,9 +153,18 @@ internal class CardViewController: FormViewController {
             numberItem.showLogos(for: [])
         }
 
-        let shouldShow = configuration.showAdditionalAuthenticationFields(for: binInfo.issuingCountryCode)
-        additionalAuthPasswordItem.isHidden.wrappedValue = !shouldShow
-        additionalAuthCodeItem.isHidden.wrappedValue = !shouldShow
+        let isHidden: Bool
+        switch configuration.koreanAuthenticationMode {
+        case .show:
+            isHidden = false
+        case .hide:
+            isHidden = true
+        case .auto:
+            isHidden = !configuration.showAdditionalAuthenticationFields(for: binInfo.issuingCountryCode)
+        }
+
+        additionalAuthPasswordItem.isHidden.wrappedValue = isHidden
+        additionalAuthCodeItem.isHidden.wrappedValue = isHidden
     }
     
     internal func resetItems() {
@@ -276,34 +287,16 @@ internal class CardViewController: FormViewController {
         item.title = localizedSubmitButtonTitle(with: payment?.amount,
                                                 style: .immediate,
                                                 localizationParameters)
-        item.buttonSelectionHandler = { [weak self] in
-            self?.cardDelegate?.didSelectSubmitButton()
+        item.buttonSelectionHandler = { [weak cardDelegate] in
+            cardDelegate?.didSelectSubmitButton()
         }
         return item
     }()
     
     private func didReceive(bin: String) {
-        self.securityCodeItem.selectedCard = supportedCardTypes.adyen.type(forCardNumber: bin)
-        throttler.throttle { [weak self] in
-            self?.apply(bin: bin)
+        throttler.throttle { [weak cardDelegate] in
+            cardDelegate?.didChangeBIN(bin)
         }
-    }
-
-    private func apply(bin: String) {
-        cardDelegate?.didChangeBIN(bin)
-        let isHidden: Bool
-        switch configuration.koreanAuthenticationMode {
-        case .show:
-            isHidden = true
-        case .hide:
-            isHidden = false
-        case .auto:
-            let binIsLong = bin.count >= BinInfoProvider.minBinLength
-            isHidden = additionalAuthPasswordItem.isHidden.wrappedValue ? true : !binIsLong
-        }
-
-        additionalAuthPasswordItem.isHidden.wrappedValue = isHidden
-        additionalAuthCodeItem.isHidden.wrappedValue = isHidden
     }
     
     private var defaultCountryCode: String {

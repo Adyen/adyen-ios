@@ -182,7 +182,7 @@ extension CardComponent: CardViewControllerDelegate {
         self.cardComponentDelegate?.didChangeBIN(String(value.prefix(publicBinLength)), component: self)
         binInfoProvider.provide(for: value, supportedTypes: supportedCardTypes) { [weak self] binInfo in
             guard let self = self else { return }
-            self.cardViewController.update(binInfo: binInfo)
+            self.cardViewController.update(bin: value, binInfo: binInfo)
             self.cardComponentDelegate?.didChangeCardBrand(binInfo.brands ?? [], component: self)
         }
     }

@@ -32,13 +32,17 @@ internal struct BinLookupResponse: Response {
     internal let enableLuhnCheck: Bool?
 
     /// :nodoc:
+    internal let cvcPolicy: CardBrand.CVCPolicy?
+
+    /// :nodoc:
     internal init(brands: [CardBrand]? = nil,
                   requestId: String = UUID().uuidString,
                   issuingCountryCode: String? = "NL",
                   showSocialSecurityNumber: Bool? = nil,
                   showExpiryDate: Bool? = nil,
                   supported: Bool? = nil,
-                  enableLuhnCheck: Bool? = nil) {
+                  enableLuhnCheck: Bool? = nil,
+                  cvcPolicy: CardBrand.CVCPolicy? = .required) {
         self.brands = brands
         self.requestId = requestId
         self.issuingCountryCode = issuingCountryCode
@@ -46,6 +50,7 @@ internal struct BinLookupResponse: Response {
         self.showExpiryDate = showExpiryDate
         self.supported = supported
         self.enableLuhnCheck = enableLuhnCheck
+        self.cvcPolicy = cvcPolicy
     }
     
     private enum CodingKeys: String, CodingKey {
@@ -55,6 +60,7 @@ internal struct BinLookupResponse: Response {
              showSocialSecurityNumber,
              showExpiryDate,
              supported,
-             enableLuhnCheck
+             enableLuhnCheck,
+             cvcPolicy
     }
 }
