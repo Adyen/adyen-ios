@@ -8,7 +8,10 @@ import Foundation
 
 /// A full address form, sutable for all countries.
 /// :nodoc:
-public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, Observer, CompoundFormItem {
+public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, Observer, CompoundFormItem, Hidable {
+    
+    /// :nodoc:
+    public var isHidden: Observable<Bool> = Observable(false)
     
     private var items: [FormItem] = []
     
@@ -27,15 +30,18 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     override public var subitems: [FormItem] { items }
     
+    private var titleXXX: String?
+    
     /// Initializes the split text item.
     ///
     /// - Parameter items: The items displayed side-by-side. Must be two.
     /// - Parameter style: The `FormSplitItemView` UI style.
-    public init(initialCountry: String, style: AddressStyle, localizationParameters: LocalizationParameters? = nil) {
+    public init(initialCountry: String, title: String? = nil, style: AddressStyle, localizationParameters: LocalizationParameters? = nil) {
         self.initialCountry = initialCountry
+        self.titleXXX = title
         self.localizationParameters = localizationParameters
         super.init(value: PostalAddress(), style: style)
-        
+
         update(for: initialCountry)
         
         bind(countrySelectItem.publisher, at: \.identifier, to: self, at: \.value.country)
@@ -45,7 +51,8 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     }
     
     internal lazy var headerItem: FormItem = {
-        let item = FormLabelItem(text: localizedString(.billingAddressSectionTitle, localizationParameters),
+        let title = titleXXX != nil ? titleXXX! : localizedString(.billingAddressSectionTitle, localizationParameters)
+        let item = FormLabelItem(text: title,
                                  style: style.title)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "title")
         return item.addingDefaultMargins()

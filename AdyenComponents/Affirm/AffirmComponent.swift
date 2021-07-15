@@ -11,71 +11,94 @@ import Foundation
 import UIKit
 
 /// A component that provides a form for Affirm payment.
-public final class AffirmComponent: AbstractPersonalInformationComponent {
+public final class AffirmComponent: AbstractPersonalInformationComponent, Observer {
+    
+    private enum Content {
+        static let personalDetailsTitle = "Personal details"
+        static let deliveryAddressToggleTitle = "Seperate delivery address"
+        static let deliveryAdddressTitle = "Delivery address"
+        static let submitButtonTitle = "Confirm purchase"
+    }
+    
+    // MARK: - Items
+    
+    private let deliveryAddressToggleItem: FormToggleItem
+    private let deliveryAddressItem: FormAddressItem
     
     // MARK: - Properties
+    
+    private var isDeliveryAddressEnabled: Bool {
+        return deliveryAddressToggleItem.value
+    }
     
     // MARK: - Initializers
     
     public init(paymentMethod: PaymentMethod,
                 apiContext: APIContext,
                 style: FormComponentStyle) {
-        // TODO: - Init logic
-        // 1. Set configuration
-        let personalDetailsHeaderItem = FormLabelItem(text: "Personal details", style: style.sectionHeader).addingDefaultMargins()
+        let personalDetailsHeaderItem = FormLabelItem(text: Content.personalDetailsTitle, style: style.sectionHeader).addingDefaultMargins()
+        deliveryAddressToggleItem = FormToggleItem(style: style.toggle)
+        deliveryAddressItem = FormAddressItem(initialCountry: "US", title: Content.deliveryAdddressTitle, style: style.addressStyle)
         
-        let deliveryAddressItem = FormAddressItem(initialCountry: "US", style: style.addressStyle)
-        deliveryAddressItem.title = "Delivery address"
         let fields: [PersonalInformation] = [.custom(CustomFormItemInjector(item: personalDetailsHeaderItem)),
                                              .firstName,
                                              .lastName,
                                              .email,
                                              .phone,
                                              .address,
+                                             .custom(CustomFormItemInjector(item: deliveryAddressToggleItem)),
                                              .custom(CustomFormItemInjector(item: deliveryAddressItem))]
-        
         let configuration = Configuration(fields: fields)
         super.init(paymentMethod: paymentMethod,
                    configuration: configuration,
                    apiContext: apiContext,
                    style: style)
+        setup()
+    }
+    
+    // MARK: - Private
+    
+    private func setup() {
+        emailItem?.autocapitalizationType = .none
+        setupDeliveryAddressToggleItem()
+    }
+    
+    private func setupDeliveryAddressToggleItem() {
+        deliveryAddressToggleItem.title = Content.deliveryAddressToggleTitle
+        deliveryAddressToggleItem.value = false
+        bind(deliveryAddressToggleItem.publisher, to: deliveryAddressItem, at: \.isHidden.wrappedValue, with: { !$0 })
     }
     
     // MARK: - Public
     
     public override func submitButtonTitle() -> String {
-        return "Confirm purchase"
+        return Content.submitButtonTitle
     }
     
     public override func createPaymentDetails() -> PaymentMethodDetails {
-        guard let firstNameItem = firstNameItem else {
+        let firstName = firstNameItem?.value
+        let lastName = lastNameItem?.value
+        let emailAddress = emailItem?.value
+        let telephoneNumber = phoneItem?.value
+        let billingAddress = addressItem?.value
+        
+        guard [firstName, lastName, emailAddress, telephoneNumber].allSatisfy({ $0 != nil }) else {
             fatalError()
         }
-        guard let lastNameItem = lastNameItem else {
-            fatalError()
-        }
-        guard let emailItem = emailItem else {
-            fatalError()
-        }
-        guard let phoneItem = phoneItem else {
-            fatalError()
-        }
-        guard let addressItem = addressItem else {
+        guard let billingAddress = billingAddress else {
             fatalError()
         }
         
-        let shopperName = ShopperName(firstName: firstNameItem.value,
-                                      lastName: lastNameItem.value)
-        let emailAddress = emailItem.value
-        let telephoneNumber = phoneItem.value
-        let billingAddress = addressItem.value
+        let deliveryAddress = isDeliveryAddressEnabled ? deliveryAddressItem.value : billingAddress
+        
+        let shopperName = ShopperName(firstName: firstName!, lastName: lastName!)
         
         let affirmDetails = AffirmDetails(paymentMethod: paymentMethod,
                                           shopperName: shopperName,
-                                          telephoneNumber: telephoneNumber,
-                                          emailAddress: emailAddress,
+                                          telephoneNumber: telephoneNumber!,
+                                          emailAddress: emailAddress!,
                                           billingAddress: billingAddress,
-                                          deliveryAddress: nil)
+                                          deliveryAddress: deliveryAddress)
         return affirmDetails
     }
     
@@ -83,10 +106,4 @@ public final class AffirmComponent: AbstractPersonalInformationComponent {
         let query = PhoneExtensionsQuery(paymentMethod: .generic)
         return PhoneExtensionsRepository.get(with: query)
     }
-    
-    // MARK: - Private
-    
-//    private static var fields: [PersonalInformation] {
-//        return []
-//    }
 }
