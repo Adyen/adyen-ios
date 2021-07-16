@@ -26,9 +26,9 @@ targets:
     sources: Source
     testTargets: [UITests,UnitTests]
     settings:
-      base:
-        INFOPLIST_FILE: Source/UIKit/Info.plist
-        PRODUCT_BUNDLE_IDENTIFIER: com.adyen.$PROJECT_NAME
+      PRODUCT_BUNDLE_IDENTIFIER: com.adyen.$PROJECT_NAME
+      CURRENT_PROJECT_VERSION: 1
+      MARKETING_VERSION: 1
     dependencies:
       - package: Adyen
         product: Adyen
@@ -72,7 +72,8 @@ schemes:
         UITests: [test]
         UnitTests: [test]
     test:
-      commandLineArguments: "-UITests"
+      commandLineArguments: 
+        "-UITests": true
       targets:
         - UITests
         - UnitTests
@@ -85,7 +86,6 @@ mkdir -p Source
 
 cp "../Tests/AdyenTests/Adyen Tests/DropIn/DropInTests.swift" UITests/DropInTests.swift
 cp "../Tests/AdyenTests/Adyen Tests/Components/Dummy.swift" UITests/Dummy.swift
-cp "../Tests/AdyenTests/Adyen Tests/Assets/AssetsAccessTests.swift" UnitTests/AssetsAccessTests.swift
 cp -a "../Demo/Common" Source/
 cp -a "../Demo/UIKit" Source/
 cp "../Demo/Configuration.swift" Source/Configuration.swift
