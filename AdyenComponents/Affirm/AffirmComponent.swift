@@ -46,8 +46,10 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
                                              .email,
                                              .phone,
                                              .address,
+                                             .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 16))),
                                              .custom(CustomFormItemInjector(item: deliveryAddressToggleItem)),
-                                             .custom(CustomFormItemInjector(item: deliveryAddressItem))]
+                                             .custom(CustomFormItemInjector(item: deliveryAddressItem)),
+                                             .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 24)))]
         let configuration = Configuration(fields: fields)
         super.init(paymentMethod: paymentMethod,
                    configuration: configuration,
@@ -89,10 +91,8 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
             fatalError()
         }
         
-        let deliveryAddress = isDeliveryAddressEnabled ? deliveryAddressItem.value : billingAddress
-        
         let shopperName = ShopperName(firstName: firstName!, lastName: lastName!)
-        
+        let deliveryAddress = isDeliveryAddressEnabled ? deliveryAddressItem.value : billingAddress
         let affirmDetails = AffirmDetails(paymentMethod: paymentMethod,
                                           shopperName: shopperName,
                                           telephoneNumber: telephoneNumber!,

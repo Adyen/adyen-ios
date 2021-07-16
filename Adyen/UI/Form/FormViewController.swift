@@ -143,8 +143,21 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         return false
     }
     
+//    private func getAllValidatableItems() -> [ValidatableFormItem] {
+//        itemManager.flatItems.compactMap { $0 as? ValidatableFormItem }
+//    }
+    
     private func getAllValidatableItems() -> [ValidatableFormItem] {
-        itemManager.flatItems.compactMap { $0 as? ValidatableFormItem }
+        let unhiddenItems = itemManager.topLevelItem.filter { item in
+            if let hidableItem = (item as? Hidable), hidableItem.isHidden.wrappedValue {
+                return false
+            }
+            
+            return true
+        }
+        
+        let validatableItems = unhiddenItems.flatMap(\.flatSubitems).compactMap { $0 as? ValidatableFormItem }
+        return validatableItems
     }
     
     private func formRequiresInputView() -> Bool {
