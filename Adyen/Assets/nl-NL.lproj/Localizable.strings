@@ -106,3 +106,9 @@
 "adyen.giftcard.currencyError" = "Cadeaukaarten zijn alleen geldig in de valuta waarin ze zijn uitgegeven";
 "adyen.giftcard.noBalance" = "Deze cadeaukaart heeft geen saldo";
 "adyen.partialPayment.remainingBalance" = "Het resterende saldo is %@";
+"adyen.card.taxNumber.label" = "Geboortedatum (JJ-MM-DD) of bedrijfsregistratienummer (10 cijfers) van kaarthouder";
+"adyen.card.taxNumber.placeholder" = "JJMMDD / 0123456789";
+"adyen.card.taxNumber.invalid" = "Geboortedatum of bedrijfsregistratienummer van kaarthouder is ongeldig";
+"adyen.card.encryptedPassword.label" = "Eerste twee cijfers van het wachtwoord van de kaart";
+"adyen.card.encryptedPassword.placeholder" = "12";
+"adyen.card.encryptedPassword.invalid" = "Ongeldig wachtwoord";

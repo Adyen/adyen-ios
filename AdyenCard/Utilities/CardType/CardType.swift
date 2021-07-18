@@ -83,6 +83,9 @@ public enum CardType: String, CaseIterable, Codable {
     
     /// Korea Cyber Payment
     case kcp = "kcp_creditcard"
+
+    /// Korean local card
+    case koreanLocalCard = "korean_local_card"
     
     /// Laser (Discontinued in 2014)
     case laser
@@ -209,6 +212,8 @@ extension CardType {
             return "^4[0-9]{0,19}$"
         case .warehouse:
             return "^(982633)[0-9]{0,10}$"
+        case .koreanLocalCard:
+            return "^94[0-9]{0,18}$"
         case .accel,
              .cencosud,
              .chequeDejeneur,

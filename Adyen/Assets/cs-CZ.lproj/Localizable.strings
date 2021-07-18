@@ -106,3 +106,9 @@
 "adyen.giftcard.currencyError" = "Dárkové karty jsou platné jenom v měně, ve které byly vystavené";
 "adyen.giftcard.noBalance" = "Na dárkové kartě je nulový zůstatek";
 "adyen.partialPayment.remainingBalance" = "Zbývající zůstatek bude %@";
+"adyen.card.taxNumber.label" = "Datum narození držitele karty (RRMMDD) nebo registrační číslo společnosti (10 číslic)";
+"adyen.card.taxNumber.placeholder" = "RRMMDD / 0123456789";
+"adyen.card.taxNumber.invalid" = "Neplatné datum narození držitele karty nebo registrační číslo společnosti";
+"adyen.card.encryptedPassword.label" = "První 2 číslice hesla karty";
+"adyen.card.encryptedPassword.placeholder" = "12";
+"adyen.card.encryptedPassword.invalid" = "Neplatné heslo";

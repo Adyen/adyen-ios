@@ -106,3 +106,9 @@
 "adyen.giftcard.currencyError" = "Οι δωροκάρτες ισχύουν μόνο για το νόμισμα στο οποίο εκδόθηκαν";
 "adyen.giftcard.noBalance" = "Η συγκεκριμένη δωροκάρτα έχει μηδενικό υπόλοιπο";
 "adyen.partialPayment.remainingBalance" = "Το υπόλοιπο θα είναι %@";
+"adyen.card.taxNumber.label" = "Ημερομηνία γέννησης κατόχου κάρτας (YYMMDD) ή αριθμός μητρώου εταιρειών (10 ψηφία)";
+"adyen.card.taxNumber.placeholder" = "ΕΕΜΜΗΗ / 0123456789";
+"adyen.card.taxNumber.invalid" = "Μη έγκυρη ημερομηνία γέννησης κατόχου κάρτας ή αριθμός μητρώου εταιρειών";
+"adyen.card.encryptedPassword.label" = "Τα πρώτα 2 ψηφία του κωδικού πρόσβασης της κάρτας";
+"adyen.card.encryptedPassword.placeholder" = "12";
+"adyen.card.encryptedPassword.invalid" = "Μη έγκυρος κωδικός πρόσβασης";

@@ -11,17 +11,6 @@ import XCTest
 
 class CardComponentTests: XCTestCase {
 
-    func testClientKeyInitialization() {
-        let method = CardPaymentMethodMock(type: "test_type", name: "test_name", brands: ["bcmc"])
-        let sut = CardComponent(paymentMethod: method, apiContext: Dummy.context)
-        
-        let cardBrandProvider = sut.cardBrandProvider as? CardBrandProvider
-        
-        XCTAssertEqual(cardBrandProvider?.apiContext.clientKey, Dummy.context.clientKey)
-        XCTAssertEqual(sut.cardPublicKeyProvider.apiContext.clientKey, Dummy.context.clientKey)
-        XCTAssertEqual(sut.apiContext.clientKey, Dummy.context.clientKey)
-    }
-
     func testRequiresKeyboardInput() {
         let method = CardPaymentMethodMock(type: "test_type", name: "test_name", brands: ["bcmc"])
         let sut = CardComponent(paymentMethod: method, apiContext: Dummy.context)
@@ -37,8 +26,8 @@ class CardComponentTests: XCTestCase {
         var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
         let sut = CardComponent(paymentMethod: method,
-                                configuration: configuration,
-                                apiContext: Dummy.context)
+                                apiContext: Dummy.context,
+                                configuration: configuration)
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         
@@ -65,8 +54,8 @@ class CardComponentTests: XCTestCase {
         var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
         let sut = CardComponent(paymentMethod: method,
-                                configuration: configuration,
-                                apiContext: Dummy.context)
+                                apiContext: Dummy.context,
+                                configuration: configuration)
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         
@@ -121,8 +110,8 @@ class CardComponentTests: XCTestCase {
         var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
         let sut = CardComponent(paymentMethod: cardPaymentMethod,
-                                configuration: configuration,
                                 apiContext: Dummy.context,
+                                configuration: configuration,
                                 style: cardComponentStyle)
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -239,8 +228,8 @@ class CardComponentTests: XCTestCase {
         var configuration = CardComponent.Configuration()
         configuration.showsSecurityCodeField = false
         let sut = CardComponent(paymentMethod: method,
-                                configuration: configuration,
-                                apiContext: Dummy.context)
+                                apiContext: Dummy.context,
+                                configuration: configuration)
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -299,15 +288,17 @@ class CardComponentTests: XCTestCase {
     
     func testDelegateCalled() {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["visa", "amex"])
-        let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context)
-
-        let cardTypeProviderMock = CardTypeProviderMock()
+        let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
             $0(BinLookupResponse(brands: [CardBrand(type: .americanExpress)]))
         }
 
-        sut.cardBrandProvider = cardTypeProviderMock
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: .init(),
+                                style: .init(),
+                                cardPublicKeyProvider: CardPublicKeyProviderMock(),
+                                binProvider: cardTypeProviderMock)
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -489,8 +480,8 @@ class CardComponentTests: XCTestCase {
         var configuration = CardComponent.Configuration()
         configuration.stored.showsSecurityCodeField = false
         let sut = CardComponent(paymentMethod: method,
-                                configuration: configuration,
-                                apiContext: Dummy.context)
+                                apiContext: Dummy.context,
+                                configuration: configuration)
         sut.payment = Payment(amount: Amount(value: 123456, currencyCode: "EUR"), countryCode: "NL")
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)
@@ -516,8 +507,8 @@ class CardComponentTests: XCTestCase {
         var configuration = CardComponent.Configuration()
         configuration.stored.showsSecurityCodeField = false
         let sut = CardComponent(paymentMethod: method,
-                                configuration: configuration,
-                                apiContext: Dummy.context)
+                                apiContext: Dummy.context,
+                                configuration: configuration)
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)
         XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
@@ -542,8 +533,8 @@ class CardComponentTests: XCTestCase {
         var configuration = CardComponent.Configuration()
         configuration.stored.showsSecurityCodeField = false
         let sut = CardComponent(paymentMethod: method,
-                                configuration: configuration,
-                                apiContext: Dummy.context)
+                                apiContext: Dummy.context,
+                                configuration: configuration)
         XCTAssertNotNil(sut.viewController as? UIAlertController)
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)
@@ -637,14 +628,14 @@ class CardComponentTests: XCTestCase {
     func testSubmit() {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         // Dummy public key
-        let cardPublicKeyProvider = CardPublicKeyProvider(apiContext: Dummy.context)
-        CardPublicKeyProvider.cachedCardPublicKey = Dummy.publicKey
         var config = CardComponent.Configuration()
         config.billingAddressMode = .full
         let sut = CardComponent(paymentMethod: method,
-                                configuration: config,
                                 apiContext: Dummy.context,
-                                cardPublicKeyProvider: cardPublicKeyProvider)
+                                configuration: config,
+                                style: FormComponentStyle(),
+                                cardPublicKeyProvider: CardPublicKeyProviderMock(),
+                                binProvider: BinInfoProviderMock())
 
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -744,8 +735,8 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .full
         let sut = CardComponent(paymentMethod: method,
-                                configuration: config,
-                                apiContext: Dummy.context)
+                                apiContext: Dummy.context,
+                                configuration: config)
         sut.payment = .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "NL")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -801,8 +792,8 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .full
         let sut = CardComponent(paymentMethod: method,
-                                configuration: config,
-                                apiContext: Dummy.context)
+                                apiContext: Dummy.context,
+                                configuration: config)
         sut.payment = .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -855,8 +846,8 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .full
         let sut = CardComponent(paymentMethod: method,
-                                configuration: config,
-                                apiContext: Dummy.context)
+                                apiContext: Dummy.context,
+                                configuration: config)
         sut.payment = .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "CA")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -911,15 +902,15 @@ class CardComponentTests: XCTestCase {
     }
 
     func testPostalCode() {
-        let cardPublicKeyProvider = CardPublicKeyProvider(apiContext: Dummy.context)
-        CardPublicKeyProvider.cachedCardPublicKey = Dummy.publicKey
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         var config = CardComponent.Configuration()
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
                                 configuration: config,
-                                apiContext: Dummy.context)
-        sut.cardPublicKeyProvider = cardPublicKeyProvider
+                                style: .init(),
+                                cardPublicKeyProvider: CardPublicKeyProviderMock(),
+                                binProvider: BinInfoProviderMock())
         sut.payment = .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -967,6 +958,71 @@ class CardComponentTests: XCTestCase {
 
         waitForExpectations(timeout: 10, handler: nil)
     }
+
+    func testKCP() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "korean_local_card"])
+        let config = CardComponent.Configuration(koreanAuthenticationMode: .auto)
+        let cardTypeProviderMock = BinInfoProviderMock()
+        cardTypeProviderMock.onFetch = {
+            $0(BinLookupResponse(brands: [CardBrand(type: .koreanLocalCard)],
+                                 issuingCountryCode: "KR"))
+        }
+
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: config,
+                                style: .init(),
+                                cardPublicKeyProvider: CardPublicKeyProviderMock(),
+                                binProvider: cardTypeProviderMock)
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        let delegate = PaymentComponentDelegateMock()
+        sut.delegate = delegate
+
+        let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
+        delegate.onDidFail = { error, component in XCTFail("should not fail") }
+        delegate.onDidSubmit = { data, component in
+            XCTAssertTrue(component === sut)
+            let paymentDetails = data.paymentMethod as? CardDetails
+            XCTAssertNotNil(paymentDetails)
+
+            XCTAssertNotEqual(paymentDetails?.password, "12")
+            XCTAssertTrue(paymentDetails!.password!.starts(with: "adyenio_0_1_25$"))
+            XCTAssertEqual(paymentDetails?.taxNumber, "123456")
+
+            sut.stopLoadingIfNeeded()
+            delegateExpectation.fulfill()
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+
+            let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
+            let expiryDateItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
+            let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
+            let taxNumberItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.additionalAuthCodeItem")
+            let passwordItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.additionalAuthPasswordItem")
+            XCTAssertTrue(taxNumberItemView!.isHidden)
+            XCTAssertTrue(passwordItemView!.isHidden)
+
+            self.populate(textItemView: cardNumberItemView!, with: "9490 2200 0661 1406")
+            self.populate(textItemView: expiryDateItemView!, with: "03/30")
+            self.populate(textItemView: securityCodeItemView!, with: "737")
+
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+                XCTAssertEqual(passwordItemView!.titleLabel.text, "First 2 digits of card password")
+                XCTAssertEqual(taxNumberItemView!.titleLabel.text, "Birthday or Corporate registration number")
+                XCTAssertFalse(taxNumberItemView!.isHidden)
+                XCTAssertFalse(passwordItemView!.isHidden)
+                self.populate(textItemView: taxNumberItemView!, with: "123456")
+                self.populate(textItemView: passwordItemView!, with: "12")
+
+                let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
+                payButtonItemViewButton?.sendActions(for: .touchUpInside)
+            }
+        }
+
+        waitForExpectations(timeout: 20, handler: nil)
+    }
     
     func testClear_shouldResetPostalCodeItemToEmptyValue() throws {
         // Given
@@ -977,8 +1033,8 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
-                                configuration: config,
-                                apiContext: Dummy.context)
+                                apiContext: Dummy.context,
+                                configuration: config)
         sut.cardViewController.postalCodeItem.value = "1501 NH"
         
         // When
@@ -997,8 +1053,8 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
-                                configuration: config,
-                                apiContext: Dummy.context)
+                                apiContext: Dummy.context,
+                                configuration: config)
         sut.cardViewController.numberItem.value = "4111 1111 1111 1111"
         
         // When
@@ -1017,8 +1073,8 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
-                                configuration: config,
-                                apiContext: Dummy.context)
+                                apiContext: Dummy.context,
+                                configuration: config)
         sut.cardViewController.expiryDateItem.value = "03/24"
 
         // When
@@ -1037,8 +1093,8 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
-                                configuration: config,
-                                apiContext: Dummy.context)
+                                apiContext: Dummy.context,
+                                configuration: config)
         sut.cardViewController.securityCodeItem.value = "935"
 
         // When
@@ -1057,8 +1113,8 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
-                                configuration: config,
-                                apiContext: Dummy.context)
+                                apiContext: Dummy.context,
+                                configuration: config)
         sut.cardViewController.holderNameItem.value = "Katrina del Mar"
 
         // When
@@ -1077,8 +1133,8 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
-                                configuration: config,
-                                apiContext: Dummy.context)
+                                apiContext: Dummy.context,
+                                configuration: config)
         sut.cardViewController.storeDetailsItem.value = true
         
         // When
@@ -1098,8 +1154,8 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
-                                configuration: config,
-                                apiContext: Dummy.context)
+                                apiContext: Dummy.context,
+                                configuration: config)
         // When
         sut.clear()
 

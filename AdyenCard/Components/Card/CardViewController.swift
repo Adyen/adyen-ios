@@ -7,7 +7,7 @@
 import Adyen
 import UIKit
 #if canImport(AdyenEncryption)
-import AdyenEncryption
+    import AdyenEncryption
 #endif
 
 internal class CardViewController: FormViewController {
@@ -70,7 +70,10 @@ internal class CardViewController: FormViewController {
         if configuration.showsHolderNameField {
             append(holderNameItem)
         }
-        
+
+        append(additionalAuthCodeItem)
+        append(additionalAuthPasswordItem)
+
         switch configuration.billingAddressMode {
         case .full:
             append(billingAddressItem)
@@ -111,7 +114,17 @@ internal class CardViewController: FormViewController {
             return nil
         }
     }
-    
+
+    internal var kcpDetails: KCPDetails? {
+        guard
+            configuration.koreanAuthenticationMode != .hide,
+            let taxNumber = additionalAuthCodeItem.nonEmptyValue,
+            let password = additionalAuthPasswordItem.nonEmptyValue
+        else { return nil }
+
+        return KCPDetails(taxNumber: taxNumber, password: password)
+    }
+
     internal var storePayment: Bool {
         configuration.showsStorePaymentMethodField ? storeDetailsItem.value : false
     }
@@ -127,16 +140,20 @@ internal class CardViewController: FormViewController {
     }
     
     internal func update(binInfo: BinLookupResponse) {
-        self.securityCodeItem.update(cardBrands: binInfo.brands ?? [])
-        
-        switch (binInfo.brands, self.numberItem.value) {
-        case (_, ""):
-            self.numberItem.showLogos(for: self.topCardTypes)
+        securityCodeItem.update(cardBrands: binInfo.brands ?? [])
+
+        switch (binInfo.brands, numberItem.value.isEmpty) {
+        case (_, true):
+            numberItem.showLogos(for: topCardTypes)
         case let (.some(brands), _):
-            self.numberItem.showLogos(for: brands.map(\.type))
+            numberItem.showLogos(for: brands.map(\.type))
         default:
-            self.numberItem.showLogos(for: [])
+            numberItem.showLogos(for: [])
         }
+
+        let shouldShow = configuration.showAdditionalAuthenticationFields(for: binInfo.issuingCountryCode)
+        additionalAuthPasswordItem.isHidden.wrappedValue = !shouldShow
+        additionalAuthCodeItem.isHidden.wrappedValue = !shouldShow
     }
     
     internal func resetItems() {
@@ -178,7 +195,7 @@ internal class CardViewController: FormViewController {
                                       logoProvider: logoProvider,
                                       style: formStyle.textField,
                                       localizationParameters: localizationParameters)
-        observe(item.$binValue) { [weak self] in self?.didReceived(bin: $0) }
+        observe(item.$binValue) { [weak self] in self?.didReceive(bin: $0) }
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "numberItem")
         return item
     }()
@@ -216,7 +233,35 @@ internal class CardViewController: FormViewController {
         
         return holderNameItem
     }()
-    
+
+    internal lazy var additionalAuthCodeItem: FormTextInputItem = {
+        let additionalItem = FormTextInputItem(style: formStyle.textField)
+        additionalItem.title = localizedString(.cardTaxNumberLabelShort, localizationParameters)
+        additionalItem.placeholder = localizedString(.cardTaxNumberPlaceholder, localizationParameters)
+        additionalItem.validator = LengthValidator(minimumLength: 6, maximumLength: 10)
+        additionalItem.validationFailureMessage = localizedString(.cardTaxNumberInvalid, localizationParameters)
+        additionalItem.autocapitalizationType = .none
+        additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthCodeItem")
+        additionalItem.keyboardType = .numberPad
+        additionalItem.isHidden.wrappedValue = !(configuration.koreanAuthenticationMode == .show)
+
+        return additionalItem
+    }()
+
+    internal lazy var additionalAuthPasswordItem: FormTextInputItem = {
+        let additionalItem = FormTextInputItem(style: formStyle.textField)
+        additionalItem.title = localizedString(.cardEncryptedPasswordLabel, localizationParameters)
+        additionalItem.placeholder = localizedString(.cardEncryptedPasswordPlaceholder, localizationParameters)
+        additionalItem.validator = LengthValidator(minimumLength: 2, maximumLength: 2)
+        additionalItem.validationFailureMessage = localizedString(.cardEncryptedPasswordInvalid, localizationParameters)
+        additionalItem.autocapitalizationType = .none
+        additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthPasswordItem")
+        additionalItem.keyboardType = .numberPad
+        additionalItem.isHidden.wrappedValue = !(configuration.koreanAuthenticationMode == .show)
+
+        return additionalItem
+    }()
+
     internal lazy var storeDetailsItem: FormToggleItem = {
         let storeDetailsItem = FormToggleItem(style: formStyle.toggle)
         storeDetailsItem.title = localizedString(.cardStoreDetailsButton, localizationParameters)
@@ -237,9 +282,28 @@ internal class CardViewController: FormViewController {
         return item
     }()
     
-    private func didReceived(bin: String) {
+    private func didReceive(bin: String) {
         self.securityCodeItem.selectedCard = supportedCardTypes.adyen.type(forCardNumber: bin)
-        throttler.throttle { [weak self] in self?.cardDelegate?.didChangeBIN(bin) }
+        throttler.throttle { [weak self] in
+            self?.apply(bin: bin)
+        }
+    }
+
+    private func apply(bin: String) {
+        cardDelegate?.didChangeBIN(bin)
+        let isHidden: Bool
+        switch configuration.koreanAuthenticationMode {
+        case .show:
+            isHidden = true
+        case .hide:
+            isHidden = false
+        case .auto:
+            let binIsLong = bin.count >= BinInfoProvider.minBinLength
+            isHidden = additionalAuthPasswordItem.isHidden.wrappedValue ? true : !binIsLong
+        }
+
+        additionalAuthPasswordItem.isHidden.wrappedValue = isHidden
+        additionalAuthCodeItem.isHidden.wrappedValue = isHidden
     }
     
     private var defaultCountryCode: String {
