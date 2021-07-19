@@ -21,6 +21,8 @@ extension VoucherView {
         
         internal let secondaryButtonTitle: String
         
+        internal let codeConfirmationTitle: String
+        
         internal let mainButtonType: Button
         
         internal let style: Style
@@ -34,6 +36,8 @@ extension VoucherView {
             internal let mainButton: ButtonStyle
             
             internal let secondaryButton: ButtonStyle
+            
+            internal let codeConfirmationColor: UIColor
             
             internal let amountLabel: TextStyle
             

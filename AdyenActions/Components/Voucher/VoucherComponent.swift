@@ -58,6 +58,9 @@ public final class VoucherComponent: AnyVoucherActionHandler {
 
     /// :nodoc:
     internal let passProvider: AnyAppleWalletPassProvider
+    
+    /// :nodoc:
+    internal var view: VoucherView?
 
     /// Initializes the `AwaitComponent`.
     ///
@@ -105,6 +108,7 @@ public final class VoucherComponent: AnyVoucherActionHandler {
 
         let view = VoucherView(model: viewModel(with: action))
         view.delegate = self
+        self.view = view
         let viewController = ADYViewController(view: view)
         
         setUpPresenterViewController(parentViewController: viewController)
@@ -163,6 +167,7 @@ public final class VoucherComponent: AnyVoucherActionHandler {
             doneButton: style.doneButton,
             mainButton: style.mainButton,
             secondaryButton: style.secondaryButton,
+            codeConfirmationColor: style.codeConfirmationColor,
             amountLabel: style.amountLabel,
             currencyLabel: style.currencyLabel,
             logoCornerRounding: .fixed(5),
@@ -184,6 +189,7 @@ public final class VoucherComponent: AnyVoucherActionHandler {
             ),
             mainButton: getPrimaryButtonTitle(with: action),
             secondaryButtonTitle: "More options",
+            codeConfirmationTitle: "Code copied",
             mainButtonType: canAddPasses ? .addToAppleWallet : .save,
             style: viewStyle
         )

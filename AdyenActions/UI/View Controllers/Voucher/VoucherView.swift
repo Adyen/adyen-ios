@@ -210,4 +210,40 @@ internal final class VoucherView: UIView, Localizable {
         }
     }
     
+    public func showCopyCodeConfirmation() {
+        UIView.transition(
+            with: secondaryButton,
+            duration: 0.5,
+            options: .transitionCrossDissolve,
+            animations: {
+                self.secondaryButton.setTitle(self.model.codeConfirmationTitle, for: .normal)
+                self.secondaryButton.setTitleColor(
+                    self.model.style.codeConfirmationColor,
+                    for: .normal
+                )
+            }, completion: { _ in
+                DispatchQueue.main.asyncAfter(
+                    deadline: .now() + .seconds(4)
+                ) {
+                    self.returnSecondaryButtonToNormalState()
+                }
+            })
+    }
+    
+    private func returnSecondaryButtonToNormalState() {
+        UIView.transition(
+            with: secondaryButton,
+            duration: 0.5,
+            options: .transitionCrossDissolve,
+            animations: {
+                self.secondaryButton.setTitle(
+                    self.model.secondaryButtonTitle,
+                    for: .normal)
+                self.secondaryButton.setTitleColor(
+                    self.model.style.secondaryButton.title.color,
+                    for: .normal
+                )
+            })
+    }
+    
 }

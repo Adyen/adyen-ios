@@ -54,6 +54,9 @@ public struct VoucherComponentStyle: ViewStyle {
         cornerRadius: 8,
         background: .clear
     )
+    
+    /// The secondary button copy code confirmation color
+    public var codeConfirmationColor = UIColor.Adyen.green40
 
     /// :nodoc:
     public var backgroundColor = UIColor.Adyen.componentBackground

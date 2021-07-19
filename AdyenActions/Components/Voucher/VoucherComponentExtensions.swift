@@ -153,6 +153,7 @@ extension VoucherComponent: VoucherViewDelegate {
     
     private func copyCodeSelected(_ code: String) {
         UIPasteboard.general.string = code
+        view?.showCopyCodeConfirmation()
     }
     
     private func handlePassProviderResult(_ result: Result<Data, Swift.Error>,
