@@ -14,14 +14,12 @@ import UIKit
 public final class AffirmComponent: AbstractPersonalInformationComponent, Observer {
     
     private enum Content {
-        static let personalDetailsTitle = "Personal details"
         static let deliveryAddressToggleTitle = "Seperate delivery address"
-        static let deliveryAdddressTitle = "Delivery address"
-        static let submitButtonTitle = "Confirm purchase"
     }
     
     // MARK: - Items
     
+    private let personalDetailsHeaderItem: FormLabelItem
     private let deliveryAddressToggleItem: FormToggleItem
     private let deliveryAddressItem: FormAddressItem
     
@@ -36,11 +34,11 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     public init(paymentMethod: PaymentMethod,
                 apiContext: APIContext,
                 style: FormComponentStyle) {
-        let personalDetailsHeaderItem = FormLabelItem(text: Content.personalDetailsTitle, style: style.sectionHeader).addingDefaultMargins()
+        personalDetailsHeaderItem = FormLabelItem(text: "", style: style.sectionHeader)
         deliveryAddressToggleItem = FormToggleItem(style: style.toggle)
-        deliveryAddressItem = FormAddressItem(initialCountry: "US", title: Content.deliveryAdddressTitle, style: style.addressStyle)
+        deliveryAddressItem = FormAddressItem(initialCountry: Locale.current.regionCode ?? "US", style: style.addressStyle)
         
-        let fields: [PersonalInformation] = [.custom(CustomFormItemInjector(item: personalDetailsHeaderItem)),
+        let fields: [PersonalInformation] = [.custom(CustomFormItemInjector(item: personalDetailsHeaderItem.addingDefaultMargins())),
                                              .firstName,
                                              .lastName,
                                              .email,
@@ -55,18 +53,20 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
                    configuration: configuration,
                    apiContext: apiContext,
                    style: style)
-        setup()
+        setupItems()
     }
     
     // MARK: - Private
     
-    private func setup() {
+    private func setupItems() {
+        personalDetailsHeaderItem.text = localizedString(.boletoPersonalDetails, localizationParameters)
         emailItem?.autocapitalizationType = .none
+        deliveryAddressItem.title = localizedString(.deliveryAddressSectionTitle, localizationParameters)
         setupDeliveryAddressToggleItem()
     }
     
     private func setupDeliveryAddressToggleItem() {
-        deliveryAddressToggleItem.title = Content.deliveryAddressToggleTitle
+        deliveryAddressToggleItem.title = localizedString(.deliveryAddressSectionTitle, localizationParameters)
         deliveryAddressToggleItem.value = false
         bind(deliveryAddressToggleItem.publisher, to: deliveryAddressItem, at: \.isHidden.wrappedValue, with: { !$0 })
     }
@@ -74,7 +74,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     // MARK: - Public
     
     public override func submitButtonTitle() -> String {
-        return Content.submitButtonTitle
+        return localizedString(.confirmPurchase, localizationParameters)
     }
     
     public override func createPaymentDetails() -> PaymentMethodDetails {
