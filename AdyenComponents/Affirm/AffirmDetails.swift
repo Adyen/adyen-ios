@@ -1,13 +1,10 @@
 //
-//  AffirmDetails.swift
-//  AdyenComponents
+// Copyright (c) 2021 Adyen N.V.
 //
-//  Created by Naufal Aros on 7/13/21.
-//  Copyright © 2021 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Adyen
-import Foundation
 
 /// Contains the details supplied by the Affirm component.
 public struct AffirmDetails: PaymentMethodDetails, ShopperInformation {
@@ -54,6 +51,7 @@ public struct AffirmDetails: PaymentMethodDetails, ShopperInformation {
     
     // MARK: - Private
     
+    /// :nodoc:
     private enum CodingKeys: CodingKey {
         case type
     }
