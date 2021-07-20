@@ -39,8 +39,8 @@ internal final class WrapperViewController: UIViewController {
     }
 
     internal func updateFrame(keyboardRect: CGRect) {
-        guard let view = child.viewIfLoaded, let window = UIApplication.shared.keyWindow else { return }
-        let finalFrame = child.finalPresentationFrame(in: window, keyboardRect: keyboardRect)
+        guard let view = child.viewIfLoaded else { return }
+        let finalFrame = child.finalPresentationFrame(with: keyboardRect)
         topConstraint?.constant = finalFrame.origin.y
         leftConstraint?.constant = finalFrame.origin.x
         rightConstraint?.constant = -finalFrame.origin.x
@@ -72,28 +72,20 @@ internal final class WrapperViewController: UIViewController {
 
 extension ModalViewController {
 
-    private var leastPresentableHeightScale: CGFloat { 0.25 }
-    private var greatestPresentableHeightScale: CGFloat {
-        UIDevice.current.userInterfaceIdiom == .phone && UIDevice.current.orientation.isPortrait ? 1 : 0.9
-    }
-
     /// Enables any `UIViewController` to recalculate it's conten's size form modal presentation ,
     /// e.g `viewController.adyen.finalPresentationFrame(in:keyboardRect:)`.
     /// :nodoc:
-    func finalPresentationFrame(in containerView: UIView, keyboardRect: CGRect = .zero) -> CGRect {
-        var frame = containerView.bounds
+    internal func finalPresentationFrame(with keyboardRect: CGRect = .zero) -> CGRect {
+        let expectedWidth = Dimensions.greatestPresentableWidth
+        var frame = UIScreen.main.bounds
+        frame.origin.x = (frame.width - expectedWidth) / 2
+        frame.size.width = expectedWidth
 
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            let width = min(frame.width * 0.85, 375 * UIScreen.main.scale)
-            frame.origin.x = (frame.width - width) / 2
-            frame.size.width = width
-        }
-
-        let smallestHeightPossible = frame.height * leastPresentableHeightScale
-        let biggestHeightPossible = frame.height * greatestPresentableHeightScale
+        let smallestHeightPossible = frame.height * Dimensions.leastPresentableHeightScale
+        let biggestHeightPossible = frame.height * Dimensions.greatestPresentableHeightScale
         guard preferredContentSize != .zero else { return frame }
 
-        let bottomPadding = max(abs(keyboardRect.height), containerView.safeAreaInsets.bottom)
+        let bottomPadding = max(abs(keyboardRect.height), view.safeAreaInsets.bottom)
         let expectedHeight = preferredContentSize.height + bottomPadding
 
         func calculateFrame(for expectedHeight: CGFloat) {

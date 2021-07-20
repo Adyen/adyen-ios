@@ -66,14 +66,7 @@ extension AdyenScope where Base: UIView {
     }
 
     public var getMinimalSize: CGSize {
-        let width: CGFloat
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            width = min(UIScreen.main.bounds.width * 0.85, 375)
-        } else {
-            width = UIScreen.main.bounds.width
-        }
-
-        let targetSize = CGSize(width: width,
+        let targetSize = CGSize(width: Dimensions.greatestPresentableWidth,
                                 height: UIView.layoutFittingCompressedSize.height)
         return base.systemLayoutSizeFitting(targetSize,
                                             withHorizontalFittingPriority: .required,
