@@ -112,7 +112,7 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
         case fundingSource
         case taxNumber
         case password = "encryptedPassword"
-        case threeDS2SDKVersion
+        case threeDS2SDKVersion = "threeDS2SdkVersion"
     }
     
 }
