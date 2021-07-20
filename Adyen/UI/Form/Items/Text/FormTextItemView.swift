@@ -306,19 +306,23 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
             highlightSeparatorView(color: item.style.errorColor)
             titleLabel.textColor = item.style.errorColor
         } else {
-            if case .customView = accessory {
-                /* Do nothing */
-            } else {
-                accessory = .none
-            }
+            removeAccessoryIfNeeded()
             hideAlertLabel(true)
             isEditing ? highlightSeparatorView(color: tintColor) : unhighlightSeparatorView()
             titleLabel.textColor = defaultTitleColor
         }
     }
+
+    private func removeAccessoryIfNeeded() {
+        if case .customView = accessory {
+            /* Do nothing */
+        } else {
+            accessory = .none
+        }
+    }
     
     private func resetValidationStatus() {
-        accessory = .none
+        removeAccessoryIfNeeded()
         hideAlertLabel(true)
         unhighlightSeparatorView()
     }
