@@ -68,4 +68,10 @@ extension Array where Element == CardBrand {
             }
         }
     }
+    
+    /// If any of the brands have `socialSecurityNumberRequired` as true, then this will return true.
+    var socialSecurityNumberRequired: Bool {
+        guard !isEmpty else { return false }
+        return contains { $0.showsSocialSecurityNumber }
+    }
 }

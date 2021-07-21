@@ -175,7 +175,7 @@ internal class CardViewController: FormViewController {
 
         additionalAuthPasswordItem.isHidden.wrappedValue = isHidden
         additionalAuthCodeItem.isHidden.wrappedValue = isHidden
-        socialSecurityNumberItem.isHidden.wrappedValue = !(binInfo.showSocialSecurityNumber ?? false)
+        socialSecurityNumberItem.isHidden.wrappedValue = !(binInfo.brands?.socialSecurityNumberRequired ?? false)
     }
     
     internal func resetItems() {
