@@ -47,6 +47,7 @@
 		5AF730EA2667C3F10091C573 /* APIContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF730E92667C3F10091C573 /* APIContextTests.swift */; };
 		5AF8CD4D26691D3A00102339 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF8CD4C26691D3A00102339 /* Dummy.swift */; };
 		C930FB6E269D79E0006A26D2 /* AffirmDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = C930FB6D269D79E0006A26D2 /* AffirmDetails.swift */; };
+		C96688BF26A6FC1C00DC7297 /* AffirmComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */; };
 		C982FFD826946F0800AED849 /* AffirmComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFD726946F0800AED849 /* AffirmComponent.swift */; };
 		C982FFDC2694792F00AED849 /* AffirmPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */; };
 		E2028F5C2227F1930007FF8B /* Details.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2028F5B2227F1930007FF8B /* Details.swift */; };
@@ -897,6 +898,7 @@
 		5AF730E92667C3F10091C573 /* APIContextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIContextTests.swift; sourceTree = "<group>"; };
 		5AF8CD4C26691D3A00102339 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 		C930FB6D269D79E0006A26D2 /* AffirmDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmDetails.swift; sourceTree = "<group>"; };
+		C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponentTests.swift; sourceTree = "<group>"; };
 		C982FFD726946F0800AED849 /* AffirmComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponent.swift; sourceTree = "<group>"; };
 		C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmPaymentMethod.swift; sourceTree = "<group>"; };
 		E2028F5B2227F1930007FF8B /* Details.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Details.swift; sourceTree = "<group>"; };
@@ -1666,6 +1668,14 @@
 				5A988B642653D9370007F4C0 /* BoletoComponentTests.swift */,
 			);
 			path = Boleto;
+			sourceTree = "<group>";
+		};
+		C96688BD26A6F72900DC7297 /* Affirm */ = {
+			isa = PBXGroup;
+			children = (
+				C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */,
+			);
+			path = Affirm;
 			sourceTree = "<group>";
 		};
 		C982FFD626945FCE00AED849 /* Affirm */ = {
@@ -2473,32 +2483,33 @@
 		E97B9717229D533B00505476 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				5A988B632653D90E0007F4C0 /* Boleto */,
-				F9A6C451265640C400D8CD3E /* Instant Payment Component Tests */,
-				5A22C26C262D67C000F12D97 /* PIX */,
-				F9838CA926315B3600963483 /* Gift Card */,
-				F96AE5032603812B009F82BD /* Seven Eleven Component */,
-				F9C5F0DB25CAB8DB005A6E54 /* Voucher Component */,
-				F9B997A225C8551800891084 /* Doku Voucher */,
-				F97C83D825BF0BDA00D7F85C /* Doku */,
-				E72521EC25517E8F00533E35 /* BLIK Component */,
-				F9639B4E24E29D080073F38A /* Await Component */,
-				F9D644E524D40C5F0059CBE3 /* MB Way */,
-				F9AC61BC2437509A0062A00D /* Redirect */,
-				F926D55323FBF18000D058D3 /* Qiwi Wallet */,
-				F96A25412371AB5D007DBF0B /* Base */,
+				F919DFA124ED599D0027976E /* AdyenActionComponentTests.swift */,
+				C96688BD26A6F72900DC7297 /* Affirm */,
+				F9639B5724E3DB3F0073F38A /* APIClientMock.swift */,
 				F960FB06237181DC00AEF74B /* Apple Pay */,
+				F97BC2AC2668C63200F1D242 /* AppleWalletPassProviderTests.swift */,
+				F9639B4E24E29D080073F38A /* Await Component */,
+				F96A25412371AB5D007DBF0B /* Base */,
+				E72521EC25517E8F00533E35 /* BLIK Component */,
+				5A988B632653D90E0007F4C0 /* Boleto */,
+				F97C83D825BF0BDA00D7F85C /* Doku */,
+				F9B997A225C8551800891084 /* Doku Voucher */,
+				5AF8CD4C26691D3A00102339 /* Dummy.swift */,
+				F9838CA926315B3600963483 /* Gift Card */,
+				F9A6C451265640C400D8CD3E /* Instant Payment Component Tests */,
+				F9D644E524D40C5F0059CBE3 /* MB Way */,
+				F9EDB79023965FFC00CFB3C9 /* Payment Method List */,
+				F9EDB795239663F800CFB3C9 /* PaymentComponentMock.swift */,
+				5A22C26C262D67C000F12D97 /* PIX */,
+				F9639B5124E29E340073F38A /* PresentationDelegateMock.swift */,
+				F926D55323FBF18000D058D3 /* Qiwi Wallet */,
+				F9AC61BC2437509A0062A00D /* Redirect */,
 				E9021DF0225CC6BD009CF7F4 /* Redirect Tests */,
 				E9021DEF225CC650009CF7F4 /* SEPA Tests */,
-				F9EDB79023965FFC00CFB3C9 /* Payment Method List */,
+				F96AE5032603812B009F82BD /* Seven Eleven Component */,
 				F9BA21C0246D398200D36A63 /* Utilities */,
-				F9EDB795239663F800CFB3C9 /* PaymentComponentMock.swift */,
-				F9639B5124E29E340073F38A /* PresentationDelegateMock.swift */,
-				F9639B5724E3DB3F0073F38A /* APIClientMock.swift */,
-				F919DFA124ED599D0027976E /* AdyenActionComponentTests.swift */,
+				F9C5F0DB25CAB8DB005A6E54 /* Voucher Component */,
 				F96AE51A26038602009F82BD /* XCTestCaseExtension.swift */,
-				F97BC2AC2668C63200F1D242 /* AppleWalletPassProviderTests.swift */,
-				5AF8CD4C26691D3A00102339 /* Dummy.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -4515,6 +4526,7 @@
 			files = (
 				E97B971A229D54D600505476 /* ActionTests.swift in Sources */,
 				F9AC61C0243750D80062A00D /* AppLauncherMock.swift in Sources */,
+				C96688BF26A6FC1C00DC7297 /* AffirmComponentTests.swift in Sources */,
 				F957AA722552DBC80099AD73 /* AnyRedirectComponentMock.swift in Sources */,
 				F9EDB79A239664B500CFB3C9 /* StoredPaymentMethodComponentTests.swift in Sources */,
 				F9EDB7982396643A00CFB3C9 /* CardPaymentMethodMock.swift in Sources */,

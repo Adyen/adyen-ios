@@ -37,7 +37,7 @@ internal final class FormRegionPickerItemView: BaseFormPickerItemView<Region> {
     override internal func initialize() {
         let stackView = UIStackView(arrangedSubviews: [titleLabel, inputControl])
         stackView.axis = .vertical
-        stackView.spacing = 8
+        stackView.spacing = 5.5
         addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.preservesSuperviewLayoutMargins = true

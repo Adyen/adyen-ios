@@ -12,14 +12,19 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     
     // MARK: - Items
     
+    /// :nodoc:
     private let personalDetailsHeaderItem: FormLabelItem
-    private let deliveryAddressToggleItem: FormToggleItem
-    private let deliveryAddressItem: FormAddressItem
+    
+    /// :nodoc:
+    public let deliveryAddressToggleItem: FormToggleItem
+    
+    /// :nodoc:
+    public let deliveryAddressItem: FormAddressItem
     
     // MARK: - Properties
     
     private var isDeliveryAddressEnabled: Bool {
-        return deliveryAddressToggleItem.value
+        deliveryAddressToggleItem.value
     }
     
     // MARK: - Initializers
@@ -74,12 +79,12 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     // MARK: - Public
     
     /// :nodoc:
-    public override func submitButtonTitle() -> String {
-        return localizedString(.confirmPurchase, localizationParameters)
+    override public func submitButtonTitle() -> String {
+        localizedString(.confirmPurchase, localizationParameters)
     }
     
     /// :nodoc:
-    public override func createPaymentDetails() -> PaymentMethodDetails {
+    override public func createPaymentDetails() -> PaymentMethodDetails {
         let firstName = firstNameItem?.value
         let lastName = lastNameItem?.value
         let emailAddress = emailItem?.value
@@ -105,7 +110,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     }
     
     /// :nodoc:
-    public override func getPhoneExtensions() -> [PhoneExtension] {
+    override public func getPhoneExtensions() -> [PhoneExtension] {
         let query = PhoneExtensionsQuery(paymentMethod: .generic)
         return PhoneExtensionsRepository.get(with: query)
     }
