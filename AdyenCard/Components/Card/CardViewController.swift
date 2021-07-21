@@ -75,6 +75,10 @@ internal class CardViewController: FormViewController {
             append(additionalAuthCodeItem)
             append(additionalAuthPasswordItem)
         }
+        
+        if configuration.socialSecurityNumberMode != .hide {
+            append(socialSecurityNumberItem)
+        }
 
         switch configuration.billingAddressMode {
         case .full:
@@ -126,6 +130,12 @@ internal class CardViewController: FormViewController {
 
         return KCPDetails(taxNumber: taxNumber, password: password)
     }
+    
+    internal var socialSecurityNumber: String? {
+        guard configuration.socialSecurityNumberMode != .hide,
+              let socialSecurityNumber = socialSecurityNumberItem.nonEmptyValue else { return nil }
+        return socialSecurityNumber
+    }
 
     internal var storePayment: Bool {
         configuration.showsStorePaymentMethodField ? storeDetailsItem.value : false
@@ -165,6 +175,7 @@ internal class CardViewController: FormViewController {
 
         additionalAuthPasswordItem.isHidden.wrappedValue = isHidden
         additionalAuthCodeItem.isHidden.wrappedValue = isHidden
+        socialSecurityNumberItem.isHidden.wrappedValue = !(binInfo.showSocialSecurityNumber ?? false)
     }
     
     internal func resetItems() {
@@ -271,6 +282,22 @@ internal class CardViewController: FormViewController {
         additionalItem.isHidden.wrappedValue = !(configuration.koreanAuthenticationMode == .show)
 
         return additionalItem
+    }()
+    
+    internal lazy var socialSecurityNumberItem: FormTextInputItem = {
+        let securityNumberItem = FormTextInputItem(style: formStyle.textField)
+        securityNumberItem.title = localizedString(.boletoSocialSecurityNumber, localizationParameters)
+        securityNumberItem.placeholder = "123.456.890-12"
+        securityNumberItem.formatter = BrazilSocialSecurityNumberFormatter()
+        securityNumberItem.validator = NumericStringValidator(minimumLength: 11, maximumLength: 11)
+            || NumericStringValidator(minimumLength: 14, maximumLength: 14)
+        securityNumberItem.validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
+        securityNumberItem.autocapitalizationType = .none
+        securityNumberItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "socialSecurityNumberItem")
+        securityNumberItem.keyboardType = .numberPad
+        securityNumberItem.isHidden.wrappedValue = !(configuration.socialSecurityNumberMode == .show)
+
+        return securityNumberItem
     }()
 
     internal lazy var storeDetailsItem: FormToggleItem = {

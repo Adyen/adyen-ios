@@ -1024,6 +1024,64 @@ class CardComponentTests: XCTestCase {
         waitForExpectations(timeout: 20, handler: nil)
     }
     
+    func testBrazilSSNs() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "elo"])
+        let config = CardComponent.Configuration(socialSecurityNumberMode: .auto)
+        let cardTypeProviderMock = BinInfoProviderMock()
+        cardTypeProviderMock.onFetch = {
+            $0(BinLookupResponse(brands: [CardBrand(type: .elo)],
+                                 issuingCountryCode: "BR",
+                                 showSocialSecurityNumber: true))
+        }
+
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: config,
+                                style: .init(),
+                                cardPublicKeyProvider: CardPublicKeyProviderMock(),
+                                binProvider: cardTypeProviderMock)
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        let delegate = PaymentComponentDelegateMock()
+        sut.delegate = delegate
+
+        let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
+        delegate.onDidFail = { error, component in XCTFail("should not fail") }
+        delegate.onDidSubmit = { data, component in
+            XCTAssertTrue(component === sut)
+            let paymentDetails = data.paymentMethod as? CardDetails
+            XCTAssertNotNil(paymentDetails)
+            XCTAssertEqual(paymentDetails?.socialSecurityNumber, "12312312312")
+
+            sut.stopLoadingIfNeeded()
+            delegateExpectation.fulfill()
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+
+            let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
+            let expiryDateItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
+            let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
+            let brazilSSNItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.socialSecurityNumberItem")
+            XCTAssertTrue(brazilSSNItemView!.isHidden)
+
+            self.populate(textItemView: cardNumberItemView!, with: "9490 2200 0661 1406")
+            self.populate(textItemView: expiryDateItemView!, with: "03/30")
+            self.populate(textItemView: securityCodeItemView!, with: "737")
+
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+                XCTAssertEqual(brazilSSNItemView!.titleLabel.text, "CPF/CNPJ")
+                XCTAssertFalse(brazilSSNItemView!.isHidden)
+                self.populate(textItemView: brazilSSNItemView!, with: "123.123.123-12")
+
+                let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
+                payButtonItemViewButton?.sendActions(for: .touchUpInside)
+            }
+        }
+
+        waitForExpectations(timeout: 20, handler: nil)
+    }
+    
     func testClear_shouldResetPostalCodeItemToEmptyValue() throws {
         // Given
         let method = CardPaymentMethod(type: "bcmc",

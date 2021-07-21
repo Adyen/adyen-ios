@@ -49,6 +49,10 @@ extension CardComponent {
         /// Indicates whether to show the security fields for South Korea issued cards. Defaults to `auto`.
         /// In AUTO mode the field will appear only for card issued in "KR" (South Korea).
         public var koreanAuthenticationMode: FieldVisibility
+        
+        /// Indicates the visibility mode for the social security number field (CPF/CNPJ) for Boleto cards. Defaults to `auto`.
+        /// In `auto` mode the field will appear based on card bin lookup.
+        public var socialSecurityNumberMode: FieldVisibility
 
         /// Indicates the display mode of the billing address form. Defaults to none.
         public var billingAddressMode: AddressFormType
@@ -82,6 +86,7 @@ extension CardComponent {
                     showsStorePaymentMethodField: Bool = true,
                     showsSecurityCodeField: Bool = true,
                     koreanAuthenticationMode: FieldVisibility = .auto,
+                    socialSecurityNumberMode: FieldVisibility = .auto,
                     billingAddressMode: AddressFormType = .none,
                     storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
                     allowedCardTypes: [CardType]? = nil) {
@@ -92,6 +97,7 @@ extension CardComponent {
             self.allowedCardTypes = allowedCardTypes
             self.billingAddressMode = billingAddressMode
             self.koreanAuthenticationMode = koreanAuthenticationMode
+            self.socialSecurityNumberMode = socialSecurityNumberMode
         }
 
         internal func bcmcConfiguration() -> Configuration {
