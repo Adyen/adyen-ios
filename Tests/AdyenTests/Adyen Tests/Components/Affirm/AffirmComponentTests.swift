@@ -83,4 +83,20 @@ class AffirmComponentTests: XCTestCase {
         XCTAssertTrue(billingAddress != expectedDeliveryAddress)
         XCTAssertEqual(deliveryAddress, expectedDeliveryAddress)
     }
+    
+    func testDeliveryAddressToggleItem_whenEnabled_shouldUnhideDeliveryAddressItem() throws {
+        // When
+        sut.deliveryAddressToggleItem.value = true
+        
+        // Then
+        XCTAssertFalse(sut.deliveryAddressItem.isHidden.wrappedValue)
+    }
+    
+    func testDeliveryAddressToggleItem_whenDisabled_shouldHideDeliveryAddressItem() throws {
+        // When
+        sut.deliveryAddressToggleItem.value = false
+        
+        // Then
+        XCTAssertTrue(sut.deliveryAddressItem.isHidden.wrappedValue)
+    }
 }
