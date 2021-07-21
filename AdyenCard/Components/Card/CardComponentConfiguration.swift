@@ -50,7 +50,7 @@ extension CardComponent {
         /// In AUTO mode the field will appear only for card issued in "KR" (South Korea).
         public var koreanAuthenticationMode: FieldVisibility
         
-        /// Indicates the visibility mode for the social security number field (CPF/CNPJ) for Boleto cards. Defaults to `auto`.
+        /// Indicates the visibility mode for the social security number field (CPF/CNPJ) for Brazilian cards. Defaults to `auto`.
         /// In `auto` mode the field will appear based on card bin lookup.
         public var socialSecurityNumberMode: FieldVisibility
 

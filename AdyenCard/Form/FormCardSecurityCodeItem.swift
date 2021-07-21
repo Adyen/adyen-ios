@@ -32,15 +32,14 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
         keyboardType = .numberPad
     }
 
-    internal func update(with info: BinLookupResponse) {
-        let isCVCOptional = info.cvcPolicy == .optional
+    internal func update(cardBrands: [CardBrand]) {
+        let isCVCOptional = cardBrands.isCVCOptional
 
         let titleFailureMessageKey: LocalizationKey = isCVCOptional ? .cardCvcItemTitleOptional : .cardCvcItemTitle
         title = localizedString(titleFailureMessageKey, localizationParameters)
         validator = isCVCOptional ? nil : securityCodeValidator
 
         self.isCVCOptional = isCVCOptional
-        self.selectedCard = info.brands?.first?.type
     }
     
     override internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {

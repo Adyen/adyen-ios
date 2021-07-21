@@ -30,6 +30,6 @@ internal final class FallbackBinInfoProvider: AnyBinInfoProvider {
 
             return CardBrand(type: brand, cvcPolicy: cvcPolicy)
         }
-        completion(BinLookupResponse(brands: result, cvcPolicy: result.isCVCOptional ? .optional : .required))
+        completion(BinLookupResponse(brands: result))
     }
 }

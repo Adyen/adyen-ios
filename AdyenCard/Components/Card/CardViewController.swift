@@ -151,8 +151,8 @@ internal class CardViewController: FormViewController {
         view.isUserInteractionEnabled = false
     }
     
-    internal func update(bin: String, binInfo: BinLookupResponse) {
-        securityCodeItem.update(with: binInfo)
+    internal func update(binInfo: BinLookupResponse) {
+        securityCodeItem.update(cardBrands: binInfo.brands ?? [])
 
         switch (binInfo.brands, numberItem.value.isEmpty) {
         case (_, true):
@@ -287,7 +287,7 @@ internal class CardViewController: FormViewController {
     internal lazy var socialSecurityNumberItem: FormTextInputItem = {
         let securityNumberItem = FormTextInputItem(style: formStyle.textField)
         securityNumberItem.title = localizedString(.boletoSocialSecurityNumber, localizationParameters)
-        securityNumberItem.placeholder = "123.456.890-12"
+        securityNumberItem.placeholder = localizedString(.cardBrazilSSNPlaceholder, localizationParameters)
         securityNumberItem.formatter = BrazilSocialSecurityNumberFormatter()
         securityNumberItem.validator = NumericStringValidator(minimumLength: 11, maximumLength: 11)
             || NumericStringValidator(minimumLength: 14, maximumLength: 14)
@@ -321,6 +321,7 @@ internal class CardViewController: FormViewController {
     }()
     
     private func didReceive(bin: String) {
+        securityCodeItem.selectedCard = supportedCardTypes.adyen.type(forCardNumber: bin)
         throttler.throttle { [weak cardDelegate] in
             cardDelegate?.didChangeBIN(bin)
         }

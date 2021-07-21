@@ -115,3 +115,4 @@
 "adyen.card.encryptedPassword.placeholder" = "12";
 "adyen.card.encryptedPassword.invalid" = "Invalid password";
 "adyen.card.taxNumber.label.short" = "Birthday or Corporate registration number";
+"adyen.card.brazilSSN.placeholder" = "123.123.123-12";

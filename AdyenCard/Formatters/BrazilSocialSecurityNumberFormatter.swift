@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import Foundation
 
 /// Formats a string based on Brazil's social security numbers (CPF and CNPJ) formatting rules.
