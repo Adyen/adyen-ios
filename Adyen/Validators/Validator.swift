@@ -41,7 +41,7 @@ internal protocol CombinedValidator: Validator {
 
 extension CombinedValidator {
     
-    func maximumLength(for value: String) -> Int {
+    internal func maximumLength(for value: String) -> Int {
         max(lhs.maximumLength(for: value), rhs.maximumLength(for: value))
     }
 }
