@@ -1029,9 +1029,8 @@ class CardComponentTests: XCTestCase {
         let config = CardComponent.Configuration(socialSecurityNumberMode: .auto)
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
-            $0(BinLookupResponse(brands: [CardBrand(type: .elo)],
-                                 issuingCountryCode: "BR",
-                                 showSocialSecurityNumber: true))
+            $0(BinLookupResponse(brands: [CardBrand(type: .elo, showSocialSecurityNumber: true)],
+                                 issuingCountryCode: "BR"))
         }
 
         let sut = CardComponent(paymentMethod: method,
@@ -1057,27 +1056,24 @@ class CardComponentTests: XCTestCase {
             delegateExpectation.fulfill()
         }
 
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+        wait(for: .seconds(1))
+        let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
+        let expiryDateItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
+        let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
+        let brazilSSNItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.socialSecurityNumberItem")
+        XCTAssertTrue(brazilSSNItemView!.isHidden)
 
-            let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
-            let expiryDateItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
-            let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
-            let brazilSSNItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.socialSecurityNumberItem")
-            XCTAssertTrue(brazilSSNItemView!.isHidden)
+        populate(textItemView: cardNumberItemView!, with: "9490 2200 0661 1406")
+        populate(textItemView: expiryDateItemView!, with: "03/30")
+        populate(textItemView: securityCodeItemView!, with: "737")
 
-            self.populate(textItemView: cardNumberItemView!, with: "9490 2200 0661 1406")
-            self.populate(textItemView: expiryDateItemView!, with: "03/30")
-            self.populate(textItemView: securityCodeItemView!, with: "737")
+        wait(for: .seconds(1))
+        XCTAssertEqual(brazilSSNItemView!.titleLabel.text, "CPF/CNPJ")
+        XCTAssertFalse(brazilSSNItemView!.isHidden)
+        populate(textItemView: brazilSSNItemView!, with: "123.123.123-12")
 
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-                XCTAssertEqual(brazilSSNItemView!.titleLabel.text, "CPF/CNPJ")
-                XCTAssertFalse(brazilSSNItemView!.isHidden)
-                self.populate(textItemView: brazilSSNItemView!, with: "123.123.123-12")
-
-                let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
-                payButtonItemViewButton?.sendActions(for: .touchUpInside)
-            }
-        }
+        let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
+        payButtonItemViewButton?.sendActions(for: .touchUpInside)
 
         waitForExpectations(timeout: 20, handler: nil)
     }

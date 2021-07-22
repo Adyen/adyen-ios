@@ -132,9 +132,8 @@ internal class CardViewController: FormViewController {
     }
     
     internal var socialSecurityNumber: String? {
-        guard configuration.socialSecurityNumberMode != .hide,
-              let socialSecurityNumber = socialSecurityNumberItem.nonEmptyValue else { return nil }
-        return socialSecurityNumber
+        guard configuration.socialSecurityNumberMode != .hide else { return nil }
+        return socialSecurityNumberItem.nonEmptyValue
     }
 
     internal var storePayment: Bool {
@@ -152,15 +151,13 @@ internal class CardViewController: FormViewController {
     }
     
     internal func update(binInfo: BinLookupResponse) {
-        securityCodeItem.update(cardBrands: binInfo.brands ?? [])
+        let brands = binInfo.brands ?? []
+        securityCodeItem.update(cardBrands: brands)
 
-        switch (binInfo.brands, numberItem.value.isEmpty) {
-        case (_, true):
+        if numberItem.value.isEmpty {
             numberItem.showLogos(for: topCardTypes)
-        case let (.some(brands), _):
+        } else {
             numberItem.showLogos(for: brands.map(\.type))
-        default:
-            numberItem.showLogos(for: [])
         }
 
         let isHidden: Bool
@@ -175,7 +172,7 @@ internal class CardViewController: FormViewController {
 
         additionalAuthPasswordItem.isHidden.wrappedValue = isHidden
         additionalAuthCodeItem.isHidden.wrappedValue = isHidden
-        socialSecurityNumberItem.isHidden.wrappedValue = !(binInfo.brands?.socialSecurityNumberRequired ?? false)
+        socialSecurityNumberItem.isHidden.wrappedValue = !brands.socialSecurityNumberRequired
     }
     
     internal func resetItems() {
