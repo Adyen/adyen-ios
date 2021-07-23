@@ -33,7 +33,8 @@ extension CardComponent {
                                       encryptedCard: encryptedCard,
                                       holderName: card.holder,
                                       billingAddress: cardViewController.address,
-                                      kcpDetails: kcpDetails)
+                                      kcpDetails: kcpDetails,
+                                      socialSecurityNumber: cardViewController.socialSecurityNumber)
             
             let data = PaymentComponentData(paymentMethodDetails: details,
                                             amount: amountToPay,

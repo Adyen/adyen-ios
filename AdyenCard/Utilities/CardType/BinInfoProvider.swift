@@ -71,11 +71,12 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
         if let service = binLookupService {
             useService(service)
         } else {
-            cardPublicKeyProvider.fetch { [weak self, apiClient] result in
+            cardPublicKeyProvider.fetch { [weak self] result in
+                guard let self = self else { return }
                 switch result {
                 case let .success(publicKey):
-                    let service = BinLookupService(publicKey: publicKey, apiClient: apiClient)
-                    self?.binLookupService = service
+                    let service = BinLookupService(publicKey: publicKey, apiClient: self.apiClient)
+                    self.binLookupService = service
                     useService(service)
                 case .failure:
                     fallback()
