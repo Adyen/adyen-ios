@@ -192,6 +192,14 @@ class AffirmComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
+    func testGetPhoneExtensions_shouldReturnNonEmptyPhoneExtensionList() throws {
+        // When
+        let phoneExtensions = sut.getPhoneExtensions()
+        
+        // Then
+        XCTAssertFalse(phoneExtensions.isEmpty)
+    }
+    
     // MARK: - Private
     
     private func fill(addressView: FormVerticalStackItemView<FormAddressItem>, with address: PostalAddress) {

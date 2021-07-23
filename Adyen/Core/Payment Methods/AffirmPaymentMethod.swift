@@ -1,9 +1,7 @@
 //
-//  AffirmPaymentMethod.swift
-//  Adyen
+// Copyright (c) 2021 Adyen N.V.
 //
-//  Created by Naufal Aros on 7/6/21.
-//  Copyright © 2021 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation

@@ -10,16 +10,22 @@ import UIKit
 /// A component that provides a form for Affirm payment.
 public final class AffirmComponent: AbstractPersonalInformationComponent, Observer {
     
+    private enum ViewIdentifier {
+        static let billingAddress = "billingAddressItem"
+        static let deliveryAddress = "deliveryAddressItem"
+        static let deliveryAddressToggle = "deliveryAddressToggleItem"
+    }
+    
     // MARK: - Items
     
     /// :nodoc:
     private let personalDetailsHeaderItem: FormLabelItem
     
     /// :nodoc:
-    public let deliveryAddressToggleItem: FormToggleItem
+    internal let deliveryAddressToggleItem: FormToggleItem
     
     /// :nodoc:
-    public let deliveryAddressItem: FormAddressItem
+    internal let deliveryAddressItem: FormAddressItem
     
     // MARK: - Properties
     
@@ -76,14 +82,14 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     /// :nodoc:
     private func setupBillingAddressItem() {
         addressItem?.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                              postfix: "billingAddressItem")
+                                                              postfix: ViewIdentifier.billingAddress)
     }
     
     /// :nodoc:
     private func setupDeliveryAddressItem() {
         deliveryAddressItem.title = localizedString(.deliveryAddressSectionTitle, localizationParameters)
         deliveryAddressItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                                     postfix: "deliveryAddressItem")
+                                                                     postfix: ViewIdentifier.deliveryAddress)
     }
     
     /// :nodoc:
@@ -91,7 +97,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
         deliveryAddressToggleItem.title = localizedString(.deliveryAddressToggleTitle, localizationParameters)
         deliveryAddressToggleItem.value = false
         deliveryAddressToggleItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                                           postfix: "deliveryAddressToggleItem")
+                                                                           postfix: ViewIdentifier.deliveryAddressToggle)
         bind(deliveryAddressToggleItem.publisher, to: deliveryAddressItem, at: \.isHidden.wrappedValue, with: { !$0 })
     }
     
