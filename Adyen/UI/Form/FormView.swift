@@ -27,7 +27,7 @@ internal final class FormView: UIScrollView {
     }
     
     override internal var intrinsicContentSize: CGSize {
-        stackView.adyen.getMinimalSize
+        stackView.adyen.minimalSize
     }
     
     // MARK: - Item Views

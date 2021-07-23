@@ -65,7 +65,8 @@ extension AdyenScope where Base: UIView {
         base.adyen.updatePreferredContentSize()
     }
 
-    public var getMinimalSize: CGSize {
+    /// :nodoc:
+    public var minimalSize: CGSize {
         let targetSize = CGSize(width: Dimensions.greatestPresentableWidth,
                                 height: UIView.layoutFittingCompressedSize.height)
         return base.systemLayoutSizeFitting(targetSize,

@@ -46,7 +46,7 @@ internal final class VoucherViewController: UIViewController {
     /// :nodoc:
     override internal var preferredContentSize: CGSize {
         get {
-            voucherView.adyen.getMinimalSize
+            voucherView.adyen.minimalSize
         }
 
         // swiftlint:disable:next unused_setter_value

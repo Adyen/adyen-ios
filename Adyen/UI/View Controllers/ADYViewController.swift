@@ -34,7 +34,7 @@ public final class ADYViewController: UIViewController {
     
     override public var preferredContentSize: CGSize {
         get {
-            view.adyen.getMinimalSize
+            view.adyen.minimalSize
         }
 
         // swiftlint:disable:next unused_setter_value

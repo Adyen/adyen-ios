@@ -71,7 +71,7 @@ internal final class AwaitViewController: UIViewController {
     /// :nodoc:
     override internal var preferredContentSize: CGSize {
         get {
-            containerView.adyen.getMinimalSize
+            containerView.adyen.minimalSize
         }
         
         // swiftlint:disable:next unused_setter_value
