@@ -34,13 +34,7 @@ public final class ADYViewController: UIViewController {
     
     override public var preferredContentSize: CGSize {
         get {
-            let targetSize = CGSize(width: UIScreen.main.bounds.width,
-                                    height: UIView.layoutFittingCompressedSize.height)
-            return view.systemLayoutSizeFitting(
-                targetSize,
-                withHorizontalFittingPriority: .required,
-                verticalFittingPriority: .fittingSizeLevel
-            )
+            view.adyen.minimalSize
         }
 
         // swiftlint:disable:next unused_setter_value
