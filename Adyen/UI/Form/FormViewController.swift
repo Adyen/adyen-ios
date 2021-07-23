@@ -144,7 +144,7 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     }
     
     private func getAllValidatableItems() -> [ValidatableFormItem] {
-        let unhiddenItems = itemManager.topLevelItem.filter { item in
+        let visibleItems = itemManager.topLevelItem.filter { item in
             if let hidableItem = (item as? Hidable), hidableItem.isHidden.wrappedValue {
                 return false
             }
@@ -152,7 +152,7 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
             return true
         }
         
-        let validatableItems = unhiddenItems.flatMap(\.flatSubitems).compactMap { $0 as? ValidatableFormItem }
+        let validatableItems = visibleItems.flatMap(\.flatSubitems).compactMap { $0 as? ValidatableFormItem }
         return validatableItems
     }
     
