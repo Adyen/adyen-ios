@@ -10,10 +10,10 @@ import Foundation
 public struct AffirmPaymentMethod: PaymentMethod {
     
     /// :nodoc:
-    public var type: String
+    public let type: String
     
     /// :nodoc:
-    public var name: String
+    public let name: String
     
     /// Initializes the Affirm payment method.
     ///
