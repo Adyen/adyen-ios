@@ -66,11 +66,7 @@ internal final class QRCodeViewController: UIViewController {
     /// :nodoc:
     override internal var preferredContentSize: CGSize {
         get {
-            let targetSize = CGSize(width: UIScreen.main.bounds.width,
-                                    height: UIView.layoutFittingCompressedSize.height)
-            return containerView.systemLayoutSizeFitting(targetSize,
-                                                         withHorizontalFittingPriority: .required,
-                                                         verticalFittingPriority: .fittingSizeLevel)
+            containerView.adyen.minimalSize
         }
         
         // swiftlint:disable:next unused_setter_value
