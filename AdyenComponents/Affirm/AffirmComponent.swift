@@ -27,12 +27,6 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     /// :nodoc:
     internal let deliveryAddressItem: FormAddressItem
     
-    // MARK: - Properties
-    
-    private var isDeliveryAddressEnabled: Bool {
-        deliveryAddressToggleItem.value
-    }
-    
     // MARK: - Initializers
     
     /// Initializes the Affirm component.
@@ -119,7 +113,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
         }
         
         let shopperName = ShopperName(firstName: firstName, lastName: lastName)
-        let deliveryAddress = isDeliveryAddressEnabled ? deliveryAddressItem.value : billingAddress
+        let deliveryAddress = deliveryAddressToggleItem.value ? deliveryAddressItem.value : billingAddress
         let affirmDetails = AffirmDetails(paymentMethod: paymentMethod,
                                           shopperName: shopperName,
                                           telephoneNumber: telephoneNumber,
