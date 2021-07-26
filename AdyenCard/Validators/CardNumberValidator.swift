@@ -11,13 +11,18 @@ import Foundation
 /// The input is expected to be sanitized.
 public final class CardNumberValidator: Validator {
     
+    /// Indicates whether to validate for luhn check
+    private let isLuhnCheckEnabled: Bool
+    
     /// :nodoc:
-    public init() {}
+    public init(isLuhnCheckEnabled: Bool) {
+        self.isLuhnCheckEnabled = isLuhnCheckEnabled
+    }
     
     /// :nodoc:
     public func isValid(_ value: String) -> Bool {
         let minimumValidCardLength = 12
-        let isValid = value.count >= minimumValidCardLength && luhnCheck(value)
+        let isValid = value.count >= minimumValidCardLength && (!isLuhnCheckEnabled || luhnCheck(value))
         
         return isValid
     }

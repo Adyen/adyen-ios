@@ -48,6 +48,7 @@ public struct CardBrand: Decodable {
     ///   - cvcPolicy: Indicates the cvc policy of the brand.
     ///   - isLuhnCheckEnabled: Indicates whether Luhn check applies to card numbers of this brand.
     ///   - showsExpiryDate: Indicates whether to show the expiry date field.
+    ///   - showsSocialSecurityNumber: Indicates whether to show social security number field or not.
     internal init(type: CardType,
                   isSupported: Bool = true,
                   cvcPolicy: CVCPolicy = .required,

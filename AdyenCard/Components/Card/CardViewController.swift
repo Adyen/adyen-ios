@@ -170,6 +170,7 @@ internal class CardViewController: FormViewController {
             isHidden = !configuration.showAdditionalAuthenticationFields(for: binInfo.issuingCountryCode)
         }
 
+        numberItem.validator = CardNumberValidator(isLuhnCheckEnabled: brands.luhnCheckRequired)
         additionalAuthPasswordItem.isHidden.wrappedValue = isHidden
         additionalAuthCodeItem.isHidden.wrappedValue = isHidden
         socialSecurityNumberItem.isHidden.wrappedValue = !brands.socialSecurityNumberRequired
