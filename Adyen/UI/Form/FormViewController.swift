@@ -144,12 +144,8 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     }
     
     private func getAllValidatableItems() -> [ValidatableFormItem] {
-        let visibleItems = itemManager.topLevelItem.filter { item in
-            if let hidableItem = (item as? Hidable), hidableItem.isHidden.wrappedValue {
-                return false
-            }
-            
-            return true
+        let visibleItems = itemManager.topLevelItem.filter {
+            !(($0 as? Hidable)?.isHidden.wrappedValue == true)
         }
         
         let validatableItems = visibleItems.flatMap(\.flatSubitems).compactMap { $0 as? ValidatableFormItem }
@@ -186,7 +182,7 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     }
     
     /// :nodoc:
-    open override func viewWillDisappear(_ animated: Bool) {
+    override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         resignFirstResponder()
     }
