@@ -44,13 +44,7 @@ class AffirmComponentTests: XCTestCase {
     
     func testCreatePaymentDetails_withSeparateDeliveryAddressDisabled_shouldCreateDetailsWithSameBillingAndDeliveryAddress() throws {
         // Given
-        let expectedDeliveryAddress = PostalAddress(city: "New York",
-                                                    country: "US",
-                                                    houseNumberOrName: "14",
-                                                    postalCode: "10019",
-                                                    stateOrProvince: "New York",
-                                                    street: "8th Ave",
-                                                    apartment: "8")
+        let expectedDeliveryAddress = PostalAddressMocks.newYorkPostalAddress
         sut.firstNameItem?.value = "Katrina"
         sut.lastNameItem?.value = "Del Mar"
         sut.emailItem?.value = "katrina@mail.com"
@@ -69,20 +63,9 @@ class AffirmComponentTests: XCTestCase {
     
     func testCreatePaymentDetails_withSeparateDeliveryAddressEnabled_shouldCreateDetailsWithDifferentBillingAndDeliveryAddress() throws {
         // Given
-        let billingAddress = PostalAddress(city: "New York",
-                                           country: "US",
-                                           houseNumberOrName: "14",
-                                           postalCode: "10019",
-                                           stateOrProvince: "New York",
-                                           street: "8th Ave",
-                                           apartment: "8")
-        let expectedDeliveryAddress = PostalAddress(city: "Los Angeles",
-                                                    country: "US",
-                                                    houseNumberOrName: "3310",
-                                                    postalCode: "90040",
-                                                    stateOrProvince: "California",
-                                                    street: "Garfield Ave",
-                                                    apartment: "24")
+        let billingAddress = PostalAddressMocks.newYorkPostalAddress
+        let expectedDeliveryAddress = PostalAddressMocks.losAngelesPostalAddress
+        
         sut.firstNameItem?.value = "Katrina"
         sut.lastNameItem?.value = "Del Mar"
         sut.emailItem?.value = "katrina@mail.com"
@@ -123,20 +106,8 @@ class AffirmComponentTests: XCTestCase {
                                   apiContext: apiContext, style: style)
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
-        let expectedBillingAddress = PostalAddress(city: "New York",
-                                                   country: "US",
-                                                   houseNumberOrName: "14",
-                                                   postalCode: "10019",
-                                                   stateOrProvince: "AL",
-                                                   street: "8th Ave",
-                                                   apartment: nil)
-        let expectedDeliveryAddress = PostalAddress(city: "Los Angeles",
-                                                    country: "US",
-                                                    houseNumberOrName: "3310",
-                                                    postalCode: "90040",
-                                                    stateOrProvince: "AL",
-                                                    street: "Garfield Ave",
-                                                    apartment: nil)
+        let expectedBillingAddress = PostalAddressMocks.newYorkPostalAddress
+        let expectedDeliveryAddress = PostalAddressMocks.losAngelesPostalAddress
         
         // Then
         let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
@@ -202,17 +173,32 @@ class AffirmComponentTests: XCTestCase {
     
     // MARK: - Private
     
+    private enum PostalAddressView: String {
+        case street = "Adyen.FormAddressItem.street"
+        case city = "Adyen.FormAddressItem.city"
+        case houseNumberOrName = "Adyen.FormAddressItem.houseNumberOrName"
+        case postalCode = "Adyen.FormAddressItem.postalCode"
+        case stateOrProvince = "Adyen.FormAddressItem.stateOrProvince"
+    }
+    
     private func fill(addressView: FormVerticalStackItemView<FormAddressItem>, with address: PostalAddress) {
-        let billingStreetView: FormTextInputItemView! = addressView.findView(by: "Adyen.FormAddressItem.street")
+        let billingStreetView: FormTextInputItemView! = addressView.findView(by: PostalAddressView.street.rawValue)
         populate(textItemView: billingStreetView, with: address.street ?? "")
         
-        let billingCityView: FormTextInputItemView! = addressView.findView(by: "Adyen.FormAddressItem.city")
+        let billingCityView: FormTextInputItemView! = addressView.findView(by: PostalAddressView.city.rawValue)
         populate(textItemView: billingCityView, with: address.city ?? "")
         
-        let billingApartmentView: FormTextInputItemView! = addressView.findView(by: "Adyen.FormAddressItem.houseNumberOrName")
+        let billingApartmentView: FormTextInputItemView! = addressView.findView(by: PostalAddressView.houseNumberOrName.rawValue)
         populate(textItemView: billingApartmentView, with: address.houseNumberOrName ?? "")
         
-        let billingPostalCodeView: FormTextInputItemView! = addressView.findView(by: "Adyen.FormAddressItem.postalCode")
+        let billingPostalCodeView: FormTextInputItemView! = addressView.findView(by: PostalAddressView.postalCode.rawValue)
         populate(textItemView: billingPostalCodeView, with: address.postalCode ?? "")
+        
+        let regionPickerView: FormRegionPickerItemView! = addressView.findView(by: PostalAddressView.stateOrProvince.rawValue)
+        let selectableValues = regionPickerView.item.selectableValues.map { $0.identifier }
+        
+        if let selectedRow = selectableValues.firstIndex(of: address.stateOrProvince ?? "") {
+            regionPickerView.pickerView(regionPickerView.pickerView, didSelectRow: selectedRow, inComponent: 0)
+        }
     }
 }

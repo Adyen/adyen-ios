@@ -46,6 +46,7 @@
 		5AD40F4F263157D50090E01C /* UIButtonHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD40F4E263157D50090E01C /* UIButtonHelpersTests.swift */; };
 		5AF730EA2667C3F10091C573 /* APIContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF730E92667C3F10091C573 /* APIContextTests.swift */; };
 		5AF8CD4D26691D3A00102339 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF8CD4C26691D3A00102339 /* Dummy.swift */; };
+		C92F6DBE26AFF336004BD516 /* PostalAddressMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F6DBD26AFF336004BD516 /* PostalAddressMocks.swift */; };
 		C930FB6E269D79E0006A26D2 /* AffirmDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = C930FB6D269D79E0006A26D2 /* AffirmDetails.swift */; };
 		C96688BF26A6FC1C00DC7297 /* AffirmComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */; };
 		C982FFD826946F0800AED849 /* AffirmComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFD726946F0800AED849 /* AffirmComponent.swift */; };
@@ -897,6 +898,7 @@
 		5AD40F4E263157D50090E01C /* UIButtonHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonHelpersTests.swift; sourceTree = "<group>"; };
 		5AF730E92667C3F10091C573 /* APIContextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIContextTests.swift; sourceTree = "<group>"; };
 		5AF8CD4C26691D3A00102339 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
+		C92F6DBD26AFF336004BD516 /* PostalAddressMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostalAddressMocks.swift; sourceTree = "<group>"; };
 		C930FB6D269D79E0006A26D2 /* AffirmDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmDetails.swift; sourceTree = "<group>"; };
 		C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponentTests.swift; sourceTree = "<group>"; };
 		C982FFD726946F0800AED849 /* AffirmComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponent.swift; sourceTree = "<group>"; };
@@ -1668,6 +1670,14 @@
 				5A988B642653D9370007F4C0 /* BoletoComponentTests.swift */,
 			);
 			path = Boleto;
+			sourceTree = "<group>";
+		};
+		C92F6DBC26AFF289004BD516 /* TestData */ = {
+			isa = PBXGroup;
+			children = (
+				C92F6DBD26AFF336004BD516 /* PostalAddressMocks.swift */,
+			);
+			path = TestData;
 			sourceTree = "<group>";
 		};
 		C96688BD26A6F72900DC7297 /* Affirm */ = {
@@ -2469,6 +2479,7 @@
 		E97B9716229D530F00505476 /* Adyen Tests */ = {
 			isa = PBXGroup;
 			children = (
+				C92F6DBC26AFF289004BD516 /* TestData */,
 				F91760A52594C5C000D653BE /* Assets */,
 				F99F085B2383EBFF00EBB948 /* UI */,
 				E97B9718229D54C600505476 /* Core */,
@@ -4593,6 +4604,7 @@
 				F919DFA224ED599D0027976E /* AdyenActionComponentTests.swift in Sources */,
 				E702BE192602525E00280682 /* AssertsTests.swift in Sources */,
 				F9639B4924E28DC80073F38A /* IntervalCalculatorMock.swift in Sources */,
+				C92F6DBE26AFF336004BD516 /* PostalAddressMocks.swift in Sources */,
 				5A988B652653D9370007F4C0 /* BoletoComponentTests.swift in Sources */,
 				F919DFA024EABCC10027976E /* StoredCardComponentTests.swift in Sources */,
 				F9838CAB26315B6100963483 /* GiftCardComponentTests.swift in Sources */,
