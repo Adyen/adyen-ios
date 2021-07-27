@@ -33,13 +33,18 @@ class AffirmComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
     
-    func testInit_shouldPaymentMethodTypeBeAffirm() {
+    func testComponent_shouldPaymentMethodTypeBeAffirm() throws {
         // Given
         let expectedPaymentMethodType: PaymentMethodType = .affirm
         
         // Then
         let paymentMethodType = sut.paymentMethod.type
         XCTAssertEqual(paymentMethodType, expectedPaymentMethodType.rawValue)
+    }
+    
+    func testComponent_shouldRequireModalPresentation() throws {
+        // Then
+        XCTAssertTrue(sut.requiresModalPresentation)
     }
     
     func testCreatePaymentDetails_withSeparateDeliveryAddressDisabled_shouldCreateDetailsWithSameBillingAndDeliveryAddress() throws {
@@ -100,7 +105,7 @@ class AffirmComponentTests: XCTestCase {
         XCTAssertTrue(sut.deliveryAddressItem.isHidden.wrappedValue)
     }
     
-    func testDidSubmit() throws {
+    func testSubmitForm_shouldCallDelegateWithProperParameters() throws {
         // Given
         let sut = AffirmComponent(paymentMethod: paymentMethod,
                                   apiContext: apiContext, style: style)
