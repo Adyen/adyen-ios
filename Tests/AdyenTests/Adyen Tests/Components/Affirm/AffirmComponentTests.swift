@@ -142,14 +142,14 @@ class AffirmComponentTests: XCTestCase {
         populate(textItemView: emailView, with: "katrina@mail.com")
                 
         let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.billingAddressItem"))
-        fill(addressView: billingAddressView, with: expectedBillingAddress)
+        fill(formAddressView: billingAddressView, with: expectedBillingAddress)
                 
         let deliveryAddressToggleView: FormToggleItemView! = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.deliveryAddressToggleItem"))
         deliveryAddressToggleView.switchControl.isOn = true
         deliveryAddressToggleView.switchControl.sendActions(for: .valueChanged)
                 
         let deliveryAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.deliveryAddressItem"))
-        fill(addressView: deliveryAddressView, with: expectedDeliveryAddress)
+        fill(formAddressView: deliveryAddressView, with: expectedDeliveryAddress)
         
         let submitButton: UIControl = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.payButtonItem.button"))
         submitButton.sendActions(for: .touchUpInside)
@@ -163,42 +163,5 @@ class AffirmComponentTests: XCTestCase {
         
         // Then
         XCTAssertFalse(phoneExtensions.isEmpty)
-    }
-    
-    // MARK: - Private
-    
-    private enum PostalAddressView: String {
-        case city = "Adyen.FormAddressItem.city"
-        case country = "Adyen.FormAddressItem.country"
-        case houseNumberOrName = "Adyen.FormAddressItem.houseNumberOrName"
-        case postalCode = "Adyen.FormAddressItem.postalCode"
-        case stateOrProvince = "Adyen.FormAddressItem.stateOrProvince"
-        case street = "Adyen.FormAddressItem.street"
-        case apartment = "Adyen.FormAddressItem.apartment"
-    }
-    
-    private func fill(addressView: FormVerticalStackItemView<FormAddressItem>, with address: PostalAddress) {
-        let cityItemView = addressView.findView(by: PostalAddressView.city.rawValue) as? FormTextInputItemView
-        populate(textItemView: cityItemView, with: address.city ?? "")
-        
-        let countryItemView = addressView.findView(by: PostalAddressView.country.rawValue) as? FormTextInputItemView
-        populate(textItemView: countryItemView, with: address.country ?? "")
-        
-        let houseNumberItemView = addressView.findView(by: PostalAddressView.houseNumberOrName.rawValue) as? FormTextInputItemView
-        populate(textItemView: houseNumberItemView, with: address.houseNumberOrName ?? "")
-        
-        let postalCodeItemView = addressView.findView(by: PostalAddressView.postalCode.rawValue) as? FormTextInputItemView
-        populate(textItemView: postalCodeItemView, with: address.postalCode ?? "")
-        
-        if let regionPickerView = addressView.findView(by: PostalAddressView.stateOrProvince.rawValue) as? FormRegionPickerItemView,
-           let selectedRow = regionPickerView.item.selectableValues.firstIndex(where: { $0.identifier == address.stateOrProvince ?? ""}) {
-            regionPickerView.pickerView(regionPickerView.pickerView, didSelectRow: selectedRow, inComponent: 0)
-        }
-        
-        let streetItemView = addressView.findView(by: PostalAddressView.street.rawValue) as? FormTextInputItemView
-        populate(textItemView: streetItemView, with: address.street ?? "")
-        
-        let apartmentItemView = addressView.findView(by: PostalAddressView.apartment.rawValue) as? FormTextInputItemView
-        populate(textItemView: apartmentItemView, with: address.apartment ?? "")
     }
 }
