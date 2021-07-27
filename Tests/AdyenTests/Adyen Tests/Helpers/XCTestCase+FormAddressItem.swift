@@ -8,7 +8,7 @@ import XCTest
 @testable import Adyen
 
 extension XCTestCase {
-        
+    
     private enum PostalAddressIdentifier {
         static let city = "Adyen.FormAddressItem.city"
         static let country = "Adyen.FormAddressItem.country"
@@ -18,8 +18,7 @@ extension XCTestCase {
         static let street = "Adyen.FormAddressItem.street"
         static let apartment = "Adyen.FormAddressItem.apartment"
     }
-    
-    
+        
     internal func fill(formAddressView: FormVerticalStackItemView<FormAddressItem>, with address: PostalAddress) {
         let cityItemView = formAddressView.findView(by: PostalAddressIdentifier.city) as? FormTextInputItemView
         populate(textItemView: cityItemView, with: address.city ?? "")
