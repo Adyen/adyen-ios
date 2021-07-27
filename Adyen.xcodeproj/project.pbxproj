@@ -1672,12 +1672,19 @@
 			path = Boleto;
 			sourceTree = "<group>";
 		};
-		C92F6DBC26AFF289004BD516 /* TestData */ = {
+		C92F6DBC26AFF289004BD516 /* DataMocks */ = {
 			isa = PBXGroup;
 			children = (
 				C92F6DBD26AFF336004BD516 /* PostalAddressMocks.swift */,
 			);
-			path = TestData;
+			path = DataMocks;
+			sourceTree = "<group>";
+		};
+		C92F6DBF26B0297A004BD516 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		C96688BD26A6F72900DC7297 /* Affirm */ = {
@@ -2479,14 +2486,15 @@
 		E97B9716229D530F00505476 /* Adyen Tests */ = {
 			isa = PBXGroup;
 			children = (
-				C92F6DBC26AFF289004BD516 /* TestData */,
 				F91760A52594C5C000D653BE /* Assets */,
-				F99F085B2383EBFF00EBB948 /* UI */,
-				E97B9718229D54C600505476 /* Core */,
 				E97B9717229D533B00505476 /* Components */,
-				E9E3DABC221EA44900697074 /* Extension Tests */,
-				E9E3DB042226B3A100697074 /* Utilities */,
+				E97B9718229D54C600505476 /* Core */,
+				C92F6DBC26AFF289004BD516 /* DataMocks */,
 				E759E1F325CB371800B1F8DC /* DropIn */,
+				E9E3DABC221EA44900697074 /* Extension Tests */,
+				C92F6DBF26B0297A004BD516 /* Helpers */,
+				F99F085B2383EBFF00EBB948 /* UI */,
+				E9E3DB042226B3A100697074 /* Utilities */,
 			);
 			path = "Adyen Tests";
 			sourceTree = "<group>";
