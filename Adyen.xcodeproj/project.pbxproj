@@ -46,7 +46,7 @@
 		5AD40F4F263157D50090E01C /* UIButtonHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD40F4E263157D50090E01C /* UIButtonHelpersTests.swift */; };
 		5AF730EA2667C3F10091C573 /* APIContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF730E92667C3F10091C573 /* APIContextTests.swift */; };
 		5AF8CD4D26691D3A00102339 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF8CD4C26691D3A00102339 /* Dummy.swift */; };
-		A07B2CE626A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B2CE526A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift */; };
+		A013F98126AFF72D00602633 /* BrazilSocialSecurityNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B2CE526A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift */; };
 		A07B2CF226A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B2CF126A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift */; };
 		E2028F5C2227F1930007FF8B /* Details.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2028F5B2227F1930007FF8B /* Details.swift */; };
 		E2028F5E222805E20007FF8B /* CardDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2028F5D222805E20007FF8B /* CardDetails.swift */; };
@@ -2941,6 +2941,7 @@
 				E216D3C2221AEDBE0013CBCF /* Formatter.swift */,
 				E9E3DAB8221E98BD00697074 /* NumericFormatter.swift */,
 				E216D3C4221AEF450013CBCF /* IBANFormatter.swift */,
+				A07B2CE526A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift */,
 			);
 			path = Formatters;
 			sourceTree = "<group>";
@@ -3502,7 +3503,6 @@
 				E9E3DAA9221C54C600697074 /* CardNumberFormatter.swift */,
 				E9E3DAB6221E97F200697074 /* CardExpiryDateFormatter.swift */,
 				E9E3DABF221ECD7C00697074 /* CardSecurityCodeFormatter.swift */,
-				A07B2CE526A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift */,
 			);
 			path = Formatters;
 			sourceTree = "<group>";
@@ -4334,6 +4334,7 @@
 				E7085912261F1C8E00D0153B /* FormFullAddressItem.swift in Sources */,
 				F96F44D923BDEDA200871C1F /* ListItemStyle.swift in Sources */,
 				E787C9AE24698C2E00B401E0 /* UIViewRoundingHelpers.swift in Sources */,
+				A013F98126AFF72D00602633 /* BrazilSocialSecurityNumberFormatter.swift in Sources */,
 				E2C0E0BA220B2966008616F6 /* FormTextItemView.swift in Sources */,
 				E97B972322B238C400505476 /* Analytics.swift in Sources */,
 				F95B6D8C252316DA002C9062 /* PhoneNumberValidator.swift in Sources */,
@@ -4662,7 +4663,6 @@
 				E7166A5424EACC44007CCDEF /* BinLookupResponse.swift in Sources */,
 				E9E3DAB4221D988200697074 /* CardNumberValidator.swift in Sources */,
 				F92329DD25AD049E002C5BC4 /* FallbackCardBrandProvider.swift in Sources */,
-				A07B2CE626A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift in Sources */,
 				E7798569268CE1B900CECA95 /* KCPDetails.swift in Sources */,
 				E9E3DACD221EEAB200697074 /* CardSecurityCodeValidator.swift in Sources */,
 				F96286B5256BDEA400043FE3 /* CardBundleExtension.swift in Sources */,
