@@ -17,12 +17,12 @@ public enum CardEncryptor {
     ///   - card: Card containing the data to be encrypted.
     ///   - publicKey: The public key to use for encryption (format "Exponent|Modulus").
     /// - Returns: An encrypted card containing the individually encrypted fields.
-    /// - Throws:  `CardEncryptor.Error.encryptionFailed` if the encryption failed,
+    /// - Throws: `CardEncryptor.Error.encryptionFailed` if the encryption failed,
     ///  maybe because the card public key is an invalid one, or for any other reason.
-    /// - Throws:  `CardEncryptor.Error.invalidEncryptionArguments` when trying to encrypt a card with  card number, securityCode,
+    /// - Throws: `CardEncryptor.Error.invalidCard` when trying to encrypt a card with  card number, securityCode,
     /// expiryMonth, and expiryYear, all of them are nil.
     public static func encrypt(card: Card, with publicKey: String) throws -> EncryptedCard {
-        guard !card.isEmpty else { throw CardEncryptor.Error.invalidCard }
+        guard !card.isEmpty else { throw Error.invalidCard }
 
         var encryptedNumber: String?
         var encryptedCode: String?
@@ -54,10 +54,9 @@ public enum CardEncryptor {
     ///   - number: The card number
     ///   - publicKey: The public key to use for encryption (format "Exponent|Modulus").
     /// - Returns: An encrypted token containing card number data.
-    /// - Throws:  `CardEncryptor.Error.encryptionFailed` if the encryption failed,
+    /// - Throws: `CardEncryptor.Error.encryptionFailed` if the encryption failed,
     ///  maybe because the card public key is an invalid one, or for any other reason.
-    /// - Throws:  `CardEncryptor.Error.invalidEncryptionArguments` when trying to encrypt a card with  card number, securityCode,
-    /// expiryMonth, and expiryYear, all of them are nil.
+    /// - Throws: `CardEncryptor.Error.invalidNumber` when trying to encrypt an empty or invalid card number
     public static func encrypt(number: String, with publicKey: String) throws -> String {
         guard !number.isEmpty, number.allSatisfy(\.isNumber) else {
             throw Error.invalidNumber
@@ -72,10 +71,9 @@ public enum CardEncryptor {
     ///   - securityCode: The card's security code.
     ///   - publicKey: The public key to use for encryption (format "Exponent|Modulus").
     /// - Returns: An encrypted token containing security code data.
-    /// - Throws:  `CardEncryptor.Error.encryptionFailed` if the encryption failed,
+    /// - Throws: `CardEncryptor.Error.encryptionFailed` if the encryption failed,
     ///  maybe because the card public key is an invalid one, or for any other reason.
-    /// - Throws:  `CardEncryptor.Error.invalidEncryptionArguments` when trying to encrypt a card with  card number, securityCode,
-    /// expiryMonth, and expiryYear, all of them are nil.
+    /// - Throws: `CardEncryptor.Error.invalidSecureCode` when trying to encrypt an empty or invalid securityCode.
     public static func encrypt(securityCode: String, with publicKey: String) throws -> String {
         guard !securityCode.isEmpty, securityCode.allSatisfy(\.isNumber) else {
             throw Error.invalidSecureCode
@@ -90,10 +88,9 @@ public enum CardEncryptor {
     ///   - expiryMonth: The expiration month.
     ///   - publicKey: The public key to use for encryption (format "Exponent|Modulus").
     /// - Returns: An encrypted token enspiration month data.
-    /// - Throws:  `CardEncryptor.Error.encryptionFailed` if the encryption failed,
+    /// - Throws: `CardEncryptor.Error.encryptionFailed` if the encryption failed,
     ///  maybe because the card public key is an invalid one, or for any other reason.
-    /// - Throws:  `CardEncryptor.Error.invalidEncryptionArguments` when trying to encrypt a card with  card number, securityCode,
-    /// expiryMonth, and expiryYear, all of them are nil.
+    /// - Throws: `CardEncryptor.Error.invalidExpiryMonth` when trying to encrypt an empty or invalid expiryMonth.
     public static func encrypt(expirationMonth: String, with publicKey: String) throws -> String {
         guard !expirationMonth.isEmpty, expirationMonth.allSatisfy(\.isNumber) else {
             throw Error.invalidExpiryMonth
@@ -108,10 +105,9 @@ public enum CardEncryptor {
     ///   - expiryMonth: The expiration year.
     ///   - publicKey: The public key to use for encryption (format "Exponent|Modulus").
     /// - Returns: An encrypted token containing enspiration year data.
-    /// - Throws:  `CardEncryptor.Error.encryptionFailed` if the encryption failed,
+    /// - Throws: `CardEncryptor.Error.encryptionFailed` if the encryption failed,
     ///  maybe because the card public key is an invalid one, or for any other reason.
-    /// - Throws:  `CardEncryptor.Error.invalidEncryptionArguments` when trying to encrypt a card with  card number, securityCode,
-    /// expiryMonth, and expiryYear, all of them are nil.
+    /// - Throws: `CardEncryptor.Error.invalidExpiryYear` when trying to encrypt an empty or invalid expiryYear.
     public static func encrypt(expirationYear: String, with publicKey: String) throws -> String {
         guard !expirationYear.isEmpty, expirationYear.allSatisfy(\.isNumber) else {
             throw Error.invalidExpiryYear
@@ -125,10 +121,9 @@ public enum CardEncryptor {
     ///   - publicKey: The public key to use for encryption (format "Exponent|Modulus").
     ///   - bin: BIN( Bank Identification number) is the first 6 to 12 digits of PAN.
     /// - Returns: An encrypted token containing BIN data.
-    /// - Throws:  `CardEncryptor.Error.encryptionFailed` if the encryption failed,
+    /// - Throws: `CardEncryptor.Error.encryptionFailed` if the encryption failed,
     ///  maybe because the card public key is an invalid one, or for any other reason.
-    /// - Throws:  `CardEncryptor.Error.invalidEncryptionArguments` when trying to encrypt a card with  card number, securityCode,
-    /// expiryMonth, and expiryYear, all of them are nil.
+    /// - Throws: `CardEncryptor.Error.invalidBin` when trying to encrypt an empty or invalid BIN.
     public static func encrypt(bin: String, with publicKey: String) throws -> String {
         guard !bin.isEmpty, bin.allSatisfy(\.isNumber) else {
             throw Error.invalidBin
@@ -137,14 +132,31 @@ public enum CardEncryptor {
         return try encrypt(payload, with: publicKey)
     }
 
+    /// Encrypts password.
+    ///
+    /// - Parameters:
+    ///   - password: The non-empty value.
+    ///   - publicKey: The public key to use for encryption (format "Exponent|Modulus").
+    /// - Returns: An encrypted token containing enspiration year data.
+    /// - Throws: `CardEncryptor.Error.encryptionFailed` if the encryption failed,
+    ///  maybe because the card public key is an invalid one, or for any other reason.
+    /// - Throws: `CardEncryptor.Error.emptyValue` when trying to encrypt an empty value.
+    public static func encrypt(password: String, with publicKey: String) throws -> String {
+        guard !password.isEmpty else {
+            throw Error.emptyValue
+        }
+        let payload = CardPayload().add(password: password)
+        return try encrypt(payload, with: publicKey)
+    }
+
     /// Encrypts a card as a token.
     /// - Parameters:
     ///   - card: Card containing the data to be encrypted.
     ///   - publicKey: The public key to use for encryption (format "Exponent|Modulus").
     /// - Returns: A string token containig encrypted card data.
-    /// - Throws:  `CardEncryptor.Error.encryptionFailed` if the encryption failed,
+    /// - Throws: `CardEncryptor.Error.encryptionFailed` if the encryption failed,
     ///  maybe because the card public key is an invalid one, or for any other reason.
-    /// - Throws:  `CardEncryptor.Error.invalidEncryptionArguments` when trying to encrypt a card with  card number, securityCode,
+    /// - Throws: `CardEncryptor.Error.invalidEncryptionArguments` when trying to encrypt a card with  card number, securityCode,
     /// expiryMonth, and expiryYear, all of them are nil.
     public static func encryptToken(from card: Card, with publicKey: String) throws -> String {
         guard !card.isEmpty else { throw CardEncryptor.Error.invalidCard }
@@ -195,6 +207,9 @@ extension CardEncryptor {
         /// Indicates an error when trying to encrypt empty or invalid expiry year.
         case invalidNumber
 
+        /// Indicates an error when trying to encrypt empty value.
+        case emptyValue
+
         public var errorDescription: String? {
             switch self {
             case .encryptionFailed:
@@ -211,6 +226,8 @@ extension CardEncryptor {
                 return "Trying to encrypt empty or invalid secure code"
             case .invalidNumber:
                 return "Trying to encrypt empty card number"
+            case .emptyValue:
+                return "Trying to encrypt empty value"
             }
         }
     }

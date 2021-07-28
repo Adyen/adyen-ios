@@ -106,3 +106,9 @@
 "adyen.giftcard.currencyError" = "Os vales-presente são válidos somente na moeda em que foram emitidos";
 "adyen.giftcard.noBalance" = "Este vale-presente tem saldo zero";
 "adyen.partialPayment.remainingBalance" = "O saldo restante será %@";
+"adyen.card.taxNumber.label" = "Data de nascimento do titular do cartão (AAMMDD) ou número de registro corporativo (10 dígitos)";
+"adyen.card.taxNumber.placeholder" = "AAAMMDD / 0123456789";
+"adyen.card.taxNumber.invalid" = "Data de nascimento do titular do cartão ou número de registro corporativo inválidos";
+"adyen.card.encryptedPassword.label" = "Primeiros dois dígitos da senha do cartão";
+"adyen.card.encryptedPassword.placeholder" = "12";
+"adyen.card.encryptedPassword.invalid" = "Senha inválida";

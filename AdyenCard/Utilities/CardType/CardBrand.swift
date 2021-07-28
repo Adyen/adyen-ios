@@ -36,6 +36,9 @@ public struct CardBrand: Decodable {
 
     /// Indicates whether to show the expiry date field.
     internal let showsExpiryDate: Bool
+    
+    /// Indicates whether to show social security number field or not.
+    internal let showsSocialSecurityNumber: Bool
 
     /// Initializes a CardBrand.
     ///
@@ -45,16 +48,19 @@ public struct CardBrand: Decodable {
     ///   - cvcPolicy: Indicates the cvc policy of the brand.
     ///   - isLuhnCheckEnabled: Indicates whether Luhn check applies to card numbers of this brand.
     ///   - showsExpiryDate: Indicates whether to show the expiry date field.
+    ///   - showsSocialSecurityNumber: Indicates whether to show social security number field or not.
     internal init(type: CardType,
                   isSupported: Bool = true,
                   cvcPolicy: CVCPolicy = .required,
                   isLuhnCheckEnabled: Bool = true,
-                  showsExpiryDate: Bool = true) {
+                  showsExpiryDate: Bool = true,
+                  showSocialSecurityNumber: Bool = false) {
         self.type = type
         self.isSupported = isSupported
         self.cvcPolicy = cvcPolicy
         self.isLuhnCheckEnabled = isLuhnCheckEnabled
         self.showsExpiryDate = showsExpiryDate
+        self.showsSocialSecurityNumber = showSocialSecurityNumber
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -63,6 +69,7 @@ public struct CardBrand: Decodable {
         case cvcPolicy
         case isLuhnCheckEnabled = "enableLuhnCheck"
         case showsExpiryDate = "showExpiryDate"
+        case showsSocialSecurityNumber = "showSocialSecurityNumber"
     }
 }
 

@@ -64,4 +64,13 @@ extension AdyenScope where Base: UIView {
         base.alpha = hidden ? 0 : 1
         base.adyen.updatePreferredContentSize()
     }
+
+    /// :nodoc:
+    public var minimalSize: CGSize {
+        let targetSize = CGSize(width: Dimensions.greatestPresentableWidth,
+                                height: UIView.layoutFittingCompressedSize.height)
+        return base.systemLayoutSizeFitting(targetSize,
+                                            withHorizontalFittingPriority: .required,
+                                            verticalFittingPriority: .fittingSizeLevel)
+    }
 }

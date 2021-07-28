@@ -238,7 +238,7 @@ extension FormViewController: FormTextItemViewDelegate {
         let remainingItemViews = itemViews.suffix(from: itemViews.index(after: currentIndex))
         
         // Find the first item view that's eligible to become a first responder.
-        let nextItemView = remainingItemViews.first { $0.canBecomeFirstResponder }
+        let nextItemView = remainingItemViews.first { $0.canBecomeFirstResponder && $0.isHidden == false }
         
         // Assign the first responder, or resign the current one if there is none remaining.
         if let nextItemView = nextItemView {

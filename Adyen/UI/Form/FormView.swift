@@ -27,11 +27,7 @@ internal final class FormView: UIScrollView {
     }
     
     override internal var intrinsicContentSize: CGSize {
-        let targetSize = CGSize(width: self.superview?.bounds.width ?? UIScreen.main.bounds.width,
-                                height: UIView.layoutFittingCompressedSize.height)
-        return stackView.systemLayoutSizeFitting(targetSize,
-                                                 withHorizontalFittingPriority: .required,
-                                                 verticalFittingPriority: .fittingSizeLevel)
+        stackView.adyen.minimalSize
     }
     
     // MARK: - Item Views

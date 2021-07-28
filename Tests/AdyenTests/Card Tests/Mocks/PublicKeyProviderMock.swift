@@ -13,6 +13,6 @@ final class CardPublicKeyProviderMock: AnyCardPublicKeyProvider {
     var onFetch: ((_ completion: @escaping CompletionHandler) -> Void)?
 
     func fetch(completion: @escaping CompletionHandler) {
-        onFetch?(completion)
+        onFetch?(completion) ?? completion(.success(Dummy.publicKey))
     }
 }

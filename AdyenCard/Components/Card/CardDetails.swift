@@ -12,34 +12,47 @@ import Foundation
 
 /// Contains the details provided by the card component.
 public struct CardDetails: PaymentMethodDetails, ShopperInformation {
-    
+
     /// The payment method type.
     public let type: String
-    
+
     /// The identifier of the selected stored payment method.
     public let storedPaymentMethodIdentifier: String?
-    
+
     /// The encrypted card number.
     public let encryptedCardNumber: String?
-    
+
     /// The encrypted expiration month.
     public let encryptedExpiryMonth: String?
-    
+
     /// The encrypted expiration year.
     public let encryptedExpiryYear: String?
-    
+
     /// The encrypted security code.
     public let encryptedSecurityCode: String?
-    
+
     /// The name on card.
     public let holderName: String?
-    
+
     /// The card funding source.
     public let fundingSource: CardFundingSource?
 
     /// The billing address information.
-    public var billingAddress: PostalAddress?
-    
+    public let billingAddress: PostalAddress?
+
+    /// The card password (2 digits).
+    public let password: String?
+
+    /// The cardholder Birthdate (6 digits in a YYMMDD format) for private cards
+    /// or Corporate registration number (10 digits) for corporate cards.
+    public let taxNumber: String?
+
+    /// Social security number of the shopper, if required by country.
+    public let socialSecurityNumber: String?
+
+    /// The 3DS2 SDK version.
+    public let threeDS2SDKVersion: String = threeDS2SdkVersion
+
     /// Initializes the card payment details.
     ///
     /// :nodoc:
@@ -48,10 +61,14 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
     ///   - paymentMethod: The used card payment method.
     ///   - encryptedCard: The encrypted card to read the details from.
     ///   - holderName: The holder name if available.
+    ///   - billingAddress: The billing address information.
+    ///   - kcpDetails: The additional details for KCP authentication.
     public init(paymentMethod: AnyCardPaymentMethod,
                 encryptedCard: EncryptedCard,
                 holderName: String? = nil,
-                billingAddress: PostalAddress? = nil) {
+                billingAddress: PostalAddress? = nil,
+                kcpDetails: KCPDetails? = nil,
+                socialSecurityNumber: String? = nil) {
         self.type = paymentMethod.type
         self.encryptedCardNumber = encryptedCard.number
         self.encryptedExpiryMonth = encryptedCard.expiryMonth
@@ -61,8 +78,11 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
         self.storedPaymentMethodIdentifier = nil
         self.fundingSource = paymentMethod.fundingSource
         self.billingAddress = billingAddress
+        self.taxNumber = kcpDetails?.taxNumber
+        self.password = kcpDetails?.password
+        self.socialSecurityNumber = socialSecurityNumber
     }
-    
+
     /// Initializes the card payment details for a stored card payment method.
     ///
     /// :nodoc:
@@ -79,10 +99,14 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
         self.encryptedExpiryYear = nil
         self.holderName = nil
         self.fundingSource = paymentMethod.fundingSource
+        self.billingAddress = nil
+        self.taxNumber = nil
+        self.password = nil
+        self.socialSecurityNumber = nil
     }
-    
+
     // MARK: - Encoding
-    
+
     private enum CodingKeys: String, CodingKey {
         case type
         case storedPaymentMethodIdentifier = "storedPaymentMethodId"
@@ -92,6 +116,9 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
         case encryptedSecurityCode
         case holderName
         case fundingSource
+        case taxNumber
+        case password = "encryptedPassword"
+        case threeDS2SDKVersion = "threeDS2SdkVersion"
     }
-    
+
 }

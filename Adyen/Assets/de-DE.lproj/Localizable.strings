@@ -106,3 +106,9 @@
 "adyen.giftcard.currencyError" = "Geschenkkarten sind nur in der Währung gültig, in der sie ausgestellt wurden";
 "adyen.giftcard.noBalance" = "Auf dieser Geschenkkarte ist kein Guthaben vorhanden";
 "adyen.partialPayment.remainingBalance" = "Es verbleibt ein Restbetrag von %@";
+"adyen.card.taxNumber.label" = "Geburtsdatum des Karteninhabers (JJMMTT) oder Unternehmensregistrierungsnummer (10-stellig)";
+"adyen.card.taxNumber.placeholder" = "JJMMTT/0123456789";
+"adyen.card.taxNumber.invalid" = "Ungültiges Geburtsdatum des Karteninhabers oder ungültige Unternehmensregistrierungsnummer";
+"adyen.card.encryptedPassword.label" = "Die ersten zwei Ziffern des Kartenpassworts";
+"adyen.card.encryptedPassword.placeholder" = "12";
+"adyen.card.encryptedPassword.invalid" = "Ungültiges Passwort";

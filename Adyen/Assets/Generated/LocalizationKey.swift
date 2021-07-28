@@ -118,9 +118,17 @@ public struct LocalizationKey {
     public static let partialPaymentPayRemainingAmount = LocalizationKey(key: "adyen.partialPayment.payRemainingAmount")
     public static let amount = LocalizationKey(key: "adyen.amount")
     public static let deliveryAddressToggleTitle = LocalizationKey(key: "adyen.deliveryAddressToggle.title")
-    
+    public static let cardTaxNumberLabel = LocalizationKey(key: "adyen.card.taxNumber.label")
+    public static let cardTaxNumberPlaceholder = LocalizationKey(key: "adyen.card.taxNumber.placeholder")
+    public static let cardTaxNumberInvalid = LocalizationKey(key: "adyen.card.taxNumber.invalid")
+    public static let cardEncryptedPasswordLabel = LocalizationKey(key: "adyen.card.encryptedPassword.label")
+    public static let cardEncryptedPasswordPlaceholder = LocalizationKey(key: "adyen.card.encryptedPassword.placeholder")
+    public static let cardEncryptedPasswordInvalid = LocalizationKey(key: "adyen.card.encryptedPassword.invalid")
+    public static let cardTaxNumberLabelShort = LocalizationKey(key: "adyen.card.taxNumber.label.short")
+    public static let cardBrazilSSNPlaceholder = LocalizationKey(key: "adyen.card.brazilSSN.placeholder")
+
     internal let key: String
-    
+
     public init(key: String) {
         self.key = key
     }

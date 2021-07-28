@@ -20,15 +20,17 @@ internal struct BinLookupResponse: Response {
     internal let issuingCountryCode: String?
 
     /// :nodoc:
-    internal init(brands: [CardBrand]?,
+    internal init(brands: [CardBrand]? = nil,
                   requestId: String = UUID().uuidString,
-                  issuingCountryCode: String = "NL") {
+                  issuingCountryCode: String? = "NL") {
         self.brands = brands
         self.requestId = requestId
         self.issuingCountryCode = issuingCountryCode
     }
     
     private enum CodingKeys: String, CodingKey {
-        case brands, requestId, issuingCountryCode
+        case brands,
+             requestId,
+             issuingCountryCode
     }
 }

@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 
 /// :nodoc:
-internal protocol AnyCardPublicKeyProvider: APIContextAware {
+internal protocol AnyCardPublicKeyProvider: AnyObject {
     
     /// :nodoc:
     typealias CompletionHandler = (Result<String, Error>) -> Void
@@ -19,24 +19,28 @@ internal protocol AnyCardPublicKeyProvider: APIContextAware {
 
 /// :nodoc:
 internal final class CardPublicKeyProvider: AnyCardPublicKeyProvider {
-    
+
     /// :nodoc:
-    internal let apiContext: APIContext
+    private let request: ClientKeyRequest
+
+    /// :nodoc:
+    private let retryApiClient: AnyRetryAPIClient
     
     /// :nodoc:
     internal static var cachedCardPublicKey: String?
     
     /// :nodoc:
-    internal init(apiContext: APIContext,
-                  apiClient: AnyRetryAPIClient? = nil) {
-        self.apiContext = apiContext
-        if let apiClient = apiClient {
-            self.retryApiClient = apiClient
-        } else {
-            let scheduler = SimpleScheduler(maximumCount: 2)
-            self.retryApiClient = APIClient(apiContext: apiContext)
-                .retryAPIClient(with: scheduler)
-        }
+    internal convenience init(apiContext: APIContext) {
+        let scheduler = SimpleScheduler(maximumCount: 2)
+        self.init(apiClient: APIClient(apiContext: apiContext).retryAPIClient(with: scheduler),
+                  request: ClientKeyRequest(clientKey: apiContext.clientKey))
+    }
+
+    /// :nodoc:
+    /// For testing only
+    internal init(apiClient: AnyRetryAPIClient, request: ClientKeyRequest) {
+        self.retryApiClient = apiClient
+        self.request = request
     }
     
     /// :nodoc:
@@ -45,8 +49,6 @@ internal final class CardPublicKeyProvider: AnyCardPublicKeyProvider {
             completion(.success(cardPublicKey))
             return
         }
-        
-        let request = ClientKeyRequest(clientKey: apiContext.clientKey)
         
         apiClient.perform(request, completionHandler: { [weak self] result in
             self?.handle(result, completion: completion)
@@ -60,9 +62,6 @@ internal final class CardPublicKeyProvider: AnyCardPublicKeyProvider {
         let retryOnErrorApiClient = retryApiClient.retryOnErrorAPIClient()
         return UniqueAssetAPIClient<ClientKeyResponse>(apiClient: retryOnErrorApiClient)
     }()
-
-    /// :nodoc:
-    private let retryApiClient: AnyRetryAPIClient
     
     /// :nodoc:
     private func handle(_ result: Result<ClientKeyResponse, Swift.Error>, completion: @escaping CompletionHandler) {

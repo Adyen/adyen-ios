@@ -106,3 +106,9 @@
 "adyen.giftcard.currencyError" = "لا تسري بطاقات الهدايا إلا بالعملة التي صدرت بها";
 "adyen.giftcard.noBalance" = "لا يوجد رصيد ببطاقة الهدايا هذه";
 "adyen.partialPayment.remainingBalance" = "سيبلغ الرصيد المتبقي %@";
+"adyen.card.taxNumber.label" = "تاريخ ميلاد حامل البطاقة (يوم شهر سنة) أو رقم تسجيل الشركة (10 أرقام)";
+"adyen.card.taxNumber.placeholder" = "يوم شهر سنة / 0123456789";
+"adyen.card.taxNumber.invalid" = "تاريخ ميلاد حامل البطاقة أو رقم تسجيل الشركة غير صحيح";
+"adyen.card.encryptedPassword.label" = "أول رقمان من كلمة مرور البطاقة";
+"adyen.card.encryptedPassword.placeholder" = "12";
+"adyen.card.encryptedPassword.invalid" = "كلمة مرور غير صحيحة";

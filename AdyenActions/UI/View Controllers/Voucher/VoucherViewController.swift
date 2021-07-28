@@ -46,11 +46,7 @@ internal final class VoucherViewController: UIViewController {
     /// :nodoc:
     override internal var preferredContentSize: CGSize {
         get {
-            let targetSize = CGSize(width: UIScreen.main.bounds.width,
-                                    height: UIView.layoutFittingCompressedSize.height)
-            return voucherView.systemLayoutSizeFitting(targetSize,
-                                                       withHorizontalFittingPriority: .required,
-                                                       verticalFittingPriority: .fittingSizeLevel)
+            voucherView.adyen.minimalSize
         }
 
         // swiftlint:disable:next unused_setter_value
