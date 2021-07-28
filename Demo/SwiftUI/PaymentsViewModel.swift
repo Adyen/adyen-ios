@@ -80,13 +80,12 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
 
     internal func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
         let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        
         if let retryHandler = retryHandler {
             alertController.addAction(UIAlertAction(title: "Retry", style: .default, handler: { _ in
                 retryHandler()
             }))
-        } else {
-            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         }
 
         viewControllerToPresent = alertController
