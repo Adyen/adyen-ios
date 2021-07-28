@@ -7,6 +7,7 @@
 import Adyen
 import Foundation
 import UIKit
+import AdyenNetworking
 
 /**
  /// A component that provides a form for card payments.

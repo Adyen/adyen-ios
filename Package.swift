@@ -50,6 +50,11 @@ let package = Package(
             .exact(Version(2, 2, 2))
         ),
         .package(
+            name: "AdyenNetworking",
+            url: "https://github.com/Adyen/adyen-networking-ios",
+            .branch("main")
+        ),
+        .package(
             name: "AdyenWeChatPayInternal",
             url: "https://github.com/Adyen/adyen-wechatpay-ios",
             .exact(Version(1, 0, 0))
@@ -58,7 +63,9 @@ let package = Package(
     targets: [
         .target(
             name: "Adyen",
-            dependencies: [],
+            dependencies: [
+                .product(name: "AdyenNetworking", package: "AdyenNetworking")
+            ],
             path: "Adyen",
             exclude: [
                 "Info.plist",

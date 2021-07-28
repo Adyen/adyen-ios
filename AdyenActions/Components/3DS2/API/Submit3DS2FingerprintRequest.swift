@@ -6,6 +6,7 @@
 
 import Adyen
 import Foundation
+import AdyenNetworking
 
 /// :nodoc:
 internal struct Submit3DS2FingerprintRequest: Request {

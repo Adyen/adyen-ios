@@ -6,6 +6,7 @@
 
 import Adyen
 import Foundation
+import AdyenNetworking
 
 internal struct BinLookupRequest: Request {
     

@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import AdyenNetworking
 
 /// :nodoc:
 /// Represents the payment status code.
@@ -23,6 +24,9 @@ public enum PaymentResultCode: String, Decodable {
 /// :nodoc:
 /// Represents a payment status response.
 public struct PaymentStatusResponse: Response {
+    
+    /// :nodoc:
+    public typealias ErrorType = APIError
     
     /// :nodoc:
     /// The payload.

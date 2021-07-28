@@ -8,6 +8,7 @@ import Adyen
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
+import AdyenNetworking
 import Foundation
 
 /// Provide cardType detection based on BinLookup API.

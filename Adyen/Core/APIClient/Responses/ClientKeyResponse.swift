@@ -5,9 +5,13 @@
 //
 
 import Foundation
+import AdyenNetworking
 
 /// :nodoc:
 public struct ClientKeyResponse: Response {
+    
+    /// :nodoc:
+    public typealias ErrorType = APIError
     
     /// The card public key
     public let cardPublicKey: String

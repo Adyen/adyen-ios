@@ -5,9 +5,13 @@
 //
 
 import Foundation
+import AdyenNetworking
 
 /// :nodoc:
 public struct AppleWalletPassResponse: Response {
+    
+    /// :nodoc:
+    public typealias ErrorType = APIError
 
     /// :nodoc:
     public let passData: Data

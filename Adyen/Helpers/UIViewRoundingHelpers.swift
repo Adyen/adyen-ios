@@ -5,6 +5,7 @@
 //
 
 import UIKit
+import AdyenNetworking
 
 /// Adds helper functionality to any `UIViewController` instance through the `adyen` property.
 /// :nodoc:

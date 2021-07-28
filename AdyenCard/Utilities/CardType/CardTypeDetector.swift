@@ -6,6 +6,7 @@
 
 import Adyen
 import Foundation
+import AdyenNetworking
 
 /// So that any `Array` instance will inherit the `adyen` scope.
 /// :nodoc:

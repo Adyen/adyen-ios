@@ -6,6 +6,7 @@
 
 import Adyen
 import Foundation
+import AdyenNetworking
 
 /// :nodoc:
 /// A specific await component thats keeps polling the `/status` endpoint to check the payment status.

@@ -5,9 +5,13 @@
 //
 
 import Foundation
+import AdyenNetworking
 
 /// :nodoc:
 public struct OrderStatusResponse: Response {
+    
+    /// :nodoc:
+    public typealias ErrorType = APIError
 
     /// The remaining amount to be paid.
     /// :nodoc:

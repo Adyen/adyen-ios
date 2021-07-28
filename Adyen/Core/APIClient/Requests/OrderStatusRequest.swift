@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import AdyenNetworking
 
 /// :nodoc:
 public struct OrderStatusRequest: Request {

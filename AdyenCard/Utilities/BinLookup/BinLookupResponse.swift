@@ -6,9 +6,13 @@
 
 import Adyen
 import Foundation
+import AdyenNetworking
 
 /// :nodoc:
 internal struct BinLookupResponse: Response {
+    
+    /// :nodoc:
+    internal typealias ErrorType = APIError
 
     /// :nodoc:
     internal var brands: [CardBrand]?

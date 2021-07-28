@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import AdyenNetworking
 
 /// So that any `Bundle` instance will inherit the `adyen` scope.
 /// :nodoc:

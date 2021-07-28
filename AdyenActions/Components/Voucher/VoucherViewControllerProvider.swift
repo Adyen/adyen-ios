@@ -7,6 +7,7 @@
 import Adyen
 import Foundation
 import UIKit
+import AdyenNetworking
 
 internal protocol AnyVoucherViewControllerProvider: Localizable {
 
