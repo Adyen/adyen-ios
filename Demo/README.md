@@ -1,12 +1,12 @@
 # Demo
 
-Sample project to try out iOS SDK.
+Sample project to try out iOS Drop-in and Components integrations.
 
 ![DropIn preview](Screenshots/dropin-ios.jpg)
 
 ## How to start
 
-To start testing SDK, you need to provide the following information to `Configuration.swift`
+To start testing SDK, you need to open `Adyen.xcodeproj` in Xcode and provide the following information to `Demo/Configuration.swift`
 
 | Field name | Placeholder | Description |
 | ------------- |:-------------:| ----- |
@@ -44,7 +44,9 @@ This example is used to support Drop-in gift card flow.
 ### UIKit Demo
 
 This is the basic UI for UIKit integration.
+You can run it by selecting `AdyenUIHost` target in xcode.
 
 ### SwiftUI Demo
 
 This is the basic UI for SwiftUI integration.
+You can run it by selecting `AdyenSwiftUIHost` target in xcode.
