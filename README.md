@@ -12,16 +12,13 @@
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Adyen_adyen-ios&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=Adyen_adyen-ios)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Adyen_adyen-ios&metric=security_rating)](https://sonarcloud.io/dashboard?id=Adyen_adyen-ios)
 
+<br/>
+
+![Checkout iOS Logo](https://user-images.githubusercontent.com/2648655/127174806-79646a9e-24be-4c7b-8b0c-6d1657d82a37.png)
 
 # Adyen Components for iOS
 
 Adyen Components for iOS allows you to accept in-app payments by providing you with the building blocks you need to create a checkout experience.
-
-<br/>
-
-![DropIn preview](./dropin-ios.jpg)
-
-<br/>
 
 ## Installation
 
