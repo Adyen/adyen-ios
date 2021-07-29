@@ -360,7 +360,7 @@ class BoletoComponentTests: XCTestCase {
     
     private let dummyName = ShopperName(firstName: "Eerst", lastName: "Laatst")
     
-    private let dummySocialSecurityNumber = "66.818.021/0001-27"
+    private let dummySocialSecurityNumber = "66818021000127"
     
     private let dummyEmail = "foo@bar.baz"
     
