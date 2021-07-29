@@ -100,7 +100,8 @@ internal final class VoucherViewControllerProvider: AnyVoucherViewControllerProv
                              passToken: String?,
                              fields: [GenericVoucherView.VoucherField]) -> GenericVoucherView.Model {
         let amountString = AmountFormatter.formatted(amount: totalAmount.value,
-                                                     currencyCode: totalAmount.currencyCode)
+                                                     currencyCode: totalAmount.currencyCode,
+                                                     localeIdentifier: localizationParameters?.locale)
 
         let logoUrl = LogoURLProvider.logoURL(withName: paymentMethodName,
                                               environment: environment,
