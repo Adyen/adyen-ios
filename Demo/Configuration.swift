@@ -41,7 +41,9 @@ internal enum ConfigurationConstants {
         [
             PKPaymentSummaryItem(
                 label: "Total",
-                amount: AmountFormatter.decimalAmount(current.amount.value, currencyCode: current.amount.currencyCode),
+                amount: AmountFormatter.decimalAmount(current.amount.value,
+                                                      currencyCode: current.amount.currencyCode,
+                                                      localeIdentifier: nil),
                 type: .final
             )
         ]
@@ -63,7 +65,7 @@ internal struct Configuration: Codable {
     internal let apiVersion: Int
     internal let merchantAccount: String
     
-    internal var amount: Amount { Amount(value: value, currencyCode: currencyCode) }
+    internal var amount: Amount { Amount(value: value, currencyCode: currencyCode, localeIdentifier: nil) }
     internal var payment: Payment { Payment(amount: amount, countryCode: countryCode) }
     
     internal static let defaultConfiguration = Configuration(

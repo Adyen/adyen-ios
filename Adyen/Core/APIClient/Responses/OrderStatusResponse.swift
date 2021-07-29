@@ -70,7 +70,8 @@ public struct OrderPaymentMethod: PaymentMethod {
     /// :nodoc:
     public func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let disclosureText = AmountFormatter.formatted(amount: -amount.value,
-                                                       currencyCode: amount.currencyCode)
+                                                       currencyCode: amount.currencyCode,
+                                                       localeIdentifier: parameters?.locale)
         return DisplayInformation(title: name,
                                   subtitle: nil,
                                   logoName: type,
