@@ -130,7 +130,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
                 item.title = title + " \(optionalMessage)"
             }
         } else {
-            item.validator = LengthValidator(minimumLength: 2, maximumLength: 70)
+            item.validator = LengthValidator(minimumLength: 1, maximumLength: 70)
         }
         
         bind(item: item, to: field)
