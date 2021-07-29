@@ -762,26 +762,7 @@ class CardComponentTests: XCTestCase {
             XCTAssertEqual(postalCodeItemView!.titleLabel.text, "Postal code")
             XCTAssertEqual(headerItemView!.text, "Billing address")
 
-            XCTAssertTrue(houseNumberItemView!.alertLabel.isHidden)
-            XCTAssertTrue(addressItemView!.alertLabel.isHidden)
-            XCTAssertTrue(apartmentSuiteItemView!.alertLabel.isHidden)
-            XCTAssertTrue(cityItemView!.alertLabel.isHidden)
-            XCTAssertTrue(provinceOrTerritoryItemView!.alertLabel.isHidden)
-            XCTAssertTrue(postalCodeItemView!.alertLabel.isHidden)
-
-            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
-            payButtonItemViewButton?.sendActions(for: .touchUpInside)
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-                XCTAssertFalse(houseNumberItemView!.alertLabel.isHidden)
-                XCTAssertFalse(addressItemView!.alertLabel.isHidden)
-                XCTAssertTrue(apartmentSuiteItemView!.alertLabel.isHidden)
-                XCTAssertFalse(cityItemView!.alertLabel.isHidden)
-                XCTAssertFalse(provinceOrTerritoryItemView!.alertLabel.isHidden)
-                XCTAssertFalse(postalCodeItemView!.alertLabel.isHidden)
-
-                expectation.fulfill()
-            }
+            expectation.fulfill()
         }
 
         wait(for: [expectation], timeout: 10)
@@ -836,6 +817,45 @@ class CardComponentTests: XCTestCase {
 
                 expectation.fulfill()
             }
+        }
+
+        wait(for: [expectation], timeout: 10)
+    }
+
+    func testAddressUK() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        var config = CardComponent.Configuration()
+        config.billingAddressMode = .full
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: config)
+        sut.payment = .init(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB")
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+
+            let houseNumberItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.houseNumberOrName")
+            let countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.country")
+            let addressItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.street")
+            let apartmentSuiteItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.apartment")
+            let cityItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.city")
+            let provinceOrTerritoryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.stateOrProvince")
+            let postalCodeItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.postalCode")
+            let headerItemView: UILabel? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.title")
+
+            XCTAssertNil(apartmentSuiteItemView)
+
+            XCTAssertEqual(countryItemView!.titleLabel.text, "Country")
+            XCTAssertEqual(countryItemView!.inputControl.label, "United Kingdom")
+            XCTAssertEqual(houseNumberItemView!.titleLabel.text, "House number")
+            XCTAssertEqual(addressItemView!.titleLabel.text, "Street")
+            XCTAssertEqual(cityItemView!.titleLabel.text, "City / Town")
+            XCTAssertNil(provinceOrTerritoryItemView)
+            XCTAssertEqual(postalCodeItemView!.titleLabel.text, "Postal code")
+            XCTAssertEqual(headerItemView!.text, "Billing address")
+
+            expectation.fulfill()
         }
 
         wait(for: [expectation], timeout: 10)

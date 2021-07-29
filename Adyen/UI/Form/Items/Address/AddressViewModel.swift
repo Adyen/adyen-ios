@@ -60,7 +60,7 @@ internal struct AddressViewModel {
         case "GB":
             viewModel.labels[.city] = .cityTownFieldTitle
             viewModel.placeholder[.city] = .cityTownFieldPlaceholder
-            viewModel.schema = [.houseNumberOrName, .street, .city, .postalCode, .stateOrProvince].map { .item($0) }
+            viewModel.schema = [.houseNumberOrName, .street, .city, .postalCode].map { .item($0) }
         case "US":
             viewModel.labels[.postalCode] = .zipCodeFieldTitle
             viewModel.labels[.houseNumberOrName] = .apartmentSuiteFieldTitle
