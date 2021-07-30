@@ -258,7 +258,7 @@ internal class CardViewController: FormViewController {
         let additionalItem = FormTextInputItem(style: formStyle.textField)
         additionalItem.title = localizedString(.cardTaxNumberLabelShort, localizationParameters)
         additionalItem.placeholder = localizedString(.cardTaxNumberPlaceholder, localizationParameters)
-        additionalItem.validator = LengthValidator(exactLength: 10) || DateValidator(format: DateValidator.Format.kcpFormat)
+        additionalItem.validator = NumericStringValidator(exactLength: 10) || DateValidator(format: DateValidator.Format.kcpFormat)
         additionalItem.validationFailureMessage = localizedString(.cardTaxNumberInvalid, localizationParameters)
         additionalItem.autocapitalizationType = .none
         additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthCodeItem")

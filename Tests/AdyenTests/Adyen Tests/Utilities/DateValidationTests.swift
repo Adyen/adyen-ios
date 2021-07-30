@@ -25,8 +25,16 @@ class DateValidationTests: XCTestCase {
         XCTAssertFalse(testMaximumLength("89-10-25", format: "yyyy-MM-dd"))
     }
 
+    func validate(_ string: String, format: DateValidator.Format) -> Bool {
+        DateValidator(format: format).isValid(string)
+    }
+
     func validate(_ string: String, format: String) -> Bool {
         DateValidator(format: format).isValid(string)
+    }
+
+    func testMaximumLength(_ string: String, format: DateValidator.Format) -> Bool {
+        string.count == DateValidator(format: format).maximumLength(for: string)
     }
 
     func testMaximumLength(_ string: String, format: String) -> Bool {

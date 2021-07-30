@@ -15,8 +15,13 @@ public final class DateValidator: Validator {
     ///
     /// - Parameters:
     ///   - format: Date format.
-    ///   See  [Apple docs](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/DataFormatting/Articles/dfDateFormatting10_4.html)
-    public init(format: String) {
+    ///   See [Apple docs](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/DataFormatting/Articles/dfDateFormatting10_4.html)
+    public init(format: Format) {
+        formatter = DateFormatter()
+        formatter.dateFormat = format.rawValue
+    }
+
+    internal init(format: String) {
         formatter = DateFormatter()
         formatter.dateFormat = format
     }
@@ -27,7 +32,7 @@ public final class DateValidator: Validator {
     }
 
     /// :nodoc:
-    public func maximumLength(for value: String) -> Int {
+    public func maximumLength(for _: String) -> Int {
         formatter.dateFormat.count
     }
 
@@ -36,9 +41,9 @@ public final class DateValidator: Validator {
 extension DateValidator {
 
     /// Standard date formats.
-    public enum Format {
+    public enum Format: String {
         /// Date format for Korean Card Payment
-        public static var kcpFormat = "yyMMdd"
+        case kcpFormat = "yyMMdd"
     }
 
 }

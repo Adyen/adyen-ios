@@ -57,8 +57,7 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
         socialSecurityNumberItem.title = localizedString(.boletoSocialSecurityNumber, localizationParameters)
         socialSecurityNumberItem.placeholder = localizedString(.boletoSocialSecurityNumber, localizationParameters)
         socialSecurityNumberItem.formatter = BrazilSocialSecurityNumberFormatter()
-        socialSecurityNumberItem.validator = NumericStringValidator(minimumLength: 11, maximumLength: 11)
-            || NumericStringValidator(minimumLength: 14, maximumLength: 14)
+        socialSecurityNumberItem.validator = NumericStringValidator(exactLength: 11) || NumericStringValidator(exactLength: 14)
         socialSecurityNumberItem.autocapitalizationType = .none
         socialSecurityNumberItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "socialSecurityNumberItem")
         
