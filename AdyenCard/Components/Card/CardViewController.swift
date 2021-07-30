@@ -258,7 +258,7 @@ internal class CardViewController: FormViewController {
         let additionalItem = FormTextInputItem(style: formStyle.textField)
         additionalItem.title = localizedString(.cardTaxNumberLabelShort, localizationParameters)
         additionalItem.placeholder = localizedString(.cardTaxNumberPlaceholder, localizationParameters)
-        additionalItem.validator = LengthValidator(minimumLength: 6, maximumLength: 10)
+        additionalItem.validator = LengthValidator(exactLength: 10) || DateValidator(format: DateValidator.Format.kcpFormat)
         additionalItem.validationFailureMessage = localizedString(.cardTaxNumberInvalid, localizationParameters)
         additionalItem.autocapitalizationType = .none
         additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthCodeItem")
@@ -272,7 +272,7 @@ internal class CardViewController: FormViewController {
         let additionalItem = FormTextInputItem(style: formStyle.textField)
         additionalItem.title = localizedString(.cardEncryptedPasswordLabel, localizationParameters)
         additionalItem.placeholder = localizedString(.cardEncryptedPasswordPlaceholder, localizationParameters)
-        additionalItem.validator = LengthValidator(minimumLength: 2, maximumLength: 2)
+        additionalItem.validator = LengthValidator(exactLength: 2)
         additionalItem.validationFailureMessage = localizedString(.cardEncryptedPasswordInvalid, localizationParameters)
         additionalItem.autocapitalizationType = .none
         additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthPasswordItem")
@@ -287,8 +287,7 @@ internal class CardViewController: FormViewController {
         securityNumberItem.title = localizedString(.boletoSocialSecurityNumber, localizationParameters)
         securityNumberItem.placeholder = localizedString(.cardBrazilSSNPlaceholder, localizationParameters)
         securityNumberItem.formatter = BrazilSocialSecurityNumberFormatter()
-        securityNumberItem.validator = NumericStringValidator(minimumLength: 11, maximumLength: 11)
-            || NumericStringValidator(minimumLength: 14, maximumLength: 14)
+        securityNumberItem.validator = NumericStringValidator(exactLength: 11) || NumericStringValidator(exactLength: 14)
         securityNumberItem.validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
         securityNumberItem.autocapitalizationType = .none
         securityNumberItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "socialSecurityNumberItem")
