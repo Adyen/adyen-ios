@@ -194,7 +194,6 @@ internal final class ComponentManager {
             apiContext: apiContext
         )
     }
-    
 }
 
 // MARK: - PaymentComponentBuilder
@@ -295,10 +294,16 @@ extension ComponentManager: PaymentComponentBuilder {
     }
     
     /// :nodoc:
+    internal func build(paymentMethod: AffirmPaymentMethod) -> PaymentComponent? {
+        AffirmComponent(paymentMethod: paymentMethod,
+                        apiContext: apiContext,
+                        style: style.formComponent)
+    }
+    
+    /// :nodoc:
     internal func build(paymentMethod: PaymentMethod) -> PaymentComponent? {
         InstantPaymentComponent(paymentMethod: paymentMethod,
                                 paymentData: nil,
                                 apiContext: apiContext)
     }
-    
 }

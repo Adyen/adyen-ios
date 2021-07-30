@@ -10,9 +10,9 @@ import Foundation
 /// like the localization table to use and the separator of the key strings.
 public struct LocalizationParameters: Equatable {
 
-    /// The locale for external resources.
+    /// The locale identifier for external resources.
     /// By default current locale is used.
-    public let locale: String?
+    public let locale: String
     
     /// The string table to search. If tableName is nil or is an empty string,
     /// the Localizable.strings is used instead.
@@ -39,6 +39,6 @@ public struct LocalizationParameters: Equatable {
         self.bundle = bundle
         self.tableName = tableName
         self.keySeparator = keySeparator
-        self.locale = locale
+        self.locale = locale ?? Locale.current.identifier
     }
 }

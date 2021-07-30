@@ -53,6 +53,12 @@ public struct PaymentComponentData {
         return shopperInfo.billingAddress
     }
     
+    /// The delivery address information.
+    public var deliveryAddress: PostalAddress? {
+        guard let shopperInfo = paymentMethod as? ShopperInformation else { return nil }
+        return shopperInfo.deliveryAddress
+    }
+    
     /// The social security number.
     public var socialSecurityNumber: String? {
         guard let shopperInfo = paymentMethod as? ShopperInformation else { return nil }

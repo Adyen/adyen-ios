@@ -21,6 +21,9 @@ public protocol ShopperInformation {
     /// The billing address information.
     var billingAddress: PostalAddress? { get }
     
+    /// The delivery address information.
+    var deliveryAddress: PostalAddress? { get }
+    
     /// The social security number information.
     var socialSecurityNumber: String? { get }
 
@@ -36,6 +39,8 @@ public extension ShopperInformation {
     var telephoneNumber: String? { nil }
     
     var billingAddress: PostalAddress? { nil }
+    
+    var deliveryAddress: PostalAddress? { nil }
 
     var socialSecurityNumber: String? { nil }
     

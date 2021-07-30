@@ -16,6 +16,11 @@ extension XCTestCase {
         textView.text = text
         textView.sendActions(for: .editingChanged)
     }
+    
+    internal func populate<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U?, with text: String) {
+        guard let textItemView = textItemView else { return }
+        populate(textItemView: textItemView, with: text)
+    }
 
     internal func append<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U, with text: String) {
         let textView = textItemView.textField
@@ -30,5 +35,4 @@ extension XCTestCase {
     internal func getRandomCountryCode() -> String {
         NSLocale.isoCountryCodes.randomElement() ?? "DE"
     }
-    
 }
