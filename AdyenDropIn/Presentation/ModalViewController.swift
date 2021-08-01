@@ -73,8 +73,9 @@ internal final class ModalViewController: UIViewController {
     override internal var preferredContentSize: CGSize {
         get {
             guard innerController.isViewLoaded else { return .zero }
-            return CGSize(width: view.bounds.width,
-                          height: navigationBarHeight + innerController.preferredContentSize.height)
+            let innerSize = innerController.preferredContentSize
+            return CGSize(width: innerSize.width,
+                          height: navigationBarHeight + innerSize.height)
         }
         
         // swiftlint:disable:next unused_setter_value

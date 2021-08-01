@@ -762,26 +762,7 @@ class CardComponentTests: XCTestCase {
             XCTAssertEqual(postalCodeItemView!.titleLabel.text, "Postal code")
             XCTAssertEqual(headerItemView!.text, "Billing address")
 
-            XCTAssertTrue(houseNumberItemView!.alertLabel.isHidden)
-            XCTAssertTrue(addressItemView!.alertLabel.isHidden)
-            XCTAssertTrue(apartmentSuiteItemView!.alertLabel.isHidden)
-            XCTAssertTrue(cityItemView!.alertLabel.isHidden)
-            XCTAssertTrue(provinceOrTerritoryItemView!.alertLabel.isHidden)
-            XCTAssertTrue(postalCodeItemView!.alertLabel.isHidden)
-
-            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
-            payButtonItemViewButton?.sendActions(for: .touchUpInside)
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-                XCTAssertFalse(houseNumberItemView!.alertLabel.isHidden)
-                XCTAssertFalse(addressItemView!.alertLabel.isHidden)
-                XCTAssertTrue(apartmentSuiteItemView!.alertLabel.isHidden)
-                XCTAssertFalse(cityItemView!.alertLabel.isHidden)
-                XCTAssertFalse(provinceOrTerritoryItemView!.alertLabel.isHidden)
-                XCTAssertFalse(postalCodeItemView!.alertLabel.isHidden)
-
-                expectation.fulfill()
-            }
+            expectation.fulfill()
         }
 
         wait(for: [expectation], timeout: 10)
@@ -836,6 +817,45 @@ class CardComponentTests: XCTestCase {
 
                 expectation.fulfill()
             }
+        }
+
+        wait(for: [expectation], timeout: 10)
+    }
+
+    func testAddressUK() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        var config = CardComponent.Configuration()
+        config.billingAddressMode = .full
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: config)
+        sut.payment = .init(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB")
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+
+            let houseNumberItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.houseNumberOrName")
+            let countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.country")
+            let addressItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.street")
+            let apartmentSuiteItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.apartment")
+            let cityItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.city")
+            let provinceOrTerritoryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.stateOrProvince")
+            let postalCodeItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.postalCode")
+            let headerItemView: UILabel? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.title")
+
+            XCTAssertNil(apartmentSuiteItemView)
+
+            XCTAssertEqual(countryItemView!.titleLabel.text, "Country")
+            XCTAssertEqual(countryItemView!.inputControl.label, "United Kingdom")
+            XCTAssertEqual(houseNumberItemView!.titleLabel.text, "House number")
+            XCTAssertEqual(addressItemView!.titleLabel.text, "Street")
+            XCTAssertEqual(cityItemView!.titleLabel.text, "City / Town")
+            XCTAssertNil(provinceOrTerritoryItemView)
+            XCTAssertEqual(postalCodeItemView!.titleLabel.text, "Postal code")
+            XCTAssertEqual(headerItemView!.text, "Billing address")
+
+            expectation.fulfill()
         }
 
         wait(for: [expectation], timeout: 10)
@@ -1020,6 +1040,60 @@ class CardComponentTests: XCTestCase {
                 payButtonItemViewButton?.sendActions(for: .touchUpInside)
             }
         }
+
+        waitForExpectations(timeout: 20, handler: nil)
+    }
+    
+    func testBrazilSSNs() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "elo"])
+        let config = CardComponent.Configuration(socialSecurityNumberMode: .auto)
+        let cardTypeProviderMock = BinInfoProviderMock()
+        cardTypeProviderMock.onFetch = {
+            $0(BinLookupResponse(brands: [CardBrand(type: .elo, showSocialSecurityNumber: true)],
+                                 issuingCountryCode: "BR"))
+        }
+
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: config,
+                                style: .init(),
+                                cardPublicKeyProvider: CardPublicKeyProviderMock(),
+                                binProvider: cardTypeProviderMock)
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        let delegate = PaymentComponentDelegateMock()
+        sut.delegate = delegate
+
+        let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
+        delegate.onDidFail = { error, component in XCTFail("should not fail") }
+        delegate.onDidSubmit = { data, component in
+            XCTAssertTrue(component === sut)
+            let paymentDetails = data.paymentMethod as? CardDetails
+            XCTAssertNotNil(paymentDetails)
+            XCTAssertEqual(paymentDetails?.socialSecurityNumber, "12312312312")
+
+            sut.stopLoadingIfNeeded()
+            delegateExpectation.fulfill()
+        }
+
+        wait(for: .seconds(1))
+        let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
+        let expiryDateItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
+        let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
+        let brazilSSNItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.socialSecurityNumberItem")
+        XCTAssertTrue(brazilSSNItemView!.isHidden)
+
+        populate(textItemView: cardNumberItemView!, with: "9490 2200 0661 1406")
+        populate(textItemView: expiryDateItemView!, with: "03/30")
+        populate(textItemView: securityCodeItemView!, with: "737")
+
+        wait(for: .seconds(1))
+        XCTAssertEqual(brazilSSNItemView!.titleLabel.text, "CPF/CNPJ")
+        XCTAssertFalse(brazilSSNItemView!.isHidden)
+        populate(textItemView: brazilSSNItemView!, with: "123.123.123-12")
+
+        let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
+        payButtonItemViewButton?.sendActions(for: .touchUpInside)
 
         waitForExpectations(timeout: 20, handler: nil)
     }

@@ -68,4 +68,14 @@ extension Array where Element == CardBrand {
             }
         }
     }
+    
+    /// If any of the brands have `socialSecurityNumberRequired` as true, then this will return true.
+    var socialSecurityNumberRequired: Bool {
+        contains { $0.showsSocialSecurityNumber }
+    }
+    
+    /// If any of the brands requires to skip luhn check, returns `false`. Otherwise `true`.
+    var luhnCheckRequired: Bool {
+        contains { !$0.isLuhnCheckEnabled }
+    }
 }

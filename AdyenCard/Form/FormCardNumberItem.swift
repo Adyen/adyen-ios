@@ -44,7 +44,7 @@ internal final class FormCardNumberItem: FormTextItem, Observer {
         observe(publisher) { [weak self] value in self?.valueDidChange(value) }
         
         title = localizedString(.cardNumberItemTitle, localizationParameters)
-        validator = CardNumberValidator()
+        validator = CardNumberValidator(isLuhnCheckEnabled: true)
         formatter = cardNumberFormatter
         placeholder = localizedString(.cardNumberItemPlaceholder, localizationParameters)
         validationFailureMessage = localizedString(.cardNumberItemInvalid, localizationParameters)

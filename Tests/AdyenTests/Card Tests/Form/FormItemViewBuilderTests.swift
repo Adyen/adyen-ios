@@ -69,7 +69,7 @@ class FormItemViewBuilderTests: XCTestCase {
         let view = item.build(with: FormItemViewBuilder())
 
         XCTAssertNotNil(view as? FormVerticalStackItemView<FormAddressItem>)
-        XCTAssertEqual(view.childItemViews.count, 8)
+        XCTAssertEqual(view.childItemViews.count, 7)
     }
     
 }

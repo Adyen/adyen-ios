@@ -108,6 +108,7 @@
 "adyen.partialPayment.remainingBalance" = "Remaining balance will be %@";
 "adyen.partialPayment.payRemainingAmount" = "Select payment method for the remaining %@";
 "adyen.amount" = "amount";
+"adyen.deliveryAddressToggle.title" = "Separate delivery address";
 "adyen.card.taxNumber.label" = "Cardholder birthdate (YYMMDD) or Corporate registration number (10 digits)";
 "adyen.card.taxNumber.placeholder" = "YYMMDD / 0123456789";
 "adyen.card.taxNumber.invalid" = "Invalid Cardholder birthdate or Corporate registration number";
@@ -115,3 +116,4 @@
 "adyen.card.encryptedPassword.placeholder" = "12";
 "adyen.card.encryptedPassword.invalid" = "Invalid password";
 "adyen.card.taxNumber.label.short" = "Birthday or Corporate registration number";
+"adyen.card.brazilSSN.placeholder" = "123.123.123-12";

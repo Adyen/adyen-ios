@@ -82,7 +82,8 @@ internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvid
                              fields: [ShareableVoucherView.VoucherField]) -> ShareableVoucherView.Model {
         let amountString = AmountFormatter.formatted(
             amount: totalAmount.value,
-            currencyCode: totalAmount.currencyCode
+            currencyCode: totalAmount.currencyCode,
+            localeIdentifier: localizationParameters?.locale
         )
         let logoUrl = LogoURLProvider.logoURL(withName: paymentMethodName,
                                               environment: environment,

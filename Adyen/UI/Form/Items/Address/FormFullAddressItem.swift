@@ -8,7 +8,10 @@ import Foundation
 
 /// A full address form, sutable for all countries.
 /// :nodoc:
-public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, Observer, CompoundFormItem {
+public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, Observer, CompoundFormItem, Hidable {
+    
+    /// :nodoc:
+    public var isHidden: Observable<Bool> = Observable(false)
     
     private var items: [FormItem] = []
     
@@ -27,6 +30,12 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     override public var subitems: [FormItem] { items }
     
+    public override var title: String? {
+        didSet {
+            headerItem.text = title ?? ""
+        }
+    }
+    
     /// Initializes the split text item.
     ///
     /// - Parameter items: The items displayed side-by-side. Must be two.
@@ -35,7 +44,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         self.initialCountry = initialCountry
         self.localizationParameters = localizationParameters
         super.init(value: PostalAddress(), style: style)
-        
+
         update(for: initialCountry)
         
         bind(countrySelectItem.publisher, at: \.identifier, to: self, at: \.value.country)
@@ -44,15 +53,15 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         })
     }
     
-    internal lazy var headerItem: FormItem = {
+    internal lazy var headerItem: FormLabelItem = {
         let item = FormLabelItem(text: localizedString(.billingAddressSectionTitle, localizationParameters),
                                  style: style.title)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "title")
-        return item.addingDefaultMargins()
+        return item
     }()
     
     internal lazy var countrySelectItem: FormRegionPickerItem = {
-        let locale = localizationParameters?.locale.map { Locale(identifier: $0) } ?? Locale.current
+        let locale = Locale(identifier: localizationParameters?.locale ?? Locale.current.identifier)
         let countries = RegionRepository.localCountryFallback(for: locale as NSLocale).sorted { $0.name < $1.name }
         let defaultCountry = countries.first { $0.identifier == initialCountry } ?? countries[0]
         let item = FormRegionPickerItem(preselectedValue: defaultCountry,
@@ -67,7 +76,9 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         let subRegions = RegionRepository.localRegionFallback(for: countryCode, locale: NSLocale.current as NSLocale)
         let viewModel = AddressViewModel[countryCode]
         
-        items = [FormSpacerItem(), headerItem, countrySelectItem]
+        items = [FormSpacerItem(),
+                 headerItem.addingDefaultMargins(),
+                 countrySelectItem]
         for field in viewModel.schema {
             switch field {
             case let .item(fieldType):
@@ -119,7 +130,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
                 item.title = title + " \(optionalMessage)"
             }
         } else {
-            item.validator = LengthValidator(minimumLength: 2, maximumLength: 70)
+            item.validator = LengthValidator(minimumLength: 1, maximumLength: 70)
         }
         
         bind(item: item, to: field)
