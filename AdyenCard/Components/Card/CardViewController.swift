@@ -255,10 +255,13 @@ internal class CardViewController: FormViewController {
     }()
 
     internal lazy var additionalAuthCodeItem: FormTextInputItem = {
+        // Validates birthdate (YYMMDD) or the Corporate registration number (10 digits)
+        let kcpValidator = NumericStringValidator(exactLength: 10) || DateValidator(format: DateValidator.Format.kcpFormat)
+
         let additionalItem = FormTextInputItem(style: formStyle.textField)
         additionalItem.title = localizedString(.cardTaxNumberLabelShort, localizationParameters)
         additionalItem.placeholder = localizedString(.cardTaxNumberPlaceholder, localizationParameters)
-        additionalItem.validator = NumericStringValidator(exactLength: 10) || DateValidator(format: DateValidator.Format.kcpFormat)
+        additionalItem.validator = kcpValidator
         additionalItem.validationFailureMessage = localizedString(.cardTaxNumberInvalid, localizationParameters)
         additionalItem.autocapitalizationType = .none
         additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthCodeItem")
