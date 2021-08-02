@@ -5,14 +5,11 @@
 //
 
 import Adyen
-import Foundation
 import AdyenNetworking
+import Foundation
 
 /// :nodoc:
 internal struct BinLookupResponse: Response {
-    
-    /// :nodoc:
-    internal typealias ErrorType = APIError
 
     /// :nodoc:
     internal var brands: [CardBrand]?

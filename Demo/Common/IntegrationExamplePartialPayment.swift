@@ -9,6 +9,7 @@ import AdyenActions
 import AdyenCard
 import AdyenComponents
 import AdyenDropIn
+import AdyenNetworking
 import UIKit
 
 extension IntegrationExample: PartialPaymentDelegate {

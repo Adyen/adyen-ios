@@ -5,9 +5,10 @@
 //
 
 import Adyen
+import AdyenNetworking
 import Foundation
 
-internal struct CancelOrderRequest: Request {
+internal struct CancelOrderRequest: APIRequest {
 
     internal typealias ResponseType = CancelOrderResponse
 

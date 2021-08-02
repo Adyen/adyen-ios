@@ -4,11 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
+import AdyenNetworking
 import Foundation
 
-import Adyen
-
-internal struct PaymentDetailsRequest: Request {
+internal struct PaymentDetailsRequest: APIRequest {
     
     internal typealias ResponseType = PaymentsResponse
     

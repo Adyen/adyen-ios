@@ -5,11 +5,11 @@
 //
 
 import Adyen
-import Foundation
 import AdyenNetworking
+import Foundation
 
 /// :nodoc:
-internal struct Submit3DS2FingerprintRequest: Request {
+internal struct Submit3DS2FingerprintRequest: APIRequest {
 
     /// :nodoc:
     internal typealias ResponseType = Submit3DS2FingerprintResponse

@@ -5,10 +5,10 @@
 //
 
 import Adyen
-import Foundation
 import AdyenNetworking
+import Foundation
 
-internal struct BinLookupRequest: Request {
+internal struct BinLookupRequest: APIRequest {
     
     internal typealias ResponseType = BinLookupResponse
     

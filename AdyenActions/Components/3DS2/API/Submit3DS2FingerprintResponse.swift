@@ -5,13 +5,11 @@
 //
 
 import Adyen
-import Foundation
 import AdyenNetworking
+import Foundation
 
 /// :nodoc:
 internal struct Submit3DS2FingerprintResponse: Response {
-    
-    internal typealias ErrorType = APIError
 
     internal let result: ThreeDSActionHandlerResult
 

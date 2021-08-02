@@ -6,9 +6,10 @@
 
 import Adyen
 import AdyenActions
+import AdyenNetworking
 import Foundation
 
-internal struct PaymentsRequest: Request {
+internal struct PaymentsRequest: APIRequest {
     
     internal typealias ResponseType = PaymentsResponse
     

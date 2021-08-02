@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
 import AdyenNetworking
+import Foundation
 
 /// :nodoc:
 /// Represents the payment status code.
@@ -24,9 +24,6 @@ public enum PaymentResultCode: String, Decodable {
 /// :nodoc:
 /// Represents a payment status response.
 public struct PaymentStatusResponse: Response {
-    
-    /// :nodoc:
-    public typealias ErrorType = APIError
     
     /// :nodoc:
     /// The payload.

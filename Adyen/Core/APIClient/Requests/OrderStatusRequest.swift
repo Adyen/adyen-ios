@@ -4,11 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
 import AdyenNetworking
+import Foundation
 
 /// :nodoc:
-public struct OrderStatusRequest: Request {
+public struct OrderStatusRequest: APIRequest {
 
     /// :nodoc:
     public typealias ResponseType = OrderStatusResponse

@@ -4,12 +4,17 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import AdyenNetworking
 import func Darwin.fputs
 
 /// Provides control over SDK logging.
 public enum AdyenLogging {
     /// Indicates whether to enable printing to the console.
-    public static var isEnabled: Bool = false
+    public static var isEnabled: Bool = false {
+        didSet {
+            AdyenNetworking.Logging.isEnabled = isEnabled
+        }
+    }
 }
 
 /// :nodoc:
