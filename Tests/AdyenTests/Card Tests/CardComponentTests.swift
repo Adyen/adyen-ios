@@ -1008,7 +1008,7 @@ class CardComponentTests: XCTestCase {
 
             XCTAssertNotEqual(paymentDetails?.password, "12")
             XCTAssertTrue(paymentDetails!.password!.starts(with: "adyenio_0_1_25$"))
-            XCTAssertEqual(paymentDetails?.taxNumber, "123456")
+            XCTAssertEqual(paymentDetails?.taxNumber, "121212")
 
             sut.stopLoadingIfNeeded()
             delegateExpectation.fulfill()
@@ -1033,7 +1033,7 @@ class CardComponentTests: XCTestCase {
                 XCTAssertEqual(taxNumberItemView!.titleLabel.text, "Birthday or Corporate registration number")
                 XCTAssertFalse(taxNumberItemView!.isHidden)
                 XCTAssertFalse(passwordItemView!.isHidden)
-                self.populate(textItemView: taxNumberItemView!, with: "123456")
+                self.populate(textItemView: taxNumberItemView!, with: "121212")
                 self.populate(textItemView: passwordItemView!, with: "12")
 
                 let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
@@ -1096,6 +1096,34 @@ class CardComponentTests: XCTestCase {
         payButtonItemViewButton?.sendActions(for: .primaryActionTriggered)
 
         waitForExpectations(timeout: 20, handler: nil)
+    }
+    
+    func testLuhnCheck() {
+        let allEnabledLuhns = [CardBrand(type: .visa, isLuhnCheckEnabled: true), CardBrand(type: .masterCard, isLuhnCheckEnabled: true)]
+        let atLeastOneDisabledLuhn = [CardBrand(type: .visa, isLuhnCheckEnabled: true), CardBrand(type: .masterCard, isLuhnCheckEnabled: false)]
+        
+        let method = CardPaymentMethod(type: "bcmc",
+                                       name: "Test name",
+                                       fundingSource: .credit,
+                                       brands: ["visa", "amex", "mc"])
+        var config = CardComponent.Configuration()
+        config.billingAddressMode = .postalCode
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: config)
+        
+        let cardNumberItem = sut.cardViewController.numberItem
+        cardNumberItem.validator = CardNumberValidator(isLuhnCheckEnabled: allEnabledLuhns.luhnCheckRequired)
+        cardNumberItem.value = "4111 1111 1111"
+        XCTAssertFalse(cardNumberItem.isValid())
+        cardNumberItem.value = "4111 1111 1111 1111"
+        XCTAssertTrue(cardNumberItem.isValid())
+        
+        cardNumberItem.validator = CardNumberValidator(isLuhnCheckEnabled: atLeastOneDisabledLuhn.luhnCheckRequired)
+        XCTAssertTrue(cardNumberItem.isValid())
+        cardNumberItem.value = "4111 1111 1111"
+        XCTAssertTrue(cardNumberItem.isValid())
+    
     }
     
     func testClear_shouldResetPostalCodeItemToEmptyValue() throws {

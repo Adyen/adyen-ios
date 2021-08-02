@@ -74,8 +74,8 @@ extension Array where Element == CardBrand {
         contains { $0.showsSocialSecurityNumber }
     }
     
-    /// If any of the brands requires to skip luhn check, returns `false`. Otherwise `true`.
+    /// If all the brands require luhn check, returns `true`. Even if one brand requires to skip it, returns `false`
     var luhnCheckRequired: Bool {
-        contains { !$0.isLuhnCheckEnabled }
+        allSatisfy(\.isLuhnCheckEnabled)
     }
 }
