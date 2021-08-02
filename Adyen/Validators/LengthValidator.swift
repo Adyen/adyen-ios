@@ -24,6 +24,15 @@ open class LengthValidator: Validator {
         self.minimumLength = minimumLength
         self.maximumLength = maximumLength
     }
+
+    /// Initializes the length validator.
+    ///
+    /// - Parameters:
+    ///   - exactLength: The required length.
+    public init(exactLength: Int) {
+        self.minimumLength = exactLength
+        self.maximumLength = exactLength
+    }
     
     /// :nodoc:
     open func isValid(_ value: String) -> Bool {
