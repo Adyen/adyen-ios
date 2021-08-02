@@ -191,11 +191,12 @@ internal class CardViewController: FormViewController {
     // MARK: Items
     
     internal lazy var billingAddressItem: FormAddressItem = {
+        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "addressVerification")
         let item = FormAddressItem(initialCountry: defaultCountryCode,
                                    style: formStyle.addressStyle,
-                                   localizationParameters: localizationParameters)
+                                   localizationParameters: localizationParameters,
+                                   identifier: identifier)
         item.style.backgroundColor = UIColor.Adyen.lightGray
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "addressVerification")
         return item
     }()
     

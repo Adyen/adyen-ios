@@ -625,7 +625,7 @@ class CardComponentTests: XCTestCase {
         wait(for: [expectation], timeout: 8)
     }
 
-    func testSubmit() {
+    func testSubmit() throws {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         // Dummy public key
         var config = CardComponent.Configuration()
@@ -639,65 +639,51 @@ class CardComponentTests: XCTestCase {
 
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
+        
+        let expectedVerificationAddress = PostalAddressMocks.newYorkPostalAddress
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidSubmit = { data, component in
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is CardDetails)
-
             let details = data.paymentMethod as! CardDetails
+            
             XCTAssertNotEqual(details.encryptedCardNumber, "4917 6100 0000 0000")
             XCTAssertNotEqual(details.encryptedExpiryYear, "30")
             XCTAssertNotEqual(details.encryptedExpiryMonth, "03")
             XCTAssertNotEqual(details.encryptedSecurityCode, "737")
-
             XCTAssertEqual(data.storePaymentMethod, true)
-
-            XCTAssertNil(data.billingAddress?.apartment)
-            XCTAssertEqual(data.billingAddress?.houseNumberOrName, "House Number")
-            XCTAssertEqual(data.billingAddress?.street, "Address")
-            XCTAssertEqual(data.billingAddress?.stateOrProvince, "AL")
-            XCTAssertEqual(data.billingAddress?.city, "City")
-            XCTAssertEqual(data.billingAddress?.country, "US")
-            XCTAssertEqual(data.billingAddress?.postalCode, "Postal Code")
+            XCTAssertEqual(data.billingAddress, expectedVerificationAddress)
 
             sut.stopLoadingIfNeeded()
             delegateExpectation.fulfill()
+            
             XCTAssertEqual(sut.cardViewController.view.isUserInteractionEnabled, true)
             XCTAssertEqual(sut.cardViewController.button.showsActivityIndicator, false)
         }
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        wait(for: .seconds(1))
 
-        let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
-        let expiryDateItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
-        let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
-        let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
-        let storeDetailsItemView: FormToggleItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem")
+        let view: UIView = sut.viewController.view
 
-        let houseNumberItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.houseNumberOrName")
-        let addressItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.street")
-        let cityItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.city")
-        let postalCodeItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.postalCode")
+        let cardNumberItemView: FormTextItemView<FormCardNumberItem> = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.numberItem"))
+        populate(textItemView: cardNumberItemView, with: "4917 6100 0000 0000")
 
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+        let expiryDateItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.expiryDateItem"))
+        populate(textItemView: expiryDateItemView, with: "03/30")
 
-            self.populate(textItemView: cardNumberItemView!, with: "4917 6100 0000 0000")
-            self.populate(textItemView: expiryDateItemView!, with: "03/30")
-            self.populate(textItemView: securityCodeItemView!, with: "737")
+        let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem> = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.securityCodeItem"))
+        populate(textItemView: securityCodeItemView, with: "737")
 
-            self.populate(textItemView: houseNumberItemView!, with: "House Number")
-            self.populate(textItemView: addressItemView!, with: "Address")
-            self.populate(textItemView: cityItemView!, with: "City")
-            self.populate(textItemView: postalCodeItemView!, with: "Postal Code")
+        let storeDetailsItemView: FormToggleItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.storeDetailsItem"))
+        storeDetailsItemView.accessibilityActivate()
 
-            storeDetailsItemView!.accessibilityActivate()
-
-            payButtonItemViewButton?.sendActions(for: .touchUpInside)
-
-            expectation.fulfill()
-        }
+        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "AdyenCard.CardComponent.addressVerification"))
+        fill(formAddressView: billingAddressView, with: expectedVerificationAddress)
+        
+        let payButtonItemViewButton: UIControl = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.payButtonItem.button"))
+        payButtonItemViewButton.sendActions(for: .touchUpInside)
+        
         waitForExpectations(timeout: 10, handler: nil)
     }
 
