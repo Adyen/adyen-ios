@@ -20,7 +20,7 @@ class VoucherViewTests: XCTestCase {
         
         let sut = getSut(model: getMockModel(mainButtonType: .save, style: style))
         
-        let expectation = expectation(description: "Dummy expectation")
+        let dummyExpectation = expectation(description: "Dummy expectation")
         
         asyncAfterDelay { [self] in
             check(layer: sut.findView(by: "logo")!.layer, forCornerRounding: style.logoCornerRounding)
@@ -29,7 +29,7 @@ class VoucherViewTests: XCTestCase {
             check(submitButtton: sut.findView(by: "mainButton")! as! SubmitButton, forStyle: style.mainButton)
             check(button: sut.findView(by: "secondaryButton")!, forStyle: style.secondaryButton)
             
-            expectation.fulfill()
+            dummyExpectation.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
@@ -37,11 +37,11 @@ class VoucherViewTests: XCTestCase {
     }
     
     func testApplePayButton() {
-        let expectation = expectation(description: "Apple wallet button tapped")
+        let appleWalletButtonExpectation = expectation(description: "Apple wallet button tapped")
         
         let delegateMock = VoucherViewDelegateMock()
         delegateMock.onAddToAppleWallet = {
-            expectation.fulfill()
+            appleWalletButtonExpectation.fulfill()
         }
         
         let sut = getSut(
@@ -109,7 +109,7 @@ class VoucherViewTests: XCTestCase {
         )
         
         let sut = getSut(model: mockModel)
-        let expectation = expectation(description: "Dummy expectation")
+        let dummyExpectation = expectation(description: "Dummy expectation")
         
         asyncAfterDelay {
             let amountLabel: UILabel? = sut.findView(by: "amountLabel")
@@ -120,7 +120,7 @@ class VoucherViewTests: XCTestCase {
             XCTAssertEqual(currencyLabel?.text, mockModel.currency)
             XCTAssertEqual(logo?.imageURL, mockModel.logoUrl)
             
-            expectation.fulfill()
+            dummyExpectation.fulfill()
         }
         
         waitForExpectations(timeout: 5, handler: nil)
@@ -134,7 +134,7 @@ class VoucherViewTests: XCTestCase {
         )
         
         let sut = getSut(model: mockModel)
-        let expectation = expectation(description: "Dummy expectation")
+        let dummyExpectation = expectation(description: "Dummy expectation")
         
         asyncAfterDelay {
             sut.showCopyCodeConfirmation()
@@ -148,7 +148,7 @@ class VoucherViewTests: XCTestCase {
                     XCTAssertEqual(secondaryButton?.title(for: .normal), mockModel.secondaryButtonTitle)
                     XCTAssertEqual(secondaryButton?.titleColor(for: .normal), mockModel.style.secondaryButton.title.color)
                     
-                    expectation.fulfill()
+                    dummyExpectation.fulfill()
                 }
             }
         }
