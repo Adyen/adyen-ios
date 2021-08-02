@@ -39,6 +39,7 @@
 "adyen.emailItem.title" = "電子郵件地址";
 "adyen.emailItem.placeHolder" = "電子郵件地址";
 "adyen.emailItem.invalid" = "電子郵件地址無效";
+"adyen.moreOptions" = "";
 "adyen.mbway.confirmPayment" = "在 MB WAY 應用程式上確認您的付款";
 "adyen.await.waitForConfirmation" = "正在等候確認";
 "adyen.blik.confirmPayment" = "開啟您的銀行應用程式以確認付款。";
@@ -65,7 +66,8 @@
 "adyen.voucher.readInstructions" = "閱覽說明";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "您有 %@ 可以支付";
-"adyen.pix.copyButton" = "";
+"adyen.pix.copyButton" = "複製代碼";
+"adyen.pix.instructions.copiedMessage" = "已將代碼複製到剪貼簿";
 "adyen.billingAddressSection.title" = "帳單地址";
 "adyen.deliveryAddressSection.title" = "派送地址";
 "adyen.countryField.title" = "國家/地區";

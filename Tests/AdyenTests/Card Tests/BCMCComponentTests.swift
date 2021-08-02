@@ -201,7 +201,7 @@ class BCMCComponentTests: XCTestCase {
             // Tap submit button
             let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.payButtonItem.button")
             XCTAssertNotNil(submitButton)
-            submitButton!.sendActions(for: .touchUpInside)
+            submitButton!.sendActions(for: .primaryActionTriggered)
         }
         wait(for: [didSubmitExpectation], timeout: 10)
     }
@@ -308,7 +308,7 @@ class BCMCComponentTests: XCTestCase {
             // Tap submit button
             let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.payButtonItem.button")
             XCTAssertNotNil(submitButton)
-            submitButton!.sendActions(for: .touchUpInside)
+            submitButton!.sendActions(for: .primaryActionTriggered)
             
             // wait until the alert popup is shown
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {

@@ -21,7 +21,7 @@ internal protocol VoucherViewDelegate: AnyObject {
 
 internal final class VoucherView: UIView, Localizable {
     
-    private let model: Model
+    internal let model: Model
     
     internal weak var delegate: VoucherViewDelegate?
     
@@ -145,7 +145,7 @@ internal final class VoucherView: UIView, Localizable {
         amountLabel.numberOfLines = 1
         amountLabel.setContentHuggingPriority(.required, for: .horizontal)
         amountLabel.setContentHuggingPriority(.required, for: .vertical)
-        amountLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "instructionLabel")
+        amountLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "amountLabel")
         
         return amountLabel
     }()
@@ -156,7 +156,7 @@ internal final class VoucherView: UIView, Localizable {
         currencyLabel.setContentHuggingPriority(.required, for: .horizontal)
         currencyLabel.setContentHuggingPriority(.required, for: .vertical)
         currencyLabel.numberOfLines = 1
-        currencyLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "instructionLabel")
+        currencyLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "currencyLabel")
         
         return currencyLabel
     }()
@@ -165,7 +165,7 @@ internal final class VoucherView: UIView, Localizable {
         let button = SubmitButton(style: model.style.mainButton)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.title = model.mainButton
-        button.addTarget(self, action: #selector(onMainButtonTap), for: .touchUpInside)
+        button.addTarget(self, action: #selector(onMainButtonTap), for: .primaryActionTriggered)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "mainButton")
         button.preservesSuperviewLayoutMargins = true
         button.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
@@ -177,7 +177,7 @@ internal final class VoucherView: UIView, Localizable {
         let button = UIButton(style: model.style.secondaryButton)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(model.secondaryButtonTitle, for: .normal)
-        button.addTarget(self, action: #selector(onSecondaryButtonTap), for: .touchUpInside)
+        button.addTarget(self, action: #selector(onSecondaryButtonTap), for: .primaryActionTriggered)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "secondaryButton")
         button.preservesSuperviewLayoutMargins = true
         button.setContentHuggingPriority(.required, for: .vertical)
@@ -187,7 +187,7 @@ internal final class VoucherView: UIView, Localizable {
     
     private lazy var appleWalletButton: PKAddPassButton = {
         let button = PKAddPassButton(addPassButtonStyle: .blackOutline)
-        button.addTarget(self, action: #selector(self.appleWalletButtonPressed), for: .touchUpInside)
+        button.addTarget(self, action: #selector(self.appleWalletButtonPressed), for: .primaryActionTriggered)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.voucher", postfix: "appleWalletButton")
         button.heightAnchor.constraint(equalToConstant: 50.0).isActive = true

@@ -35,4 +35,8 @@ extension XCTestCase {
     internal func getRandomCountryCode() -> String {
         NSLocale.isoCountryCodes.randomElement() ?? "DE"
     }
+    
+    internal func asyncAfterDelay(seconds: Int = 1, execute work: @escaping () -> Void) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(seconds), execute: work)
+    }
 }

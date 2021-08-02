@@ -200,7 +200,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
             let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem")
             let ibanItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem")
 
-            payButtonItemViewButton?.sendActions(for: .touchUpInside)
+            payButtonItemViewButton?.sendActions(for: .primaryActionTriggered)
 
             XCTAssertEqual(nameItemView?.alertLabel.text, "Holder name invalid")
             XCTAssertEqual(ibanItemView?.alertLabel.text, "Invalid account number")
@@ -238,7 +238,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
             self.populate(textItemView: ibanItemView!, with: "NL13TEST0123456789")
             self.populate(textItemView: nameItemView!, with: "A. Klaassen")
 
-            payButtonItemViewButton?.sendActions(for: .touchUpInside)
+            payButtonItemViewButton?.sendActions(for: .primaryActionTriggered)
         }
         wait(for: [expectation], timeout: 5)
     }

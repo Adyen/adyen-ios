@@ -90,4 +90,78 @@ class AmountFormatterTests: XCTestCase {
         amountCVE.localeIdentifier = "fr_FR"
         XCTAssertEqual(amountCVE.formatted, "12 345,00 CVE")
     }
+    
+    func testComponentExtraction() {
+        let comparator: ((String, String)?, (String, String)?) -> Bool = { (lhs, rhs) in
+            switch (lhs, rhs) {
+            case (.none, .none):
+                return true
+            case (.some(let lhs), .some(let rhs)):
+                return lhs.0 == rhs.0 && rhs.1 == rhs.1
+            case (_, _):
+                return false
+            }
+        }
+        
+        let amount = 123456
+        XCTAssertTrue(
+            comparator(
+                AmountFormatter.formattedComponents(
+                    amount: amount,
+                    currencyCode: "USD",
+                    localeIdentifier: "ko_KR"
+                ), ("US$", "1,234.56")
+            )
+        )
+        
+        XCTAssertTrue(
+            comparator(
+                AmountFormatter.formattedComponents(
+                    amount: amount,
+                    currencyCode: "USD",
+                    localeIdentifier: "fr_FR"
+                ), ("$US", "1 234,56")
+            )
+        )
+        
+        XCTAssertTrue(
+            comparator(
+                AmountFormatter.formattedComponents(
+                    amount: amount,
+                    currencyCode: "CVE",
+                    localeIdentifier: "ko_KR"
+                ), ("CVE", "123,456.00")
+            )
+        )
+        
+        XCTAssertTrue(
+            comparator(
+                AmountFormatter.formattedComponents(
+                    amount: amount,
+                    currencyCode: "CVE",
+                    localeIdentifier: "fr_FR"
+                ), ("CVE", "123 456,00")
+            )
+        )
+        
+        XCTAssertTrue(
+            comparator(
+                AmountFormatter.formattedComponents(
+                    amount: amount,
+                    currencyCode: "EUR",
+                    localeIdentifier: "ko_KR"
+                ), ("€", "123,456.00")
+            )
+        )
+        
+        XCTAssertTrue(
+            comparator(
+                AmountFormatter.formattedComponents(
+                    amount: amount,
+                    currencyCode: "EUR",
+                    localeIdentifier: "fr_FR"
+                ), ("€", "123 456,00")
+            )
+        )
+    }
 }

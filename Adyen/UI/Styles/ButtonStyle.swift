@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 
 /// Contains the styling customization options for any buttons.
-public struct ButtonStyle: ViewStyle {
+public struct ButtonStyle: ViewStyle, Equatable {
     
     /// The title style.
     public var title: TextStyle

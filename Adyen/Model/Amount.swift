@@ -58,17 +58,30 @@ public struct Amount: Codable, Equatable {
 /// :nodoc:
 public extension Amount {
 
-    /// Returns a formatter representation of the amount.
+    /// Returns a formatted representation of the amount.
     ///
     /// :nodoc:
     var formatted: String {
-        if let formattedAmount = AmountFormatter.formatted(amount: value,
-                                                           currencyCode: currencyCode,
-                                                           localeIdentifier: localeIdentifier) {
+        if let formattedAmount = AmountFormatter.formatted(
+            amount: value,
+            currencyCode: currencyCode,
+            localeIdentifier: localeIdentifier
+        ) {
             return formattedAmount
         }
 
         return String(value) + " " + currencyCode
+    }
+    
+    /// Returns a formatted representation of the amount, split in two components
+    ///
+    /// :nodoc:
+    var formattedComponents: (currency: String, value: String) {
+        AmountFormatter.formattedComponents(
+            amount: value,
+            currencyCode: currencyCode,
+            localeIdentifier: localeIdentifier
+        ) ?? (currency: currencyCode, value: String(value))
     }
 
 }

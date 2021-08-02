@@ -172,7 +172,7 @@ class QiwiWalletComponentTests: XCTestCase {
 
             self.populate(textItemView: phoneNumberView!, with: "7455573152")
 
-            payButtonItemViewButton?.sendActions(for: .touchUpInside)
+            payButtonItemViewButton?.sendActions(for: .primaryActionTriggered)
 
             expectation.fulfill()
         }

@@ -9,11 +9,11 @@ import Adyen
 import UIKit
 import XCTest
 
-class EContextStoresVoucherViewControllerProviderTests: XCTestCase {
+class EContextATMShareableVoucherViewProviderTests: XCTestCase {
 
     func testCustomLocalization() throws {
-        let econtextAction = try Coder.decode(econtextStoresAction) as EContextStoresVoucherAction
-        let action: VoucherAction = .econtextStores(econtextAction)
+        let econtextAction = try Coder.decode(econtextATMAction) as EContextATMVoucherAction
+        let action: VoucherAction = .econtextATM(econtextAction)
 
         let viewProvider = VoucherShareableViewProvider(
             style: VoucherComponentStyle(),
@@ -34,6 +34,12 @@ class EContextStoresVoucherViewControllerProviderTests: XCTestCase {
                         currencyCode: econtextAction.totalAmount.currencyCode
         ))
 
+        let collectionInstitutionKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.CollectionInstitutionNumberKeyLabel")
+        XCTAssertEqual(collectionInstitutionKeyLabel.text, "Collection Institution Number -- Test")
+
+        let collectionInstitutionValueLable: UILabel! = sut.findView(by: "adyen.voucher.CollectionInstitutionNumberValueLabel")
+        XCTAssertEqual(collectionInstitutionValueLable.text, "58091")
+
         let expireyKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationKeyLabel")
         XCTAssertEqual(expireyKeyLabel.text, "Expiration Date -- Test")
 
@@ -47,5 +53,5 @@ class EContextStoresVoucherViewControllerProviderTests: XCTestCase {
         XCTAssertEqual(maskedPhoneValueLabel.text, "11******89")
 
     }
-
+    
 }

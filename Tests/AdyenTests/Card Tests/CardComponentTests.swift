@@ -694,7 +694,7 @@ class CardComponentTests: XCTestCase {
 
             storeDetailsItemView!.accessibilityActivate()
 
-            payButtonItemViewButton?.sendActions(for: .touchUpInside)
+            payButtonItemViewButton?.sendActions(for: .primaryActionTriggered)
 
             expectation.fulfill()
         }
@@ -807,7 +807,7 @@ class CardComponentTests: XCTestCase {
             XCTAssertTrue(postalCodeItemView!.alertLabel.isHidden)
 
             let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
-            payButtonItemViewButton?.sendActions(for: .touchUpInside)
+            payButtonItemViewButton?.sendActions(for: .primaryActionTriggered)
 
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
                 XCTAssertTrue(houseNumberItemView!.alertLabel.isHidden)
@@ -971,7 +971,7 @@ class CardComponentTests: XCTestCase {
             self.populate(textItemView: postalCodeItemView!, with: "12345")
 
             let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
-            payButtonItemViewButton?.sendActions(for: .touchUpInside)
+            payButtonItemViewButton?.sendActions(for: .primaryActionTriggered)
 
             expectation.fulfill()
         }
@@ -1037,7 +1037,7 @@ class CardComponentTests: XCTestCase {
                 self.populate(textItemView: passwordItemView!, with: "12")
 
                 let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
-                payButtonItemViewButton?.sendActions(for: .touchUpInside)
+                payButtonItemViewButton?.sendActions(for: .primaryActionTriggered)
             }
         }
 
@@ -1093,7 +1093,7 @@ class CardComponentTests: XCTestCase {
         populate(textItemView: brazilSSNItemView!, with: "123.123.123-12")
 
         let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
-        payButtonItemViewButton?.sendActions(for: .touchUpInside)
+        payButtonItemViewButton?.sendActions(for: .primaryActionTriggered)
 
         waitForExpectations(timeout: 20, handler: nil)
     }

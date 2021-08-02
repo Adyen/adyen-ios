@@ -99,7 +99,6 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
                                             style: style.textField,
                                             contentType: .givenName)
         injector.localizationParameters = localizationParameters
-        injector.item.value = "foo"
         return injector
     }()
 
@@ -115,7 +114,6 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
                                             style: style.textField,
                                             contentType: .familyName)
         injector.localizationParameters = localizationParameters
-        injector.item.value = "foo"
         return injector
     }()
 
@@ -129,7 +127,6 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         let injector = EmailFormItemInjector(identifier: identifier,
                                              style: style.textField)
         injector.localizationParameters = localizationParameters
-        injector.item.value = "foo@foo.foo"
         return injector
     }()
 

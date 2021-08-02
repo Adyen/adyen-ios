@@ -87,7 +87,7 @@ class GiftCardComponentTests: XCTestCase {
 
         populate(cardNumber: "60643650100000000000", pin: "73737")
 
-        payButtonItemViewButton?.sendActions(for: .touchUpInside)
+        payButtonItemViewButton?.sendActions(for: .primaryActionTriggered)
 
         wait(for: .seconds(1))
 
@@ -127,7 +127,7 @@ class GiftCardComponentTests: XCTestCase {
 
         populate(cardNumber: "60643650100000000000", pin: "73737")
 
-        payButtonItemViewButton?.sendActions(for: .touchUpInside)
+        payButtonItemViewButton?.sendActions(for: .primaryActionTriggered)
 
         wait(for: .seconds(1))
 
@@ -167,7 +167,7 @@ class GiftCardComponentTests: XCTestCase {
 
         populate(cardNumber: "60643650100000000000", pin: "73737")
 
-        payButtonItemViewButton?.sendActions(for: .touchUpInside)
+        payButtonItemViewButton?.sendActions(for: .primaryActionTriggered)
 
         wait(for: .seconds(1))
 
@@ -207,7 +207,7 @@ class GiftCardComponentTests: XCTestCase {
 
         populate(cardNumber: "60643650100000000000", pin: "73737")
 
-        payButtonItemViewButton?.sendActions(for: .touchUpInside)
+        payButtonItemViewButton?.sendActions(for: .primaryActionTriggered)
 
         wait(for: .seconds(1))
 
@@ -247,7 +247,7 @@ class GiftCardComponentTests: XCTestCase {
 
         populate(cardNumber: "60643650100000000000", pin: "73737")
 
-        payButtonItemViewButton?.sendActions(for: .touchUpInside)
+        payButtonItemViewButton?.sendActions(for: .primaryActionTriggered)
 
         wait(for: .seconds(1))
 
@@ -300,7 +300,7 @@ class GiftCardComponentTests: XCTestCase {
 
         populate(cardNumber: "60643650100000000000", pin: "73737")
 
-        payButtonItemViewButton?.sendActions(for: .touchUpInside)
+        payButtonItemViewButton?.sendActions(for: .primaryActionTriggered)
 
         wait(for: .seconds(1))
 
@@ -354,7 +354,7 @@ class GiftCardComponentTests: XCTestCase {
 
         populate(cardNumber: "60643650100000000000", pin: "73737")
 
-        payButtonItemViewButton?.sendActions(for: .touchUpInside)
+        payButtonItemViewButton?.sendActions(for: .primaryActionTriggered)
 
         wait(for: .seconds(1))
 
@@ -412,7 +412,7 @@ class GiftCardComponentTests: XCTestCase {
 
         populate(cardNumber: "60643650100000000000", pin: "73737")
 
-        payButtonItemViewButton?.sendActions(for: .touchUpInside)
+        payButtonItemViewButton?.sendActions(for: .primaryActionTriggered)
 
         wait(for: .seconds(1))
 
@@ -469,7 +469,7 @@ class GiftCardComponentTests: XCTestCase {
 
         populate(cardNumber: "60643650100000000000", pin: "73737")
 
-        payButtonItemViewButton?.sendActions(for: .touchUpInside)
+        payButtonItemViewButton?.sendActions(for: .primaryActionTriggered)
 
         wait(for: .seconds(1))
 
@@ -525,7 +525,7 @@ class GiftCardComponentTests: XCTestCase {
 
         populate(cardNumber: "60643650100000000000", pin: "73737")
 
-        payButtonItemViewButton?.sendActions(for: .touchUpInside)
+        payButtonItemViewButton?.sendActions(for: .primaryActionTriggered)
 
         wait(for: .seconds(1))
 

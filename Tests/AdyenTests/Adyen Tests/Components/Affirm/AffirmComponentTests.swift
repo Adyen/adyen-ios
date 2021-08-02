@@ -157,7 +157,7 @@ class AffirmComponentTests: XCTestCase {
         fill(formAddressView: deliveryAddressView, with: expectedDeliveryAddress)
         
         let submitButton: UIControl = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.payButtonItem.button"))
-        submitButton.sendActions(for: .touchUpInside)
+        submitButton.sendActions(for: .primaryActionTriggered)
         
         waitForExpectations(timeout: 10, handler: nil)
     }

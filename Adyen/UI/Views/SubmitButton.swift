@@ -40,7 +40,7 @@ public final class SubmitButton: UIControl {
     
     // MARK: - Background View
     
-    private lazy var backgroundView: BackgroundView = {
+    internal lazy var backgroundView: BackgroundView = {
         let backgroundView = BackgroundView(cornerRounding: style.cornerRounding,
                                             borderColor: style.borderColor,
                                             borderWidth: style.borderWidth,
@@ -60,7 +60,7 @@ public final class SubmitButton: UIControl {
         }
     }
     
-    private lazy var titleLabel: UILabel = {
+    internal lazy var titleLabel: UILabel = {
         let titleLabel = UILabel(style: style.title)
         titleLabel.isAccessibilityElement = false
         
@@ -118,7 +118,7 @@ public final class SubmitButton: UIControl {
     
     override public func layoutSubviews() {
         super.layoutSubviews()
-        self.adyen.round(corners: .allCorners, rounding: style.cornerRounding)
+        self.adyen.round(using: style.cornerRounding)
     }
     
     private func configureConstraints() {
@@ -160,14 +160,15 @@ public final class SubmitButton: UIControl {
 
 extension SubmitButton {
     
-    private class BackgroundView: UIView {
+    final internal class BackgroundView: UIView {
         
         private let color: UIColor
         private let rounding: CornerRounding
         
         fileprivate init(cornerRounding: CornerRounding,
                          borderColor: UIColor?,
-                         borderWidth: CGFloat, color: UIColor) {
+                         borderWidth: CGFloat,
+                         color: UIColor) {
             self.color = color
             self.rounding = cornerRounding
             super.init(frame: .zero)
@@ -181,7 +182,7 @@ extension SubmitButton {
         }
         
         @available(*, unavailable)
-        fileprivate required init?(coder aDecoder: NSCoder) {
+        internal required init?(coder aDecoder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
         
@@ -214,7 +215,7 @@ extension SubmitButton {
             layer.add(transition, forKey: nil)
         }
         
-        override func layoutSubviews() {
+        internal override func layoutSubviews() {
             super.layoutSubviews()
             self.adyen.round(corners: .allCorners, rounding: rounding)
         }

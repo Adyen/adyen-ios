@@ -174,22 +174,19 @@ public final class VoucherComponent: AnyVoucherActionHandler {
             backgroundColor: style.backgroundColor
         )
         
-        var amount = anyAction.totalAmount.formatted
-        amount
-            .range(of: anyAction.totalAmount.currencyCode)
-            .map { amount.removeSubrange($0) }
+        let comps = anyAction.totalAmount.formattedComponents
         
         return VoucherView.Model(
-            amount: amount,
-            currency: anyAction.totalAmount.currencyCode,
+            amount: comps.value,
+            currency: comps.currency,
             logoUrl: LogoURLProvider.logoURL(
                 withName: anyAction.paymentMethodType.rawValue,
                 environment: apiContext.environment,
                 size: .medium
             ),
             mainButton: getPrimaryButtonTitle(with: action),
-            secondaryButtonTitle: "More options",
-            codeConfirmationTitle: "Code copied",
+            secondaryButtonTitle: localizedString(.moreOptions, localizationParameters),
+            codeConfirmationTitle: localizedString(.pixInstructionsCopiedMessage, localizationParameters),
             mainButtonType: canAddPasses ? .addToAppleWallet : .save,
             style: viewStyle
         )

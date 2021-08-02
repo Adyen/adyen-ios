@@ -39,6 +39,7 @@
 "adyen.emailItem.title" = "Adres e-mail";
 "adyen.emailItem.placeHolder" = "Adres e-mail";
 "adyen.emailItem.invalid" = "Niepoprawny adres email";
+"adyen.moreOptions" = "";
 "adyen.mbway.confirmPayment" = "Potwierdź płatność w aplikacji MB WAY";
 "adyen.await.waitForConfirmation" = "Oczekiwanie na potwierdzenie";
 "adyen.blik.confirmPayment" = "Otwórz aplikację bankową, aby potwierdzić płatność.";
@@ -67,7 +68,8 @@
 "adyen.voucher.finish" = "Finish";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Masz do zapłacenia %@";
-"adyen.pix.copyButton" = "";
+"adyen.pix.copyButton" = "Skopiuj kod";
+"adyen.pix.instructions.copiedMessage" = "Kod skopiowany do schowka";
 "adyen.billingAddressSection.title" = "Adres rozliczeniowy";
 "adyen.deliveryAddressSection.title" = "Adres dostawy";
 "adyen.countryField.title" = "Kraj";
