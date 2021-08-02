@@ -91,6 +91,9 @@ targets:
       - framework: Carthage/Checkouts/adyen-3ds2-ios/XCFramework/Dynamic/Adyen3DS2.xcframework
         embed: true
         codeSign: true
+      - framework: Carthage/Build/AdyenNetworking.xcframework
+        embed: true
+        codeSign: true
       - framework: Carthage/Build/AdyenSwiftUI.xcframework
         embed: true
         codeSign: true
