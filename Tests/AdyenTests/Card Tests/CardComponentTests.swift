@@ -1098,6 +1098,34 @@ class CardComponentTests: XCTestCase {
         waitForExpectations(timeout: 20, handler: nil)
     }
     
+    func testLuhnCheck() {
+        let allEnabledLuhns = [CardBrand(type: .visa, isLuhnCheckEnabled: true), CardBrand(type: .masterCard, isLuhnCheckEnabled: true)]
+        let atLeastOneDisabledLuhn = [CardBrand(type: .visa, isLuhnCheckEnabled: true), CardBrand(type: .masterCard, isLuhnCheckEnabled: false)]
+        
+        let method = CardPaymentMethod(type: "bcmc",
+                                       name: "Test name",
+                                       fundingSource: .credit,
+                                       brands: ["visa", "amex", "mc"])
+        var config = CardComponent.Configuration()
+        config.billingAddressMode = .postalCode
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: config)
+        
+        let cardNumberItem = sut.cardViewController.numberItem
+        cardNumberItem.validator = CardNumberValidator(isLuhnCheckEnabled: allEnabledLuhns.luhnCheckRequired)
+        cardNumberItem.value = "4111 1111 1111"
+        XCTAssertFalse(cardNumberItem.isValid())
+        cardNumberItem.value = "4111 1111 1111 1111"
+        XCTAssertTrue(cardNumberItem.isValid())
+        
+        cardNumberItem.validator = CardNumberValidator(isLuhnCheckEnabled: atLeastOneDisabledLuhn.luhnCheckRequired)
+        XCTAssertTrue(cardNumberItem.isValid())
+        cardNumberItem.value = "4111 1111 1111"
+        XCTAssertTrue(cardNumberItem.isValid())
+    
+    }
+    
     func testClear_shouldResetPostalCodeItemToEmptyValue() throws {
         // Given
         let method = CardPaymentMethod(type: "bcmc",
