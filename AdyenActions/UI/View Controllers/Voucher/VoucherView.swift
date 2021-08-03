@@ -165,7 +165,7 @@ internal final class VoucherView: UIView, Localizable {
         let button = SubmitButton(style: model.style.mainButton)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.title = model.mainButton
-        button.addTarget(self, action: #selector(onMainButtonTap), for: .primaryActionTriggered)
+        button.addTarget(self, action: #selector(onMainButtonTap), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "mainButton")
         button.preservesSuperviewLayoutMargins = true
         button.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
@@ -177,7 +177,7 @@ internal final class VoucherView: UIView, Localizable {
         let button = UIButton(style: model.style.secondaryButton)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(model.secondaryButtonTitle, for: .normal)
-        button.addTarget(self, action: #selector(onSecondaryButtonTap), for: .primaryActionTriggered)
+        button.addTarget(self, action: #selector(onSecondaryButtonTap), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "secondaryButton")
         button.preservesSuperviewLayoutMargins = true
         button.setContentHuggingPriority(.required, for: .vertical)
@@ -187,7 +187,7 @@ internal final class VoucherView: UIView, Localizable {
     
     private lazy var appleWalletButton: PKAddPassButton = {
         let button = PKAddPassButton(addPassButtonStyle: .blackOutline)
-        button.addTarget(self, action: #selector(self.appleWalletButtonPressed), for: .primaryActionTriggered)
+        button.addTarget(self, action: #selector(self.appleWalletButtonPressed), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.voucher", postfix: "appleWalletButton")
         button.heightAnchor.constraint(equalToConstant: 50.0).isActive = true

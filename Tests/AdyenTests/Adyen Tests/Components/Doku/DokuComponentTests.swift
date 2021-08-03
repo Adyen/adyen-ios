@@ -172,7 +172,7 @@ class DokuComponentTests: XCTestCase {
             let emailView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.DokuComponent.emailItem")
             self.populate(textItemView: emailView, with: "mohamed.smith@domain.com")
 
-            submitButton?.sendActions(for: .primaryActionTriggered)
+            submitButton?.sendActions(for: .touchUpInside)
 
             dummyExpectation.fulfill()
         }

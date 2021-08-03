@@ -85,7 +85,7 @@ internal class BasePickerInputControl: UIControl, PickerTextInputControl {
         super.init(frame: CGRect.zero)
 
         setupView()
-        addTarget(self, action: #selector(self.handleTapAction), for: .primaryActionTriggered)
+        addTarget(self, action: #selector(self.handleTapAction), for: .touchUpInside)
     }
 
     @available(*, unavailable)

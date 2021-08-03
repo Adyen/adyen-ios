@@ -246,7 +246,7 @@ class QRCodeComponentTests: XCTestCase {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
                 let copyButton: SubmitButton? = viewController.view.findView(by: "copyButton")
                 XCTAssertNotNil(copyButton)
-                copyButton?.sendActions(for: .primaryActionTriggered)
+                copyButton?.sendActions(for: .touchUpInside)
                 
                 XCTAssertEqual(self.action.qrCodeData, UIPasteboard.general.string)
                 

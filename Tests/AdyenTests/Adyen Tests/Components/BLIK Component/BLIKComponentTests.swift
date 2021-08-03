@@ -160,7 +160,7 @@ class BLIKComponentTests: XCTestCase {
             let blikCodeView: FormTextInputItemView! = self.sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem")
             self.populate(textItemView: blikCodeView, with: "123456")
 
-            submitButton?.sendActions(for: .primaryActionTriggered)
+            submitButton?.sendActions(for: .touchUpInside)
 
             dummyExpectation.fulfill()
         }

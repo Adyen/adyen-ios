@@ -130,7 +130,7 @@ class MBWayComponentTests: XCTestCase {
             let phoneNumberView: FormPhoneNumberItemView! = sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.phoneNumberItem")
             self.populate(textItemView: phoneNumberView, with: "1233456789")
 
-            submitButton?.sendActions(for: .primaryActionTriggered)
+            submitButton?.sendActions(for: .touchUpInside)
 
             dummyExpectation.fulfill()
         }

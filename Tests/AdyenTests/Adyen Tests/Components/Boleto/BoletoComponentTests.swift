@@ -307,7 +307,7 @@ class BoletoComponentTests: XCTestCase {
         
             let submitButton: SubmitButton? = self.sut.viewController.view.findView(by: "payButtonItem.button") as? SubmitButton
         
-            submitButton?.sendActions(for: .primaryActionTriggered)
+            submitButton?.sendActions(for: .touchUpInside)
             
         }
     
@@ -341,7 +341,7 @@ class BoletoComponentTests: XCTestCase {
 
             let submitButton: SubmitButton? = self.sut.viewController.view.findView(by: "payButtonItem.button") as? SubmitButton
 
-            submitButton?.sendActions(for: .primaryActionTriggered)
+            submitButton?.sendActions(for: .touchUpInside)
 
         }
 

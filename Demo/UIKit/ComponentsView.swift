@@ -76,7 +76,7 @@ internal final class ComponentsView: UIView {
             payButton.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor)
         ])
         
-        payButton.addTarget(self, action: #selector(onApplePayButtonTap), for: .primaryActionTriggered)
+        payButton.addTarget(self, action: #selector(onApplePayButtonTap), for: .touchUpInside)
     }
 }
 

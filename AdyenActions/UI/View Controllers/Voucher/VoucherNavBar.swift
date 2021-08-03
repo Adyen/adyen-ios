@@ -51,12 +51,12 @@ final internal class VoucherNavBar: UIView, AnyNavigationBar {
         let editButton = UIButton(style: model.style.editButton)
         editButton.translatesAutoresizingMaskIntoConstraints = false
         editButton.setTitle(model.editButtonTitle, for: .normal)
-        editButton.addTarget(self, action: #selector(onEditButtonTap), for: .primaryActionTriggered)
+        editButton.addTarget(self, action: #selector(onEditButtonTap), for: .touchUpInside)
         
         let doneButton = UIButton(style: model.style.doneButton)
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         doneButton.setTitle(model.doneButtonTitle, for: .normal)
-        doneButton.addTarget(self, action: #selector(onDoneButtonTap), for: .primaryActionTriggered)
+        doneButton.addTarget(self, action: #selector(onDoneButtonTap), for: .touchUpInside)
         
         stackView.addArrangedSubview(editButton)
         stackView.addArrangedSubview(doneButton)

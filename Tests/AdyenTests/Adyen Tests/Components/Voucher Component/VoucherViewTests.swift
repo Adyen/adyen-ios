@@ -59,7 +59,7 @@ class VoucherViewTests: XCTestCase {
             XCTAssertNil(mainButton)
             XCTAssertNotNil(addToAppleWalletButton)
             
-            addToAppleWalletButton!.sendActions(for: .primaryActionTriggered)
+            addToAppleWalletButton!.sendActions(for: .touchUpInside)
         }
         
         waitForExpectations(timeout: 5, handler: nil)
@@ -95,8 +95,8 @@ class VoucherViewTests: XCTestCase {
             XCTAssertEqual(mainButton?.title, mockModel.mainButton)
             XCTAssertEqual(secondaryButton?.title(for: .normal), mockModel.secondaryButtonTitle)
             
-            mainButton?.sendActions(for: .primaryActionTriggered)
-            secondaryButton?.sendActions(for: .primaryActionTriggered)
+            mainButton?.sendActions(for: .touchUpInside)
+            secondaryButton?.sendActions(for: .touchUpInside)
         }
         
         waitForExpectations(timeout: 5, handler: nil)
