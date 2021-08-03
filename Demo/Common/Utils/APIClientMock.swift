@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import AdyenNetworking
 
 internal typealias MockedResult = Result<Response, Error>
 

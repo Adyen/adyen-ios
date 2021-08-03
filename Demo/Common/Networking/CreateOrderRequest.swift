@@ -5,12 +5,13 @@
 //
 
 import Adyen
+import AdyenNetworking
 #if canImport(AdyenCard)
     import AdyenCard
 #endif
 import Foundation
 
-internal struct CreateOrderRequest: Request {
+internal struct CreateOrderRequest: APIRequest {
 
     internal typealias ResponseType = CreateOrderResponse
 

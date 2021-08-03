@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import AdyenNetworking
 
 /// :nodoc:
 /// An object that needs an API context to retrieve internal resources
@@ -13,21 +14,6 @@ public protocol APIContextAware: AnyObject {
     /// :nodoc:
     /// The API context
     var apiContext: APIContext { get }
-    
-}
-
-/// :nodoc:
-/// Protocol that describes an API context used for retrieving internal resources
-public protocol AnyAPIContext {
-    
-    /// :nodoc:
-    var environment: AnyAPIEnvironment { get }
-    
-    /// :nodoc:
-    var headers: [String: String] { get }
-    
-    /// :nodoc:
-    var queryParameters: [URLQueryItem] { get }
     
 }
 

@@ -14,6 +14,7 @@ import Adyen
 #if canImport(AdyenCard)
     import AdyenCard
 #endif
+import AdyenNetworking
 import UIKit
 
 /**

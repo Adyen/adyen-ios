@@ -5,6 +5,7 @@
 //
 
 import UIKit
+import AdyenNetworking
 
 /// So that any `UIView` instance will inherit the `adyen` scope.
 /// :nodoc:

@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import AdyenNetworking
 
 internal protocol APIClientAware {
     var apiClient: APIClientProtocol { get }

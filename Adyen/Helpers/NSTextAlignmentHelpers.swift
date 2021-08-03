@@ -7,6 +7,7 @@
 import Foundation
 import QuartzCore
 import UIKit
+import AdyenNetworking
 
 /// :nodoc:
 extension NSTextAlignment: AdyenCompatible {}

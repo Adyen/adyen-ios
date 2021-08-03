@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import AdyenNetworking
 
 /// :nodoc:
 extension String: AdyenCompatible {

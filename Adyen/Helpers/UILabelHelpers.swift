@@ -5,6 +5,7 @@
 //
 
 import UIKit
+import AdyenNetworking
 
 /// :nodoc:
 extension UILabel {
