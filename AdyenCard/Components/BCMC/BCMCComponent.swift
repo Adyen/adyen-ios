@@ -7,6 +7,7 @@
 import Adyen
 import Foundation
 import UIKit
+import AdyenNetworking
 
 /// A component that handles BCMC card payments.
 public final class BCMCComponent: CardComponent {

@@ -5,9 +5,10 @@
 //
 
 import Adyen
+import AdyenNetworking
 import Foundation
 
-internal struct BalanceCheckRequest: Request {
+internal struct BalanceCheckRequest: APIRequest {
 
     internal typealias ResponseType = BalanceCheckResponse
 

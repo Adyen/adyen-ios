@@ -280,17 +280,17 @@
 		E9E3DACF221EEB5300697074 /* CardSecurityCodeValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DACE221EEB5300697074 /* CardSecurityCodeValidatorTests.swift */; };
 		E9E3DAD1221EEE2100697074 /* CardExpiryDateValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAD0221EEE2100697074 /* CardExpiryDateValidator.swift */; };
 		E9E3DAD3221EEFF700697074 /* CardExpiryDateValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAD2221EEFF700697074 /* CardExpiryDateValidatorTests.swift */; };
-		E9E3DAFD2225485400697074 /* URLSessionHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAFC2225485400697074 /* URLSessionHelpers.swift */; };
 		E9E3DAFF2225488900697074 /* Completion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAFE2225488900697074 /* Completion.swift */; };
 		E9E3DB03222548E100697074 /* Coder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DB02222548E100697074 /* Coder.swift */; };
 		E9E3DB062226B3B200697074 /* CoderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DB052226B3B200697074 /* CoderTests.swift */; };
 		F90FB7BC2446E8C8005BFE0E /* BrowserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90FB7BB2446E8C8005BFE0E /* BrowserInfo.swift */; };
 		F90FB7BE2446EBB9005BFE0E /* BrowserInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90FB7BD2446EBB9005BFE0E /* BrowserInfoTests.swift */; };
 		F90FB7C02448587C005BFE0E /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90FB7BF2448587C005BFE0E /* TextField.swift */; };
+		F913B3ED26B7FAA8008F6CD2 /* AdyenNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = F913B3EC26B7FAA8008F6CD2 /* AdyenNetworking */; };
+		F913B3F126B80D4E008F6CD2 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F913B3F026B80D4E008F6CD2 /* APIRequest.swift */; };
 		F91664F023E41D7300C10738 /* AnyEncodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91664EF23E41D7300C10738 /* AnyEncodable.swift */; };
 		F9172F682643E0BC00985310 /* OrderStatusRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9172F672643E0BC00985310 /* OrderStatusRequest.swift */; };
 		F9172F742643E0D200985310 /* OrderStatusResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9172F732643E0D200985310 /* OrderStatusResponse.swift */; };
-		F9172FF626452E6E00985310 /* RetryOnErrorAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9172FF526452E6E00985310 /* RetryOnErrorAPIClient.swift */; };
 		F917308E26491ED900985310 /* InstantPaymentComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F917308D26491ED900985310 /* InstantPaymentComponent.swift */; };
 		F9175E59259393E800D653BE /* AdyenComponents.h in Headers */ = {isa = PBXBuildFile; fileRef = F9175E57259393E800D653BE /* AdyenComponents.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F9175E672593944C00D653BE /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
@@ -471,15 +471,9 @@
 		F96286BD256BDEB000043FE3 /* CoreBundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96286BC256BDEB000043FE3 /* CoreBundleExtension.swift */; };
 		F9639B2224DC2FF50073F38A /* PresentableComponentWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B2124DC2FF50073F38A /* PresentableComponentWrapper.swift */; };
 		F9639B2424DC38460073F38A /* PresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B2324DC38460073F38A /* PresentationDelegate.swift */; };
-		F9639B2A24DD6A990073F38A /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95E24AE22C1155A00973184 /* Request.swift */; };
-		F9639B2B24DD6A9C0073F38A /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95E24B222C1155A00973184 /* APIClient.swift */; };
-		F9639B2D24DD6B370073F38A /* RetryAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B2C24DD6B370073F38A /* RetryAPIClient.swift */; };
 		F9639B3324DD96990073F38A /* PaymentStatusRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B3224DD96990073F38A /* PaymentStatusRequest.swift */; };
 		F9639B3524DD97A30073F38A /* PaymentStatusResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B3424DD97A30073F38A /* PaymentStatusResponse.swift */; };
 		F9639B3B24E14A940073F38A /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B3A24E14A940073F38A /* APIError.swift */; };
-		F9639B3F24E18F620073F38A /* Scheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B3E24E18F620073F38A /* Scheduler.swift */; };
-		F9639B4124E27D0E0073F38A /* BackoffScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B4024E27D0E0073F38A /* BackoffScheduler.swift */; };
-		F9639B4324E27FAE0073F38A /* SimpleScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B4224E27FAE0073F38A /* SimpleScheduler.swift */; };
 		F9639B4724E283060073F38A /* BackoffSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B4624E283060073F38A /* BackoffSchedulerTests.swift */; };
 		F9639B4924E28DC80073F38A /* IntervalCalculatorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B4824E28DC80073F38A /* IntervalCalculatorMock.swift */; };
 		F9639B4D24E298C70073F38A /* SimpleSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B4C24E298C70073F38A /* SimpleSchedulerTests.swift */; };
@@ -507,7 +501,6 @@
 		F9789C6E23F18EBD000B4B2B /* WeChatPayActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C6D23F18EBD000B4B2B /* WeChatPayActionComponent.swift */; };
 		F9789C7523F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C7423F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift */; };
 		F97BC22C2667768B00F1D242 /* AppleWalletPassProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97BC22B2667768B00F1D242 /* AppleWalletPassProvider.swift */; };
-		F97BC2382667949100F1D242 /* UniqueAssetAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97BC2372667949100F1D242 /* UniqueAssetAPIClient.swift */; };
 		F97BC2792668BEE200F1D242 /* AppleWalletError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97BC2782668BEE200F1D242 /* AppleWalletError.swift */; };
 		F97BC2AD2668C63200F1D242 /* AppleWalletPassProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97BC2AC2668C63200F1D242 /* AppleWalletPassProviderTests.swift */; };
 		F97BC2CE2668EB4500F1D242 /* VoucherViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97BC2B82668EAFD00F1D242 /* VoucherViewDelegateMock.swift */; };
@@ -1155,8 +1148,6 @@
 		E90934772297E37B00C9F04B /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-FR"; path = "fr-FR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		E90934792297E38000C9F04B /* sv-SE */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "sv-SE"; path = "sv-SE.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		E9240D6B2265EFE900FB57D0 /* StoredCardAlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredCardAlertManager.swift; sourceTree = "<group>"; };
-		E95E24AE22C1155A00973184 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
-		E95E24B222C1155A00973184 /* APIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		E95E24BF22C2593900973184 /* ApplePayPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayPaymentMethod.swift; sourceTree = "<group>"; };
 		E97B970B2297ED0D00505476 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E97B9719229D54D600505476 /* ActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionTests.swift; sourceTree = "<group>"; };
@@ -1198,20 +1189,19 @@
 		E9E3DAD2221EEFF700697074 /* CardExpiryDateValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardExpiryDateValidatorTests.swift; sourceTree = "<group>"; };
 		E9E3DAF822241D6000697074 /* CardPayload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardPayload.swift; sourceTree = "<group>"; };
 		E9E3DAF922241D6000697074 /* CardEncryptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardEncryptor.swift; sourceTree = "<group>"; };
-		E9E3DAFC2225485400697074 /* URLSessionHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHelpers.swift; sourceTree = "<group>"; };
 		E9E3DAFE2225488900697074 /* Completion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Completion.swift; sourceTree = "<group>"; };
 		E9E3DB02222548E100697074 /* Coder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coder.swift; sourceTree = "<group>"; };
 		E9E3DB052226B3B200697074 /* CoderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoderTests.swift; sourceTree = "<group>"; };
 		F90FB7BB2446E8C8005BFE0E /* BrowserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserInfo.swift; sourceTree = "<group>"; };
 		F90FB7BD2446EBB9005BFE0E /* BrowserInfoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserInfoTests.swift; sourceTree = "<group>"; };
 		F90FB7BF2448587C005BFE0E /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
+		F913B3F026B80D4E008F6CD2 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 		F91664EF23E41D7300C10738 /* AnyEncodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyEncodable.swift; sourceTree = "<group>"; };
 		F91664F823E460CD00C10738 /* WeChatPaySDKData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeChatPaySDKData.swift; sourceTree = "<group>"; };
 		F91664FC23F1615B00C10738 /* SDKAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKAction.swift; sourceTree = "<group>"; };
 		F9172F522643DABA00985310 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F9172F672643E0BC00985310 /* OrderStatusRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderStatusRequest.swift; sourceTree = "<group>"; };
 		F9172F732643E0D200985310 /* OrderStatusResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderStatusResponse.swift; sourceTree = "<group>"; };
-		F9172FF526452E6E00985310 /* RetryOnErrorAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetryOnErrorAPIClient.swift; sourceTree = "<group>"; };
 		F917308D26491ED900985310 /* InstantPaymentComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstantPaymentComponent.swift; sourceTree = "<group>"; };
 		F9175E55259393E800D653BE /* AdyenComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdyenComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9175E57259393E800D653BE /* AdyenComponents.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdyenComponents.h; sourceTree = "<group>"; };
@@ -1324,15 +1314,11 @@
 		F9639B2124DC2FF50073F38A /* PresentableComponentWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentableComponentWrapper.swift; sourceTree = "<group>"; };
 		F9639B2324DC38460073F38A /* PresentationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationDelegate.swift; sourceTree = "<group>"; };
 		F9639B2524DD3DA30073F38A /* AwaitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitView.swift; sourceTree = "<group>"; };
-		F9639B2C24DD6B370073F38A /* RetryAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetryAPIClient.swift; sourceTree = "<group>"; };
 		F9639B3224DD96990073F38A /* PaymentStatusRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentStatusRequest.swift; sourceTree = "<group>"; };
 		F9639B3424DD97A30073F38A /* PaymentStatusResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentStatusResponse.swift; sourceTree = "<group>"; };
 		F9639B3624E122A40073F38A /* PollingComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollingComponent.swift; sourceTree = "<group>"; };
 		F9639B3A24E14A940073F38A /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		F9639B3C24E178300073F38A /* AwaitActionDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwaitActionDetails.swift; sourceTree = "<group>"; };
-		F9639B3E24E18F620073F38A /* Scheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scheduler.swift; sourceTree = "<group>"; };
-		F9639B4024E27D0E0073F38A /* BackoffScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackoffScheduler.swift; sourceTree = "<group>"; };
-		F9639B4224E27FAE0073F38A /* SimpleScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleScheduler.swift; sourceTree = "<group>"; };
 		F9639B4624E283060073F38A /* BackoffSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackoffSchedulerTests.swift; sourceTree = "<group>"; };
 		F9639B4824E28DC80073F38A /* IntervalCalculatorMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntervalCalculatorMock.swift; sourceTree = "<group>"; };
 		F9639B4C24E298C70073F38A /* SimpleSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleSchedulerTests.swift; sourceTree = "<group>"; };
@@ -1365,7 +1351,7 @@
 		F9789C7223F1A5C1000B4B2B /* WeChatPaySDKAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeChatPaySDKAction.swift; sourceTree = "<group>"; };
 		F9789C7423F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeChatPayAdditionalDetails.swift; sourceTree = "<group>"; };
 		F97BC22B2667768B00F1D242 /* AppleWalletPassProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleWalletPassProvider.swift; sourceTree = "<group>"; };
-		F97BC2372667949100F1D242 /* UniqueAssetAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniqueAssetAPIClient.swift; sourceTree = "<group>"; };
+		F97BC2432667A7BF00F1D242 /* AppleWalletError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleWalletError.swift; sourceTree = "<group>"; };
 		F97BC2782668BEE200F1D242 /* AppleWalletError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleWalletError.swift; sourceTree = "<group>"; };
 		F97BC2AC2668C63200F1D242 /* AppleWalletPassProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleWalletPassProviderTests.swift; sourceTree = "<group>"; };
 		F97BC2B82668EAFD00F1D242 /* VoucherViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherViewDelegateMock.swift; sourceTree = "<group>"; };
@@ -1509,6 +1495,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F913B3ED26B7FAA8008F6CD2 /* AdyenNetworking in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2126,7 +2113,6 @@
 			isa = PBXGroup;
 			children = (
 				E2D12BFF221D91ED00EF682F /* StringHelpers.swift */,
-				E9E3DAFC2225485400697074 /* URLSessionHelpers.swift */,
 				E9021DED225CC46D009CF7F4 /* URLHelpers.swift */,
 				E9021E012264C4C5009CF7F4 /* KeyedDecodingContainerHelpers.swift */,
 				E2B3C215233507030067891D /* UIColorHelpers.swift */,
@@ -2411,11 +2397,11 @@
 		E7B6280724ED65D2000CEC6E /* Requests */ = {
 			isa = PBXGroup;
 			children = (
-				E95E24AE22C1155A00973184 /* Request.swift */,
 				F9639B3224DD96990073F38A /* PaymentStatusRequest.swift */,
 				F919DF8E24E682250027976E /* ClientKeyRequest.swift */,
 				F9172F672643E0BC00985310 /* OrderStatusRequest.swift */,
 				F99D2EFD2661363D00BB5B2F /* AppleWalletPassRequest.swift */,
+				F913B3F026B80D4E008F6CD2 /* APIRequest.swift */,
 			);
 			path = Requests;
 			sourceTree = "<group>";
@@ -3221,13 +3207,6 @@
 			children = (
 				E7B6280824ED65E4000CEC6E /* Responses */,
 				E7B6280724ED65D2000CEC6E /* Requests */,
-				E95E24B222C1155A00973184 /* APIClient.swift */,
-				F9639B2C24DD6B370073F38A /* RetryAPIClient.swift */,
-				F9172FF526452E6E00985310 /* RetryOnErrorAPIClient.swift */,
-				F97BC2372667949100F1D242 /* UniqueAssetAPIClient.swift */,
-				F9639B3E24E18F620073F38A /* Scheduler.swift */,
-				F9639B4024E27D0E0073F38A /* BackoffScheduler.swift */,
-				F9639B4224E27FAE0073F38A /* SimpleScheduler.swift */,
 				E90933FE228AFC6600C9F04B /* Environment.swift */,
 				5A4702172664E9440023F264 /* APIContext.swift */,
 			);
@@ -3651,6 +3630,9 @@
 			dependencies = (
 			);
 			name = Adyen;
+			packageProductDependencies = (
+				F913B3EC26B7FAA8008F6CD2 /* AdyenNetworking */,
+			);
 			productName = Adyen;
 			productReference = E2C0E03322097917008616F6 /* Adyen.framework */;
 			productType = "com.apple.product-type.framework";
@@ -3989,6 +3971,7 @@
 			mainGroup = E2C0E02922097916008616F6;
 			packageReferences = (
 				F9C5F07725C968FE005A6E54 /* XCRemoteSwiftPackageReference "adyen-3ds2-ios" */,
+				F913B3EB26B7FAA8008F6CD2 /* XCRemoteSwiftPackageReference "adyen-networking-ios" */,
 			);
 			productRefGroup = E2C0E03422097917008616F6 /* Products */;
 			projectDirPath = "";
@@ -4401,7 +4384,6 @@
 				E7B3DE9F25A61B9200CA4D2B /* UIViewConstraintsHelper.swift in Sources */,
 				E795A27626404E9400321C48 /* AddressViewModel.swift in Sources */,
 				F9354BE923A7B5AC00A6760B /* ViewStyle.swift in Sources */,
-				F9639B4324E27FAE0073F38A /* SimpleScheduler.swift in Sources */,
 				E9B36C9D223FDE4F00EAA368 /* PaymentMethods.swift in Sources */,
 				F9620DB023C75430005209FC /* WeChatPayPaymentMethod.swift in Sources */,
 				F9EDB78423914B4400CFB3C9 /* CurrencyCodeValidator.swift in Sources */,
@@ -4432,7 +4414,6 @@
 				E7085A8D2627132B00D0153B /* PostalAddress.swift in Sources */,
 				F9589D272601F19E00E4113F /* EmailFormItemInjector.swift in Sources */,
 				E72D9BAA26A6E66800FBDA48 /* Dimentions.swift in Sources */,
-				F9639B2D24DD6B370073F38A /* RetryAPIClient.swift in Sources */,
 				F9620DB323C75C19005209FC /* PaymentComponentBuilder.swift in Sources */,
 				E7085B122628B29600D0153B /* BasePickerInputControl.swift in Sources */,
 				E700A72D2549E2F00012B64C /* BLIKPaymentMethod.swift in Sources */,
@@ -4444,7 +4425,6 @@
 				E28098C4220DC66E0087928F /* ListItemView.swift in Sources */,
 				E28098C2220DC1080087928F /* ListCell.swift in Sources */,
 				E270FDE4225CACB0006C2CD0 /* Observable.swift in Sources */,
-				F9172FF626452E6E00985310 /* RetryOnErrorAPIClient.swift in Sources */,
 				E9E3DAFF2225488900697074 /* Completion.swift in Sources */,
 				E278EB4122AA5EBD00497FD5 /* CardPaymentMethod.swift in Sources */,
 				E2D12C00221D91ED00EF682F /* StringHelpers.swift in Sources */,
@@ -4477,7 +4457,6 @@
 				E278EB4322AA5EC800497FD5 /* IssuerListPaymentMethod.swift in Sources */,
 				F90FB7BC2446E8C8005BFE0E /* BrowserInfo.swift in Sources */,
 				E787C9D1246E948F00B401E0 /* CoreFonts.swift in Sources */,
-				F9639B4124E27D0E0073F38A /* BackoffScheduler.swift in Sources */,
 				F9589D032601EE7800E4113F /* FormItemInjector.swift in Sources */,
 				5A15D5A1264BE1E500A8E3C7 /* PrefilledShopperInformation.swift in Sources */,
 				F96F44D523BDED4400871C1F /* FormTextItemStyle.swift in Sources */,
@@ -4514,7 +4493,6 @@
 				F926D52C23F59ABE00D058D3 /* QiwiWalletPaymentMethod.swift in Sources */,
 				F97C857725C1D5BA00D7F85C /* UIViewHelpers.swift in Sources */,
 				E95E24C022C2593900973184 /* ApplePayPaymentMethod.swift in Sources */,
-				F97BC2382667949100F1D242 /* UniqueAssetAPIClient.swift in Sources */,
 				F9A6C4D12657B0D700D8CD3E /* FormSpacerItemView.swift in Sources */,
 				E24FED0822704C9800A65122 /* ComponentError.swift in Sources */,
 				F95A788825C416A60032CF7E /* CopyLabelView.swift in Sources */,
@@ -4527,7 +4505,6 @@
 				E909342822969AFF00C9F04B /* PaymentComponentData.swift in Sources */,
 				F99D454A262716EF00880D72 /* FormErrorItemStyle.swift in Sources */,
 				E21895E422A7CC4D001B6EE0 /* FormSplitItem.swift in Sources */,
-				F9639B2A24DD6A990073F38A /* Request.swift in Sources */,
 				E7D5311424462D87000046B4 /* FormButtonItemView.swift in Sources */,
 				E7085C81262DD44E00D0153B /* AllCountriesPhoneExtensions.swift in Sources */,
 				F926D53323F5A5D000D058D3 /* NumericStringValidator.swift in Sources */,
@@ -4535,6 +4512,7 @@
 				E288EB962267652D000E960C /* Observer.swift in Sources */,
 				F9EDB7862391734200CFB3C9 /* UnknownError.swift in Sources */,
 				F924C074246C2E0B006DDAB8 /* LazyOptional.swift in Sources */,
+				F913B3F126B80D4E008F6CD2 /* APIRequest.swift in Sources */,
 				E2C0E0C1220D7E5E008616F6 /* SubmitButton.swift in Sources */,
 				E216D3C9221AFB830013CBCF /* IBANValidator.swift in Sources */,
 				E76EC6972417F36A009C6E2F /* FormTextInputItemView.swift in Sources */,
@@ -4554,14 +4532,12 @@
 				E7085B162628B29600D0153B /* FormPhoneExtensionPickerItemView.swift in Sources */,
 				F924C079246C38E0006DDAB8 /* SecuredViewController.swift in Sources */,
 				E7D5311A2446F525000046B4 /* FormSeparatorItem.swift in Sources */,
-				E9E3DAFD2225485400697074 /* URLSessionHelpers.swift in Sources */,
 				E71E8F3E257921D10054B03D /* StoredBLIKPaymentMethod.swift in Sources */,
 				C982FFDC2694792F00AED849 /* AffirmPaymentMethod.swift in Sources */,
 				F9B798C923AB697100A2103C /* FormComponentStyle.swift in Sources */,
 				E708591F261F1CB800D0153B /* FormVerticalStackItemView.swift in Sources */,
 				E7275BF9255012F600907CF9 /* FormLabelItem.swift in Sources */,
 				E2D12BEF221D560800EF682F /* FormValueItem.swift in Sources */,
-				F9639B3F24E18F620073F38A /* Scheduler.swift in Sources */,
 				E76EC6882412581E009C6E2F /* FormTextInputItem.swift in Sources */,
 				E2C0E096220B04F0008616F6 /* FormViewController.swift in Sources */,
 				F9FE25D62626CD49001874BB /* ReadyToSubmitPaymentComponentDelegate.swift in Sources */,
@@ -4571,7 +4547,6 @@
 				F919DF9124E682480027976E /* ClientKeyResponse.swift in Sources */,
 				F97C81AF25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift in Sources */,
 				F97CCD3C24360A4000BC560A /* BundleHelpers.swift in Sources */,
-				F9639B2B24DD6A9C0073F38A /* APIClient.swift in Sources */,
 				E788A4EF2658030100089448 /* DisplayInformation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -6144,6 +6119,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		F913B3EB26B7FAA8008F6CD2 /* XCRemoteSwiftPackageReference "adyen-networking-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Adyen/adyen-networking-ios";
+			requirement = {
+				kind = exactVersion;
+				version = "1.0.0-beta.3";
+			};
+		};
 		F9C5F07725C968FE005A6E54 /* XCRemoteSwiftPackageReference "adyen-3ds2-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Adyen/adyen-3ds2-ios";
@@ -6155,6 +6138,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		F913B3EC26B7FAA8008F6CD2 /* AdyenNetworking */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F913B3EB26B7FAA8008F6CD2 /* XCRemoteSwiftPackageReference "adyen-networking-ios" */;
+			productName = AdyenNetworking;
+		};
 		F9C5F07825C968FE005A6E54 /* Adyen3DS2 */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F9C5F07725C968FE005A6E54 /* XCRemoteSwiftPackageReference "adyen-3ds2-ios" */;

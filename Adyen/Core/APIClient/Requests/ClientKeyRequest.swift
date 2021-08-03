@@ -4,10 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import AdyenNetworking
 import Foundation
 
 /// :nodoc:
-public struct ClientKeyRequest: Request {
+public struct ClientKeyRequest: APIRequest {
     
     /// :nodoc:
     public typealias ResponseType = ClientKeyResponse

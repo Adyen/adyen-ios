@@ -19,7 +19,7 @@ class BoletoVoucherShareableVoucherViewProviderTests: XCTestCase {
         let boletoDecoded = try Coder.decode(boletoAction) as BoletoVoucherAction
         let action: VoucherAction = .boletoBancairoSantander(boletoDecoded)
 
-        let sut = viewProvider.provideView(with: action)
+        let sut = viewProvider.provideView(with: action, logo: nil)
 
         UIApplication.shared.keyWindow?.rootViewController?.view = sut
 

@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import AdyenNetworking
 
 /// Formats an IBAN (International Bank Account Number).
 public final class IBANFormatter: Formatter {

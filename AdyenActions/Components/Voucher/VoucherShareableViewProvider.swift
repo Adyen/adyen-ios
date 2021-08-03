@@ -6,6 +6,7 @@
 
 import Adyen
 import Foundation
+import AdyenNetworking
 import UIKit
 
 internal protocol AnyVoucherShareableViewProvider: Localizable {

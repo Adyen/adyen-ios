@@ -17,7 +17,7 @@ class DokuVoucherUITests: XCTestCase {
         let dokuAction = try Coder.decode(dokuIndomaretAction) as DokuVoucherAction
         let action: VoucherAction = .dokuIndomaret(dokuAction)
 
-        let sut = viewControllerProvider.provideView(with: action)
+        let sut = viewControllerProvider.provideView(with: action, logo: nil)
 
         UIApplication.shared.keyWindow?.rootViewController?.view = sut
 
@@ -55,7 +55,7 @@ class DokuVoucherUITests: XCTestCase {
         let dokuAction = try Coder.decode(dokuIndomaretAction) as DokuVoucherAction
         let action: VoucherAction = .dokuIndomaret(dokuAction)
 
-        let sut = viewProvider.provideView(with: action)
+        let sut = viewProvider.provideView(with: action, logo: nil)
 
         UIApplication.shared.keyWindow?.rootViewController?.view = sut
 
@@ -93,7 +93,7 @@ class DokuVoucherUITests: XCTestCase {
         let dokuAction = try Coder.decode(dokuAlfamartAction) as DokuVoucherAction
         let action: VoucherAction = .dokuAlfamart(dokuAction)
 
-        let sut = viewProvider.provideView(with: action)
+        let sut = viewProvider.provideView(with: action, logo: nil)
 
         UIApplication.shared.keyWindow?.rootViewController?.view = sut
 

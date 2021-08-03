@@ -21,7 +21,7 @@ class EContextStoresVoucherViewControllerProviderTests: XCTestCase {
         )
         viewProvider.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost")
 
-        let sut = viewProvider.provideView(with: action)
+        let sut = viewProvider.provideView(with: action, logo: nil)
 
         UIApplication.shared.keyWindow?.rootViewController?.view = sut
 

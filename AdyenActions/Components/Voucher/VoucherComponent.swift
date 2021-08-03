@@ -7,6 +7,7 @@
 import Adyen
 import PassKit
 import UIKit
+import AdyenNetworking
 
 /// A component that handles voucher action's.
 internal protocol AnyVoucherActionHandler: ActionComponent, Cancellable {

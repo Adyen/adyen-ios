@@ -5,6 +5,7 @@
 //
 
 import UIKit
+import AdyenNetworking
 
 /// Adds helper functionality to any `UIView` instance through the `adyen` property.
 /// :nodoc:

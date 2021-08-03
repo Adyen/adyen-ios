@@ -20,7 +20,7 @@ internal final class VoucherShareableViewProviderMock: AnyVoucherShareableViewPr
 
     internal var onProvide: ((_ action: VoucherAction) -> UIView)?
 
-    internal func provideView(with action: VoucherAction) -> UIView {
+    internal func provideView(with action: VoucherAction, logo image: UIImage?) -> UIView {
         onProvide?(action) ?? UIView()
     }
 }
