@@ -123,7 +123,7 @@ internal final class VoucherView: UIView, Localizable {
         return stackView
     }()
     
-    private lazy var logo: NetworkImageView = {
+    internal lazy var logo: NetworkImageView = {
         let logo = NetworkImageView()
         let logoSize = CGSize(width: 77.0, height: 50.0)
         logo.contentMode = .scaleAspectFit

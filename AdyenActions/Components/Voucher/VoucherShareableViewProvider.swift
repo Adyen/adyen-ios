@@ -12,7 +12,7 @@ internal protocol AnyVoucherShareableViewProvider: Localizable {
 
     var style: VoucherComponentStyle { get }
     
-    func provideView(with action: VoucherAction) -> UIView
+    func provideView(with action: VoucherAction, logo: UIImage?) -> UIView
 }
 
 internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvider {
@@ -21,6 +21,8 @@ internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvid
 
     internal var localizationParameters: LocalizationParameters?
     
+    private var logo: UIImage?
+    
     private let environment: AnyAPIEnvironment
 
     internal init(style: VoucherComponentStyle, environment: AnyAPIEnvironment) {
@@ -28,7 +30,9 @@ internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvid
         self.environment = environment
     }
     
-    internal func provideView(with action: VoucherAction) -> UIView {
+    internal func provideView(with action: VoucherAction, logo: UIImage?) -> UIView {
+        self.logo = logo
+        
         let view: ShareableVoucherView
         switch action {
         case let .dokuIndomaret(action):
@@ -79,15 +83,13 @@ internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvid
                              paymentMethodName: String,
                              instructionsUrl: String,
                              reference: String,
-                             fields: [ShareableVoucherView.VoucherField]) -> ShareableVoucherView.Model {
+                             fields: [ShareableVoucherView.VoucherField]
+    ) -> ShareableVoucherView.Model {
         let amountString = AmountFormatter.formatted(
             amount: totalAmount.value,
             currencyCode: totalAmount.currencyCode,
             localeIdentifier: localizationParameters?.locale
         )
-        let logoUrl = LogoURLProvider.logoURL(withName: paymentMethodName,
-                                              environment: environment,
-                                              size: .medium)
         let separatorTitle = localizedString(.voucherPaymentReferenceLabel, localizationParameters)
         let text = localizedString(.voucherIntroduction, localizationParameters)
         let style = ShareableVoucherView.Model.Style(backgroundColor: self.style.backgroundColor)
@@ -98,7 +100,7 @@ internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvid
             amount: amountString,
             code: reference,
             fields: fields,
-            logoUrl: logoUrl,
+            logo: logo,
             style: style
         )
     }

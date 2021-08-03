@@ -58,8 +58,8 @@ internal class ShareableVoucherView: UIView, Localizable {
         createLabel(with: model.style.amount, text: model.amount, identifier: "amountLabel")
     }()
     
-    private lazy var logoView: NetworkImageView = {
-        let imageView = NetworkImageView()
+    private lazy var logoView: UIImageView = {
+        let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.preservesSuperviewLayoutMargins = true
@@ -70,7 +70,7 @@ internal class ShareableVoucherView: UIView, Localizable {
     }()
     
     internal func createTopView() -> UIView {
-        logoView.imageURL = model.logoUrl
+        logoView.image = model.logo
         let textLabelWrapper = textLabel.adyen.wrapped(
             with: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: -16)
         )
@@ -174,7 +174,7 @@ extension ShareableVoucherView {
         
         internal let fields: [VoucherField]
         
-        internal let logoUrl: URL
+        internal let logo: UIImage?
         
         internal var style: Style
         

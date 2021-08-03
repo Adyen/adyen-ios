@@ -51,8 +51,12 @@ extension VoucherComponent: VoucherViewDelegate {
     private func saveAsImage(sourceView: UIView) {
         guard let action = action else { return }
         
-        let view = voucherShareableViewProvider.provideView(with: action)
-        view.frame = UIScreen.main.bounds
+        let view = voucherShareableViewProvider.provideView(
+            with: action,
+            logo: view.map(\.logo).flatMap(\.image)
+        )
+        
+        view.frame = CGRect(origin: .zero, size: view.adyen.minimalSize)
         
         guard let image = view.adyen.snapShot() else { return }
         
