@@ -11,13 +11,15 @@ import UIKit
 /// specifically the voice over reading of the UITextField.placeholder.
 /// So in order to prevent this behaviour,
 /// accessibilityValue is overriden to return an empty string in case the text var is nil or empty string.
-internal final class TextField: UITextField {
+/// :nodoc:
+public final class TextField: UITextField {
     
     private var heightConstraint: NSLayoutConstraint?
     
     internal var disablePlaceHolderAccessibility: Bool = true
-    
-    override internal var accessibilityValue: String? {
+
+    /// :nodoc:
+    override public var accessibilityValue: String? {
         get {
             guard disablePlaceHolderAccessibility else { return super.accessibilityValue }
             if let text = super.text, !text.isEmpty {
@@ -29,8 +31,9 @@ internal final class TextField: UITextField {
         
         set { super.accessibilityValue = newValue }
     }
-    
-    override internal var font: UIFont? {
+
+    /// :nodoc:
+    override public var font: UIFont? {
         didSet {
             heightConstraint = heightConstraint ?? heightAnchor.constraint(equalToConstant: 0)
             let sizeToFit = sizeThatFits(CGSize(width: bounds.width,

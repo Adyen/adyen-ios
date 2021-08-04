@@ -93,7 +93,9 @@ class CardComponentTests: XCTestCase {
         cardComponentStyle.textField.text.color = .yellow
         cardComponentStyle.textField.text.font = .systemFont(ofSize: 5)
         cardComponentStyle.textField.text.textAlignment = .center
-        
+        cardComponentStyle.textField.placeholderText = TextStyle(font: .preferredFont(forTextStyle: .headline),
+                                                                 color: .systemOrange,
+                                                                 textAlignment: .center)
         cardComponentStyle.textField.title.backgroundColor = .blue
         cardComponentStyle.textField.title.color = .green
         cardComponentStyle.textField.title.font = .systemFont(ofSize: 18)
@@ -152,6 +154,7 @@ class CardComponentTests: XCTestCase {
             XCTAssertEqual(cardNumberItemTextField?.textAlignment, .center)
             XCTAssertEqual(cardNumberItemTextField?.textColor, .yellow)
             XCTAssertEqual(cardNumberItemTextField?.font, .systemFont(ofSize: 5))
+            XCTAssertEqual(cardNumberItemTextField?.attributedPlaceholder?.foregroundColor, .systemOrange)
             
             /// Test card holer name field
             XCTAssertEqual(holderNameItemView?.backgroundColor, .blue)
@@ -163,6 +166,7 @@ class CardComponentTests: XCTestCase {
             XCTAssertEqual(holderNameItemTextField?.textAlignment, .center)
             XCTAssertEqual(holderNameItemTextField?.textColor, .yellow)
             XCTAssertEqual(holderNameItemTextField?.font, .systemFont(ofSize: 5))
+            XCTAssertEqual(holderNameItemTextField?.attributedPlaceholder?.foregroundColor, .systemOrange)
             
             /// Test expiry date field
             XCTAssertEqual(expiryDateItemView?.backgroundColor, .blue)
@@ -174,6 +178,7 @@ class CardComponentTests: XCTestCase {
             XCTAssertEqual(expiryDateItemTextField?.textAlignment, .center)
             XCTAssertEqual(expiryDateItemTextField?.textColor, .yellow)
             XCTAssertEqual(expiryDateItemTextField?.font, .systemFont(ofSize: 5))
+            XCTAssertEqual(expiryDateItemTextField?.attributedPlaceholder?.foregroundColor, .systemOrange)
             
             /// Test security code field
             XCTAssertEqual(securityCodeItemView?.backgroundColor, .blue)
@@ -186,6 +191,7 @@ class CardComponentTests: XCTestCase {
             XCTAssertEqual(securityCodeItemTextField?.textColor, .yellow)
             XCTAssertEqual(securityCodeItemTextField?.font, .systemFont(ofSize: 5))
             XCTAssertNotNil(securityCodeCvvHint)
+            XCTAssertEqual(securityCodeItemTextField?.attributedPlaceholder?.foregroundColor, .systemOrange)
             
             /// Test store card details switch
             XCTAssertEqual(storeDetailsItemView?.backgroundColor, .magenta)
@@ -1276,5 +1282,18 @@ extension XCTestCase {
     func tapSubmitButton(on view: UIView) {
         let payButtonItemViewButton: UIControl? = view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
+    }
+}
+
+extension NSAttributedString {
+
+    var foregroundColor: UIColor? {
+        var range = NSRange(location: 0, length: string.count)
+        return attribute(NSAttributedString.Key.foregroundColor, at: 0, effectiveRange: &range) as? UIColor
+    }
+
+    var font: UIFont? {
+        var range = NSRange(location: 0, length: string.count)
+        return attribute(NSAttributedString.Key.font, at: 0, effectiveRange: &range) as? UIFont
     }
 }

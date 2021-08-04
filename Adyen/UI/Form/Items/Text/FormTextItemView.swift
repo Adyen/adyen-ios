@@ -96,7 +96,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     
     // MARK: - Text Field
     
-    public lazy var textField: UITextField = {
+    public lazy var textField: TextField = {
         let textField = TextField()
         textField.font = item.style.text.font
         textField.adjustsFontForContentSizeCategory = true
@@ -104,7 +104,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
         textField.textAlignment = item.style.text.textAlignment
         textField.backgroundColor = item.style.backgroundColor
         textField.text = item.value
-        setPlaceHolderText(to: textField)
+        setPlaceHolderText(to: textField, text: item.placeholder)
         textField.autocorrectionType = item.autocorrectionType
         textField.autocapitalizationType = item.autocapitalizationType
         textField.keyboardType = item.keyboardType
@@ -164,12 +164,13 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     }
     
     // MARK: - Private
-    
-    private func setPlaceHolderText(to textField: TextField) {
-        if let placeholderStyle = item.style.placeholderText, let placeholderText = item.placeholder {
-            apply(textStyle: placeholderStyle, to: textField, with: placeholderText)
+
+    /// :nodoc:
+    public func setPlaceHolderText(to textField: TextField, text: String?) {
+        if let placeholderStyle = item.style.placeholderText, let text = text {
+            apply(textStyle: placeholderStyle, to: textField, with: text)
         } else {
-            textField.placeholder = item.placeholder
+            textField.placeholder = text
         }
     }
     

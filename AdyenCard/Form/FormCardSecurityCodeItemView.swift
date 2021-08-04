@@ -16,7 +16,10 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         observe(item.$selectedCard) { [weak self] cardsType in
             let number = cardsType == CardType.americanExpress ? "4" : "3"
             let localization = localizedString(.cardCvcItemPlaceholderDigits, item.localizationParameters, number)
-            self?.textField.placeholder = localization
+
+            if let textField = self?.textField {
+                self?.setPlaceHolderText(to: textField, text: localization)
+            }
         }
 
         observe(item.$isCVCOptional) { [weak self] _ in
