@@ -826,7 +826,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertFalse(postalCodeItemView.alertLabel.isHidden)
     }
 
-    func testAddressSelectCountry() {
+    func testAddressSelectCountry() throws {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         var config = CardComponent.Configuration()
         config.billingAddressMode = .full
@@ -835,55 +835,50 @@ class CardComponentTests: XCTestCase {
                                 configuration: config)
         sut.payment = .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "CA")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-
-            var houseNumberItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.houseNumberOrName")
-            var countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.country")
-            var addressItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.street")
-            var apartmentSuiteItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.apartment")
-            var cityItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.city")
-            var provinceOrTerritoryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.stateOrProvince")
-            var postalCodeItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.postalCode")
-
-            XCTAssertNil(apartmentSuiteItemView)
-
-            XCTAssertEqual(countryItemView!.titleLabel.text, "Country")
-            XCTAssertEqual(countryItemView!.inputControl.label, "Canada")
-            XCTAssertEqual(houseNumberItemView!.titleLabel.text, "Apartment / Suite (optional)")
-            XCTAssertEqual(addressItemView!.titleLabel.text, "Address")
-            XCTAssertEqual(cityItemView!.titleLabel.text, "City")
-            XCTAssertEqual(provinceOrTerritoryItemView!.titleLabel.text, "Province or Territory")
-            XCTAssertEqual(postalCodeItemView!.titleLabel.text, "Postal code")
-            XCTAssertNil(apartmentSuiteItemView)
-
-            countryItemView!.item.value = countryItemView!.item.selectableValues.first { $0.identifier == "BR" }!
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-
-                houseNumberItemView = sut.viewController.view.findView(with: "Adyen.FormAddressItem.houseNumberOrName")
-                countryItemView = sut.viewController.view.findView(with: "Adyen.FormAddressItem.country")
-                addressItemView = sut.viewController.view.findView(with: "Adyen.FormAddressItem.street")
-                apartmentSuiteItemView = sut.viewController.view.findView(with: "Adyen.FormAddressItem.apartment")
-                cityItemView = sut.viewController.view.findView(with: "Adyen.FormAddressItem.city")
-                provinceOrTerritoryItemView = sut.viewController.view.findView(with: "Adyen.FormAddressItem.stateOrProvince")
-                postalCodeItemView = sut.viewController.view.findView(with: "Adyen.FormAddressItem.postalCode")
-
-                XCTAssertEqual(countryItemView!.titleLabel.text, "Country")
-                XCTAssertEqual(countryItemView!.inputControl.label, "Brazil")
-                XCTAssertEqual(houseNumberItemView!.titleLabel.text, "House number")
-                XCTAssertEqual(addressItemView!.titleLabel.text, "Street")
-                XCTAssertEqual(cityItemView!.titleLabel.text, "City")
-                XCTAssertEqual(provinceOrTerritoryItemView!.titleLabel.text, "State")
-                XCTAssertEqual(postalCodeItemView!.titleLabel.text, "Postal code")
-                XCTAssertEqual(apartmentSuiteItemView!.titleLabel.text, "Apartment / Suite (optional)")
-
-                expectation.fulfill()
-            }
-        }
-
-        wait(for: [expectation], timeout: 10)
+        
+        wait(for: .seconds(1))
+        
+        let view: UIView = sut.viewController.view
+        
+        var houseNumberItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.houseNumberOrName"))
+        var countryItemView: FormRegionPickerItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.country"))
+        var addressItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.street"))
+        var apartmentSuiteItemView: FormTextInputItemView! = view.findView(with: "AdyenCard.CardComponent.billingAddress.apartment")
+        var cityItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.city"))
+        var provinceOrTerritoryItemView: FormRegionPickerItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.stateOrProvince"))
+        var postalCodeItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.postalCode"))
+        
+        XCTAssertNil(apartmentSuiteItemView)
+        
+        XCTAssertEqual(countryItemView.titleLabel.text, "Country")
+        XCTAssertEqual(countryItemView.inputControl.label, "Canada")
+        XCTAssertEqual(houseNumberItemView.titleLabel.text, "Apartment / Suite (optional)")
+        XCTAssertEqual(addressItemView.titleLabel.text, "Address")
+        XCTAssertEqual(cityItemView.titleLabel.text, "City")
+        XCTAssertEqual(provinceOrTerritoryItemView.titleLabel.text, "Province or Territory")
+        XCTAssertEqual(postalCodeItemView.titleLabel.text, "Postal code")
+        XCTAssertNil(apartmentSuiteItemView)
+        
+        countryItemView.item.value = countryItemView.item.selectableValues.first { $0.identifier == "BR" }!
+        
+        wait(for: .seconds(1))
+        
+        houseNumberItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.houseNumberOrName"))
+        countryItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.country"))
+        addressItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.street"))
+        apartmentSuiteItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.apartment"))
+        cityItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.city"))
+        provinceOrTerritoryItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.stateOrProvince"))
+        postalCodeItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.postalCode"))
+        
+        XCTAssertEqual(countryItemView.titleLabel.text, "Country")
+        XCTAssertEqual(countryItemView.inputControl.label, "Brazil")
+        XCTAssertEqual(houseNumberItemView.titleLabel.text, "House number")
+        XCTAssertEqual(addressItemView.titleLabel.text, "Street")
+        XCTAssertEqual(cityItemView.titleLabel.text, "City")
+        XCTAssertEqual(provinceOrTerritoryItemView.titleLabel.text, "State")
+        XCTAssertEqual(postalCodeItemView.titleLabel.text, "Postal code")
+        XCTAssertEqual(apartmentSuiteItemView.titleLabel.text, "Apartment / Suite (optional)")
     }
 
     func testPostalCode() {
