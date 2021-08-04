@@ -181,6 +181,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     }
     
     private func updateItems(identifier: String?) {
+        let items = items + [headerItem, countrySelectItem]
         for item in items {
             if let item = item as? FormSplitItem {
                 update(item: item.leftItem, identifier: identifier)
