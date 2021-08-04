@@ -10,7 +10,7 @@ import UIKit
 /// Delegate for observing user's activity on `CardComponent`.
 public protocol CardComponentDelegate: AnyObject {
 
-    /// Called when user enters PAN in `CardComponent`.
+    /// Called when shopper enters PAN in `CardComponent`.
     /// - Parameter value: Up to 6 first digits in entered PAN.
     /// - Parameter component: The `CardComponent` instance.
     func didChangeBIN(_ value: String, component: CardComponent)
@@ -19,4 +19,9 @@ public protocol CardComponentDelegate: AnyObject {
     /// - Parameter value: Array of card types matching entered value. Null - if no data entered.
     /// - Parameter component: The `CardComponent` instance.
     func didChangeCardBrand(_ value: [CardBrand]?, component: CardComponent)
+
+    /// Called when shopper submits a card in `CardComponent`.
+    /// - Parameter value: Last 4 digits of card.
+    /// - Parameter component: The `CardComponent` instance.
+    func didSubmitLastFour(_ value: String, component: CardComponent)
 }
