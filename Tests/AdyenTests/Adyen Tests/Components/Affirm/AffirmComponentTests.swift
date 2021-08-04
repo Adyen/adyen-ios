@@ -113,6 +113,7 @@ class AffirmComponentTests: XCTestCase {
         sut.delegate = delegate
         let expectedBillingAddress = PostalAddressMocks.newYorkPostalAddress
         let expectedDeliveryAddress = PostalAddressMocks.losAngelesPostalAddress
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         // Then
         let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")

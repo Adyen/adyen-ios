@@ -639,6 +639,7 @@ class CardComponentTests: XCTestCase {
 
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         let expectedVerificationAddress = PostalAddressMocks.newYorkPostalAddress
 
@@ -678,7 +679,7 @@ class CardComponentTests: XCTestCase {
         let storeDetailsItemView: FormToggleItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.storeDetailsItem"))
         storeDetailsItemView.accessibilityActivate()
 
-        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "AdyenCard.CardComponent.addressVerification"))
+        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "AdyenCard.CardComponent.billingAddress"))
         fill(addressView: billingAddressView, with: expectedVerificationAddress)
         
         let payButtonItemViewButton: UIControl = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.payButtonItem.button"))
