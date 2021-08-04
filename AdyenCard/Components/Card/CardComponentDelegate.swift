@@ -25,3 +25,9 @@ public protocol CardComponentDelegate: AnyObject {
     /// - Parameter component: The `CardComponent` instance.
     func didSubmitLastFour(_ value: String, component: CardComponent)
 }
+
+extension CardComponentDelegate {
+
+    public func didSubmitLastFour(_ _: String, _: CardComponent) {}
+
+}
