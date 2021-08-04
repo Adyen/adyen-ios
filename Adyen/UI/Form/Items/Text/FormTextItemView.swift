@@ -104,7 +104,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
         textField.textAlignment = item.style.text.textAlignment
         textField.backgroundColor = item.style.backgroundColor
         textField.text = item.value
-        setPlaceHolderText(to: textField, text: item.placeholder)
+        textField.apply(placeholderText: item.placeholder, with: item.style.placeholderText)
         textField.autocorrectionType = item.autocorrectionType
         textField.autocapitalizationType = item.autocapitalizationType
         textField.keyboardType = item.keyboardType
@@ -164,35 +164,6 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     }
     
     // MARK: - Private
-
-    /// :nodoc:
-    public func setPlaceHolderText(to textField: TextField, text: String?) {
-        if let placeholderStyle = item.style.placeholderText, let text = text {
-            apply(textStyle: placeholderStyle, to: textField, with: text)
-        } else {
-            textField.placeholder = text
-        }
-    }
-    
-    private func apply(textStyle: TextStyle, to textField: TextField, with placeholderText: String) {
-        let attributes = stringAttributes(from: textStyle)
-        let attributedString = NSAttributedString(string: placeholderText, attributes: attributes)
-        textField.attributedPlaceholder = attributedString
-    }
-    
-    private func stringAttributes(from textStyle: TextStyle) -> [NSAttributedString.Key: Any] {
-        var attributes = [NSAttributedString.Key.foregroundColor: textStyle.color,
-                          NSAttributedString.Key.backgroundColor: textStyle.backgroundColor,
-                          NSAttributedString.Key.font: textStyle.font]
-        
-        let paragraphStyle = NSParagraphStyle.default.mutableCopy() as? NSMutableParagraphStyle
-        paragraphStyle?.alignment = item.style.placeholderText?.textAlignment ?? .natural
-        if let paragraphStyle = paragraphStyle {
-            attributes[NSAttributedString.Key.paragraphStyle] = paragraphStyle
-        }
-        
-        return attributes
-    }
     
     @objc private func textDidChange(textField: UITextField) {
         let newText = textField.text

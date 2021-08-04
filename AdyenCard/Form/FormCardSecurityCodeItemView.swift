@@ -15,10 +15,10 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         accessory = .customView(cardHintView)
         observe(item.$selectedCard) { [weak self] cardsType in
             let number = cardsType == CardType.americanExpress ? "4" : "3"
-            let localization = localizedString(.cardCvcItemPlaceholderDigits, item.localizationParameters, number)
+            let localizedPlaceholder = localizedString(.cardCvcItemPlaceholderDigits, item.localizationParameters, number)
 
             if let textField = self?.textField {
-                self?.setPlaceHolderText(to: textField, text: localization)
+                textField.apply(placeholderText: localizedPlaceholder, with: item.style.placeholderText)
             }
         }
 
