@@ -5,9 +5,9 @@
 //
 
 import Adyen
+import AdyenNetworking
 import Foundation
 import UIKit
-import AdyenNetworking
 
 /**
  /// A component that provides a form for card payments.
@@ -26,6 +26,8 @@ public class CardComponent: CardPublicKeyConsumer,
     public let apiContext: APIContext
 
     private let publicBinLength = 6
+
+    internal let publicPanSuffixLength = 4
 
     internal let cardPaymentMethod: AnyCardPaymentMethod
 

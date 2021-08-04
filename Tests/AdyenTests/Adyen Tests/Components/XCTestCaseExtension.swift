@@ -7,7 +7,10 @@
 //
 
 @testable import Adyen
+@testable import AdyenEncryption
+@testable import AdyenCard
 import XCTest
+
 
 extension XCTestCase {
     
@@ -35,4 +38,5 @@ extension XCTestCase {
     internal func getRandomCountryCode() -> String {
         NSLocale.isoCountryCodes.randomElement() ?? "DE"
     }
+
 }
