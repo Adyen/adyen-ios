@@ -679,7 +679,7 @@ class CardComponentTests: XCTestCase {
         storeDetailsItemView.accessibilityActivate()
 
         let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "AdyenCard.CardComponent.addressVerification"))
-        fill(formAddressView: billingAddressView, with: expectedVerificationAddress)
+        fill(addressView: billingAddressView, with: expectedVerificationAddress)
         
         let payButtonItemViewButton: UIControl = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.payButtonItem.button"))
         payButtonItemViewButton.sendActions(for: .touchUpInside)

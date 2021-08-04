@@ -39,7 +39,9 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
                 style: FormComponentStyle) {
         personalDetailsHeaderItem = FormLabelItem(text: "", style: style.sectionHeader)
         deliveryAddressToggleItem = FormToggleItem(style: style.toggle)
-        deliveryAddressItem = FormAddressItem(initialCountry: Locale.current.regionCode ?? "US", style: style.addressStyle)
+        
+        deliveryAddressItem = FormAddressItem(initialCountry: Locale.current.regionCode ?? "US",
+                                              style: style.addressStyle)
         
         let fields: [PersonalInformation] = [
             .custom(CustomFormItemInjector(item: personalDetailsHeaderItem.addingDefaultMargins())),

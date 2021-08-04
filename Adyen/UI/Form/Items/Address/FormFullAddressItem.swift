@@ -35,23 +35,25 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
             headerItem.text = title ?? ""
         }
     }
+    
+    override public var identifier: String? {
+        didSet {
+            updateItems(identifier: identifier)
+        }
+    }
 
-    // TODO: - Complete docu
     /// Initializes the split text item.
     /// - Parameters:
     ///   - initialCountry: The items displayed side-by-side. Must be two.
     ///   - style: The `FormSplitItemView` UI style.
     ///   - localizationParameters: The localization parameters
-    ///   - identifier: XXX
     public init(initialCountry: String,
                 style: AddressStyle,
-                localizationParameters: LocalizationParameters? = nil,
-                identifier: String? = nil) {
+                localizationParameters: LocalizationParameters? = nil) {
         self.initialCountry = initialCountry
         self.localizationParameters = localizationParameters
         super.init(value: PostalAddress(), style: style)
 
-        self.identifier = identifier
         update(for: initialCountry)
         
         bind(countrySelectItem.publisher, at: \.identifier, to: self, at: \.value.country)
@@ -78,6 +80,8 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "country")
         return item
     }()
+    
+    // MARK: - Private
     
     private func update(for countryCode: String) {
         let subRegions = RegionRepository.localRegionFallback(for: countryCode, locale: NSLocale.current as NSLocale)
@@ -175,6 +179,26 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
             publisherObservers[.stateOrProvince] = observe(publisher) { item.value = $0.stateOrProvince ?? "" }
         }
     }
+    
+    private func updateItems(identifier: String?) {
+        for item in items {
+            if let item = item as? FormSplitItem {
+                update(item: item.leftItem, identifier: identifier)
+                update(item: item.rightItem, identifier: identifier)
+                continue
+            }
+            update(item: item, identifier: identifier)
+        }
+    }
+    
+    private func update(item: FormItem, identifier: String?) {
+        let className = String(describing: self)
+        let currentIdentifier = item.identifier
+        let newIdentifier = currentIdentifier?.replacingOccurrences(of: className, with: identifier ?? "")
+        item.identifier = newIdentifier
+    }
+    
+    // MARK: - Public
     
     /// :nodoc:
     override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {

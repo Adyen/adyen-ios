@@ -22,11 +22,9 @@ internal final class AddressFormItemInjector: FormItemInjector, Localizable {
 
     /// :nodoc:
     internal lazy var item: FormAddressItem = {
-        let item = FormAddressItem(
-            initialCountry: initialCountry,
-            style: style,
-            localizationParameters: localizationParameters
-        )
+        let item = FormAddressItem(initialCountry: initialCountry,
+                                   style: style,
+                                   localizationParameters: localizationParameters)
         
         return item
     }()

@@ -194,8 +194,7 @@ internal class CardViewController: FormViewController {
         let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "addressVerification")
         let item = FormAddressItem(initialCountry: defaultCountryCode,
                                    style: formStyle.addressStyle,
-                                   localizationParameters: localizationParameters,
-                                   identifier: identifier)
+                                   localizationParameters: localizationParameters)
         item.style.backgroundColor = UIColor.Adyen.lightGray
         return item
     }()

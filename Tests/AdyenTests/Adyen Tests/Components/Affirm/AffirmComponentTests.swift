@@ -147,14 +147,14 @@ class AffirmComponentTests: XCTestCase {
         populate(textItemView: emailView, with: "katrina@mail.com")
                 
         let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.billingAddressItem"))
-        fill(formAddressView: billingAddressView, with: expectedBillingAddress)
+        fill(addressView: billingAddressView, with: expectedBillingAddress)
                 
         let deliveryAddressToggleView: FormToggleItemView! = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.deliveryAddressToggleItem"))
         deliveryAddressToggleView.switchControl.isOn = true
         deliveryAddressToggleView.switchControl.sendActions(for: .valueChanged)
                 
         let deliveryAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.deliveryAddressItem"))
-        fill(formAddressView: deliveryAddressView, with: expectedDeliveryAddress)
+        fill(addressView: deliveryAddressView, with: expectedDeliveryAddress)
         
         let submitButton: UIControl = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.payButtonItem.button"))
         submitButton.sendActions(for: .touchUpInside)

@@ -8,39 +8,37 @@ import XCTest
 @testable import Adyen
 
 extension XCTestCase {
-    
-    private enum PostalAddressIdentifier {
-        static let city = "Adyen.FormAddressItem.city"
-        static let country = "Adyen.FormAddressItem.country"
-        static let houseNumberOrName = "Adyen.FormAddressItem.houseNumberOrName"
-        static let postalCode = "Adyen.FormAddressItem.postalCode"
-        static let stateOrProvince = "Adyen.FormAddressItem.stateOrProvince"
-        static let street = "Adyen.FormAddressItem.street"
-        static let apartment = "Adyen.FormAddressItem.apartment"
-    }
+            
+    internal func fill(addressView: FormVerticalStackItemView<FormAddressItem>, with address: PostalAddress) {
+        let addressViewIdentifier = addressView.item.identifier?.components(separatedBy: ".").last ?? ""
         
-    internal func fill(formAddressView: FormVerticalStackItemView<FormAddressItem>, with address: PostalAddress) {
-        let cityItemView = formAddressView.findView(by: PostalAddressIdentifier.city) as? FormTextInputItemView
+        let cityItemView = addressView.findView(by: identifier(for: .city, addressView: addressViewIdentifier)) as? FormTextInputItemView
         populate(textItemView: cityItemView, with: address.city ?? "")
         
-        let countryItemView = formAddressView.findView(by: PostalAddressIdentifier.country) as? FormTextInputItemView
-        populate(textItemView: countryItemView, with: address.country ?? "")
+//        let countryItemView = addressView.findView(by: identifier(for: .country, addressView: addressViewIdentifier)) as? FormTextInputItemView
+//        populate(textItemView: countryItemView, with: address.country ?? "")
         
-        let houseNumberItemView = formAddressView.findView(by: PostalAddressIdentifier.houseNumberOrName) as? FormTextInputItemView
+        let houseNumberItemView = addressView.findView(by: identifier(for: .houseNumberOrName, addressView: addressViewIdentifier)) as? FormTextInputItemView
         populate(textItemView: houseNumberItemView, with: address.houseNumberOrName ?? "")
         
-        let postalCodeItemView = formAddressView.findView(by: PostalAddressIdentifier.postalCode) as? FormTextInputItemView
+        let postalCodeItemView = addressView.findView(by: identifier(for: .postalCode, addressView: addressViewIdentifier)) as? FormTextInputItemView
         populate(textItemView: postalCodeItemView, with: address.postalCode ?? "")
         
-        if let regionPickerView = formAddressView.findView(by: PostalAddressIdentifier.stateOrProvince) as? FormRegionPickerItemView,
+        if let regionPickerView = addressView.findView(by: identifier(for: .stateOrProvince, addressView: addressViewIdentifier)) as? FormRegionPickerItemView,
            let selectedRow = regionPickerView.item.selectableValues.firstIndex(where: { $0.identifier == address.stateOrProvince ?? ""}) {
             regionPickerView.pickerView(regionPickerView.pickerView, didSelectRow: selectedRow, inComponent: 0)
         }
         
-        let streetItemView = formAddressView.findView(by: PostalAddressIdentifier.street) as? FormTextInputItemView
+        let streetItemView = addressView.findView(by: identifier(for: .street, addressView: addressViewIdentifier)) as? FormTextInputItemView
         populate(textItemView: streetItemView, with: address.street ?? "")
         
-        let apartmentItemView = formAddressView.findView(by: PostalAddressIdentifier.apartment) as? FormTextInputItemView
+        let apartmentItemView = addressView.findView(by: identifier(for: .apartment, addressView: addressViewIdentifier)) as? FormTextInputItemView
         populate(textItemView: apartmentItemView, with: address.apartment ?? "")
+    }
+    
+    // MARK: - Private
+    
+    private func identifier(for field: AddressField, addressView: String) -> String {
+        return "\(addressView).\(field.rawValue)"
     }
 }
