@@ -8,6 +8,19 @@ import Foundation
 
 /// Describes the Card brand.
 public struct CardBrand: Decodable {
+    
+    /// Indicates the requirement level of a field.
+    public enum RequirementPolicy: String, Decodable {
+
+        /// Field is required.
+        case required
+
+        /// Field is optional.
+        case optional
+
+        /// Field should not be asked.
+        case hidden
+    }
 
     /// Indicates the card brand type.
     public let type: CardType
@@ -16,26 +29,13 @@ public struct CardBrand: Decodable {
     public let isSupported: Bool
 
     /// Indicates the cvc policy of the brand.
-    internal let cvcPolicy: CVCPolicy
-
-    /// Indicates the cvc policy of the brand.
-    public enum CVCPolicy: String, Decodable {
-
-        /// CVC is required.
-        case required
-
-        /// CVC is optional.
-        case optional
-
-        /// CVC should be hidden.
-        case hidden
-    }
+    internal let cvcPolicy: RequirementPolicy
+    
+    /// Indicates the expiry date policy of the brand.
+    internal let expiryDatePolicy: RequirementPolicy
 
     /// Indicates whether Luhn check applies to card numbers of this brand.
     internal let isLuhnCheckEnabled: Bool
-
-    /// Indicates whether to show the expiry date field.
-    internal let showsExpiryDate: Bool
     
     /// Indicates whether to show social security number field or not.
     internal let showsSocialSecurityNumber: Bool
@@ -46,20 +46,20 @@ public struct CardBrand: Decodable {
     ///   - type: Indicates the card brand type.
     ///   - isSupported: Indicates whether its supported by the merchant or not.
     ///   - cvcPolicy: Indicates the cvc policy of the brand.
+    ///   - expiryDatePolicy: Indicates the expirty date policy of the brand.
     ///   - isLuhnCheckEnabled: Indicates whether Luhn check applies to card numbers of this brand.
-    ///   - showsExpiryDate: Indicates whether to show the expiry date field.
     ///   - showsSocialSecurityNumber: Indicates whether to show social security number field or not.
     internal init(type: CardType,
                   isSupported: Bool = true,
-                  cvcPolicy: CVCPolicy = .required,
+                  cvcPolicy: RequirementPolicy = .required,
+                  expiryDatePolicy: RequirementPolicy = .required,
                   isLuhnCheckEnabled: Bool = true,
-                  showsExpiryDate: Bool = true,
                   showSocialSecurityNumber: Bool = false) {
         self.type = type
         self.isSupported = isSupported
         self.cvcPolicy = cvcPolicy
+        self.expiryDatePolicy = expiryDatePolicy
         self.isLuhnCheckEnabled = isLuhnCheckEnabled
-        self.showsExpiryDate = showsExpiryDate
         self.showsSocialSecurityNumber = showSocialSecurityNumber
     }
 
@@ -68,8 +68,8 @@ public struct CardBrand: Decodable {
         case isSupported = "supported"
         case cvcPolicy
         case isLuhnCheckEnabled = "enableLuhnCheck"
-        case showsExpiryDate = "showExpiryDate"
         case showsSocialSecurityNumber = "showSocialSecurityNumber"
+        case expiryDatePolicy
     }
 }
 

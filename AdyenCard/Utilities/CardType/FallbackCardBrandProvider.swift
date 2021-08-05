@@ -14,7 +14,7 @@ internal final class FallbackBinInfoProvider: AnyBinInfoProvider {
     internal func provide(for bin: String, supportedTypes: [CardType], completion: @escaping (BinLookupResponse) -> Void) {
         let result: [CardBrand] = supportedTypes.adyen.types(forCardNumber: bin).map { brand in
 
-            let cvcPolicy: CardBrand.CVCPolicy
+            let cvcPolicy: CardBrand.RequirementPolicy
             switch brand {
             case .laser,
                  .bcmc,
