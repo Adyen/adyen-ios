@@ -177,6 +177,8 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         case .stateOrProvince:
             observers[.stateOrProvince] = bind(item.publisher, to: self, at: \.value.stateOrProvince)
             publisherObservers[.stateOrProvince] = observe(publisher) { item.value = $0.stateOrProvince ?? "" }
+        case .country:
+            break
         }
     }
     
