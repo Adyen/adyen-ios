@@ -5,9 +5,9 @@
 //
 
 import Adyen
+import AdyenNetworking
 import Foundation
 import UIKit
-import AdyenNetworking
 
 /// A component that handles BCMC card payments.
 public final class BCMCComponent: CardComponent {
@@ -21,7 +21,8 @@ public final class BCMCComponent: CardComponent {
         
         let cardPublicKeyProvider = CardPublicKeyProvider(apiContext: apiContext)
         let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: apiContext),
-                                              cardPublicKeyProvider: cardPublicKeyProvider)
+                                              cardPublicKeyProvider: cardPublicKeyProvider,
+                                              minBinLength: Constant.privateBinLength)
         super.init(paymentMethod: paymentMethod,
                    apiContext: apiContext,
                    configuration: configuration,
