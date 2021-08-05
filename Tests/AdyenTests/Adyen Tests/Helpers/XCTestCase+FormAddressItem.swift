@@ -15,8 +15,8 @@ extension XCTestCase {
         let cityItemView = addressView.findView(by: identifier(for: .city, addressView: addressViewIdentifier)) as? FormTextInputItemView
         populate(textItemView: cityItemView, with: address.city ?? "")
         
-//        let countryItemView = addressView.findView(by: identifier(for: .country, addressView: addressViewIdentifier)) as? FormTextInputItemView
-//        populate(textItemView: countryItemView, with: address.country ?? "")
+        let countryItemView = addressView.findView(by: identifier(for: .country, addressView: addressViewIdentifier)) as? FormTextInputItemView
+        populate(textItemView: countryItemView, with: address.country ?? "")
         
         let houseNumberItemView = addressView.findView(by: identifier(for: .houseNumberOrName, addressView: addressViewIdentifier)) as? FormTextInputItemView
         populate(textItemView: houseNumberItemView, with: address.houseNumberOrName ?? "")
