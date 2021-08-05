@@ -1,0 +1,175 @@
+//
+// Copyright (c) 2021 Adyen N.V.
+//
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
+//
+
+import Foundation
+
+extension CardViewController {
+
+    struct ItemManager {
+
+        private let formStyle: FormComponentStyle
+
+        private let payment: Payment?
+
+        private var localizationParameters: LocalizationParameters?
+
+        private let configuration: CardComponent.Configuration
+
+        private let supportedCardTypes: [CardType]
+
+        private let cardLogos: [FormCardNumberItem.CardTypeLogo]
+
+        private let scope: String
+
+        private let defaultCountryCode: String
+
+        internal init(formStyle: FormComponentStyle,
+                      payment: Payment?,
+                      configuration: CardComponent.Configuration,
+                      supportedCardTypes: [CardType],
+                      cardLogos: [FormCardNumberItem.CardTypeLogo],
+                      scope: String,
+                      defaultCountryCode: String,
+                      localizationParameters: LocalizationParameters?) {
+            self.formStyle = formStyle
+            self.payment = payment
+            self.configuration = configuration
+            self.supportedCardTypes = supportedCardTypes
+            self.cardLogos = cardLogos
+            self.scope = scope
+            self.defaultCountryCode = defaultCountryCode
+            self.localizationParameters = localizationParameters
+        }
+
+        internal lazy var billingAddressItem: FormAddressItem = {
+            let item = FormAddressItem(initialCountry: defaultCountryCode,
+                                       style: formStyle.addressStyle,
+                                       localizationParameters: localizationParameters)
+            item.style.backgroundColor = UIColor.Adyen.lightGray
+            item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "addressVerification")
+            return item
+        }()
+
+        internal lazy var postalCodeItem: FormTextItem = {
+            let zipCodeItem = FormTextInputItem(style: formStyle.textField)
+            zipCodeItem.title = localizedString(.postalCodeFieldTitle, localizationParameters)
+            zipCodeItem.placeholder = localizedString(.postalCodeFieldPlaceholder, localizationParameters)
+            zipCodeItem.validator = LengthValidator(minimumLength: 2, maximumLength: 30)
+            zipCodeItem.validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
+            zipCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "postalCodeItem")
+            zipCodeItem.contentType = .postalCode
+            return zipCodeItem
+        }()
+
+        internal lazy var numberItem: FormCardNumberItem = {
+            let item = FormCardNumberItem(supportedCardTypes: supportedCardTypes,
+                                          cardTypeLogos: cardLogos,
+                                          style: formStyle.textField,
+                                          localizationParameters: localizationParameters)
+            item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "numberItem")
+            return item
+        }()
+
+        internal lazy var expiryDateItem: FormTextInputItem = {
+            let expiryDateItem = FormTextInputItem(style: formStyle.textField)
+            expiryDateItem.title = localizedString(.cardExpiryItemTitle, localizationParameters)
+            expiryDateItem.placeholder = localizedString(.cardExpiryItemPlaceholder, localizationParameters)
+            expiryDateItem.formatter = CardExpiryDateFormatter()
+            expiryDateItem.validator = CardExpiryDateValidator()
+            expiryDateItem.validationFailureMessage = localizedString(.cardExpiryItemInvalid, localizationParameters)
+            expiryDateItem.keyboardType = .numberPad
+            expiryDateItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "expiryDateItem")
+
+            return expiryDateItem
+        }()
+
+        internal lazy var securityCodeItem: FormCardSecurityCodeItem = {
+            let securityCodeItem = FormCardSecurityCodeItem(style: formStyle.textField,
+                                                            localizationParameters: localizationParameters)
+            securityCodeItem.localizationParameters = self.localizationParameters
+            securityCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "securityCodeItem")
+            return securityCodeItem
+        }()
+
+        internal lazy var holderNameItem: FormTextInputItem = {
+            let holderNameItem = FormTextInputItem(style: formStyle.textField)
+            holderNameItem.title = localizedString(.cardNameItemTitle, localizationParameters)
+            holderNameItem.placeholder = localizedString(.cardNameItemPlaceholder, localizationParameters)
+            holderNameItem.validator = LengthValidator(minimumLength: 2)
+            holderNameItem.validationFailureMessage = localizedString(.cardNameItemInvalid, localizationParameters)
+            holderNameItem.autocapitalizationType = .words
+            holderNameItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "holderNameItem")
+            holderNameItem.contentType = .name
+
+            return holderNameItem
+        }()
+
+        internal lazy var additionalAuthCodeItem: FormTextInputItem = {
+            // Validates birthdate (YYMMDD) or the Corporate registration number (10 digits)
+            let kcpValidator = NumericStringValidator(exactLength: 10) || DateValidator(format: DateValidator.Format.kcpFormat)
+
+            let additionalItem = FormTextInputItem(style: formStyle.textField)
+            additionalItem.title = localizedString(.cardTaxNumberLabelShort, localizationParameters)
+            additionalItem.placeholder = localizedString(.cardTaxNumberPlaceholder, localizationParameters)
+            additionalItem.validator = kcpValidator
+            additionalItem.validationFailureMessage = localizedString(.cardTaxNumberInvalid, localizationParameters)
+            additionalItem.autocapitalizationType = .none
+            additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthCodeItem")
+            additionalItem.keyboardType = .numberPad
+            additionalItem.isHidden.wrappedValue = !(configuration.koreanAuthenticationMode == .show)
+
+            return additionalItem
+        }()
+
+        internal lazy var additionalAuthPasswordItem: FormTextInputItem = {
+            let additionalItem = FormTextInputItem(style: formStyle.textField)
+            additionalItem.title = localizedString(.cardEncryptedPasswordLabel, localizationParameters)
+            additionalItem.placeholder = localizedString(.cardEncryptedPasswordPlaceholder, localizationParameters)
+            additionalItem.validator = LengthValidator(exactLength: 2)
+            additionalItem.validationFailureMessage = localizedString(.cardEncryptedPasswordInvalid, localizationParameters)
+            additionalItem.autocapitalizationType = .none
+            additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthPasswordItem")
+            additionalItem.keyboardType = .numberPad
+            additionalItem.isHidden.wrappedValue = !(configuration.koreanAuthenticationMode == .show)
+
+            return additionalItem
+        }()
+
+        internal lazy var socialSecurityNumberItem: FormTextInputItem = {
+            let securityNumberItem = FormTextInputItem(style: formStyle.textField)
+            securityNumberItem.title = localizedString(.boletoSocialSecurityNumber, localizationParameters)
+            securityNumberItem.placeholder = localizedString(.cardBrazilSSNPlaceholder, localizationParameters)
+            securityNumberItem.formatter = BrazilSocialSecurityNumberFormatter()
+            securityNumberItem.validator = NumericStringValidator(exactLength: 11) || NumericStringValidator(exactLength: 14)
+            securityNumberItem.validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
+            securityNumberItem.autocapitalizationType = .none
+            securityNumberItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "socialSecurityNumberItem")
+            securityNumberItem.keyboardType = .numberPad
+            securityNumberItem.isHidden.wrappedValue = !(configuration.socialSecurityNumberMode == .show)
+
+            return securityNumberItem
+        }()
+
+        internal lazy var storeDetailsItem: FormToggleItem = {
+            let storeDetailsItem = FormToggleItem(style: formStyle.toggle)
+            storeDetailsItem.title = localizedString(.cardStoreDetailsButton, localizationParameters)
+            storeDetailsItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "storeDetailsItem")
+
+            return storeDetailsItem
+        }()
+
+        internal lazy var button: FormButtonItem = {
+            let item = FormButtonItem(style: formStyle.mainButtonItem)
+            item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "payButtonItem")
+            item.title = localizedSubmitButtonTitle(with: payment?.amount,
+                                                    style: .immediate,
+                                                    localizationParameters)
+            return item
+        }()
+
+    }
+
+}

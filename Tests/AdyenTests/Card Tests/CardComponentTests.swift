@@ -31,22 +31,23 @@ class CardComponentTests: XCTestCase {
                                 configuration: configuration)
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
+        var items = sut.cardViewController.items
         
-        XCTAssertEqual(sut.cardViewController.expiryDateItem.title, localizedString(.cardExpiryItemTitle, nil))
-        XCTAssertEqual(sut.cardViewController.expiryDateItem.placeholder, localizedString(.cardExpiryItemPlaceholder, sut.localizationParameters))
-        XCTAssertEqual(sut.cardViewController.expiryDateItem.validationFailureMessage, localizedString(.cardExpiryItemInvalid, sut.localizationParameters))
+        XCTAssertEqual(items.expiryDateItem.title, localizedString(.cardExpiryItemTitle, nil))
+        XCTAssertEqual(items.expiryDateItem.placeholder, localizedString(.cardExpiryItemPlaceholder, sut.localizationParameters))
+        XCTAssertEqual(items.expiryDateItem.validationFailureMessage, localizedString(.cardExpiryItemInvalid, sut.localizationParameters))
         
-        XCTAssertEqual(sut.cardViewController.securityCodeItem.title, localizedString(.cardCvcItemTitle, sut.localizationParameters))
-        XCTAssertNil(sut.cardViewController.securityCodeItem.placeholder)
-        XCTAssertEqual(sut.cardViewController.securityCodeItem.validationFailureMessage, localizedString(.cardCvcItemInvalid, sut.localizationParameters))
+        XCTAssertEqual(items.securityCodeItem.title, localizedString(.cardCvcItemTitle, sut.localizationParameters))
+        XCTAssertNil(items.securityCodeItem.placeholder)
+        XCTAssertEqual(items.securityCodeItem.validationFailureMessage, localizedString(.cardCvcItemInvalid, sut.localizationParameters))
         
-        XCTAssertEqual(sut.cardViewController.holderNameItem.title, localizedString(.cardNameItemTitle, sut.localizationParameters))
-        XCTAssertEqual(sut.cardViewController.holderNameItem.placeholder, localizedString(.cardNameItemPlaceholder, sut.localizationParameters))
-        XCTAssertEqual(sut.cardViewController.holderNameItem.validationFailureMessage, localizedString(.cardNameItemInvalid, sut.localizationParameters))
+        XCTAssertEqual(items.holderNameItem.title, localizedString(.cardNameItemTitle, sut.localizationParameters))
+        XCTAssertEqual(items.holderNameItem.placeholder, localizedString(.cardNameItemPlaceholder, sut.localizationParameters))
+        XCTAssertEqual(items.holderNameItem.validationFailureMessage, localizedString(.cardNameItemInvalid, sut.localizationParameters))
         
-        XCTAssertEqual(sut.cardViewController.storeDetailsItem.title, localizedString(.cardStoreDetailsButton, sut.localizationParameters))
+        XCTAssertEqual(items.storeDetailsItem.title, localizedString(.cardStoreDetailsButton, sut.localizationParameters))
         
-        XCTAssertEqual(sut.cardViewController.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
+        XCTAssertEqual(items.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
     }
     
     func testLocalizationWithCustomKeySeparator() {
@@ -59,22 +60,23 @@ class CardComponentTests: XCTestCase {
                                 configuration: configuration)
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
+
+        var items = sut.cardViewController.items
+        XCTAssertEqual(items.expiryDateItem.title, localizedString(.cardExpiryItemTitle, nil))
+        XCTAssertEqual(items.expiryDateItem.placeholder, localizedString(LocalizationKey(key: "adyen_card_expiryItem_placeholder"), sut.localizationParameters))
+        XCTAssertEqual(items.expiryDateItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_card_expiryItem_invalid"), sut.localizationParameters))
         
-        XCTAssertEqual(sut.cardViewController.expiryDateItem.title, localizedString(.cardExpiryItemTitle, nil))
-        XCTAssertEqual(sut.cardViewController.expiryDateItem.placeholder, localizedString(LocalizationKey(key: "adyen_card_expiryItem_placeholder"), sut.localizationParameters))
-        XCTAssertEqual(sut.cardViewController.expiryDateItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_card_expiryItem_invalid"), sut.localizationParameters))
+        XCTAssertEqual(items.securityCodeItem.title, localizedString(LocalizationKey(key: "adyen_card_cvcItem_title"), sut.localizationParameters))
+        XCTAssertNil(items.securityCodeItem.placeholder)
+        XCTAssertEqual(items.securityCodeItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_card_cvcItem_invalid"), sut.localizationParameters))
         
-        XCTAssertEqual(sut.cardViewController.securityCodeItem.title, localizedString(LocalizationKey(key: "adyen_card_cvcItem_title"), sut.localizationParameters))
-        XCTAssertNil(sut.cardViewController.securityCodeItem.placeholder)
-        XCTAssertEqual(sut.cardViewController.securityCodeItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_card_cvcItem_invalid"), sut.localizationParameters))
+        XCTAssertEqual(items.holderNameItem.title, localizedString(LocalizationKey(key: "adyen_card_nameItem_title"), sut.localizationParameters))
+        XCTAssertEqual(items.holderNameItem.placeholder, localizedString(LocalizationKey(key: "adyen_card_nameItem_placeholder"), sut.localizationParameters))
+        XCTAssertEqual(items.holderNameItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_card_nameItem_invalid"), sut.localizationParameters))
         
-        XCTAssertEqual(sut.cardViewController.holderNameItem.title, localizedString(LocalizationKey(key: "adyen_card_nameItem_title"), sut.localizationParameters))
-        XCTAssertEqual(sut.cardViewController.holderNameItem.placeholder, localizedString(LocalizationKey(key: "adyen_card_nameItem_placeholder"), sut.localizationParameters))
-        XCTAssertEqual(sut.cardViewController.holderNameItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_card_nameItem_invalid"), sut.localizationParameters))
+        XCTAssertEqual(items.storeDetailsItem.title, localizedString(LocalizationKey(key: "adyen_card_storeDetailsButton"), sut.localizationParameters))
         
-        XCTAssertEqual(sut.cardViewController.storeDetailsItem.title, localizedString(LocalizationKey(key: "adyen_card_storeDetailsButton"), sut.localizationParameters))
-        
-        XCTAssertEqual(sut.cardViewController.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
+        XCTAssertEqual(items.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
     }
     
     func testUIConfiguration() {
@@ -675,7 +677,7 @@ class CardComponentTests: XCTestCase {
             sut.stopLoadingIfNeeded()
             delegateExpectation.fulfill()
             XCTAssertEqual(sut.cardViewController.view.isUserInteractionEnabled, true)
-            XCTAssertEqual(sut.cardViewController.button.showsActivityIndicator, false)
+            XCTAssertEqual(sut.cardViewController.items.button.showsActivityIndicator, false)
         }
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -1097,8 +1099,8 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: config)
-        
-        let cardNumberItem = sut.cardViewController.numberItem
+
+        let cardNumberItem = sut.cardViewController.items.numberItem
         cardNumberItem.validator = CardNumberValidator(isLuhnCheckEnabled: allEnabledLuhns.luhnCheckRequired)
         cardNumberItem.value = "4111 1111 1111"
         XCTAssertFalse(cardNumberItem.isValid())
@@ -1123,13 +1125,13 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: config)
-        sut.cardViewController.postalCodeItem.value = "1501 NH"
+        sut.cardViewController.items.postalCodeItem.value = "1501 NH"
         
         // When
         sut.clear()
         
         // Then
-        XCTAssertTrue(sut.cardViewController.postalCodeItem.value.isEmpty)
+        XCTAssertTrue(sut.cardViewController.items.postalCodeItem.value.isEmpty)
     }
     
     func testClearShouldResetNumberItemToEmptyValue() throws {
@@ -1143,13 +1145,13 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: config)
-        sut.cardViewController.numberItem.value = "4111 1111 1111 1111"
+        sut.cardViewController.items.numberItem.value = "4111 1111 1111 1111"
         
         // When
         sut.clear()
         
         // Then
-        XCTAssertTrue(sut.cardViewController.numberItem.value.isEmpty)
+        XCTAssertTrue(sut.cardViewController.items.numberItem.value.isEmpty)
     }
     
     func testClearShouldResetExpiryDateItemToEmptyValue() throws {
@@ -1163,13 +1165,13 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: config)
-        sut.cardViewController.expiryDateItem.value = "03/24"
+        sut.cardViewController.items.expiryDateItem.value = "03/24"
 
         // When
         sut.clear()
         
         // Then
-        XCTAssertTrue(sut.cardViewController.expiryDateItem.value.isEmpty)
+        XCTAssertTrue(sut.cardViewController.items.expiryDateItem.value.isEmpty)
     }
     
     func testClearShouldResetSecurityCodeItemToEmptyValue() throws {
@@ -1183,13 +1185,13 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: config)
-        sut.cardViewController.securityCodeItem.value = "935"
+        sut.cardViewController.items.securityCodeItem.value = "935"
 
         // When
         sut.clear()
         
         // Then
-        XCTAssertTrue(sut.cardViewController.securityCodeItem.value.isEmpty)
+        XCTAssertTrue(sut.cardViewController.items.securityCodeItem.value.isEmpty)
     }
     
     func testClearShouldResetHolderNameItemToEmptyValue() throws {
@@ -1203,13 +1205,13 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: config)
-        sut.cardViewController.holderNameItem.value = "Katrina del Mar"
+        sut.cardViewController.items.holderNameItem.value = "Katrina del Mar"
 
         // When
         sut.clear()
         
         // Then
-        XCTAssertTrue(sut.cardViewController.holderNameItem.value.isEmpty)
+        XCTAssertTrue(sut.cardViewController.items.holderNameItem.value.isEmpty)
     }
     
     func testClearShouldDisableStoreDetailsItem() throws {
@@ -1223,13 +1225,13 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: config)
-        sut.cardViewController.storeDetailsItem.value = true
+        sut.cardViewController.items.storeDetailsItem.value = true
         
         // When
         sut.clear()
         
         // Then
-        XCTAssertFalse(sut.cardViewController.storeDetailsItem.value)
+        XCTAssertFalse(sut.cardViewController.items.storeDetailsItem.value)
     }
     
     func testClearShouldAssignEmptyPostalAddressToBillingAddressItem() throws {
@@ -1248,7 +1250,7 @@ class CardComponentTests: XCTestCase {
         sut.clear()
 
         // Then
-        let postalAddress = sut.cardViewController.billingAddressItem.value
+        let postalAddress = sut.cardViewController.items.billingAddressItem.value
         XCTAssertEqual(expectedPostalAddress, postalAddress)
     }
     
