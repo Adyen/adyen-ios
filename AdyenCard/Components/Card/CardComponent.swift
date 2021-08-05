@@ -18,16 +18,20 @@ import UIKit
 public class CardComponent: CardPublicKeyConsumer,
     PresentableComponent,
     Localizable,
-    Observer,
     LoadingComponent,
     ClearableComponent {
+
+    internal enum Constant {
+        internal static let defaultCountryCode = "US"
+        internal static let secondsThrottlingDelay = 0.5
+        internal static let maxCardsVisible = 4
+        internal static let publicBinLength = 6
+        internal static let privateBinLength = 11
+        internal static let publicPanSuffixLength = 4
+    }
     
     /// :nodoc:
     public let apiContext: APIContext
-
-    private let publicBinLength = 6
-
-    internal let publicPanSuffixLength = 4
 
     internal let cardPaymentMethod: AnyCardPaymentMethod
 
@@ -77,7 +81,8 @@ public class CardComponent: CardPublicKeyConsumer,
                             style: FormComponentStyle = FormComponentStyle()) {
         let cardPublicKeyProvider = CardPublicKeyProvider(apiContext: apiContext)
         let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: apiContext),
-                                              cardPublicKeyProvider: cardPublicKeyProvider)
+                                              cardPublicKeyProvider: cardPublicKeyProvider,
+                                              minBinLength: Constant.privateBinLength)
         self.init(paymentMethod: paymentMethod,
                   apiContext: apiContext,
                   configuration: configuration,
@@ -182,7 +187,7 @@ public class CardComponent: CardPublicKeyConsumer,
 extension CardComponent: CardViewControllerDelegate {
     
     func didChangeBIN(_ value: String) {
-        self.cardComponentDelegate?.didChangeBIN(String(value.prefix(publicBinLength)), component: self)
+        self.cardComponentDelegate?.didChangeBIN(String(value.prefix(Constant.publicBinLength)), component: self)
         binInfoProvider.provide(for: value, supportedTypes: supportedCardTypes) { [weak self] binInfo in
             guard let self = self else { return }
             self.cardViewController.update(binInfo: binInfo)

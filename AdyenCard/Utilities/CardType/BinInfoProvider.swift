@@ -5,8 +5,8 @@
 //
 
 import Adyen
-import Foundation
 import AdyenNetworking
+import Foundation
 
 /// :nodoc:
 internal protocol AnyBinInfoProvider: AnyObject {
@@ -17,7 +17,7 @@ internal protocol AnyBinInfoProvider: AnyObject {
 /// Provide cardType detection based on BinLookup API.
 internal final class BinInfoProvider: AnyBinInfoProvider {
     
-    internal static let minBinLength = 11
+    private let minBinLength: Int
 
     private let apiClient: APIClientProtocol
 
@@ -35,10 +35,12 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
     ///   if API not available or BIN too short.
     internal init(apiClient: APIClientProtocol,
                   cardPublicKeyProvider: AnyCardPublicKeyProvider,
-                  fallbackCardTypeProvider: AnyBinInfoProvider = FallbackBinInfoProvider()) {
+                  fallbackCardTypeProvider: AnyBinInfoProvider = FallbackBinInfoProvider(),
+                  minBinLength: Int) {
         self.apiClient = apiClient
         self.cardPublicKeyProvider = cardPublicKeyProvider
         self.fallbackCardTypeProvider = fallbackCardTypeProvider
+        self.minBinLength = minBinLength
     }
     
     /// Request card types based on enterd BIN.
@@ -53,8 +55,8 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
                                               completion: completion)
         }
 
-        let bin = String(bin.prefix(BinInfoProvider.minBinLength))
-        guard bin.count == BinInfoProvider.minBinLength else {
+        let bin = String(bin.prefix(minBinLength))
+        guard bin.count == minBinLength else {
             return fallback()
         }
 

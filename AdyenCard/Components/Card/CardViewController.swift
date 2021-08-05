@@ -24,12 +24,10 @@ internal class CardViewController: FormViewController {
     
     private let scope: String
     
-    private let maxCardsVisible = 4
-    
-    private let throttler = Throttler(minimumDelay: 0.5)
+    private let throttler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
     
     private var topCardTypes: [CardType] {
-        Array(supportedCardTypes.prefix(maxCardsVisible))
+        Array(supportedCardTypes.prefix(CardComponent.Constant.maxCardsVisible))
     }
     
     // MARK: Init view controller
@@ -328,7 +326,7 @@ internal class CardViewController: FormViewController {
     }
     
     private var defaultCountryCode: String {
-        payment?.countryCode ?? Locale.current.regionCode ?? "US"
+        payment?.countryCode ?? Locale.current.regionCode ?? CardComponent.Constant.defaultCountryCode
     }
     
 }
