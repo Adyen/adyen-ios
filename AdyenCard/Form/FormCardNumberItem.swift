@@ -29,14 +29,12 @@ internal final class FormCardNumberItem: FormTextItem, Observer {
     
     /// Initializes the form card number item.
     internal init(supportedCardTypes: [CardType],
-                  logoProvider: LogoURLProvider,
+                  cardTypeLogos: [CardTypeLogo],
                   style: FormTextItemStyle = FormTextItemStyle(),
                   localizationParameters: LocalizationParameters? = nil) {
         self.supportedCardTypes = supportedCardTypes
         
-        self.cardTypeLogos = supportedCardTypes.map {
-            CardTypeLogo(url: logoProvider.logoURL(withName: $0.rawValue), type: $0)
-        }
+        self.cardTypeLogos = cardTypeLogos
         self.localizationParameters = localizationParameters
         
         super.init(style: style)
