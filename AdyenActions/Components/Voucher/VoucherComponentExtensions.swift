@@ -57,11 +57,8 @@ extension VoucherComponent: VoucherViewDelegate {
         )
         
         shareableView.frame = CGRect(origin: .zero, size: shareableView.adyen.minimalSize)
-        
-        // this is needed to trigger rendering and resizing of the shareableView
-        guard shareableView.adyen.snapShot() != nil else { return }
 
-        guard let image = shareableView.adyen.snapShot() else { return }
+        guard let image = shareableView.adyen.snapShot(forceRedraw: true) else { return }
 
         presentSharePopover(
             with: image,
