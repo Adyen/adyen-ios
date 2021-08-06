@@ -8,6 +8,7 @@ import Foundation
 
 /// :nodoc:
 public protocol Hidable {
+
     /// :nodoc:
     var isHidden: Observable<Bool> { get }
 }
@@ -66,4 +67,19 @@ internal protocol SelfRenderingFormItemDelegate: AnyObject {
 
 internal protocol CompoundFormItem {
     var delegate: SelfRenderingFormItemDelegate? { get set }
+}
+
+extension Hidable {
+
+    /// :nodoc:
+    public var isVisible: Bool {
+        get {
+            !self.isHidden.wrappedValue
+        }
+
+        set {
+            self.isHidden.wrappedValue = !newValue
+        }
+    }
+
 }

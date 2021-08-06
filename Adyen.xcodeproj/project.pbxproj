@@ -182,7 +182,7 @@
 		E767F3F525A4CFAF0077029E /* WrapperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E767F34D25A4865A0077029E /* WrapperViewController.swift */; };
 		E767F49B25A5E9740077029E /* ModalToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E767F49A25A5E9740077029E /* ModalToolbar.swift */; };
 		E767F4DC25A603A50077029E /* ModalToolbarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E767F4DB25A603A50077029E /* ModalToolbarTests.swift */; };
-		E76CAC4E26BC0CC200117953 /* CardViewControllerItemManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76CAC4D26BC0CC200117953 /* CardViewControllerItemManager.swift */; };
+		E76CAC4E26BC0CC200117953 /* CardViewControllerItemsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76CAC4D26BC0CC200117953 /* CardViewControllerItemsProvider.swift */; };
 		E76EC680241125E0009C6E2F /* FormCardSecurityCodeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76EC67F241125E0009C6E2F /* FormCardSecurityCodeItem.swift */; };
 		E76EC682241125F5009C6E2F /* FormCardSecurityCodeItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76EC681241125F5009C6E2F /* FormCardSecurityCodeItemView.swift */; };
 		E76EC685241127CE009C6E2F /* AdyenCardAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E76EC684241127CE009C6E2F /* AdyenCardAssets.xcassets */; };
@@ -1070,7 +1070,7 @@
 		E767F4DB25A603A50077029E /* ModalToolbarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalToolbarTests.swift; sourceTree = "<group>"; };
 		E768712426B02D17005A91DB /* Shared.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Shared.entitlements; sourceTree = "<group>"; };
 		E76A4D392684F39A001BEAC3 /* KCPDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KCPDetails.swift; sourceTree = "<group>"; };
-		E76CAC4D26BC0CC200117953 /* CardViewControllerItemManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewControllerItemManager.swift; sourceTree = "<group>"; };
+		E76CAC4D26BC0CC200117953 /* CardViewControllerItemsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewControllerItemsProvider.swift; sourceTree = "<group>"; };
 		E76EC67F241125E0009C6E2F /* FormCardSecurityCodeItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardSecurityCodeItem.swift; sourceTree = "<group>"; };
 		E76EC681241125F5009C6E2F /* FormCardSecurityCodeItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardSecurityCodeItemView.swift; sourceTree = "<group>"; };
 		E76EC684241127CE009C6E2F /* AdyenCardAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AdyenCardAssets.xcassets; sourceTree = "<group>"; };
@@ -2891,7 +2891,7 @@
 				E7451A042600EC8D000BDCCF /* CardComponentConfiguration.swift */,
 				E745175425FB6A59000BDCCF /* CardViewController.swift */,
 				E76EEDA6267CEA3F00BEB3C6 /* CardComponentDelegate.swift */,
-				E76CAC4D26BC0CC200117953 /* CardViewControllerItemManager.swift */,
+				E76CAC4D26BC0CC200117953 /* CardViewControllerItemsProvider.swift */,
 			);
 			path = Card;
 			sourceTree = "<group>";
@@ -4715,7 +4715,7 @@
 				F92329D225AD0240002C5BC4 /* CardBrand.swift in Sources */,
 				E7451A052600EC8D000BDCCF /* CardComponentConfiguration.swift in Sources */,
 				F919DF9524E6D7BC0027976E /* CardComponentExtensions.swift in Sources */,
-				E76CAC4E26BC0CC200117953 /* CardViewControllerItemManager.swift in Sources */,
+				E76CAC4E26BC0CC200117953 /* CardViewControllerItemsProvider.swift in Sources */,
 				E76EC680241125E0009C6E2F /* FormCardSecurityCodeItem.swift in Sources */,
 				E7166A5624EAD99F007CCDEF /* BinInfoProvider.swift in Sources */,
 				E2028F5E222805E20007FF8B /* CardDetails.swift in Sources */,

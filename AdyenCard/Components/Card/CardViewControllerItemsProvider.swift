@@ -8,7 +8,7 @@ import Foundation
 
 extension CardViewController {
 
-    struct ItemManager {
+    internal struct ItemsProvider {
 
         private let formStyle: FormComponentStyle
 
@@ -111,7 +111,7 @@ extension CardViewController {
             // Validates birthdate (YYMMDD) or the Corporate registration number (10 digits)
             let kcpValidator = NumericStringValidator(exactLength: 10) || DateValidator(format: DateValidator.Format.kcpFormat)
 
-            let additionalItem = FormTextInputItem(style: formStyle.textField)
+            var additionalItem = FormTextInputItem(style: formStyle.textField)
             additionalItem.title = localizedString(.cardTaxNumberLabelShort, localizationParameters)
             additionalItem.placeholder = localizedString(.cardTaxNumberPlaceholder, localizationParameters)
             additionalItem.validator = kcpValidator
@@ -119,13 +119,13 @@ extension CardViewController {
             additionalItem.autocapitalizationType = .none
             additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthCodeItem")
             additionalItem.keyboardType = .numberPad
-            additionalItem.isHidden.wrappedValue = !(configuration.koreanAuthenticationMode == .show)
+            additionalItem.isVisible = configuration.koreanAuthenticationMode == .show
 
             return additionalItem
         }()
 
         internal lazy var additionalAuthPasswordItem: FormTextInputItem = {
-            let additionalItem = FormTextInputItem(style: formStyle.textField)
+            var additionalItem = FormTextInputItem(style: formStyle.textField)
             additionalItem.title = localizedString(.cardEncryptedPasswordLabel, localizationParameters)
             additionalItem.placeholder = localizedString(.cardEncryptedPasswordPlaceholder, localizationParameters)
             additionalItem.validator = LengthValidator(exactLength: 2)
@@ -133,13 +133,13 @@ extension CardViewController {
             additionalItem.autocapitalizationType = .none
             additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthPasswordItem")
             additionalItem.keyboardType = .numberPad
-            additionalItem.isHidden.wrappedValue = !(configuration.koreanAuthenticationMode == .show)
+            additionalItem.isVisible = configuration.koreanAuthenticationMode == .show
 
             return additionalItem
         }()
 
         internal lazy var socialSecurityNumberItem: FormTextInputItem = {
-            let securityNumberItem = FormTextInputItem(style: formStyle.textField)
+            var securityNumberItem = FormTextInputItem(style: formStyle.textField)
             securityNumberItem.title = localizedString(.boletoSocialSecurityNumber, localizationParameters)
             securityNumberItem.placeholder = localizedString(.cardBrazilSSNPlaceholder, localizationParameters)
             securityNumberItem.formatter = BrazilSocialSecurityNumberFormatter()
@@ -148,7 +148,7 @@ extension CardViewController {
             securityNumberItem.autocapitalizationType = .none
             securityNumberItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "socialSecurityNumberItem")
             securityNumberItem.keyboardType = .numberPad
-            securityNumberItem.isHidden.wrappedValue = !(configuration.socialSecurityNumberMode == .show)
+            securityNumberItem.isVisible = configuration.socialSecurityNumberMode == .show
 
             return securityNumberItem
         }()

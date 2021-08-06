@@ -24,7 +24,7 @@ internal class CardViewController: FormViewController {
         Array(supportedCardTypes.prefix(CardComponent.Constant.maxCardsVisible))
     }
 
-    internal var items: ItemManager
+    internal var items: ItemsProvider
     
     // MARK: Init view controller
     
@@ -50,7 +50,7 @@ internal class CardViewController: FormViewController {
         let cardLogos = supportedCardTypes.map {
             FormCardNumberItem.CardTypeLogo(url: logoProvider.logoURL(withName: $0.rawValue), type: $0)
         }
-        self.items = ItemManager(formStyle: formStyle,
+        self.items = ItemsProvider(formStyle: formStyle,
                                  payment: payment,
                                  configuration: configuration,
                                  supportedCardTypes: supportedCardTypes,
