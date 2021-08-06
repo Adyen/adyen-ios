@@ -35,7 +35,7 @@ internal class ShareableVoucherView: UIView, Localizable {
         voucherCardView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(voucherCardView)
         
-        voucherCardView.adyen.anchor(inside: layoutMarginsGuide)
+        voucherCardView.adyen.anchor(inside: self)
     }
     
     private lazy var voucherCardView: VoucherCardView = {
@@ -60,11 +60,13 @@ internal class ShareableVoucherView: UIView, Localizable {
     
     private lazy var logoView: UIImageView = {
         let imageView = UIImageView()
+        let logoSize = CGSize(width: 77.0, height: 50.0)
+        imageView.adyen.round(using: model.style.logoCornerRounding)
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.preservesSuperviewLayoutMargins = true
-        imageView.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        imageView.clipsToBounds = true
+        imageView.widthAnchor.constraint(equalToConstant: logoSize.width).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: logoSize.height).isActive = true
         
         return imageView
     }()
@@ -203,6 +205,8 @@ extension ShareableVoucherView {
                 color: UIColor.Adyen.componentLabel,
                 textAlignment: .center
             )
+            
+            internal var logoCornerRounding = CornerRounding.fixed(5)
             
             internal var backgroundColor: UIColor
         }
