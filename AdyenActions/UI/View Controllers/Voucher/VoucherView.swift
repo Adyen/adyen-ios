@@ -210,7 +210,7 @@ internal final class VoucherView: UIView, Localizable {
         }
     }
     
-    public func showCopyCodeConfirmation() {
+    internal func showCopyCodeConfirmation() {
         UIView.transition(
             with: secondaryButton,
             duration: 0.5,
