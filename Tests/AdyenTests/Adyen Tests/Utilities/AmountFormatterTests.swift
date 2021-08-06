@@ -91,77 +91,32 @@ class AmountFormatterTests: XCTestCase {
         XCTAssertEqual(amountCVE.formatted, "12 345,00 CVE")
     }
     
-    func testComponentExtraction() {
-        let comparator: ((String, String)?, (String, String)?) -> Bool = { (lhs, rhs) in
-            switch (lhs, rhs) {
-            case (.none, .none):
-                return true
-            case (.some(let lhs), .some(let rhs)):
-                return lhs.0 == rhs.0 && rhs.1 == rhs.1
-            case (_, _):
-                return false
-            }
+    func testAmountComponents() {
+        let comparator: (AmountComponents, (currency: String, value: String)) -> Bool = { (lhs, rhs) in
+            lhs.formattedValue == rhs.value &&
+                lhs.formattedCurrencySymbol == rhs.currency
         }
         
-        let amount = 123456
-        XCTAssertTrue(
-            comparator(
-                AmountFormatter.formattedComponents(
-                    amount: amount,
-                    currencyCode: "USD",
-                    localeIdentifier: "ko_KR"
-                ), ("US$", "1,234.56")
-            )
-        )
+        let value = 123456
         
-        XCTAssertTrue(
-            comparator(
-                AmountFormatter.formattedComponents(
-                    amount: amount,
-                    currencyCode: "USD",
-                    localeIdentifier: "fr_FR"
-                ), ("$US", "1 234,56")
-            )
-        )
+        let suts = [
+            Amount(value: value, currencyCode: "USD", localeIdentifier: "ko_KR"),
+            Amount(value: value, currencyCode: "USD", localeIdentifier: "fr_FR"),
+            Amount(value: value, currencyCode: "CVE", localeIdentifier: "ko_KR"),
+            Amount(value: value, currencyCode: "CVE", localeIdentifier: "fr_FR"),
+            Amount(value: value, currencyCode: "EUR", localeIdentifier: "ko_KR"),
+            Amount(value: value, currencyCode: "EUR", localeIdentifier: "fr_FR"),
+        ].map(\.formattedComponents)
         
-        XCTAssertTrue(
-            comparator(
-                AmountFormatter.formattedComponents(
-                    amount: amount,
-                    currencyCode: "CVE",
-                    localeIdentifier: "ko_KR"
-                ), ("CVE", "123,456.00")
-            )
-        )
+        let comps = [
+            ("US$", "1,234.56"),
+            ("$US", "1 234,56"),
+            ("CVE", "123,456.00"),
+            ("CVE", "123 456,00"),
+            ("€", "1,234.56"),
+            ("€", "1 234,56")
+        ]
         
-        XCTAssertTrue(
-            comparator(
-                AmountFormatter.formattedComponents(
-                    amount: amount,
-                    currencyCode: "CVE",
-                    localeIdentifier: "fr_FR"
-                ), ("CVE", "123 456,00")
-            )
-        )
-        
-        XCTAssertTrue(
-            comparator(
-                AmountFormatter.formattedComponents(
-                    amount: amount,
-                    currencyCode: "EUR",
-                    localeIdentifier: "ko_KR"
-                ), ("€", "123,456.00")
-            )
-        )
-        
-        XCTAssertTrue(
-            comparator(
-                AmountFormatter.formattedComponents(
-                    amount: amount,
-                    currencyCode: "EUR",
-                    localeIdentifier: "fr_FR"
-                ), ("€", "123 456,00")
-            )
-        )
+        XCTAssertTrue(zip(suts, comps).allSatisfy(comparator))
     }
 }

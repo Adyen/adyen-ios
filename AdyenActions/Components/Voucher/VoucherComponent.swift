@@ -178,8 +178,8 @@ public final class VoucherComponent: AnyVoucherActionHandler {
         let comps = anyAction.totalAmount.formattedComponents
         
         return VoucherView.Model(
-            amount: comps.value,
-            currency: comps.currency,
+            amount: comps.formattedValue,
+            currency: comps.formattedCurrencySymbol,
             logoUrl: LogoURLProvider.logoURL(
                 withName: anyAction.paymentMethodType.rawValue,
                 environment: apiContext.environment,

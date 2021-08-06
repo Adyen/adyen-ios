@@ -76,12 +76,8 @@ public extension Amount {
     /// Returns a formatted representation of the amount, split in two components
     ///
     /// :nodoc:
-    var formattedComponents: (currency: String, value: String) {
-        AmountFormatter.formattedComponents(
-            amount: value,
-            currencyCode: currencyCode,
-            localeIdentifier: localeIdentifier
-        ) ?? (currency: currencyCode, value: String(value))
+    var formattedComponents: AmountComponents {
+        AmountComponents(amount: self)
     }
 
 }
@@ -118,4 +114,55 @@ extension Amount: Comparable {
         return Amount(value: lhs.value - rhs.value, currencyCode: lhs.currencyCode, localeIdentifier: lhs.localeIdentifier)
     }
 
+}
+
+/// :nodoc:
+public struct AmountComponents {
+    
+    /// :nodoc:
+    public init(amount: Amount) {
+        if let comps = Self.extractAmountComponents(from: amount.formatted) {
+            (self.formattedCurrencySymbol, self.formattedValue) = comps
+        } else {
+            self.formattedValue = String(amount.value)
+            self.formattedCurrencySymbol = amount.currencyCode
+        }
+    }
+    
+    /// :nodoc:
+    public let formattedValue: String
+    
+    /// :nodoc:
+    public let formattedCurrencySymbol: String
+    
+    private static func extractAmountComponents(
+        from formattedString: String
+    ) -> (currency: String, value: String)? {
+        guard let regexp = try? NSRegularExpression(
+            pattern: "(\\d+(?:[.,\\s]\\d+)+)",
+            options: []
+        ), let match = regexp.firstMatch(
+            in: formattedString,
+            options: [],
+            range: NSRange(location: 0, length: formattedString.count)
+        ) else {
+            return nil
+        }
+        
+        let matchStartIndex = formattedString.index(formattedString.startIndex, offsetBy: match.range.location)
+        let matchEndIndex = formattedString.index(matchStartIndex, offsetBy: match.range.length)
+        let amountString = formattedString[matchStartIndex..<matchEndIndex]
+        let currencyString: Substring
+        
+        if matchStartIndex == formattedString.startIndex {
+            currencyString = formattedString[matchEndIndex...]
+        } else {
+            currencyString = formattedString[formattedString.startIndex..<matchStartIndex]
+        }
+        
+        return (
+            String(currencyString).trimmingCharacters(in: .whitespacesAndNewlines),
+            String(amountString).trimmingCharacters(in: .whitespacesAndNewlines)
+        )
+    }
 }

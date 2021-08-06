@@ -102,8 +102,8 @@ class VoucherComponentTests: XCTestCase {
         
         let comps = action.anyAction.totalAmount.formattedComponents
         
-        XCTAssertEqual(model.amount, comps.value)
-        XCTAssertEqual(model.currency, comps.currency)
+        XCTAssertEqual(model.amount, comps.formattedValue)
+        XCTAssertEqual(model.currency, comps.formattedCurrencySymbol)
         XCTAssertEqual(
             model.logoUrl,
             LogoURLProvider.logoURL(
