@@ -117,7 +117,7 @@ public struct LocalizationKey {
     public static let partialPaymentRemainingBalance = LocalizationKey(key: "adyen.partialPayment.remainingBalance")
     public static let partialPaymentPayRemainingAmount = LocalizationKey(key: "adyen.partialPayment.payRemainingAmount")
     public static let amount = LocalizationKey(key: "adyen.amount")
-    public static let deliveryAddressToggleTitle = LocalizationKey(key: "adyen.deliveryAddressToggle.title")
+    public static let deliveryAddressToggleTitle = LocalizationKey(key: "adyen.affirm.deliveryAddressToggle.title")
     public static let cardTaxNumberLabel = LocalizationKey(key: "adyen.card.taxNumber.label")
     public static let cardTaxNumberPlaceholder = LocalizationKey(key: "adyen.card.taxNumber.placeholder")
     public static let cardTaxNumberInvalid = LocalizationKey(key: "adyen.card.taxNumber.invalid")
