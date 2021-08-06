@@ -12,7 +12,7 @@ internal final class ModalToolbar: UIView {
     private let style: NavigationStyle
     private let cancelHandler: () -> Void
     private let title: String?
-    private let paddingWithMarginCorrection: CGFloat = 20
+    private let paddingWithMarginCorrection: CGFloat = 16
 
     internal init(title: String?, style: NavigationStyle, cancelHandler: @escaping () -> Void) {
         self.style = style
