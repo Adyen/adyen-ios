@@ -138,26 +138,18 @@ public struct AmountComponents {
     private static func extractAmountComponents(
         from formattedString: String
     ) -> (currency: String, value: String)? {
-        guard let regexp = try? NSRegularExpression(
-            pattern: "(\\d+(?:[.,\\s]\\d+)+)",
-            options: []
-        ), let match = regexp.firstMatch(
-            in: formattedString,
-            options: [],
-            range: NSRange(location: 0, length: formattedString.count)
-        ) else {
-            return nil
-        }
+        guard let range = formattedString.range(
+                of: "(\\d+(?:[.,\\s]\\d+)+)",
+                options: .regularExpression
+        ) else { return nil }
         
-        let matchStartIndex = formattedString.index(formattedString.startIndex, offsetBy: match.range.location)
-        let matchEndIndex = formattedString.index(matchStartIndex, offsetBy: match.range.length)
-        let amountString = formattedString[matchStartIndex..<matchEndIndex]
+        let amountString = formattedString[range.lowerBound..<range.upperBound]
         let currencyString: Substring
         
-        if matchStartIndex == formattedString.startIndex {
-            currencyString = formattedString[matchEndIndex...]
+        if range.lowerBound == formattedString.startIndex {
+            currencyString = formattedString[range.upperBound...]
         } else {
-            currencyString = formattedString[formattedString.startIndex..<matchStartIndex]
+            currencyString = formattedString[formattedString.startIndex..<range.lowerBound]
         }
         
         return (
