@@ -43,7 +43,7 @@ extension CardComponent {
             
             if let number = card.number {
                 let publicSuffix = String(number.suffix(Constant.publicPanSuffixLength))
-                cardComponentDelegate?.didSubmitLastFour(publicSuffix, component: self)
+                cardComponentDelegate?.didSubmit(lastFour: publicSuffix, component: self)
             }
 
             submit(data: data)
