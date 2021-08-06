@@ -44,16 +44,16 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
                                               style: style.addressStyle)
         
         let fields: [PersonalInformation] = [
+            .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 2))),
             .custom(CustomFormItemInjector(item: personalDetailsHeaderItem.addingDefaultMargins())),
             .firstName,
             .lastName,
             .email,
             .phone,
             .address,
-            .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 16))),
             .custom(CustomFormItemInjector(item: deliveryAddressToggleItem)),
             .custom(CustomFormItemInjector(item: deliveryAddressItem)),
-            .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 24)))
+            .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 2)))
         ]
         let configuration = Configuration(fields: fields)
         super.init(paymentMethod: paymentMethod,
