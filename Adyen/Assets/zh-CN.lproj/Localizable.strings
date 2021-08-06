@@ -108,6 +108,7 @@
 "adyen.giftcard.currencyError" = "礼品卡仅以其发行的货币为有效货币";
 "adyen.giftcard.noBalance" = "礼品卡余额为零";
 "adyen.partialPayment.remainingBalance" = "剩余额度为 %@";
+"adyen.partialPayment.payRemainingAmount" = "选择支付方式支付剩余的 %@";
 "adyen.card.taxNumber.label" = "持卡人生日 (YYMMDD) 或公司注册号（10 位数）";
 "adyen.card.taxNumber.placeholder" = "年月日 / 0123456789";
 "adyen.card.taxNumber.invalid" = "无效的持卡人生日或公司注册号";

@@ -108,6 +108,7 @@
 "adyen.giftcard.currencyError" = "Las tarjetas regalo solo son válidas en la moneda en que fueron emitidas";
 "adyen.giftcard.noBalance" = "Esta tarjeta regalo no tiene saldo";
 "adyen.partialPayment.remainingBalance" = "El saldo restante será %@";
+"adyen.partialPayment.payRemainingAmount" = "Seleccione el método de pago para la cantidad restante: %@";
 "adyen.card.taxNumber.label" = "Fecha de nacimiento del titular de la tarjeta (AAMMDD) o número de registro comercial (10 dígitos)";
 "adyen.card.taxNumber.placeholder" = "AAMMDD / 0123456789";
 "adyen.card.taxNumber.invalid" = "Fecha de nacimiento del titular o número de registro comercial incorrectos";

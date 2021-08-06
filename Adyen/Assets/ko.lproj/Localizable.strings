@@ -108,6 +108,7 @@
 "adyen.giftcard.currencyError" = "기프트 카드는 발급된 통화로만 사용하실 수 있습니다";
 "adyen.giftcard.noBalance" = "이 기프트 카드에는 잔액이 없습니다";
 "adyen.partialPayment.remainingBalance" = "남은 잔액은 %@입니다";
+"adyen.partialPayment.payRemainingAmount" = "남은 %@에 대한 결제 수단 선택";
 "adyen.card.taxNumber.label" = "카드 소유자 생년월일(예: 870130) 또는 법인 등록 번호(10자리)";
 "adyen.card.taxNumber.placeholder" = "YYMMDD / 0123456789";
 "adyen.card.taxNumber.invalid" = "유효하지 않은 카드 소유자 생년월일 또는 법인 등록 번호";

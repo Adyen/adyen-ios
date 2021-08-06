@@ -108,6 +108,7 @@
 "adyen.giftcard.currencyError" = "Presentkort är endast giltiga i den valuta som de utfärdades i";
 "adyen.giftcard.noBalance" = "Saldot för detta presentkort är noll";
 "adyen.partialPayment.remainingBalance" = "Återstående saldo blir %@";
+"adyen.partialPayment.payRemainingAmount" = "Välj betalningssätt för återstående %@";
 "adyen.card.taxNumber.label" = "Kortinnehavarens födelsedatum (ÅÅMMDD) eller företagets organisationsnummer (10 siffror)";
 "adyen.card.taxNumber.placeholder" = "ÅÅMMDD / 0123456789";
 "adyen.card.taxNumber.invalid" = "Ogiltigt födelsedatum eller organisationsnummer";

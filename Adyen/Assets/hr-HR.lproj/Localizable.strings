@@ -108,6 +108,7 @@
 "adyen.giftcard.currencyError" = "Poklon-kartice vrijede samo u valuti u kojoj su izdane";
 "adyen.giftcard.noBalance" = "Stanje na ovoj poklon-kartici iznosi nula";
 "adyen.partialPayment.remainingBalance" = "Preostalo stanje na računu iznosit će %@";
+"adyen.partialPayment.payRemainingAmount" = "Odaberite način plaćanja za preostali iznos %@";
 "adyen.card.taxNumber.label" = "Datum rođenja vlasnika kartice (GGMMDD) ili registracijski broj tvrtke (10 znamenki)";
 "adyen.card.taxNumber.placeholder" = "YYMMDD / 0123456789";
 "adyen.card.taxNumber.invalid" = "Netočan datum rođenja vlasnika kartice (GGMMDD) ili registracijski broj tvrtke (10 znamenki)";

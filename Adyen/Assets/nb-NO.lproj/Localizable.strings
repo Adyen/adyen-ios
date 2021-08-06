@@ -108,6 +108,7 @@
 "adyen.giftcard.currencyError" = "Gavekort er kun gyldige i den valutaen de ble utstedt i";
 "adyen.giftcard.noBalance" = "Dette gavekortet har en saldo på null";
 "adyen.partialPayment.remainingBalance" = "Gjenværende saldo vil være %@";
+"adyen.partialPayment.payRemainingAmount" = "Velg betalingsmetode for de gjenstående %@";
 "adyen.card.taxNumber.label" = "Kortholders fødselsdato (YYMMDD) eller bedriftsregistreringsnummer (10 siffer)";
 "adyen.card.taxNumber.placeholder" = "YYMMDD / 0123456789";
 "adyen.card.taxNumber.invalid" = "Ugyldig kortholders fødselsdato eller bedriftsregistreringsnummer";

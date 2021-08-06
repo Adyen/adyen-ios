@@ -108,6 +108,7 @@
 "adyen.giftcard.currencyError" = "ギフトカードは、発行された通貨でのみ有効です。";
 "adyen.giftcard.noBalance" = "このギフトカードの残高はゼロです";
 "adyen.partialPayment.remainingBalance" = "残りの残高は%@になります";
+"adyen.partialPayment.payRemainingAmount" = "残りの%@の支払方法を選択してください";
 "adyen.card.taxNumber.label" = "カード所有者の生年月日（YYMMDD）または法人登録番号（10桁）";
 "adyen.card.taxNumber.placeholder" = "年月日（YYMMDD）/ 0123456789";
 "adyen.card.taxNumber.invalid" = "カード所有者の生年月日または法人登録番号が無効です";

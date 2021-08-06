@@ -53,7 +53,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
             .address,
             .custom(CustomFormItemInjector(item: deliveryAddressToggleItem)),
             .custom(CustomFormItemInjector(item: deliveryAddressItem)),
-            .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 2)))
+            .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 1)))
         ]
         let configuration = Configuration(fields: fields)
         super.init(paymentMethod: paymentMethod,

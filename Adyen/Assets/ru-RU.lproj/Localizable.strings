@@ -108,6 +108,7 @@
 "adyen.giftcard.currencyError" = "Принимаются только подарочные карты соответствующей валюты";
 "adyen.giftcard.noBalance" = "На этой подарочной карте нет средств";
 "adyen.partialPayment.remainingBalance" = "Остаток на балансе составит %@";
+"adyen.partialPayment.payRemainingAmount" = "Выбрать другой способ оплаты оставшейся суммы %@";
 "adyen.card.taxNumber.label" = "Дата рождения владельца карты (ГГММДД) или регистрационный номер предприятия (10 цифр)";
 "adyen.card.taxNumber.placeholder" = "ГГММДД / 0123456789";
 "adyen.card.taxNumber.invalid" = "Неверная дата рождения владельца карты или регистрационный номер предприятия";
