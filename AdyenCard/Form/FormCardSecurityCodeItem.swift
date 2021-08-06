@@ -34,10 +34,15 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
 
     internal func update(cardBrands: [CardBrand]) {
         let isCVCOptional = cardBrands.isCVCOptional
-
-        let titleFailureMessageKey: LocalizationKey = isCVCOptional ? .cardCvcItemTitleOptional : .cardCvcItemTitle
-        title = localizedString(titleFailureMessageKey, localizationParameters)
-        validator = isCVCOptional ? nil : securityCodeValidator
+        
+        // when optional, if user enters anything it should be validated as regular cvc.
+        if isCVCOptional {
+            title = localizedString(.cardCvcItemTitleOptional, localizationParameters)
+            validator = NumericStringValidator(exactLength: 0) || securityCodeValidator
+        } else {
+            title = localizedString(.cardCvcItemTitle, localizationParameters)
+            validator = securityCodeValidator
+        }
 
         self.isCVCOptional = isCVCOptional
     }
@@ -61,6 +66,20 @@ extension Array where Element == CardBrand {
         guard !isEmpty else { return false }
         return allSatisfy { brand in
             switch brand.cvcPolicy {
+            case .optional, .hidden:
+                return true
+            default:
+                return false
+            }
+        }
+    }
+    
+    /// At the moment, due to UI concerns, we won't hide cvc/exp date fields even when response is hidden
+    /// We will make them optional.
+    var isExpiryDateOptional: Bool {
+        guard !isEmpty else { return false }
+        return allSatisfy { brand in
+            switch brand.expiryDatePolicy {
             case .optional, .hidden:
                 return true
             default:
