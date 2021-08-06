@@ -167,9 +167,9 @@ public class CardComponent: CardPublicKeyConsumer,
             payment: payment,
             logoProvider: LogoURLProvider(environment: apiContext.environment),
             supportedCardTypes: supportedCardTypes,
-            scope: String(describing: self)
+            scope: String(describing: self),
+            localizationParameters: localizationParameters
         )
-        formViewController.localizationParameters = localizationParameters
         formViewController.delegate = self
         formViewController.cardDelegate = self
         formViewController.title = paymentMethod.name
