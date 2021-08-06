@@ -21,13 +21,13 @@ public protocol CardComponentDelegate: AnyObject {
     func didChangeCardBrand(_ value: [CardBrand]?, component: CardComponent)
 
     /// Called when shopper submits a card in `CardComponent`.
-    /// - Parameter value: Last 4 digits of card.
+    /// - Parameter lastFour: Last 4 digits of card.
     /// - Parameter component: The `CardComponent` instance.
-    func didSubmitLastFour(_ value: String, component: CardComponent)
+    func didSubmit(lastFour value: String, component: CardComponent)
 }
 
 extension CardComponentDelegate {
 
-    public func didSubmitLastFour(_ _: String, _: CardComponent) {}
+    public func didSubmit(lastFour value: String, component: CardComponent) {}
 
 }

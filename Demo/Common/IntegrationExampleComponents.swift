@@ -155,7 +155,7 @@ extension IntegrationExample: ActionComponentDelegate {
 }
 
 extension IntegrationExample: CardComponentDelegate {
-    func didSubmitLastFour(_ value: String, component: CardComponent) {
+    func didSubmit(lastFour value: String, component: CardComponent) {
         print("Card used: **** **** **** \(value)")
     }
 

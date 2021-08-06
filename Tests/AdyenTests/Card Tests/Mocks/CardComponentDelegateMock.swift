@@ -29,7 +29,7 @@ internal class CardComponentDelegateMock: CardComponentDelegate {
         onCardBrandChange(value)
     }
 
-    func didSubmitLastFour(_ value: String, component: CardComponent) {
+    func didSubmit(lastFour value: String, component: CardComponent) {
         onSubmitLastFour(value)
     }
 }
