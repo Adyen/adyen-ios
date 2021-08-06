@@ -39,13 +39,13 @@
 "adyen.emailItem.title" = "電子郵件地址";
 "adyen.emailItem.placeHolder" = "電子郵件地址";
 "adyen.emailItem.invalid" = "電子郵件地址無效";
+"adyen.moreOptions" = "";
 "adyen.mbway.confirmPayment" = "在 MB WAY 應用程式上確認您的付款";
 "adyen.await.waitForConfirmation" = "正在等候確認";
 "adyen.blik.confirmPayment" = "開啟您的銀行應用程式以確認付款。";
 "adyen.blik.invalid" = "輸入 6 個數字";
 "adyen.blik.code" = "6 位數代碼";
 "adyen.blik.help" = "從您的銀行應用程式中獲取代碼。";
-"adyen.blik.placeholder" = "123–456";
 "adyen.preauthorizeWith" = "透過以下方式進行預先授權：%@";
 "adyen.confirmPreauthorization" = "確認預先授權";
 "adyen.card.cvcItem.title.optional" = "CVC / CVV (可選)";
@@ -65,7 +65,8 @@
 "adyen.voucher.readInstructions" = "閱覽說明";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "您有 %@ 可以支付";
-"adyen.pix.copyButton" = "";
+"adyen.pix.copyButton" = "複製代碼";
+"adyen.pix.instructions.copiedMessage" = "已將代碼複製到剪貼簿";
 "adyen.billingAddressSection.title" = "帳單地址";
 "adyen.deliveryAddressSection.title" = "派送地址";
 "adyen.countryField.title" = "國家/地區";
@@ -110,3 +111,4 @@
 "adyen.card.encryptedPassword.label" = "卡密碼的前 2 位數字";
 "adyen.card.encryptedPassword.placeholder" = "12";
 "adyen.card.encryptedPassword.invalid" = "密碼無效";
+"adyen.affirm.deliveryAddressToggle.title" = "單獨派送地址";

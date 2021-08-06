@@ -10,7 +10,7 @@
 "adyen.sepa.ibanItem.title" = "Rekeningnummer (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Ongeldig rekeningnummer";
 "adyen.sepa.nameItem.title" = "Ten name van";
-"adyen.sepa.nameItem.placeholder" = "P. de Ridder";
+"adyen.sepa.nameItem.placeholder" = "J. Janssen";
 "adyen.sepa.consentLabel" = "Door op de knop hierboven te drukken, gaat u ermee akkoord dat het opgegeven bedrag van uw bankrekening wordt afgeschreven.";
 "adyen.sepa.nameItem.invalid" = "Naam houder ongeldig";
 "adyen.card.storeDetailsButton" = "Onthouden voor de volgende keer";
@@ -24,7 +24,7 @@
 "adyen.card.expiryItem.placeholder" = "MM/JJ";
 "adyen.card.expiryItem.invalid" = "Ongeldige vervaldatum";
 "adyen.card.cvcItem.invalid" = "Ongeldige CVC-/CVV-indeling";
-"adyen.card.cvcItem.title" = "Verificatiecode";
+"adyen.card.cvcItem.title" = "CVC / CVV";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "Verifieer uw kaart";
 "adyen.card.stored.message" = "Voer de verificatiecode in voor %@";
@@ -39,6 +39,7 @@
 "adyen.emailItem.title" = "E-mailadres";
 "adyen.emailItem.placeHolder" = "E-mailadres";
 "adyen.emailItem.invalid" = "Ongeldig e-mailadres";
+"adyen.moreOptions" = "";
 "adyen.mbway.confirmPayment" = "Bevestig uw betaling via de MB WAY-app";
 "adyen.await.waitForConfirmation" = "Wacht op bevestiging";
 "adyen.blik.confirmPayment" = "Open uw bankapp om de betaling te bevestigen.";
@@ -67,7 +68,8 @@
 "adyen.voucher.finish" = "Finish";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "U heeft %@ om te betalen";
-"adyen.pix.copyButton" = "";
+"adyen.pix.copyButton" = "Code kopiëren";
+"adyen.pix.instructions.copiedMessage" = "De code is naar het klembord gekopieerd";
 "adyen.billingAddressSection.title" = "Factuuradres";
 "adyen.deliveryAddressSection.title" = "Bezorgadres";
 "adyen.countryField.title" = "Land";
@@ -112,3 +114,4 @@
 "adyen.card.encryptedPassword.label" = "Eerste twee cijfers van het wachtwoord van de kaart";
 "adyen.card.encryptedPassword.placeholder" = "12";
 "adyen.card.encryptedPassword.invalid" = "Ongeldig wachtwoord";
+"adyen.affirm.deliveryAddressToggle.title" = "Afwijkend bezorgadres";

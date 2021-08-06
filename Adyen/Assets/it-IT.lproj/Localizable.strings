@@ -18,14 +18,14 @@
 "adyen.card.nameItem.placeholder" = "J. Smith";
 "adyen.card.nameItem.invalid" = "Nome del titolare della carta non valido";
 "adyen.card.numberItem.title" = "Numero carta";
-"adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
+"adyen.card.numberItem.placeholder" = "";
 "adyen.card.numberItem.invalid" = "Numero carta non valido";
 "adyen.card.expiryItem.title" = "Data di scadenza";
 "adyen.card.expiryItem.placeholder" = "MM/AA";
 "adyen.card.expiryItem.invalid" = "Data di scadenza non valida";
 "adyen.card.cvcItem.invalid" = "Formato CVC/CVV non valido";
-"adyen.card.cvcItem.title" = "CVC / CVV";
-"adyen.card.cvcItem.placeholder" = "123";
+"adyen.card.cvcItem.title" = "CVC/CVV";
+"adyen.card.cvcItem.placeholder" = "";
 "adyen.card.stored.title" = "Verifica la Carta";
 "adyen.card.stored.message" = "Inserire il codice CVC per %@";
 "adyen.card.stored.expires" = "Scade il: %@";
@@ -39,6 +39,7 @@
 "adyen.emailItem.title" = "Indirizzo e-mail";
 "adyen.emailItem.placeHolder" = "Indirizzo e-mail";
 "adyen.emailItem.invalid" = "Indirizzo e-mail non valido";
+"adyen.moreOptions" = "";
 "adyen.mbway.confirmPayment" = "Conferma il pagamento con l'app MB WAY";
 "adyen.await.waitForConfirmation" = "In attesa di conferma";
 "adyen.blik.confirmPayment" = "Apri l'app della tua banca per confermare il pagamento.";
@@ -67,7 +68,8 @@
 "adyen.voucher.finish" = "Finish";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Devi pagare %@";
-"adyen.pix.copyButton" = "";
+"adyen.pix.copyButton" = "Copia codice";
+"adyen.pix.instructions.copiedMessage" = "Codice copiato negli appunti";
 "adyen.billingAddressSection.title" = "Indirizzo di fatturazione";
 "adyen.deliveryAddressSection.title" = "Indirizzo di consegna";
 "adyen.countryField.title" = "Paese";
@@ -112,3 +114,4 @@
 "adyen.card.encryptedPassword.label" = "Prime 2 cifre della password della carta";
 "adyen.card.encryptedPassword.placeholder" = "12";
 "adyen.card.encryptedPassword.invalid" = "Password non valida";
+"adyen.affirm.deliveryAddressToggle.title" = "Indirizzo di consegna separato";

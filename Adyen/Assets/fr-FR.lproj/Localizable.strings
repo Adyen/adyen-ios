@@ -1,7 +1,7 @@
 "adyen.submitButton" = "Payer";
 "adyen.submitButton.formatted" = "Payer %@";
 "adyen.cancelButton" = "Annuler";
-"adyen.dismissButton" = "OK";
+"adyen.dismissButton" = "Ok";
 "adyen.error.title" = "Erreur";
 "adyen.error.unknown" = "Une erreur inconnue s'est produite";
 "adyen.validationAlert.title" = "Saisie incorrecte";
@@ -39,6 +39,7 @@
 "adyen.emailItem.title" = "Adresse e-mail";
 "adyen.emailItem.placeHolder" = "Adresse e-mail";
 "adyen.emailItem.invalid" = "Adresse e-mail incorrecte";
+"adyen.moreOptions" = "";
 "adyen.mbway.confirmPayment" = "Confirmez votre paiement sur l'application MB WAY";
 "adyen.await.waitForConfirmation" = "En attente de confirmation";
 "adyen.blik.confirmPayment" = "Ouvrez votre application bancaire pour confirmer le paiement.";
@@ -67,7 +68,8 @@
 "adyen.voucher.finish" = "Finish";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Vous avez %@ pour payer cette somme";
-"adyen.pix.copyButton" = "";
+"adyen.pix.copyButton" = "Copier le code";
+"adyen.pix.instructions.copiedMessage" = "Code copié dans le presse-papiers";
 "adyen.billingAddressSection.title" = "Adresse de facturation";
 "adyen.deliveryAddressSection.title" = "Adresse de livraison";
 "adyen.countryField.title" = "Pays";
@@ -112,3 +114,4 @@
 "adyen.card.encryptedPassword.label" = "Les deux premiers chiffres du code de votre carte";
 "adyen.card.encryptedPassword.placeholder" = "12";
 "adyen.card.encryptedPassword.invalid" = "Code incorrect";
+"adyen.affirm.deliveryAddressToggle.title" = "Adresse de livraison distincte";

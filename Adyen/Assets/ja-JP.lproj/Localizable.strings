@@ -31,7 +31,7 @@
 "adyen.card.stored.expires" = "%@ に期限が切れます";
 "adyen.dropIn.stored.title" = "%@のお支払いをご確認下さい";
 "adyen.dropIn.preselected.openAll.title" = "お支払方法を変更する";
-"adyen.continueTo" = "次へ進む：%@";
+"adyen.continueTo" = "次へ進む： %@";
 "adyen.phoneNumber.title" = "電話番号";
 "adyen.phoneNumber.invalid" = "無効な電話番号";
 "adyen.phoneNumber.placeholder" = "123–456–789";
@@ -39,6 +39,7 @@
 "adyen.emailItem.title" = "Eメールアドレス";
 "adyen.emailItem.placeHolder" = "Eメールアドレス";
 "adyen.emailItem.invalid" = "Eメールアドレスが無効です";
+"adyen.moreOptions" = "";
 "adyen.mbway.confirmPayment" = "MB WAYアプリで支払を確認する";
 "adyen.await.waitForConfirmation" = "確認を待っています";
 "adyen.blik.confirmPayment" = "バンキングアプリを開いて、支払を確認してください。";
@@ -46,7 +47,7 @@
 "adyen.blik.code" = "6桁のコード";
 "adyen.blik.help" = "バンキングアプリからコードを取得してください。";
 "adyen.blik.placeholder" = "123–456";
-"adyen.preauthorizeWith" = "次で事前認証する：%@";
+"adyen.preauthorizeWith" = "次で事前認証する： %@";
 "adyen.confirmPreauthorization" = "事前承認を確認する";
 "adyen.card.cvcItem.title.optional" = "セキュリティーコード(任意)";
 "adyen.confirmPurchase" = "購入を確認する";
@@ -67,7 +68,8 @@
 "adyen.voucher.finish" = "Finish";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "%@をお支払い下さい。";
-"adyen.pix.copyButton" = "";
+"adyen.pix.copyButton" = "コードをコピー";
+"adyen.pix.instructions.copiedMessage" = "コードをクリップボードにコピーしました";
 "adyen.billingAddressSection.title" = "ご請求住所";
 "adyen.deliveryAddressSection.title" = "配送先住所";
 "adyen.countryField.title" = "国";
@@ -112,3 +114,4 @@
 "adyen.card.encryptedPassword.label" = "カードのパスワードの最初の2桁";
 "adyen.card.encryptedPassword.placeholder" = "12";
 "adyen.card.encryptedPassword.invalid" = "パスワードが無効です";
+"adyen.affirm.deliveryAddressToggle.title" = "別の配送先住所";

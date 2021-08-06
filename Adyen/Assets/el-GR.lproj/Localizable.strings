@@ -39,6 +39,7 @@
 "adyen.emailItem.title" = "Διεύθυνση email";
 "adyen.emailItem.placeHolder" = "Διεύθυνση email";
 "adyen.emailItem.invalid" = "Μη έγκυρη διεύθυνση email";
+"adyen.moreOptions" = "";
 "adyen.mbway.confirmPayment" = "Επιβεβαιώστε την πληρωμή στην εφαρμογή MB WAY";
 "adyen.await.waitForConfirmation" = "Αναμονή για επιβεβαίωση…";
 "adyen.blik.confirmPayment" = "Ανοίξτε την εφαρμογή τραπεζικής σας για να επιβεβαιώσετε την πληρωμή.";
@@ -67,7 +68,8 @@
 "adyen.voucher.finish" = "Finish";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Έχετε στη διάθεσή σας %@ για την πληρωμή";
-"adyen.pix.copyButton" = "";
+"adyen.pix.copyButton" = "Αντιγραφή κωδικού";
+"adyen.pix.instructions.copiedMessage" = "Ο κωδικός αντιγράφτηκε στο πρόχειρο";
 "adyen.billingAddressSection.title" = "Διεύθυνση τιμολόγησης";
 "adyen.deliveryAddressSection.title" = "Διεύθυνση παράδοσης";
 "adyen.countryField.title" = "Χώρα";
@@ -112,3 +114,4 @@
 "adyen.card.encryptedPassword.label" = "Τα πρώτα 2 ψηφία του κωδικού πρόσβασης της κάρτας";
 "adyen.card.encryptedPassword.placeholder" = "12";
 "adyen.card.encryptedPassword.invalid" = "Μη έγκυρος κωδικός πρόσβασης";
+"adyen.affirm.deliveryAddressToggle.title" = "Ξεχωριστή διεύθυνση παράδοσης";

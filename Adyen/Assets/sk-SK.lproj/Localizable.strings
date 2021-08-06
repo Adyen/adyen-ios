@@ -39,6 +39,7 @@
 "adyen.emailItem.title" = "E-mailová adresa";
 "adyen.emailItem.placeHolder" = "E-mailová adresa";
 "adyen.emailItem.invalid" = "Neplatná emailová adresa";
+"adyen.moreOptions" = "";
 "adyen.mbway.confirmPayment" = "Potvrďte svoju platbu v aplikácii MB WAY";
 "adyen.await.waitForConfirmation" = "Čaká sa na potvrdenie";
 "adyen.blik.confirmPayment" = "Otvorte svoju bankovú aplikáciu a potvrďte platbu.";
@@ -67,7 +68,8 @@
 "adyen.voucher.finish" = "Finish";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Na zaplatenie máte %@";
-"adyen.pix.copyButton" = "";
+"adyen.pix.copyButton" = "Skopírovať kód";
+"adyen.pix.instructions.copiedMessage" = "Kód bol skopírovaný do schránky";
 "adyen.billingAddressSection.title" = "Fakturačná adresa";
 "adyen.deliveryAddressSection.title" = "Dodacia adresa";
 "adyen.countryField.title" = "Krajina";
@@ -112,3 +114,4 @@
 "adyen.card.encryptedPassword.label" = "Prvé 2 číslice hesla karty";
 "adyen.card.encryptedPassword.placeholder" = "12";
 "adyen.card.encryptedPassword.invalid" = "Neplané heslo";
+"adyen.affirm.deliveryAddressToggle.title" = "Samostatná dodacia adresa";

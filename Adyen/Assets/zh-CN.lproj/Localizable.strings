@@ -39,6 +39,7 @@
 "adyen.emailItem.title" = "电子邮件地址";
 "adyen.emailItem.placeHolder" = "电子邮件地址";
 "adyen.emailItem.invalid" = "无效的邮件地址";
+"adyen.moreOptions" = "";
 "adyen.mbway.confirmPayment" = "在 MB WAY 应用上确认您的付款";
 "adyen.await.waitForConfirmation" = "等待确认";
 "adyen.blik.confirmPayment" = "打开您的银行应用以确认支付。";
@@ -67,7 +68,8 @@
 "adyen.voucher.finish" = "Finish";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "您需要支付 %@";
-"adyen.pix.copyButton" = "";
+"adyen.pix.copyButton" = "复制代码";
+"adyen.pix.instructions.copiedMessage" = "代码复制到剪贴板";
 "adyen.billingAddressSection.title" = "账单地址";
 "adyen.deliveryAddressSection.title" = "寄送地址";
 "adyen.countryField.title" = "国家/地区";
@@ -110,5 +112,6 @@
 "adyen.card.taxNumber.placeholder" = "年月日 / 0123456789";
 "adyen.card.taxNumber.invalid" = "无效的持卡人生日或公司注册号";
 "adyen.card.encryptedPassword.label" = "卡片密码的前 2 位数";
-"adyen.card.encryptedPassword.placeholder" = "12";
+"adyen.card.encryptedPassword.placeholder" = "";
 "adyen.card.encryptedPassword.invalid" = "无效的密码";
+"adyen.affirm.deliveryAddressToggle.title" = "单独的送货地址";

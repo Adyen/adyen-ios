@@ -39,6 +39,7 @@
 "adyen.emailItem.title" = "Adresa e-pošte";
 "adyen.emailItem.placeHolder" = "Adresa e-pošte";
 "adyen.emailItem.invalid" = "Nevažeća adresa e-pošte";
+"adyen.moreOptions" = "";
 "adyen.mbway.confirmPayment" = "Potvrdite uplatu u aplikaciji MB WAY";
 "adyen.await.waitForConfirmation" = "Čeka se potvrda";
 "adyen.blik.confirmPayment" = "Otvorite svoju bankovnu aplikaciju kako biste potvrdili plaćanje.";
@@ -67,7 +68,8 @@
 "adyen.voucher.finish" = "Finish";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Imate %@ za plaćanje";
-"adyen.pix.copyButton" = "";
+"adyen.pix.copyButton" = "Kopiraj kôd";
+"adyen.pix.instructions.copiedMessage" = "Kôd je kopiran u međuspremnik";
 "adyen.billingAddressSection.title" = "Adresa za račun";
 "adyen.deliveryAddressSection.title" = "Adresa za dostavu";
 "adyen.countryField.title" = "Zemlja";
@@ -112,3 +114,4 @@
 "adyen.card.encryptedPassword.label" = "Prve 2 znamenke lozinke kartice";
 "adyen.card.encryptedPassword.placeholder" = "12";
 "adyen.card.encryptedPassword.invalid" = "Lozinka je netočna";
+"adyen.affirm.deliveryAddressToggle.title" = "Zasebna adresa za dostavu";

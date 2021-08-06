@@ -39,6 +39,7 @@
 "adyen.emailItem.title" = "Email address";
 "adyen.emailItem.placeHolder" = "Email address";
 "adyen.emailItem.invalid" = "Invalid email address";
+"adyen.moreOptions" = "More options";
 "adyen.mbway.confirmPayment" = "Confirm your payment on the MB WAY app";
 "adyen.await.waitForConfirmation" = "Waiting for confirmation";
 "adyen.blik.confirmPayment" = "Open your banking app to confirm the payment.";
@@ -68,6 +69,7 @@
 "adyen.pix.instructions" = "Open the app with the PIX registered key, choose Pay with PIX and scan the QR Code or copy and paste the code";
 "adyen.pix.expirationLabel" = "You have %@ to pay";
 "adyen.pix.copyButton" = "Copy code";
+"adyen.pix.instructions.copiedMessage" = "Code copied to clipboard";
 "adyen.billingAddressSection.title" = "Billing address";
 "adyen.deliveryAddressSection.title" = "Delivery Address";
 "adyen.countryField.title" = "Country";
@@ -106,14 +108,12 @@
 "adyen.giftcard.currencyError" = "Gift cards are only valid in the currency they were issued in";
 "adyen.giftcard.noBalance" = "This gift card has zero balance";
 "adyen.partialPayment.remainingBalance" = "Remaining balance will be %@";
-"adyen.partialPayment.payRemainingAmount" = "Select payment method for the remaining %@";
-"adyen.amount" = "amount";
-"adyen.deliveryAddressToggle.title" = "Separate delivery address";
 "adyen.card.taxNumber.label" = "Cardholder birthdate (YYMMDD) or Corporate registration number (10 digits)";
 "adyen.card.taxNumber.placeholder" = "YYMMDD / 0123456789";
 "adyen.card.taxNumber.invalid" = "Invalid Cardholder birthdate or Corporate registration number";
 "adyen.card.encryptedPassword.label" = "First 2 digits of card password";
 "adyen.card.encryptedPassword.placeholder" = "12";
 "adyen.card.encryptedPassword.invalid" = "Invalid password";
+"adyen.affirm.deliveryAddressToggle.title" = "Separate delivery address";
 "adyen.card.taxNumber.label.short" = "Birthday or Corporate registration number";
 "adyen.card.brazilSSN.placeholder" = "123.123.123-12";

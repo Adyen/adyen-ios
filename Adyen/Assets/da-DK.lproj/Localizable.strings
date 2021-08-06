@@ -39,6 +39,7 @@
 "adyen.emailItem.title" = "E-mailadresse";
 "adyen.emailItem.placeHolder" = "E-mailadresse";
 "adyen.emailItem.invalid" = "Ugyldig e-mailadresse";
+"adyen.moreOptions" = "";
 "adyen.mbway.confirmPayment" = "Bekræft din betaling på appen MB WAY";
 "adyen.await.waitForConfirmation" = "Venter på bekræftelse";
 "adyen.blik.confirmPayment" = "Åbn din bankapp for at bekræfte betalingen.";
@@ -67,7 +68,8 @@
 "adyen.voucher.finish" = "Finish";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Du har %@ at betale";
-"adyen.pix.copyButton" = "";
+"adyen.pix.copyButton" = "Kopiér koden";
+"adyen.pix.instructions.copiedMessage" = "Koden er kopieret til udklipsholderen";
 "adyen.billingAddressSection.title" = "Faktureringsadresse";
 "adyen.deliveryAddressSection.title" = "Leveringsadresse";
 "adyen.countryField.title" = "Land";
@@ -101,7 +103,7 @@
 "adyen.boletobancario.btnLabel" = "Generér Boleto";
 "adyen.boleto.sendCopyToEmail" = "Send en kopi til min e-mail";
 "adyen.boleto.personalDetails" = "Personlige oplysninger";
-"adyen.boleto.socialSecurityNumber" = "";
+"adyen.boleto.socialSecurityNumber" = "CPF / CNPJ";
 "adyen.boleto.download.pdf" = "Download PDF";
 "adyen.giftcard.currencyError" = "Gavekort er kun gyldige i udstedelsesvalutaen";
 "adyen.giftcard.noBalance" = "Saldoen på gavekortet er 0";
@@ -112,3 +114,4 @@
 "adyen.card.encryptedPassword.label" = "Første 2 cifre i adgangskode til kort";
 "adyen.card.encryptedPassword.placeholder" = "12";
 "adyen.card.encryptedPassword.invalid" = "Ugyldig adgangskode";
+"adyen.affirm.deliveryAddressToggle.title" = "Separat leveringsadresse";

@@ -22,7 +22,7 @@
 "adyen.card.numberItem.invalid" = "Недействительный номер карты";
 "adyen.card.expiryItem.title" = "Срок действия";
 "adyen.card.expiryItem.placeholder" = "ММ/ГГ";
-"adyen.card.expiryItem.invalid" = "Указан неверный срок действия";
+"adyen.card.expiryItem.invalid" = "Неверный срок действия";
 "adyen.card.cvcItem.invalid" = "Неверный формат CVC / CVV";
 "adyen.card.cvcItem.title" = "CVC / CVV";
 "adyen.card.cvcItem.placeholder" = "123";
@@ -39,12 +39,13 @@
 "adyen.emailItem.title" = "Адрес эл. почты";
 "adyen.emailItem.placeHolder" = "Адрес эл. почты";
 "adyen.emailItem.invalid" = "Недействительный адрес эл. почты";
+"adyen.moreOptions" = "";
 "adyen.mbway.confirmPayment" = "Подтвердите оплату в приложении MB WAY";
 "adyen.await.waitForConfirmation" = "Ожидание подтверждения";
 "adyen.blik.confirmPayment" = "Для подтверждения оплаты откройте приложение банка.";
 "adyen.blik.invalid" = "Введите 6 цифр";
 "adyen.blik.code" = "6-значный код";
-"adyen.blik.help" = "Получите код из банковского приложения.";
+"adyen.blik.help" = "Получите код из приложения вашего банка.";
 "adyen.blik.placeholder" = "123–456";
 "adyen.preauthorizeWith" = "Предавторизация в %@";
 "adyen.confirmPreauthorization" = "Подтвердить предавторизацию";
@@ -67,7 +68,8 @@
 "adyen.voucher.finish" = "Finish";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "У вас %@ на оплату";
-"adyen.pix.copyButton" = "";
+"adyen.pix.copyButton" = "Скопировать код";
+"adyen.pix.instructions.copiedMessage" = "Код скопирован в буфер обмена";
 "adyen.billingAddressSection.title" = "Платежный адрес";
 "adyen.deliveryAddressSection.title" = "Адрес доставки";
 "adyen.countryField.title" = "Страна";
@@ -93,8 +95,8 @@
 "adyen.selectStateOrProvinceField.placeholder" = "Выберите провинцию или территорию";
 "adyen.provinceOrTerritoryField.title" = "Провинция или территория";
 "adyen.provinceOrTerritoryField.placeholder" = "Провинция или территория";
-"adyen.apartmentSuiteField.title" = "Квартира";
-"adyen.apartmentSuiteField.placeholder" = "Квартира";
+"adyen.apartmentSuiteField.title" = "Квартира / помещение";
+"adyen.apartmentSuiteField.placeholder" = "Квартира / помещение";
 "adyen.errorFeedback.emptyField" = "Обязательное поле; пожалуйста, заполните его.";
 "adyen.errorFeedback.incorrectFormat" = "Неверный формат ввода.";
 "adyen.field.title.optional" = "(необязательно)";
@@ -110,5 +112,6 @@
 "adyen.card.taxNumber.placeholder" = "ГГММДД / 0123456789";
 "adyen.card.taxNumber.invalid" = "Неверная дата рождения владельца карты или регистрационный номер предприятия";
 "adyen.card.encryptedPassword.label" = "Первые 2 цифры пароля карты";
-"adyen.card.encryptedPassword.placeholder" = "12";
+"adyen.card.encryptedPassword.placeholder" = "";
 "adyen.card.encryptedPassword.invalid" = "Неверный пароль";
+"adyen.affirm.deliveryAddressToggle.title" = "Доставить по другому адрес";

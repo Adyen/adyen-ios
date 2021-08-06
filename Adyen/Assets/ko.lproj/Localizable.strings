@@ -39,6 +39,7 @@
 "adyen.emailItem.title" = "이메일 주소";
 "adyen.emailItem.placeHolder" = "이메일 주소";
 "adyen.emailItem.invalid" = "유효하지 않은 이메일 주소";
+"adyen.moreOptions" = "";
 "adyen.mbway.confirmPayment" = "MB WAY 앱에서 결제를 확인하십시오";
 "adyen.await.waitForConfirmation" = "확인 대기중";
 "adyen.blik.confirmPayment" = "뱅킹 앱을 열어서 결제를 확인하세요.";
@@ -67,7 +68,8 @@
 "adyen.voucher.finish" = "Finish";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "남은 결제 시한: %@";
-"adyen.pix.copyButton" = "";
+"adyen.pix.copyButton" = "코드 복사하기";
+"adyen.pix.instructions.copiedMessage" = "코드가 클립보드에 복사되었습니다";
 "adyen.billingAddressSection.title" = "청구지 주소";
 "adyen.deliveryAddressSection.title" = "배송 주소";
 "adyen.countryField.title" = "국가";
@@ -112,4 +114,5 @@
 "adyen.card.encryptedPassword.label" = "카드 비밀번호 첫 2자리";
 "adyen.card.encryptedPassword.placeholder" = "12";
 "adyen.card.encryptedPassword.invalid" = "유효하지 않은 번호";
+"adyen.affirm.deliveryAddressToggle.title" = "별도의 배송 주소";
 "adyen.card.taxNumber.label.short" = "생년월일 또는 법인등록번호";

@@ -39,6 +39,7 @@
 "adyen.emailItem.title" = "E-mail-cím";
 "adyen.emailItem.placeHolder" = "E-mail-cím";
 "adyen.emailItem.invalid" = "Érvénytelen e-mail-cím";
+"adyen.moreOptions" = "";
 "adyen.mbway.confirmPayment" = "Fizetés jóváhagyása az MB WAY alkalmazásban";
 "adyen.await.waitForConfirmation" = "Várakozás a jóváhagyásra";
 "adyen.blik.confirmPayment" = "A fizetés jóváhagyásához nyissa meg a banki alkalmazást.";
@@ -67,7 +68,8 @@
 "adyen.voucher.finish" = "Finish";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Fizetéshez rendelkezésre álló idő: %@";
-"adyen.pix.copyButton" = "";
+"adyen.pix.copyButton" = "Kód másolása";
+"adyen.pix.instructions.copiedMessage" = "Kód a vágólapra másolva";
 "adyen.billingAddressSection.title" = "Számlázási cím";
 "adyen.deliveryAddressSection.title" = "Szállítási cím";
 "adyen.countryField.title" = "Ország";
@@ -112,3 +114,4 @@
 "adyen.card.encryptedPassword.label" = "Kártya jelszavának első 2 számjegye";
 "adyen.card.encryptedPassword.placeholder" = "12";
 "adyen.card.encryptedPassword.invalid" = "Érvénytelen jelszó";
+"adyen.affirm.deliveryAddressToggle.title" = "Eltérő szállítási cím";
