@@ -120,7 +120,7 @@ extension Amount: Comparable {
 public struct AmountComponents {
     
     /// :nodoc:
-    public init(amount: Amount) {
+    fileprivate init(amount: Amount) {
         if let comps = Self.extractAmountComponents(from: amount.formatted) {
             (self.formattedCurrencySymbol, self.formattedValue) = comps
         } else {
