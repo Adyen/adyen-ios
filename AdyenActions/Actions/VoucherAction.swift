@@ -27,7 +27,7 @@ public enum VoucherPaymentMethod: String, Codable, CaseIterable {
 }
 
 /// Describes any Voucher action.
-public enum VoucherAction: Decodable, AnyVoucherAction {
+public enum VoucherAction: Decodable {
 
     /// Indicates Doku Indomaret Voucher type.
     case dokuIndomaret(DokuVoucherAction)
@@ -67,20 +67,20 @@ public enum VoucherAction: Decodable, AnyVoucherAction {
     private enum CodingKeys: String, CodingKey {
         case paymentMethodType
     }
-
+    
     /// :nodoc:
-    public var passCreationToken: String? {
+    public var anyAction: AnyVoucherAction {
         switch self {
         case let .boletoBancairoSantander(action):
-            return action.passCreationToken
+            return action
         case let .dokuAlfamart(action):
-            return action.passCreationToken
+            return action
         case let .dokuIndomaret(action):
-            return action.passCreationToken
+            return action
         case let .econtextATM(action):
-            return action.passCreationToken
+            return action
         case let .econtextStores(action):
-            return action.passCreationToken
+            return action
         }
     }
 }

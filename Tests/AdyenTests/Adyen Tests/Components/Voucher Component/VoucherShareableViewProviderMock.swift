@@ -10,7 +10,7 @@ import Adyen
 @testable import AdyenActions
 import UIKit
 
-internal final class VoucherViewControllerProviderMock: AnyVoucherViewControllerProvider {
+internal final class VoucherShareableViewProviderMock: AnyVoucherShareableViewProvider {
 
     internal var style = VoucherComponentStyle()
 
@@ -18,9 +18,9 @@ internal final class VoucherViewControllerProviderMock: AnyVoucherViewController
 
     internal var localizationParameters: LocalizationParameters?
 
-    internal var onProvide: ((_ action: VoucherAction) -> UIViewController)?
+    internal var onProvide: ((_ action: VoucherAction) -> UIView)?
 
-    internal func provide(with action: VoucherAction) -> UIViewController {
-        onProvide?(action) ?? UIViewController()
+    internal func provideView(with action: VoucherAction, logo image: UIImage?) -> UIView {
+        onProvide?(action) ?? UIView()
     }
 }

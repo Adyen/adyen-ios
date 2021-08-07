@@ -39,6 +39,7 @@
 "adyen.emailItem.title" = "Elektronski naslov";
 "adyen.emailItem.placeHolder" = "Elektronski naslov";
 "adyen.emailItem.invalid" = "Neveljaven elektronski naslov";
+"adyen.moreOptions" = "";
 "adyen.mbway.confirmPayment" = "Potrdite svoje plačilo v aplikaciji MB WAY";
 "adyen.await.waitForConfirmation" = "Čakanje na potrditev";
 "adyen.blik.confirmPayment" = "Za potrditev plačila odprite svojo bančno aplikacijo.";
@@ -67,7 +68,8 @@
 "adyen.voucher.finish" = "Finish";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Plačati morate %@";
-"adyen.pix.copyButton" = "";
+"adyen.pix.copyButton" = "Kopiraj kodo";
+"adyen.pix.instructions.copiedMessage" = "Koda je kopirana v odložišče";
 "adyen.billingAddressSection.title" = "Naslov za račun";
 "adyen.deliveryAddressSection.title" = "Naslov za dostavo";
 "adyen.countryField.title" = "Država";

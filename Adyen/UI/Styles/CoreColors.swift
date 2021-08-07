@@ -127,6 +127,9 @@ extension UIColor {
 
         /// :nodoc:
         private static let orange = color(hex: 0x7F4A00)
+        
+        /// :nodoc:
+        public static let green40 = color(hex: 0x0ABF53)
 
         /// Create new UIColor from hex value.
         /// - Parameter hex: The hex value of color. Should be between 0 and 0xFFFFFF.

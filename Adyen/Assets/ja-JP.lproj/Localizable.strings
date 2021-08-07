@@ -39,6 +39,7 @@
 "adyen.emailItem.title" = "Eメールアドレス";
 "adyen.emailItem.placeHolder" = "Eメールアドレス";
 "adyen.emailItem.invalid" = "Eメールアドレスが無効です";
+"adyen.moreOptions" = "";
 "adyen.mbway.confirmPayment" = "MB WAYアプリで支払を確認する";
 "adyen.await.waitForConfirmation" = "確認を待っています";
 "adyen.blik.confirmPayment" = "バンキングアプリを開いて、支払を確認してください。";
@@ -67,7 +68,8 @@
 "adyen.voucher.finish" = "Finish";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "%@をお支払い下さい。";
-"adyen.pix.copyButton" = "";
+"adyen.pix.copyButton" = "コードをコピー";
+"adyen.pix.instructions.copiedMessage" = "コードをクリップボードにコピーしました";
 "adyen.billingAddressSection.title" = "ご請求住所";
 "adyen.deliveryAddressSection.title" = "配送先住所";
 "adyen.countryField.title" = "国";

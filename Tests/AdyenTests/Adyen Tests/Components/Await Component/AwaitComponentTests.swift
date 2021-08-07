@@ -78,7 +78,9 @@ class AwaitComponentTests: XCTestCase {
     func testRequiresKeyboardInput() {
         let sut = AwaitViewController(viewModel: AwaitComponentViewModel(icon: "icon", message: "message", spinnerTitle: "spinner title"))
 
-        let wrapperViewController = WrapperViewController(child: ModalViewController(rootViewController: sut))
+        let wrapperViewController = WrapperViewController(
+            child: ModalViewController(rootViewController: sut, navBarType: .regular)
+        )
 
         XCTAssertFalse(wrapperViewController.requiresKeyboardInput)
     }

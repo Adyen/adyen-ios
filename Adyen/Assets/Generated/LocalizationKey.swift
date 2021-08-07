@@ -48,6 +48,7 @@ public struct LocalizationKey {
     public static let emailItemTitle = LocalizationKey(key: "adyen.emailItem.title")
     public static let emailItemPlaceHolder = LocalizationKey(key: "adyen.emailItem.placeHolder")
     public static let emailItemInvalid = LocalizationKey(key: "adyen.emailItem.invalid")
+    public static let moreOptions = LocalizationKey(key: "adyen.moreOptions")
     public static let mbwayConfirmPayment = LocalizationKey(key: "adyen.mbway.confirmPayment")
     public static let awaitWaitForConfirmation = LocalizationKey(key: "adyen.await.waitForConfirmation")
     public static let blikConfirmPayment = LocalizationKey(key: "adyen.blik.confirmPayment")
@@ -77,6 +78,7 @@ public struct LocalizationKey {
     public static let pixInstructions = LocalizationKey(key: "adyen.pix.instructions")
     public static let pixExpirationLabel = LocalizationKey(key: "adyen.pix.expirationLabel")
     public static let pixCopyButton = LocalizationKey(key: "adyen.pix.copyButton")
+    public static let pixInstructionsCopiedMessage = LocalizationKey(key: "adyen.pix.instructions.copiedMessage")
     public static let billingAddressSectionTitle = LocalizationKey(key: "adyen.billingAddressSection.title")
     public static let deliveryAddressSectionTitle = LocalizationKey(key: "adyen.deliveryAddressSection.title")
     public static let countryFieldTitle = LocalizationKey(key: "adyen.countryField.title")
@@ -126,9 +128,9 @@ public struct LocalizationKey {
     public static let cardEncryptedPasswordInvalid = LocalizationKey(key: "adyen.card.encryptedPassword.invalid")
     public static let cardTaxNumberLabelShort = LocalizationKey(key: "adyen.card.taxNumber.label.short")
     public static let cardBrazilSSNPlaceholder = LocalizationKey(key: "adyen.card.brazilSSN.placeholder")
-
+    
     internal let key: String
-
+    
     public init(key: String) {
         self.key = key
     }

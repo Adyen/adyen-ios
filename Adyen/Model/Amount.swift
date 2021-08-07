@@ -58,17 +58,26 @@ public struct Amount: Codable, Equatable {
 /// :nodoc:
 public extension Amount {
 
-    /// Returns a formatter representation of the amount.
+    /// Returns a formatted representation of the amount.
     ///
     /// :nodoc:
     var formatted: String {
-        if let formattedAmount = AmountFormatter.formatted(amount: value,
-                                                           currencyCode: currencyCode,
-                                                           localeIdentifier: localeIdentifier) {
+        if let formattedAmount = AmountFormatter.formatted(
+            amount: value,
+            currencyCode: currencyCode,
+            localeIdentifier: localeIdentifier
+        ) {
             return formattedAmount
         }
 
         return String(value) + " " + currencyCode
+    }
+    
+    /// Returns a formatted representation of the amount, split in two components
+    ///
+    /// :nodoc:
+    var formattedComponents: AmountComponents {
+        AmountComponents(amount: self)
     }
 
 }
@@ -105,4 +114,47 @@ extension Amount: Comparable {
         return Amount(value: lhs.value - rhs.value, currencyCode: lhs.currencyCode, localeIdentifier: lhs.localeIdentifier)
     }
 
+}
+
+/// :nodoc:
+public struct AmountComponents {
+    
+    /// :nodoc:
+    fileprivate init(amount: Amount) {
+        if let comps = Self.extractAmountComponents(from: amount.formatted) {
+            (self.formattedCurrencySymbol, self.formattedValue) = comps
+        } else {
+            self.formattedValue = String(amount.value)
+            self.formattedCurrencySymbol = amount.currencyCode
+        }
+    }
+    
+    /// :nodoc:
+    public let formattedValue: String
+    
+    /// :nodoc:
+    public let formattedCurrencySymbol: String
+    
+    private static func extractAmountComponents(
+        from formattedString: String
+    ) -> (currency: String, value: String)? {
+        guard let range = formattedString.range(
+                of: "(\\d+(?:[.,\\s]\\d+)+)",
+                options: .regularExpression
+        ) else { return nil }
+        
+        let amountString = formattedString[range.lowerBound..<range.upperBound]
+        let currencyString: Substring
+        
+        if range.lowerBound == formattedString.startIndex {
+            currencyString = formattedString[range.upperBound...]
+        } else {
+            currencyString = formattedString[formattedString.startIndex..<range.lowerBound]
+        }
+        
+        return (
+            String(currencyString).trimmingCharacters(in: .whitespacesAndNewlines),
+            String(amountString).trimmingCharacters(in: .whitespacesAndNewlines)
+        )
+    }
 }

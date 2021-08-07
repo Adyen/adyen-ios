@@ -114,7 +114,7 @@ class AssertsTests: XCTestCase {
     }
 
     func testModalViewControllerPreferredContentSizeAssertion() {
-        let sut = ModalViewController(rootViewController: UIViewController())
+        let sut = ModalViewController(rootViewController: UIViewController(), navBarType: .regular)
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
         AdyenAssertion.listener = { message in
