@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import AdyenNetworking
 import Foundation
 
 /// :nodoc:

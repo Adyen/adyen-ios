@@ -7,16 +7,14 @@
 import Adyen
 import UIKit
 
-internal final class ModalToolbar: UIView {
-
+internal final class ModalToolbar: UIView, AnyNavigationBar {
     private let style: NavigationStyle
-    private let cancelHandler: () -> Void
+    internal var onCancelHandler: (() -> Void)?
     private let title: String?
     private let paddingWithMarginCorrection: CGFloat = 16
 
-    internal init(title: String?, style: NavigationStyle, cancelHandler: @escaping () -> Void) {
+    internal init(title: String?, style: NavigationStyle) {
         self.style = style
-        self.cancelHandler = cancelHandler
         self.title = title
         super.init(frame: .zero)
 
@@ -72,7 +70,7 @@ internal final class ModalToolbar: UIView {
     }
 
     @objc private func didCancel() {
-        cancelHandler()
+        onCancelHandler?()
     }
 
     // MARK: - View setup

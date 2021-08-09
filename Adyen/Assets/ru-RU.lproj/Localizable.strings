@@ -111,7 +111,7 @@
 "adyen.partialPayment.payRemainingAmount" = "Выбрать другой способ оплаты оставшейся суммы %@";
 "adyen.card.taxNumber.label" = "Дата рождения владельца карты (ГГММДД) или регистрационный номер предприятия (10 цифр)";
 "adyen.card.taxNumber.placeholder" = "ГГММДД / 0123456789";
-"adyen.card.taxNumber.invalid" = "Неверная дата рождения владельца карты или регистрационный номер предприятия";
+"adyen.card.taxNumber.invalid" = "Неверная дата рождения владельца карты или регистрационного номера предприятия";
 "adyen.card.encryptedPassword.label" = "Первые 2 цифры пароля карты";
 "adyen.card.encryptedPassword.placeholder" = "";
 "adyen.card.encryptedPassword.invalid" = "Неверный пароль";

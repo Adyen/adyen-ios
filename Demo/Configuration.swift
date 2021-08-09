@@ -10,6 +10,7 @@ import PassKit
 
 internal enum ConfigurationConstants {
     // swiftlint:disable explicit_acl
+    // swiftlint:disable line_length
 
     /// Please use your own web server between your app and adyen checkout API.
     static let demoServerEnvironment = DemoServerEnvironment.test
@@ -28,20 +29,23 @@ internal enum ConfigurationConstants {
     
     static let additionalData = ["allow3DS2": true]
     
-    static let clientKey = "{YOUR_CLIENT_KEY}"
-    
     static let apiContext = APIContext(environment: componentsEnvironment, clientKey: clientKey)
+    
+    static let clientKey = "{YOUR_CLIENT_KEY}"
 
-    // swiftlint:disable:next line_length
     static let demoServerAPIKey = "{YOUR_DEMO_SERVER_API_KEY}"
 
     static let applePayMerchantIdentifier = "{YOUR_APPLE_PAY_MERCHANT_IDENTIFIER}"
+
+    static let merchantAccount = "{YOUR_MERCHANT_ACCOUNT}"
     
     static var applePaySummaryItems: [PKPaymentSummaryItem] {
         [
             PKPaymentSummaryItem(
                 label: "Total",
-                amount: AmountFormatter.decimalAmount(current.amount.value, currencyCode: current.amount.currencyCode),
+                amount: AmountFormatter.decimalAmount(current.amount.value,
+                                                      currencyCode: current.amount.currencyCode,
+                                                      localeIdentifier: nil),
                 type: .final
             )
         ]
@@ -52,6 +56,7 @@ internal enum ConfigurationConstants {
     }
 
     // swiftlint:enable explicit_acl
+    // swiftlint:enable line_length
 }
 
 internal struct Configuration: Codable {
@@ -63,7 +68,7 @@ internal struct Configuration: Codable {
     internal let apiVersion: Int
     internal let merchantAccount: String
     
-    internal var amount: Amount { Amount(value: value, currencyCode: currencyCode) }
+    internal var amount: Amount { Amount(value: value, currencyCode: currencyCode, localeIdentifier: nil) }
     internal var payment: Payment { Payment(amount: amount, countryCode: countryCode) }
     
     internal static let defaultConfiguration = Configuration(
@@ -71,7 +76,7 @@ internal struct Configuration: Codable {
         value: 17408,
         currencyCode: "EUR",
         apiVersion: 67,
-        merchantAccount: "TestMerchantCheckout"
+        merchantAccount: ConfigurationConstants.merchantAccount
     )
     
     fileprivate static func loadConfiguration() -> Configuration {

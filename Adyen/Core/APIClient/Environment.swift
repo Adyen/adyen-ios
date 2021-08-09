@@ -5,15 +5,7 @@
 //
 
 import Foundation
-
-/// :nodoc:
-public protocol AnyAPIEnvironment {
-    
-    /// :nodoc:
-    /// The base url.
-    var baseURL: URL { get }
-    
-}
+import AdyenNetworking
     
 /// :nodoc:
 /// Struct that defines the environment to retrieve resources from.

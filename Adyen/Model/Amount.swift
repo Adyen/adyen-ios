@@ -14,16 +14,21 @@ public struct Amount: Codable, Equatable {
 
     /// The code of the currency in which the amount's value is specified.
     public let currencyCode: String
+    
+    /// The identifier of the locale.
+    public var localeIdentifier: String?
 
     /// Initializes an Amount.
     ///
     /// - Parameters:
     ///   - value: The value in minor units.
     ///   - currencyCode: The code of the currency.
-    public init(value: Int, currencyCode: String) {
+    ///   - localeIdentifier: The identifier of the locale.
+    public init(value: Int, currencyCode: String, localeIdentifier: String? = nil) {
         assert(CurrencyCodeValidator().isValid(currencyCode), "Currency code should be in ISO-4217 format. For example: USD.")
         self.value = value
         self.currencyCode = currencyCode
+        self.localeIdentifier = localeIdentifier
     }
 
     /// Initializes an Amount from a `Decimal` value expressed in major units.
@@ -31,9 +36,11 @@ public struct Amount: Codable, Equatable {
     /// - Parameters:
     ///   - value: The value in major units.
     ///   - currencyCode: The code of the currency.
-    public init(value: Decimal, currencyCode: String) {
-        let minorUnit = AmountFormatter.minorUnitAmount(from: value, currencyCode: currencyCode)
-        self.init(value: minorUnit, currencyCode: currencyCode)
+    ///   - localeIdentifier: The identifier of the locale.
+    public init(value: Decimal, currencyCode: String, localeIdentifier: String? = nil) {
+        let minorUnit = AmountFormatter.minorUnitAmount(from: value, currencyCode: currencyCode, localeIdentifier: localeIdentifier)
+        
+        self.init(value: minorUnit, currencyCode: currencyCode, localeIdentifier: localeIdentifier)
     }
 
     /// :nodoc:
@@ -51,15 +58,26 @@ public struct Amount: Codable, Equatable {
 /// :nodoc:
 public extension Amount {
 
-    /// Returns a formatter representation of the amount.
+    /// Returns a formatted representation of the amount.
     ///
     /// :nodoc:
     var formatted: String {
-        if let formattedAmount = AmountFormatter.formatted(amount: value, currencyCode: currencyCode) {
+        if let formattedAmount = AmountFormatter.formatted(
+            amount: value,
+            currencyCode: currencyCode,
+            localeIdentifier: localeIdentifier
+        ) {
             return formattedAmount
         }
 
         return String(value) + " " + currencyCode
+    }
+    
+    /// Returns a formatted representation of the amount, split in two components
+    ///
+    /// :nodoc:
+    var formattedComponents: AmountComponents {
+        AmountComponents(amount: self)
     }
 
 }
@@ -69,31 +87,74 @@ extension Amount: Comparable {
 
     /// :nodoc:
     public static func < (lhs: Amount, rhs: Amount) -> Bool {
-        assert(lhs.currencyCode == rhs.currencyCode, "Currencies should match to compate")
+        assert(lhs.currencyCode == rhs.currencyCode, "Currencies should match to compare")
         return lhs.value < rhs.value
     }
 
     /// :nodoc:
     public static func <= (lhs: Amount, rhs: Amount) -> Bool {
-        assert(lhs.currencyCode == rhs.currencyCode, "Currencies should match to compate")
+        assert(lhs.currencyCode == rhs.currencyCode, "Currencies should match to compare")
         return lhs.value <= rhs.value
     }
 
     /// :nodoc:
     public static func >= (lhs: Amount, rhs: Amount) -> Bool {
-        assert(lhs.currencyCode == rhs.currencyCode, "Currencies should match to compate")
+        assert(lhs.currencyCode == rhs.currencyCode, "Currencies should match to compare")
         return lhs.value >= rhs.value
     }
 
     /// :nodoc:
     public static func > (lhs: Amount, rhs: Amount) -> Bool {
-        assert(lhs.currencyCode == rhs.currencyCode, "Currencies should match to compate")
+        assert(lhs.currencyCode == rhs.currencyCode, "Currencies should match to compare")
         return lhs.value > rhs.value
     }
 
     internal static func - (lhs: Amount, rhs: Amount) -> Amount {
         assert(lhs.currencyCode == rhs.currencyCode, "Currencies should match to substract")
-        return Amount(value: lhs.value - rhs.value, currencyCode: lhs.currencyCode)
+        return Amount(value: lhs.value - rhs.value, currencyCode: lhs.currencyCode, localeIdentifier: lhs.localeIdentifier)
     }
 
+}
+
+/// :nodoc:
+public struct AmountComponents {
+    
+    /// :nodoc:
+    fileprivate init(amount: Amount) {
+        if let comps = Self.extractAmountComponents(from: amount.formatted) {
+            (self.formattedCurrencySymbol, self.formattedValue) = comps
+        } else {
+            self.formattedValue = String(amount.value)
+            self.formattedCurrencySymbol = amount.currencyCode
+        }
+    }
+    
+    /// :nodoc:
+    public let formattedValue: String
+    
+    /// :nodoc:
+    public let formattedCurrencySymbol: String
+    
+    private static func extractAmountComponents(
+        from formattedString: String
+    ) -> (currency: String, value: String)? {
+        guard let range = formattedString.range(
+                of: "(\\d+(?:[.,\\s]\\d+)+)",
+                options: .regularExpression
+        ) else { return nil }
+        
+        let amountString = formattedString[range.lowerBound..<range.upperBound]
+        let currencyString: Substring
+        
+        if range.lowerBound == formattedString.startIndex {
+            currencyString = formattedString[range.upperBound...]
+        } else {
+            currencyString = formattedString[formattedString.startIndex..<range.lowerBound]
+        }
+        
+        return (
+            String(currencyString).trimmingCharacters(in: .whitespacesAndNewlines),
+            String(amountString).trimmingCharacters(in: .whitespacesAndNewlines)
+        )
+    }
 }

@@ -70,7 +70,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     }()
     
     internal lazy var countrySelectItem: FormRegionPickerItem = {
-        let locale = localizationParameters?.locale.map { Locale(identifier: $0) } ?? Locale.current
+        let locale = Locale(identifier: localizationParameters?.locale ?? Locale.current.identifier)
         let countries = RegionRepository.localCountryFallback(for: locale as NSLocale).sorted { $0.name < $1.name }
         let defaultCountry = countries.first { $0.identifier == initialCountry } ?? countries[0]
         let item = FormRegionPickerItem(preselectedValue: defaultCountry,
@@ -141,7 +141,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
                 item.title = title + " \(optionalMessage)"
             }
         } else {
-            item.validator = LengthValidator(minimumLength: 2, maximumLength: 70)
+            item.validator = LengthValidator(minimumLength: 1, maximumLength: 70)
         }
         
         bind(item: item, to: field)

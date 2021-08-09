@@ -60,4 +60,63 @@ class AmountFormatterTests: XCTestCase {
         XCTAssertEqual(AmountFormatter.minorUnitAmount(from: Decimal(218521.213969269), currencyCode: "CLF"), 2185212139)
         XCTAssertEqual(AmountFormatter.minorUnitAmount(from: Decimal(-218521.213969269), currencyCode: "CLF"), -2185212139)
     }
+    
+    func testDifferentLocales() {
+        let amount = 123456
+        XCTAssertEqual(AmountFormatter.formatted(amount: amount, currencyCode: "USD", localeIdentifier: "ko_KR"), "US$1,234.56")
+        XCTAssertEqual(AmountFormatter.formatted(amount: amount, currencyCode: "USD", localeIdentifier: "fr_FR"), "1 234,56 $US")
+        
+        XCTAssertEqual(AmountFormatter.formatted(amount: amount, currencyCode: "CVE", localeIdentifier: "ko_KR"), "CVE 123,456.00")
+        XCTAssertEqual(AmountFormatter.formatted(amount: amount, currencyCode: "CVE", localeIdentifier: "fr_FR"), "123 456,00 CVE")
+        
+        XCTAssertEqual(AmountFormatter.minorUnitAmount(from: 1234.56, currencyCode: "USD", localeIdentifier: "ko_KR"), 123456)
+        XCTAssertEqual(AmountFormatter.minorUnitAmount(from: 1234.56, currencyCode: "USD", localeIdentifier: "fr_FR"), 123456)
+        
+        XCTAssertEqual(AmountFormatter.minorUnitAmount(from: Decimal(123456), currencyCode: "USD", localeIdentifier: "ko_KR"), 12345600)
+        XCTAssertEqual(AmountFormatter.minorUnitAmount(from: Decimal(123456), currencyCode: "USD", localeIdentifier: "fr_FR"), 12345600)
+        
+        XCTAssertEqual(AmountFormatter.decimalAmount(amount, currencyCode: "CVE", localeIdentifier: "ko_KR"), 123456)
+        XCTAssertEqual(AmountFormatter.decimalAmount(amount, currencyCode: "CVE", localeIdentifier: "fr_FR"), 123456)
+    }
+    
+    func testAmountWithDifferentLocales() {
+        var amountEUR = Amount(value: 12345, currencyCode: "EUR", localeIdentifier: "ko_KR")
+        XCTAssertEqual(amountEUR.formatted, "€123.45")
+        amountEUR.localeIdentifier = "fr_FR"
+        XCTAssertEqual(amountEUR.formatted, "123,45 €")
+        
+        var amountCVE = Amount(value: 12345, currencyCode: "CVE", localeIdentifier: "ko_KR")
+        XCTAssertEqual(amountCVE.formatted, "CVE 12,345.00")
+        amountCVE.localeIdentifier = "fr_FR"
+        XCTAssertEqual(amountCVE.formatted, "12 345,00 CVE")
+    }
+    
+    func testAmountComponents() {
+        let comparator: (AmountComponents, (currency: String, value: String)) -> Bool = { (lhs, rhs) in
+            lhs.formattedValue == rhs.value &&
+                lhs.formattedCurrencySymbol == rhs.currency
+        }
+        
+        let value = 123456
+        
+        let suts = [
+            Amount(value: value, currencyCode: "USD", localeIdentifier: "ko_KR"),
+            Amount(value: value, currencyCode: "USD", localeIdentifier: "fr_FR"),
+            Amount(value: value, currencyCode: "CVE", localeIdentifier: "ko_KR"),
+            Amount(value: value, currencyCode: "CVE", localeIdentifier: "fr_FR"),
+            Amount(value: value, currencyCode: "EUR", localeIdentifier: "ko_KR"),
+            Amount(value: value, currencyCode: "EUR", localeIdentifier: "fr_FR"),
+        ].map(\.formattedComponents)
+        
+        let comps = [
+            ("US$", "1,234.56"),
+            ("$US", "1 234,56"),
+            ("CVE", "123,456.00"),
+            ("CVE", "123 456,00"),
+            ("€", "1,234.56"),
+            ("€", "1 234,56")
+        ]
+        
+        XCTAssertTrue(zip(suts, comps).allSatisfy(comparator))
+    }
 }

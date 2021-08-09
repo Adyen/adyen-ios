@@ -40,6 +40,11 @@ extension CardComponent {
                                             amount: amountToPay,
                                             order: order,
                                             storePaymentMethod: cardViewController.storePayment)
+            
+            if let number = card.number {
+                let publicSuffix = String(number.suffix(Constant.publicPanSuffixLength))
+                cardComponentDelegate?.didSubmit(lastFour: publicSuffix, component: self)
+            }
 
             submit(data: data)
         } catch {

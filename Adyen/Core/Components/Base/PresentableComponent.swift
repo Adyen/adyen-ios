@@ -23,15 +23,32 @@ public protocol Cancellable: AnyObject {
     func didCancel()
 }
 
+/// :nodoc:
+/// Pepresents navigation bar on top of presentable components.
+public protocol AnyNavigationBar: UIView {
+    
+    var onCancelHandler: (() -> Void)? { get set }
+    
+}
+
+/// :nodoc:
+public enum NavigationBarType {
+    case regular
+    case custom(AnyNavigationBar)
+}
+
 /// A component that provides a view controller for the shopper to fill payment details.
 public protocol PresentableComponent: Component {
     
     /// Indicates whether `viewController` expected to be presented modally,
-    /// hence it can not handle it's own presentation and dismissal.
+    /// hence it can not handle its own presentation and dismissal.
     var requiresModalPresentation: Bool { get }
     
     /// Returns a view controller that presents the payment details for the shopper to fill.
     var viewController: UIViewController { get }
+    
+    /// Indicates whether Component implements a custom Navigation bar.
+    var navBarType: NavigationBarType { get }
 }
 
 /// A component that provides an interface to reset and assign default values to its items.
@@ -45,6 +62,9 @@ public extension PresentableComponent {
     
     /// :nodoc:
     var requiresModalPresentation: Bool { false }
+    
+    /// :nodoc:
+    var navBarType: NavigationBarType { .regular }
     
 }
 

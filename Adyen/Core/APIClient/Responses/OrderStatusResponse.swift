@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import AdyenNetworking
 import Foundation
 
 /// :nodoc:
@@ -70,7 +71,8 @@ public struct OrderPaymentMethod: PaymentMethod {
     /// :nodoc:
     public func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let disclosureText = AmountFormatter.formatted(amount: -amount.value,
-                                                       currencyCode: amount.currencyCode)
+                                                       currencyCode: amount.currencyCode,
+                                                       localeIdentifier: parameters?.locale)
         return DisplayInformation(title: name,
                                   subtitle: nil,
                                   logoName: type,
