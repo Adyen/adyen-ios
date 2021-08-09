@@ -16,7 +16,11 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
     @Observable(nil) internal var selectedCard: CardType?
 
     /// :nodoc:
-    @Observable(false) internal var isCVCOptional: Bool
+    @Observable(false) internal var isOptional: Bool {
+        didSet {
+            updateFormState()
+        }
+    }
 
     /// Initializes the form card number item.
     internal init(style: FormTextItemStyle = FormTextItemStyle(),
@@ -32,19 +36,15 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
         keyboardType = .numberPad
     }
 
-    internal func update(cardBrands: [CardBrand]) {
-        let isCVCOptional = cardBrands.isCVCOptional
-        
-        // when optional, if user enters anything it should be validated as regular cvc.
-        if isCVCOptional {
+    internal func updateFormState() {
+        // when optional, if user enters anything it should be validated as regular entry.
+        if isOptional {
             title = localizedString(.cardCvcItemTitleOptional, localizationParameters)
             validator = NumericStringValidator(exactLength: 0) || securityCodeValidator
         } else {
             title = localizedString(.cardCvcItemTitle, localizationParameters)
             validator = securityCodeValidator
         }
-
-        self.isCVCOptional = isCVCOptional
     }
     
     override internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {

@@ -34,7 +34,6 @@ internal final class FormSplitItemView: FormItemView<FormSplitItem> {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.preservesSuperviewLayoutMargins = true
         stackView.axis = .horizontal
-        stackView.alignment = .top
         stackView.distribution = .fillEqually
         stackView.spacing = 16
         return stackView

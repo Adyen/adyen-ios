@@ -51,13 +51,13 @@ internal class CardViewController: FormViewController {
             FormCardNumberItem.CardTypeLogo(url: logoProvider.logoURL(withName: $0.rawValue), type: $0)
         }
         self.items = ItemsProvider(formStyle: formStyle,
-                                 payment: payment,
-                                 configuration: configuration,
-                                 supportedCardTypes: supportedCardTypes,
-                                 cardLogos: cardLogos,
-                                 scope: scope,
-                                 defaultCountryCode: countryCode,
-                                 localizationParameters: localizationParameters)
+                                   payment: payment,
+                                   configuration: configuration,
+                                   supportedCardTypes: supportedCardTypes,
+                                   cardLogos: cardLogos,
+                                   scope: scope,
+                                   defaultCountryCode: countryCode,
+                                   localizationParameters: localizationParameters)
         super.init(style: formStyle)
         self.localizationParameters = localizationParameters
     }
@@ -122,7 +122,8 @@ internal class CardViewController: FormViewController {
     
     internal func update(binInfo: BinLookupResponse) {
         let brands = binInfo.brands ?? []
-        items.securityCodeItem.update(cardBrands: brands)
+        items.securityCodeItem.isOptional = brands.isCVCOptional
+        items.expiryDateItem.isOptional = brands.isExpiryDateOptional
 
         if items.numberItem.value.isEmpty {
             items.numberItem.showLogos(for: topCardTypes)
