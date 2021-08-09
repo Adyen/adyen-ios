@@ -21,14 +21,10 @@ internal final class AddressFormItemInjector: FormItemInjector, Localizable {
     private let initialCountry: String
 
     /// :nodoc:
-    internal lazy var item: FormAddressItem = {
-        let item = FormAddressItem(initialCountry: initialCountry,
-                                   style: style,
-                                   localizationParameters: localizationParameters)
-        
-        return item
-    }()
-
+    internal lazy var item = FormAddressItem(initialCountry: initialCountry,
+                                             style: style,
+                                             localizationParameters: localizationParameters)
+    
     internal init(identifier: String, initialCountry: String, style: AddressStyle) {
         self.identifier = identifier
         self.initialCountry = initialCountry
