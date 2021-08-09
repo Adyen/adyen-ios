@@ -29,7 +29,6 @@ public final class FormSpacerItemView: FormItemView<FormSpacerItem> {
 
     private lazy var stackView: UIView = {
         let stackView = UIStackView(arrangedSubviews: arrangedSubviews)
-        // TODO: FIXME
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.distribution = .fillEqually
