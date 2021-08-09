@@ -10,7 +10,7 @@ import Foundation
 public struct CardBrand: Decodable {
     
     /// Indicates the requirement level of a field.
-    public enum RequirementPolicy: String, Decodable {
+    internal enum RequirementPolicy: String, Decodable {
 
         /// Field is required.
         case required
@@ -46,7 +46,7 @@ public struct CardBrand: Decodable {
     ///   - type: Indicates the card brand type.
     ///   - isSupported: Indicates whether its supported by the merchant or not.
     ///   - cvcPolicy: Indicates the cvc policy of the brand.
-    ///   - expiryDatePolicy: Indicates the expirty date policy of the brand.
+    ///   - expiryDatePolicy: Indicates the expiry date policy of the brand.
     ///   - isLuhnCheckEnabled: Indicates whether Luhn check applies to card numbers of this brand.
     ///   - showsSocialSecurityNumber: Indicates whether to show social security number field or not.
     internal init(type: CardType,

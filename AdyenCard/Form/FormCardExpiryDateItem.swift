@@ -22,8 +22,7 @@ internal final class FormCardExpiryDateItem: FormTextItem, Hidable {
         }
     }
     
-    private lazy var expiryDateValidator = CardExpiryDateValidator()
-    private lazy var expiryDateFormatter = CardExpiryDateFormatter()
+    private let expiryDateValidator = CardExpiryDateValidator()
     
     /// Inititate new instance of `FormTextInputItem`
     /// - Parameter style: The `FormTextItemStyle` UI style.
@@ -32,7 +31,7 @@ internal final class FormCardExpiryDateItem: FormTextItem, Hidable {
         super.init(style: style)
         title = localizedString(.cardExpiryItemTitle, localizationParameters)
         placeholder = localizedString(.cardExpiryItemPlaceholder, localizationParameters)
-        formatter = expiryDateFormatter
+        formatter = CardExpiryDateFormatter()
         validator = expiryDateValidator
         validationFailureMessage = localizedString(.cardExpiryItemInvalid, localizationParameters)
         keyboardType = .numberPad
