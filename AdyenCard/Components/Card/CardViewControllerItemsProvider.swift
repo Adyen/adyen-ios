@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import UIKit
 import Adyen
+import UIKit
 
 extension CardViewController {
 
@@ -50,7 +50,7 @@ extension CardViewController {
                                        style: formStyle.addressStyle,
                                        localizationParameters: localizationParameters)
             item.style.backgroundColor = UIColor.Adyen.lightGray
-            item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "addressVerification")
+            item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "billingAddress")
             return item
         }()
 
