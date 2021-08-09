@@ -190,7 +190,7 @@ class BCMCComponentTests: XCTestCase {
             self.populate(textItemView: cardNumberView!, with: Dummy.bancontactCard.number!)
             
             // Enter Expiry Date
-            let expiryDateItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.expiryDateItem")
+            let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem>? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.expiryDateItem")
             XCTAssertNotNil(expiryDateItemView)
             let date = Date(timeIntervalSinceNow: 60 * 60 * 24 * 30 * 2)
             let calendar = Calendar(identifier: .gregorian)
@@ -305,8 +305,8 @@ class BCMCComponentTests: XCTestCase {
             
             // Enter Expiry Date
             let expiryDateView = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.expiryDateItem")
-            XCTAssertNotNil(expiryDateView as? FormTextItemView<FormTextInputItem>)
-            let expiryDateItemView = expiryDateView as! FormTextItemView<FormTextInputItem>
+            XCTAssertNotNil(expiryDateView as? FormTextItemView<FormCardExpiryDateItem>)
+            let expiryDateItemView = expiryDateView as! FormTextItemView<FormCardExpiryDateItem>
             self.populate(textItemView: expiryDateItemView, with: "10/20")
             
             // Tap submit button
@@ -333,14 +333,9 @@ class BCMCComponentTests: XCTestCase {
                                 apiContext: Dummy.context)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.Test name"))
-            XCTAssertEqual(sut.viewController.title, cardPaymentMethod.name)
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 5)
+        wait(for: .seconds(1))
+        XCTAssertNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.Test name"))
+        XCTAssertEqual(sut.viewController.title, cardPaymentMethod.name)
     }
     
 }
