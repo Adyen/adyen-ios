@@ -57,6 +57,6 @@ internal final class FormCardExpiryDateItem: FormTextItem, Hidable {
 
 extension FormItemViewBuilder {
     internal func build(with item: FormCardExpiryDateItem) -> FormItemView<FormCardExpiryDateItem> {
-        FormCardExpiryDateItemView(item: item)
+        FormTextItemView<FormCardExpiryDateItem>(item: item)
     }
 }
