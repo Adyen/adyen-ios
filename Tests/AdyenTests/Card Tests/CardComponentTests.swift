@@ -806,6 +806,7 @@ class CardComponentTests: XCTestCase {
         let postalCodeItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.postalCode"))
         let headerItemView: UILabel = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.title"))
 
+        // Then
         XCTAssertNil(apartmentSuiteItemView)
 
         XCTAssertEqual(countryItemView.titleLabel.text, "Country")

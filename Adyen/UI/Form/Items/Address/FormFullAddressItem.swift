@@ -183,15 +183,8 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     }
     
     private func updateItems(identifier: String?) {
-        let items = items + [headerItem, countrySelectItem]
-        for item in items {
-            if let item = item as? FormSplitItem {
-                update(item: item.leftItem, identifier: identifier)
-                update(item: item.rightItem, identifier: identifier)
-                continue
-            }
-            update(item: item, identifier: identifier)
-        }
+        let subitems = [headerItem, countrySelectItem] + items.flatMap(\.flatSubitems)
+        subitems.forEach { update(item: $0, identifier: identifier) }
     }
     
     private func update(item: FormItem, identifier: String?) {
