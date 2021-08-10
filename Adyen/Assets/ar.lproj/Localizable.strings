@@ -39,6 +39,7 @@
 "adyen.emailItem.title" = "عنوان البريد الإلكتروني";
 "adyen.emailItem.placeHolder" = "عنوان البريد الإلكتروني";
 "adyen.emailItem.invalid" = "عنوان بريد إلكتروني غير صحيح";
+"adyen.moreOptions" = "";
 "adyen.mbway.confirmPayment" = "تأكيد الدفع على تطبيق MB WAY";
 "adyen.await.waitForConfirmation" = "في انتظار التأكيد";
 "adyen.blik.confirmPayment" = "افتح تطبيقك البنكي لتأكيد الدفع.";
@@ -67,7 +68,8 @@
 "adyen.voucher.finish" = "Finish";
 "adyen.pix.instructions" = "افتح التطبيق باستخدام مفتاح PIX المسجل، واختر الدفع باستخدام PIX وامسح رمز الاستجابة السريعة ضوئيًا أو انسخ الرمز والصقه";
 "adyen.pix.expirationLabel" = "لديك %@ للدفع";
-"adyen.pix.copyButton" = "";
+"adyen.pix.copyButton" = "نسخ الرمز";
+"adyen.pix.instructions.copiedMessage" = "تم نسخ الرمز إلى الحافظة";
 "adyen.billingAddressSection.title" = "عنوان الفواتير";
 "adyen.deliveryAddressSection.title" = "عنوان التسليم";
 "adyen.countryField.title" = "البلد";

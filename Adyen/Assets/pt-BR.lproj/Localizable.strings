@@ -9,7 +9,7 @@
 "adyen.paymentMethods.title" = "Meios de pagamento";
 "adyen.sepa.ibanItem.title" = "Número de conta (NIB)";
 "adyen.sepa.ibanItem.invalid" = "Número de conta inválido";
-"adyen.sepa.nameItem.title" = "Nome do titular da conta bancária";
+"adyen.sepa.nameItem.title" = "Nome do titular da conta bancária";
 "adyen.sepa.nameItem.placeholder" = "J. Silva";
 "adyen.sepa.consentLabel" = "Ao apertar o botão acima, você concorda que a quantia especificada seja debitada de sua conta bancária.";
 "adyen.sepa.nameItem.invalid" = "Nome do titular inválido";
@@ -18,16 +18,16 @@
 "adyen.card.nameItem.placeholder" = "J. Smith";
 "adyen.card.nameItem.invalid" = "Nome do titular do cartão inválido";
 "adyen.card.numberItem.title" = "Número do cartão";
-"adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
+"adyen.card.numberItem.placeholder" = "";
 "adyen.card.numberItem.invalid" = "Número de cartão inválido";
 "adyen.card.expiryItem.title" = "Data de validade";
 "adyen.card.expiryItem.placeholder" = "MM/AA";
 "adyen.card.expiryItem.invalid" = "Data de vencimento inválida";
 "adyen.card.cvcItem.invalid" = "Formato de CVC/CVV inválido";
-"adyen.card.cvcItem.title" = "CVC / CVV";
-"adyen.card.cvcItem.placeholder" = "123";
-"adyen.card.stored.title" = "Verifique o seu cartão";
-"adyen.card.stored.message" = "Por favor insira o código CVC para %@";
+"adyen.card.cvcItem.title" = "CVC/CVV";
+"adyen.card.cvcItem.placeholder" = "";
+"adyen.card.stored.title" = "Verifique seu cartão";
+"adyen.card.stored.message" = "Por favor insira o código CVC para %@";
 "adyen.card.stored.expires" = "Expira em %@";
 "adyen.dropIn.stored.title" = "Confirmar pagamento %@";
 "adyen.dropIn.preselected.openAll.title" = "Alterar método de pagamento";
@@ -39,6 +39,7 @@
 "adyen.emailItem.title" = "Endereço de e-mail";
 "adyen.emailItem.placeHolder" = "Endereço de e-mail";
 "adyen.emailItem.invalid" = "Endereço de e-mail inválido";
+"adyen.moreOptions" = "";
 "adyen.mbway.confirmPayment" = "Confirme seu pagamento no aplicativo MB WAY";
 "adyen.await.waitForConfirmation" = "Aguardando confirmação";
 "adyen.blik.confirmPayment" = "Abra o aplicativo do seu banco para confirmar o pagamento.";
@@ -68,6 +69,7 @@
 "adyen.pix.instructions" = "Abra o app com sua chave PIX cadastrada, escolha Pagar com Pix e escaneie o QR Code ou copie e cole o código";
 "adyen.pix.expirationLabel" = "Você tem %@ para pagar";
 "adyen.pix.copyButton" = "Copiar código";
+"adyen.pix.instructions.copiedMessage" = "Código copiado";
 "adyen.billingAddressSection.title" = "Endereço de cobrança";
 "adyen.deliveryAddressSection.title" = "Endereço de entrega";
 "adyen.countryField.title" = "País";
@@ -110,5 +112,5 @@
 "adyen.card.taxNumber.placeholder" = "AAAMMDD / 0123456789";
 "adyen.card.taxNumber.invalid" = "Data de nascimento do titular do cartão ou número de registro corporativo inválidos";
 "adyen.card.encryptedPassword.label" = "Primeiros dois dígitos da senha do cartão";
-"adyen.card.encryptedPassword.placeholder" = "12";
+"adyen.card.encryptedPassword.placeholder" = "";
 "adyen.card.encryptedPassword.invalid" = "Senha inválida";

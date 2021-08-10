@@ -12,7 +12,12 @@ import AdyenNetworking
 extension AdyenScope where Base: UIView {
 
     /// :nodoc:
-    public func snapShot() -> UIImage? {
+    @discardableResult
+    public func snapShot(forceRedraw: Bool = false) -> UIImage? {
+        if forceRedraw {
+            snapShot(forceRedraw: false)
+        }
+        
         UIGraphicsBeginImageContextWithOptions(base.bounds.size, false, 0.0)
         base.drawHierarchy(in: base.bounds, afterScreenUpdates: true)
 

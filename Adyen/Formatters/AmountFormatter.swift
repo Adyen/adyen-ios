@@ -108,5 +108,5 @@ public final class AmountFormatter {
             return formatter.maximumFractionDigits
         }
     }
-    
+
 }

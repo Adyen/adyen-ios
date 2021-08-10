@@ -39,6 +39,7 @@
 "adyen.emailItem.title" = "Adresă de e-mail";
 "adyen.emailItem.placeHolder" = "Adresă de e-mail";
 "adyen.emailItem.invalid" = "Adresă de e-mail incorectă";
+"adyen.moreOptions" = "";
 "adyen.mbway.confirmPayment" = "Confirmați plata în aplicația MB WAY";
 "adyen.await.waitForConfirmation" = "Se așteaptă confirmarea";
 "adyen.blik.confirmPayment" = "Deschideți aplicația dvs. de banking pentru a confirma plata.";
@@ -67,7 +68,8 @@
 "adyen.voucher.finish" = "Finish";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Trebuie să achitați %@";
-"adyen.pix.copyButton" = "";
+"adyen.pix.copyButton" = "Copiați codul";
+"adyen.pix.instructions.copiedMessage" = "Cod copiat în clipboard";
 "adyen.billingAddressSection.title" = "Adresa de facturare";
 "adyen.deliveryAddressSection.title" = "Adresă de livrare";
 "adyen.countryField.title" = "Țară";

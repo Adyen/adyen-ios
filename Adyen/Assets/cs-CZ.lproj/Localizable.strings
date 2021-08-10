@@ -39,6 +39,7 @@
 "adyen.emailItem.title" = "E-mailová adresa";
 "adyen.emailItem.placeHolder" = "E-mailová adresa";
 "adyen.emailItem.invalid" = "Neplatná e-mailová adresa";
+"adyen.moreOptions" = "";
 "adyen.mbway.confirmPayment" = "Potvrďte platbu v aplikaci MB WAY";
 "adyen.await.waitForConfirmation" = "Čeká se na potvrzení";
 "adyen.blik.confirmPayment" = "Spusťte bankovní aplikaci a potvrďte platbu.";
@@ -67,7 +68,8 @@
 "adyen.voucher.finish" = "Finish";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Na zaplacení vám zbývá %@";
-"adyen.pix.copyButton" = "";
+"adyen.pix.copyButton" = "Kopírovat kód";
+"adyen.pix.instructions.copiedMessage" = "Kód zkopírován do schránky";
 "adyen.billingAddressSection.title" = "Fakturační adresa";
 "adyen.deliveryAddressSection.title" = "Dodací adresa";
 "adyen.countryField.title" = "Země";

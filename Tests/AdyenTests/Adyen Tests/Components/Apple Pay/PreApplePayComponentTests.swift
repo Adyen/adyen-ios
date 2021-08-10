@@ -72,7 +72,7 @@ class PreApplePayComponentTests: XCTestCase {
         
         XCTAssertNotNil(applePayButton)
         
-        applePayButton?.sendActions(for: .primaryActionTriggered)
+        applePayButton?.sendActions(for: .touchUpInside)
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             XCTAssertTrue(UIApplication.shared.keyWindow?.rootViewController?.presentedViewController is PKPaymentAuthorizationViewController)

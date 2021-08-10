@@ -39,6 +39,7 @@
 "adyen.emailItem.title" = "Sähköpostiosoite";
 "adyen.emailItem.placeHolder" = "Sähköpostiosoite";
 "adyen.emailItem.invalid" = "Ei-kelvollinen sähköpostiosoite";
+"adyen.moreOptions" = "";
 "adyen.mbway.confirmPayment" = "Vahvista maksusi MB WAY -sovelluksella";
 "adyen.await.waitForConfirmation" = "Odottaa vahvistusta";
 "adyen.blik.confirmPayment" = "Avaa pankkisovelluksesi vahvistaaksesi maksun.";
@@ -67,7 +68,8 @@
 "adyen.voucher.finish" = "Finish";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Sinulla on %@ maksettavana";
-"adyen.pix.copyButton" = "";
+"adyen.pix.copyButton" = "Kopioi koodi";
+"adyen.pix.instructions.copiedMessage" = "Koodi kopioitu leikepöydälle";
 "adyen.billingAddressSection.title" = "Laskutusosoite";
 "adyen.deliveryAddressSection.title" = "Toimitusosoite";
 "adyen.countryField.title" = "Maa";

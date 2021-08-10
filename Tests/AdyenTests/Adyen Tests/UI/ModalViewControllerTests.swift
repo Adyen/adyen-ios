@@ -34,7 +34,11 @@ class ModalViewControllerTests: XCTestCase {
     }
     
     fileprivate func loadAndRunTests(for style: NavigationStyle, test: @escaping () -> Void) {
-        sut = ModalViewController(rootViewController: viewController, style: style, cancelButtonHandler: { _ in })
+        sut = ModalViewController(
+            rootViewController: viewController,
+            style: style,
+            navBarType: .regular
+        )
         UIApplication.shared.keyWindow?.rootViewController = sut
         sut.loadView()
         sut.viewDidLoad()

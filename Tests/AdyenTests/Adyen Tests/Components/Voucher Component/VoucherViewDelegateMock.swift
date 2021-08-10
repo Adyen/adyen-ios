@@ -12,29 +12,28 @@ import Foundation
 
 internal final class VoucherViewDelegateMock: VoucherViewDelegate {
     
-    var onDidComplete: ((_ presentingViewController: UIViewController) -> Void)?
+    var onDidComplete: (() -> Void)?
     
-    func didComplete(presentingViewController: UIViewController) {
-        onDidComplete?(presentingViewController)
+    func didComplete() {
+        onDidComplete?()
     }
     
-    var onSaveAsImage: ((_ voucherView: UIView, _ presentingViewController: UIViewController) -> Void)?
-    
-    func saveAsImage(voucherView: UIView, presentingViewController: UIViewController) {
-        onSaveAsImage?(voucherView, presentingViewController)
+    var onMainButtonTap: ((UIView) -> Void)?
+
+    func mainButtonTap(sourceView: UIView) {
+        onMainButtonTap?(sourceView)
     }
     
-    var onDownload: ((_ url: URL, _ voucherView: UIView, _ presentingViewController: UIViewController) -> Void)?
+    var onAddToAppleWallet: (() -> Void)?
     
-    func download(url: URL, voucherView: UIView, presentingViewController: UIViewController) {
-        onDownload?(url, voucherView, presentingViewController)
+    func addToAppleWallet(completion: @escaping () -> Void) {
+        onAddToAppleWallet?()
     }
     
-    var onAddToAppleWallet: ((_ passToken: String, _ presentingViewController: UIViewController, _ completion: ((Bool) -> Void)?) -> Void)?
+    var onSecondaryButtonTap: ((UIView) -> Void)?
     
-    func addToAppleWallet(passToken: String, presentingViewController: UIViewController, completion: ((Bool) -> Void)?) {
-        onAddToAppleWallet?(passToken, presentingViewController, completion)
+    func secondaryButtonTap(sourceView: UIView) {
+        onSecondaryButtonTap?(sourceView)
     }
-    
     
 }
