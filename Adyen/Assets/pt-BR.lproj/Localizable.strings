@@ -64,10 +64,10 @@
 "adyen.button.copy" = "Copiar";
 "adyen.voucher.introduction" = "Obrigado pela sua compra, use a informação a seguir para concluir o seu pagamento.";
 "adyen.voucher.readInstructions" = "Leia as instruções";
-"adyen.voucher.saveImage" = "";
-"adyen.voucher.finish" = "";
-"adyen.card.brazilSSN.placeholder" = "";
-"adyen.amount" = "Valor";
+"adyen.voucher.saveImage" = "Save as image";
+"adyen.voucher.finish" = "Finish";
+"adyen.card.brazilSSN.placeholder" = "123.123.123-12";
+"adyen.amount" = "amount";
 "adyen.pix.instructions" = "Abra o app com sua chave PIX cadastrada, escolha Pagar com Pix e escaneie o QR Code ou copie e cole o código";
 "adyen.pix.expirationLabel" = "Você tem %@ para pagar";
 "adyen.pix.copyButton" = "Copiar código";

@@ -64,10 +64,10 @@
 "adyen.button.copy" = "コピー";
 "adyen.voucher.introduction" = "お買い上げありがとうございます。以下の情報を使用して、お支払いを完了してください。";
 "adyen.voucher.readInstructions" = "手順を参照してください";
-"adyen.voucher.saveImage" = "";
-"adyen.voucher.finish" = "";
-"adyen.card.brazilSSN.placeholder" = "";
-"adyen.amount" = "金額";
+"adyen.voucher.saveImage" = "Save as image";
+"adyen.voucher.finish" = "Finish";
+"adyen.card.brazilSSN.placeholder" = "123.123.123-12";
+"adyen.amount" = "amount";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "%@をお支払い下さい。";
 "adyen.pix.copyButton" = "コードをコピー";

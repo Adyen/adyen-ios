@@ -64,10 +64,10 @@
 "adyen.button.copy" = "Kopieren";
 "adyen.voucher.introduction" = "Vielen Dank für Ihren Kauf. Bitte schließen Sie Ihre Zahlung unter Verwendung der folgenden Informationen ab.";
 "adyen.voucher.readInstructions" = "Anweisungen lesen";
-"adyen.voucher.saveImage" = "";
-"adyen.voucher.finish" = "";
-"adyen.card.brazilSSN.placeholder" = "";
-"adyen.amount" = "Betrag";
+"adyen.voucher.saveImage" = "Save as image";
+"adyen.voucher.finish" = "Finish";
+"adyen.card.brazilSSN.placeholder" = "123.123.123-12";
+"adyen.amount" = "amount";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Sie haben noch %@ um zu zahlen";
 "adyen.pix.copyButton" = "Code kopieren";

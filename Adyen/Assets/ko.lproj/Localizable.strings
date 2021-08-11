@@ -64,10 +64,10 @@
 "adyen.button.copy" = "복사";
 "adyen.voucher.introduction" = "구매해 주셔서 감사합니다. 다음 정보를 이용하여 결제를 완료하십시오.";
 "adyen.voucher.readInstructions" = "안내 읽기";
-"adyen.voucher.saveImage" = "";
-"adyen.voucher.finish" = "";
-"adyen.card.brazilSSN.placeholder" = "";
-"adyen.amount" = "금액";
+"adyen.voucher.saveImage" = "Save as image";
+"adyen.voucher.finish" = "Finish";
+"adyen.card.brazilSSN.placeholder" = "123.123.123-12";
+"adyen.amount" = "amount";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "남은 결제 시한: %@";
 "adyen.pix.copyButton" = "코드 복사하기";

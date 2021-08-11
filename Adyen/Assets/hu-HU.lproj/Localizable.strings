@@ -64,10 +64,10 @@
 "adyen.button.copy" = "Másolás";
 "adyen.voucher.introduction" = "Köszönjük a vásárlást! Kérjük, a fizetéshez használja a következő információt.";
 "adyen.voucher.readInstructions" = "Olvassa el az utasításokat";
-"adyen.voucher.saveImage" = "";
-"adyen.voucher.finish" = "";
-"adyen.card.brazilSSN.placeholder" = "";
-"adyen.amount" = "Összeg";
+"adyen.voucher.saveImage" = "Save as image";
+"adyen.voucher.finish" = "Finish";
+"adyen.card.brazilSSN.placeholder" = "123.123.123-12";
+"adyen.amount" = "amount";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Fizetéshez rendelkezésre álló idő: %@";
 "adyen.pix.copyButton" = "Kód másolása";

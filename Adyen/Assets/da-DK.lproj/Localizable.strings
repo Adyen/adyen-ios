@@ -64,10 +64,10 @@
 "adyen.button.copy" = "Kopiér";
 "adyen.voucher.introduction" = "Tak for dit køb. Brug følgende oplysninger til at gennemføre din betaling.";
 "adyen.voucher.readInstructions" = "Læs anvisningerne";
-"adyen.voucher.saveImage" = "";
-"adyen.voucher.finish" = "";
-"adyen.card.brazilSSN.placeholder" = "";
-"adyen.amount" = "Beløb";
+"adyen.voucher.saveImage" = "Save as image";
+"adyen.voucher.finish" = "Finish";
+"adyen.card.brazilSSN.placeholder" = "123.123.123-12";
+"adyen.amount" = "amount";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Du har %@ at betale";
 "adyen.pix.copyButton" = "Kopiér koden";
