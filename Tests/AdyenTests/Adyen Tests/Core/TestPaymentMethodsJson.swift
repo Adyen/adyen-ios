@@ -221,6 +221,11 @@ let econtextOnline = [
     "type": "econtext_online"
 ] as [String: Any]
 
+let oxxo = [
+    "name": "OXXO",
+    "type": "oxxo"
+] as [String: Any]
+
 let dokuIndomaretAction: [String: Any] = [
     "reference": "9786512300056485",
     "initialAmount": [

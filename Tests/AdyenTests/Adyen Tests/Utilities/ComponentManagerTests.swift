@@ -40,7 +40,8 @@ class ComponentManagerTests: XCTestCase {
             dokuWallet,
             econtextStores,
             econtextATM,
-            econtextOnline
+            econtextOnline,
+            oxxo
         ]
     ]
 
@@ -58,10 +59,10 @@ class ComponentManagerTests: XCTestCase {
                                    order: nil)
 
         XCTAssertEqual(sut.storedComponents.count, 4)
-        XCTAssertEqual(sut.regularComponents.count, 15)
+        XCTAssertEqual(sut.regularComponents.count, 16)
 
         XCTAssertEqual(sut.storedComponents.filter { $0.apiContext.clientKey == Dummy.context.clientKey }.count, 4)
-        XCTAssertEqual(sut.regularComponents.filter { $0.apiContext.clientKey == Dummy.context.clientKey }.count, 15)
+        XCTAssertEqual(sut.regularComponents.filter { $0.apiContext.clientKey == Dummy.context.clientKey }.count, 16)
 
         XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 12)
         XCTAssertEqual(sut.regularComponents.filter { $0 is Localizable }.count, 11)
@@ -83,7 +84,7 @@ class ComponentManagerTests: XCTestCase {
                                    order: nil)
         
         XCTAssertEqual(sut.storedComponents.count, 4)
-        XCTAssertEqual(sut.regularComponents.count, 15)
+        XCTAssertEqual(sut.regularComponents.count, 16)
         
         XCTAssertEqual(sut.storedComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 4)
         XCTAssertEqual(sut.regularComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 11)
@@ -104,7 +105,7 @@ class ComponentManagerTests: XCTestCase {
                                    order: nil)
         
         XCTAssertEqual(sut.storedComponents.count, 4)
-        XCTAssertEqual(sut.regularComponents.count, 15)
+        XCTAssertEqual(sut.regularComponents.count, 16)
         
         XCTAssertEqual(sut.storedComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 4)
         XCTAssertEqual(sut.regularComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 11)
@@ -138,11 +139,11 @@ class ComponentManagerTests: XCTestCase {
 
         XCTAssertEqual(sut.paidComponents.count, 2)
         XCTAssertEqual(sut.storedComponents.count, 4)
-        XCTAssertEqual(sut.regularComponents.count, 15)
+        XCTAssertEqual(sut.regularComponents.count, 16)
 
         XCTAssertEqual(sut.paidComponents.filter { $0.order == order }.count, 2)
         XCTAssertEqual(sut.storedComponents.filter { $0.order == order }.count, 4)
-        XCTAssertEqual(sut.regularComponents.filter { $0.order == order }.count, 15)
+        XCTAssertEqual(sut.regularComponents.filter { $0.order == order }.count, 16)
     }
     
 }

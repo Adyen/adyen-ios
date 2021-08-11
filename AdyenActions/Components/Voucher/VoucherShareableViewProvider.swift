@@ -152,13 +152,13 @@ internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvid
     
     private func createShopperReferenceField(with reference: String) -> ShareableVoucherView.VoucherField {
         ShareableVoucherView.VoucherField(identifier: "shopperReference",
-                                          title: "Shopper Reference",
+                                          title: localizedString(.voucherShopperReference, localizationParameters),
                                           value: reference)
     }
     
     private func createAlternativeReferenceField(with reference: String) -> ShareableVoucherView.VoucherField {
         ShareableVoucherView.VoucherField(identifier: "alternativeReference",
-                                          title: "Alternative Reference",
+                                          title: localizedString(.voucherAlternativeReference, localizationParameters),
                                           value: reference)
     }
 

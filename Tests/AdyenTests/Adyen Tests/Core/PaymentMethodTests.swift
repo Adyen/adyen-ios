@@ -60,7 +60,8 @@ class PaymentMethodTests: XCTestCase {
                 sevenElevenDictionary,
                 econtextATM,
                 econtextStores,
-                econtextOnline
+                econtextOnline,
+                oxxo
             ]
         ]
         
@@ -115,7 +116,7 @@ class PaymentMethodTests: XCTestCase {
         
         // Regular payment methods
         
-        XCTAssertEqual(paymentMethods.regular.count, 20)
+        XCTAssertEqual(paymentMethods.regular.count, 21)
         XCTAssertTrue(paymentMethods.regular[0] is CardPaymentMethod)
         XCTAssertEqual((paymentMethods.regular[0] as! CardPaymentMethod).fundingSource!, .credit)
         
@@ -205,6 +206,10 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertTrue(paymentMethods.regular[19] is EContextPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[19].name, "Online Banking")
         XCTAssertEqual(paymentMethods.regular[19].type, "econtext_online")
+        
+        XCTAssertTrue(paymentMethods.regular[20] is OXXOPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[20].name, "OXXO")
+        XCTAssertEqual(paymentMethods.regular[20].type, "oxxo")
 
     }
     
@@ -375,6 +380,14 @@ class PaymentMethodTests: XCTestCase {
         let paymentMethod = try Coder.decode(econtextOnline) as EContextPaymentMethod
         XCTAssertEqual(paymentMethod.name, "Online Banking")
         XCTAssertEqual(paymentMethod.type, "econtext_online")
+    }
+    
+    // MARK: - OXXO
+
+    func testDecodingOXXOPaymentMethod() throws {
+        let paymentMethod = try Coder.decode(oxxo) as OXXOPaymentMethod
+        XCTAssertEqual(paymentMethod.name, "OXXO")
+        XCTAssertEqual(paymentMethod.type, "oxxo")
     }
 
     // MARK: - E-Context ATM
