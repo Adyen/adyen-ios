@@ -72,33 +72,33 @@ extension VoucherComponent: VoucherViewDelegate {
             message: nil,
             preferredStyle: .actionSheet
         )
-        getAlertActions(for: action.anyAction, sourceView: sourceView).forEach { alert.addAction($0) }
+        createAlertActions(for: action.anyAction, sourceView: sourceView).forEach { alert.addAction($0) }
         
         presenterViewController.present(alert, animated: true, completion: nil)
     }
     
-    private func getAlertActions(for action: AnyVoucherAction, sourceView: UIView) -> [UIAlertAction] {
+    private func createAlertActions(for action: AnyVoucherAction, sourceView: UIView) -> [UIAlertAction] {
         [
-            getCopyCodeAlertAction(for: action.reference),
-            getMainAlertAction(for: action, sourceView: sourceView),
+            createCopyCodeAlertAction(for: action.reference),
+            createMainAlertAction(for: action, sourceView: sourceView),
             (action as? InstructionAwareVoucherAction).flatMap {
-                getReadInstructionsAlertAction(for: $0.instructionsUrl)
+                createReadInstructionsAlertAction(for: $0.instructionsUrl)
             },
             getCancelAlertAction()
         ].compactMap { $0 }
     }
     
-    private func getMainAlertAction(for action: AnyVoucherAction, sourceView: UIView) -> UIAlertAction? {
+    private func createMainAlertAction(for action: AnyVoucherAction, sourceView: UIView) -> UIAlertAction? {
         guard canAddPasses else { return nil }
         
         if let downloadable = action as? DownloadableVoucher {
-            return getDownloadPDFAlertAction(for: downloadable.downloadUrl, sourceView: sourceView)
+            return createDownloadPDFAlertAction(for: downloadable.downloadUrl, sourceView: sourceView)
         } else {
             return getSaveAsAnImageAlertAction(with: sourceView)
         }
     }
     
-    private func getCopyCodeAlertAction(for reference: String) -> UIAlertAction {
+    private func createCopyCodeAlertAction(for reference: String) -> UIAlertAction {
         UIAlertAction(
             title: localizedString(.pixCopyButton, localizationParameters),
             style: .default,
@@ -106,7 +106,7 @@ extension VoucherComponent: VoucherViewDelegate {
         )
     }
     
-    private func getReadInstructionsAlertAction(for url: String) -> UIAlertAction? {
+    private func createReadInstructionsAlertAction(for url: String) -> UIAlertAction? {
         guard let url = URL(string: url) else { return nil }
         
         return UIAlertAction(
@@ -118,7 +118,7 @@ extension VoucherComponent: VoucherViewDelegate {
         )
     }
     
-    private func getDownloadPDFAlertAction(for url: URL, sourceView: UIView) -> UIAlertAction {
+    private func createDownloadPDFAlertAction(for url: URL, sourceView: UIView) -> UIAlertAction {
         UIAlertAction(
             title: localizedString(.boletoDownloadPdf, localizationParameters),
             style: .default,
