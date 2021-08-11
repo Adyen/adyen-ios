@@ -15,7 +15,7 @@ public struct OXXOPaymentMethod: PaymentMethod {
     /// :nodoc:
     public let name: String
 
-    /// Initializes the E-context ATM, Store or Online payment method.
+    /// Initializes the OXXO payment method.
     ///
     /// - Parameter type: The payment method type.
     /// - Parameter name: The payment method name.
