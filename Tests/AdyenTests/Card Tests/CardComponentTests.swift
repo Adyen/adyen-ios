@@ -831,33 +831,26 @@ class CardComponentTests: XCTestCase {
         sut.payment = .init(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+        wait(for: .seconds(1))
+        let houseNumberItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.houseNumberOrName")
+        let countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.country")
+        let addressItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.street")
+        let apartmentSuiteItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.apartment")
+        let cityItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.city")
+        let provinceOrTerritoryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.stateOrProvince")
+        let postalCodeItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.postalCode")
+        let headerItemView: UILabel? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.title")
 
-            let houseNumberItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.houseNumberOrName")
-            let countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.country")
-            let addressItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.street")
-            let apartmentSuiteItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.apartment")
-            let cityItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.city")
-            let provinceOrTerritoryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.stateOrProvince")
-            let postalCodeItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.postalCode")
-            let headerItemView: UILabel? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.title")
+        XCTAssertNil(apartmentSuiteItemView)
 
-            XCTAssertNil(apartmentSuiteItemView)
-
-            XCTAssertEqual(countryItemView!.titleLabel.text, "Country")
-            XCTAssertEqual(countryItemView!.inputControl.label, "United Kingdom")
-            XCTAssertEqual(houseNumberItemView!.titleLabel.text, "House number")
-            XCTAssertEqual(addressItemView!.titleLabel.text, "Street")
-            XCTAssertEqual(cityItemView!.titleLabel.text, "City / Town")
-            XCTAssertNil(provinceOrTerritoryItemView)
-            XCTAssertEqual(postalCodeItemView!.titleLabel.text, "Postal code")
-            XCTAssertEqual(headerItemView!.text, "Billing address")
-
-            expectation.fulfill()
-        }
-
-        wait(for: [expectation], timeout: 10)
+        XCTAssertEqual(countryItemView!.titleLabel.text, "Country")
+        XCTAssertEqual(countryItemView!.inputControl.label, "United Kingdom")
+        XCTAssertEqual(houseNumberItemView!.titleLabel.text, "House number")
+        XCTAssertEqual(addressItemView!.titleLabel.text, "Street")
+        XCTAssertEqual(cityItemView!.titleLabel.text, "City / Town")
+        XCTAssertNil(provinceOrTerritoryItemView)
+        XCTAssertEqual(postalCodeItemView!.titleLabel.text, "Postal code")
+        XCTAssertEqual(headerItemView!.text, "Billing address")
     }
 
     func testAddressSelectCountry() {
