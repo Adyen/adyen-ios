@@ -15,15 +15,6 @@ public struct OXXOPaymentMethod: PaymentMethod {
     /// :nodoc:
     public let name: String
 
-    /// Initializes the OXXO payment method.
-    ///
-    /// - Parameter type: The payment method type.
-    /// - Parameter name: The payment method name.
-    internal init(type: String, name: String) {
-        self.type = type
-        self.name = name
-    }
-
     /// :nodoc:
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
