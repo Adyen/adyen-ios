@@ -279,6 +279,13 @@ extension ComponentManager: PaymentComponentBuilder {
                       apiContext: apiContext,
                       style: style.formComponent)
     }
+    
+    /// :nodoc:
+    internal func build(paymentMethod: OXXOPaymentMethod) -> PaymentComponent? {
+        InstantPaymentComponent(paymentMethod: paymentMethod,
+                                paymentData: nil,
+                                apiContext: apiContext)
+    }
 
     /// :nodoc:
     internal func build(paymentMethod: GiftCardPaymentMethod) -> PaymentComponent? {

@@ -5,8 +5,8 @@
 //
 
 import Adyen
-import Foundation
 import AdyenNetworking
+import Foundation
 import UIKit
 
 internal protocol AnyVoucherShareableViewProvider: Localizable {
@@ -44,6 +44,8 @@ internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvid
             view = createGenericView(with: action, fields: createEContextStoresVoucherFields(for: action))
         case let .econtextATM(action):
             view = createGenericView(with: action, fields: createEContextATMVoucherFields(for: action))
+        case let .oxxo(action):
+            view = createGenericView(with: action, fields: createOXXOVoucherFields(for: action))
         case let .boletoBancairoSantander(action):
             view = createBoletoView(with: action)
         }
@@ -84,8 +86,7 @@ internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvid
                              paymentMethodName: String,
                              instructionsUrl: String,
                              reference: String,
-                             fields: [ShareableVoucherView.VoucherField]
-    ) -> ShareableVoucherView.Model {
+                             fields: [ShareableVoucherView.VoucherField]) -> ShareableVoucherView.Model {
         let amountString = AmountFormatter.formatted(
             amount: totalAmount.value,
             currencyCode: totalAmount.currencyCode,
@@ -116,6 +117,12 @@ internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvid
          createExpirationField(with: action.expiresAt),
          createMaskedPhoneField(with: action.maskedTelephoneNumber)]
     }
+    
+    private func createOXXOVoucherFields(for action: OXXOVoucherAction) -> [ShareableVoucherView.VoucherField] {
+        [createExpirationField(with: action.expiresAt),
+         createShopperReferenceField(with: action.merchantReference),
+         createAlternativeReferenceField(with: action.alternativeReference)]
+    }
 
     private func createDokuVoucherFields(for action: DokuVoucherAction) -> [ShareableVoucherView.VoucherField] {
         [createExpirationField(with: action.expiresAt),
@@ -133,31 +140,43 @@ internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvid
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         let expiration = dateFormatter.string(from: expiration)
         return ShareableVoucherView.VoucherField(identifier: "expiration",
-                                               title: localizedString(.voucherExpirationDate, localizationParameters),
-                                               value: expiration)
+                                                 title: localizedString(.voucherExpirationDate, localizationParameters),
+                                                 value: expiration)
     }
 
     private func createShopperNameField(with name: String) -> ShareableVoucherView.VoucherField {
         ShareableVoucherView.VoucherField(identifier: "shopperName",
-                                        title: localizedString(.voucherShopperName, localizationParameters),
-                                        value: name)
+                                          title: localizedString(.voucherShopperName, localizationParameters),
+                                          value: name)
+    }
+    
+    private func createShopperReferenceField(with reference: String) -> ShareableVoucherView.VoucherField {
+        ShareableVoucherView.VoucherField(identifier: "shopperReference",
+                                          title: "Shopper Reference",
+                                          value: reference)
+    }
+    
+    private func createAlternativeReferenceField(with reference: String) -> ShareableVoucherView.VoucherField {
+        ShareableVoucherView.VoucherField(identifier: "alternativeReference",
+                                          title: "Alternative Reference",
+                                          value: reference)
     }
 
     private func createMerchantField(with name: String) -> ShareableVoucherView.VoucherField {
         ShareableVoucherView.VoucherField(identifier: "merchant",
-                                        title: localizedString(.voucherMerchantName, localizationParameters),
-                                        value: name)
+                                          title: localizedString(.voucherMerchantName, localizationParameters),
+                                          value: name)
     }
 
     private func createMaskedPhoneField(with phone: String) -> ShareableVoucherView.VoucherField {
         ShareableVoucherView.VoucherField(identifier: "maskedTelephoneNumber",
-                                        title: localizedString(.phoneNumberTitle, localizationParameters),
-                                        value: phone)
+                                          title: localizedString(.phoneNumberTitle, localizationParameters),
+                                          value: phone)
     }
 
     private func createCollectionInstitutionField(with number: String) -> ShareableVoucherView.VoucherField {
         ShareableVoucherView.VoucherField(identifier: "CollectionInstitutionNumber",
-                                        title: localizedString(.voucherCollectionInstitutionNumber, localizationParameters),
-                                        value: number)
+                                          title: localizedString(.voucherCollectionInstitutionNumber, localizationParameters),
+                                          value: number)
     }
 }

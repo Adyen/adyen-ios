@@ -24,6 +24,9 @@ public enum VoucherPaymentMethod: String, Codable, CaseIterable {
     
     /// Boleto Bancairo Santander
     case boletoBancairoSantander = "boletobancario_santander"
+    
+    /// OXXO
+    case oxxo
 }
 
 /// Describes any Voucher action.
@@ -43,6 +46,9 @@ public enum VoucherAction: Decodable {
     
     /// Indicates a Boleto Bancairo Santander Voucher type.
     case boletoBancairoSantander(BoletoVoucherAction)
+    
+    /// Indicates an OXXO voucher type
+    case oxxo(OXXOVoucherAction)
 
     /// :nodoc:
     public init(from decoder: Decoder) throws {
@@ -60,6 +66,8 @@ public enum VoucherAction: Decodable {
             self = .econtextATM(try EContextATMVoucherAction(from: decoder))
         case .boletoBancairoSantander:
             self = .boletoBancairoSantander(try BoletoVoucherAction(from: decoder))
+        case .oxxo:
+            self = .oxxo(try OXXOVoucherAction(from: decoder))
         }
     }
 
@@ -81,12 +89,25 @@ public enum VoucherAction: Decodable {
             return action
         case let .econtextStores(action):
             return action
+        case let .oxxo(action):
+            return action
         }
     }
 }
 
+/// :nodoc:
+/// Describes a voucher that has an instructions url.
+internal protocol InstructionAwareVoucherAction {
+    
+    /// :nodoc:
+    /// The instruction url.
+    var instructionsUrl: String { get }
+}
+
 /// Describes an action in which a voucher is presented to the shopper.
-public class GenericVoucherAction: Decodable, AnyVoucherAction {
+public class GenericVoucherAction: Decodable,
+    AnyVoucherAction,
+    InstructionAwareVoucherAction {
 
     /// The `paymentMethodType` for which the voucher is presented.
     public let paymentMethodType: VoucherPaymentMethod

@@ -7,8 +7,17 @@
 import Adyen
 import Foundation
 
+/// :nodoc:
+/// Describes a voucher that can be downloaded.
+internal protocol DownloadableVoucher {
+    
+    /// :nodoc:
+    /// Download URL.
+    var downloadUrl: URL { get }
+}
+
 /// Describes an action in which a Boleto voucher is presented to the shopper.
-public final class BoletoVoucherAction: Decodable, AnyVoucherAction {
+public final class BoletoVoucherAction: Decodable, AnyVoucherAction, DownloadableVoucher {
     
     /// The `paymentMethodType` for which the voucher is presented.
     public let paymentMethodType: VoucherPaymentMethod

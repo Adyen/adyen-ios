@@ -5,9 +5,9 @@
 //
 
 import Adyen
+import AdyenNetworking
 import PassKit
 import UIKit
-import AdyenNetworking
 
 /// A component that handles voucher action's.
 internal protocol AnyVoucherActionHandler: ActionComponent, Cancellable {
@@ -94,7 +94,7 @@ public final class VoucherComponent: AnyVoucherActionHandler {
     }
 
     /// :nodoc:
-    public func didCancel() { }
+    public func didCancel() {}
 
     /// Handles await action.
     ///
@@ -150,7 +150,8 @@ public final class VoucherComponent: AnyVoucherActionHandler {
             style: VoucherNavBar.Model.Style(
                 editButton: style.editButton,
                 doneButton: style.doneButton,
-                backgroundColor: style.backgroundColor)
+                backgroundColor: style.backgroundColor
+            )
         )
         let navBar = VoucherNavBar(
             model: model
@@ -194,11 +195,10 @@ public final class VoucherComponent: AnyVoucherActionHandler {
     }
     
     private func getPrimaryButtonTitle(with action: VoucherAction) -> String {
-        switch action {
-        case .dokuIndomaret, .dokuAlfamart, .econtextStores, .econtextATM:
-            return localizedString(.voucherSaveImage, localizationParameters )
-        case .boletoBancairoSantander:
+        if action.anyAction is DownloadableVoucher {
             return localizedString(.boletoDownloadPdf, localizationParameters)
+        } else {
+            return localizedString(.voucherSaveImage, localizationParameters)
         }
     }
 

@@ -86,6 +86,7 @@ internal enum AnyPaymentMethod: Decodable {
     case econtextOnline(EContextPaymentMethod)
     case boleto(BoletoPaymentMethod)
     case affirm(AffirmPaymentMethod)
+    case oxxo(OXXOPaymentMethod)
     
     case none
     
@@ -134,6 +135,8 @@ internal enum AnyPaymentMethod: Decodable {
         case let .boleto(paymentMethod):
             return paymentMethod
         case let .affirm(paymentMethod):
+            return paymentMethod
+        case let .oxxo(paymentMethod):
             return paymentMethod
         case .none:
             return nil
