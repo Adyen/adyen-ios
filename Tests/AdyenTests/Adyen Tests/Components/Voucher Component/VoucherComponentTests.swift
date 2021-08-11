@@ -89,6 +89,50 @@ class VoucherComponentTests: XCTestCase {
         waitForExpectations(timeout: 60, handler: nil)
     }
     
+    func testOXXOVoucherComponent() throws {
+        let action = try Coder.decode(oxxoAction) as VoucherAction
+        
+        let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
+        presentationDelegate.doPresent = { [self] component in
+            let component = component as! PresentableComponentWrapper
+            XCTAssert(component.component === sut)
+            
+            let view = sut.view
+            
+            XCTAssertNotNil(view)
+            
+            checkViewModel(view!.model, forAction: action)
+            
+            presentationDelegateExpectation.fulfill()
+        }
+        
+        sut.handle(action)
+        
+        waitForExpectations(timeout: 60, handler: nil)
+    }
+    
+    func testEContextStoresVoucherComponent() throws {
+        let action = try Coder.decode(econtextStoresAction) as VoucherAction
+        
+        let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
+        presentationDelegate.doPresent = { [self] component in
+            let component = component as! PresentableComponentWrapper
+            XCTAssert(component.component === sut)
+            
+            let view = sut.view
+            
+            XCTAssertNotNil(view)
+            
+            checkViewModel(view!.model, forAction: action)
+            
+            presentationDelegateExpectation.fulfill()
+        }
+        
+        sut.handle(action)
+        
+        waitForExpectations(timeout: 60, handler: nil)
+    }
+    
     func checkViewModel(
         _ model: VoucherView.Model,
         forAction action: VoucherAction
