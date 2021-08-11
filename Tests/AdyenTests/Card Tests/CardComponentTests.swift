@@ -131,7 +131,7 @@ class CardComponentTests: XCTestCase {
             let holderNameItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.holderNameItem.titleLabel")
             let holderNameItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.holderNameItem.textField")
             
-            let expiryDateItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
+            let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
             let expiryDateItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem.titleLabel")
             let expiryDateItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem.textField")
             
@@ -714,7 +714,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        let expiryDateItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
+        let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
@@ -747,32 +747,25 @@ class CardComponentTests: XCTestCase {
         sut.payment = .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "NL")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+        wait(for: .seconds(1))
+        let houseNumberItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.houseNumberOrName")
+        let countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.country")
+        let addressItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.street")
+        let apartmentSuiteItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.apartment")
+        let cityItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.city")
+        let provinceOrTerritoryItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.stateOrProvince")
+        let postalCodeItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.postalCode")
+        let headerItemView: UILabel? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.title")
 
-            let houseNumberItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.houseNumberOrName")
-            let countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.country")
-            let addressItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.street")
-            let apartmentSuiteItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.apartment")
-            let cityItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.city")
-            let provinceOrTerritoryItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.stateOrProvince")
-            let postalCodeItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.postalCode")
-            let headerItemView: UILabel? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.title")
-
-            XCTAssertEqual(countryItemView!.titleLabel.text, "Country")
-            XCTAssertEqual(countryItemView!.inputControl.label, "Netherlands")
-            XCTAssertEqual(houseNumberItemView!.titleLabel.text, "House number")
-            XCTAssertEqual(addressItemView!.titleLabel.text, "Street")
-            XCTAssertEqual(apartmentSuiteItemView!.titleLabel.text, "Apartment / Suite (optional)")
-            XCTAssertEqual(cityItemView!.titleLabel.text, "City")
-            XCTAssertEqual(provinceOrTerritoryItemView!.titleLabel.text, "Province or Territory")
-            XCTAssertEqual(postalCodeItemView!.titleLabel.text, "Postal code")
-            XCTAssertEqual(headerItemView!.text, "Billing address")
-
-            expectation.fulfill()
-        }
-
-        wait(for: [expectation], timeout: 10)
+        XCTAssertEqual(countryItemView!.titleLabel.text, "Country")
+        XCTAssertEqual(countryItemView!.inputControl.label, "Netherlands")
+        XCTAssertEqual(houseNumberItemView!.titleLabel.text, "House number")
+        XCTAssertEqual(addressItemView!.titleLabel.text, "Street")
+        XCTAssertEqual(apartmentSuiteItemView!.titleLabel.text, "Apartment / Suite (optional)")
+        XCTAssertEqual(cityItemView!.titleLabel.text, "City")
+        XCTAssertEqual(provinceOrTerritoryItemView!.titleLabel.text, "Province or Territory")
+        XCTAssertEqual(postalCodeItemView!.titleLabel.text, "Postal code")
+        XCTAssertEqual(headerItemView!.text, "Billing address")
     }
 
     func testAddressUS() {
@@ -838,33 +831,26 @@ class CardComponentTests: XCTestCase {
         sut.payment = .init(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+        wait(for: .seconds(1))
+        let houseNumberItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.houseNumberOrName")
+        let countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.country")
+        let addressItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.street")
+        let apartmentSuiteItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.apartment")
+        let cityItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.city")
+        let provinceOrTerritoryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.stateOrProvince")
+        let postalCodeItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.postalCode")
+        let headerItemView: UILabel? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.title")
 
-            let houseNumberItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.houseNumberOrName")
-            let countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.country")
-            let addressItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.street")
-            let apartmentSuiteItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.apartment")
-            let cityItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.city")
-            let provinceOrTerritoryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.stateOrProvince")
-            let postalCodeItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.postalCode")
-            let headerItemView: UILabel? = sut.viewController.view.findView(with: "Adyen.FormAddressItem.title")
+        XCTAssertNil(apartmentSuiteItemView)
 
-            XCTAssertNil(apartmentSuiteItemView)
-
-            XCTAssertEqual(countryItemView!.titleLabel.text, "Country")
-            XCTAssertEqual(countryItemView!.inputControl.label, "United Kingdom")
-            XCTAssertEqual(houseNumberItemView!.titleLabel.text, "House number")
-            XCTAssertEqual(addressItemView!.titleLabel.text, "Street")
-            XCTAssertEqual(cityItemView!.titleLabel.text, "City / Town")
-            XCTAssertNil(provinceOrTerritoryItemView)
-            XCTAssertEqual(postalCodeItemView!.titleLabel.text, "Postal code")
-            XCTAssertEqual(headerItemView!.text, "Billing address")
-
-            expectation.fulfill()
-        }
-
-        wait(for: [expectation], timeout: 10)
+        XCTAssertEqual(countryItemView!.titleLabel.text, "Country")
+        XCTAssertEqual(countryItemView!.inputControl.label, "United Kingdom")
+        XCTAssertEqual(houseNumberItemView!.titleLabel.text, "House number")
+        XCTAssertEqual(addressItemView!.titleLabel.text, "Street")
+        XCTAssertEqual(cityItemView!.titleLabel.text, "City / Town")
+        XCTAssertNil(provinceOrTerritoryItemView)
+        XCTAssertEqual(postalCodeItemView!.titleLabel.text, "Postal code")
+        XCTAssertEqual(headerItemView!.text, "Billing address")
     }
 
     func testAddressSelectCountry() {
@@ -1087,8 +1073,10 @@ class CardComponentTests: XCTestCase {
     }
     
     func testLuhnCheck() {
-        let allEnabledLuhns = [CardBrand(type: .visa, isLuhnCheckEnabled: true), CardBrand(type: .masterCard, isLuhnCheckEnabled: true)]
-        let atLeastOneDisabledLuhn = [CardBrand(type: .visa, isLuhnCheckEnabled: true), CardBrand(type: .masterCard, isLuhnCheckEnabled: false)]
+        let allEnabledLuhns = [CardBrand(type: .visa, isLuhnCheckEnabled: true),
+                               CardBrand(type: .masterCard, isLuhnCheckEnabled: true)]
+        let atLeastOneDisabledLuhn = [CardBrand(type: .visa, isLuhnCheckEnabled: true),
+                                      CardBrand(type: .masterCard, isLuhnCheckEnabled: false)]
         
         let method = CardPaymentMethod(type: "bcmc",
                                        name: "Test name",
@@ -1111,7 +1099,78 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(cardNumberItem.isValid())
         cardNumberItem.value = "4111 1111 1111"
         XCTAssertTrue(cardNumberItem.isValid())
+    }
     
+    func testCVCOptionality() {
+        let mixedBrands = [CardBrand(type: .visa, cvcPolicy: .required),
+                     CardBrand(type: .masterCard, cvcPolicy: .hidden),
+                     CardBrand(type: .masterCard, cvcPolicy: .optional)]
+        let optionalBrands = [CardBrand(type: .visa, cvcPolicy: .optional),
+                     CardBrand(type: .masterCard, cvcPolicy: .hidden),
+                     CardBrand(type: .masterCard, cvcPolicy: .optional)]
+        
+        let method = CardPaymentMethod(type: "visa",
+                                       name: "Test name",
+                                       fundingSource: .credit,
+                                       brands: ["visa", "amex", "mc"])
+        let config = CardComponent.Configuration()
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: config)
+        
+        let cvcItem = sut.cardViewController.items.securityCodeItem
+        cvcItem.value = ""
+        cvcItem.isOptional = mixedBrands.isCVCOptional
+        // mixed means non option, valid value must be entered
+        XCTAssertFalse(cvcItem.isValid())
+        cvcItem.value = "1"
+        XCTAssertFalse(cvcItem.isValid())
+        cvcItem.value = "123"
+        XCTAssertTrue(cvcItem.isValid())
+        
+        cvcItem.isOptional = optionalBrands.isCVCOptional
+        XCTAssertTrue(cvcItem.isValid())
+        cvcItem.value = "1"
+        XCTAssertFalse(cvcItem.isValid())
+        // no value or correct value (3-4 digits) is valid
+        cvcItem.value = ""
+        XCTAssertTrue(cvcItem.isValid())
+    }
+    
+    func testExpiryDateOptionality() {
+        let mixedBrands = [CardBrand(type: .visa, expiryDatePolicy: .required),
+                     CardBrand(type: .masterCard, expiryDatePolicy: .optional),
+                     CardBrand(type: .masterCard, expiryDatePolicy: .hidden)]
+        let optionalBrands = [CardBrand(type: .visa, expiryDatePolicy: .hidden),
+                     CardBrand(type: .masterCard, expiryDatePolicy: .optional),
+                     CardBrand(type: .masterCard, expiryDatePolicy: .hidden)]
+        
+        let method = CardPaymentMethod(type: "visa",
+                                       name: "Test name",
+                                       fundingSource: .credit,
+                                       brands: ["visa", "amex", "mc"])
+        let config = CardComponent.Configuration()
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: config)
+        
+        let expDateItem = sut.cardViewController.items.expiryDateItem
+        expDateItem.value = ""
+        expDateItem.isOptional = mixedBrands.isExpiryDateOptional
+        // mixed means non option, valid value must be entered
+        XCTAssertFalse(expDateItem.isValid())
+        expDateItem.value = "1"
+        XCTAssertFalse(expDateItem.isValid())
+        expDateItem.value = "0224"
+        XCTAssertTrue(expDateItem.isValid())
+        
+        expDateItem.isOptional = optionalBrands.isExpiryDateOptional
+        XCTAssertTrue(expDateItem.isValid())
+        expDateItem.value = "1"
+        XCTAssertFalse(expDateItem.isValid())
+        // no value or correct value (3-4 digits) is valid
+        expDateItem.value = ""
+        XCTAssertTrue(expDateItem.isValid())
     }
     
     func testClearShouldResetPostalCodeItemToEmptyValue() throws {
@@ -1273,7 +1332,7 @@ extension XCTestCase {
 
     func fillCard(on view: UIView, with card: Card) {
         let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = view.findView(with: "AdyenCard.CardComponent.numberItem")
-        let expiryDateItemView: FormTextItemView<FormTextInputItem>? = view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
+        let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem>? = view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
 
         populate(textItemView: cardNumberItemView!, with: card.number ?? "")

@@ -12,10 +12,10 @@ internal final class FallbackBinInfoProvider: AnyBinInfoProvider {
 
     /// :nodoc:
     internal func provide(for bin: String, supportedTypes: [CardType], completion: @escaping (BinLookupResponse) -> Void) {
-        let result: [CardBrand] = supportedTypes.adyen.types(forCardNumber: bin).map { brand in
+        let result: [CardBrand] = supportedTypes.adyen.types(forCardNumber: bin).map { type in
 
-            let cvcPolicy: CardBrand.CVCPolicy
-            switch brand {
+            let cvcPolicy: CardBrand.RequirementPolicy
+            switch type {
             case .laser,
                  .bcmc,
                  .maestro,
@@ -28,7 +28,7 @@ internal final class FallbackBinInfoProvider: AnyBinInfoProvider {
                 cvcPolicy = .required
             }
 
-            return CardBrand(type: brand, cvcPolicy: cvcPolicy)
+            return CardBrand(type: type, cvcPolicy: cvcPolicy)
         }
         completion(BinLookupResponse(brands: result))
     }

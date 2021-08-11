@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import UIKit
 import Adyen
+import UIKit
 
 extension CardViewController {
 
@@ -74,14 +74,10 @@ extension CardViewController {
             return item
         }()
 
-        internal lazy var expiryDateItem: FormTextInputItem = {
-            let expiryDateItem = FormTextInputItem(style: formStyle.textField)
-            expiryDateItem.title = localizedString(.cardExpiryItemTitle, localizationParameters)
-            expiryDateItem.placeholder = localizedString(.cardExpiryItemPlaceholder, localizationParameters)
-            expiryDateItem.formatter = CardExpiryDateFormatter()
-            expiryDateItem.validator = CardExpiryDateValidator()
-            expiryDateItem.validationFailureMessage = localizedString(.cardExpiryItemInvalid, localizationParameters)
-            expiryDateItem.keyboardType = .numberPad
+        internal lazy var expiryDateItem: FormCardExpiryDateItem = {
+            let expiryDateItem = FormCardExpiryDateItem(style: formStyle.textField,
+                                                        localizationParameters: localizationParameters)
+            expiryDateItem.localizationParameters = localizationParameters
             expiryDateItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "expiryDateItem")
 
             return expiryDateItem
@@ -90,7 +86,7 @@ extension CardViewController {
         internal lazy var securityCodeItem: FormCardSecurityCodeItem = {
             let securityCodeItem = FormCardSecurityCodeItem(style: formStyle.textField,
                                                             localizationParameters: localizationParameters)
-            securityCodeItem.localizationParameters = self.localizationParameters
+            securityCodeItem.localizationParameters = localizationParameters
             securityCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "securityCodeItem")
             return securityCodeItem
         }()
