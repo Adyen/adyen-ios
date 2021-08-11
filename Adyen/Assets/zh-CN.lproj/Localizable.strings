@@ -67,7 +67,6 @@
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
 "adyen.card.brazilSSN.placeholder" = "123.123.123-12";
-"adyen.amount" = "amount";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "您需要支付 %@";
 "adyen.pix.copyButton" = "复制代码";

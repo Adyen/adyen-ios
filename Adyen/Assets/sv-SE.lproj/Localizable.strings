@@ -67,7 +67,6 @@
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
 "adyen.card.brazilSSN.placeholder" = "123.123.123-12";
-"adyen.amount" = "amount";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Du har %@ att betala";
 "adyen.pix.copyButton" = "Kopiera kod";

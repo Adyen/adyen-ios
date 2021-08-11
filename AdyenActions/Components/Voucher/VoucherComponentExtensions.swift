@@ -80,21 +80,21 @@ extension VoucherComponent: VoucherViewDelegate {
     private func createAlertActions(for action: AnyVoucherAction, sourceView: UIView) -> [UIAlertAction] {
         [
             createCopyCodeAlertAction(for: action.reference),
-            createMainAlertAction(for: action, sourceView: sourceView),
-            (action as? InstructionAwareVoucherAction).flatMap {
-                createReadInstructionsAlertAction(for: $0.instructionsUrl)
-            },
+            createSaveAlertAction(for: action, sourceView: sourceView),
+            (action as? InstructionAwareVoucherAction)
+                .map(\.instructionsUrl)
+                .flatMap(createReadInstructionsAlertAction(for:)),
             getCancelAlertAction()
         ].compactMap { $0 }
     }
     
-    private func createMainAlertAction(for action: AnyVoucherAction, sourceView: UIView) -> UIAlertAction? {
+    private func createSaveAlertAction(for action: AnyVoucherAction, sourceView: UIView) -> UIAlertAction? {
         guard canAddPasses else { return nil }
         
         if let downloadable = action as? DownloadableVoucher {
             return createDownloadPDFAlertAction(for: downloadable.downloadUrl, sourceView: sourceView)
         } else {
-            return getSaveAsAnImageAlertAction(with: sourceView)
+            return createSaveAsAnImageAlertAction(with: sourceView)
         }
     }
     
@@ -106,10 +106,8 @@ extension VoucherComponent: VoucherViewDelegate {
         )
     }
     
-    private func createReadInstructionsAlertAction(for url: String) -> UIAlertAction? {
-        guard let url = URL(string: url) else { return nil }
-        
-        return UIAlertAction(
+    private func createReadInstructionsAlertAction(for url: URL) -> UIAlertAction? {
+        UIAlertAction(
             title: localizedString(.voucherReadInstructions, localizationParameters),
             style: .default,
             handler: { _ in
@@ -128,7 +126,7 @@ extension VoucherComponent: VoucherViewDelegate {
         )
     }
     
-    private func getSaveAsAnImageAlertAction(with sourceView: UIView) -> UIAlertAction {
+    private func createSaveAsAnImageAlertAction(with sourceView: UIView) -> UIAlertAction {
         UIAlertAction(
             title: localizedString(.voucherSaveImage, localizationParameters),
             style: .default,

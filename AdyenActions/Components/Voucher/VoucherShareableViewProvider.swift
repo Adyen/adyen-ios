@@ -61,7 +61,6 @@ internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvid
             model: createModel(
                 totalAmount: action.totalAmount,
                 paymentMethodName: action.paymentMethodType.rawValue,
-                instructionsUrl: action.instructionsUrl,
                 reference: action.reference,
                 fields: fields
             )
@@ -75,7 +74,6 @@ internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvid
             model: createModel(
                 totalAmount: boletoAction.totalAmount,
                 paymentMethodName: boletoAction.paymentMethodType.rawValue,
-                instructionsUrl: boletoAction.downloadUrl.absoluteString,
                 reference: boletoAction.reference,
                 fields: createBoletoVoucherfields(for: boletoAction)
             )
@@ -84,7 +82,6 @@ internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvid
 
     private func createModel(totalAmount: Amount,
                              paymentMethodName: String,
-                             instructionsUrl: String,
                              reference: String,
                              fields: [ShareableVoucherView.VoucherField]) -> ShareableVoucherView.Model {
         let amountString = AmountFormatter.formatted(

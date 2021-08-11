@@ -92,7 +92,7 @@ class AssertsTests: XCTestCase {
                                                                 expiresAt: .distantFuture,
                                                                 merchantName: "",
                                                                 shopperName: "",
-                                                                instructionsUrl: "")))
+                                                                instructionsUrl: URL(string: "https://google.com")!)))
 
         wait(for: [expectation], timeout: 2)
 
