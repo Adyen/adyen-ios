@@ -51,7 +51,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     public init(initialCountry: String,
                 style: AddressStyle,
                 localizationParameters: LocalizationParameters? = nil,
-                identifier: String?) {
+                identifier: String? = nil) {
         self.initialCountry = initialCountry
         self.localizationParameters = localizationParameters
         super.init(value: PostalAddress(), style: style)
