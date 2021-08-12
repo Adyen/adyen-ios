@@ -77,7 +77,7 @@ class AffirmComponentTests: XCTestCase {
         sut.phoneItem?.value = "202 555 0146"
         sut.addressItem?.value = billingAddress
         sut.deliveryAddressToggleItem.value = true
-        sut.deliveryAddressItem.value = expectedDeliveryAddress
+        sut.deliveryAddressItem?.value = expectedDeliveryAddress
         
         // When
         let paymentDetails = sut.createPaymentDetails()
@@ -94,7 +94,8 @@ class AffirmComponentTests: XCTestCase {
         sut.deliveryAddressToggleItem.value = true
         
         // Then
-        XCTAssertFalse(sut.deliveryAddressItem.isHidden.wrappedValue)
+        let deliveryAddressItem = try XCTUnwrap(sut.deliveryAddressItem)
+        XCTAssertFalse(deliveryAddressItem.isHidden.wrappedValue)
     }
     
     func testDeliveryAddressToggleItem_whenDisabled_shouldHideDeliveryAddressItem() throws {
@@ -102,7 +103,8 @@ class AffirmComponentTests: XCTestCase {
         sut.deliveryAddressToggleItem.value = false
         
         // Then
-        XCTAssertTrue(sut.deliveryAddressItem.isHidden.wrappedValue)
+        let deliveryAddressItem = try XCTUnwrap(sut.deliveryAddressItem)
+        XCTAssertTrue(deliveryAddressItem.isHidden.wrappedValue)
     }
     
     func testSubmitForm_shouldCallDelegateWithProperParameters() throws {
@@ -147,7 +149,7 @@ class AffirmComponentTests: XCTestCase {
         let emailView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.emailItem"))
         populate(textItemView: emailView, with: "katrina@mail.com")
                 
-        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.billingAddressItem"))
+        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.addressItem"))
         fill(addressView: billingAddressView, with: expectedBillingAddress)
                 
         let deliveryAddressToggleView: FormToggleItemView! = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.deliveryAddressToggleItem"))
