@@ -39,14 +39,14 @@
 "adyen.emailItem.title" = "E-mailadresse";
 "adyen.emailItem.placeHolder" = "E-mailadresse";
 "adyen.emailItem.invalid" = "Ugyldig e-mailadresse";
-"adyen.moreOptions" = "";
+"adyen.moreOptions" = "Flere valg";
 "adyen.mbway.confirmPayment" = "Bekræft din betaling på appen MB WAY";
 "adyen.await.waitForConfirmation" = "Venter på bekræftelse";
 "adyen.blik.confirmPayment" = "Åbn din bankapp for at bekræfte betalingen.";
 "adyen.blik.invalid" = "Indtast 6 tal";
 "adyen.blik.code" = "6-cifret kode";
 "adyen.blik.help" = "Få koden fra din bankapp.";
-"adyen.blik.placeholder" = "123–456";
+"adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "Forhåndsgodkend med %@";
 "adyen.confirmPreauthorization" = "Bekræft forhåndsgodkendelse";
 "adyen.card.cvcItem.title.optional" = "CVC / CVV (valgfrit)";
@@ -64,8 +64,10 @@
 "adyen.button.copy" = "Kopiér";
 "adyen.voucher.introduction" = "Tak for dit køb. Brug følgende oplysninger til at gennemføre din betaling.";
 "adyen.voucher.readInstructions" = "Læs anvisningerne";
-"adyen.voucher.saveImage" = "Save as image";
-"adyen.voucher.finish" = "Finish";
+"adyen.voucher.saveImage" = "";
+"adyen.voucher.finish" = "";
+"adyen.card.brazilSSN.placeholder" = "";
+"adyen.amount" = "Beløb";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Du har %@ at betale";
 "adyen.pix.copyButton" = "Kopiér koden";
@@ -115,4 +117,7 @@
 "adyen.card.encryptedPassword.label" = "Første 2 cifre i adgangskode til kort";
 "adyen.card.encryptedPassword.placeholder" = "12";
 "adyen.card.encryptedPassword.invalid" = "Ugyldig adgangskode";
+"adyen.card.taxNumber.label.short" = "Fødselsdato eller virksomhedens registreringsnummer";
 "adyen.affirm.deliveryAddressToggle.title" = "Separat leveringsadresse";
+"adyen.voucher.shopperReference" = "Købers reference";
+"adyen.voucher.alternativeReference" = "Alternativ reference";

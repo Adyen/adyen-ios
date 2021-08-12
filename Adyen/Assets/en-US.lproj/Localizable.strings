@@ -21,7 +21,6 @@
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "Invalid card number";
 "adyen.card.expiryItem.title" = "Expiry date";
-"adyen.card.expiryItem.title.optional" = "Expiry date (optional)";
 "adyen.card.expiryItem.placeholder" = "MM/YY";
 "adyen.card.expiryItem.invalid" = "Invalid expiry date";
 "adyen.card.cvcItem.invalid" = "Invalid CVC / CVV format";
@@ -67,6 +66,8 @@
 "adyen.voucher.readInstructions" = "Read instructions";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.card.brazilSSN.placeholder" = "123.123.123-12";
+"adyen.amount" = "Amount";
 "adyen.pix.instructions" = "Open the app with the PIX registered key, choose Pay with PIX and scan the QR Code or copy and paste the code";
 "adyen.pix.expirationLabel" = "You have %@ to pay";
 "adyen.pix.copyButton" = "Copy code";
@@ -116,6 +117,7 @@
 "adyen.card.encryptedPassword.label" = "First 2 digits of card password";
 "adyen.card.encryptedPassword.placeholder" = "12";
 "adyen.card.encryptedPassword.invalid" = "Invalid password";
+"adyen.card.taxNumber.label.short" = "Birthdate or Corporate registration number";
 "adyen.affirm.deliveryAddressToggle.title" = "Separate delivery address";
-"adyen.card.taxNumber.label.short" = "Birthday or Corporate registration number";
-"adyen.card.brazilSSN.placeholder" = "123.123.123-12";
+"adyen.voucher.shopperReference" = "Shopper Reference";
+"adyen.voucher.alternativeReference" = "Alternative Reference";

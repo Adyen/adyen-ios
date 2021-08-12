@@ -39,14 +39,14 @@
 "adyen.emailItem.title" = "عنوان البريد الإلكتروني";
 "adyen.emailItem.placeHolder" = "عنوان البريد الإلكتروني";
 "adyen.emailItem.invalid" = "عنوان بريد إلكتروني غير صحيح";
-"adyen.moreOptions" = "";
+"adyen.moreOptions" = "المزيد من الخيارات";
 "adyen.mbway.confirmPayment" = "تأكيد الدفع على تطبيق MB WAY";
 "adyen.await.waitForConfirmation" = "في انتظار التأكيد";
 "adyen.blik.confirmPayment" = "افتح تطبيقك البنكي لتأكيد الدفع.";
 "adyen.blik.invalid" = "أدخل 6 أرقام";
 "adyen.blik.code" = "رمز مكون من 6 أرقام";
 "adyen.blik.help" = "احصل على الرمز من تطبيقك البنكي.";
-"adyen.blik.placeholder" = "123–456";
+"adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "تفويض مسبق باستخدام %@";
 "adyen.confirmPreauthorization" = "تأكيد التفويض المسبق";
 "adyen.card.cvcItem.title.optional" = "رمز CVC / CVV (اختياري)";
@@ -64,8 +64,10 @@
 "adyen.button.copy" = "نسخ";
 "adyen.voucher.introduction" = "شكرًا لك على شرائك، يرجى استخدام المعلومات التالية لإتمام عملية الدفع.";
 "adyen.voucher.readInstructions" = "قراءة التعليمات";
-"adyen.voucher.saveImage" = "Save as image";
-"adyen.voucher.finish" = "Finish";
+"adyen.voucher.saveImage" = "";
+"adyen.voucher.finish" = "";
+"adyen.card.brazilSSN.placeholder" = "";
+"adyen.amount" = "المبلغ";
 "adyen.pix.instructions" = "افتح التطبيق باستخدام مفتاح PIX المسجل، واختر الدفع باستخدام PIX وامسح رمز الاستجابة السريعة ضوئيًا أو انسخ الرمز والصقه";
 "adyen.pix.expirationLabel" = "لديك %@ للدفع";
 "adyen.pix.copyButton" = "نسخ الرمز";
@@ -115,4 +117,7 @@
 "adyen.card.encryptedPassword.label" = "أول رقمان من كلمة مرور البطاقة";
 "adyen.card.encryptedPassword.placeholder" = "12";
 "adyen.card.encryptedPassword.invalid" = "كلمة مرور غير صحيحة";
+"adyen.card.taxNumber.label.short" = "تاريخ الميلاد أو رقم تسجيل الشركة";
 "adyen.affirm.deliveryAddressToggle.title" = "عنوان تسليم منفصل";
+"adyen.voucher.shopperReference" = "مرجع المتسوق";
+"adyen.voucher.alternativeReference" = "المرجع البديل";

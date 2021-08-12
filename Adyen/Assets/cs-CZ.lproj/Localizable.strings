@@ -39,14 +39,14 @@
 "adyen.emailItem.title" = "E-mailová adresa";
 "adyen.emailItem.placeHolder" = "E-mailová adresa";
 "adyen.emailItem.invalid" = "Neplatná e-mailová adresa";
-"adyen.moreOptions" = "";
+"adyen.moreOptions" = "Další možnosti";
 "adyen.mbway.confirmPayment" = "Potvrďte platbu v aplikaci MB WAY";
 "adyen.await.waitForConfirmation" = "Čeká se na potvrzení";
 "adyen.blik.confirmPayment" = "Spusťte bankovní aplikaci a potvrďte platbu.";
 "adyen.blik.invalid" = "Zadejte 6 čísel";
 "adyen.blik.code" = "Šestimístný kód";
 "adyen.blik.help" = "Získejte kód z bankovní aplikace.";
-"adyen.blik.placeholder" = "123–456";
+"adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "Předautorizovat pomocí %@";
 "adyen.confirmPreauthorization" = "Potvrdit předautorizaci";
 "adyen.card.cvcItem.title.optional" = "Kód CVC/CVV (volitelné)";
@@ -64,8 +64,10 @@
 "adyen.button.copy" = "Kopírovat";
 "adyen.voucher.introduction" = "Děkujeme za nákup. K dokončení platby použijte prosím následující informace.";
 "adyen.voucher.readInstructions" = "Přečtěte si pokyny";
-"adyen.voucher.saveImage" = "Save as image";
-"adyen.voucher.finish" = "Finish";
+"adyen.voucher.saveImage" = "";
+"adyen.voucher.finish" = "";
+"adyen.card.brazilSSN.placeholder" = "";
+"adyen.amount" = "Částka";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Na zaplacení vám zbývá %@";
 "adyen.pix.copyButton" = "Kopírovat kód";
@@ -115,4 +117,7 @@
 "adyen.card.encryptedPassword.label" = "První 2 číslice hesla karty";
 "adyen.card.encryptedPassword.placeholder" = "12";
 "adyen.card.encryptedPassword.invalid" = "Neplatné heslo";
+"adyen.card.taxNumber.label.short" = "Datum narození nebo registrační číslo společnosti";
 "adyen.affirm.deliveryAddressToggle.title" = "Dodací adresa odlišná od fakturační";
+"adyen.voucher.shopperReference" = "Číslo kupujícího";
+"adyen.voucher.alternativeReference" = "Náhradní číslo";

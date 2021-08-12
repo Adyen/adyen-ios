@@ -39,14 +39,14 @@
 "adyen.emailItem.title" = "Sähköpostiosoite";
 "adyen.emailItem.placeHolder" = "Sähköpostiosoite";
 "adyen.emailItem.invalid" = "Ei-kelvollinen sähköpostiosoite";
-"adyen.moreOptions" = "";
+"adyen.moreOptions" = "Lisää vaihtoehtoja";
 "adyen.mbway.confirmPayment" = "Vahvista maksusi MB WAY -sovelluksella";
 "adyen.await.waitForConfirmation" = "Odottaa vahvistusta";
 "adyen.blik.confirmPayment" = "Avaa pankkisovelluksesi vahvistaaksesi maksun.";
 "adyen.blik.invalid" = "Syötä 6 lukua";
 "adyen.blik.code" = "6-numeroinen koodi";
 "adyen.blik.help" = "Hanki koodi pankkisovelluksestasi.";
-"adyen.blik.placeholder" = "123–456";
+"adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "Ennkkolupa käyttäjän kanssa %@";
 "adyen.confirmPreauthorization" = "Vahvista ennakkolupa";
 "adyen.card.cvcItem.title.optional" = "CVC / CVV (valinnainen)";
@@ -64,8 +64,10 @@
 "adyen.button.copy" = "Kopio";
 "adyen.voucher.introduction" = "Kiitos hankinnastasi, käytä seuraavia tietoja päättääksesi maksusi.";
 "adyen.voucher.readInstructions" = "Lue ohjeet";
-"adyen.voucher.saveImage" = "Save as image";
-"adyen.voucher.finish" = "Finish";
+"adyen.voucher.saveImage" = "";
+"adyen.voucher.finish" = "";
+"adyen.card.brazilSSN.placeholder" = "";
+"adyen.amount" = "Summa";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Sinulla on %@ maksettavana";
 "adyen.pix.copyButton" = "Kopioi koodi";
@@ -115,4 +117,7 @@
 "adyen.card.encryptedPassword.label" = "Kortin salasanan ensimmäiset 2 lukua";
 "adyen.card.encryptedPassword.placeholder" = "12";
 "adyen.card.encryptedPassword.invalid" = "Kelpaamaton salasana";
+"adyen.card.taxNumber.label.short" = "Syntymäpäivä tai yrityksen rekisterinumero";
 "adyen.affirm.deliveryAddressToggle.title" = "Erillinen toimitusosoite";
+"adyen.voucher.shopperReference" = "Ostajan viite";
+"adyen.voucher.alternativeReference" = "Vaihtoehtoinen viite";

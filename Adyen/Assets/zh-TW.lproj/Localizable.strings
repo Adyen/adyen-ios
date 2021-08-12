@@ -39,7 +39,7 @@
 "adyen.emailItem.title" = "電子郵件地址";
 "adyen.emailItem.placeHolder" = "電子郵件地址";
 "adyen.emailItem.invalid" = "電子郵件地址無效";
-"adyen.moreOptions" = "";
+"adyen.moreOptions" = "其他選項";
 "adyen.mbway.confirmPayment" = "在 MB WAY 應用程式上確認您的付款";
 "adyen.await.waitForConfirmation" = "正在等候確認";
 "adyen.blik.confirmPayment" = "開啟您的銀行應用程式以確認付款。";
@@ -63,6 +63,8 @@
 "adyen.button.copy" = "複製";
 "adyen.voucher.introduction" = "多謝惠顧，請使用以下資訊完成付款。";
 "adyen.voucher.readInstructions" = "閱覽說明";
+"adyen.card.brazilSSN.placeholder" = "";
+"adyen.amount" = "金額";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "您有 %@ 可以支付";
 "adyen.pix.copyButton" = "複製代碼";
@@ -112,4 +114,7 @@
 "adyen.card.encryptedPassword.label" = "卡密碼的前 2 位數字";
 "adyen.card.encryptedPassword.placeholder" = "12";
 "adyen.card.encryptedPassword.invalid" = "密碼無效";
+"adyen.card.taxNumber.label.short" = "生日或公司註冊號碼";
 "adyen.affirm.deliveryAddressToggle.title" = "單獨派送地址";
+"adyen.voucher.shopperReference" = "購物者參考";
+"adyen.voucher.alternativeReference" = "備選參照";

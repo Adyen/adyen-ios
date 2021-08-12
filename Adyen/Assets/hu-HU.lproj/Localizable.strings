@@ -39,14 +39,14 @@
 "adyen.emailItem.title" = "E-mail-cím";
 "adyen.emailItem.placeHolder" = "E-mail-cím";
 "adyen.emailItem.invalid" = "Érvénytelen e-mail-cím";
-"adyen.moreOptions" = "";
+"adyen.moreOptions" = "További lehetőségek";
 "adyen.mbway.confirmPayment" = "Fizetés jóváhagyása az MB WAY alkalmazásban";
 "adyen.await.waitForConfirmation" = "Várakozás a jóváhagyásra";
 "adyen.blik.confirmPayment" = "A fizetés jóváhagyásához nyissa meg a banki alkalmazást.";
 "adyen.blik.invalid" = "Adjon meg 6 számjegyet";
 "adyen.blik.code" = "6 számjegyű kód";
 "adyen.blik.help" = "Kód lekérése a banki alkalmazásból.";
-"adyen.blik.placeholder" = "123–456";
+"adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "Előzetes meghatalmazás a következővel: %@";
 "adyen.confirmPreauthorization" = "Előzetes meghatalmazás jóváhagyása";
 "adyen.card.cvcItem.title.optional" = "CVC/CVV (opcionális)";
@@ -64,8 +64,10 @@
 "adyen.button.copy" = "Másolás";
 "adyen.voucher.introduction" = "Köszönjük a vásárlást! Kérjük, a fizetéshez használja a következő információt.";
 "adyen.voucher.readInstructions" = "Olvassa el az utasításokat";
-"adyen.voucher.saveImage" = "Save as image";
-"adyen.voucher.finish" = "Finish";
+"adyen.voucher.saveImage" = "";
+"adyen.voucher.finish" = "";
+"adyen.card.brazilSSN.placeholder" = "";
+"adyen.amount" = "Összeg";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Fizetéshez rendelkezésre álló idő: %@";
 "adyen.pix.copyButton" = "Kód másolása";
@@ -115,4 +117,7 @@
 "adyen.card.encryptedPassword.label" = "Kártya jelszavának első 2 számjegye";
 "adyen.card.encryptedPassword.placeholder" = "12";
 "adyen.card.encryptedPassword.invalid" = "Érvénytelen jelszó";
+"adyen.card.taxNumber.label.short" = "Születési dátum vagy cégjegyzékszám";
 "adyen.affirm.deliveryAddressToggle.title" = "Eltérő szállítási cím";
+"adyen.voucher.shopperReference" = "Vásárlói referencia";
+"adyen.voucher.alternativeReference" = "Alternatív hivatkozás";

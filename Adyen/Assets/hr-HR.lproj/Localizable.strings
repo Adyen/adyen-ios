@@ -39,14 +39,14 @@
 "adyen.emailItem.title" = "Adresa e-pošte";
 "adyen.emailItem.placeHolder" = "Adresa e-pošte";
 "adyen.emailItem.invalid" = "Nevažeća adresa e-pošte";
-"adyen.moreOptions" = "";
+"adyen.moreOptions" = "Više opcija";
 "adyen.mbway.confirmPayment" = "Potvrdite uplatu u aplikaciji MB WAY";
 "adyen.await.waitForConfirmation" = "Čeka se potvrda";
 "adyen.blik.confirmPayment" = "Otvorite svoju bankovnu aplikaciju kako biste potvrdili plaćanje.";
 "adyen.blik.invalid" = "Unesite 6 znamenki";
 "adyen.blik.code" = "6-znamenkasti kôd";
 "adyen.blik.help" = "Preuzmite kôd iz bankovne aplikacije.";
-"adyen.blik.placeholder" = "123–456";
+"adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "Prethodno odobri s %@";
 "adyen.confirmPreauthorization" = "Potvrdite prethodno odobrenje";
 "adyen.card.cvcItem.title.optional" = "CVC/CVV (nije obavezno)";
@@ -64,8 +64,10 @@
 "adyen.button.copy" = "Kopiraj";
 "adyen.voucher.introduction" = "Zahvaljujemo na kupnji, upotrijebite sljedeće podatke za dovršetak plaćanja.";
 "adyen.voucher.readInstructions" = "Pročitajte upute";
-"adyen.voucher.saveImage" = "Save as image";
-"adyen.voucher.finish" = "Finish";
+"adyen.voucher.saveImage" = "";
+"adyen.voucher.finish" = "";
+"adyen.card.brazilSSN.placeholder" = "";
+"adyen.amount" = "Iznos";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Imate %@ za plaćanje";
 "adyen.pix.copyButton" = "Kopiraj kôd";
@@ -115,4 +117,7 @@
 "adyen.card.encryptedPassword.label" = "Prve 2 znamenke lozinke kartice";
 "adyen.card.encryptedPassword.placeholder" = "12";
 "adyen.card.encryptedPassword.invalid" = "Lozinka je netočna";
+"adyen.card.taxNumber.label.short" = "Datum rođenja ili registracijski broj tvrtke";
 "adyen.affirm.deliveryAddressToggle.title" = "Zasebna adresa za dostavu";
+"adyen.voucher.shopperReference" = "Referenca kupca";
+"adyen.voucher.alternativeReference" = "Alternativna referenca";

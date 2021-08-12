@@ -39,14 +39,14 @@
 "adyen.emailItem.title" = "Indirizzo e-mail";
 "adyen.emailItem.placeHolder" = "Indirizzo e-mail";
 "adyen.emailItem.invalid" = "Indirizzo e-mail non valido";
-"adyen.moreOptions" = "";
+"adyen.moreOptions" = "Altre opzioni";
 "adyen.mbway.confirmPayment" = "Conferma il pagamento con l'app MB WAY";
 "adyen.await.waitForConfirmation" = "In attesa di conferma";
 "adyen.blik.confirmPayment" = "Apri l'app della tua banca per confermare il pagamento.";
 "adyen.blik.invalid" = "Inserisci 6 numeri";
 "adyen.blik.code" = "Codice a 6 cifre";
 "adyen.blik.help" = "Ottieni il codice dalla app della tua banca.";
-"adyen.blik.placeholder" = "123–456";
+"adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "Preautorizza con %@";
 "adyen.confirmPreauthorization" = "Conferma preautorizzazione";
 "adyen.card.cvcItem.title.optional" = "CVC/CVV (facoltativo)";
@@ -64,8 +64,10 @@
 "adyen.button.copy" = "Copia";
 "adyen.voucher.introduction" = "Grazie per il tuo acquisto, utilizza i seguenti dati per completare il pagamento.";
 "adyen.voucher.readInstructions" = "Leggi le istruzioni";
-"adyen.voucher.saveImage" = "Save as image";
-"adyen.voucher.finish" = "Finish";
+"adyen.voucher.saveImage" = "";
+"adyen.voucher.finish" = "";
+"adyen.card.brazilSSN.placeholder" = "";
+"adyen.amount" = "Somma";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Devi pagare %@";
 "adyen.pix.copyButton" = "Copia codice";
@@ -115,4 +117,7 @@
 "adyen.card.encryptedPassword.label" = "Prime 2 cifre della password della carta";
 "adyen.card.encryptedPassword.placeholder" = "12";
 "adyen.card.encryptedPassword.invalid" = "Password non valida";
+"adyen.card.taxNumber.label.short" = "Data di nascita o numero di registrazione aziendale";
 "adyen.affirm.deliveryAddressToggle.title" = "Indirizzo di consegna separato";
+"adyen.voucher.shopperReference" = "Riferimento dell'acquirente";
+"adyen.voucher.alternativeReference" = "Riferimento alternativo";
