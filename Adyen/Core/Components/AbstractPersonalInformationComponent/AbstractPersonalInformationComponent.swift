@@ -85,6 +85,8 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
             phoneItemInjector?.inject(into: formViewController)
         case .address:
             addressItemInjector?.inject(into: formViewController)
+        case .deliveryAddress:
+            deliveryAddressItemInjector?.inject(into: formViewController)
         case let .custom(injector):
             injector.inject(into: formViewController)
         }
@@ -145,6 +147,17 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     
     /// :nodoc:
     public var addressItem: FormAddressItem? { addressItemInjector?.item }
+    
+    /// :nodoc:
+    internal lazy var deliveryAddressItemInjector: AddressFormItemInjector? = {
+        guard configuration.fields.contains(.deliveryAddress) else { return nil }
+        return AddressFormItemInjector(identifier: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "deliveryAddressItem"),
+                                       initialCountry: defaultCountryCode,
+                                       style: style.addressStyle)
+    }()
+    
+    /// :nodoc:
+    public var deliveryAddressItem: FormAddressItem? { deliveryAddressItemInjector?.item }
 
     /// :nodoc:
     internal lazy var phoneItemInjector: PhoneFormItemInjector? = {

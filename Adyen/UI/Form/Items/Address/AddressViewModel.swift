@@ -14,6 +14,7 @@ internal enum AddressField: String, CaseIterable {
     case postalCode
     case city
     case stateOrProvince
+    case country
 }
 
 internal enum FormScheme {
@@ -43,7 +44,7 @@ internal struct AddressViewModel {
                                                        .postalCode: .postalCodeFieldPlaceholder,
                                                        .apartment: .apartmentSuiteFieldPlaceholder],
                                          optionalFields: [.apartment],
-                                         schema: AddressField.allCases.map { .item($0) })
+                                         schema: AddressField.allCases.filter { $0 != .country }.map { .item($0) })
         switch countryCode {
         case "BR":
             viewModel.labels[.stateOrProvince] = .stateFieldTitle
@@ -100,6 +101,8 @@ extension AddressField {
             return .addressCity
         case .stateOrProvince:
             return .addressState
+        case .country:
+            return .countryName
         }
     }
 
