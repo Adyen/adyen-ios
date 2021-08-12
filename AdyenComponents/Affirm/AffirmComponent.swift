@@ -41,7 +41,9 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
         deliveryAddressToggleItem = FormToggleItem(style: style.toggle)
         
         deliveryAddressItem = FormAddressItem(initialCountry: Locale.current.regionCode ?? "US",
-                                              style: style.addressStyle)
+                                              style: style.addressStyle,
+                                              identifier: ViewIdentifierBuilder.build(scopeInstance: AffirmComponent.self,
+                                                                                      postfix: ViewIdentifier.deliveryAddress))
         
         let fields: [PersonalInformation] = [
             .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 2))),
@@ -77,15 +79,13 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     
     /// :nodoc:
     private func setupBillingAddressItem() {
-        addressItem?.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                              postfix: ViewIdentifier.billingAddress)
+//        addressItem?.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
+//                                                              postfix: ViewIdentifier.billingAddress)
     }
     
     /// :nodoc:
     private func setupDeliveryAddressItem() {
         deliveryAddressItem.title = localizedString(.deliveryAddressSectionTitle, localizationParameters)
-        deliveryAddressItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                                     postfix: ViewIdentifier.deliveryAddress)
     }
     
     /// :nodoc:

@@ -36,24 +36,27 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         }
     }
     
-    override public var identifier: String? {
-        didSet {
-            updateItems(identifier: identifier)
-        }
-    }
+//    override public var identifier: String? {
+//        didSet {
+//            updateItems(identifier: identifier)
+//        }
+//    }
 
     /// Initializes the split text item.
     /// - Parameters:
     ///   - initialCountry: The items displayed side-by-side. Must be two.
     ///   - style: The `FormSplitItemView` UI style.
     ///   - localizationParameters: The localization parameters
+    ///   - identifier: Form item identifier
     public init(initialCountry: String,
                 style: AddressStyle,
-                localizationParameters: LocalizationParameters? = nil) {
+                localizationParameters: LocalizationParameters? = nil,
+                identifier: String? = nil) {
         self.initialCountry = initialCountry
         self.localizationParameters = localizationParameters
         super.init(value: PostalAddress(), style: style)
 
+        self.identifier = identifier
         update(for: initialCountry)
         
         bind(countrySelectItem.publisher, at: \.identifier, to: self, at: \.value.country)
