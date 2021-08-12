@@ -36,18 +36,12 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         }
     }
     
-//    override public var identifier: String? {
-//        didSet {
-//            updateItems(identifier: identifier)
-//        }
-//    }
-
     /// Initializes the split text item.
     /// - Parameters:
     ///   - initialCountry: The items displayed side-by-side. Must be two.
     ///   - style: The `FormSplitItemView` UI style.
     ///   - localizationParameters: The localization parameters
-    ///   - identifier: Form item identifier
+    ///   - identifier: The item identifier
     public init(initialCountry: String,
                 style: AddressStyle,
                 localizationParameters: LocalizationParameters? = nil,
@@ -184,19 +178,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
             break
         }
     }
-    
-    private func updateItems(identifier: String?) {
-        let subitems = [headerItem, countrySelectItem] + items.flatMap(\.flatSubitems)
-        subitems.forEach { update(item: $0, identifier: identifier) }
-    }
-    
-    private func update(item: FormItem, identifier: String?) {
-        let className = String(describing: self)
-        let currentIdentifier = item.identifier
-        let newIdentifier = currentIdentifier?.replacingOccurrences(of: className, with: identifier ?? "")
-        item.identifier = newIdentifier
-    }
-    
+        
     // MARK: - Public
     
     /// :nodoc:
