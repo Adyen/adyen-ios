@@ -13,9 +13,9 @@ internal enum ConfigurationConstants {
     // swiftlint:disable line_length
 
     /// Please use your own web server between your app and adyen checkout API.
-    static let demoServerEnvironment = DemoServerEnvironment.local
+    static let demoServerEnvironment = DemoServerEnvironment.test
 
-    static let componentsEnvironment = Environment(baseURL: URL(string: "http://localhost:8080")!)
+    static let componentsEnvironment = Environment.test
 
     static let appName = "Adyen Demo"
 
