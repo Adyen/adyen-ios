@@ -50,7 +50,7 @@ internal final class ComponentManager {
 
         // Paid section
         let amountString: String = remainingAmount.map(\.formatted) ??
-            localizedString(.amount, configuration.localizationParameters)
+            localizedString(.partialPaymentPayRemainingAmount, configuration.localizationParameters)
         let footerTitle = localizedString(.partialPaymentPayRemainingAmount,
                                           configuration.localizationParameters,
                                           amountString)

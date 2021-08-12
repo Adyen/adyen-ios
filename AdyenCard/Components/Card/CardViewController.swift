@@ -73,11 +73,17 @@ internal class CardViewController: FormViewController {
     internal weak var cardDelegate: CardViewControllerDelegate?
 
     internal var card: Card {
-        Card(number: items.numberItem.value,
-             securityCode: configuration.showsSecurityCodeField ? items.securityCodeItem.nonEmptyValue : nil,
-             expiryMonth: items.expiryDateItem.value.adyen[0...1],
-             expiryYear: "20" + items.expiryDateItem.value.adyen[2...3],
-             holder: configuration.showsHolderNameField ? items.holderNameItem.nonEmptyValue : nil)
+        var expiryMonth: String?
+        var expiryYear: String?
+        if let expiryItemValue = items.expiryDateItem.nonEmptyValue {
+            expiryMonth = expiryItemValue.adyen[0...1]
+            expiryYear = "20" + expiryItemValue.adyen[2...3]
+        }
+        return Card(number: items.numberItem.value,
+                    securityCode: configuration.showsSecurityCodeField ? items.securityCodeItem.nonEmptyValue : nil,
+                    expiryMonth: expiryMonth,
+                    expiryYear: expiryYear,
+                    holder: configuration.showsHolderNameField ? items.holderNameItem.nonEmptyValue : nil)
     }
 
     internal var address: PostalAddress? {
@@ -122,7 +128,8 @@ internal class CardViewController: FormViewController {
 
     internal func update(binInfo: BinLookupResponse) {
         let brands = binInfo.brands ?? []
-        items.securityCodeItem.update(cardBrands: brands)
+        items.securityCodeItem.isOptional = brands.isCVCOptional
+        items.expiryDateItem.isOptional = brands.isExpiryDateOptional
 
         if items.numberItem.value.isEmpty {
             items.numberItem.showLogos(for: topCardTypes)
