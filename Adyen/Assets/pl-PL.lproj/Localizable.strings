@@ -64,9 +64,10 @@
 "adyen.button.copy" = "Kopiuj";
 "adyen.voucher.introduction" = "Dziękujemy za zakup. Dokończ płatność przy użyciu poniższych informacji.";
 "adyen.voucher.readInstructions" = "Przeczytaj instrukcje";
-"adyen.voucher.saveImage" = "Save as image";
-"adyen.voucher.finish" = "Finish";
-"adyen.card.brazilSSN.placeholder" = "123.123.123-12";
+"adyen.voucher.saveImage" = "";
+"adyen.voucher.finish" = "";
+"adyen.card.brazilSSN.placeholder" = "";
+"adyen.amount" = "Kwota";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Masz do zapłacenia %@";
 "adyen.pix.copyButton" = "Skopiuj kod";

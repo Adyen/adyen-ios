@@ -64,9 +64,10 @@
 "adyen.button.copy" = "Αντιγραφή";
 "adyen.voucher.introduction" = "Σας ευχαριστούμε για την αγορά. Χρησιμοποιήστε τις ακόλουθες πληροφορίες για να ολοκληρώσετε την πληρωμή.";
 "adyen.voucher.readInstructions" = "Διαβάστε τις οδηγίες";
-"adyen.voucher.saveImage" = "Save as image";
-"adyen.voucher.finish" = "Finish";
-"adyen.card.brazilSSN.placeholder" = "123.123.123-12";
+"adyen.voucher.saveImage" = "";
+"adyen.voucher.finish" = "";
+"adyen.card.brazilSSN.placeholder" = "";
+"adyen.amount" = "Ποσό";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Έχετε στη διάθεσή σας %@ για την πληρωμή";
 "adyen.pix.copyButton" = "Αντιγραφή κωδικού";

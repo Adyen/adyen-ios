@@ -64,9 +64,10 @@
 "adyen.button.copy" = "Kopiera";
 "adyen.voucher.introduction" = "Tack för ditt köp, vänligen använd följande information för att slutföra din betalning.";
 "adyen.voucher.readInstructions" = "Läs instruktionerna";
-"adyen.voucher.saveImage" = "Save as image";
-"adyen.voucher.finish" = "Finish";
-"adyen.card.brazilSSN.placeholder" = "123.123.123-12";
+"adyen.voucher.saveImage" = "";
+"adyen.voucher.finish" = "";
+"adyen.card.brazilSSN.placeholder" = "";
+"adyen.amount" = "Belopp";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Du har %@ att betala";
 "adyen.pix.copyButton" = "Kopiera kod";

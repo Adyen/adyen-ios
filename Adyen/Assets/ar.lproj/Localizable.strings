@@ -64,9 +64,10 @@
 "adyen.button.copy" = "نسخ";
 "adyen.voucher.introduction" = "شكرًا لك على شرائك، يرجى استخدام المعلومات التالية لإتمام عملية الدفع.";
 "adyen.voucher.readInstructions" = "قراءة التعليمات";
-"adyen.voucher.saveImage" = "Save as image";
-"adyen.voucher.finish" = "Finish";
-"adyen.card.brazilSSN.placeholder" = "123.123.123-12";
+"adyen.voucher.saveImage" = "";
+"adyen.voucher.finish" = "";
+"adyen.card.brazilSSN.placeholder" = "";
+"adyen.amount" = "المبلغ";
 "adyen.pix.instructions" = "افتح التطبيق باستخدام مفتاح PIX المسجل، واختر الدفع باستخدام PIX وامسح رمز الاستجابة السريعة ضوئيًا أو انسخ الرمز والصقه";
 "adyen.pix.expirationLabel" = "لديك %@ للدفع";
 "adyen.pix.copyButton" = "نسخ الرمز";

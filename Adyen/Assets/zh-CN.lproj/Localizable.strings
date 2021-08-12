@@ -64,9 +64,10 @@
 "adyen.button.copy" = "复制";
 "adyen.voucher.introduction" = "感谢您的购买，请使用以下信息完成支付。";
 "adyen.voucher.readInstructions" = "阅读说明";
-"adyen.voucher.saveImage" = "Save as image";
-"adyen.voucher.finish" = "Finish";
-"adyen.card.brazilSSN.placeholder" = "123.123.123-12";
+"adyen.voucher.saveImage" = "";
+"adyen.voucher.finish" = "";
+"adyen.card.brazilSSN.placeholder" = "";
+"adyen.amount" = "金额";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "您需要支付 %@";
 "adyen.pix.copyButton" = "复制代码";

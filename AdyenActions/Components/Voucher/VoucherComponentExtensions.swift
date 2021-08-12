@@ -82,7 +82,7 @@ extension VoucherComponent: VoucherViewDelegate {
             createCopyCodeAlertAction(for: action.reference),
             createSaveAlertAction(for: action, sourceView: sourceView),
             (action as? InstructionAwareVoucherAction)
-                .map(\.instructionsUrl)
+                .map(\.instructionsURL)
                 .flatMap(createReadInstructionsAlertAction(for:)),
             getCancelAlertAction()
         ].compactMap { $0 }
@@ -106,7 +106,7 @@ extension VoucherComponent: VoucherViewDelegate {
         )
     }
     
-    private func createReadInstructionsAlertAction(for url: URL) -> UIAlertAction? {
+    private func createReadInstructionsAlertAction(for url: URL) -> UIAlertAction {
         UIAlertAction(
             title: localizedString(.voucherReadInstructions, localizationParameters),
             style: .default,

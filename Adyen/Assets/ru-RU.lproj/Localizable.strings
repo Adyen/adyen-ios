@@ -64,9 +64,10 @@
 "adyen.button.copy" = "Копия";
 "adyen.voucher.introduction" = "Благодарим за покупку. Для завершения оплаты используйте следующие сведения.";
 "adyen.voucher.readInstructions" = "Прочитайте инструкции";
-"adyen.voucher.saveImage" = "Save as image";
-"adyen.voucher.finish" = "Finish";
-"adyen.card.brazilSSN.placeholder" = "123.123.123-12";
+"adyen.voucher.saveImage" = "";
+"adyen.voucher.finish" = "";
+"adyen.card.brazilSSN.placeholder" = "";
+"adyen.amount" = "Сумма";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "У вас %@ на оплату";
 "adyen.pix.copyButton" = "Скопировать код";

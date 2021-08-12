@@ -64,9 +64,10 @@
 "adyen.button.copy" = "Kopírovat";
 "adyen.voucher.introduction" = "Děkujeme za nákup. K dokončení platby použijte prosím následující informace.";
 "adyen.voucher.readInstructions" = "Přečtěte si pokyny";
-"adyen.voucher.saveImage" = "Save as image";
-"adyen.voucher.finish" = "Finish";
-"adyen.card.brazilSSN.placeholder" = "123.123.123-12";
+"adyen.voucher.saveImage" = "";
+"adyen.voucher.finish" = "";
+"adyen.card.brazilSSN.placeholder" = "";
+"adyen.amount" = "Částka";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Na zaplacení vám zbývá %@";
 "adyen.pix.copyButton" = "Kopírovat kód";

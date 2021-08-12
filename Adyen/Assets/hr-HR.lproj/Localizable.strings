@@ -64,9 +64,10 @@
 "adyen.button.copy" = "Kopiraj";
 "adyen.voucher.introduction" = "Zahvaljujemo na kupnji, upotrijebite sljedeće podatke za dovršetak plaćanja.";
 "adyen.voucher.readInstructions" = "Pročitajte upute";
-"adyen.voucher.saveImage" = "Save as image";
-"adyen.voucher.finish" = "Finish";
-"adyen.card.brazilSSN.placeholder" = "123.123.123-12";
+"adyen.voucher.saveImage" = "";
+"adyen.voucher.finish" = "";
+"adyen.card.brazilSSN.placeholder" = "";
+"adyen.amount" = "Iznos";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Imate %@ za plaćanje";
 "adyen.pix.copyButton" = "Kopiraj kôd";

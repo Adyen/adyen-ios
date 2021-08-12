@@ -101,7 +101,7 @@ internal protocol InstructionAwareVoucherAction {
     
     /// :nodoc:
     /// The instruction url.
-    var instructionsUrl: URL { get }
+    var instructionsURL: URL { get }
 }
 
 /// Describes an action in which a voucher is presented to the shopper.
@@ -128,7 +128,11 @@ public class GenericVoucherAction: Decodable,
     public let merchantName: String
 
     /// The instruction url.
-    public let instructionsUrl: URL
+    @available(*, deprecated, message: "Please use `instructionsURL` instead.")
+    public let instructionsUrl: String
+    
+    /// The instruction `URL` object.
+    public let instructionsURL: URL
 
     /// :nodoc:
     public let passCreationToken: String?
@@ -141,7 +145,8 @@ public class GenericVoucherAction: Decodable,
         totalAmount = try container.decode(Amount.self, forKey: .totalAmount)
         reference = try container.decode(String.self, forKey: .reference)
         merchantName = try container.decode(String.self, forKey: .merchantName)
-        instructionsUrl = try container.decode(URL.self, forKey: .instructionsUrl)
+        instructionsUrl = try container.decode(String.self, forKey: .instructionsUrl)
+        instructionsURL = try container.decode(URL.self, forKey: .instructionsUrl)
         passCreationToken = try container.decodeIfPresent(String.self, forKey: .passCreationToken)
 
         let expiresAtString = try container.decode(String.self, forKey: .expiresAt)
@@ -175,7 +180,8 @@ public class GenericVoucherAction: Decodable,
         self.reference = reference
         self.expiresAt = expiresAt
         self.merchantName = merchantName
-        self.instructionsUrl = instructionsUrl
+        self.instructionsUrl = instructionsUrl.absoluteString
+        self.instructionsURL = instructionsUrl
         self.passCreationToken = passCreationToken
     }
 

@@ -67,7 +67,7 @@
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
 "adyen.card.brazilSSN.placeholder" = "123.123.123-12";
-"adyen.amount" = "amount";
+"adyen.amount" = "Amount";
 "adyen.pix.instructions" = "Open the app with the PIX registered key, choose Pay with PIX and scan the QR Code or copy and paste the code";
 "adyen.pix.expirationLabel" = "You have %@ to pay";
 "adyen.pix.copyButton" = "Copy code";
