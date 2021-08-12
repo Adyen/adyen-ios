@@ -217,7 +217,7 @@ extension SubmitButton {
         
         internal override func layoutSubviews() {
             super.layoutSubviews()
-            self.adyen.round(corners: .allCorners, rounding: rounding)
+            self.adyen.round(using: rounding)
         }
         
     }
