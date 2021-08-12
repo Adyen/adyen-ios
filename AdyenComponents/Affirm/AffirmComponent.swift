@@ -75,6 +75,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     
     /// :nodoc:
     private func setupDeliveryAddressToggleItem() {
+        guard let deliveryAddressItem = deliveryAddressItem else { return }
         deliveryAddressToggleItem.title = localizedString(.affirmDeliveryAddressToggleTitle, localizationParameters)
         deliveryAddressToggleItem.value = false
         deliveryAddressToggleItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
