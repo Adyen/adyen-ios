@@ -1011,7 +1011,7 @@ class CardComponentTests: XCTestCase {
 
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
                 XCTAssertEqual(passwordItemView!.titleLabel.text, "First 2 digits of card password")
-                XCTAssertEqual(taxNumberItemView!.titleLabel.text, "Birthday or Corporate registration number")
+                XCTAssertEqual(taxNumberItemView!.titleLabel.text, "Birthdate or Corporate registration number")
                 XCTAssertFalse(taxNumberItemView!.isHidden)
                 XCTAssertFalse(passwordItemView!.isHidden)
                 self.populate(textItemView: taxNumberItemView!, with: "121212")
