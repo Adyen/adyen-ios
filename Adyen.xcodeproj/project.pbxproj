@@ -205,7 +205,6 @@
 		E767F4DC25A603A50077029E /* ModalToolbarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E767F4DB25A603A50077029E /* ModalToolbarTests.swift */; };
 		E76CAC4E26BC0CC200117953 /* CardViewControllerItemsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76CAC4D26BC0CC200117953 /* CardViewControllerItemsProvider.swift */; };
 		E76CAC5F26C6B95300117953 /* AdyenWeChatPayInternal in Frameworks */ = {isa = PBXBuildFile; productRef = E76CAC5E26C6B95300117953 /* AdyenWeChatPayInternal */; };
-		E76CAC6126C6CBDD00117953 /* AdyenWeChatPayInternal in Frameworks */ = {isa = PBXBuildFile; productRef = E76CAC6026C6CBDD00117953 /* AdyenWeChatPayInternal */; };
 		E76EC680241125E0009C6E2F /* FormCardSecurityCodeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76EC67F241125E0009C6E2F /* FormCardSecurityCodeItem.swift */; };
 		E76EC682241125F5009C6E2F /* FormCardSecurityCodeItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76EC681241125F5009C6E2F /* FormCardSecurityCodeItemView.swift */; };
 		E76EC685241127CE009C6E2F /* AdyenCardAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E76EC684241127CE009C6E2F /* AdyenCardAssets.xcassets */; };
@@ -1619,7 +1618,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E76CAC6126C6CBDD00117953 /* AdyenWeChatPayInternal in Frameworks */,
 				F9620DA823C7486B005209FC /* libsqlite3.tbd in Frameworks */,
 				F9620DAC23C74896005209FC /* SystemConfiguration.framework in Frameworks */,
 				F9176004259499F900D653BE /* AdyenActions.framework in Frameworks */,
@@ -3882,7 +3880,6 @@
 			);
 			name = AdyenWeChatPay;
 			packageProductDependencies = (
-				E76CAC6026C6CBDD00117953 /* AdyenWeChatPayInternal */,
 			);
 			productName = AdyenWeChatPay;
 			productReference = F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */;
@@ -5251,7 +5248,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/iOS/**";
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/**";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -5316,7 +5313,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/iOS/**";
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/**";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -5970,7 +5967,9 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 3;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)\n$(PROJECT_DIR)/Carthage/Checkouts/**",
+				);
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = AdyenWeChatPay/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -5991,7 +5990,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
-				SWIFT_INCLUDE_PATHS = "$(PROJECT_DIR)/AdyenWeChatPay/WeChatSDK/";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -6012,7 +6010,9 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 3;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)\n$(PROJECT_DIR)/Carthage/Checkouts/**",
+				);
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = AdyenWeChatPay/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -6033,7 +6033,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
-				SWIFT_INCLUDE_PATHS = "$(PROJECT_DIR)/AdyenWeChatPay/WeChatSDK/";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -6201,11 +6200,6 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		E76CAC5E26C6B95300117953 /* AdyenWeChatPayInternal */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E76CAC5D26C6B95300117953 /* XCRemoteSwiftPackageReference "adyen-wechatpay-ios" */;
-			productName = AdyenWeChatPayInternal;
-		};
-		E76CAC6026C6CBDD00117953 /* AdyenWeChatPayInternal */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E76CAC5D26C6B95300117953 /* XCRemoteSwiftPackageReference "adyen-wechatpay-ios" */;
 			productName = AdyenWeChatPayInternal;

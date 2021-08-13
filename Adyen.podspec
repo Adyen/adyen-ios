@@ -32,7 +32,7 @@ Pod::Spec.new do |s|
     plugin.private_header_files = 'AdyenWeChatPay/WeChatSDK/*.h'
     plugin.dependency 'Adyen/Core'
     plugin.dependency 'Adyen/Actions'
-    # plugin.dependency 'AdyenWeChatPayInternal', '1.0.0'
+    plugin.dependency 'AdyenWeChatPayInternal', '1.0.0'
     plugin.libraries = 'z', 'stdc++', 'sqlite3.0'
     plugin.frameworks = 'SystemConfiguration', 'CoreTelephony', 'CFNetwork', 'CoreGraphics', 'Security'
   end
