@@ -4,9 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import UIKit
-import PassKit
 import Adyen
+import PassKit
+import UIKit
 
 /// :nodoc:
 extension VoucherComponent: VoucherViewDelegate {
@@ -27,12 +27,10 @@ extension VoucherComponent: VoucherViewDelegate {
     
     internal func mainButtonTap(sourceView: UIView) {
         guard let action = action else { return }
-        
-        switch action {
-        case .dokuIndomaret, .dokuAlfamart, .econtextStores, .econtextATM:
+        if let downloadable = action.anyAction as? DownloadableVoucher {
+            presentSharePopover(with: downloadable.downloadUrl, sourceView: sourceView)
+        } else {
             saveAsImage(sourceView: sourceView)
-        case let .boletoBancairoSantander(action):
-            presentSharePopover(with: action.downloadUrl, sourceView: sourceView)
         }
     }
     
@@ -74,44 +72,33 @@ extension VoucherComponent: VoucherViewDelegate {
             message: nil,
             preferredStyle: .actionSheet
         )
-        getAlertActions(for: action, sourceView: sourceView).forEach { alert.addAction($0) }
+        createAlertActions(for: action.anyAction, sourceView: sourceView).forEach { alert.addAction($0) }
         
         presenterViewController.present(alert, animated: true, completion: nil)
     }
     
-    private func getAlertActions(for action: VoucherAction, sourceView: UIView) -> [UIAlertAction] {
-        switch action {
-        case .dokuIndomaret(let genericAction):
-            return getGenericAlertActions(for: genericAction, sourceView: sourceView)
-        case .dokuAlfamart(let genericAction):
-            return getGenericAlertActions(for: genericAction, sourceView: sourceView)
-        case .econtextStores(let genericAction):
-            return getGenericAlertActions(for: genericAction, sourceView: sourceView)
-        case .econtextATM(let genericAction):
-            return getGenericAlertActions(for: genericAction, sourceView: sourceView)
-        case .boletoBancairoSantander(let boletoAction):
-            return getBoletoAlertActions(for: boletoAction, sourceView: sourceView)
+    private func createAlertActions(for action: AnyVoucherAction, sourceView: UIView) -> [UIAlertAction] {
+        [
+            createCopyCodeAlertAction(for: action.reference),
+            createSaveAlertAction(for: action, sourceView: sourceView),
+            (action as? InstructionAwareVoucherAction)
+                .map(\.instructionsURL)
+                .flatMap(createReadInstructionsAlertAction(for:)),
+            getCancelAlertAction()
+        ].compactMap { $0 }
+    }
+    
+    private func createSaveAlertAction(for action: AnyVoucherAction, sourceView: UIView) -> UIAlertAction? {
+        guard canAddPasses else { return nil }
+        
+        if let downloadable = action as? DownloadableVoucher {
+            return createDownloadPDFAlertAction(for: downloadable.downloadUrl, sourceView: sourceView)
+        } else {
+            return createSaveAsAnImageAlertAction(with: sourceView)
         }
     }
     
-    private func getGenericAlertActions(for action: GenericVoucherAction, sourceView: UIView) -> [UIAlertAction] {
-        [
-            getCopyCodeAlertAction(for: action.reference),
-            getReadInstructionsAlertAction(for: action.instructionsUrl),
-            canAddPasses ? getSaveAsAnImageAlertAction(for: action, sourceView: sourceView) : nil,
-            getCancelAlertAction()
-        ].compactMap { $0 }
-    }
-    
-    private func getBoletoAlertActions(for action: BoletoVoucherAction, sourceView: UIView) -> [UIAlertAction] {
-        [
-            getCopyCodeAlertAction(for: action.reference),
-            canAddPasses ? getDownloadPDFAlertAction(for: action.downloadUrl, sourceView: sourceView) : nil,
-            getCancelAlertAction()
-        ].compactMap { $0 }
-    }
-    
-    private func getCopyCodeAlertAction(for reference: String) -> UIAlertAction {
+    private func createCopyCodeAlertAction(for reference: String) -> UIAlertAction {
         UIAlertAction(
             title: localizedString(.pixCopyButton, localizationParameters),
             style: .default,
@@ -119,10 +106,8 @@ extension VoucherComponent: VoucherViewDelegate {
         )
     }
     
-    private func getReadInstructionsAlertAction(for url: String) -> UIAlertAction? {
-        guard let url = URL(string: url) else { return nil }
-        
-        return UIAlertAction(
+    private func createReadInstructionsAlertAction(for url: URL) -> UIAlertAction {
+        UIAlertAction(
             title: localizedString(.voucherReadInstructions, localizationParameters),
             style: .default,
             handler: { _ in
@@ -131,7 +116,7 @@ extension VoucherComponent: VoucherViewDelegate {
         )
     }
     
-    private func getDownloadPDFAlertAction(for url: URL, sourceView: UIView) -> UIAlertAction {
+    private func createDownloadPDFAlertAction(for url: URL, sourceView: UIView) -> UIAlertAction {
         UIAlertAction(
             title: localizedString(.boletoDownloadPdf, localizationParameters),
             style: .default,
@@ -141,7 +126,7 @@ extension VoucherComponent: VoucherViewDelegate {
         )
     }
     
-    private func getSaveAsAnImageAlertAction(for action: GenericVoucherAction, sourceView: UIView) -> UIAlertAction {
+    private func createSaveAsAnImageAlertAction(with sourceView: UIView) -> UIAlertAction {
         UIAlertAction(
             title: localizedString(.voucherSaveImage, localizationParameters),
             style: .default,

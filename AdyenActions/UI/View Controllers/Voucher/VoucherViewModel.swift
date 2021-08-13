@@ -11,6 +11,8 @@ extension VoucherView {
     
     internal struct Model {
         
+        internal let identifier: String
+        
         internal let amount: String
         
         internal let currency: String

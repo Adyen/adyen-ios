@@ -89,6 +89,68 @@ class VoucherComponentTests: XCTestCase {
         waitForExpectations(timeout: 60, handler: nil)
     }
     
+    func testOXXOVoucherComponent() throws {
+        let action = try Coder.decode(oxxoAction) as VoucherAction
+        
+        let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
+        presentationDelegate.doPresent = { [self] component in
+            let component = component as! PresentableComponentWrapper
+            XCTAssert(component.component === sut)
+            
+            UIApplication.shared.keyWindow?.rootViewController = component.viewController
+            
+            let view = sut.view
+            
+            XCTAssertNotNil(view)
+            
+            checkViewModel(view!.model, forAction: action)
+            
+            let optionsButton: UIButton! = component.viewController.view.findView(with: "AdyenActions.VoucherComponent.voucherView.secondaryButton")
+            XCTAssertNotNil(optionsButton)
+            XCTAssertEqual(optionsButton.titleLabel?.text, "More options")
+            
+            optionsButton.sendActions(for: .touchUpInside)
+            
+            wait(for: .seconds(1))
+            
+            let alertSheet = UIViewController.findTopPresenter() as? UIAlertController
+            XCTAssertNotNil(alertSheet)
+            XCTAssertEqual(alertSheet?.actions.count, 4)
+            XCTAssertEqual(alertSheet?.actions[0].title, "Copy code")
+            XCTAssertEqual(alertSheet?.actions[1].title, "Download PDF")
+            XCTAssertEqual(alertSheet?.actions[2].title, "Read instructions")
+            XCTAssertEqual(alertSheet?.actions[3].title, "Cancel")
+            
+            presentationDelegateExpectation.fulfill()
+        }
+        
+        sut.handle(action)
+        
+        waitForExpectations(timeout: 60, handler: nil)
+    }
+    
+    func testEContextStoresVoucherComponent() throws {
+        let action = try Coder.decode(econtextStoresAction) as VoucherAction
+        
+        let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
+        presentationDelegate.doPresent = { [self] component in
+            let component = component as! PresentableComponentWrapper
+            XCTAssert(component.component === sut)
+            
+            let view = sut.view
+            
+            XCTAssertNotNil(view)
+            
+            checkViewModel(view!.model, forAction: action)
+            
+            presentationDelegateExpectation.fulfill()
+        }
+        
+        sut.handle(action)
+        
+        waitForExpectations(timeout: 60, handler: nil)
+    }
+    
     func checkViewModel(
         _ model: VoucherView.Model,
         forAction action: VoucherAction

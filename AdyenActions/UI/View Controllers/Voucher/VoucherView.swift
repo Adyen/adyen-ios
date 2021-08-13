@@ -5,8 +5,8 @@
 //
 
 import Adyen
-import UIKit
 import PassKit
+import UIKit
 
 internal protocol VoucherViewDelegate: AnyObject {
     
@@ -33,6 +33,7 @@ internal final class VoucherView: UIView, Localizable {
         self.model = model
 
         super.init(frame: .zero)
+        self.accessibilityIdentifier = model.identifier
         self.translatesAutoresizingMaskIntoConstraints = false
         
         buildUI()
@@ -93,7 +94,7 @@ internal final class VoucherView: UIView, Localizable {
         updateSpacerConstraints()
     }
     
-    internal override func layoutSubviews() {
+    override internal func layoutSubviews() {
         super.layoutSubviews()
         
         updateSpacerConstraints()
@@ -227,7 +228,8 @@ internal final class VoucherView: UIView, Localizable {
                 ) {
                     self.returnSecondaryButtonToNormalState()
                 }
-            })
+            }
+        )
     }
     
     private func returnSecondaryButtonToNormalState() {
@@ -238,12 +240,14 @@ internal final class VoucherView: UIView, Localizable {
             animations: {
                 self.secondaryButton.setTitle(
                     self.model.secondaryButtonTitle,
-                    for: .normal)
+                    for: .normal
+                )
                 self.secondaryButton.setTitleColor(
                     self.model.style.secondaryButton.title.color,
                     for: .normal
                 )
-            })
+            }
+        )
     }
     
 }
