@@ -1,7 +1,0 @@
-module AdyenWeChatPayInternal {
-  header "WXApiObject.h"
-  header "WXApi.h"
-  header "WechatAuthSDK.h"
-
-  export *
-}
