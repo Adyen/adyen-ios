@@ -49,4 +49,4 @@ Run the UIKit Demo by selecting `AdyenUIHost` as the target in Xcode.
 ### SwiftUI Demo
 
 This is the basic UI for SwiftUI integration.
-You can run it by selecting `AdyenSwiftUIHost` target in xcode.
+Run the SwiftUI Demo it by selecting `AdyenSwiftUIHost` as the target in Xcode.
