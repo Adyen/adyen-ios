@@ -44,7 +44,7 @@ This example is used to support Drop-in gift card flow.
 ### UIKit Demo
 
 This is the basic UI for UIKit integration.
-You can run it by selecting `AdyenUIHost` target in xcode.
+Run the UIKit Demo by selecting `AdyenUIHost` as the target in Xcode.
 
 ### SwiftUI Demo
 
