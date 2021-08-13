@@ -192,7 +192,7 @@ class DropInTests: XCTestCase {
             XCTAssertNotNil(topVC)
             XCTAssertEqual(topVC!.sections.count, 2)
             XCTAssertEqual(topVC!.sections[0].items.count, 2)
-            XCTAssertTrue(topVC!.sections[0].footer!.title.contains("Select payment method for the remaining amount"))
+            XCTAssertTrue(topVC!.sections[0].footer!.title.contains("Select payment method for the remaining"))
             waitExpectation.fulfill()
         }
 

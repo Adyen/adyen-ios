@@ -11,7 +11,7 @@ internal final class ModalToolbar: UIView, AnyNavigationBar {
     private let style: NavigationStyle
     internal var onCancelHandler: (() -> Void)?
     private let title: String?
-    private let paddingWithMarginCorrection: CGFloat = 20
+    private let paddingWithMarginCorrection: CGFloat = 16
 
     internal init(title: String?, style: NavigationStyle) {
         self.style = style

@@ -48,7 +48,7 @@
 "adyen.blik.code" = "6桁のコード";
 "adyen.blik.help" = "バンキングアプリからコードを取得してください。";
 "adyen.blik.placeholder" = "";
-"adyen.preauthorizeWith" = "次で事前認証する： %@";
+"adyen.preauthorizeWith" = "次で事前認証する：%@";
 "adyen.confirmPreauthorization" = "事前承認を確認する";
 "adyen.card.cvcItem.title.optional" = "セキュリティーコード(任意)";
 "adyen.confirmPurchase" = "購入を確認する";

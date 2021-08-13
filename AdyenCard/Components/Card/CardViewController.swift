@@ -11,7 +11,7 @@ import UIKit
 #endif
 
 internal class CardViewController: FormViewController {
-    
+
     private let configuration: CardComponent.Configuration
 
     private let supportedCardTypes: [CardType]
@@ -19,15 +19,15 @@ internal class CardViewController: FormViewController {
     private let throttler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
 
     private let formStyle: FormComponentStyle
-    
+
     private var topCardTypes: [CardType] {
         Array(supportedCardTypes.prefix(CardComponent.Constant.maxCardsVisible))
     }
 
     internal var items: ItemsProvider
-    
+
     // MARK: Init view controller
-    
+
     /// Create new instance of CardViewController
     /// - Parameters:
     ///   - configuration: The configurations of the `CardComponent`.
@@ -67,11 +67,11 @@ internal class CardViewController: FormViewController {
         setupViewRelations()
         super.viewDidLoad()
     }
-    
+
     // MARK: Public methods
-    
+
     internal weak var cardDelegate: CardViewControllerDelegate?
-    
+
     internal var card: Card {
         var expiryMonth: String?
         var expiryYear: String?
@@ -85,7 +85,7 @@ internal class CardViewController: FormViewController {
                     expiryYear: expiryYear,
                     holder: configuration.showsHolderNameField ? items.holderNameItem.nonEmptyValue : nil)
     }
-    
+
     internal var address: PostalAddress? {
         switch configuration.billingAddressMode {
         case .full:
@@ -106,7 +106,7 @@ internal class CardViewController: FormViewController {
 
         return KCPDetails(taxNumber: taxNumber, password: password)
     }
-    
+
     internal var socialSecurityNumber: String? {
         guard configuration.socialSecurityNumberMode != .hide else { return nil }
         return items.socialSecurityNumberItem.nonEmptyValue
@@ -115,17 +115,17 @@ internal class CardViewController: FormViewController {
     internal var storePayment: Bool {
         configuration.showsStorePaymentMethodField ? items.storeDetailsItem.value : false
     }
-    
+
     internal func stopLoading() {
         items.button.showsActivityIndicator = false
         view.isUserInteractionEnabled = true
     }
-    
+
     internal func startLoading() {
         items.button.showsActivityIndicator = true
         view.isUserInteractionEnabled = false
     }
-    
+
     internal func update(binInfo: BinLookupResponse) {
         let brands = binInfo.brands ?? []
         items.securityCodeItem.isOptional = brands.isCVCOptional
@@ -158,7 +158,7 @@ internal class CardViewController: FormViewController {
          CardTypeLogo(url: logoProvider.logoURL(withName: $0.rawValue), type: $0)
      }
      */
-    
+
     internal func resetItems() {
         items.billingAddressItem.reset()
 
@@ -167,10 +167,10 @@ internal class CardViewController: FormViewController {
          items.expiryDateItem,
          items.securityCodeItem,
          items.holderNameItem].forEach { $0.value = "" }
-        
+
         items.storeDetailsItem.value = false
     }
-    
+
     // MARK: Private methods
 
     private func setupView() {
@@ -220,22 +220,22 @@ internal class CardViewController: FormViewController {
             cardDelegate?.didSelectSubmitButton()
         }
     }
-    
+
     private func didReceive(bin: String) {
         items.securityCodeItem.selectedCard = supportedCardTypes.adyen.type(forCardNumber: bin)
         throttler.throttle { [weak cardDelegate] in
             cardDelegate?.didChangeBIN(bin)
         }
     }
-    
+
 }
 
 internal protocol CardViewControllerDelegate: AnyObject {
-    
+
     func didSelectSubmitButton()
-    
+
     func didChangeBIN(_ value: String)
-    
+
 }
 
 extension FormValueItem where ValueType == String {
