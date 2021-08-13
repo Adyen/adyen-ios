@@ -21,6 +21,7 @@
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "无效的卡号";
 "adyen.card.expiryItem.title" = "有效期";
+"adyen.card.expiryItem.title.optional" = "到期日期（可选）";
 "adyen.card.expiryItem.placeholder" = "月月/年年";
 "adyen.card.expiryItem.invalid" = "无效的到期日期";
 "adyen.card.cvcItem.invalid" = "无效的 CVC / CVV 格式";
@@ -31,7 +32,7 @@
 "adyen.card.stored.expires" = "%@过期";
 "adyen.dropIn.stored.title" = "确认 %@ 支付";
 "adyen.dropIn.preselected.openAll.title" = "更改支付方式";
-"adyen.continueTo" = "继续至%@";
+"adyen.continueTo" = "继续至 %@";
 "adyen.phoneNumber.title" = "电话号码";
 "adyen.phoneNumber.invalid" = "无效的电话号码";
 "adyen.phoneNumber.placeholder" = "123–456–789";
@@ -47,7 +48,7 @@
 "adyen.blik.code" = "6 位数代码";
 "adyen.blik.help" = "从您的银行应用中获取代码。";
 "adyen.blik.placeholder" = "";
-"adyen.preauthorizeWith" = "预先授权%@";
+"adyen.preauthorizeWith" = "预先授权 %@";
 "adyen.confirmPreauthorization" = "确认预先授权";
 "adyen.card.cvcItem.title.optional" = "CVC / CVV（可选）";
 "adyen.confirmPurchase" = "确认购买";

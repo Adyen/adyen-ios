@@ -21,6 +21,7 @@
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "Μη έγκυρος αριθμός κάρτας";
 "adyen.card.expiryItem.title" = "Ημερομηνία λήξης";
+"adyen.card.expiryItem.title.optional" = "Ημερομηνία λήξης (προαιρετικό)";
 "adyen.card.expiryItem.placeholder" = "ΜΜ/ΕΕ";
 "adyen.card.expiryItem.invalid" = "Μη έγκυρη ημερομηνία λήξης";
 "adyen.card.cvcItem.invalid" = "Μη έγκυρη μορφή κωδικού CVC/CVV";

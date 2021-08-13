@@ -21,6 +21,7 @@
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "Érvénytelen kártyaszám";
 "adyen.card.expiryItem.title" = "Lejárati dátum";
+"adyen.card.expiryItem.title.optional" = "Lejárati dátum (nem kötelező)";
 "adyen.card.expiryItem.placeholder" = "HH/ÉÉ";
 "adyen.card.expiryItem.invalid" = "Érvénytelen lejárati dátum";
 "adyen.card.cvcItem.invalid" = "A CVC/CVV formátuma érvénytelen";
