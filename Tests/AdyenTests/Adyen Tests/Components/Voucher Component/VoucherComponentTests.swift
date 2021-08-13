@@ -97,11 +97,29 @@ class VoucherComponentTests: XCTestCase {
             let component = component as! PresentableComponentWrapper
             XCTAssert(component.component === sut)
             
+            UIApplication.shared.keyWindow?.rootViewController = component.viewController
+            
             let view = sut.view
             
             XCTAssertNotNil(view)
             
             checkViewModel(view!.model, forAction: action)
+            
+            let optionsButton: UIButton! = component.viewController.view.findView(with: "AdyenActions.VoucherComponent.voucherView.secondaryButton")
+            XCTAssertNotNil(optionsButton)
+            XCTAssertEqual(optionsButton.titleLabel?.text, "More options")
+            
+            optionsButton.sendActions(for: .touchUpInside)
+            
+            wait(for: .seconds(1))
+            
+            let alertSheet = UIViewController.findTopPresenter() as? UIAlertController
+            XCTAssertNotNil(alertSheet)
+            XCTAssertEqual(alertSheet?.actions.count, 4)
+            XCTAssertEqual(alertSheet?.actions[0].title, "Copy code")
+            XCTAssertEqual(alertSheet?.actions[1].title, "Download PDF")
+            XCTAssertEqual(alertSheet?.actions[2].title, "Read instructions")
+            XCTAssertEqual(alertSheet?.actions[3].title, "Cancel")
             
             presentationDelegateExpectation.fulfill()
         }

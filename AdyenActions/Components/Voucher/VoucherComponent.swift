@@ -179,6 +179,7 @@ public final class VoucherComponent: AnyVoucherActionHandler {
         let comps = anyAction.totalAmount.formattedComponents
         
         return VoucherView.Model(
+            identifier: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "voucherView"),
             amount: comps.formattedValue,
             currency: comps.formattedCurrencySymbol,
             logoUrl: LogoURLProvider.logoURL(

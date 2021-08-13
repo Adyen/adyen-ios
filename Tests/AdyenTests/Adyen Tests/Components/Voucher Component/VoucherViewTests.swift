@@ -173,6 +173,7 @@ class VoucherViewTests: XCTestCase {
         style: VoucherView.Model.Style
     ) -> VoucherView.Model {
         VoucherView.Model(
+            identifier: "identifier",
             amount: "100",
             currency: "EUR",
             logoUrl: URL(string: "http://adyen.com")!,
