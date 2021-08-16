@@ -50,7 +50,7 @@ internal final class ComponentManager {
 
         // Paid section
         let amountString: String = remainingAmount.map(\.formatted) ??
-            localizedString(.amount, configuration.localizationParameters)
+            localizedString(.amount, configuration.localizationParameters).lowercased()
         let footerTitle = localizedString(.partialPaymentPayRemainingAmount,
                                           configuration.localizationParameters,
                                           amountString)
@@ -278,6 +278,13 @@ extension ComponentManager: PaymentComponentBuilder {
         DokuComponent(paymentMethod: paymentMethod,
                       apiContext: apiContext,
                       style: style.formComponent)
+    }
+    
+    /// :nodoc:
+    internal func build(paymentMethod: OXXOPaymentMethod) -> PaymentComponent? {
+        InstantPaymentComponent(paymentMethod: paymentMethod,
+                                paymentData: nil,
+                                apiContext: apiContext)
     }
 
     /// :nodoc:

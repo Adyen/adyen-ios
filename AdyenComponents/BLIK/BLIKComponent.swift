@@ -82,7 +82,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
         let item = FormTextInputItem(style: style.textField)
         item.title = localizedString(.blikCode, localizationParameters)
         item.placeholder = localizedString(.blikPlaceholder, localizationParameters)
-        item.validator = NumericStringValidator(minimumLength: 6, maximumLength: 6)
+        item.validator = NumericStringValidator(exactLength: 6)
         item.formatter = NumericFormatter()
         item.validationFailureMessage = localizedString(.blikInvalid, localizationParameters)
         item.keyboardType = .numberPad

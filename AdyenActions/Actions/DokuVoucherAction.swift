@@ -33,7 +33,7 @@ public final class DokuVoucherAction: GenericVoucherAction {
                   expiresAt: Date,
                   merchantName: String,
                   shopperName: String,
-                  instructionsUrl: String) {
+                  instructionsUrl: URL) {
         self.shopperEmail = shopperEmail
         self.shopperName = shopperName
         super.init(paymentMethodType: paymentMethodType,

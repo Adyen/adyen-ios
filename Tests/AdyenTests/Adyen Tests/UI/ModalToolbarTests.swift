@@ -19,7 +19,7 @@ class ModalToolbarTests: XCTestCase {
 
     func testDefaultStyle() {
         let style = NavigationStyle()
-        sut = ModalToolbar(title: "SomeTitle", style: style, cancelHandler: {})
+        sut = ModalToolbar(title: "SomeTitle", style: style)
 
         if !ProcessInfo().isOperatingSystemAtLeast(OperatingSystemVersion(majorVersion: 13, minorVersion: 0, patchVersion: 0)) {
             XCTAssertEqual(self.sut.cancelButton.tintColor.cgColor, UIColor.Adyen.defaultBlue.cgColor)
@@ -40,7 +40,7 @@ class ModalToolbarTests: XCTestCase {
         style.separatorColor = .red
         style.barTitle = .init(font: .italicSystemFont(ofSize: 17), color: .yellow, textAlignment: .center)
 
-        sut = ModalToolbar(title: "SomeTitle", style: style, cancelHandler: {})
+        sut = ModalToolbar(title: "SomeTitle", style: style)
 
         XCTAssertEqual(self.sut.cancelButton.tintColor, .white)
         XCTAssertEqual(self.sut.titleLabel.textColor, .yellow)
@@ -55,7 +55,7 @@ class ModalToolbarTests: XCTestCase {
         style.barTitle.textAlignment = .center
         style.toolbarMode = .leftCancel
 
-        sut = ModalToolbar(title: "SomeTitle", style: style, cancelHandler: {})
+        sut = ModalToolbar(title: "SomeTitle", style: style)
 
         XCTAssertNotNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.leftAnchor })
         XCTAssertNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.rightAnchor })
@@ -66,7 +66,7 @@ class ModalToolbarTests: XCTestCase {
         style.barTitle.textAlignment = .center
         style.toolbarMode = .rightCancel
 
-        sut = ModalToolbar(title: "SomeTitle", style: style, cancelHandler: {})
+        sut = ModalToolbar(title: "SomeTitle", style: style)
 
         XCTAssertNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.leftAnchor })
         XCTAssertNotNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.rightAnchor })
@@ -77,7 +77,7 @@ class ModalToolbarTests: XCTestCase {
         style.barTitle.textAlignment = .natural
         style.toolbarMode = .leftCancel
 
-        sut = ModalToolbar(title: "SomeTitle", style: style, cancelHandler: {})
+        sut = ModalToolbar(title: "SomeTitle", style: style)
 
         XCTAssertEqual(sut.stackView.arrangedSubviews.last, sut.cancelButton)
     }
@@ -86,7 +86,7 @@ class ModalToolbarTests: XCTestCase {
         var style = NavigationStyle()
         style.cancelButton = .legacy
 
-        sut = ModalToolbar(title: "SomeTitle", style: style, cancelHandler: {})
+        sut = ModalToolbar(title: "SomeTitle", style: style)
 
         XCTAssertEqual(sut.cancelButton.title(for: .normal), "Cancel")
         XCTAssertNil(sut.cancelButton.image(for: .normal))
@@ -96,7 +96,7 @@ class ModalToolbarTests: XCTestCase {
         var style = NavigationStyle()
         style.cancelButton = .system
 
-        sut = ModalToolbar(title: "SomeTitle", style: style, cancelHandler: {})
+        sut = ModalToolbar(title: "SomeTitle", style: style)
 
         if #available(iOS 13.0, *) {
             XCTAssertNotEqual(sut.cancelButton.title(for: .normal), "Cancel")
@@ -112,7 +112,7 @@ class ModalToolbarTests: XCTestCase {
         var style = NavigationStyle()
         style.cancelButton = .custom(UIImage(named: "shopping-cart")!)
 
-        sut = ModalToolbar(title: "SomeTitle", style: style, cancelHandler: {})
+        sut = ModalToolbar(title: "SomeTitle", style: style)
 
         XCTAssertNotEqual(sut.cancelButton.title(for: .normal), "Cancel")
         XCTAssertEqual(sut.cancelButton.image(for: .normal), UIImage(named: "shopping-cart"))

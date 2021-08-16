@@ -53,4 +53,48 @@ class StringExtensionsTests: XCTestCase {
         XCTAssertEqual("abc".adyen[1...2], "bc")
     }
     
+    func testClosedRanges() {
+        let testString = "012345"
+        XCTAssertEqual(testString.adyen[0...2], "012")
+        XCTAssertEqual(testString.adyen[0...5], "012345")
+        XCTAssertEqual(testString.adyen[3...6], "345")
+        XCTAssertEqual(testString.adyen[2...3], "23")
+        XCTAssertEqual(testString.adyen[2...2], "2")
+        XCTAssertEqual(testString.adyen[1...4], "1234")
+        XCTAssertEqual(testString.adyen[6...8], "")
+        XCTAssertEqual(testString.adyen[-6...8], "012345")
+        
+        let empty = ""
+        XCTAssertEqual(empty.adyen[0...2], "")
+        XCTAssertEqual(empty.adyen[0...5], "")
+        XCTAssertEqual(empty.adyen[3...6], "")
+        XCTAssertEqual(empty.adyen[2...3], "")
+        XCTAssertEqual(empty.adyen[2...2], "")
+        XCTAssertEqual(empty.adyen[1...4], "")
+        XCTAssertEqual(empty.adyen[6...8], "")
+        XCTAssertEqual(empty.adyen[-6...8], "")
+    }
+    
+    func testOpenRanges() {
+        let testString = "012345"
+        XCTAssertEqual(testString.adyen[0..<2], "01")
+        XCTAssertEqual(testString.adyen[0..<5], "01234")
+        XCTAssertEqual(testString.adyen[3..<6], "345")
+        XCTAssertEqual(testString.adyen[2..<3], "2")
+        XCTAssertEqual(testString.adyen[2..<2], "")
+        XCTAssertEqual(testString.adyen[1..<4], "123")
+        XCTAssertEqual(testString.adyen[6..<8], "")
+        XCTAssertEqual(testString.adyen[-6..<8], "012345")
+        
+        let empty = ""
+        XCTAssertEqual(empty.adyen[0..<2], "")
+        XCTAssertEqual(empty.adyen[0..<5], "")
+        XCTAssertEqual(empty.adyen[3..<6], "")
+        XCTAssertEqual(empty.adyen[2..<3], "")
+        XCTAssertEqual(empty.adyen[2..<2], "")
+        XCTAssertEqual(empty.adyen[1..<4], "")
+        XCTAssertEqual(empty.adyen[6..<8], "")
+        XCTAssertEqual(empty.adyen[-6..<8], "")
+    }
+    
 }

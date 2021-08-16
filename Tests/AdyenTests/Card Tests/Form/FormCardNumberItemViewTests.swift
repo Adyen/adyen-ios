@@ -15,7 +15,7 @@ class FormCardNumberItemViewTests: XCTestCase {
     var validator: ValidatorMock!
     
     override func setUp() {
-        item = FormCardNumberItem(supportedCardTypes: [.masterCard, .visa, .americanExpress], logoProvider: LogoURLProvider(environment: Dummy.context.environment))
+        item = FormCardNumberItem(supportedCardTypes: [.masterCard, .visa, .americanExpress], cardTypeLogos: [])
         validator = ValidatorMock()
         
         item.validator = validator

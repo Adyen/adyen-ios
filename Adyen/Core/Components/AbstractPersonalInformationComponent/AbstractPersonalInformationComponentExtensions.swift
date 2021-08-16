@@ -33,6 +33,7 @@ public enum PersonalInformation: Equatable {
     case email
     case phone
     case address
+    case deliveryAddress
     case custom(FormItemInjector)
 
     public static func == (lhs: PersonalInformation, rhs: PersonalInformation) -> Bool {
@@ -42,6 +43,7 @@ public enum PersonalInformation: Equatable {
              (.email, .email),
              (.phone, .phone),
              (.address, .address),
+             (.deliveryAddress, .deliveryAddress),
              (.custom, .custom):
             return true
         default:

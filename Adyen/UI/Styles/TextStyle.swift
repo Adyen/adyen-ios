@@ -65,5 +65,18 @@ extension TextStyle: Equatable {
             lhs.backgroundColor == rhs.backgroundColor &&
             lhs.textAlignment == rhs.textAlignment
     }
-    
+
+    /// Convert TextSyle into collection of attributes.
+    public var stringAttributes: [NSAttributedString.Key: Any] {
+        var attributes = [NSAttributedString.Key.foregroundColor: color,
+                          NSAttributedString.Key.backgroundColor: backgroundColor,
+                          NSAttributedString.Key.font: font]
+
+        if let paragraphStyle = NSParagraphStyle.default.mutableCopy() as? NSMutableParagraphStyle {
+            paragraphStyle.alignment = textAlignment
+            attributes[NSAttributedString.Key.paragraphStyle] = paragraphStyle
+        }
+
+        return attributes
+    }
 }

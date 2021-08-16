@@ -24,10 +24,13 @@ public enum VoucherPaymentMethod: String, Codable, CaseIterable {
     
     /// Boleto Bancairo Santander
     case boletoBancairoSantander = "boletobancario_santander"
+    
+    /// OXXO
+    case oxxo
 }
 
 /// Describes any Voucher action.
-public enum VoucherAction: Decodable, AnyVoucherAction {
+public enum VoucherAction: Decodable {
 
     /// Indicates Doku Indomaret Voucher type.
     case dokuIndomaret(DokuVoucherAction)
@@ -43,6 +46,9 @@ public enum VoucherAction: Decodable, AnyVoucherAction {
     
     /// Indicates a Boleto Bancairo Santander Voucher type.
     case boletoBancairoSantander(BoletoVoucherAction)
+    
+    /// Indicates an OXXO voucher type
+    case oxxo(OXXOVoucherAction)
 
     /// :nodoc:
     public init(from decoder: Decoder) throws {
@@ -60,6 +66,8 @@ public enum VoucherAction: Decodable, AnyVoucherAction {
             self = .econtextATM(try EContextATMVoucherAction(from: decoder))
         case .boletoBancairoSantander:
             self = .boletoBancairoSantander(try BoletoVoucherAction(from: decoder))
+        case .oxxo:
+            self = .oxxo(try OXXOVoucherAction(from: decoder))
         }
     }
 
@@ -67,26 +75,39 @@ public enum VoucherAction: Decodable, AnyVoucherAction {
     private enum CodingKeys: String, CodingKey {
         case paymentMethodType
     }
-
+    
     /// :nodoc:
-    public var passCreationToken: String? {
+    public var anyAction: AnyVoucherAction {
         switch self {
         case let .boletoBancairoSantander(action):
-            return action.passCreationToken
+            return action
         case let .dokuAlfamart(action):
-            return action.passCreationToken
+            return action
         case let .dokuIndomaret(action):
-            return action.passCreationToken
+            return action
         case let .econtextATM(action):
-            return action.passCreationToken
+            return action
         case let .econtextStores(action):
-            return action.passCreationToken
+            return action
+        case let .oxxo(action):
+            return action
         }
     }
 }
 
+/// :nodoc:
+/// Describes a voucher that has an instructions url.
+internal protocol InstructionAwareVoucherAction {
+    
+    /// :nodoc:
+    /// The instruction url.
+    var instructionsURL: URL { get }
+}
+
 /// Describes an action in which a voucher is presented to the shopper.
-public class GenericVoucherAction: Decodable, AnyVoucherAction {
+public class GenericVoucherAction: Decodable,
+    AnyVoucherAction,
+    InstructionAwareVoucherAction {
 
     /// The `paymentMethodType` for which the voucher is presented.
     public let paymentMethodType: VoucherPaymentMethod
@@ -107,7 +128,11 @@ public class GenericVoucherAction: Decodable, AnyVoucherAction {
     public let merchantName: String
 
     /// The instruction url.
+    @available(*, deprecated, message: "Please use `instructionsURL` instead.")
     public let instructionsUrl: String
+    
+    /// The instruction `URL` object.
+    public let instructionsURL: URL
 
     /// :nodoc:
     public let passCreationToken: String?
@@ -121,6 +146,7 @@ public class GenericVoucherAction: Decodable, AnyVoucherAction {
         reference = try container.decode(String.self, forKey: .reference)
         merchantName = try container.decode(String.self, forKey: .merchantName)
         instructionsUrl = try container.decode(String.self, forKey: .instructionsUrl)
+        instructionsURL = try container.decode(URL.self, forKey: .instructionsUrl)
         passCreationToken = try container.decodeIfPresent(String.self, forKey: .passCreationToken)
 
         let expiresAtString = try container.decode(String.self, forKey: .expiresAt)
@@ -146,7 +172,7 @@ public class GenericVoucherAction: Decodable, AnyVoucherAction {
                   reference: String,
                   expiresAt: Date,
                   merchantName: String,
-                  instructionsUrl: String,
+                  instructionsUrl: URL,
                   passCreationToken: String? = nil) {
         self.paymentMethodType = paymentMethodType
         self.initialAmount = initialAmount
@@ -154,7 +180,8 @@ public class GenericVoucherAction: Decodable, AnyVoucherAction {
         self.reference = reference
         self.expiresAt = expiresAt
         self.merchantName = merchantName
-        self.instructionsUrl = instructionsUrl
+        self.instructionsUrl = instructionsUrl.absoluteString
+        self.instructionsURL = instructionsUrl
         self.passCreationToken = passCreationToken
     }
 

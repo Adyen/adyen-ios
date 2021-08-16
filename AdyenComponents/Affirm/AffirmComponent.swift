@@ -24,9 +24,6 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     /// :nodoc:
     internal let deliveryAddressToggleItem: FormToggleItem
     
-    /// :nodoc:
-    internal let deliveryAddressItem: FormAddressItem
-    
     // MARK: - Initializers
     
     /// Initializes the Affirm component.
@@ -39,19 +36,18 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
                 style: FormComponentStyle) {
         personalDetailsHeaderItem = FormLabelItem(text: "", style: style.sectionHeader)
         deliveryAddressToggleItem = FormToggleItem(style: style.toggle)
-        deliveryAddressItem = FormAddressItem(initialCountry: Locale.current.regionCode ?? "US", style: style.addressStyle)
         
         let fields: [PersonalInformation] = [
+            .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 2))),
             .custom(CustomFormItemInjector(item: personalDetailsHeaderItem.addingDefaultMargins())),
             .firstName,
             .lastName,
             .email,
             .phone,
             .address,
-            .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 16))),
             .custom(CustomFormItemInjector(item: deliveryAddressToggleItem)),
-            .custom(CustomFormItemInjector(item: deliveryAddressItem)),
-            .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 24)))
+            .deliveryAddress,
+            .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 1)))
         ]
         let configuration = Configuration(fields: fields)
         super.init(paymentMethod: paymentMethod,
@@ -67,28 +63,20 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     private func setupItems() {
         personalDetailsHeaderItem.text = localizedString(.boletoPersonalDetails, localizationParameters)
         emailItem?.autocapitalizationType = .none
-
-        setupBillingAddressItem()
+        
         setupDeliveryAddressItem()
         setupDeliveryAddressToggleItem()
     }
     
     /// :nodoc:
-    private func setupBillingAddressItem() {
-        addressItem?.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                              postfix: ViewIdentifier.billingAddress)
-    }
-    
-    /// :nodoc:
     private func setupDeliveryAddressItem() {
-        deliveryAddressItem.title = localizedString(.deliveryAddressSectionTitle, localizationParameters)
-        deliveryAddressItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                                     postfix: ViewIdentifier.deliveryAddress)
+        deliveryAddressItem?.title = localizedString(.deliveryAddressSectionTitle, localizationParameters)
     }
     
     /// :nodoc:
     private func setupDeliveryAddressToggleItem() {
-        deliveryAddressToggleItem.title = localizedString(.deliveryAddressToggleTitle, localizationParameters)
+        guard let deliveryAddressItem = deliveryAddressItem else { return }
+        deliveryAddressToggleItem.title = localizedString(.affirmDeliveryAddressToggleTitle, localizationParameters)
         deliveryAddressToggleItem.value = false
         deliveryAddressToggleItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                                            postfix: ViewIdentifier.deliveryAddressToggle)
@@ -108,18 +96,18 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
               let lastName = lastNameItem?.value,
               let emailAddress = emailItem?.value,
               let telephoneNumber = phoneItem?.value,
-              let billingAddress = addressItem?.value else {
+              let billingAddress = addressItem?.value,
+              let deliveryAddress = deliveryAddressItem?.value else {
             fatalError("There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
         }
         
         let shopperName = ShopperName(firstName: firstName, lastName: lastName)
-        let deliveryAddress = deliveryAddressToggleItem.value ? deliveryAddressItem.value : billingAddress
         let affirmDetails = AffirmDetails(paymentMethod: paymentMethod,
                                           shopperName: shopperName,
                                           telephoneNumber: telephoneNumber,
                                           emailAddress: emailAddress,
                                           billingAddress: billingAddress,
-                                          deliveryAddress: deliveryAddress)
+                                          deliveryAddress: deliveryAddressToggleItem.value ? deliveryAddress : billingAddress)
         return affirmDetails
     }
     

@@ -11,29 +11,23 @@ import UIKit
 #endif
 
 internal class CardViewController: FormViewController {
-    
+
     private let configuration: CardComponent.Configuration
-    
-    private let formStyle: FormComponentStyle
-    
-    private let payment: Payment?
-    
-    private let logoProvider: LogoURLProvider
-    
+
     private let supportedCardTypes: [CardType]
-    
-    private let scope: String
-    
-    private let maxCardsVisible = 4
-    
-    private let throttler = Throttler(minimumDelay: 0.5)
-    
+
+    private let throttler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
+
+    private let formStyle: FormComponentStyle
+
     private var topCardTypes: [CardType] {
-        Array(supportedCardTypes.prefix(maxCardsVisible))
+        Array(supportedCardTypes.prefix(CardComponent.Constant.maxCardsVisible))
     }
-    
+
+    internal var items: ItemsProvider
+
     // MARK: Init view controller
-    
+
     /// Create new instance of CardViewController
     /// - Parameters:
     ///   - configuration: The configurations of the `CardComponent`.
@@ -46,76 +40,58 @@ internal class CardViewController: FormViewController {
                   payment: Payment?,
                   logoProvider: LogoURLProvider,
                   supportedCardTypes: [CardType],
-                  scope: String) {
+                  scope: String,
+                  localizationParameters: LocalizationParameters?) {
         self.configuration = configuration
-        self.formStyle = formStyle
-        self.payment = payment
-        self.logoProvider = logoProvider
         self.supportedCardTypes = supportedCardTypes
-        self.scope = scope
+        self.formStyle = formStyle
+
+        let countryCode = payment?.countryCode ?? Locale.current.regionCode ?? CardComponent.Constant.defaultCountryCode
+        let cardLogos = supportedCardTypes.map {
+            FormCardNumberItem.CardTypeLogo(url: logoProvider.logoURL(withName: $0.rawValue), type: $0)
+        }
+        self.items = ItemsProvider(formStyle: formStyle,
+                                   payment: payment,
+                                   configuration: configuration,
+                                   supportedCardTypes: supportedCardTypes,
+                                   cardLogos: cardLogos,
+                                   scope: scope,
+                                   defaultCountryCode: countryCode,
+                                   localizationParameters: localizationParameters)
         super.init(style: formStyle)
+        self.localizationParameters = localizationParameters
     }
-    
+
     override internal func viewDidLoad() {
-        append(numberItem)
-        numberItem.showLogos(for: topCardTypes)
-        
-        if configuration.showsSecurityCodeField {
-            let splitTextItem = FormSplitItem(items: expiryDateItem, securityCodeItem, style: formStyle.textField)
-            append(splitTextItem)
-        } else {
-            append(expiryDateItem)
-        }
-        
-        if configuration.showsHolderNameField {
-            append(holderNameItem)
-        }
-
-        if configuration.koreanAuthenticationMode != .hide {
-            append(additionalAuthCodeItem)
-            append(additionalAuthPasswordItem)
-        }
-        
-        if configuration.socialSecurityNumberMode != .hide {
-            append(socialSecurityNumberItem)
-        }
-
-        switch configuration.billingAddressMode {
-        case .full:
-            append(billingAddressItem)
-        case .postalCode:
-            append(postalCodeItem)
-        case .none:
-            break
-        }
-        
-        if configuration.showsStorePaymentMethodField {
-            append(storeDetailsItem)
-        }
-        
-        append(button)
-        
+        setupView()
+        setupViewRelations()
         super.viewDidLoad()
     }
-    
+
     // MARK: Public methods
-    
+
     internal weak var cardDelegate: CardViewControllerDelegate?
-    
+
     internal var card: Card {
-        Card(number: numberItem.value,
-             securityCode: configuration.showsSecurityCodeField ? securityCodeItem.nonEmptyValue : nil,
-             expiryMonth: expiryDateItem.value.adyen[0...1],
-             expiryYear: "20" + expiryDateItem.value.adyen[2...3],
-             holder: configuration.showsHolderNameField ? holderNameItem.nonEmptyValue : nil)
+        var expiryMonth: String?
+        var expiryYear: String?
+        if let expiryItemValue = items.expiryDateItem.nonEmptyValue {
+            expiryMonth = expiryItemValue.adyen[0...1]
+            expiryYear = "20" + expiryItemValue.adyen[2...3]
+        }
+        return Card(number: items.numberItem.value,
+                    securityCode: configuration.showsSecurityCodeField ? items.securityCodeItem.nonEmptyValue : nil,
+                    expiryMonth: expiryMonth,
+                    expiryYear: expiryYear,
+                    holder: configuration.showsHolderNameField ? items.holderNameItem.nonEmptyValue : nil)
     }
-    
+
     internal var address: PostalAddress? {
         switch configuration.billingAddressMode {
         case .full:
-            return billingAddressItem.value
+            return items.billingAddressItem.value
         case .postalCode:
-            return PostalAddress(postalCode: postalCodeItem.value)
+            return PostalAddress(postalCode: items.postalCodeItem.value)
         case .none:
             return nil
         }
@@ -124,40 +100,41 @@ internal class CardViewController: FormViewController {
     internal var kcpDetails: KCPDetails? {
         guard
             configuration.koreanAuthenticationMode != .hide,
-            let taxNumber = additionalAuthCodeItem.nonEmptyValue,
-            let password = additionalAuthPasswordItem.nonEmptyValue
+            let taxNumber = items.additionalAuthCodeItem.nonEmptyValue,
+            let password = items.additionalAuthPasswordItem.nonEmptyValue
         else { return nil }
 
         return KCPDetails(taxNumber: taxNumber, password: password)
     }
-    
+
     internal var socialSecurityNumber: String? {
         guard configuration.socialSecurityNumberMode != .hide else { return nil }
-        return socialSecurityNumberItem.nonEmptyValue
+        return items.socialSecurityNumberItem.nonEmptyValue
     }
 
     internal var storePayment: Bool {
-        configuration.showsStorePaymentMethodField ? storeDetailsItem.value : false
+        configuration.showsStorePaymentMethodField ? items.storeDetailsItem.value : false
     }
-    
+
     internal func stopLoading() {
-        button.showsActivityIndicator = false
+        items.button.showsActivityIndicator = false
         view.isUserInteractionEnabled = true
     }
-    
+
     internal func startLoading() {
-        button.showsActivityIndicator = true
+        items.button.showsActivityIndicator = true
         view.isUserInteractionEnabled = false
     }
-    
+
     internal func update(binInfo: BinLookupResponse) {
         let brands = binInfo.brands ?? []
-        securityCodeItem.update(cardBrands: brands)
+        items.securityCodeItem.isOptional = brands.isCVCOptional
+        items.expiryDateItem.isOptional = brands.isExpiryDateOptional
 
-        if numberItem.value.isEmpty {
-            numberItem.showLogos(for: topCardTypes)
+        if items.numberItem.value.isEmpty {
+            items.numberItem.showLogos(for: topCardTypes)
         } else {
-            numberItem.showLogos(for: brands.map(\.type))
+            items.numberItem.showLogos(for: brands.map(\.type))
         }
 
         let isHidden: Bool
@@ -170,173 +147,95 @@ internal class CardViewController: FormViewController {
             isHidden = !configuration.showAdditionalAuthenticationFields(for: binInfo.issuingCountryCode)
         }
 
-        numberItem.validator = CardNumberValidator(isLuhnCheckEnabled: brands.luhnCheckRequired)
-        additionalAuthPasswordItem.isHidden.wrappedValue = isHidden
-        additionalAuthCodeItem.isHidden.wrappedValue = isHidden
-        socialSecurityNumberItem.isHidden.wrappedValue = !brands.socialSecurityNumberRequired
+        items.numberItem.validator = CardNumberValidator(isLuhnCheckEnabled: brands.luhnCheckRequired)
+        items.additionalAuthPasswordItem.isHidden.wrappedValue = isHidden
+        items.additionalAuthCodeItem.isHidden.wrappedValue = isHidden
+        items.socialSecurityNumberItem.isHidden.wrappedValue = !brands.socialSecurityNumberRequired
     }
-    
+
+    /*
+     supportedCardTypes.map {
+         CardTypeLogo(url: logoProvider.logoURL(withName: $0.rawValue), type: $0)
+     }
+     */
+
     internal func resetItems() {
-        billingAddressItem.reset()
+        items.billingAddressItem.reset()
 
-        [postalCodeItem,
-         numberItem,
-         expiryDateItem,
-         securityCodeItem,
-         holderNameItem].forEach { $0.value = "" }
-        
-        storeDetailsItem.value = false
+        [items.postalCodeItem,
+         items.numberItem,
+         items.expiryDateItem,
+         items.securityCodeItem,
+         items.holderNameItem].forEach { $0.value = "" }
+
+        items.storeDetailsItem.value = false
     }
-    
-    // MARK: Items
-    
-    internal lazy var billingAddressItem: FormAddressItem = {
-        let item = FormAddressItem(initialCountry: defaultCountryCode,
-                                   style: formStyle.addressStyle,
-                                   localizationParameters: localizationParameters)
-        item.style.backgroundColor = UIColor.Adyen.lightGray
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "addressVerification")
-        return item
-    }()
-    
-    internal lazy var postalCodeItem: FormTextItem = {
-        let zipCodeItem = FormTextInputItem(style: formStyle.textField)
-        zipCodeItem.title = localizedString(.postalCodeFieldTitle, localizationParameters)
-        zipCodeItem.placeholder = localizedString(.postalCodeFieldPlaceholder, localizationParameters)
-        zipCodeItem.validator = LengthValidator(minimumLength: 2, maximumLength: 30)
-        zipCodeItem.validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
-        zipCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "postalCodeItem")
-        zipCodeItem.contentType = .postalCode
-        return zipCodeItem
-    }()
-    
-    internal lazy var numberItem: FormCardNumberItem = {
-        let item = FormCardNumberItem(supportedCardTypes: supportedCardTypes,
-                                      logoProvider: logoProvider,
-                                      style: formStyle.textField,
-                                      localizationParameters: localizationParameters)
-        observe(item.$binValue) { [weak self] in self?.didReceive(bin: $0) }
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "numberItem")
-        return item
-    }()
-    
-    internal lazy var expiryDateItem: FormTextInputItem = {
-        let expiryDateItem = FormTextInputItem(style: formStyle.textField)
-        expiryDateItem.title = localizedString(.cardExpiryItemTitle, localizationParameters)
-        expiryDateItem.placeholder = localizedString(.cardExpiryItemPlaceholder, localizationParameters)
-        expiryDateItem.formatter = CardExpiryDateFormatter()
-        expiryDateItem.validator = CardExpiryDateValidator()
-        expiryDateItem.validationFailureMessage = localizedString(.cardExpiryItemInvalid, localizationParameters)
-        expiryDateItem.keyboardType = .numberPad
-        expiryDateItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "expiryDateItem")
-        
-        return expiryDateItem
-    }()
-    
-    internal lazy var securityCodeItem: FormCardSecurityCodeItem = {
-        let securityCodeItem = FormCardSecurityCodeItem(style: formStyle.textField,
-                                                        localizationParameters: localizationParameters)
-        securityCodeItem.localizationParameters = self.localizationParameters
-        securityCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "securityCodeItem")
-        return securityCodeItem
-    }()
-    
-    internal lazy var holderNameItem: FormTextInputItem = {
-        let holderNameItem = FormTextInputItem(style: formStyle.textField)
-        holderNameItem.title = localizedString(.cardNameItemTitle, localizationParameters)
-        holderNameItem.placeholder = localizedString(.cardNameItemPlaceholder, localizationParameters)
-        holderNameItem.validator = LengthValidator(minimumLength: 2)
-        holderNameItem.validationFailureMessage = localizedString(.cardNameItemInvalid, localizationParameters)
-        holderNameItem.autocapitalizationType = .words
-        holderNameItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "holderNameItem")
-        holderNameItem.contentType = .name
-        
-        return holderNameItem
-    }()
 
-    internal lazy var additionalAuthCodeItem: FormTextInputItem = {
-        let additionalItem = FormTextInputItem(style: formStyle.textField)
-        additionalItem.title = localizedString(.cardTaxNumberLabelShort, localizationParameters)
-        additionalItem.placeholder = localizedString(.cardTaxNumberPlaceholder, localizationParameters)
-        additionalItem.validator = LengthValidator(minimumLength: 6, maximumLength: 10)
-        additionalItem.validationFailureMessage = localizedString(.cardTaxNumberInvalid, localizationParameters)
-        additionalItem.autocapitalizationType = .none
-        additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthCodeItem")
-        additionalItem.keyboardType = .numberPad
-        additionalItem.isHidden.wrappedValue = !(configuration.koreanAuthenticationMode == .show)
+    // MARK: Private methods
 
-        return additionalItem
-    }()
+    private func setupView() {
+        append(items.numberItem)
+        items.numberItem.showLogos(for: topCardTypes)
 
-    internal lazy var additionalAuthPasswordItem: FormTextInputItem = {
-        let additionalItem = FormTextInputItem(style: formStyle.textField)
-        additionalItem.title = localizedString(.cardEncryptedPasswordLabel, localizationParameters)
-        additionalItem.placeholder = localizedString(.cardEncryptedPasswordPlaceholder, localizationParameters)
-        additionalItem.validator = LengthValidator(minimumLength: 2, maximumLength: 2)
-        additionalItem.validationFailureMessage = localizedString(.cardEncryptedPasswordInvalid, localizationParameters)
-        additionalItem.autocapitalizationType = .none
-        additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthPasswordItem")
-        additionalItem.keyboardType = .numberPad
-        additionalItem.isHidden.wrappedValue = !(configuration.koreanAuthenticationMode == .show)
+        if configuration.showsSecurityCodeField {
+            let splitTextItem = FormSplitItem(items: items.expiryDateItem, items.securityCodeItem, style: formStyle.textField)
+            append(splitTextItem)
+        } else {
+            append(items.expiryDateItem)
+        }
 
-        return additionalItem
-    }()
-    
-    internal lazy var socialSecurityNumberItem: FormTextInputItem = {
-        let securityNumberItem = FormTextInputItem(style: formStyle.textField)
-        securityNumberItem.title = localizedString(.boletoSocialSecurityNumber, localizationParameters)
-        securityNumberItem.placeholder = localizedString(.cardBrazilSSNPlaceholder, localizationParameters)
-        securityNumberItem.formatter = BrazilSocialSecurityNumberFormatter()
-        securityNumberItem.validator = NumericStringValidator(minimumLength: 11, maximumLength: 11)
-            || NumericStringValidator(minimumLength: 14, maximumLength: 14)
-        securityNumberItem.validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
-        securityNumberItem.autocapitalizationType = .none
-        securityNumberItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "socialSecurityNumberItem")
-        securityNumberItem.keyboardType = .numberPad
-        securityNumberItem.isHidden.wrappedValue = !(configuration.socialSecurityNumberMode == .show)
+        if configuration.showsHolderNameField {
+            append(items.holderNameItem)
+        }
 
-        return securityNumberItem
-    }()
+        if configuration.koreanAuthenticationMode != .hide {
+            append(items.additionalAuthCodeItem)
+            append(items.additionalAuthPasswordItem)
+        }
 
-    internal lazy var storeDetailsItem: FormToggleItem = {
-        let storeDetailsItem = FormToggleItem(style: formStyle.toggle)
-        storeDetailsItem.title = localizedString(.cardStoreDetailsButton, localizationParameters)
-        storeDetailsItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "storeDetailsItem")
-        
-        return storeDetailsItem
-    }()
-    
-    internal lazy var button: FormButtonItem = {
-        let item = FormButtonItem(style: formStyle.mainButtonItem)
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "payButtonItem")
-        item.title = localizedSubmitButtonTitle(with: payment?.amount,
-                                                style: .immediate,
-                                                localizationParameters)
-        item.buttonSelectionHandler = { [weak cardDelegate] in
+        if configuration.socialSecurityNumberMode != .hide {
+            append(items.socialSecurityNumberItem)
+        }
+
+        switch configuration.billingAddressMode {
+        case .full:
+            append(items.billingAddressItem)
+        case .postalCode:
+            append(items.postalCodeItem)
+        case .none:
+            break
+        }
+
+        if configuration.showsStorePaymentMethodField {
+            append(items.storeDetailsItem)
+        }
+
+        append(items.button)
+    }
+
+    private func setupViewRelations() {
+        observe(items.numberItem.$binValue) { [weak self] in self?.didReceive(bin: $0) }
+
+        items.button.buttonSelectionHandler = { [weak cardDelegate] in
             cardDelegate?.didSelectSubmitButton()
         }
-        return item
-    }()
-    
+    }
+
     private func didReceive(bin: String) {
-        securityCodeItem.selectedCard = supportedCardTypes.adyen.type(forCardNumber: bin)
+        items.securityCodeItem.selectedCard = supportedCardTypes.adyen.type(forCardNumber: bin)
         throttler.throttle { [weak cardDelegate] in
             cardDelegate?.didChangeBIN(bin)
         }
     }
-    
-    private var defaultCountryCode: String {
-        payment?.countryCode ?? Locale.current.regionCode ?? "US"
-    }
-    
+
 }
 
 internal protocol CardViewControllerDelegate: AnyObject {
-    
+
     func didSelectSubmitButton()
-    
+
     func didChangeBIN(_ value: String)
-    
+
 }
 
 extension FormValueItem where ValueType == String {

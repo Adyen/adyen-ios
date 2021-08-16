@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import AdyenNetworking
 
 /// So that any `TimeInterval` instance will inherit the `adyen` scope.
 /// :nodoc:

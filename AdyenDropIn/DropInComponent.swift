@@ -14,6 +14,7 @@ import Adyen
 #if canImport(AdyenCard)
     import AdyenCard
 #endif
+import AdyenNetworking
 import UIKit
 
 /**
@@ -154,12 +155,13 @@ public final class DropInComponent: NSObject, PresentableComponent {
         }
     }()
     
-    private lazy var navigationController = DropInNavigationController(rootComponent: rootComponent,
-                                                                       style: style.navigation,
-                                                                       cancelHandler: { [weak self] isRoot, component in
-                                                                           self?.didSelectCancelButton(isRoot: isRoot,
-                                                                                                       component: component)
-                                                                       })
+    private lazy var navigationController = DropInNavigationController(
+        rootComponent: rootComponent,
+        style: style.navigation,
+        cancelHandler: { [weak self] isRoot, component in
+            self?.didSelectCancelButton(isRoot: isRoot, component: component)
+        }
+    )
 
     private lazy var actionComponent: AdyenActionComponent = {
         let handler = AdyenActionComponent(apiContext: apiContext, style: style.actionComponent)

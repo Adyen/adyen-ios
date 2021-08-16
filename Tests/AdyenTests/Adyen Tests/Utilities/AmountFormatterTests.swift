@@ -90,4 +90,33 @@ class AmountFormatterTests: XCTestCase {
         amountCVE.localeIdentifier = "fr_FR"
         XCTAssertEqual(amountCVE.formatted, "12 345,00 CVE")
     }
+    
+    func testAmountComponents() {
+        let comparator: (AmountComponents, (currency: String, value: String)) -> Bool = { (lhs, rhs) in
+            lhs.formattedValue == rhs.value &&
+                lhs.formattedCurrencySymbol == rhs.currency
+        }
+        
+        let value = 123456
+        
+        let suts = [
+            Amount(value: value, currencyCode: "USD", localeIdentifier: "ko_KR"),
+            Amount(value: value, currencyCode: "USD", localeIdentifier: "fr_FR"),
+            Amount(value: value, currencyCode: "CVE", localeIdentifier: "ko_KR"),
+            Amount(value: value, currencyCode: "CVE", localeIdentifier: "fr_FR"),
+            Amount(value: value, currencyCode: "EUR", localeIdentifier: "ko_KR"),
+            Amount(value: value, currencyCode: "EUR", localeIdentifier: "fr_FR"),
+        ].map(\.formattedComponents)
+        
+        let comps = [
+            ("US$", "1,234.56"),
+            ("$US", "1 234,56"),
+            ("CVE", "123,456.00"),
+            ("CVE", "123 456,00"),
+            ("€", "1,234.56"),
+            ("€", "1 234,56")
+        ]
+        
+        XCTAssertTrue(zip(suts, comps).allSatisfy(comparator))
+    }
 }

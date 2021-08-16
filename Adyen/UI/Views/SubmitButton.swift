@@ -40,7 +40,7 @@ public final class SubmitButton: UIControl {
     
     // MARK: - Background View
     
-    private lazy var backgroundView: BackgroundView = {
+    internal lazy var backgroundView: BackgroundView = {
         let backgroundView = BackgroundView(cornerRounding: style.cornerRounding,
                                             borderColor: style.borderColor,
                                             borderWidth: style.borderWidth,
@@ -51,7 +51,7 @@ public final class SubmitButton: UIControl {
     }()
     
     // MARK: - Title Label
-    
+     
     /// The title of the submit button.
     public var title: String? {
         didSet {
@@ -60,7 +60,7 @@ public final class SubmitButton: UIControl {
         }
     }
     
-    private lazy var titleLabel: UILabel = {
+    internal lazy var titleLabel: UILabel = {
         let titleLabel = UILabel(style: style.title)
         titleLabel.isAccessibilityElement = false
         
@@ -118,27 +118,33 @@ public final class SubmitButton: UIControl {
     
     override public func layoutSubviews() {
         super.layoutSubviews()
-        self.adyen.round(corners: .allCorners, rounding: style.cornerRounding)
+        self.adyen.round(using: style.cornerRounding)
     }
     
     private func configureConstraints() {
         backgroundView.adyen.anchor(inside: self)
         
-        let constraints = [
+        let heightConstraint = heightAnchor.constraint(equalToConstant: 50.0)
+        heightConstraint.priority = .required
+        
+        let labelConstraints = [
+            titleLabel.topAnchor.constraint(equalTo: topAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ].map { (const: NSLayoutConstraint) -> NSLayoutConstraint in
+            const.priority = .defaultHigh
+            return const
+        }
+        
+        let spinnerConstraints = [
             activityIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            activityIndicatorView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            
-            titleLabel.topAnchor.constraint(greaterThanOrEqualTo: layoutMarginsGuide.topAnchor),
-            titleLabel.leadingAnchor.constraint(greaterThanOrEqualTo: layoutMarginsGuide.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.trailingAnchor),
-            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.bottomAnchor),
-            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            
-            heightAnchor.constraint(greaterThanOrEqualToConstant: 50.0)
+            activityIndicatorView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ]
         
-        NSLayoutConstraint.activate(constraints)
+        let allConstraints = labelConstraints + spinnerConstraints + [heightConstraint]
+        
+        NSLayoutConstraint.activate(allConstraints)
     }
     
     // MARK: - State
@@ -154,14 +160,15 @@ public final class SubmitButton: UIControl {
 
 extension SubmitButton {
     
-    private class BackgroundView: UIView {
+    final internal class BackgroundView: UIView {
         
         private let color: UIColor
         private let rounding: CornerRounding
         
         fileprivate init(cornerRounding: CornerRounding,
                          borderColor: UIColor?,
-                         borderWidth: CGFloat, color: UIColor) {
+                         borderWidth: CGFloat,
+                         color: UIColor) {
             self.color = color
             self.rounding = cornerRounding
             super.init(frame: .zero)
@@ -175,7 +182,7 @@ extension SubmitButton {
         }
         
         @available(*, unavailable)
-        fileprivate required init?(coder aDecoder: NSCoder) {
+        internal required init?(coder aDecoder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
         
@@ -208,9 +215,9 @@ extension SubmitButton {
             layer.add(transition, forKey: nil)
         }
         
-        override func layoutSubviews() {
+        internal override func layoutSubviews() {
             super.layoutSubviews()
-            self.adyen.round(corners: .allCorners, rounding: rounding)
+            self.adyen.round(using: rounding)
         }
         
     }

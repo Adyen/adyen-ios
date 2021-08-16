@@ -75,7 +75,7 @@ internal struct Configuration: Codable {
         countryCode: "NL",
         value: 17408,
         currencyCode: "EUR",
-        apiVersion: 67,
+        apiVersion: 68,
         merchantAccount: ConfigurationConstants.merchantAccount
     )
     

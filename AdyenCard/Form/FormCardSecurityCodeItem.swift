@@ -16,7 +16,11 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
     @Observable(nil) internal var selectedCard: CardType?
 
     /// :nodoc:
-    @Observable(false) internal var isCVCOptional: Bool
+    @Observable(false) internal var isOptional: Bool {
+        didSet {
+            updateFormState()
+        }
+    }
 
     /// Initializes the form card number item.
     internal init(style: FormTextItemStyle = FormTextItemStyle(),
@@ -32,14 +36,15 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
         keyboardType = .numberPad
     }
 
-    internal func update(cardBrands: [CardBrand]) {
-        let isCVCOptional = cardBrands.isCVCOptional
-
-        let titleFailureMessageKey: LocalizationKey = isCVCOptional ? .cardCvcItemTitleOptional : .cardCvcItemTitle
-        title = localizedString(titleFailureMessageKey, localizationParameters)
-        validator = isCVCOptional ? nil : securityCodeValidator
-
-        self.isCVCOptional = isCVCOptional
+    internal func updateFormState() {
+        // when optional, if user enters anything it should be validated as regular entry.
+        if isOptional {
+            title = localizedString(.cardCvcItemTitleOptional, localizationParameters)
+            validator = NumericStringValidator(exactLength: 0) || securityCodeValidator
+        } else {
+            title = localizedString(.cardCvcItemTitle, localizationParameters)
+            validator = securityCodeValidator
+        }
     }
     
     override internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
@@ -57,7 +62,7 @@ extension FormItemViewBuilder {
 }
 
 extension Array where Element == CardBrand {
-    var isCVCOptional: Bool {
+    internal var isCVCOptional: Bool {
         guard !isEmpty else { return false }
         return allSatisfy { brand in
             switch brand.cvcPolicy {
@@ -69,13 +74,27 @@ extension Array where Element == CardBrand {
         }
     }
     
+    /// At the moment, due to UI concerns, we won't hide cvc/exp date fields even when response is hidden
+    /// We will make them optional.
+    internal var isExpiryDateOptional: Bool {
+        guard !isEmpty else { return false }
+        return allSatisfy { brand in
+            switch brand.expiryDatePolicy {
+            case .optional, .hidden:
+                return true
+            default:
+                return false
+            }
+        }
+    }
+    
     /// If any of the brands have `socialSecurityNumberRequired` as true, then this will return true.
-    var socialSecurityNumberRequired: Bool {
+    internal var socialSecurityNumberRequired: Bool {
         contains { $0.showsSocialSecurityNumber }
     }
     
-    /// If any of the brands requires to skip luhn check, returns `false`. Otherwise `true`.
-    var luhnCheckRequired: Bool {
-        contains { !$0.isLuhnCheckEnabled }
+    /// If all the brands require luhn check, returns `true`. Even if one brand requires to skip it, returns `false`
+    internal var luhnCheckRequired: Bool {
+        allSatisfy(\.isLuhnCheckEnabled)
     }
 }

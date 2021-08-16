@@ -5,9 +5,10 @@
 //
 
 import Adyen
+import AdyenNetworking
 import Foundation
 
-internal struct PaymentMethodsRequest: Request {
+internal struct PaymentMethodsRequest: APIRequest {
     
     internal typealias ResponseType = PaymentMethodsResponse
     

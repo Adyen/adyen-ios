@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import AdyenNetworking
 import Foundation
 
 /// :nodoc:
@@ -106,25 +107,53 @@ public extension AdyenScope where Base == String {
     }
     
     /// Get the substring from a given open range.
+    /// If the range does not overlap with the base string at all, returns an empty string.
     ///
     /// - Parameter range: The range of the desired substring.
     /// - Returns: A string with the substring of the given range.
     subscript(range: Range<Int>) -> String {
-        let lowerBound = base.index(base.startIndex, offsetBy: range.lowerBound)
-        let upperBound = base.index(lowerBound, offsetBy: range.upperBound - range.lowerBound)
-        
-        return String(base[lowerBound..<upperBound])
+        guard let safe = safeRange(from: range) else { return "" }
+        return String(base[safe])
     }
     
     /// Get the substring from a given closed range.
+    /// If the range does not overlap with the base string at all, returns an empty string.
     ///
     /// - Parameter range: The closed range of the desired substring.
     /// - Returns: A string with the substring of the given closed range.
     subscript(range: ClosedRange<Int>) -> String {
-        let lowerBound = base.index(base.startIndex, offsetBy: range.lowerBound)
-        let upperBound = base.index(lowerBound, offsetBy: range.upperBound - range.lowerBound)
+        guard let safeRange = safeClosedRange(from: range) else { return "" }
+        return String(base[safeRange])
+    }
+    
+    /// Returns an open range from the given range that is within the `base`'s bounds, to prevent out of bounds access.
+    /// - Parameter range: The desired range to access in the `base`.
+    /// - Returns: A new open range that is within the `base`'s bounds, or nil when there is no overlap.
+    internal func safeRange(from range: Range<Int>) -> Range<String.Index>? {
+        guard !base.isEmpty else { return nil }
+        let baseRange = 0..<base.count
+        guard baseRange.overlaps(range) else { return nil }
+        let clampedRange = baseRange.clamped(to: range)
         
-        return String(base[lowerBound...upperBound])
+        let lowerIndex = base.index(base.startIndex, offsetBy: clampedRange.lowerBound)
+        let upperIndex = base.index(lowerIndex, offsetBy: clampedRange.upperBound - clampedRange.lowerBound)
+        
+        return lowerIndex..<upperIndex
+    }
+    
+    /// Returns a closed range from the given range that is within the `base`'s bounds, to prevent out of bounds access.
+    /// - Parameter range: The desired range to access in the `base`.
+    /// - Returns: A new closed range that is within the `base'`s bounds, or nil when there is no overlap.
+    internal func safeClosedRange(from range: ClosedRange<Int>) -> ClosedRange<String.Index>? {
+        guard !base.isEmpty else { return nil }
+        let baseRange = 0...base.count - 1
+        guard baseRange.overlaps(range) else { return nil }
+        let clampedRange = baseRange.clamped(to: range)
+        
+        let lowerIndex = base.index(base.startIndex, offsetBy: clampedRange.lowerBound)
+        let upperIndex = base.index(lowerIndex, offsetBy: clampedRange.upperBound - clampedRange.lowerBound)
+        
+        return lowerIndex...upperIndex
     }
 }
 

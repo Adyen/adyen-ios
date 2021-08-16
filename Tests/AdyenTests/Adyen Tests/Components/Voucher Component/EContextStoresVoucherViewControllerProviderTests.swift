@@ -15,76 +15,37 @@ class EContextStoresVoucherViewControllerProviderTests: XCTestCase {
         let econtextAction = try Coder.decode(econtextStoresAction) as EContextStoresVoucherAction
         let action: VoucherAction = .econtextStores(econtextAction)
 
-        let sut = VoucherViewControllerProvider(style: VoucherComponentStyle(), environment: Dummy.context.environment)
-        sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost")
+        let viewProvider = VoucherShareableViewProvider(
+            style: VoucherComponentStyle(),
+            environment: Dummy.context.environment
+        )
+        viewProvider.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost")
 
-        let viewController = sut.provide(with: action) as! VoucherViewController
+        let sut = viewProvider.provideView(with: action, logo: nil)
 
-        UIApplication.shared.keyWindow?.rootViewController = viewController
+        UIApplication.shared.keyWindow?.rootViewController?.view = sut
 
-        let textLabel: UILabel! = viewController.view.findView(by: "adyen.voucher.textLabel")
+        let textLabel: UILabel! = sut.findView(by: "adyen.voucher.textLabel")
         XCTAssertEqual(textLabel.text, "Thank you for your purchase, please use the following information to complete your payment. -- Test")
 
-        let instructionButton: UIButton! = viewController.view.findView(by: "adyen.voucher.instructionButton")
-        XCTAssertEqual(instructionButton.titleLabel?.text, "Read instructions -- Test")
+        let amountLabel: UILabel! = sut.findView(by: "adyen.voucher.amountLabel")
+        XCTAssertEqual(amountLabel.text, AmountFormatter.formatted(
+                        amount: econtextAction.totalAmount.value,
+                        currencyCode: econtextAction.totalAmount.currencyCode
+        ))
 
-        let amountLabel: UILabel! = viewController.view.findView(by: "adyen.voucher.amountLabel")
-        XCTAssertEqual(amountLabel.text, AmountFormatter.formatted(amount: econtextAction.totalAmount.value,
-                                                                   currencyCode: econtextAction.totalAmount.currencyCode))
-
-        let expireyKeyLabel: UILabel! = viewController.view.findView(by: "adyen.voucher.expirationKeyLabel")
+        let expireyKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationKeyLabel")
         XCTAssertEqual(expireyKeyLabel.text, "Expiration Date -- Test")
 
-        let expireyValueLable: UILabel! = viewController.view.findView(by: "adyen.voucher.expirationValueLabel")
+        let expireyValueLable: UILabel! = sut.findView(by: "adyen.voucher.expirationValueLabel")
         XCTAssertEqual(expireyValueLable.text, "02/04/2021")
 
-        let maskedPhoneKeyLabel: UILabel! = viewController.view.findView(by: "adyen.voucher.maskedTelephoneNumberKeyLabel")
+        let maskedPhoneKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.maskedTelephoneNumberKeyLabel")
         XCTAssertEqual(maskedPhoneKeyLabel.text, "Test-Phone Number")
 
-        let maskedPhoneValueLabel: UILabel! = viewController.view.findView(by: "adyen.voucher.maskedTelephoneNumberValueLabel")
+        let maskedPhoneValueLabel: UILabel! = sut.findView(by: "adyen.voucher.maskedTelephoneNumberValueLabel")
         XCTAssertEqual(maskedPhoneValueLabel.text, "11******89")
 
-    }
-
-    func testCustomUI() throws {
-        let econtextAction = try Coder.decode(econtextStoresAction) as EContextStoresVoucherAction
-        let action: VoucherAction = .econtextStores(econtextAction)
-
-        var style = VoucherComponentStyle()
-        style.mainButton.backgroundColor = UIColor.cyan
-        style.mainButton.borderColor = UIColor.red
-        style.mainButton.borderWidth = 3
-        style.mainButton.cornerRounding = .fixed(6)
-        style.mainButton.title.color = UIColor.black
-        style.mainButton.title.font = .systemFont(ofSize: 23)
-
-        style.secondaryButton.backgroundColor = UIColor.red
-        style.secondaryButton.borderColor = UIColor.blue
-        style.secondaryButton.borderWidth = 2
-        style.secondaryButton.cornerRounding = .fixed(12)
-        style.secondaryButton.title.color = UIColor.white
-        style.secondaryButton.title.font = .systemFont(ofSize: 34)
-        let sut = VoucherViewControllerProvider(style: style, environment: Dummy.context.environment)
-
-        let viewController = sut.provide(with: action) as! VoucherViewController
-
-        UIApplication.shared.keyWindow?.rootViewController = viewController
-
-        let doneButton: UIButton! = viewController.view.findView(by: "adyen.voucher.doneButton")
-        XCTAssertEqual(doneButton.titleColor(for: .normal), UIColor.white)
-        XCTAssertEqual(doneButton.layer.backgroundColor, UIColor.red.cgColor)
-        XCTAssertEqual(doneButton.titleLabel?.font, .systemFont(ofSize: 34))
-        XCTAssertEqual(doneButton.layer.borderWidth, 2)
-        XCTAssertEqual(doneButton.layer.borderColor, UIColor.blue.cgColor)
-        XCTAssertEqual(doneButton.layer.cornerRadius, 12)
-
-        let saveButton: UIButton! = viewController.view.findView(by: "adyen.voucher.saveButton")
-        XCTAssertEqual(saveButton.titleColor(for: .normal), UIColor.black)
-        XCTAssertEqual(saveButton.layer.backgroundColor, UIColor.cyan.cgColor)
-        XCTAssertEqual(saveButton.titleLabel?.font, .systemFont(ofSize: 23))
-        XCTAssertEqual(saveButton.layer.borderWidth, 3)
-        XCTAssertEqual(saveButton.layer.borderColor, UIColor.red.cgColor)
-        XCTAssertEqual(saveButton.layer.cornerRadius, 6)
     }
 
 }
