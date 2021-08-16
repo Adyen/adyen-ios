@@ -4,7 +4,7 @@ Sample project to try out iOS Drop-in and Components integrations.
 
 ![DropIn preview](Screenshots/dropin-ios.jpg)
 
-## How to start
+## Configuration
 
 To start testing SDK, you need to open `Adyen.xcodeproj` in Xcode and provide the following information to `Demo/Configuration.swift`
 
