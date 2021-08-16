@@ -21,6 +21,7 @@
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "Nieprawidłowy numer karty";
 "adyen.card.expiryItem.title" = "Data ważności";
+"adyen.card.expiryItem.title.optional" = "Data ważności (opcjonalnie)";
 "adyen.card.expiryItem.placeholder" = "MM/RR";
 "adyen.card.expiryItem.invalid" = "Nieprawidłowa data wygaśnięcia";
 "adyen.card.cvcItem.invalid" = "Nieprawidłowy format CVC/CVV";

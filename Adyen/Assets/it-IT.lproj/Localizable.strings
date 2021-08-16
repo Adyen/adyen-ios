@@ -21,6 +21,7 @@
 "adyen.card.numberItem.placeholder" = "";
 "adyen.card.numberItem.invalid" = "Numero carta non valido";
 "adyen.card.expiryItem.title" = "Data di scadenza";
+"adyen.card.expiryItem.title.optional" = "Data di scadenza (opzionale)";
 "adyen.card.expiryItem.placeholder" = "MM/AA";
 "adyen.card.expiryItem.invalid" = "Data di scadenza non valida";
 "adyen.card.cvcItem.invalid" = "Formato CVC/CVV non valido";

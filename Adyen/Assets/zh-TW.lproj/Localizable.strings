@@ -21,6 +21,7 @@
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "信用卡號碼無效";
 "adyen.card.expiryItem.title" = "到期日期";
+"adyen.card.expiryItem.title.optional" = "到期日（選用）";
 "adyen.card.expiryItem.placeholder" = "MM/YY";
 "adyen.card.expiryItem.invalid" = "到期日期無效";
 "adyen.card.cvcItem.invalid" = "CVC／CVV 格式無效";
@@ -31,7 +32,7 @@
 "adyen.card.stored.expires" = "%@ 到期";
 "adyen.dropIn.stored.title" = "確認 %@ 付款";
 "adyen.dropIn.preselected.openAll.title" = "變更付款方式";
-"adyen.continueTo" = "繼續前往%@";
+"adyen.continueTo" = "繼續前往 %@";
 "adyen.phoneNumber.title" = "電話號碼";
 "adyen.phoneNumber.invalid" = "電話號碼無效";
 "adyen.phoneNumber.placeholder" = "123–456–789";

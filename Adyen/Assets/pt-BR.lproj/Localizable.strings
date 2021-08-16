@@ -21,6 +21,7 @@
 "adyen.card.numberItem.placeholder" = "";
 "adyen.card.numberItem.invalid" = "Número de cartão inválido";
 "adyen.card.expiryItem.title" = "Data de validade";
+"adyen.card.expiryItem.title.optional" = "Data de validade (opcional)";
 "adyen.card.expiryItem.placeholder" = "MM/AA";
 "adyen.card.expiryItem.invalid" = "Data de vencimento inválida";
 "adyen.card.cvcItem.invalid" = "Formato de CVC/CVV inválido";
