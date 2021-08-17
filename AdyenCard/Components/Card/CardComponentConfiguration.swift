@@ -67,7 +67,10 @@ extension CardComponent {
 
         /// Indicates the card brands excluded from the supported brands.
         internal var excludedCardTypes: Set<CardType> = [.bcmc]
-
+        
+        /// Installments options to present to the user. Default is `nil`.
+        public var installmentOptions: InstallmentConfiguration?
+        
         /// Configuration of Card component.
         /// - Parameters:
         ///   - showsHolderNameField: Indicates if the field for entering the holder name should be displayed in the form.
@@ -82,6 +85,7 @@ extension CardComponent {
         ///   Defaults to none.
         ///   - storedCardConfiguration: Stored card configuration.
         ///   - allowedCardTypes: The enforced list of allowed card types.
+        ///   - installmentOptions: The allowed installment options.
         public init(showsHolderNameField: Bool = false,
                     showsStorePaymentMethodField: Bool = true,
                     showsSecurityCodeField: Bool = true,
@@ -89,7 +93,8 @@ extension CardComponent {
                     socialSecurityNumberMode: FieldVisibility = .auto,
                     billingAddressMode: AddressFormType = .none,
                     storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
-                    allowedCardTypes: [CardType]? = nil) {
+                    allowedCardTypes: [CardType]? = nil,
+                    installmentOptions: InstallmentConfiguration? = nil) {
             self.showsHolderNameField = showsHolderNameField
             self.showsSecurityCodeField = showsSecurityCodeField
             self.showsStorePaymentMethodField = showsStorePaymentMethodField
@@ -98,6 +103,7 @@ extension CardComponent {
             self.billingAddressMode = billingAddressMode
             self.koreanAuthenticationMode = koreanAuthenticationMode
             self.socialSecurityNumberMode = socialSecurityNumberMode
+            self.installmentOptions = installmentOptions
         }
 
         internal func bcmcConfiguration() -> Configuration {
