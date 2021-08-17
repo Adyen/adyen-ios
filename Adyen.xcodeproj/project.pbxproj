@@ -5218,7 +5218,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = Mac;
+				TARGETED_DEVICE_FAMILY = 6;
 			};
 			name = Debug;
 		};
@@ -5227,7 +5227,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = Mac;
+				TARGETED_DEVICE_FAMILY = 6;
 			};
 			name = Release;
 		};
