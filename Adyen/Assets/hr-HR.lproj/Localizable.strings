@@ -21,6 +21,7 @@
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "Nevažeći broj kartice";
 "adyen.card.expiryItem.title" = "Datum isteka";
+"adyen.card.expiryItem.title.optional" = "Datum isteka (neobavezno)";
 "adyen.card.expiryItem.placeholder" = "MM/GG";
 "adyen.card.expiryItem.invalid" = "Nevažeći datum isteka";
 "adyen.card.cvcItem.invalid" = "Nevažeći CVC/CVV format";

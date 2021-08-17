@@ -21,6 +21,7 @@
 "adyen.card.numberItem.placeholder" = "3456 9012 5678 1234";
 "adyen.card.numberItem.invalid" = "رقم بطاقة غير صحيح";
 "adyen.card.expiryItem.title" = "تاريخ الانتهاء";
+"adyen.card.expiryItem.title.optional" = "تاريخ الانتهاء (اختياري)";
 "adyen.card.expiryItem.placeholder" = "شهر/سنة";
 "adyen.card.expiryItem.invalid" = "تاريخ انتهاء غير صحيح";
 "adyen.card.cvcItem.invalid" = "تنسيق CVC / CVV غير صحيح";

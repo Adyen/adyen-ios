@@ -129,8 +129,8 @@ public struct LocalizationKey {
     public static let cardEncryptedPasswordLabel = LocalizationKey(key: "adyen.card.encryptedPassword.label")
     public static let cardEncryptedPasswordPlaceholder = LocalizationKey(key: "adyen.card.encryptedPassword.placeholder")
     public static let cardEncryptedPasswordInvalid = LocalizationKey(key: "adyen.card.encryptedPassword.invalid")
-    public static let affirmDeliveryAddressToggleTitle = LocalizationKey(key: "adyen.affirm.deliveryAddressToggle.title")
     public static let cardTaxNumberLabelShort = LocalizationKey(key: "adyen.card.taxNumber.label.short")
+    public static let affirmDeliveryAddressToggleTitle = LocalizationKey(key: "adyen.affirm.deliveryAddressToggle.title")
     public static let voucherShopperReference = LocalizationKey(key: "adyen.voucher.shopperReference")
     public static let voucherAlternativeReference = LocalizationKey(key: "adyen.voucher.alternativeReference")
     

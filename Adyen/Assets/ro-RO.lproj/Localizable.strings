@@ -21,6 +21,7 @@
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "Număr de card incorect";
 "adyen.card.expiryItem.title" = "Data expirării";
+"adyen.card.expiryItem.title.optional" = "Data de expirare (opțional)";
 "adyen.card.expiryItem.placeholder" = "LL/AA";
 "adyen.card.expiryItem.invalid" = "Data de expirare este incorectă";
 "adyen.card.cvcItem.invalid" = "Format CVC/CVV incorect";

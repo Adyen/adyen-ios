@@ -21,6 +21,7 @@
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "カード番号が無効です";
 "adyen.card.expiryItem.title" = "有効期限";
+"adyen.card.expiryItem.title.optional" = "有効期限（任意）";
 "adyen.card.expiryItem.placeholder" = "MM/YY";
 "adyen.card.expiryItem.invalid" = "有効期限が無効です";
 "adyen.card.cvcItem.invalid" = "無効なCVC / CVV形式です";

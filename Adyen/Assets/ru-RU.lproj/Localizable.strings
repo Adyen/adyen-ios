@@ -21,6 +21,7 @@
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "Недействительный номер карты";
 "adyen.card.expiryItem.title" = "Срок действия";
+"adyen.card.expiryItem.title.optional" = "Срок действия (необязательно)";
 "adyen.card.expiryItem.placeholder" = "ММ/ГГ";
 "adyen.card.expiryItem.invalid" = "Неверный срок действия";
 "adyen.card.cvcItem.invalid" = "Неверный формат CVC / CVV";

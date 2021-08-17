@@ -21,6 +21,7 @@
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "Ongeldig kaartnummer";
 "adyen.card.expiryItem.title" = "Vervaldatum";
+"adyen.card.expiryItem.title.optional" = "Vervaldatum (optioneel)";
 "adyen.card.expiryItem.placeholder" = "MM/JJ";
 "adyen.card.expiryItem.invalid" = "Ongeldige vervaldatum";
 "adyen.card.cvcItem.invalid" = "Ongeldige CVC-/CVV-indeling";

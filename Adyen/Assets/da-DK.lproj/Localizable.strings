@@ -21,6 +21,7 @@
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "Ugyldigt kortnummer";
 "adyen.card.expiryItem.title" = "Udløbsdato";
+"adyen.card.expiryItem.title.optional" = "Udløbsdato (valgfrit)";
 "adyen.card.expiryItem.placeholder" = "MM/ÅÅ";
 "adyen.card.expiryItem.invalid" = "Ugyldig udløbsdato";
 "adyen.card.cvcItem.invalid" = "Ugyldigt format for CVC/CVV";
