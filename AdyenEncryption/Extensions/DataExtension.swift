@@ -13,5 +13,16 @@ extension Data {
         let count = self.count / MemoryLayout<CUnsignedChar>.size
         return [CUnsignedChar](UnsafeBufferPointer<CUnsignedChar>(start: start, count: count))
     }
-
+    
+    internal init?(base64URLEncoded base64URLString: String) {
+        self.init(base64Encoded: base64URLString.base64String())
+    }
+    
+    internal func base64URLString() -> String {
+        var result = base64EncodedString()
+        result = result.replacingOccurrences(of: "+", with: "-")
+        result = result.replacingOccurrences(of: "/", with: "_")
+        result = result.replacingOccurrences(of: "=", with: "")
+        return result
+    }
 }

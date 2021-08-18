@@ -27,5 +27,17 @@ extension String {
 
         return data
     }
+    
+    internal func base64String() -> String {
+        var fromBase64UrlString = replacingOccurrences(of: "-", with: "+").replacingOccurrences(of: "_", with: "/")
+        
+        if fromBase64UrlString.count % 4 == 2 {
+            fromBase64UrlString.append("==")
+        }
+        if fromBase64UrlString.count % 4 == 3 {
+            fromBase64UrlString.append("=")
+        }
+        return fromBase64UrlString
+    }
 
 }

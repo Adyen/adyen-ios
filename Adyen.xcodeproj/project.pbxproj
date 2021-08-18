@@ -629,6 +629,14 @@
 		F9EDB79C2396652000CFB3C9 /* StoredPaymentMethodMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB79B2396652000CFB3C9 /* StoredPaymentMethodMock.swift */; };
 		F9EDB79E2397AEF400CFB3C9 /* ComponentManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB79D2397AEF400CFB3C9 /* ComponentManagerTests.swift */; };
 		F9EDB7A02397BD8500CFB3C9 /* TestPaymentMethodsJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB79F2397BD8500CFB3C9 /* TestPaymentMethodsJson.swift */; };
+		F9F1A98226CCEAB20005CB1D /* JWAEncryptionAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F1A98126CCEAB20005CB1D /* JWAEncryptionAlgorithm.swift */; };
+		F9F1A98426CCEB650005CB1D /* JWAA256CBCHS512Algorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F1A98326CCEB650005CB1D /* JWAA256CBCHS512Algorithm.swift */; };
+		F9F1A98726CCFD1F0005CB1D /* JWAA128CBCHS256AlgorithmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F1A98626CCFD1F0005CB1D /* JWAA128CBCHS256AlgorithmTests.swift */; };
+		F9F1A98926CD0CCF0005CB1D /* CommonCryptoHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F1A98826CD0CCF0005CB1D /* CommonCryptoHelpers.swift */; };
+		F9F1A98B26CD0F640005CB1D /* JSONWebEncryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F1A98A26CD0F640005CB1D /* JSONWebEncryption.swift */; };
+		F9F1A98D26CD14D60005CB1D /* JSONWebEncryptionGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F1A98C26CD14D60005CB1D /* JSONWebEncryptionGenerator.swift */; };
+		F9F1A98F26CD15C30005CB1D /* RSAOAEP256Algorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F1A98E26CD15C30005CB1D /* RSAOAEP256Algorithm.swift */; };
+		F9F1A99426CD39740005CB1D /* RSAOAEP256AlgorithmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F1A99326CD39740005CB1D /* RSAOAEP256AlgorithmTests.swift */; };
 		F9FE24AD2625913C001874BB /* CancelOrderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE248326258F6E001874BB /* CancelOrderRequest.swift */; };
 		F9FE24C32625913F001874BB /* CancelOrderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE248326258F6E001874BB /* CancelOrderRequest.swift */; };
 		F9FE24D926259267001874BB /* CreateOrderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE24D826259267001874BB /* CreateOrderRequest.swift */; };
@@ -1486,6 +1494,14 @@
 		F9EDB79B2396652000CFB3C9 /* StoredPaymentMethodMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredPaymentMethodMock.swift; sourceTree = "<group>"; };
 		F9EDB79D2397AEF400CFB3C9 /* ComponentManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentManagerTests.swift; sourceTree = "<group>"; };
 		F9EDB79F2397BD8500CFB3C9 /* TestPaymentMethodsJson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPaymentMethodsJson.swift; sourceTree = "<group>"; };
+		F9F1A98126CCEAB20005CB1D /* JWAEncryptionAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWAEncryptionAlgorithm.swift; sourceTree = "<group>"; };
+		F9F1A98326CCEB650005CB1D /* JWAA256CBCHS512Algorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWAA256CBCHS512Algorithm.swift; sourceTree = "<group>"; };
+		F9F1A98626CCFD1F0005CB1D /* JWAA128CBCHS256AlgorithmTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWAA128CBCHS256AlgorithmTests.swift; sourceTree = "<group>"; };
+		F9F1A98826CD0CCF0005CB1D /* CommonCryptoHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonCryptoHelpers.swift; sourceTree = "<group>"; };
+		F9F1A98A26CD0F640005CB1D /* JSONWebEncryption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONWebEncryption.swift; sourceTree = "<group>"; };
+		F9F1A98C26CD14D60005CB1D /* JSONWebEncryptionGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONWebEncryptionGenerator.swift; sourceTree = "<group>"; };
+		F9F1A98E26CD15C30005CB1D /* RSAOAEP256Algorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSAOAEP256Algorithm.swift; sourceTree = "<group>"; };
+		F9F1A99326CD39740005CB1D /* RSAOAEP256AlgorithmTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSAOAEP256AlgorithmTests.swift; sourceTree = "<group>"; };
 		F9FE24552624BCEC001874BB /* GiftCardComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiftCardComponent.swift; sourceTree = "<group>"; };
 		F9FE24562624BCEC001874BB /* GiftCardDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiftCardDetails.swift; sourceTree = "<group>"; };
 		F9FE248326258F6E001874BB /* CancelOrderRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelOrderRequest.swift; sourceTree = "<group>"; };
@@ -2028,6 +2044,7 @@
 		E2C0E04022097917008616F6 /* AdyenTests */ = {
 			isa = PBXGroup;
 			children = (
+				F9F1A98526CCFD090005CB1D /* Encryption */,
 				F95D76052565445E0088A353 /* Assets */,
 				E97B9716229D530F00505476 /* Adyen Tests */,
 				E9E3DAB0221D79A800697074 /* Card Tests */,
@@ -2943,6 +2960,7 @@
 		F92326AD25A3669E002C5BC4 /* AdyenEncryption */ = {
 			isa = PBXGroup;
 			children = (
+				F9F1A97F26CCEA7A0005CB1D /* JOSE */,
 				E74517C025FBA275000BDCCF /* Payload */,
 				E745178325FB82F3000BDCCF /* Model */,
 				E7364987252B7C4A00AB76AE /* Cryptor */,
@@ -3533,6 +3551,60 @@
 				F9EDB7912396603F00CFB3C9 /* PaymentMethodListComponentTests.swift */,
 			);
 			path = "Payment Method List";
+			sourceTree = "<group>";
+		};
+		F9F1A97F26CCEA7A0005CB1D /* JOSE */ = {
+			isa = PBXGroup;
+			children = (
+				F9F1A98026CCEA830005CB1D /* Encryption Algorithms */,
+			);
+			path = JOSE;
+			sourceTree = "<group>";
+		};
+		F9F1A98026CCEA830005CB1D /* Encryption Algorithms */ = {
+			isa = PBXGroup;
+			children = (
+				F9F1A99226CD211E0005CB1D /* JSON Web Encryption */,
+				F9F1A99126CD20EC0005CB1D /* Key Encryption Algorithms */,
+				F9F1A99026CD20CF0005CB1D /* Content Encryption Algorithms */,
+				F9F1A98826CD0CCF0005CB1D /* CommonCryptoHelpers.swift */,
+			);
+			path = "Encryption Algorithms";
+			sourceTree = "<group>";
+		};
+		F9F1A98526CCFD090005CB1D /* Encryption */ = {
+			isa = PBXGroup;
+			children = (
+				F9F1A98626CCFD1F0005CB1D /* JWAA128CBCHS256AlgorithmTests.swift */,
+				F9F1A99326CD39740005CB1D /* RSAOAEP256AlgorithmTests.swift */,
+			);
+			path = Encryption;
+			sourceTree = "<group>";
+		};
+		F9F1A99026CD20CF0005CB1D /* Content Encryption Algorithms */ = {
+			isa = PBXGroup;
+			children = (
+				F9F1A98126CCEAB20005CB1D /* JWAEncryptionAlgorithm.swift */,
+				F9F1A98326CCEB650005CB1D /* JWAA256CBCHS512Algorithm.swift */,
+			);
+			path = "Content Encryption Algorithms";
+			sourceTree = "<group>";
+		};
+		F9F1A99126CD20EC0005CB1D /* Key Encryption Algorithms */ = {
+			isa = PBXGroup;
+			children = (
+				F9F1A98E26CD15C30005CB1D /* RSAOAEP256Algorithm.swift */,
+			);
+			path = "Key Encryption Algorithms";
+			sourceTree = "<group>";
+		};
+		F9F1A99226CD211E0005CB1D /* JSON Web Encryption */ = {
+			isa = PBXGroup;
+			children = (
+				F9F1A98A26CD0F640005CB1D /* JSONWebEncryption.swift */,
+				F9F1A98C26CD14D60005CB1D /* JSONWebEncryptionGenerator.swift */,
+			);
+			path = "JSON Web Encryption";
 			sourceTree = "<group>";
 		};
 		F9FE24542624BCEC001874BB /* GiftCardComponent */ = {
@@ -4652,6 +4724,7 @@
 				E7768BDC26B416C3000851B3 /* DateValidationTests.swift in Sources */,
 				F97BC2CE2668EB4500F1D242 /* VoucherViewDelegateMock.swift in Sources */,
 				F9AC61C2243751A70062A00D /* ActionComponentDelegateMock.swift in Sources */,
+				F9F1A98726CCFD1F0005CB1D /* JWAA128CBCHS256AlgorithmTests.swift in Sources */,
 				E759E24C25CB3BB700B1F8DC /* DropInTests.swift in Sources */,
 				F957AA462552C3D20099AD73 /* ThreeDS2FingerprintSubmitterTests.swift in Sources */,
 				5AD40F43263150F90090E01C /* UILabelHelpersTests.swift in Sources */,
@@ -4677,6 +4750,7 @@
 				E7085C1E2629FDD700D0153B /* RedirectListnerTests.swift in Sources */,
 				E74CE3DF26727EB1008231D2 /* DropInDelegateMock.swift in Sources */,
 				E262128D22A8FE6700F2B133 /* PaymentMethodTests.swift in Sources */,
+				F9F1A99426CD39740005CB1D /* RSAOAEP256AlgorithmTests.swift in Sources */,
 				F9EDB7A02397BD8500CFB3C9 /* TestPaymentMethodsJson.swift in Sources */,
 				F9AC61BE243750BB0062A00D /* RedirectComponentTests.swift in Sources */,
 				F9EDB79C2396652000CFB3C9 /* StoredPaymentMethodMock.swift in Sources */,
@@ -4923,13 +4997,19 @@
 				F92326E825A366EC002C5BC4 /* IntegerExtension.swift in Sources */,
 				E74517CB25FBA2A5000BDCCF /* BinPayload.swift in Sources */,
 				E736413A25A73064007C10E3 /* AESGCM.swift in Sources */,
+				F9F1A98B26CD0F640005CB1D /* JSONWebEncryption.swift in Sources */,
 				F92326E725A366EC002C5BC4 /* DataExtension.swift in Sources */,
 				E745185D25FBDDC7000BDCCF /* Payload.swift in Sources */,
 				E74517A425FB834C000BDCCF /* EncryptedCard.swift in Sources */,
+				F9F1A98F26CD15C30005CB1D /* RSAOAEP256Algorithm.swift in Sources */,
+				F9F1A98926CD0CCF0005CB1D /* CommonCryptoHelpers.swift in Sources */,
 				E745179925FB8340000BDCCF /* Card.swift in Sources */,
 				E736413025A73061007C10E3 /* AESCCM.swift in Sources */,
 				F92326BD25A366D9002C5BC4 /* CardPayload.swift in Sources */,
 				F92326D125A366E6002C5BC4 /* RSA.swift in Sources */,
+				F9F1A98D26CD14D60005CB1D /* JSONWebEncryptionGenerator.swift in Sources */,
+				F9F1A98426CCEB650005CB1D /* JWAA256CBCHS512Algorithm.swift in Sources */,
+				F9F1A98226CCEAB20005CB1D /* JWAEncryptionAlgorithm.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
