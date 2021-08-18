@@ -304,7 +304,18 @@ extension ComponentManager: PaymentComponentBuilder {
     internal func build(paymentMethod: AffirmPaymentMethod) -> PaymentComponent? {
         AffirmComponent(paymentMethod: paymentMethod,
                         apiContext: apiContext,
-                        style: style.formComponent)
+                        style: style.formComponent, shopperInformation: PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
+                                                                                                    emailAddress: "katrina@mail.com",
+                                                                                                    telephoneNumber: "1234567890",
+                                                                                                    billingAddress: PostalAddress(city: "Cupertino",
+                                                                                                                                  country: "NL",
+                                                                                                                                  houseNumberOrName: nil,
+                                                                                                                                  postalCode: "18900",
+                                                                                                                                  stateOrProvince: "California",
+                                                                                                                                  street: "First avenue",
+                                                                                                                                  apartment: "1"),
+                                                                                                    deliveryAddress: nil,
+                                                                                                    socialSecurityNumber: nil))
     }
     
     /// :nodoc:

@@ -24,6 +24,11 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     /// :nodoc:
     internal let deliveryAddressToggleItem: FormToggleItem
     
+    // MARK: - Properties
+    
+    /// :nodoc:
+    private let shopperInformation: PrefilledShopperInformation?
+    
     // MARK: - Initializers
     
     /// Initializes the Affirm component.
@@ -33,7 +38,10 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     ///   - style: The component's style.
     public init(paymentMethod: PaymentMethod,
                 apiContext: APIContext,
-                style: FormComponentStyle) {
+                style: FormComponentStyle,
+                shopperInformation: PrefilledShopperInformation? = nil) {
+        self.shopperInformation = shopperInformation
+
         personalDetailsHeaderItem = FormLabelItem(text: "", style: style.sectionHeader)
         deliveryAddressToggleItem = FormToggleItem(style: style.toggle)
         
@@ -54,7 +62,9 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
                    configuration: configuration,
                    apiContext: apiContext,
                    style: style)
+
         setupItems()
+        setupShopperInformation()
     }
     
     // MARK: - Private
@@ -81,6 +91,21 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
         deliveryAddressToggleItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                                            postfix: ViewIdentifier.deliveryAddressToggle)
         bind(deliveryAddressToggleItem.publisher, to: deliveryAddressItem, at: \.isHidden.wrappedValue, with: { !$0 })
+    }
+    
+    /// :nodoc:
+    private func setupShopperInformation() {
+        guard let shopperInformation = shopperInformation else { return }
+        firstNameItem?.value = shopperInformation.shopperName?.firstName ?? ""
+        lastNameItem?.value = shopperInformation.shopperName?.lastName ?? ""
+        emailItem?.value = shopperInformation.emailAddress ?? ""
+        phoneItem?.value = shopperInformation.telephoneNumber ?? ""
+        addressItem?.value = shopperInformation.billingAddress ?? .init()
+        
+        if let deliveryAddress = shopperInformation.deliveryAddress {
+            deliveryAddressItem?.value = deliveryAddress
+            deliveryAddressToggleItem.value = true
+        }
     }
     
     // MARK: - Public
