@@ -43,6 +43,8 @@ internal class BasePickerInputControl: UIControl, PickerTextInputControl {
     internal var onDidTap: (() -> Void)?
 
     override internal var inputView: UIView? { customInputView }
+    
+    override internal var inputAccessoryView: UIView? { customInputAccessoryView }
 
     override internal var canBecomeFirstResponder: Bool { true }
 
@@ -51,6 +53,8 @@ internal class BasePickerInputControl: UIControl, PickerTextInputControl {
                                                     compatibleWith: nil) }
 
     internal var customInputView: UIView
+    
+    internal var customInputAccessoryView: UIView
 
     internal var showChevron: Bool {
         get { !chevronView.isHidden }
@@ -78,9 +82,11 @@ internal class BasePickerInputControl: UIControl, PickerTextInputControl {
     /// Initializes a `PhoneExtensionInputControl`.
     ///
     /// - Parameter inputView: The input view used in place of the system keyboard.
+    /// - Parameter inputAccessoryView: The accessory view to show above the input view.
     /// - Parameter style: The UI style.
-    internal init(inputView: UIView, style: TextStyle) {
+    internal init(inputView: UIView, inputAccessoryView: UIView, style: TextStyle) {
         self.customInputView = inputView
+        self.customInputAccessoryView = inputAccessoryView
         self.style = style
         super.init(frame: CGRect.zero)
 

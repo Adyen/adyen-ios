@@ -22,6 +22,15 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
         pickerView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         return pickerView
     }()
+    
+    /// Toolbar above the pickerview with buttons to dismiss it.
+    internal lazy var pickerViewToolbar: UIToolbar = {
+        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: pickerView.frame.width, height: 44))
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(handleDoneButtonTap))
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolbar.setItems([flexSpace, doneButton], animated: false)
+        return toolbar
+    }()
 
     /// Initializes the picker item view.
     ///
@@ -36,11 +45,13 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
     override open var canBecomeFirstResponder: Bool { true }
 
     /// :nodoc:
+    @discardableResult
     override open func becomeFirstResponder() -> Bool {
         inputControl.becomeFirstResponder()
     }
 
     /// :nodoc:
+    @discardableResult
     override open func resignFirstResponder() -> Bool {
         inputControl.resignFirstResponder()
     }
@@ -48,7 +59,9 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
     // MARK: - Abstract
 
     internal func getInputControl() -> PickerTextInputControl {
-        BasePickerInputControl(inputView: pickerView, style: item.style.text)
+        BasePickerInputControl(inputView: pickerView,
+                               inputAccessoryView: pickerViewToolbar,
+                               style: item.style.text)
     }
 
     internal func updateSelection() {
@@ -78,11 +91,15 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
 
         view.onDidTap = { [weak self] in
             guard let self = self, self.item.selectableValues.count > 1 else { return }
-            _ = self.becomeFirstResponder()
+            self.becomeFirstResponder()
         }
 
         return view
     }()
+    
+    @objc private func handleDoneButtonTap() {
+        resignFirstResponder()
+    }
 
     // MARK: - UIPickerViewDelegate and UIPickerViewDataSource
 
