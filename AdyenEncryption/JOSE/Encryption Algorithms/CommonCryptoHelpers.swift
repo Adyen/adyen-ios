@@ -14,7 +14,7 @@ internal func aes256Crypt(operation: CCOperation,
                           dataIn: Data) throws -> Data {
     let dataOutLength = dataIn.count + kCCBlockSizeAES128
     guard let dataOut = NSMutableData(length: dataOutLength) else {
-        throw JsonWebEncryptionError.encryptionFailed
+        throw EncryptionError.encryptionFailed
     }
     let keyData = keyData as NSData
     let dataIn = dataIn as NSData
@@ -30,7 +30,7 @@ internal func aes256Crypt(operation: CCOperation,
                                           dataOut.mutableBytes, dataOut.length,
                                           &numBytesOut)
     guard status == kCCSuccess else {
-        throw JsonWebEncryptionError.encryptionFailed
+        throw EncryptionError.encryptionFailed
     }
     let startIndex = dataOut.startIndex
     let endIndex = startIndex.advanced(by: numBytesOut)
@@ -39,7 +39,7 @@ internal func aes256Crypt(operation: CCOperation,
 
 internal func hmac(data: Data, withKey: Data) throws -> Data {
     guard let dataOut = NSMutableData(length: Int(CC_SHA512_DIGEST_LENGTH)) else {
-        throw JsonWebEncryptionError.unknownError
+        throw EncryptionError.unknownError
     }
     let dataIn = data as NSData
     let keyData = withKey as NSData
@@ -55,13 +55,13 @@ internal func hmac(data: Data, withKey: Data) throws -> Data {
 internal func generateRandomData(length: Int) throws -> Data {
     var bytes = [Int8](repeating: 0, count: length)
     let status = SecRandomCopyBytes(kSecRandomDefault, length, &bytes)
-    guard status == errSecSuccess else { throw JsonWebEncryptionError.failedToGenerateRandomData }
+    guard status == errSecSuccess else { throw EncryptionError.failedToGenerateRandomData }
     return Data(bytes: bytes, count: length)
 }
 
-internal func secKey(fromModulus modulus: String, exponent: String) throws -> SecKey {
+internal func createSecKey(fromModulus modulus: String, exponent: String) throws -> SecKey {
     guard let modulusHex = modulus.hexadecimal,
-          let exponentHex = exponent.hexadecimal else { throw JsonWebEncryptionError.invalidKey }
+          let exponentHex = exponent.hexadecimal else { throw EncryptionError.invalidKey }
     let keyData = generateRSAPublicKey(with: modulusHex, exponent: exponentHex)
     var error: Unmanaged<CFError>?
     let parsedKey = SecKeyCreateWithData(keyData as NSData,
@@ -71,10 +71,10 @@ internal func secKey(fromModulus modulus: String, exponent: String) throws -> Se
                                          ] as NSDictionary,
                                          &error)
     if let error = error {
-        throw JsonWebEncryptionError.other(error.takeRetainedValue())
+        throw EncryptionError.other(error.takeRetainedValue())
     }
     
-    guard let key = parsedKey else { throw JsonWebEncryptionError.invalidKey }
+    guard let key = parsedKey else { throw EncryptionError.invalidKey }
     return key
 }
 

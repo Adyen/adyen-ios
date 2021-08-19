@@ -46,20 +46,13 @@ internal struct Cryptor {
      */
     internal func encrypt(data: Data, publicKey keyInHex: String) throws -> String {
         
-        //
-        var key = [UInt8](repeating: 0, count: kCCKeySizeAES256)
-        guard SecRandomCopyBytes(kSecRandomDefault, key.count, &key) == noErr else {
-            throw Error.randomGenerationError
-        }
+        let key = try generateRandomData(length: kCCKeySizeAES256)
         
         // generate a initialisation vector
-        var initVector = [UInt8](repeating: 0, count: aes.ivLength)
-        guard SecRandomCopyBytes(kSecRandomDefault, initVector.count, &initVector) == noErr else {
-            throw Error.randomGenerationError
-        }
+        let initVector = try generateRandomData(length: aes.ivLength)
         
         guard
-            case let encryptionResult = self.aesEncrypt(data: data, with: Data(key), initVector: Data(initVector)),
+            case let encryptionResult = self.aesEncrypt(data: data, with: key, initVector: initVector),
             let cipherText = encryptionResult.cipher
         else { throw Error.aesEncryptionError }
         
@@ -74,7 +67,7 @@ internal struct Cryptor {
         payload.append(cipherText)
         payload.append(encryptionResult.atag ?? Data())
         
-        if let encryptedKey = try? self.rsaEncrypt(data: Data(key), with: keyInHex) {
+        if let encryptedKey = try? self.rsaEncrypt(data: key, with: keyInHex) {
             return prefix + encryptedKey.base64EncodedString() + Cryptor.msgSeparator + payload.base64EncodedString()
         }
         

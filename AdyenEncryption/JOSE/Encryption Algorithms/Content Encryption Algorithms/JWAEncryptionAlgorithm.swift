@@ -35,7 +35,7 @@ internal struct JWAInput {
     internal let additionalAuthenticationData: Data
 }
 
-public enum JsonWebEncryptionError: LocalizedError {
+public enum EncryptionError: LocalizedError {
     case invalidKey
     
     case invalidInitializationVector

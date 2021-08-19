@@ -32,9 +32,8 @@ class CardEncryptorCardTests: XCTestCase {
 
     func testEncryptCardShouldThrowOnInvalidKey() {
         XCTAssertThrowsError(try CardEncryptor.encrypt(card: correctCard, with: "test_key")) { error in
-            XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
-            XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.encryptionFailed, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
-            XCTAssertEqual(error.localizedDescription, CardEncryptor.Error.encryptionFailed.errorDescription)
+            XCTAssertTrue(error is EncryptionError, "Thrown Error is not JsonWebEncryptionError")
+            XCTAssertEqual(error.localizedDescription, EncryptionError.invalidKey.errorDescription)
         }
     }
 
@@ -52,8 +51,8 @@ class CardEncryptorCardTests: XCTestCase {
     
     func testEncryptNumberShouldFailWithInvalidPublicKey() {
         XCTAssertThrowsError(try CardEncryptor.encrypt(number: "12345678", with: "test_key")) { error in
-            XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
-            XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.encryptionFailed, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
+            XCTAssertTrue(error is EncryptionError, "Thrown Error is not JsonWebEncryptionError")
+            XCTAssertEqual(error.localizedDescription, EncryptionError.invalidKey.localizedDescription)
         }
     }
 
@@ -74,8 +73,8 @@ class CardEncryptorCardTests: XCTestCase {
 
     func testEncryptSecureCodeShouldShouldFailWithInvalidPublicKey() {
         XCTAssertThrowsError(try CardEncryptor.encrypt(securityCode: "123", with: "test_key")) { error in
-            XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
-            XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.encryptionFailed, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
+            XCTAssertTrue(error is EncryptionError, "Thrown Error is not JsonWebEncryptionError")
+            XCTAssertEqual(error.localizedDescription, EncryptionError.invalidKey.localizedDescription)
         }
     }
 
@@ -96,8 +95,8 @@ class CardEncryptorCardTests: XCTestCase {
 
     func testEncryptExpirationMonthShouldShouldFailWithInvalidPublicKey() {
         XCTAssertThrowsError(try CardEncryptor.encrypt(expirationMonth: "123", with: "test_key")) { error in
-            XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
-            XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.encryptionFailed, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
+            XCTAssertTrue(error is EncryptionError, "Thrown Error is not JsonWebEncryptionError")
+            XCTAssertEqual(error.localizedDescription, EncryptionError.invalidKey.errorDescription)
         }
     }
 
@@ -118,8 +117,8 @@ class CardEncryptorCardTests: XCTestCase {
 
     func testEncryptExpirationYearShouldShouldFailWithInvalidPublicKey() {
         XCTAssertThrowsError(try CardEncryptor.encrypt(expirationYear: "123", with: "test_key")) { error in
-            XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
-            XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.encryptionFailed, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
+            XCTAssertTrue(error is EncryptionError, "Thrown Error is not JsonWebEncryptionError")
+            XCTAssertEqual(error.localizedDescription, EncryptionError.invalidKey.localizedDescription)
         }
     }
 
@@ -140,8 +139,8 @@ class CardEncryptorCardTests: XCTestCase {
 
     func testEncryptTokenShouldShouldFailWithInvalidPublicKey() {
         XCTAssertThrowsError(try CardEncryptor.encryptToken(from: correctCard, with: "test_key")) { error in
-            XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
-            XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.encryptionFailed, "Thrown Error is not CardEncryptor.Error.encryptionFailed")
+            XCTAssertTrue(error is EncryptionError, "Thrown Error is not JsonWebEncryptionError")
+            XCTAssertEqual(error.localizedDescription, EncryptionError.invalidKey.localizedDescription)
         }
     }
 

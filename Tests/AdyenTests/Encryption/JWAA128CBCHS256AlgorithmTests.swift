@@ -65,7 +65,7 @@ class JWAA128CBCHS256AlgorithmTests: XCTestCase {
 //
 //    func testInvalidKeyLength() throws {
 //        XCTAssertThrowsError(try sut.encrypt(input: invalidKeyLengthInput)) { error in
-//            XCTAssertEqual(error as? JsonWebEncryptionError, .invalidKey)
+//            XCTAssertEqual(error as? EncryptionError, .invalidKey)
 //        }
 //    }
 //

@@ -28,7 +28,7 @@ extension Cryptor {
         internal static func encrypt(data: Data, exponent: String, modulus: String) throws -> Data? {
             guard let modulusHex = modulus.hexadecimal, let exponentHex = exponent.hexadecimal else { return nil }
 
-            let pubKeyData = self.generateRSAPublicKey(with: modulusHex, exponent: exponentHex)
+            let pubKeyData = generateRSAPublicKey(with: modulusHex, exponent: exponentHex)
             return try self.encrypt(original: data, publicKey: pubKeyData)
         }
 
@@ -50,50 +50,6 @@ extension Cryptor {
                 throw err
             }
             return nil
-        }
-
-        /// https://github.com/henrinormak/Heimdall/blob/master/Heimdall/Heimdall.swift
-        private static func generateRSAPublicKey(with modulus: Data, exponent: Data) -> Data {
-            var modulusBytes = modulus.asBytes
-            let exponentBytes = exponent.asBytes
-
-            // Make sure modulus starts with a 0x00
-            if let prefix = modulusBytes.first, prefix != 0x00 {
-                modulusBytes.insert(0x00, at: 0)
-            }
-
-            // Lengths
-            let modulusLengthOctets = modulusBytes.count.encodedOctets()
-            let exponentLengthOctets = exponentBytes.count.encodedOctets()
-
-            // Total length is the sum of components + types
-            let totalLengthOctets = (modulusLengthOctets.count + modulusBytes.count +
-                exponentLengthOctets.count + exponentBytes.count + 2).encodedOctets()
-
-            // Combine the two sets of data into a single container
-            var builder: [CUnsignedChar] = []
-            let data = NSMutableData()
-
-            // Container type and size
-            builder.append(0x30)
-            builder.append(contentsOf: totalLengthOctets)
-            data.append(builder, length: builder.count)
-            builder.removeAll(keepingCapacity: false)
-
-            // Modulus
-            builder.append(0x02)
-            builder.append(contentsOf: modulusLengthOctets)
-            data.append(builder, length: builder.count)
-            builder.removeAll(keepingCapacity: false)
-            data.append(modulusBytes, length: modulusBytes.count)
-
-            // Exponent
-            builder.append(0x02)
-            builder.append(contentsOf: exponentLengthOctets)
-            data.append(builder, length: builder.count)
-            data.append(exponentBytes, length: exponentBytes.count)
-
-            return Data(bytes: data.bytes, count: data.length)
         }
     }
 }

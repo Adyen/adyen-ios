@@ -20,10 +20,10 @@ internal struct RSAOAEP256Algorithm: RSAAlgorithm {
                                                    &error)
         
         if let error = error {
-            throw JsonWebEncryptionError.other(error.takeRetainedValue())
+            throw EncryptionError.other(error.takeRetainedValue())
         }
         
-        guard let cipherResult = cipherText else { throw JsonWebEncryptionError.encryptionFailed }
+        guard let cipherResult = cipherText else { throw EncryptionError.encryptionFailed }
         
         return cipherResult as Data
     }

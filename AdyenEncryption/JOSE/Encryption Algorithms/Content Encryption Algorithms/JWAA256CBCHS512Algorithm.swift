@@ -16,10 +16,10 @@ internal struct JWAA256CBCHS512Algorithm: JWAEncryptionAlgorithm {
     
     internal func encrypt(input: JWAInput) throws -> JWAOutput {
         guard input.key.count == keyLength else {
-            throw JsonWebEncryptionError.invalidKey
+            throw EncryptionError.invalidKey
         }
         guard input.initializationVector.count == initializationVectorLength else {
-            throw JsonWebEncryptionError.invalidInitializationVector
+            throw EncryptionError.invalidInitializationVector
         }
 
         let (aesKey, hmacKey) = deriveKeys(from: input.key)
@@ -31,10 +31,10 @@ internal struct JWAA256CBCHS512Algorithm: JWAEncryptionAlgorithm {
                                                keyData: aesKey,
                                                initializationVector: input.initializationVector,
                                                dataIn: input.payload)
-        let authenticationTag = try authenticationTag(withAdditionalAuthenticationData: input.additionalAuthenticationData,
-                                                      initializationVector: input.initializationVector,
-                                                      encryptedPayload: encryptedPayload,
-                                                      hmacKey: hmacKey)
+        let authenticationTag = try createAuthenticationTag(withAdditionalAuthenticationData: input.additionalAuthenticationData,
+                                                            initializationVector: input.initializationVector,
+                                                            encryptedPayload: encryptedPayload,
+                                                            hmacKey: hmacKey)
         return JWAOutput(encryptedPayload: encryptedPayload, authenticationTag: authenticationTag)
     }
     
@@ -51,10 +51,10 @@ internal struct JWAA256CBCHS512Algorithm: JWAEncryptionAlgorithm {
         return (aesKey, hmacKey)
     }
     
-    private func authenticationTag(withAdditionalAuthenticationData: Data,
-                                   initializationVector: Data,
-                                   encryptedPayload: Data,
-                                   hmacKey: Data) throws -> Data {
+    private func createAuthenticationTag(withAdditionalAuthenticationData: Data,
+                                         initializationVector: Data,
+                                         encryptedPayload: Data,
+                                         hmacKey: Data) throws -> Data {
         var hmacData = Data()
         hmacData.append(withAdditionalAuthenticationData)
         hmacData.append(initializationVector)

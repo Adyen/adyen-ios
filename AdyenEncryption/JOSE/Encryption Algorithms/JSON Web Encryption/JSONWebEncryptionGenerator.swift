@@ -32,7 +32,7 @@ internal struct JSONWebEncryptionGenerator: AnyJSONWebEncryptionGenerator {
         let initializationVector = try mockInitializationVector ??
             generateRandomData(length: contentEncryptionAlgorithm.initializationVectorLength)
         guard let additionalAuthenticationData = encodedHeader.base64URLString().data(using: .ascii) else {
-            throw JsonWebEncryptionError.encryptionFailed
+            throw EncryptionError.encryptionFailed
         }
         
         let contentEncryptionInput = JWAInput(payload: withPayload,
