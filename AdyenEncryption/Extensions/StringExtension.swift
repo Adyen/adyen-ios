@@ -28,7 +28,8 @@ extension String {
         return data
     }
     
-    internal func base64String() -> String {
+    internal func base64String() throws -> String {
+        guard Data(base64Encoded: self) != nil else { throw EncryptionError.invalidBase64 }
         var fromBase64UrlString = replacingOccurrences(of: "-", with: "+").replacingOccurrences(of: "_", with: "/")
         
         if fromBase64UrlString.count % 4 == 2 {

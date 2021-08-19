@@ -15,14 +15,14 @@ extension Data {
     }
     
     internal init?(base64URLEncoded base64URLString: String) {
-        self.init(base64Encoded: base64URLString.base64String())
+        guard let base64String = try? base64URLString.base64String() else { return nil }
+        self.init(base64Encoded: base64String)
     }
     
     internal func base64URLString() -> String {
-        var result = base64EncodedString()
-        result = result.replacingOccurrences(of: "+", with: "-")
-        result = result.replacingOccurrences(of: "/", with: "_")
-        result = result.replacingOccurrences(of: "=", with: "")
-        return result
+        base64EncodedString()
+            .replacingOccurrences(of: "+", with: "-")
+            .replacingOccurrences(of: "/", with: "_")
+            .replacingOccurrences(of: "=", with: "")
     }
 }

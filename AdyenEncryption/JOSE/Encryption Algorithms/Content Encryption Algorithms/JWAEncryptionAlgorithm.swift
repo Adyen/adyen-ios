@@ -46,6 +46,8 @@ public enum EncryptionError: LocalizedError {
     
     case failedToGenerateRandomData
     
+    case invalidBase64
+    
     case other(Error)
     
     public var errorDescription: String? {
@@ -58,6 +60,8 @@ public enum EncryptionError: LocalizedError {
             return "Encryption failed."
         case .failedToGenerateRandomData:
             return "Failed to generate random data"
+        case .invalidBase64:
+            return "Invalid base64 string."
         case .unknownError:
             return "Unknown error."
         case let .other(error):
