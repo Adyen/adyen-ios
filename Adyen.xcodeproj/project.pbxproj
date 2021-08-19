@@ -6,6 +6,20 @@
 	objectVersion = 52;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		C96A8E2826CA800A000BB8C6 /* Localization */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = C96A8E2B26CA800A000BB8C6 /* Build configuration list for PBXAggregateTarget "Localization" */;
+			buildPhases = (
+				C96A8E2C26CA801E000BB8C6 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = Localization;
+			productName = Localization;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		5A1315C926296B100092366D /* ProgressViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1315C826296B100092366D /* ProgressViewStyle.swift */; };
 		5A15D589264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A15D588264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift */; };
@@ -3914,6 +3928,9 @@
 				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = Adyen;
 				TargetAttributes = {
+					C96A8E2826CA800A000BB8C6 = {
+						CreatedOnToolsVersion = 12.5;
+					};
 					E2C0E03222097917008616F6 = {
 						CreatedOnToolsVersion = 10.1;
 						LastSwiftMigration = 1020;
@@ -4014,6 +4031,7 @@
 				F9175F8B2594986900D653BE /* AdyenActions */,
 				F92326AB25A3669E002C5BC4 /* AdyenEncryption */,
 				F95899C525FA524100E4113F /* AdyenSwiftUI */,
+				C96A8E2826CA800A000BB8C6 /* Localization */,
 			);
 		};
 /* End PBXProject section */
@@ -4145,6 +4163,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "#!/bin/bash\n\nif ((! [ -z $(git diff --name-only $SCRIPT_INPUT_FILE_0) ]) || (! [ -z $(git diff --cached --name-only $SCRIPT_INPUT_FILE_0) ])) && [ -f $SRCROOT/Scripts/generate_localization_keys ]\nthen\n    echo \"Detected changes in Localizable.strings. Generating new LocalizationKey.swift\"\n    $SRCROOT/Scripts/generate_localization_keys $SCRIPT_INPUT_FILE_0 $SCRIPT_OUTPUT_FILE_0\nfi\n\n";
+		};
+		C96A8E2C26CA801E000BB8C6 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\necho \"$SRCROOT\"\n./Scripts/localization.sh\n";
 		};
 		E7388FC1260B68C400291DE7 /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5190,6 +5225,24 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		C96A8E2926CA800A000BB8C6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 6;
+			};
+			name = Debug;
+		};
+		C96A8E2A26CA800A000BB8C6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 6;
+			};
+			name = Release;
+		};
 		E2C0E04522097917008616F6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -6030,6 +6083,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		C96A8E2B26CA800A000BB8C6 /* Build configuration list for PBXAggregateTarget "Localization" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C96A8E2926CA800A000BB8C6 /* Debug */,
+				C96A8E2A26CA800A000BB8C6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E2C0E02D22097917008616F6 /* Build configuration list for PBXProject "Adyen" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
