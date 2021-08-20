@@ -52,7 +52,7 @@ let package = Package(
         .package(
             name: "AdyenNetworking",
             url: "https://github.com/Adyen/adyen-networking-ios",
-            .exact(Version(1, 0, 0, prereleaseIdentifiers: ["beta.3"]))
+            .exact(Version(1, 0, 0))
         ),
         .package(
             name: "AdyenWeChatPayInternal",
