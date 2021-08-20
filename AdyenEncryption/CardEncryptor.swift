@@ -169,26 +169,13 @@ public enum CardEncryptor {
     }
 
     private static func encrypt(_ payload: Payload, with publicKey: String) throws -> String {
-        
-        if let payload = payload as? BinPayload {
-            do {
-                let unencryptedData = try payload.jsonData()
-                return try Cryptor(aes: Cryptor.AES.CCM).encrypt(data: unencryptedData, publicKey: publicKey)
-            } catch {
-                throw CardEncryptor.Error.encryptionFailed
-            }
-        } else {
-            let tokens = publicKey.components(separatedBy: "|")
-            guard tokens.count == 2 else { throw EncryptionError.invalidKey }
-            let secKey = try createSecKey(fromModulus: tokens[1], exponent: tokens[0])
-            let jweGenerator = JSONWebEncryptionGenerator()
-            return try jweGenerator.generate(withPayload: payload.jsonData(),
-                                             publicRSAKey: secKey,
-                                             mockInitializationVector: nil,
-                                             mockContentEncryptionKey: nil,
-                                             header: .init(contentEncryptionAlgorithm: .AESCBC,
-                                                           keyEncryptionAlgorithm: .rsaOAEP256)).compactRepresentation
-        }
+        let tokens = publicKey.components(separatedBy: "|")
+        guard tokens.count == 2 else { throw EncryptionError.invalidKey }
+        let secKey = try createSecKey(fromModulus: tokens[1], exponent: tokens[0])
+        let jweGenerator = JSONWebEncryptionGenerator()
+        return try jweGenerator.generate(withPayload: payload.jsonData(),
+                                         publicRSAKey: secKey,
+                                         header: .defaultHeader).compactRepresentation
     }
 }
 

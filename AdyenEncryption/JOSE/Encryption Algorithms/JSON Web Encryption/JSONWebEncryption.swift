@@ -8,6 +8,10 @@ import Foundation
 
 internal struct JSONWebEncryption {
     internal struct Header: Encodable {
+        
+        internal static let defaultHeader: Header = .init(contentEncryptionAlgorithm: .AESCBC,
+                                                          keyEncryptionAlgorithm: .rsaOAEP256)
+        
         internal let contentEncryptionAlgorithm: ContentEncryptionAlgorithm
         
         internal let keyEncryptionAlgorithm: KeyEncryptionAlgorithm

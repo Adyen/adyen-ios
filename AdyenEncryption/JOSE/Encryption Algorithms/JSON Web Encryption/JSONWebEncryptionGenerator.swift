@@ -17,8 +17,8 @@ internal protocol AnyJSONWebEncryptionGenerator {
 internal struct JSONWebEncryptionGenerator: AnyJSONWebEncryptionGenerator {
     internal func generate(withPayload: Data,
                            publicRSAKey: SecKey,
-                           mockInitializationVector: Data?,
-                           mockContentEncryptionKey: Data?,
+                           mockInitializationVector: Data? = nil,
+                           mockContentEncryptionKey: Data? = nil,
                            header: JSONWebEncryption.Header) throws -> JSONWebEncryption {
         let keyEncryptionAlgorithm = header.keyEncryptionAlgorithm.algorithm
         let contentEncryptionAlgorithm = header.contentEncryptionAlgorithm.algorithm
