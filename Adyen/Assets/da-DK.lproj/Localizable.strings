@@ -122,3 +122,10 @@
 "adyen.affirm.deliveryAddressToggle.title" = "Separat leveringsadresse";
 "adyen.voucher.shopperReference" = "Købers reference";
 "adyen.voucher.alternativeReference" = "Alternativ reference";
+"adyen.card.installments.numberOfInstallments" = "Antal rater";
+"adyen.card.installments.oneTime" = "Engangsbetaling";
+"adyen.card.installments.title" = "Afdragsbetaling";
+"adyen.card.installments.revolving" = "Løbende betaling";
+"adyen.card.installments.monthsAndPrice" = "%@x %@";
+"adyen.card.installments.months" = "%@ måneder";
+"adyen.card.installments.plan" = "";

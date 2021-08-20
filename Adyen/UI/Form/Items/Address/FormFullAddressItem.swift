@@ -54,7 +54,9 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         update(for: initialCountry)
         
         bind(countrySelectItem.publisher, at: \.identifier, to: self, at: \.value.country)
-        observe(countrySelectItem.publisher, eventHandler: { event in
+        observe(countrySelectItem.publisher, eventHandler: { [weak self] event in
+            guard let self = self else { return }
+            self.value.country = event.element.identifier
             self.update(for: event.element.identifier)
         })
     }

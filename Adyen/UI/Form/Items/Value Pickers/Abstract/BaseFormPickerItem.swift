@@ -31,14 +31,22 @@ public struct BasePickerElement<ElementType: CustomStringConvertible>: PickerEle
     }
 
     public var description: String { element.description }
+    
+    public init(identifier: String, element: ElementType) {
+        self.identifier = identifier
+        self.element = element
+    }
 
 }
 
 /// Describes a picker item.
 /// :nodoc:
 open class BaseFormPickerItem<ElementType: CustomStringConvertible>: FormValueItem<BasePickerElement<ElementType>, FormTextItemStyle>,
-    InputViewRequiringFormItem {
+    InputViewRequiringFormItem, Hidable {
 
+    /// :nodoc:
+    public var isHidden: Observable<Bool> = Observable(false)
+    
     /// The complete list of selectable values.
     internal var selectableValues: [BasePickerElement<ElementType>]
 
@@ -46,7 +54,7 @@ open class BaseFormPickerItem<ElementType: CustomStringConvertible>: FormValueIt
     ///
     /// - Parameter selectableValues: The list of values to select from.
     /// - Parameter style: The `FormPhoneExtensionPickerItem` UI style.
-    internal init(preselectedValue: BasePickerElement<ElementType>, selectableValues: [BasePickerElement<ElementType>], style: FormTextItemStyle) {
+    public init(preselectedValue: BasePickerElement<ElementType>, selectableValues: [BasePickerElement<ElementType>], style: FormTextItemStyle) {
         assert(selectableValues.count > 0)
         self.selectableValues = selectableValues
         super.init(value: preselectedValue, style: style)

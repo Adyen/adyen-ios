@@ -122,3 +122,10 @@
 "adyen.affirm.deliveryAddressToggle.title" = "Adresă de livrare separată";
 "adyen.voucher.shopperReference" = "Referință cumpărător";
 "adyen.voucher.alternativeReference" = "Referință alternativă";
+"adyen.card.installments.numberOfInstallments" = "Număr de rate";
+"adyen.card.installments.oneTime" = "Plată unică";
+"adyen.card.installments.title" = "Plată în rate";
+"adyen.card.installments.revolving" = "Plată recurentă";
+"adyen.card.installments.monthsAndPrice" = "%@x %@";
+"adyen.card.installments.months" = "%@ luni";
+"adyen.card.installments.plan" = "";

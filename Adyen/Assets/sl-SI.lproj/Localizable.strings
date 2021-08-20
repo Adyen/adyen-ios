@@ -122,3 +122,10 @@
 "adyen.affirm.deliveryAddressToggle.title" = "Ločen naslov za dostavo";
 "adyen.voucher.shopperReference" = "Referenčna številka kupca";
 "adyen.voucher.alternativeReference" = "Druga referenčna številka";
+"adyen.card.installments.numberOfInstallments" = "Število obrokov";
+"adyen.card.installments.oneTime" = "Enkratno plačilo";
+"adyen.card.installments.title" = "Obročno plačilo";
+"adyen.card.installments.revolving" = "Revolving plačilo";
+"adyen.card.installments.monthsAndPrice" = "%@ × %@";
+"adyen.card.installments.months" = "Št. mesecev: %@";
+"adyen.card.installments.plan" = "";

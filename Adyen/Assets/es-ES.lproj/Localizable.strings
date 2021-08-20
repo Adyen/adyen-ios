@@ -122,3 +122,10 @@
 "adyen.affirm.deliveryAddressToggle.title" = "Entregar en otra dirección";
 "adyen.voucher.shopperReference" = "Referencia cliente";
 "adyen.voucher.alternativeReference" = "Referencia alternativa";
+"adyen.card.installments.numberOfInstallments" = "Número de plazos";
+"adyen.card.installments.oneTime" = "Pago único";
+"adyen.card.installments.title" = "Pago fraccionado";
+"adyen.card.installments.revolving" = "Pago rotativo";
+"adyen.card.installments.monthsAndPrice" = "%@x %@";
+"adyen.card.installments.months" = "%@ meses";
+"adyen.card.installments.plan" = "";

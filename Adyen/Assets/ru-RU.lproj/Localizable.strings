@@ -122,3 +122,10 @@
 "adyen.affirm.deliveryAddressToggle.title" = "Доставить по другому адресу";
 "adyen.voucher.shopperReference" = "Идентификатор покупателя";
 "adyen.voucher.alternativeReference" = "Другой код";
+"adyen.card.installments.numberOfInstallments" = "Количество платежей";
+"adyen.card.installments.oneTime" = "Одноразовый платеж";
+"adyen.card.installments.title" = "Рассрочка";
+"adyen.card.installments.revolving" = "Повторяющаяся оплата";
+"adyen.card.installments.monthsAndPrice" = "%@× %@";
+"adyen.card.installments.months" = "%@ мес.";
+"adyen.card.installments.plan" = "";

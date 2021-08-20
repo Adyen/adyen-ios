@@ -122,3 +122,10 @@
 "adyen.affirm.deliveryAddressToggle.title" = "별도의 배송 주소";
 "adyen.voucher.shopperReference" = "구매자 참조번호";
 "adyen.voucher.alternativeReference" = "대체 참조번호";
+"adyen.card.installments.numberOfInstallments" = "할부 개월 수";
+"adyen.card.installments.oneTime" = "일시불 결제";
+"adyen.card.installments.title" = "할부 결제";
+"adyen.card.installments.revolving" = "리볼빙 결제";
+"adyen.card.installments.monthsAndPrice" = "%@x %@";
+"adyen.card.installments.months" = "%@개월";
+"adyen.card.installments.plan" = "";

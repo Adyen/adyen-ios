@@ -8,14 +8,14 @@ import Foundation
 import UIKit
 
 /// A view representing a vertical stack of items.
-internal final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormItemType> {
+public final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormItemType> {
 
     private var views: [AnyFormItemView] = []
 
     /// Initializes the split item view.
     ///
     /// - Parameter item: The item represented by the view.
-    internal required init(item: FormItemType) {
+    public required init(item: FormItemType) {
         super.init(item: item)
 
         views = item.subitems.map(FormVerticalStackItemView.build)
@@ -28,7 +28,7 @@ internal final class FormVerticalStackItemView<FormItemType: FormItem>: FormItem
         stackView.adyen.anchor(inside: self)
     }
 
-    override internal var childItemViews: [AnyFormItemView] { views }
+    override public var childItemViews: [AnyFormItemView] { views }
 
     // MARK: - Layout
 

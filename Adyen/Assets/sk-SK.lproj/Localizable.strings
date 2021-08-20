@@ -122,3 +122,10 @@
 "adyen.affirm.deliveryAddressToggle.title" = "Samostatná dodacia adresa";
 "adyen.voucher.shopperReference" = "Referencia kupujúceho";
 "adyen.voucher.alternativeReference" = "Alternatívny odkaz";
+"adyen.card.installments.numberOfInstallments" = "Počet splátok";
+"adyen.card.installments.oneTime" = "Jednorazová platba";
+"adyen.card.installments.title" = "Platba po splátkach";
+"adyen.card.installments.revolving" = "Revolvingová platba";
+"adyen.card.installments.monthsAndPrice" = "% {times} x % {partialValue}";
+"adyen.card.installments.months" = "%@ mesiace/-ov";
+"adyen.card.installments.plan" = "";

@@ -122,3 +122,10 @@
 "adyen.affirm.deliveryAddressToggle.title" = "Dodací adresa odlišná od fakturační";
 "adyen.voucher.shopperReference" = "Číslo kupujícího";
 "adyen.voucher.alternativeReference" = "Náhradní číslo";
+"adyen.card.installments.numberOfInstallments" = "Počet splátek";
+"adyen.card.installments.oneTime" = "Jednorázová platba";
+"adyen.card.installments.title" = "Platba na splátky";
+"adyen.card.installments.revolving" = "Opakující se platba";
+"adyen.card.installments.monthsAndPrice" = "%@× %@";
+"adyen.card.installments.months" = "%@ měsíců";
+"adyen.card.installments.plan" = "";

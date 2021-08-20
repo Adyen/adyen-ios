@@ -122,3 +122,10 @@
 "adyen.affirm.deliveryAddressToggle.title" = "Eltérő szállítási cím";
 "adyen.voucher.shopperReference" = "Vásárlói referencia";
 "adyen.voucher.alternativeReference" = "Alternatív hivatkozás";
+"adyen.card.installments.numberOfInstallments" = "Részletek száma";
+"adyen.card.installments.oneTime" = "Egyösszegű fizetés";
+"adyen.card.installments.title" = "Részletfizetés";
+"adyen.card.installments.revolving" = "Többösszegű fizetés";
+"adyen.card.installments.monthsAndPrice" = "%@ x %@";
+"adyen.card.installments.months" = "%@ hónap";
+"adyen.card.installments.plan" = "";

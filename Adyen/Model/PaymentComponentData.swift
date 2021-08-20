@@ -25,6 +25,9 @@ public struct PaymentComponentData {
 
     /// The payment amount.
     public let amount: Amount?
+    
+    /// The installments object.
+    public let installments: Installments?
 
     /// Shopper name.
     public var shopperName: ShopperName? {
@@ -75,16 +78,19 @@ public struct PaymentComponentData {
     ///   - order: The partial payment order if any.
     ///   - storePaymentMethod: Whether the user has chosen to store the payment method.
     ///   - browserInfo: The device default browser info.
+    ///   - installments: Installments selection if specified.
     public init(paymentMethodDetails: PaymentMethodDetails,
                 amount: Amount?,
                 order: PartialPaymentOrder?,
                 storePaymentMethod: Bool = false,
-                browserInfo: BrowserInfo? = nil) {
+                browserInfo: BrowserInfo? = nil,
+                installments: Installments? = nil) {
         self.paymentMethod = paymentMethodDetails
         self.storePaymentMethod = storePaymentMethod
         self.browserInfo = browserInfo
         self.order = order
         self.amount = amount
+        self.installments = installments
     }
 
     /// :nodoc:

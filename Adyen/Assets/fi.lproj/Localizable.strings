@@ -122,3 +122,10 @@
 "adyen.affirm.deliveryAddressToggle.title" = "Erillinen toimitusosoite";
 "adyen.voucher.shopperReference" = "Ostajan viite";
 "adyen.voucher.alternativeReference" = "Vaihtoehtoinen viite";
+"adyen.card.installments.numberOfInstallments" = "Asennusten määrä";
+"adyen.card.installments.oneTime" = "Kertamaksu";
+"adyen.card.installments.title" = "Erämaksu";
+"adyen.card.installments.revolving" = "Toistuva maksu";
+"adyen.card.installments.monthsAndPrice" = "% {kertaa} x% {osittainenarvo}";
+"adyen.card.installments.months" = "% {kertaa} kuukautta";
+"adyen.card.installments.plan" = "";

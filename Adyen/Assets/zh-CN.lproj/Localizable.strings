@@ -122,3 +122,10 @@
 "adyen.affirm.deliveryAddressToggle.title" = "单独的送货地址";
 "adyen.voucher.shopperReference" = "顾客参考";
 "adyen.voucher.alternativeReference" = "备选代码";
+"adyen.card.installments.numberOfInstallments" = "分期付款期数";
+"adyen.card.installments.oneTime" = "全款支付";
+"adyen.card.installments.title" = "分期支付";
+"adyen.card.installments.revolving" = "循环支付";
+"adyen.card.installments.monthsAndPrice" = "%@x %@";
+"adyen.card.installments.months" = "%@ 个月";
+"adyen.card.installments.plan" = "";
