@@ -7,11 +7,11 @@
 import CommonCrypto
 import Foundation
 
-internal func aes256Crypt(operation: CCOperation,
-                          options: CCOptions,
-                          keyData: Data,
-                          initializationVector: Data?,
-                          dataIn: Data) throws -> Data {
+internal func aesCrypt(operation: CCOperation,
+                       options: CCOptions,
+                       keyData: Data,
+                       initializationVector: Data?,
+                       dataIn: Data) throws -> Data {
     let dataOutLength = dataIn.count + kCCBlockSizeAES128
     guard let dataOut = NSMutableData(length: dataOutLength) else {
         throw EncryptionError.encryptionFailed

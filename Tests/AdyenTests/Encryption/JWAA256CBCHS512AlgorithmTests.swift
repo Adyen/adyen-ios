@@ -62,11 +62,7 @@ class JWAA256CBCHS512AlgorithmTests: XCTestCase {
     }
     
     private func byteArray(from string: String) -> [UInt8] {
-        string.split(separator: " ").compactMap { UInt8($0) }.reduce([UInt8](), { array, value in
-            var array = array
-            array.append(value)
-            return array
-        })
+        string.split(separator: " ").compactMap { UInt8($0) }
     }
 
     func testInvalidKeyLength() throws {

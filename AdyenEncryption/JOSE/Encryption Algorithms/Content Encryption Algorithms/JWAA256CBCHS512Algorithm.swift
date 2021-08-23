@@ -26,11 +26,11 @@ internal struct JWAA256CBCHS512Algorithm: JWAEncryptionAlgorithm {
         
         let operation = CCOperation(kCCEncrypt)
         let option = CCOptions(kCCOptionPKCS7Padding)
-        let encryptedPayload = try aes256Crypt(operation: operation,
-                                               options: option,
-                                               keyData: aesKey,
-                                               initializationVector: input.initializationVector,
-                                               dataIn: input.payload)
+        let encryptedPayload = try aesCrypt(operation: operation,
+                                            options: option,
+                                            keyData: aesKey,
+                                            initializationVector: input.initializationVector,
+                                            dataIn: input.payload)
         let authenticationTag = try createAuthenticationTag(withAdditionalAuthenticationData: input.additionalAuthenticationData,
                                                             initializationVector: input.initializationVector,
                                                             encryptedPayload: encryptedPayload,

@@ -9,28 +9,22 @@ import Foundation
 internal protocol AnyJSONWebEncryptionGenerator {
     func generate(withPayload: Data,
                   publicRSAKey: SecKey,
-                  mockInitializationVector: Data?,
-                  mockContentEncryptionKey: Data?,
                   header: JSONWebEncryption.Header) throws -> JSONWebEncryption
 }
 
 internal struct JSONWebEncryptionGenerator: AnyJSONWebEncryptionGenerator {
     internal func generate(withPayload: Data,
                            publicRSAKey: SecKey,
-                           mockInitializationVector: Data? = nil,
-                           mockContentEncryptionKey: Data? = nil,
                            header: JSONWebEncryption.Header) throws -> JSONWebEncryption {
         let keyEncryptionAlgorithm = header.keyEncryptionAlgorithm.algorithm
         let contentEncryptionAlgorithm = header.contentEncryptionAlgorithm.algorithm
         
-        let contentEncryptionKey = try mockContentEncryptionKey ??
-            generateRandomData(length: contentEncryptionAlgorithm.keyLength)
+        let contentEncryptionKey = try generateRandomData(length: contentEncryptionAlgorithm.keyLength)
         let enctyptedKey = try keyEncryptionAlgorithm.encrypt(contentEncryptionKey, withKey: publicRSAKey)
         
         let encodedHeader = try JSONEncoder().encode(header)
         
-        let initializationVector = try mockInitializationVector ??
-            generateRandomData(length: contentEncryptionAlgorithm.initializationVectorLength)
+        let initializationVector = try generateRandomData(length: contentEncryptionAlgorithm.initializationVectorLength)
         guard let additionalAuthenticationData = encodedHeader.base64URLString().data(using: .ascii) else {
             throw EncryptionError.encryptionFailed
         }
