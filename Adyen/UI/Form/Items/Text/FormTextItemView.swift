@@ -297,6 +297,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
         removeAccessoryIfNeeded()
         hideAlertLabel(true)
         unhighlightSeparatorView()
+        titleLabel.textColor = defaultTitleColor
     }
     
     private func hideAlertLabel(_ hidden: Bool) {
