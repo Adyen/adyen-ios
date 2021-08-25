@@ -124,7 +124,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
                                            transitionView.removeFromSuperview()
                                        })
         
-        animate(context: context)
+        adyen.animate(context: context)
     }
     
     private enum Animation: String {
@@ -142,7 +142,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
                                            self.separatorView.backgroundColor = self.item.style.separatorColor
                                        })
         
-        animate(context: context)
+        adyen.animate(context: context)
         
     }
     
