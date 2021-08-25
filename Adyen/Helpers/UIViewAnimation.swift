@@ -67,53 +67,31 @@ extension AdyenScope where Base: UIView {
     public func animate(context: AnimationContext) {
         base.animations.append(context)
         
-        guard base.animations.count == 1 else { return }
-        animateNext(context: context)
-    }
-    
-    /// :nodoc:
-    public func animateKeyframes(context: KeyFrameAnimationContext) {
-        animate(context: context)
-    }
-    
-    private func animateNext(context: AnimationContext?) {
-        if let context = context as? KeyFrameAnimationContext {
-            animateNextKeyframes(context: context)
-            return
+        if base.animations.count == 1 {
+            animateNext(context: context)
         }
-        guard let context = context else { return }
-        
-        func next() {
+    }
+    
+    private func animateNext(context: AnimationContext) {
+        let completion: (Bool) -> Void = {
+            context.completion?($0)
             base.animations.removeFirst()
-            animateNext(context: base.animations.first)
+            base.animations.first.map(animateNext)
         }
         
-        UIView.animate(withDuration: context.duration,
-                       delay: context.delay,
-                       options: context.options,
-                       animations: context.animations,
-                       completion: {
-                           context.completion?($0)
-                           next()
-                       })
-    }
-    
-    private func animateNextKeyframes(context: KeyFrameAnimationContext?) {
-        guard let context = context else { return }
-        
-        func next() {
-            base.animations.removeFirst()
-            animateNext(context: base.animations.first)
+        if let keyFrameContext = context as? KeyFrameAnimationContext {
+            UIView.animateKeyframes(withDuration: keyFrameContext.duration,
+                                    delay: keyFrameContext.delay,
+                                    options: keyFrameContext.keyFrameOptions,
+                                    animations: keyFrameContext.animations,
+                                    completion: completion)
+        } else {
+            UIView.animate(withDuration: context.duration,
+                           delay: context.delay,
+                           options: context.options,
+                           animations: context.animations,
+                           completion: completion)
         }
-        
-        UIView.animateKeyframes(withDuration: context.duration,
-                                delay: context.delay,
-                                options: context.keyFrameOptions,
-                                animations: context.animations,
-                                completion: {
-                                    context.completion?($0)
-                                    next()
-                                })
     }
 }
 
@@ -121,10 +99,7 @@ private extension UIView {
     /// :nodoc:
     var animations: [AnimationContext] {
         get {
-            guard let value = objc_getAssociatedObject(self, &AssociatedKeys.animations) as? [AnimationContext] else {
-                return [AnimationContext]()
-            }
-            return value
+            objc_getAssociatedObject(self, &AssociatedKeys.animations) as? [AnimationContext] ?? []
         }
         set {
             objc_setAssociatedObject(self, &AssociatedKeys.animations, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_COPY)

@@ -59,7 +59,7 @@ extension AdyenScope where Base: UIView {
                                                    self.base.alpha = hidden ? 0 : 1
                                                    self.base.adyen.updatePreferredContentSize()
                                                })
-        animateKeyframes(context: context)
+        animate(context: context)
     }
     
     /// :nodoc:
