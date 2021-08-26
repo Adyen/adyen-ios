@@ -162,6 +162,10 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     
     override open func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        resetForm()
+    }
+    
+    public func resetForm() {
         itemManager.flatItemViews.forEach { $0.reset() }
     }
     

@@ -295,7 +295,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     
     private func resetValidationStatus() {
         removeAccessoryIfNeeded()
-        hideAlertLabel(true)
+        hideAlertLabel(true, animated: false)
         unhighlightSeparatorView()
         titleLabel.textColor = defaultTitleColor
     }
