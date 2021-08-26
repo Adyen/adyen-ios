@@ -10,8 +10,6 @@ import UIKit
 /// Animate sequential slid in and out movement for transitioning controllers.
 internal final class SlideInPresentationAnimator: NSObject, UIViewControllerAnimatedTransitioning {
 
-    private static let pixelPerSec: Double = 1800
-
     private enum Animation: String {
         case dropinTransitionPresentation = "transition_presentation"
     }
@@ -30,22 +28,26 @@ internal final class SlideInPresentationAnimator: NSObject, UIViewControllerAnim
         guard let toShow = transitionContext.viewController(forKey: .to) as? WrapperViewController,
               let toHide = transitionContext.viewController(forKey: .from) as? WrapperViewController else { return }
 
-        let distance = Double(toShow.child.view.bounds.height + toHide.child.view.bounds.height)
-        let time = distance / SlideInPresentationAnimator.pixelPerSec
+        let showDistance = Double(toShow.child.view.bounds.height)
+        let hideDistance = Double(toHide.child.view.bounds.height)
+        let distance = showDistance + hideDistance
+
         let containerView = transitionContext.containerView
         containerView.addSubview(toShow.view)
         toShow.view.frame.origin.y = containerView.bounds.height
         toShow.updateFrame(keyboardRect: .zero)
 
         let context = KeyFrameAnimationContext(animationKey: Animation.dropinTransitionPresentation.rawValue,
-                                               duration: time,
+                                               duration: duration,
                                                delay: 0.0,
-                                               options: [.layoutSubviews, .beginFromCurrentState],
+                                               options: [.beginFromCurrentState],
                                                animations: {
-                                                   UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.5) {
+                                                   UIView.addKeyframe(withRelativeStartTime: 0.0,
+                                                                      relativeDuration: hideDistance / distance) {
                                                        toHide.view.frame.origin.y = containerView.bounds.height
                                                    }
-                                                   UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.5) {
+                                                   UIView.addKeyframe(withRelativeStartTime: hideDistance / distance,
+                                                                      relativeDuration: 1 - hideDistance / distance) {
                                                        toShow.view.frame.origin.y = containerView.frame.origin.y
                                                    }
                                                },

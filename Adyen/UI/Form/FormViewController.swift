@@ -81,7 +81,7 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     public func didUpdatePreferredContentSize() {
         let bottomInset: CGFloat = keyboardRect.height - view.safeAreaInsets.bottom
         let context = AnimationContext(animationKey: "Keyboard",
-                                       duration: 0.5,
+                                       duration: 0.25,
                                        delay: 0,
                                        options: [.beginFromCurrentState, .layoutSubviews],
                                        animations: { self.formView.contentInset.bottom = bottomInset },
@@ -191,12 +191,10 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         delegate?.viewDidAppear(viewController: self)
 
         view.adyen.animate(context: AnimationContext(animationKey: "First responder",
-                                                     duration: 0.25,
+                                                     duration: 0,
                                                      delay: 0,
-                                                     options: [.layoutSubviews],
-                                                     animations: {
-                                                         self.assignInitialFirstResponder()
-                                                     }))
+                                                     options: [.layoutSubviews, .beginFromCurrentState],
+                                                     animations: { self.assignInitialFirstResponder() }))
     }
     
     /// :nodoc:

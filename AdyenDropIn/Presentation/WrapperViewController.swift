@@ -42,20 +42,12 @@ internal final class WrapperViewController: UIViewController {
         guard let view = child.viewIfLoaded else { return }
         let finalFrame = child.finalPresentationFrame(with: keyboardRect)
 
-        view.adyen.animate(context: AnimationContext(animationKey: "Layout first",
-                                                     duration: 0,
-                                                     delay: 0,
-                                                     options: [],
-                                                     animations: {
-                                                         self.view.layoutIfNeeded()
-                                                     }))
-
         view.adyen.animate(context: SpringAnimationContext(animationKey: "Update frame",
                                                            duration: 0.3,
                                                            delay: 0,
                                                            dampingRatio: 0.8,
                                                            velocity: 0.2,
-                                                           options: [.layoutSubviews, .beginFromCurrentState, .curveEaseInOut],
+                                                           options: [.beginFromCurrentState, .curveEaseInOut],
                                                            animations: {
                                                                self.leftConstraint?.constant = finalFrame.origin.x
                                                                self.rightConstraint?.constant = -finalFrame.origin.x
