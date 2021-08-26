@@ -68,10 +68,6 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
 
     private var keyboardRect: CGRect = .zero
 
-    private func updateScrollViewInsets(keyboardHeight: CGFloat) {
-        formView.contentInset.bottom = keyboardHeight
-    }
-
     // MARK: - Private Properties
 
     private lazy var itemManager = FormViewItemManager()
@@ -83,8 +79,14 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
 
     /// :nodoc:
     public func didUpdatePreferredContentSize() {
-        updateScrollViewInsets(keyboardHeight: keyboardRect.height)
-        view.layoutIfNeeded()
+        let bottomInset: CGFloat = keyboardRect.height - view.safeAreaInsets.bottom
+        let context = AnimationContext(animationKey: "Keyboard",
+                                       duration: 0.5,
+                                       delay: 0,
+                                       options: [.beginFromCurrentState, .layoutSubviews],
+                                       animations: { self.formView.contentInset.bottom = bottomInset },
+                                       completion: { _ in })
+        view.adyen.animate(context: context)
     }
     
     // MARK: - Items
@@ -157,6 +159,15 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     }
     
     // MARK: - View
+    
+    override open func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        resetForm()
+    }
+    
+    public func resetForm() {
+        itemManager.flatItemViews.forEach { $0.reset() }
+    }
     
     /// :nodoc:
     override open func viewDidLoad() {

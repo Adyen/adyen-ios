@@ -6,8 +6,9 @@
 
 import Foundation
 
-// Throttles requests.
-internal final class Throttler {
+// Throttles come code execution.
+/// :nodoc:
+public final class Throttler {
     
     private var workItem = DispatchWorkItem(block: { /* first work item is idle */ })
     private var previousRun = Date.distantPast

@@ -115,7 +115,7 @@ internal class CardViewController: FormViewController {
     internal var storePayment: Bool {
         configuration.showsStorePaymentMethodField ? items.storeDetailsItem.value : false
     }
-    
+
     internal var installments: Installments? {
         guard !items.installmentsItem.isHidden.wrappedValue else { return nil }
         return items.installmentsItem.value.element.installmentValue
@@ -159,18 +159,6 @@ internal class CardViewController: FormViewController {
         items.installmentsItem.update(cardType: brands.first?.type) // choose first until dual brand selection feature
     }
 
-    internal func resetItems() {
-        items.billingAddressItem.reset()
-
-        [items.postalCodeItem,
-         items.numberItem,
-         items.expiryDateItem,
-         items.securityCodeItem,
-         items.holderNameItem].forEach { $0.value = "" }
-
-        items.storeDetailsItem.value = false
-    }
-
     // MARK: Private methods
 
     private func setupView() {
@@ -196,7 +184,7 @@ internal class CardViewController: FormViewController {
         if configuration.socialSecurityNumberMode != .hide {
             append(items.socialSecurityNumberItem)
         }
-        
+
         if configuration.installmentConfigration != nil {
             append(items.installmentsItem)
         }
