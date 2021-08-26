@@ -37,6 +37,8 @@ internal final class WrapperViewController: UIViewController {
 
         return viewController?.children.contains(where: { heirarchyRequiresKeyboardInput(viewController: $0) }) ?? false
     }
+    
+    private let frameUpdateThrottler = Throttler(minimumDelay: 0.05)
 
     internal func updateFrame(keyboardRect: CGRect) {
         guard let view = child.viewIfLoaded else { return }
@@ -44,7 +46,7 @@ internal final class WrapperViewController: UIViewController {
         topConstraint?.constant = finalFrame.origin.y
         leftConstraint?.constant = finalFrame.origin.x
         rightConstraint?.constant = -finalFrame.origin.x
-        view.layoutIfNeeded()
+        frameUpdateThrottler.throttle(view.layoutIfNeeded)
     }
 
     fileprivate func positionContent(_ child: ModalViewController) {

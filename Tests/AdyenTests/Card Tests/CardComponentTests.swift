@@ -1201,8 +1201,16 @@ class CardComponentTests: XCTestCase {
                                 configuration: config)
         sut.cardViewController.items.postalCodeItem.value = "1501 NH"
 
+        // show view controller
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        wait(for: .seconds(1))
+        
         // When
-        sut.clear()
+        // hide view controller
+        UIApplication.shared.keyWindow?.rootViewController = UIViewController()
+        
+        wait(for: .seconds(1))
 
         // Then
         XCTAssertTrue(sut.cardViewController.items.postalCodeItem.value.isEmpty)
@@ -1220,9 +1228,17 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config)
         sut.cardViewController.items.numberItem.value = "4111 1111 1111 1111"
-
+        
+        // show view controller
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        wait(for: .seconds(1))
+        
         // When
-        sut.clear()
+        // hide view controller
+        UIApplication.shared.keyWindow?.rootViewController = UIViewController()
+        
+        wait(for: .seconds(1))
 
         // Then
         XCTAssertTrue(sut.cardViewController.items.numberItem.value.isEmpty)
@@ -1241,8 +1257,16 @@ class CardComponentTests: XCTestCase {
                                 configuration: config)
         sut.cardViewController.items.expiryDateItem.value = "03/24"
 
+        // show view controller
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        wait(for: .seconds(1))
+        
         // When
-        sut.clear()
+        // hide view controller
+        UIApplication.shared.keyWindow?.rootViewController = UIViewController()
+        
+        wait(for: .seconds(1))
 
         // Then
         XCTAssertTrue(sut.cardViewController.items.expiryDateItem.value.isEmpty)
@@ -1261,8 +1285,16 @@ class CardComponentTests: XCTestCase {
                                 configuration: config)
         sut.cardViewController.items.securityCodeItem.value = "935"
 
+        // show view controller
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        wait(for: .seconds(1))
+        
         // When
-        sut.clear()
+        // hide view controller
+        UIApplication.shared.keyWindow?.rootViewController = UIViewController()
+        
+        wait(for: .seconds(1))
 
         // Then
         XCTAssertTrue(sut.cardViewController.items.securityCodeItem.value.isEmpty)
@@ -1274,15 +1306,23 @@ class CardComponentTests: XCTestCase {
                                        name: "Test name",
                                        fundingSource: .credit,
                                        brands: ["visa", "amex", "mc"])
-        var config = CardComponent.Configuration()
+        var config = CardComponent.Configuration(showsHolderNameField: true)
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: config)
         sut.cardViewController.items.holderNameItem.value = "Katrina del Mar"
 
+        // show view controller
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        wait(for: .seconds(1))
+        
         // When
-        sut.clear()
+        // hide view controller
+        UIApplication.shared.keyWindow?.rootViewController = UIViewController()
+        
+        wait(for: .seconds(1))
 
         // Then
         XCTAssertTrue(sut.cardViewController.items.holderNameItem.value.isEmpty)
@@ -1301,8 +1341,16 @@ class CardComponentTests: XCTestCase {
                                 configuration: config)
         sut.cardViewController.items.storeDetailsItem.value = true
 
+        // show view controller
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        wait(for: .seconds(1))
+        
         // When
-        sut.clear()
+        // hide view controller
+        UIApplication.shared.keyWindow?.rootViewController = UIViewController()
+        
+        wait(for: .seconds(1))
 
         // Then
         XCTAssertFalse(sut.cardViewController.items.storeDetailsItem.value)
@@ -1310,18 +1358,32 @@ class CardComponentTests: XCTestCase {
 
     func testClearShouldAssignEmptyPostalAddressToBillingAddressItem() throws {
         // Given
-        let expectedPostalAddress = PostalAddress()
+        let expectedPostalAddress = PostalAddress(city: "",
+                                                  country: "US",
+                                                  houseNumberOrName: "",
+                                                  postalCode: "",
+                                                  stateOrProvince: "AL",
+                                                  street: "",
+                                                  apartment: nil)
         let method = CardPaymentMethod(type: "bcmc",
                                        name: "Test name",
                                        fundingSource: .credit,
                                        brands: ["visa", "amex", "mc"])
         var config = CardComponent.Configuration()
-        config.billingAddressMode = .postalCode
+        config.billingAddressMode = .full
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: config)
+        // show view controller
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        wait(for: .seconds(1))
+        
         // When
-        sut.clear()
+        // hide view controller
+        UIApplication.shared.keyWindow?.rootViewController = UIViewController()
+        
+        wait(for: .seconds(1))
 
         // Then
         let postalAddress = sut.cardViewController.items.billingAddressItem.value

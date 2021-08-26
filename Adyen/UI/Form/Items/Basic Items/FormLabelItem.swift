@@ -49,4 +49,7 @@ private class ADYLabel: UILabel, AnyFormItemView {
 
     public var childItemViews: [AnyFormItemView] { [] }
     
+    /// :nodoc:
+    public func reset() { /* Do nothing */ }
+    
 }
