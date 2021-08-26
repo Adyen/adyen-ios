@@ -48,7 +48,7 @@ internal final class SlideInPresentationAnimator: NSObject, UIViewControllerAnim
                                                completion: { finished in
                                                    transitionContext.completeTransition(finished)
                                                })
-        containerView.adyen.animateKeyframes(context: context)
+        containerView.adyen.animate(context: context)
 
     }
 }
