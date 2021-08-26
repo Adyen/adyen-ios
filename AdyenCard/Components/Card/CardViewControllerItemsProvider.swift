@@ -155,8 +155,17 @@ extension CardViewController {
             let storeDetailsItem = FormToggleItem(style: formStyle.toggle)
             storeDetailsItem.title = localizedString(.cardStoreDetailsButton, localizationParameters)
             storeDetailsItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "storeDetailsItem")
-
+            
             return storeDetailsItem
+        }()
+        
+        internal lazy var installmentsItem: FormCardInstallmentsItem = {
+            let installmentsItem = FormCardInstallmentsItem(installmentConfiguration: configuration.installmentConfigration,
+                                                            style: formStyle.textField,
+                                                            amount: payment?.amount,
+                                                            localizationParameters: localizationParameters)
+            installmentsItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "installmentsItem")
+            return installmentsItem
         }()
 
         internal lazy var button: FormButtonItem = {

@@ -53,6 +53,7 @@ public struct InstallmentConfiguration {
     
     /// Determines whether to show the money amount in the installment selection.
     /// For example, `3 months X 500 USD` or `3 months`.
+    /// For now it is disabled due to making the dividing calculations in the client.
     internal let showInstallmentPrice: Bool
     
     /// Creates a new installment configuration by providing both the card type based options
@@ -60,36 +61,30 @@ public struct InstallmentConfiguration {
     /// - Parameters:
     ///   - cardBasedOptions: Options based on the card type. Must not be empty.
     ///   - defaultOptions: Default options for cards that are not specified in `cardBasedOptions`.
-    ///   - showInstallmentPrice: Boolean to determine whether to show the money amount next to the installments.
-    /// For example, `"3 months X 500 USD"` vs `"3 months"`. Default is `true`.
-    public init(cardBasedOptions: [CardType: InstallmentOptions], defaultOptions: InstallmentOptions, showInstallmentPrice: Bool = true) {
+    public init(cardBasedOptions: [CardType: InstallmentOptions], defaultOptions: InstallmentOptions) {
         assert(!cardBasedOptions.isEmpty, "This dictionary must not be empty.")
         self.cardBasedOptions = cardBasedOptions
         self.defaultOptions = defaultOptions
-        self.showInstallmentPrice = showInstallmentPrice
+        self.showInstallmentPrice = false
     }
     
     /// Creates a new installment configuration by providing the card based options.
     /// - Parameters:
     ///   - cardBasedOptions:  Options based on the card type. Must not be empty.
-    ///   - showInstallmentPrice: Boolean to determine whether to show the money amount next to the installments.
-    /// For example, `"3 months X 500 USD"` vs `"3 months"`. Default is `true`.
-    public init(cardBasedOptions: [CardType: InstallmentOptions], showInstallmentPrice: Bool = true) {
+    public init(cardBasedOptions: [CardType: InstallmentOptions]) {
         assert(!cardBasedOptions.isEmpty, "This dictionary must not be empty.")
         self.defaultOptions = nil
         self.cardBasedOptions = cardBasedOptions
-        self.showInstallmentPrice = showInstallmentPrice
+        self.showInstallmentPrice = false
     }
     
     /// Creates a new installment configuration by providing the default options.
     /// - Parameters:
     ///   - defaultOptions: Default options to apply to all card types.
-    ///   - showInstallmentPrice: Boolean to determine whether to show the money amount next to the installments.
-    /// For example, `"3 months X 500 USD"` vs `"3 months"`. Default is `true`.
-    public init(defaultOptions: InstallmentOptions, showInstallmentPrice: Bool = true) {
+    public init(defaultOptions: InstallmentOptions) {
         self.defaultOptions = defaultOptions
         self.cardBasedOptions = nil
-        self.showInstallmentPrice = showInstallmentPrice
+        self.showInstallmentPrice = false
     }
     
 }

@@ -36,7 +36,7 @@ public struct Installments: Encodable, Equatable {
     }
     
     /// Creates a new `Installments` instance with default value options.
-    public init(totalMonths: Int = 2, plan: Plan = .regular) {
+    public init(totalMonths: Int = 1, plan: Plan = .regular) {
         self.totalMonths = totalMonths
         self.plan = plan
     }

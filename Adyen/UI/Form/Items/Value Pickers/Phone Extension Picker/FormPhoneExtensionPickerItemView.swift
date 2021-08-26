@@ -12,7 +12,7 @@ internal final class FormPhoneExtensionPickerItemView: BaseFormPickerItemView<Ph
                                                                              inputAccessoryView: pickerViewToolbar,
                                                                              style: item.style.text)
 
-    override internal func getInputControl() -> PickerTextInputControl {
+    override internal func createInputControl() -> PickerTextInputControl {
         phoneExtensionInputControl
     }
 

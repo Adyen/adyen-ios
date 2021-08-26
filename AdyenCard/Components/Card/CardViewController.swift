@@ -115,6 +115,11 @@ internal class CardViewController: FormViewController {
     internal var storePayment: Bool {
         configuration.showsStorePaymentMethodField ? items.storeDetailsItem.value : false
     }
+    
+    internal var installments: Installments? {
+        guard !items.installmentsItem.isHidden.wrappedValue else { return nil }
+        return items.installmentsItem.value.element.installmentValue
+    }
 
     internal func stopLoading() {
         items.button.showsActivityIndicator = false
@@ -151,13 +156,8 @@ internal class CardViewController: FormViewController {
         items.additionalAuthPasswordItem.isHidden.wrappedValue = isHidden
         items.additionalAuthCodeItem.isHidden.wrappedValue = isHidden
         items.socialSecurityNumberItem.isHidden.wrappedValue = !brands.socialSecurityNumberRequired
+        items.installmentsItem.update(cardType: brands.first?.type) // choose first until dual brand selection feature
     }
-
-    /*
-     supportedCardTypes.map {
-         CardTypeLogo(url: logoProvider.logoURL(withName: $0.rawValue), type: $0)
-     }
-     */
 
     internal func resetItems() {
         items.billingAddressItem.reset()
@@ -195,6 +195,10 @@ internal class CardViewController: FormViewController {
 
         if configuration.socialSecurityNumberMode != .hide {
             append(items.socialSecurityNumberItem)
+        }
+        
+        if configuration.installmentConfigration != nil {
+            append(items.installmentsItem)
         }
 
         switch configuration.billingAddressMode {

@@ -39,6 +39,14 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
         super.init(item: item)
         initialize()
         select(value: item.value)
+        observe(item.$selectableValues) { [weak self] change in
+            guard let self = self else { return }
+            self.inputControl.showChevron = change.count > 1
+            self.pickerView.reloadAllComponents()
+            if let first = change.first {
+                self.select(value: first)
+            }
+        }
     }
 
     /// :nodoc:
@@ -58,7 +66,7 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
 
     // MARK: - Abstract
 
-    internal func getInputControl() -> PickerTextInputControl {
+    internal func createInputControl() -> PickerTextInputControl {
         BasePickerInputControl(inputView: pickerView,
                                inputAccessoryView: pickerViewToolbar,
                                style: item.style.text)
@@ -68,15 +76,18 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
         inputControl.label = item.value.description
     }
 
-    internal func initialize() {
+    /// Function called right after `init` for additional initialization of controls.
+    open func initialize() {
         addSubview(inputControl)
         inputControl.translatesAutoresizingMaskIntoConstraints = false
         inputControl.preservesSuperviewLayoutMargins = true
         (inputControl as UIView).adyen.anchor(inside: self)
     }
 
-    internal lazy var inputControl: PickerTextInputControl = {
-        let view = getInputControl()
+    /// The main control of the picker element that
+    /// handles displaying the selected value and triggering the pickerview.
+    public lazy var inputControl: PickerTextInputControl = {
+        let view = createInputControl()
         view.showChevron = item.selectableValues.count > 1
         view.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "inputControl") }
         view.onDidBecomeFirstResponder = { [weak self] in

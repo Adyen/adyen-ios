@@ -6,8 +6,9 @@
 
 import UIKit
 
+/// Interface for a basic picker input control.
 /// :nodoc:
-internal protocol PickerTextInputControl: UIView {
+public protocol PickerTextInputControl: UIView {
 
     /// Executed when the view resigns as first responder.
     var onDidResignFirstResponder: (() -> Void)? { get set }
@@ -27,7 +28,7 @@ internal protocol PickerTextInputControl: UIView {
 }
 
 /// :nodoc:
-/// A control to select a phone extension from a list.
+/// A control to select a value from a list.
 internal class BasePickerInputControl: UIControl, PickerTextInputControl {
 
     internal let style: TextStyle

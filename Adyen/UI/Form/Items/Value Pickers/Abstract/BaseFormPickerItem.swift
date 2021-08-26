@@ -48,7 +48,7 @@ open class BaseFormPickerItem<ElementType: CustomStringConvertible>: FormValueIt
     public var isHidden: Observable<Bool> = Observable(false)
     
     /// The complete list of selectable values.
-    internal var selectableValues: [BasePickerElement<ElementType>]
+    @Observable([]) internal var selectableValues: [BasePickerElement<ElementType>]
 
     /// Initializes the picker item.
     ///
@@ -56,8 +56,15 @@ open class BaseFormPickerItem<ElementType: CustomStringConvertible>: FormValueIt
     /// - Parameter style: The `FormPhoneExtensionPickerItem` UI style.
     public init(preselectedValue: BasePickerElement<ElementType>, selectableValues: [BasePickerElement<ElementType>], style: FormTextItemStyle) {
         assert(selectableValues.count > 0)
-        self.selectableValues = selectableValues
         super.init(value: preselectedValue, style: style)
+        self.selectableValues = selectableValues
+    }
+    
+    /// Updates the selectable values items of the picker
+    /// and triggers the observing view component to update it's pickerview
+    /// - Parameter values: New selectable values to update.
+    public func updateSelectableValues(_ values: [BasePickerElement<ElementType>]) {
+        self.selectableValues = values
     }
 
 }

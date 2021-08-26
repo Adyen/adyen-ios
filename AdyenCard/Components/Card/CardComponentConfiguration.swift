@@ -69,7 +69,7 @@ extension CardComponent {
         internal var excludedCardTypes: Set<CardType> = [.bcmc]
         
         /// Installments options to present to the user. Default is `nil`.
-        public var installmentOptions: InstallmentConfiguration?
+        public var installmentConfigration: InstallmentConfiguration?
         
         /// Configuration of Card component.
         /// - Parameters:
@@ -85,7 +85,7 @@ extension CardComponent {
         ///   Defaults to none.
         ///   - storedCardConfiguration: Stored card configuration.
         ///   - allowedCardTypes: The enforced list of allowed card types.
-        ///   - installmentOptions: The allowed installment options.
+        ///   - installmentConfigration: Configration for installments..
         public init(showsHolderNameField: Bool = false,
                     showsStorePaymentMethodField: Bool = true,
                     showsSecurityCodeField: Bool = true,
@@ -94,7 +94,7 @@ extension CardComponent {
                     billingAddressMode: AddressFormType = .none,
                     storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
                     allowedCardTypes: [CardType]? = nil,
-                    installmentOptions: InstallmentConfiguration? = nil) {
+                    installmentConfigration: InstallmentConfiguration? = nil) {
             self.showsHolderNameField = showsHolderNameField
             self.showsSecurityCodeField = showsSecurityCodeField
             self.showsStorePaymentMethodField = showsStorePaymentMethodField
@@ -103,7 +103,7 @@ extension CardComponent {
             self.billingAddressMode = billingAddressMode
             self.koreanAuthenticationMode = koreanAuthenticationMode
             self.socialSecurityNumberMode = socialSecurityNumberMode
-            self.installmentOptions = installmentOptions
+            self.installmentConfigration = installmentConfigration
         }
 
         internal func bcmcConfiguration() -> Configuration {

@@ -95,20 +95,22 @@ public struct PaymentComponentData {
 
     /// :nodoc:
     public func replacingOrder(with order: PartialPaymentOrder) -> PaymentComponentData {
-        PaymentComponentData(paymentMethodDetails: self.paymentMethod,
-                             amount: self.amount,
+        PaymentComponentData(paymentMethodDetails: paymentMethod,
+                             amount: amount,
                              order: order,
-                             storePaymentMethod: self.storePaymentMethod,
-                             browserInfo: self.browserInfo)
+                             storePaymentMethod: storePaymentMethod,
+                             browserInfo: browserInfo,
+                             installments: installments)
     }
 
     /// :nodoc:
     public func replacingAmount(with amount: Amount) -> PaymentComponentData {
-        PaymentComponentData(paymentMethodDetails: self.paymentMethod,
+        PaymentComponentData(paymentMethodDetails: paymentMethod,
                              amount: amount,
-                             order: self.order,
-                             storePaymentMethod: self.storePaymentMethod,
-                             browserInfo: self.browserInfo)
+                             order: order,
+                             storePaymentMethod: storePaymentMethod,
+                             browserInfo: browserInfo,
+                             installments: installments)
     }
     
     /// Creates a new `PaymentComponentData` by populating the `browserInfo`,
@@ -122,7 +124,8 @@ public struct PaymentComponentData {
                                             amount: amount,
                                             order: order,
                                             storePaymentMethod: storePaymentMethod,
-                                            browserInfo: $0))
+                                            browserInfo: $0,
+                                            installments: installments))
         }
     }
     
