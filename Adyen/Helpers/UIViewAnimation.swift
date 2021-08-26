@@ -10,7 +10,8 @@ private enum AssociatedKeys {
     internal static var animations = "animations"
 }
 
-internal class AnimationContext: NSObject {
+/// :nodoc:
+public class AnimationContext: NSObject {
     fileprivate let animationKey: String
     
     fileprivate let duration: TimeInterval
@@ -23,12 +24,13 @@ internal class AnimationContext: NSObject {
     
     fileprivate let completion: ((Bool) -> Void)?
     
-    internal init(animationKey: String,
-                  duration: TimeInterval,
-                  delay: TimeInterval,
-                  options: UIView.AnimationOptions = [],
-                  animations: @escaping () -> Void,
-                  completion: ((Bool) -> Void)? = nil) {
+    /// :nodoc:
+    public init(animationKey: String,
+                duration: TimeInterval,
+                delay: TimeInterval,
+                options: UIView.AnimationOptions = [],
+                animations: @escaping () -> Void,
+                completion: ((Bool) -> Void)? = nil) {
         self.animationKey = animationKey
         self.duration = duration
         self.delay = delay
@@ -38,16 +40,18 @@ internal class AnimationContext: NSObject {
     }
 }
 
-internal final class KeyFrameAnimationContext: AnimationContext {
+/// :nodoc:
+public final class KeyFrameAnimationContext: AnimationContext {
     
     fileprivate let keyFrameOptions: UIView.KeyframeAnimationOptions
     
-    internal init(animationKey: String,
-                  duration: TimeInterval,
-                  delay: TimeInterval,
-                  options: UIView.KeyframeAnimationOptions = [],
-                  animations: @escaping () -> Void,
-                  completion: ((Bool) -> Void)? = nil) {
+    /// :nodoc:
+    public init(animationKey: String,
+                duration: TimeInterval,
+                delay: TimeInterval,
+                options: UIView.KeyframeAnimationOptions = [],
+                animations: @escaping () -> Void,
+                completion: ((Bool) -> Void)? = nil) {
         self.keyFrameOptions = options
         super.init(animationKey: animationKey,
                    duration: duration,
@@ -58,58 +62,44 @@ internal final class KeyFrameAnimationContext: AnimationContext {
     }
 }
 
-extension UIView {
-    
+extension AdyenScope where Base: UIView {
     /// :nodoc:
-    @objc internal func animate(context: AnimationContext) {
-        if animationsMap.contains(context.animationKey) {
-            perform(#selector(animate(context:)), with: context, afterDelay: 0.1)
-            return
-        }
-        animateSynchronized(context: context)
-    }
-    
-    /// :nodoc:
-    @objc internal func animateKeyframes(context: KeyFrameAnimationContext) {
-        if animationsMap.contains(context.animationKey) {
-            perform(#selector(animateKeyframes(context:)), with: context, afterDelay: 0.1)
-            return
-        }
-        animateKeyframesSynchronized(context: context)
-    }
-    
-    @objc private func animateSynchronized(context: AnimationContext) {
-        animationsMap.insert(context.animationKey)
-        UIView.animate(withDuration: context.duration,
-                       delay: context.delay,
-                       options: context.options,
-                       animations: context.animations,
-                       completion: {
-                           context.completion?($0)
-                           self.animationsMap.remove(context.animationKey)
-                       })
-    }
-    
-    @objc private func animateKeyframesSynchronized(context: KeyFrameAnimationContext) {
-        animationsMap.insert(context.animationKey)
+    public func animate(context: AnimationContext) {
+        base.animations.append(context)
         
-        UIView.animateKeyframes(withDuration: context.duration,
-                                delay: context.delay,
-                                options: context.keyFrameOptions,
-                                animations: context.animations,
-                                completion: {
-                                    context.completion?($0)
-                                    self.animationsMap.remove(context.animationKey)
-                                })
+        if base.animations.count == 1 {
+            animateNext(context: context)
+        }
     }
     
+    private func animateNext(context: AnimationContext) {
+        let completion: (Bool) -> Void = {
+            context.completion?($0)
+            base.animations.removeFirst()
+            base.animations.first.map(animateNext)
+        }
+        
+        if let keyFrameContext = context as? KeyFrameAnimationContext {
+            UIView.animateKeyframes(withDuration: keyFrameContext.duration,
+                                    delay: keyFrameContext.delay,
+                                    options: keyFrameContext.keyFrameOptions,
+                                    animations: keyFrameContext.animations,
+                                    completion: completion)
+        } else {
+            UIView.animate(withDuration: context.duration,
+                           delay: context.delay,
+                           options: context.options,
+                           animations: context.animations,
+                           completion: completion)
+        }
+    }
+}
+
+private extension UIView {
     /// :nodoc:
-    private var animationsMap: Set<String> {
+    var animations: [AnimationContext] {
         get {
-            guard let value = objc_getAssociatedObject(self, &AssociatedKeys.animations) as? Set<String> else {
-                return Set<String>()
-            }
-            return value
+            objc_getAssociatedObject(self, &AssociatedKeys.animations) as? [AnimationContext] ?? []
         }
         set {
             objc_setAssociatedObject(self, &AssociatedKeys.animations, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_COPY)

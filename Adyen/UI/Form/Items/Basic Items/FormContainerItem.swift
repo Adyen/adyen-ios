@@ -54,6 +54,9 @@ public class FormContainerItem: FormItem {
             addSubview(contentView)
             contentView.adyen.anchor(inside: self.layoutMarginsGuide, with: padding)
         }
+        
+        /// :nodoc:
+        internal func reset() { /* Do nothing */ }
     }
 }
 

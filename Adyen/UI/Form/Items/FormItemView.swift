@@ -36,6 +36,9 @@ open class FormItemView<ItemType: FormItem>: UIView, AnyFormItemView, Observer {
         []
     }
     
+    /// :nodoc:
+    public func reset() { /* Do nothing */ }
+    
 }
 
 /// A type-erased form item view.
@@ -47,6 +50,9 @@ public protocol AnyFormItemView: UIView {
     
     /// The array of item views embedded in the current item view.
     var childItemViews: [AnyFormItemView] { get }
+    
+    /// :nodoc:
+    func reset()
     
 }
 

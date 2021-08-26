@@ -18,8 +18,7 @@ import UIKit
 public class CardComponent: CardPublicKeyConsumer,
     PresentableComponent,
     Localizable,
-    LoadingComponent,
-    ClearableComponent {
+    LoadingComponent {
 
     internal enum Constant {
         internal static let defaultCountryCode = "US"
@@ -175,13 +174,6 @@ public class CardComponent: CardPublicKeyConsumer,
         formViewController.title = paymentMethod.name
         return formViewController
     }()
-    
-    // MARK: - ClearableComponent
-    
-    /// :nodoc:
-    public func clear() {
-        cardViewController.resetItems()
-    }
 }
 
 extension CardComponent: CardViewControllerDelegate {

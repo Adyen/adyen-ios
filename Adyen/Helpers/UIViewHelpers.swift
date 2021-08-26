@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import UIKit
 import AdyenNetworking
+import UIKit
 
 /// Adds helper functionality to any `UIView` instance through the `adyen` property.
 /// :nodoc:
@@ -59,7 +59,7 @@ extension AdyenScope where Base: UIView {
                                                    self.base.alpha = hidden ? 0 : 1
                                                    self.base.adyen.updatePreferredContentSize()
                                                })
-        base.animateKeyframes(context: context)
+        animate(context: context)
     }
     
     /// :nodoc:
