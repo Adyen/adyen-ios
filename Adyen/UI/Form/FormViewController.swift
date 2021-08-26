@@ -189,7 +189,14 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         delegate?.viewDidAppear(viewController: self)
-        assignInitialFirstResponder()
+
+        view.adyen.animate(context: AnimationContext(animationKey: "First responder",
+                                                     duration: 0.25,
+                                                     delay: 0,
+                                                     options: [.layoutSubviews],
+                                                     animations: {
+                                                         self.assignInitialFirstResponder()
+                                                     }))
     }
     
     /// :nodoc:

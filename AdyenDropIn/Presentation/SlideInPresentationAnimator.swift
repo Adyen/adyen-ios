@@ -10,6 +10,8 @@ import UIKit
 /// Animate sequential slid in and out movement for transitioning controllers.
 internal final class SlideInPresentationAnimator: NSObject, UIViewControllerAnimatedTransitioning {
 
+    private static let pixelPerSec: Double = 1800
+
     private enum Animation: String {
         case dropinTransitionPresentation = "transition_presentation"
     }
@@ -27,14 +29,16 @@ internal final class SlideInPresentationAnimator: NSObject, UIViewControllerAnim
     internal func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         guard let toShow = transitionContext.viewController(forKey: .to) as? WrapperViewController,
               let toHide = transitionContext.viewController(forKey: .from) as? WrapperViewController else { return }
-        
+
+        let distance = Double(toShow.child.view.bounds.height + toHide.child.view.bounds.height)
+        let time = distance / SlideInPresentationAnimator.pixelPerSec
         let containerView = transitionContext.containerView
         containerView.addSubview(toShow.view)
         toShow.view.frame.origin.y = containerView.bounds.height
         toShow.updateFrame(keyboardRect: .zero)
 
         let context = KeyFrameAnimationContext(animationKey: Animation.dropinTransitionPresentation.rawValue,
-                                               duration: duration,
+                                               duration: time,
                                                delay: 0.0,
                                                options: [.layoutSubviews, .beginFromCurrentState],
                                                animations: {
