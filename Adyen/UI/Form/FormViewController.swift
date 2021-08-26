@@ -160,6 +160,11 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     
     // MARK: - View
     
+    override open func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        itemManager.flatItemViews.forEach { $0.reset() }
+    }
+    
     /// :nodoc:
     override open func viewDidLoad() {
         super.viewDidLoad()

@@ -153,24 +153,6 @@ internal class CardViewController: FormViewController {
         items.socialSecurityNumberItem.isHidden.wrappedValue = !brands.socialSecurityNumberRequired
     }
 
-    /*
-     supportedCardTypes.map {
-         CardTypeLogo(url: logoProvider.logoURL(withName: $0.rawValue), type: $0)
-     }
-     */
-
-    internal func resetItems() {
-        items.billingAddressItem.reset()
-
-        [items.postalCodeItem,
-         items.numberItem,
-         items.expiryDateItem,
-         items.securityCodeItem,
-         items.holderNameItem].forEach { $0.value = "" }
-
-        items.storeDetailsItem.value = false
-    }
-
     // MARK: Private methods
 
     private func setupView() {

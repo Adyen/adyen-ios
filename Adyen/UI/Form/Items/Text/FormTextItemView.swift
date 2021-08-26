@@ -44,17 +44,17 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
 
         bind(item.$placeholder, to: textField, at: \.placeholder)
         bind(item.publisher, to: textField, at: \.text)
-
-        observe(item.publisher) { [weak self] value in
-            if value.isEmpty {
-                self?.resetValidationStatus()
-            }
-        }
         
         updateValidationStatus()
         
         addSubview(textStackView)
         configureConstraints()
+    }
+    
+    /// :nodoc:
+    override public func reset() {
+        item.value = ""
+        resetValidationStatus()
     }
 
     /// Delegate text related events.
@@ -300,9 +300,9 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
         titleLabel.textColor = defaultTitleColor
     }
     
-    private func hideAlertLabel(_ hidden: Bool) {
+    private func hideAlertLabel(_ hidden: Bool, animated: Bool = true) {
         guard hidden || alertLabel.text != nil else { return }
-        alertLabel.adyen.hide(animationKey: "hide_alertLabel", hidden: hidden, animated: true)
+        alertLabel.adyen.hide(animationKey: "hide_alertLabel", hidden: hidden, animated: animated)
     }
 }
 

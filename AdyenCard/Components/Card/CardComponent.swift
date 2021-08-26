@@ -180,7 +180,8 @@ public class CardComponent: CardPublicKeyConsumer,
     
     /// :nodoc:
     public func clear() {
-        cardViewController.resetItems()
+        /* Do nothing,
+         clearing is handled by the `FormViewController` */
     }
 }
 
