@@ -10,7 +10,7 @@ import Adyen
 internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentElement>, Observer {
     
     /// Configurations  to prepare the picker form items.
-    private let installmentConfiguration: InstallmentConfiguration?
+    private let installmentConfiguration: InstallmentConfiguration
     
     /// Payment amount to be able to divide for installment option texts.
     private let amount: Amount?
@@ -25,9 +25,9 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
     }
     
     private var currentInstallmentOptions: InstallmentOptions? {
-        guard let cardType = cardType else { return installmentConfiguration?.defaultOptions }
+        guard let cardType = cardType else { return installmentConfiguration.defaultOptions }
         
-        return installmentConfiguration?.cardBasedOptions?[cardType] ?? installmentConfiguration?.defaultOptions
+        return installmentConfiguration.cardBasedOptions?[cardType] ?? installmentConfiguration.defaultOptions
     }
     
     /// Default picker option.
@@ -43,11 +43,12 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
             values.append(InstallmentElement(kind: .plan(.revolving), localizationParameters: localizationParameters))
         }
         
+        let showAmount = installmentConfiguration.showInstallmentPrice
         let monthValues = currentInstallmentOptions.regularInstallmentMonths.map {
             InstallmentElement(
                 kind: .month(InstallmentElement.InstallmentMonth(monthValue: Int($0),
                                                                  amount: amount,
-                                                                 showAmount: installmentConfiguration?.showInstallmentPrice ?? false)),
+                                                                 showAmount: showAmount)),
                 localizationParameters: localizationParameters
             )
         }
@@ -57,11 +58,10 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
 
     /// Initializes the installments element.
     /// There will be one element in the picker at initilazation.
-    internal init(installmentConfiguration: InstallmentConfiguration?,
+    internal init(installmentConfiguration: InstallmentConfiguration,
                   style: FormTextItemStyle,
                   amount: Amount?,
                   localizationParameters: LocalizationParameters? = nil) {
-
         self.installmentConfiguration = installmentConfiguration
         self.amount = amount
         self.localizationParameters = localizationParameters

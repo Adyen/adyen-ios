@@ -43,9 +43,7 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
             guard let self = self else { return }
             self.inputControl.showChevron = change.count > 1
             self.pickerView.reloadAllComponents()
-            if let first = change.first {
-                self.select(value: first)
-            }
+            change.first.map(self.select)
         }
     }
 
@@ -77,6 +75,7 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
     }
 
     /// Function called right after `init` for additional initialization of controls.
+    /// :nodoc:
     open func initialize() {
         addSubview(inputControl)
         inputControl.translatesAutoresizingMaskIntoConstraints = false
@@ -130,9 +129,9 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
         select(value: item.selectableValues[row])
     }
 
-    // MARK: - Private
+    // MARK: - Internal
 
-    private func select(value: BasePickerElement<T>) {
+    internal func select(value: BasePickerElement<T>) {
         self.item.value = value
         updateSelection()
 

@@ -18,10 +18,10 @@ public struct Installments: Encodable, Equatable {
     }
     
     /// Selected total month of installments
-    public var totalMonths: Int
+    public let totalMonths: Int
     
     /// Selected plan
-    public var plan: Plan
+    public let plan: Plan
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -36,7 +36,7 @@ public struct Installments: Encodable, Equatable {
     }
     
     /// Creates a new `Installments` instance with default value options.
-    public init(totalMonths: Int = 1, plan: Plan = .regular) {
+    public init(totalMonths: Int, plan: Plan) {
         self.totalMonths = totalMonths
         self.plan = plan
     }

@@ -27,16 +27,14 @@ internal struct InstallmentElement: CustomStringConvertible, Equatable {
     /// These rules are: month values > 1 for regular plan
     /// and month value = 1 for revolving plan
     internal var installmentValue: Installments? {
-        // create with default values and
-        // modify only based on the selected one
-        var value = Installments()
         switch kind {
         case let .plan(plan):
-            value.plan = plan.installmentPlan
-            return value.plan == .revolving ? value : nil
+            if plan.installmentPlan == .revolving {
+                return Installments(totalMonths: 1, plan: plan.installmentPlan)
+            }
+            return nil
         case let .month(month):
-            value.totalMonths = month.monthValue
-            return value
+            return Installments(totalMonths: month.monthValue, plan: .regular)
         }
     }
     

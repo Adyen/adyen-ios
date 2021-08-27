@@ -117,8 +117,9 @@ internal class CardViewController: FormViewController {
     }
 
     internal var installments: Installments? {
-        guard !items.installmentsItem.isHidden.wrappedValue else { return nil }
-        return items.installmentsItem.value.element.installmentValue
+        guard let installmentsItem = items.installmentsItem,
+              !installmentsItem.isHidden.wrappedValue else { return nil }
+        return installmentsItem.value.element.installmentValue
     }
 
     internal func stopLoading() {
@@ -156,7 +157,7 @@ internal class CardViewController: FormViewController {
         items.additionalAuthPasswordItem.isHidden.wrappedValue = isHidden
         items.additionalAuthCodeItem.isHidden.wrappedValue = isHidden
         items.socialSecurityNumberItem.isHidden.wrappedValue = !brands.socialSecurityNumberRequired
-        items.installmentsItem.update(cardType: brands.first?.type) // choose first until dual brand selection feature
+        items.installmentsItem?.update(cardType: brands.first?.type) // choose first until dual brand selection feature
     }
 
     // MARK: Private methods
@@ -185,8 +186,8 @@ internal class CardViewController: FormViewController {
             append(items.socialSecurityNumberItem)
         }
 
-        if configuration.installmentConfigration != nil {
-            append(items.installmentsItem)
+        if let installmentsItem = items.installmentsItem {
+            append(installmentsItem)
         }
 
         switch configuration.billingAddressMode {
