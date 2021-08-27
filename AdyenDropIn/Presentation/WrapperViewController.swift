@@ -52,7 +52,7 @@ internal final class WrapperViewController: UIViewController {
                                                                self?.leftConstraint?.constant = finalFrame.origin.x
                                                                self?.rightConstraint?.constant = -finalFrame.origin.x
                                                                self?.topConstraint?.constant = finalFrame.origin.y
-                                                               view.layoutIfNeeded()
+                                                               self?.view.layoutIfNeeded()
                                                            }))
     }
 

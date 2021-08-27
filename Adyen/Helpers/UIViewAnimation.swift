@@ -82,7 +82,7 @@ public final class SpringAnimationContext: AnimationContext {
         super.init(animationKey: animationKey,
                    duration: duration,
                    delay: delay,
-                   options: [],
+                   options: options,
                    animations: animations,
                    completion: completion)
     }
