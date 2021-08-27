@@ -38,15 +38,22 @@ internal final class WrapperViewController: UIViewController {
         return viewController?.children.contains(where: { heirarchyRequiresKeyboardInput(viewController: $0) }) ?? false
     }
     
-    private let frameUpdateThrottler = Throttler(minimumDelay: 0.05)
-
     internal func updateFrame(keyboardRect: CGRect) {
         guard let view = child.viewIfLoaded else { return }
         let finalFrame = child.finalPresentationFrame(with: keyboardRect)
-        topConstraint?.constant = finalFrame.origin.y
-        leftConstraint?.constant = finalFrame.origin.x
-        rightConstraint?.constant = -finalFrame.origin.x
-        frameUpdateThrottler.throttle(view.layoutIfNeeded)
+
+        view.adyen.animate(context: SpringAnimationContext(animationKey: "Update frame",
+                                                           duration: 0.3,
+                                                           delay: 0,
+                                                           dampingRatio: 0.8,
+                                                           velocity: 0.2,
+                                                           options: [.beginFromCurrentState, .curveEaseInOut],
+                                                           animations: { [weak self] in
+                                                               self?.leftConstraint?.constant = finalFrame.origin.x
+                                                               self?.rightConstraint?.constant = -finalFrame.origin.x
+                                                               self?.topConstraint?.constant = finalFrame.origin.y
+                                                               self?.view.layoutIfNeeded()
+                                                           }))
     }
 
     fileprivate func positionContent(_ child: ModalViewController) {

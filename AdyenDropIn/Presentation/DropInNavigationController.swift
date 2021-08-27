@@ -108,7 +108,7 @@ extension DropInNavigationController: UINavigationControllerDelegate {
                                        animationControllerFor operation: UINavigationController.Operation,
                                        from fromVC: UIViewController,
                                        to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        SlideInPresentationAnimator(duration: 0.5)
+        SlideInPresentationAnimator(duration: 0.6)
     }
     
 }
