@@ -27,7 +27,7 @@ public class AnimationContext: NSObject {
     /// :nodoc:
     public init(animationKey: String,
                 duration: TimeInterval,
-                delay: TimeInterval,
+                delay: TimeInterval = 0,
                 options: UIView.AnimationOptions = [],
                 animations: @escaping () -> Void,
                 completion: ((Bool) -> Void)? = nil) {
@@ -48,7 +48,7 @@ public final class KeyFrameAnimationContext: AnimationContext {
     /// :nodoc:
     public init(animationKey: String,
                 duration: TimeInterval,
-                delay: TimeInterval,
+                delay: TimeInterval = 0,
                 options: UIView.KeyframeAnimationOptions = [],
                 animations: @escaping () -> Void,
                 completion: ((Bool) -> Void)? = nil) {
@@ -71,7 +71,7 @@ public final class SpringAnimationContext: AnimationContext {
     /// :nodoc:
     public init(animationKey: String,
                 duration: TimeInterval,
-                delay: TimeInterval,
+                delay: TimeInterval = 0,
                 dampingRatio: CGFloat,
                 velocity: CGFloat,
                 options: UIView.AnimationOptions = [],

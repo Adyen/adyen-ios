@@ -47,7 +47,7 @@ internal final class SlideInPresentationAnimator: NSObject, UIViewControllerAnim
                                                        toHide.view.frame.origin.y = containerView.bounds.height
                                                    }
                                                    UIView.addKeyframe(withRelativeStartTime: hideDistance / distance,
-                                                                      relativeDuration: 1 - hideDistance / distance) {
+                                                                      relativeDuration: showDistance / distance) {
                                                        toShow.view.frame.origin.y = containerView.frame.origin.y
                                                    }
                                                },
@@ -55,6 +55,5 @@ internal final class SlideInPresentationAnimator: NSObject, UIViewControllerAnim
                                                    transitionContext.completeTransition(finished)
                                                })
         containerView.adyen.animate(context: context)
-
     }
 }

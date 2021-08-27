@@ -48,11 +48,11 @@ internal final class WrapperViewController: UIViewController {
                                                            dampingRatio: 0.8,
                                                            velocity: 0.2,
                                                            options: [.beginFromCurrentState, .curveEaseInOut],
-                                                           animations: {
-                                                               self.leftConstraint?.constant = finalFrame.origin.x
-                                                               self.rightConstraint?.constant = -finalFrame.origin.x
-                                                               self.topConstraint?.constant = finalFrame.origin.y
-                                                               self.view.layoutIfNeeded()
+                                                           animations: { [weak self] in
+                                                               self?.leftConstraint?.constant = finalFrame.origin.x
+                                                               self?.rightConstraint?.constant = -finalFrame.origin.x
+                                                               self?.topConstraint?.constant = finalFrame.origin.y
+                                                               view.layoutIfNeeded()
                                                            }))
     }
 
