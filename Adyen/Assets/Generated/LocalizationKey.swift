@@ -149,6 +149,8 @@ public struct LocalizationKey {
     public static let cardBrazilSSNPlaceholder = LocalizationKey(key: "adyen.card.brazilSSN.placeholder")
     /// Amount
     public static let amount = LocalizationKey(key: "adyen.amount")
+    /// Entity
+    public static let voucherEntity = LocalizationKey(key: "adyen.voucher.entity")
     /// Open the app with the PIX registered key, choose Pay with PIX and scan the QR Code or copy and paste the code
     public static let pixInstructions = LocalizationKey(key: "adyen.pix.instructions")
     /// You have %@ to pay
