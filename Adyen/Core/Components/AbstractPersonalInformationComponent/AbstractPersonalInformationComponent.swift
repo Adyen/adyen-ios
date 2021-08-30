@@ -164,7 +164,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         guard configuration.fields.contains(.deliveryAddress) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "deliveryAddressItem")
         let initialCountry = shopperInformation?.deliveryAddress?.country ?? defaultCountryCode
-        return AddressFormItemInjector(value: nil,
+        return AddressFormItemInjector(value: shopperInformation?.deliveryAddress,
                                        initialCountry: initialCountry,
                                        identifier: identifier,
                                        style: style.addressStyle)

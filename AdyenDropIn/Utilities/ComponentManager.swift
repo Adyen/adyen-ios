@@ -302,20 +302,31 @@ extension ComponentManager: PaymentComponentBuilder {
     
     /// :nodoc:
     internal func build(paymentMethod: AffirmPaymentMethod) -> PaymentComponent? {
-        AffirmComponent(paymentMethod: paymentMethod,
-                        apiContext: apiContext,
-                        style: style.formComponent, shopperInformation: PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
-                                                                                                    emailAddress: "katrina@mail.com",
-                                                                                                    telephoneNumber: "1234567890",
-                                                                                                    billingAddress: PostalAddress(city: "Cupertino",
-                                                                                                                                  country: "NL",
-                                                                                                                                  houseNumberOrName: nil,
-                                                                                                                                  postalCode: "18900",
-                                                                                                                                  stateOrProvince: "California",
-                                                                                                                                  street: "First avenue",
-                                                                                                                                  apartment: "1"),
-                                                                                                    deliveryAddress: nil,
-                                                                                                    socialSecurityNumber: nil))
+
+        let billingAddress = PostalAddress(city: "Amsterdam",
+                                           country: "NL",
+                                           houseNumberOrName: nil,
+                                           postalCode: "1490PO",
+                                           stateOrProvince: "North Holland",
+                                           street: "Dam Square",
+                                           apartment: "124P")
+        let deliveryAddress = PostalAddress(city: "Zaandam",
+                                            country: "NL",
+                                            houseNumberOrName: nil,
+                                            postalCode: "1501NH",
+                                            stateOrProvince: "North Holland",
+                                            street: "Rokin Straat",
+                                            apartment: "14H")
+        let shopperInformation = PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
+                                                             emailAddress: "katrina@mail.com",
+                                                             telephoneNumber: "1234567890",
+                                                             billingAddress: billingAddress,
+                                                             deliveryAddress: deliveryAddress,
+                                                             socialSecurityNumber: nil)
+        return AffirmComponent(paymentMethod: paymentMethod,
+                               apiContext: apiContext,
+                               style: style.formComponent,
+                               shopperInformation: shopperInformation)
     }
     
     /// :nodoc:
