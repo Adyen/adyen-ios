@@ -27,7 +27,7 @@ public class AnimationContext: NSObject {
     /// :nodoc:
     public init(animationKey: String,
                 duration: TimeInterval,
-                delay: TimeInterval,
+                delay: TimeInterval = 0,
                 options: UIView.AnimationOptions = [],
                 animations: @escaping () -> Void,
                 completion: ((Bool) -> Void)? = nil) {
@@ -48,7 +48,7 @@ public final class KeyFrameAnimationContext: AnimationContext {
     /// :nodoc:
     public init(animationKey: String,
                 duration: TimeInterval,
-                delay: TimeInterval,
+                delay: TimeInterval = 0,
                 options: UIView.KeyframeAnimationOptions = [],
                 animations: @escaping () -> Void,
                 completion: ((Bool) -> Void)? = nil) {
@@ -57,6 +57,32 @@ public final class KeyFrameAnimationContext: AnimationContext {
                    duration: duration,
                    delay: delay,
                    options: [],
+                   animations: animations,
+                   completion: completion)
+    }
+}
+
+/// :nodoc:
+public final class SpringAnimationContext: AnimationContext {
+
+    fileprivate let dampingRatio: CGFloat
+    fileprivate let velocity: CGFloat
+
+    /// :nodoc:
+    public init(animationKey: String,
+                duration: TimeInterval,
+                delay: TimeInterval = 0,
+                dampingRatio: CGFloat,
+                velocity: CGFloat,
+                options: UIView.AnimationOptions = [],
+                animations: @escaping () -> Void,
+                completion: ((Bool) -> Void)? = nil) {
+        self.dampingRatio = dampingRatio
+        self.velocity = velocity
+        super.init(animationKey: animationKey,
+                   duration: duration,
+                   delay: delay,
+                   options: options,
                    animations: animations,
                    completion: completion)
     }
@@ -78,8 +104,16 @@ extension AdyenScope where Base: UIView {
             base.animations.removeFirst()
             base.animations.first.map(animateNext)
         }
-        
-        if let keyFrameContext = context as? KeyFrameAnimationContext {
+
+        if let springContext = context as? SpringAnimationContext {
+            UIView.animate(withDuration: context.duration,
+                           delay: context.delay,
+                           usingSpringWithDamping: springContext.dampingRatio,
+                           initialSpringVelocity: springContext.velocity,
+                           options: context.options,
+                           animations: context.animations,
+                           completion: completion)
+        } else if let keyFrameContext = context as? KeyFrameAnimationContext {
             UIView.animateKeyframes(withDuration: keyFrameContext.duration,
                                     delay: keyFrameContext.delay,
                                     options: keyFrameContext.keyFrameOptions,
