@@ -68,7 +68,7 @@ extension CardComponent {
         /// Indicates the card brands excluded from the supported brands.
         internal var excludedCardTypes: Set<CardType> = [.bcmc]
         
-        /// Installments options to present to the user. Default is `nil`.
+        /// Installments options to present to the user.
         public var installmentConfigration: InstallmentConfiguration?
         
         /// Configuration of Card component.
@@ -85,7 +85,7 @@ extension CardComponent {
         ///   Defaults to none.
         ///   - storedCardConfiguration: Stored card configuration.
         ///   - allowedCardTypes: The enforced list of allowed card types.
-        ///   - installmentConfigration: Configration for installments..
+        ///   - installmentConfigration: Configration for installments. Defaults to `nil`.
         public init(showsHolderNameField: Bool = false,
                     showsStorePaymentMethodField: Bool = true,
                     showsSecurityCodeField: Bool = true,
