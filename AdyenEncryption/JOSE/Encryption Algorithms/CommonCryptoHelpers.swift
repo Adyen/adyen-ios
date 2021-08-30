@@ -95,29 +95,24 @@ internal func generateRSAPublicKey(with modulus: Data, exponent: Data) -> Data {
     // Total length is the sum of components + types
     let totalLengthOctets = (modulusLengthOctets.count + modulusBytes.count +
         exponentLengthOctets.count + exponentBytes.count + 2).encodedOctets()
-
+    
     // Combine the two sets of data into a single container
-    var builder: [CUnsignedChar] = []
-    let data = NSMutableData()
+    let bytesArray: [UInt8] = [
+        // Container type and size
+        [0x30],
+        totalLengthOctets,
+        
+        // Modulus
+        [0x02],
+        modulusLengthOctets,
+        modulusBytes,
+        
+        // Exponent
+        [0x02],
+        exponentLengthOctets,
+        exponentBytes
+        
+    ].flatMap { $0 }
 
-    // Container type and size
-    builder.append(0x30)
-    builder.append(contentsOf: totalLengthOctets)
-    data.append(builder, length: builder.count)
-    builder.removeAll(keepingCapacity: false)
-
-    // Modulus
-    builder.append(0x02)
-    builder.append(contentsOf: modulusLengthOctets)
-    data.append(builder, length: builder.count)
-    builder.removeAll(keepingCapacity: false)
-    data.append(modulusBytes, length: modulusBytes.count)
-
-    // Exponent
-    builder.append(0x02)
-    builder.append(contentsOf: exponentLengthOctets)
-    data.append(builder, length: builder.count)
-    data.append(exponentBytes, length: exponentBytes.count)
-
-    return Data(bytes: data.bytes, count: data.length)
+    return Data(bytes: bytesArray, count: bytesArray.count)
 }
