@@ -305,14 +305,14 @@ extension ComponentManager: PaymentComponentBuilder {
 
         let billingAddress = PostalAddress(city: "Amsterdam",
                                            country: "NL",
-                                           houseNumberOrName: nil,
+                                           houseNumberOrName: "1",
                                            postalCode: "1490PO",
                                            stateOrProvince: "North Holland",
                                            street: "Dam Square",
                                            apartment: "124P")
         let deliveryAddress = PostalAddress(city: "Zaandam",
                                             country: "NL",
-                                            houseNumberOrName: nil,
+                                            houseNumberOrName: "1",
                                             postalCode: "1501NH",
                                             stateOrProvince: "North Holland",
                                             street: "Rokin Straat",

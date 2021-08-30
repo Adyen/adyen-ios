@@ -39,7 +39,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     public let configuration: Configuration
 
     /// :nodoc:
-    private let shopperInformation: PrefilledShopperInformation?
+    public let shopperInformation: PrefilledShopperInformation?
 
     /// Initializes the MB Way component.
     ///

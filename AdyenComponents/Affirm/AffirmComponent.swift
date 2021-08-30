@@ -58,7 +58,6 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
                    style: style)
 
         setupItems()
-        setupShopperInformation()
     }
     
     // MARK: - Private
@@ -70,6 +69,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
         
         setupDeliveryAddressItem()
         setupDeliveryAddressToggleItem()
+        setupShopperInformation()
     }
     
     /// :nodoc:
@@ -89,17 +89,10 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     
     /// :nodoc:
     private func setupShopperInformation() {
-//        guard let shopperInformation = shopperInformation else { return }
-//        firstNameItem?.value = shopperInformation.shopperName?.firstName ?? ""
-//        lastNameItem?.value = shopperInformation.shopperName?.lastName ?? ""
-//        emailItem?.value = shopperInformation.emailAddress ?? ""
-//        phoneItem?.value = shopperInformation.telephoneNumber ?? ""
-//        addressItem?.value = shopperInformation.billingAddress ?? .init()
-//
-//        if let deliveryAddress = shopperInformation.deliveryAddress {
-//            deliveryAddressItem?.value = deliveryAddress
-//            deliveryAddressToggleItem.value = true
-//        }
+        if let deliveryAddress = shopperInformation?.deliveryAddress {
+            deliveryAddressItem?.value = deliveryAddress
+            deliveryAddressToggleItem.value = true
+        }
     }
     
     // MARK: - Public
