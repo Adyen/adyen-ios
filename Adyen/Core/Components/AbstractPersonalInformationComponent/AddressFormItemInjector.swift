@@ -12,23 +12,36 @@ internal final class AddressFormItemInjector: FormItemInjector, Localizable {
     internal var localizationParameters: LocalizationParameters?
 
     /// :nodoc:
-    internal let style: AddressStyle
+    internal var value: PostalAddress?
 
-    /// :nodoc:
-    internal var identifier: String
-    
     /// :nodoc:
     private let initialCountry: String
 
     /// :nodoc:
-    internal lazy var item = FormAddressItem(initialCountry: initialCountry,
-                                             style: style,
-                                             localizationParameters: localizationParameters,
-                                             identifier: identifier)
+    internal var identifier: String
+
+    /// :nodoc:
+    internal let style: AddressStyle
+
+    /// :nodoc:
+    internal lazy var item: FormAddressItem = {
+        let addressItem = FormAddressItem(initialCountry: initialCountry,
+                                          style: style,
+                                          localizationParameters: localizationParameters,
+                                          identifier: identifier)
+        if let value = value {
+            addressItem.value = value
+        }
+        return addressItem
+    }()
     
-    internal init(identifier: String, initialCountry: String, style: AddressStyle) {
-        self.identifier = identifier
+    internal init(value: PostalAddress?,
+                  initialCountry: String,
+                  identifier: String,
+                  style: AddressStyle) {
+        self.value = value
         self.initialCountry = initialCountry
+        self.identifier = identifier
         self.style = style
     }
 
