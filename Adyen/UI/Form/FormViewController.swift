@@ -11,9 +11,9 @@ import UIKit
 @objc(ADYFormViewController)
 open class FormViewController: UIViewController, Localizable, KeyboardObserver, Observer, PreferredContentSizeConsumer {
 
-    enum Animations {
-        static let keyboardBottomInset = "keyboardBottomInset"
-        static let firstResponder = "firstResponder"
+    fileprivate enum Animations {
+        fileprivate static let keyboardBottomInset = "keyboardBottomInset"
+        fileprivate static let firstResponder = "firstResponder"
     }
 
     /// :nodoc:
