@@ -69,6 +69,7 @@
 "adyen.voucher.finish" = "";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Valor";
+"adyen.voucher.entity" = "Entidade";
 "adyen.pix.instructions" = "Abra o app com sua chave PIX cadastrada, escolha Pagar com Pix e escaneie o QR Code ou copie e cole o código";
 "adyen.pix.expirationLabel" = "Você tem %@ para pagar";
 "adyen.pix.copyButton" = "Copiar código";

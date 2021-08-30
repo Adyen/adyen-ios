@@ -66,6 +66,7 @@
 "adyen.voucher.readInstructions" = "閱覽說明";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "金額";
+"adyen.voucher.entity" = "實體";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "您有 %@ 可以支付";
 "adyen.pix.copyButton" = "複製代碼";

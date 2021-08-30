@@ -69,6 +69,7 @@
 "adyen.voucher.finish" = "";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "المبلغ";
+"adyen.voucher.entity" = "الكيان";
 "adyen.pix.instructions" = "افتح التطبيق باستخدام مفتاح PIX المسجل، واختر الدفع باستخدام PIX وامسح رمز الاستجابة السريعة ضوئيًا أو انسخ الرمز والصقه";
 "adyen.pix.expirationLabel" = "لديك %@ للدفع";
 "adyen.pix.copyButton" = "نسخ الرمز";

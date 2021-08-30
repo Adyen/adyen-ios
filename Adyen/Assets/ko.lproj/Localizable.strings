@@ -69,6 +69,7 @@
 "adyen.voucher.finish" = "";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "금액";
+"adyen.voucher.entity" = "발급사";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "남은 결제 시한: %@";
 "adyen.pix.copyButton" = "코드 복사하기";

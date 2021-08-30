@@ -69,6 +69,7 @@
 "adyen.voucher.finish" = "";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Částka";
+"adyen.voucher.entity" = "Subjekt";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Na zaplacení vám zbývá %@";
 "adyen.pix.copyButton" = "Kopírovat kód";

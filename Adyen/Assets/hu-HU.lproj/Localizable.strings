@@ -69,6 +69,7 @@
 "adyen.voucher.finish" = "";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Összeg";
+"adyen.voucher.entity" = "Entitás";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Fizetéshez rendelkezésre álló idő: %@";
 "adyen.pix.copyButton" = "Kód másolása";

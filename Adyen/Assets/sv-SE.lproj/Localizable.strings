@@ -69,6 +69,7 @@
 "adyen.voucher.finish" = "";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Belopp";
+"adyen.voucher.entity" = "Enhet";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Du har %@ att betala";
 "adyen.pix.copyButton" = "Kopiera kod";

@@ -69,6 +69,7 @@
 "adyen.voucher.finish" = "";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Znesek";
+"adyen.voucher.entity" = "Entiteta";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Plačati morate %@";
 "adyen.pix.copyButton" = "Kopiraj kodo";

@@ -69,6 +69,7 @@
 "adyen.voucher.finish" = "";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Ποσό";
+"adyen.voucher.entity" = "Οντότητα";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Έχετε στη διάθεσή σας %@ για την πληρωμή";
 "adyen.pix.copyButton" = "Αντιγραφή κωδικού";

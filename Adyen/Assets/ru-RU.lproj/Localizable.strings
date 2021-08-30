@@ -69,6 +69,7 @@
 "adyen.voucher.finish" = "";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Сумма";
+"adyen.voucher.entity" = "Объект";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "У вас %@ на оплату";
 "adyen.pix.copyButton" = "Скопировать код";

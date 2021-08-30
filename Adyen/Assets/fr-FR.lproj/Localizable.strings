@@ -69,6 +69,7 @@
 "adyen.voucher.finish" = "";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Montant";
+"adyen.voucher.entity" = "Entité";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Vous avez %@ pour payer cette somme";
 "adyen.pix.copyButton" = "Copier le code";

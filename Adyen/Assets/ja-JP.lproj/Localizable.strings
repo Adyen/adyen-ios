@@ -69,6 +69,7 @@
 "adyen.voucher.finish" = "";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "金額";
+"adyen.voucher.entity" = "エンティティ";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "%@をお支払い下さい。";
 "adyen.pix.copyButton" = "コードをコピー";
