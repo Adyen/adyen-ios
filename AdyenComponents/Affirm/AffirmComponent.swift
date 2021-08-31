@@ -31,10 +31,11 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     ///   - paymentMethod: The Affirm payment method.
     ///   - apiContext: The component's API context.
     ///   - style: The component's style.
+    ///   - shopperInformation: The shopper's information.
     public init(paymentMethod: PaymentMethod,
                 apiContext: APIContext,
-                style: FormComponentStyle,
-                shopperInformation: PrefilledShopperInformation? = nil) {
+                shopperInformation: PrefilledShopperInformation? = nil,
+                style: FormComponentStyle) {
         personalDetailsHeaderItem = FormLabelItem(text: "", style: style.sectionHeader)
         deliveryAddressToggleItem = FormToggleItem(style: style.toggle)
         

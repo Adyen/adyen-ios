@@ -325,8 +325,8 @@ extension ComponentManager: PaymentComponentBuilder {
                                                              socialSecurityNumber: nil)
         return AffirmComponent(paymentMethod: paymentMethod,
                                apiContext: apiContext,
-                               style: style.formComponent,
-                               shopperInformation: shopperInformation)
+                               shopperInformation: shopperInformation,
+                               style: style.formComponent)
     }
     
     /// :nodoc:
