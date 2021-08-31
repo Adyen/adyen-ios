@@ -172,9 +172,17 @@ internal final class ComponentManager {
     }
     
     private func createMBWayComponent(_ paymentMethod: MBWayPaymentMethod) -> MBWayComponent? {
-        MBWayComponent(paymentMethod: paymentMethod,
-                       apiContext: apiContext,
-                       style: style.formComponent)
+        let prefilledShopperInformation = PrefilledShopperInformation(shopperName: .init(firstName: "Katrina",
+                                                                                         lastName: "Del Mar"),
+                                                                      emailAddress: "katrina@mail.com",
+                                                                      telephoneNumber: "1234567890",
+                                                                      billingAddress: nil,
+                                                                      deliveryAddress: nil,
+                                                                      socialSecurityNumber: nil)
+        return MBWayComponent(paymentMethod: paymentMethod,
+                              apiContext: apiContext,
+                              shopperInformation: prefilledShopperInformation,
+                              style: style.formComponent)
     }
 
     private func createBLIKComponent(_ paymentMethod: BLIKPaymentMethod) -> BLIKComponent? {

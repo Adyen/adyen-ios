@@ -17,7 +17,7 @@ public final class DokuComponent: AbstractPersonalInformationComponent {
     /// Initializes the Doku component.
     /// - Parameters:
     ///   - paymentMethod: The Doku Wallet, Doku Alfamart, or Doku Indomaret payment method.
-    ///   - apiContext: The Component's UI style.
+    ///   - apiContext: The component's UI style.
     ///   - shopperInformation: The component's API context.
     ///   - style: The shopper's information.
     public init(paymentMethod: DokuPaymentMethod,
