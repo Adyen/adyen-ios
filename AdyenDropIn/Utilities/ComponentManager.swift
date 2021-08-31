@@ -276,9 +276,17 @@ extension ComponentManager: PaymentComponentBuilder {
 
     /// :nodoc:
     internal func build(paymentMethod: EContextPaymentMethod) -> PaymentComponent? {
-        BasicPersonalInfoFormComponent(paymentMethod: paymentMethod,
-                                       apiContext: apiContext,
-                                       style: style.formComponent)
+        let prefilledShopperInformation = PrefilledShopperInformation(shopperName: .init(firstName: "Katrina",
+                                                                                         lastName: "Del Mar"),
+                                                                      emailAddress: "katrina@mail.com",
+                                                                      telephoneNumber: "123567890",
+                                                                      billingAddress: nil,
+                                                                      deliveryAddress: nil,
+                                                                      socialSecurityNumber: nil)
+        return BasicPersonalInfoFormComponent(paymentMethod: paymentMethod,
+                                              apiContext: apiContext,
+                                              shopperInformation: prefilledShopperInformation,
+                                              style: style.formComponent)
     }
 
     /// :nodoc:

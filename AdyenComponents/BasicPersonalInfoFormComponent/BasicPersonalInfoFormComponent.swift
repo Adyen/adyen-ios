@@ -13,18 +13,20 @@ import UIKit
 public final class BasicPersonalInfoFormComponent: AbstractPersonalInformationComponent {
 
     /// Initializes the component.
-    ///
-    /// - Parameter paymentMethod: The payment method.
-    /// - Parameter style: The Component's UI style.
-    public init(
-        paymentMethod: PaymentMethod,
-        apiContext: APIContext,
-        style: FormComponentStyle = FormComponentStyle()
-    ) {
+    /// - Parameters:
+    ///   - paymentMethod: The payment method.
+    ///   - apiContext: The component's API context.
+    ///   - style: The component's UI style.
+    ///   - shopperInformation: The shopper's information.
+    public init(paymentMethod: PaymentMethod,
+                apiContext: APIContext,
+                shopperInformation: PrefilledShopperInformation? = nil,
+                style: FormComponentStyle = FormComponentStyle()) {
         let configuration = Configuration(fields: [.firstName, .lastName, .phone, .email])
         super.init(paymentMethod: paymentMethod,
                    configuration: configuration,
                    apiContext: apiContext,
+                   shopperInformation: shopperInformation,
                    style: style)
     }
 
