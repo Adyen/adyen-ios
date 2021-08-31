@@ -275,9 +275,17 @@ extension ComponentManager: PaymentComponentBuilder {
 
     /// :nodoc:
     internal func build(paymentMethod: DokuPaymentMethod) -> PaymentComponent? {
-        DokuComponent(paymentMethod: paymentMethod,
-                      apiContext: apiContext,
-                      style: style.formComponent)
+        let prefilledShopperInformation = PrefilledShopperInformation(shopperName: .init(firstName: "Katrina",
+                                                                                         lastName: "Del Mar"),
+                                                                      emailAddress: "katrina@mail.com",
+                                                                      telephoneNumber: nil,
+                                                                      billingAddress: nil,
+                                                                      deliveryAddress: nil,
+                                                                      socialSecurityNumber: nil)
+        return DokuComponent(paymentMethod: paymentMethod,
+                             apiContext: apiContext,
+                             shopperInformation: prefilledShopperInformation,
+                             style: style.formComponent)
     }
     
     /// :nodoc:
