@@ -86,13 +86,16 @@ internal struct InstallmentElement: CustomStringConvertible, Equatable {
         internal let showAmount: Bool
         
         internal func title(with localizationParameters: LocalizationParameters?) -> String {
+            var localizedText: String
             if showAmount,
                let amount = amount,
                let formatted = AmountFormatter.formatted(amount: amount.value / monthValue,
                                                          currencyCode: amount.currencyCode) {
-                return localizedString(.cardInstallmentsMonthsAndPrice, localizationParameters, String(monthValue), formatted)
+                localizedText = localizedString(.cardInstallmentsMonthsAndPrice, localizationParameters, String(monthValue), formatted)
+            } else {
+                localizedText = localizedString(.cardInstallmentsMonths, localizationParameters, String(monthValue))
             }
-            return localizedString(.cardInstallmentsMonths, localizationParameters, String(monthValue))
+            return localizedText
         }
     }
     

@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import UIKit
 
 internal typealias InstallmentPickerElement = BasePickerElement<InstallmentElement>
 
