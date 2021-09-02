@@ -172,10 +172,10 @@ public enum CardEncryptor {
         let tokens = publicKey.components(separatedBy: "|")
         guard tokens.count == 2 else { throw EncryptionError.invalidKey }
         let secKey = try createSecKey(fromModulus: tokens[1], exponent: tokens[0])
-        let jweGenerator = JSONWebEncryptionGenerator()
-        return try jweGenerator.generate(withPayload: payload.jsonData(),
-                                         publicRSAKey: secKey,
-                                         header: .defaultHeader).compactRepresentation
+        return try JSONWebEncryptionGenerator()
+            .generate(withPayload: payload.jsonData(),
+                      publicRSAKey: secKey,
+                      header: .defaultHeader).compactRepresentation
     }
 }
 
