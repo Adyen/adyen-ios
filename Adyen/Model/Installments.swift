@@ -35,7 +35,10 @@ public struct Installments: Encodable, Equatable {
         case plan
     }
     
-    /// Creates a new `Installments` instance with default value options.
+    /// Creates a new `Installments` instance.
+    /// - Parameters:
+    ///   - totalMonths: Total month value of the installments.
+    ///   - plan: Selected plan.
     public init(totalMonths: Int, plan: Plan) {
         self.totalMonths = totalMonths
         self.plan = plan
