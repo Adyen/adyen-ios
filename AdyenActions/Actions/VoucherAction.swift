@@ -129,7 +129,9 @@ public class GenericVoucherAction: Decodable,
 
     /// The instruction url.
     @available(*, deprecated, message: "Please use `instructionsURL` instead.")
-    public let instructionsUrl: String
+    public var instructionsUrl: String {
+        instructionsURL.absoluteString
+    }
     
     /// The instruction `URL` object.
     public let instructionsURL: URL
@@ -145,7 +147,6 @@ public class GenericVoucherAction: Decodable,
         totalAmount = try container.decode(Amount.self, forKey: .totalAmount)
         reference = try container.decode(String.self, forKey: .reference)
         merchantName = try container.decode(String.self, forKey: .merchantName)
-        instructionsUrl = try container.decode(String.self, forKey: .instructionsUrl)
         instructionsURL = try container.decode(URL.self, forKey: .instructionsUrl)
         passCreationToken = try container.decodeIfPresent(String.self, forKey: .passCreationToken)
 
@@ -180,7 +181,6 @@ public class GenericVoucherAction: Decodable,
         self.reference = reference
         self.expiresAt = expiresAt
         self.merchantName = merchantName
-        self.instructionsUrl = instructionsUrl.absoluteString
         self.instructionsURL = instructionsUrl
         self.passCreationToken = passCreationToken
     }

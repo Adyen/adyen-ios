@@ -50,7 +50,6 @@ extension AdyenScope where Base: UIView {
                                                    UIView.addKeyframe(withRelativeStartTime: hidden ? 0.5 : 0, relativeDuration: 0.5) {
                                                        self.base.isHidden = hidden
                                                    }
-                                                
                                                    UIView.addKeyframe(withRelativeStartTime: hidden ? 0 : 0.5, relativeDuration: 0.5) {
                                                        self.base.alpha = hidden ? 0 : 1
                                                    }
