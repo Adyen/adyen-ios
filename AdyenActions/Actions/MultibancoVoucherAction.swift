@@ -10,6 +10,7 @@ import Foundation
 /// Describes an action in which a Multibanco voucher is presented to the shopper.
 public final class MultibancoVoucherAction: GenericVoucherAction {
     
+    /// Multibanco entity.
     public let entity: String
     
     /// The reference to uniquely identify a payment.
