@@ -51,7 +51,6 @@ target '$PROJECT_NAME' do
   use_frameworks!
 
   pod 'Adyen', :path => '../'
-  pod 'Adyen/WeChatPay', :path => '../'
   pod 'Adyen/SwiftUI', :path => '../'
 end
 " >> Podfile
