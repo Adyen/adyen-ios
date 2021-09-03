@@ -11,18 +11,31 @@ function print_help {
 
 set -e # Any subsequent(*) commands which fail will cause the shell script to exit immediately
 
-EXCLUDE_WECHAT=false
+INCLUDE_WECHAT=true
 
 while test $# -gt 0; do
   case "$1" in
-    -w|--exclude-wechat)
-      EXCLUDE_WECHAT=true
+    -h|--help)
+      print_help
+      exit 0
+      ;;
+    -w|--include-wechat)
+      INCLUDE_WECHAT=false
       shift
       ;;
   esac
 done
 
 PROJECT_NAME=TempProject
+
+function clean_up {
+  cd ../
+  rm -rf $PROJECT_NAME
+  echo "exited"
+}
+
+# Delete the temp folder if the script exited with error.
+trap "clean_up" 0 1 2 3 6
 
 rm -rf $PROJECT_NAME
 
@@ -66,7 +79,7 @@ swift package generate-xcodeproj
 
 # Create a Podfile with our pod as dependency.
 
-if [ "$EXCLUDE_WECHAT" == true ]
+if [ "$INCLUDE_WECHAT" == false ]
 then
   echo "platform :ios, '11.0'
 
@@ -108,7 +121,3 @@ xcodebuild archive -scheme TempProject-Package -workspace TempProject.xcworkspac
 # Build for x86_64 simulator
 echo '############# Build for simulator ###############'
 xcodebuild clean build -scheme TempProject-Package -workspace TempProject.xcworkspace -destination 'generic/platform=iOS Simulator'
-
-# Clean up.
-cd ../
-rm -rf $PROJECT_NAME

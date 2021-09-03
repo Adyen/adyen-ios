@@ -44,7 +44,7 @@ pod 'Adyen/WeChatPay'     // WeChat Pay Component.
 pod 'Adyen/SwiftUI'       // SwiftUI apps specific module.
 ```
 
-:warning: _`Adyen/WeChatPay` module doesn't support arm64 simulator for M1 Mac's._
+:warning: _`Adyen/WeChatPay` module doesn't support arm64 simulator for M1 Mac devices._
 
 ### Carthage
 
@@ -62,7 +62,7 @@ You can add all modules or select individual modules to add to your integration.
 * `AdyenWeChatPay`: WeChat Pay component.
 * `AdyenSwiftUI`: SwiftUI apps specific module.
 
-:warning: _`AdyenWeChatPay` module doesn't support arm64 simulator for M1 Mac's._
+:warning: _`AdyenWeChatPay` module doesn't support arm64 simulator for M1 Mac devices._
 
 ### Swift Package Manager
 
