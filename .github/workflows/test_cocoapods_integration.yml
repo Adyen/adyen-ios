@@ -24,8 +24,12 @@ jobs:
       with:
         xcode-version: latest-stable
 
+    - name: Lint Cocoapods
+      run: |
+        gem install cocoapods -v 1.10.2
+        pod lib lint Adyen.podspec --allow-warnings --verbose
+
     - name: Test Cocoapods Integration
       run: |
-        gem install cocoapods
-        pod lib lint Adyen.podspec --allow-warnings
+        Scripts/test-CocoaPods-integration.sh -w
         Scripts/test-CocoaPods-integration.sh

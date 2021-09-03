@@ -44,8 +44,7 @@ pod 'Adyen/WeChatPay'     // WeChat Pay Component.
 pod 'Adyen/SwiftUI'       // SwiftUI apps specific module.
 ```
 
-
-:warning: _`3DS2 SDK` binary dependency through CocoaPods doesn't support `arm64` Simulator builds. `arm64` needs to be excluded as described [here](https://github.com/Adyen/adyen-ios/issues/291) to be able to make `Any Simulator` builds._
+:warning: _`Adyen/WeChatPay` module doesn't support arm64 simulator for M1 Mac's._
 
 ### Carthage
 
@@ -63,7 +62,7 @@ You can add all modules or select individual modules to add to your integration.
 * `AdyenWeChatPay`: WeChat Pay component.
 * `AdyenSwiftUI`: SwiftUI apps specific module.
 
-:warning: _`3DS2 SDK` binary dependency through Carthage doesn't support `arm64` Simulator builds. `arm64` needs to be excluded as described [here](https://github.com/Adyen/adyen-ios/issues/291) to be able to make `Any Simulator` builds_
+:warning: _`AdyenWeChatPay` module doesn't support arm64 simulator for M1 Mac's._
 
 ### Swift Package Manager
 
