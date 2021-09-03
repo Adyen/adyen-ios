@@ -26,15 +26,12 @@ Pod::Spec.new do |s|
     plugin.dependency 'Adyen/Components'
   end
 
-  # Payment Methods
   s.subspec 'WeChatPay' do |plugin|
-    plugin.source_files = 'AdyenWeChatPay/**/*.swift', 'AdyenWeChatPay/WeChatSDK/*.h'
+    plugin.source_files = 'AdyenWeChatPay/**/*.swift'
     plugin.private_header_files = 'AdyenWeChatPay/WeChatSDK/*.h'
-    plugin.vendored_libraries = 'AdyenWeChatPay/WeChatSDK/libWeChatSDK.a'
-    plugin.xcconfig = { 'SWIFT_INCLUDE_PATHS' => '${PODS_TARGET_SRCROOT}/AdyenWeChatPay/WeChatSDK', 'OTHER_LDFLAGS' => '-ObjC -all_load' }
-    plugin.preserve_paths = 'AdyenWeChatPay/WeChatSDK/module.modulemap'
     plugin.dependency 'Adyen/Core'
     plugin.dependency 'Adyen/Actions'
+    plugin.dependency 'AdyenWeChatPayInternal', '1.1.0'
     plugin.libraries = 'z', 'stdc++', 'sqlite3.0'
     plugin.frameworks = 'SystemConfiguration', 'CoreTelephony', 'CFNetwork', 'CoreGraphics', 'Security'
   end
@@ -56,7 +53,6 @@ Pod::Spec.new do |s|
     plugin.dependency 'Adyen/Core'
     plugin.source_files = 'AdyenComponents/**/*.swift'
   end
-
 
   s.subspec 'Actions' do |plugin|
     plugin.dependency 'Adyen/Core'
