@@ -90,7 +90,7 @@ internal enum AnyPaymentMethod: Decodable {
     
     case none
     
-    var value: PaymentMethod? {
+    internal var value: PaymentMethod? {
         switch self {
         case let .storedCard(paymentMethod):
             return paymentMethod
