@@ -31,4 +31,5 @@ jobs:
 
     - name: Test Cocoapods Integration
       run: |
+        Scripts/test-CocoaPods-integration.sh -w
         Scripts/test-CocoaPods-integration.sh

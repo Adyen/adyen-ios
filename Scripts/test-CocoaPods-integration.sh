@@ -1,6 +1,26 @@
 #!/bin/bash
 
+function print_help {
+  echo "Test CocoaPods Integration"
+  echo " "
+  echo "test-CocoaPods-integration [-w]"
+  echo " "
+  echo "options:"
+  echo "-w, --exclude-wechat      exclude wechat module"
+}
+
 set -e # Any subsequent(*) commands which fail will cause the shell script to exit immediately
+
+EXCLUDE_WECHAT=false
+
+while test $# -gt 0; do
+  case "$1" in
+    -w|--exclude-wechat)
+      EXCLUDE_WECHAT=true
+      shift
+      ;;
+  esac
+done
 
 PROJECT_NAME=TempProject
 
@@ -45,15 +65,30 @@ swift package update
 swift package generate-xcodeproj
 
 # Create a Podfile with our pod as dependency.
-echo "platform :ios, '11.0'
 
-target '$PROJECT_NAME' do
-  use_frameworks!
+if [ "$EXCLUDE_WECHAT" == true ]
+then
+  echo "platform :ios, '11.0'
 
-  pod 'Adyen', :path => '../'
-  pod 'Adyen/SwiftUI', :path => '../'
-end
-" >> Podfile
+  target '$PROJECT_NAME' do
+    use_frameworks!
+
+    pod 'Adyen', :path => '../'
+    pod 'Adyen/SwiftUI', :path => '../'
+  end
+  " >> Podfile
+else
+  echo "platform :ios, '11.0'
+
+  target '$PROJECT_NAME' do
+    use_frameworks!
+
+    pod 'Adyen', :path => '../'
+    pod 'Adyen/WeChatPay', :path => '../'
+    pod 'Adyen/SwiftUI', :path => '../'
+  end
+  " >> Podfile
+fi
 
 # Install the pods.
 pod install
