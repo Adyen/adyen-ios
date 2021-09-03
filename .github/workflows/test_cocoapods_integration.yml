@@ -23,11 +23,11 @@ jobs:
       uses: maxim-lobanov/setup-xcode@v1
       with:
         xcode-version: latest-stable
-        
+
     - name: Lint Cocoapods
       run: |
         gem install cocoapods -v 1.10.2
-        pod lib lint Adyen.podspec --allow-warnings --verbose
+        pod lib lint Adyen.podspec --allow-warnings --verbose --no-subspecs
 
     - name: Test Cocoapods Integration
       run: |
