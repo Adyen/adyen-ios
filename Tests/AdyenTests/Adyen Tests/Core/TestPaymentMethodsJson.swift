@@ -435,3 +435,13 @@ let boleto = [
     "name": "Boleto Bancario",
     "type": "boletobancario_santander"
 ]
+
+let bacsDirectDebit = [
+    "name": "BACS Direct Debit",
+    "type": "directdebit_GB"
+]
+
+let achDirectDebit = [
+    "name": "ACH Direct Debit",
+    "type": "ach"
+]

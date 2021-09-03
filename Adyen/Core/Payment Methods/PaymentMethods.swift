@@ -7,10 +7,10 @@
 import Foundation
 
 /**
-  A collection of available payment methods.
+ A collection of available payment methods.
 
-  - SeeAlso:
-  [API Reference](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/paymentMethods__section_resParams)
+ - SeeAlso:
+ [API Reference](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/paymentMethods__section_resParams)
  */
 public struct PaymentMethods: Decodable {
 
@@ -90,7 +90,7 @@ internal enum AnyPaymentMethod: Decodable {
     
     case none
     
-    fileprivate var value: PaymentMethod? {
+    var value: PaymentMethod? {
         switch self {
         case let .storedCard(paymentMethod):
             return paymentMethod
