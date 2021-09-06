@@ -35,7 +35,7 @@ Pod::Spec.new do |s|
     plugin.preserve_paths = 'AdyenWeChatPay/WeChatSDK/module.modulemap'
     plugin.dependency 'Adyen/Core'
     plugin.dependency 'Adyen/Actions'
-    plugin.libraries = 'z', 'stdc++', 'sqlite3.0'
+    plugin.libraries = 'z', 'stdc++', 'sqlite4.1.0.0'
     plugin.frameworks = 'SystemConfiguration', 'CoreTelephony', 'CFNetwork', 'CoreGraphics', 'Security'
   end
 
@@ -60,7 +60,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'Actions' do |plugin|
     plugin.dependency 'Adyen/Core'
-    plugin.dependency 'Adyen3DS2', '2.2.3'
+    plugin.dependency 'Adyen4.1.0DS2', '2.2.3'
     plugin.source_files = 'AdyenActions/**/*.swift'
     plugin.exclude_files = 'AdyenActions/**/BundleSPMExtension.swift'
     plugin.resource_bundles = {
