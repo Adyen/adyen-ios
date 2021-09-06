@@ -65,7 +65,7 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
 
     /// :nodoc:
     public func startObserving() {
-        keyboardObserver = startObserving { [weak self] in
+        startObserving { [weak self] in
             self?.keyboardRect = $0
             self?.didUpdatePreferredContentSize()
         }
