@@ -34,9 +34,14 @@ let header =
 let structName = "LocalizationKey"
 let indent = "    "
 
-func extractKey(_ line: String) -> String {
-    String(line.prefix(while: { $0 != " " }))
-        .trimmingCharacters(in: CharacterSet(charactersIn: "\""))
+func extractKeyAndTranslation(_ line: String) -> (key: String, translation: String) {
+    let quotationMarks = CharacterSet(charactersIn: "\"")
+    let key = String(line.prefix(while: { $0 != " " }))
+        .trimmingCharacters(in: quotationMarks)
+    let translation = String(line.components(separatedBy: " = ")[1]
+        .dropLast())
+            .trimmingCharacters(in: quotationMarks)
+    return (key, translation)
 }
 
 func capitalizeFirstLetter(_ string: String) -> String {
@@ -44,7 +49,8 @@ func capitalizeFirstLetter(_ string: String) -> String {
 }
 
 func indentLines(_ lines: [String], with indent: String) -> [String] {
-    lines.map { indent.appending($0) }
+    lines.flatMap { $0.components(separatedBy: .newlines) }
+        .map { indent.appending($0) }
 }
 
 func formatKeyToName(_ key: String) -> String {
@@ -54,14 +60,13 @@ func formatKeyToName(_ key: String) -> String {
         .joined()
 }
 
-func generate(_ name: String, _ key: String) -> String {
-    String(format: "public static let %@ = %@(key: \"%@\")", name, structName, key)
+func generate(_ name: String, _ key: String, _ translation: String) -> String {
+    let translationComment = "/// \(translation)"
+    let keyValue = String(format: "public static let %@ = %@(key: \"%@\")", name, structName, key)
+    return [translationComment, keyValue].joined(separator: "\n")
 }
 
-func generateStruct(
-    _ lines: [String],
-    indent: String = indent
-) -> String {
+func generateStruct(_ lines: [String], indent: String = indent) -> String {
     let generatedLines: [[String]] = [
         ["/// :nodoc:", "public struct \(structName) {", ""],
         indentLines(lines, with: indent),
@@ -95,8 +100,8 @@ guard let fileContents = FileManager.default.contents(atPath: inputURL.relativeP
 
 let lines = strings.components(separatedBy: .newlines)
     .filter { $0.isEmpty == false }
-    .map(extractKey)
-    .map { (formatKeyToName($0), $0) }
+    .map(extractKeyAndTranslation)
+    .map { (formatKeyToName($0.key), $0.key, $0.translation) }
     .map(generate)
 
 print("Detected \(lines.count) localizable keys")

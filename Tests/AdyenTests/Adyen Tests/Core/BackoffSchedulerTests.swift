@@ -6,8 +6,8 @@
 //  Copyright © 2020 Adyen. All rights reserved.
 //
 
-@testable import AdyenNetworking
 @testable import Adyen
+@testable import AdyenNetworking
 import XCTest
 
 extension XCTestCase {

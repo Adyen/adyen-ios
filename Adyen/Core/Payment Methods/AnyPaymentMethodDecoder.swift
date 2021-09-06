@@ -52,7 +52,8 @@ internal enum PaymentMethodType: String {
     case boleto = "boletobancario_santander"
     case affirm
     case oxxo
-    
+    case bacsDirectDebit = "directdebit_GB"
+    case achDirectDebit = "ach"
 }
 
 private struct PaymentMethodField: Decodable {
@@ -85,6 +86,8 @@ internal enum AnyPaymentMethodDecoder {
         .afterpay: UnsupportedPaymentMethodDecoder(),
         .androidPay: UnsupportedPaymentMethodDecoder(),
         .amazonPay: UnsupportedPaymentMethodDecoder(),
+        .bacsDirectDebit: UnsupportedPaymentMethodDecoder(),
+        .achDirectDebit: UnsupportedPaymentMethodDecoder(),
         
         // Supported payment methods
         .card: CardPaymentMethodDecoder(),

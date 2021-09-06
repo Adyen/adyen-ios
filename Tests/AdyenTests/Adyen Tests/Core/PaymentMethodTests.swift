@@ -469,6 +469,20 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.displayInformation.logoName, "boletobancario_santander")
         XCTAssertEqual(paymentMethod.localizedDisplayInformation(using: nil).logoName, "boletobancario_santander")
     }
+
+    // MARK: - BACS Direct Debit
+
+    func testDecodingBACSDirectDebitPaymentMethod() throws {
+        let paymentMethod = try Coder.decode(bacsDirectDebit) as AnyPaymentMethod
+        XCTAssertNil(paymentMethod.value)
+    }
+
+    // MARK: - ACH Direct Debit
+
+    func testDecodingACHDirectDebitPaymentMethod() throws {
+        let paymentMethod = try Coder.decode(achDirectDebit) as AnyPaymentMethod
+        XCTAssertNil(paymentMethod.value)
+    }
 }
 
 internal extension Coder {

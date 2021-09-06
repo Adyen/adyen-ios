@@ -6,9 +6,9 @@
 //  Copyright © 2020 Adyen. All rights reserved.
 //
 
-import AdyenNetworking
 @testable import Adyen
 @testable import AdyenActions
+import AdyenNetworking
 import XCTest
 
 class PollingComponentTests: XCTestCase {

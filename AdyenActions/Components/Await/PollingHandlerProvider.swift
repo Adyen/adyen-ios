@@ -5,8 +5,8 @@
 //
 
 import Adyen
-import Foundation
 import AdyenNetworking
+import Foundation
 
 /// Any action that has payment data
 internal protocol PaymentDataAware {

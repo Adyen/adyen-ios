@@ -92,7 +92,7 @@ class AmountFormatterTests: XCTestCase {
     }
     
     func testAmountComponents() {
-        let comparator: (AmountComponents, (currency: String, value: String)) -> Bool = { (lhs, rhs) in
+        let comparator: (AmountComponents, (currency: String, value: String)) -> Bool = { lhs, rhs in
             lhs.formattedValue == rhs.value &&
                 lhs.formattedCurrencySymbol == rhs.currency
         }
@@ -105,7 +105,7 @@ class AmountFormatterTests: XCTestCase {
             Amount(value: value, currencyCode: "CVE", localeIdentifier: "ko_KR"),
             Amount(value: value, currencyCode: "CVE", localeIdentifier: "fr_FR"),
             Amount(value: value, currencyCode: "EUR", localeIdentifier: "ko_KR"),
-            Amount(value: value, currencyCode: "EUR", localeIdentifier: "fr_FR"),
+            Amount(value: value, currencyCode: "EUR", localeIdentifier: "fr_FR")
         ].map(\.formattedComponents)
         
         let comps = [

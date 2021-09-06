@@ -6,9 +6,9 @@
 //  Copyright © 2020 Adyen. All rights reserved.
 //
 
-import AdyenNetworking
 @testable import Adyen
 @testable import AdyenCard
+import AdyenNetworking
 import XCTest
 
 class CardPublicKeyProviderTests: XCTestCase {
@@ -21,7 +21,7 @@ class CardPublicKeyProviderTests: XCTestCase {
     func testMultipleFetchCallsAndOneRequestDispatched() throws {
         var baseApiClient = APIClientMock()
         var apiClient = RetryAPIClient(apiClient: baseApiClient, scheduler: SimpleScheduler(maximumCount: 2))
-        var sut = CardPublicKeyProvider(apiClient: apiClient, request: ClientKeyRequest(clientKey: "") )
+        var sut = CardPublicKeyProvider(apiClient: apiClient, request: ClientKeyRequest(clientKey: ""))
         CardPublicKeyProvider.cachedCardPublicKey = nil
 
         baseApiClient.mockedResults = [.success(ClientKeyResponse(cardPublicKey: "test_public_key"))]
