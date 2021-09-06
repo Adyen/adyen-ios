@@ -60,11 +60,13 @@ custom_categories:
       - ApplePayPaymentMethod
       - SEPADirectDebitPaymentMethod
       - QiwiWalletPaymentMethod
+      - AffirmPaymentMethod
       - AwaitPaymentMethod
       - MBWayPaymentMethod
       - BLIKPaymentMethod
       - VoucherPaymentMethod
       - DokuPaymentMethod
+      - OXXOPaymentMethod
       - EContextPaymentMethod
       - SevenElevenPaymentMethod
       - QRCodePaymentMethod
@@ -90,6 +92,8 @@ custom_categories:
       - DokuVoucherAction
       - EContextATMVoucherAction
       - EContextStoresVoucherAction
+      - OXXOVoucherAction
+      - AppleWalletError
       
   - name: Action-handling components
     children:
@@ -101,7 +105,6 @@ custom_categories:
       - RedirectComponent
       - RedirectDetails
       - WeChatPaySDKActionComponent
-            
       
   - name: Card Component
     children:
@@ -113,6 +116,7 @@ custom_categories:
       - CardComponent
       - BCMCComponent
       - CardDetails
+      - KCPDetails
       - CardFundingSource
       - CardType
       - CardBrand
@@ -158,6 +162,12 @@ custom_categories:
       - QiwiWalletPaymentMethod
       - QiwiWalletComponent
       - QiwiWalletDetails
+      
+  - name: Affirm Component
+    children:
+      - AffirmPaymentMethod
+      - AffirmComponent
+      - AffirmDetails
       
   - name: BLIK Component
     children:
@@ -234,6 +244,7 @@ custom_categories:
       - Details
       - AdditionalDetails
       - PaymentMethodDetails
+      - AnyVoucherAction
       
   - name: Public delegates
     children:
@@ -272,7 +283,10 @@ custom_categories:
     children:
       - AdyenLogging
       - Formatter
+      - BrazilSocialSecurityNumberFormatter
+      - threeDS2SdkVersion
       - Validator
+      - DateValidator
       - LengthValidator
       - Environment
       - LogoURLProvider
