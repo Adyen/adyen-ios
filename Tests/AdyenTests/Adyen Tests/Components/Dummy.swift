@@ -8,7 +8,6 @@ import Adyen
 import AdyenEncryption
 import Foundation
 
-
 enum Dummy: Error {
     case error
     
@@ -40,6 +39,5 @@ enum Dummy: Error {
                                        expiryMonth: "03",
                                        expiryYear: "30",
                                        holder: nil)
-
 
 }

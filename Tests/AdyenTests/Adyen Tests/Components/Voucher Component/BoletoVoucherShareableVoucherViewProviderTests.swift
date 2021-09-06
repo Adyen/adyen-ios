@@ -28,8 +28,8 @@ class BoletoVoucherShareableVoucherViewProviderTests: XCTestCase {
 
         let amountLabel: UILabel! = sut.findView(by: "adyen.voucher.amountLabel")
         XCTAssertEqual(amountLabel.text, AmountFormatter.formatted(
-                        amount: boletoDecoded.totalAmount.value,
-                        currencyCode: boletoDecoded.totalAmount.currencyCode
+            amount: boletoDecoded.totalAmount.value,
+            currencyCode: boletoDecoded.totalAmount.currencyCode
         ))
 
         let expireyKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationKeyLabel")

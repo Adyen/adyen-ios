@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import XCTest
 @testable import Adyen
+import XCTest
 
 extension XCTestCase {
             
@@ -25,7 +25,7 @@ extension XCTestCase {
         populate(textItemView: postalCodeItemView, with: address.postalCode ?? "")
         
         if let regionPickerView = addressView.findView(by: identifier(for: .stateOrProvince, addressView: addressViewIdentifier)) as? FormRegionPickerItemView,
-           let selectedRow = regionPickerView.item.selectableValues.firstIndex(where: { $0.identifier == address.stateOrProvince ?? ""}) {
+           let selectedRow = regionPickerView.item.selectableValues.firstIndex(where: { $0.identifier == address.stateOrProvince ?? "" }) {
             regionPickerView.pickerView(regionPickerView.pickerView, didSelectRow: selectedRow, inComponent: 0)
         }
         
@@ -39,6 +39,6 @@ extension XCTestCase {
     // MARK: - Private
     
     private func identifier(for field: AddressField, addressView: String) -> String {
-        return "\(addressView).\(field.rawValue)"
+        "\(addressView).\(field.rawValue)"
     }
 }
