@@ -26,8 +26,8 @@ class DokuVoucherUITests: XCTestCase {
 
         let amountLabel: UILabel! = sut.findView(by: "adyen.voucher.amountLabel")
         XCTAssertEqual(amountLabel.text, AmountFormatter.formatted(
-                        amount: dokuAction.totalAmount.value,
-                        currencyCode: dokuAction.totalAmount.currencyCode
+            amount: dokuAction.totalAmount.value,
+            currencyCode: dokuAction.totalAmount.currencyCode
         ))
 
         let expireyKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationKeyLabel")
@@ -64,8 +64,8 @@ class DokuVoucherUITests: XCTestCase {
 
         let amountLabel: UILabel! = sut.findView(by: "adyen.voucher.amountLabel")
         XCTAssertEqual(amountLabel.text, AmountFormatter.formatted(
-                        amount: dokuAction.totalAmount.value,
-                        currencyCode: dokuAction.totalAmount.currencyCode
+            amount: dokuAction.totalAmount.value,
+            currencyCode: dokuAction.totalAmount.currencyCode
         ))
 
         let expireyKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationKeyLabel")
@@ -102,8 +102,8 @@ class DokuVoucherUITests: XCTestCase {
 
         let amountLabel: UILabel! = sut.findView(by: "adyen.voucher.amountLabel")
         XCTAssertEqual(amountLabel.text, AmountFormatter.formatted(
-                        amount: dokuAction.totalAmount.value,
-                        currencyCode: dokuAction.totalAmount.currencyCode
+            amount: dokuAction.totalAmount.value,
+            currencyCode: dokuAction.totalAmount.currencyCode
         ))
 
         let expireyKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationKeyLabel")

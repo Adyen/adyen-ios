@@ -8,8 +8,8 @@
 
 import Adyen
 @testable import AdyenActions
-import UIKit
 import PassKit
+import UIKit
 import XCTest
 
 class VoucherViewTests: XCTestCase {

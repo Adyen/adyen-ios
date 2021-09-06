@@ -6,9 +6,9 @@
 //  Copyright © 2021 Adyen. All rights reserved.
 //
 
-import Foundation
 @testable import Adyen
 @testable import AdyenActions
+import Foundation
 
 internal final class VoucherViewDelegateMock: VoucherViewDelegate {
     

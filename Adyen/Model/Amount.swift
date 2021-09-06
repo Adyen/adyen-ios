@@ -139,8 +139,8 @@ public struct AmountComponents {
         from formattedString: String
     ) -> (currency: String, value: String)? {
         guard let range = formattedString.range(
-                of: "(\\d+(?:[.,\\s]\\d+)+)",
-                options: .regularExpression
+            of: "(\\d+(?:[.,\\s]\\d+)+)",
+            options: .regularExpression
         ) else { return nil }
         
         let amountString = formattedString[range.lowerBound..<range.upperBound]
