@@ -6,10 +6,10 @@
 //  Copyright © 2021 Adyen. All rights reserved.
 //
 
-import XCTest
-@testable import AdyenNetworking
 @testable import Adyen
 @testable import AdyenActions
+@testable import AdyenNetworking
+import XCTest
 
 class AppleWalletPassProviderTests: XCTestCase {
 

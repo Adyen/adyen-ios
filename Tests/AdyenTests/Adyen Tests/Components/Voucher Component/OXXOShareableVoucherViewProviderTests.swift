@@ -30,8 +30,8 @@ class OXXOShareableVoucherViewProviderTests: XCTestCase {
 
         let amountLabel: UILabel! = sut.findView(by: "adyen.voucher.amountLabel")
         XCTAssertEqual(amountLabel.text, AmountFormatter.formatted(
-                        amount: oxxoDecoded.totalAmount.value,
-                        currencyCode: oxxoDecoded.totalAmount.currencyCode
+            amount: oxxoDecoded.totalAmount.value,
+            currencyCode: oxxoDecoded.totalAmount.currencyCode
         ))
 
         let expireyKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationKeyLabel")

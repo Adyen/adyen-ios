@@ -1110,11 +1110,11 @@ class CardComponentTests: XCTestCase {
 
     func testCVCOptionality() {
         let mixedBrands = [CardBrand(type: .visa, cvcPolicy: .required),
-                     CardBrand(type: .masterCard, cvcPolicy: .hidden),
-                     CardBrand(type: .masterCard, cvcPolicy: .optional)]
+                           CardBrand(type: .masterCard, cvcPolicy: .hidden),
+                           CardBrand(type: .masterCard, cvcPolicy: .optional)]
         let optionalBrands = [CardBrand(type: .visa, cvcPolicy: .optional),
-                     CardBrand(type: .masterCard, cvcPolicy: .hidden),
-                     CardBrand(type: .masterCard, cvcPolicy: .optional)]
+                              CardBrand(type: .masterCard, cvcPolicy: .hidden),
+                              CardBrand(type: .masterCard, cvcPolicy: .optional)]
 
         let method = CardPaymentMethod(type: "visa",
                                        name: "Test name",
@@ -1146,11 +1146,11 @@ class CardComponentTests: XCTestCase {
 
     func testExpiryDateOptionality() {
         let mixedBrands = [CardBrand(type: .visa, expiryDatePolicy: .required),
-                     CardBrand(type: .masterCard, expiryDatePolicy: .optional),
-                     CardBrand(type: .masterCard, expiryDatePolicy: .hidden)]
+                           CardBrand(type: .masterCard, expiryDatePolicy: .optional),
+                           CardBrand(type: .masterCard, expiryDatePolicy: .hidden)]
         let optionalBrands = [CardBrand(type: .visa, expiryDatePolicy: .hidden),
-                     CardBrand(type: .masterCard, expiryDatePolicy: .optional),
-                     CardBrand(type: .masterCard, expiryDatePolicy: .hidden)]
+                              CardBrand(type: .masterCard, expiryDatePolicy: .optional),
+                              CardBrand(type: .masterCard, expiryDatePolicy: .hidden)]
 
         let method = CardPaymentMethod(type: "visa",
                                        name: "Test name",

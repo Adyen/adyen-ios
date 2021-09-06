@@ -39,8 +39,8 @@ func extractKeyAndTranslation(_ line: String) -> (key: String, translation: Stri
     let key = String(line.prefix(while: { $0 != " " }))
         .trimmingCharacters(in: quotationMarks)
     let translation = String(line.components(separatedBy: " = ")[1]
-                                .dropLast())
-        .trimmingCharacters(in: quotationMarks)
+        .dropLast())
+            .trimmingCharacters(in: quotationMarks)
     return (key, translation)
 }
 
@@ -63,7 +63,7 @@ func formatKeyToName(_ key: String) -> String {
 func generate(_ name: String, _ key: String, _ translation: String) -> String {
     let translationComment = "/// \(translation)"
     let keyValue = String(format: "public static let %@ = %@(key: \"%@\")", name, structName, key)
-    return  [translationComment, keyValue].joined(separator: "\n")
+    return [translationComment, keyValue].joined(separator: "\n")
 }
 
 func generateStruct(_ lines: [String], indent: String = indent) -> String {

@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
 import AdyenNetworking
+import Foundation
 
 /// Formats an IBAN (International Bank Account Number).
 public final class IBANFormatter: Formatter {
