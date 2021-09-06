@@ -60,11 +60,13 @@ custom_categories:
       - ApplePayPaymentMethod
       - SEPADirectDebitPaymentMethod
       - QiwiWalletPaymentMethod
+      - AffirmPaymentMethod
       - AwaitPaymentMethod
       - MBWayPaymentMethod
       - BLIKPaymentMethod
       - VoucherPaymentMethod
       - DokuPaymentMethod
+      - OXXOPaymentMethod
       - EContextPaymentMethod
       - SevenElevenPaymentMethod
       - QRCodePaymentMethod
@@ -90,6 +92,7 @@ custom_categories:
       - DokuVoucherAction
       - EContextATMVoucherAction
       - EContextStoresVoucherAction
+      - OXXOVoucherAction
       
   - name: Action-handling components
     children:
@@ -101,7 +104,6 @@ custom_categories:
       - RedirectComponent
       - RedirectDetails
       - WeChatPaySDKActionComponent
-            
       
   - name: Card Component
     children:
@@ -158,6 +160,12 @@ custom_categories:
       - QiwiWalletPaymentMethod
       - QiwiWalletComponent
       - QiwiWalletDetails
+      
+  - name: Affirm Component
+    children:
+      - AffirmPaymentMethod
+      - AffirmComponent
+      - AffirmDetails
       
   - name: BLIK Component
     children:
