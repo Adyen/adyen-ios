@@ -27,8 +27,8 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
     internal lazy var pickerViewToolbar: UIToolbar = {
         let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: pickerView.frame.width, height: 44))
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(handleDoneButtonTap))
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        toolbar.setItems([flexSpace, doneButton], animated: false)
+        let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolbar.setItems([space, doneButton], animated: false)
         return toolbar
     }()
 
@@ -85,6 +85,7 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
 
     /// The main control of the picker element that
     /// handles displaying the selected value and triggering the pickerview.
+    /// :nodoc:
     public lazy var inputControl: PickerTextInputControl = {
         let view = createInputControl()
         view.showChevron = item.selectableValues.count > 1

@@ -6,7 +6,7 @@
 
 import Foundation
 
-/// The model to create an installments object.
+/// The model to create an installments instance.
 public struct Installments: Encodable, Equatable {
     
     public enum Plan: String {
@@ -17,12 +17,13 @@ public struct Installments: Encodable, Equatable {
         case revolving
     }
     
-    /// Selected total month of installments
+    /// Selected total months of the installments.
     public let totalMonths: Int
     
     /// Selected plan
     public let plan: Plan
     
+    /// :nodoc:
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         

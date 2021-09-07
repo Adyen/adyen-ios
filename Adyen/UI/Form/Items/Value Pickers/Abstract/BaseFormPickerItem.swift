@@ -30,8 +30,10 @@ public struct BasePickerElement<ElementType: CustomStringConvertible>: PickerEle
         lhs.identifier == rhs.identifier
     }
 
+    /// :nodoc:
     public var description: String { element.description }
     
+    /// :nodoc:
     public init(identifier: String, element: ElementType) {
         self.identifier = identifier
         self.element = element
@@ -47,8 +49,10 @@ open class BaseFormPickerItem<ElementType: CustomStringConvertible>: FormValueIt
     /// :nodoc:
     public var isHidden: Observable<Bool> = Observable(false)
     
-    /// The complete list of selectable values.
-    @Observable([]) internal var selectableValues: [BasePickerElement<ElementType>]
+    /// The complete list of selectable values, as observable.
+    /// Updating this notifies the observing view `BaseFormPickerItemView`
+    /// and reloads the picker view.
+    @Observable([]) public var selectableValues: [BasePickerElement<ElementType>]
 
     /// Initializes the picker item.
     ///
@@ -58,13 +62,6 @@ open class BaseFormPickerItem<ElementType: CustomStringConvertible>: FormValueIt
         assert(selectableValues.count > 0)
         super.init(value: preselectedValue, style: style)
         self.selectableValues = selectableValues
-    }
-    
-    /// Updates the selectable values items of the picker
-    /// and triggers the observing view component to update it's pickerview
-    /// - Parameter values: New selectable values to update.
-    public func updateSelectableValues(_ values: [BasePickerElement<ElementType>]) {
-        self.selectableValues = values
     }
 
 }

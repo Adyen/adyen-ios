@@ -31,8 +31,9 @@ internal struct InstallmentElement: CustomStringConvertible, Equatable {
         case let .plan(plan):
             if plan.installmentPlan == .revolving {
                 return Installments(totalMonths: 1, plan: plan.installmentPlan)
+            } else {
+                return nil
             }
-            return nil
         case let .month(month):
             return Installments(totalMonths: month.monthValue, plan: .regular)
         }

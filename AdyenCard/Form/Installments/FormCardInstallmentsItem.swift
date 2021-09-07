@@ -84,13 +84,13 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
         // clear picker and hide the component
         guard !additionalPickerElements.isEmpty else {
             isHidden.wrappedValue = true
-            updateSelectableValues([oneTimePaymentElement.pickerElement])
+            selectableValues = [oneTimePaymentElement.pickerElement]
             return
         }
         isHidden.wrappedValue = false
         
         let newValues = [oneTimePaymentElement] + additionalPickerElements
-        updateSelectableValues(newValues.map(\.pickerElement))
+        selectableValues = newValues.map(\.pickerElement)
     }
     
     /// :nodoc:
