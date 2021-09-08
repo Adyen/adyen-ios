@@ -69,6 +69,7 @@
 "adyen.voucher.finish" = "";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "金額";
+"adyen.voucher.entity" = "エンティティ";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "%@をお支払い下さい。";
 "adyen.pix.copyButton" = "コードをコピー";
@@ -122,3 +123,10 @@
 "adyen.affirm.deliveryAddressToggle.title" = "別の配送先住所";
 "adyen.voucher.shopperReference" = "購入者向け参考情報";
 "adyen.voucher.alternativeReference" = "別の参照";
+"adyen.card.installments.numberOfInstallments" = "分割回数";
+"adyen.card.installments.oneTime" = "一括払い";
+"adyen.card.installments.title" = "分割払い";
+"adyen.card.installments.revolving" = "リボ払い";
+"adyen.card.installments.monthsAndPrice" = "%@x %@";
+"adyen.card.installments.months" = "%@か月";
+"adyen.card.installments.plan" = "";

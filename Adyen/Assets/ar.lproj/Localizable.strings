@@ -69,6 +69,7 @@
 "adyen.voucher.finish" = "";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "المبلغ";
+"adyen.voucher.entity" = "الكيان";
 "adyen.pix.instructions" = "افتح التطبيق باستخدام مفتاح PIX المسجل، واختر الدفع باستخدام PIX وامسح رمز الاستجابة السريعة ضوئيًا أو انسخ الرمز والصقه";
 "adyen.pix.expirationLabel" = "لديك %@ للدفع";
 "adyen.pix.copyButton" = "نسخ الرمز";
@@ -122,3 +123,10 @@
 "adyen.affirm.deliveryAddressToggle.title" = "عنوان تسليم منفصل";
 "adyen.voucher.shopperReference" = "مرجع المتسوق";
 "adyen.voucher.alternativeReference" = "المرجع البديل";
+"adyen.card.installments.numberOfInstallments" = "عدد الأقساط";
+"adyen.card.installments.oneTime" = "الدفع مرة واحدة";
+"adyen.card.installments.title" = "الدفع على أقساط";
+"adyen.card.installments.revolving" = "الدفع الدوري";
+"adyen.card.installments.monthsAndPrice" = "%@ x %@";
+"adyen.card.installments.months" = "%@ أشهر";
+"adyen.card.installments.plan" = "";
