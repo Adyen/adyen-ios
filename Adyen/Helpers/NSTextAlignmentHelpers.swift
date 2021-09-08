@@ -4,10 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import AdyenNetworking
 import Foundation
 import QuartzCore
 import UIKit
-import AdyenNetworking
 
 /// :nodoc:
 extension NSTextAlignment: AdyenCompatible {}

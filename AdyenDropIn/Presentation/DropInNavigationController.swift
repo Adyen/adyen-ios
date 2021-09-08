@@ -32,7 +32,7 @@ internal final class DropInNavigationController: UINavigationController, Keyboar
     }
 
     internal func startObserving() {
-        keyboardObserver = startObserving { [weak self] in
+        startObserving { [weak self] in
             self?.keyboardRect = $0
             self?.updateTopViewControllerIfNeeded()
         }

@@ -30,8 +30,8 @@ class EContextStoresVoucherViewControllerProviderTests: XCTestCase {
 
         let amountLabel: UILabel! = sut.findView(by: "adyen.voucher.amountLabel")
         XCTAssertEqual(amountLabel.text, AmountFormatter.formatted(
-                        amount: econtextAction.totalAmount.value,
-                        currencyCode: econtextAction.totalAmount.currencyCode
+            amount: econtextAction.totalAmount.value,
+            currencyCode: econtextAction.totalAmount.currencyCode
         ))
 
         let expireyKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationKeyLabel")

@@ -8,7 +8,7 @@ import Adyen
 import UIKit
 
 /// :nodoc:
-final internal class VoucherNavBar: UIView, AnyNavigationBar {
+internal final class VoucherNavBar: UIView, AnyNavigationBar {
     
     /// :nodoc:
     public var leadingButtonHandler: (() -> Void)?

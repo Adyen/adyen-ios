@@ -160,7 +160,7 @@ public final class SubmitButton: UIControl {
 
 extension SubmitButton {
     
-    final internal class BackgroundView: UIView {
+    internal final class BackgroundView: UIView {
         
         private let color: UIColor
         private let rounding: CornerRounding
@@ -215,7 +215,7 @@ extension SubmitButton {
             layer.add(transition, forKey: nil)
         }
         
-        internal override func layoutSubviews() {
+        override internal func layoutSubviews() {
             super.layoutSubviews()
             self.adyen.round(using: rounding)
         }
