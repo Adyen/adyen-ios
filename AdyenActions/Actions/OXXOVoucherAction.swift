@@ -7,7 +7,8 @@
 import Foundation
 
 /// Describes an action in which an OXXO voucher is presented to the shopper.
-public class OXXOVoucherAction: GenericVoucherAction, DownloadableVoucher,
+public class OXXOVoucherAction: GenericVoucherAction,
+    DownloadableVoucher,
     InstructionAwareVoucherAction {
 
     /// This reference is a short version of the barcode number of the voucher.
