@@ -15,7 +15,7 @@ internal enum ConfigurationConstants {
     /// Please use your own web server between your app and adyen checkout API.
     static let demoServerEnvironment = DemoServerEnvironment.test
 
-    static let componentsEnvironment = Environment.test // Environment(baseURL: URL(string: "http://localhost:8080")!)
+    static let componentsEnvironment = Environment.test
 
     static let appName = "Adyen Demo"
 
