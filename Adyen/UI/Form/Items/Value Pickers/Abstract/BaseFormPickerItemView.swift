@@ -22,6 +22,15 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
         pickerView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         return pickerView
     }()
+    
+    /// Toolbar above the pickerview with buttons to dismiss it.
+    internal lazy var pickerViewToolbar: UIToolbar = {
+        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: pickerView.frame.width, height: 44))
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(handleDoneButtonTap))
+        let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolbar.setItems([space, doneButton], animated: false)
+        return toolbar
+    }()
 
     /// Initializes the picker item view.
     ///
@@ -30,40 +39,55 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
         super.init(item: item)
         initialize()
         select(value: item.value)
+        observe(item.$selectableValues) { [weak self] change in
+            guard let self = self else { return }
+            self.inputControl.showChevron = change.count > 1
+            self.pickerView.reloadAllComponents()
+            change.first.map(self.select)
+        }
     }
 
     /// :nodoc:
     override open var canBecomeFirstResponder: Bool { true }
 
     /// :nodoc:
+    @discardableResult
     override open func becomeFirstResponder() -> Bool {
         inputControl.becomeFirstResponder()
     }
 
     /// :nodoc:
+    @discardableResult
     override open func resignFirstResponder() -> Bool {
         inputControl.resignFirstResponder()
     }
 
     // MARK: - Abstract
 
-    internal func getInputControl() -> PickerTextInputControl {
-        BasePickerInputControl(inputView: pickerView, style: item.style.text)
+    internal func createInputControl() -> PickerTextInputControl {
+        BasePickerInputControl(inputView: pickerView,
+                               inputAccessoryView: pickerViewToolbar,
+                               style: item.style.text)
     }
 
     internal func updateSelection() {
         inputControl.label = item.value.description
     }
 
-    internal func initialize() {
+    /// Function called right after `init` for additional initialization of controls.
+    /// :nodoc:
+    open func initialize() {
         addSubview(inputControl)
         inputControl.translatesAutoresizingMaskIntoConstraints = false
         inputControl.preservesSuperviewLayoutMargins = true
         (inputControl as UIView).adyen.anchor(inside: self)
     }
 
-    internal lazy var inputControl: PickerTextInputControl = {
-        let view = getInputControl()
+    /// The main control of the picker element that
+    /// handles displaying the selected value and triggering the pickerview.
+    /// :nodoc:
+    public lazy var inputControl: PickerTextInputControl = {
+        let view = createInputControl()
         view.showChevron = item.selectableValues.count > 1
         view.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "inputControl") }
         view.onDidBecomeFirstResponder = { [weak self] in
@@ -78,11 +102,15 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
 
         view.onDidTap = { [weak self] in
             guard let self = self, self.item.selectableValues.count > 1 else { return }
-            _ = self.becomeFirstResponder()
+            self.becomeFirstResponder()
         }
 
         return view
     }()
+    
+    @objc private func handleDoneButtonTap() {
+        resignFirstResponder()
+    }
 
     // MARK: - UIPickerViewDelegate and UIPickerViewDataSource
 
@@ -102,9 +130,9 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
         select(value: item.selectableValues[row])
     }
 
-    // MARK: - Private
+    // MARK: - Internal
 
-    private func select(value: BasePickerElement<T>) {
+    internal func select(value: BasePickerElement<T>) {
         self.item.value = value
         updateSelection()
 

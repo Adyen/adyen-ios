@@ -69,6 +69,7 @@
 "adyen.voucher.finish" = "";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Valor";
+"adyen.voucher.entity" = "Entidade";
 "adyen.pix.instructions" = "Abra o app com sua chave PIX cadastrada, escolha Pagar com Pix e escaneie o QR Code ou copie e cole o código";
 "adyen.pix.expirationLabel" = "Você tem %@ para pagar";
 "adyen.pix.copyButton" = "Copiar código";
@@ -122,3 +123,10 @@
 "adyen.affirm.deliveryAddressToggle.title" = "Endereço de entrega (se for diferente)";
 "adyen.voucher.shopperReference" = "Referência do consumidor";
 "adyen.voucher.alternativeReference" = "Referência alternativa";
+"adyen.card.installments.numberOfInstallments" = "Opções de Parcelamento";
+"adyen.card.installments.oneTime" = "Pagamento à vista";
+"adyen.card.installments.title" = "Pagamento parcelado";
+"adyen.card.installments.revolving" = "Pagamento rotativo";
+"adyen.card.installments.monthsAndPrice" = "%@x %@";
+"adyen.card.installments.months" = "%@ meses";
+"adyen.card.installments.plan" = "";

@@ -69,6 +69,7 @@
 "adyen.voucher.finish" = "";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Montant";
+"adyen.voucher.entity" = "Entité";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Vous avez %@ pour payer cette somme";
 "adyen.pix.copyButton" = "Copier le code";
@@ -122,3 +123,10 @@
 "adyen.affirm.deliveryAddressToggle.title" = "Adresse de livraison distincte";
 "adyen.voucher.shopperReference" = "Référence client";
 "adyen.voucher.alternativeReference" = "Autre référence";
+"adyen.card.installments.numberOfInstallments" = "Nombre de versements";
+"adyen.card.installments.oneTime" = "Paiement unique";
+"adyen.card.installments.title" = "Paiement échelonné";
+"adyen.card.installments.revolving" = "Paiement en plusieurs fois";
+"adyen.card.installments.monthsAndPrice" = "%@x %@";
+"adyen.card.installments.months" = "%@ mois";
+"adyen.card.installments.plan" = "";

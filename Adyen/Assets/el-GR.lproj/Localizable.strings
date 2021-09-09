@@ -69,6 +69,7 @@
 "adyen.voucher.finish" = "";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Ποσό";
+"adyen.voucher.entity" = "Οντότητα";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Έχετε στη διάθεσή σας %@ για την πληρωμή";
 "adyen.pix.copyButton" = "Αντιγραφή κωδικού";
@@ -122,3 +123,10 @@
 "adyen.affirm.deliveryAddressToggle.title" = "Ξεχωριστή διεύθυνση παράδοσης";
 "adyen.voucher.shopperReference" = "Αναφορά αγοραστή";
 "adyen.voucher.alternativeReference" = "Εναλλακτική αναφορά";
+"adyen.card.installments.numberOfInstallments" = "Αριθμός δόσεων";
+"adyen.card.installments.oneTime" = "Εφάπαξ πληρωμή";
+"adyen.card.installments.title" = "Πληρωμή με δόσεις";
+"adyen.card.installments.revolving" = "Ανακυκλούμενη πληρωμή";
+"adyen.card.installments.monthsAndPrice" = "%@x %@";
+"adyen.card.installments.months" = "%@ μήνες";
+"adyen.card.installments.plan" = "";

@@ -69,6 +69,7 @@
 "adyen.voucher.finish" = "";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "금액";
+"adyen.voucher.entity" = "발급사";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "남은 결제 시한: %@";
 "adyen.pix.copyButton" = "코드 복사하기";
@@ -122,3 +123,10 @@
 "adyen.affirm.deliveryAddressToggle.title" = "별도의 배송 주소";
 "adyen.voucher.shopperReference" = "구매자 참조번호";
 "adyen.voucher.alternativeReference" = "대체 참조번호";
+"adyen.card.installments.numberOfInstallments" = "할부 개월 수";
+"adyen.card.installments.oneTime" = "일시불 결제";
+"adyen.card.installments.title" = "할부 결제";
+"adyen.card.installments.revolving" = "리볼빙 결제";
+"adyen.card.installments.monthsAndPrice" = "%@x %@";
+"adyen.card.installments.months" = "%@개월";
+"adyen.card.installments.plan" = "";
