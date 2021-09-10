@@ -7,7 +7,9 @@
 import Foundation
 
 /// Describes an action in which an OXXO voucher is presented to the shopper.
-public class OXXOVoucherAction: GenericVoucherAction, DownloadableVoucher {
+public class OXXOVoucherAction: GenericVoucherAction,
+    DownloadableVoucher,
+    InstructionAwareVoucherAction {
 
     /// This reference is a short version of the barcode number of the voucher.
     public let alternativeReference: String
@@ -18,6 +20,15 @@ public class OXXOVoucherAction: GenericVoucherAction, DownloadableVoucher {
     
     /// Download URL.
     public let downloadUrl: URL
+    
+    /// The instruction url.
+    @available(*, deprecated, message: "Please use `instructionsURL` instead.")
+    public var instructionsUrl: String {
+        instructionsURL.absoluteString
+    }
+    
+    /// The instruction `URL` object.
+    public let instructionsURL: URL
 
     /// :nodoc:
     public required init(from decoder: Decoder) throws {
@@ -25,6 +36,7 @@ public class OXXOVoucherAction: GenericVoucherAction, DownloadableVoucher {
         alternativeReference = try container.decode(String.self, forKey: .alternativeReference)
         merchantReference = try container.decode(String.self, forKey: .merchantReference)
         downloadUrl = try container.decode(URL.self, forKey: .downloadUrl)
+        instructionsURL = try container.decode(URL.self, forKey: .instructionsUrl)
         try super.init(from: decoder)
     }
 
@@ -32,6 +44,7 @@ public class OXXOVoucherAction: GenericVoucherAction, DownloadableVoucher {
     private enum CodingKeys: String, CodingKey {
         case alternativeReference,
              merchantReference,
-             downloadUrl
+             downloadUrl,
+             instructionsUrl
     }
 }

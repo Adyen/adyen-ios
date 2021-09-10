@@ -41,11 +41,12 @@ class ComponentManagerTests: XCTestCase {
             econtextStores,
             econtextATM,
             econtextOnline,
-            oxxo
+            oxxo,
+            multibanco
         ]
     ]
     
-    let numebrOfExpectedRegularComponents = 16
+    let numebrOfExpectedRegularComponents = 17
 
     func testClientKeyInjectionAndProtocolConfromance() throws {
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods

@@ -552,6 +552,9 @@
 		F9838D452631AD3700963483 /* BalanceChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9838D442631AD3700963483 /* BalanceChecker.swift */; };
 		F9842CD025710BF00063CE5A /* ThreeDS2ClassicActionHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9842CCF25710BF00063CE5A /* ThreeDS2ClassicActionHandlerTests.swift */; };
 		F9976BA526D654ED00D2D7CE /* Throttler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E773EA35251E26BE00119499 /* Throttler.swift */; };
+		F9976BB126D9006C00D2D7CE /* MultibancoPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9976BB026D9006C00D2D7CE /* MultibancoPaymentMethod.swift */; };
+		F9976BB326D903F400D2D7CE /* MultibancoVoucherAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9976BB226D903F400D2D7CE /* MultibancoVoucherAction.swift */; };
+		F9976BB526D90C6700D2D7CE /* MultibancoShareableVoucherViewProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9976BB426D90C6700D2D7CE /* MultibancoShareableVoucherViewProviderTests.swift */; };
 		F99D2EFE2661363D00BB5B2F /* AppleWalletPassRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99D2EFD2661363D00BB5B2F /* AppleWalletPassRequest.swift */; };
 		F99D2F0A266136A700BB5B2F /* AppleWalletPassResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99D2F09266136A700BB5B2F /* AppleWalletPassResponse.swift */; };
 		F99D2F702664EDC900BB5B2F /* AnyVoucherAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99D2F6F2664EDC900BB5B2F /* AnyVoucherAction.swift */; };
@@ -1417,6 +1420,9 @@
 		F9842C9E256EBF5F0063CE5A /* ThreeDS2ClassicActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2ClassicActionHandler.swift; sourceTree = "<group>"; };
 		F9842CCF25710BF00063CE5A /* ThreeDS2ClassicActionHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2ClassicActionHandlerTests.swift; sourceTree = "<group>"; };
 		F99262C324EECB9F00C9A60D /* ApplePayComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayComponentExtensions.swift; sourceTree = "<group>"; };
+		F9976BB026D9006C00D2D7CE /* MultibancoPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultibancoPaymentMethod.swift; sourceTree = "<group>"; };
+		F9976BB226D903F400D2D7CE /* MultibancoVoucherAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultibancoVoucherAction.swift; sourceTree = "<group>"; };
+		F9976BB426D90C6700D2D7CE /* MultibancoShareableVoucherViewProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultibancoShareableVoucherViewProviderTests.swift; sourceTree = "<group>"; };
 		F99D2EFD2661363D00BB5B2F /* AppleWalletPassRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleWalletPassRequest.swift; sourceTree = "<group>"; };
 		F99D2F09266136A700BB5B2F /* AppleWalletPassResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleWalletPassResponse.swift; sourceTree = "<group>"; };
 		F99D2F6F2664EDC900BB5B2F /* AnyVoucherAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyVoucherAction.swift; sourceTree = "<group>"; };
@@ -1888,6 +1894,7 @@
 				F97C837825BF047600D7F85C /* DokuPaymentMethod.swift */,
 				E788A3B1265565DF00089448 /* EContextPaymentMethod.swift */,
 				F97842D626C2758E00677458 /* OXXOPaymentMethod.swift */,
+				F9976BB026D9006C00D2D7CE /* MultibancoPaymentMethod.swift */,
 				E7763A1025F02BD20046371E /* GiftCardPaymentMethod.swift */,
 				E278EB4222AA5EC800497FD5 /* IssuerListPaymentMethod.swift */,
 				F9D644DD24D2D9950059CBE3 /* MBWayPaymentMethod.swift */,
@@ -1919,6 +1926,7 @@
 				F9639B1824DABDE40073F38A /* AwaitAction.swift */,
 				F97C84CC25C1761900D7F85C /* VoucherAction.swift */,
 				F9B017F62608F4FE001F23FC /* DokuVoucherAction.swift */,
+				F9976BB226D903F400D2D7CE /* MultibancoVoucherAction.swift */,
 				F9B018022608F648001F23FC /* EContextStoresVoucherAction.swift */,
 				F9B018B7260A2DB2001F23FC /* EContextATMVoucherAction.swift */,
 				F97842D426C2746500677458 /* OXXOVoucherAction.swift */,
@@ -3531,6 +3539,7 @@
 				F9B019592611ED94001F23FC /* EContextStoresVoucherViewControllerProviderTests.swift */,
 				5A988C332657D5290007F4C0 /* BoletoVoucherShareableVoucherViewProviderTests.swift */,
 				F97842D826C3D55200677458 /* OXXOShareableVoucherViewProviderTests.swift */,
+				F9976BB426D90C6700D2D7CE /* MultibancoShareableVoucherViewProviderTests.swift */,
 				5A56E15226B6DB9C00744CA0 /* VoucherViewTests.swift */,
 			);
 			path = "Voucher Component";
@@ -4631,6 +4640,7 @@
 				F97842D726C2758E00677458 /* OXXOPaymentMethod.swift in Sources */,
 				F97CCD3C24360A4000BC560A /* BundleHelpers.swift in Sources */,
 				E788A4EF2658030100089448 /* DisplayInformation.swift in Sources */,
+				F9976BB126D9006C00D2D7CE /* MultibancoPaymentMethod.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4656,6 +4666,7 @@
 				F9BA21C62474113500D36A63 /* AmountFormatterTests.swift in Sources */,
 				E9E3DABB221EA22F00697074 /* CardExpiryDateFormatterTests.swift in Sources */,
 				F9639B5624E3DB190073F38A /* PollingComponentTests.swift in Sources */,
+				F9976BB526D90C6700D2D7CE /* MultibancoShareableVoucherViewProviderTests.swift in Sources */,
 				F99F08642383F2B000EBB948 /* FormTextItemViewTests.swift in Sources */,
 				5A54FFE126299602007194B7 /* TimeIntervalExtensionsTests.swift in Sources */,
 				F96A25432371AB75007DBF0B /* PaymentComponentDelegateMock.swift in Sources */,
@@ -4940,6 +4951,7 @@
 				5A64571B2625CB87001824F0 /* QRCodeView.swift in Sources */,
 				F917615C25A30B6400D653BE /* AnyChallengeResult.swift in Sources */,
 				5A6457272625CB99001824F0 /* QRCodeViewModel.swift in Sources */,
+				F9976BB326D903F400D2D7CE /* MultibancoVoucherAction.swift in Sources */,
 				F9175FFA259499D500D653BE /* AwaitViewController.swift in Sources */,
 				F9175FD22594999600D653BE /* RedirectComponent.swift in Sources */,
 				F97C851625C192D000D7F85C /* VoucherViewController.swift in Sources */,
