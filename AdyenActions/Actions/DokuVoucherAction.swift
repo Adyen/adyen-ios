@@ -8,19 +8,29 @@ import Adyen
 import Foundation
 
 /// Describes an action in which a Doku voucher is presented to the shopper.
-public final class DokuVoucherAction: GenericVoucherAction {
+public final class DokuVoucherAction: GenericVoucherAction, InstructionAwareVoucherAction {
     
     /// Shopper Name.
     public let shopperName: String
 
     /// The shopper email.
     public let shopperEmail: String
+    
+    /// The instruction url.
+    @available(*, deprecated, message: "Please use `instructionsURL` instead.")
+    public var instructionsUrl: String {
+        instructionsURL.absoluteString
+    }
+    
+    /// The instruction `URL` object.
+    public let instructionsURL: URL
 
     /// :nodoc:
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         shopperName = try container.decode(String.self, forKey: .shopperName)
         shopperEmail = try container.decode(String.self, forKey: .shopperEmail)
+        instructionsURL = try container.decode(URL.self, forKey: .instructionsUrl)
         try super.init(from: decoder)
     }
 
@@ -36,19 +46,20 @@ public final class DokuVoucherAction: GenericVoucherAction {
                   instructionsUrl: URL) {
         self.shopperEmail = shopperEmail
         self.shopperName = shopperName
+        self.instructionsURL = instructionsUrl
         super.init(paymentMethodType: paymentMethodType,
                    initialAmount: initialAmount,
                    totalAmount: totalAmount,
                    reference: reference,
                    expiresAt: expiresAt,
-                   merchantName: merchantName,
-                   instructionsUrl: instructionsUrl)
+                   merchantName: merchantName)
     }
 
     /// :nodoc:
     private enum CodingKeys: String, CodingKey {
         case shopperEmail,
-             shopperName
+             shopperName,
+             instructionsUrl
 
     }
 }

@@ -48,6 +48,8 @@ internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvid
             view = createGenericView(with: action, fields: createOXXOVoucherFields(for: action))
         case let .boletoBancairoSantander(action):
             view = createBoletoView(with: action)
+        case let .multibanco(action):
+            view = createGenericView(with: action, fields: createMultibancoVoucherFields(for: action))
         }
         
         return view
@@ -119,6 +121,12 @@ internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvid
         [createExpirationField(with: action.expiresAt),
          createShopperReferenceField(with: action.merchantReference),
          createAlternativeReferenceField(with: action.alternativeReference)]
+    }
+    
+    private func createMultibancoVoucherFields(for action: MultibancoVoucherAction) -> [ShareableVoucherView.VoucherField] {
+        [.init(identifier: "entity", title: localizedString(.voucherEntity, localizationParameters), value: action.entity),
+         createExpirationField(with: action.expiresAt),
+         createShopperReferenceField(with: action.merchantReference)]
     }
 
     private func createDokuVoucherFields(for action: DokuVoucherAction) -> [ShareableVoucherView.VoucherField] {

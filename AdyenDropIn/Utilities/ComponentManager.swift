@@ -286,6 +286,13 @@ extension ComponentManager: PaymentComponentBuilder {
                                 paymentData: nil,
                                 apiContext: apiContext)
     }
+    
+    /// :nodoc:
+    internal func build(paymentMethod: MultibancoPaymentMethod) -> PaymentComponent? {
+        InstantPaymentComponent(paymentMethod: paymentMethod,
+                                paymentData: nil,
+                                apiContext: apiContext)
+    }
 
     /// :nodoc:
     internal func build(paymentMethod: GiftCardPaymentMethod) -> PaymentComponent? {
