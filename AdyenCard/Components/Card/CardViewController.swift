@@ -143,20 +143,30 @@ internal class CardViewController: FormViewController {
             items.numberItem.showLogos(for: brands.map(\.type))
         }
 
-        let isHidden: Bool
+        let kcpItemsHidden: Bool
         switch configuration.koreanAuthenticationMode {
         case .show:
-            isHidden = false
+            kcpItemsHidden = false
         case .hide:
-            isHidden = true
+            kcpItemsHidden = true
         case .auto:
-            isHidden = !configuration.showAdditionalAuthenticationFields(for: binInfo.issuingCountryCode)
+            kcpItemsHidden = !configuration.showAdditionalAuthenticationFields(for: binInfo.issuingCountryCode)
+        }
+        
+        var socialSecurityItemHidden: Bool
+        switch configuration.socialSecurityNumberMode {
+        case .show:
+            socialSecurityItemHidden = false
+        case .hide:
+            socialSecurityItemHidden = true
+        case .auto:
+            socialSecurityItemHidden = !brands.socialSecurityNumberRequired
         }
 
         items.numberItem.validator = CardNumberValidator(isLuhnCheckEnabled: brands.luhnCheckRequired)
-        items.additionalAuthPasswordItem.isHidden.wrappedValue = isHidden
-        items.additionalAuthCodeItem.isHidden.wrappedValue = isHidden
-        items.socialSecurityNumberItem.isHidden.wrappedValue = !brands.socialSecurityNumberRequired
+        items.additionalAuthPasswordItem.isHidden.wrappedValue = kcpItemsHidden
+        items.additionalAuthCodeItem.isHidden.wrappedValue = kcpItemsHidden
+        items.socialSecurityNumberItem.isHidden.wrappedValue = socialSecurityItemHidden
         items.installmentsItem?.update(cardType: brands.first?.type) // choose first until dual brand selection feature
     }
 

@@ -1031,7 +1031,7 @@ class CardComponentTests: XCTestCase {
         waitForExpectations(timeout: 20, handler: nil)
     }
 
-    func testBrazilSSNs() {
+    func testBrazilSSNAuto() {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "elo"])
         let config = CardComponent.Configuration(socialSecurityNumberMode: .auto)
         let cardTypeProviderMock = BinInfoProviderMock()
@@ -1067,16 +1067,58 @@ class CardComponentTests: XCTestCase {
         let brazilSSNItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.socialSecurityNumberItem")
         XCTAssertTrue(brazilSSNItemView!.isHidden)
 
-        self.fillCard(on: sut.viewController.view, with: Dummy.visaCard)
+        fillCard(on: sut.viewController.view, with: Dummy.visaCard)
 
         wait(for: .seconds(1))
         XCTAssertEqual(brazilSSNItemView!.titleLabel.text, "CPF/CNPJ")
         XCTAssertFalse(brazilSSNItemView!.isHidden)
         populate(textItemView: brazilSSNItemView!, with: "123.123.123-12")
 
-        self.tapSubmitButton(on: sut.viewController.view)
+        tapSubmitButton(on: sut.viewController.view)
+        
+        let newResponse = BinLookupResponse(brands: [CardBrand(type: .elo, showSocialSecurityNumber: false)])
+        sut.cardViewController.update(binInfo: newResponse)
+        XCTAssertTrue(brazilSSNItemView!.isHidden)
 
         waitForExpectations(timeout: 20, handler: nil)
+    }
+    
+    func testBrazilSSNDisabled() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "elo"])
+        let config = CardComponent.Configuration(socialSecurityNumberMode: .hide)
+
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: config,
+                                style: .init())
+        
+        let brazilSSNItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.socialSecurityNumberItem")
+        XCTAssertNil(brazilSSNItemView)
+        
+        // config is always hide, so item is not added to view
+        let newResponse = BinLookupResponse(brands: [CardBrand(type: .elo, showSocialSecurityNumber: true)])
+        sut.cardViewController.update(binInfo: newResponse)
+        
+        XCTAssertNil(brazilSSNItemView)
+    }
+    
+    func testBrazilSSNEnabled() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "elo"])
+        let config = CardComponent.Configuration(socialSecurityNumberMode: .show)
+
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: config,
+                                style: .init())
+        
+        let brazilSSNItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.socialSecurityNumberItem")
+        XCTAssertFalse(brazilSSNItemView!.isHidden)
+        
+        // config is always show, so bin response is ignored
+        let newResponse = BinLookupResponse(brands: [CardBrand(type: .elo, showSocialSecurityNumber: false)])
+        sut.cardViewController.update(binInfo: newResponse)
+        
+        XCTAssertFalse(brazilSSNItemView!.isHidden)
     }
 
     func testLuhnCheck() {
