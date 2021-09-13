@@ -169,12 +169,13 @@ public enum CardEncryptor {
     }
 
     private static func encrypt(_ payload: Payload, with publicKey: String) throws -> String {
-        do {
-            let unencryptedData = try payload.jsonData()
-            return try Cryptor(aes: Cryptor.AES.CCM).encrypt(data: unencryptedData, publicKey: publicKey)
-        } catch {
-            throw CardEncryptor.Error.encryptionFailed
-        }
+        let tokens = publicKey.components(separatedBy: "|")
+        guard tokens.count == 2 else { throw EncryptionError.invalidKey }
+        let secKey = try createSecKey(fromModulus: tokens[1], exponent: tokens[0])
+        return try JSONWebEncryptionGenerator()
+            .generate(withPayload: payload.jsonData(),
+                      publicRSAKey: secKey,
+                      header: .defaultHeader).compactRepresentation
     }
 }
 

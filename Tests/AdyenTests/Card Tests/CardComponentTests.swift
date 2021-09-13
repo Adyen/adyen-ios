@@ -1000,7 +1000,7 @@ class CardComponentTests: XCTestCase {
             XCTAssertNotNil(paymentDetails)
 
             XCTAssertNotEqual(paymentDetails?.password, "12")
-            XCTAssertTrue(paymentDetails!.password!.starts(with: "adyenio_0_1_25$"))
+            XCTAssertTrue(paymentDetails!.password!.starts(with: "eyJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiYWxnIjoiUlNBLU9BRVAtMjU2IiwidmVyc2lvbiI6IjEifQ"))
             XCTAssertEqual(paymentDetails?.taxNumber, "121212")
 
             sut.stopLoadingIfNeeded()
