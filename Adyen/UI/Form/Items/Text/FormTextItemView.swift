@@ -96,8 +96,8 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     
     // MARK: - Text Field
     
-    public lazy var textField: TextField = {
-        let textField = TextField()
+    public lazy var textField: TextFieldAdyen = {
+        let textField = TextFieldAdyen()
         textField.font = item.style.text.font
         textField.adjustsFontForContentSizeCategory = true
         textField.textColor = item.style.text.color

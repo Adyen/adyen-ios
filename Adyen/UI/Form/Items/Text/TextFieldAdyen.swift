@@ -12,7 +12,7 @@ import UIKit
 /// So in order to prevent this behaviour,
 /// accessibilityValue is overriden to return an empty string in case the text var is nil or empty string.
 /// :nodoc:
-public final class TextField: UITextField {
+public final class TextFieldAdyen: UITextField {
     
     private var heightConstraint: NSLayoutConstraint?
     
@@ -45,7 +45,7 @@ public final class TextField: UITextField {
     }
 }
 
-extension TextField {
+extension TextFieldAdyen {
 
     public func apply(placeholderText: String?, with style: TextStyle?) {
         if let text = placeholderText, let style = style {
