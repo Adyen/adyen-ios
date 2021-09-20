@@ -342,7 +342,7 @@ extension ComponentManager: PaymentComponentBuilder {
                                                              telephoneNumber: "1234567890",
                                                              billingAddress: billingAddress,
                                                              deliveryAddress: deliveryAddress,
-                                                             socialSecurityNumber: nil)
+                                                             socialSecurityNumber: "785.421.343-70")
         return shopperInformation
     }
 }

@@ -76,16 +76,6 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
 
         return sendCopyToEmailItem
     }()
-
-    // TODO: - Remove unused items
-    /// :nodoc:
-    internal lazy var billingAddressLabelItem: FormContainerItem = {
-        FormLabelItem(
-            text: configuration.shopperInformation.billingAddress?.formatted ?? "",
-            style: style.hintLabel,
-            identifier: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "preFilledBillingAddress")
-        ).addingDefaultMargins()
-    }()
     
     /// :nodoc:
     private func headerFormItem(key: LocalizationKey) -> FormContainerItem {
@@ -203,7 +193,6 @@ extension BoletoComponent: PaymentComponentDelegate {
     public func didFail(with error: Error, from component: PaymentComponent) {
         delegate?.didFail(with: error, from: self)
     }
-    
 }
 
 /// :nodoc:
