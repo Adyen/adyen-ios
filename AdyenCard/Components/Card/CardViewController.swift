@@ -143,20 +143,12 @@ internal class CardViewController: FormViewController {
             items.numberItem.showLogos(for: brands.map(\.type))
         }
 
-        let isHidden: Bool
-        switch configuration.koreanAuthenticationMode {
-        case .show:
-            isHidden = false
-        case .hide:
-            isHidden = true
-        case .auto:
-            isHidden = !configuration.showAdditionalAuthenticationFields(for: binInfo.issuingCountryCode)
-        }
+        let kcpItemsHidden = shouldHideKcpItems(with: binInfo.issuingCountryCode)
 
         items.numberItem.validator = CardNumberValidator(isLuhnCheckEnabled: brands.luhnCheckRequired)
-        items.additionalAuthPasswordItem.isHidden.wrappedValue = isHidden
-        items.additionalAuthCodeItem.isHidden.wrappedValue = isHidden
-        items.socialSecurityNumberItem.isHidden.wrappedValue = !brands.socialSecurityNumberRequired
+        items.additionalAuthPasswordItem.isHidden.wrappedValue = kcpItemsHidden
+        items.additionalAuthCodeItem.isHidden.wrappedValue = kcpItemsHidden
+        items.socialSecurityNumberItem.isHidden.wrappedValue = shouldHideSocialSecurityItem(with: brands)
         items.installmentsItem?.update(cardType: brands.first?.type) // choose first until dual brand selection feature
     }
 
@@ -218,6 +210,28 @@ internal class CardViewController: FormViewController {
         items.securityCodeItem.selectedCard = supportedCardTypes.adyen.type(forCardNumber: bin)
         throttler.throttle { [weak cardDelegate] in
             cardDelegate?.didChangeBIN(bin)
+        }
+    }
+    
+    private func shouldHideKcpItems(with countryCode: String?) -> Bool {
+        switch configuration.koreanAuthenticationMode {
+        case .show:
+            return false
+        case .hide:
+            return true
+        case .auto:
+            return !configuration.showAdditionalAuthenticationFields(for: countryCode)
+        }
+    }
+    
+    private func shouldHideSocialSecurityItem(with brands: [CardBrand]) -> Bool {
+        switch configuration.socialSecurityNumberMode {
+        case .show:
+            return false
+        case .hide:
+            return true
+        case .auto:
+            return !brands.socialSecurityNumberRequired
         }
     }
 
