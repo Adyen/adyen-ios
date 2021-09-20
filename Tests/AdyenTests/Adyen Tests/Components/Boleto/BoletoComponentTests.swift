@@ -382,7 +382,7 @@ class BoletoComponentTests: XCTestCase {
             boletoPaymentMethod:
             BoletoPaymentMethod(type: "boletobancario_santander_test", name: "Boleto Bancario"),
             payment: Payment(amount: Amount(value: 25000, currencyCode: "BRL"), countryCode: "BR"),
-            shopperInfo: shopperInfo,
+            shopperInformation: shopperInfo,
             showEmailAddress: showEmailAddress
         )
     }

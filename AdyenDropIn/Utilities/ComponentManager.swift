@@ -172,17 +172,10 @@ internal final class ComponentManager {
     }
     
     private func createMBWayComponent(_ paymentMethod: MBWayPaymentMethod) -> MBWayComponent? {
-        let prefilledShopperInformation = PrefilledShopperInformation(shopperName: .init(firstName: "Katrina",
-                                                                                         lastName: "Del Mar"),
-                                                                      emailAddress: "katrina@mail.com",
-                                                                      telephoneNumber: "1234567890",
-                                                                      billingAddress: nil,
-                                                                      deliveryAddress: nil,
-                                                                      socialSecurityNumber: nil)
-        return MBWayComponent(paymentMethod: paymentMethod,
-                              apiContext: apiContext,
-                              shopperInformation: prefilledShopperInformation,
-                              style: style.formComponent)
+        MBWayComponent(paymentMethod: paymentMethod,
+                       apiContext: apiContext,
+                       shopperInformation: prefiledShopperInformation(),
+                       style: style.formComponent)
     }
 
     private func createBLIKComponent(_ paymentMethod: BLIKPaymentMethod) -> BLIKComponent? {
@@ -192,15 +185,11 @@ internal final class ComponentManager {
     }
     
     private func createBoletoComponent(_ paymentMethod: BoletoPaymentMethod) -> BoletoComponent {
-        BoletoComponent(
-            configuration: BoletoComponent.Configuration(
-                boletoPaymentMethod: paymentMethod,
-                payment: configuration.payment,
-                shopperInfo: configuration.shopper,
-                showEmailAddress: true
-            ),
-            apiContext: apiContext
-        )
+        let configuration = BoletoComponent.Configuration(boletoPaymentMethod: paymentMethod,
+                                                          payment: configuration.payment,
+                                                          shopperInformation: prefiledShopperInformation(),
+                                                          showEmailAddress: true)
+        return BoletoComponent(configuration: configuration, apiContext: apiContext)
     }
 }
 
@@ -276,32 +265,18 @@ extension ComponentManager: PaymentComponentBuilder {
 
     /// :nodoc:
     internal func build(paymentMethod: EContextPaymentMethod) -> PaymentComponent? {
-        let prefilledShopperInformation = PrefilledShopperInformation(shopperName: .init(firstName: "Katrina",
-                                                                                         lastName: "Del Mar"),
-                                                                      emailAddress: "katrina@mail.com",
-                                                                      telephoneNumber: "123567890",
-                                                                      billingAddress: nil,
-                                                                      deliveryAddress: nil,
-                                                                      socialSecurityNumber: nil)
-        return BasicPersonalInfoFormComponent(paymentMethod: paymentMethod,
-                                              apiContext: apiContext,
-                                              shopperInformation: prefilledShopperInformation,
-                                              style: style.formComponent)
+        BasicPersonalInfoFormComponent(paymentMethod: paymentMethod,
+                                       apiContext: apiContext,
+                                       shopperInformation: prefiledShopperInformation(),
+                                       style: style.formComponent)
     }
 
     /// :nodoc:
     internal func build(paymentMethod: DokuPaymentMethod) -> PaymentComponent? {
-        let prefilledShopperInformation = PrefilledShopperInformation(shopperName: .init(firstName: "Katrina",
-                                                                                         lastName: "Del Mar"),
-                                                                      emailAddress: "katrina@mail.com",
-                                                                      telephoneNumber: nil,
-                                                                      billingAddress: nil,
-                                                                      deliveryAddress: nil,
-                                                                      socialSecurityNumber: nil)
-        return DokuComponent(paymentMethod: paymentMethod,
-                             apiContext: apiContext,
-                             shopperInformation: prefilledShopperInformation,
-                             style: style.formComponent)
+        DokuComponent(paymentMethod: paymentMethod,
+                      apiContext: apiContext,
+                      shopperInformation: prefiledShopperInformation(),
+                      style: style.formComponent)
     }
     
     /// :nodoc:
@@ -333,7 +308,21 @@ extension ComponentManager: PaymentComponentBuilder {
     
     /// :nodoc:
     internal func build(paymentMethod: AffirmPaymentMethod) -> PaymentComponent? {
+        AffirmComponent(paymentMethod: paymentMethod,
+                        apiContext: apiContext,
+                        shopperInformation: prefiledShopperInformation(),
+                        style: style.formComponent)
+    }
+    
+    /// :nodoc:
+    internal func build(paymentMethod: PaymentMethod) -> PaymentComponent? {
+        InstantPaymentComponent(paymentMethod: paymentMethod,
+                                paymentData: nil,
+                                apiContext: apiContext)
+    }
 
+    // TODO: - Remove on merge
+    private func prefiledShopperInformation() -> PrefilledShopperInformation {
         let billingAddress = PostalAddress(city: "Amsterdam",
                                            country: "NL",
                                            houseNumberOrName: "1",
@@ -354,16 +343,6 @@ extension ComponentManager: PaymentComponentBuilder {
                                                              billingAddress: billingAddress,
                                                              deliveryAddress: deliveryAddress,
                                                              socialSecurityNumber: nil)
-        return AffirmComponent(paymentMethod: paymentMethod,
-                               apiContext: apiContext,
-                               shopperInformation: shopperInformation,
-                               style: style.formComponent)
-    }
-    
-    /// :nodoc:
-    internal func build(paymentMethod: PaymentMethod) -> PaymentComponent? {
-        InstantPaymentComponent(paymentMethod: paymentMethod,
-                                paymentData: nil,
-                                apiContext: apiContext)
+        return shopperInformation
     }
 }

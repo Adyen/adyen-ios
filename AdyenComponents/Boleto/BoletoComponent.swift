@@ -28,6 +28,11 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     
     /// :nodoc:
     private let configuration: Configuration
+
+    /// :nodoc:
+    private var shopperInformation: PrefilledShopperInformation {
+        configuration.shopperInformation
+    }
     
     /// :nodoc:
     public let requiresModalPresentation: Bool = true
@@ -39,11 +44,9 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     /// - Parameters:
     ///   - configuration: The Component's configuration.
     ///   - style: The Component's UI style.
-    public init(
-        configuration: Configuration,
-        apiContext: APIContext,
-        style: FormComponentStyle = FormComponentStyle()
-    ) {
+    public init(configuration: Configuration,
+                apiContext: APIContext,
+                style: FormComponentStyle = FormComponentStyle()) {
         self.configuration = configuration
         self.apiContext = apiContext
         self.style = style
@@ -73,11 +76,12 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
 
         return sendCopyToEmailItem
     }()
-    
+
+    // TODO: - Remove unused items
     /// :nodoc:
     internal lazy var billingAddressLabelItem: FormContainerItem = {
         FormLabelItem(
-            text: configuration.shopperInfo.billingAddress?.formatted ?? "",
+            text: configuration.shopperInformation.billingAddress?.formatted ?? "",
             style: style.hintLabel,
             identifier: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "preFilledBillingAddress")
         ).addingDefaultMargins()
@@ -97,13 +101,12 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     
     /// :nodoc:
     private lazy var formComponent: FormComponent = {
-        let component = FormComponent(
-            paymentMethod: paymentMethod,
-            configuration: AbstractPersonalInformationComponent.Configuration(fields: getFormFields()),
-            apiContext: apiContext,
-            onCreatePaymentDetails: { [weak self] in self?.createPaymentDetails() },
-            style: style
-        )
+        let configuration = AbstractPersonalInformationComponent.Configuration(fields: formFields)
+        let component = FormComponent(paymentMethod: paymentMethod,
+                                      configuration: configuration,
+                                      apiContext: apiContext,
+                                      onCreatePaymentDetails: { [weak self] in self?.createPaymentDetails() },
+                                      style: style)
         prefillFields(for: component)
         component.delegate = self
         return component
@@ -114,23 +117,15 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     
     /// :nodoc:
     /// Constructs the fields for the form based on the configuration
-    private func getFormFields() -> [PersonalInformation] {
+    private var formFields: [PersonalInformation] {
         var fields: [PersonalInformation] = [
             .custom(CustomFormItemInjector(item: headerFormItem(key: .boletoPersonalDetails))),
             .firstName,
             .lastName,
-            .custom(CustomFormItemInjector(item: socialSecurityNumberItem))
+            .custom(CustomFormItemInjector(item: socialSecurityNumberItem)),
+            .address
         ]
 
-        if configuration.shopperInfo.billingAddress != nil {
-            fields.append(
-                .custom(CustomFormItemInjector(item: headerFormItem(key: .billingAddressSectionTitle)))
-            )
-            fields.append(.custom(CustomFormItemInjector(item: billingAddressLabelItem)))
-        } else {
-            fields.append(.address)
-        }
-        
         if configuration.showEmailAddress {
             fields.append(.custom(CustomFormItemInjector(item: sendCopyByEmailItem)))
             fields.append(.email)
@@ -142,18 +137,22 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     /// :nodoc:
     /// Sets the initial values for the form fields based on configuration
     private func prefillFields(for component: FormComponent) {
-        if let shopperName = configuration.shopperInfo.shopperName {
+        if let shopperName = shopperInformation.shopperName {
             component.firstNameItem?.value = shopperName.firstName
             component.lastNameItem?.value = shopperName.lastName
         }
         
-        if let socialSecurityNumber = configuration.shopperInfo.socialSecurityNumber {
+        if let socialSecurityNumber = shopperInformation.socialSecurityNumber {
             socialSecurityNumberItem.value = socialSecurityNumber
         }
-        
+
+        if let billingAddress = shopperInformation.billingAddress {
+            component.addressItem?.value = billingAddress
+        }
+
         if let emailItem = component.emailItem {
             sendCopyByEmailItem.value = false
-            emailItem.value = configuration.shopperInfo.emailAddress ?? ""
+            emailItem.value = shopperInformation.emailAddress ?? ""
             bind(sendCopyByEmailItem.publisher, to: emailItem, at: \.isHidden.wrappedValue, with: { !$0 })
         }
     }
@@ -162,7 +161,7 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     private func createPaymentDetails() -> PaymentMethodDetails {
         guard let firstNameItem = formComponent.firstNameItem,
               let lastNameItem = formComponent.lastNameItem,
-              let billingAddress = configuration.shopperInfo.billingAddress ?? formComponent.addressItem?.value else {
+              let billingAddress = shopperInformation.billingAddress ?? formComponent.addressItem?.value else {
             fatalError("There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
         }
         
@@ -180,14 +179,13 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     /// :nodoc:
     /// Obtain email address depending if it was prefilled, or the checkbox was ticked
     private func getEmailDetails() -> String? {
-        if let prefilledEmail = configuration.shopperInfo.emailAddress {
+        if let prefilledEmail = shopperInformation.emailAddress {
             return prefilledEmail
-        } else if sendCopyByEmailItem.value,
-                  let filledEmail = formComponent.emailItem?.value {
+        } else if sendCopyByEmailItem.value, let filledEmail = formComponent.emailItem?.value {
             return filledEmail
-        } else {
-            return nil
         }
+
+        return nil
     }
     
     /// :nodoc:
