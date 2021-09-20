@@ -9,6 +9,10 @@ import UIKit
 
 /// Animate sequential slid in and out movement for transitioning controllers.
 internal final class SlideInPresentationAnimator: NSObject, UIViewControllerAnimatedTransitioning {
+
+    private enum Animation: String {
+        case dropinTransitionPresentation = "transition_presentation"
+    }
     
     private let duration: TimeInterval
     
@@ -23,25 +27,33 @@ internal final class SlideInPresentationAnimator: NSObject, UIViewControllerAnim
     internal func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         guard let toShow = transitionContext.viewController(forKey: .to) as? WrapperViewController,
               let toHide = transitionContext.viewController(forKey: .from) as? WrapperViewController else { return }
-        
+
+        let showDistance = Double(toShow.child.view.bounds.height)
+        let hideDistance = Double(toHide.child.view.bounds.height)
+        let distance = showDistance + hideDistance
+
         let containerView = transitionContext.containerView
         containerView.addSubview(toShow.view)
         toShow.view.frame.origin.y = containerView.bounds.height
         toShow.updateFrame(keyboardRect: .zero)
-        
-        UIView.animateKeyframes(withDuration: duration,
-                                delay: 0.0,
-                                options: [],
-                                animations: {
-                                    UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.5) {
-                                        toHide.view.frame.origin.y = containerView.bounds.height
-                                    }
-                                    UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.5) {
-                                        toShow.view.frame.origin.y = containerView.frame.origin.y
-                                    }
-                                },
-                                completion: { finished in
-                                    transitionContext.completeTransition(finished)
-                                })
+
+        let context = KeyFrameAnimationContext(animationKey: Animation.dropinTransitionPresentation.rawValue,
+                                               duration: duration,
+                                               delay: 0.0,
+                                               options: [.beginFromCurrentState],
+                                               animations: {
+                                                   UIView.addKeyframe(withRelativeStartTime: 0.0,
+                                                                      relativeDuration: hideDistance / distance) {
+                                                       toHide.view.frame.origin.y = containerView.bounds.height
+                                                   }
+                                                   UIView.addKeyframe(withRelativeStartTime: hideDistance / distance,
+                                                                      relativeDuration: showDistance / distance) {
+                                                       toShow.view.frame.origin.y = containerView.frame.origin.y
+                                                   }
+                                               },
+                                               completion: { finished in
+                                                   transitionContext.completeTransition(finished)
+                                               })
+        containerView.adyen.animate(context: context)
     }
 }

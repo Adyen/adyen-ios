@@ -226,6 +226,11 @@ let oxxo = [
     "type": "oxxo"
 ] as [String: Any]
 
+let multibanco = [
+    "name": "Multibanco",
+    "type": "multibanco"
+] as [String: Any]
+
 let dokuIndomaretAction: [String: Any] = [
     "reference": "9786512300056485",
     "initialAmount": [
@@ -317,31 +322,50 @@ let boletoAction: [String: Any] = [
         "currency": "BRL",
         "value": 17408
     ],
-    "expiresAt" : "2021-05-30T00:00:00",
-    "type" : "voucher",
+    "expiresAt": "2021-05-30T00:00:00",
+    "type": "voucher",
     "passCreationToken": "test token".data(using: .utf8)?.base64EncodedString() ?? ""
 ]
 
 let oxxoAction: [String: Any] = [
-    "instructionsUrl" : "https://checkoutshopper-test.adyen.com/checkoutshopper/voucherInstructions.shtml?txVariant=oxxo&shopperLocale=en_US",
-    "passCreationToken" : "token",
-    "shopperEmail" : "checkoutshopperios@example.org",
-    "paymentMethodType" : "oxxo",
-    "totalAmount" : [
-      "currency" : "MXN",
-      "value" : 17408
+    "instructionsUrl": "https://checkoutshopper-test.adyen.com/checkoutshopper/voucherInstructions.shtml?txVariant=oxxo&shopperLocale=en_US",
+    "passCreationToken": "token",
+    "shopperEmail": "checkoutshopperios@example.org",
+    "paymentMethodType": "oxxo",
+    "totalAmount": [
+        "currency": "MXN",
+        "value": 17408
     ],
-    "alternativeReference" : "59168675976701",
+    "alternativeReference": "59168675976701",
+    "initialAmount": [
+        "currency": "MXN",
+        "value": 17408
+    ],
+    "type": "voucher",
+    "merchantName": "TestMerchantCheckout",
+    "expiresAt": "2021-08-15T00:00:00",
+    "merchantReference": "Test Order Reference - iOS UIHost",
+    "reference": "59591686759767012021081500174084",
+    "downloadUrl": "https://test.adyen.com/hpp/generationOxxoVoucher.shtml?data=1G8cQNAQFLrM7phkjS%2BnZRJ2W5K1z6NH9bqplnKsAviVGW%2Fe5W%2FNksob2MPC7BV1Vp5i%2BpSQ22UEeYouvWUFIVWz9%2FSrSQm%2BOnTGszWr6Sn6h3hNCacs%2BIXgGmg6DxxW20hMhSEj1SSL513eiXbKZTjpn%2BZAaRJfTCkP9kklYd5hxOMG6okhByIeMzvfCW718nQXXP%2F6%2F09p7zE3zM5uBQaaXQS9tY3Y80a1lIQytMlv4dIM7ZMLMv6rf18YgbzCOdTO%2B7wmrqR0fyuSLFC5mw2xQYBupKdSajEiIiHdy6Oq1YWrXFRoHnAVA3RLJkwNT3zk203p%2FbADKBJBrTF1ILOAlK5nJ%2FA6R1ioMVt%2F9vQ%3D"
+]
+
+let multibancoVoucher: [String: Any] = [
+    "entity" : "11249",
     "initialAmount" : [
-      "currency" : "MXN",
+      "currency" : "EUR",
       "value" : 17408
     ],
-    "type" : "voucher",
-    "merchantName" : "TestMerchantCheckout",
-    "expiresAt" : "2021-08-15T00:00:00",
+    "reference" : "522 771 332",
+    "paymentMethodType" : "multibanco",
+    "totalAmount" : [
+      "currency" : "EUR",
+      "value" : 17408
+    ],
+    "expiresAt" : "2021-08-30T12:00:10",
+    "merchantName" : "TestMerchant",
     "merchantReference" : "Test Order Reference - iOS UIHost",
-    "reference" : "59591686759767012021081500174084",
-    "downloadUrl" : "https://test.adyen.com/hpp/generationOxxoVoucher.shtml?data=1G8cQNAQFLrM7phkjS%2BnZRJ2W5K1z6NH9bqplnKsAviVGW%2Fe5W%2FNksob2MPC7BV1Vp5i%2BpSQ22UEeYouvWUFIVWz9%2FSrSQm%2BOnTGszWr6Sn6h3hNCacs%2BIXgGmg6DxxW20hMhSEj1SSL513eiXbKZTjpn%2BZAaRJfTCkP9kklYd5hxOMG6okhByIeMzvfCW718nQXXP%2F6%2F09p7zE3zM5uBQaaXQS9tY3Y80a1lIQytMlv4dIM7ZMLMv6rf18YgbzCOdTO%2B7wmrqR0fyuSLFC5mw2xQYBupKdSajEiIiHdy6Oq1YWrXFRoHnAVA3RLJkwNT3zk203p%2FbADKBJBrTF1ILOAlK5nJ%2FA6R1ioMVt%2F9vQ%3D"
+    "type" : "voucher",
+    "passCreationToken" : "Ab02b4c0!BQABAgBj+WtQPwc2TYNDdxV/IKW/SYB6d6IWV7yne67s2T4Nbr3v+KGzEVYaLs2uWQdkMVhubumVa1ula96RUqor6h9UoFMr7crM0qrZvz7wEuyV0dR1XG+F/cOq8UyLjhtkQL9RLh0gdntrw1FjCOHq7IAg+jzrWsH+fV5ofjdACkTlU1aSzqtPJDR9owl06Xeo1znNK9lYrvri4JRVPOkIEC4+h96sd1Rfn3t/NbAkBzhS/1emJIn6NQv7hmDz8FcWbxyjmY2LtHTigRhntmvY01z8hNOZ+1Zd4c/1GaEv3v1Y204AhcJx2ITHUIwmjD7j1GwYM+prkE1E+K6SOW0uV/cJQiIxkdDec1yN1+pFVvi78RRewIDthceqsxMBXQ6N7Z+8f+eVJJQDI1pRNdIcpsEgUSNMzUVGlu1eoPH1cY4o6/JxfvjY/+iqTCCsOLRgl+1A3oaRtAHUEKE7sqVwKU6NBfU9fXDCYRhF3dkgO8lN90YBgMDVO892MbloRzlB89sO2ZByE7JjQ65ElcunTMj290HrO+MKPtT+WocUWs+SrHjQldnbbgydQTtiV4m/gij/9z5uRNIEcoSjVn5VPlZ5eLI4nDq55Z4Ei8ak1VpUdmYm8/B2zhQtt5/0LXOsl8I8Ll+6R2LXrYesTt5wkac5yZK7oB51ilpqSzoQqMMXPhBEabbPAtWMNu14l1jGymF9AEp7ImtleSI6IkFGMEFBQTEwM0NBNTM3RUFFRDg3QzI0REQ1MzkwOUI4MEE3OEE5MjNFMzgyM0Q2OERBQ0M5NEI5RkY4MzA1REMiffSIcuL8hjKp/KgDw8goT6VN1sl6o4jfjayQOWvnkJdhBTqqxAbLFOvSfi6WMwbGYjVDwp53HsXZvJkNnEbxyk/SPR91A/foRwm7MCBlSTNM4IaUNVPrNmpOAw49oLoCifhwRAexyyjU0ybNSlwp4Y47dsFZmEkE8DdRRedW/N57bqst5IdRgpMEMVGpTgYsU2QYr4hpN1fwA40avGC19zaqnZC6iLQHsCaDKWQIjgM79Bzsr0WBL+hHjChMwgccoJA2QxPjJtE2CXCtSZYA5FqIcW3yi/P+SAPHQFafQgLMoX2/dQjxjMtHUHmtw1dB/kSDggB82znMKq+Udu3Y9H8hBxetaCyNGQSx0Ux5KkwfOEqf+M9FQsN35Dv/znwnzPsfxxqrIqb+ivddFx7JsyUF7M62xnCgPuWxP1WPyX+oKOLQhANibpUj/XDqc1tHlYQEE+95ZJWTYSQ="
   ]
 
 let weChatMiniProgramDictionary = [
@@ -434,4 +458,14 @@ let giftCard = [
 let boleto = [
     "name": "Boleto Bancario",
     "type": "boletobancario_santander"
+]
+
+let bacsDirectDebit = [
+    "name": "BACS Direct Debit",
+    "type": "directdebit_GB"
+]
+
+let achDirectDebit = [
+    "name": "ACH Direct Debit",
+    "type": "ach"
 ]

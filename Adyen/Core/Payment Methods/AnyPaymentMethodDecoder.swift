@@ -52,7 +52,9 @@ internal enum PaymentMethodType: String {
     case boleto = "boletobancario_santander"
     case affirm
     case oxxo
-    
+    case bacsDirectDebit = "directdebit_GB"
+    case achDirectDebit = "ach"
+    case multibanco
 }
 
 private struct PaymentMethodField: Decodable {
@@ -85,6 +87,8 @@ internal enum AnyPaymentMethodDecoder {
         .afterpay: UnsupportedPaymentMethodDecoder(),
         .androidPay: UnsupportedPaymentMethodDecoder(),
         .amazonPay: UnsupportedPaymentMethodDecoder(),
+        .bacsDirectDebit: UnsupportedPaymentMethodDecoder(),
+        .achDirectDebit: UnsupportedPaymentMethodDecoder(),
         
         // Supported payment methods
         .card: CardPaymentMethodDecoder(),
@@ -115,7 +119,8 @@ internal enum AnyPaymentMethodDecoder {
         .econtextOnline: EContextOnlinePaymentMethodDecoder(),
         .boleto: BoletoPaymentMethodDecoder(),
         .affirm: AffirmPaymentMethodDecoder(),
-        .oxxo: OXXOPaymentMethodDecoder()
+        .oxxo: OXXOPaymentMethodDecoder(),
+        .multibanco: MultibancoPaymentMethodDecoder()
     ]
     
     private static var defaultDecoder: PaymentMethodDecoder = RedirectPaymentMethodDecoder()
@@ -300,5 +305,11 @@ private struct AffirmPaymentMethodDecoder: PaymentMethodDecoder {
 private struct OXXOPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         .oxxo(try OXXOPaymentMethod(from: decoder))
+    }
+}
+
+private struct MultibancoPaymentMethodDecoder: PaymentMethodDecoder {
+    func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
+        .multibanco(try MultibancoPaymentMethod(from: decoder))
     }
 }

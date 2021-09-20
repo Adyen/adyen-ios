@@ -5,8 +5,8 @@
 //
 
 import Adyen
-import Foundation
 import AdyenNetworking
+import Foundation
 
 /// :nodoc:
 internal protocol AnyThreeDS2FingerprintSubmitter {

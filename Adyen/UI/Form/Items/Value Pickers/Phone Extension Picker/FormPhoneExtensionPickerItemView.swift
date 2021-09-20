@@ -8,10 +8,11 @@ import UIKit
 
 internal final class FormPhoneExtensionPickerItemView: BaseFormPickerItemView<PhoneExtension> {
 
-    private lazy var phoneExtensionInputControl = PhoneExtensionInputControl(inputView: self.pickerView,
-                                                                             style: self.item.style.text)
+    private lazy var phoneExtensionInputControl = PhoneExtensionInputControl(inputView: pickerView,
+                                                                             inputAccessoryView: pickerViewToolbar,
+                                                                             style: item.style.text)
 
-    override internal func getInputControl() -> PickerTextInputControl {
+    override internal func createInputControl() -> PickerTextInputControl {
         phoneExtensionInputControl
     }
 

@@ -69,6 +69,7 @@
 "adyen.voucher.finish" = "";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Iznos";
+"adyen.voucher.entity" = "Entitet";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Imate %@ za plaćanje";
 "adyen.pix.copyButton" = "Kopiraj kôd";
@@ -122,3 +123,10 @@
 "adyen.affirm.deliveryAddressToggle.title" = "Zasebna adresa za dostavu";
 "adyen.voucher.shopperReference" = "Referenca kupca";
 "adyen.voucher.alternativeReference" = "Alternativna referenca";
+"adyen.card.installments.numberOfInstallments" = "Broj rata";
+"adyen.card.installments.oneTime" = "Jednokratno plaćanje";
+"adyen.card.installments.title" = "Plaćanje na rate";
+"adyen.card.installments.revolving" = "Obnovljivo plaćanje";
+"adyen.card.installments.monthsAndPrice" = "%@ x %@";
+"adyen.card.installments.months" = "Mjeseci: %@";
+"adyen.card.installments.plan" = "";

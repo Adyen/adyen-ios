@@ -31,6 +31,11 @@ public final class FormToggleItemView: FormValueItemView<Bool, FormToggleItemSty
         stackView.adyen.anchor(inside: self.layoutMarginsGuide)
     }
     
+    /// :nodoc:
+    override public func reset() {
+        item.value = false
+    }
+    
     // MARK: - Switch Control
     
     internal lazy var switchControl: UISwitch = {

@@ -69,6 +69,7 @@
 "adyen.voucher.finish" = "";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Beløb";
+"adyen.voucher.entity" = "Enhed";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "Du har %@ at betale";
 "adyen.pix.copyButton" = "Kopiér koden";
@@ -122,3 +123,10 @@
 "adyen.affirm.deliveryAddressToggle.title" = "Separat leveringsadresse";
 "adyen.voucher.shopperReference" = "Købers reference";
 "adyen.voucher.alternativeReference" = "Alternativ reference";
+"adyen.card.installments.numberOfInstallments" = "Antal rater";
+"adyen.card.installments.oneTime" = "Engangsbetaling";
+"adyen.card.installments.title" = "Afdragsbetaling";
+"adyen.card.installments.revolving" = "Løbende betaling";
+"adyen.card.installments.monthsAndPrice" = "%@x %@";
+"adyen.card.installments.months" = "%@ måneder";
+"adyen.card.installments.plan" = "";

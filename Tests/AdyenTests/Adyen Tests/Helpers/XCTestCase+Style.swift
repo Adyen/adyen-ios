@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import XCTest
 @testable import Adyen
+import XCTest
 
 extension XCTestCase {
     
@@ -49,7 +49,6 @@ extension XCTestCase {
         check(layer: submitButtton.layer, forCornerRounding: style.cornerRounding)
     }
     
-    
     /// Checks whether the given corner rounding was applied properly to the given layer
     /// - Parameters:
     ///   - layer: `CALayer` to check
@@ -58,9 +57,9 @@ extension XCTestCase {
         switch cornerRounding {
         case .none:
             break
-        case .fixed(let radius):
+        case let .fixed(radius):
             XCTAssertEqual(layer.cornerRadius, radius)
-        case .percent(let percent):
+        case let .percent(percent):
             let radius = min(layer.frame.width, layer.frame.height) * percent
             XCTAssertEqual(layer.cornerRadius, radius)
         }

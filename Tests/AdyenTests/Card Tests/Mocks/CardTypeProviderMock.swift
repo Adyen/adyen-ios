@@ -11,7 +11,6 @@ final class BinInfoProviderMock: AnyBinInfoProvider {
         onFetch?(completion)
     }
 
-
     var onFetch: ((_ completion: @escaping (BinLookupResponse) -> Void) -> Void)?
 
 }

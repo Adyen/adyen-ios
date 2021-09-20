@@ -32,7 +32,7 @@ internal final class DropInNavigationController: UINavigationController, Keyboar
     }
 
     internal func startObserving() {
-        keyboardObserver = startObserving { [weak self] in
+        startObserving { [weak self] in
             self?.keyboardRect = $0
             self?.updateTopViewControllerIfNeeded()
         }
@@ -108,7 +108,7 @@ extension DropInNavigationController: UINavigationControllerDelegate {
                                        animationControllerFor operation: UINavigationController.Operation,
                                        from fromVC: UIViewController,
                                        to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        SlideInPresentationAnimator(duration: 0.5)
+        SlideInPresentationAnimator(duration: 0.6)
     }
     
 }

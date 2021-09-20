@@ -116,6 +116,12 @@ internal class CardViewController: FormViewController {
         configuration.showsStorePaymentMethodField ? items.storeDetailsItem.value : false
     }
 
+    internal var installments: Installments? {
+        guard let installmentsItem = items.installmentsItem,
+              !installmentsItem.isHidden.wrappedValue else { return nil }
+        return installmentsItem.value.element.installmentValue
+    }
+
     internal func stopLoading() {
         items.button.showsActivityIndicator = false
         view.isUserInteractionEnabled = true
@@ -137,38 +143,13 @@ internal class CardViewController: FormViewController {
             items.numberItem.showLogos(for: brands.map(\.type))
         }
 
-        let isHidden: Bool
-        switch configuration.koreanAuthenticationMode {
-        case .show:
-            isHidden = false
-        case .hide:
-            isHidden = true
-        case .auto:
-            isHidden = !configuration.showAdditionalAuthenticationFields(for: binInfo.issuingCountryCode)
-        }
+        let kcpItemsHidden = shouldHideKcpItems(with: binInfo.issuingCountryCode)
 
         items.numberItem.validator = CardNumberValidator(isLuhnCheckEnabled: brands.luhnCheckRequired)
-        items.additionalAuthPasswordItem.isHidden.wrappedValue = isHidden
-        items.additionalAuthCodeItem.isHidden.wrappedValue = isHidden
-        items.socialSecurityNumberItem.isHidden.wrappedValue = !brands.socialSecurityNumberRequired
-    }
-
-    /*
-     supportedCardTypes.map {
-         CardTypeLogo(url: logoProvider.logoURL(withName: $0.rawValue), type: $0)
-     }
-     */
-
-    internal func resetItems() {
-        items.billingAddressItem.reset()
-
-        [items.postalCodeItem,
-         items.numberItem,
-         items.expiryDateItem,
-         items.securityCodeItem,
-         items.holderNameItem].forEach { $0.value = "" }
-
-        items.storeDetailsItem.value = false
+        items.additionalAuthPasswordItem.isHidden.wrappedValue = kcpItemsHidden
+        items.additionalAuthCodeItem.isHidden.wrappedValue = kcpItemsHidden
+        items.socialSecurityNumberItem.isHidden.wrappedValue = shouldHideSocialSecurityItem(with: brands)
+        items.installmentsItem?.update(cardType: brands.first?.type) // choose first until dual brand selection feature
     }
 
     // MARK: Private methods
@@ -195,6 +176,10 @@ internal class CardViewController: FormViewController {
 
         if configuration.socialSecurityNumberMode != .hide {
             append(items.socialSecurityNumberItem)
+        }
+
+        if let installmentsItem = items.installmentsItem {
+            append(installmentsItem)
         }
 
         switch configuration.billingAddressMode {
@@ -225,6 +210,28 @@ internal class CardViewController: FormViewController {
         items.securityCodeItem.selectedCard = supportedCardTypes.adyen.type(forCardNumber: bin)
         throttler.throttle { [weak cardDelegate] in
             cardDelegate?.didChangeBIN(bin)
+        }
+    }
+    
+    private func shouldHideKcpItems(with countryCode: String?) -> Bool {
+        switch configuration.koreanAuthenticationMode {
+        case .show:
+            return false
+        case .hide:
+            return true
+        case .auto:
+            return !configuration.showAdditionalAuthenticationFields(for: countryCode)
+        }
+    }
+    
+    private func shouldHideSocialSecurityItem(with brands: [CardBrand]) -> Bool {
+        switch configuration.socialSecurityNumberMode {
+        case .show:
+            return false
+        case .hide:
+            return true
+        case .auto:
+            return !brands.socialSecurityNumberRequired
         }
     }
 

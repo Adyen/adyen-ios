@@ -7,10 +7,9 @@
 //
 
 @testable import Adyen
-@testable import AdyenEncryption
 @testable import AdyenCard
+@testable import AdyenEncryption
 import XCTest
-
 
 extension XCTestCase {
     

@@ -11,6 +11,11 @@ import UIKit
 @objc(ADYFormViewController)
 open class FormViewController: UIViewController, Localizable, KeyboardObserver, Observer, PreferredContentSizeConsumer {
 
+    fileprivate enum Animations {
+        fileprivate static let keyboardBottomInset = "keyboardBottomInset"
+        fileprivate static let firstResponder = "firstResponder"
+    }
+
     /// :nodoc:
     public var requiresKeyboardInput: Bool { formRequiresInputView() }
 
@@ -60,17 +65,13 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
 
     /// :nodoc:
     public func startObserving() {
-        keyboardObserver = startObserving { [weak self] in
+        startObserving { [weak self] in
             self?.keyboardRect = $0
             self?.didUpdatePreferredContentSize()
         }
     }
 
     private var keyboardRect: CGRect = .zero
-
-    private func updateScrollViewInsets(keyboardHeight: CGFloat) {
-        formView.contentInset.bottom = keyboardHeight
-    }
 
     // MARK: - Private Properties
 
@@ -83,8 +84,14 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
 
     /// :nodoc:
     public func didUpdatePreferredContentSize() {
-        updateScrollViewInsets(keyboardHeight: keyboardRect.height)
-        view.layoutIfNeeded()
+        let bottomInset: CGFloat = keyboardRect.height - view.safeAreaInsets.bottom
+        let context = AnimationContext(animationKey: Animations.keyboardBottomInset,
+                                       duration: 0.25,
+                                       options: [.beginFromCurrentState, .layoutSubviews],
+                                       animations: { [weak self] in
+                                           self?.formView.contentInset.bottom = bottomInset
+                                       })
+        view.adyen.animate(context: context)
     }
     
     // MARK: - Items
@@ -107,7 +114,6 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
 
     private func observerVisibility<T: FormItem>(of item: T, and itemView: UIView) {
         guard let item = item as? Hidable else { return }
-        
         itemView.adyen.hide(animationKey: String(describing: itemView),
                             hidden: item.isHidden.wrappedValue, animated: false)
         
@@ -158,6 +164,15 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     
     // MARK: - View
     
+    override open func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        resetForm()
+    }
+    
+    public func resetForm() {
+        itemManager.flatItemViews.forEach { $0.reset() }
+    }
+    
     /// :nodoc:
     override open func viewDidLoad() {
         super.viewDidLoad()
@@ -178,7 +193,13 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         delegate?.viewDidAppear(viewController: self)
-        assignInitialFirstResponder()
+
+        view.adyen.animate(context: AnimationContext(animationKey: Animations.firstResponder,
+                                                     duration: 0,
+                                                     options: [.layoutSubviews, .beginFromCurrentState],
+                                                     animations: { [weak self] in
+                                                         self?.assignInitialFirstResponder()
+                                                     }))
     }
     
     /// :nodoc:

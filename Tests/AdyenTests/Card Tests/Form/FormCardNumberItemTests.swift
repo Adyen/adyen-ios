@@ -32,7 +32,7 @@ class FormCardNumberItemTests: XCTestCase {
     func testInternalBinLookup() {
 
         let cardTypeLogos = supportedCardTypes.map {
-            FormCardNumberItem.CardTypeLogo(url: URL(string: "http://google.com")! , type: $0)
+            FormCardNumberItem.CardTypeLogo(url: URL(string: "http://google.com")!, type: $0)
         }
         let item = FormCardNumberItem(supportedCardTypes: supportedCardTypes, cardTypeLogos: cardTypeLogos)
         XCTAssertEqual(item.cardTypeLogos.count, 5)
@@ -154,7 +154,7 @@ class FormCardNumberItemTests: XCTestCase {
                                    .success(BinLookupResponse(brands: []))]
 
         let cardTypeLogos = supportedCardTypes.map {
-            FormCardNumberItem.CardTypeLogo(url: URL(string: "http://google.com")! , type: $0)
+            FormCardNumberItem.CardTypeLogo(url: URL(string: "http://google.com")!, type: $0)
         }
         let item = FormCardNumberItem(supportedCardTypes: supportedCardTypes, cardTypeLogos: cardTypeLogos)
         XCTAssertEqual(item.cardTypeLogos.count, 5)
@@ -182,7 +182,7 @@ class FormCardNumberItemTests: XCTestCase {
         apiClient.mockedResults = [.failure(Dummy.error), .failure(Dummy.error)]
 
         let cardTypeLogos = supportedCardTypes.map {
-            FormCardNumberItem.CardTypeLogo(url: URL(string: "http://google.com")! , type: $0)
+            FormCardNumberItem.CardTypeLogo(url: URL(string: "http://google.com")!, type: $0)
         }
         let item = FormCardNumberItem(supportedCardTypes: supportedCardTypes, cardTypeLogos: cardTypeLogos)
         XCTAssertEqual(item.cardTypeLogos.count, 5)

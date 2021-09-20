@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import UIKit
 import AdyenNetworking
+import UIKit
 
 /// So that any `UIView` instance will inherit the `adyen` scope.
 /// :nodoc:

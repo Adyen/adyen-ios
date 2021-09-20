@@ -39,7 +39,8 @@ extension CardComponent {
             let data = PaymentComponentData(paymentMethodDetails: details,
                                             amount: amountToPay,
                                             order: order,
-                                            storePaymentMethod: cardViewController.storePayment)
+                                            storePaymentMethod: cardViewController.storePayment,
+                                            installments: cardViewController.installments)
             
             if let number = card.number {
                 let publicSuffix = String(number.suffix(Constant.publicPanSuffixLength))

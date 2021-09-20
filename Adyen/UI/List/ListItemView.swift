@@ -32,6 +32,9 @@ public final class ListItemView: UIView, AnyFormItemView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    /// :nodoc:
+    public func reset() { /* Do nothing */ }
+    
     // MARK: - Item
     
     /// The item displayed in the item view.

@@ -66,6 +66,7 @@
 "adyen.voucher.readInstructions" = "閱覽說明";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "金額";
+"adyen.voucher.entity" = "實體";
 "adyen.pix.instructions" = "";
 "adyen.pix.expirationLabel" = "您有 %@ 可以支付";
 "adyen.pix.copyButton" = "複製代碼";
@@ -119,3 +120,10 @@
 "adyen.affirm.deliveryAddressToggle.title" = "單獨派送地址";
 "adyen.voucher.shopperReference" = "購物者參考";
 "adyen.voucher.alternativeReference" = "備選參照";
+"adyen.card.installments.numberOfInstallments" = "分期付款的期數";
+"adyen.card.installments.oneTime" = "一次性付款";
+"adyen.card.installments.title" = "分期付款";
+"adyen.card.installments.revolving" = "延期付款";
+"adyen.card.installments.monthsAndPrice" = "%@x %@";
+"adyen.card.installments.months" = "％{times} 個月";
+"adyen.card.installments.plan" = "";

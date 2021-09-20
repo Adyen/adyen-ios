@@ -1000,7 +1000,7 @@ class CardComponentTests: XCTestCase {
             XCTAssertNotNil(paymentDetails)
 
             XCTAssertNotEqual(paymentDetails?.password, "12")
-            XCTAssertTrue(paymentDetails!.password!.starts(with: "adyenio_0_1_25$"))
+            XCTAssertTrue(paymentDetails!.password!.starts(with: "eyJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiYWxnIjoiUlNBLU9BRVAtMjU2IiwidmVyc2lvbiI6IjEifQ"))
             XCTAssertEqual(paymentDetails?.taxNumber, "121212")
 
             sut.stopLoadingIfNeeded()
@@ -1031,7 +1031,7 @@ class CardComponentTests: XCTestCase {
         waitForExpectations(timeout: 20, handler: nil)
     }
 
-    func testBrazilSSNs() {
+    func testBrazilSSNAuto() {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "elo"])
         let config = CardComponent.Configuration(socialSecurityNumberMode: .auto)
         let cardTypeProviderMock = BinInfoProviderMock()
@@ -1067,16 +1067,58 @@ class CardComponentTests: XCTestCase {
         let brazilSSNItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.socialSecurityNumberItem")
         XCTAssertTrue(brazilSSNItemView!.isHidden)
 
-        self.fillCard(on: sut.viewController.view, with: Dummy.visaCard)
+        fillCard(on: sut.viewController.view, with: Dummy.visaCard)
 
         wait(for: .seconds(1))
         XCTAssertEqual(brazilSSNItemView!.titleLabel.text, "CPF/CNPJ")
         XCTAssertFalse(brazilSSNItemView!.isHidden)
         populate(textItemView: brazilSSNItemView!, with: "123.123.123-12")
 
-        self.tapSubmitButton(on: sut.viewController.view)
+        tapSubmitButton(on: sut.viewController.view)
+        
+        let newResponse = BinLookupResponse(brands: [CardBrand(type: .elo, showSocialSecurityNumber: false)])
+        sut.cardViewController.update(binInfo: newResponse)
+        XCTAssertTrue(brazilSSNItemView!.isHidden)
 
         waitForExpectations(timeout: 20, handler: nil)
+    }
+    
+    func testBrazilSSNDisabled() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "elo"])
+        let config = CardComponent.Configuration(socialSecurityNumberMode: .hide)
+
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: config,
+                                style: .init())
+        
+        let brazilSSNItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.socialSecurityNumberItem")
+        XCTAssertNil(brazilSSNItemView)
+        
+        // config is always hide, so item is not added to view
+        let newResponse = BinLookupResponse(brands: [CardBrand(type: .elo, showSocialSecurityNumber: true)])
+        sut.cardViewController.update(binInfo: newResponse)
+        
+        XCTAssertNil(brazilSSNItemView)
+    }
+    
+    func testBrazilSSNEnabled() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "elo"])
+        let config = CardComponent.Configuration(socialSecurityNumberMode: .show)
+
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: config,
+                                style: .init())
+        
+        let brazilSSNItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.socialSecurityNumberItem")
+        XCTAssertFalse(brazilSSNItemView!.isHidden)
+        
+        // config is always show, so bin response is ignored
+        let newResponse = BinLookupResponse(brands: [CardBrand(type: .elo, showSocialSecurityNumber: false)])
+        sut.cardViewController.update(binInfo: newResponse)
+        
+        XCTAssertFalse(brazilSSNItemView!.isHidden)
     }
 
     func testLuhnCheck() {
@@ -1110,11 +1152,11 @@ class CardComponentTests: XCTestCase {
 
     func testCVCOptionality() {
         let mixedBrands = [CardBrand(type: .visa, cvcPolicy: .required),
-                     CardBrand(type: .masterCard, cvcPolicy: .hidden),
-                     CardBrand(type: .masterCard, cvcPolicy: .optional)]
+                           CardBrand(type: .masterCard, cvcPolicy: .hidden),
+                           CardBrand(type: .masterCard, cvcPolicy: .optional)]
         let optionalBrands = [CardBrand(type: .visa, cvcPolicy: .optional),
-                     CardBrand(type: .masterCard, cvcPolicy: .hidden),
-                     CardBrand(type: .masterCard, cvcPolicy: .optional)]
+                              CardBrand(type: .masterCard, cvcPolicy: .hidden),
+                              CardBrand(type: .masterCard, cvcPolicy: .optional)]
 
         let method = CardPaymentMethod(type: "visa",
                                        name: "Test name",
@@ -1146,11 +1188,11 @@ class CardComponentTests: XCTestCase {
 
     func testExpiryDateOptionality() {
         let mixedBrands = [CardBrand(type: .visa, expiryDatePolicy: .required),
-                     CardBrand(type: .masterCard, expiryDatePolicy: .optional),
-                     CardBrand(type: .masterCard, expiryDatePolicy: .hidden)]
+                           CardBrand(type: .masterCard, expiryDatePolicy: .optional),
+                           CardBrand(type: .masterCard, expiryDatePolicy: .hidden)]
         let optionalBrands = [CardBrand(type: .visa, expiryDatePolicy: .hidden),
-                     CardBrand(type: .masterCard, expiryDatePolicy: .optional),
-                     CardBrand(type: .masterCard, expiryDatePolicy: .hidden)]
+                              CardBrand(type: .masterCard, expiryDatePolicy: .optional),
+                              CardBrand(type: .masterCard, expiryDatePolicy: .hidden)]
 
         let method = CardPaymentMethod(type: "visa",
                                        name: "Test name",
@@ -1187,6 +1229,139 @@ class CardComponentTests: XCTestCase {
         XCTAssertNil(sut.cardViewController.card.expiryMonth)
         XCTAssertTrue(expDateItem.isValid())
     }
+    
+    func testInstallmentsWithDefaultAndCardBasedOptions() {
+        let method = CardPaymentMethod(type: "visa", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [.visa:
+            InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
+        let defaultInstallmentOptions = InstallmentOptions(monthValues: [3, 6, 9, 12], includesRevolving: false)
+        let config = CardComponent.Configuration(installmentConfigration: InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions, defaultOptions: defaultInstallmentOptions))
+        let cardTypeProviderMock = BinInfoProviderMock()
+
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: config,
+                                style: .init(),
+                                cardPublicKeyProvider: CardPublicKeyProviderMock(),
+                                binProvider: cardTypeProviderMock)
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        wait(for: .seconds(1))
+        
+        let installmentItemView: FormCardInstallmentsItemView? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
+        XCTAssertEqual(installmentItemView!.titleLabel.text, "Number of installments")
+        XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
+        XCTAssertFalse(installmentItemView!.isHidden)
+        
+        sut.cardViewController.items.installmentsItem?.update(cardType: .visa)
+        XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 9)
+        installmentItemView?.select(value: sut.cardViewController.items.installmentsItem!.selectableValues[2])
+        XCTAssertEqual(installmentItemView!.inputControl.label, "2 months")
+        XCTAssertNotNil(sut.cardViewController.installments)
+        
+        sut.cardViewController.items.installmentsItem?.update(cardType: .americanExpress)
+        XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 5)
+        XCTAssertFalse(installmentItemView!.isHidden)
+        XCTAssertNil(sut.cardViewController.installments)
+        XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
+        installmentItemView?.select(value: sut.cardViewController.items.installmentsItem!.selectableValues[2])
+        XCTAssertEqual(installmentItemView!.inputControl.label, "6 months")
+        XCTAssertNotNil(sut.cardViewController.installments)
+        
+        // nil card type refers to default options if exists
+        sut.cardViewController.items.installmentsItem?.update(cardType: nil)
+        XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 5)
+        XCTAssertFalse(installmentItemView!.isHidden)
+        XCTAssertEqual(installmentItemView!.inputControl.label, "6 months")
+        XCTAssertNotNil(sut.cardViewController.installments)
+    }
+    
+    func testInstallmentsWithDefaultOptions() {
+        let method = CardPaymentMethod(type: "visa", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        let defaultInstallmentOptions = InstallmentOptions(monthValues: [3, 6, 9, 12], includesRevolving: false)
+        let config = CardComponent.Configuration(installmentConfigration: InstallmentConfiguration(defaultOptions: defaultInstallmentOptions))
+        let cardTypeProviderMock = BinInfoProviderMock()
+
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: config,
+                                style: .init(),
+                                cardPublicKeyProvider: CardPublicKeyProviderMock(),
+                                binProvider: cardTypeProviderMock)
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        wait(for: .seconds(1))
+        
+        let installmentItemView: FormCardInstallmentsItemView? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
+        XCTAssertEqual(installmentItemView!.titleLabel.text, "Number of installments")
+        XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
+        XCTAssertFalse(installmentItemView!.isHidden)
+        
+        sut.cardViewController.items.installmentsItem?.update(cardType: .americanExpress)
+        XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 5)
+        XCTAssertFalse(installmentItemView!.isHidden)
+        XCTAssertNil(sut.cardViewController.installments)
+        XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
+        
+        installmentItemView?.select(value: sut.cardViewController.items.installmentsItem!.selectableValues[2])
+        XCTAssertEqual(installmentItemView!.inputControl.label, "6 months")
+        XCTAssertNotNil(sut.cardViewController.installments)
+        
+        sut.cardViewController.items.installmentsItem?.update(cardType: .visa)
+        XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 5)
+        XCTAssertEqual(installmentItemView!.inputControl.label, "6 months")
+        XCTAssertNotNil(sut.cardViewController.installments)
+    }
+
+    func testInstallmentsWitCardBasedOptions() {
+        let method = CardPaymentMethod(type: "visa", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [.visa:
+            InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
+        let config = CardComponent.Configuration(installmentConfigration: InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions))
+        let cardTypeProviderMock = BinInfoProviderMock()
+
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: config,
+                                style: .init(),
+                                cardPublicKeyProvider: CardPublicKeyProviderMock(),
+                                binProvider: cardTypeProviderMock)
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        wait(for: .seconds(1))
+        
+        let installmentItemView: FormCardInstallmentsItemView? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
+        XCTAssertEqual(installmentItemView!.titleLabel.text, "Number of installments")
+        XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
+        XCTAssertTrue(installmentItemView!.isHidden)
+        
+        sut.cardViewController.items.installmentsItem?.update(cardType: .americanExpress)
+        XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 1)
+        XCTAssertTrue(installmentItemView!.isHidden)
+        XCTAssertNil(sut.cardViewController.installments)
+        XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
+        
+        // set card type one that has installment options
+        sut.cardViewController.items.installmentsItem?.update(cardType: .visa)
+        XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 9)
+        XCTAssertFalse(installmentItemView!.isHidden)
+        XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
+        XCTAssertNil(sut.cardViewController.installments)
+        
+        installmentItemView?.select(value: sut.cardViewController.items.installmentsItem!.selectableValues[2])
+        XCTAssertEqual(installmentItemView!.inputControl.label, "2 months")
+        XCTAssertNotNil(sut.cardViewController.installments)
+        
+        installmentItemView?.select(value: sut.cardViewController.items.installmentsItem!.selectableValues[1])
+        XCTAssertEqual(installmentItemView!.inputControl.label, "Revolving payment")
+        XCTAssertNotNil(sut.cardViewController.installments)
+        
+        // nil card type means no options since there is no default option
+        sut.cardViewController.items.installmentsItem?.update(cardType: nil)
+        XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 1)
+        XCTAssertFalse(installmentItemView!.isHidden)
+        XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
+    }
 
     func testClearShouldResetPostalCodeItemToEmptyValue() throws {
         // Given
@@ -1201,8 +1376,16 @@ class CardComponentTests: XCTestCase {
                                 configuration: config)
         sut.cardViewController.items.postalCodeItem.value = "1501 NH"
 
+        // show view controller
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        wait(for: .seconds(1))
+        
         // When
-        sut.clear()
+        // hide view controller
+        UIApplication.shared.keyWindow?.rootViewController = UIViewController()
+        
+        wait(for: .seconds(1))
 
         // Then
         XCTAssertTrue(sut.cardViewController.items.postalCodeItem.value.isEmpty)
@@ -1220,9 +1403,17 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config)
         sut.cardViewController.items.numberItem.value = "4111 1111 1111 1111"
-
+        
+        // show view controller
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        wait(for: .seconds(1))
+        
         // When
-        sut.clear()
+        // hide view controller
+        UIApplication.shared.keyWindow?.rootViewController = UIViewController()
+        
+        wait(for: .seconds(1))
 
         // Then
         XCTAssertTrue(sut.cardViewController.items.numberItem.value.isEmpty)
@@ -1241,8 +1432,16 @@ class CardComponentTests: XCTestCase {
                                 configuration: config)
         sut.cardViewController.items.expiryDateItem.value = "03/24"
 
+        // show view controller
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        wait(for: .seconds(1))
+        
         // When
-        sut.clear()
+        // hide view controller
+        UIApplication.shared.keyWindow?.rootViewController = UIViewController()
+        
+        wait(for: .seconds(1))
 
         // Then
         XCTAssertTrue(sut.cardViewController.items.expiryDateItem.value.isEmpty)
@@ -1261,8 +1460,16 @@ class CardComponentTests: XCTestCase {
                                 configuration: config)
         sut.cardViewController.items.securityCodeItem.value = "935"
 
+        // show view controller
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        wait(for: .seconds(1))
+        
         // When
-        sut.clear()
+        // hide view controller
+        UIApplication.shared.keyWindow?.rootViewController = UIViewController()
+        
+        wait(for: .seconds(1))
 
         // Then
         XCTAssertTrue(sut.cardViewController.items.securityCodeItem.value.isEmpty)
@@ -1274,15 +1481,23 @@ class CardComponentTests: XCTestCase {
                                        name: "Test name",
                                        fundingSource: .credit,
                                        brands: ["visa", "amex", "mc"])
-        var config = CardComponent.Configuration()
+        var config = CardComponent.Configuration(showsHolderNameField: true)
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: config)
         sut.cardViewController.items.holderNameItem.value = "Katrina del Mar"
 
+        // show view controller
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        wait(for: .seconds(1))
+        
         // When
-        sut.clear()
+        // hide view controller
+        UIApplication.shared.keyWindow?.rootViewController = UIViewController()
+        
+        wait(for: .seconds(1))
 
         // Then
         XCTAssertTrue(sut.cardViewController.items.holderNameItem.value.isEmpty)
@@ -1301,8 +1516,16 @@ class CardComponentTests: XCTestCase {
                                 configuration: config)
         sut.cardViewController.items.storeDetailsItem.value = true
 
+        // show view controller
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        wait(for: .seconds(1))
+        
         // When
-        sut.clear()
+        // hide view controller
+        UIApplication.shared.keyWindow?.rootViewController = UIViewController()
+        
+        wait(for: .seconds(1))
 
         // Then
         XCTAssertFalse(sut.cardViewController.items.storeDetailsItem.value)
@@ -1310,18 +1533,32 @@ class CardComponentTests: XCTestCase {
 
     func testClearShouldAssignEmptyPostalAddressToBillingAddressItem() throws {
         // Given
-        let expectedPostalAddress = PostalAddress()
+        let expectedPostalAddress = PostalAddress(city: "",
+                                                  country: "US",
+                                                  houseNumberOrName: "",
+                                                  postalCode: "",
+                                                  stateOrProvince: "AL",
+                                                  street: "",
+                                                  apartment: nil)
         let method = CardPaymentMethod(type: "bcmc",
                                        name: "Test name",
                                        fundingSource: .credit,
                                        brands: ["visa", "amex", "mc"])
         var config = CardComponent.Configuration()
-        config.billingAddressMode = .postalCode
+        config.billingAddressMode = .full
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: config)
+        // show view controller
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        wait(for: .seconds(1))
+        
         // When
-        sut.clear()
+        // hide view controller
+        UIApplication.shared.keyWindow?.rootViewController = UIViewController()
+        
+        wait(for: .seconds(1))
 
         // Then
         let postalAddress = sut.cardViewController.items.billingAddressItem.value

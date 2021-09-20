@@ -69,6 +69,7 @@
 "adyen.voucher.finish" = "Finish";
 "adyen.card.brazilSSN.placeholder" = "123.123.123-12";
 "adyen.amount" = "Amount";
+"adyen.voucher.entity" = "Entity";
 "adyen.pix.instructions" = "Open the app with the PIX registered key, choose Pay with PIX and scan the QR Code or copy and paste the code";
 "adyen.pix.expirationLabel" = "You have %@ to pay";
 "adyen.pix.copyButton" = "Copy code";
@@ -122,3 +123,10 @@
 "adyen.affirm.deliveryAddressToggle.title" = "Separate delivery address";
 "adyen.voucher.shopperReference" = "Shopper Reference";
 "adyen.voucher.alternativeReference" = "Alternative Reference";
+"adyen.card.installments.numberOfInstallments" = "Number of installments";
+"adyen.card.installments.oneTime" = "One time payment";
+"adyen.card.installments.title" = "Installments payment";
+"adyen.card.installments.revolving" = "Revolving payment";
+"adyen.card.installments.monthsAndPrice" = "%@x %@";
+"adyen.card.installments.months" = "%@ months";
+"adyen.card.installments.plan" = "Method of payment";

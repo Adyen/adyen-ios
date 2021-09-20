@@ -116,7 +116,7 @@ internal final class ModalViewController: UIViewController {
         switch navBarType {
         case .regular:
             navBar = getRegularNavBar()
-        case .custom(let customNavbar):
+        case let .custom(customNavbar):
             navBar = customNavbar
         }
         
