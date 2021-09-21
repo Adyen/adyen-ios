@@ -117,8 +117,10 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
         ]
 
         if configuration.showEmailAddress {
+            fields.append(.custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 1))))
             fields.append(.custom(CustomFormItemInjector(item: sendCopyByEmailItem)))
             fields.append(.email)
+            fields.append(.custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 1))))
         }
         
         return fields
