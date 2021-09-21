@@ -14,13 +14,18 @@ public final class CardNumberValidator: Validator {
     /// Indicates whether to validate for luhn check
     private let isLuhnCheckEnabled: Bool
     
+    /// Indicates whether the detected brand is supported or not.
+    private let isEnteredBrandSupported: Bool
+    
     /// :nodoc:
-    public init(isLuhnCheckEnabled: Bool) {
+    public init(isLuhnCheckEnabled: Bool, isEnteredBrandSupported: Bool) {
         self.isLuhnCheckEnabled = isLuhnCheckEnabled
+        self.isEnteredBrandSupported = isEnteredBrandSupported
     }
     
     /// :nodoc:
     public func isValid(_ value: String) -> Bool {
+        guard isEnteredBrandSupported else { return false }
         let minimumValidCardLength = 12
         let isValid = value.count >= minimumValidCardLength && (!isLuhnCheckEnabled || luhnCheck(value))
         

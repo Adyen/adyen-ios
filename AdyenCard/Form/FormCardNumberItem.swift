@@ -24,6 +24,17 @@ internal final class FormCardNumberItem: FormTextItem, Observer {
     /// The value contains up to 6 first digits of card' PAN.
     @Observable("") internal var binValue: String
     
+    /// Current brand detected for the entered bin.
+    @Observable(nil) internal private(set) var currentBrand: CardBrand?
+    
+    /// Determines whether validation includes luhn check.
+    internal var luhnCheckEnabled: Bool = true {
+        didSet {
+            validator = CardNumberValidator(isLuhnCheckEnabled: luhnCheckEnabled,
+                                            isEnteredBrandSupported: currentBrand?.isSupported ?? true)
+        }
+    }
+    
     /// :nodoc:
     private let localizationParameters: LocalizationParameters?
     
@@ -42,7 +53,7 @@ internal final class FormCardNumberItem: FormTextItem, Observer {
         observe(publisher) { [weak self] value in self?.valueDidChange(value) }
         
         title = localizedString(.cardNumberItemTitle, localizationParameters)
-        validator = CardNumberValidator(isLuhnCheckEnabled: true)
+        validator = CardNumberValidator(isLuhnCheckEnabled: true, isEnteredBrandSupported: true)
         formatter = cardNumberFormatter
         placeholder = localizedString(.cardNumberItemPlaceholder, localizationParameters)
         validationFailureMessage = localizedString(.cardNumberItemInvalid, localizationParameters)
@@ -70,6 +81,22 @@ internal final class FormCardNumberItem: FormTextItem, Observer {
             let isVisible = detectedCards.contains(logo.type)
             logo.isHidden = !isVisible
         }
+    }
+    
+    /// Updates the current brand and the related validation checks.
+    internal func update(currentBrand: CardBrand?) {
+        // validation message will change based on if brand is supported or not
+        // if brand is not supported, allow validation while editing to show the error instantly.
+        if currentBrand?.isSupported ?? true {
+            allowsValidationWhileEditing = false
+            validationFailureMessage = localizedString(.cardNumberItemInvalid, localizationParameters)
+        } else {
+            allowsValidationWhileEditing = true
+            validationFailureMessage = localizedString(.cardNumberItemUnknownBrand, localizationParameters)
+        }
+        
+        validator = CardNumberValidator(isLuhnCheckEnabled: luhnCheckEnabled, isEnteredBrandSupported: currentBrand?.isSupported ?? true)
+        self.currentBrand = currentBrand
     }
     
 }

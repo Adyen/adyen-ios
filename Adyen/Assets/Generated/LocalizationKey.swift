@@ -71,6 +71,10 @@ public struct LocalizationKey {
     public static let cardStoredMessage = LocalizationKey(key: "adyen.card.stored.message")
     /// Expires %@
     public static let cardStoredExpires = LocalizationKey(key: "adyen.card.stored.expires")
+    /// %@ isn't supported
+    public static let cardNumberItemUnsupportedBrand = LocalizationKey(key: "adyen.card.numberItem.unsupportedBrand")
+    /// The entered card brand isn't supported
+    public static let cardNumberItemUnknownBrand = LocalizationKey(key: "adyen.card.numberItem.unknownBrand")
     /// Confirm %@ payment
     public static let dropInStoredTitle = LocalizationKey(key: "adyen.dropIn.stored.title")
     /// Change Payment Method
@@ -257,12 +261,19 @@ public struct LocalizationKey {
     public static let voucherShopperReference = LocalizationKey(key: "adyen.voucher.shopperReference")
     /// Alternative Reference
     public static let voucherAlternativeReference = LocalizationKey(key: "adyen.voucher.alternativeReference")
+    /// Number of installments
     public static let cardInstallmentsNumberOfInstallments = LocalizationKey(key: "adyen.card.installments.numberOfInstallments")
+    /// One time payment
     public static let cardInstallmentsOneTime = LocalizationKey(key: "adyen.card.installments.oneTime")
+    /// Installments payment
     public static let cardInstallmentsTitle = LocalizationKey(key: "adyen.card.installments.title")
+    /// Revolving payment
     public static let cardInstallmentsRevolving = LocalizationKey(key: "adyen.card.installments.revolving")
+    /// %@x %@
     public static let cardInstallmentsMonthsAndPrice = LocalizationKey(key: "adyen.card.installments.monthsAndPrice")
+    /// %@ months
     public static let cardInstallmentsMonths = LocalizationKey(key: "adyen.card.installments.months")
+    /// Method of payment
     public static let cardInstallmentsPlan = LocalizationKey(key: "adyen.card.installments.plan")
     
     internal let key: String

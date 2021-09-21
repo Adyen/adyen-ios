@@ -30,6 +30,8 @@
 "adyen.card.stored.title" = "カード情報を確認して下さい。";
 "adyen.card.stored.message" = "%@のためセキュリティーコードをご入力下さい";
 "adyen.card.stored.expires" = "%@ に期限が切れます";
+"adyen.card.numberItem.unsupportedBrand" = "";
+"adyen.card.numberItem.unknownBrand" = "";
 "adyen.dropIn.stored.title" = "%@のお支払いをご確認下さい";
 "adyen.dropIn.preselected.openAll.title" = "お支払方法を変更する";
 "adyen.continueTo" = "次へ進む：%@";
@@ -129,4 +131,4 @@
 "adyen.card.installments.revolving" = "リボ払い";
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "%@か月";
-"adyen.card.installments.plan" = "";
+"adyen.card.installments.plan" = "支払方法";

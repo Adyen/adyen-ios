@@ -30,6 +30,8 @@
 "adyen.card.stored.title" = "Verify your card";
 "adyen.card.stored.message" = "Please enter the CVC code for %@";
 "adyen.card.stored.expires" = "Expires %@";
+"adyen.card.numberItem.unsupportedBrand" = "%@ isn't supported";
+"adyen.card.numberItem.unknownBrand" = "The entered card brand isn't supported";
 "adyen.dropIn.stored.title" = "Confirm %@ payment";
 "adyen.dropIn.preselected.openAll.title" = "Change Payment Method";
 "adyen.continueTo" = "Continue to %@";

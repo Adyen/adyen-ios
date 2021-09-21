@@ -145,11 +145,19 @@ internal class CardViewController: FormViewController {
 
         let kcpItemsHidden = shouldHideKcpItems(with: binInfo.issuingCountryCode)
 
-        items.numberItem.validator = CardNumberValidator(isLuhnCheckEnabled: brands.luhnCheckRequired)
+        let firstBrand = firstSupportedBrand(from: brands)
+        items.numberItem.luhnCheckEnabled = brands.luhnCheckRequired
+        items.numberItem.update(currentBrand: firstBrand)
         items.additionalAuthPasswordItem.isHidden.wrappedValue = kcpItemsHidden
         items.additionalAuthCodeItem.isHidden.wrappedValue = kcpItemsHidden
         items.socialSecurityNumberItem.isHidden.wrappedValue = shouldHideSocialSecurityItem(with: brands)
-        items.installmentsItem?.update(cardType: brands.first?.type) // choose first until dual brand selection feature
+        items.installmentsItem?.update(cardType: firstBrand?.type) // choose first until dual brand selection feature
+    }
+    
+    /// Returns the first supported brand in a multi(dual) brand sitation. If neither brand is supported, returns the first brand.
+    private func firstSupportedBrand(from brands: [CardBrand]) -> CardBrand? {
+        guard !brands.isEmpty else { return nil }
+        return brands.first { $0.isSupported } ?? brands.first
     }
 
     // MARK: Private methods

@@ -30,6 +30,8 @@
 "adyen.card.stored.title" = "التحقق من بطاقتك";
 "adyen.card.stored.message" = "يُرجى إدخال رمز CVC للبطاقة %@";
 "adyen.card.stored.expires" = "تنتهي في %@";
+"adyen.card.numberItem.unsupportedBrand" = "";
+"adyen.card.numberItem.unknownBrand" = "";
 "adyen.dropIn.stored.title" = "تأكيد الدفع باستخدام %@";
 "adyen.dropIn.preselected.openAll.title" = "تغيير طريقة الدفع";
 "adyen.continueTo" = "متابعة إلى %@";
@@ -129,4 +131,4 @@
 "adyen.card.installments.revolving" = "الدفع الدوري";
 "adyen.card.installments.monthsAndPrice" = "%@ x %@";
 "adyen.card.installments.months" = "%@ أشهر";
-"adyen.card.installments.plan" = "";
+"adyen.card.installments.plan" = "طريقة الدفع";

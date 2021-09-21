@@ -30,6 +30,8 @@
 "adyen.card.stored.title" = "Verifieer uw kaart";
 "adyen.card.stored.message" = "Voer de verificatiecode in voor %@";
 "adyen.card.stored.expires" = "Verloopt op %@";
+"adyen.card.numberItem.unsupportedBrand" = "";
+"adyen.card.numberItem.unknownBrand" = "";
 "adyen.dropIn.stored.title" = "Bevestig %@ betaling";
 "adyen.dropIn.preselected.openAll.title" = "Betalingsmethode wijzigen";
 "adyen.continueTo" = "Doorgaan naar %@";
@@ -129,4 +131,4 @@
 "adyen.card.installments.revolving" = "Terugkerende betaling";
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "%@ maanden";
-"adyen.card.installments.plan" = "";
+"adyen.card.installments.plan" = "Betaalmethode";
