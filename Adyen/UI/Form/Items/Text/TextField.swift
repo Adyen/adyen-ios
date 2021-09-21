@@ -12,6 +12,7 @@ import UIKit
 /// So in order to prevent this behaviour,
 /// accessibilityValue is overriden to return an empty string in case the text var is nil or empty string.
 /// :nodoc:
+@objc(AdyTextField)
 public final class TextField: UITextField {
     
     private var heightConstraint: NSLayoutConstraint?
