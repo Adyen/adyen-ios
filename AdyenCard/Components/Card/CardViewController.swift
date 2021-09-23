@@ -144,8 +144,8 @@ internal class CardViewController: FormViewController {
         }
 
         let kcpItemsHidden = shouldHideKcpItems(with: binInfo.issuingCountryCode)
-
         let firstBrand = firstSupportedBrand(from: brands)
+        
         items.numberItem.luhnCheckEnabled = brands.luhnCheckRequired
         items.numberItem.update(currentBrand: firstBrand)
         items.additionalAuthPasswordItem.isHidden.wrappedValue = kcpItemsHidden
