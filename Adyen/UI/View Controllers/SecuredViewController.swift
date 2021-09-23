@@ -78,6 +78,12 @@ public final class SecuredViewController: UIViewController {
         super.viewDidAppear(animated)
         delegate?.viewDidAppear(viewController: self)
     }
+
+    /// :nodoc:
+    override public func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        delegate?.viewWillAppear(viewController: self)
+    }
     
     @LazyOptional(initialize: UIVisualEffectView())
     private var blurEffectView: UIVisualEffectView

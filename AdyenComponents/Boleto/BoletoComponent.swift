@@ -189,12 +189,13 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
 extension BoletoComponent: ViewControllerDelegate {
 
     /// :nodoc:
-    public func viewDidLoad(viewController: UIViewController) {
-        prefillFields(for: formComponent)
-    }
+    public func viewDidLoad(viewController: UIViewController) {}
 
     /// :nodoc:
-    public func viewDidAppear(viewController: UIViewController) {
+    public func viewDidAppear(viewController: UIViewController) {}
+
+    /// :nodoc:
+    public func viewWillAppear(viewController: UIViewController) {
         prefillFields(for: formComponent)
     }
 }
