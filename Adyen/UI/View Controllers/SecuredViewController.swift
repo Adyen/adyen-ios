@@ -35,6 +35,8 @@ public final class SecuredViewController: UIViewController {
         get { childViewController.title }
         set { childViewController.title = newValue }
     }
+
+    // MARK: - Initializers
     
     /// Initializes the `SecuredViewController`.
     ///
@@ -57,16 +59,24 @@ public final class SecuredViewController: UIViewController {
     deinit {
         backgroundObservers?.forEach { notificationCenter.removeObserver($0) }
     }
+
+    // MARK: - View lifecycle
     
     /// :nodoc:
     override public func viewDidLoad() {
         super.viewDidLoad()
-        
+
         view.backgroundColor = style.backgroundColor
-        
         addChildViewController()
-        
         listenToBackgroundNotifications()
+
+        delegate?.viewDidLoad(viewController: self)
+    }
+
+    /// :nodoc:
+    override public func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        delegate?.viewDidAppear(viewController: self)
     }
     
     @LazyOptional(initialize: UIVisualEffectView())
@@ -129,9 +139,8 @@ public final class SecuredViewController: UIViewController {
                            }
                            self?.blurEffectView.removeFromSuperview()
                            self?.$blurEffectView.reset()
-                        
+
                            self?.view.backgroundColor = self?.style.backgroundColor
                        })
     }
-    
 }

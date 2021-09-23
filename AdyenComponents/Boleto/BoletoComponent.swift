@@ -10,7 +10,7 @@ import UIKit
 
 /// A component that provides a form for Boleto payment.
 public final class BoletoComponent: PaymentComponent, LoadingComponent, PresentableComponent, Localizable, Observer {
-    
+
     /// :nodoc:
     public let apiContext: APIContext
     
@@ -97,7 +97,7 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
                                       apiContext: apiContext,
                                       onCreatePaymentDetails: { [weak self] in self?.createPaymentDetails() },
                                       style: style)
-        prefillFields(for: component)
+        (component.viewController as? SecuredViewController)?.delegate = self
         component.delegate = self
         return component
     }()
@@ -186,6 +186,19 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     }
 }
 
+extension BoletoComponent: ViewControllerDelegate {
+
+    /// :nodoc:
+    public func viewDidLoad(viewController: UIViewController) {
+        prefillFields(for: formComponent)
+    }
+
+    /// :nodoc:
+    public func viewDidAppear(viewController: UIViewController) {
+        prefillFields(for: formComponent)
+    }
+}
+
 extension BoletoComponent: PaymentComponentDelegate {
     
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
@@ -232,5 +245,4 @@ extension BoletoComponent {
             onCreatePaymentDetails() ?? InstantPaymentDetails(type: paymentMethod.type)
         }
     }
-    
 }

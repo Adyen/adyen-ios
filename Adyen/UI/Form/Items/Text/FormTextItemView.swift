@@ -44,6 +44,11 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
 
         bind(item.$placeholder, to: textField, at: \.placeholder)
         bind(item.publisher, to: textField, at: \.text)
+
+        observe(item.publisher) { [weak self] _ in
+            guard let self = self else { return }
+            self.textDidChange(textField: self.textField, publish: false)
+        }
         
         updateValidationStatus()
         
@@ -166,17 +171,22 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     // MARK: - Private
     
     @objc private func textDidChange(textField: UITextField) {
+        textDidChange(textField: textField, publish: true)
+    }
+
+    private func textDidChange(textField: UITextField, publish: Bool) {
         let newText = textField.text
         var sanitizedText = newText.map { item.formatter?.sanitizedValue(for: $0) ?? $0 } ?? ""
         let maximumLength = item.validator?.maximumLength(for: sanitizedText) ?? .max
         sanitizedText = sanitizedText.adyen.truncate(to: maximumLength)
-        
-        item.value = sanitizedText
-        
+
+        // If the item's value is already set, we validate and stop propagating.
+        publish ? item.value = sanitizedText : validate()
+
         if sanitizedText.count == maximumLength {
             delegate?.didReachMaximumLength(in: self)
         }
-        
+
         if let formatter = item.formatter, let newText = newText {
             textField.text = formatter.formattedValue(for: newText)
         }
