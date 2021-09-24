@@ -90,8 +90,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     
     /// :nodoc:
     private func setupShopperInformation() {
-        if let deliveryAddress = shopperInformation?.deliveryAddress {
-            deliveryAddressItem?.value = deliveryAddress
+        if shopperInformation?.deliveryAddress != nil {
             deliveryAddressToggleItem.value = true
         }
     }
