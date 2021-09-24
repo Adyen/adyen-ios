@@ -162,33 +162,16 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         itemManager.flatItems.contains { $0 is InputViewRequiringFormItem }
     }
     
-    // MARK: - View
-    
-    override open func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        resetForm()
-    }
-    
-    public func resetForm() {
-        itemManager.flatItemViews.forEach { $0.reset() }
-    }
-    
+    // MARK: - View lifecycle
+
     /// :nodoc:
     override open func viewDidLoad() {
         super.viewDidLoad()
         addFormView()
-        
-        delegate?.viewDidLoad(viewController: self)
         itemManager.topLevelItemViews.forEach(formView.appendItemView(_:))
+        delegate?.viewDidLoad(viewController: self)
     }
 
-    private func addFormView() {
-        view.addSubview(formView)
-        view.backgroundColor = style.backgroundColor
-        formView.backgroundColor = style.backgroundColor
-        formView.adyen.anchor(inside: view.safeAreaLayoutGuide)
-    }
-    
     /// :nodoc:
     override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -201,13 +184,38 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
                                                          self?.assignInitialFirstResponder()
                                                      }))
     }
-    
+
+    /// :nodoc:
+    override open func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        resetForm()
+    }
+
+    /// :nodoc:
+    override open func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        delegate?.viewWillAppear(viewController: self)
+    }
+
     /// :nodoc:
     override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         resignFirstResponder()
     }
-    
+
+    public func resetForm() {
+        itemManager.flatItemViews.forEach { $0.reset() }
+    }
+
+    // MARK: - Private
+
+    private func addFormView() {
+        view.addSubview(formView)
+        view.backgroundColor = style.backgroundColor
+        formView.backgroundColor = style.backgroundColor
+        formView.adyen.anchor(inside: view.safeAreaLayoutGuide)
+    }
+
     private lazy var formView: FormView = {
         let form = FormView()
         form.translatesAutoresizingMaskIntoConstraints = false

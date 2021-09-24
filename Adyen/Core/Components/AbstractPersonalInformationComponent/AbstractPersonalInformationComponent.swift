@@ -225,4 +225,32 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         payment?.countryCode ?? Locale.current.regionCode ?? "US"
     }
 
+    /// :nodoc:
+    internal func populateFields() {
+        guard let shopperInformation = shopperInformation else { return }
+
+        if let firstName = shopperInformation.shopperName?.firstName {
+            firstNameItem?.value = firstName
+        }
+
+        if let lastName = shopperInformation.shopperName?.lastName {
+            lastNameItem?.value = lastName
+        }
+
+        if let emailAddress = shopperInformation.emailAddress {
+            emailItem?.value = emailAddress
+        }
+
+        if let telephoneNumber = shopperInformation.telephoneNumber {
+            phoneItem?.value = telephoneNumber
+        }
+
+        if let billingAddress = shopperInformation.billingAddress {
+            addressItem?.value = billingAddress
+        }
+
+        if let deliveryAddress = shopperInformation.deliveryAddress {
+            deliveryAddressItem?.value = deliveryAddress
+        }
+    }
 }
