@@ -6,7 +6,7 @@
 
 import SwiftUI
 
-#if canImport(SwiftUI) && canImport(Combine)
+#if canImport(SwiftUI) && canImport(Combine) && (arch(arm64) || arch(x86_64))
     /// :nodoc:
     @available(iOS 13.0, *)
     public extension View {
