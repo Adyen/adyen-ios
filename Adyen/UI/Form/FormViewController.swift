@@ -182,13 +182,8 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         itemManager.topLevelItemViews.forEach(formView.appendItemView(_:))
     }
 
-    private func addFormView() {
-        view.addSubview(formView)
-        view.backgroundColor = style.backgroundColor
-        formView.backgroundColor = style.backgroundColor
-        formView.adyen.anchor(inside: view.safeAreaLayoutGuide)
-    }
-    
+    // MARK: - View lifecycle
+
     /// :nodoc:
     override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -201,11 +196,20 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
                                                          self?.assignInitialFirstResponder()
                                                      }))
     }
-    
+
     /// :nodoc:
     override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         resignFirstResponder()
+    }
+
+    // MARK: - Private
+
+    private func addFormView() {
+        view.addSubview(formView)
+        view.backgroundColor = style.backgroundColor
+        formView.backgroundColor = style.backgroundColor
+        formView.adyen.anchor(inside: view.safeAreaLayoutGuide)
     }
     
     private lazy var formView: FormView = {
