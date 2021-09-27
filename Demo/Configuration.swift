@@ -37,7 +37,7 @@ internal enum ConfigurationConstants {
 
     static let applePayMerchantIdentifier = "{YOUR_APPLE_PAY_MERCHANT_IDENTIFIER}"
 
-    static let merchantAccount = "TestMerchantCheckout"
+    static let merchantAccount = "{YOUR_MERCHANT_ACCOUNT}"
     
     static var applePaySummaryItems: [PKPaymentSummaryItem] {
         [
