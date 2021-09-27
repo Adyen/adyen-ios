@@ -16,13 +16,14 @@ extension AdyenScope where Base: UIView {
     /// - Parameter view: Container view
     @discardableResult
     public func anchor(inside view: UIView, with padding: UIEdgeInsets = .zero) -> [NSLayoutConstraint] {
+        base.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
             base.topAnchor.constraint(equalTo: view.topAnchor, constant: padding.top),
             base.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: padding.bottom),
             base.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding.left),
             base.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: padding.right)
         ]
-        NSLayoutConstraint.activateConstrainst(constraints)
+        NSLayoutConstraint.activate(constraints)
         return constraints
     }
 
@@ -31,13 +32,14 @@ extension AdyenScope where Base: UIView {
     /// - Parameter margins: The layout guide to constraint to.
     @discardableResult
     public func anchor(inside margins: UILayoutGuide, with padding: UIEdgeInsets = .zero) -> [NSLayoutConstraint] {
+        base.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
             base.topAnchor.constraint(equalTo: margins.topAnchor, constant: padding.top),
             base.bottomAnchor.constraint(equalTo: margins.bottomAnchor, constant: padding.bottom),
             base.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: padding.left),
             base.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: padding.right)
         ]
-        NSLayoutConstraint.activateConstrainst(constraints)
+        NSLayoutConstraint.activate(constraints)
         return constraints
     }
 
