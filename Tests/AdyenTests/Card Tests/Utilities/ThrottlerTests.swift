@@ -10,23 +10,29 @@ import XCTest
 class ThrottlerTests: XCTestCase {
 
     func test() {
-        let sut = Throttler(minimumDelay: 0.5)
-
-        var counter = 0
-
-        let expectation = XCTestExpectation(description: "Waiting for callback")
-        for index in 0...3 {
-            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(index * 100)) {
-                sut.throttle { counter += 1 }
+        let sut = Throttler(minimumDelay: 1)
+        
+        var lastExecution = Date.distantPast
+        
+        let xctExpectation = expectation(description: "wait for last block execution")
+        
+        let tries = 100
+        
+        (0..<tries).forEach { index in
+            sut.throttle {
+                let timeSinceLastExecution = -lastExecution.timeIntervalSinceNow
+                XCTAssertGreaterThanOrEqual(timeSinceLastExecution, 1)
+                
+                lastExecution = Date()
+                
+                if index == tries - 1 {
+                    xctExpectation.fulfill()
+                }
             }
+            wait(for: .milliseconds(100))
         }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-            expectation.fulfill()
-        }
-
-        wait(for: [expectation], timeout: 2)
-        XCTAssertEqual(counter, 1)
+        
+        waitForExpectations(timeout: 100, handler: nil)
     }
 
 }
