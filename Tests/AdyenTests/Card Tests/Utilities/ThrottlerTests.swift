@@ -16,20 +16,25 @@ class ThrottlerTests: XCTestCase {
         
         let xctExpectation = expectation(description: "wait for last block execution")
         
-        let tries = 100
+        let triesCount = 15
         
-        (0..<tries).forEach { index in
+        let delays = (0..<triesCount).map { _ in Int.random(in: 100...1500) }
+        
+        delays.enumerated().forEach { iterator in
             sut.throttle {
                 let timeSinceLastExecution = -lastExecution.timeIntervalSinceNow
                 XCTAssertGreaterThanOrEqual(timeSinceLastExecution, 1)
+                if iterator.offset > 0 {
+                    XCTAssertLessThan(timeSinceLastExecution, 2)
+                }
                 
                 lastExecution = Date()
                 
-                if index == tries - 1 {
+                if iterator.offset == triesCount - 1 {
                     xctExpectation.fulfill()
                 }
             }
-            wait(for: .milliseconds(100))
+            wait(for: .milliseconds(iterator.element))
         }
         
         waitForExpectations(timeout: 100, handler: nil)
