@@ -21,11 +21,18 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         accessory = .customView(cardTypeLogosView)
         textField.textContentType = .creditCardNumber
         textField.returnKeyType = .default
+        
+        observe(item.$currentBrand) { [weak self] _ in
+            self?.updateValidationStatus(forced: true)
+        }
     }
     
     override internal func textFieldDidBeginEditing(_ text: UITextField) {
         super.textFieldDidBeginEditing(text)
-        accessory = .customView(cardTypeLogosView)
+        // change accessory back only if brand is supported or empty
+        if item.currentBrand?.isSupported ?? true {
+            accessory = .customView(cardTypeLogosView)
+        }
     }
     
     override internal func textFieldDidEndEditing(_ text: UITextField) {

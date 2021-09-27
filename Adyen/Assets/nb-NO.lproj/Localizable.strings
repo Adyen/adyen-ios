@@ -30,6 +30,8 @@
 "adyen.card.stored.title" = "Bekreft kortet ditt";
 "adyen.card.stored.message" = "Vennligst oppgi CVC-koden for %@";
 "adyen.card.stored.expires" = "Utløper %@";
+"adyen.card.numberItem.unsupportedBrand" = "";
+"adyen.card.numberItem.unknownBrand" = "";
 "adyen.dropIn.stored.title" = "Bekreft betaling med %@";
 "adyen.dropIn.preselected.openAll.title" = "Endre betalingsmetode";
 "adyen.continueTo" = "Fortsett til %@";
@@ -129,4 +131,4 @@
 "adyen.card.installments.revolving" = "Gjentakende betaling";
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "%@ måneder";
-"adyen.card.installments.plan" = "";
+"adyen.card.installments.plan" = "Betalingsmetode";

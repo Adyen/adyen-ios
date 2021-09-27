@@ -20,8 +20,8 @@ open class FormTextItem: FormValueItem<String, FormTextItemStyle>, ValidatableFo
     /// The validator to use for validating the text in the text field.
     public var validator: Validator?
 
-    /// A message that is displayed when validation fails.
-    public var validationFailureMessage: String?
+    /// A message that is displayed when validation fails. Observable.
+    @Observable(nil) public var validationFailureMessage: String?
 
     /// The auto-capitalization style for the text field.
     public var autocapitalizationType: UITextAutocapitalizationType = .sentences
@@ -34,6 +34,9 @@ open class FormTextItem: FormValueItem<String, FormTextItemStyle>, ValidatableFo
 
     /// The type of content for autofill.
     public var contentType: UITextContentType?
+    
+    /// Determines whether the validation can occur while editing is active.
+    public var allowsValidationWhileEditing: Bool = false
 
     public init(style: FormTextItemStyle) {
         super.init(value: "", style: style)

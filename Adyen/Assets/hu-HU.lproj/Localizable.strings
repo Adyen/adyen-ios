@@ -30,6 +30,8 @@
 "adyen.card.stored.title" = "Kártya ellenőrzése";
 "adyen.card.stored.message" = "Adja meg a %@ CVC-kódját";
 "adyen.card.stored.expires" = "Lejár: %@";
+"adyen.card.numberItem.unsupportedBrand" = "";
+"adyen.card.numberItem.unknownBrand" = "";
 "adyen.dropIn.stored.title" = "%@ használatával történő fizetés jóváhagyása";
 "adyen.dropIn.preselected.openAll.title" = "Fizetési mód módosítása";
 "adyen.continueTo" = "Folytatás a következővel: %@";
@@ -129,4 +131,4 @@
 "adyen.card.installments.revolving" = "Többösszegű fizetés";
 "adyen.card.installments.monthsAndPrice" = "%@ x %@";
 "adyen.card.installments.months" = "%@ hónap";
-"adyen.card.installments.plan" = "";
+"adyen.card.installments.plan" = "Fizetési mód";

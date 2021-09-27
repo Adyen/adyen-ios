@@ -30,6 +30,8 @@
 "adyen.card.stored.title" = "Kontrollér dit kort";
 "adyen.card.stored.message" = "Du skal indtaste CVC-koden for %@";
 "adyen.card.stored.expires" = "Udløber %@";
+"adyen.card.numberItem.unsupportedBrand" = "";
+"adyen.card.numberItem.unknownBrand" = "";
 "adyen.dropIn.stored.title" = "Bekræft %@-betaling";
 "adyen.dropIn.preselected.openAll.title" = "Skift betalingsmåde";
 "adyen.continueTo" = "Fortsæt til %@";
@@ -129,4 +131,4 @@
 "adyen.card.installments.revolving" = "Løbende betaling";
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "%@ måneder";
-"adyen.card.installments.plan" = "";
+"adyen.card.installments.plan" = "Betalingsmetode";
