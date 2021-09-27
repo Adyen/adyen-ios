@@ -203,8 +203,12 @@ class BoletoComponentTests: XCTestCase {
             let lastNameField: UITextField? = sutVC.view.findView(by: "lastNameItem.textField") as? UITextField
             let socialSecurityNumberField: UITextField? = sutVC.view.findView(by: "socialSecurityNumberItem.textField") as? UITextField
             let emailField: UITextField? = sutVC.view.findView(by: "emailItem.textField") as? UITextField
-            let addressLabel: UILabel? = self.sut.viewController.view.findView(by: "preFilledBillingAddress") as? UILabel
-            
+
+            let streetField = sutVC.view.findView(by: "addressItem.street.textField") as? UITextField
+            let houseNumberField = sutVC.view.findView(by: "addressItem.houseNumberOrName.textField") as? UITextField
+            let cityField = sutVC.view.findView(by: "addressItem.city.textField") as? UITextField
+            let postalCodeField = sutVC.view.findView(by: "addressItem.postalCode.textField") as? UITextField
+
             XCTAssertNotNil(firstNameField)
             XCTAssertNil(firstNameField?.text?.adyen.nilIfEmpty)
             
@@ -216,13 +220,23 @@ class BoletoComponentTests: XCTestCase {
             
             XCTAssertNotNil(emailField)
             XCTAssertNil(emailField?.text?.adyen.nilIfEmpty)
-            
-            XCTAssertNil(addressLabel)
-            
+
+            XCTAssertNotNil(streetField)
+            XCTAssertTrue(streetField?.text?.isEmpty ?? true)
+
+            XCTAssertNotNil(houseNumberField)
+            XCTAssertTrue(houseNumberField?.text?.isEmpty ?? true)
+
+            XCTAssertNotNil(cityField)
+            XCTAssertTrue(cityField?.text?.isEmpty ?? true)
+
+            XCTAssertNotNil(postalCodeField)
+            XCTAssertTrue(postalCodeField?.text?.isEmpty ?? true)
+
             dummyExpectation.fulfill()
         }
         
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 15, handler: nil)
     }
     
     func testNoEmailSection() {
