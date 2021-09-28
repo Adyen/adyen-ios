@@ -97,6 +97,10 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
                                       apiContext: apiContext,
                                       onCreatePaymentDetails: { [weak self] in self?.createPaymentDetails() },
                                       style: style)
+
+        if let emailItem = component.emailItem {
+            bind(sendCopyByEmailItem.publisher, to: emailItem, at: \.isHidden.wrappedValue, with: { !$0 })
+        }
         (component.viewController as? SecuredViewController)?.delegate = self
         component.delegate = self
         return component
@@ -122,10 +126,10 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
             fields.append(.email)
             fields.append(.custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 1))))
         }
-        
+
         return fields
     }
-    
+
     /// :nodoc:
     /// Sets the initial values for the form fields based on configuration
     private func prefillFields(for component: FormComponent) {

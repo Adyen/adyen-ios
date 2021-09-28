@@ -182,7 +182,7 @@ class BoletoComponentTests: XCTestCase {
             dummyExpectation.fulfill()
         }
         
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 15, handler: nil)
     }
     
     func testNoPrefilledInformation() {
@@ -305,7 +305,7 @@ class BoletoComponentTests: XCTestCase {
     
         }
         
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 15, handler: nil)
     }
     
     func testPaymentDataProvided() {
