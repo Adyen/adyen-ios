@@ -30,8 +30,8 @@ class MultibancoShareableVoucherViewProviderTests: XCTestCase {
 
         let amountLabel: UILabel! = sut.findView(by: "adyen.voucher.amountLabel")
         XCTAssertEqual(amountLabel.text, AmountFormatter.formatted(
-                        amount: multibancoDecoded.totalAmount.value,
-                        currencyCode: multibancoDecoded.totalAmount.currencyCode
+            amount: multibancoDecoded.totalAmount.value,
+            currencyCode: multibancoDecoded.totalAmount.currencyCode
         ))
 
         let expireyKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationKeyLabel")
