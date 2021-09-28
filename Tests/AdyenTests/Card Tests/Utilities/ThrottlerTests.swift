@@ -12,32 +12,34 @@ class ThrottlerTests: XCTestCase {
     func test() {
         let sut = Throttler(minimumDelay: 1)
         
-        var lastExecution = Date.distantPast
+        let startTimestamp = Date()
         
         let xctExpectation = expectation(description: "wait for last block execution")
         
-        let triesCount = 15
+        let triesCount = 25
+
+        var counter: Int = 0
         
-        let delays = (0..<triesCount).map { _ in Int.random(in: 100...1500) }
-        
-        delays.enumerated().forEach { iterator in
+        (0..<triesCount).forEach { index in
             sut.throttle {
-                let timeSinceLastExecution = -lastExecution.timeIntervalSinceNow
-                XCTAssertGreaterThanOrEqual(timeSinceLastExecution, 1)
-                if iterator.offset > 0 {
-                    XCTAssertLessThan(timeSinceLastExecution, 2)
-                }
+                let timeSinceLastExecution = -startTimestamp.timeIntervalSinceNow
+                XCTAssertGreaterThanOrEqual(timeSinceLastExecution, 3.5)
+                XCTAssertLessThan(timeSinceLastExecution, 4)
+                print("time elapsed: \(timeSinceLastExecution)")
                 
-                lastExecution = Date()
+                counter += 1
                 
-                if iterator.offset == triesCount - 1 {
+                if index == triesCount - 1 {
                     xctExpectation.fulfill()
                 }
             }
-            wait(for: .milliseconds(iterator.element))
+
+            wait(for: .milliseconds(100))
         }
         
         waitForExpectations(timeout: 100, handler: nil)
+        
+        XCTAssertEqual(counter, 1)
     }
 
 }
