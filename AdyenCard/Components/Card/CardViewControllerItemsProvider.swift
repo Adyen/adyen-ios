@@ -21,7 +21,7 @@ extension CardViewController {
 
         private let supportedCardTypes: [CardType]
 
-        private let cardLogos: [FormCardNumberItem.CardTypeLogo]
+        private let cardLogos: [FormCardLogoItem.CardTypeLogo]
 
         private let scope: String
 
@@ -31,7 +31,7 @@ extension CardViewController {
                       payment: Payment?,
                       configuration: CardComponent.Configuration,
                       supportedCardTypes: [CardType],
-                      cardLogos: [FormCardNumberItem.CardTypeLogo],
+                      cardLogos: [FormCardLogoItem.CardTypeLogo],
                       scope: String,
                       defaultCountryCode: String,
                       localizationParameters: LocalizationParameters?) {
@@ -66,11 +66,10 @@ extension CardViewController {
             return zipCodeItem
         }()
 
-        internal lazy var numberItem: FormCardNumberItem = {
-            let item = FormCardNumberItem(supportedCardTypes: supportedCardTypes,
-                                          cardTypeLogos: cardLogos,
-                                          style: formStyle.textField,
-                                          localizationParameters: localizationParameters)
+        internal lazy var numberContainerItem: FormCardNumberContainerItem = {
+            let item = FormCardNumberContainerItem(cardTypeLogos: cardLogos,
+                                                   style: formStyle.textField,
+                                                   localizationParameters: localizationParameters)
             item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "numberItem")
             return item
         }()

@@ -21,7 +21,7 @@ internal class CardViewController: FormViewController {
     private let formStyle: FormComponentStyle
 
     private var topCardTypes: [CardType] {
-        Array(supportedCardTypes.prefix(CardComponent.Constant.maxCardsVisible))
+        supportedCardTypes // Array(supportedCardTypes.prefix(CardComponent.Constant.maxCardsVisible))
     }
 
     internal var items: ItemsProvider
@@ -48,7 +48,7 @@ internal class CardViewController: FormViewController {
 
         let countryCode = payment?.countryCode ?? Locale.current.regionCode ?? CardComponent.Constant.defaultCountryCode
         let cardLogos = supportedCardTypes.map {
-            FormCardNumberItem.CardTypeLogo(url: logoProvider.logoURL(withName: $0.rawValue), type: $0)
+            FormCardLogoItem.CardTypeLogo(url: logoProvider.logoURL(withName: $0.rawValue), type: $0)
         }
         self.items = ItemsProvider(formStyle: formStyle,
                                    payment: payment,
@@ -79,7 +79,7 @@ internal class CardViewController: FormViewController {
             expiryMonth = expiryItemValue.adyen[0...1]
             expiryYear = "20" + expiryItemValue.adyen[2...3]
         }
-        return Card(number: items.numberItem.value,
+        return Card(number: items.numberContainerItem.numberItem.value,
                     securityCode: configuration.showsSecurityCodeField ? items.securityCodeItem.nonEmptyValue : nil,
                     expiryMonth: expiryMonth,
                     expiryYear: expiryYear,
@@ -137,17 +137,17 @@ internal class CardViewController: FormViewController {
         items.securityCodeItem.isOptional = brands.isCVCOptional
         items.expiryDateItem.isOptional = brands.isExpiryDateOptional
 
-        if items.numberItem.value.isEmpty {
-            items.numberItem.showLogos(for: topCardTypes)
-        } else {
-            items.numberItem.showLogos(for: brands.map(\.type))
-        }
+//        if items.numberItem.value.isEmpty {
+//            items.numberItem.showLogos(for: topCardTypes)
+//        } else {
+//            items.numberItem.showLogos(for: brands.map(\.type))
+//        }
 
         let kcpItemsHidden = shouldHideKcpItems(with: binInfo.issuingCountryCode)
         let firstBrand = firstSupportedBrand(from: brands)
         
-        items.numberItem.luhnCheckEnabled = brands.luhnCheckRequired
-        items.numberItem.update(currentBrand: firstBrand)
+        items.numberContainerItem.numberItem.luhnCheckEnabled = brands.luhnCheckRequired
+        items.numberContainerItem.numberItem.update(currentBrand: firstBrand)
         items.additionalAuthPasswordItem.isHidden.wrappedValue = kcpItemsHidden
         items.additionalAuthCodeItem.isHidden.wrappedValue = kcpItemsHidden
         items.socialSecurityNumberItem.isHidden.wrappedValue = shouldHideSocialSecurityItem(with: brands)
@@ -163,8 +163,7 @@ internal class CardViewController: FormViewController {
     // MARK: Private methods
 
     private func setupView() {
-        append(items.numberItem)
-        items.numberItem.showLogos(for: topCardTypes)
+        append(items.numberContainerItem)
 
         if configuration.showsSecurityCodeField {
             let splitTextItem = FormSplitItem(items: items.expiryDateItem, items.securityCodeItem, style: formStyle.textField)
@@ -207,7 +206,7 @@ internal class CardViewController: FormViewController {
     }
 
     private func setupViewRelations() {
-        observe(items.numberItem.$binValue) { [weak self] in self?.didReceive(bin: $0) }
+        observe(items.numberContainerItem.numberItem.$binValue) { [weak self] in self?.didReceive(bin: $0) }
 
         items.button.buttonSelectionHandler = { [weak cardDelegate] in
             cardDelegate?.didSelectSubmitButton()
