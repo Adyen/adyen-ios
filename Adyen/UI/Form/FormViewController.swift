@@ -142,11 +142,16 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         
         resignFirstResponder()
         
+        showValidation()
+        
+        return false
+    }
+    
+    /// :nodoc:
+    public func showValidation() {
         itemManager.flatItemViews
             .compactMap { $0 as? AnyFormValueItemView }
             .forEach { $0.validate() }
-        
-        return false
     }
     
     private func getAllValidatableItems() -> [ValidatableFormItem] {

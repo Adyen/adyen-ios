@@ -57,6 +57,11 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         self.shopperInformation = shopperInformation
         self.style = style
     }
+    
+    /// :nodoc:
+    public func showValidation() {
+        formViewController.showValidation()
+    }
 
     /// :nodoc:
     internal lazy var formViewController: FormViewController = {
