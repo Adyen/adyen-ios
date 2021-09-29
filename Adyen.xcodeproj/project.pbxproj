@@ -77,7 +77,6 @@
 		C92F6DBE26AFF336004BD516 /* PostalAddressMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F6DBD26AFF336004BD516 /* PostalAddressMocks.swift */; };
 		C92F6DC126B04B63004BD516 /* XCTestCase+FormAddressItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F6DC026B04B63004BD516 /* XCTestCase+FormAddressItem.swift */; };
 		C930FB6E269D79E0006A26D2 /* AffirmDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = C930FB6D269D79E0006A26D2 /* AffirmDetails.swift */; };
-		C942F0FE26FA26C8009781D2 /* NSLayoutConstraint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C942F0FD26FA26C8009781D2 /* NSLayoutConstraint+Extensions.swift */; };
 		C96688BF26A6FC1C00DC7297 /* AffirmComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */; };
 		C982FFD826946F0800AED849 /* AffirmComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFD726946F0800AED849 /* AffirmComponent.swift */; };
 		C982FFDC2694792F00AED849 /* AffirmPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */; };
@@ -951,7 +950,6 @@
 		C92F6DBD26AFF336004BD516 /* PostalAddressMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostalAddressMocks.swift; sourceTree = "<group>"; };
 		C92F6DC026B04B63004BD516 /* XCTestCase+FormAddressItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+FormAddressItem.swift"; sourceTree = "<group>"; };
 		C930FB6D269D79E0006A26D2 /* AffirmDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmDetails.swift; sourceTree = "<group>"; };
-		C942F0FD26FA26C8009781D2 /* NSLayoutConstraint+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+Extensions.swift"; sourceTree = "<group>"; };
 		C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponentTests.swift; sourceTree = "<group>"; };
 		C982FFD726946F0800AED849 /* AffirmComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponent.swift; sourceTree = "<group>"; };
 		C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmPaymentMethod.swift; sourceTree = "<group>"; };
@@ -1765,14 +1763,6 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		C942F0FC26FA26A8009781D2 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				C942F0FD26FA26C8009781D2 /* NSLayoutConstraint+Extensions.swift */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
 		C96688BD26A6F72900DC7297 /* Affirm */ = {
 			isa = PBXGroup;
 			children = (
@@ -2079,7 +2069,6 @@
 		E2C0E03522097917008616F6 /* Adyen */ = {
 			isa = PBXGroup;
 			children = (
-				C942F0FC26FA26A8009781D2 /* Extensions */,
 				F926D53623F6A34300D058D3 /* Formatters */,
 				F926D53123F5A5BD00D058D3 /* Validators */,
 				E9021DAB22578AA6009CF7F4 /* Assets */,
@@ -4525,7 +4514,6 @@
 				E2C0E0BA220B2966008616F6 /* FormTextItemView.swift in Sources */,
 				E97B972322B238C400505476 /* Analytics.swift in Sources */,
 				F95B6D8C252316DA002C9062 /* PhoneNumberValidator.swift in Sources */,
-				C942F0FE26FA26C8009781D2 /* NSLayoutConstraint+Extensions.swift in Sources */,
 				F9838D392631AD1900963483 /* Balance.swift in Sources */,
 				E9021E022264C4C5009CF7F4 /* KeyedDecodingContainerHelpers.swift in Sources */,
 				E7085B182628B29600D0153B /* FormPhoneExtensionPickerItem.swift in Sources */,
