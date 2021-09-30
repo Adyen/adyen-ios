@@ -149,7 +149,6 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
         if let emailItem = component.emailItem {
             sendCopyByEmailItem.value = false
             emailItem.value = shopperInformation.emailAddress ?? ""
-            bind(sendCopyByEmailItem.publisher, to: emailItem, at: \.isHidden.wrappedValue, with: { !$0 })
         }
         
         component.showValidation()

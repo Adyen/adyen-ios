@@ -297,7 +297,7 @@ class BoletoComponentTests: XCTestCase {
             XCTAssertTrue(emailItem!.isHidden)
             
             emailSwitchItem?.accessibilityActivate()
-                
+
             // Test that email field is visible
             XCTAssertFalse(emailItem!.isHidden)
                 
