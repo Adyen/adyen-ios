@@ -49,6 +49,10 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
         
         addSubview(textStackView)
         configureConstraints()
+        
+        observe(item.$validationFailureMessage) { [weak self] newValue in
+            self?.alertLabel.text = newValue
+        }
     }
     
     /// :nodoc:
@@ -258,7 +262,9 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     /// :nodoc:
     open func updateValidationStatus(forced: Bool = false) {
         let textFieldNotEmpty = textField.text.map(\.isEmpty) == false
-        let forceShowValidationStatus = (forced || textFieldNotEmpty) && !isEditing
+        // if validation check is allowed during editing, ignore editing check
+        let forceShowValidationStatus = (forced || textFieldNotEmpty)
+            && (item.allowsValidationWhileEditing || !isEditing)
         if item.isValid(), forceShowValidationStatus {
             accessory = .valid
             hideAlertLabel(true)

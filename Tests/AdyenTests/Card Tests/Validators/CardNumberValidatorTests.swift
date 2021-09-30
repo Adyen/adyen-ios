@@ -10,7 +10,7 @@ import XCTest
 class CardNumberValidatorTests: XCTestCase {
     
     func testValidCards() {
-        let validator = CardNumberValidator(isLuhnCheckEnabled: true)
+        let validator = CardNumberValidator(isLuhnCheckEnabled: true, isEnteredBrandSupported: true)
         
         CardNumbers.valid.forEach { cardNumber in
             XCTAssertTrue(validator.isValid(cardNumber))
@@ -18,15 +18,21 @@ class CardNumberValidatorTests: XCTestCase {
     }
     
     func testInvalidCards() {
-        let validator = CardNumberValidator(isLuhnCheckEnabled: true)
+        let validator = CardNumberValidator(isLuhnCheckEnabled: true, isEnteredBrandSupported: true)
         
         CardNumbers.invalid.forEach { cardNumber in
             XCTAssertFalse(validator.isValid(cardNumber))
         }
     }
     
+    func testUnsupportedCard() {
+        let validator = CardNumberValidator(isLuhnCheckEnabled: true, isEnteredBrandSupported: false)
+        
+        CardNumbers.valid.forEach { XCTAssertFalse(validator.isValid($0)) }
+    }
+    
     func testNonLuhnCheckCards() {
-        let validator = CardNumberValidator(isLuhnCheckEnabled: false)
+        let validator = CardNumberValidator(isLuhnCheckEnabled: false, isEnteredBrandSupported: true)
         XCTAssertTrue(validator.isValid("4111111111111112"))
         XCTAssertTrue(validator.isValid("370000000000000"))
         XCTAssertFalse(validator.isValid("37000000000"))

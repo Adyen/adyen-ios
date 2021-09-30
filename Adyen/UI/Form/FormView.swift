@@ -56,5 +56,4 @@ internal final class FormView: UIScrollView {
         stackView.adyen.anchor(inside: self)
         stackView.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
     }
-    
 }

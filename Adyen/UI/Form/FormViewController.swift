@@ -27,7 +27,7 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     public weak var delegate: ViewControllerDelegate?
 
     // MARK: - Public
-    
+
     /// Initializes the FormViewController.
     ///
     /// - Parameter style: The `FormViewController` UI style.
@@ -86,11 +86,11 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     /// :nodoc:
     override public var preferredContentSize: CGSize {
         get { formView.intrinsicContentSize }
-        
+
         // swiftlint:disable:next unused_setter_value
         set { AdyenAssertion.assertionFailure(message: """
         PreferredContentSize is overridden for this view controller.
@@ -134,9 +134,9 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
                                        })
         view.adyen.animate(context: context)
     }
-    
+
     // MARK: - Items
-    
+
     /// Appends an item to the form.
     ///
     /// - Parameters:
@@ -157,7 +157,7 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         guard let item = item as? Hidable else { return }
         itemView.adyen.hide(animationKey: String(describing: itemView),
                             hidden: item.isHidden.wrappedValue, animated: false)
-        
+
         observe(item.isHidden) { isHidden in
             itemView.adyen.hide(animationKey: String(describing: itemView),
                                 hidden: isHidden, animated: true)
@@ -168,42 +168,42 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
 
     /// :nodoc:
     public var localizationParameters: LocalizationParameters?
-    
+
     // MARK: - Validity
-    
+
     /// Validates the items in the form. If the form's contents are invalid, an alert is presented.
     ///
     /// - Returns: Whether the form is valid or not.
     public func validate() -> Bool {
         let validatableItems = getAllValidatableItems()
         let isValid = validatableItems.allSatisfy { $0.isValid() }
-        
+
         // Exit when all validations passed.
         guard !isValid else { return true }
-        
+
         resignFirstResponder()
-        
+
         showValidation()
-        
+
         return false
     }
-    
+
     /// :nodoc:
     public func showValidation() {
         itemManager.flatItemViews
             .compactMap { $0 as? AnyFormValueItemView }
             .forEach { $0.validate() }
     }
-    
+
     private func getAllValidatableItems() -> [ValidatableFormItem] {
         let visibleItems = itemManager.topLevelItem.filter {
             !(($0 as? Hidable)?.isHidden.wrappedValue == true)
         }
-        
+
         let validatableItems = visibleItems.flatMap(\.flatSubitems).compactMap { $0 as? ValidatableFormItem }
         return validatableItems
     }
-    
+
     private func formRequiresInputView() -> Bool {
         itemManager.flatItems.contains { $0 is InputViewRequiringFormItem }
     }
@@ -228,17 +228,17 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     }()
 
     // MARK: - UIResponder
-    
+
     @discardableResult
     override public func resignFirstResponder() -> Bool {
         let textItemView = itemManager.flatItemViews.first(where: { $0.isFirstResponder })
         textItemView?.resignFirstResponder()
-        
+
         return super.resignFirstResponder()
     }
-    
+
     // MARK: - Other
-    
+
     private func assignInitialFirstResponder() {
         guard view.isUserInteractionEnabled else { return }
         let textItemView = itemManager.topLevelItemViews.first(where: { $0.canBecomeFirstResponder })
@@ -249,31 +249,31 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
 // MARK: - FormTextItemViewDelegate
 
 extension FormViewController: FormTextItemViewDelegate {
-    
+
     /// :nodoc:
     public func didReachMaximumLength<T: FormTextItem>(in itemView: FormTextItemView<T>) {
         handleReturnKey(from: itemView)
     }
-    
+
     /// :nodoc:
     public func didSelectReturnKey<T: FormTextItem>(in itemView: FormTextItemView<T>) {
         handleReturnKey(from: itemView)
     }
-    
+
     private func handleReturnKey<T: FormTextItem>(from itemView: FormTextItemView<T>) {
         let itemViews = itemManager.flatItemViews
-        
+
         // Determine the index of the current item view.
         guard let currentIndex = itemViews.firstIndex(where: { $0 === itemView }) else {
             return
         }
-        
+
         // Create a slice of the remaining item views.
         let remainingItemViews = itemViews.suffix(from: itemViews.index(after: currentIndex))
-        
+
         // Find the first item view that's eligible to become a first responder.
         let nextItemView = remainingItemViews.first { $0.canBecomeFirstResponder && $0.isHidden == false }
-        
+
         // Assign the first responder, or resign the current one if there is none remaining.
         if let nextItemView = nextItemView {
             nextItemView.becomeFirstResponder()
@@ -281,5 +281,5 @@ extension FormViewController: FormTextItemViewDelegate {
             itemView.resignFirstResponder()
         }
     }
-    
+
 }

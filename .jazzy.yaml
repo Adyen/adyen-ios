@@ -71,6 +71,7 @@ custom_categories:
       - SevenElevenPaymentMethod
       - QRCodePaymentMethod
       - WeChatPayPaymentMethod
+      - MultibancoPaymentMethod
       
   - name: Actions
     children:
@@ -85,6 +86,7 @@ custom_categories:
       - DokuVoucherAction
       - EContextATMVoucherAction
       - EContextStoresVoucherAction
+      - MultibancoVoucherAction
       - QRCodeAction
       - SDKAction
       - WeChatPaySDKAction
@@ -128,6 +130,9 @@ custom_categories:
       - CardNumberValidator
       - CardComponentDelegate
       - StoredCardConfiguration
+      - InstallmentConfiguration
+      - InstallmentOptions
+      - Installments
       
   - name: 3D Secure 2 Component
     children:
@@ -278,6 +283,7 @@ custom_categories:
       - CardEncryptor
       - Card
       - EncryptedCard
+      - EncryptionError
       
   - name: Utilities
     children:

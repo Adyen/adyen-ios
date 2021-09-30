@@ -30,6 +30,8 @@
 "adyen.card.stored.title" = "验证您的卡片";
 "adyen.card.stored.message" = "请输入 %@ 的 CVC 码";
 "adyen.card.stored.expires" = "%@过期";
+"adyen.card.numberItem.unsupportedBrand" = "";
+"adyen.card.numberItem.unknownBrand" = "";
 "adyen.dropIn.stored.title" = "确认 %@ 支付";
 "adyen.dropIn.preselected.openAll.title" = "更改支付方式";
 "adyen.continueTo" = "继续至 %@";
@@ -129,4 +131,4 @@
 "adyen.card.installments.revolving" = "循环支付";
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "%@ 个月";
-"adyen.card.installments.plan" = "";
+"adyen.card.installments.plan" = "付款方式";

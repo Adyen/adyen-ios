@@ -30,6 +30,8 @@
 "adyen.card.stored.title" = "Zweryfikuj kartę";
 "adyen.card.stored.message" = "Proszę wprowadzić kod CVC dla %@";
 "adyen.card.stored.expires" = "Wygasa %@";
+"adyen.card.numberItem.unsupportedBrand" = "";
+"adyen.card.numberItem.unknownBrand" = "";
 "adyen.dropIn.stored.title" = "Potwierdź płatność %@";
 "adyen.dropIn.preselected.openAll.title" = "Zmień metodę płatności";
 "adyen.continueTo" = "Przejdź do %@";
@@ -129,4 +131,4 @@
 "adyen.card.installments.revolving" = "Płatność odnawialna";
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "%@ miesięcy";
-"adyen.card.installments.plan" = "";
+"adyen.card.installments.plan" = "Metoda płatności";

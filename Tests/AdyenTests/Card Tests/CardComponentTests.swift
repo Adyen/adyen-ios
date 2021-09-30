@@ -1134,16 +1134,44 @@ class CardComponentTests: XCTestCase {
                                 configuration: config)
 
         let cardNumberItem = sut.cardViewController.items.numberItem
-        cardNumberItem.validator = CardNumberValidator(isLuhnCheckEnabled: allEnabledLuhns.luhnCheckRequired)
+        cardNumberItem.luhnCheckEnabled = allEnabledLuhns.luhnCheckRequired
         cardNumberItem.value = "4111 1111 1111"
         XCTAssertFalse(cardNumberItem.isValid())
         cardNumberItem.value = "4111 1111 1111 1111"
         XCTAssertTrue(cardNumberItem.isValid())
 
-        cardNumberItem.validator = CardNumberValidator(isLuhnCheckEnabled: atLeastOneDisabledLuhn.luhnCheckRequired)
+        cardNumberItem.luhnCheckEnabled = atLeastOneDisabledLuhn.luhnCheckRequired
         XCTAssertTrue(cardNumberItem.isValid())
         cardNumberItem.value = "4111 1111 1111"
         XCTAssertTrue(cardNumberItem.isValid())
+    }
+    
+    func testUnSupportedBrands() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "elo"])
+        var config = CardComponent.Configuration()
+        config.excludedCardTypes = [.americanExpress]
+
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: config,
+                                style: .init())
+        
+        fillCard(on: sut.viewController.view, with: Dummy.visaCard)
+        let cardNumberItem = sut.cardViewController.items.numberItem
+        var binResponse = BinLookupResponse(brands: [CardBrand(type: .visa, isSupported: true)])
+        sut.cardViewController.update(binInfo: binResponse)
+        XCTAssertFalse(cardNumberItem.allowsValidationWhileEditing)
+        XCTAssertTrue(cardNumberItem.isValid())
+        
+        fillCard(on: sut.viewController.view, with: Dummy.amexCard)
+        binResponse = BinLookupResponse(brands: [CardBrand(type: .americanExpress, isSupported: false)])
+        sut.cardViewController.update(binInfo: binResponse)
+        XCTAssertTrue(cardNumberItem.allowsValidationWhileEditing)
+        XCTAssertFalse(cardNumberItem.isValid())
+        
+        binResponse = BinLookupResponse(brands: [])
+        sut.cardViewController.update(binInfo: binResponse)
+        XCTAssertFalse(cardNumberItem.allowsValidationWhileEditing)
     }
 
     func testCVCOptionality() {

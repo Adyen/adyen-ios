@@ -30,6 +30,8 @@
 "adyen.card.stored.title" = "Overte kartu";
 "adyen.card.stored.message" = "Zadajte kód CVC pre kartu s číslom %@";
 "adyen.card.stored.expires" = "Platnosť vyprší %@";
+"adyen.card.numberItem.unsupportedBrand" = "";
+"adyen.card.numberItem.unknownBrand" = "";
 "adyen.dropIn.stored.title" = "Potvrďte platbu pomocou %@";
 "adyen.dropIn.preselected.openAll.title" = "Zmeniť spôsob platby";
 "adyen.continueTo" = "Pokračovať do %@";
@@ -129,4 +131,4 @@
 "adyen.card.installments.revolving" = "Revolvingová platba";
 "adyen.card.installments.monthsAndPrice" = "%@ x %@";
 "adyen.card.installments.months" = "%@ mesiace/-ov";
-"adyen.card.installments.plan" = "";
+"adyen.card.installments.plan" = "Spôsob platby";
