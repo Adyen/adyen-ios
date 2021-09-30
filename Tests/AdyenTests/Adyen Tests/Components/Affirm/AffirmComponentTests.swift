@@ -137,29 +137,29 @@ class AffirmComponentTests: XCTestCase {
         
         let view: UIView = sut.viewController.view
         
-        let firstNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.firstNameItem"))
+        let firstNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.firstName))
         populate(textItemView: firstNameView, with: "Katrina")
         
-        let lastNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.lastNameItem"))
+        let lastNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.lastName))
         populate(textItemView: lastNameView, with: "Del Mar")
         
-        let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.phoneNumberItem"))
+        let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.phone))
         populate(textItemView: phoneNumberView, with: "2025550146")
         
-        let emailView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.emailItem"))
+        let emailView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.email))
         populate(textItemView: emailView, with: "katrina@mail.com")
 
-        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.addressItem"))
+        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.billingAddress))
         fill(addressView: billingAddressView, with: expectedBillingAddress)
 
-        let deliveryAddressToggleView: FormToggleItemView! = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.deliveryAddressToggleItem"))
+        let deliveryAddressToggleView: FormToggleItemView! = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.deliveryAddressToggle))
         deliveryAddressToggleView.switchControl.isOn = true
         deliveryAddressToggleView.switchControl.sendActions(for: .valueChanged)
 
-        let deliveryAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.deliveryAddressItem"))
+        let deliveryAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.deliveryAddress))
         fill(addressView: deliveryAddressView, with: expectedDeliveryAddress)
         
-        let submitButton: UIControl = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.payButtonItem.button"))
+        let submitButton: UIControl = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.payButton))
         submitButton.sendActions(for: .touchUpInside)
         
         waitForExpectations(timeout: 10, handler: nil)
@@ -187,35 +187,35 @@ class AffirmComponentTests: XCTestCase {
         // Then
         let view: UIView = prefillSut.viewController.view
 
-        let firstNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.firstNameItem"))
+        let firstNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.firstName))
         let expectedFirstName = try XCTUnwrap(shopperInformation.shopperName?.firstName)
         let firstName = firstNameView.item.value
         XCTAssertEqual(expectedFirstName, firstName)
 
-        let lastNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.lastNameItem"))
+        let lastNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.lastName))
         let expectedLastName = try XCTUnwrap(shopperInformation.shopperName?.lastName)
         let lastName = lastNameView.item.value
         XCTAssertEqual(expectedLastName, lastName)
 
-        let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.phoneNumberItem"))
+        let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.phone))
         let expectedPhoneNumber = try XCTUnwrap(shopperInformation.telephoneNumber)
         let phoneNumber = phoneNumberView.item.value
         XCTAssertEqual(expectedPhoneNumber, phoneNumber)
 
-        let emailView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.emailItem"))
+        let emailView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.email))
         let expectedEmail = try XCTUnwrap(shopperInformation.emailAddress)
         let email = emailView.item.value
         XCTAssertEqual(expectedEmail, email)
 
-        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.addressItem"))
+        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.billingAddress))
         let expectedBillingAddress = try XCTUnwrap(shopperInformation.billingAddress)
         let billingAddress = billingAddressView.item.value
         XCTAssertEqual(expectedBillingAddress, billingAddress)
 
-        let deliveryAddressToggleView: FormToggleItemView! = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.deliveryAddressToggleItem"))
+        let deliveryAddressToggleView: FormToggleItemView! = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.deliveryAddressToggle))
         XCTAssertTrue(deliveryAddressToggleView.item.value)
 
-        let deliveryAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.deliveryAddressItem"))
+        let deliveryAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.deliveryAddress))
         let expectedDeliveryAddress = try XCTUnwrap(shopperInformation.deliveryAddress)
         let deliveryAddress = deliveryAddressView.item.value
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
@@ -235,41 +235,52 @@ class AffirmComponentTests: XCTestCase {
         // Then
         let view: UIView = prefillSut.viewController.view
 
-        let firstNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.firstNameItem"))
+        let firstNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.firstName))
         let expectedFirstName = try XCTUnwrap(shopperInformation.shopperName?.firstName)
         let firstName = firstNameView.item.value
         XCTAssertEqual(expectedFirstName, firstName)
 
-        let lastNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.lastNameItem"))
+        let lastNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.lastName))
         let expectedLastName = try XCTUnwrap(shopperInformation.shopperName?.lastName)
         let lastName = lastNameView.item.value
         XCTAssertEqual(expectedLastName, lastName)
 
-        let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.phoneNumberItem"))
+        let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.phone))
         let expectedPhoneNumber = try XCTUnwrap(shopperInformation.telephoneNumber)
         let phoneNumber = phoneNumberView.item.value
         XCTAssertEqual(expectedPhoneNumber, phoneNumber)
 
-        let emailView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.emailItem"))
+        let emailView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.email))
         let expectedEmail = try XCTUnwrap(shopperInformation.emailAddress)
         let email = emailView.item.value
         XCTAssertEqual(expectedEmail, email)
 
-        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.addressItem"))
+        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.billingAddress))
         let expectedBillingAddress = try XCTUnwrap(shopperInformation.billingAddress)
         let billingAddress = billingAddressView.item.value
         XCTAssertEqual(expectedBillingAddress, billingAddress)
 
-        let deliveryAddressToggleView: FormToggleItemView! = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.deliveryAddressToggleItem"))
+        let deliveryAddressToggleView: FormToggleItemView! = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.deliveryAddressToggle))
         XCTAssertFalse(deliveryAddressToggleView.item.value)
 
-        let deliveryAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.deliveryAddressItem"))
+        let deliveryAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.deliveryAddress))
         let expectedDeliveryAddress = PostalAddressMocks.emptyUSPostalAddress
         let deliveryAddress = deliveryAddressView.item.value
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
     }
 
     // MARK: - Private
+
+    private enum AffirmViewIdentifier {
+        static let firstName = "AdyenComponents.AffirmComponent.firstNameItem"
+        static let lastName = "AdyenComponents.AffirmComponent.lastNameItem"
+        static let phone = "AdyenComponents.AffirmComponent.phoneNumberItem"
+        static let email = "AdyenComponents.AffirmComponent.emailItem"
+        static let billingAddress = "AdyenComponents.AffirmComponent.addressItem"
+        static let deliveryAddress = "AdyenComponents.AffirmComponent.deliveryAddressItem"
+        static let deliveryAddressToggle = "AdyenComponents.AffirmComponent.deliveryAddressToggleItem"
+        static let payButton = "AdyenComponents.AffirmComponent.payButtonItem.button"
+    }
 
     private var shopperInformation: PrefilledShopperInformation {
         let billingAddress = PostalAddressMocks.newYorkPostalAddress
