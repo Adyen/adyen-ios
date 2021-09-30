@@ -192,10 +192,13 @@ public final class FormViewController: UIViewController, Localizable {
     
     @objc private func keyboardWillChangeFrame(_ notification: NSNotification) {
         guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
-        var heightOffset = keyboardFrame.origin.y - UIScreen.main.bounds.height
+        let keyboardRect = keyboardFrame.intersection(UIScreen.main.bounds)
+        var heightOffset: CGFloat
         
         if #available(iOS 11.0, *) {
-            heightOffset += min(abs(heightOffset), view.safeAreaInsets.bottom)
+            heightOffset = keyboardRect.height - view.safeAreaInsets.bottom
+        } else {
+            heightOffset = keyboardRect.height
         }
         
         bottomConstraint?.constant = heightOffset
