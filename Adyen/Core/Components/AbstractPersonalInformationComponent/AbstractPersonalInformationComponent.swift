@@ -57,11 +57,6 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         self.shopperInformation = shopperInformation
         self.style = style
     }
-    
-    /// :nodoc:
-    public func showValidation() {
-        formViewController.showValidation()
-    }
 
     /// :nodoc:
     internal lazy var formViewController: FormViewController = {
@@ -228,6 +223,11 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     /// :nodoc:
     private var defaultCountryCode: String {
         payment?.countryCode ?? Locale.current.regionCode ?? "US"
+    }
+
+    /// :nodoc:
+    public func showValidation() {
+        formViewController.showValidation()
     }
 
     /// :nodoc:
