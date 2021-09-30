@@ -257,5 +257,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         if let deliveryAddress = shopperInformation.deliveryAddress {
             deliveryAddressItem?.value = deliveryAddress
         }
+
+        showValidation()
     }
 }
