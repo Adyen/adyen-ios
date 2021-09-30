@@ -22,6 +22,7 @@ class AffirmComponentTests: XCTestCase {
         style = FormComponentStyle()
         sut = AffirmComponent(paymentMethod: paymentMethod,
                               apiContext: apiContext,
+                              shopperInformation: nil,
                               style: style)
     }
     
@@ -179,8 +180,7 @@ class AffirmComponentTests: XCTestCase {
                                          apiContext: apiContext,
                                          shopperInformation: shopperInformation,
                                          style: style)
-        let affirmComponentVC = prefillSut.viewController
-        UIApplication.shared.keyWindow?.rootViewController = affirmComponentVC
+        UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
         wait(for: .seconds(1))
 
@@ -227,8 +227,7 @@ class AffirmComponentTests: XCTestCase {
                                          apiContext: apiContext,
                                          shopperInformation: shopperInformationNoDeliveryAddress,
                                          style: style)
-        let affirmComponentVC = prefillSut.viewController
-        UIApplication.shared.keyWindow?.rootViewController = affirmComponentVC
+        UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
         wait(for: .seconds(1))
 
@@ -257,6 +256,45 @@ class AffirmComponentTests: XCTestCase {
 
         let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.billingAddress))
         let expectedBillingAddress = try XCTUnwrap(shopperInformation.billingAddress)
+        let billingAddress = billingAddressView.item.value
+        XCTAssertEqual(expectedBillingAddress, billingAddress)
+
+        let deliveryAddressToggleView: FormToggleItemView! = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.deliveryAddressToggle))
+        XCTAssertFalse(deliveryAddressToggleView.item.value)
+
+        let deliveryAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.deliveryAddress))
+        let expectedDeliveryAddress = PostalAddressMocks.emptyUSPostalAddress
+        let deliveryAddress = deliveryAddressView.item.value
+        XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
+    }
+
+    func testAffirm_givenNoShopperInformation_shouldNotPrefill() throws {
+        // Given
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        wait(for: .seconds(1))
+
+        // Then
+        let view: UIView = sut.viewController.view
+
+        let firstNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.firstName))
+        let firstName = firstNameView.item.value
+        XCTAssertTrue(firstName.isEmpty)
+
+        let lastNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.lastName))
+        let lastName = lastNameView.item.value
+        XCTAssertTrue(lastName.isEmpty)
+
+        let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.phone))
+        let phoneNumber = phoneNumberView.item.value
+        XCTAssertTrue(phoneNumber.isEmpty)
+
+        let emailView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.email))
+        let email = emailView.item.value
+        XCTAssertTrue(email.isEmpty)
+
+        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.billingAddress))
+        let expectedBillingAddress = PostalAddressMocks.emptyUSPostalAddress
         let billingAddress = billingAddressView.item.value
         XCTAssertEqual(expectedBillingAddress, billingAddress)
 
