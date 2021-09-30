@@ -350,23 +350,23 @@ let oxxoAction: [String: Any] = [
 ]
 
 let multibancoVoucher: [String: Any] = [
-    "entity" : "11249",
-    "initialAmount" : [
-      "currency" : "EUR",
-      "value" : 17408
+    "entity": "11249",
+    "initialAmount": [
+        "currency": "EUR",
+        "value": 17408
     ],
-    "reference" : "522 771 332",
-    "paymentMethodType" : "multibanco",
-    "totalAmount" : [
-      "currency" : "EUR",
-      "value" : 17408
+    "reference": "522 771 332",
+    "paymentMethodType": "multibanco",
+    "totalAmount": [
+        "currency": "EUR",
+        "value": 17408
     ],
-    "expiresAt" : "2021-08-30T12:00:10",
-    "merchantName" : "TestMerchant",
-    "merchantReference" : "Test Order Reference - iOS UIHost",
-    "type" : "voucher",
-    "passCreationToken" : "Ab02b4c0!BQABAgBj+WtQPwc2TYNDdxV/IKW/SYB6d6IWV7yne67s2T4Nbr3v+KGzEVYaLs2uWQdkMVhubumVa1ula96RUqor6h9UoFMr7crM0qrZvz7wEuyV0dR1XG+F/cOq8UyLjhtkQL9RLh0gdntrw1FjCOHq7IAg+jzrWsH+fV5ofjdACkTlU1aSzqtPJDR9owl06Xeo1znNK9lYrvri4JRVPOkIEC4+h96sd1Rfn3t/NbAkBzhS/1emJIn6NQv7hmDz8FcWbxyjmY2LtHTigRhntmvY01z8hNOZ+1Zd4c/1GaEv3v1Y204AhcJx2ITHUIwmjD7j1GwYM+prkE1E+K6SOW0uV/cJQiIxkdDec1yN1+pFVvi78RRewIDthceqsxMBXQ6N7Z+8f+eVJJQDI1pRNdIcpsEgUSNMzUVGlu1eoPH1cY4o6/JxfvjY/+iqTCCsOLRgl+1A3oaRtAHUEKE7sqVwKU6NBfU9fXDCYRhF3dkgO8lN90YBgMDVO892MbloRzlB89sO2ZByE7JjQ65ElcunTMj290HrO+MKPtT+WocUWs+SrHjQldnbbgydQTtiV4m/gij/9z5uRNIEcoSjVn5VPlZ5eLI4nDq55Z4Ei8ak1VpUdmYm8/B2zhQtt5/0LXOsl8I8Ll+6R2LXrYesTt5wkac5yZK7oB51ilpqSzoQqMMXPhBEabbPAtWMNu14l1jGymF9AEp7ImtleSI6IkFGMEFBQTEwM0NBNTM3RUFFRDg3QzI0REQ1MzkwOUI4MEE3OEE5MjNFMzgyM0Q2OERBQ0M5NEI5RkY4MzA1REMiffSIcuL8hjKp/KgDw8goT6VN1sl6o4jfjayQOWvnkJdhBTqqxAbLFOvSfi6WMwbGYjVDwp53HsXZvJkNnEbxyk/SPR91A/foRwm7MCBlSTNM4IaUNVPrNmpOAw49oLoCifhwRAexyyjU0ybNSlwp4Y47dsFZmEkE8DdRRedW/N57bqst5IdRgpMEMVGpTgYsU2QYr4hpN1fwA40avGC19zaqnZC6iLQHsCaDKWQIjgM79Bzsr0WBL+hHjChMwgccoJA2QxPjJtE2CXCtSZYA5FqIcW3yi/P+SAPHQFafQgLMoX2/dQjxjMtHUHmtw1dB/kSDggB82znMKq+Udu3Y9H8hBxetaCyNGQSx0Ux5KkwfOEqf+M9FQsN35Dv/znwnzPsfxxqrIqb+ivddFx7JsyUF7M62xnCgPuWxP1WPyX+oKOLQhANibpUj/XDqc1tHlYQEE+95ZJWTYSQ="
-  ]
+    "expiresAt": "2021-08-30T12:00:10",
+    "merchantName": "TestMerchant",
+    "merchantReference": "Test Order Reference - iOS UIHost",
+    "type": "voucher",
+    "passCreationToken": "Ab02b4c0!BQABAgBj+WtQPwc2TYNDdxV/IKW/SYB6d6IWV7yne67s2T4Nbr3v+KGzEVYaLs2uWQdkMVhubumVa1ula96RUqor6h9UoFMr7crM0qrZvz7wEuyV0dR1XG+F/cOq8UyLjhtkQL9RLh0gdntrw1FjCOHq7IAg+jzrWsH+fV5ofjdACkTlU1aSzqtPJDR9owl06Xeo1znNK9lYrvri4JRVPOkIEC4+h96sd1Rfn3t/NbAkBzhS/1emJIn6NQv7hmDz8FcWbxyjmY2LtHTigRhntmvY01z8hNOZ+1Zd4c/1GaEv3v1Y204AhcJx2ITHUIwmjD7j1GwYM+prkE1E+K6SOW0uV/cJQiIxkdDec1yN1+pFVvi78RRewIDthceqsxMBXQ6N7Z+8f+eVJJQDI1pRNdIcpsEgUSNMzUVGlu1eoPH1cY4o6/JxfvjY/+iqTCCsOLRgl+1A3oaRtAHUEKE7sqVwKU6NBfU9fXDCYRhF3dkgO8lN90YBgMDVO892MbloRzlB89sO2ZByE7JjQ65ElcunTMj290HrO+MKPtT+WocUWs+SrHjQldnbbgydQTtiV4m/gij/9z5uRNIEcoSjVn5VPlZ5eLI4nDq55Z4Ei8ak1VpUdmYm8/B2zhQtt5/0LXOsl8I8Ll+6R2LXrYesTt5wkac5yZK7oB51ilpqSzoQqMMXPhBEabbPAtWMNu14l1jGymF9AEp7ImtleSI6IkFGMEFBQTEwM0NBNTM3RUFFRDg3QzI0REQ1MzkwOUI4MEE3OEE5MjNFMzgyM0Q2OERBQ0M5NEI5RkY4MzA1REMiffSIcuL8hjKp/KgDw8goT6VN1sl6o4jfjayQOWvnkJdhBTqqxAbLFOvSfi6WMwbGYjVDwp53HsXZvJkNnEbxyk/SPR91A/foRwm7MCBlSTNM4IaUNVPrNmpOAw49oLoCifhwRAexyyjU0ybNSlwp4Y47dsFZmEkE8DdRRedW/N57bqst5IdRgpMEMVGpTgYsU2QYr4hpN1fwA40avGC19zaqnZC6iLQHsCaDKWQIjgM79Bzsr0WBL+hHjChMwgccoJA2QxPjJtE2CXCtSZYA5FqIcW3yi/P+SAPHQFafQgLMoX2/dQjxjMtHUHmtw1dB/kSDggB82znMKq+Udu3Y9H8hBxetaCyNGQSx0Ux5KkwfOEqf+M9FQsN35Dv/znwnzPsfxxqrIqb+ivddFx7JsyUF7M62xnCgPuWxP1WPyX+oKOLQhANibpUj/XDqc1tHlYQEE+95ZJWTYSQ="
+]
 
 let weChatMiniProgramDictionary = [
     "name": "WeChat Pay",

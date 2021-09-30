@@ -296,7 +296,7 @@ A full list of customization options can be found in the [API Reference][referen
 
 ## Requirements
 
-- iOS 10.0+
+- iOS 11.0+
 - Xcode 11.0+
 - Swift 5.1
 
