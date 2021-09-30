@@ -226,6 +226,11 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     }
 
     /// :nodoc:
+    public func showValidation() {
+        formViewController.showValidation()
+    }
+
+    /// :nodoc:
     internal func populateFields() {
         guard let shopperInformation = shopperInformation else { return }
 

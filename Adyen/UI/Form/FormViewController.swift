@@ -41,6 +41,47 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         stopObserving()
     }
 
+    // MARK: - View lifecycle
+
+    /// :nodoc:
+    override open func viewDidLoad() {
+        super.viewDidLoad()
+        addFormView()
+        itemManager.topLevelItemViews.forEach(formView.appendItemView(_:))
+        delegate?.viewDidLoad(viewController: self)
+    }
+
+    /// :nodoc:
+    override open func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        delegate?.viewWillAppear(viewController: self)
+    }
+
+    /// :nodoc:
+    override open func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        delegate?.viewDidAppear(viewController: self)
+
+        view.adyen.animate(context: AnimationContext(animationKey: Animations.firstResponder,
+                                                     duration: 0,
+                                                     options: [.layoutSubviews, .beginFromCurrentState],
+                                                     animations: { [weak self] in
+                                                         self?.assignInitialFirstResponder()
+                                                     }))
+    }
+
+    /// :nodoc:
+    override open func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        resignFirstResponder()
+    }
+
+    /// :nodoc:
+    override open func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        resetForm()
+    }
+
     @available(*, unavailable)
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -71,9 +112,9 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         }
     }
 
-    private var keyboardRect: CGRect = .zero
-
     // MARK: - Private Properties
+
+    private var keyboardRect: CGRect = .zero
 
     private lazy var itemManager = FormViewItemManager()
 
@@ -142,11 +183,16 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         
         resignFirstResponder()
         
+        showValidation()
+        
+        return false
+    }
+    
+    /// :nodoc:
+    public func showValidation() {
         itemManager.flatItemViews
             .compactMap { $0 as? AnyFormValueItemView }
             .forEach { $0.validate() }
-        
-        return false
     }
     
     private func getAllValidatableItems() -> [ValidatableFormItem] {
@@ -160,47 +206,6 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     
     private func formRequiresInputView() -> Bool {
         itemManager.flatItems.contains { $0 is InputViewRequiringFormItem }
-    }
-    
-    // MARK: - View lifecycle
-
-    /// :nodoc:
-    override open func viewDidLoad() {
-        super.viewDidLoad()
-        addFormView()
-        itemManager.topLevelItemViews.forEach(formView.appendItemView(_:))
-        delegate?.viewDidLoad(viewController: self)
-    }
-
-    /// :nodoc:
-    override open func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        delegate?.viewDidAppear(viewController: self)
-
-        view.adyen.animate(context: AnimationContext(animationKey: Animations.firstResponder,
-                                                     duration: 0,
-                                                     options: [.layoutSubviews, .beginFromCurrentState],
-                                                     animations: { [weak self] in
-                                                         self?.assignInitialFirstResponder()
-                                                     }))
-    }
-
-    /// :nodoc:
-    override open func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        resetForm()
-    }
-
-    /// :nodoc:
-    override open func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        delegate?.viewWillAppear(viewController: self)
-    }
-
-    /// :nodoc:
-    override open func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        resignFirstResponder()
     }
 
     public func resetForm() {

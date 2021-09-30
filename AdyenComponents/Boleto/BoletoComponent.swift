@@ -151,6 +151,8 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
             emailItem.value = shopperInformation.emailAddress ?? ""
             bind(sendCopyByEmailItem.publisher, to: emailItem, at: \.isHidden.wrappedValue, with: { !$0 })
         }
+        
+        component.showValidation()
     }
     
     /// :nodoc:
