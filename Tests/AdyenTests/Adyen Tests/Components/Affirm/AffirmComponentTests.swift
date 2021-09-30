@@ -14,7 +14,7 @@ class AffirmComponentTests: XCTestCase {
     private var apiContext: APIContext!
     private var style: FormComponentStyle!
     private var sut: AffirmComponent!
-    
+
     override func setUpWithError() throws {
         try super.setUpWithError()
         paymentMethod = AffirmPaymentMethod(type: "affirm", name: "Affirm")
@@ -148,14 +148,14 @@ class AffirmComponentTests: XCTestCase {
         
         let emailView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.emailItem"))
         populate(textItemView: emailView, with: "katrina@mail.com")
-                
+
         let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.addressItem"))
         fill(addressView: billingAddressView, with: expectedBillingAddress)
-                
+
         let deliveryAddressToggleView: FormToggleItemView! = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.deliveryAddressToggleItem"))
         deliveryAddressToggleView.switchControl.isOn = true
         deliveryAddressToggleView.switchControl.sendActions(for: .valueChanged)
-                
+
         let deliveryAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.deliveryAddressItem"))
         fill(addressView: deliveryAddressView, with: expectedDeliveryAddress)
         
@@ -172,4 +172,126 @@ class AffirmComponentTests: XCTestCase {
         // Then
         XCTAssertFalse(phoneExtensions.isEmpty)
     }
+
+    func testAffirmPrefilling_givenDeliveryAddressIsSet() throws {
+        // Given
+        let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
+                                         apiContext: apiContext,
+                                         shopperInformation: shopperInformation,
+                                         style: style)
+        let affirmComponentVC = prefillSut.viewController
+        UIApplication.shared.keyWindow?.rootViewController = affirmComponentVC
+
+        wait(for: .seconds(1))
+
+        // Then
+        let view: UIView = prefillSut.viewController.view
+
+        let firstNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.firstNameItem"))
+        let expectedFirstName = try XCTUnwrap(shopperInformation.shopperName?.firstName)
+        let firstName = firstNameView.item.value
+        XCTAssertEqual(expectedFirstName, firstName)
+
+        let lastNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.lastNameItem"))
+        let expectedLastName = try XCTUnwrap(shopperInformation.shopperName?.lastName)
+        let lastName = lastNameView.item.value
+        XCTAssertEqual(expectedLastName, lastName)
+
+        let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.phoneNumberItem"))
+        let expectedPhoneNumber = try XCTUnwrap(shopperInformation.telephoneNumber)
+        let phoneNumber = phoneNumberView.item.value
+        XCTAssertEqual(expectedPhoneNumber, phoneNumber)
+
+        let emailView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.emailItem"))
+        let expectedEmail = try XCTUnwrap(shopperInformation.emailAddress)
+        let email = emailView.item.value
+        XCTAssertEqual(expectedEmail, email)
+
+        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.addressItem"))
+        let expectedBillingAddress = try XCTUnwrap(shopperInformation.billingAddress)
+        let billingAddress = billingAddressView.item.value
+        XCTAssertEqual(expectedBillingAddress, billingAddress)
+
+        let deliveryAddressToggleView: FormToggleItemView! = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.deliveryAddressToggleItem"))
+        XCTAssertTrue(deliveryAddressToggleView.item.value)
+
+        let deliveryAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.deliveryAddressItem"))
+        let expectedDeliveryAddress = try XCTUnwrap(shopperInformation.deliveryAddress)
+        let deliveryAddress = deliveryAddressView.item.value
+        XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
+    }
+
+    func testAffirmPrefilling_givenDeliveryAddressIsNotSet() throws {
+        // Given
+        let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
+                                         apiContext: apiContext,
+                                         shopperInformation: shopperInformationNoDeliveryAddress,
+                                         style: style)
+        let affirmComponentVC = prefillSut.viewController
+        UIApplication.shared.keyWindow?.rootViewController = affirmComponentVC
+
+        wait(for: .seconds(1))
+
+        // Then
+        let view: UIView = prefillSut.viewController.view
+
+        let firstNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.firstNameItem"))
+        let expectedFirstName = try XCTUnwrap(shopperInformation.shopperName?.firstName)
+        let firstName = firstNameView.item.value
+        XCTAssertEqual(expectedFirstName, firstName)
+
+        let lastNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.lastNameItem"))
+        let expectedLastName = try XCTUnwrap(shopperInformation.shopperName?.lastName)
+        let lastName = lastNameView.item.value
+        XCTAssertEqual(expectedLastName, lastName)
+
+        let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.phoneNumberItem"))
+        let expectedPhoneNumber = try XCTUnwrap(shopperInformation.telephoneNumber)
+        let phoneNumber = phoneNumberView.item.value
+        XCTAssertEqual(expectedPhoneNumber, phoneNumber)
+
+        let emailView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.emailItem"))
+        let expectedEmail = try XCTUnwrap(shopperInformation.emailAddress)
+        let email = emailView.item.value
+        XCTAssertEqual(expectedEmail, email)
+
+        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.addressItem"))
+        let expectedBillingAddress = try XCTUnwrap(shopperInformation.billingAddress)
+        let billingAddress = billingAddressView.item.value
+        XCTAssertEqual(expectedBillingAddress, billingAddress)
+
+        let deliveryAddressToggleView: FormToggleItemView! = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.deliveryAddressToggleItem"))
+        XCTAssertFalse(deliveryAddressToggleView.item.value)
+
+        let deliveryAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "AdyenComponents.AffirmComponent.deliveryAddressItem"))
+        let expectedDeliveryAddress = PostalAddressMocks.emptyUSPostalAddress
+        let deliveryAddress = deliveryAddressView.item.value
+        XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
+    }
+
+    // MARK: - Private
+
+    private var shopperInformation: PrefilledShopperInformation {
+        let billingAddress = PostalAddressMocks.newYorkPostalAddress
+        let deliveryAddress = PostalAddressMocks.losAngelesPostalAddress
+        let shopperInformation = PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
+                                                             emailAddress: "katrina@mail.com",
+                                                             telephoneNumber: "1234567890",
+                                                             billingAddress: billingAddress,
+                                                             deliveryAddress: deliveryAddress,
+                                                             socialSecurityNumber: "78542134370")
+        return shopperInformation
+    }
+
+    private var shopperInformationNoDeliveryAddress: PrefilledShopperInformation {
+        let billingAddress = PostalAddressMocks.newYorkPostalAddress
+        let shopperInformation = PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
+                                                             emailAddress: "katrina@mail.com",
+                                                             telephoneNumber: "1234567890",
+                                                             billingAddress: billingAddress,
+                                                             deliveryAddress: nil,
+                                                             socialSecurityNumber: "78542134370")
+        return shopperInformation
+    }
+
 }
