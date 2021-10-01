@@ -108,12 +108,12 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
                                isFirstField: false)
 
         let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: ViewIdentifier.phone)
-        let phoneNumberViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.phoneNumberItem.titleLabel")
-        let phoneNumberViewTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.phoneNumberItem.textField")
+        let phoneNumberViewTitleLabel: UILabel? = sut.viewController.view.findView(with: ViewIdentifier.phoneTitleLabel)
+        let phoneNumberViewTextField: UITextField? = sut.viewController.view.findView(with: ViewIdentifier.phoneTextField)
 
         /// Test submit button
         let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: ViewIdentifier.payButton)
-        let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.payButtonItem.button.titleLabel")
+        let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: ViewIdentifier.payButtonTitleLabel)
 
         XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
         XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
@@ -288,8 +288,11 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         static let firstName = "AdyenComponents.BasicPersonalInfoFormComponent.firstNameItem"
         static let lastName = "AdyenComponents.BasicPersonalInfoFormComponent.lastNameItem"
         static let phone = "AdyenComponents.BasicPersonalInfoFormComponent.phoneNumberItem"
+        static let phoneTitleLabel = "AdyenComponents.BasicPersonalInfoFormComponent.phoneNumberItem.titleLabel"
+        static let phoneTextField = "AdyenComponents.BasicPersonalInfoFormComponent.phoneNumberItem.textField"
         static let email = "AdyenComponents.BasicPersonalInfoFormComponent.emailItem"
         static let payButton = "AdyenComponents.BasicPersonalInfoFormComponent.payButtonItem.button"
+        static let payButtonTitleLabel = "AdyenComponents.BasicPersonalInfoFormComponent.payButtonItem.button.titleLabel"
     }
 
     private var shopperInformation: PrefilledShopperInformation {
