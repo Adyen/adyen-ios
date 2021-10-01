@@ -12,11 +12,11 @@ import XCTest
 
 class MBWayComponentTests: XCTestCase {
 
-    lazy var method = MBWayPaymentMethod(type: "test_type", name: "test_name")
+    lazy var paymentMethod = MBWayPaymentMethod(type: "test_type", name: "test_name")
     let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
 
     func testLocalizationWithCustomTableName() {
-        let sut = MBWayComponent(paymentMethod: method, apiContext: Dummy.context)
+        let sut = MBWayComponent(paymentMethod: paymentMethod, apiContext: Dummy.context)
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
@@ -25,12 +25,12 @@ class MBWayComponentTests: XCTestCase {
         XCTAssertEqual(sut.phoneItem?.validationFailureMessage, localizedString(.phoneNumberInvalid, sut.localizationParameters))
 
         XCTAssertNotNil(sut.button.title)
-        XCTAssertEqual(sut.button.title, localizedString(.continueTo, sut.localizationParameters, method.name))
-        XCTAssertTrue(sut.button.title!.contains(method.name))
+        XCTAssertEqual(sut.button.title, localizedString(.continueTo, sut.localizationParameters, paymentMethod.name))
+        XCTAssertTrue(sut.button.title!.contains(paymentMethod.name))
     }
 
     func testLocalizationWithCustomKeySeparator() {
-        let sut = MBWayComponent(paymentMethod: method, apiContext: Dummy.context)
+        let sut = MBWayComponent(paymentMethod: paymentMethod, apiContext: Dummy.context)
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
 
@@ -39,7 +39,7 @@ class MBWayComponentTests: XCTestCase {
         XCTAssertEqual(sut.phoneItem?.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_phoneNumber_invalid"), sut.localizationParameters))
 
         XCTAssertNotNil(sut.button.title)
-        XCTAssertEqual(sut.button.title, localizedString(LocalizationKey(key: "adyen_continueTo"), sut.localizationParameters, method.name))
+        XCTAssertEqual(sut.button.title, localizedString(LocalizationKey(key: "adyen_continueTo"), sut.localizationParameters, paymentMethod.name))
     }
 
     func testUIConfiguration() {
@@ -67,17 +67,17 @@ class MBWayComponentTests: XCTestCase {
         style.textField.title.textAlignment = .center
         style.textField.backgroundColor = .red
 
-        let sut = MBWayComponent(paymentMethod: method, apiContext: Dummy.context, style: style)
+        let sut = MBWayComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, style: style)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.phoneNumberItem")
+            let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: MBWayViewIdentifier.phone)
             let phoneNumberViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.phoneNumberItem.titleLabel")
             let phoneNumberViewTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.phoneNumberItem.textField")
 
-            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.payButtonItem.button")
+            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: MBWayViewIdentifier.payButton)
             let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.payButtonItem.button.titleLabel")
 
             /// Test phone number field
@@ -104,7 +104,7 @@ class MBWayComponentTests: XCTestCase {
     }
 
     func testSubmitForm() {
-        let sut = MBWayComponent(paymentMethod: method, apiContext: Dummy.context)
+        let sut = MBWayComponent(paymentMethod: paymentMethod, apiContext: Dummy.context)
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         sut.payment = payment
@@ -125,9 +125,9 @@ class MBWayComponentTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         let dummyExpectation = expectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.payButtonItem.button")
+            let submitButton: UIControl? = sut.viewController.view.findView(with: MBWayViewIdentifier.payButton)
 
-            let phoneNumberView: FormPhoneNumberItemView! = sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.phoneNumberItem")
+            let phoneNumberView: FormPhoneNumberItemView! = sut.viewController.view.findView(with: MBWayViewIdentifier.phone)
             self.populate(textItemView: phoneNumberView, with: "1233456789")
 
             submitButton?.sendActions(for: .touchUpInside)
@@ -139,14 +139,14 @@ class MBWayComponentTests: XCTestCase {
     }
 
     func testBigTitle() {
-        let sut = MBWayComponent(paymentMethod: method, apiContext: Dummy.context)
+        let sut = MBWayComponent(paymentMethod: paymentMethod, apiContext: Dummy.context)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.Test name"))
-            XCTAssertEqual(sut.viewController.title, self.method.name)
+            XCTAssertEqual(sut.viewController.title, self.paymentMethod.name)
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 5)
@@ -158,4 +158,57 @@ class MBWayComponentTests: XCTestCase {
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 
+    func testMBWayPrefilling() throws {
+        // Given
+        let prefillSut = MBWayComponent(paymentMethod: paymentMethod,
+                                        apiContext: Dummy.context,
+                                        shopperInformation: shopperInformation)
+        UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
+
+        wait(for: .seconds(1))
+
+        // Then
+        let view: UIView = prefillSut.viewController.view
+
+        let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: MBWayViewIdentifier.phone))
+        let expectedPhoneNumber = try XCTUnwrap(shopperInformation.telephoneNumber)
+        let phoneNumber = phoneNumberView.item.value
+        XCTAssertEqual(expectedPhoneNumber, phoneNumber)
+    }
+
+    func testMBWay_givenNoShopperInformation_shouldNotPrefill() throws {
+        // Given
+        let sut = MBWayComponent(paymentMethod: paymentMethod,
+                                 apiContext: Dummy.context,
+                                 shopperInformation: nil)
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        wait(for: .seconds(1))
+
+        // Then
+        let view: UIView = sut.viewController.view
+
+        let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: MBWayViewIdentifier.phone))
+        let phoneNumber = phoneNumberView.item.value
+        XCTAssertTrue(phoneNumber.isEmpty)
+    }
+
+    // MARK: - Private
+
+    private enum MBWayViewIdentifier {
+        static let phone = "AdyenComponents.MBWayComponent.phoneNumberItem"
+        static let payButton = "AdyenComponents.MBWayComponent.payButtonItem.button"
+    }
+
+    private var shopperInformation: PrefilledShopperInformation {
+        let billingAddress = PostalAddressMocks.newYorkPostalAddress
+        let deliveryAddress = PostalAddressMocks.losAngelesPostalAddress
+        let shopperInformation = PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
+                                                             emailAddress: "katrina@mail.com",
+                                                             telephoneNumber: "1234567890",
+                                                             billingAddress: billingAddress,
+                                                             deliveryAddress: deliveryAddress,
+                                                             socialSecurityNumber: "78542134370")
+        return shopperInformation
+    }
 }
