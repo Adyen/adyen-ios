@@ -174,7 +174,6 @@ internal final class ComponentManager {
     private func createMBWayComponent(_ paymentMethod: MBWayPaymentMethod) -> MBWayComponent? {
         MBWayComponent(paymentMethod: paymentMethod,
                        apiContext: apiContext,
-                       shopperInformation: prefiledShopperInformation(),
                        style: style.formComponent)
     }
 
@@ -186,9 +185,9 @@ internal final class ComponentManager {
     
     private func createBoletoComponent(_ paymentMethod: BoletoPaymentMethod) -> BoletoComponent {
         let boletoConfiguration = BoletoComponent.Configuration(boletoPaymentMethod: paymentMethod,
-                                                          payment: configuration.payment,
-                                                          shopperInformation: prefiledShopperInformation(),
-                                                          showEmailAddress: true)
+                                                                payment: configuration.payment,
+                                                                shopperInformation: configuration.shopper,
+                                                                showEmailAddress: true)
         return BoletoComponent(configuration: boletoConfiguration, apiContext: apiContext)
     }
 }
@@ -267,7 +266,6 @@ extension ComponentManager: PaymentComponentBuilder {
     internal func build(paymentMethod: EContextPaymentMethod) -> PaymentComponent? {
         BasicPersonalInfoFormComponent(paymentMethod: paymentMethod,
                                        apiContext: apiContext,
-                                       shopperInformation: prefiledShopperInformation(),
                                        style: style.formComponent)
     }
 
@@ -275,7 +273,6 @@ extension ComponentManager: PaymentComponentBuilder {
     internal func build(paymentMethod: DokuPaymentMethod) -> PaymentComponent? {
         DokuComponent(paymentMethod: paymentMethod,
                       apiContext: apiContext,
-                      shopperInformation: prefiledShopperInformation(),
                       style: style.formComponent)
     }
     
@@ -310,7 +307,6 @@ extension ComponentManager: PaymentComponentBuilder {
     internal func build(paymentMethod: AffirmPaymentMethod) -> PaymentComponent? {
         AffirmComponent(paymentMethod: paymentMethod,
                         apiContext: apiContext,
-                        shopperInformation: prefiledShopperInformation(),
                         style: style.formComponent)
     }
     
@@ -319,30 +315,5 @@ extension ComponentManager: PaymentComponentBuilder {
         InstantPaymentComponent(paymentMethod: paymentMethod,
                                 paymentData: nil,
                                 apiContext: apiContext)
-    }
-
-    // TODO: - Remove on merge
-    private func prefiledShopperInformation() -> PrefilledShopperInformation {
-        let billingAddress = PostalAddress(city: "Amsterdam",
-                                           country: "NL",
-                                           houseNumberOrName: "1",
-                                           postalCode: "1490PO",
-                                           stateOrProvince: "North Holland",
-                                           street: "Dam Square",
-                                           apartment: "124P")
-        let deliveryAddress = PostalAddress(city: "Zaandam",
-                                            country: "NL",
-                                            houseNumberOrName: "1",
-                                            postalCode: "1501NH",
-                                            stateOrProvince: "North Holland",
-                                            street: "Rokin Straat",
-                                            apartment: "14H")
-        let shopperInformation = PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
-                                                             emailAddress: "katrina@mail.com",
-                                                             telephoneNumber: "1234567890",
-                                                             billingAddress: billingAddress,
-                                                             deliveryAddress: deliveryAddress,
-                                                             socialSecurityNumber: "78542134370")
-        return shopperInformation
     }
 }
