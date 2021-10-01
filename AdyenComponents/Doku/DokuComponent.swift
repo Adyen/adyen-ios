@@ -18,8 +18,8 @@ public final class DokuComponent: AbstractPersonalInformationComponent {
     /// - Parameters:
     ///   - paymentMethod: The Doku Wallet, Doku Alfamart, or Doku Indomaret payment method.
     ///   - apiContext: The component's UI style.
-    ///   - shopperInformation: The component's API context.
-    ///   - style: The shopper's information.
+    ///   - shopperInformation: The shopper's information.
+    ///   - style:The component's UI style.
     public init(paymentMethod: DokuPaymentMethod,
                 apiContext: APIContext,
                 shopperInformation: PrefilledShopperInformation? = nil,

@@ -18,8 +18,8 @@ public final class MBWayComponent: AbstractPersonalInformationComponent {
     /// - Parameters:
     ///   - paymentMethod: The MB Way payment method.
     ///   - apiContext: The component's API context.
-    ///   - style: The component's UI style.
     ///   - shopperInformation: The shopper's information.
+    ///   - style: The component's UI style.
     public init(paymentMethod: MBWayPaymentMethod,
                 apiContext: APIContext,
                 shopperInformation: PrefilledShopperInformation? = nil,

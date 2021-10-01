@@ -16,8 +16,8 @@ public final class BasicPersonalInfoFormComponent: AbstractPersonalInformationCo
     /// - Parameters:
     ///   - paymentMethod: The payment method.
     ///   - apiContext: The component's API context.
-    ///   - style: The component's UI style.
     ///   - shopperInformation: The shopper's information.
+    ///   - style: The component's UI style.
     public init(paymentMethod: PaymentMethod,
                 apiContext: APIContext,
                 shopperInformation: PrefilledShopperInformation? = nil,
