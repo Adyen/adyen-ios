@@ -74,11 +74,11 @@ class MBWayComponentTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: MBWayViewIdentifier.phone)
-            let phoneNumberViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.phoneNumberItem.titleLabel")
-            let phoneNumberViewTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.phoneNumberItem.textField")
+            let phoneNumberViewTitleLabel: UILabel? = sut.viewController.view.findView(with: MBWayViewIdentifier.phoneTitleLabel)
+            let phoneNumberViewTextField: UITextField? = sut.viewController.view.findView(with: MBWayViewIdentifier.phoneTextField)
 
             let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: MBWayViewIdentifier.payButton)
-            let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.payButtonItem.button.titleLabel")
+            let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: MBWayViewIdentifier.payButtonTitleLabel)
 
             /// Test phone number field
             XCTAssertEqual(phoneNumberView?.backgroundColor, .red)
@@ -149,7 +149,7 @@ class MBWayComponentTests: XCTestCase {
             XCTAssertEqual(sut.viewController.title, self.paymentMethod.name)
             expectation.fulfill()
         }
-        wait(for: [expectation], timeout: 5)
+        wait(for: [expectation], timeout: 10)
     }
 
     func testRequiresModalPresentation() {
@@ -197,7 +197,10 @@ class MBWayComponentTests: XCTestCase {
 
     private enum MBWayViewIdentifier {
         static let phone = "AdyenComponents.MBWayComponent.phoneNumberItem"
+        static let phoneTitleLabel = "AdyenComponents.MBWayComponent.phoneNumberItem.titleLabel"
+        static let phoneTextField = "AdyenComponents.MBWayComponent.phoneNumberItem.textField"
         static let payButton = "AdyenComponents.MBWayComponent.payButtonItem.button"
+        static let payButtonTitleLabel = "AdyenComponents.MBWayComponent.payButtonItem.button.titleLabel"
     }
 
     private var shopperInformation: PrefilledShopperInformation {
