@@ -46,16 +46,20 @@ public final class ThreeDS2Component: ActionComponent {
             serviceParameters.directoryServerPublicKey = token.directoryServerPublicKey
             
             ADYService.service(with: serviceParameters, appearanceConfiguration: appearanceConfiguration) { service in
-                self.createFingerprint(using: service, paymentData: action.paymentData)
+                self.createFingerprint(using: service,
+                                       messageVersion: token.threeDSMessageVersion,
+                                       paymentData: action.paymentData)
             }
         } catch {
             didFail(with: error)
         }
     }
     
-    private func createFingerprint(using service: ADYService, paymentData: String) {
+    private func createFingerprint(using service: ADYService,
+                                   messageVersion: String,
+                                   paymentData: String) {
         do {
-            let transaction = try service.transaction(withMessageVersion: "2.1.0")
+            let transaction = try service.transaction(withMessageVersion: messageVersion)
             self.transaction = transaction
             
             let fingerprint = try Fingerprint(authenticationRequestParameters: transaction.authenticationRequestParameters)
