@@ -17,7 +17,7 @@ open class FormTextItem: FormValueItem<String, FormTextItemStyle>, ValidatableFo
     /// :nodoc:
     override public var value: String {
         get { publisher.wrappedValue }
-        set { publish(newValue: newValue) }
+        set { publishTransformed(value: newValue) }
     }
 
     /// The formatter to use for formatting the text in the text field.
@@ -58,14 +58,14 @@ open class FormTextItem: FormValueItem<String, FormTextItemStyle>, ValidatableFo
 
     // MARK: - Private
 
-    private func publish(newValue: String) {
-        var sanitizedValue = formatter?.sanitizedValue(for: newValue) ?? newValue
+    private func publishTransformed(value: String) {
+        var sanitizedValue = formatter?.sanitizedValue(for: value) ?? value
         let maximumLength = validator?.maximumLength(for: sanitizedValue) ?? .max
         sanitizedValue = sanitizedValue.adyen.truncate(to: maximumLength)
         
         publisher.wrappedValue = sanitizedValue
         
-        formattedValue = formatter?.formattedValue(for: newValue) ?? newValue
+        formattedValue = formatter?.formattedValue(for: value) ?? value
     }
 
 }
