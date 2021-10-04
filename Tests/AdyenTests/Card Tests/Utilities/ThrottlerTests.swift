@@ -24,7 +24,6 @@ class ThrottlerTests: XCTestCase {
             sut.throttle {
                 let timeSinceLastExecution = -startTimestamp.timeIntervalSinceNow
                 XCTAssertGreaterThanOrEqual(timeSinceLastExecution, 3.5)
-                XCTAssertLessThan(timeSinceLastExecution, 4)
                 print("time elapsed: \(timeSinceLastExecution)")
                 
                 counter += 1
