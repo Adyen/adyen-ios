@@ -62,6 +62,7 @@ class AmountFormatterTests: XCTestCase {
     }
     
     func testDifferentLocales() {
+        guard Available.iOS13 else { return }
         let amount = 123456
         XCTAssertEqual(AmountFormatter.formatted(amount: amount, currencyCode: "USD", localeIdentifier: "ko_KR"), "US$1,234.56")
         XCTAssertEqual(AmountFormatter.formatted(amount: amount, currencyCode: "USD", localeIdentifier: "fr_FR"), "1 234,56 $US")
@@ -80,6 +81,7 @@ class AmountFormatterTests: XCTestCase {
     }
     
     func testAmountWithDifferentLocales() {
+        guard Available.iOS13 else { return }
         var amountEUR = Amount(value: 12345, currencyCode: "EUR", localeIdentifier: "ko_KR")
         XCTAssertEqual(amountEUR.formatted, "€123.45")
         amountEUR.localeIdentifier = "fr_FR"
@@ -92,6 +94,7 @@ class AmountFormatterTests: XCTestCase {
     }
     
     func testAmountComponents() {
+        guard Available.iOS13 else { return }
         let comparator: (AmountComponents, (currency: String, value: String)) -> Bool = { lhs, rhs in
             lhs.formattedValue == rhs.value &&
                 lhs.formattedCurrencySymbol == rhs.currency
