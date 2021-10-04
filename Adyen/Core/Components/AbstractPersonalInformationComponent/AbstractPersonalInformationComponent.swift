@@ -234,29 +234,14 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     internal func populateFields() {
         guard let shopperInformation = shopperInformation else { return }
 
-        if let firstName = shopperInformation.shopperName?.firstName {
-            firstNameItem?.value = firstName
+        shopperInformation.shopperName.map {
+            firstNameItem?.value = $0.firstName
+            lastNameItem?.value = $0.lastName
         }
-
-        if let lastName = shopperInformation.shopperName?.lastName {
-            lastNameItem?.value = lastName
-        }
-
-        if let emailAddress = shopperInformation.emailAddress {
-            emailItem?.value = emailAddress
-        }
-
-        if let telephoneNumber = shopperInformation.telephoneNumber {
-            phoneItem?.value = telephoneNumber
-        }
-
-        if let billingAddress = shopperInformation.billingAddress {
-            addressItem?.value = billingAddress
-        }
-
-        if let deliveryAddress = shopperInformation.deliveryAddress {
-            deliveryAddressItem?.value = deliveryAddress
-        }
+        shopperInformation.emailAddress.map { emailItem?.value = $0 }
+        shopperInformation.telephoneNumber.map { phoneItem?.value = $0 }
+        shopperInformation.billingAddress.map { addressItem?.value = $0 }
+        shopperInformation.deliveryAddress.map { deliveryAddressItem?.value = $0 }
 
         showValidation()
     }
