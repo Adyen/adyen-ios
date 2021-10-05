@@ -76,5 +76,5 @@ extension TrackableComponent {
     public func viewDidAppear(viewController: UIViewController) { /* Empty Implementation */ }
 
     /// :nodoc:
-    public func viewWillAppear(viewController: UIViewController) {}
+    public func viewWillAppear(viewController: UIViewController) { /* Empty Implementation */ }
 }

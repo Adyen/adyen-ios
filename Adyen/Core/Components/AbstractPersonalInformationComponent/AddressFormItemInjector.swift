@@ -29,9 +29,7 @@ internal final class AddressFormItemInjector: FormItemInjector, Localizable {
                                           style: style,
                                           localizationParameters: localizationParameters,
                                           identifier: identifier)
-        if let value = value {
-            addressItem.value = value
-        }
+        value.map { addressItem.value = $0 }
         return addressItem
     }()
     
