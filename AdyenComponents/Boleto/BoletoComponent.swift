@@ -133,18 +133,12 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     /// :nodoc:
     /// Sets the initial values for the form fields based on configuration
     private func prefillFields(for component: FormComponent) {
-        if let shopperName = shopperInformation.shopperName {
-            component.firstNameItem?.value = shopperName.firstName
-            component.lastNameItem?.value = shopperName.lastName
+        shopperInformation.shopperName.map {
+            component.firstNameItem?.value = $0.firstName
+            component.lastNameItem?.value = $0.lastName
         }
-        
-        if let socialSecurityNumber = shopperInformation.socialSecurityNumber {
-            socialSecurityNumberItem.value = socialSecurityNumber
-        }
-
-        if let billingAddress = shopperInformation.billingAddress {
-            component.addressItem?.value = billingAddress
-        }
+        shopperInformation.socialSecurityNumber.map { socialSecurityNumberItem.value = $0 }
+        shopperInformation.billingAddress.map { component.addressItem?.value = $0 }
 
         if let emailItem = component.emailItem {
             sendCopyByEmailItem.value = false
