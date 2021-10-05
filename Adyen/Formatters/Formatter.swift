@@ -18,7 +18,7 @@ public protocol Formatter: Sanitizer {
 }
 
 public protocol Sanitizer {
-    /// Sanitizes (unformats) the given value.
+    /// Sanitizes (removes any illegal character) the given value.
     ///
     /// - Parameter value: The formatted value to remove the formatting from.
     /// - Returns: The given value but without any formatting.
