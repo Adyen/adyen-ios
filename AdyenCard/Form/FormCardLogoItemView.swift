@@ -10,87 +10,113 @@ import UIKit
 internal final class FormCardLogoItemView: FormItemView<FormCardLogoItem> {
     
     private enum Constants {
-        static let cardSpacing: CGFloat = 4.0
-        static let cardSize = CGSize(width: 24.0, height: 16.0)
+        static let cardSpacing: CGFloat = 3
+        static let rowSpacing: CGFloat = 2
+        static let cardSize = CGSize(width: 24, height: 16)
     }
     
-    private lazy var cardsView: CardsView = {
-        let stackView = CardsView(logos: item.cardLogos, style: item.style)
-        stackView.axis = .horizontal
-        stackView.spacing = Constants.cardSpacing
-        return stackView
+    private lazy var collectionView: CardsCollectionView = {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.itemSize = Constants.cardSize
+        flowLayout.minimumLineSpacing = Constants.rowSpacing
+        flowLayout.minimumInteritemSpacing = Constants.cardSpacing
+        flowLayout.scrollDirection = .vertical
+        let collectionView = CardsCollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        collectionView.backgroundColor = .clear
+        return collectionView
     }()
     
     internal required init(item: FormCardLogoItem) {
         super.init(item: item)
-        cardsView.adyen.anchor(inside: self)
+        addSubview(collectionView)
+        collectionView.adyen.anchor(inside: layoutMarginsGuide)
+        collectionView.register(CardTypeLogoCell.self, forCellWithReuseIdentifier: CardTypeLogoCell.reuseIdentifier)
+        collectionView.dataSource = self
     }
     
 }
 
+extension FormCardLogoItemView: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        item.cardLogos.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CardTypeLogoCell.reuseIdentifier, for: indexPath)
+        if let cell = cell as? CardTypeLogoCell {
+            let logo = item.cardLogos[indexPath.row]
+            cell.update(imageUrl: logo.url, style: item.style.icon)
+        }
+        return cell
+    }
+}
+
 extension FormCardLogoItemView {
-    internal class CardsView: UIStackView, Observer {
+    
+    /// A collectionview that updates its intrinsicContentSize to make all rows visible.
+    internal class CardsCollectionView: UICollectionView {
+        private var shouldInvaliateLayout = false
         
-        internal init(logos: [FormCardLogoItem.CardTypeLogo], style: FormTextItemStyle) {
-            super.init(frame: .zero)
-            axis = .horizontal
-            spacing = Constants.cardSpacing
-            
-            for logo in logos {
-                let imageView = CardTypeLogoView(cardTypeLogo: logo, style: style.icon)
-                imageView.backgroundColor = style.backgroundColor
-                addArrangedSubview(imageView)
+        override internal func layoutSubviews() {
+            super.layoutSubviews()
+            if shouldInvaliateLayout {
+                collectionViewLayout.invalidateLayout()
+                shouldInvaliateLayout = false
             }
         }
         
-        @available(*, unavailable)
-        internal required init(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-        
-        override internal func layoutSubviews() {
+        override internal func reloadData() {
+            shouldInvaliateLayout = true
             invalidateIntrinsicContentSize()
-            super.layoutSubviews()
+            super.reloadData()
         }
         
         override internal var intrinsicContentSize: CGSize {
-            let cardsCount = CGFloat(arrangedSubviews.filter { !$0.isHidden }.count)
-            let width = Constants.cardSize.width * cardsCount + Constants.cardSpacing * max(cardsCount - 1, 0)
-            return .init(width: max(width, Constants.cardSpacing), height: Constants.cardSize.height)
+            CGSize(width: contentSize.width, height: max(Constants.cardSize.height, contentSize.height))
+        }
+    }
+}
+
+extension FormCardLogoItemView {
+    
+    private class CardTypeLogoCell: UICollectionViewCell {
+        
+        fileprivate static let reuseIdentifier = "CardTypeLogoCell"
+        
+        private lazy var cardTypeImageView: NetworkImageView = {
+            NetworkImageView()
+        }()
+        
+        override private init(frame: CGRect) {
+            super.init(frame: frame)
+            contentView.addSubview(cardTypeImageView)
+            cardTypeImageView.adyen.anchor(inside: contentView)
+        }
+        
+        @available(*, unavailable)
+        fileprivate required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+        
+        internal func update(imageUrl: URL, style: ImageStyle) {
+            cardTypeImageView.imageURL = imageUrl
+            
+            cardTypeImageView.layer.masksToBounds = style.clipsToBounds
+            cardTypeImageView.layer.borderWidth = style.borderWidth
+            cardTypeImageView.layer.borderColor = style.borderColor?.cgColor
+            cardTypeImageView.backgroundColor = style.backgroundColor
+            cardTypeImageView.adyen.round(using: style.cornerRounding)
         }
         
     }
 }
 
-extension FormCardLogoItemView {
-    private class CardTypeLogoView: NetworkImageView {
-        
-        private let rounding: CornerRounding
-        
-        internal init(cardTypeLogo: FormCardLogoItem.CardTypeLogo, style: ImageStyle) {
-            self.rounding = style.cornerRounding
-            super.init(frame: .zero)
-            
-            imageURL = cardTypeLogo.url
-            
-            layer.masksToBounds = style.clipsToBounds
-            layer.borderWidth = style.borderWidth
-            layer.borderColor = style.borderColor?.cgColor
-            backgroundColor = style.backgroundColor
-        }
-        
-        @available(*, unavailable)
-        internal required init?(coder aDecoder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-        
-        override internal var intrinsicContentSize: CGSize {
-            Constants.cardSize
-        }
-        
-        override internal func layoutSubviews() {
-            super.layoutSubviews()
-            self.adyen.round(using: rounding)
-        }
+internal extension Array {
+    
+    /// Safely returns the element at the given index, if the index is within the bounds of the array.
+    subscript(safeIndex index: Int) -> Element? {
+        guard index >= startIndex,
+              index < endIndex else { return nil }
+        return self[index]
     }
 }

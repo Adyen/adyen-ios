@@ -33,6 +33,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         if item.currentBrand?.isSupported ?? true {
             accessory = .customView(cardTypeLogosView)
         }
+        item.isActive = true
     }
     
     override internal func textFieldDidEndEditing(_ text: UITextField) {
@@ -40,6 +41,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         if accessory == .valid {
             accessory = .customView(cardTypeLogosView)
         }
+        item.isActive = false
     }
     
     // MARK: - Card Type Logos View

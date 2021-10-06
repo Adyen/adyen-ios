@@ -8,7 +8,7 @@ import Adyen
 import UIKit
 
 /// A form item which consists of card number item and the supported card icons below.
-internal final class FormCardNumberContainerItem: FormItem {
+internal final class FormCardNumberContainerItem: FormItem, Observer {
     
     /// The supported card type logos.
     internal let cardTypeLogos: [FormCardLogoItem.CardTypeLogo]
@@ -44,6 +44,13 @@ internal final class FormCardNumberContainerItem: FormItem {
         self.cardTypeLogos = cardTypeLogos
         self.localizationParameters = localizationParameters
         self.style = style
+        
+        observe(numberItem.$isActive) { [weak self] newValue in
+            guard let self = self else { return }
+            // logo item only visible when number item is active or when it's invalid
+            let hidden = !newValue && self.numberItem.isValid()
+            self.logoItem.isHidden.wrappedValue = hidden
+        }
     }
     
     internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
@@ -51,7 +58,10 @@ internal final class FormCardNumberContainerItem: FormItem {
     }
 }
 
-internal final class FormCardLogoItem: FormItem {
+internal final class FormCardLogoItem: FormItem, Hidable {
+    
+    internal var isHidden: Observable<Bool> = Observable(false)
+    
     internal var identifier: String?
     
     internal var subitems: [FormItem] = []
@@ -77,7 +87,7 @@ extension FormItemViewBuilder {
     }
     
     internal func build(with item: FormCardNumberContainerItem) -> FormItemView<FormCardNumberContainerItem> {
-        FormVerticalStackItemView<FormCardNumberContainerItem>(item: item)
+        FormVerticalStackItemView<FormCardNumberContainerItem>(item: item, itemSpacing: 0)
     }
 }
 

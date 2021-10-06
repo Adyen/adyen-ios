@@ -32,6 +32,9 @@ internal final class FormCardNumberItem: FormTextItem, Observer {
         }
     }
     
+    /// Determines whether the item is currently the focused one (first responder).
+    @Observable(false) internal var isActive
+    
     /// :nodoc:
     private let localizationParameters: LocalizationParameters?
     

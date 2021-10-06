@@ -12,15 +12,17 @@ import UIKit
 public final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormItemType> {
 
     private var views: [AnyFormItemView] = []
+    
+    private var observations: [Observation] = []
 
     /// Initializes the split item view.
     ///
     /// - Parameter item: The item represented by the view.
-    public required init(item: FormItemType) {
+    internal required init(item: FormItemType) {
         super.init(item: item)
 
-        views = item.subitems.map(FormVerticalStackItemView.build)
-
+        prepareSubItems()
+        
         if var compound = item as? CompoundFormItem {
             compound.delegate = self
         }
@@ -28,8 +30,21 @@ public final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemVi
         addSubview(stackView)
         stackView.adyen.anchor(inside: self)
     }
+    
+    public convenience init(item: FormItemType, itemSpacing: CGFloat) {
+        self.init(item: item)
+        stackView.spacing = itemSpacing
+    }
 
     override public var childItemViews: [AnyFormItemView] { views }
+    
+    override public var canBecomeFirstResponder: Bool {
+        views.first { $0.canBecomeFirstResponder } != nil
+    }
+    
+    override public func becomeFirstResponder() -> Bool {
+        views.first { $0.canBecomeFirstResponder }?.becomeFirstResponder() ?? super.becomeFirstResponder()
+    }
 
     // MARK: - Layout
 
@@ -49,6 +64,30 @@ public final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemVi
         itemView.preservesSuperviewLayoutMargins = true
         return itemView
     }
+    
+    private func prepareSubItems() {
+        item.subitems.forEach { subItem in
+            let view = FormVerticalStackItemView.build(subItem)
+            views.append(view)
+            let itemView = view as UIView
+            if let subItem = subItem as? Hidable {
+                let observation = observe(subItem.isHidden) { newValue in
+                    itemView.adyen.hide(animationKey: String(describing: itemView), hidden: newValue, animated: true)
+                    UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn) {
+                        itemView.isHidden = newValue
+                        itemView.alpha = newValue ? 0 : 1
+                    }
+
+                }
+                observations.append(observation)
+            }
+        }
+    }
+    
+    private func removeObservers() {
+        observations.forEach(remove)
+        observations = []
+    }
 
 }
 
@@ -56,7 +95,8 @@ extension FormVerticalStackItemView: SelfRenderingFormItemDelegate {
 
     internal func didUpdateItems(_ items: [FormItem]) {
         stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        views = items.map(FormVerticalStackItemView.build)
+        removeObservers()
+        prepareSubItems()
         views.forEach(stackView.addArrangedSubview)
         stackView.setNeedsLayout()
         views.first { $0.canBecomeFirstResponder }?.becomeFirstResponder()
