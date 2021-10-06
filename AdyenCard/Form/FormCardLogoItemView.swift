@@ -110,13 +110,3 @@ extension FormCardLogoItemView {
         
     }
 }
-
-internal extension Array {
-    
-    /// Safely returns the element at the given index, if the index is within the bounds of the array.
-    subscript(safeIndex index: Int) -> Element? {
-        guard index >= startIndex,
-              index < endIndex else { return nil }
-        return self[index]
-    }
-}

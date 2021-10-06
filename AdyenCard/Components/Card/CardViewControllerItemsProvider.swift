@@ -70,7 +70,7 @@ extension CardViewController {
             let item = FormCardNumberContainerItem(cardTypeLogos: cardLogos,
                                                    style: formStyle.textField,
                                                    localizationParameters: localizationParameters)
-            item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "numberItem")
+            item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "numberContainerItem")
             return item
         }()
 

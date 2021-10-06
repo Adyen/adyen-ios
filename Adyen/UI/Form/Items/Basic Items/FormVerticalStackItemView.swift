@@ -49,7 +49,7 @@ public final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemVi
     // MARK: - Layout
 
     private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: childItemViews)
+        let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.preservesSuperviewLayoutMargins = true
         stackView.axis = .vertical
@@ -70,16 +70,22 @@ public final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemVi
             let view = FormVerticalStackItemView.build(subItem)
             views.append(view)
             let itemView = view as UIView
+            stackView.addArrangedSubview(view)
             if let subItem = subItem as? Hidable {
                 let observation = observe(subItem.isHidden) { newValue in
                     itemView.adyen.hide(animationKey: String(describing: itemView), hidden: newValue, animated: true)
-                    UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn) {
-                        itemView.isHidden = newValue
-                        itemView.alpha = newValue ? 0 : 1
-                    }
-
                 }
                 observations.append(observation)
+            }
+            
+            // weirdest behavior on uistackview with 2 visible arranged subviews
+            // hiding/showing the bottom one glitches the animation
+            // workaround is to add another 1px height subview
+            if views.count == 2 {
+                let extraView = UIView()
+                extraView.backgroundColor = .clear
+                stackView.addArrangedSubview(extraView)
+                extraView.heightAnchor.constraint(equalToConstant: 1).isActive = true
             }
         }
     }
@@ -97,7 +103,6 @@ extension FormVerticalStackItemView: SelfRenderingFormItemDelegate {
         stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         removeObservers()
         prepareSubItems()
-        views.forEach(stackView.addArrangedSubview)
         stackView.setNeedsLayout()
         views.first { $0.canBecomeFirstResponder }?.becomeFirstResponder()
     }
