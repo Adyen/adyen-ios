@@ -11,7 +11,6 @@ import Foundation
 public final class Throttler {
     
     private var workItem = DispatchWorkItem(block: { /* first work item is idle */ })
-    private var previousRun = Date.distantPast
     private let queue: DispatchQueue
     private let minimumDelay: TimeInterval
     
@@ -27,16 +26,9 @@ public final class Throttler {
         workItem.cancel()
         
         // Re-assign workItem with the new block task, resetting the previousRun time when it executes
-        workItem = DispatchWorkItem { [weak self] in
-            self?.previousRun = Date()
-            block()
-        }
-        
-        // If the time since the previous run is more than the required minimum delay
-        // => execute the workItem immediately
-        // else
+        workItem = DispatchWorkItem(block: block)
+
         // => delay the workItem execution by the minimum delay time
-        let delay = previousRun.timeIntervalSinceNow > minimumDelay ? 0 : minimumDelay
-        queue.asyncAfter(deadline: .now() + Double(delay), execute: workItem)
+        queue.asyncAfter(deadline: .now() + minimumDelay, execute: workItem)
     }
 }

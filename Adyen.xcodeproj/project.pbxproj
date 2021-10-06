@@ -416,6 +416,7 @@
 		F926D53323F5A5D000D058D3 /* NumericStringValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F926D53223F5A5D000D058D3 /* NumericStringValidator.swift */; };
 		F926D53723F6A35700D058D3 /* NumericFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAB8221E98BD00697074 /* NumericFormatter.swift */; };
 		F926D55523FBF1A800D058D3 /* QiwiWalletComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F926D55423FBF1A800D058D3 /* QiwiWalletComponentTests.swift */; };
+		F931DDC5270B0874004B012C /* Available.swift in Sources */ = {isa = PBXBuildFile; fileRef = F931DDC4270B0874004B012C /* Available.swift */; };
 		F9354BE723A7B4E200A6760B /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9354BE623A7B4E200A6760B /* TextStyle.swift */; };
 		F9354BE923A7B5AC00A6760B /* ViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9354BE823A7B5AC00A6760B /* ViewStyle.swift */; };
 		F9354BED23A7C34D00A6760B /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9354BEC23A7C34D00A6760B /* ButtonStyle.swift */; };
@@ -526,7 +527,7 @@
 		F97BC2CE2668EB4500F1D242 /* VoucherViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97BC2B82668EAFD00F1D242 /* VoucherViewDelegateMock.swift */; };
 		F97BC2D92668EB4800F1D242 /* VoucherViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97BC2B82668EAFD00F1D242 /* VoucherViewDelegateMock.swift */; };
 		F97C81AF25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C81AE25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift */; };
-		F97C829225BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C829125BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift */; };
+		F97C829225BB156600D7F85C /* AbstractPersonalInformationComponent+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C829125BB156600D7F85C /* AbstractPersonalInformationComponent+Extensions.swift */; };
 		F97C837925BF047600D7F85C /* DokuPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C837825BF047600D7F85C /* DokuPaymentMethod.swift */; };
 		F97C838425BF053F00D7F85C /* DokuComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C838325BF053F00D7F85C /* DokuComponent.swift */; };
 		F97C839825BF05AB00D7F85C /* DokuDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C839725BF05AB00D7F85C /* DokuDetails.swift */; };
@@ -1271,6 +1272,7 @@
 		F926D53223F5A5D000D058D3 /* NumericStringValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumericStringValidator.swift; sourceTree = "<group>"; };
 		F926D53423F68FD200D058D3 /* QiwiWalletDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QiwiWalletDetails.swift; sourceTree = "<group>"; };
 		F926D55423FBF1A800D058D3 /* QiwiWalletComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QiwiWalletComponentTests.swift; sourceTree = "<group>"; };
+		F931DDC4270B0874004B012C /* Available.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Available.swift; path = "Tests/AdyenTests/Adyen Tests/Utilities/Available.swift"; sourceTree = SOURCE_ROOT; };
 		F9354BE623A7B4E200A6760B /* TextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyle.swift; sourceTree = "<group>"; };
 		F9354BE823A7B5AC00A6760B /* ViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewStyle.swift; sourceTree = "<group>"; };
 		F9354BEC23A7C34D00A6760B /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
@@ -1396,7 +1398,7 @@
 		F97C7C502590C56E00D80A54 /* ThreeDS2CoreActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2CoreActionHandler.swift; sourceTree = "<group>"; };
 		F97C7C5E2590EE0A00D80A54 /* AnyThreeDS2ActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyThreeDS2ActionHandler.swift; sourceTree = "<group>"; };
 		F97C81AE25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractPersonalInformationComponent.swift; sourceTree = "<group>"; };
-		F97C829125BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractPersonalInformationComponentExtensions.swift; sourceTree = "<group>"; };
+		F97C829125BB156600D7F85C /* AbstractPersonalInformationComponent+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPersonalInformationComponent+Extensions.swift"; sourceTree = "<group>"; };
 		F97C837825BF047600D7F85C /* DokuPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuPaymentMethod.swift; sourceTree = "<group>"; };
 		F97C838325BF053F00D7F85C /* DokuComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuComponent.swift; sourceTree = "<group>"; };
 		F97C839725BF05AB00D7F85C /* DokuDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuDetails.swift; sourceTree = "<group>"; };
@@ -2798,6 +2800,7 @@
 		E9E3DB042226B3A100697074 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				F931DDC4270B0874004B012C /* Available.swift */,
 				E702BE182602525E00280682 /* AssertsTests.swift */,
 				5AF730E92667C3F10091C573 /* APIContextTests.swift */,
 				E9E3DB052226B3B200697074 /* CoderTests.swift */,
@@ -3312,12 +3315,12 @@
 		F97C81AD25BAC8CF00D7F85C /* AbstractPersonalInformationComponent */ = {
 			isa = PBXGroup;
 			children = (
-				E7D0DAAD265E66D70013A5F3 /* AddressFormItemInjector.swift */,
 				F97C81AE25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift */,
-				F97C829125BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift */,
+				F97C829125BB156600D7F85C /* AbstractPersonalInformationComponent+Extensions.swift */,
+				E7D0DAAD265E66D70013A5F3 /* AddressFormItemInjector.swift */,
+				F9589D262601F19E00E4113F /* EmailFormItemInjector.swift */,
 				F9589D022601EE7800E4113F /* FormItemInjector.swift */,
 				F9589D0E2601EF8100E4113F /* NameFormItemInjector.swift */,
-				F9589D262601F19E00E4113F /* EmailFormItemInjector.swift */,
 				F9589D322601F1D400E4113F /* PhoneFormItemInjector.swift */,
 			);
 			path = AbstractPersonalInformationComponent;
@@ -4625,7 +4628,7 @@
 				F99D2F0A266136A700BB5B2F /* AppleWalletPassResponse.swift in Sources */,
 				F9639B3524DD97A30073F38A /* PaymentStatusResponse.swift in Sources */,
 				F9BA21C2246E82EE00D36A63 /* SizeUtilities.swift in Sources */,
-				F97C829225BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift in Sources */,
+				F97C829225BB156600D7F85C /* AbstractPersonalInformationComponent+Extensions.swift in Sources */,
 				A0DE8F6D26CEA04500F2F1E8 /* Installments.swift in Sources */,
 				F939CD7725EE56BA00018DEC /* LoadingComponent.swift in Sources */,
 				E7806EBD26147AB700101DBB /* ViewControllerDelegate.swift in Sources */,
@@ -4812,6 +4815,7 @@
 				E7085C1E2629FDD700D0153B /* RedirectListnerTests.swift in Sources */,
 				E74CE3DF26727EB1008231D2 /* DropInDelegateMock.swift in Sources */,
 				E262128D22A8FE6700F2B133 /* PaymentMethodTests.swift in Sources */,
+				F931DDC5270B0874004B012C /* Available.swift in Sources */,
 				F9F1A99426CD39740005CB1D /* RSAOAEP256AlgorithmTests.swift in Sources */,
 				F9EDB7A02397BD8500CFB3C9 /* TestPaymentMethodsJson.swift in Sources */,
 				F9AC61BE243750BB0062A00D /* RedirectComponentTests.swift in Sources */,

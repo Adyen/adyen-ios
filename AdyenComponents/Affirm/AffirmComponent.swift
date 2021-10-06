@@ -23,7 +23,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     
     /// :nodoc:
     internal let deliveryAddressToggleItem: FormToggleItem
-    
+
     // MARK: - Initializers
     
     /// Initializes the Affirm component.
@@ -31,8 +31,10 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     ///   - paymentMethod: The Affirm payment method.
     ///   - apiContext: The component's API context.
     ///   - style: The component's style.
+    ///   - shopperInformation: The shopper's information.
     public init(paymentMethod: PaymentMethod,
                 apiContext: APIContext,
+                shopperInformation: PrefilledShopperInformation? = nil,
                 style: FormComponentStyle) {
         personalDetailsHeaderItem = FormLabelItem(text: "", style: style.sectionHeader)
         deliveryAddressToggleItem = FormToggleItem(style: style.toggle)
@@ -53,7 +55,9 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
         super.init(paymentMethod: paymentMethod,
                    configuration: configuration,
                    apiContext: apiContext,
+                   shopperInformation: shopperInformation,
                    style: style)
+
         setupItems()
     }
     
@@ -66,6 +70,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
         
         setupDeliveryAddressItem()
         setupDeliveryAddressToggleItem()
+        setupShopperInformation()
     }
     
     /// :nodoc:
@@ -81,6 +86,13 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
         deliveryAddressToggleItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                                            postfix: ViewIdentifier.deliveryAddressToggle)
         bind(deliveryAddressToggleItem.publisher, to: deliveryAddressItem, at: \.isHidden.wrappedValue, with: { !$0 })
+    }
+    
+    /// :nodoc:
+    private func setupShopperInformation() {
+        if shopperInformation?.deliveryAddress != nil {
+            deliveryAddressToggleItem.value = true
+        }
     }
     
     // MARK: - Public

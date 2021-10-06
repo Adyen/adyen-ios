@@ -282,13 +282,3 @@ class ApplePayComponentTest: XCTestCase {
         return networks
     }
 }
-
-enum Available {
-    static var iOS12: Bool {
-        if #available(iOS 12.0, *) {
-            return true
-        } else {
-            return false
-        }
-    }
-}

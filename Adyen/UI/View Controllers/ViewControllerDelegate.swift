@@ -18,4 +18,7 @@ public protocol ViewControllerDelegate: AnyObject {
     /// Handles the UIViewController.viewDidAppear() event.
     func viewDidAppear(viewController: UIViewController)
 
+    /// :nodoc
+    /// Handles the UIViewController.viewWillAppear() event.
+    func viewWillAppear(viewController: UIViewController)
 }

@@ -18,6 +18,9 @@ internal final class PhoneFormItemInjector: FormItemInjector, Localizable {
     internal let phoneExtensions: [PhoneExtensionPickerItem]
 
     /// :nodoc:
+    internal var value: String?
+
+    /// :nodoc:
     internal var identifier: String
 
     /// :nodoc:
@@ -25,13 +28,16 @@ internal final class PhoneFormItemInjector: FormItemInjector, Localizable {
         let item = FormPhoneNumberItem(selectableValues: phoneExtensions,
                                        style: style,
                                        localizationParameters: localizationParameters)
+        item.value = value ?? ""
         item.identifier = identifier
         return item
     }()
 
-    internal init(identifier: String,
+    internal init(value: String?,
+                  identifier: String,
                   phoneExtensions: [PhoneExtensionPickerItem],
                   style: FormTextItemStyle) {
+        self.value = value
         self.identifier = identifier
         self.phoneExtensions = phoneExtensions
         self.style = style

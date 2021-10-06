@@ -43,7 +43,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
         super.init(item: item)
 
         bind(item.$placeholder, to: textField, at: \.placeholder)
-        bind(item.publisher, to: textField, at: \.text)
+        bind(item.$formattedValue, to: textField, at: \.text)
         
         updateValidationStatus()
         
@@ -170,19 +170,11 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     // MARK: - Private
     
     @objc private func textDidChange(textField: UITextField) {
-        let newText = textField.text
-        var sanitizedText = newText.map { item.formatter?.sanitizedValue(for: $0) ?? $0 } ?? ""
-        let maximumLength = item.validator?.maximumLength(for: sanitizedText) ?? .max
-        sanitizedText = sanitizedText.adyen.truncate(to: maximumLength)
+        textField.text.map { item.value = $0 }
         
-        item.value = sanitizedText
-        
-        if sanitizedText.count == maximumLength {
+        let maximumLength = item.validator?.maximumLength(for: item.value) ?? .max
+        if item.value.count == maximumLength {
             delegate?.didReachMaximumLength(in: self)
-        }
-        
-        if let formatter = item.formatter, let newText = newText {
-            textField.text = formatter.formattedValue(for: newText)
         }
     }
     

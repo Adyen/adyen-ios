@@ -13,19 +13,23 @@ public final class MBWayComponent: AbstractPersonalInformationComponent {
     
     /// :nodoc:
     private let mbWayPaymentMethod: MBWayPaymentMethod
-    
+
     /// Initializes the MB Way component.
-    ///
-    /// - Parameter paymentMethod: The MB Way payment method.
-    /// - Parameter style: The Component's UI style.
+    /// - Parameters:
+    ///   - paymentMethod: The MB Way payment method.
+    ///   - apiContext: The component's API context.
+    ///   - shopperInformation: The shopper's information.
+    ///   - style: The component's UI style.
     public init(paymentMethod: MBWayPaymentMethod,
                 apiContext: APIContext,
+                shopperInformation: PrefilledShopperInformation? = nil,
                 style: FormComponentStyle = FormComponentStyle()) {
         self.mbWayPaymentMethod = paymentMethod
         let configuration = Configuration(fields: [.phone])
         super.init(paymentMethod: paymentMethod,
                    configuration: configuration,
                    apiContext: apiContext,
+                   shopperInformation: shopperInformation,
                    style: style)
     }
 

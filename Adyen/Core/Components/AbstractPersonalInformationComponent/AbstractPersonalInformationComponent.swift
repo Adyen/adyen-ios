@@ -12,6 +12,8 @@ import UIKit
 /// :nodoc:
 open class AbstractPersonalInformationComponent: PaymentComponent, PresentableComponent, Localizable {
 
+    // MARK: - Properties
+
     /// :nodoc:
     public let apiContext: APIContext
     
@@ -36,6 +38,9 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     /// :nodoc:
     public let configuration: Configuration
 
+    /// :nodoc:
+    public let shopperInformation: PrefilledShopperInformation?
+
     /// Initializes the MB Way component.
     ///
     /// - Parameter paymentMethod: The payment method.
@@ -44,11 +49,13 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     public init(paymentMethod: PaymentMethod,
                 configuration: Configuration,
                 apiContext: APIContext,
+                shopperInformation: PrefilledShopperInformation? = nil,
                 style: FormComponentStyle = FormComponentStyle()) {
         self.paymentMethod = paymentMethod
         self.configuration = configuration
-        self.style = style
         self.apiContext = apiContext
+        self.shopperInformation = shopperInformation
+        self.style = style
     }
 
     /// :nodoc:
@@ -96,7 +103,8 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     internal lazy var firstNameItemInjector: NameFormItemInjector? = {
         guard configuration.fields.contains(.firstName) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "firstNameItem")
-        let injector = NameFormItemInjector(identifier: identifier,
+        let injector = NameFormItemInjector(value: shopperInformation?.shopperName?.firstName,
+                                            identifier: identifier,
                                             localizationKey: .firstName,
                                             style: style.textField,
                                             contentType: .givenName)
@@ -111,7 +119,8 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     internal lazy var lastNameItemInjector: NameFormItemInjector? = {
         guard configuration.fields.contains(.lastName) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "lastNameItem")
-        let injector = NameFormItemInjector(identifier: identifier,
+        let injector = NameFormItemInjector(value: shopperInformation?.shopperName?.lastName,
+                                            identifier: identifier,
                                             localizationKey: .lastName,
                                             style: style.textField,
                                             contentType: .familyName)
@@ -126,7 +135,8 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     internal lazy var emailItemInjector: EmailFormItemInjector? = {
         guard configuration.fields.contains(.email) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "emailItem")
-        let injector = EmailFormItemInjector(identifier: identifier,
+        let injector = EmailFormItemInjector(value: shopperInformation?.emailAddress,
+                                             identifier: identifier,
                                              style: style.textField)
         injector.localizationParameters = localizationParameters
         return injector
@@ -138,11 +148,12 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     /// :nodoc:
     internal lazy var addressItemInjector: AddressFormItemInjector? = {
         guard configuration.fields.contains(.address) else { return nil }
-        return AddressFormItemInjector(
-            identifier: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "addressItem"),
-            initialCountry: defaultCountryCode,
-            style: style.addressStyle
-        )
+        let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "addressItem")
+        let initialCountry = shopperInformation?.billingAddress?.country ?? defaultCountryCode
+        return AddressFormItemInjector(value: shopperInformation?.billingAddress,
+                                       initialCountry: initialCountry,
+                                       identifier: identifier,
+                                       style: style.addressStyle)
     }()
     
     /// :nodoc:
@@ -151,8 +162,11 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     /// :nodoc:
     internal lazy var deliveryAddressItemInjector: AddressFormItemInjector? = {
         guard configuration.fields.contains(.deliveryAddress) else { return nil }
-        return AddressFormItemInjector(identifier: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "deliveryAddressItem"),
-                                       initialCountry: defaultCountryCode,
+        let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "deliveryAddressItem")
+        let initialCountry = shopperInformation?.deliveryAddress?.country ?? defaultCountryCode
+        return AddressFormItemInjector(value: shopperInformation?.deliveryAddress,
+                                       initialCountry: initialCountry,
+                                       identifier: identifier,
                                        style: style.addressStyle)
     }()
     
@@ -163,7 +177,8 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     internal lazy var phoneItemInjector: PhoneFormItemInjector? = {
         guard configuration.fields.contains(.phone) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "phoneNumberItem")
-        let injector = PhoneFormItemInjector(identifier: identifier,
+        let injector = PhoneFormItemInjector(value: shopperInformation?.telephoneNumber,
+                                             identifier: identifier,
                                              phoneExtensions: selectableValues,
                                              style: style.textField)
         injector.localizationParameters = localizationParameters
@@ -210,4 +225,24 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         payment?.countryCode ?? Locale.current.regionCode ?? "US"
     }
 
+    /// :nodoc:
+    public func showValidation() {
+        formViewController.showValidation()
+    }
+
+    /// :nodoc:
+    internal func populateFields() {
+        guard let shopperInformation = shopperInformation else { return }
+
+        shopperInformation.shopperName.map {
+            firstNameItem?.value = $0.firstName
+            lastNameItem?.value = $0.lastName
+        }
+        shopperInformation.emailAddress.map { emailItem?.value = $0 }
+        shopperInformation.telephoneNumber.map { phoneItem?.value = $0 }
+        shopperInformation.billingAddress.map { addressItem?.value = $0 }
+        shopperInformation.deliveryAddress.map { deliveryAddressItem?.value = $0 }
+
+        showValidation()
+    }
 }

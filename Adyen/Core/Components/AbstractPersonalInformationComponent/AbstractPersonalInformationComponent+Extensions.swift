@@ -5,8 +5,9 @@
 //
 
 import Foundation
+import UIKit
 
-extension AbstractPersonalInformationComponent: LoadingComponent, TrackableComponent {
+extension AbstractPersonalInformationComponent: LoadingComponent {
 
     /// :nodoc:
     public func stopLoading() {
@@ -23,6 +24,14 @@ extension AbstractPersonalInformationComponent: LoadingComponent, TrackableCompo
 
         let details = createPaymentDetails()
         submit(data: PaymentComponentData(paymentMethodDetails: details, amount: amountToPay, order: order))
+    }
+}
+
+extension AbstractPersonalInformationComponent: TrackableComponent {
+
+    /// :nodoc:
+    public func viewWillAppear(viewController: UIViewController) {
+        populateFields()
     }
 }
 

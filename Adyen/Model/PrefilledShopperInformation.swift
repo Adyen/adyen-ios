@@ -21,6 +21,9 @@ public struct PrefilledShopperInformation: ShopperInformation {
     /// The billing address information.
     public var billingAddress: PostalAddress?
     
+    /// The delivery address information.
+    public var deliveryAddress: PostalAddress?
+    
     /// The social secuity number
     public var socialSecurityNumber: String?
     
@@ -31,18 +34,17 @@ public struct PrefilledShopperInformation: ShopperInformation {
     ///   - telephoneNumber: The telephone number of the shopper, optional.
     ///   - billingAddress: The billing address of the shopper, optional.
     ///   - socialSecurityNumber: The social security number of the shopper, optional.
-    public init(
-        shopperName: ShopperName? = nil,
-        emailAddress: String? = nil,
-        telephoneNumber: String? = nil,
-        billingAddress: PostalAddress? = nil,
-        socialSecurityNumber: String? = nil
-    ) {
+    public init(shopperName: ShopperName? = nil,
+                emailAddress: String? = nil,
+                telephoneNumber: String? = nil,
+                billingAddress: PostalAddress? = nil,
+                deliveryAddress: PostalAddress? = nil,
+                socialSecurityNumber: String? = nil) {
         self.shopperName = shopperName
         self.emailAddress = emailAddress
         self.telephoneNumber = telephoneNumber
         self.billingAddress = billingAddress
+        self.deliveryAddress = deliveryAddress
         self.socialSecurityNumber = socialSecurityNumber
     }
-    
 }
