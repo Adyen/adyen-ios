@@ -12,8 +12,6 @@ class ThrottlerTests: XCTestCase {
     func test() {
         let sut = Throttler(minimumDelay: 1)
         
-        let startTimestamp = Date()
-        
         let xctExpectation = expectation(description: "wait for last block execution")
         
         let triesCount = 25
@@ -22,9 +20,6 @@ class ThrottlerTests: XCTestCase {
         
         (0..<triesCount).forEach { index in
             sut.throttle {
-                let timeSinceLastExecution = -startTimestamp.timeIntervalSinceNow
-                XCTAssertGreaterThanOrEqual(timeSinceLastExecution, 3.5)
-                print("time elapsed: \(timeSinceLastExecution)")
                 
                 counter += 1
                 
@@ -32,7 +27,7 @@ class ThrottlerTests: XCTestCase {
                     xctExpectation.fulfill()
                 }
             }
-
+            
             wait(for: .milliseconds(100))
         }
         
