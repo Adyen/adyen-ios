@@ -400,18 +400,14 @@ class CardComponentTests: XCTestCase {
 
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
         XCTAssertEqual(securityCodeItemView!.titleLabel.textColor!, .gray)
-
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            self.populate(textItemView: securityCodeItemView!, with: "123")
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-                let successIcon: UIImageView? = sut.viewController.view.findView(by: "cvvHintIcon.imageView")
-                XCTAssertNotNil(successIcon)
-                XCTAssertEqual(successIcon?.tintColor, .systemYellow)
-                expectation.fulfill()
-            }
-        }
-        wait(for: [expectation], timeout: 10)
+        
+        self.populate(textItemView: securityCodeItemView!, with: "123")
+        
+        wait(for: .seconds(1))
+        
+        let successIcon: UIImageView? = sut.viewController.view.findView(by: "cvvHintIcon.imageView")
+        XCTAssertNotNil(successIcon)
+        XCTAssertEqual(successIcon?.tintColor, .systemYellow)
     }
 
     func testFormViewControllerDelegate() {

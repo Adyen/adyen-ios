@@ -7,7 +7,7 @@
 import Foundation
 
 /// Formats a value for display purposes.
-public protocol Formatter {
+public protocol Formatter: Sanitizer {
     
     /// Formats the given value.
     ///
@@ -15,10 +15,12 @@ public protocol Formatter {
     /// - Returns: A formatted version of the given value.
     func formattedValue(for value: String) -> String
     
-    /// Sanitizes (unformats) the given value.
+}
+
+public protocol Sanitizer {
+    /// Sanitizes (removes any illegal character) the given value.
     ///
-    /// - Parameter value: The formatted value to remove the formatting from.
-    /// - Returns: The given value but without any formatting.
+    /// - Parameter value: The value to be sanitized.
+    /// - Returns: The given value without any illegal characters.
     func sanitizedValue(for value: String) -> String
-    
 }

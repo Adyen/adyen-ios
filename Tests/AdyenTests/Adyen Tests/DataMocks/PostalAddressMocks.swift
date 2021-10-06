@@ -21,4 +21,11 @@ enum PostalAddressMocks {
                                                        stateOrProvince: "CA",
                                                        street: "Garfield Ave",
                                                        apartment: nil)
+    static let emptyUSPostalAddress = PostalAddress(city: "",
+                                                    country: "US",
+                                                    houseNumberOrName: "",
+                                                    postalCode: "",
+                                                    stateOrProvince: "AL",
+                                                    street: "",
+                                                    apartment: nil)
 }
