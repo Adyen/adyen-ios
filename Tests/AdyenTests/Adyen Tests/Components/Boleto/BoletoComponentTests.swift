@@ -126,10 +126,11 @@ class BoletoComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
-    func testFullPrefilledInfo() {
+    func testFullPrefilledInfo() throws {
+        // Given
         let dummyExpectation = expectation(description: "Dummy Expectation")
-        
         let prefilledInformation = dummyFullPrefilledInformation
+        let brazilSocialSecurityNumberFormatter = BrazilSocialSecurityNumberFormatter()
         
         sut = BoletoComponent(
             configuration: getConfiguration(with: prefilledInformation, showEmailAddress: true),
@@ -146,8 +147,13 @@ class BoletoComponentTests: XCTestCase {
             let lastNameField: UITextField? = sutVC.view.findView(by: "lastNameItem.textField") as? UITextField
             let socialSecurityNumberField: UITextField? = sutVC.view.findView(by: "socialSecurityNumberItem.textField") as? UITextField
             let emailField: UITextField? = sutVC.view.findView(by: "emailItem.textField") as? UITextField
-            let addressLabel: UILabel? = self.sut.viewController.view.findView(by: "preFilledBillingAddress") as? UILabel
-            
+
+            let streetField = sutVC.view.findView(by: "addressItem.street.textField") as? UITextField
+            let houseNumberField = sutVC.view.findView(by: "addressItem.houseNumberOrName.textField") as? UITextField
+            let cityField = sutVC.view.findView(by: "addressItem.city.textField") as? UITextField
+            let postalCodeField = sutVC.view.findView(by: "addressItem.postalCode.textField") as? UITextField
+
+
             XCTAssertNotNil(firstNameField)
             XCTAssertEqual(firstNameField?.text, prefilledInformation.shopperName?.firstName)
             
@@ -155,18 +161,28 @@ class BoletoComponentTests: XCTestCase {
             XCTAssertEqual(lastNameField?.text, prefilledInformation.shopperName?.lastName)
 
             XCTAssertNotNil(socialSecurityNumberField)
-            XCTAssertEqual(socialSecurityNumberField?.text, prefilledInformation.socialSecurityNumber)
+            let formattedSocialSecurityNumber = brazilSocialSecurityNumberFormatter.formattedValue(for: prefilledInformation.socialSecurityNumber!)
+            XCTAssertEqual(formattedSocialSecurityNumber, socialSecurityNumberField?.text)
             
             XCTAssertNotNil(emailField)
             XCTAssertEqual(emailField?.text, prefilledInformation.emailAddress)
 
-            XCTAssertNotNil(addressLabel)
-            XCTAssertEqual(addressLabel?.text, self.dummyAddress.formatted)
-            
+            XCTAssertNotNil(streetField)
+            XCTAssertEqual(streetField?.text, self.dummyAddress.street)
+
+            XCTAssertNotNil(houseNumberField)
+            XCTAssertEqual(houseNumberField?.text, self.dummyAddress.houseNumberOrName)
+
+            XCTAssertNotNil(cityField)
+            XCTAssertEqual(cityField?.text, self.dummyAddress.city)
+
+            XCTAssertNotNil(postalCodeField)
+            XCTAssertEqual(postalCodeField?.text, self.dummyAddress.postalCode)
+
             dummyExpectation.fulfill()
         }
         
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 15, handler: nil)
     }
     
     func testNoPrefilledInformation() {
@@ -187,8 +203,12 @@ class BoletoComponentTests: XCTestCase {
             let lastNameField: UITextField? = sutVC.view.findView(by: "lastNameItem.textField") as? UITextField
             let socialSecurityNumberField: UITextField? = sutVC.view.findView(by: "socialSecurityNumberItem.textField") as? UITextField
             let emailField: UITextField? = sutVC.view.findView(by: "emailItem.textField") as? UITextField
-            let addressLabel: UILabel? = self.sut.viewController.view.findView(by: "preFilledBillingAddress") as? UILabel
-            
+
+            let streetField = sutVC.view.findView(by: "addressItem.street.textField") as? UITextField
+            let houseNumberField = sutVC.view.findView(by: "addressItem.houseNumberOrName.textField") as? UITextField
+            let cityField = sutVC.view.findView(by: "addressItem.city.textField") as? UITextField
+            let postalCodeField = sutVC.view.findView(by: "addressItem.postalCode.textField") as? UITextField
+
             XCTAssertNotNil(firstNameField)
             XCTAssertNil(firstNameField?.text?.adyen.nilIfEmpty)
             
@@ -200,13 +220,23 @@ class BoletoComponentTests: XCTestCase {
             
             XCTAssertNotNil(emailField)
             XCTAssertNil(emailField?.text?.adyen.nilIfEmpty)
-            
-            XCTAssertNil(addressLabel)
-            
+
+            XCTAssertNotNil(streetField)
+            XCTAssertTrue(streetField?.text?.isEmpty ?? true)
+
+            XCTAssertNotNil(houseNumberField)
+            XCTAssertTrue(houseNumberField?.text?.isEmpty ?? true)
+
+            XCTAssertNotNil(cityField)
+            XCTAssertTrue(cityField?.text?.isEmpty ?? true)
+
+            XCTAssertNotNil(postalCodeField)
+            XCTAssertTrue(postalCodeField?.text?.isEmpty ?? true)
+
             dummyExpectation.fulfill()
         }
         
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 15, handler: nil)
     }
     
     func testNoEmailSection() {
@@ -267,7 +297,7 @@ class BoletoComponentTests: XCTestCase {
             XCTAssertTrue(emailItem!.isHidden)
             
             emailSwitchItem?.accessibilityActivate()
-                
+
             // Test that email field is visible
             XCTAssertFalse(emailItem!.isHidden)
                 
@@ -275,7 +305,7 @@ class BoletoComponentTests: XCTestCase {
     
         }
         
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 15, handler: nil)
     }
     
     func testPaymentDataProvided() {
@@ -382,7 +412,7 @@ class BoletoComponentTests: XCTestCase {
             boletoPaymentMethod:
             BoletoPaymentMethod(type: "boletobancario_santander_test", name: "Boleto Bancario"),
             payment: Payment(amount: Amount(value: 25000, currencyCode: "BRL"), countryCode: "BR"),
-            shopperInfo: shopperInfo,
+            shopperInformation: shopperInfo,
             showEmailAddress: showEmailAddress
         )
     }

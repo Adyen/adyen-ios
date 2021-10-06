@@ -18,6 +18,9 @@ internal final class NameFormItemInjector: FormItemInjector, Localizable {
     internal let style: FormTextItemStyle
 
     /// :nodoc:
+    internal var value: String?
+
+    /// :nodoc:
     internal var identifier: String
 
     /// :nodoc:
@@ -26,6 +29,7 @@ internal final class NameFormItemInjector: FormItemInjector, Localizable {
     /// :nodoc:
     internal lazy var item: FormTextInputItem = {
         let item = FormTextInputItem(style: style)
+        item.value = value ?? ""
         item.title = localizedString(localizationKey, localizationParameters)
         item.placeholder = localizedString(localizationKey, localizationParameters)
         item.validator = LengthValidator(minimumLength: 1, maximumLength: 50)
@@ -36,7 +40,12 @@ internal final class NameFormItemInjector: FormItemInjector, Localizable {
         return item
     }()
 
-    internal init(identifier: String, localizationKey: LocalizationKey, style: FormTextItemStyle, contentType: UITextContentType = .name) {
+    internal init(value: String?,
+                  identifier: String,
+                  localizationKey: LocalizationKey,
+                  style: FormTextItemStyle,
+                  contentType: UITextContentType = .name) {
+        self.value = value
         self.identifier = identifier
         self.localizationKey = localizationKey
         self.style = style

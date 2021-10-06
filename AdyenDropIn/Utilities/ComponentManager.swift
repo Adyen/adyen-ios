@@ -184,15 +184,11 @@ internal final class ComponentManager {
     }
     
     private func createBoletoComponent(_ paymentMethod: BoletoPaymentMethod) -> BoletoComponent {
-        BoletoComponent(
-            configuration: BoletoComponent.Configuration(
-                boletoPaymentMethod: paymentMethod,
-                payment: configuration.payment,
-                shopperInfo: configuration.shopper,
-                showEmailAddress: true
-            ),
-            apiContext: apiContext
-        )
+        BoletoComponent(configuration: .init(boletoPaymentMethod: paymentMethod,
+                                             payment: configuration.payment,
+                                             shopperInformation: configuration.shopper,
+                                             showEmailAddress: true),
+                        apiContext: apiContext)
     }
 }
 

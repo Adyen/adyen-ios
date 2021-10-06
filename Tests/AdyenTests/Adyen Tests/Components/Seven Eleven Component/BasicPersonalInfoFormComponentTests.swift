@@ -12,11 +12,11 @@ import XCTest
 
 class BasicPersonalInfoFormComponentTests: XCTestCase {
 
-    lazy var method = SevenElevenPaymentMethod(type: "test_type", name: "test_name")
+    lazy var paymentMethod = SevenElevenPaymentMethod(type: "test_type", name: "test_name")
     let payment = Payment(amount: Amount(value: 2, currencyCode: "IDR"), countryCode: "ID")
 
     func testLocalizationWithCustomTableName() {
-        let sut = SevenElevenComponent(paymentMethod: method, apiContext: Dummy.context)
+        let sut = SevenElevenComponent(paymentMethod: paymentMethod, apiContext: Dummy.context)
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
@@ -37,7 +37,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
     }
 
     func testLocalizationWithCustomKeySeparator() {
-        let sut = SevenElevenComponent(paymentMethod: method, apiContext: Dummy.context)
+        let sut = SevenElevenComponent(paymentMethod: paymentMethod, apiContext: Dummy.context)
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
 
@@ -83,37 +83,37 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         style.textField.title.textAlignment = .center
         style.textField.backgroundColor = .red
 
-        let sut = SevenElevenComponent(paymentMethod: method, apiContext: Dummy.context, style: style)
+        let sut = SevenElevenComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, style: style)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         wait(for: .seconds(1))
         
         /// Test firstName field
-        self.assertTextInputUI("AdyenComponents.BasicPersonalInfoFormComponent.firstNameItem",
+        self.assertTextInputUI(ViewIdentifier.firstName,
                                view: sut.viewController.view,
                                style: style.textField,
                                isFirstField: true)
 
         /// Test lastName field
-        self.assertTextInputUI("AdyenComponents.BasicPersonalInfoFormComponent.lastNameItem",
+        self.assertTextInputUI(ViewIdentifier.lastName,
                                view: sut.viewController.view,
                                style: style.textField,
                                isFirstField: false)
 
         /// Test email field
-        self.assertTextInputUI("AdyenComponents.BasicPersonalInfoFormComponent.emailItem",
+        self.assertTextInputUI(ViewIdentifier.email,
                                view: sut.viewController.view,
                                style: style.textField,
                                isFirstField: false)
 
-        let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.phoneNumberItem")
-        let phoneNumberViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.phoneNumberItem.titleLabel")
-        let phoneNumberViewTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.phoneNumberItem.textField")
+        let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: ViewIdentifier.phone)
+        let phoneNumberViewTitleLabel: UILabel? = sut.viewController.view.findView(with: ViewIdentifier.phoneTitleLabel)
+        let phoneNumberViewTextField: UITextField? = sut.viewController.view.findView(with: ViewIdentifier.phoneTextField)
 
         /// Test submit button
-        let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.payButtonItem.button")
-        let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.payButtonItem.button.titleLabel")
+        let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: ViewIdentifier.payButton)
+        let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: ViewIdentifier.payButtonTitleLabel)
 
         XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
         XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
@@ -154,7 +154,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
     }
 
     func testSubmitForm() {
-        let sut = SevenElevenComponent(paymentMethod: method, apiContext: Dummy.context)
+        let sut = SevenElevenComponent(paymentMethod: paymentMethod, apiContext: Dummy.context)
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         sut.payment = payment
@@ -178,18 +178,18 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         let dummyExpectation = expectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.payButtonItem.button")
+            let submitButton: UIControl? = sut.viewController.view.findView(with: ViewIdentifier.payButton)
 
-            let firstNameView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.firstNameItem")
+            let firstNameView: FormTextInputItemView! = sut.viewController.view.findView(with: ViewIdentifier.firstName)
             self.populate(textItemView: firstNameView, with: "Mohamed")
 
-            let lastNameView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.lastNameItem")
+            let lastNameView: FormTextInputItemView! = sut.viewController.view.findView(with: ViewIdentifier.lastName)
             self.populate(textItemView: lastNameView, with: "Smith")
 
-            let emailView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.emailItem")
+            let emailView: FormTextInputItemView! = sut.viewController.view.findView(with: ViewIdentifier.email)
             self.populate(textItemView: emailView, with: "mohamed.smith@domain.com")
 
-            let phoneNumberView: FormPhoneNumberItemView! = sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.phoneNumberItem")
+            let phoneNumberView: FormPhoneNumberItemView! = sut.viewController.view.findView(with: ViewIdentifier.phone)
             self.populate(textItemView: phoneNumberView, with: "1233456789")
 
             submitButton?.sendActions(for: .touchUpInside)
@@ -201,14 +201,14 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
     }
 
     func testBigTitle() {
-        let sut = SevenElevenComponent(paymentMethod: method, apiContext: Dummy.context)
+        let sut = SevenElevenComponent(paymentMethod: paymentMethod, apiContext: Dummy.context)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.Test name"))
-            XCTAssertEqual(sut.viewController.title, self.method.name)
+            XCTAssertEqual(sut.viewController.title, self.paymentMethod.name)
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 5)
@@ -220,4 +220,90 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 
+    func testBasicPersonalInfoFormPrefilling() throws {
+        // Given
+        let prefillSut = SevenElevenComponent(paymentMethod: paymentMethod,
+                                              apiContext: Dummy.context,
+                                              shopperInformation: shopperInformation)
+        UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
+
+        wait(for: .seconds(1))
+
+        // Then
+        let view: UIView = prefillSut.viewController.view
+
+        let firstNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: ViewIdentifier.firstName))
+        let expectedFirstName = try XCTUnwrap(shopperInformation.shopperName?.firstName)
+        let firstName = firstNameView.item.value
+        XCTAssertEqual(expectedFirstName, firstName)
+
+        let lastNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: ViewIdentifier.lastName))
+        let expectedLastName = try XCTUnwrap(shopperInformation.shopperName?.lastName)
+        let lastName = lastNameView.item.value
+        XCTAssertEqual(expectedLastName, lastName)
+
+        let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: ViewIdentifier.phone))
+        let expectedPhoneNumber = try XCTUnwrap(shopperInformation.telephoneNumber)
+        let phoneNumber = phoneNumberView.item.value
+        XCTAssertEqual(expectedPhoneNumber, phoneNumber)
+
+        let emailView: FormTextInputItemView = try XCTUnwrap(view.findView(by: ViewIdentifier.email))
+        let expectedEmail = try XCTUnwrap(shopperInformation.emailAddress)
+        let email = emailView.item.value
+        XCTAssertEqual(expectedEmail, email)
+    }
+
+    func testBasicPersonalInfoForm_givenNoShopperInformation_shouldNotPrefill() throws {
+        // Given
+        let sut = SevenElevenComponent(paymentMethod: paymentMethod,
+                                       apiContext: Dummy.context,
+                                       shopperInformation: nil)
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        wait(for: .seconds(1))
+
+        // Then
+        let view: UIView = sut.viewController.view
+
+        let firstNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: ViewIdentifier.firstName))
+        let firstName = firstNameView.item.value
+        XCTAssertTrue(firstName.isEmpty)
+
+        let lastNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: ViewIdentifier.lastName))
+        let lastName = lastNameView.item.value
+        XCTAssertTrue(lastName.isEmpty)
+
+        let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: ViewIdentifier.phone))
+        let phoneNumber = phoneNumberView.item.value
+        XCTAssertTrue(phoneNumber.isEmpty)
+
+        let emailView: FormTextInputItemView = try XCTUnwrap(view.findView(by: ViewIdentifier.email))
+        let email = emailView.item.value
+        XCTAssertTrue(email.isEmpty)
+    }
+
+    // MARK: - Private
+
+    private enum ViewIdentifier {
+        static let firstName = "AdyenComponents.BasicPersonalInfoFormComponent.firstNameItem"
+        static let lastName = "AdyenComponents.BasicPersonalInfoFormComponent.lastNameItem"
+        static let phone = "AdyenComponents.BasicPersonalInfoFormComponent.phoneNumberItem"
+        static let phoneTitleLabel = "AdyenComponents.BasicPersonalInfoFormComponent.phoneNumberItem.titleLabel"
+        static let phoneTextField = "AdyenComponents.BasicPersonalInfoFormComponent.phoneNumberItem.textField"
+        static let email = "AdyenComponents.BasicPersonalInfoFormComponent.emailItem"
+        static let payButton = "AdyenComponents.BasicPersonalInfoFormComponent.payButtonItem.button"
+        static let payButtonTitleLabel = "AdyenComponents.BasicPersonalInfoFormComponent.payButtonItem.button.titleLabel"
+    }
+
+    private var shopperInformation: PrefilledShopperInformation {
+        let billingAddress = PostalAddressMocks.newYorkPostalAddress
+        let deliveryAddress = PostalAddressMocks.losAngelesPostalAddress
+        let shopperInformation = PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
+                                                             emailAddress: "katrina@mail.com",
+                                                             telephoneNumber: "1234567890",
+                                                             billingAddress: billingAddress,
+                                                             deliveryAddress: deliveryAddress,
+                                                             socialSecurityNumber: "78542134370")
+        return shopperInformation
+    }
 }

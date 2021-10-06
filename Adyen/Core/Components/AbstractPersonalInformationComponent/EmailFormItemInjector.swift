@@ -15,11 +15,15 @@ internal final class EmailFormItemInjector: FormItemInjector, Localizable {
     internal let style: FormTextItemStyle
 
     /// :nodoc:
+    internal var value: String?
+
+    /// :nodoc:
     internal var identifier: String
 
     /// :nodoc:
     internal lazy var item: FormTextInputItem = {
         let item = FormTextInputItem(style: style)
+        item.value = value ?? ""
         item.title = localizedString(.emailItemTitle, localizationParameters)
         item.placeholder = localizedString(.emailItemPlaceHolder, localizationParameters)
         item.validator = EmailValidator()
@@ -30,7 +34,10 @@ internal final class EmailFormItemInjector: FormItemInjector, Localizable {
         return item
     }()
 
-    internal init(identifier: String, style: FormTextItemStyle) {
+    internal init(value: String?,
+                  identifier: String,
+                  style: FormTextItemStyle) {
+        self.value = value
         self.identifier = identifier
         self.style = style
     }

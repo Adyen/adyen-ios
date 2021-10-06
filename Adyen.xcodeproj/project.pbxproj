@@ -525,7 +525,7 @@
 		F97BC2CE2668EB4500F1D242 /* VoucherViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97BC2B82668EAFD00F1D242 /* VoucherViewDelegateMock.swift */; };
 		F97BC2D92668EB4800F1D242 /* VoucherViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97BC2B82668EAFD00F1D242 /* VoucherViewDelegateMock.swift */; };
 		F97C81AF25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C81AE25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift */; };
-		F97C829225BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C829125BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift */; };
+		F97C829225BB156600D7F85C /* AbstractPersonalInformationComponent+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C829125BB156600D7F85C /* AbstractPersonalInformationComponent+Extensions.swift */; };
 		F97C837925BF047600D7F85C /* DokuPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C837825BF047600D7F85C /* DokuPaymentMethod.swift */; };
 		F97C838425BF053F00D7F85C /* DokuComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C838325BF053F00D7F85C /* DokuComponent.swift */; };
 		F97C839825BF05AB00D7F85C /* DokuDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C839725BF05AB00D7F85C /* DokuDetails.swift */; };
@@ -1394,7 +1394,7 @@
 		F97C7C502590C56E00D80A54 /* ThreeDS2CoreActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2CoreActionHandler.swift; sourceTree = "<group>"; };
 		F97C7C5E2590EE0A00D80A54 /* AnyThreeDS2ActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyThreeDS2ActionHandler.swift; sourceTree = "<group>"; };
 		F97C81AE25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractPersonalInformationComponent.swift; sourceTree = "<group>"; };
-		F97C829125BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractPersonalInformationComponentExtensions.swift; sourceTree = "<group>"; };
+		F97C829125BB156600D7F85C /* AbstractPersonalInformationComponent+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPersonalInformationComponent+Extensions.swift"; sourceTree = "<group>"; };
 		F97C837825BF047600D7F85C /* DokuPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuPaymentMethod.swift; sourceTree = "<group>"; };
 		F97C838325BF053F00D7F85C /* DokuComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuComponent.swift; sourceTree = "<group>"; };
 		F97C839725BF05AB00D7F85C /* DokuDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuDetails.swift; sourceTree = "<group>"; };
@@ -3309,12 +3309,12 @@
 		F97C81AD25BAC8CF00D7F85C /* AbstractPersonalInformationComponent */ = {
 			isa = PBXGroup;
 			children = (
-				E7D0DAAD265E66D70013A5F3 /* AddressFormItemInjector.swift */,
 				F97C81AE25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift */,
-				F97C829125BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift */,
+				F97C829125BB156600D7F85C /* AbstractPersonalInformationComponent+Extensions.swift */,
+				E7D0DAAD265E66D70013A5F3 /* AddressFormItemInjector.swift */,
+				F9589D262601F19E00E4113F /* EmailFormItemInjector.swift */,
 				F9589D022601EE7800E4113F /* FormItemInjector.swift */,
 				F9589D0E2601EF8100E4113F /* NameFormItemInjector.swift */,
-				F9589D262601F19E00E4113F /* EmailFormItemInjector.swift */,
 				F9589D322601F1D400E4113F /* PhoneFormItemInjector.swift */,
 			);
 			path = AbstractPersonalInformationComponent;
@@ -4622,7 +4622,7 @@
 				F99D2F0A266136A700BB5B2F /* AppleWalletPassResponse.swift in Sources */,
 				F9639B3524DD97A30073F38A /* PaymentStatusResponse.swift in Sources */,
 				F9BA21C2246E82EE00D36A63 /* SizeUtilities.swift in Sources */,
-				F97C829225BB156600D7F85C /* AbstractPersonalInformationComponentExtensions.swift in Sources */,
+				F97C829225BB156600D7F85C /* AbstractPersonalInformationComponent+Extensions.swift in Sources */,
 				A0DE8F6D26CEA04500F2F1E8 /* Installments.swift in Sources */,
 				F939CD7725EE56BA00018DEC /* LoadingComponent.swift in Sources */,
 				E7806EBD26147AB700101DBB /* ViewControllerDelegate.swift in Sources */,
