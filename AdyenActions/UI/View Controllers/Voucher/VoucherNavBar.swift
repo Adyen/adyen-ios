@@ -41,7 +41,6 @@ internal final class VoucherNavBar: UIView, AnyNavigationBar {
         backgroundColor = model.style.backgroundColor
         
         let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(stackView)
         
         stackView.adyen.anchor(inside: self)
