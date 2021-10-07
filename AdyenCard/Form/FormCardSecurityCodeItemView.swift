@@ -78,7 +78,7 @@ extension FormCardSecurityCodeItemView {
             super.init(frame: .zero)
             image = UIImage(named: logoResource, in: self.bundle, compatibleWith: nil)
             translatesAutoresizingMaskIntoConstraints = false
-            setupConstrints()
+            setupConstraints()
             observe(item.$selectedCard) { [weak self] cardType in self?.flipCard(toFront: cardType == CardType.americanExpress) }
         }
         
@@ -126,16 +126,14 @@ extension FormCardSecurityCodeItemView {
             }
         }
         
-        private func setupConstrints() {
+        private func setupConstraints() {
             addSubview(hintImage)
             setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
             hintImage.adyen.anchor(inside: self)
         }
         
-        private lazy var hintImage: UIImageView = {
-            let view = UIImageView(image: UIImage(named: self.hintResource, in: self.bundle, compatibleWith: nil))
-            view.translatesAutoresizingMaskIntoConstraints = false
-            return view
-        }()
+        private lazy var hintImage = UIImageView(image: UIImage(named: self.hintResource,
+                                                                in: self.bundle,
+                                                                compatibleWith: nil))
     }
 }
