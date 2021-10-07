@@ -78,7 +78,6 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
     /// :nodoc:
     open func initialize() {
         addSubview(inputControl)
-        inputControl.translatesAutoresizingMaskIntoConstraints = false
         inputControl.preservesSuperviewLayoutMargins = true
         (inputControl as UIView).adyen.anchor(inside: self)
     }
