@@ -18,7 +18,6 @@ class LoadingViewTests: XCTestCase {
         super.setUp()
         let contentView = UIView()
         sut = LoadingView(contentView: contentView)
-        sut.translatesAutoresizingMaskIntoConstraints = false
 
         viewController = UIViewController()
         viewController.view.addSubview(sut)
