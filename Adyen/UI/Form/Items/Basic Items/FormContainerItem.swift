@@ -50,7 +50,6 @@ public class FormContainerItem: FormItem {
 
         internal func fill(with contentView: UIView, padding: UIEdgeInsets) {
             preservesSuperviewLayoutMargins = true
-            contentView.translatesAutoresizingMaskIntoConstraints = false
             addSubview(contentView)
             contentView.adyen.anchor(inside: self.layoutMarginsGuide, with: padding)
         }
