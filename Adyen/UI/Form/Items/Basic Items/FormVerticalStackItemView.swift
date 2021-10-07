@@ -34,7 +34,6 @@ internal final class FormVerticalStackItemView<FormItemType: FormItem>: FormItem
 
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: childItemViews)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.preservesSuperviewLayoutMargins = true
         stackView.axis = .vertical
         stackView.alignment = .fill
