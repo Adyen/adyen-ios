@@ -19,8 +19,7 @@ class LoadingViewTests: XCTestCase {
         let contentView = UIView()
         sut = LoadingView(contentView: contentView)
         sut.translatesAutoresizingMaskIntoConstraints = false
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         viewController = UIViewController()
         viewController.view.addSubview(sut)
         viewController.view.backgroundColor = .white
