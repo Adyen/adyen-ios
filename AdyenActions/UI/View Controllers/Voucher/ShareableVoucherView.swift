@@ -32,9 +32,7 @@ internal class ShareableVoucherView: UIView, Localizable {
     }
 
     private func addVoucherView() {
-        voucherCardView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(voucherCardView)
-        
         voucherCardView.adyen.anchor(inside: self)
     }
     

@@ -128,7 +128,6 @@ internal class BasePickerInputControl: UIControl, PickerTextInputControl {
         stackView.isUserInteractionEnabled = false
 
         addSubview(stackView)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.adyen.anchor(inside: self, with: .init(top: 0, left: 0, bottom: -1, right: -6))
     }
 

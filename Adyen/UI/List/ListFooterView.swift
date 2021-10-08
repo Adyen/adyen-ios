@@ -42,7 +42,6 @@ internal final class ListFooterView: UIView {
         stackView.distribution = .fill
         stackView.spacing = 0
         stackView.isUserInteractionEnabled = false
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.preservesSuperviewLayoutMargins = true
 
         return stackView

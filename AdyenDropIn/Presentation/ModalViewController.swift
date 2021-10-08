@@ -135,7 +135,6 @@ internal final class ModalViewController: UIViewController {
         stackView.axis = .vertical
         stackView.distribution = .fill
         stackView.alignment = .fill
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     

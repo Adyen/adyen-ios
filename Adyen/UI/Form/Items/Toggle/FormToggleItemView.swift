@@ -72,8 +72,7 @@ public final class FormToggleItemView: FormValueItemView<Bool, FormToggleItemSty
         stackView.alignment = .center
         stackView.distribution = .fill
         stackView.spacing = 8.0
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         return stackView
     }()
 

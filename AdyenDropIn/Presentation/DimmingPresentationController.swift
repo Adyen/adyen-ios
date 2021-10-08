@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: - DimmingPresentationController
 
-/// Presentation Controller that performe dimming view alongside presentation animation.
+/// Presentation Controller that performs dimming view alongside presentation animation.
 internal final class DimmingPresentationController: UIPresentationController {
     internal var layoutDidChanged: () -> Void
     
@@ -20,7 +20,6 @@ internal final class DimmingPresentationController: UIPresentationController {
     
     private lazy var dimmingView: UIView = {
         let dimmingView = UIView()
-        dimmingView.translatesAutoresizingMaskIntoConstraints = false
         dimmingView.backgroundColor = UIColor.Adyen.dimmBackground
         dimmingView.alpha = 0.0
         
