@@ -30,8 +30,8 @@
 "adyen.card.stored.title" = "Overte kartu";
 "adyen.card.stored.message" = "Zadajte kód CVC pre kartu s číslom %@";
 "adyen.card.stored.expires" = "Platnosť vyprší %@";
-"adyen.card.numberItem.unsupportedBrand" = "";
-"adyen.card.numberItem.unknownBrand" = "";
+"adyen.card.numberItem.unsupportedBrand" = "Značka %@ nie je podporovaná";
+"adyen.card.numberItem.unknownBrand" = "Zadaná značka karty nie je podporovaná";
 "adyen.dropIn.stored.title" = "Potvrďte platbu pomocou %@";
 "adyen.dropIn.preselected.openAll.title" = "Zmeniť spôsob platby";
 "adyen.continueTo" = "Pokračovať do %@";
