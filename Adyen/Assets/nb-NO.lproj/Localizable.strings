@@ -30,8 +30,8 @@
 "adyen.card.stored.title" = "Bekreft kortet ditt";
 "adyen.card.stored.message" = "Vennligst oppgi CVC-koden for %@";
 "adyen.card.stored.expires" = "Utløper %@";
-"adyen.card.numberItem.unsupportedBrand" = "";
-"adyen.card.numberItem.unknownBrand" = "";
+"adyen.card.numberItem.unsupportedBrand" = "%@ støttes ikke";
+"adyen.card.numberItem.unknownBrand" = "Kortmerket du har oppgitt, støttes ikke";
 "adyen.dropIn.stored.title" = "Bekreft betaling med %@";
 "adyen.dropIn.preselected.openAll.title" = "Endre betalingsmetode";
 "adyen.continueTo" = "Fortsett til %@";

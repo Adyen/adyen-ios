@@ -30,8 +30,8 @@
 "adyen.card.stored.title" = "Verificați-vă cardul";
 "adyen.card.stored.message" = "Vă rugăm să introduceți codul CVC pentru %@";
 "adyen.card.stored.expires" = "Expiră la %@";
-"adyen.card.numberItem.unsupportedBrand" = "";
-"adyen.card.numberItem.unknownBrand" = "";
+"adyen.card.numberItem.unsupportedBrand" = "%@ nu este acceptată";
+"adyen.card.numberItem.unknownBrand" = "Marca de card introdusă nu este acceptată";
 "adyen.dropIn.stored.title" = "Confirmați plata %@";
 "adyen.dropIn.preselected.openAll.title" = "Schimbare metodă de plată";
 "adyen.continueTo" = "Continuați către %@";
