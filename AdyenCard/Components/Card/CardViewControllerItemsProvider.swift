@@ -113,6 +113,11 @@ extension CardViewController {
             holderNameItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "holderNameItem")
             holderNameItem.contentType = .name
 
+            // FIXME: - Change implementation
+            let shopperName = shopperInformation?.shopperName
+            let holderName = "\(shopperName?.firstName ?? "") \(shopperName?.lastName ?? "")"
+            holderNameItem.value = holderName
+
             return holderNameItem
         }()
 
@@ -158,6 +163,9 @@ extension CardViewController {
             securityNumberItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "socialSecurityNumberItem")
             securityNumberItem.keyboardType = .numberPad
             securityNumberItem.isVisible = configuration.socialSecurityNumberMode == .show
+
+            let socialSecurityNumber = shopperInformation?.socialSecurityNumber
+            socialSecurityNumber.map { securityNumberItem.value = $0 }
 
             return securityNumberItem
         }()
