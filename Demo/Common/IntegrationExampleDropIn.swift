@@ -24,6 +24,8 @@ extension IntegrationExample {
 
         // TODO: - Restore previous value
         configuration.card.billingAddressMode = .full
+        configuration.card.showsHolderNameField = true
+        configuration.card.socialSecurityNumberMode = .show
 
         let dropInComponentStyle = DropInComponent.Style()
         let component = DropInComponent(paymentMethods: paymentMethods,

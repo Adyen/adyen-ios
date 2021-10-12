@@ -52,12 +52,12 @@ extension CardViewController {
         internal lazy var billingAddressItem: FormAddressItem = {
             let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "billingAddress")
 
-            let initialCountry = shopperInformation?.billingAddress?.country ?? defaultCountryCode
-            let item = FormAddressItem(initialCountry: initialCountry,
+//            let initialCountry = shopperInformation?.billingAddress?.country ?? defaultCountryCode
+            let item = FormAddressItem(initialCountry: defaultCountryCode,
                                        style: formStyle.addressStyle,
                                        localizationParameters: localizationParameters,
                                        identifier: identifier)
-            shopperInformation?.billingAddress.map { item.value = $0 }
+//            shopperInformation?.billingAddress.map { item.value = $0 }
             item.style.backgroundColor = UIColor.Adyen.lightGray
             return item
         }()
@@ -70,10 +70,6 @@ extension CardViewController {
             zipCodeItem.validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
             zipCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "postalCodeItem")
             zipCodeItem.contentType = .postalCode
-
-            let postalCode = shopperInformation?.billingAddress?.postalCode
-            postalCode.map { zipCodeItem.value = $0 }
-
             return zipCodeItem
         }()
 
@@ -112,12 +108,6 @@ extension CardViewController {
             holderNameItem.autocapitalizationType = .words
             holderNameItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "holderNameItem")
             holderNameItem.contentType = .name
-
-            // FIXME: - Change implementation
-            let shopperName = shopperInformation?.shopperName
-            let holderName = "\(shopperName?.firstName ?? "") \(shopperName?.lastName ?? "")"
-            holderNameItem.value = holderName
-
             return holderNameItem
         }()
 
@@ -163,10 +153,6 @@ extension CardViewController {
             securityNumberItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "socialSecurityNumberItem")
             securityNumberItem.keyboardType = .numberPad
             securityNumberItem.isVisible = configuration.socialSecurityNumberMode == .show
-
-            let socialSecurityNumber = shopperInformation?.socialSecurityNumber
-            socialSecurityNumber.map { securityNumberItem.value = $0 }
-
             return securityNumberItem
         }()
 

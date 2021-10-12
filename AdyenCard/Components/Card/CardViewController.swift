@@ -62,10 +62,17 @@ internal class CardViewController: FormViewController {
         self.localizationParameters = localizationParameters
     }
 
+    // MARK: - View lifecycle
+
     override internal func viewDidLoad() {
         setupView()
         setupViewRelations()
         super.viewDidLoad()
+    }
+
+    override internal func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        prefill()
     }
 
     // MARK: Public methods
@@ -204,6 +211,27 @@ internal class CardViewController: FormViewController {
         }
 
         append(items.button)
+    }
+
+    // TODO: - Prefilling logic for fillable items
+    private func prefill() {
+        guard let shopperInformation = configuration.shopperInformation else { return }
+
+        // 1. Billing address
+        shopperInformation.billingAddress.map { items.billingAddressItem.value = $0 }
+
+        // 2. Postal code
+        shopperInformation.billingAddress?.postalCode.map { items.postalCodeItem.value = $0 }
+
+        // 3. Card holdername
+        // FIXME: - Change implementation
+        shopperInformation.shopperName.map { items.holderNameItem.value = "\($0.firstName) \($0.lastName)" }
+
+        // 4. Social security number
+        shopperInformation.socialSecurityNumber.map { items.socialSecurityNumberItem.value = $0 }
+
+//        _ = validate()
+        showValidation()
     }
 
     private func setupViewRelations() {
