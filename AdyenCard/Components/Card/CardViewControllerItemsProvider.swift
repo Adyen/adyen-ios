@@ -70,6 +70,10 @@ extension CardViewController {
             zipCodeItem.validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
             zipCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "postalCodeItem")
             zipCodeItem.contentType = .postalCode
+
+            let postalCode = shopperInformation?.billingAddress?.postalCode
+            postalCode.map { zipCodeItem.value = $0 }
+
             return zipCodeItem
         }()
 
