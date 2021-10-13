@@ -224,9 +224,8 @@ internal class CardViewController: FormViewController {
         shopperInformation.billingAddress?.postalCode.map { items.postalCodeItem.value = $0 }
 
         // 3. Card holdername
-        // FIXME: - Change implementation
-        shopperInformation.shopperName.map { items.holderNameItem.value = "\($0.firstName) \($0.lastName)" }
-
+        shopperInformation.card.map { items.holderNameItem.value = $0.holdername }
+        
         // 4. Social security number
         shopperInformation.socialSecurityNumber.map { items.socialSecurityNumberItem.value = $0 }
     }

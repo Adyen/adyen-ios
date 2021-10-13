@@ -67,7 +67,8 @@ public extension DropInComponent {
                                                                  telephoneNumber: "666444222",
                                                                  billingAddress: billingAddress,
                                                                  deliveryAddress: deliveryAddress,
-                                                                 socialSecurityNumber: "27873099253")
+                                                                 socialSecurityNumber: "27873099253",
+                                                                 card: .init(holdername: "Kat del Mar"))
             return shopperInformation
         }
     }
