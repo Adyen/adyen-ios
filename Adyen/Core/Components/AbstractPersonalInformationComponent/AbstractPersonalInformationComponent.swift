@@ -225,6 +225,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         payment?.countryCode ?? Locale.current.regionCode ?? "US"
     }
 
+    // TODO: - Deprecate this method
     /// :nodoc:
     public func showValidation() {
         formViewController.showValidation()
@@ -242,7 +243,5 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         shopperInformation.telephoneNumber.map { phoneItem?.value = $0 }
         shopperInformation.billingAddress.map { addressItem?.value = $0 }
         shopperInformation.deliveryAddress.map { deliveryAddressItem?.value = $0 }
-
-        showValidation()
     }
 }
