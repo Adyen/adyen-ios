@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>ThreeDS2Details Enumeration Reference</title>
+    <title>Sanitizer Protocol Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -14,9 +14,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Enum/ThreeDS2Details" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Protocol/Sanitizer" class="dashAnchor"></a>
 
-    <a title="ThreeDS2Details Enumeration Reference"></a>
+    <a title="Sanitizer Protocol Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -44,7 +44,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html">Adyen Reference</a>
       <img class="carat" src="../img/carat.png" alt=""/>
-      ThreeDS2Details Enumeration Reference
+      Sanitizer Protocol Reference
     </p>
 
     <div class="content-wrapper">
@@ -784,15 +784,15 @@
 
         <section class="section">
           <div class="section-content top-matter">
-            <h1>ThreeDS2Details</h1>
+            <h1>Sanitizer</h1>
               <div class="declaration">
                 <div class="language">
                   
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">ThreeDS2Details</span> <span class="p">:</span> <span class="kt"><a href="../Public%20Protocols.html#/s:5Adyen17AdditionalDetailsP">AdditionalDetails</a></span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Sanitizer</span></code></pre>
 
                 </div>
               </div>
-            <p>Holds the results of the 3D Secure 2 component.</p>
+            <p>Undocumented</p>
 
           </div>
         </section>
@@ -804,9 +804,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:5Adyen15ThreeDS2DetailsO11fingerprintyACSScACmF"></a>
-                    <a name="//apple_ref/swift/Element/fingerprint(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen15ThreeDS2DetailsO11fingerprintyACSScACmF">fingerprint(_:<wbr>)</a>
+                    <a name="/s:5Adyen9SanitizerP14sanitizedValue3forS2S_tF"></a>
+                    <a name="//apple_ref/swift/Method/sanitizedValue(for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen9SanitizerP14sanitizedValue3forS2S_tF">sanitizedValue(for:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -814,70 +814,39 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>When a fingerprint was taken, this case contains the generated 3D Secure 2 fingerprint.</p>
+                        <p>Sanitizes (removes any illegal character) the given value.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">fingerprint</span><span class="p">(</span><span class="kt">String</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">sanitizedValue</span><span class="p">(</span><span class="k">for</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span></code></pre>
 
                         </div>
                       </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:5Adyen15ThreeDS2DetailsO15challengeResultyAcA0B8DSResultVcACmF"></a>
-                    <a name="//apple_ref/swift/Element/challengeResult(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen15ThreeDS2DetailsO15challengeResultyAcA0B8DSResultVcACmF">challengeResult(_:<wbr>)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>When a challenge was perform, this case contains the 3D Secure 2 challenge result.</p>
-
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>value</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The value to be sanitized.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">challengeResult</span><span class="p">(</span><span class="kt">ThreeDSResult</span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:5Adyen15ThreeDS2DetailsO9completedyAcA0B8DSResultVcACmF"></a>
-                    <a name="//apple_ref/swift/Element/completed(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen15ThreeDS2DetailsO9completedyAcA0B8DSResultVcACmF">completed(_:<wbr>)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>When a 3DS flow is completed.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">completed</span><span class="p">(</span><span class="kt">ThreeDSResult</span><span class="p">)</span></code></pre>
-
-                        </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The given value without any illegal characters.</p>
                       </div>
                     </section>
                   </div>
