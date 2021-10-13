@@ -229,9 +229,6 @@ internal class CardViewController: FormViewController {
 
         // 4. Social security number
         shopperInformation.socialSecurityNumber.map { items.socialSecurityNumberItem.value = $0 }
-
-//        _ = validate()
-        showValidation()
     }
 
     private func setupViewRelations() {

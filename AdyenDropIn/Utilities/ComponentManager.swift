@@ -186,7 +186,7 @@ internal final class ComponentManager {
     private func createBoletoComponent(_ paymentMethod: BoletoPaymentMethod) -> BoletoComponent {
         BoletoComponent(configuration: .init(boletoPaymentMethod: paymentMethod,
                                              payment: configuration.payment,
-                                             shopperInformation: configuration.shopper,
+                                             shopperInformation: shopperInformation(),
                                              showEmailAddress: true),
                         apiContext: apiContext)
     }
@@ -307,6 +307,7 @@ extension ComponentManager: PaymentComponentBuilder {
     internal func build(paymentMethod: AffirmPaymentMethod) -> PaymentComponent? {
         AffirmComponent(paymentMethod: paymentMethod,
                         apiContext: apiContext,
+                        shopperInformation: shopperInformation(),
                         style: style.formComponent)
     }
     
@@ -315,5 +316,34 @@ extension ComponentManager: PaymentComponentBuilder {
         InstantPaymentComponent(paymentMethod: paymentMethod,
                                 paymentData: nil,
                                 apiContext: apiContext)
+    }
+
+    // MARK: - Private
+
+    // TODO: - Remove mock shopper information data
+    private func shopperInformation() -> PrefilledShopperInformation {
+        let shopperName = ShopperName(firstName: "Katrina", lastName: "Del Mar")
+        let billingAddress = PostalAddress(city: "New York",
+                                           country: "US",
+                                           houseNumberOrName: "256",
+                                           postalCode: "1034HN",
+                                           stateOrProvince: "New York",
+                                           street: "First Avenue",
+                                           apartment: "8A")
+        let deliveryAddress = PostalAddress(city: "Amsterdam",
+                                            country: "NL",
+                                            houseNumberOrName: "176",
+                                            postalCode: "1008KL",
+                                            stateOrProvince: "North Holland",
+                                            street: "Amsterlstraat",
+                                            apartment: "2B")
+
+        let shopperInformation = PrefilledShopperInformation(shopperName: shopperName,
+                                                             emailAddress: "katrina@mail.com",
+                                                             telephoneNumber: "666444222",
+                                                             billingAddress: billingAddress,
+                                                             deliveryAddress: deliveryAddress,
+                                                             socialSecurityNumber: "27873099253")
+        return shopperInformation
     }
 }

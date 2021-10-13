@@ -43,7 +43,11 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
         super.init(item: item)
 
         bind(item.$placeholder, to: textField, at: \.placeholder)
-        bind(item.$formattedValue, to: textField, at: \.text)
+//        bind(item.$formattedValue, to: textField, at: \.text)
+        observe(item.$formattedValue) { [weak self] newValue in
+            self?.textField.text = newValue
+            self?.updateValidationStatus()
+        }
         
         updateValidationStatus()
         
