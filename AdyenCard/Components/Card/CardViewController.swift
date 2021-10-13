@@ -213,20 +213,12 @@ internal class CardViewController: FormViewController {
         append(items.button)
     }
 
-    // TODO: - Prefilling logic for fillable items
     private func prefill() {
         guard let shopperInformation = configuration.shopperInformation else { return }
 
-        // 1. Billing address
         shopperInformation.billingAddress.map { items.billingAddressItem.value = $0 }
-
-        // 2. Postal code
         shopperInformation.billingAddress?.postalCode.map { items.postalCodeItem.value = $0 }
-
-        // 3. Card holdername
         shopperInformation.card.map { items.holderNameItem.value = $0.holdername }
-        
-        // 4. Social security number
         shopperInformation.socialSecurityNumber.map { items.socialSecurityNumberItem.value = $0 }
     }
 
