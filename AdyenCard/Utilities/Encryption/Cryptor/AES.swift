@@ -8,23 +8,18 @@ import CommonCrypto
 import Foundation
 
 extension Cryptor {
-
     /// Set of helpers for AES encryption.
-    internal enum AES {
-
+    enum AES {
         internal static func encrypt(data: Data, withKey key: Data, initVector: Data) -> Data {
             var cipher = AESCCMEncryptor(data: data as NSData,
                                          key: key as NSData,
                                          initVector: initVector as NSData)
             return cipher.data
         }
-
     }
-
 }
 
 extension Cryptor.AES {
-
     /**
       Authenticates and encrypts a message using AES in CCM mode.
       Please see also RFC 3610 for the meaning of  M,  L,  lm and  la.
@@ -32,7 +27,6 @@ extension Cryptor.AES {
      By default the number of additional authentication octets is zero.
      */
     private struct AESCCMEncryptor {
-
         private typealias Bytes = UnsafeBufferPointer<UInt8>
         private typealias MutableBytes = UnsafeMutableBufferPointer<UInt8>
         private typealias Pointer = UnsafeMutablePointer<UInt8>
@@ -97,7 +91,6 @@ extension Cryptor.AES {
         }
 
         internal func encryptMessage() {
-
             AESCCM.aesEncrypt(block: blockB, with: key, saveTo: blockX)
             blockB.initialize(repeating: 0)
 
@@ -105,7 +98,6 @@ extension Cryptor.AES {
             var cipherPointer = cipher.baseAddress!
             var counter: UInt = 1 /// @bug does not work correctly on ia32 when lm >= 2^16
             while unencryptedMessageLength >= AESCCM.blockSize {
-
                 encryptMAC(from: cipherPointer,
                            count: AESCCM.blockSize,
                            counter: counter)
@@ -138,7 +130,7 @@ extension Cryptor.AES {
             AESCCM.setCounter(blockA, encodeBytesLength, 0)
             AESCCM.aesEncrypt(block: blockA, with: key, saveTo: blockS)
 
-            for index in 0..<authOctets {
+            for index in 0 ..< authOctets {
                 cipherPointer.initialize(to: UInt8(blockX[index] ^ blockS[index]))
                 cipherPointer = cipherPointer.successor()
             }
@@ -146,7 +138,8 @@ extension Cryptor.AES {
 
         private func encryptMAC(from pointer: Pointer,
                                 count: Int,
-                                counter: UInt) {
+                                counter: UInt)
+        {
             // calculate MAC
             AESCCM.mac(key: key,
                        pointer: pointer,
@@ -166,13 +159,13 @@ extension Cryptor.AES {
         }
 
         private enum AESCCM {
-
             // Block size.
             internal static let blockSize = kCCBlockSizeAES128
 
             internal static func aesEncrypt(block: MutableBytes,
                                             with key: Bytes,
-                                            saveTo cipher: MutableBytes) {
+                                            saveTo cipher: MutableBytes)
+            {
                 var numBytesEncrypted = 0
                 CCCrypt(CCOperation(kCCEncrypt),
                         CCAlgorithm(kCCAlgorithmAES),
@@ -199,7 +192,7 @@ extension Cryptor.AES {
             // XORs `n` bytes byte-by-byte starting at `y` to the memory area starting at `x`.
             internal static func memxor(_ pointer: Pointer, _ bytes: MutableBytes, _ count: Int) {
                 var pointer = pointer
-                for index in 0..<count {
+                for index in 0 ..< count {
                     pointer.initialize(to: pointer.pointee ^ UInt8(bytes[index]))
                     pointer = pointer.successor()
                 }
@@ -214,7 +207,7 @@ extension Cryptor.AES {
                 blockB.memecpy(from: nonce, offset: 1, count: AESCCM.blockSize - encodeBytes)
 
                 var shift = messageLength
-                for index in 0..<encodeBytes {
+                for index in 0 ..< encodeBytes {
                     blockB[15 - index] = UInt8(shift & 0xFF)
                     shift >>= 8
                 }
@@ -253,9 +246,10 @@ extension Cryptor.AES {
                                      pointer: Pointer,
                                      length: Int,
                                      blockB: MutableBytes,
-                                     blockX: MutableBytes) {
+                                     blockX: MutableBytes)
+            {
                 var pointer = pointer
-                for index in 0..<length {
+                for index in 0 ..< length {
                     blockB[index] = blockX[index] ^ pointer.pointee
                     pointer = pointer.successor()
                 }
@@ -270,30 +264,26 @@ extension Cryptor.AES {
             internal static func encodingMask(_ encodeBytesLength: Int) -> UInt {
                 UInt((1 << 8 * encodeBytesLength) - 1)
             }
-
         }
-
     }
 }
 
 extension UnsafeMutableBufferPointer {
-
-    internal func memecpy(from source: UnsafePointer<Element>, offset: Int, count: Int) {
-        for index in offset..<(offset + count) {
+    func memecpy(from source: UnsafePointer<Element>, offset: Int, count: Int) {
+        for index in offset ..< (offset + count) {
             self[index] = source.advanced(by: index - offset).pointee
         }
     }
 
-    internal func memecpy<T: RandomAccessCollection>(from source: T, offset: Int, count: Int) where T.Element == Element, T.Index == Int {
-        for index in offset..<(offset + count) {
+    func memecpy<T: RandomAccessCollection>(from source: T, offset: Int, count: Int) where T.Element == Element, T.Index == Int {
+        for index in offset ..< (offset + count) {
             self[index] = source[index - offset]
         }
     }
 
-    internal func memset(value: Element, offset: Int, count: Int) {
-        for index in offset..<offset + count {
+    func memset(value: Element, offset: Int, count: Int) {
+        for index in offset ..< offset + count {
             self[index] = value
         }
     }
-
 }

@@ -8,23 +8,21 @@ import Foundation
 
 /// Contains the details supplied by the issuer list component.
 public struct IssuerListDetails: PaymentMethodDetails {
-    
     /// The payment method type.
     public let type: String
-    
+
     /// The selected issuer.
     public let issuer: String
-    
+
     /// Initializes the Issuer List details.
     ///
     /// - Parameters:
     ///   - paymentMethod: The issuer list payment method.
     ///   - issuer: The selected issuer.
     public init(paymentMethod: IssuerListPaymentMethod, issuer: String) {
-        self.type = paymentMethod.type
+        type = paymentMethod.type
         self.issuer = issuer
     }
-    
 }
 
 /// Contains the details supplied by the IDEAL component.

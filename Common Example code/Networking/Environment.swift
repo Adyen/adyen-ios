@@ -8,9 +8,8 @@ import Adyen
 import Foundation
 
 internal enum DemoServerEnvironment: APIEnvironment {
-    
     case beta, test
-    
+
     internal var baseURL: URL {
         switch self {
         case .beta:
@@ -19,11 +18,11 @@ internal enum DemoServerEnvironment: APIEnvironment {
             return URL(string: "https://checkout-test.adyen.com/v66")!
         }
     }
-    
+
     internal var headers: [String: String] {
         [
             "Content-Type": "application/json",
-            "X-API-Key": Configuration.demoServerAPIKey
+            "X-API-Key": Configuration.demoServerAPIKey,
         ]
     }
 

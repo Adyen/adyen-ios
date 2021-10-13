@@ -11,7 +11,6 @@
 import XCTest
 
 class StoredCardComponentTests: XCTestCase {
-
     func testUIWithClientKey() {
         let method = StoredCardPaymentMethod(type: "type",
                                              identifier: "id",
@@ -207,14 +206,13 @@ class StoredCardComponentTests: XCTestCase {
         }
         waitForExpectations(timeout: 10, handler: nil)
     }
-
 }
 
 extension UIAlertAction {
     typealias AlertHandler = @convention(block) (UIAlertAction) -> Void
 
     func tap() {
-        let closure = self.value(forKey: "handler")
+        let closure = value(forKey: "handler")
 
         let handler = unsafeBitCast(closure as AnyObject, to: AlertHandler.self)
 

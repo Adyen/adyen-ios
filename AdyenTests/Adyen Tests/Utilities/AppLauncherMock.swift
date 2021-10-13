@@ -8,17 +8,15 @@
 import Foundation
 
 final class AppLauncherMock: AnyAppLauncher {
-    
     var onOpenCustomSchemeUrl: ((_ url: URL, _ completion: ((Bool) -> Void)?) -> Void)?
-    
+
     func openCustomSchemeUrl(_ url: URL, completion: ((Bool) -> Void)?) {
         onOpenCustomSchemeUrl?(url, completion)
     }
-    
+
     var onOpenUniversalAppUrl: ((_ url: URL, _ completion: ((Bool) -> Void)?) -> Void)?
-    
+
     func openUniversalAppUrl(_ url: URL, completion: ((Bool) -> Void)?) {
         onOpenUniversalAppUrl?(url, completion)
     }
-    
 }

@@ -9,8 +9,6 @@ import Foundation
 /// Represents any structure/object whose behaviour is device dependant.
 /// :nodoc:
 public protocol DeviceDependant {
-    
     /// Decides whether curret device is supported.
     static func isDeviceSupported() -> Bool
-    
 }

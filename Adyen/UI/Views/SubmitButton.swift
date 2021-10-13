@@ -9,46 +9,45 @@ import UIKit
 /// A rounded submit button used to submit details.
 /// :nodoc:
 public final class SubmitButton: UIControl {
-    
     /// :nodoc:
     private let style: ButtonStyle
-    
+
     /// Initializes the submit button.
     ///
     /// - Parameter style: The `SubmitButton` UI style.
     public init(style: ButtonStyle) {
         self.style = style
         super.init(frame: .zero)
-        
+
         isAccessibilityElement = true
         accessibilityTraits = .button
-        
+
         addSubview(backgroundView)
         addSubview(activityIndicatorView)
         addSubview(titleLabel)
-        
+
         backgroundColor = style.backgroundColor
-        
+
         configureConstraints()
     }
-    
+
     /// :nodoc:
     @available(*, unavailable)
-    public required init?(coder aDecoder: NSCoder) {
+    public required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - Background View
-    
+
     private lazy var backgroundView: BackgroundView = {
         let backgroundView = BackgroundView(cornerRounding: style.cornerRounding, color: style.backgroundColor)
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         return backgroundView
     }()
-    
+
     // MARK: - Title Label
-    
+
     /// The title of the submit button.
     public var title: String? {
         didSet {
@@ -56,7 +55,7 @@ public final class SubmitButton: UIControl {
             accessibilityLabel = title
         }
     }
-    
+
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.font = style.title.font
@@ -66,10 +65,10 @@ public final class SubmitButton: UIControl {
         titleLabel.textAlignment = style.title.textAlignment
         titleLabel.isAccessibilityElement = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        
+
         return titleLabel
     }()
-    
+
     /// :nodoc:
     override public var accessibilityIdentifier: String? {
         didSet {
@@ -78,15 +77,15 @@ public final class SubmitButton: UIControl {
             }
         }
     }
-    
+
     // MARK: - Activity Indicator View
-    
+
     /// Boolean value indicating whether an activity indicator should be shown.
     public var showsActivityIndicator: Bool {
         get {
             activityIndicatorView.isAnimating
         }
-        
+
         set {
             if newValue {
                 activityIndicatorView.startAnimating()
@@ -99,7 +98,7 @@ public final class SubmitButton: UIControl {
             }
         }
     }
-    
+
     private lazy var activityIndicatorView: UIActivityIndicatorView = {
         let activityIndicatorView = UIActivityIndicatorView(style: .white)
         activityIndicatorView.color = titleLabel.textColor
@@ -108,105 +107,100 @@ public final class SubmitButton: UIControl {
         activityIndicatorView.hidesWhenStopped = true
         return activityIndicatorView
     }()
-    
+
     // MARK: - Layout
-    
+
     override public func layoutSubviews() {
         super.layoutSubviews()
-        self.adyen.round(corners: .allCorners, rounding: style.cornerRounding)
+        adyen.round(corners: .allCorners, rounding: style.cornerRounding)
     }
-    
+
     private func configureConstraints() {
         let constraints = [
             backgroundView.topAnchor.constraint(equalTo: topAnchor),
             backgroundView.leadingAnchor.constraint(equalTo: leadingAnchor),
             backgroundView.trailingAnchor.constraint(equalTo: trailingAnchor),
             backgroundView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            
+
             activityIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor),
             activityIndicatorView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            
+
             titleLabel.topAnchor.constraint(greaterThanOrEqualTo: layoutMarginsGuide.topAnchor),
             titleLabel.leadingAnchor.constraint(greaterThanOrEqualTo: layoutMarginsGuide.leadingAnchor),
             titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.trailingAnchor),
             titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.bottomAnchor),
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            
-            heightAnchor.constraint(greaterThanOrEqualToConstant: 50.0)
+
+            heightAnchor.constraint(greaterThanOrEqualToConstant: 50.0),
         ]
-        
+
         NSLayoutConstraint.activate(constraints)
     }
-    
+
     // MARK: - State
-    
+
     /// :nodoc:
     override public var isHighlighted: Bool {
         didSet {
             backgroundView.isHighlighted = isHighlighted
         }
     }
-    
 }
 
 extension SubmitButton {
-    
     private class BackgroundView: UIView {
-        
         private let color: UIColor
         private let rounding: CornerRounding
-        
+
         fileprivate init(cornerRounding: CornerRounding, color: UIColor) {
             self.color = color
-            self.rounding = cornerRounding
+            rounding = cornerRounding
             super.init(frame: .zero)
-            
+
             backgroundColor = color
             isUserInteractionEnabled = false
-            
+
             layer.masksToBounds = true
         }
-        
+
         @available(*, unavailable)
-        fileprivate required init?(coder aDecoder: NSCoder) {
+        fileprivate required init?(coder _: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
-        
+
         // MARK: - Background Color
-        
+
         fileprivate var isHighlighted = false {
             didSet {
                 updateBackgroundColor()
-                
+
                 if !isHighlighted {
                     performTransition()
                 }
             }
         }
-        
+
         private func updateBackgroundColor() {
             var backgroundColor = color
-            
+
             if isHighlighted {
                 backgroundColor = color.withBrightnessMultiple(0.75)
             }
-            
+
             self.backgroundColor = backgroundColor
         }
-        
+
         private func performTransition() {
             let transition = CATransition()
             transition.duration = 0.2
             transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
             layer.add(transition, forKey: nil)
         }
-        
+
         override func layoutSubviews() {
             super.layoutSubviews()
-            self.adyen.round(corners: .allCorners, rounding: rounding)
+            adyen.round(corners: .allCorners, rounding: rounding)
         }
-        
     }
-    
 }

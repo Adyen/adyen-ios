@@ -8,16 +8,14 @@ import Foundation
 
 /// Describes the current payment.
 public struct Payment {
-    
     /// Describes the amount of a payment.
     public struct Amount {
-        
         /// The value of the amount in minor units.
         public var value: Int
-        
+
         /// The code of the currency in which the amount's value is specified.
         public var currencyCode: String
-        
+
         /// Initializes an Amount.
         ///
         /// - Parameters:
@@ -27,7 +25,7 @@ public struct Payment {
             self.value = value
             self.currencyCode = currencyCode
         }
-        
+
         /// Initializes an Amount from a `Decimal` value expressed in major units.
         ///
         /// - Parameters:
@@ -38,13 +36,13 @@ public struct Payment {
             self.currencyCode = currencyCode
         }
     }
-    
+
     /// The amount for this payment.
     public var amount: Amount
-    
+
     /// The code of the country in which the payment is made.
     public var countryCode: String?
-    
+
     /// Initializes a payment.
     ///
     /// - Parameters:
@@ -58,7 +56,6 @@ public struct Payment {
 
 /// :nodoc:
 public extension Payment.Amount {
-    
     /// Returns a formatter representation of the amount.
     ///
     /// :nodoc:
@@ -66,8 +63,7 @@ public extension Payment.Amount {
         guard let formattedAmount = AmountFormatter.formatted(amount: value, currencyCode: currencyCode) else {
             return String(value) + " " + currencyCode
         }
-        
+
         return formattedAmount
     }
-    
 }

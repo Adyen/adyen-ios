@@ -10,13 +10,12 @@
 import XCTest
 
 class ComponentManagerTests: XCTestCase {
-    
     let dictionary = [
         "storedPaymentMethods": [
             storedCreditCardDictionary,
             storedCreditCardDictionary,
             storedPayPalDictionary,
-            storedBcmcDictionary
+            storedBcmcDictionary,
         ],
         "paymentMethods": [
             creditCardDictionary,
@@ -33,8 +32,8 @@ class ComponentManagerTests: XCTestCase {
             bcmcMobileQR,
             mbway,
             blik,
-            qiwiWallet
-        ]
+            qiwiWallet,
+        ],
     ]
 
     func testClientKeyInjection() throws {
@@ -115,7 +114,7 @@ class ComponentManagerTests: XCTestCase {
 
         XCTAssertFalse(sut.components.regular.contains { $0 is MBWayComponent })
     }
-    
+
     func testLocalizationWithCustomTableName() throws {
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
         let payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
@@ -128,14 +127,14 @@ class ComponentManagerTests: XCTestCase {
                                    payment: payment,
                                    configuration: config,
                                    style: DropInComponent.Style())
-        
+
         XCTAssertEqual(sut.components.stored.count, 4)
         XCTAssertEqual(sut.components.regular.count, 9)
-        
+
         XCTAssertEqual(sut.components.stored.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 4)
         XCTAssertEqual(sut.components.regular.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 7)
     }
-    
+
     func testLocalizationWithCustomKeySeparator() throws {
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
         let payment = Payment(amount: Payment.Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
@@ -148,12 +147,11 @@ class ComponentManagerTests: XCTestCase {
                                    payment: payment,
                                    configuration: config,
                                    style: DropInComponent.Style())
-        
+
         XCTAssertEqual(sut.components.stored.count, 4)
         XCTAssertEqual(sut.components.regular.count, 9)
-        
+
         XCTAssertEqual(sut.components.stored.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 4)
         XCTAssertEqual(sut.components.regular.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 7)
     }
-    
 }

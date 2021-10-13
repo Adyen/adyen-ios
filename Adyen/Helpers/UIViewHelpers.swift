@@ -13,7 +13,6 @@ extension UIView: AdyenCompatible {}
 /// Adds helper functionality to any `UIViewController` instance through the `adyen` property.
 /// :nodoc:
 public extension AdyenScope where Base: UIView {
-    
     /// Apply a BezierPath mask in shape of a rounded rectangular path.
     /// - Parameters:
     ///   - corners: The corners of a rectangle to round.
@@ -25,7 +24,7 @@ public extension AdyenScope where Base: UIView {
         maskedLayer.path = path.cgPath
         base.layer.mask = maskedLayer
     }
-    
+
     /// Apply a BezierPath mask in shape of a rounded rectangular path.
     /// - Parameters:
     ///   - corners: The corners of a rectangle to round.
@@ -34,7 +33,7 @@ public extension AdyenScope where Base: UIView {
         let radius = precentage * min(base.bounds.height, base.bounds.width)
         base.adyen.round(corners: corners, radius: radius)
     }
-    
+
     /// Apply a BezierPath mask in shape of a rounded rectangular path.
     /// - Parameters:
     ///   - corners: The corners of a rectangle to round.
@@ -49,7 +48,7 @@ public extension AdyenScope where Base: UIView {
             break
         }
     }
-    
+
     /// Apply a radius to redraw view with a rounded corners for the layer’s background. Requires bounds clipping.
     /// - Parameters:
     ///   - radius: The radius of each corner oval.
@@ -64,5 +63,4 @@ public extension AdyenScope where Base: UIView {
             base.layer.cornerRadius = 0
         }
     }
-    
 }

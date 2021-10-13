@@ -7,18 +7,15 @@
 import Foundation
 
 internal extension ThreeDS2Component {
-    
     struct FingerprintToken: Decodable { // swiftlint:disable:this explicit_acl
-        
         internal let directoryServerIdentifier: String
         internal let directoryServerPublicKey: String
         internal let threeDSMessageVersion: String
-        
+
         private enum CodingKeys: String, CodingKey {
             case directoryServerIdentifier = "directoryServerId"
             case directoryServerPublicKey
             case threeDSMessageVersion
         }
     }
-    
 }

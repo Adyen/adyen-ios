@@ -8,14 +8,12 @@ import Foundation
 import UIKit
 
 extension UIFont {
-    
     /// :nodoc:
-    internal enum AdyenCore {
-        
+    enum AdyenCore {
         internal static var barTitle: UIFont {
             UIFont.preferredFont(forTextStyle: .title3).adyen.font(with: .semibold)
         }
-        
+
         internal static var largeTitle: UIFont {
             if #available(iOS 11.0, *) {
                 return UIFont.preferredFont(forTextStyle: .largeTitle).adyen.font(with: .bold)
@@ -23,6 +21,5 @@ extension UIFont {
                 return .systemFont(ofSize: 32.0, weight: .bold)
             }
         }
-        
     }
 }

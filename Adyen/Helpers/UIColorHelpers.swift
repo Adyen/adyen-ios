@@ -7,7 +7,6 @@
 import UIKit
 
 internal extension UIColor {
-    
     // swiftlint:disable:next explicit_acl
     func withBrightnessMultiple(_ brightnessMultiple: Float) -> UIColor {
         var hue: CGFloat = 1.0
@@ -17,18 +16,16 @@ internal extension UIColor {
         guard getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) else {
             return self
         }
-        
+
         return UIColor(hue: hue,
                        saturation: saturation,
                        brightness: min(max(brightness * CGFloat(brightnessMultiple), 0.0), 1.0),
                        alpha: alpha)
     }
-    
 }
 
 /// :nodoc:
 public extension UIColor {
-    
     /// Create new UIColor from hex value.
     /// - Parameter hex: The hex value of color. Should be between 0 and 0xFFFFFF.
     convenience init(hex: UInt) {
@@ -41,5 +38,4 @@ public extension UIColor {
             alpha: 1.0
         )
     }
-    
 }

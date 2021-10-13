@@ -9,36 +9,36 @@ import UIKit
 
 /// A `UIViewController` that shows the await action UI.
 internal final class AwaitViewController: UIViewController {
-    
     /// The view model.
     private let viewModel: AwaitComponentViewModel
-    
+
     /// The UI style.
     private let style: AwaitComponentStyle
-    
+
     /// :nodoc:
     internal lazy var awaitView = AwaitView(viewModel: viewModel, style: style)
-    
+
     /// :nodoc:
     private lazy var containerView = UIView(frame: .zero)
-    
+
     /// Initializes the `AwaitViewController`.
     ///
     /// - Parameter viewModel: The view model.
     /// - Parameter style: The UI style.
     internal init(viewModel: AwaitComponentViewModel,
-                  style: AwaitComponentStyle = AwaitComponentStyle()) {
+                  style: AwaitComponentStyle = AwaitComponentStyle())
+    {
         self.viewModel = viewModel
         self.style = style
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     /// :nodoc:
     @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
+    internal required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     /// :nodoc:
     override internal func viewDidLoad() {
         super.viewDidLoad()
@@ -47,35 +47,35 @@ internal final class AwaitViewController: UIViewController {
         configureConstraints()
         view.backgroundColor = style.backgroundColor
     }
-    
+
     /// :nodoc:
     private func configureConstraints() {
         awaitView.translatesAutoresizingMaskIntoConstraints = false
         containerView.translatesAutoresizingMaskIntoConstraints = false
         var guid = view.layoutMarginsGuide
-        
+
         if #available(iOS 11, *) {
             guid = view.safeAreaLayoutGuide
         }
-        
+
         let constraints = [
             awaitView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
-            
+
             awaitView.topAnchor.constraint(greaterThanOrEqualTo: containerView.topAnchor),
             awaitView.bottomAnchor.constraint(lessThanOrEqualTo: containerView.bottomAnchor),
-            
+
             awaitView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             awaitView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            
+
             containerView.topAnchor.constraint(equalTo: guid.topAnchor),
             containerView.leadingAnchor.constraint(equalTo: guid.leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: guid.trailingAnchor),
-            containerView.bottomAnchor.constraint(equalTo: guid.bottomAnchor)
+            containerView.bottomAnchor.constraint(equalTo: guid.bottomAnchor),
         ]
-        
+
         NSLayoutConstraint.activate(constraints)
     }
-    
+
     /// :nodoc:
     override internal var preferredContentSize: CGSize {
         get {
@@ -85,7 +85,7 @@ internal final class AwaitViewController: UIViewController {
                                                          withHorizontalFittingPriority: .required,
                                                          verticalFittingPriority: .fittingSizeLevel)
         }
-        
+
         // swiftlint:disable:next unused_setter_value
         set { assertionFailure("""
         PreferredContentSize is overridden for this view controller.
@@ -93,5 +93,4 @@ internal final class AwaitViewController: UIViewController {
         setter - no implemented.
         """) }
     }
-    
 }

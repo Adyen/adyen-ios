@@ -37,25 +37,22 @@ internal enum PaymentMethodType: String {
     case mbWay = "mbway"
     case blik
     case giftcard
-    
 }
 
 private struct PaymentMethodField: Decodable {
-    
     fileprivate var key: String
-    
+
     fileprivate var type: String
-    
+
     fileprivate var isOptional: Bool?
-    
+
     fileprivate var isRequired: Bool {
         isOptional.map { !$0 } ?? true
     }
-    
+
     private enum CodingKeys: String, CodingKey {
         case key, type, isOptional = "optional"
     }
-    
 }
 
 internal enum AnyPaymentMethodDecoder {
@@ -82,11 +79,11 @@ internal enum AnyPaymentMethodDecoder {
         .qiwiWallet: QiwiWalletPaymentMethodDecoder(),
         .mbWay: MBWayPaymentMethodDecoder(),
         .blik: BLIKPaymentMethodDecoder(),
-        .giftcard: GiftcardPaymentMethodDecoder()
+        .giftcard: GiftcardPaymentMethodDecoder(),
     ]
-    
+
     private static var defaultDecoder: PaymentMethodDecoder = RedirectPaymentMethodDecoder()
-    
+
     internal static func decode(from decoder: Decoder) -> AnyPaymentMethod {
         do {
             let container = try decoder.container(keyedBy: AnyPaymentMethod.CodingKeys.self)
@@ -95,7 +92,7 @@ internal enum AnyPaymentMethodDecoder {
             let details = try container.decodeIfPresent([PaymentMethodField].self, forKey: .details)
             let requiresDetails = details?.isAnyFieldRequired ?? false
             let brand = try? container.decode(String.self, forKey: .brand)
-            
+
             // This is a hack to handle stored Bancontact as a separate
             // payment method, even though Bancontact is just another
             // scheme of a card payment method,
@@ -107,9 +104,9 @@ internal enum AnyPaymentMethodDecoder {
             if isStored, brand == "bcmc", type == "scheme" {
                 return try decoders[.bcmc, default: defaultDecoder].decode(from: decoder, isStored: true, requiresDetails: requiresDetails)
             }
-            
+
             let paymentDecoder = PaymentMethodType(rawValue: type).map { decoders[$0, default: defaultDecoder] } ?? defaultDecoder
-            
+
             return try paymentDecoder.decode(from: decoder, isStored: isStored, requiresDetails: requiresDetails)
         } catch {
             return .none
@@ -122,7 +119,7 @@ private protocol PaymentMethodDecoder {
 }
 
 private struct CardPaymentMethodDecoder: PaymentMethodDecoder {
-    func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
+    func decode(from decoder: Decoder, isStored: Bool, requiresDetails _: Bool) throws -> AnyPaymentMethod {
         if isStored {
             return .storedCard(try StoredCardPaymentMethod(from: decoder))
         } else {
@@ -132,7 +129,7 @@ private struct CardPaymentMethodDecoder: PaymentMethodDecoder {
 }
 
 private struct BCMCCardPaymentMethodDecoder: PaymentMethodDecoder {
-    func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
+    func decode(from decoder: Decoder, isStored: Bool, requiresDetails _: Bool) throws -> AnyPaymentMethod {
         if isStored {
             return .storedBCMC(try StoredBCMCPaymentMethod(from: decoder))
         } else {
@@ -142,19 +139,19 @@ private struct BCMCCardPaymentMethodDecoder: PaymentMethodDecoder {
 }
 
 private struct IssuerListPaymentMethodDecoder: PaymentMethodDecoder {
-    func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
+    func decode(from decoder: Decoder, isStored _: Bool, requiresDetails _: Bool) throws -> AnyPaymentMethod {
         .issuerList(try IssuerListPaymentMethod(from: decoder))
     }
 }
 
 private struct SEPADirectDebitPaymentMethodDecoder: PaymentMethodDecoder {
-    func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
+    func decode(from decoder: Decoder, isStored _: Bool, requiresDetails _: Bool) throws -> AnyPaymentMethod {
         .sepaDirectDebit(try SEPADirectDebitPaymentMethod(from: decoder))
     }
 }
 
 private struct ApplePayPaymentMethodDecoder: PaymentMethodDecoder {
-    func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
+    func decode(from decoder: Decoder, isStored _: Bool, requiresDetails _: Bool) throws -> AnyPaymentMethod {
         .applePay(try ApplePayPaymentMethod(from: decoder))
     }
 }
@@ -182,37 +179,37 @@ private struct RedirectPaymentMethodDecoder: PaymentMethodDecoder {
 }
 
 private struct WeChatPayPaymentMethodDecoder: PaymentMethodDecoder {
-    func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
+    func decode(from decoder: Decoder, isStored _: Bool, requiresDetails _: Bool) throws -> AnyPaymentMethod {
         .weChatPay(try WeChatPayPaymentMethod(from: decoder))
     }
 }
 
 private struct UnsupportedPaymentMethodDecoder: PaymentMethodDecoder {
-    func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
+    func decode(from _: Decoder, isStored _: Bool, requiresDetails _: Bool) throws -> AnyPaymentMethod {
         .none
     }
 }
 
 private struct QiwiWalletPaymentMethodDecoder: PaymentMethodDecoder {
-    func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
+    func decode(from decoder: Decoder, isStored _: Bool, requiresDetails _: Bool) throws -> AnyPaymentMethod {
         .qiwiWallet(try QiwiWalletPaymentMethod(from: decoder))
     }
 }
 
 private struct MBWayPaymentMethodDecoder: PaymentMethodDecoder {
-    func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
+    func decode(from decoder: Decoder, isStored _: Bool, requiresDetails _: Bool) throws -> AnyPaymentMethod {
         .mbWay(try MBWayPaymentMethod(from: decoder))
     }
 }
 
 private struct BLIKPaymentMethodDecoder: PaymentMethodDecoder {
-    func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
+    func decode(from decoder: Decoder, isStored _: Bool, requiresDetails _: Bool) throws -> AnyPaymentMethod {
         .blik(try BLIKPaymentMethod(from: decoder))
     }
 }
 
 private struct GiftcardPaymentMethodDecoder: PaymentMethodDecoder {
-    func decode(from decoder: Decoder, isStored: Bool, requiresDetails: Bool) throws -> AnyPaymentMethod {
+    func decode(from decoder: Decoder, isStored _: Bool, requiresDetails _: Bool) throws -> AnyPaymentMethod {
         .giftcard(try GiftCardPaymentMethod(from: decoder))
     }
 }

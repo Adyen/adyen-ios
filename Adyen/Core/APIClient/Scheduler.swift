@@ -9,7 +9,6 @@ import Foundation
 /// :nodoc:
 /// Scheduler of closures.
 public protocol Scheduler {
-    
     /// :nodoc:
     /// Schedule a closure according to how many times it has beed scheduled before.
     ///

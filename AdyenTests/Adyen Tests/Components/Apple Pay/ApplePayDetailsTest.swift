@@ -8,7 +8,6 @@
 import XCTest
 
 class ApplePayDetailsTest: XCTestCase {
-    
     func testSerialisation() throws {
         let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name")
         let sut = ApplePayDetails(paymentMethod: paymentMethod,
@@ -16,20 +15,19 @@ class ApplePayDetailsTest: XCTestCase {
                                   network: "test_network",
                                   billingContact: nil,
                                   shippingContact: nil)
-        
+
         let encoder = JSONEncoder()
         let data = try encoder.encode(sut.encodable)
-        
+
         let resultJson = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0)) as? [String: Any]
-        
+
         let expectedJson = [
             "applePayToken": "test_token",
             "applePayCardNetwork": "test_network",
-            "type": "test_type"
+            "type": "test_type",
         ]
         XCTAssertEqual(expectedJson["applePayToken"], resultJson?["applePayToken"] as? String)
         XCTAssertEqual(expectedJson["applePayCardNetwork"], resultJson?["applePayCardNetwork"] as? String)
         XCTAssertEqual(expectedJson["type"], resultJson?["type"] as? String)
     }
-    
 }

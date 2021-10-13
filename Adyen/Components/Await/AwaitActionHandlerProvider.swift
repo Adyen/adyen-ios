@@ -8,14 +8,12 @@ import Foundation
 
 /// :nodoc:
 internal protocol AnyAwaitActionHandlerProvider {
-
     /// :nodoc:
     func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyAwaitActionHandler
 }
 
 /// :nodoc:
 internal struct AwaitActionHandlerProvider: AnyAwaitActionHandlerProvider {
-
     /// :nodoc:
     private let environment: APIEnvironment
 

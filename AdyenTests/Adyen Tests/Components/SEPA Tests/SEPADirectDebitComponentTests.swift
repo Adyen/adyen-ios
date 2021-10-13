@@ -9,7 +9,6 @@
 import XCTest
 
 class SEPADirectDebitComponentTests: XCTestCase {
-
     func testShowLargeTiteSetting() {
         let method = SEPADirectDebitPaymentMethod(type: "test_type", name: "test_name")
         let sut = SEPADirectDebitComponent(paymentMethod: method)
@@ -35,18 +34,18 @@ class SEPADirectDebitComponentTests: XCTestCase {
 
         XCTAssertTrue((navigationViewController.topViewController as! WrapperViewController).requiresKeyboardInput)
     }
-    
+
     func testLocalizationWithCustomTableName() {
         let method = SEPADirectDebitPaymentMethod(type: "test_type", name: "test_name")
         let payment = Payment(amount: Payment.Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
         let sut = SEPADirectDebitComponent(paymentMethod: method)
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
-        
+
         XCTAssertEqual(sut.nameItem.title, ADYLocalizedString("adyen.sepa.nameItem.title", sut.localizationParameters))
         XCTAssertEqual(sut.nameItem.placeholder, ADYLocalizedString("adyen.sepa.nameItem.placeholder", sut.localizationParameters))
         XCTAssertEqual(sut.nameItem.validationFailureMessage, ADYLocalizedString("adyen.sepa.nameItem.invalid", sut.localizationParameters))
-        
+
         XCTAssertEqual(sut.ibanItem.title, ADYLocalizedString("adyen.sepa.ibanItem.title", sut.localizationParameters))
         XCTAssertEqual(sut.ibanItem.validationFailureMessage, ADYLocalizedString("adyen.sepa.ibanItem.invalid", sut.localizationParameters))
 
@@ -70,27 +69,27 @@ class SEPADirectDebitComponentTests: XCTestCase {
 
         XCTAssertEqual(sut.button.title, "Confirm preauthorization")
     }
-    
+
     func testLocalizationWithCustomKeySeparator() {
         let method = SEPADirectDebitPaymentMethod(type: "test_type", name: "test_name")
         let payment = Payment(amount: Payment.Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
         let sut = SEPADirectDebitComponent(paymentMethod: method)
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
-        
+
         XCTAssertEqual(sut.nameItem.title, ADYLocalizedString("adyen_sepa_nameItem_title", sut.localizationParameters))
         XCTAssertEqual(sut.nameItem.placeholder, ADYLocalizedString("adyen_sepa_nameItem_placeholder", sut.localizationParameters))
         XCTAssertEqual(sut.nameItem.validationFailureMessage, ADYLocalizedString("adyen_sepa_nameItem_invalid", sut.localizationParameters))
-        
+
         XCTAssertEqual(sut.ibanItem.title, ADYLocalizedString("adyen_sepa_ibanItem_title", sut.localizationParameters))
         XCTAssertEqual(sut.ibanItem.validationFailureMessage, ADYLocalizedString("adyen_sepa_ibanItem_invalid", sut.localizationParameters))
-        
+
         XCTAssertEqual(sut.button.title, ADYLocalizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
     }
-    
+
     func testUIConfiguration() {
         var sepaComponentStyle = FormComponentStyle()
-        
+
         /// Footer
         sepaComponentStyle.mainButtonItem.button.title.color = .white
         sepaComponentStyle.mainButtonItem.button.title.backgroundColor = .red
@@ -98,49 +97,49 @@ class SEPADirectDebitComponentTests: XCTestCase {
         sepaComponentStyle.mainButtonItem.button.title.font = .systemFont(ofSize: 22)
         sepaComponentStyle.mainButtonItem.button.backgroundColor = .red
         sepaComponentStyle.mainButtonItem.backgroundColor = .brown
-        
+
         /// background color
         sepaComponentStyle.backgroundColor = .red
-        
+
         /// Header
         sepaComponentStyle.header.backgroundColor = .magenta
         sepaComponentStyle.header.title.color = .white
         sepaComponentStyle.header.title.backgroundColor = .black
         sepaComponentStyle.header.title.textAlignment = .left
         sepaComponentStyle.header.title.font = .systemFont(ofSize: 30)
-        
+
         /// Text field
         sepaComponentStyle.textField.text.color = .red
         sepaComponentStyle.textField.text.font = .systemFont(ofSize: 13)
         sepaComponentStyle.textField.text.textAlignment = .right
-        
+
         sepaComponentStyle.textField.title.backgroundColor = .blue
         sepaComponentStyle.textField.title.color = .yellow
         sepaComponentStyle.textField.title.font = .systemFont(ofSize: 20)
         sepaComponentStyle.textField.title.textAlignment = .center
         sepaComponentStyle.textField.backgroundColor = .red
-        
+
         let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: "bcmc", name: "Test name")
         let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod, style: sepaComponentStyle)
-        
+
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        
+
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.nameItem")
             let nameItemViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.nameItem.titleLabel")
             let nameItemViewTextField: UITextField? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.nameItem.textField")
-            
+
             let ibanItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.ibanItem")
             let ibanItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.ibanItem.titleLabel")
             let ibanItemTextField: UITextField? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.ibanItem.textField")
-            
+
             let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.payButtonItem.button")
             let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.payButtonItem.button.titleLabel")
-            
+
             let headerItemView: UIView? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.Test name")
             let headerItemViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "Adyen.SEPADirectDebitComponent.Test name.titleLabel")
-            
+
             /// Test card number field
             XCTAssertEqual(nameItemView?.backgroundColor, .red)
             XCTAssertEqual(nameItemViewTitleLabel?.textColor, sut.viewController.view.tintColor)
@@ -151,7 +150,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
             XCTAssertEqual(nameItemViewTextField?.textAlignment, .right)
             XCTAssertEqual(nameItemViewTextField?.textColor, .red)
             XCTAssertEqual(nameItemViewTextField?.font, .systemFont(ofSize: 13))
-            
+
             /// Test IBAN field
             XCTAssertEqual(ibanItemView?.backgroundColor, .red)
             XCTAssertEqual(ibanItemTitleLabel?.backgroundColor, .blue)
@@ -162,33 +161,33 @@ class SEPADirectDebitComponentTests: XCTestCase {
             XCTAssertEqual(ibanItemTextField?.textAlignment, .right)
             XCTAssertEqual(ibanItemTextField?.textColor, .red)
             XCTAssertEqual(ibanItemTextField?.font, .systemFont(ofSize: 13))
-            
+
             /// Test footer
             XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
             XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
             XCTAssertEqual(payButtonItemViewButtonTitle?.textAlignment, .center)
             XCTAssertEqual(payButtonItemViewButtonTitle?.textColor, .white)
             XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
-            
+
             /// Test header
             XCTAssertEqual(headerItemView?.backgroundColor, .magenta)
             XCTAssertEqual(headerItemViewTitleLabel?.backgroundColor, .black)
             XCTAssertEqual(headerItemViewTitleLabel?.textAlignment, .left)
             XCTAssertEqual(headerItemViewTitleLabel?.textColor, .white)
             XCTAssertEqual(headerItemViewTitleLabel?.font, .systemFont(ofSize: 30))
-            
+
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 5)
     }
-    
+
     func testBigTitle() {
         let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: "bcmc", name: "Test name")
         let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod)
         sut.showsLargeTitle = false
-        
+
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        
+
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             XCTAssertNil(sut.viewController.view.findView(with: "AdyenCard.CardComponent.Test name"))
@@ -197,11 +196,10 @@ class SEPADirectDebitComponentTests: XCTestCase {
         }
         wait(for: [expectation], timeout: 5)
     }
-    
+
     func testRequiresModalPresentation() {
         let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: "bcmc", name: "Test name")
         let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod)
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
-    
 }

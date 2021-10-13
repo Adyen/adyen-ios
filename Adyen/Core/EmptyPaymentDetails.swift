@@ -9,15 +9,13 @@ import Foundation
 /// Describes a payment details that contains nothing but the payment method type name.
 /// :nodoc:
 public struct EmptyPaymentDetails: PaymentMethodDetails {
-    
     /// The payment method type name.
     public let type: String
-    
+
     /// Initializes an `EmptyPaymentDetails`.
     ///
     /// - Parameter type: The payment method type name.
     public init(type: String) {
         self.type = type
     }
-    
 }

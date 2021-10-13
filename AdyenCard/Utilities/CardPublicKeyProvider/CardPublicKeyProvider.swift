@@ -9,32 +9,30 @@ import Foundation
 
 /// :nodoc:
 internal protocol AnyCardPublicKeyProvider: Component {
-    
     /// :nodoc:
     typealias CompletionHandler = (Result<String, Error>) -> Void
-    
+
     /// :nodoc:
     func fetch(completion: @escaping CompletionHandler) throws
 }
 
 /// :nodoc:
 internal class CardPublicKeyProvider: AnyCardPublicKeyProvider {
-    
     /// :nodoc:
     internal static var cachedCardPublicKey: String?
-    
+
     /// :nodoc:
     internal init(apiClient: AnyRetryAPIClient? = nil) {
         if let apiClient = apiClient {
             self.apiClient = apiClient
         }
     }
-    
+
     /// :nodoc:
     internal init(cardPublicKey: String) {
         Self.cachedCardPublicKey = cardPublicKey
     }
-    
+
     /// :nodoc:
     internal func fetch(completion: @escaping CompletionHandler) throws {
         waitingList.append(completion)
@@ -42,29 +40,29 @@ internal class CardPublicKeyProvider: AnyCardPublicKeyProvider {
             deliver(.success(cardPublicKey))
             return
         }
-        
+
         guard let clientKey = clientKey else {
             throw CardComponent.Error.missingClientKey
         }
-        
+
         guard waitingList.count == 1 else { return }
-        
+
         let request = ClientKeyRequest(clientKey: clientKey)
-        
+
         apiClient.perform(request, shouldRetry: { [weak self] result in
             self?.shouldRetry(result) ?? false
         }, completionHandler: { [weak self] result in
             self?.handle(result)
         })
     }
-    
+
     /// :nodoc:
     private lazy var apiClient: AnyRetryAPIClient = RetryAPIClient(apiClient: APIClient(environment: environment),
                                                                    scheduler: SimpleScheduler(maximumCount: 2))
-    
+
     /// :nodoc:
     private var waitingList: [CompletionHandler] = []
-    
+
     /// :nodoc:
     private func shouldRetry(_ result: Result<ClientKeyResponse, Swift.Error>) -> Bool {
         if case Result.success = result {
@@ -72,7 +70,7 @@ internal class CardPublicKeyProvider: AnyCardPublicKeyProvider {
         }
         return true
     }
-    
+
     /// :nodoc:
     private func handle(_ result: Result<ClientKeyResponse, Swift.Error>) {
         switch result {
@@ -83,7 +81,7 @@ internal class CardPublicKeyProvider: AnyCardPublicKeyProvider {
             deliver(.failure(error))
         }
     }
-    
+
     /// :nodoc:
     private func deliver(_ result: Result<String, Swift.Error>) {
         waitingList.forEach {

@@ -7,13 +7,11 @@
 import Foundation
 
 private struct LocalizationInput {
-    
     let key: String
-    
+
     let table: String?
-    
+
     let bundle: Bundle
-    
 }
 
 /// Returns a localized string for the given key, and optionally uses it as a template
@@ -32,11 +30,11 @@ public func ADYLocalizedString(_ key: String, _ parameters: LocalizationParamete
     let possibleInputs = buildPossibleInputs(key, parameters)
 
     let result = attempt(possibleInputs) ?? fallbackLocalizedString(key: key)
-    
+
     guard !arguments.isEmpty else {
         return result
     }
-    
+
     return String(format: result, arguments: arguments)
 }
 
@@ -45,7 +43,8 @@ private func fallbackLocalizedString(key: String) -> String {
 }
 
 private func buildPossibleInputs(_ key: String,
-                                 _ parameters: LocalizationParameters?) -> [LocalizationInput] {
+                                 _ parameters: LocalizationParameters?) -> [LocalizationInput]
+{
     var possibleInputs = buildPossibleInputs(for: Bundle.main, key, parameters)
 
     if let customBundle = parameters?.bundle {
@@ -58,15 +57,16 @@ private func buildPossibleInputs(_ key: String,
 
 private func buildPossibleInputs(for bundle: Bundle,
                                  _ key: String,
-                                 _ parameters: LocalizationParameters?) -> [LocalizationInput] {
+                                 _ parameters: LocalizationParameters?) -> [LocalizationInput]
+{
     var possibleInputs = [LocalizationInput]()
-    
+
     if let customKey = updated(key, withSeparator: parameters?.keySeparator) {
         possibleInputs.append(LocalizationInput(key: customKey, table: parameters?.tableName, bundle: bundle))
     }
-    
+
     possibleInputs.append(LocalizationInput(key: key, table: parameters?.tableName, bundle: bundle))
-    
+
     return possibleInputs
 }
 
@@ -81,11 +81,11 @@ private func attempt(_ inputs: [LocalizationInput]) -> String? {
 
 private func attempt(_ input: LocalizationInput) -> String? {
     let localizedString = NSLocalizedString(input.key, tableName: input.table, bundle: input.bundle, comment: "")
-    
+
     if localizedString != input.key {
         return localizedString
     }
-    
+
     return nil
 }
 
@@ -105,7 +105,8 @@ public enum PaymentStyle {
 /// - Parameter parameters: The localization parameters.
 public func ADYLocalizedSubmitButtonTitle(with amount: Payment.Amount?,
                                           style: PaymentStyle,
-                                          _ parameters: LocalizationParameters?) -> String {
+                                          _ parameters: LocalizationParameters?) -> String
+{
     if let amount = amount, amount.value == 0 {
         return ADYLocalizedZeroPaymentAuthorisationButtonTitle(style: style,
                                                                parameters)
@@ -113,12 +114,13 @@ public func ADYLocalizedSubmitButtonTitle(with amount: Payment.Amount?,
     guard let formattedAmount = amount?.formatted else {
         return ADYLocalizedString("adyen.submitButton", parameters)
     }
-    
+
     return ADYLocalizedString("adyen.submitButton.formatted", parameters, formattedAmount)
 }
 
 private func ADYLocalizedZeroPaymentAuthorisationButtonTitle(style: PaymentStyle,
-                                                             _ parameters: LocalizationParameters?) -> String {
+                                                             _ parameters: LocalizationParameters?) -> String
+{
     switch style {
     case let .needsRedirectToThirdParty(name):
         return ADYLocalizedString("adyen.preauthorizeWith", parameters, name)

@@ -12,7 +12,5 @@ internal func + (lhs: CGSize, rhs: CGSize) -> CGSize {
 }
 
 extension UIEdgeInsets {
-    
-    internal var size: CGSize { CGSize(width: left + right, height: top + bottom) }
-    
+    var size: CGSize { CGSize(width: left + right, height: top + bottom) }
 }

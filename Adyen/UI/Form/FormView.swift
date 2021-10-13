@@ -9,53 +9,52 @@ import UIKit
 /// Displays a form for the user to enter details.
 /// :nodoc:
 internal final class FormView: UIScrollView {
-    
     /// Initializes the form view.
     internal init() {
         super.init(frame: .zero)
-        
+
         preservesSuperviewLayoutMargins = true
         addSubview(stackView)
-        
+
         configureConstraints()
     }
-    
+
     /// :nodoc:
     @available(*, unavailable)
-    internal required init?(coder aDecoder: NSCoder) {
+    internal required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override internal var intrinsicContentSize: CGSize {
-        let targetSize = CGSize(width: self.superview?.bounds.width ?? UIScreen.main.bounds.width,
+        let targetSize = CGSize(width: superview?.bounds.width ?? UIScreen.main.bounds.width,
                                 height: UIView.layoutFittingCompressedSize.height)
         return stackView.systemLayoutSizeFitting(targetSize,
                                                  withHorizontalFittingPriority: .required,
                                                  verticalFittingPriority: .fittingSizeLevel)
     }
-    
+
     // MARK: - Item Views
-    
+
     /// Appends an item view to the stack of item views.
     ///
     /// - Parameter itemView: The item view to append.
     internal func appendItemView(_ itemView: UIView) {
         stackView.addArrangedSubview(itemView)
     }
-    
+
     override internal var contentOffset: CGPoint {
         get {
             super.contentOffset
         }
-        
+
         set {
             let noNeedToScroll = contentSize.height <= frame.size.height
             super.contentOffset = noNeedToScroll ? .zero : newValue
         }
     }
-    
+
     // MARK: - Stack View
-    
+
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -64,19 +63,18 @@ internal final class FormView: UIScrollView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-    
+
     // MARK: - Layout
-    
+
     private func configureConstraints() {
         let constraints = [
             stackView.topAnchor.constraint(equalTo: topAnchor),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            stackView.widthAnchor.constraint(equalTo: widthAnchor)
+            stackView.widthAnchor.constraint(equalTo: widthAnchor),
         ]
-        
+
         NSLayoutConstraint.activate(constraints)
     }
-    
 }

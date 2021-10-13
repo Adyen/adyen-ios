@@ -8,18 +8,17 @@
 import XCTest
 
 class URLExtensionsTests: XCTestCase {
-    
     func testQueryParametersWithNoParameters() {
         let url = URL(string: "url://")!
         let parameters = url.queryParameters
-        
+
         XCTAssertEqual(parameters.isEmpty, true)
     }
-    
+
     func testQueryParametersWithMultipleParameters() {
         let url = URL(string: "url://?a=aParameter&b=2&c=c")!
         let parameters = url.queryParameters
-        
+
         XCTAssertEqual(parameters.count, 3)
         XCTAssertEqual(parameters["a"], "aParameter")
         XCTAssertEqual(parameters["b"], "2")

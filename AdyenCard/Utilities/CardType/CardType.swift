@@ -8,138 +8,135 @@ import Foundation
 
 /// Enum containing most known types of credit and debit cards.
 public enum CardType: String, CaseIterable, Codable {
-    
     /// Accel
     case accel
-    
+
     /// Alpha Bank Bonus MasterCard
     case alphaBankBonusMasterCard = "mcalphabankbonus"
-    
+
     /// Alpha Bank Bonus VISA
     case alphaBankBonusVISA = "visaalphabankbonus"
-    
+
     /// Argencard
     case argencard
-    
+
     /// American Express
     case americanExpress = "amex"
-    
+
     /// BCMC
     case bcmc
-    
+
     /// de Bijenkorf Card
     case bijenkorfCard = "bijcard"
-    
+
     /// Cabal
     case cabal
-    
+
     /// Carte Bancaire
     case carteBancaire = "cartebancaire"
-    
+
     /// Cencosud
     case cencosud
-    
+
     /// Chèque Déjeuner
     case chequeDejeneur
-    
+
     /// China UnionPay
     case chinaUnionPay = "cup"
-    
+
     /// Codensa
     case codensa
-    
+
     /// Credit Union 24
     case creditUnion24 = "cu24"
-    
+
     /// Dankort
     case dankort
-    
+
     /// Dankort VISA
     case dankortVISA = "visadankort"
-    
+
     /// Diners Club
     case diners
-    
+
     /// Discover
     case discover
-    
+
     /// Elo
     case elo
-    
+
     // Forbrugsforeningen
     case forbrugsforeningen
-    
+
     /// Hiper
     case hiper
-    
+
     /// Hipercard
     case hipercard
-    
+
     /// JCB
     case jcb
-    
+
     /// KarenMillen
     case karenMillen = "karenmillen"
-    
+
     /// Korea Cyber Payment
     case kcp = "kcp_creditcard"
-    
+
     /// Laser (Discontinued in 2014)
     case laser
-    
+
     /// Maestro
     case maestro
-    
+
     /// Maestro UK
     case maestroUK = "maestrouk"
-    
+
     /// MasterCard
     case masterCard = "mc"
-    
+
     /// Mir
     case mir
-    
+
     /// Naranja
     case naranja
-    
+
     /// Net+
     case netplus
-    
+
     /// NYCE
     case nyce
-    
+
     /// Oasis
     case oasis
-    
+
     /// Pulse
     case pulse
-    
+
     /// Shopping
     case shopping
-    
+
     /// Solo
     case solo
-    
+
     /// STAR
     case star
-    
+
     /// Troy
     case troy
-    
+
     /// Universal Air Travel Plan
     case uatp
-    
+
     /// VISA
     case visa
-    
+
     /// The Warehouse
     case warehouse
-    
 }
 
 extension CardType {
-    
-    internal var pattern: String? {
+    var pattern: String? {
         switch self { // NOSONAR
         case .alphaBankBonusMasterCard:
             return "^(510099)[0-9]{0,10}$"
@@ -224,16 +221,15 @@ extension CardType {
 }
 
 extension CardType {
-    
-    internal func matches(cardNumber: String) -> Bool {
+    func matches(cardNumber: String) -> Bool {
         guard let pattern = pattern else {
             return false
         }
-        
+
         do {
             let regularExpression = try NSRegularExpression(pattern: pattern, options: [])
             let range = NSRange(location: 0, length: cardNumber.count)
-            
+
             return regularExpression.firstMatch(in: cardNumber, options: [], range: range) != nil
         } catch {
             return false

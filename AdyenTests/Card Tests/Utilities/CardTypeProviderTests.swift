@@ -8,7 +8,6 @@
 import XCTest
 
 class CardTypeProviderTests: XCTestCase {
-
     var cardPublicKeyProvider: CardPublicKeyProviderMock!
     var apiClientMock: APIClientMock!
     var sut: CardTypeProvider!
@@ -61,5 +60,4 @@ class CardTypeProviderTests: XCTestCase {
             XCTAssertEqual(result, [.maestro])
         }
     }
-
 }

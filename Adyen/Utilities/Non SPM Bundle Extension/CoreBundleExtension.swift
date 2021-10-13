@@ -10,17 +10,15 @@ import Foundation
 /// The Bundle extension in `BundleSPMExtension.swift` is used instead.
 /// :nodoc:
 extension Bundle {
-
     /// The main bundle of the framework.
-    internal static let core: Bundle = {
+    static let core: Bundle = {
         Bundle(for: FormView.self)
     }()
 
     /// The bundle in which the framework's resources are located.
-    internal static let coreInternalResources: Bundle = {
+    static let coreInternalResources: Bundle = {
         let url = core.url(forResource: "Adyen", withExtension: "bundle")
         let bundle = url.flatMap { Bundle(url: $0) }
         return bundle ?? core
     }()
-
 }

@@ -8,10 +8,9 @@
 import XCTest
 
 class NumericStringValidatorTests: XCTestCase {
-    
     func testValidation() {
         let sut = NumericStringValidator(maximumLength: 15)
-        
+
         // Valid numbers
         XCTAssertTrue(sut.isValid("1234567890"))
         XCTAssertTrue(sut.isValid("2025550117"))
@@ -41,7 +40,7 @@ class NumericStringValidatorTests: XCTestCase {
         XCTAssertTrue(sut.isValid("31113367"))
         XCTAssertTrue(sut.isValid("475807"))
         XCTAssertTrue(sut.isValid("15044"))
-        
+
         // Invalid characters
         XCTAssertFalse(sut.isValid("1234567890lknhdhdlsh"))
         XCTAssertFalse(sut.isValid("123456789l648knhdhdlsh0"))
@@ -66,12 +65,11 @@ class NumericStringValidatorTests: XCTestCase {
         XCTAssertFalse(sut.isValid("๙"))
         XCTAssertFalse(sut.isValid("7.1"))
         XCTAssertFalse(sut.isValid("9,5"))
-        
+
         // Maximum length
         XCTAssertEqual(sut.maximumLength(for: ""), 15)
         XCTAssertEqual(sut.maximumLength(for: "efew"), 15)
         XCTAssertEqual(sut.maximumLength(for: "73231"), 15)
         XCTAssertEqual(sut.maximumLength(for: "+7👨‍🦳1"), 15)
     }
-    
 }

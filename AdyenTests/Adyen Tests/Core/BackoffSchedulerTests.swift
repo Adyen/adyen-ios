@@ -22,7 +22,6 @@ extension XCTestCase {
 }
 
 class BackoffSchedulerTests: XCTestCase {
-
     func testScheduling() {
         var executionCounter = 0
         let closureToSchedule = {
@@ -40,7 +39,7 @@ class BackoffSchedulerTests: XCTestCase {
         var sut = BackoffScheduler(queue: .main)
         sut.backoffIntevalCalculator = intervalCalculator
 
-        (0...99).forEach { counter in
+        (0 ... 99).forEach { counter in
             XCTAssertFalse(sut.schedule(counter, closure: closureToSchedule))
         }
 
@@ -50,5 +49,4 @@ class BackoffSchedulerTests: XCTestCase {
 
         XCTAssertEqual(executionCounter, 100)
     }
-
 }

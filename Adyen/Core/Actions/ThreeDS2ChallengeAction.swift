@@ -8,13 +8,12 @@ import Foundation
 
 /// Describes an action in which a 3D Secure challenge is presented to the user.
 public struct ThreeDS2ChallengeAction: Decodable {
-    
     /// The 3D Secure challenge token.
     public let token: String
-    
+
     /// The server-generated payment data that should be submitted to the `/payments/details` endpoint.
     public let paymentData: String
-    
+
     /// Initializes a 3D Secure challenge action.
     ///
     /// - Parameters:
@@ -24,5 +23,4 @@ public struct ThreeDS2ChallengeAction: Decodable {
         self.token = token
         self.paymentData = paymentData
     }
-    
 }

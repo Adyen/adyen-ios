@@ -9,30 +9,29 @@ import PassKit
 
 /// A component that handles Apple Pay payments.
 public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent, Localizable {
-    
     /// Describes the error that can occur during Apple Pay payment.
     public enum Error: Swift.Error, LocalizedError {
         /// Indicates that the user can't make payments on any of the payment request’s supported networks.
         case userCannotMakePayment
-        
+
         /// Indicates that the current device's hardware doesn't support ApplePay.
         case deviceDoesNotSupportApplyPay
-        
+
         /// Indicates that the summaryItems array is empty.
         case emptySummaryItems
-        
+
         /// Indicates that the grand total summary item is a negative value.
         case negativeGrandTotal
-        
+
         /// Indicates that at least one of the summary items has an invalid amount.
         case invalidSummaryItem
-        
+
         /// Indicates that the country code is invalid.
         case invalidCountryCode
-        
+
         /// Indicates that the currency code is invalid.
         case invalidCurrencyCode
-        
+
         /// :nodoc:
         public var errorDescription: String? {
             switch self {
@@ -53,35 +52,35 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
             }
         }
     }
-    
+
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
-    
+
     /// The Apple Pay payment method.
     public let paymentMethod: PaymentMethod
-    
+
     /// The line items for this payment.
     public var summaryItems: [PKPaymentSummaryItem] {
         configuration.summaryItems
     }
-    
+
     /// A list of fields that you need for a billing contact in order to process the transaction.
     /// Ignored on iOS 10.*.
     public var requiredBillingContactFields: Set<PKContactField> {
         configuration.requiredBillingContactFields
     }
-    
+
     /// A list of fields that you need for a shipping contact in order to process the transaction.
     /// Ignored on iOS 10.*.
     public var requiredShippingContactFields: Set<PKContactField> {
         configuration.requiredShippingContactFields
     }
-    
+
     /// The merchant identifier for apple pay.
     private var merchantIdentifier: String {
         configuration.merchantIdentifier
     }
-    
+
     /// Apple Pay component configuration.
     private let configuration: Configuration
 
@@ -89,7 +88,7 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     /// By default all cancelations assumed to be initiated by the user.
     /// :nodoc:
     internal var isUserCancel = true
-    
+
     /// Initializes the component.
     ///
     /// - Warning: `stopLoading()` must be called before dismissing this component.
@@ -109,7 +108,8 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     public init(paymentMethod: ApplePayPaymentMethod,
                 payment: Payment,
                 configuration: Configuration,
-                cancelHandler: (() -> Void)? = nil) throws {
+                cancelHandler: (() -> Void)? = nil) throws
+    {
         guard PKPaymentAuthorizationViewController.canMakePayments() else {
             throw Error.deviceDoesNotSupportApplyPay
         }
@@ -131,17 +131,17 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
         guard configuration.summaryItems.filter({ $0.amount.isEqual(to: NSDecimalNumber.notANumber) }).count == 0 else {
             throw Error.invalidSummaryItem
         }
-        
+
         self.paymentMethod = paymentMethod
-        self.applePayPaymentMethod = paymentMethod
+        applePayPaymentMethod = paymentMethod
         self.configuration = configuration
-        self.dismissCompletion = cancelHandler
-        
+        dismissCompletion = cancelHandler
+
         super.init()
-        
+
         self.payment = payment
     }
-    
+
     /// Initializes the component.
     ///
     /// - Warning: `stopLoading()` must be called before dismissing this component.
@@ -170,14 +170,15 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
                             summaryItems: [PKPaymentSummaryItem],
                             requiredBillingContactFields: Set<PKContactField> = [],
                             requiredShippingContactFields: Set<PKContactField> = [],
-                            cancelHandler: (() -> Void)? = nil) throws {
+                            cancelHandler _: (() -> Void)? = nil) throws
+    {
         let configuration = Configuration(summaryItems: summaryItems,
                                           merchantIdentifier: merchantIdentifier,
                                           requiredBillingContactFields: requiredBillingContactFields,
                                           requiredShippingContactFields: requiredShippingContactFields)
         try self.init(paymentMethod: paymentMethod, payment: payment, configuration: configuration)
     }
-    
+
     /// Initializes the component.
     ///
     /// - Parameter paymentMethod: The Apple Pay payment method.
@@ -199,38 +200,38 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
             adyenPrint("Failed to instantiate ApplePayComponent. PKPaymentAuthorizationViewController.canMakePayments(usingNetworks:) returned false.")
             return nil
         }
-        
+
         self.paymentMethod = paymentMethod
-        self.applePayPaymentMethod = paymentMethod
+        applePayPaymentMethod = paymentMethod
         self.configuration = configuration
-        self.dismissCompletion = cancelHandler
+        dismissCompletion = cancelHandler
     }
-    
+
     internal let applePayPaymentMethod: ApplePayPaymentMethod
-    
+
     // MARK: - Presentable Component Protocol
-    
+
     /// :nodoc:
     public var viewController: UIViewController {
         getPaymentAuthorizationViewController() ?? errorAlertController
     }
-    
+
     /// :nodoc:
     public var localizationParameters: LocalizationParameters?
-    
+
     /// :nodoc:
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
         isUserCancel = false
         paymentAuthorizationCompletion?(success ? .success : .failure)
         dismiss(callback: completion)
     }
-    
+
     // MARK: - Private
-    
+
     internal var paymentAuthorizationCompletion: ((PKPaymentAuthorizationStatus) -> Void)?
-    
+
     internal var dismissCompletion: (() -> Void)?
-    
+
     private lazy var errorAlertController: UIAlertController = {
         let alertController = UIAlertController(title: ADYLocalizedString("adyen.error.title", localizationParameters),
                                                 message: ADYLocalizedString("adyen.error.unknown", localizationParameters),
@@ -246,9 +247,9 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
         alertController.addAction(dismissAction)
         return alertController
     }()
-    
+
     internal var paymentAuthorizationViewController: PKPaymentAuthorizationViewController?
-    
+
     private func getPaymentAuthorizationViewController() -> PKPaymentAuthorizationViewController? {
         if paymentAuthorizationViewController == nil {
             paymentAuthorizationViewController = newPaymentAuthorizationViewController()
@@ -256,35 +257,35 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
         }
         return paymentAuthorizationViewController
     }
-    
+
     private func newPaymentAuthorizationViewController() -> PKPaymentAuthorizationViewController? {
         guard let paymentAuthorizationViewController = PKPaymentAuthorizationViewController(paymentRequest: createPaymentRequest()) else {
             adyenPrint("Failed to instantiate PKPaymentAuthorizationViewController.")
             return nil
         }
         paymentAuthorizationViewController.delegate = self
-        
+
         return paymentAuthorizationViewController
     }
-    
+
     internal func createPaymentRequest() -> PKPaymentRequest {
         let paymentRequest = PKPaymentRequest()
-        
+
         paymentRequest.countryCode = payment?.countryCode ?? ""
         paymentRequest.merchantIdentifier = merchantIdentifier
         paymentRequest.currencyCode = payment?.amount.currencyCode ?? ""
         paymentRequest.supportedNetworks = configuration.supportedNetworks
         paymentRequest.merchantCapabilities = .capability3DS
         paymentRequest.paymentSummaryItems = summaryItems
-        
+
         if #available(iOS 11.0, *) {
             paymentRequest.requiredBillingContactFields = requiredBillingContactFields
             paymentRequest.requiredShippingContactFields = requiredShippingContactFields
         }
-        
+
         return paymentRequest
     }
-    
+
     private func handle(_ error: Swift.Error) {
         delegate?.didFail(with: error, from: self)
     }
@@ -292,8 +293,8 @@ public class ApplePayComponent: NSObject, PaymentComponent, PresentableComponent
     internal func dismiss(callback: (() -> Void)? = nil) {
         func dismiss(_ callback: (() -> Void)? = nil) {
             callback?()
-            self.dismissCompletion?()
-            self.dismissCompletion = nil
+            dismissCompletion?()
+            dismissCompletion = nil
         }
 
         guard let viewController = paymentAuthorizationViewController else {

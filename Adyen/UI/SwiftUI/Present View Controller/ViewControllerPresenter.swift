@@ -10,7 +10,6 @@ import SwiftUI
     /// :nodoc:
     @available(iOS 13.0, *)
     public extension View {
-
         /// Present a `ViewController` modally.
         ///
         /// - Parameter viewController: A `Binding<UIViewController?>` instance,
@@ -25,7 +24,6 @@ import SwiftUI
     /// :nodoc:
     @available(iOS 13.0, *)
     internal struct ViewControllerPresenter: ViewModifier {
-
         @Binding internal var viewController: UIViewController?
 
         internal func body(content: Content) -> some View {
@@ -39,19 +37,17 @@ import SwiftUI
     /// :nodoc:
     @available(iOS 13.0, *)
     internal final class FullScreenView: UIViewControllerRepresentable {
-
         @Binding internal var viewController: UIViewController?
 
         internal init(viewController: Binding<UIViewController?>) {
-            self._viewController = viewController
+            _viewController = viewController
         }
 
         internal final class Coordinator {
-
             fileprivate var currentlyPresentedViewController: UIViewController?
         }
 
-        internal func makeUIViewController(context: UIViewControllerRepresentableContext<FullScreenView>) -> UIViewController {
+        internal func makeUIViewController(context _: UIViewControllerRepresentableContext<FullScreenView>) -> UIViewController {
             UIViewController()
         }
 
@@ -61,20 +57,18 @@ import SwiftUI
 
         internal func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<FullScreenView>) {
             if let viewController = viewController, viewController !== context.coordinator.currentlyPresentedViewController {
-
                 dismissIfNeededThenPresent(viewController: viewController, presenter: uiViewController, context: context)
 
             } else if context.coordinator.currentlyPresentedViewController != nil, viewController == nil {
-
                 dismiss(presenter: uiViewController, context: context, completion: nil)
             }
         }
 
         private func dismissIfNeededThenPresent(viewController: UIViewController,
                                                 presenter: UIViewController,
-                                                context: UIViewControllerRepresentableContext<FullScreenView>) {
+                                                context: UIViewControllerRepresentableContext<FullScreenView>)
+        {
             if context.coordinator.currentlyPresentedViewController != nil {
-
                 dismiss(presenter: presenter, context: context) { [weak self] in
                     self?.present(viewController: viewController, presenter: presenter, context: context)
                 }
@@ -85,7 +79,8 @@ import SwiftUI
 
         private func present(viewController: UIViewController,
                              presenter: UIViewController,
-                             context: UIViewControllerRepresentableContext<FullScreenView>) {
+                             context: UIViewControllerRepresentableContext<FullScreenView>)
+        {
             guard !viewController.isBeingPresented, !viewController.isBeingDismissed else { return }
             presenter.present(viewController, animated: true) {
                 context.coordinator.currentlyPresentedViewController = viewController
@@ -94,7 +89,8 @@ import SwiftUI
 
         private func dismiss(presenter: UIViewController,
                              context: UIViewControllerRepresentableContext<FullScreenView>,
-                             completion: (() -> Void)?) {
+                             completion: (() -> Void)?)
+        {
             guard let viewController = context.coordinator.currentlyPresentedViewController else { return }
             guard !viewController.isBeingPresented, !viewController.isBeingDismissed else { return }
 

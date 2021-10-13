@@ -7,8 +7,7 @@
 import Foundation
 
 extension NSInteger {
-
-    internal func encodedOctets() -> [CUnsignedChar] {
+    func encodedOctets() -> [CUnsignedChar] {
         // Short form
         guard self >= 128 else { return [CUnsignedChar(self)] }
 
@@ -17,12 +16,11 @@ extension NSInteger {
         var len = self
         var result = [CUnsignedChar(index + 0x80)]
 
-        for _ in 0..<index {
+        for _ in 0 ..< index {
             result.insert(CUnsignedChar(len & 0xFF), at: 1)
             len = len >> 8
         }
 
         return result
     }
-
 }

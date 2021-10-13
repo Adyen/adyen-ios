@@ -10,8 +10,7 @@ import Foundation
 public enum ComponentError: Error {
     /// Indicates the component was cancelled by the user.
     case cancelled
-    
+
     /// Indicates the payment method is not supported by the SDK.
     case paymentMethodNotSupported
-    
 }

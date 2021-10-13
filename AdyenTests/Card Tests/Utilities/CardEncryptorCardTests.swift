@@ -8,15 +8,14 @@
 import XCTest
 
 class CardEncryptorCardTests: XCTestCase {
-
     // MARK: - Test encrypting Card number
-    
+
     func testEncryptNumberShouldReturnNilWithNilNumber() {
         let card = CardEncryptor.Card()
         XCTAssertNoThrow(try card.encryptedNumber(publicKey: "test_key", date: Date()))
         XCTAssertNil(try? card.encryptedNumber(publicKey: "test_key", date: Date()))
     }
-    
+
     func testEncryptNumberShouldFailWithInvalidPublicKey() {
         let card = CardEncryptor.Card(number: "test_number")
         let key = "test_invalid_key"
@@ -32,15 +31,15 @@ class CardEncryptorCardTests: XCTestCase {
         let key = Dummy.dummyPublicKey
         XCTAssertNotNil(try card.encryptedNumber(publicKey: key, date: Date()))
     }
-    
+
     // MARK: - Test encrypting Security Code
-    
+
     func testEncryptSecurityCodeShouldReturnNilWithNilSecurityCode() {
         let card = CardEncryptor.Card()
         XCTAssertNoThrow(try card.encryptedSecurityCode(publicKey: "test_key", date: Date()))
         XCTAssertNil(try? card.encryptedSecurityCode(publicKey: "test_key", date: Date()))
     }
-    
+
     func testEncryptSecurityCodeShouldFailWithInvalidPublicKey() {
         let card = CardEncryptor.Card(securityCode: "test_security_code")
         let key = "test_invalid_key"
@@ -56,15 +55,15 @@ class CardEncryptorCardTests: XCTestCase {
         let key = Dummy.dummyPublicKey
         XCTAssertNotNil(try card.encryptedSecurityCode(publicKey: key, date: Date()))
     }
-    
+
     // MARK: - Test encrypting Expiry Month
-    
+
     func testEncryptExpiryMonthShouldReturnNilWithNilExpiryMonth() {
         let card = CardEncryptor.Card()
         XCTAssertNoThrow(try card.encryptedExpiryMonth(publicKey: "test_key", date: Date()))
         XCTAssertNil(try? card.encryptedExpiryMonth(publicKey: "test_key", date: Date()))
     }
-    
+
     func testEncryptExpiryMonthShouldFailWithInvalidPublicKey() {
         let card = CardEncryptor.Card(expiryMonth: "test_expiry_month")
         let key = "test_invalid_key"
@@ -80,15 +79,15 @@ class CardEncryptorCardTests: XCTestCase {
         let key = Dummy.dummyPublicKey
         XCTAssertNotNil(try card.encryptedExpiryMonth(publicKey: key, date: Date()))
     }
-    
+
     // MARK: - Test encrypting Expiry Year
-    
+
     func testEncryptExpiryYearShouldReturnNilWithNilExpiryYear() {
         let card = CardEncryptor.Card()
         XCTAssertNoThrow(try card.encryptedExpiryYear(publicKey: "test_key", date: Date()))
         XCTAssertNil(try? card.encryptedExpiryYear(publicKey: "test_key", date: Date()))
     }
-    
+
     func testEncryptExpiryYearShouldFailWithInvalidPublicKey() {
         let card = CardEncryptor.Card(expiryYear: "test_expiry_year")
         let key = "test_invalid_key"
@@ -104,9 +103,9 @@ class CardEncryptorCardTests: XCTestCase {
         let key = Dummy.dummyPublicKey
         XCTAssertNotNil(try card.encryptedExpiryYear(publicKey: key, date: Date()))
     }
-    
+
     // MARK: - Test encrypting encryptedToToken function
-    
+
     func testEncryptedToTokenShouldFailWithAllNilIvars() {
         let card = CardEncryptor.Card()
         XCTAssertTrue(card.isEmpty)
@@ -116,7 +115,7 @@ class CardEncryptorCardTests: XCTestCase {
             XCTAssertEqual(error.localizedDescription, CardEncryptor.Error.invalidEncryptionArguments.errorDescription)
         }
     }
-    
+
     func testEncryptedToTokenShouldFailWithInvalidPublicKey() {
         let card = CardEncryptor.Card(expiryYear: "test_expiry_year")
         let key = "test_invalid_key"

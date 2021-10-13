@@ -10,12 +10,11 @@ import UIKit
 
 /// Delegate for observing user's activity on `BCMCComponent`.
 public protocol BCMCComponentDelegate: AnyObject {
-    
     /// Called when user enters PAN in `BCMCComponent`.
     /// - Parameter value: Up to 6 first digits in entered PAN.
     /// - Parameter component: The `BCMCComponent` instance.
     func didChangeBIN(_ value: String, component: BCMCComponent)
-    
+
     /// Called when `BCMCComponent` detected card type(s) in entered PAN.
     /// - Parameter value: True or false if entered value matching Bancontact card. Null - if no data entered.
     /// - Parameter component: The `BCMCComponent` instance.
@@ -24,16 +23,15 @@ public protocol BCMCComponentDelegate: AnyObject {
 
 /// A component that handles BCMC card payments.
 public final class BCMCComponent: PaymentComponent, PresentableComponent, Localizable {
-    
     /// The card payment method.
     public let paymentMethod: PaymentMethod
-    
+
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
-    
+
     /// The delegate for user activity on component.
     public weak var bcmcComponentDelegate: BCMCComponentDelegate?
-    
+
     /// Indicates if form will show a large header title. True - show title; False - assign title to a view controllers's title.
     /// Defaults to true.
     @available(*, deprecated, message: """
@@ -46,51 +44,51 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
             guard !_isDropIn else { return false }
             return cardComponent._showsLargeTitle
         }
-        
+
         set {
             cardComponent._showsLargeTitle = newValue
         }
     }
-    
+
     /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
     public var showsHolderNameField: Bool {
         get {
             cardComponent.showsHolderNameField
         }
-        
+
         set {
             cardComponent.showsHolderNameField = newValue
         }
     }
-    
+
     /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
     public var showsStorePaymentMethodField: Bool {
         get {
             cardComponent.showsStorePaymentMethodField
         }
-        
+
         set {
             cardComponent.showsStorePaymentMethodField = newValue
         }
     }
-    
+
     /// :nodoc:
     public var clientKey: String? {
         get {
             cardComponent.clientKey
         }
-        
+
         set {
             cardComponent.clientKey = newValue
         }
     }
-    
+
     /// :nodoc:
     public var environment: Environment {
         get {
             cardComponent.environment
         }
-        
+
         set {
             cardComponent.environment = newValue
         }
@@ -106,7 +104,7 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
             cardComponent.storedCardConfiguration = newValue
         }
     }
-    
+
     /// Initializes the Bancontact component.
     ///
     /// - Parameters:
@@ -115,7 +113,8 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
     ///   - style: The Component's UI style.
     internal init(paymentMethod: BCMCPaymentMethod,
                   cardComponent: CardComponent,
-                  style: FormComponentStyle = FormComponentStyle()) {
+                  style _: FormComponentStyle = FormComponentStyle())
+    {
         self.paymentMethod = paymentMethod
         self.cardComponent = cardComponent
         self.cardComponent.delegate = self
@@ -125,7 +124,7 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
         self.cardComponent.showsSecurityCodeField = false
         self.cardComponent.storedCardConfiguration.showsSecurityCodeField = false
     }
-    
+
     /// Initializes the Bancontact component.
     ///
     /// - Parameters:
@@ -135,47 +134,48 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
     ///   - style: The Component's UI style.
     public convenience init(paymentMethod: BCMCPaymentMethod,
                             clientKey: String,
-                            style: FormComponentStyle = FormComponentStyle()) {
+                            style: FormComponentStyle = FormComponentStyle())
+    {
         let cardComponent = CardComponent(paymentMethod: paymentMethod,
                                           clientKey: clientKey,
                                           style: style)
         self.init(paymentMethod: paymentMethod, cardComponent: cardComponent)
     }
-    
+
     // MARK: - Presentable Component Protocol
-    
+
     /// :nodoc:
     public var requiresModalPresentation: Bool {
         cardComponent.requiresModalPresentation
     }
-    
+
     /// The payment information.
     public var payment: Payment? {
         get {
             cardComponent.payment
         }
-        
+
         set {
             cardComponent.payment = newValue
         }
     }
-    
+
     /// Returns a view controller that presents the payment details for the shopper to fill.
     public var viewController: UIViewController {
         cardComponent.viewController
     }
-    
+
     /// :nodoc:
     public var localizationParameters: LocalizationParameters? {
         get {
             cardComponent.localizationParameters
         }
-        
+
         set {
             cardComponent.localizationParameters = newValue
         }
     }
-    
+
     /// Stops any processing animation that the view controller is running.
     ///
     /// - Parameters:
@@ -184,12 +184,12 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
     public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
         cardComponent.stopLoading(withSuccess: success, completion: completion)
     }
-    
+
     // MARK: - Protected
-    
+
     /// :nodoc:
     internal var excludedCardTypes: Set<CardType> { cardComponent.excludedCardTypes }
-    
+
     /// :nodoc:
     internal var supportedCardTypes: [CardType] { cardComponent.supportedCardTypes }
 
@@ -199,14 +199,13 @@ public final class BCMCComponent: PaymentComponent, PresentableComponent, Locali
 
 /// :nodoc:
 extension BCMCComponent: CardComponentDelegate {
-    
     /// :nodoc:
-    public func didChangeBIN(_ value: String, component: CardComponent) {
+    public func didChangeBIN(_ value: String, component _: CardComponent) {
         bcmcComponentDelegate?.didChangeBIN(value, component: self)
     }
-    
+
     /// :nodoc:
-    public func didChangeCardType(_ value: [CardType]?, component: CardComponent) {
+    public func didChangeCardType(_ value: [CardType]?, component _: CardComponent) {
         let isCardBCMC = value == nil ? nil : value?.first == CardType.bcmc
         bcmcComponentDelegate?.didChangeCardType(isCardBCMC, component: self)
     }
@@ -222,7 +221,7 @@ extension BCMCComponent: PaymentComponentDelegate {
             delegate?.didFail(with: error, from: component)
         }
     }
-    
+
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         if cardComponent === component {
             submit(data: data)
@@ -236,7 +235,6 @@ extension BCMCComponent: PaymentComponentDelegate {
 /// :nodoc:
 /// Deprecated initializers
 public extension BCMCComponent {
-    
     /// Initializes the Bancontact component.
     ///
     /// - Parameters:
@@ -246,13 +244,14 @@ public extension BCMCComponent {
     @available(*, deprecated, message: "Use init(paymentMethod:clientKey:style:) instead.")
     convenience init(paymentMethod: BCMCPaymentMethod,
                      publicKey: String,
-                     style: FormComponentStyle = FormComponentStyle()) {
+                     style: FormComponentStyle = FormComponentStyle())
+    {
         let cardComponent = CardComponent(paymentMethod: paymentMethod,
                                           publicKey: publicKey,
                                           style: style)
         self.init(paymentMethod: paymentMethod, cardComponent: cardComponent)
     }
-    
+
     /// :nodoc:
     /// Initializes a Bancontact component.
     ///
@@ -262,7 +261,8 @@ public extension BCMCComponent {
     ///   - style: The Component's UI style.
     static func component(paymentMethod: BCMCPaymentMethod,
                           publicKey: String,
-                          style: FormComponentStyle = FormComponentStyle()) -> BCMCComponent {
+                          style: FormComponentStyle = FormComponentStyle()) -> BCMCComponent
+    {
         let cardComponent = CardComponent.component(paymentMethod: paymentMethod,
                                                     publicKey: publicKey,
                                                     style: style)
