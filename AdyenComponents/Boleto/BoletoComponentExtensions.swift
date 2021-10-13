@@ -30,7 +30,7 @@ extension BoletoComponent {
         ///   - shopperInformation: Pre-filled optional personal information about the shopper
         public init(boletoPaymentMethod: BoletoPaymentMethod,
                     payment: Payment?,
-                    shopperInformation: PrefilledShopperInformation?,
+                    shopperInformation: PrefilledShopperInformation? = nil,
                     showEmailAddress: Bool) {
             self.boletoPaymentMethod = boletoPaymentMethod
             self.payment = payment
