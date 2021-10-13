@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>FormButtonItemStyle Structure Reference</title>
+    <title>Sanitizer Protocol Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -14,9 +14,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Struct/FormButtonItemStyle" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Protocol/Sanitizer" class="dashAnchor"></a>
 
-    <a title="FormButtonItemStyle Structure Reference"></a>
+    <a title="Sanitizer Protocol Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -44,7 +44,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html">Adyen Reference</a>
       <img class="carat" src="../img/carat.png" alt=""/>
-      FormButtonItemStyle Structure Reference
+      Sanitizer Protocol Reference
     </p>
 
     <div class="content-wrapper">
@@ -779,15 +779,15 @@
 
         <section class="section">
           <div class="section-content top-matter">
-            <h1>FormButtonItemStyle</h1>
+            <h1>Sanitizer</h1>
               <div class="declaration">
                 <div class="language">
                   
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">FormButtonItemStyle</span> <span class="p">:</span> <span class="kt">ViewStyle</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Sanitizer</span></code></pre>
 
                 </div>
               </div>
-            <p>Contains the styling customization options for a form button item.</p>
+            <p>Undocumented</p>
 
           </div>
         </section>
@@ -799,9 +799,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:5Adyen19FormButtonItemStyleV6buttonAA0cE0Vvp"></a>
-                    <a name="//apple_ref/swift/Property/button" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen19FormButtonItemStyleV6buttonAA0cE0Vvp">button</a>
+                    <a name="/s:5Adyen9SanitizerP14sanitizedValue3forS2S_tF"></a>
+                    <a name="//apple_ref/swift/Method/sanitizedValue(for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen9SanitizerP14sanitizedValue3forS2S_tF">sanitizedValue(for:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -809,68 +809,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The font used to display the text.</p>
+                        <p>Sanitizes (removes any illegal character) the given value.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">button</span><span class="p">:</span> <span class="kt"><a href="../Structs/ButtonStyle.html">ButtonStyle</a></span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:5Adyen19FormButtonItemStyleV15backgroundColorSo7UIColorCvp"></a>
-                    <a name="//apple_ref/swift/Property/backgroundColor" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen19FormButtonItemStyleV15backgroundColorSo7UIColorCvp">backgroundColor</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The background of the view.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">backgroundColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:5Adyen19FormButtonItemStyleV6buttonAcA0cE0V_tcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(button:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen19FormButtonItemStyleV6buttonAcA0cE0V_tcfc">init(button:<wbr>)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Initializes the secondary button style.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">button</span><span class="p">:</span> <span class="kt"><a href="../Structs/ButtonStyle.html">ButtonStyle</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">sanitizedValue</span><span class="p">(</span><span class="k">for</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span></code></pre>
 
                         </div>
                       </div>
@@ -881,336 +827,21 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>font</em>
+                                <em>value</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The font of a title.</p>
+                                  <p>The value to be sanitized.</p>
                                 </div>
                               </td>
                             </tr>
                           </tbody>
                         </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:5Adyen19FormButtonItemStyleV6button10backgroundAcA0cE0V_So7UIColorCtcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(button:background:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen19FormButtonItemStyleV6button10backgroundAcA0cE0V_So7UIColorCtcfc">init(button:<wbr>background:<wbr>)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Initializes the button style.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">button</span><span class="p">:</span> <span class="kt"><a href="../Structs/ButtonStyle.html">ButtonStyle</a></span><span class="p">,</span> <span class="nv">background</span><span class="p">:</span> <span class="kt">UIColor</span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:5Adyen19FormButtonItemStyleV4main4font9textColor0fI012cornerRadiusACSo6UIFontC_So7UIColorCAL12CoreGraphics7CGFloatVtFZ"></a>
-                    <a name="//apple_ref/swift/Method/main(font:textColor:mainColor:cornerRadius:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen19FormButtonItemStyleV4main4font9textColor0fI012cornerRadiusACSo6UIFontC_So7UIColorCAL12CoreGraphics7CGFloatVtFZ">main(font:<wbr>textColor:<wbr>mainColor:<wbr>cornerRadius:<wbr>)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Get instance of <code>FormButtonItemStyle</code> styled as filled button with corner radius.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="nv">font</span><span class="p">:</span> <span class="kt">UIFont</span><span class="p">,</span> <span class="nv">textColor</span><span class="p">:</span> <span class="kt">UIColor</span><span class="p">,</span> <span class="nv">mainColor</span><span class="p">:</span> <span class="kt">UIColor</span><span class="p">,</span> <span class="nv">cornerRadius</span><span class="p">:</span> <span class="kt">CGFloat</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">FormButtonItemStyle</span></code></pre>
-
-                        </div>
                       </div>
                       <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>font</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The font of button&rsquo;s title.</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>textColor</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The color of button&rsquo;s title.</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>mainColor</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The filling color of a button..</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>cornerRadius</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The corner radius of the button.</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:5Adyen19FormButtonItemStyleV4main4font9textColor0fI0ACSo6UIFontC_So7UIColorCAKtFZ"></a>
-                    <a name="//apple_ref/swift/Method/main(font:textColor:mainColor:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen19FormButtonItemStyleV4main4font9textColor0fI0ACSo6UIFontC_So7UIColorCAKtFZ">main(font:<wbr>textColor:<wbr>mainColor:<wbr>)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Get instance of <code>FormButtonItemStyle</code> styled as filled button with default corner radius.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="nv">font</span><span class="p">:</span> <span class="kt">UIFont</span><span class="p">,</span> <span class="nv">textColor</span><span class="p">:</span> <span class="kt">UIColor</span><span class="p">,</span> <span class="nv">mainColor</span><span class="p">:</span> <span class="kt">UIColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">FormButtonItemStyle</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>font</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The font of button&rsquo;s title.</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>textColor</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The color of button&rsquo;s title.</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>mainColor</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The filling color of a button..</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:5Adyen19FormButtonItemStyleV4main4font9textColor0fI014cornerRoundingACSo6UIFontC_So7UIColorCAlA06CornerK0OtFZ"></a>
-                    <a name="//apple_ref/swift/Method/main(font:textColor:mainColor:cornerRounding:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen19FormButtonItemStyleV4main4font9textColor0fI014cornerRoundingACSo6UIFontC_So7UIColorCAlA06CornerK0OtFZ">main(font:<wbr>textColor:<wbr>mainColor:<wbr>cornerRounding:<wbr>)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Get instance of <code>FormButtonItemStyle</code> styled as filled button with corner radius.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="nv">font</span><span class="p">:</span> <span class="kt">UIFont</span><span class="p">,</span> <span class="nv">textColor</span><span class="p">:</span> <span class="kt">UIColor</span><span class="p">,</span> <span class="nv">mainColor</span><span class="p">:</span> <span class="kt">UIColor</span><span class="p">,</span> <span class="nv">cornerRounding</span><span class="p">:</span> <span class="kt"><a href="../Enums/CornerRounding.html">CornerRounding</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">FormButtonItemStyle</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>font</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The font of button&rsquo;s title.</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>textColor</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The color of button&rsquo;s title.</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>mainColor</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The filling color of a button..</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>cornerRounding</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The corner style of the button.</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:5Adyen19FormButtonItemStyleV9secondary4font9textColorACSo6UIFontC_So7UIColorCtFZ"></a>
-                    <a name="//apple_ref/swift/Method/secondary(font:textColor:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen19FormButtonItemStyleV9secondary4font9textColorACSo6UIFontC_So7UIColorCtFZ">secondary(font:<wbr>textColor:<wbr>)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Get instance of <code>FormButtonItemStyle</code> styled as plane button transparent background.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">secondary</span><span class="p">(</span><span class="nv">font</span><span class="p">:</span> <span class="kt">UIFont</span><span class="p">,</span> <span class="nv">textColor</span><span class="p">:</span> <span class="kt">UIColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">FormButtonItemStyle</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>font</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The font of button&rsquo;s title.</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>textColor</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The color of button&rsquo;s title.</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
+                        <h4>Return Value</h4>
+                        <p>The given value without any illegal characters.</p>
                       </div>
                     </section>
                   </div>
