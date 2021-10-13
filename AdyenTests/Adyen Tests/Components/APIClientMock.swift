@@ -19,13 +19,12 @@ enum Dummy: Error {
 }
 
 final class APIClientMock: APIClientProtocol {
-
     var mockedResults: [MockedResult] = []
     var onExecute: (() -> Void)?
 
     private(set) var counter: Int = 0
 
-    func perform<R>(_ request: R, completionHandler: @escaping (Result<R.ResponseType, Error>) -> Void) where R: Request {
+    func perform<R>(_: R, completionHandler: @escaping (Result<R.ResponseType, Error>) -> Void) where R: Request {
         counter += 1
         DispatchQueue.main.async {
             self.onExecute?()
@@ -39,5 +38,4 @@ final class APIClientMock: APIClientProtocol {
             }
         }
     }
-
 }

@@ -11,10 +11,10 @@ import Foundation
 public struct ListSection {
     /// The title of the section.
     public var title: String?
-    
+
     /// The items inside the section.
     public var items: [ListItem]
-    
+
     /// Initializes the picker section.
     ///
     /// - Parameters:
@@ -24,5 +24,4 @@ public struct ListSection {
         self.title = title
         self.items = items
     }
-    
 }

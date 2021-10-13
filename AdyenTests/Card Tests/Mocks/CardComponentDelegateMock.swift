@@ -7,41 +7,41 @@
 import AdyenCard
 
 internal class CardComponentDelegateMock: CardComponentDelegate {
-    
     private let onBINDidChange: (String) -> Void
     private let onCardTypeChange: ([CardType]?) -> Void
-    
+
     internal init(onBINDidChange: @escaping (String) -> Void,
-                  onCardTypeChange: @escaping ([CardType]?) -> Void) {
+                  onCardTypeChange: @escaping ([CardType]?) -> Void)
+    {
         self.onBINDidChange = onBINDidChange
         self.onCardTypeChange = onCardTypeChange
     }
-    
-    func didChangeBIN(_ value: String, component: CardComponent) {
+
+    func didChangeBIN(_ value: String, component _: CardComponent) {
         onBINDidChange(value)
     }
-    
-    func didChangeCardType(_ value: [CardType]?, component: CardComponent) {
+
+    func didChangeCardType(_ value: [CardType]?, component _: CardComponent) {
         onCardTypeChange(value)
     }
 }
 
 internal class BCMCComponentDelegateMock: BCMCComponentDelegate {
-    
     private let onBINDidChange: (String) -> Void
     private let onCardTypeChange: (Bool?) -> Void
-    
+
     internal init(onBINDidChange: @escaping (String) -> Void,
-                  onCardTypeChange: @escaping (Bool?) -> Void) {
+                  onCardTypeChange: @escaping (Bool?) -> Void)
+    {
         self.onBINDidChange = onBINDidChange
         self.onCardTypeChange = onCardTypeChange
     }
-    
-    func didChangeBIN(_ value: String, component: BCMCComponent) {
+
+    func didChangeBIN(_ value: String, component _: BCMCComponent) {
         onBINDidChange(value)
     }
-    
-    func didChangeCardType(_ value: Bool?, component: BCMCComponent) {
+
+    func didChangeCardType(_ value: Bool?, component _: BCMCComponent) {
         onCardTypeChange(value)
     }
 }

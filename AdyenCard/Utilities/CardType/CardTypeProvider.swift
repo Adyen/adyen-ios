@@ -16,15 +16,14 @@ internal protocol AnyCardTypeProvider: Component {
 /// Provide cardType detection based on BinLookup API.
 /// Fall back to local regex-based detector if API not available or BIN too short.
 internal final class CardTypeProvider: AnyCardTypeProvider {
-    
     private static let minBinLength = 6
-    
+
     private let apiClient: APIClientProtocol?
 
     private var privateBinLookupService: BinLookupService?
-    
+
     private let cardPublicKeyProvider: AnyCardPublicKeyProvider
-    
+
     /// Create a new instance of CardTypeProvider.
     /// - Parameters:
     ///   - supportedCardTypes: Array of supported cads.
@@ -34,7 +33,7 @@ internal final class CardTypeProvider: AnyCardTypeProvider {
         self.apiClient = apiClient
         self.cardPublicKeyProvider = cardPublicKeyProvider
     }
-    
+
     /// Request card types based on enterd BIN.
     /// - Parameters:
     ///   - bin: Card's BIN number. If longer than `minBinLength` - calls API, otherwise check local Regex,
@@ -43,7 +42,7 @@ internal final class CardTypeProvider: AnyCardTypeProvider {
         guard bin.count > CardTypeProvider.minBinLength else {
             return completion(cardType.adyen.types(forCardNumber: bin))
         }
-        
+
         fetchBinLookupService(success: { binLookupService in
             binLookupService.requestCardType(for: bin,
                                              supportedCardTypes: cardType) { result in
@@ -58,19 +57,20 @@ internal final class CardTypeProvider: AnyCardTypeProvider {
             completion(cardType.adyen.types(forCardNumber: bin))
         })
     }
-    
+
     private func fetchBinLookupService(success: @escaping (BinLookupService) -> Void,
-                                       failure: ((Swift.Error) -> Void)? = nil) {
+                                       failure: ((Swift.Error) -> Void)? = nil)
+    {
         if let binLookupService = privateBinLookupService {
             return success(binLookupService)
         }
-        
-        let localApiClient = self.apiClient ?? APIClient(environment: self.environment)
-        
+
+        let localApiClient = apiClient ?? APIClient(environment: environment)
+
         do {
             try cardPublicKeyProvider.fetch { [weak self] result in
                 guard let self = self else { return }
-                
+
                 switch result {
                 case let .success(publicKey):
                     let binLookupService = BinLookupService(publicKey: publicKey,

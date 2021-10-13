@@ -10,7 +10,6 @@
 import XCTest
 
 class PhoneNumberValidatorTests: XCTestCase {
-
     func testValidNumbers() throws {
         let sut = PhoneNumberValidator()
 
@@ -37,5 +36,4 @@ class PhoneNumberValidatorTests: XCTestCase {
         XCTAssertFalse(sut.isValid("+31 23+ 123"))
         XCTAssertFalse(sut.isValid("+31+23+123"))
     }
-
 }

@@ -23,13 +23,11 @@ internal enum PaymentResultCode: String, Decodable {
 /// :nodoc:
 /// Represents a payment status response.
 internal struct PaymentStatusResponse: Response {
-    
     /// :nodoc:
     /// The payload.
     internal let payload: String
-    
+
     /// :nodoc:
     /// The payment status.
     internal let resultCode: PaymentResultCode
-    
 }

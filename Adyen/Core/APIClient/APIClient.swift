@@ -10,27 +10,24 @@ import UIKit
 /// :nodoc:
 /// Describes any API Client.
 public protocol APIClientProtocol {
-    
     /// :nodoc:
     typealias CompletionHandler<T> = (Result<T, Error>) -> Void
-    
+
     /// :nodoc:
     /// Performs the API request.
     func perform<R: Request>(_ request: R, completionHandler: @escaping CompletionHandler<R.ResponseType>)
-    
 }
 
 /// :nodoc:
 /// The Basic API Client.
 public final class APIClient: APIClientProtocol {
-    
     /// :nodoc:
     public typealias CompletionHandler<T> = (Result<T, Error>) -> Void
-    
+
     /// :nodoc:
     /// The API environment.
     public let environment: APIEnvironment
-    
+
     /// :nodoc:
     /// Initializes the API client.
     ///
@@ -39,7 +36,7 @@ public final class APIClient: APIClientProtocol {
     public init(environment: APIEnvironment) {
         self.environment = environment
     }
-    
+
     /// :nodoc:
     public func perform<R: Request>(_ request: R, completionHandler: @escaping CompletionHandler<R.ResponseType>) {
         let url = environment.baseURL.appendingPathComponent(request.path)
@@ -48,34 +45,34 @@ public final class APIClient: APIClientProtocol {
             body = try Coder.encode(request)
         } catch {
             completionHandler(.failure(error))
-            
+
             return
         }
-        
+
         adyenPrint("---- Request (/\(request.path)) ----")
-        
+
         printAsJSON(body)
-        
+
         var urlRequest = URLRequest(url: add(queryParameters: request.queryParameters + environment.queryParameters, to: url))
         urlRequest.httpMethod = request.method.rawValue
         if request.method == .post {
             urlRequest.httpBody = body
         }
-        
+
         urlRequest.allHTTPHeaderFields = request.headers.merging(environment.headers, uniquingKeysWith: { key1, _ in key1 })
-        
+
         requestCounter += 1
-        
+
         urlSession.adyen.dataTask(with: urlRequest) { [weak self] result in
-            
+
             self?.requestCounter -= 1
-            
+
             switch result {
             case let .success(data):
                 do {
                     adyenPrint("---- Response (/\(request.path)) ----")
                     printAsJSON(data)
-                    
+
                     if let apiError: APIError = try? Coder.decode(data) {
                         completionHandler(.failure(apiError))
                     } else {
@@ -88,10 +85,10 @@ public final class APIClient: APIClientProtocol {
             case let .failure(error):
                 completionHandler(.failure(error))
             }
-            
+
         }.resume()
     }
-    
+
     /// :nodoc:
     private func add(queryParameters: [URLQueryItem], to url: URL) -> URL {
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
@@ -100,20 +97,19 @@ public final class APIClient: APIClientProtocol {
         }
         return components?.url ?? url
     }
-    
+
     /// :nodoc:
     private lazy var urlSession: URLSession = {
         URLSession(configuration: .default, delegate: nil, delegateQueue: .main)
     }()
-    
+
     /// :nodoc:
     private var requestCounter = 0 {
         didSet {
             let application = UIApplication.shared
-            application.isNetworkActivityIndicatorVisible = self.requestCounter > 0
+            application.isNetworkActivityIndicatorVisible = requestCounter > 0
         }
     }
-    
 }
 
 internal func printAsJSON(_ data: Data) {

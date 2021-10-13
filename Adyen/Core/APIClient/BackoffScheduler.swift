@@ -16,7 +16,6 @@ internal protocol IntervalCalculator {
 /// 2 seconds between the first 20 events, and then 10 seconds between the next 80 events,
 /// then `DispatchTimeInterval.never` is returned after that.
 internal struct BackoffIntervalCalculator: IntervalCalculator {
-    
     /// :nodoc:
     internal func interval(for counter: UInt) -> DispatchTimeInterval {
         if counter <= 20 {
@@ -33,30 +32,29 @@ internal struct BackoffIntervalCalculator: IntervalCalculator {
 /// Scheduler of closures with increasing interval between dispatching's, with maximum of 100 times,
 /// how intervals are calculated is decided by injecting an `IntervalCalculator` implementation.
 internal struct BackoffScheduler: Scheduler {
-    
     /// :nodoc:
     private let queue: DispatchQueue
-    
+
     /// :nodoc:
     internal var backoffIntevalCalculator: IntervalCalculator = BackoffIntervalCalculator()
-    
+
     /// :nodoc:
     internal init(queue: DispatchQueue) {
         self.queue = queue
     }
-    
+
     /// :nodoc:
     internal func schedule(_ currentCount: UInt, closure: @escaping () -> Void) -> Bool {
         guard currentCount < 100 else { return true }
-        
+
         let dispatchInterval = backoffIntevalCalculator.interval(for: currentCount)
-        
+
         guard dispatchInterval != .never else { return true }
-        
+
         let workItem = DispatchWorkItem(block: closure)
-        
+
         queue.asyncAfter(deadline: DispatchTime.now() + dispatchInterval, execute: workItem)
-        
+
         return false
     }
 }

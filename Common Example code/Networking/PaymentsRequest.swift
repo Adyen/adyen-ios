@@ -8,26 +8,25 @@ import Adyen
 import Foundation
 
 internal struct PaymentsRequest: Request {
-    
     internal typealias ResponseType = PaymentsResponse
-    
+
     internal let path = "payments"
-    
+
     internal let data: PaymentComponentData
-    
+
     internal var counter: UInt = 0
-    
+
     internal var method: HTTPMethod = .post
-    
+
     internal var queryParameters: [URLQueryItem] = []
-    
+
     internal var headers: [String: String] = [:]
-    
+
     internal func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        
+
         let amount = Payment.Amount(value: Configuration.amount.value, currencyCode: Configuration.amount.currencyCode)
-        
+
         try container.encode(data.paymentMethod.encodable, forKey: .details)
         try container.encode(data.storePaymentMethod, forKey: .storePaymentMethod)
         try container.encodeIfPresent(data.browserInfo, forKey: .browserInfo)
@@ -42,7 +41,7 @@ internal struct PaymentsRequest: Request {
         try container.encode(Configuration.merchantAccount, forKey: .merchantAccount)
         try container.encode(data.billingAddress, forKey: .billingAddress)
     }
-    
+
     private enum CodingKeys: String, CodingKey {
         case details = "paymentMethod"
         case storePaymentMethod
@@ -58,30 +57,26 @@ internal struct PaymentsRequest: Request {
         case browserInfo
         case billingAddress
     }
-    
 }
 
 internal struct PaymentsResponse: Response {
-    
     internal let resultCode: ResultCode
-    
+
     internal let action: Action?
-    
+
     internal init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.resultCode = try container.decode(ResultCode.self, forKey: .resultCode)
-        self.action = try container.decodeIfPresent(Action.self, forKey: .action)
+        resultCode = try container.decode(ResultCode.self, forKey: .resultCode)
+        action = try container.decodeIfPresent(Action.self, forKey: .action)
     }
-    
+
     private enum CodingKeys: String, CodingKey {
         case resultCode
         case action
     }
-    
 }
 
 internal extension PaymentsResponse {
-    
     // swiftlint:disable:next explicit_acl
     enum ResultCode: String, Decodable {
         case authorised = "Authorised"
@@ -94,5 +89,4 @@ internal extension PaymentsResponse {
         case identifyShopper = "IdentifyShopper"
         case challengeShopper = "ChallengeShopper"
     }
-    
 }

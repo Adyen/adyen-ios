@@ -11,27 +11,27 @@ internal extension UIView {
         if self.accessibilityIdentifier == accessibilityIdentifier {
             return self as? T
         }
-        
+
         for subview in subviews {
             if let v = subview.findView(with: accessibilityIdentifier) {
                 return v as? T
             }
         }
-        
+
         return nil
     }
-    
+
     func findView<T: UIView>(by lastAccessibilityIdentifierComponent: String) -> T? {
-        if self.accessibilityIdentifier?.hasSuffix(lastAccessibilityIdentifierComponent) == true {
+        if accessibilityIdentifier?.hasSuffix(lastAccessibilityIdentifierComponent) == true {
             return self as? T
         }
-        
+
         for subview in subviews {
             if let v = subview.findView(by: lastAccessibilityIdentifierComponent) {
                 return v as? T
             }
         }
-        
+
         return nil
     }
 }

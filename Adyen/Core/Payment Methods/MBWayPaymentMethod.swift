@@ -8,13 +8,12 @@ import Foundation
 
 /// A MB Way paymeny method.
 public struct MBWayPaymentMethod: PaymentMethod {
-    
     /// :nodoc:
     public let type: String
-    
+
     /// :nodoc:
     public let name: String
-    
+
     /// Initializes the MB Way Wallet payment method.
     ///
     /// - Parameter type: The payment method type.
@@ -23,12 +22,12 @@ public struct MBWayPaymentMethod: PaymentMethod {
         self.type = type
         self.name = name
     }
-    
+
     /// :nodoc:
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }
-    
+
     private enum CodingKeys: String, CodingKey {
         case type
         case name

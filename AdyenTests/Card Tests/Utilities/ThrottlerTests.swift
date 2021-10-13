@@ -8,14 +8,13 @@
 import XCTest
 
 class ThrottlerTests: XCTestCase {
-
     func test() {
         let sut = Throttler(minimumDelay: 0.5)
 
         var counter = 0
 
         let expectation = XCTestExpectation(description: "Waiting for callback")
-        for index in 0...3 {
+        for index in 0 ... 3 {
             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(index * 100)) {
                 sut.throttle { counter += 1 }
             }
@@ -28,5 +27,4 @@ class ThrottlerTests: XCTestCase {
         wait(for: [expectation], timeout: 2)
         XCTAssertEqual(counter, 1)
     }
-
 }

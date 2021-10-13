@@ -7,9 +7,8 @@
 import UIKit
 
 final class PresentingViewControllerMock: UIViewController {
-    
     var onPresent: ((_ viewControllerToPresent: UIViewController, _ flag: Bool, _ completion: (() -> Void)?) -> Void)?
-    
+
     override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
         onPresent?(viewControllerToPresent, flag, completion)
     }

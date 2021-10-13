@@ -10,38 +10,35 @@ import UIKit
 /// An item in which text can be entered using a text field.
 /// :nodoc:
 public protocol FormTextItem: FormValueItem, ValidatableFormItem, InputViewRequiringFormItem {
-    
     /// The text item style.
     var style: FormTextItemStyle { get }
-    
+
     /// The title displayed above the text field.
     var title: String? { get set }
-    
+
     /// The placeholder of the text field.
     var placeholder: String? { get set }
-    
+
     /// :nodoc:
     var identifier: String? { get set }
-    
+
     /// The formatter to use for formatting the text in the text field.
     var formatter: Formatter? { get set }
-    
+
     /// The validator to use for validating the text in the text field.
     var validator: Validator? { get set }
-    
+
     /// The auto-capitalization style for the text field.
     var autocapitalizationType: UITextAutocapitalizationType { get set }
-    
+
     /// The autocorrection style for the text field.
     var autocorrectionType: UITextAutocorrectionType { get set }
-    
+
     /// The type of keyboard to use for text entry.
     var keyboardType: UIKeyboardType { get set }
-    
 }
 
 public extension FormTextItem where ValueType == String {
-    
     /// :nodoc:
     var value: String {
         get {
@@ -56,7 +53,7 @@ public extension FormTextItem where ValueType == String {
             valueDidChange()
         }
     }
-    
+
     /// :nodoc:
     func isValid() -> Bool {
         validator?.isValid(value) ?? true
@@ -64,7 +61,6 @@ public extension FormTextItem where ValueType == String {
 }
 
 public extension FormTextItem {
-    
     /// The auto-capitalization style for the text field.
     var autocapitalizationType: UITextAutocapitalizationType {
         get {
@@ -78,7 +74,7 @@ public extension FormTextItem {
                                      objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
-    
+
     /// The autocorrection style for the text field.
     var autocorrectionType: UITextAutocorrectionType {
         get {
@@ -92,7 +88,7 @@ public extension FormTextItem {
                                      objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
-    
+
     /// The type of keyboard to use for text entry.
     var keyboardType: UIKeyboardType {
         get {
@@ -106,7 +102,7 @@ public extension FormTextItem {
                                      objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
-    
+
     /// The text item style.
     var style: FormTextItemStyle {
         get {
@@ -120,7 +116,7 @@ public extension FormTextItem {
                                      objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
-    
+
     /// The title displayed above the text field.
     var title: String? {
         get {
@@ -133,7 +129,7 @@ public extension FormTextItem {
                                      objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
-    
+
     /// The placeholder of the text field.
     var placeholder: String? {
         get {
@@ -146,7 +142,7 @@ public extension FormTextItem {
                                      objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
-    
+
     /// :nodoc:
     var identifier: String? {
         get {
@@ -159,7 +155,7 @@ public extension FormTextItem {
                                      objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
-    
+
     /// The formatter to use for formatting the text in the text field.
     var formatter: Formatter? {
         get {
@@ -172,7 +168,7 @@ public extension FormTextItem {
                                      objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
-    
+
     /// The validator to use for validating the text in the text field.
     var validator: Validator? {
         get {
@@ -185,7 +181,7 @@ public extension FormTextItem {
                                      objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
-    
+
     /// A message that is displayed when validation fails.
     var validationFailureMessage: String? {
         get {

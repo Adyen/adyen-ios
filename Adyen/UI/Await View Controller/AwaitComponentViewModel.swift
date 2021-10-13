@@ -8,16 +8,15 @@ import Foundation
 
 /// Describes the `AwaitViewController` UI elements.
 internal struct AwaitComponentViewModel {
-    
     /// The await icon name.
     internal let icon: String
-    
+
     /// The await message.
     internal let message: String
-    
+
     /// The spinner title.
     internal let spinnerTitle: String
-    
+
     /// Initializes the `AwaitComponentViewModel`.
     ///
     /// - Parameter icon: The icon name.
@@ -28,13 +27,14 @@ internal struct AwaitComponentViewModel {
         self.message = message
         self.spinnerTitle = spinnerTitle
     }
-    
+
     /// Initializes the `AwaitComponentViewModel`.
     ///
     /// - Parameter paymentMethodType: The `paymentMethodType` for which the await action is used.
     /// - Parameter localizationParameters: The localization parameters to control some aspects of how strings are localized
     internal static func viewModel(with paymentMethodType: AwaitPaymentMethod,
-                                   localizationParameters: LocalizationParameters? = nil) -> AwaitComponentViewModel {
+                                   localizationParameters: LocalizationParameters? = nil) -> AwaitComponentViewModel
+    {
         switch paymentMethodType {
         case .mbway, .blik:
             let localizationString = "adyen.\(paymentMethodType.rawValue).confirmPayment"
@@ -43,5 +43,4 @@ internal struct AwaitComponentViewModel {
                                            spinnerTitle: ADYLocalizedString("adyen.await.waitForConfirmation", localizationParameters))
         }
     }
-    
 }

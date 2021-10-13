@@ -10,14 +10,13 @@
 import XCTest
 
 class StoredPaymentMethodComponentTests: XCTestCase {
-    
     func testLocalizationWithCustomTableName() {
         let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: "test_type", name: "test_name")
         let sut = StoredPaymentMethodComponent(paymentMethod: method)
         let payment = Payment(amount: Payment.Amount(value: 34, currencyCode: "EUR"), countryCode: "DE")
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
-        
+
         let viewController = sut.viewController as? UIAlertController
         XCTAssertNotNil(viewController)
         XCTAssertEqual(viewController?.actions.count, 2)
@@ -39,14 +38,14 @@ class StoredPaymentMethodComponentTests: XCTestCase {
 
         XCTAssertEqual(viewController?.actions.last?.title, "Confirm preauthorization")
     }
-    
+
     func testLocalizationWithCustomKeySeparator() {
         let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: "test_type", name: "test_name")
         let sut = StoredPaymentMethodComponent(paymentMethod: method)
         let payment = Payment(amount: Payment.Amount(value: 34, currencyCode: "EUR"), countryCode: "DE")
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
-        
+
         let viewController = sut.viewController as? UIAlertController
         XCTAssertNotNil(viewController)
         XCTAssertEqual(viewController?.actions.count, 2)
@@ -100,5 +99,4 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         }
         waitForExpectations(timeout: 10, handler: nil)
     }
-    
 }

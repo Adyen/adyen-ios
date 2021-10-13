@@ -9,7 +9,6 @@
 import XCTest
 
 class AdyenSwiftUITests: XCTestCase {
-
     var app: XCUIApplication!
 
     override func setUp() {

@@ -11,8 +11,8 @@ internal struct CountryCodeValidator: Validator {
         let allCountryCodes = Locale.isoRegionCodes
         return allCountryCodes.contains(value)
     }
-    
-    internal func maximumLength(for value: String) -> Int {
+
+    internal func maximumLength(for _: String) -> Int {
         3
     }
 }

@@ -11,7 +11,6 @@
 import XCTest
 
 final class AwaitActionHandlerMock: AnyAwaitActionHandler {
-
     var delegate: ActionComponentDelegate?
 
     var onHandle: ((_ action: AwaitAction) -> Void)?
@@ -28,13 +27,11 @@ final class AwaitActionHandlerMock: AnyAwaitActionHandler {
 }
 
 struct AwaitActionHandlerProviderMock: AnyAwaitActionHandlerProvider {
-
     var onHandler: (_ paymentMethodType: AwaitPaymentMethod) -> AnyAwaitActionHandler
 
     func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyAwaitActionHandler {
         onHandler(paymentMethodType)
     }
-
 }
 
 extension AwaitAction: Equatable {
@@ -44,9 +41,7 @@ extension AwaitAction: Equatable {
 }
 
 class AwaitComponentTests: XCTestCase {
-
     func testLocalizationWithCustomTableName() {
-
         let sut = AwaitComponent(style: nil)
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         let presentationDelegate = PresentationDelegateMock()
@@ -103,7 +98,7 @@ class AwaitComponentTests: XCTestCase {
 
         let presentationDelegate = PresentationDelegateMock()
         let waitExpectation = expectation(description: "Wait for the presentationDelegate to be called.")
-        presentationDelegate.doPresent = { component, disableCloseButton in
+        presentationDelegate.doPresent = { component, _ in
             XCTAssertNotNil(component.viewController as? AwaitViewController)
             let viewController = component.viewController as! AwaitViewController
 
@@ -133,5 +128,4 @@ class AwaitComponentTests: XCTestCase {
 
         waitForExpectations(timeout: 5, handler: nil)
     }
-
 }

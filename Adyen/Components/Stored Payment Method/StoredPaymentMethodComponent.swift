@@ -9,7 +9,6 @@ import UIKit
 
 /// :nodoc:
 public final class StoredPaymentMethodComponent: PaymentComponent, PresentableComponent, Localizable {
-
     /// :nodoc:
     public var paymentMethod: PaymentMethod { storedPaymentMethod }
 
@@ -18,28 +17,28 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
 
     /// :nodoc:
     public init(paymentMethod: StoredPaymentMethod) {
-        self.storedPaymentMethod = paymentMethod
+        storedPaymentMethod = paymentMethod
     }
-    
+
     private let storedPaymentMethod: StoredPaymentMethod
-    
+
     // MARK: - PresentableComponent
 
     /// :nodoc:
     public lazy var viewController: UIViewController = {
         Analytics.sendEvent(component: storedPaymentMethod.type, flavor: _isDropIn ? .dropin : .components, environment: environment)
-        
+
         let displayInformation = storedPaymentMethod.localizedDisplayInformation(using: localizationParameters)
         let alertController = UIAlertController(title: ADYLocalizedString("adyen.dropIn.stored.title",
                                                                           localizationParameters, storedPaymentMethod.name),
                                                 message: displayInformation.title,
                                                 preferredStyle: .alert)
-        
+
         let cancelAction = UIAlertAction(title: ADYLocalizedString("adyen.cancelButton", localizationParameters), style: .cancel) { _ in
             self.delegate?.didFail(with: ComponentError.cancelled, from: self)
         }
         alertController.addAction(cancelAction)
-        
+
         let submitActionTitle = ADYLocalizedSubmitButtonTitle(with: payment?.amount,
                                                               style: .immediate,
                                                               localizationParameters)
@@ -48,31 +47,28 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
             self.submit(data: PaymentComponentData(paymentMethodDetails: details))
         }
         alertController.addAction(submitAction)
-        
+
         return alertController
     }()
-    
+
     /// :nodoc:
     public var localizationParameters: LocalizationParameters?
-    
 }
 
 /// :nodoc:
 public struct StoredPaymentDetails: PaymentMethodDetails {
-    
     internal let type: String
-    
+
     internal let storedPaymentMethodIdentifier: String
 
     /// :nodoc:
     public init(paymentMethod: StoredPaymentMethod) {
-        self.type = paymentMethod.type
-        self.storedPaymentMethodIdentifier = paymentMethod.identifier
+        type = paymentMethod.type
+        storedPaymentMethodIdentifier = paymentMethod.identifier
     }
-    
+
     private enum CodingKeys: String, CodingKey {
         case type
         case storedPaymentMethodIdentifier = "storedPaymentMethodId"
     }
-    
 }

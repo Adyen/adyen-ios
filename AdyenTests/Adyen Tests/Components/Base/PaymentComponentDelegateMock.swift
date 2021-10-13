@@ -11,7 +11,7 @@ final class PaymentComponentDelegateMock: PaymentComponentDelegate {
     func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         onDidSubmit?(data, component)
     }
-    
+
     var onDidFail: ((Error, PaymentComponent) -> Void)?
     func didFail(with error: Error, from component: PaymentComponent) {
         onDidFail?(error, component)

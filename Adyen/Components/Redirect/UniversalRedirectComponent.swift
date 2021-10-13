@@ -9,29 +9,28 @@ import UIKit
 
 /// Handles any redirect Url whether its a web url, an App custom scheme url, or an app universal link.
 internal final class UniversalRedirectComponent: ActionComponent, DismissableComponent {
-    
     /// :nodoc:
     internal weak var delegate: ActionComponentDelegate?
-    
+
     /// :nodoc:
     internal var appLauncher: AnyAppLauncher = AppLauncher()
-    
+
     /// :nodoc:
     private var redirectComponent: WebRedirectComponent?
-    
+
     /// :nodoc:
     private let style: RedirectComponentStyle?
-    
+
     /// :nodoc:
     private let componentName = "redirect"
-    
+
     /// Initializes the component.
     ///
     /// - Parameter style: The component's UI style.
     internal init(style: RedirectComponentStyle? = nil) {
         self.style = style
     }
-    
+
     /// This function should be invoked from the application's delegate when the application is opened through a URL.
     ///
     /// - Parameter url: The URL through which the application was opened.
@@ -40,7 +39,7 @@ internal final class UniversalRedirectComponent: ActionComponent, DismissableCom
     internal static func applicationDidOpen(from url: URL) -> Bool {
         WebRedirectComponent.applicationDidOpen(from: url)
     }
-    
+
     /// Handles a redirect action.
     ///
     /// - Parameter action: The redirect action object.
@@ -51,14 +50,14 @@ internal final class UniversalRedirectComponent: ActionComponent, DismissableCom
             openCustomSchemeUrl(action)
         }
     }
-    
+
     /// :nodoc:
     internal func dismiss(_ animated: Bool, completion: (() -> Void)?) {
         redirectComponent?.viewController.dismiss(animated: animated, completion: completion)
     }
-    
+
     // MARK: - Http link handling
-    
+
     /// :nodoc:
     private func openHttpSchemeUrl(_ action: RedirectAction) {
         // Try to open as a universal app link, if it fails open the in-app browser.
@@ -72,7 +71,7 @@ internal final class UniversalRedirectComponent: ActionComponent, DismissableCom
             }
         }
     }
-    
+
     /// :nodoc:
     private func openInAppBrowser(_ action: RedirectAction) {
         let component = WebRedirectComponent(url: action.url,
@@ -82,12 +81,12 @@ internal final class UniversalRedirectComponent: ActionComponent, DismissableCom
         component._isDropIn = _isDropIn
         component.environment = environment
         redirectComponent = component
-        
+
         UIViewController.findTopPresenter()?.present(component.viewController, animated: true)
     }
-    
+
     // MARK: - Custom scheme link handling
-    
+
     /// :nodoc:
     private func openCustomSchemeUrl(_ action: RedirectAction) {
         appLauncher.openCustomSchemeUrl(action.url) { [weak self] success in
@@ -100,38 +99,35 @@ internal final class UniversalRedirectComponent: ActionComponent, DismissableCom
             }
         }
     }
-    
+
     // MARK: - Helpers
-    
+
     /// :nodoc:
     private func registerRedirectBounceBackListener(_ action: RedirectAction) {
         RedirectListener.registerForURL { [weak self] returnURL in
             guard let self = self else { return }
-            
+
             let additionalDetails = RedirectDetails(returnURL: returnURL)
             let actionData = ActionComponentData(details: additionalDetails, paymentData: action.paymentData)
             self.delegate?.didProvide(actionData, from: self)
         }
     }
-    
 }
 
 /// :nodoc:
 extension UniversalRedirectComponent: ActionComponentDelegate {
-    
     /// :nodoc:
-    public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
+    public func didProvide(_ data: ActionComponentData, from _: ActionComponent) {
         delegate?.didProvide(data, from: self)
     }
-    
+
     /// :nodoc:
-    public func didFail(with error: Error, from component: ActionComponent) {
+    public func didFail(with error: Error, from _: ActionComponent) {
         delegate?.didFail(with: error, from: self)
     }
-    
+
     /// :nodoc:
-    public func didOpenExternalApplication(_ component: ActionComponent) {
+    public func didOpenExternalApplication(_: ActionComponent) {
         delegate?.didOpenExternalApplication(self)
     }
-    
 }

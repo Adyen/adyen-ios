@@ -8,38 +8,38 @@ import Adyen
 
 /// A form item into which a card's security code (CVC/CVV) is entered.
 internal final class FormCardSecurityCodeItem: FormTextItem {
-    
     /// :nodoc:
     internal var localizationParameters: LocalizationParameters?
-    
+
     /// :nodoc:
     @Observable(nil) internal var selectedCard: CardType?
-    
+
     /// Initializes the form card number item.
-    internal init(environment: Environment,
+    internal init(environment _: Environment,
                   style: FormTextItemStyle = FormTextItemStyle(),
-                  localizationParameters: LocalizationParameters? = nil) {
+                  localizationParameters: LocalizationParameters? = nil)
+    {
         self.localizationParameters = localizationParameters
         self.style = style
-        
+
         title = ADYLocalizedString("adyen.card.cvcItem.title", localizationParameters)
         validator = securityCodeValidator
         formatter = securityCodeFormatter
-        
+
         validationFailureMessage = ADYLocalizedString("adyen.card.cvcItem.invalid", localizationParameters)
         keyboardType = .numberPad
     }
-    
+
     internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
-    
+
     private lazy var securityCodeFormatter = CardSecurityCodeFormatter(publisher: $selectedCard)
     private lazy var securityCodeValidator = CardSecurityCodeValidator(publisher: $selectedCard)
 }
 
 extension FormItemViewBuilder {
-    internal func build(with item: FormCardSecurityCodeItem) -> FormItemView<FormCardSecurityCodeItem> {
+    func build(with item: FormCardSecurityCodeItem) -> FormItemView<FormCardSecurityCodeItem> {
         FormCardSecurityCodeItemView(item: item)
     }
 }

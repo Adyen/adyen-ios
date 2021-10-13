@@ -17,17 +17,15 @@ internal protocol AnyAppLauncher {
 /// Handles opening third party apps.
 /// :nodoc:
 internal struct AppLauncher: AnyAppLauncher {
-    
     /// :nodoc:
     internal func openCustomSchemeUrl(_ url: URL, completion: ((Bool) -> Void)?) {
         UIApplication.shared.open(url, options: [:], completionHandler: completion)
     }
-    
+
     /// :nodoc:
     internal func openUniversalAppUrl(_ url: URL, completion: ((Bool) -> Void)?) {
         UIApplication.shared.open(url,
                                   options: [UIApplication.OpenExternalURLOptionsKey.universalLinksOnly: true],
                                   completionHandler: completion)
     }
-    
 }

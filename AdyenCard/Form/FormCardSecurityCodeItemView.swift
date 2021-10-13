@@ -9,7 +9,6 @@ import UIKit
 
 /// A view representing a form card security code item.
 internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>, Observer {
-    
     internal required init(item: FormCardSecurityCodeItem) {
         super.init(item: item)
         accessory = .customView(cardHintView)
@@ -18,60 +17,57 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
             let localization = ADYLocalizedString("adyen.card.cvcItem.placeholder.digits", item.localizationParameters)
             self?.textField.placeholder = String(format: localization, number)
         }
-        
+
         item.$selectedCard.publish(nil)
     }
-    
+
     private lazy var cardHintView: HintView = {
         let view = HintView(item: self.item)
         view.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cvvHintIcon")
         return view
     }()
-    
+
     override internal func textFieldDidBeginEditing(_ text: UITextField) {
         super.textFieldDidBeginEditing(text)
         accessory = .customView(cardHintView)
         cardHintView.isHighlighted = true
     }
-    
+
     override internal func textFieldDidEndEditing(_ text: UITextField) {
         super.textFieldDidEndEditing(text)
         cardHintView.isHighlighted = false
     }
-    
 }
 
 extension FormCardSecurityCodeItemView {
-    
-    internal class HintView: UIImageView, Observer {
-        
+    class HintView: UIImageView, Observer {
         private lazy var bundle = Bundle.cardInternalResources
         private let minimumAlpha: CGFloat = 0.3
         private let blinkDuration = 1.0
-        
+
         internal var showFront: Bool = false
-        
+
         private var logoResource: String {
             showFront ? "ic_card_front" : "ic_card_back"
         }
-        
+
         private var hintResource: String {
             showFront ? "ic_card_front_cvv_focus" : "ic_card_back_cvv_focus"
         }
-        
+
         internal init(item: FormCardSecurityCodeItem) {
             super.init(frame: .zero)
-            image = UIImage(named: logoResource, in: self.bundle, compatibleWith: nil)
+            image = UIImage(named: logoResource, in: bundle, compatibleWith: nil)
             translatesAutoresizingMaskIntoConstraints = false
             setupConstrints()
             observe(item.$selectedCard) { [weak self] cardType in self?.flipCard(toFront: cardType == CardType.americanExpress) }
         }
-        
+
         @available(*, unavailable)
-        internal required init?(coder: NSCoder) {
+        internal required init?(coder _: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
-        
+
         /// Indicate when user focused on security code field
         override internal var isHighlighted: Bool {
             didSet {
@@ -83,7 +79,7 @@ extension FormCardSecurityCodeItemView {
                 }
             }
         }
-        
+
         private func flipCard(toFront: Bool) {
             guard showFront != toFront else { return }
             showFront = toFront
@@ -96,7 +92,7 @@ extension FormCardSecurityCodeItemView {
                               },
                               completion: nil)
         }
-        
+
         private func animateHint() {
             UIView.animate(withDuration: blinkDuration,
                            delay: 0,
@@ -104,13 +100,13 @@ extension FormCardSecurityCodeItemView {
                            animations: { self.hintImage.alpha = self.minimumAlpha },
                            completion: nil)
         }
-        
+
         override public var accessibilityIdentifier: String? {
             didSet {
                 hintImage.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "imageView")
             }
         }
-        
+
         private func setupConstrints() {
             addSubview(hintImage)
             setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
@@ -118,10 +114,10 @@ extension FormCardSecurityCodeItemView {
                 hintImage.topAnchor.constraint(equalTo: topAnchor),
                 hintImage.bottomAnchor.constraint(equalTo: bottomAnchor),
                 hintImage.leftAnchor.constraint(equalTo: leftAnchor),
-                hintImage.rightAnchor.constraint(equalTo: rightAnchor)
+                hintImage.rightAnchor.constraint(equalTo: rightAnchor),
             ])
         }
-        
+
         private lazy var hintImage: UIImageView = {
             let view = UIImageView(image: UIImage(named: self.hintResource, in: self.bundle, compatibleWith: nil))
             view.translatesAutoresizingMaskIntoConstraints = false

@@ -12,7 +12,6 @@ import SafariServices
 import XCTest
 
 class DropInActionComponentTests: XCTestCase {
-
     func testRedirectToHttpWebLink() {
         let sut = DropInActionComponent()
         let delegate = ActionComponentDelegateMock()
@@ -27,7 +26,6 @@ class DropInActionComponentTests: XCTestCase {
 
         let waitExpectation = expectation(description: "Expect in app browser to be presented and then dismissed")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
-
             let topPresentedViewController = UIViewController.findTopPresenter()
             XCTAssertNotNil(topPresentedViewController as? SFSafariViewController)
 
@@ -41,5 +39,4 @@ class DropInActionComponentTests: XCTestCase {
 
         waitForExpectations(timeout: 10, handler: nil)
     }
-
 }

@@ -8,7 +8,6 @@ import Foundation
 
 /// A BLIK paymeny method.
 public struct BLIKPaymentMethod: PaymentMethod {
-
     /// :nodoc:
     public let type: String
 

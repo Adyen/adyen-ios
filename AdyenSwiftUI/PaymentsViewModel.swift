@@ -7,9 +7,7 @@
 import SwiftUI
 
 internal final class PaymentsViewModel: ObservableObject, Identifiable, Presenter {
-
     private lazy var controller: PaymentsController = {
-
         let controller = PaymentsController()
         controller.presenter = self
 
@@ -45,14 +43,14 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
     internal func viewDidAppear() {
         items = [
             [
-                ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent)
+                ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent),
             ],
             [
                 ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
                 ComponentsItem(title: "iDEAL", selectionHandler: presentIdealComponent),
                 ComponentsItem(title: "SEPA Direct Debit", selectionHandler: presentSEPADirectDebitComponent),
-                ComponentsItem(title: "MB WAY", selectionHandler: presentMBWayComponent)
-            ]
+                ComponentsItem(title: "MB WAY", selectionHandler: presentMBWayComponent),
+            ],
         ]
         controller.requestPaymentMethods()
     }

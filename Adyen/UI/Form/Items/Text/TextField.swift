@@ -12,11 +12,10 @@ import UIKit
 /// So in order to prevent this behaviour,
 /// accessibilityValue is overriden to return an empty string in case the text var is nil or empty string.
 internal final class TextField: UITextField {
-    
     private var heightConstraint: NSLayoutConstraint?
-    
+
     internal var disablePlaceHolderAccessibility: Bool = true
-    
+
     override internal var accessibilityValue: String? {
         get {
             guard disablePlaceHolderAccessibility else { return super.accessibilityValue }
@@ -26,10 +25,10 @@ internal final class TextField: UITextField {
                 return ""
             }
         }
-        
+
         set { super.accessibilityValue = newValue }
     }
-    
+
     override internal var font: UIFont? {
         didSet {
             heightConstraint = heightConstraint ?? heightAnchor.constraint(equalToConstant: 0)

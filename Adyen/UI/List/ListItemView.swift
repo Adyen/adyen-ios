@@ -10,37 +10,36 @@ import UIKit
 /// Displays a list item.
 /// :nodoc:
 public final class ListItemView: UIView, AnyFormItemView {
-    
     /// :nodoc:
     public weak var delegate: FormItemViewDelegate?
-    
+
     /// :nodoc:
     public var childItemViews: [AnyFormItemView] = []
-    
+
     /// Initializes the list item view.
     public init() {
         super.init(frame: .zero)
-        
+
         addSubview(imageView)
         addSubview(textStackView)
-        
+
         preservesSuperviewLayoutMargins = true
         configureConstraints()
     }
-    
+
     /// :nodoc:
     @available(*, unavailable)
-    public required init?(coder aDecoder: NSCoder) {
+    public required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - Item
-    
+
     /// The item displayed in the item view.
     public var item: ListItem? {
         didSet {
             updateItemData(item: item)
-            
+
             if let style = item?.style, oldValue?.style != style {
                 updateImageView(style: style)
                 updateTitleLabel(style: style)
@@ -48,22 +47,22 @@ public final class ListItemView: UIView, AnyFormItemView {
             }
         }
     }
-    
+
     private func updateItemData(item: ListItem?) {
         accessibilityIdentifier = item?.identifier
-        
+
         titleLabel.text = item?.title
         titleLabel.accessibilityIdentifier = item?.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel") }
-        
+
         subtitleLabel.text = item?.subtitle
         subtitleLabel.isHidden = item?.subtitle?.isEmpty ?? true
         subtitleLabel.accessibilityIdentifier = item?.identifier.map {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "subtitleLabel")
         }
-        
+
         imageView.imageURL = item?.imageURL
     }
-    
+
     private func updateTitleLabel(style: ListItemStyle) {
         titleLabel.font = style.title.font
         titleLabel.adjustsFontForContentSizeCategory = true
@@ -71,7 +70,7 @@ public final class ListItemView: UIView, AnyFormItemView {
         titleLabel.backgroundColor = style.title.backgroundColor
         titleLabel.textAlignment = style.title.textAlignment
     }
-    
+
     private func updateSubtitleLabel(style: ListItemStyle) {
         subtitleLabel.font = style.subtitle.font
         subtitleLabel.adjustsFontForContentSizeCategory = true
@@ -79,7 +78,7 @@ public final class ListItemView: UIView, AnyFormItemView {
         subtitleLabel.backgroundColor = style.subtitle.backgroundColor
         subtitleLabel.textAlignment = style.subtitle.textAlignment
     }
-    
+
     private func updateImageView(style: ListItemStyle) {
         imageView.contentMode = style.image.contentMode
         guard item?.canModifyIcon == true else {
@@ -90,17 +89,17 @@ public final class ListItemView: UIView, AnyFormItemView {
         imageView.layer.borderWidth = style.image.borderWidth
         imageView.layer.borderColor = style.image.borderColor?.cgColor
     }
-    
+
     // MARK: - Image View
-    
+
     private lazy var imageView: NetworkImageView = {
         let imageView = NetworkImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.preservesSuperviewLayoutMargins = true
-        
+
         return imageView
     }()
-    
+
     override public func layoutSubviews() {
         super.layoutSubviews()
 
@@ -110,28 +109,28 @@ public final class ListItemView: UIView, AnyFormItemView {
 
         imageView.adyen.round(using: item?.style.image.cornerRounding ?? .fixed(8))
     }
-    
+
     // MARK: - Title Label
-    
+
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        
+
         return titleLabel
     }()
-    
+
     // MARK: - Subtitle Label
-    
+
     private lazy var subtitleLabel: UILabel = {
         let subtitleLabel = UILabel()
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.isHidden = true
-        
+
         return subtitleLabel
     }()
-    
+
     // MARK: - Text Stack View
-    
+
     private lazy var textStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [titleLabel, subtitleLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -141,11 +140,11 @@ public final class ListItemView: UIView, AnyFormItemView {
         stackView.distribution = .fill
         return stackView
     }()
-    
+
     // MARK: - Layout
-    
+
     private let imageSize = CGSize(width: 40, height: 26)
-    
+
     private func configureConstraints() {
         let constraints = [
             imageView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
@@ -154,32 +153,32 @@ public final class ListItemView: UIView, AnyFormItemView {
             imageView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             imageView.widthAnchor.constraint(equalToConstant: imageSize.width),
             imageView.heightAnchor.constraint(equalToConstant: imageSize.height),
-            
+
             textStackView.topAnchor.constraint(greaterThanOrEqualTo: layoutMarginsGuide.topAnchor),
             textStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
             textStackView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 16.0),
             textStackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             textStackView.bottomAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.bottomAnchor),
-            
-            self.heightAnchor.constraint(greaterThanOrEqualToConstant: 48)
+
+            heightAnchor.constraint(greaterThanOrEqualToConstant: 48),
         ]
-        
+
         NSLayoutConstraint.activate(constraints)
     }
-    
+
     // MARK: - Trait Collection
-    
+
     /// :nodoc:
     override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        
+
         guard item?.canModifyIcon == true else {
             return imageView.layer.borderColor = nil
         }
 
         imageView.layer.borderColor = item?.style.image.borderColor?.cgColor ?? UIColor.AdyenCore.componentSeparator.cgColor
     }
-    
+
     override public var intrinsicContentSize: CGSize {
         let targetSize = CGSize(width: UIView.layoutFittingCompressedSize.width,
                                 height: UIView.layoutFittingCompressedSize.height)
@@ -188,5 +187,4 @@ public final class ListItemView: UIView, AnyFormItemView {
                                                          verticalFittingPriority: .fittingSizeLevel)
         return size + layoutMargins.size + CGSize(width: imageSize.width, height: 0)
     }
-    
 }

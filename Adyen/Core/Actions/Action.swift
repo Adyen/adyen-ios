@@ -8,29 +8,28 @@ import Foundation
 
 /// Describes a follow-up action that should be taken to complete a payment.
 public enum Action: Decodable {
-    
     /// Indicates the user should be redirected to a URL.
     case redirect(RedirectAction)
-    
+
     /// Indicates the user should be redirected to an SDK.
     case sdk(SDKAction)
-    
+
     /// Indicates a 3D Secure device fingerprint should be taken.
     case threeDS2Fingerprint(ThreeDS2FingerprintAction)
-    
+
     /// Indicates a 3D Secure challenge should be presented.
     case threeDS2Challenge(ThreeDS2ChallengeAction)
-    
+
     /// Indicate that the SDK should wait for user action.
-    case await(AwaitAction)
-    
+    case await (AwaitAction)
+
     // MARK: - Coding
-    
+
     /// :nodoc:
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(ActionType.self, forKey: .type)
-        
+
         switch type {
         case .redirect, .qrCode:
             self = .redirect(try RedirectAction(from: decoder))
@@ -44,7 +43,7 @@ public enum Action: Decodable {
             self = .await(try AwaitAction(from: decoder))
         }
     }
-    
+
     private enum ActionType: String, Decodable {
         case redirect
         case threeDS2Fingerprint
@@ -53,9 +52,8 @@ public enum Action: Decodable {
         case qrCode
         case await
     }
-    
+
     private enum CodingKeys: String, CodingKey {
         case type
     }
-    
 }

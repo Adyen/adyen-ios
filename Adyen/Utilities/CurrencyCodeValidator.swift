@@ -11,8 +11,8 @@ internal struct CurrencyCodeValidator: Validator {
         let allCurrencyCodes = Locale.isoCurrencyCodes
         return allCurrencyCodes.contains(value)
     }
-    
-    internal func maximumLength(for value: String) -> Int {
+
+    internal func maximumLength(for _: String) -> Int {
         3
     }
 }

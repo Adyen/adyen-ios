@@ -7,45 +7,43 @@
 import UIKit
 
 internal final class ComponentsViewController: UIViewController, Presenter {
-    
     private lazy var componentsView = ComponentsView()
 
     private lazy var controller: PaymentsController = {
-
         let controller = PaymentsController()
         controller.presenter = self
 
         return controller
     }()
-    
+
     // MARK: - View
-    
+
     override internal func loadView() {
         view = componentsView
     }
-    
+
     override internal func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Components"
-        
+
         componentsView.items = [
             [
-                ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent)
+                ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent),
             ],
             [
                 ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
                 ComponentsItem(title: "iDEAL", selectionHandler: presentIdealComponent),
                 ComponentsItem(title: "SEPA Direct Debit", selectionHandler: presentSEPADirectDebitComponent),
-                ComponentsItem(title: "MB WAY", selectionHandler: presentMBWayComponent)
+                ComponentsItem(title: "MB WAY", selectionHandler: presentMBWayComponent),
             ],
             [
-                ComponentsItem(title: "Apple Pay", selectionHandler: presentApplePayComponent)
-            ]
+                ComponentsItem(title: "Apple Pay", selectionHandler: presentApplePayComponent),
+            ],
         ]
-        
+
         controller.requestPaymentMethods()
     }
-    
+
     // MARK: - DropIn Component
 
     internal func presentDropInComponent() {

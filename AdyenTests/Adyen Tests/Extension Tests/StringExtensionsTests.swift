@@ -8,7 +8,6 @@
 import XCTest
 
 class StringExtensionsTests: XCTestCase {
-    
     func testTruncateString() {
         XCTAssertEqual("".truncate(to: 2), "")
         XCTAssertEqual("a".truncate(to: 2), "a")
@@ -16,7 +15,7 @@ class StringExtensionsTests: XCTestCase {
         XCTAssertEqual("ab".truncate(to: 2), "ab")
         XCTAssertEqual("abcde".truncate(to: 2), "ab")
     }
-    
+
     func testStringComponentsWithLength() {
         XCTAssertEqual("".components(withLength: 0), [])
         XCTAssertEqual("".components(withLength: 3), [])
@@ -24,7 +23,7 @@ class StringExtensionsTests: XCTestCase {
         XCTAssertEqual("abcabc".components(withLength: 3), ["abc", "abc"])
         XCTAssertEqual("abcabca".components(withLength: 3), ["abc", "abc", "a"])
     }
-    
+
     func testStringComponentsWithLengths() {
         XCTAssertEqual("".components(withLengths: [2, 1]), [])
         XCTAssertEqual("ab".components(withLengths: [2, 1]), ["ab"])
@@ -32,7 +31,7 @@ class StringExtensionsTests: XCTestCase {
         XCTAssertEqual("abcde".components(withLengths: [2, 1]), ["ab", "c"])
         XCTAssertEqual("abcde".components(withLengths: [1, 1, 3]), ["a", "b", "cde"])
     }
-    
+
     func testStringSubscriptWithPostion() {
         XCTAssertEqual(""[1], "")
         XCTAssertEqual("abc"[4], "")
@@ -41,16 +40,15 @@ class StringExtensionsTests: XCTestCase {
         XCTAssertEqual("abc"[1], "b")
         XCTAssertEqual("abc"[2], "c")
     }
-    
+
     func testStringSubscriptWithOpenRange() {
-        XCTAssertEqual("abc"[0..<2], "ab")
-        XCTAssertEqual("abc"[1..<2], "b")
+        XCTAssertEqual("abc"[0 ..< 2], "ab")
+        XCTAssertEqual("abc"[1 ..< 2], "b")
     }
-    
+
     func testStringSubscriptWithClosedRange() {
-        XCTAssertEqual("abc"[0...1], "ab")
-        XCTAssertEqual("abc"[0...2], "abc")
-        XCTAssertEqual("abc"[1...2], "bc")
+        XCTAssertEqual("abc"[0 ... 1], "ab")
+        XCTAssertEqual("abc"[0 ... 2], "abc")
+        XCTAssertEqual("abc"[1 ... 2], "bc")
     }
-    
 }
