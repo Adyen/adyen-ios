@@ -1,0 +1,32 @@
+name: Format project
+on: [workflow_dispatch]
+jobs:
+
+  Update:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - uses: n1hility/cancel-previous-runs@v2
+      with:
+        token: ${{ secrets.MANUAL_ACTION_TOKEN }}
+
+    - name: Select latest Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+
+    - name: Format project
+      run: |
+        brew install swiftformat
+        swiftformat .
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v3
+      with:
+        delete-branch: true
+        branch: format-project-github-action
+        commit-message: "chore: format project"
+        title: Format project
+        body: Format project.
+        token: ${{ secrets.MANUAL_ACTION_TOKEN }}
