@@ -1,0 +1,33 @@
+name: Generate Docs
+on: [workflow_dispatch]
+jobs:
+
+  Generate:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - uses: n1hility/cancel-previous-runs@v2
+      with:
+        token: ${{ secrets.MANUAL_ACTION_TOKEN }}
+
+    - name: Select latest Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+
+    - name: Generate Docs
+      run: |
+        gem install cocoapods
+        gem install jazzy
+        Internal/generate_documentation.sh v3
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v3
+      with:
+        delete-branch: true
+        branch: update-docs-github-action
+        commit-message: "chore: updated documentation"
+        title: update documentation
+        body: Regenerate documentation.
+        token: ${{ secrets.MANUAL_ACTION_TOKEN }}
