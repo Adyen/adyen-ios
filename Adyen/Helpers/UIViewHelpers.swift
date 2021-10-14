@@ -46,17 +46,17 @@ extension AdyenScope where Base: UIView {
                                                duration: 0.35,
                                                delay: 0,
                                                options: [.calculationModeCubicPaced, .beginFromCurrentState],
-                                               animations: {
+                                               animations: { [weak base] in
                                                    UIView.addKeyframe(withRelativeStartTime: hidden ? 0.5 : 0, relativeDuration: 0.5) {
-                                                       self.base.isHidden = hidden
+                                                       base?.isHidden = hidden
                                                    }
                                                    UIView.addKeyframe(withRelativeStartTime: hidden ? 0 : 0.5, relativeDuration: 0.5) {
-                                                       self.base.alpha = hidden ? 0 : 1
+                                                       base?.alpha = hidden ? 0 : 1
                                                    }
-                                               }, completion: { _ in
-                                                   self.base.isHidden = hidden
-                                                   self.base.alpha = hidden ? 0 : 1
-                                                   self.base.adyen.updatePreferredContentSize()
+                                               }, completion: { [weak base] _ in
+                                                   base?.isHidden = hidden
+                                                   base?.alpha = hidden ? 0 : 1
+                                                   base?.adyen.updatePreferredContentSize()
                                                })
         animate(context: context)
     }

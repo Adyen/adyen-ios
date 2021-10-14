@@ -30,8 +30,8 @@
 "adyen.card.stored.title" = "Επαληθεύστε την κάρτα σας";
 "adyen.card.stored.message" = "Εισαγάγετε τον κωδικό CVC της κάρτας %@";
 "adyen.card.stored.expires" = "Λήξη: %@";
-"adyen.card.numberItem.unsupportedBrand" = "";
-"adyen.card.numberItem.unknownBrand" = "";
+"adyen.card.numberItem.unsupportedBrand" = "%@: δεν υποστηρίζεται";
+"adyen.card.numberItem.unknownBrand" = "Η επωνυμία κάρτας που εισαγάγατε δεν υποστηρίζεται";
 "adyen.dropIn.stored.title" = "Επιβεβαίωση πληρωμής μέσω %@";
 "adyen.dropIn.preselected.openAll.title" = "Αλλαγή τρόπου πληρωμής";
 "adyen.continueTo" = "Μετάβαση στην %@";

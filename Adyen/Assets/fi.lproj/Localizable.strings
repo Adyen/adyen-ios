@@ -30,8 +30,8 @@
 "adyen.card.stored.title" = "Määritä korttisi";
 "adyen.card.stored.message" = "Syötä CVC-koodisi %@ varten";
 "adyen.card.stored.expires" = "Vanhenee %@";
-"adyen.card.numberItem.unsupportedBrand" = "";
-"adyen.card.numberItem.unknownBrand" = "";
+"adyen.card.numberItem.unsupportedBrand" = "%@ ei tueta";
+"adyen.card.numberItem.unknownBrand" = "Syötettyä tuotemerkkikorttia ei tueta";
 "adyen.dropIn.stored.title" = "Vahvista %@ maksu";
 "adyen.dropIn.preselected.openAll.title" = "Muuta maksutapaa";
 "adyen.continueTo" = "Jatka kohteeseen %@";

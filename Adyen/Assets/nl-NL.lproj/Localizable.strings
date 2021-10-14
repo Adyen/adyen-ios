@@ -30,8 +30,8 @@
 "adyen.card.stored.title" = "Verifieer uw kaart";
 "adyen.card.stored.message" = "Voer de verificatiecode in voor %@";
 "adyen.card.stored.expires" = "Verloopt op %@";
-"adyen.card.numberItem.unsupportedBrand" = "";
-"adyen.card.numberItem.unknownBrand" = "";
+"adyen.card.numberItem.unsupportedBrand" = "%@ wordt niet ondersteund";
+"adyen.card.numberItem.unknownBrand" = "Het ingevoerde kaartmerk wordt niet ondersteund";
 "adyen.dropIn.stored.title" = "Bevestig %@ betaling";
 "adyen.dropIn.preselected.openAll.title" = "Betalingsmethode wijzigen";
 "adyen.continueTo" = "Doorgaan naar %@";

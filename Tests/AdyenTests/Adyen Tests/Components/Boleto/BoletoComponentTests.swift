@@ -153,7 +153,6 @@ class BoletoComponentTests: XCTestCase {
             let cityField = sutVC.view.findView(by: "addressItem.city.textField") as? UITextField
             let postalCodeField = sutVC.view.findView(by: "addressItem.postalCode.textField") as? UITextField
 
-
             XCTAssertNotNil(firstNameField)
             XCTAssertEqual(firstNameField?.text, prefilledInformation.shopperName?.firstName)
             

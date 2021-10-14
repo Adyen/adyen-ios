@@ -30,8 +30,8 @@
 "adyen.card.stored.title" = "Подтвердить карту";
 "adyen.card.stored.message" = "Введите код CVC карты %@";
 "adyen.card.stored.expires" = "Действительно до %@";
-"adyen.card.numberItem.unsupportedBrand" = "";
-"adyen.card.numberItem.unknownBrand" = "";
+"adyen.card.numberItem.unsupportedBrand" = "%@ не поддерживается";
+"adyen.card.numberItem.unknownBrand" = "Карты введенной платежной системы не поддерживаются";
 "adyen.dropIn.stored.title" = "Подтвердить оплату %@";
 "adyen.dropIn.preselected.openAll.title" = "Изменить способ оплаты";
 "adyen.continueTo" = "Перейти к %@";
