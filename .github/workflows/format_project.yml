@@ -25,7 +25,7 @@ jobs:
       uses: peter-evans/create-pull-request@v3
       with:
         delete-branch: true
-        branch: format-project-github-action
+        branch: format-project-github-action-v3
         commit-message: "chore: format project"
         title: Format project
         body: Format project.
