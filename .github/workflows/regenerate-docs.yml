@@ -21,7 +21,7 @@ jobs:
       run: |
         gem install cocoapods
         gem install jazzy
-        Internal/generate_documentation.sh
+        Scripts/generate_documentation.sh
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
       with:
