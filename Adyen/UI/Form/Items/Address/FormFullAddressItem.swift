@@ -35,7 +35,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
             headerItem.text = title ?? ""
         }
     }
-    
+
     /// Initializes the split text item.
     /// - Parameters:
     ///   - initialCountry: The items displayed side-by-side. Must be two.
