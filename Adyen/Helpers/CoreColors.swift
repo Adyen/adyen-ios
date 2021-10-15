@@ -8,10 +8,8 @@ import UIKit
 
 /// :nodoc:
 extension UIColor {
-    
     /// :nodoc:
-    internal enum AdyenCore {
-        
+    enum AdyenCore {
         internal static var componentBackground: UIColor {
             if #available(iOS 13.0, *) {
                 return .systemBackground
@@ -19,7 +17,7 @@ extension UIColor {
                 return .white
             }
         }
-        
+
         internal static var componentLabel: UIColor {
             if #available(iOS 13.0, *) {
                 return .label
@@ -27,7 +25,7 @@ extension UIColor {
                 return .black
             }
         }
-        
+
         internal static var componentSecondaryLabel: UIColor {
             if #available(iOS 13.0, *) {
                 return .secondaryLabel
@@ -35,7 +33,7 @@ extension UIColor {
                 return .darkGray
             }
         }
-        
+
         internal static var componentTertiaryLabel: UIColor {
             if #available(iOS 13.0, *) {
                 return .tertiaryLabel
@@ -43,7 +41,7 @@ extension UIColor {
                 return .gray
             }
         }
-        
+
         internal static var componentQuaternaryLabel: UIColor {
             if #available(iOS 13.0, *) {
                 return .quaternaryLabel
@@ -51,7 +49,7 @@ extension UIColor {
                 return .lightGray
             }
         }
-        
+
         internal static var componentPlaceholderText: UIColor {
             if #available(iOS 13.0, *) {
                 return .placeholderText
@@ -59,7 +57,7 @@ extension UIColor {
                 return .gray
             }
         }
-        
+
         internal static var componentSeparator: UIColor {
             if #available(iOS 13.0, *) {
                 return .separator
@@ -67,7 +65,7 @@ extension UIColor {
                 return UIColor(white: 0.0, alpha: 0.2)
             }
         }
-        
+
         internal static var componentLoadingMessageColor: UIColor {
             if #available(iOS 11.0, *) {
                 return UIColor(named: "awaitLoadingMessageColor",
@@ -77,11 +75,9 @@ extension UIColor {
                 return componentPlaceholderText
             }
         }
-        
+
         internal static let defaultBlue = UIColor(hex: 0x007AFF)
-        
+
         internal static let defaultRed = UIColor(hex: 0xFF3B30)
-        
     }
-    
 }

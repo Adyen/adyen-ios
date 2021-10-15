@@ -15,31 +15,29 @@ public enum HTTPMethod: String {
 /// :nodoc:
 /// Represents an API request.
 public protocol Request: Encodable {
-    
     /// :nodoc:
     /// The type of the expected response.
     associatedtype ResponseType: Response
-    
+
     /// :nodoc:
     /// The request path.
     var path: String { get }
-    
+
     /// :nodoc:
     /// How many times the request has been tried.
     var counter: UInt { get set }
-    
+
     /// :nodoc:
     /// The HTTP headers.
     var headers: [String: String] { get }
-    
+
     /// :nodoc:
     /// The query parameters.
     var queryParameters: [URLQueryItem] { get }
-    
+
     /// :nodoc:
     /// The HTTP method.
     var method: HTTPMethod { get }
-    
 }
 
 /// :nodoc:

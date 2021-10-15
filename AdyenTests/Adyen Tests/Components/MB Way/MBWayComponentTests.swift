@@ -10,7 +10,6 @@
 import XCTest
 
 class MBWayComponentTests: XCTestCase {
-
     lazy var method = MBWayPaymentMethod(type: "test_type", name: "test_name")
     let payment = Payment(amount: Payment.Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
 
@@ -199,5 +198,4 @@ class MBWayComponentTests: XCTestCase {
         let sut = MBWayComponent(paymentMethod: mbWayPaymentMethod)
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
-
 }

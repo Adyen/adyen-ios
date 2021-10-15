@@ -8,15 +8,14 @@ import Foundation
 
 /// :nodoc:
 public struct ClientKeyResponse: Response {
-    
     /// The card public key
     public let cardPublicKey: String
-    
+
     /// :nodoc:
     internal init(cardPublicKey: String) {
         self.cardPublicKey = cardPublicKey
     }
-    
+
     /// :nodoc:
     internal enum CodingKeys: String, CodingKey {
         case cardPublicKey = "publicKey"

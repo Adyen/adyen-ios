@@ -10,13 +10,12 @@ import Foundation
 
 /// Action component to handle WeChat Pay SDK action.
 public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionComponent {
-    
     /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
-    
+
     /// :nodoc:
     private var currentlyHandledAction: WeChatPaySDKAction?
-    
+
     /// :nodoc:
     public func handle(_ action: WeChatPaySDKAction) {
         guard Self.isDeviceSupported() else {
@@ -28,39 +27,37 @@ public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionC
           Warning: There was a WeChatPaySDKAction already in progress.
          Handling multiple WeChatPaySDKAction's in parallel is not supported.
         """)
-        
+
         Analytics.sendEvent(component: "wechatpaySDK", flavor: _isDropIn ? .dropin : .components, environment: environment)
-        
+
         currentlyHandledAction = action
-        
+
         RedirectListener.registerForURL { url in
             WXApi.handleOpen(url, delegate: self)
         }
-        
+
         WXApi.registerApp(action.sdkData.appIdentifier)
         WXApi.send(PayReq(actionData: action.sdkData))
-        
+
         delegate?.didOpenExternalApplication(self)
     }
-    
+
     /// Checks if the current device supports WeChat Pay.
     public static func isDeviceSupported() -> Bool {
         assertWeChatPayAppSchemeConfigured()
         WXApi.registerApp("")
         return WXApi.isWXAppInstalled() && WXApi.isWXAppSupport()
     }
-    
+
     private static func assertWeChatPayAppSchemeConfigured() {
         guard Bundle.main.adyen.isSchemeConfigured("weixin") else {
             assertionFailure("weixin:// scheme must be added to Info.plist under LSApplicationQueriesSchemes key.")
             return
         }
     }
-    
 }
 
 extension WeChatPaySDKActionComponent: WXApiDelegate {
-    
     public func onResp(_ resp: BaseResp) {
         guard let currentlyHandledAction = currentlyHandledAction else { assertionFailure(); return }
         let additionalData = WeChatPayAdditionalDetails(resultCode: String(resp.errCode))
@@ -68,13 +65,12 @@ extension WeChatPaySDKActionComponent: WXApiDelegate {
         delegate?.didProvide(actionData, from: self)
         self.currentlyHandledAction = nil
     }
-    
 }
 
 private extension PayReq {
     convenience init(actionData: WeChatPaySDKData) {
         self.init()
-        
+
         openID = actionData.appIdentifier
         partnerId = actionData.partnerIdentifier
         prepayId = actionData.prepayIdentifier

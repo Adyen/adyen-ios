@@ -9,8 +9,6 @@ import Foundation
 /// Represents any structure/class that can be initialized without any parameters.
 /// :nodoc:
 public protocol ParameterlessInitializable {
-    
     /// Parameterless initializer.
     init()
-    
 }

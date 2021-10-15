@@ -8,13 +8,12 @@ import UIKit
 
 /// Contains the styling customization options for any images.
 public struct ImageStyle: TintableStyle {
-    
     /// The color of the image's border.
     public var borderColor: UIColor?
-    
+
     /// The width of the image's border.
     public var borderWidth: CGFloat
-    
+
     /// The image's corner radius.
     @available(*, deprecated, message: "Use cornerRounding instead.")
     public var cornerRadius: CGFloat {
@@ -22,27 +21,27 @@ public struct ImageStyle: TintableStyle {
             guard case let .fixed(value) = cornerRounding else { return 0 }
             return value
         }
-        
+
         set {
             cornerRounding = .fixed(newValue)
         }
     }
-    
+
     /// The corners style of the image.
     public var cornerRounding: CornerRounding
-    
+
     /// A boolean value that determines whether the image is confined to the bounds of the view.
     public var clipsToBounds: Bool
-    
+
     /// A flag used to determine how to lay out the image in its bounds.
     public var contentMode: UIView.ContentMode
-    
+
     /// :nodoc:
     public var backgroundColor = UIColor.AdyenCore.componentBackground
-    
+
     /// The tint color of the icon.
     public var tintColor: UIColor?
-    
+
     /// Initializes the image style.
     ///
     /// - Parameter borderColor: The color of the image's border.
@@ -54,14 +53,15 @@ public struct ImageStyle: TintableStyle {
                 borderWidth: CGFloat,
                 cornerRadius: CGFloat,
                 clipsToBounds: Bool,
-                contentMode: UIView.ContentMode) {
+                contentMode: UIView.ContentMode)
+    {
         self.borderColor = borderColor
         self.borderWidth = borderWidth
-        self.cornerRounding = .fixed(cornerRadius)
+        cornerRounding = .fixed(cornerRadius)
         self.clipsToBounds = clipsToBounds
         self.contentMode = contentMode
     }
-    
+
     /// Initializes the image style.
     ///
     /// - Parameter borderColor: The color of the image's border.
@@ -73,18 +73,17 @@ public struct ImageStyle: TintableStyle {
                 borderWidth: CGFloat,
                 cornerRounding: CornerRounding,
                 clipsToBounds: Bool,
-                contentMode: UIView.ContentMode) {
+                contentMode: UIView.ContentMode)
+    {
         self.borderColor = borderColor
         self.borderWidth = borderWidth
         self.cornerRounding = cornerRounding
         self.clipsToBounds = clipsToBounds
         self.contentMode = contentMode
     }
-    
 }
 
 extension ImageStyle: Equatable {
-    
     public static func == (lhs: ImageStyle, rhs: ImageStyle) -> Bool {
         lhs.borderColor?.cgColor == rhs.borderColor?.cgColor &&
             lhs.borderWidth == rhs.borderWidth &&
@@ -93,5 +92,4 @@ extension ImageStyle: Equatable {
             lhs.contentMode == rhs.contentMode &&
             lhs.tintColor == rhs.tintColor
     }
-    
 }

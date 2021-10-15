@@ -10,7 +10,6 @@ import AdyenDropIn
 import UIKit
 
 internal protocol Presenter: AnyObject {
-
     func present(viewController: UIViewController, completion: (() -> Void)?)
 
     func dismiss(completion: (() -> Void)?)
@@ -71,7 +70,7 @@ internal final class PaymentsController {
     @objc private func cancelDidPress() {
         currentComponent?.didCancel()
 
-        if let paymentComponent = self.currentComponent as? PaymentComponent {
+        if let paymentComponent = currentComponent as? PaymentComponent {
             paymentComponent.delegate?.didFail(with: ComponentError.cancelled, from: paymentComponent)
         }
     }
@@ -246,66 +245,61 @@ internal final class PaymentsController {
 }
 
 extension PaymentsController: DropInComponentDelegate {
-
-    internal func didSubmit(_ data: PaymentComponentData, from component: DropInComponent) {
+    internal func didSubmit(_ data: PaymentComponentData, from _: DropInComponent) {
         performPayment(with: data)
         paymentInProgress = true
     }
 
-    internal func didProvide(_ data: ActionComponentData, from component: DropInComponent) {
+    internal func didProvide(_ data: ActionComponentData, from _: DropInComponent) {
         performPaymentDetails(with: data)
     }
 
-    internal func didFail(with error: Error, from component: DropInComponent) {
+    internal func didFail(with error: Error, from _: DropInComponent) {
         paymentInProgress = false
         finish(with: error)
     }
 
-    internal func didCancel(component: PresentableComponent, from dropInComponent: DropInComponent) {
+    internal func didCancel(component: PresentableComponent, from _: DropInComponent) {
         // Handle the event when the user closes a PresentableComponent.
         print("User did close: \(component)")
     }
-
 }
 
 extension PaymentsController: PaymentComponentDelegate {
-
-    internal func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
+    internal func didSubmit(_ data: PaymentComponentData, from _: PaymentComponent) {
         paymentInProgress = true
         performPayment(with: data)
     }
 
-    internal func didFail(with error: Error, from component: PaymentComponent) {
+    internal func didFail(with error: Error, from _: PaymentComponent) {
         paymentInProgress = false
         finish(with: error)
     }
-
 }
 
 extension PaymentsController: ActionComponentDelegate {
-
-    internal func didFail(with error: Error, from component: ActionComponent) {
+    internal func didFail(with error: Error, from _: ActionComponent) {
         paymentInProgress = false
         finish(with: error)
     }
 
-    internal func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
+    internal func didProvide(_ data: ActionComponentData, from _: ActionComponent) {
         performPaymentDetails(with: data)
     }
 }
 
 extension PaymentsController: CardComponentDelegate {
-    internal func didChangeBIN(_ value: String, component: CardComponent) {
+    internal func didChangeBIN(_ value: String, component _: CardComponent) {
         print("Current BIN: \(value)")
     }
 
-    internal func didChangeCardType(_ value: [CardType]?, component: CardComponent) {
+    internal func didChangeCardType(_ value: [CardType]?, component _: CardComponent) {
         print("Current card type: \((value ?? []).reduce("") { "\($0), \($1)" })")
     }
 }
 
 extension PaymentsController: PresentationDelegate {
-    internal func present(component: PresentableComponent, disableCloseButton: Bool) {
+    internal func present(component: PresentableComponent, disableCloseButton _: Bool) {
         present(component)
     }
 }

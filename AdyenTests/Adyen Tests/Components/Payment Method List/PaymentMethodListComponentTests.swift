@@ -9,7 +9,6 @@
 import XCTest
 
 class PaymentMethodListComponentTests: XCTestCase {
-
     func testRequiresKeyboardInput() {
         let method1 = PaymentMethodMock(type: "test_stored_type_1", name: "test_stored_name_1")
         let method2 = PaymentMethodMock(type: "test_stored_type_2", name: "test_stored_name_2")
@@ -22,7 +21,7 @@ class PaymentMethodListComponentTests: XCTestCase {
 
         XCTAssertFalse((navigationViewController.topViewController as! WrapperViewController).requiresKeyboardInput)
     }
-    
+
     func testLocalizationWithCustomTableName() {
         let method1 = PaymentMethodMock(type: "test_stored_type_1", name: "test_stored_name_1")
         let method2 = PaymentMethodMock(type: "test_stored_type_2", name: "test_stored_name_2")
@@ -31,13 +30,13 @@ class PaymentMethodListComponentTests: XCTestCase {
         let sectionedComponents = SectionedComponents(stored: [storedComponent], regular: [regularComponent])
         let sut = PaymentMethodListComponent(components: sectionedComponents)
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
-        
+
         let listViewController = sut.listViewController
         XCTAssertEqual(listViewController.title, ADYLocalizedString("adyen.paymentMethods.title", sut.localizationParameters))
         XCTAssertEqual(listViewController.sections.count, 2)
         XCTAssertEqual(listViewController.sections[1].title, ADYLocalizedString("adyen.paymentMethods.otherMethods", sut.localizationParameters))
     }
-    
+
     func testLocalizationWithCustomKeySeparator() {
         let method1 = PaymentMethodMock(type: "test_stored_type_1", name: "test_stored_name_1")
         let method2 = PaymentMethodMock(type: "test_stored_type_2", name: "test_stored_name_2")
@@ -46,11 +45,10 @@ class PaymentMethodListComponentTests: XCTestCase {
         let sectionedComponents = SectionedComponents(stored: [storedComponent], regular: [regularComponent])
         let sut = PaymentMethodListComponent(components: sectionedComponents)
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
-        
+
         let listViewController = sut.listViewController
         XCTAssertEqual(listViewController.title, ADYLocalizedString("adyen_paymentMethods_title", sut.localizationParameters))
         XCTAssertEqual(listViewController.sections.count, 2)
         XCTAssertEqual(listViewController.sections[1].title, ADYLocalizedString("adyen_paymentMethods_otherMethods", sut.localizationParameters))
     }
-    
 }

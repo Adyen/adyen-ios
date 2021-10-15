@@ -9,20 +9,19 @@ import UIKit
 
 /// A view representing a separator line item.
 internal final class FormSeparatorItemView: FormItemView<FormSeparatorItem> {
-    
     /// Initializes the separator line item view.
     ///
     /// - Parameter item: The item represented by the view.
     internal required init(item: FormSeparatorItem) {
         super.init(item: item)
-        
+
         addSubview(separator)
-        
+
         configureConstraints()
     }
-    
+
     // MARK: - Separator
-    
+
     private lazy var separator: UIView = {
         let view = UIView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -32,19 +31,18 @@ internal final class FormSeparatorItemView: FormItemView<FormSeparatorItem> {
         }
         return view
     }()
-    
+
     // MARK: - Layout
-    
+
     private func configureConstraints() {
         let constraints = [
             separator.topAnchor.constraint(equalTo: topAnchor),
             separator.leadingAnchor.constraint(equalTo: leadingAnchor),
             separator.trailingAnchor.constraint(equalTo: trailingAnchor),
             separator.bottomAnchor.constraint(equalTo: bottomAnchor),
-            separator.heightAnchor.constraint(equalToConstant: 1 / UIScreen.main.scale)
+            separator.heightAnchor.constraint(equalToConstant: 1 / UIScreen.main.scale),
         ]
-        
+
         NSLayoutConstraint.activate(constraints)
     }
-    
 }

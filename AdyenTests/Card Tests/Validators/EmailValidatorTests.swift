@@ -10,7 +10,6 @@
 import XCTest
 
 class EmailValidatorTests: XCTestCase {
-
     func testLengthValidation() {
         let sut = EmailValidator()
 
@@ -70,5 +69,4 @@ class EmailValidatorTests: XCTestCase {
         // Local part contains a "@"
         XCTAssertFalse(sut.isValid("UYFGO^R&%@&*T*T*&GIU@gmail.com"))
     }
-
 }

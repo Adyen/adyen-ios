@@ -10,7 +10,6 @@
 import XCTest
 
 class SimpleSchedulerTests: XCTestCase {
-
     func testScheduling() {
         var executionCounter = 0
         let closureToSchedule = {
@@ -19,7 +18,7 @@ class SimpleSchedulerTests: XCTestCase {
 
         let sut = SimpleScheduler(maximumCount: 100)
 
-        (0...99).forEach { counter in
+        (0 ... 99).forEach { counter in
             XCTAssertFalse(sut.schedule(counter, closure: closureToSchedule))
         }
 
@@ -27,5 +26,4 @@ class SimpleSchedulerTests: XCTestCase {
 
         XCTAssertEqual(executionCounter, 100)
     }
-
 }

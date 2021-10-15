@@ -12,7 +12,6 @@ public protocol Observer: AnyObject {}
 
 /// :nodoc:
 public extension Observer {
-    
     /// Observes an event publisher for events.
     ///
     /// - Parameters:
@@ -23,7 +22,7 @@ public extension Observer {
     func observe<T: EventPublisher>(_ eventPublisher: T, eventHandler: @escaping EventHandler<T.Event>) -> Observation {
         observationManager.observe(eventPublisher, eventHandler: eventHandler)
     }
-    
+
     /// Binds the value of an observable to a key path.
     /// It will also set the current value of the observable to the key path.
     ///
@@ -36,43 +35,40 @@ public extension Observer {
     func bind<Value, Target: AnyObject>(_ observable: Observable<Value>, to target: Target, at keyPath: ReferenceWritableKeyPath<Target, Value>) -> Observation {
         // Set the initial value.
         target[keyPath: keyPath] = observable.wrappedValue
-        
+
         return observe(observable, eventHandler: { [unowned target] newValue in
             target[keyPath: keyPath] = newValue
         })
     }
-    
+
     /// Removes an observation.
     ///
     /// - Parameter observation: The observation to remove.
     func remove(_ observation: Observation) {
         observationManager.remove(observation)
     }
-    
+
     // MARK: - Observation Manager
-    
+
     /// The observation manager that manages the observations of the observer.
     private var observationManager: ObservationManager {
         let existingObservationManager = objc_getAssociatedObject(self, &AssociatedKeys.observationManager)
         if let observationManager = existingObservationManager as? ObservationManager {
             return observationManager
         }
-        
+
         let observationManager = ObservationManager()
         objc_setAssociatedObject(self,
                                  &AssociatedKeys.observationManager,
                                  observationManager,
                                  .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        
+
         return observationManager
     }
-    
 }
 
 /// The keys used for associated objects.
 private enum AssociatedKeys {
-    
     /// The observation manager associated with the object.
     public static var observationManager = "observationManager"
-    
 }

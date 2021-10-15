@@ -11,7 +11,6 @@ import Foundation
 /// The Bundle extension in `BundleSPMExtension.swift` is used instead.
 /// :nodoc:
 extension Bundle {
-
     /// The main bundle of the framework.
     private static let cardBundle: Bundle = {
         Bundle(for: ThreeDS2Component.self)
@@ -23,5 +22,4 @@ extension Bundle {
         let bundle = url.flatMap { Bundle(url: $0) }
         return bundle ?? cardBundle
     }
-
 }

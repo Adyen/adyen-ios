@@ -9,35 +9,33 @@ import Foundation
 /// A form item that represents a single button with a spinner.
 /// :nodoc:
 public final class FormButtonItem: FormItem {
-    
     /// Indicates the item's UI styling.
     public let style: FormButtonItemStyle
-    
+
     /// :nodoc:
     public var identifier: String?
-    
+
     /// The title of the button.
     public var title: String?
-    
+
     /// The observable of the button indicator activity.
     @Observable(false) public var showsActivityIndicator: Bool
-    
+
     /// The observable of the button's availability status.
     @Observable(true) public var enabled: Bool
-    
+
     /// A closure that will be invoked when a button is selected.
     public var buttonSelectionHandler: (() -> Void)?
-    
+
     /// Initializes the button item.
     ///
     /// - Parameter style: The item's UI style.
     public init(style: FormButtonItemStyle) {
         self.style = style
     }
-    
+
     /// :nodoc:
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
-    
 }

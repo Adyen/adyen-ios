@@ -8,19 +8,16 @@ import Foundation
 
 /// A component provides payment method-specific UI and handling.
 public protocol Component: AnyObject {
-    
     /// Defines the environment used to make networking requests.
     var environment: Environment { get set }
-    
+
     /// The client key that corresponds to the webservice user you will use for initiating the payment.
     /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
     var clientKey: String? { get set }
-    
 }
 
 /// A component that has UI that can be dismissed.
 public protocol DismissableComponent: Component {
-    
     /// Dismiss any `ViewController` presented by the component, for example when payment has concluded.
     ///
     /// - Parameter animated: A boolean indicating whether to dismiss with animation or not.
@@ -29,7 +26,6 @@ public protocol DismissableComponent: Component {
 }
 
 public extension Component {
-    
     /// :nodoc:
     var environment: Environment {
         get {
@@ -44,7 +40,7 @@ public extension Component {
             objc_setAssociatedObject(self, &AssociatedKeys.environment, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
-    
+
     /// :nodoc:
     var clientKey: String? {
         get {
@@ -55,7 +51,7 @@ public extension Component {
             environment.clientKey = newValue
         }
     }
-    
+
     /// :nodoc:
     var _isDropIn: Bool { // swiftlint:disable:this identifier_name
         get {
@@ -68,7 +64,6 @@ public extension Component {
             objc_setAssociatedObject(self, &AssociatedKeys.isDropIn, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
-    
 }
 
 private enum AssociatedKeys {

@@ -8,19 +8,18 @@
 import XCTest
 
 class IBANValidatorTests: XCTestCase {
-    
     func testValidation() {
         let validator = IBANValidator()
-        
+
         validIBANs.forEach { iban in
             XCTAssertTrue(validator.isValid(iban), "\(iban) is not valid.")
         }
-        
+
         invalidIBANs.forEach { iban in
             XCTAssertFalse(validator.isValid(iban), "\(iban) is valid.")
         }
     }
-    
+
     let validIBANs = [
         "AD1200012030200359100100",
         "AE070331234567890123456",
@@ -87,9 +86,9 @@ class IBANValidatorTests: XCTestCase {
         "TN5914207207100707129648",
         "TR330006100519786457841326",
         "VG96VPVG0000012345678901",
-        "XK051212012345678906"
+        "XK051212012345678906",
     ]
-    
+
     let invalidIBANs = [
         "",
         "AD1",
@@ -105,7 +104,6 @@ class IBANValidatorTests: XCTestCase {
         "AD12 0001 2030 2003 5910 0100",
         "AE$07033123.4567890123456",
         "AL47 21 21 10090000000235698741",
-        ".AT611904300234573201"
+        ".AT611904300234573201",
     ]
-    
 }

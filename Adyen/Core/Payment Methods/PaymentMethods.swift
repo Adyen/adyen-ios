@@ -8,13 +8,12 @@ import Foundation
 
 /// A collection of available payment methods.
 public struct PaymentMethods: Decodable {
-    
     /// The regular payment methods.
     public let regular: [PaymentMethod]
-    
+
     /// The stored payment methods.
     public let stored: [StoredPaymentMethod]
-    
+
     /// Initializes the PaymentMethods.
     ///
     /// - Parameters:
@@ -24,34 +23,33 @@ public struct PaymentMethods: Decodable {
         self.regular = regular
         self.stored = stored
     }
-    
+
     /// Returns the first available payment method of the given type.
     ///
     /// - Parameter type: The type of payment method to retrieve.
     /// - Returns: The first available payment method of the given type, or `nil` if none could be found.
-    public func paymentMethod<T: PaymentMethod>(ofType type: T.Type) -> T? {
+    public func paymentMethod<T: PaymentMethod>(ofType _: T.Type) -> T? {
         regular.first { $0 is T } as? T
     }
-    
+
     // MARK: - Decoding
-    
+
     /// :nodoc:
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.regular = try container.decode([AnyPaymentMethod].self, forKey: .regular).compactMap(\.value)
-        
+        regular = try container.decode([AnyPaymentMethod].self, forKey: .regular).compactMap(\.value)
+
         if container.contains(.stored) {
-            self.stored = try container.decode([AnyPaymentMethod].self, forKey: .stored).compactMap { $0.value as? StoredPaymentMethod }
+            stored = try container.decode([AnyPaymentMethod].self, forKey: .stored).compactMap { $0.value as? StoredPaymentMethod }
         } else {
-            self.stored = []
+            stored = []
         }
     }
-    
+
     internal enum CodingKeys: String, CodingKey {
         case regular = "paymentMethods"
         case stored = "storedPaymentMethods"
     }
-    
 }
 
 internal enum AnyPaymentMethod: Decodable {
@@ -59,7 +57,7 @@ internal enum AnyPaymentMethod: Decodable {
     case storedPayPal(StoredPayPalPaymentMethod)
     case storedBCMC(StoredBCMCPaymentMethod)
     case storedRedirect(StoredRedirectPaymentMethod)
-    
+
     case card(AnyCardPaymentMethod)
     case issuerList(IssuerListPaymentMethod)
     case sepaDirectDebit(SEPADirectDebitPaymentMethod)
@@ -70,9 +68,9 @@ internal enum AnyPaymentMethod: Decodable {
     case mbWay(MBWayPaymentMethod)
     case blik(BLIKPaymentMethod)
     case giftcard(GiftCardPaymentMethod)
-    
+
     case none
-    
+
     fileprivate var value: PaymentMethod? {
         switch self {
         case let .storedCard(paymentMethod):
@@ -107,13 +105,13 @@ internal enum AnyPaymentMethod: Decodable {
             return nil
         }
     }
-    
+
     // MARK: - Decoding
-    
+
     internal init(from decoder: Decoder) throws {
         self = AnyPaymentMethodDecoder.decode(from: decoder)
     }
-    
+
     internal enum CodingKeys: String, CodingKey {
         case type
         case details

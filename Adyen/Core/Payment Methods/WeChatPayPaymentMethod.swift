@@ -8,13 +8,12 @@ import Foundation
 
 /// An WeChat Pay payment method.
 public struct WeChatPayPaymentMethod: PaymentMethod {
-    
     /// :nodoc:
     public let type: String
-    
+
     /// :nodoc:
     public let name: String
-    
+
     /// :nodoc:
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)

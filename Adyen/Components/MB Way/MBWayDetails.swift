@@ -8,13 +8,12 @@ import Foundation
 
 /// Contains the details supplied by the MB Way component.
 public struct MBWayDetails: PaymentMethodDetails {
-    
     /// The payment method type.
     public let type: String
-    
+
     /// The telephone number.
     public let telephoneNumber: String
-    
+
     /// Initializes the MB Way details.
     ///
     ///
@@ -22,13 +21,12 @@ public struct MBWayDetails: PaymentMethodDetails {
     ///   - paymentMethod: The MB Way payment method.
     ///   - telephoneNumber: The telephone number.
     public init(paymentMethod: PaymentMethod, telephoneNumber: String) {
-        self.type = paymentMethod.type
+        type = paymentMethod.type
         self.telephoneNumber = telephoneNumber
     }
-    
+
     private enum CodingKeys: String, CodingKey {
         case type
         case telephoneNumber
     }
-    
 }

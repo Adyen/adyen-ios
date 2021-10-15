@@ -9,23 +9,22 @@ import Foundation
 /// :nodoc:
 /// Represents an API error object.
 public struct APIError: Decodable, Error, LocalizedError {
-    
     /// :nodoc:
     /// The status.
     public let status: Int?
-    
+
     /// :nodoc:
     /// The error code.
     public let errorCode: String
-    
+
     /// :nodoc:
     /// The error message.
     public let errorMessage: String
-    
+
     /// :nodoc:
     /// The error type.
     public let type: APIErrorType
-    
+
     /// :nodoc:
     /// The error human readable description.
     public var errorDescription: String? {
@@ -35,7 +34,6 @@ public struct APIError: Decodable, Error, LocalizedError {
     private enum CodingKeys: String, CodingKey {
         case status, errorCode, errorMessage = "message", type = "errorType"
     }
-    
 }
 
 /// :nodoc:

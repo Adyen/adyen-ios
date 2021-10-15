@@ -8,7 +8,6 @@ import Foundation
 import UIKit
 
 internal final class AwaitView: UIView {
-    
     /// :nodoc:
     internal lazy var icon: UIImageView = {
         var image = UIImage(named: viewModel.icon)
@@ -19,10 +18,10 @@ internal final class AwaitView: UIView {
         imageView.contentMode = .center
         imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "icon")
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         return imageView
     }()
-    
+
     /// :nodoc:
     internal lazy var messageLabel: UILabel = {
         let label = UILabel()
@@ -36,10 +35,10 @@ internal final class AwaitView: UIView {
         label.lineBreakMode = .byWordWrapping
         label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "messageLabel")
         label.translatesAutoresizingMaskIntoConstraints = false
-        
+
         return label
     }()
-    
+
     /// :nodoc:
     internal lazy var spinnerView: UIView = {
         let stackView = UIStackView(arrangedSubviews: [activityIndicatorView, spinnerTitleLabel])
@@ -49,10 +48,10 @@ internal final class AwaitView: UIView {
         stackView.spacing = 6
         stackView.isUserInteractionEnabled = false
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         return stackView
     }()
-    
+
     /// :nodoc:
     internal lazy var activityIndicatorView: UIActivityIndicatorView = {
         let activityIndicatorView = UIActivityIndicatorView(style: .gray)
@@ -61,10 +60,10 @@ internal final class AwaitView: UIView {
         activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         activityIndicatorView.hidesWhenStopped = true
         activityIndicatorView.startAnimating()
-        
+
         return activityIndicatorView
     }()
-    
+
     /// :nodoc:
     internal lazy var spinnerTitleLabel: UILabel = {
         let label = UILabel()
@@ -77,22 +76,23 @@ internal final class AwaitView: UIView {
         label.numberOfLines = 1
         label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "spinnerTitleLabel")
         label.translatesAutoresizingMaskIntoConstraints = false
-        
+
         return label
     }()
-    
+
     /// The view model.
     private let viewModel: AwaitComponentViewModel
-    
+
     /// The UI style.
     private let style: AwaitComponentStyle
-    
+
     /// Initializes the `AwaitView`.
     ///
     /// - Parameter viewModel: The view model.
     /// - Parameter style: The UI style.
     internal init(viewModel: AwaitComponentViewModel,
-                  style: AwaitComponentStyle = AwaitComponentStyle()) {
+                  style: AwaitComponentStyle = AwaitComponentStyle())
+    {
         self.viewModel = viewModel
         self.style = style
         super.init(frame: .zero)
@@ -102,33 +102,33 @@ internal final class AwaitView: UIView {
         configureConstraints()
         backgroundColor = style.backgroundColor
     }
-    
+
     @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
+    internal required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     /// :nodoc:
     private func configureConstraints() {
         var guid = layoutMarginsGuide
-        
+
         if #available(iOS 11, *) {
             guid = safeAreaLayoutGuide
         }
-        
+
         let constraints = [
             icon.topAnchor.constraint(equalTo: topAnchor, constant: 16),
             icon.centerXAnchor.constraint(equalTo: centerXAnchor),
-            
+
             messageLabel.topAnchor.constraint(equalTo: icon.bottomAnchor, constant: 25),
             messageLabel.leadingAnchor.constraint(equalTo: guid.leadingAnchor, constant: 16),
             messageLabel.trailingAnchor.constraint(equalTo: guid.trailingAnchor, constant: -16),
-            
+
             spinnerView.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 16),
             spinnerView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            spinnerView.bottomAnchor.constraint(equalTo: guid.bottomAnchor, constant: -32)
+            spinnerView.bottomAnchor.constraint(equalTo: guid.bottomAnchor, constant: -32),
         ]
-        
+
         NSLayoutConstraint.activate(constraints)
     }
 }

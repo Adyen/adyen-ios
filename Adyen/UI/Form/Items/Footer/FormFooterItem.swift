@@ -10,34 +10,32 @@ import Foundation
 /// :nodoc:
 @available(*, deprecated, message: "The `FormFooterItem` is deprecated. Use FormButtonItem and FormLabelItem instead")
 public final class FormFooterItem: FormItem {
-    
     /// Indicates the `FormFooterItemView` UI styling.
     public let style: FormFooterStyle
-    
+
     /// :nodoc:
     public var identifier: String?
-    
+
     /// The title of the footer.
     public var title: String?
-    
+
     /// The title of the submit button.
     public var submitButtonTitle: String?
-    
+
     /// The observable of the button indicator activity.
     @Observable(false) public var showsActivityIndicator: Bool
-    
+
     /// A closure that will be invoked when the submit button is selected.
     public var submitButtonSelectionHandler: (() -> Void)?
-    
+
     /// Initializes the footer item.
     ///
     /// - Parameter style: The `FormFooterItemView` UI style.
     public init(style: FormFooterStyle = FormFooterStyle()) {
         self.style = style
     }
-    
+
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
-    
 }

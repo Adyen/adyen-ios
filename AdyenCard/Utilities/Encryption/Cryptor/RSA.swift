@@ -9,10 +9,8 @@ import Foundation
 import Security
 
 extension Cryptor {
-    
     /// Set of helpers for RSA encryption.
-    internal enum RSA {
-
+    enum RSA {
         internal static let keySizeInBits = 2048
 
         /**
@@ -29,8 +27,8 @@ extension Cryptor {
         internal static func encrypt(data: Data, exponent: String, modulus: String) -> Data? {
             guard let modulusHex = modulus.hexadecimal, let exponentHex = exponent.hexadecimal else { return nil }
 
-            let pubKeyData = self.generateRSAPublicKey(with: modulusHex, exponent: exponentHex)
-            return self.encrypt(original: data, publicKey: pubKeyData)
+            let pubKeyData = generateRSAPublicKey(with: modulusHex, exponent: exponentHex)
+            return encrypt(original: data, publicKey: pubKeyData)
         }
 
         private static func encrypt(original: Data, publicKey: Data) -> Data? {
@@ -39,17 +37,17 @@ extension Cryptor {
             let attributes: [String: Any] = [
                 kSecAttrKeyClass as String: kSecAttrKeyClassPublic,
                 kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
-                kSecAttrKeySizeInBits as String: RSA.keySizeInBits
+                kSecAttrKeySizeInBits as String: RSA.keySizeInBits,
             ]
 
             if let secKey = SecKeyCreateWithData(publicKey as CFData, attributes as CFDictionary, nil),
-               let encrypted = SecKeyCreateEncryptedData(secKey, .rsaEncryptionPKCS1, original as CFData, &error) {
+               let encrypted = SecKeyCreateEncryptedData(secKey, .rsaEncryptionPKCS1, original as CFData, &error)
+            {
                 return encrypted as NSData as Data
             }
 
             if let err: Swift.Error = error?.takeRetainedValue() {
                 adyenPrint("encryptData error \(err.localizedDescription)")
-
             }
             return nil
         }

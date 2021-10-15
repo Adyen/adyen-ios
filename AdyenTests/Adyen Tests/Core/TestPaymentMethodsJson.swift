@@ -10,14 +10,14 @@ let creditCardDictionary = [
     "type": "scheme",
     "name": "Credit Card",
     "fundingSource": "credit",
-    "brands": ["mc", "visa", "amex"]
+    "brands": ["mc", "visa", "amex"],
 ] as [String: Any]
 
 let debitCardDictionary = [
     "type": "scheme",
     "name": "Credit Card",
     "fundingSource": "debit",
-    "brands": ["mc", "visa", "amex"]
+    "brands": ["mc", "visa", "amex"],
 ] as [String: Any]
 
 let storedCreditCardDictionary = [
@@ -32,8 +32,8 @@ let storedCreditCardDictionary = [
     "fundingSource": "credit",
     "supportedShopperInteractions": [
         "Ecommerce",
-        "ContAuth"
-    ]
+        "ContAuth",
+    ],
 ] as [String: Any]
 
 let storedDeditCardDictionary = [
@@ -48,14 +48,14 @@ let storedDeditCardDictionary = [
     "fundingSource": "debit",
     "supportedShopperInteractions": [
         "Ecommerce",
-        "ContAuth"
-    ]
+        "ContAuth",
+    ],
 ] as [String: Any]
 
 let payPalDictionary = [
     "name": "PayPal",
     "supportsRecurring": true,
-    "type": "paypal"
+    "type": "paypal",
 ] as [String: Any]
 
 let storedPayPalDictionary = [
@@ -65,20 +65,20 @@ let storedPayPalDictionary = [
     "shopperEmail": "example@shopper.com",
     "supportedShopperInteractions": [
         "Ecommerce",
-        "ContAuth"
-    ]
+        "ContAuth",
+    ],
 ] as [String: Any]
 
 let applePayDictionary = [
     "name": "Apple Pay",
     "supportsRecurring": true,
-    "type": "applepay"
+    "type": "applepay",
 ] as [String: Any]
 
 let bcmcCardDictionary = [
     "name": "Bancontact card",
     "supportsRecurring": true,
-    "type": "bcmc"
+    "type": "bcmc",
 ] as [String: Any]
 
 let storedBcmcDictionary = [
@@ -86,13 +86,13 @@ let storedBcmcDictionary = [
     "expiryYear": "2020",
     "id": "8415736344108917",
     "supportedShopperInteractions": [
-        "Ecommerce"
+        "Ecommerce",
     ],
     "lastFour": "4449",
     "brand": "bcmc",
     "type": "scheme",
     "holderName": "Checkout Shopper PlaceHolder",
-    "name": "Maestro"
+    "name": "Maestro",
 ] as [String: Any]
 
 let issuerListDictionary = [
@@ -103,26 +103,26 @@ let issuerListDictionary = [
             "items": [
                 [
                     "id": "1121",
-                    "name": "Test Issuer 1"
+                    "name": "Test Issuer 1",
                 ],
                 [
                     "id": "1154",
-                    "name": "Test Issuer 2"
+                    "name": "Test Issuer 2",
                 ],
                 [
                     "id": "1153",
-                    "name": "Test Issuer 3"
-                ]
+                    "name": "Test Issuer 3",
+                ],
             ],
             "key": "issuer",
-            "type": "select"
-        ]
-    ]
+            "type": "select",
+        ],
+    ],
 ] as [String: Any]
 
 let sepaDirectDebitDictionary = [
     "type": "sepadirectdebit",
-    "name": "SEPA Direct Debit"
+    "name": "SEPA Direct Debit",
 ] as [String: Any]
 
 let giroPayDictionaryWithOptionalDetails = [
@@ -130,66 +130,66 @@ let giroPayDictionaryWithOptionalDetails = [
         [
             "key": "bic",
             "type": "text",
-            "optional": true
-        ]
+            "optional": true,
+        ],
     ],
     "name": "GiroPay",
     "supportsRecurring": true,
-    "type": "giropay"
+    "type": "giropay",
 ] as [String: Any]
 
 let giroPayDictionaryWithNonOptionalDetails = [
     "details": [
         [
             "key": "bic",
-            "type": "text"
-        ]
+            "type": "text",
+        ],
     ],
     "name": "GiroPay with non optional details",
     "supportsRecurring": true,
-    "type": "giropay"
+    "type": "giropay",
 ] as [String: Any]
 
 let weChatMiniProgramDictionary = [
     "name": "WeChat Pay",
     "supportsRecurring": true,
-    "type": "wechatpayMiniProgram"
+    "type": "wechatpayMiniProgram",
 ] as [String: Any]
 
 let weChatQRDictionary = [
     "name": "WeChat Pay",
     "supportsRecurring": true,
-    "type": "wechatpayQR"
+    "type": "wechatpayQR",
 ] as [String: Any]
 
 let weChatSDKDictionary = [
     "name": "WeChat Pay",
     "supportsRecurring": true,
-    "type": "wechatpaySDK"
+    "type": "wechatpaySDK",
 ] as [String: Any]
 
 let weChatWebDictionary = [
     "name": "WeChat Pay",
     "supportsRecurring": true,
-    "type": "wechatpayWeb"
+    "type": "wechatpayWeb",
 ] as [String: Any]
 
 let bcmcMobileQR = [
     "name": "BCMC Mobile",
     "supportsRecurring": false,
-    "type": "bcmc_mobile_QR"
+    "type": "bcmc_mobile_QR",
 ] as [String: Any]
 
 let mbway = [
     "name": "MB WAY",
     "supportsRecurring": true,
-    "type": "mbway"
+    "type": "mbway",
 ] as [String: Any]
 
 let blik = [
     "name": "Blik",
     "supportsRecurring": true,
-    "type": "blik"
+    "type": "blik",
 ] as [String: Any]
 
 let qiwiWallet = [
@@ -198,32 +198,32 @@ let qiwiWallet = [
             "items": [
                 [
                     "id": "+7",
-                    "name": "RU"
+                    "name": "RU",
                 ],
                 [
                     "id": "+9955",
-                    "name": "GE"
+                    "name": "GE",
                 ],
                 [
                     "id": "+507",
-                    "name": "PA"
-                ]
+                    "name": "PA",
+                ],
             ],
             "key": "qiwiwallet.telephoneNumberPrefix",
-            "type": "select"
+            "type": "select",
         ],
         [
             "key": "qiwiwallet.telephoneNumber",
-            "type": "text"
-        ]
+            "type": "text",
+        ],
     ],
     "name": "Qiwi Wallet",
     "supportsRecurring": true,
-    "type": "qiwiwallet"
+    "type": "qiwiwallet",
 ] as [String: Any]
 
 let giftCard = [
     "brand": "genericgiftcard",
     "name": "Generic GiftCard",
-    "type": "giftcard"
+    "type": "giftcard",
 ] as [String: Any]

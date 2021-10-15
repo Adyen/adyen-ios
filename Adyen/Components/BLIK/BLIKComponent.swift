@@ -35,12 +35,12 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
     /// - Parameter paymentMethod: The BLIK payment method.
     /// - Parameter style: The Component's UI style.
     public init(paymentMethod: BLIKPaymentMethod, style: FormComponentStyle = FormComponentStyle()) {
-        self.blikPaymentMethod = paymentMethod
+        blikPaymentMethod = paymentMethod
         self.style = style
     }
 
     /// :nodoc:
-    public func stopLoading(withSuccess success: Bool, completion: (() -> Void)?) {
+    public func stopLoading(withSuccess _: Bool, completion: (() -> Void)?) {
         button.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
         completion?()

@@ -10,7 +10,6 @@
 import XCTest
 
 class BLIKComponentTests: XCTestCase {
-
     lazy var method = BLIKPaymentMethod(type: "test_type", name: "test_name")
     let payment = Payment(amount: Payment.Amount(value: 2, currencyCode: "PLN"), countryCode: "PL")
     var sut: BLIKComponent!
@@ -103,7 +102,6 @@ class BLIKComponentTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-
             let hintView: UILabel! = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.blikCodeHintLabel")
 
             let blikCodeView: FormTextInputItemView! = self.sut.viewController.view.findView(with: "Adyen.BLIKComponent.blikCodeItem")
@@ -182,7 +180,6 @@ class BLIKComponentTests: XCTestCase {
     }
 
     func testVCTitle() {
-
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
@@ -198,5 +195,4 @@ class BLIKComponentTests: XCTestCase {
         let sut = BLIKComponent(paymentMethod: blikPaymentMethod)
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
-
 }

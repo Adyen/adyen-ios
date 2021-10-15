@@ -8,7 +8,6 @@
 import XCTest
 
 class IBANFormatterTests: XCTestCase {
-    
     func testFormatting() {
         let formatter = IBANFormatter()
         XCTAssertEqual(formatter.formattedValue(for: "NL13TEST0123456789"), "NL13 TEST 0123 4567 89")
@@ -22,7 +21,7 @@ class IBANFormatterTests: XCTestCase {
         XCTAssertEqual(formatter.formattedValue(for: "NO6012341234561"), "NO60 1234 1234 561")
         XCTAssertEqual(formatter.formattedValue(for: "PL20123123411234567890123456"), "PL20 1231 2341 1234 5678 9012 3456")
         XCTAssertEqual(formatter.formattedValue(for: "SE9412312345678901234561"), "SE94 1231 2345 6789 0123 4561")
-        
+
         XCTAssertEqual(formatter.formattedValue(for: "nl36test 0236169114"), "NL36 TEST 0236 1691 14")
         XCTAssertEqual(formatter.formattedValue(for: "NL 82 test 0836169255"), "NL82 TEST 0836 1692 55")
         XCTAssertEqual(formatter.formattedValue(for: " DE94 8888 8888 9876 5432 10"), "DE94 8888 8888 9876 5432 10")
@@ -31,7 +30,7 @@ class IBANFormatterTests: XCTestCase {
         XCTAssertEqual(formatter.formattedValue(for: "ES9121000418450200051332"), "ES91 2100 0418 4502 0005 1332")
         XCTAssertEqual(formatter.formattedValue(for: "D K 8 6 1 2 3 4 1 2 3 4 5 6 7 8 9 0 "), "DK86 1234 1234 5678 90")
     }
-    
+
     func testSanitizing() {
         let formatter = IBANFormatter()
         XCTAssertEqual(formatter.sanitizedValue(for: "NL13 TEST 0123 4567 89"), "NL13TEST0123456789")
@@ -45,7 +44,7 @@ class IBANFormatterTests: XCTestCase {
         XCTAssertEqual(formatter.sanitizedValue(for: "NO60 1234 1234 561"), "NO6012341234561")
         XCTAssertEqual(formatter.sanitizedValue(for: "PL20 1231 2341 1234 5678 9012 3456"), "PL20123123411234567890123456")
         XCTAssertEqual(formatter.sanitizedValue(for: "SE94 1231 2345 6789 0123 4561"), "SE9412312345678901234561")
-        
+
         XCTAssertEqual(formatter.sanitizedValue(for: "nl36test 0236169114"), "NL36TEST0236169114")
         XCTAssertEqual(formatter.sanitizedValue(for: "NL 82 test 0836169255"), "NL82TEST0836169255")
         XCTAssertEqual(formatter.sanitizedValue(for: " DE94 8888 8888 9876 5432 10"), "DE94888888889876543210")
@@ -54,5 +53,4 @@ class IBANFormatterTests: XCTestCase {
         XCTAssertEqual(formatter.sanitizedValue(for: "ES9121000418450200051332"), "ES9121000418450200051332")
         XCTAssertEqual(formatter.sanitizedValue(for: "D K 8 6 1 2 3 4 1 2 3 4 5 6 7 8 9 0 "), "DK8612341234567890")
     }
-    
 }

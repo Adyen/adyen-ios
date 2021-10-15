@@ -9,27 +9,26 @@ import UIKit
 
 /// Contains the styling customization options for a form button item.
 public struct FormButtonItemStyle: ViewStyle {
-    
     /// The font used to display the text.
     public var button: ButtonStyle
-    
+
     /// The background of the view.
     public var backgroundColor: UIColor = .clear
-    
+
     /// Initializes the secondary button style.
     ///
     /// - Parameter font: The font of a title.
     public init(button: ButtonStyle) {
         self.button = button
     }
-    
+
     /// Initializes the button style.
     ///
     public init(button: ButtonStyle, background: UIColor) {
         self.button = button
-        self.backgroundColor = background
+        backgroundColor = background
     }
-    
+
     /// Get instance of `FormButtonItemStyle` styled as filled button with corner radius.
     /// - Parameters:
     ///   - font: The font of button's title.
@@ -41,7 +40,7 @@ public struct FormButtonItemStyle: ViewStyle {
                                                 cornerRadius: cornerRadius,
                                                 background: mainColor))
     }
-    
+
     /// Get instance of `FormButtonItemStyle` styled as filled button with default corner radius.
     /// - Parameters:
     ///   - font: The font of button's title.
@@ -52,7 +51,7 @@ public struct FormButtonItemStyle: ViewStyle {
                                                 cornerRounding: .fixed(8),
                                                 background: mainColor))
     }
-    
+
     /// Get instance of `FormButtonItemStyle` styled as filled button with corner radius.
     /// - Parameters:
     ///   - font: The font of button's title.
@@ -64,7 +63,7 @@ public struct FormButtonItemStyle: ViewStyle {
                                                 cornerRounding: cornerRounding,
                                                 background: mainColor))
     }
-    
+
     /// Get instance of `FormButtonItemStyle` styled as plane button transparent background.
     /// - Parameters:
     ///   - font: The font of button's title.
@@ -74,5 +73,4 @@ public struct FormButtonItemStyle: ViewStyle {
                                                 cornerRadius: 0,
                                                 background: .clear))
     }
-    
 }

@@ -8,18 +8,17 @@
 import XCTest
 
 class CardNumberValidatorTests: XCTestCase {
-    
     func testValidCards() {
         let validator = CardNumberValidator()
-        
+
         CardNumbers.valid.forEach { cardNumber in
             XCTAssertTrue(validator.isValid(cardNumber))
         }
     }
-    
+
     func testInvalidCards() {
         let validator = CardNumberValidator()
-        
+
         CardNumbers.invalid.forEach { cardNumber in
             XCTAssertFalse(validator.isValid(cardNumber))
         }

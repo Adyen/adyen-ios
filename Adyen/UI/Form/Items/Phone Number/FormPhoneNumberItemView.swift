@@ -8,7 +8,6 @@ import Foundation
 import UIKit
 
 internal final class FormPhoneNumberItemView: FormTextItemView<FormPhoneNumberItem> {
-    
     /// Initializes the split text item view.
     ///
     /// - Parameter item: The item represented by the view.
@@ -17,14 +16,14 @@ internal final class FormPhoneNumberItemView: FormTextItemView<FormPhoneNumberIt
         showsSeparator = true
         applyTextFieldLeftAccessoryView(textField: textField)
     }
-    
+
     /// :nodoc:
     override internal var childItemViews: [AnyFormItemView] {
         [phoneExtensionView]
     }
-    
+
     // MARK: - Private
-    
+
     private lazy var phoneExtensionView: AnyFormItemView = {
         let view = item.phonePrefixItem.build(with: FormItemViewBuilder())
         view.accessibilityIdentifier = item.phonePrefixItem.identifier
@@ -32,7 +31,7 @@ internal final class FormPhoneNumberItemView: FormTextItemView<FormPhoneNumberIt
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     private func applyTextFieldLeftAccessoryView(textField: UITextField) {
         textField.leftViewMode = .always
         textField.leftView = phoneExtensionView

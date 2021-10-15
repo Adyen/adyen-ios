@@ -9,33 +9,30 @@ import Foundation
 /// Describes a single picker item in the list of selectable items.
 /// :nodoc:
 public struct PhoneExtensionPickerItem: Equatable {
-    
     /// Picker item identifier.
     internal let identifier: String
-    
+
     /// Picker item title.
     internal let title: String
-    
+
     /// Country phone extension.
     internal let phoneExtension: String
-    
 }
 
 /// Describes a picker item.
 internal final class FormPhoneExtensionPickerItem: FormValueItem, InputViewRequiringFormItem {
-    
     /// :nodoc
     public var identifier: String?
-    
+
     /// The currently selected value in the list.
     public var value: PhoneExtensionPickerItem
-    
+
     /// The complete list of selectable values.
     internal let selectableValues: [PhoneExtensionPickerItem]
-    
+
     /// The item UI style.
     internal let style: FormTextItemStyle
-    
+
     /// Initializes the picker item.
     ///
     /// - Parameter selectableValues: The list of values to select from.
@@ -44,9 +41,9 @@ internal final class FormPhoneExtensionPickerItem: FormValueItem, InputViewRequi
         assert(selectableValues.count > 0)
         self.selectableValues = selectableValues
         self.style = style
-        self.value = selectableValues.first(where: { $0.identifier == Locale.current.regionCode }) ?? selectableValues[0]
+        value = selectableValues.first(where: { $0.identifier == Locale.current.regionCode }) ?? selectableValues[0]
     }
-    
+
     /// :nodoc:
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)

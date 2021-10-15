@@ -8,19 +8,18 @@ import Foundation
 
 /// The data supplied by a payment component upon completion.
 public struct PaymentComponentData {
-    
     /// The payment method details submitted by the payment component.
     public let paymentMethod: PaymentMethodDetails
-    
+
     /// Indicates whether the user has chosen to store the payment method.
     public let storePaymentMethod: Bool
-    
+
     /// Indicates the device default browser info.
     public let browserInfo: BrowserInfo?
 
     /// Indicates shopper's billing address info.
     public let billingAddress: AddressInfo?
-    
+
     /// Initializes the payment component data.
     ///
     /// :nodoc:
@@ -32,13 +31,14 @@ public struct PaymentComponentData {
     public init(paymentMethodDetails: PaymentMethodDetails,
                 storePaymentMethod: Bool = false,
                 browserInfo: BrowserInfo? = nil,
-                billingAddress: AddressInfo? = nil) {
-        self.paymentMethod = paymentMethodDetails
+                billingAddress: AddressInfo? = nil)
+    {
+        paymentMethod = paymentMethodDetails
         self.storePaymentMethod = storePaymentMethod
         self.browserInfo = browserInfo
         self.billingAddress = billingAddress
     }
-    
+
     /// Creates a new `PaymentComponentData` by populating the `browserInfo`,
     /// in case the browser info like the user-agent is needed, but its not needed for mobile payments.
     ///
@@ -52,5 +52,4 @@ public struct PaymentComponentData {
                                             billingAddress: self.billingAddress))
         }
     }
-    
 }

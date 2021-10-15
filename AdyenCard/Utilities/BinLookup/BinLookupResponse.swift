@@ -9,7 +9,7 @@ import Foundation
 
 internal struct BinLookupResponse: Response {
     internal var detectedBrands: [CardType]?
-    
+
     private enum CodingKeys: String, CodingKey {
         case detectedBrands
     }

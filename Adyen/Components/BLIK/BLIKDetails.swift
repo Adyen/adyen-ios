@@ -8,7 +8,6 @@ import Foundation
 
 /// Contains the details supplied by the BLIK component.
 public struct BLIKDetails: PaymentMethodDetails {
-
     /// The payment method type.
     public let type: String
 
@@ -21,7 +20,7 @@ public struct BLIKDetails: PaymentMethodDetails {
     ///   - paymentMethod: The BLIK payment method.
     ///   - blikCode: The BLIK code.
     public init(paymentMethod: PaymentMethod, blikCode: String) {
-        self.type = paymentMethod.type
+        type = paymentMethod.type
         self.blikCode = blikCode
     }
 
@@ -29,5 +28,4 @@ public struct BLIKDetails: PaymentMethodDetails {
         case type
         case blikCode
     }
-
 }

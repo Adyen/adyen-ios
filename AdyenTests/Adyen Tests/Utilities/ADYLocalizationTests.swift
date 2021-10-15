@@ -15,9 +15,9 @@ class ADYLocalizationTests: XCTestCase {
 
         XCTAssertEqual(ADYLocalizedSubmitButtonTitle(with: Payment.Amount(value: 0, currencyCode: "EUR"), style: .immediate, nil), "Confirm preauthorization")
     }
-    
+
     // MARK: - Custom Recognized TableName
-    
+
     /// Default Separator
     func testLocalizationWithCustomRecognizedTableNameAndDefaultSeparator() {
         let parameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
@@ -71,62 +71,62 @@ class ADYLocalizationTests: XCTestCase {
         XCTAssertEqual(ADYLocalizedString("adyen.dropIn.stored.title", parameters, "test"), "TestBundle-Confirm test payment")
         XCTAssertEqual(ADYLocalizedString("adyen.card.stored.title", parameters), "TestBundle-Verify your card")
     }
-    
+
     // MARK: - Custom Unrecognized TableName
-    
+
     /// Default Separator
     func testLocalizationWithCustomUnrecognizedTableNameAndDefaultSeparator() {
         let parameters = LocalizationParameters(tableName: "123", keySeparator: nil)
         XCTAssertEqual(ADYLocalizedString("adyen.dropIn.stored.title", parameters, "test"), "Confirm test payment")
         XCTAssertEqual(ADYLocalizedString("adyen.card.stored.title", parameters), "Verify your card")
     }
-    
+
     /// Unrecognized Separator
     func testLocalizationWithCustomUnrecognizedTableNameAndCustomUnrecognizedSeparator() {
         let parameters = LocalizationParameters(tableName: "123", keySeparator: "*")
         XCTAssertEqual(ADYLocalizedString("adyen.dropIn.stored.title", parameters, "test"), "Confirm test payment")
         XCTAssertEqual(ADYLocalizedString("adyen.card.stored.title", parameters), "Verify your card")
     }
-    
+
     /// Recognized Separator
     func testLocalizationWithCustomUnrecognizedTableNameAndCustomRecognizedSeparator() {
         let parameters = LocalizationParameters(tableName: "123", keySeparator: "_")
         XCTAssertEqual(ADYLocalizedString("adyen.dropIn.stored.title", parameters, "test"), "Confirm test payment")
         XCTAssertEqual(ADYLocalizedString("adyen.card.stored.title", parameters), "Verify your card")
     }
-    
+
     // MARK: - SDK bundle default TableName
-    
+
     /// Default Separator
     func testLocalizationWithDefaultTableNameAndDefaultSeparator() {
         let parameters = LocalizationParameters(tableName: nil, keySeparator: nil)
         XCTAssertEqual(ADYLocalizedString("adyen.dropIn.stored.title", parameters, "test"), "Confirm test payment")
         XCTAssertEqual(ADYLocalizedString("adyen.card.stored.title", parameters), "Verify your card")
     }
-    
+
     /// Unrecognized Separator
     func testLocalizationWithDefaultTableNameAndCustomUnrecognizedSeparator() {
         let parameters = LocalizationParameters(tableName: nil, keySeparator: "*")
         XCTAssertEqual(ADYLocalizedString("adyen.dropIn.stored.title", parameters, "test"), "Confirm test payment")
         XCTAssertEqual(ADYLocalizedString("adyen.card.stored.title", parameters), "Verify your card")
     }
-    
+
     /// Recognized Separator
     func testLocalizationWithDefaultTableNameAndCustomRecognizedSeparator() {
         let parameters = LocalizationParameters(tableName: nil, keySeparator: "_")
         XCTAssertEqual(ADYLocalizedString("adyen.dropIn.stored.title", parameters, "test"), "Confirm test payment")
         XCTAssertEqual(ADYLocalizedString("adyen.card.stored.title", parameters), "Verify your card")
     }
-    
+
     // MARK: - App bundle default TableName
-    
+
     /// Default Separator
     func testLocalizationWithDefaultAppBundleTableNameAndDefaultSeparator() {
         let parameters = LocalizationParameters(tableName: nil, keySeparator: nil)
         XCTAssertEqual(ADYLocalizedString("any.key.1", parameters, "test"), "value 1 test")
         XCTAssertEqual(ADYLocalizedString("any.key.2", parameters), "value 2")
     }
-    
+
     /// Unrecognized Separator
     func testLocalizationWithDefaultAppBundleTableNameAndUnrecognizedSeparator() {
         let parameters = LocalizationParameters(tableName: nil, keySeparator: "*")

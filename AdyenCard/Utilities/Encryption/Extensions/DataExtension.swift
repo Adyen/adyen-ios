@@ -7,11 +7,9 @@
 import Foundation
 
 extension Data {
-
-    internal var asBytes: [CUnsignedChar] {
+    var asBytes: [CUnsignedChar] {
         let start = (self as NSData).bytes.bindMemory(to: CUnsignedChar.self, capacity: self.count)
         let count = self.count / MemoryLayout<CUnsignedChar>.size
         return [CUnsignedChar](UnsafeBufferPointer<CUnsignedChar>(start: start, count: count))
     }
-
 }
