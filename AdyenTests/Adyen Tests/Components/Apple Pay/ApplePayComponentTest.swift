@@ -247,9 +247,18 @@ class ApplePayComponentTest: XCTestCase {
 
     private var supportedNetworks: [PKPaymentNetwork] {
         var networks: [PKPaymentNetwork] = [.visa, .masterCard, .amex, .discover, .interac]
+        
+        if #available(iOS 14.0, *) {
+            networks.append(.girocard)
+        }
+
+        if #available(iOS 12.1.1, *) {
+            networks.append(.elo)
+        }
 
         if #available(iOS 12.0, *) {
             networks.append(.maestro)
+            networks.append(.electron)
         }
 
         if #available(iOS 10.1, *) {
