@@ -65,6 +65,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
         formViewController.append(hintLabelItem.addingDefaultMargins())
         formViewController.append(FormSpacerItem())
         formViewController.append(codeItem)
+        formViewController.append(FormSpacerItem())
         formViewController.append(button)
 
         return formViewController
