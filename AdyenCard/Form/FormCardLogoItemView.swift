@@ -15,13 +15,13 @@ internal final class FormCardLogoItemView: FormItemView<FormCardLogoItem> {
         static let cardSize = CGSize(width: 24, height: 16)
     }
     
-    private lazy var collectionView: CardsCollectionView = {
+    private lazy var collectionView: CardLogoCollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.itemSize = Constants.cardSize
         flowLayout.minimumLineSpacing = Constants.rowSpacing
         flowLayout.minimumInteritemSpacing = Constants.cardSpacing
         flowLayout.scrollDirection = .vertical
-        let collectionView = CardsCollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        let collectionView = CardLogoCollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.backgroundColor = .clear
         return collectionView
     }()
@@ -29,8 +29,8 @@ internal final class FormCardLogoItemView: FormItemView<FormCardLogoItem> {
     internal required init(item: FormCardLogoItem) {
         super.init(item: item)
         addSubview(collectionView)
-        collectionView.adyen.anchor(inside: layoutMarginsGuide)
-        collectionView.register(CardTypeLogoCell.self, forCellWithReuseIdentifier: CardTypeLogoCell.reuseIdentifier)
+        collectionView.adyen.anchor(inside: self, with: UIEdgeInsets(top: 4, left: 16, bottom: -8, right: -16))
+        collectionView.register(CardLogoCell.self, forCellWithReuseIdentifier: CardLogoCell.reuseIdentifier)
         collectionView.dataSource = self
     }
     
@@ -42,9 +42,9 @@ extension FormCardLogoItemView: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CardTypeLogoCell.reuseIdentifier, for: indexPath)
-        if let cell = cell as? CardTypeLogoCell {
-            let logo = item.cardLogos[indexPath.row]
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CardLogoCell.reuseIdentifier, for: indexPath)
+        if let cell = cell as? CardLogoCell,
+           let logo = item.cardLogos.adyen[safeIndex: indexPath.row] {
             cell.update(imageUrl: logo.url, style: item.style.icon)
         }
         return cell
@@ -54,7 +54,7 @@ extension FormCardLogoItemView: UICollectionViewDataSource {
 extension FormCardLogoItemView {
     
     /// A collectionview that updates its intrinsicContentSize to make all rows visible.
-    internal class CardsCollectionView: UICollectionView {
+    internal class CardLogoCollectionView: UICollectionView {
         private var shouldInvaliateLayout = false
         
         override internal func layoutSubviews() {
@@ -79,9 +79,9 @@ extension FormCardLogoItemView {
 
 extension FormCardLogoItemView {
     
-    private class CardTypeLogoCell: UICollectionViewCell {
+    private class CardLogoCell: UICollectionViewCell {
         
-        fileprivate static let reuseIdentifier = "CardTypeLogoCell"
+        fileprivate static let reuseIdentifier = "CardLogoCell"
         
         private lazy var cardTypeImageView: NetworkImageView = {
             NetworkImageView()

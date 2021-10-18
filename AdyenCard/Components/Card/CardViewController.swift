@@ -20,11 +20,9 @@ internal class CardViewController: FormViewController {
 
     private let formStyle: FormComponentStyle
 
-    private var topCardTypes: [CardType] {
-        supportedCardTypes // Array(supportedCardTypes.prefix(CardComponent.Constant.maxCardsVisible))
-    }
-
     internal var items: ItemsProvider
+    
+    private var issuingCountryCode: String?
 
     // MARK: Init view controller
 
@@ -53,7 +51,6 @@ internal class CardViewController: FormViewController {
         self.items = ItemsProvider(formStyle: formStyle,
                                    payment: payment,
                                    configuration: configuration,
-                                   supportedCardTypes: supportedCardTypes,
                                    cardLogos: cardLogos,
                                    scope: scope,
                                    defaultCountryCode: countryCode,
@@ -65,6 +62,7 @@ internal class CardViewController: FormViewController {
     override internal func viewDidLoad() {
         setupView()
         setupViewRelations()
+        observeNumberItem()
         super.viewDidLoad()
     }
 
@@ -84,6 +82,10 @@ internal class CardViewController: FormViewController {
                     expiryMonth: expiryMonth,
                     expiryYear: expiryYear,
                     holder: configuration.showsHolderNameField ? items.holderNameItem.nonEmptyValue : nil)
+    }
+    
+    internal var brandNameWhenCoBranded: String? {
+        items.numberContainerItem.numberItem.brandNameWhenCoBranded
     }
 
     internal var address: PostalAddress? {
@@ -134,30 +136,29 @@ internal class CardViewController: FormViewController {
 
     internal func update(binInfo: BinLookupResponse) {
         let brands = binInfo.brands ?? []
-        items.securityCodeItem.isOptional = brands.isCVCOptional
-        items.expiryDateItem.isOptional = brands.isExpiryDateOptional
-
-//        if items.numberItem.value.isEmpty {
-//            items.numberItem.showLogos(for: topCardTypes)
-//        } else {
-//            items.numberItem.showLogos(for: brands.map(\.type))
-//        }
-
-        let kcpItemsHidden = shouldHideKcpItems(with: binInfo.issuingCountryCode)
-        let firstBrand = firstSupportedBrand(from: brands)
-        
-        items.numberContainerItem.numberItem.luhnCheckEnabled = brands.luhnCheckRequired
-        items.numberContainerItem.numberItem.update(currentBrand: firstBrand)
-        items.additionalAuthPasswordItem.isHidden.wrappedValue = kcpItemsHidden
-        items.additionalAuthCodeItem.isHidden.wrappedValue = kcpItemsHidden
-        items.socialSecurityNumberItem.isHidden.wrappedValue = shouldHideSocialSecurityItem(with: brands)
-        items.installmentsItem?.update(cardType: firstBrand?.type) // choose first until dual brand selection feature
+        issuingCountryCode = binInfo.issuingCountryCode
+        items.numberContainerItem.numberItem.update(brands: brands)
     }
     
-    /// Returns the first supported brand in a multi(dual) brand sitation. If neither brand is supported, returns the first brand.
-    private func firstSupportedBrand(from brands: [CardBrand]) -> CardBrand? {
-        guard !brands.isEmpty else { return nil }
-        return brands.first { $0.isSupported } ?? brands.first
+    /// Observe the current brand changes to update all other fields.
+    private func observeNumberItem() {
+        // `currentBrand` changes are what triggers the update for all other fields
+        // and it can be changed by both `FormCardNumberItemView` with dual brand selections
+        // and from here via binlookup response
+        observe(items.numberContainerItem.numberItem.$currentBrand) { [weak self] newBrand in
+            self?.updateFields(from: newBrand)
+        }
+    }
+    
+    private func updateFields(from brand: CardBrand?) {
+        items.securityCodeItem.isOptional = brand?.isCVCOptional ?? false
+        items.expiryDateItem.isOptional = brand?.isExpiryDateOptional ?? false
+        
+        let kcpItemsHidden = shouldHideKcpItems(with: issuingCountryCode)
+        items.additionalAuthPasswordItem.isHidden.wrappedValue = kcpItemsHidden
+        items.additionalAuthCodeItem.isHidden.wrappedValue = kcpItemsHidden
+        items.socialSecurityNumberItem.isHidden.wrappedValue = shouldHideSocialSecurityItem(with: brand)
+        items.installmentsItem?.update(cardType: brand?.type)
     }
 
     // MARK: Private methods
@@ -231,14 +232,15 @@ internal class CardViewController: FormViewController {
         }
     }
     
-    private func shouldHideSocialSecurityItem(with brands: [CardBrand]) -> Bool {
+    private func shouldHideSocialSecurityItem(with brand: CardBrand?) -> Bool {
+        guard let brand = brand else { return true }
         switch configuration.socialSecurityNumberMode {
         case .show:
             return false
         case .hide:
             return true
         case .auto:
-            return !brands.socialSecurityNumberRequired
+            return !brand.showsSocialSecurityNumber
         }
     }
 

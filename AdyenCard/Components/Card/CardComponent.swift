@@ -23,10 +23,11 @@ public class CardComponent: CardPublicKeyConsumer,
     internal enum Constant {
         internal static let defaultCountryCode = "US"
         internal static let secondsThrottlingDelay = 0.5
-        internal static let maxCardsVisible = 4
         internal static let publicBinLength = 6
         internal static let privateBinLength = 11
         internal static let publicPanSuffixLength = 4
+        internal static let plccText = "plcc"
+        internal static let cbccText = "cbcc"
     }
     
     /// :nodoc:
@@ -182,9 +183,48 @@ extension CardComponent: CardViewControllerDelegate {
         self.cardComponentDelegate?.didChangeBIN(String(value.prefix(Constant.publicBinLength)), component: self)
         binInfoProvider.provide(for: value, supportedTypes: supportedCardTypes) { [weak self] binInfo in
             guard let self = self else { return }
+            // update response with sorted brands
+            var binInfo = binInfo
+            binInfo.brands = self.sortBrands(binInfo.brands ?? [])
             self.cardViewController.update(binInfo: binInfo)
             self.cardComponentDelegate?.didChangeCardBrand(binInfo.brands ?? [], component: self)
         }
+    }
+    
+    /// Sorts the brands by the rules below for dual branded cards.
+    private func sortBrands(_ brands: [CardBrand]) -> [CardBrand] {
+        // only try to sort if both brands are available.
+        guard let firstBrand = brands.first,
+              let secondBrand = brands.adyen[safeIndex: 1] else { return brands }
+        var brands = brands
+        let hasCarteBancaire = brands.contains { $0.type == .carteBancaire }
+        let hasVisa = brands.contains { $0.type == .visa }
+        let hasPLCC = brands.contains(where: brandContainsPrivateLabels)
+        
+        // these rules on web include checks for BCMC as well
+        // but here BCMC component only supports BCMC brand
+        // so dual brand won't be visible as the second brand won't be supported
+        
+        //  if regular card and dual branding contains Visa & Cartebancaire - ensure Visa is first
+        if hasVisa, hasCarteBancaire {
+            if firstBrand.type != .visa {
+                brands = [secondBrand, firstBrand]
+            }
+        }
+        
+        // if regular card and dual branding contains a PLCC this should be shown first
+        if hasPLCC {
+            if !brandContainsPrivateLabels(firstBrand) {
+                brands = [secondBrand, firstBrand]
+            }
+        }
+        
+        return brands
+    }
+    
+    /// Convenience function to determine if a brand contains any private labels such as `plcc`, `cbcc`.
+    private func brandContainsPrivateLabels(_ brand: CardBrand) -> Bool {
+        brand.type.rawValue.contains(Constant.plccText) || brand.type.rawValue.contains(Constant.cbccText)
     }
     
 }

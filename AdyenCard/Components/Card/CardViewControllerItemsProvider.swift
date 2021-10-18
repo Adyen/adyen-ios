@@ -19,8 +19,6 @@ extension CardViewController {
 
         private let configuration: CardComponent.Configuration
 
-        private let supportedCardTypes: [CardType]
-
         private let cardLogos: [FormCardLogoItem.CardTypeLogo]
 
         private let scope: String
@@ -30,7 +28,6 @@ extension CardViewController {
         internal init(formStyle: FormComponentStyle,
                       payment: Payment?,
                       configuration: CardComponent.Configuration,
-                      supportedCardTypes: [CardType],
                       cardLogos: [FormCardLogoItem.CardTypeLogo],
                       scope: String,
                       defaultCountryCode: String,
@@ -38,7 +35,6 @@ extension CardViewController {
             self.formStyle = formStyle
             self.payment = payment
             self.configuration = configuration
-            self.supportedCardTypes = supportedCardTypes
             self.cardLogos = cardLogos
             self.scope = scope
             self.defaultCountryCode = defaultCountryCode

@@ -14,7 +14,7 @@ open class NetworkImageView: UIImageView {
     public var imageURL: URL? {
         didSet {
             cancelCurrentTask()
-            image = nil
+            image = placeholderImage
             
             // Only load an image when we're in a window.
             if let imageURL = imageURL, window != nil {
@@ -22,6 +22,9 @@ open class NetworkImageView: UIImageView {
             }
         }
     }
+    
+    /// The image to display before image loading starts and also in case it fails.
+    public var placeholderImage: UIImage?
     
     /// :nodoc:
     override open func didMoveToWindow() {

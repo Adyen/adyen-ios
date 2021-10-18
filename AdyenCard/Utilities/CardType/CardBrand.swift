@@ -71,6 +71,24 @@ public struct CardBrand: Decodable {
         case showsSocialSecurityNumber = "showSocialSecurityNumber"
         case expiryDatePolicy
     }
+    
+    internal var isCVCOptional: Bool {
+        switch cvcPolicy {
+        case .optional, .hidden:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    internal var isExpiryDateOptional: Bool {
+        switch expiryDatePolicy {
+        case .optional, .hidden:
+            return true
+        default:
+            return false
+        }
+    }
 }
 
 /// :nodoc:

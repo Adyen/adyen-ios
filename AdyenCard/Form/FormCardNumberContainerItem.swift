@@ -25,7 +25,7 @@ internal final class FormCardNumberContainerItem: FormItem, Observer {
     }
     
     internal lazy var numberItem: FormCardNumberItem = {
-        let item = FormCardNumberItem(supportedCardTypes: cardTypeLogos.map(\.type),
+        let item = FormCardNumberItem(cardTypeLogos: cardTypeLogos,
                                       style: FormTextItemStyle(),
                                       localizationParameters: localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "numberItem")
@@ -93,8 +93,8 @@ extension FormItemViewBuilder {
 
 extension FormCardLogoItem {
     /// Describes a card type logo shown in the card number form item.
-    internal final class CardTypeLogo {
-
+    internal final class CardTypeLogo: Equatable {
+        
         internal let type: CardType
         
         /// The URL of the card type logo.
@@ -106,6 +106,10 @@ extension FormCardLogoItem {
         internal init(url: URL, type: CardType) {
             self.url = url
             self.type = type
+        }
+        
+        internal static func == (lhs: FormCardLogoItem.CardTypeLogo, rhs: FormCardLogoItem.CardTypeLogo) -> Bool {
+            lhs.url == rhs.url && lhs.type == rhs.type
         }
     }
 }

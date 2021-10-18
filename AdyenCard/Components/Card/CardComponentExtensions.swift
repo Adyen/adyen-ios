@@ -32,6 +32,7 @@ extension CardComponent {
             let details = CardDetails(paymentMethod: cardPaymentMethod,
                                       encryptedCard: encryptedCard,
                                       holderName: card.holder,
+                                      brandNameWhenCoBranded: cardViewController.brandNameWhenCoBranded,
                                       billingAddress: cardViewController.address,
                                       kcpDetails: kcpDetails,
                                       socialSecurityNumber: cardViewController.socialSecurityNumber)

@@ -31,6 +31,10 @@ public final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemVi
         stackView.adyen.anchor(inside: self)
     }
     
+    /// Creates a `FormVerticalStackItemView` with the specified spacing between its vertical items.
+    /// - Parameters:
+    ///   - item: The item represented by the view.
+    ///   - itemSpacing: Spacing among the child views of the stack.
     public convenience init(item: FormItemType, itemSpacing: CGFloat) {
         self.init(item: item)
         stackView.spacing = itemSpacing

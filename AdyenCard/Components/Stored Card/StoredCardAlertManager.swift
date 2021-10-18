@@ -33,7 +33,7 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, APIC
     // MARK: - CVC length
 
     private var minCharactersCount: Int {
-        guard let brand = CardType(rawValue: paymentMethod.brand) else { return 3 }
+        let brand = CardType(rawValue: paymentMethod.brand)
         switch brand {
         case .americanExpress:
             return 4
@@ -43,7 +43,7 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, APIC
     }
 
     private var maxCharactersCount: Int {
-        guard let brand = CardType(rawValue: paymentMethod.brand) else { return 4 }
+        let brand = CardType(rawValue: paymentMethod.brand)
         switch brand {
         case .americanExpress:
             return 4
