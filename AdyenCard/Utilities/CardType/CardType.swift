@@ -141,13 +141,6 @@ public enum CardType: RawRepresentable, Codable, Equatable, Hashable {
     /// Fallback option for any other scheme name
     case other(named: String)
     
-    /// :nodoc:
-//    public init(from decoder: Decoder) throws {
-//        let container = try decoder.singleValueContainer()
-//        let stringValue = try container.decode(String.self)
-//        self = CardType(rawValue: stringValue)
-//    }
-    
     // swiftlint:disable cyclomatic_complexity function_body_length
     public init(rawValue: String) {
         switch rawValue {

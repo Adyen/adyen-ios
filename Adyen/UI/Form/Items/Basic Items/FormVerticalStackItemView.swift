@@ -9,6 +9,7 @@ import UIKit
 
 /// A view representing a vertical stack of items.
 /// Items are created from the `subitems` property of the `item`
+/// :nodoc:
 public final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormItemType> {
 
     private var views: [AnyFormItemView] = []
@@ -35,6 +36,7 @@ public final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemVi
     /// - Parameters:
     ///   - item: The item represented by the view.
     ///   - itemSpacing: Spacing among the child views of the stack.
+    ///   :nodoc:
     public convenience init(item: FormItemType, itemSpacing: CGFloat) {
         self.init(item: item)
         stackView.spacing = itemSpacing
@@ -77,12 +79,7 @@ public final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemVi
             views.append(view)
             let itemView = view as UIView
             stackView.addArrangedSubview(view)
-            if let subItem = subItem as? Hidable {
-                let observation = observe(subItem.isHidden) { newValue in
-                    itemView.adyen.hide(animationKey: String(describing: itemView), hidden: newValue, animated: true)
-                }
-                observations.append(observation)
-            }
+            addVisibilityObserver(for: subItem, view: itemView)
 
             // weirdest behavior on uistackview with 2 visible arranged subviews
             // hiding/showing the bottom one glitches the animation
@@ -94,6 +91,14 @@ public final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemVi
                 extraView.heightAnchor.constraint(equalToConstant: 1).isActive = true
             }
         }
+    }
+    
+    private func addVisibilityObserver(for subItem: FormItem, view: UIView) {
+        guard let subItem = subItem as? Hidable else { return }
+        let observation = observe(subItem.isHidden) { isHidden in
+            view.adyen.hide(animationKey: String(describing: view), hidden: isHidden, animated: true)
+        }
+        observations.append(observation)
     }
 
     private func removeObservers() {

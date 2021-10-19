@@ -76,7 +76,7 @@ public struct CardBrand: Decodable {
         switch cvcPolicy {
         case .optional, .hidden:
             return true
-        default:
+        case .required:
             return false
         }
     }
@@ -85,9 +85,14 @@ public struct CardBrand: Decodable {
         switch expiryDatePolicy {
         case .optional, .hidden:
             return true
-        default:
+        case .required:
             return false
         }
+    }
+    
+    /// Determines if the brand is a private labelled card.
+    internal var containsPrivateLabels: Bool {
+        type.rawValue.contains("plcc") || type.rawValue.contains("cbcc")
     }
 }
 

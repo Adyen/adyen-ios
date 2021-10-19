@@ -178,8 +178,8 @@ extension FormCardNumberItemView {
         
         private func createEmptyImageView() -> NetworkImageView {
             let imageView = NetworkImageView()
-            imageView.adyen.round(using: style.cornerRounding)
             imageView.placeholderImage = Constant.placeholderImage
+            imageView.adyen.round(using: style.cornerRounding)
             imageView.layer.masksToBounds = style.clipsToBounds
             imageView.layer.borderWidth = style.borderWidth
             imageView.layer.borderColor = style.borderColor?.cgColor

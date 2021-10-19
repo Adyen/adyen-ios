@@ -45,10 +45,10 @@ internal final class FormCardNumberContainerItem: FormItem, Observer {
         self.localizationParameters = localizationParameters
         self.style = style
         
-        observe(numberItem.$isActive) { [weak self] newValue in
+        observe(numberItem.$isActive) { [weak self] isActive in
             guard let self = self else { return }
             // logo item only visible when number item is active or when it's invalid
-            let hidden = !newValue && self.numberItem.isValid()
+            let hidden = !isActive && self.numberItem.isValid()
             self.logoItem.isHidden.wrappedValue = hidden
         }
     }
