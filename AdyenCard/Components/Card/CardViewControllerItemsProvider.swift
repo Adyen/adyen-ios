@@ -156,7 +156,7 @@ extension CardViewController {
         
         /// If there is a configuration for installments, this item is created. Otherwise it will be nil.
         internal lazy var installmentsItem: FormCardInstallmentsItem? = {
-            guard let installmentsConfiguration = configuration.installmentConfigration else { return nil }
+            guard let installmentsConfiguration = configuration.installmentConfiguration else { return nil }
             let installmentsItem = FormCardInstallmentsItem(installmentConfiguration: installmentsConfiguration,
                                                             style: formStyle.textField,
                                                             amount: payment?.amount,

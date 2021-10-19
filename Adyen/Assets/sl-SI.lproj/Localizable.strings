@@ -30,8 +30,8 @@
 "adyen.card.stored.title" = "Preverite podatke o kartici";
 "adyen.card.stored.message" = "Vnesite kodo CVC za kartico, ki se konča na %@";
 "adyen.card.stored.expires" = "Potek veljavnosti %@";
-"adyen.card.numberItem.unsupportedBrand" = "";
-"adyen.card.numberItem.unknownBrand" = "";
+"adyen.card.numberItem.unsupportedBrand" = "%@ ni podprta znamka";
+"adyen.card.numberItem.unknownBrand" = "Vnesena znamka kartice ni podprta";
 "adyen.dropIn.stored.title" = "Potrdite plačilo: %@";
 "adyen.dropIn.preselected.openAll.title" = "Spremeni način plačila";
 "adyen.continueTo" = "Nadaljujte na %@";

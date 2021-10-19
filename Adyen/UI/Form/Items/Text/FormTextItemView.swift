@@ -182,6 +182,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     
     /// :nodoc:
     override public func validate() {
+        guard !isHidden else { return }
         updateValidationStatus(forced: true)
     }
     

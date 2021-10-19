@@ -128,7 +128,6 @@ public final class SecuredViewController: UIViewController {
         view.addSubview(blurEffectView)
         view.backgroundColor = .clear
 
-        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
         blurConstraints = blurEffectView.adyen.anchor(inside: view)
 
         UIView.animate(withDuration: 0.2, animations: { [weak self] in

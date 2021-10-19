@@ -135,11 +135,11 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         let context = AnimationContext(animationKey: Animation.separatorHighlighting.rawValue,
                                        duration: 0.0,
                                        delay: 0.0,
-                                       animations: {
-                                           self.separatorView.backgroundColor = self.item.style.separatorColor
+                                       animations: { [weak self] in
+                                           self?.separatorView.backgroundColor = self?.item.style.separatorColor
                                        },
-                                       completion: { _ in
-                                           self.separatorView.backgroundColor = self.item.style.separatorColor
+                                       completion: { [weak self] _ in
+                                           self?.separatorView.backgroundColor = self?.item.style.separatorColor
                                        })
         
         adyen.animate(context: context)

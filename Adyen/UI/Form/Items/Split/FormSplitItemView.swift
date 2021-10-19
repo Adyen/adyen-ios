@@ -31,7 +31,6 @@ internal final class FormSplitItemView: FormItemView<FormSplitItem> {
     
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: childItemViews)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.preservesSuperviewLayoutMargins = true
         stackView.axis = .horizontal
         stackView.alignment = .top

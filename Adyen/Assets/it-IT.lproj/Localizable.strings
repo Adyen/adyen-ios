@@ -14,7 +14,7 @@
 "adyen.sepa.consentLabel" = "Premendo il pulsante qui sopra accetti che l'importo specificato sia addebitato sul tuo conto bancario.";
 "adyen.sepa.nameItem.invalid" = "Nome del titolare non valido";
 "adyen.card.storeDetailsButton" = "Ricorda per la prossima volta";
-"adyen.card.nameItem.title" = "Nome sulla carta";
+"adyen.card.nameItem.title" = "Titolare carta";
 "adyen.card.nameItem.placeholder" = "J. Smith";
 "adyen.card.nameItem.invalid" = "Nome del titolare della carta non valido";
 "adyen.card.numberItem.title" = "Numero carta";
@@ -30,8 +30,8 @@
 "adyen.card.stored.title" = "Verifica la Carta";
 "adyen.card.stored.message" = "Inserire il codice CVC per %@";
 "adyen.card.stored.expires" = "Scade il: %@";
-"adyen.card.numberItem.unsupportedBrand" = "";
-"adyen.card.numberItem.unknownBrand" = "";
+"adyen.card.numberItem.unsupportedBrand" = "%@ non è supportata";
+"adyen.card.numberItem.unknownBrand" = "Il brand della carta inserita non è supportato";
 "adyen.dropIn.stored.title" = "Conferma il pagamento di %@";
 "adyen.dropIn.preselected.openAll.title" = "Cambia metodo di pagamento";
 "adyen.continueTo" = "Procedi verso %@";

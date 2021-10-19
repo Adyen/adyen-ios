@@ -32,7 +32,6 @@ public final class CopyLabelView: UIView, Localizable {
         self.style = style
         super.init(frame: .zero)
         addSubview(label)
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.adyen.anchor(inside: layoutMarginsGuide)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         addGestureRecognizer(tapGesture)

@@ -30,8 +30,8 @@
 "adyen.card.stored.title" = "Potvrdite svoju karticu";
 "adyen.card.stored.message" = "Unesite CVC kôd za %@";
 "adyen.card.stored.expires" = "Istječe %@";
-"adyen.card.numberItem.unsupportedBrand" = "";
-"adyen.card.numberItem.unknownBrand" = "";
+"adyen.card.numberItem.unsupportedBrand" = "Kartica %@ nije podržana";
+"adyen.card.numberItem.unknownBrand" = "Unesena marka kartice nije podržana";
 "adyen.dropIn.stored.title" = "Potvrdite plaćanje: % @";
 "adyen.dropIn.preselected.openAll.title" = "Promijeni način plaćanja";
 "adyen.continueTo" = "Nastavi na %@";

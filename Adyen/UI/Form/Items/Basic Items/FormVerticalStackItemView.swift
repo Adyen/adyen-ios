@@ -12,7 +12,7 @@ import UIKit
 public final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormItemType> {
 
     private var views: [AnyFormItemView] = []
-    
+
     private var observations: [Observation] = []
 
     /// Initializes the split item view.
@@ -22,7 +22,7 @@ public final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemVi
         super.init(item: item)
 
         prepareSubItems()
-        
+
         if var compound = item as? CompoundFormItem {
             compound.delegate = self
         }
@@ -30,7 +30,7 @@ public final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemVi
         addSubview(stackView)
         stackView.adyen.anchor(inside: self)
     }
-    
+
     /// Creates a `FormVerticalStackItemView` with the specified spacing between its vertical items.
     /// - Parameters:
     ///   - item: The item represented by the view.
@@ -41,11 +41,11 @@ public final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemVi
     }
 
     override public var childItemViews: [AnyFormItemView] { views }
-    
+
     override public var canBecomeFirstResponder: Bool {
         views.first { $0.canBecomeFirstResponder } != nil
     }
-    
+
     override public func becomeFirstResponder() -> Bool {
         views.first { $0.canBecomeFirstResponder }?.becomeFirstResponder() ?? super.becomeFirstResponder()
     }
@@ -54,7 +54,6 @@ public final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemVi
 
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.preservesSuperviewLayoutMargins = true
         stackView.axis = .vertical
         stackView.alignment = .fill
@@ -68,7 +67,7 @@ public final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemVi
         itemView.preservesSuperviewLayoutMargins = true
         return itemView
     }
-    
+
     private func prepareSubItems() {
         item.subitems.forEach { subItem in
             let view = FormVerticalStackItemView.build(subItem)
@@ -81,7 +80,7 @@ public final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemVi
                 }
                 observations.append(observation)
             }
-            
+
             // weirdest behavior on uistackview with 2 visible arranged subviews
             // hiding/showing the bottom one glitches the animation
             // workaround is to add another 1px height subview
@@ -93,7 +92,7 @@ public final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemVi
             }
         }
     }
-    
+
     private func removeObservers() {
         observations.forEach(remove)
         observations = []

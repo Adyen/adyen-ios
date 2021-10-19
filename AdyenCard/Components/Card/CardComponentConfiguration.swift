@@ -69,7 +69,7 @@ extension CardComponent {
         internal var excludedCardTypes: Set<CardType> = [.bcmc]
         
         /// Installments options to present to the user.
-        public var installmentConfigration: InstallmentConfiguration?
+        public var installmentConfiguration: InstallmentConfiguration?
         
         /// Configuration of Card component.
         /// - Parameters:
@@ -103,7 +103,7 @@ extension CardComponent {
             self.billingAddressMode = billingAddressMode
             self.koreanAuthenticationMode = koreanAuthenticationMode
             self.socialSecurityNumberMode = socialSecurityNumberMode
-            self.installmentConfigration = installmentConfigration
+            self.installmentConfiguration = installmentConfigration
         }
 
         internal func bcmcConfiguration() -> Configuration {

@@ -39,7 +39,6 @@ internal final class FormRegionPickerItemView: BaseFormPickerItemView<Region> {
         stackView.axis = .vertical
         stackView.spacing = 5.5
         addSubview(stackView)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.preservesSuperviewLayoutMargins = true
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.adyen.anchor(inside: self)
