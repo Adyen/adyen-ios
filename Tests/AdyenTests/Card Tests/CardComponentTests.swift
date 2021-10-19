@@ -1625,6 +1625,42 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(expectedBillingAddress, billingAddress)
     }
 
+    func testCardPrefilling_givenBillingAddressInPostalCodeMode() throws {
+        // Given
+        let method = CardPaymentMethod(type: "bcmc",
+                                       name: "Test name",
+                                       fundingSource: .credit,
+                                       brands: ["visa", "amex", "mc"])
+        var configuration = CardComponent.Configuration(shopperInformation: shopperInformation)
+        configuration.showsHolderNameField = true
+        configuration.billingAddressMode = .postalCode
+
+        let prefilledSut = CardComponent(paymentMethod: method,
+                                         apiContext: Dummy.context,
+                                         configuration: configuration)
+        UIApplication.shared.keyWindow?.rootViewController = prefilledSut.cardViewController
+
+        wait(for: .seconds(1))
+
+        // When
+        let view: UIView = prefilledSut.cardViewController.view
+
+        let holdernameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.holdername))
+        let expectedHoldername = try XCTUnwrap(shopperInformation.card?.holdername)
+        let holdername = holdernameView.item.value
+        XCTAssertEqual(expectedHoldername, holdername)
+
+        let socialSecurityNumberView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.socialSecurityNumber))
+        let expectedSocialSecurityNumber = try XCTUnwrap(shopperInformation.socialSecurityNumber)
+        let socialSecurityNumber = socialSecurityNumberView.item.value
+        XCTAssertEqual(expectedSocialSecurityNumber, socialSecurityNumber)
+
+        let postalCodeView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.zipCode))
+        let expectedPostalCode = try XCTUnwrap(shopperInformation.billingAddress?.postalCode)
+        let postalCode = postalCodeView.item.value
+        XCTAssertEqual(expectedPostalCode, postalCode)
+    }
+
     // MARK: - Private
 
     private func focus<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U) {
