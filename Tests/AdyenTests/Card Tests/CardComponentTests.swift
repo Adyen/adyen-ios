@@ -1671,15 +1671,15 @@ class CardComponentTests: XCTestCase {
         configuration.showsHolderNameField = true
         configuration.billingAddressMode = .full
 
-        let prefilledSut = CardComponent(paymentMethod: method,
-                                         apiContext: Dummy.context,
-                                         configuration: configuration)
-        UIApplication.shared.keyWindow?.rootViewController = prefilledSut.cardViewController
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: configuration)
+        UIApplication.shared.keyWindow?.rootViewController = sut.cardViewController
 
         wait(for: .seconds(1))
 
         // When
-        let view: UIView = prefilledSut.cardViewController.view
+        let view: UIView = sut.cardViewController.view
 
         let holdernameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.holdername))
         let holdername = holdernameView.item.value
@@ -1705,15 +1705,15 @@ class CardComponentTests: XCTestCase {
         configuration.showsHolderNameField = true
         configuration.billingAddressMode = .postalCode
 
-        let prefilledSut = CardComponent(paymentMethod: method,
-                                         apiContext: Dummy.context,
-                                         configuration: configuration)
-        UIApplication.shared.keyWindow?.rootViewController = prefilledSut.cardViewController
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: configuration)
+        UIApplication.shared.keyWindow?.rootViewController = sut.cardViewController
 
         wait(for: .seconds(1))
 
         // When
-        let view: UIView = prefilledSut.cardViewController.view
+        let view: UIView = sut.cardViewController.view
 
         let holdernameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.holdername))
         let holdername = holdernameView.item.value
