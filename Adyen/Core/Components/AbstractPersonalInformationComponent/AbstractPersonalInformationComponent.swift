@@ -75,7 +75,9 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         configuration.fields.forEach { field in
             self.add(field, into: formViewController)
         }
+        formViewController.append(FormSpacerItem())
         formViewController.append(button)
+        formViewController.append(FormSpacerItem(numberOfSpaces: 2))
     }
 
     /// :nodoc:

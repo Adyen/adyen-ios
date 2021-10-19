@@ -67,6 +67,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
         formViewController.append(codeItem)
         formViewController.append(FormSpacerItem())
         formViewController.append(button)
+        formViewController.append(FormSpacerItem(numberOfSpaces: 2))
 
         return formViewController
     }()
