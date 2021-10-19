@@ -23,7 +23,7 @@ extension IntegrationExample {
         configuration.payment = payment
 
         // TODO: - Restore previous value
-        configuration.card.billingAddressMode = .full
+//        configuration.card.billingAddressMode = .full
         configuration.card.showsHolderNameField = true
         configuration.card.socialSecurityNumberMode = .show
 

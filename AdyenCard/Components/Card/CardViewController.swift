@@ -210,7 +210,9 @@ internal class CardViewController: FormViewController {
             append(items.storeDetailsItem)
         }
 
+        append(FormSpacerItem())
         append(items.button)
+        append(FormSpacerItem(numberOfSpaces: 2))
     }
 
     private func prefill() {
