@@ -87,6 +87,8 @@ internal final class FormCardNumberItem: FormTextItem, Observer {
         case 1:
             update(currentBrand: brands.first)
         case 2:
+            // if there are 2 brands and neither is supported,
+            // need to show unsupported text
             if let firstSupportedBrand = brands.first(where: { $0.isSupported }) {
                 update(currentBrand: firstSupportedBrand)
             } else {

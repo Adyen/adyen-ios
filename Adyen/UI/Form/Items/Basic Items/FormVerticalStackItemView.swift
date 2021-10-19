@@ -40,12 +40,15 @@ public final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemVi
         stackView.spacing = itemSpacing
     }
 
+    /// :nodoc:
     override public var childItemViews: [AnyFormItemView] { views }
 
+    /// :nodoc:
     override public var canBecomeFirstResponder: Bool {
         views.first { $0.canBecomeFirstResponder } != nil
     }
 
+    /// :nodoc:
     override public func becomeFirstResponder() -> Bool {
         views.first { $0.canBecomeFirstResponder }?.becomeFirstResponder() ?? super.becomeFirstResponder()
     }
