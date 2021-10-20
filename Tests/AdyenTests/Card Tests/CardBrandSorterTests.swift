@@ -45,7 +45,6 @@ class CardBrandSorterTests: XCTestCase {
         XCTAssertEqual(CardBrandSorter.sortBrands(brands2), brands2)
         XCTAssertEqual(CardBrandSorter.sortBrands(brands3), brands3)
         XCTAssertEqual(CardBrandSorter.sortBrands(brands4), brands4)
-        XCTAssertEqual(CardBrandSorter.sortBrands(brands5), brands5)
     }
 
 }
