@@ -1598,7 +1598,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(expectedPostalAddress, postalAddress)
     }
 
-    func testCardPrefilling_givenBillingAddressInFullMode() throws {
+    func testCardPrefillingGivenBillingAddressInFullModeShouldPrefillItems() throws {
         // Given
         let method = CardPaymentMethod(type: "bcmc",
                                        name: "Test name",
@@ -1634,7 +1634,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(expectedBillingAddress, billingAddress)
     }
 
-    func testCardPrefilling_givenBillingAddressInPostalCodeMode() throws {
+    func testCardPrefillingGivenBillingAddressInPostalCodeModeShouldPrefillItems() throws {
         // Given
         let method = CardPaymentMethod(type: "bcmc",
                                        name: "Test name",
@@ -1670,7 +1670,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(expectedPostalCode, postalCode)
     }
 
-    func testCardPrefilling_givingNoShopperInformationAndFullAddressMode_shouldNotPrefillItems() throws {
+    func testCardPrefillingGivenNoShopperInformationAndFullAddressModeShouldNotPrefillItems() throws {
         // Given
         let method = CardPaymentMethod(type: "bcmc",
                                        name: "Test name",
@@ -1704,7 +1704,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(expectedBillingAddress, billingAddress)
     }
 
-    func testCardPrefilling_givingNoShopperInformationAndPostalCodeMode_shouldNotPrefillItems() throws {
+    func testCardPrefillingGivenNoShopperInformationAndPostalCodeModeShouldNotPrefillItems() throws {
         // Given
         let method = CardPaymentMethod(type: "bcmc",
                                        name: "Test name",
