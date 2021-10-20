@@ -84,8 +84,8 @@ internal class CardViewController: FormViewController {
                     holder: configuration.showsHolderNameField ? items.holderNameItem.nonEmptyValue : nil)
     }
     
-    internal var brandNameWhenCoBranded: String? {
-        items.numberContainerItem.numberItem.brandNameWhenCoBranded
+    internal var selectedBrand: String? {
+        items.numberContainerItem.numberItem.currentBrand?.type.rawValue
     }
 
     internal var address: PostalAddress? {

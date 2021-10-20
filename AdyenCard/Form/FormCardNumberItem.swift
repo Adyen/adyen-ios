@@ -39,12 +39,6 @@ internal final class FormCardNumberItem: FormTextItem, Observer {
     /// :nodoc:
     private let localizationParameters: LocalizationParameters?
     
-    /// Returns the brand name for only dual branded flow. Both brands must be supported too.
-    internal var brandNameWhenCoBranded: String? {
-        guard detectedBrands.filter(\.isSupported).count == 2 else { return nil }
-        return currentBrand?.type.rawValue
-    }
-    
     /// Initializes the form card number item.
     internal init(cardTypeLogos: [FormCardLogoItem.CardTypeLogo],
                   style: FormTextItemStyle = FormTextItemStyle(),

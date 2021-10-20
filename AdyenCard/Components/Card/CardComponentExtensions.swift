@@ -32,7 +32,7 @@ extension CardComponent {
             let details = CardDetails(paymentMethod: cardPaymentMethod,
                                       encryptedCard: encryptedCard,
                                       holderName: card.holder,
-                                      brandNameWhenCoBranded: cardViewController.brandNameWhenCoBranded,
+                                      selectedBrand: cardViewController.selectedBrand,
                                       billingAddress: cardViewController.address,
                                       kcpDetails: kcpDetails,
                                       socialSecurityNumber: cardViewController.socialSecurityNumber)
@@ -77,9 +77,10 @@ extension KCPDetails {
 internal enum CardBrandSorter {
     
     /// Sorts the brands by the rules below for dual branded cards.
-    static func sortBrands(_ brands: [CardBrand]) -> [CardBrand] {
+    internal static func sortBrands(_ brands: [CardBrand]) -> [CardBrand] {
         // only try to sort if both brands are available.
-        guard let firstBrand = brands.first,
+        guard brands.count == 2,
+              let firstBrand = brands.first,
               let secondBrand = brands.adyen[safeIndex: 1] else { return brands }
         let hasCarteBancaire = brands.contains { $0.type == .carteBancaire }
         let hasVisa = brands.contains { $0.type == .visa }

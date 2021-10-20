@@ -53,8 +53,8 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
     /// The 3DS2 SDK version.
     public let threeDS2SDKVersion: String = threeDS2SdkVersion
     
-    /// Name of the brand when co-branded. `nil` for single branded cards.
-    public let brandNameWhenCoBranded: String?
+    /// Brand of the card.
+    public let selectedBrand: String?
 
     /// Initializes the card payment details.
     ///
@@ -64,12 +64,13 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
     ///   - paymentMethod: The used card payment method.
     ///   - encryptedCard: The encrypted card to read the details from.
     ///   - holderName: The holder name if available.
+    ///   - selectedBrand: Brand of the card.
     ///   - billingAddress: The billing address information.
     ///   - kcpDetails: The additional details for KCP authentication.
     public init(paymentMethod: AnyCardPaymentMethod,
                 encryptedCard: EncryptedCard,
                 holderName: String? = nil,
-                brandNameWhenCoBranded: String? = nil,
+                selectedBrand: String? = nil,
                 billingAddress: PostalAddress? = nil,
                 kcpDetails: KCPDetails? = nil,
                 socialSecurityNumber: String? = nil) {
@@ -79,7 +80,7 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
         self.encryptedExpiryYear = encryptedCard.expiryYear
         self.encryptedSecurityCode = encryptedCard.securityCode
         self.holderName = holderName
-        self.brandNameWhenCoBranded = brandNameWhenCoBranded
+        self.selectedBrand = selectedBrand
         self.storedPaymentMethodIdentifier = nil
         self.fundingSource = paymentMethod.fundingSource
         self.billingAddress = billingAddress
@@ -108,7 +109,7 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
         self.taxNumber = nil
         self.password = nil
         self.socialSecurityNumber = nil
-        self.brandNameWhenCoBranded = nil
+        self.selectedBrand = nil
     }
 
     // MARK: - Encoding
@@ -121,7 +122,7 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
         case encryptedExpiryYear
         case encryptedSecurityCode
         case holderName
-        case brandNameWhenCoBranded = "brand"
+        case selectedBrand = "brand"
         case fundingSource
         case taxNumber
         case password = "encryptedPassword"
