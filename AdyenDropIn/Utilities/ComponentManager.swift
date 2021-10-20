@@ -186,6 +186,7 @@ internal final class ComponentManager {
     private func createBoletoComponent(_ paymentMethod: BoletoPaymentMethod) -> BoletoComponent {
         BoletoComponent(configuration: .init(boletoPaymentMethod: paymentMethod,
                                              payment: configuration.payment,
+                                             shopperInformation: configuration.shopper,
                                              showEmailAddress: true),
                         apiContext: apiContext)
     }
