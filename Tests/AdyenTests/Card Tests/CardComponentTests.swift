@@ -387,26 +387,32 @@ class CardComponentTests: XCTestCase {
         wait(for: [expectation], timeout: 10)
     }
 
-    func testSuccessTintColorCustomisation() {
+    func testSuccessTintColorCustomisation() throws {
+        // Given
         var style = FormComponentStyle(tintColor: .systemYellow)
         style.textField.title.color = .gray
 
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex"])
+        let method = CardPaymentMethod(type: "bcmc",
+                                       name: "Test name",
+                                       fundingSource: .credit,
+                                       brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 style: style)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
-        XCTAssertEqual(securityCodeItemView!.titleLabel.textColor!, .gray)
-        
-        self.populate(textItemView: securityCodeItemView!, with: "123")
-        
         wait(for: .seconds(1))
-        
-        let successIcon: UIImageView? = sut.viewController.view.findView(by: "cvvHintIcon.imageView")
-        XCTAssertNotNil(successIcon)
+
+        // Given
+        let view: UIView = sut.viewController.view
+
+        let securityCodeItemView: FormCardSecurityCodeItemView? = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.securityCodeItem"))
+        XCTAssertEqual(securityCodeItemView?.titleLabel.textColor, .gray)
+
+        populate(textItemView: securityCodeItemView!, with: "123")
+        wait(for: .seconds(1))
+
+        let successIcon: UIImageView? = try XCTUnwrap(securityCodeItemView?.cardHintView)
         XCTAssertEqual(successIcon?.tintColor, .systemYellow)
     }
 
@@ -1074,6 +1080,9 @@ class CardComponentTests: XCTestCase {
         
         let newResponse = BinLookupResponse(brands: [CardBrand(type: .elo, showSocialSecurityNumber: false)])
         sut.cardViewController.update(binInfo: newResponse)
+
+        wait(for: .seconds(1))
+
         XCTAssertTrue(brazilSSNItemView!.isHidden)
 
         waitForExpectations(timeout: 20, handler: nil)

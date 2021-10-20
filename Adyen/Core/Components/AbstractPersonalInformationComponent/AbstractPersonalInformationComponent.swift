@@ -227,7 +227,6 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         payment?.countryCode ?? Locale.current.regionCode ?? "US"
     }
 
-    // TODO: - Deprecate this method
     /// :nodoc:
     public func showValidation() {
         formViewController.showValidation()

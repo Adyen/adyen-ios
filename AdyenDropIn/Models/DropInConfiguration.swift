@@ -20,7 +20,7 @@ public extension DropInComponent {
     final class Configuration: APIContextAware {
         
         /// Card component related configuration.
-        public var card = CardComponent.Configuration(shopperInformation: shopperInformation)
+        public var card = CardComponent.Configuration()
         
         /// The Apple Pay configuration.
         public var applePay: ApplePayComponent.Configuration?
@@ -42,34 +42,6 @@ public extension DropInComponent {
         ///   - apiContext: The API context used to retrieve internal resources.
         public init(apiContext: APIContext) {
             self.apiContext = apiContext
-        }
-
-        // TODO: - Remove mock shopper information data
-        private static var shopperInformation: PrefilledShopperInformation {
-            let shopperName = ShopperName(firstName: "Katrina", lastName: "Del Mar")
-            let billingAddress = PostalAddress(city: "New York",
-                                               country: "US",
-                                               houseNumberOrName: "256",
-                                               postalCode: "1034HN",
-                                               stateOrProvince: "New York",
-                                               street: "First Avenue",
-                                               apartment: "8A")
-            let deliveryAddress = PostalAddress(city: "Amsterdam",
-                                                country: "NL",
-                                                houseNumberOrName: "176",
-                                                postalCode: "1008KL",
-                                                stateOrProvince: "North Holland",
-                                                street: "Amsterlstraat",
-                                                apartment: "2B")
-
-            let shopperInformation = PrefilledShopperInformation(shopperName: shopperName,
-                                                                 emailAddress: "katrina@mail.com",
-                                                                 telephoneNumber: "666444222",
-                                                                 billingAddress: billingAddress,
-                                                                 deliveryAddress: deliveryAddress,
-                                                                 socialSecurityNumber: "27873099253",
-                                                                 card: .init(holdername: "Kat del Mar"))
-            return shopperInformation
         }
     }
 
