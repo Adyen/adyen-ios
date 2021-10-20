@@ -26,7 +26,7 @@ internal final class FormCardNumberContainerItem: FormItem, Observer {
     
     internal lazy var numberItem: FormCardNumberItem = {
         let item = FormCardNumberItem(cardTypeLogos: cardTypeLogos,
-                                      style: FormTextItemStyle(),
+                                      style: style,
                                       localizationParameters: localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "numberItem")
         return item

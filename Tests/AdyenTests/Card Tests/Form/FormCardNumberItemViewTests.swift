@@ -14,8 +14,11 @@ class FormCardNumberItemViewTests: XCTestCase {
     var sut: FormCardNumberItemView!
     var validator: ValidatorMock!
     
+    private static let url = URL(string: "https:google.com")!
+    
     override func setUp() {
-        item = FormCardNumberItem(supportedCardTypes: [.masterCard, .visa, .americanExpress], cardTypeLogos: [])
+        item = FormCardNumberItem(cardTypeLogos: [.init(url: Self.url, type: .visa),
+                                                  .init(url: Self.url, type: .masterCard)])
         validator = ValidatorMock()
         
         item.validator = validator

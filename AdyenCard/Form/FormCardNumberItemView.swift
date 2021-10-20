@@ -52,7 +52,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     // MARK: - Card Type Logos View
     
     /// Logo view for the brand(s) icons and selection for dual-branded cards.
-    private lazy var cardTypeLogosView: CardLogoView = {
+    internal lazy var cardTypeLogosView: CardLogoView = {
         let cardTypeLogosView = CardLogoView(style: item.style.icon)
         cardTypeLogosView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cardTypeLogos")
         cardTypeLogosView.backgroundColor = item.style.backgroundColor
@@ -66,7 +66,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
 extension FormCardNumberItemView {
     
     /// Custom view housing up to 2 sub views for brand logos.
-    private class CardLogoView: UIView {
+    internal class CardLogoView: UIView {
         
         private enum Constant {
             static let iconSize = CGSize(width: 24, height: 16)
@@ -86,10 +86,10 @@ extension FormCardNumberItemView {
         }()
         
         /// First view to display the current brand or the placeholder image.
-        private lazy var primaryLogoView: NetworkImageView = createEmptyImageView()
+        internal private(set) lazy var primaryLogoView: NetworkImageView = createEmptyImageView()
         
         /// View to display the second brand for dual-branded cards. Hidden otherwise.
-        private lazy var secondaryLogoView: NetworkImageView = {
+        internal private(set) lazy var secondaryLogoView: NetworkImageView = {
             let imageView = createEmptyImageView()
             imageView.isHidden = true
             return imageView
@@ -109,7 +109,7 @@ extension FormCardNumberItemView {
             }
         }
         
-        init(style: ImageStyle) {
+        internal init(style: ImageStyle) {
             self.style = style
             super.init(frame: .zero)
             addSubview(stackView)
@@ -118,7 +118,7 @@ extension FormCardNumberItemView {
         }
         
         @available(*, unavailable)
-        required init?(coder: NSCoder) {
+        internal required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
         

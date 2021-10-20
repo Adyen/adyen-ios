@@ -123,9 +123,9 @@ class CardComponentTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
-            let cardNumberItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem.titleLabel")
-            let cardNumberItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem.textField")
+            let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
+            let cardNumberItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem.titleLabel")
+            let cardNumberItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem.textField")
 
             let holderNameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.holderNameItem")
             let holderNameItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.holderNameItem.titleLabel")
@@ -278,7 +278,7 @@ class CardComponentTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
+            let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
             let securityCodeCvvHint: FormCardSecurityCodeItemView.HintView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem.cvvHintIcon")
             let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
 
@@ -344,7 +344,7 @@ class CardComponentTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
-            let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
+            let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
             let securityCodeCvvHint: FormCardSecurityCodeItemView.HintView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem.cvvHintIcon")
 
             XCTAssertNotNil(securityCodeCvvHint)
@@ -555,19 +555,19 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
+        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         XCTAssertNotNil(cardNumberItemView)
-        let textItemView: FormTextItemView<FormCardNumberItem>? = cardNumberItemView!.findView(with: "AdyenCard.CardComponent.numberItem")
+        let textItemView: FormTextItemView<FormCardNumberItem>? = cardNumberItemView!.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         XCTAssertNotNil(textItemView)
-        let cardLogoView = cardNumberItemView!.cardTypeLogosView as! FormCardNumberItemView.CardsView
+        let cardLogoView = cardNumberItemView!.cardTypeLogosView
         XCTAssertNotNil(cardLogoView)
         let cardNumberItem = cardNumberItemView!.item
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             XCTAssertEqual(cardNumberItem.cardTypeLogos.count, 6)
-            XCTAssertEqual(cardLogoView.subviews.count, 6)
-            XCTAssertEqual(cardLogoView.arrangedSubviews.filter { !$0.isHidden }.count, 4)
+            XCTAssertFalse(cardLogoView.primaryLogoView.isHidden)
+            XCTAssertTrue(cardLogoView.secondaryLogoView.isHidden)
 
             expectation.fulfill()
         }
@@ -580,11 +580,11 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
+        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         XCTAssertNotNil(cardNumberItemView)
-        let textItemView: FormTextItemView<FormCardNumberItem>? = cardNumberItemView!.findView(with: "AdyenCard.CardComponent.numberItem")
+        let textItemView: FormTextItemView<FormCardNumberItem>? = cardNumberItemView!.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         XCTAssertNotNil(textItemView)
-        let cardLogoView = cardNumberItemView!.cardTypeLogosView as! FormCardNumberItemView.CardsView
+        let cardLogoView = cardNumberItemView!.cardTypeLogosView
         XCTAssertNotNil(cardLogoView)
         let cardNumberItem = cardNumberItemView!.item
 
@@ -595,8 +595,8 @@ class CardComponentTests: XCTestCase {
 
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
                 XCTAssertEqual(cardNumberItem.cardTypeLogos.count, 3)
-                XCTAssertEqual(cardLogoView.subviews.count, 3)
-                XCTAssertTrue(cardLogoView.arrangedSubviews.allSatisfy(\.isHidden))
+                XCTAssertFalse(cardLogoView.primaryLogoView.isHidden)
+                XCTAssertTrue(cardLogoView.secondaryLogoView.isHidden)
 
                 expectation.fulfill()
             }
@@ -610,11 +610,11 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberItem")
+        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         XCTAssertNotNil(cardNumberItemView)
-        let textItemView: FormTextItemView<FormCardNumberItem>? = cardNumberItemView!.findView(with: "AdyenCard.CardComponent.numberItem")
+        let textItemView: FormTextItemView<FormCardNumberItem>? = cardNumberItemView!.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         XCTAssertNotNil(textItemView)
-        let cardLogoView = cardNumberItemView!.cardTypeLogosView as! FormCardNumberItemView.CardsView
+        let cardLogoView = cardNumberItemView!.cardTypeLogosView
         XCTAssertNotNil(cardLogoView)
         let cardNumberItem = cardNumberItemView!.item
 
@@ -625,8 +625,8 @@ class CardComponentTests: XCTestCase {
 
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
                 XCTAssertEqual(cardNumberItem.cardTypeLogos.count, 3)
-                XCTAssertEqual(cardLogoView.subviews.count, 3)
-                XCTAssertEqual(cardLogoView.arrangedSubviews.filter { !$0.isHidden }.count, 1)
+                XCTAssertFalse(cardLogoView.primaryLogoView.isHidden)
+                XCTAssertTrue(cardLogoView.secondaryLogoView.isHidden)
 
                 expectation.fulfill()
             }
@@ -1118,9 +1118,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testLuhnCheck() {
-        let allEnabledLuhns = [CardBrand(type: .visa, isLuhnCheckEnabled: true),
-                               CardBrand(type: .masterCard, isLuhnCheckEnabled: true)]
-        let atLeastOneDisabledLuhn = [CardBrand(type: .visa, isLuhnCheckEnabled: true),
+        let brands = [CardBrand(type: .visa, isLuhnCheckEnabled: true),
                                       CardBrand(type: .masterCard, isLuhnCheckEnabled: false)]
 
         let method = CardPaymentMethod(type: "bcmc",
@@ -1133,14 +1131,14 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config)
 
-        let cardNumberItem = sut.cardViewController.items.numberItem
-        cardNumberItem.luhnCheckEnabled = allEnabledLuhns.luhnCheckRequired
+        let cardNumberItem = sut.cardViewController.items.numberContainerItem.numberItem
+        cardNumberItem.update(brands: brands)
         cardNumberItem.value = "4111 1111 1111"
         XCTAssertFalse(cardNumberItem.isValid())
         cardNumberItem.value = "4111 1111 1111 1111"
         XCTAssertTrue(cardNumberItem.isValid())
 
-        cardNumberItem.luhnCheckEnabled = atLeastOneDisabledLuhn.luhnCheckRequired
+        cardNumberItem.selectBrand(at: 1)
         XCTAssertTrue(cardNumberItem.isValid())
         cardNumberItem.value = "4111 1111 1111"
         XCTAssertTrue(cardNumberItem.isValid())
@@ -1157,7 +1155,7 @@ class CardComponentTests: XCTestCase {
                                 style: .init())
         
         fillCard(on: sut.viewController.view, with: Dummy.visaCard)
-        let cardNumberItem = sut.cardViewController.items.numberItem
+        let cardNumberItem = sut.cardViewController.items.numberContainerItem.numberItem
         var binResponse = BinLookupResponse(brands: [CardBrand(type: .visa, isSupported: true)])
         sut.cardViewController.update(binInfo: binResponse)
         XCTAssertFalse(cardNumberItem.allowsValidationWhileEditing)
@@ -1175,12 +1173,9 @@ class CardComponentTests: XCTestCase {
     }
 
     func testCVCOptionality() {
-        let mixedBrands = [CardBrand(type: .visa, cvcPolicy: .required),
+        let brands = [CardBrand(type: .visa, cvcPolicy: .required),
                            CardBrand(type: .masterCard, cvcPolicy: .hidden),
                            CardBrand(type: .masterCard, cvcPolicy: .optional)]
-        let optionalBrands = [CardBrand(type: .visa, cvcPolicy: .optional),
-                              CardBrand(type: .masterCard, cvcPolicy: .hidden),
-                              CardBrand(type: .masterCard, cvcPolicy: .optional)]
 
         let method = CardPaymentMethod(type: "visa",
                                        name: "Test name",
@@ -1193,15 +1188,14 @@ class CardComponentTests: XCTestCase {
 
         let cvcItem = sut.cardViewController.items.securityCodeItem
         cvcItem.value = ""
-        cvcItem.isOptional = mixedBrands.isCVCOptional
-        // mixed means non option, valid value must be entered
+        cvcItem.isOptional = brands[0].isCVCOptional
         XCTAssertFalse(cvcItem.isValid())
         cvcItem.value = "1"
         XCTAssertFalse(cvcItem.isValid())
         cvcItem.value = "123"
         XCTAssertTrue(cvcItem.isValid())
 
-        cvcItem.isOptional = optionalBrands.isCVCOptional
+        cvcItem.isOptional = brands[1].isCVCOptional
         XCTAssertTrue(cvcItem.isValid())
         cvcItem.value = "1"
         XCTAssertFalse(cvcItem.isValid())
@@ -1211,12 +1205,9 @@ class CardComponentTests: XCTestCase {
     }
 
     func testExpiryDateOptionality() {
-        let mixedBrands = [CardBrand(type: .visa, expiryDatePolicy: .required),
+        let brands = [CardBrand(type: .visa, expiryDatePolicy: .required),
                            CardBrand(type: .masterCard, expiryDatePolicy: .optional),
                            CardBrand(type: .masterCard, expiryDatePolicy: .hidden)]
-        let optionalBrands = [CardBrand(type: .visa, expiryDatePolicy: .hidden),
-                              CardBrand(type: .masterCard, expiryDatePolicy: .optional),
-                              CardBrand(type: .masterCard, expiryDatePolicy: .hidden)]
 
         let method = CardPaymentMethod(type: "visa",
                                        name: "Test name",
@@ -1229,7 +1220,7 @@ class CardComponentTests: XCTestCase {
 
         let expDateItem = sut.cardViewController.items.expiryDateItem
         expDateItem.value = ""
-        expDateItem.isOptional = mixedBrands.isExpiryDateOptional
+        expDateItem.isOptional = brands[0].isExpiryDateOptional
         // mixed means non option, valid value must be entered
         XCTAssertFalse(expDateItem.isValid())
         expDateItem.value = "1"
@@ -1241,7 +1232,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(sut.cardViewController.card.expiryYear, "2024")
         XCTAssertEqual(sut.cardViewController.card.expiryMonth, "02")
 
-        expDateItem.isOptional = optionalBrands.isExpiryDateOptional
+        expDateItem.isOptional = brands[1].isExpiryDateOptional
         XCTAssertTrue(expDateItem.isValid())
         expDateItem.value = "1"
         XCTAssertEqual(sut.cardViewController.card.expiryYear, "20")
@@ -1426,7 +1417,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: config)
-        sut.cardViewController.items.numberItem.value = "4111 1111 1111 1111"
+        sut.cardViewController.items.numberContainerItem.numberItem.value = "4111 1111 1111 1111"
         
         // show view controller
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -1440,7 +1431,7 @@ class CardComponentTests: XCTestCase {
         wait(for: .seconds(1))
 
         // Then
-        XCTAssertTrue(sut.cardViewController.items.numberItem.value.isEmpty)
+        XCTAssertTrue(sut.cardViewController.items.numberContainerItem.numberItem.value.isEmpty)
     }
 
     func testClearShouldResetExpiryDateItemToEmptyValue() throws {
@@ -1607,7 +1598,7 @@ extension UIView {
 extension XCTestCase {
 
     func fillCard(on view: UIView, with card: Card) {
-        let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = view.findView(with: "AdyenCard.CardComponent.numberItem")
+        let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem>? = view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
 

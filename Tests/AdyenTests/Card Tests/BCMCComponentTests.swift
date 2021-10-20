@@ -42,8 +42,9 @@ class BCMCComponentTests: XCTestCase {
         XCTAssertEqual(sut.configuration.excludedCardTypes, [])
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberItem"))
-            XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberItem.cardTypeLogos"))
+            XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem"))
+            XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem.cardTypeLogos"))
+            XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.cardLogoItem"))
             XCTAssertNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.holderNameItem"))
             XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.expiryDateItem"))
             XCTAssertNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.securityCodeItem"))
@@ -67,8 +68,8 @@ class BCMCComponentTests: XCTestCase {
         XCTAssertEqual(sut.configuration.excludedCardTypes, [])
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberItem"))
-            XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberItem.cardTypeLogos"))
+            XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem"))
+            XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem.cardTypeLogos"))
             XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.holderNameItem"))
             XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.expiryDateItem"))
             XCTAssertNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.securityCodeItem"))
@@ -92,8 +93,8 @@ class BCMCComponentTests: XCTestCase {
         XCTAssertEqual(sut.configuration.excludedCardTypes, [])
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberItem"))
-            XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberItem.cardTypeLogos"))
+            XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem"))
+            XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem.cardTypeLogos"))
             XCTAssertNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.holderNameItem"))
             XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.expiryDateItem"))
             XCTAssertNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.securityCodeItem"))
@@ -112,17 +113,16 @@ class BCMCComponentTests: XCTestCase {
         
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberItem")
+            let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
             XCTAssertNotNil(cardNumberItemView)
-            let textItemView: FormTextItemView<FormCardNumberItem>? = cardNumberItemView!.findView(with: "AdyenCard.BCMCComponent.numberItem")
+            let textItemView: FormCardNumberItemView? = cardNumberItemView!.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
             XCTAssertNotNil(textItemView)
             self.populate(textItemView: textItemView!, with: Dummy.bancontactCard.number!)
             
             let cardNumberItem = cardNumberItemView!.item
             XCTAssertEqual(cardNumberItem.cardTypeLogos.count, 1)
             XCTAssertEqual(cardNumberItem.cardTypeLogos.first?.url, LogoURLProvider.logoURL(withName: "bcmc", environment: sut.apiContext.environment))
-            XCTAssertEqual(cardNumberItem.cardTypeLogos.first?.isHidden, false)
-            XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberItem.cardTypeLogos"))
+            XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem.cardTypeLogos"))
             
             expectation.fulfill()
         }
@@ -137,14 +137,14 @@ class BCMCComponentTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         let expectation = XCTestExpectation(description: "Dummy Expectation")
-        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberItem")
+        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         XCTAssertNotNil(cardNumberItemView)
 
         let cardNumberItem = cardNumberItemView!.item
         self.populate(textItemView: cardNumberItemView!, with: "00000")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
 
-            XCTAssertTrue(cardNumberItem.cardTypeLogos.allSatisfy(\.isHidden))
+            XCTAssertTrue(cardNumberItem.detectedBrandLogos.count == 0)
             
             expectation.fulfill()
         }
@@ -185,7 +185,7 @@ class BCMCComponentTests: XCTestCase {
 
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             // Enter Card Number
-            let cardNumberView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberItem")
+            let cardNumberView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
             XCTAssertNotNil(cardNumberView)
             self.populate(textItemView: cardNumberView!, with: Dummy.bancontactCard.number!)
             
@@ -225,7 +225,7 @@ class BCMCComponentTests: XCTestCase {
         sut.cardComponentDelegate = delegateMock
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberItem")
+            let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
             self.populate(textItemView: cardNumberItemView!, with: "67034")
         }
         
@@ -250,7 +250,7 @@ class BCMCComponentTests: XCTestCase {
         sut.cardComponentDelegate = delegateMock
 
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberItem")
+            let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
             self.populate(textItemView: cardNumberItemView!, with: Dummy.bancontactCard.number!)
         }
 
@@ -275,7 +275,7 @@ class BCMCComponentTests: XCTestCase {
         sut.cardComponentDelegate = delegateMock
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberItem")
+            let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
             self.populate(textItemView: cardNumberItemView!, with: "32145")
         }
         
@@ -300,7 +300,7 @@ class BCMCComponentTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             // Enter invalid Card Number
-            let cardNumberView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberItem")
+            let cardNumberView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
             XCTAssertNotNil(cardNumberView)
             self.populate(textItemView: cardNumberView!, with: "123")
             
@@ -317,7 +317,7 @@ class BCMCComponentTests: XCTestCase {
             
             // wait until the alert popup is shown
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-                let alertLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberItem.alertLabel")
+                let alertLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem.alertLabel")
                 XCTAssertNotNil(alertLabel)
                 XCTAssertEqual(alertLabel?.text, cardNumberView?.item.validationFailureMessage)
                 expectation.fulfill()
