@@ -296,7 +296,12 @@ class StoredCardComponentTests: XCTestCase {
 
             textField.text = "1111"
             textField?.sendActions(for: .editingChanged)
-            XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 3, length: 1), replacementString: "1"), false)
+            XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 3, length: 1), replacementString: "1"), true)
+            XCTAssertEqual(payAction.isEnabled, true)
+
+            textField.text = "11111"
+            textField?.sendActions(for: .editingChanged)
+            XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 4, length: 1), replacementString: "1"), false)
 
             dummyExpectation.fulfill()
             alertController.dismiss(animated: false, completion: nil)
