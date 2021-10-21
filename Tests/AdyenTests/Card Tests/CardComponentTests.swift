@@ -400,10 +400,11 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 style: style)
 
+        // When
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         wait(for: .seconds(1))
 
-        // Given
+        // Then
         let view: UIView = sut.viewController.view
 
         let securityCodeItemView: FormCardSecurityCodeItemView? = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.securityCodeItem"))
@@ -1611,11 +1612,13 @@ class CardComponentTests: XCTestCase {
         let prefilledSut = CardComponent(paymentMethod: method,
                                          apiContext: Dummy.context,
                                          configuration: configuration)
+
+        // When
         UIApplication.shared.keyWindow?.rootViewController = prefilledSut.cardViewController
 
         wait(for: .seconds(1))
 
-        // When
+        // Then
         let view: UIView = prefilledSut.cardViewController.view
 
         let holdernameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.holdername))
@@ -1647,11 +1650,13 @@ class CardComponentTests: XCTestCase {
         let prefilledSut = CardComponent(paymentMethod: method,
                                          apiContext: Dummy.context,
                                          configuration: configuration)
+
+        // When
         UIApplication.shared.keyWindow?.rootViewController = prefilledSut.cardViewController
 
         wait(for: .seconds(1))
 
-        // When
+        // Then
         let view: UIView = prefilledSut.cardViewController.view
 
         let holdernameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.holdername))
@@ -1683,11 +1688,13 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: configuration)
+
+        // When
         UIApplication.shared.keyWindow?.rootViewController = sut.cardViewController
 
         wait(for: .seconds(1))
 
-        // When
+        // Then
         let view: UIView = sut.cardViewController.view
 
         let holdernameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.holdername))
@@ -1717,11 +1724,13 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: configuration)
+
+        // When
         UIApplication.shared.keyWindow?.rootViewController = sut.cardViewController
 
         wait(for: .seconds(1))
 
-        // When
+        // Then
         let view: UIView = sut.cardViewController.view
 
         let holdernameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.holdername))
