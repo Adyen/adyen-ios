@@ -55,18 +55,18 @@ extension FormCardLogoItemView {
     
     /// A collectionview that updates its intrinsicContentSize to make all rows visible.
     internal class CardLogoCollectionView: UICollectionView {
-        private var shouldInvaliateLayout = false
+        private var shouldInvalidateLayout = false
         
         override internal func layoutSubviews() {
             super.layoutSubviews()
-            if shouldInvaliateLayout {
+            if shouldInvalidateLayout {
                 collectionViewLayout.invalidateLayout()
-                shouldInvaliateLayout = false
+                shouldInvalidateLayout = false
             }
         }
         
         override internal func reloadData() {
-            shouldInvaliateLayout = true
+            shouldInvalidateLayout = true
             invalidateIntrinsicContentSize()
             super.reloadData()
         }
@@ -83,9 +83,7 @@ extension FormCardLogoItemView {
         
         fileprivate static let reuseIdentifier = "CardLogoCell"
         
-        private lazy var cardTypeImageView: NetworkImageView = {
-            NetworkImageView()
-        }()
+        private lazy var cardTypeImageView = NetworkImageView()
         
         override private init(frame: CGRect) {
             super.init(frame: frame)
