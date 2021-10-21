@@ -53,7 +53,7 @@ extension CardViewController {
             let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "billingAddress")
 
             let initialCountry = shopperInformation?.billingAddress?.country ?? defaultCountryCode
-            let item = FormAddressItem(initialCountry: defaultCountryCode,
+            let item = FormAddressItem(initialCountry: initialCountry,
                                        style: formStyle.addressStyle,
                                        localizationParameters: localizationParameters,
                                        identifier: identifier)
