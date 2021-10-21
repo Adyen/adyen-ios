@@ -1377,6 +1377,45 @@ class CardComponentTests: XCTestCase {
         XCTAssertFalse(installmentItemView!.isHidden)
         XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
     }
+    
+    func testSupportedCardLogoVisibility() {
+        let method = CardPaymentMethod(type: "visa",
+                                       name: "Test name",
+                                       fundingSource: .credit,
+                                       brands: ["visa", "amex", "mc"])
+        let config = CardComponent.Configuration()
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: config)
+        
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        wait(for: .seconds(1))
+
+        let numberItem = sut.cardViewController.items.numberContainerItem.numberItem
+        
+        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
+        let logoItemView: FormCardLogoItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberContainerItem.logoItem")
+        
+        XCTAssertFalse(logoItemView!.isHidden)
+        
+        // valid card but still active. logos should be visible
+        populate(textItemView: cardNumberItemView, with: Dummy.visaCard.number!)
+        XCTAssertFalse(logoItemView!.isHidden)
+        
+        // with valid card and inactive, logos should hide
+        numberItem.isActive = false
+        XCTAssertTrue(logoItemView!.isHidden)
+        
+        // invalid card and active/inactive numberitem, logos should be visible
+        populate(textItemView: cardNumberItemView, with: "1234")
+        numberItem.isActive = true
+        wait(for: .seconds(1))
+        XCTAssertFalse(logoItemView!.isHidden)
+        numberItem.isActive = false
+        wait(for: .seconds(1))
+        XCTAssertFalse(logoItemView!.isHidden)
+    }
 
     func testClearShouldResetPostalCodeItemToEmptyValue() throws {
         // Given
