@@ -218,8 +218,10 @@ internal class CardViewController: FormViewController {
     private func prefill() {
         guard let shopperInformation = configuration.shopperInformation else { return }
 
-        shopperInformation.billingAddress.map { items.billingAddressItem.value = $0 }
-        shopperInformation.billingAddress?.postalCode.map { items.postalCodeItem.value = $0 }
+        shopperInformation.billingAddress.map { billingAddress in
+            items.billingAddressItem.value = billingAddress
+            billingAddress.postalCode.map { items.postalCodeItem.value = $0 }
+        }
         shopperInformation.card.map { items.holderNameItem.value = $0.holdername }
         shopperInformation.socialSecurityNumber.map { items.socialSecurityNumberItem.value = $0 }
     }
