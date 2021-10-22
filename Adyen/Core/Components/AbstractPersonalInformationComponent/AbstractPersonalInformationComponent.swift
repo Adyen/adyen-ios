@@ -75,7 +75,9 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         configuration.fields.forEach { field in
             self.add(field, into: formViewController)
         }
+        formViewController.append(FormSpacerItem())
         formViewController.append(button)
+        formViewController.append(FormSpacerItem(numberOfSpaces: 2))
     }
 
     /// :nodoc:
@@ -242,7 +244,5 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         shopperInformation.telephoneNumber.map { phoneItem?.value = $0 }
         shopperInformation.billingAddress.map { addressItem?.value = $0 }
         shopperInformation.deliveryAddress.map { deliveryAddressItem?.value = $0 }
-
-        showValidation()
     }
 }

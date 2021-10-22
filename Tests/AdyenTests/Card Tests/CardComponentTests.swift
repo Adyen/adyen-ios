@@ -387,26 +387,33 @@ class CardComponentTests: XCTestCase {
         wait(for: [expectation], timeout: 10)
     }
 
-    func testSuccessTintColorCustomisation() {
+    func testSuccessTintColorCustomisation() throws {
+        // Given
         var style = FormComponentStyle(tintColor: .systemYellow)
         style.textField.title.color = .gray
 
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex"])
+        let method = CardPaymentMethod(type: "bcmc",
+                                       name: "Test name",
+                                       fundingSource: .credit,
+                                       brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 style: style)
 
+        // When
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
-        XCTAssertEqual(securityCodeItemView!.titleLabel.textColor!, .gray)
-        
-        self.populate(textItemView: securityCodeItemView!, with: "123")
-        
         wait(for: .seconds(1))
-        
-        let successIcon: UIImageView? = sut.viewController.view.findView(by: "cvvHintIcon.imageView")
-        XCTAssertNotNil(successIcon)
+
+        // Then
+        let view: UIView = sut.viewController.view
+
+        let securityCodeItemView: FormCardSecurityCodeItemView? = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.securityCodeItem"))
+        XCTAssertEqual(securityCodeItemView?.titleLabel.textColor, .gray)
+
+        populate(textItemView: securityCodeItemView!, with: "123")
+        wait(for: .seconds(1))
+
+        let successIcon: UIImageView? = try XCTUnwrap(securityCodeItemView?.cardHintView)
         XCTAssertEqual(successIcon?.tintColor, .systemYellow)
     }
 
@@ -1074,6 +1081,9 @@ class CardComponentTests: XCTestCase {
         
         let newResponse = BinLookupResponse(brands: [CardBrand(type: .elo, showSocialSecurityNumber: false)])
         sut.cardViewController.update(binInfo: newResponse)
+
+        wait(for: .seconds(1))
+
         XCTAssertTrue(brazilSSNItemView!.isHidden)
 
         waitForExpectations(timeout: 20, handler: nil)
@@ -1248,7 +1258,7 @@ class CardComponentTests: XCTestCase {
     func testInstallmentsWithDefaultAndCardBasedOptions() {
         let method = CardPaymentMethod(type: "visa", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [.visa:
-            InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
+                                                                            InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
         let defaultInstallmentOptions = InstallmentOptions(monthValues: [3, 6, 9, 12], includesRevolving: false)
         let config = CardComponent.Configuration(installmentConfigration: InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions, defaultOptions: defaultInstallmentOptions))
         let cardTypeProviderMock = BinInfoProviderMock()
@@ -1331,7 +1341,7 @@ class CardComponentTests: XCTestCase {
     func testInstallmentsWitCardBasedOptions() {
         let method = CardPaymentMethod(type: "visa", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [.visa:
-            InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
+                                                                            InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
         let config = CardComponent.Configuration(installmentConfigration: InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions))
         let cardTypeProviderMock = BinInfoProviderMock()
 
@@ -1619,8 +1629,177 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(expectedPostalAddress, postalAddress)
     }
 
+    func testCardPrefillingGivenBillingAddressInFullModeShouldPrefillItems() throws {
+        // Given
+        let method = CardPaymentMethod(type: "bcmc",
+                                       name: "Test name",
+                                       fundingSource: .credit,
+                                       brands: ["visa", "amex", "mc"])
+        var configuration = CardComponent.Configuration(shopperInformation: shopperInformation)
+        configuration.showsHolderNameField = true
+        configuration.billingAddressMode = .full
+
+        let prefilledSut = CardComponent(paymentMethod: method,
+                                         apiContext: Dummy.context,
+                                         configuration: configuration)
+
+        // When
+        UIApplication.shared.keyWindow?.rootViewController = prefilledSut.cardViewController
+
+        wait(for: .seconds(1))
+
+        // Then
+        let view: UIView = prefilledSut.cardViewController.view
+
+        let holdernameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.holdername))
+        let expectedHoldername = try XCTUnwrap(shopperInformation.card?.holdername)
+        let holdername = holdernameView.item.value
+        XCTAssertEqual(expectedHoldername, holdername)
+
+        let socialSecurityNumberView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.socialSecurityNumber))
+        let expectedSocialSecurityNumber = try XCTUnwrap(shopperInformation.socialSecurityNumber)
+        let socialSecurityNumber = socialSecurityNumberView.item.value
+        XCTAssertEqual(expectedSocialSecurityNumber, socialSecurityNumber)
+
+        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
+        let expectedBillingAddress = try XCTUnwrap(shopperInformation.billingAddress)
+        let billingAddress = billingAddressView.item.value
+        XCTAssertEqual(expectedBillingAddress, billingAddress)
+    }
+
+    func testCardPrefillingGivenBillingAddressInPostalCodeModeShouldPrefillItems() throws {
+        // Given
+        let method = CardPaymentMethod(type: "bcmc",
+                                       name: "Test name",
+                                       fundingSource: .credit,
+                                       brands: ["visa", "amex", "mc"])
+        var configuration = CardComponent.Configuration(shopperInformation: shopperInformation)
+        configuration.showsHolderNameField = true
+        configuration.billingAddressMode = .postalCode
+
+        let prefilledSut = CardComponent(paymentMethod: method,
+                                         apiContext: Dummy.context,
+                                         configuration: configuration)
+
+        // When
+        UIApplication.shared.keyWindow?.rootViewController = prefilledSut.cardViewController
+
+        wait(for: .seconds(1))
+
+        // Then
+        let view: UIView = prefilledSut.cardViewController.view
+
+        let holdernameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.holdername))
+        let expectedHoldername = try XCTUnwrap(shopperInformation.card?.holdername)
+        let holdername = holdernameView.item.value
+        XCTAssertEqual(expectedHoldername, holdername)
+
+        let socialSecurityNumberView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.socialSecurityNumber))
+        let expectedSocialSecurityNumber = try XCTUnwrap(shopperInformation.socialSecurityNumber)
+        let socialSecurityNumber = socialSecurityNumberView.item.value
+        XCTAssertEqual(expectedSocialSecurityNumber, socialSecurityNumber)
+
+        let postalCodeView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.zipCode))
+        let expectedPostalCode = try XCTUnwrap(shopperInformation.billingAddress?.postalCode)
+        let postalCode = postalCodeView.item.value
+        XCTAssertEqual(expectedPostalCode, postalCode)
+    }
+
+    func testCardPrefillingGivenNoShopperInformationAndFullAddressModeShouldNotPrefillItems() throws {
+        // Given
+        let method = CardPaymentMethod(type: "bcmc",
+                                       name: "Test name",
+                                       fundingSource: .credit,
+                                       brands: ["visa", "amex", "mc"])
+        var configuration = CardComponent.Configuration()
+        configuration.showsHolderNameField = true
+        configuration.billingAddressMode = .full
+
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: configuration)
+
+        // When
+        UIApplication.shared.keyWindow?.rootViewController = sut.cardViewController
+
+        wait(for: .seconds(1))
+
+        // Then
+        let view: UIView = sut.cardViewController.view
+
+        let holdernameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.holdername))
+        let holdername = holdernameView.item.value
+        XCTAssertTrue(holdername.isEmpty)
+
+        let socialSecurityNumberView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.socialSecurityNumber))
+        let socialSecurityNumber = socialSecurityNumberView.item.value
+        XCTAssertTrue(socialSecurityNumber.isEmpty)
+
+        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
+        let expectedBillingAddress = PostalAddressMocks.emptyUSPostalAddress
+        let billingAddress = billingAddressView.item.value
+        XCTAssertEqual(expectedBillingAddress, billingAddress)
+    }
+
+    func testCardPrefillingGivenNoShopperInformationAndPostalCodeModeShouldNotPrefillItems() throws {
+        // Given
+        let method = CardPaymentMethod(type: "bcmc",
+                                       name: "Test name",
+                                       fundingSource: .credit,
+                                       brands: ["visa", "amex", "mc"])
+        var configuration = CardComponent.Configuration()
+        configuration.showsHolderNameField = true
+        configuration.billingAddressMode = .postalCode
+
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: configuration)
+
+        // When
+        UIApplication.shared.keyWindow?.rootViewController = sut.cardViewController
+
+        wait(for: .seconds(1))
+
+        // Then
+        let view: UIView = sut.cardViewController.view
+
+        let holdernameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.holdername))
+        let holdername = holdernameView.item.value
+        XCTAssertTrue(holdername.isEmpty)
+
+        let socialSecurityNumberView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.socialSecurityNumber))
+        let socialSecurityNumber = socialSecurityNumberView.item.value
+        XCTAssertTrue(socialSecurityNumber.isEmpty)
+
+        let postalCodeView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.zipCode))
+        let postalCode = postalCodeView.item.value
+        XCTAssertTrue(postalCode.isEmpty)
+    }
+
+    // MARK: - Private
+
     private func focus<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U) {
         textItemView.textField.becomeFirstResponder()
+    }
+
+    private enum CardViewIdentifier {
+        static let holdername = "AdyenCard.CardComponent.holderNameItem"
+        static let billingAddress = "AdyenCard.CardComponent.billingAddress"
+        static let zipCode = "AdyenCard.CardComponent.postalCodeItem"
+        static let socialSecurityNumber = "AdyenCard.CardComponent.socialSecurityNumberItem"
+    }
+
+    private var shopperInformation: PrefilledShopperInformation {
+        let billingAddress = PostalAddressMocks.newYorkPostalAddress
+        let deliveryAddress = PostalAddressMocks.losAngelesPostalAddress
+        let shopperInformation = PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
+                                                             emailAddress: "katrina@mail.com",
+                                                             telephoneNumber: "1234567890",
+                                                             billingAddress: billingAddress,
+                                                             deliveryAddress: deliveryAddress,
+                                                             socialSecurityNumber: "78542134370",
+                                                             card: .init(holdername: "Katrina del Mar"))
+        return shopperInformation
     }
 }
 

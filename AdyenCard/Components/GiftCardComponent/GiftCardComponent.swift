@@ -76,7 +76,9 @@ public final class GiftCardComponent: PartialPaymentComponent,
         formViewController.append(errorItem)
         formViewController.append(numberItem)
         formViewController.append(securityCodeItem)
+        formViewController.append(FormSpacerItem())
         formViewController.append(button)
+        formViewController.append(FormSpacerItem(numberOfSpaces: 2))
         return formViewController
     }()
 

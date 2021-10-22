@@ -43,6 +43,7 @@ public extension DropInComponent {
         public init(apiContext: APIContext) {
             self.apiContext = apiContext
         }
+
     }
 
     /// Apple Pay component configuration.

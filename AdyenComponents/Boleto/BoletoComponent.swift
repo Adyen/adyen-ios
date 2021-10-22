@@ -144,8 +144,6 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
             sendCopyByEmailItem.value = false
             emailItem.value = shopperInformation.emailAddress ?? ""
         }
-        
-        component.showValidation()
     }
     
     /// :nodoc:
