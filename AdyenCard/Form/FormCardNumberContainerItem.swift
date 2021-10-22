@@ -17,12 +17,9 @@ internal final class FormCardNumberContainerItem: FormItem, Observer {
     
     internal let style: FormTextItemStyle
     
-    /// :nodoc:
     private let localizationParameters: LocalizationParameters?
    
-    internal var subitems: [FormItem] {
-        [numberItem, logosItem]
-    }
+    internal lazy var subitems: [FormItem] = [numberItem, supportedCardLogosItem]
     
     internal lazy var numberItem: FormCardNumberItem = {
         let item = FormCardNumberItem(cardTypeLogos: cardTypeLogos,
@@ -32,9 +29,9 @@ internal final class FormCardNumberContainerItem: FormItem, Observer {
         return item
     }()
     
-    internal lazy var logosItem: FormCardLogosItem = {
+    internal lazy var supportedCardLogosItem: FormCardLogosItem = {
         let item = FormCardLogosItem(cardLogos: cardTypeLogos, style: style)
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "logosItem")
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "supportedCardLogosItem")
         return item
     }()
     
@@ -49,7 +46,7 @@ internal final class FormCardNumberContainerItem: FormItem, Observer {
             guard let self = self else { return }
             // logo item only visible when number item is active or when it's invalid
             let hidden = !isActive && self.numberItem.isValid()
-            self.logosItem.isHidden.wrappedValue = hidden
+            self.supportedCardLogosItem.isHidden.wrappedValue = hidden
         }
     }
     
@@ -94,7 +91,7 @@ extension FormItemViewBuilder {
 
 extension FormCardLogosItem {
     /// Describes a card type logo shown in the card number form item.
-    internal final class CardTypeLogo: Equatable {
+    internal struct CardTypeLogo: Equatable {
         
         internal let type: CardType
         

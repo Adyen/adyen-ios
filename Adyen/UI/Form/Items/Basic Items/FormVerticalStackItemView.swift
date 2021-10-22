@@ -75,22 +75,24 @@ public final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemVi
 
     private func prepareSubItems() {
         views.removeAll()
-        item.subitems.forEach { subItem in
-            let view = FormVerticalStackItemView.build(subItem)
-            views.append(view)
-            let itemView = view as UIView
-            stackView.addArrangedSubview(view)
-            addVisibilityObserver(for: subItem, view: itemView)
+        item.subitems.forEach(prepareSubViews(from:))
+    }
+    
+    private func prepareSubViews(from subItem: FormItem) {
+        let view = FormVerticalStackItemView.build(subItem)
+        views.append(view)
+        let itemView = view as UIView
+        stackView.addArrangedSubview(view)
+        addVisibilityObserver(for: subItem, view: itemView)
 
-            // weirdest behavior on uistackview with 2 visible arranged subviews
-            // hiding/showing the bottom one glitches the animation
-            // workaround is to add another 1px height subview
-            if views.count == 2 {
-                let extraView = UIView()
-                extraView.backgroundColor = .clear
-                stackView.addArrangedSubview(extraView)
-                extraView.heightAnchor.constraint(equalToConstant: 1).isActive = true
-            }
+        // weirdest behavior on UIStackView with 2 visible arranged subviews
+        // hiding/showing the bottom one glitches the animation
+        // workaround is to add another 1px height subview
+        if views.count == 2 {
+            let extraView = UIView()
+            extraView.backgroundColor = .clear
+            stackView.addArrangedSubview(extraView)
+            extraView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         }
     }
     

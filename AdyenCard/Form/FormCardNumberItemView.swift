@@ -27,8 +27,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         }
         
         observe(item.$detectedBrandLogos) { [weak self] newValue in
-            guard let self = self else { return }
-            self.detectedBrandsView.updateCurrentLogos(newValue)
+            self?.detectedBrandsView.updateCurrentLogos(newValue)
         }
     }
     
@@ -52,8 +51,8 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     // MARK: - Card Type Logos View
     
     /// Logo view for the brand(s) icons and selection for dual-branded cards.
-    internal lazy var detectedBrandsView: CardLogosView = {
-        let cardTypeLogosView = CardLogosView(style: item.style.icon)
+    internal lazy var detectedBrandsView: DualBrandView = {
+        let cardTypeLogosView = DualBrandView(style: item.style.icon)
         cardTypeLogosView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cardTypeLogos")
         cardTypeLogosView.backgroundColor = item.style.backgroundColor
         cardTypeLogosView.onBrandSelection = { [weak self] index in
@@ -66,7 +65,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
 extension FormCardNumberItemView {
     
     /// Custom view housing up to 2 sub views for brand logos.
-    internal class CardLogosView: UIView {
+    internal class DualBrandView: UIView {
         
         private enum Constant {
             static let iconSize = CGSize(width: 24, height: 16)

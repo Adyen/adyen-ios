@@ -1395,7 +1395,7 @@ class CardComponentTests: XCTestCase {
         let numberItem = sut.cardViewController.items.numberContainerItem.numberItem
         
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
-        let logoItemView: FormCardLogosItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberContainerItem.logosItem")
+        let logoItemView: FormCardLogosItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberContainerItem.supportedCardLogosItem")
         
         XCTAssertFalse(logoItemView!.isHidden)
         

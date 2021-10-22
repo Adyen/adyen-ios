@@ -77,17 +77,15 @@ internal final class FormCardNumberItem: FormTextItem, Observer {
     /// and sets the first supported one as the `currentBrand`.
     internal func update(brands: [CardBrand]) {
         detectedBrands = brands
-        switch brands.count {
-        case 1:
+        switch (brands.count, brands.first(where: \.isSupported)) {
+        case (1, _):
             update(currentBrand: brands.first)
-        case 2:
+        case let (2, .some(firstSupportedBrand)):
+            update(currentBrand: firstSupportedBrand)
+        case (2, nil):
             // if there are 2 brands and neither is supported,
             // need to show unsupported text
-            if let firstSupportedBrand = brands.first(where: { $0.isSupported }) {
-                update(currentBrand: firstSupportedBrand)
-            } else {
-                update(currentBrand: nil, defaultSupportedValue: false)
-            }
+            update(currentBrand: nil, defaultSupportedValue: false)
         default:
             update(currentBrand: nil)
         }
