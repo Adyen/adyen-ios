@@ -49,7 +49,7 @@ extension CardComponent {
         /// Indicates whether to show the security fields for South Korea issued cards. Defaults to `auto`.
         /// In AUTO mode the field will appear only for card issued in "KR" (South Korea).
         public var koreanAuthenticationMode: FieldVisibility
-        
+
         /// Indicates the visibility mode for the social security number field (CPF/CNPJ) for Brazilian cards. Defaults to `auto`.
         /// In `auto` mode the field will appear based on card bin lookup.
         public var socialSecurityNumberMode: FieldVisibility
@@ -67,10 +67,13 @@ extension CardComponent {
 
         /// Indicates the card brands excluded from the supported brands.
         internal var excludedCardTypes: Set<CardType> = [.bcmc]
-        
+
         /// Installments options to present to the user.
         public var installmentConfiguration: InstallmentConfiguration?
-        
+
+        /// The shopper's information to be prefilled.
+        public var shopperInformation: PrefilledShopperInformation?
+
         /// Configuration of Card component.
         /// - Parameters:
         ///   - showsHolderNameField: Indicates if the field for entering the holder name should be displayed in the form.
@@ -94,7 +97,8 @@ extension CardComponent {
                     billingAddressMode: AddressFormType = .none,
                     storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
                     allowedCardTypes: [CardType]? = nil,
-                    installmentConfigration: InstallmentConfiguration? = nil) {
+                    installmentConfigration: InstallmentConfiguration? = nil,
+                    shopperInformation: PrefilledShopperInformation? = nil) {
             self.showsHolderNameField = showsHolderNameField
             self.showsSecurityCodeField = showsSecurityCodeField
             self.showsStorePaymentMethodField = showsStorePaymentMethodField
@@ -104,6 +108,7 @@ extension CardComponent {
             self.koreanAuthenticationMode = koreanAuthenticationMode
             self.socialSecurityNumberMode = socialSecurityNumberMode
             self.installmentConfiguration = installmentConfigration
+            self.shopperInformation = shopperInformation
         }
 
         internal func bcmcConfiguration() -> Configuration {

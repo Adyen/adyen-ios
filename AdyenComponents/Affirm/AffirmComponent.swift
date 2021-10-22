@@ -30,8 +30,8 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     /// - Parameters:
     ///   - paymentMethod: The Affirm payment method.
     ///   - apiContext: The component's API context.
-    ///   - style: The component's style.
     ///   - shopperInformation: The shopper's information.
+    ///   - style: The component's style.
     public init(paymentMethod: PaymentMethod,
                 apiContext: APIContext,
                 shopperInformation: PrefilledShopperInformation? = nil,

@@ -27,6 +27,10 @@ extension CardViewController {
 
         private let defaultCountryCode: String
 
+        private var shopperInformation: PrefilledShopperInformation? {
+            configuration.shopperInformation
+        }
+
         internal init(formStyle: FormComponentStyle,
                       payment: Payment?,
                       configuration: CardComponent.Configuration,
@@ -47,10 +51,13 @@ extension CardViewController {
 
         internal lazy var billingAddressItem: FormAddressItem = {
             let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "billingAddress")
-            let item = FormAddressItem(initialCountry: defaultCountryCode,
+
+            let initialCountry = shopperInformation?.billingAddress?.country ?? defaultCountryCode
+            let item = FormAddressItem(initialCountry: initialCountry,
                                        style: formStyle.addressStyle,
                                        localizationParameters: localizationParameters,
                                        identifier: identifier)
+            shopperInformation?.billingAddress.map { item.value = $0 }
             item.style.backgroundColor = UIColor.Adyen.lightGray
             return item
         }()
@@ -101,7 +108,6 @@ extension CardViewController {
             holderNameItem.autocapitalizationType = .words
             holderNameItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "holderNameItem")
             holderNameItem.contentType = .name
-
             return holderNameItem
         }()
 
@@ -147,7 +153,6 @@ extension CardViewController {
             securityNumberItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "socialSecurityNumberItem")
             securityNumberItem.keyboardType = .numberPad
             securityNumberItem.isVisible = configuration.socialSecurityNumberMode == .show
-
             return securityNumberItem
         }()
 
