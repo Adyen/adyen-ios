@@ -32,9 +32,9 @@ class FormCardNumberItemTests: XCTestCase {
     func testInternalBinLookup() {
 
         let cardTypeLogos = supportedCardTypes.map {
-            FormCardNumberItem.CardTypeLogo(url: URL(string: "http://google.com")!, type: $0)
+            FormCardLogosItem.CardTypeLogo(url: URL(string: "http://google.com")!, type: $0)
         }
-        let item = FormCardNumberItem(supportedCardTypes: supportedCardTypes, cardTypeLogos: cardTypeLogos)
+        let item = FormCardNumberItem(cardTypeLogos: cardTypeLogos)
         XCTAssertEqual(item.cardTypeLogos.count, 5)
         
         let visa = item.cardTypeLogos[0]
@@ -43,107 +43,70 @@ class FormCardNumberItemTests: XCTestCase {
         let cup = item.cardTypeLogos[3]
         let maestro = item.cardTypeLogos[4]
         
-        // Initially, all card type logos should be visible.
-        XCTAssertEqual(visa.isHidden, false)
-        XCTAssertEqual(mc.isHidden, false)
-        XCTAssertEqual(amex.isHidden, false)
-        XCTAssertEqual(cup.isHidden, false)
-        XCTAssertEqual(maestro.isHidden, false)
+        // Initially, only placeholder should be visible
+        XCTAssertEqual(item.detectedBrandLogos.count, 0)
         
-        // When typing unknown combination, all logos should be hidden.
+        // When typing unknown combination, still show placeholder
         item.value = "5"
         cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
-            let brands = response.brands!.map(\.type)
-            item.showLogos(for: brands)
-            XCTAssertEqual(visa.isHidden, true)
-            XCTAssertEqual(mc.isHidden, true)
-            XCTAssertEqual(amex.isHidden, true)
-            XCTAssertEqual(cup.isHidden, true)
-            XCTAssertEqual(maestro.isHidden, true)
+            item.update(brands: response.brands!)
+            XCTAssertEqual(item.detectedBrandLogos.count, 0)
         }
         
         // When typing Maestro pattern, only Maestro should be visible.
         item.value = "56"
         cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
-            let brands = response.brands!.map(\.type)
-            item.showLogos(for: brands)
-            XCTAssertEqual(visa.isHidden, true)
-            XCTAssertEqual(mc.isHidden, true)
-            XCTAssertEqual(amex.isHidden, true)
-            XCTAssertEqual(cup.isHidden, true)
-            XCTAssertEqual(maestro.isHidden, false)
+            item.update(brands: response.brands!)
+            XCTAssertEqual(item.detectedBrandLogos.count, 1)
+            XCTAssertEqual(item.detectedBrandLogos[0], maestro)
         }
         
         // When typing Mastercard pattern, only Mastercard should be visible.
         item.value = "55"
         cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
-            let brands = response.brands!.map(\.type)
-            item.showLogos(for: brands)
-            XCTAssertEqual(visa.isHidden, true)
-            XCTAssertEqual(mc.isHidden, false)
-            XCTAssertEqual(amex.isHidden, true)
-            XCTAssertEqual(cup.isHidden, true)
-            XCTAssertEqual(maestro.isHidden, true)
+            item.update(brands: response.brands!)
+            XCTAssertEqual(item.detectedBrandLogos.count, 1)
+            XCTAssertEqual(item.detectedBrandLogos[0], mc)
         }
         
         // When continuing to type, Mastercard should remain visible.
         item.value = "5555"
         cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
-            let brands = response.brands!.map(\.type)
-            item.showLogos(for: brands)
-            XCTAssertEqual(visa.isHidden, true)
-            XCTAssertEqual(mc.isHidden, false)
-            XCTAssertEqual(amex.isHidden, true)
-            XCTAssertEqual(cup.isHidden, true)
-            XCTAssertEqual(maestro.isHidden, true)
+            item.update(brands: response.brands!)
+            XCTAssertEqual(item.detectedBrandLogos.count, 1)
+            XCTAssertEqual(item.detectedBrandLogos[0], mc)
         }
         
-        // Clearing the field should bring back both logos.
+        // Clearing the field should bring back placeholder
         item.value = ""
         cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
-            let brands = response.brands!.map(\.type)
-            item.showLogos(for: brands)
-            XCTAssertEqual(visa.isHidden, true)
-            XCTAssertEqual(mc.isHidden, true)
-            XCTAssertEqual(amex.isHidden, true)
-            XCTAssertEqual(cup.isHidden, true)
-            XCTAssertEqual(maestro.isHidden, true)
+            item.update(brands: response.brands!)
+            XCTAssertEqual(item.detectedBrandLogos.count, 0)
         }
         
         // When typing VISA pattern, only VISA should be visible.
         item.value = "4"
         cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
-            let brands = response.brands!.map(\.type)
-            item.showLogos(for: brands)
-            XCTAssertEqual(visa.isHidden, false)
-            XCTAssertEqual(mc.isHidden, true)
-            XCTAssertEqual(amex.isHidden, true)
-            XCTAssertEqual(cup.isHidden, true)
-            XCTAssertEqual(maestro.isHidden, true)
+            item.update(brands: response.brands!)
+            XCTAssertEqual(item.detectedBrandLogos.count, 1)
+            XCTAssertEqual(item.detectedBrandLogos[0], visa)
         }
         
         // When typing Amex pattern, only Amex should be visible.
         item.value = "34"
         cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
-            let brands = response.brands!.map(\.type)
-            item.showLogos(for: brands)
-            XCTAssertEqual(visa.isHidden, true)
-            XCTAssertEqual(mc.isHidden, true)
-            XCTAssertEqual(amex.isHidden, false)
-            XCTAssertEqual(cup.isHidden, true)
-            XCTAssertEqual(maestro.isHidden, true)
+            item.update(brands: response.brands!)
+            XCTAssertEqual(item.detectedBrandLogos.count, 1)
+            XCTAssertEqual(item.detectedBrandLogos[0], amex)
         }
         
         // When typing common pattern, all matching cards should be visible.
         item.value = "62"
         cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
-            let brands = response.brands!.map(\.type)
-            item.showLogos(for: brands)
-            XCTAssertEqual(visa.isHidden, true)
-            XCTAssertEqual(mc.isHidden, true)
-            XCTAssertEqual(amex.isHidden, true)
-            XCTAssertEqual(cup.isHidden, false)
-            XCTAssertEqual(maestro.isHidden, false)
+            item.update(brands: response.brands!)
+            XCTAssertEqual(item.detectedBrandLogos.count, 2)
+            XCTAssertEqual(item.detectedBrandLogos[0], cup)
+            XCTAssertEqual(item.detectedBrandLogos[1], maestro)
         }
     }
 
@@ -154,26 +117,15 @@ class FormCardNumberItemTests: XCTestCase {
                                    .success(BinLookupResponse(brands: []))]
 
         let cardTypeLogos = supportedCardTypes.map {
-            FormCardNumberItem.CardTypeLogo(url: URL(string: "http://google.com")!, type: $0)
+            FormCardLogosItem.CardTypeLogo(url: URL(string: "http://google.com")!, type: $0)
         }
-        let item = FormCardNumberItem(supportedCardTypes: supportedCardTypes, cardTypeLogos: cardTypeLogos)
+        let item = FormCardNumberItem(cardTypeLogos: cardTypeLogos)
         XCTAssertEqual(item.cardTypeLogos.count, 5)
-
-        let visa = item.cardTypeLogos[0]
-        let mc = item.cardTypeLogos[1]
-        let amex = item.cardTypeLogos[2]
-        let cup = item.cardTypeLogos[3]
-        let maestro = item.cardTypeLogos[4]
 
         item.value = "1234567890"
         cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
-            let brands = response.brands!.map(\.type)
-            item.showLogos(for: brands)
-            XCTAssertEqual(visa.isHidden, true)
-            XCTAssertEqual(mc.isHidden, true)
-            XCTAssertEqual(amex.isHidden, true)
-            XCTAssertEqual(cup.isHidden, true)
-            XCTAssertEqual(maestro.isHidden, true)
+            item.update(brands: response.brands!)
+            XCTAssertEqual(item.detectedBrandLogos.count, 0)
         }
     }
 
@@ -182,45 +134,30 @@ class FormCardNumberItemTests: XCTestCase {
         apiClient.mockedResults = [.failure(Dummy.error), .failure(Dummy.error)]
 
         let cardTypeLogos = supportedCardTypes.map {
-            FormCardNumberItem.CardTypeLogo(url: URL(string: "http://google.com")!, type: $0)
+            FormCardLogosItem.CardTypeLogo(url: URL(string: "http://google.com")!, type: $0)
         }
-        let item = FormCardNumberItem(supportedCardTypes: supportedCardTypes, cardTypeLogos: cardTypeLogos)
+        let item = FormCardNumberItem(cardTypeLogos: cardTypeLogos)
         XCTAssertEqual(item.cardTypeLogos.count, 5)
-
-        let visa = item.cardTypeLogos[0]
-        let mc = item.cardTypeLogos[1]
-        let amex = item.cardTypeLogos[2]
-        let cup = item.cardTypeLogos[3]
-        let maestro = item.cardTypeLogos[4]
 
         // When entering PAN, Mastercard should remain visible.
         item.value = "5577000055770004"
         cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
-            let brands = response.brands!.map(\.type)
-            item.showLogos(for: brands)
-            XCTAssertEqual(visa.isHidden, true)
-            XCTAssertEqual(mc.isHidden, false)
-            XCTAssertEqual(amex.isHidden, true)
-            XCTAssertEqual(cup.isHidden, true)
-            XCTAssertEqual(maestro.isHidden, true)
+            item.update(brands: response.brands!)
+            XCTAssertEqual(item.detectedBrandLogos.count, 1)
+            XCTAssertEqual(item.detectedBrandLogos[0].type, .masterCard)
         }
 
         // When entering too long PAN, all logos should be hidden.
         item.value = "55770000557700040"
         cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
-            let brands = response.brands!.map(\.type)
-            item.showLogos(for: brands)
-            XCTAssertEqual(visa.isHidden, true)
-            XCTAssertEqual(mc.isHidden, true)
-            XCTAssertEqual(amex.isHidden, true)
-            XCTAssertEqual(cup.isHidden, true)
-            XCTAssertEqual(maestro.isHidden, true)
+            item.update(brands: response.brands!)
+            XCTAssertEqual(item.detectedBrandLogos.count, 0)
         }
     }
     
     func testLocalizationWithCustomTableName() {
         let expectedLocalizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
-        let sut = FormCardNumberItem(supportedCardTypes: [.visa, .masterCard], cardTypeLogos: [], localizationParameters: expectedLocalizationParameters)
+        let sut = FormCardNumberItem(cardTypeLogos: [], localizationParameters: expectedLocalizationParameters)
         
         XCTAssertEqual(sut.title, localizedString(.cardNumberItemTitle, expectedLocalizationParameters))
         XCTAssertEqual(sut.placeholder, localizedString(.cardNumberItemPlaceholder, expectedLocalizationParameters))
@@ -229,7 +166,7 @@ class FormCardNumberItemTests: XCTestCase {
     
     func testLocalizationWithCustomKeySeparator() {
         let expectedLocalizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
-        let sut = FormCardNumberItem(supportedCardTypes: [.visa, .masterCard], cardTypeLogos: [], localizationParameters: expectedLocalizationParameters)
+        let sut = FormCardNumberItem(cardTypeLogos: [], localizationParameters: expectedLocalizationParameters)
         
         XCTAssertEqual(sut.title, localizedString(LocalizationKey(key: "adyen_card_numberItem_title"), expectedLocalizationParameters))
         XCTAssertEqual(sut.placeholder, localizedString(LocalizationKey(key: "adyen_card_numberItem_placeholder"), expectedLocalizationParameters))

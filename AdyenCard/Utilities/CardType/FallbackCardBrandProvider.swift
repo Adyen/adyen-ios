@@ -12,6 +12,7 @@ internal final class FallbackBinInfoProvider: AnyBinInfoProvider {
 
     /// :nodoc:
     internal func provide(for bin: String, supportedTypes: [CardType], completion: @escaping (BinLookupResponse) -> Void) {
+        // only return result out of the given supported types.
         let result: [CardBrand] = supportedTypes.adyen.types(forCardNumber: bin).map { type in
 
             let cvcPolicy: CardBrand.RequirementPolicy

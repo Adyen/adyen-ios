@@ -7,34 +7,34 @@
 import Foundation
 
 /// Enum containing most known types of credit and debit cards.
-public enum CardType: String, CaseIterable, Codable {
+public enum CardType: RawRepresentable, Codable, Equatable, Hashable {
     
     /// Accel
     case accel
     
     /// Alpha Bank Bonus MasterCard
-    case alphaBankBonusMasterCard = "mcalphabankbonus"
+    case alphaBankBonusMasterCard
     
     /// Alpha Bank Bonus VISA
-    case alphaBankBonusVISA = "visaalphabankbonus"
+    case alphaBankBonusVISA
     
     /// Argencard
     case argencard
     
     /// American Express
-    case americanExpress = "amex"
+    case americanExpress
     
     /// BCMC
     case bcmc
     
     /// de Bijenkorf Card
-    case bijenkorfCard = "bijcard"
+    case bijenkorfCard
     
     /// Cabal
     case cabal
     
     /// Carte Bancaire
-    case carteBancaire = "cartebancaire"
+    case carteBancaire
     
     /// Cencosud
     case cencosud
@@ -43,19 +43,19 @@ public enum CardType: String, CaseIterable, Codable {
     case chequeDejeneur
     
     /// China UnionPay
-    case chinaUnionPay = "cup"
+    case chinaUnionPay
     
     /// Codensa
     case codensa
     
     /// Credit Union 24
-    case creditUnion24 = "cu24"
+    case creditUnion24
     
     /// Dankort
     case dankort
     
     /// Dankort VISA
-    case dankortVISA = "visadankort"
+    case dankortVISA
     
     /// Diners Club
     case diners
@@ -79,13 +79,13 @@ public enum CardType: String, CaseIterable, Codable {
     case jcb
     
     /// KarenMillen
-    case karenMillen = "karenmillen"
+    case karenMillen
     
     /// Korea Cyber Payment
-    case kcp = "kcp_creditcard"
+    case kcp
 
     /// Korean local card
-    case koreanLocalCard = "korean_local_card"
+    case koreanLocalCard
     
     /// Laser (Discontinued in 2014)
     case laser
@@ -94,10 +94,10 @@ public enum CardType: String, CaseIterable, Codable {
     case maestro
     
     /// Maestro UK
-    case maestroUK = "maestrouk"
+    case maestroUK
     
     /// MasterCard
-    case masterCard = "mc"
+    case masterCard
     
     /// Mir
     case mir
@@ -137,6 +137,110 @@ public enum CardType: String, CaseIterable, Codable {
     
     /// The Warehouse
     case warehouse
+    
+    /// Fallback option for any other scheme name
+    case other(named: String)
+    
+    // swiftlint:disable cyclomatic_complexity function_body_length
+    public init(rawValue: String) {
+        switch rawValue {
+        case "accel": self = .accel
+        case "mcalphabankbonus": self = .alphaBankBonusMasterCard
+        case "visaalphabankbonus": self = .alphaBankBonusVISA
+        case "argencard": self = .argencard
+        case "amex": self = .americanExpress
+        case "bcmc": self = .bcmc
+        case "bijcard": self = .bijenkorfCard
+        case "cabal": self = .cabal
+        case "cartebancaire": self = .carteBancaire
+        case "cencosud": self = .cencosud
+        case "chequeDejeneur": self = .chequeDejeneur
+        case "cup": self = .chinaUnionPay
+        case "codensa": self = .codensa
+        case "cu24": self = .creditUnion24
+        case "dankort": self = .dankort
+        case "visadankort": self = .dankortVISA
+        case "diners": self = .diners
+        case "discover": self = .discover
+        case "elo": self = .elo
+        case "forbrugsforeningen": self = .forbrugsforeningen
+        case "hiper": self = .hiper
+        case "hipercard": self = .hipercard
+        case "jcb": self = .jcb
+        case "karenmillen": self = .karenMillen
+        case "kcp_creditcard": self = .kcp
+        case "korean_local_card": self = .koreanLocalCard
+        case "laser": self = .laser
+        case "maestro": self = .maestro
+        case "maestrouk": self = .maestroUK
+        case "mc": self = .masterCard
+        case "mir": self = .mir
+        case "naranja": self = .naranja
+        case "netplus": self = .netplus
+        case "nyce": self = .nyce
+        case "oasis": self = .oasis
+        case "pulse": self = .pulse
+        case "shopping": self = .shopping
+        case "solo": self = .solo
+        case "star": self = .star
+        case "troy": self = .troy
+        case "uatp": self = .uatp
+        case "visa": self = .visa
+        case "warehouse": self = .warehouse
+        default: self = .other(named: rawValue)
+        }
+    }
+
+    // swiftlint:enable cyclomatic_complexity function_body_length
+    
+    public var rawValue: String {
+        switch self {
+        case .accel: return "accel"
+        case .alphaBankBonusMasterCard: return "mcalphabankbonus"
+        case .alphaBankBonusVISA: return "visaalphabankbonus"
+        case .argencard: return "argencard"
+        case .americanExpress: return "amex"
+        case .bcmc: return "bcmc"
+        case .bijenkorfCard: return "bijcard"
+        case .cabal: return "cabal"
+        case .carteBancaire: return "cartebancaire"
+        case .cencosud: return "cencosud"
+        case .chequeDejeneur: return "chequeDejeneur"
+        case .chinaUnionPay: return "cup"
+        case .codensa: return "codensa"
+        case .creditUnion24: return "cu24"
+        case .dankort: return "dankort"
+        case .dankortVISA: return "visadankort"
+        case .diners: return "diners"
+        case .discover: return "discover"
+        case .elo: return "elo"
+        case .forbrugsforeningen: return "forbrugsforeningen"
+        case .hiper: return "hiper"
+        case .hipercard: return "hipercard"
+        case .jcb: return "jcb"
+        case .karenMillen: return "karenmillen"
+        case .kcp: return "kcp_creditcard"
+        case .koreanLocalCard: return "korean_local_card"
+        case .laser: return "laser"
+        case .maestro: return "maestro"
+        case .maestroUK: return "maestrouk"
+        case .masterCard: return "mc"
+        case .mir: return "mir"
+        case .naranja: return "naranja"
+        case .netplus: return "netplus"
+        case .nyce: return "nyce"
+        case .oasis: return "oasis"
+        case .pulse: return "pulse"
+        case .shopping: return "shopping"
+        case .solo: return "solo"
+        case .star: return "star"
+        case .troy: return "troy"
+        case .uatp: return "uatp"
+        case .visa: return "visa"
+        case .warehouse: return "warehouse"
+        case let .other(named: name): return name
+        }
+    }
     
 }
 
@@ -222,7 +326,8 @@ extension CardType {
              .netplus,
              .nyce,
              .pulse,
-             .star:
+             .star,
+             .other:
             return nil
         }
     }

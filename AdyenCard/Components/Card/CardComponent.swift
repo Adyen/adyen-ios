@@ -23,7 +23,6 @@ public class CardComponent: CardPublicKeyConsumer,
     internal enum Constant {
         internal static let defaultCountryCode = "US"
         internal static let secondsThrottlingDelay = 0.5
-        internal static let maxCardsVisible = 4
         internal static let publicBinLength = 6
         internal static let privateBinLength = 11
         internal static let publicPanSuffixLength = 4
@@ -182,6 +181,9 @@ extension CardComponent: CardViewControllerDelegate {
         self.cardComponentDelegate?.didChangeBIN(String(value.prefix(Constant.publicBinLength)), component: self)
         binInfoProvider.provide(for: value, supportedTypes: supportedCardTypes) { [weak self] binInfo in
             guard let self = self else { return }
+            // update response with sorted brands
+            var binInfo = binInfo
+            binInfo.brands = CardBrandSorter.sortBrands(binInfo.brands ?? [])
             self.cardViewController.update(binInfo: binInfo)
             self.cardComponentDelegate?.didChangeCardBrand(binInfo.brands ?? [], component: self)
         }

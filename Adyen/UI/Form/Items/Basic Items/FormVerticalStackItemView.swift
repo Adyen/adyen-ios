@@ -8,9 +8,13 @@ import Foundation
 import UIKit
 
 /// A view representing a vertical stack of items.
-internal final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormItemType> {
+/// Items are created from the `subitems` property of the `item`
+/// :nodoc:
+public final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormItemType> {
 
     private var views: [AnyFormItemView] = []
+
+    private var observations: [Observation] = []
 
     /// Initializes the split item view.
     ///
@@ -18,7 +22,7 @@ internal final class FormVerticalStackItemView<FormItemType: FormItem>: FormItem
     internal required init(item: FormItemType) {
         super.init(item: item)
 
-        views = item.subitems.map(FormVerticalStackItemView.build)
+        prepareSubItems()
 
         if var compound = item as? CompoundFormItem {
             compound.delegate = self
@@ -28,12 +32,33 @@ internal final class FormVerticalStackItemView<FormItemType: FormItem>: FormItem
         stackView.adyen.anchor(inside: self)
     }
 
-    override internal var childItemViews: [AnyFormItemView] { views }
+    /// Creates a `FormVerticalStackItemView` with the specified spacing between its vertical items.
+    /// - Parameters:
+    ///   - item: The item represented by the view.
+    ///   - itemSpacing: Spacing among the child views of the stack.
+    ///   :nodoc:
+    public convenience init(item: FormItemType, itemSpacing: CGFloat) {
+        self.init(item: item)
+        stackView.spacing = itemSpacing
+    }
+
+    /// :nodoc:
+    override public var childItemViews: [AnyFormItemView] { views }
+
+    /// :nodoc:
+    override public var canBecomeFirstResponder: Bool {
+        views.first { $0.canBecomeFirstResponder } != nil
+    }
+
+    /// :nodoc:
+    override public func becomeFirstResponder() -> Bool {
+        views.first { $0.canBecomeFirstResponder }?.becomeFirstResponder() ?? super.becomeFirstResponder()
+    }
 
     // MARK: - Layout
 
     private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: childItemViews)
+        let stackView = UIStackView()
         stackView.preservesSuperviewLayoutMargins = true
         stackView.axis = .vertical
         stackView.alignment = .fill
@@ -48,14 +73,50 @@ internal final class FormVerticalStackItemView<FormItemType: FormItem>: FormItem
         return itemView
     }
 
+    private func prepareSubItems() {
+        views.removeAll()
+        item.subitems.forEach(prepareSubViews(from:))
+    }
+    
+    private func prepareSubViews(from subItem: FormItem) {
+        let view = FormVerticalStackItemView.build(subItem)
+        views.append(view)
+        let itemView = view as UIView
+        stackView.addArrangedSubview(view)
+        addVisibilityObserver(for: subItem, view: itemView)
+
+        // weirdest behavior on UIStackView with 2 visible arranged subviews
+        // hiding/showing the bottom one glitches the animation
+        // workaround is to add another 1px height subview
+        if views.count == 2 {
+            let extraView = UIView()
+            extraView.backgroundColor = .clear
+            stackView.addArrangedSubview(extraView)
+            extraView.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        }
+    }
+    
+    private func addVisibilityObserver(for subItem: FormItem, view: UIView) {
+        guard let subItem = subItem as? Hidable else { return }
+        let observation = observe(subItem.isHidden) { isHidden in
+            view.adyen.hide(animationKey: String(describing: view), hidden: isHidden, animated: true)
+        }
+        observations.append(observation)
+    }
+
+    private func removeObservers() {
+        observations.forEach(remove)
+        observations = []
+    }
+
 }
 
 extension FormVerticalStackItemView: SelfRenderingFormItemDelegate {
 
     internal func didUpdateItems(_ items: [FormItem]) {
         stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        views = items.map(FormVerticalStackItemView.build)
-        views.forEach(stackView.addArrangedSubview)
+        removeObservers()
+        prepareSubItems()
         stackView.setNeedsLayout()
         views.first { $0.canBecomeFirstResponder }?.becomeFirstResponder()
     }

@@ -39,6 +39,11 @@ public struct CardBrand: Decodable {
     
     /// Indicates whether to show social security number field or not.
     internal let showsSocialSecurityNumber: Bool
+    
+    private enum Constants {
+        static let plccText = "plcc"
+        static let cbccText = "cbcc"
+    }
 
     /// Initializes a CardBrand.
     ///
@@ -70,6 +75,29 @@ public struct CardBrand: Decodable {
         case isLuhnCheckEnabled = "enableLuhnCheck"
         case showsSocialSecurityNumber = "showSocialSecurityNumber"
         case expiryDatePolicy
+    }
+    
+    internal var isCVCOptional: Bool {
+        switch cvcPolicy {
+        case .optional, .hidden:
+            return true
+        case .required:
+            return false
+        }
+    }
+    
+    internal var isExpiryDateOptional: Bool {
+        switch expiryDatePolicy {
+        case .optional, .hidden:
+            return true
+        case .required:
+            return false
+        }
+    }
+    
+    /// Determines if the brand is a private labeled card.
+    internal var isPrivateLabeled: Bool {
+        type.rawValue.contains(Constants.plccText) || type.rawValue.contains(Constants.cbccText)
     }
 }
 

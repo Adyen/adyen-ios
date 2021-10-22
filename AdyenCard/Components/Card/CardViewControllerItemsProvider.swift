@@ -19,9 +19,7 @@ extension CardViewController {
 
         private let configuration: CardComponent.Configuration
 
-        private let supportedCardTypes: [CardType]
-
-        private let cardLogos: [FormCardNumberItem.CardTypeLogo]
+        private let cardLogos: [FormCardLogosItem.CardTypeLogo]
 
         private let scope: String
 
@@ -34,15 +32,13 @@ extension CardViewController {
         internal init(formStyle: FormComponentStyle,
                       payment: Payment?,
                       configuration: CardComponent.Configuration,
-                      supportedCardTypes: [CardType],
-                      cardLogos: [FormCardNumberItem.CardTypeLogo],
+                      cardLogos: [FormCardLogosItem.CardTypeLogo],
                       scope: String,
                       defaultCountryCode: String,
                       localizationParameters: LocalizationParameters?) {
             self.formStyle = formStyle
             self.payment = payment
             self.configuration = configuration
-            self.supportedCardTypes = supportedCardTypes
             self.cardLogos = cardLogos
             self.scope = scope
             self.defaultCountryCode = defaultCountryCode
@@ -73,12 +69,11 @@ extension CardViewController {
             return zipCodeItem
         }()
 
-        internal lazy var numberItem: FormCardNumberItem = {
-            let item = FormCardNumberItem(supportedCardTypes: supportedCardTypes,
-                                          cardTypeLogos: cardLogos,
-                                          style: formStyle.textField,
-                                          localizationParameters: localizationParameters)
-            item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "numberItem")
+        internal lazy var numberContainerItem: FormCardNumberContainerItem = {
+            let item = FormCardNumberContainerItem(cardTypeLogos: cardLogos,
+                                                   style: formStyle.textField,
+                                                   localizationParameters: localizationParameters)
+            item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "numberContainerItem")
             return item
         }()
 
