@@ -52,12 +52,11 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     
     /// Logo view for the brand(s) icons and selection for dual-branded cards.
     internal lazy var detectedBrandsView: DualBrandView = {
-        let cardTypeLogosView = DualBrandView(style: item.style.icon)
+        let cardTypeLogosView = DualBrandView(style: item.style.icon, onBrandSelection: { [weak self] index in
+            self?.item.selectBrand(at: index)
+        })
         cardTypeLogosView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cardTypeLogos")
         cardTypeLogosView.backgroundColor = item.style.backgroundColor
-        cardTypeLogosView.onBrandSelection = { [weak self] index in
-            self?.item.selectBrand(at: index)
-        }
         return cardTypeLogosView
     }()
 }
@@ -75,7 +74,7 @@ extension FormCardNumberItemView {
         private let style: ImageStyle
         
         /// Closure that's called when a selection is made between the brands
-        fileprivate var onBrandSelection: ((Int) -> Void)?
+        private let onBrandSelection: (Int) -> Void
         
         private lazy var stackView: UIStackView = {
             let stackView = UIStackView(arrangedSubviews: [primaryLogoView, secondaryLogoView])
@@ -108,8 +107,9 @@ extension FormCardNumberItemView {
             }
         }
         
-        internal init(style: ImageStyle) {
+        internal init(style: ImageStyle, onBrandSelection: @escaping ((Int) -> Void)) {
             self.style = style
+            self.onBrandSelection = onBrandSelection
             super.init(frame: .zero)
             addSubview(stackView)
             stackView.adyen.anchor(inside: self)
@@ -155,14 +155,14 @@ extension FormCardNumberItemView {
             guard primaryLogoView.alpha != selectedViewAlpha else { return }
             primaryLogoView.alpha = selectedViewAlpha
             secondaryLogoView.alpha = unselectedViewAlpha
-            onBrandSelection?(0)
+            onBrandSelection(0)
         }
         
         @objc private func secondaryLogoTapped() {
             guard secondaryLogoView.alpha != selectedViewAlpha else { return }
             secondaryLogoView.alpha = selectedViewAlpha
             primaryLogoView.alpha = unselectedViewAlpha
-            onBrandSelection?(1)
+            onBrandSelection(1)
         }
         
         private func resetLogos() {
