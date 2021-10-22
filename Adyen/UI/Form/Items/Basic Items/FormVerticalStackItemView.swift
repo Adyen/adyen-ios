@@ -74,6 +74,7 @@ public final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemVi
     }
 
     private func prepareSubItems() {
+        views.removeAll()
         item.subitems.forEach { subItem in
             let view = FormVerticalStackItemView.build(subItem)
             views.append(view)

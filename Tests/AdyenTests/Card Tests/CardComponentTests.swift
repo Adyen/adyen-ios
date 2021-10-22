@@ -559,7 +559,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertNotNil(cardNumberItemView)
         let textItemView: FormTextItemView<FormCardNumberItem>? = cardNumberItemView!.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         XCTAssertNotNil(textItemView)
-        let cardLogoView = cardNumberItemView!.cardTypeLogosView
+        let cardLogoView = cardNumberItemView!.detectedBrandsView
         XCTAssertNotNil(cardLogoView)
         let cardNumberItem = cardNumberItemView!.item
 
@@ -584,7 +584,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertNotNil(cardNumberItemView)
         let textItemView: FormTextItemView<FormCardNumberItem>? = cardNumberItemView!.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         XCTAssertNotNil(textItemView)
-        let cardLogoView = cardNumberItemView!.cardTypeLogosView
+        let cardLogoView = cardNumberItemView!.detectedBrandsView
         XCTAssertNotNil(cardLogoView)
         let cardNumberItem = cardNumberItemView!.item
 
@@ -614,7 +614,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertNotNil(cardNumberItemView)
         let textItemView: FormTextItemView<FormCardNumberItem>? = cardNumberItemView!.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         XCTAssertNotNil(textItemView)
-        let cardLogoView = cardNumberItemView!.cardTypeLogosView
+        let cardLogoView = cardNumberItemView!.detectedBrandsView
         XCTAssertNotNil(cardLogoView)
         let cardNumberItem = cardNumberItemView!.item
 
@@ -1395,7 +1395,7 @@ class CardComponentTests: XCTestCase {
         let numberItem = sut.cardViewController.items.numberContainerItem.numberItem
         
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
-        let logoItemView: FormCardLogoItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberContainerItem.logoItem")
+        let logoItemView: FormCardLogosItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberContainerItem.logosItem")
         
         XCTAssertFalse(logoItemView!.isHidden)
         

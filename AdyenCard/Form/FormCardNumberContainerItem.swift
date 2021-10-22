@@ -11,7 +11,7 @@ import UIKit
 internal final class FormCardNumberContainerItem: FormItem, Observer {
     
     /// The supported card type logos.
-    internal let cardTypeLogos: [FormCardLogoItem.CardTypeLogo]
+    internal let cardTypeLogos: [FormCardLogosItem.CardTypeLogo]
     
     internal var identifier: String?
     
@@ -21,7 +21,7 @@ internal final class FormCardNumberContainerItem: FormItem, Observer {
     private let localizationParameters: LocalizationParameters?
    
     internal var subitems: [FormItem] {
-        [numberItem, logoItem]
+        [numberItem, logosItem]
     }
     
     internal lazy var numberItem: FormCardNumberItem = {
@@ -32,13 +32,13 @@ internal final class FormCardNumberContainerItem: FormItem, Observer {
         return item
     }()
     
-    internal lazy var logoItem: FormCardLogoItem = {
-        let item = FormCardLogoItem(cardLogos: cardTypeLogos, style: style)
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "logoItem")
+    internal lazy var logosItem: FormCardLogosItem = {
+        let item = FormCardLogosItem(cardLogos: cardTypeLogos, style: style)
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "logosItem")
         return item
     }()
     
-    internal init(cardTypeLogos: [FormCardLogoItem.CardTypeLogo],
+    internal init(cardTypeLogos: [FormCardLogosItem.CardTypeLogo],
                   style: FormTextItemStyle,
                   localizationParameters: LocalizationParameters?) {
         self.cardTypeLogos = cardTypeLogos
@@ -49,7 +49,7 @@ internal final class FormCardNumberContainerItem: FormItem, Observer {
             guard let self = self else { return }
             // logo item only visible when number item is active or when it's invalid
             let hidden = !isActive && self.numberItem.isValid()
-            self.logoItem.isHidden.wrappedValue = hidden
+            self.logosItem.isHidden.wrappedValue = hidden
         }
     }
     
@@ -58,7 +58,8 @@ internal final class FormCardNumberContainerItem: FormItem, Observer {
     }
 }
 
-internal final class FormCardLogoItem: FormItem, Hidable {
+/// Form item to display multiple card logos.
+internal final class FormCardLogosItem: FormItem, Hidable {
     
     internal var isHidden: Observable<Bool> = Observable(false)
     
@@ -82,8 +83,8 @@ internal final class FormCardLogoItem: FormItem, Hidable {
 }
 
 extension FormItemViewBuilder {
-    internal func build(with item: FormCardLogoItem) -> FormItemView<FormCardLogoItem> {
-        FormCardLogoItemView(item: item)
+    internal func build(with item: FormCardLogosItem) -> FormItemView<FormCardLogosItem> {
+        FormCardLogosItemView(item: item)
     }
     
     internal func build(with item: FormCardNumberContainerItem) -> FormItemView<FormCardNumberContainerItem> {
@@ -91,7 +92,7 @@ extension FormItemViewBuilder {
     }
 }
 
-extension FormCardLogoItem {
+extension FormCardLogosItem {
     /// Describes a card type logo shown in the card number form item.
     internal final class CardTypeLogo: Equatable {
         
@@ -108,7 +109,7 @@ extension FormCardLogoItem {
             self.type = type
         }
         
-        internal static func == (lhs: FormCardLogoItem.CardTypeLogo, rhs: FormCardLogoItem.CardTypeLogo) -> Bool {
+        internal static func == (lhs: FormCardLogosItem.CardTypeLogo, rhs: FormCardLogosItem.CardTypeLogo) -> Bool {
             lhs.url == rhs.url && lhs.type == rhs.type
         }
     }

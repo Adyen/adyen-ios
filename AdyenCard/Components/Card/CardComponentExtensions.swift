@@ -84,7 +84,7 @@ internal enum CardBrandSorter {
               let secondBrand = brands.adyen[safeIndex: 1] else { return brands }
         let hasCarteBancaire = brands.contains { $0.type == .carteBancaire }
         let hasVisa = brands.contains { $0.type == .visa }
-        let hasPLCC = brands.contains(where: \.containsPrivateLabels)
+        let hasPLCC = brands.contains(where: \.isPrivateLabeled)
         
         // these rules on web include checks for BCMC as well
         // but here BCMC component only supports BCMC brand
@@ -95,7 +95,7 @@ internal enum CardBrandSorter {
         case (true, true, _) where secondBrand.type == .visa:
             return [secondBrand, firstBrand]
         // if regular card and dual branding contains a PLCC this should be shown first
-        case (_, _, true) where secondBrand.containsPrivateLabels:
+        case (_, _, true) where secondBrand.isPrivateLabeled:
             return [secondBrand, firstBrand]
         default:
             return brands

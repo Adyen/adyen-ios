@@ -46,7 +46,7 @@ internal class CardViewController: FormViewController {
 
         let countryCode = payment?.countryCode ?? Locale.current.regionCode ?? CardComponent.Constant.defaultCountryCode
         let cardLogos = supportedCardTypes.map {
-            FormCardLogoItem.CardTypeLogo(url: logoProvider.logoURL(withName: $0.rawValue), type: $0)
+            FormCardLogosItem.CardTypeLogo(url: logoProvider.logoURL(withName: $0.rawValue), type: $0)
         }
         self.items = ItemsProvider(formStyle: formStyle,
                                    payment: payment,

@@ -19,7 +19,7 @@ extension CardViewController {
 
         private let configuration: CardComponent.Configuration
 
-        private let cardLogos: [FormCardLogoItem.CardTypeLogo]
+        private let cardLogos: [FormCardLogosItem.CardTypeLogo]
 
         private let scope: String
 
@@ -28,7 +28,7 @@ extension CardViewController {
         internal init(formStyle: FormComponentStyle,
                       payment: Payment?,
                       configuration: CardComponent.Configuration,
-                      cardLogos: [FormCardLogoItem.CardTypeLogo],
+                      cardLogos: [FormCardLogosItem.CardTypeLogo],
                       scope: String,
                       defaultCountryCode: String,
                       localizationParameters: LocalizationParameters?) {

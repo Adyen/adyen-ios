@@ -40,7 +40,7 @@ public struct CardBrand: Decodable {
     /// Indicates whether to show social security number field or not.
     internal let showsSocialSecurityNumber: Bool
     
-    private enum Constant {
+    private enum Constants {
         static let plccText = "plcc"
         static let cbccText = "cbcc"
     }
@@ -95,9 +95,9 @@ public struct CardBrand: Decodable {
         }
     }
     
-    /// Determines if the brand is a private labelled card.
-    internal var containsPrivateLabels: Bool {
-        type.rawValue.contains(Constant.plccText) || type.rawValue.contains(Constant.cbccText)
+    /// Determines if the brand is a private labeled card.
+    internal var isPrivateLabeled: Bool {
+        type.rawValue.contains(Constants.plccText) || type.rawValue.contains(Constants.cbccText)
     }
 }
 

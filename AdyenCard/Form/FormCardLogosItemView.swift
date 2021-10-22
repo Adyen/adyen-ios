@@ -7,7 +7,7 @@
 import Adyen
 import UIKit
 
-internal final class FormCardLogoItemView: FormItemView<FormCardLogoItem> {
+internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem> {
     
     private enum Constants {
         static let cardSpacing: CGFloat = 3
@@ -26,7 +26,7 @@ internal final class FormCardLogoItemView: FormItemView<FormCardLogoItem> {
         return collectionView
     }()
     
-    internal required init(item: FormCardLogoItem) {
+    internal required init(item: FormCardLogosItem) {
         super.init(item: item)
         addSubview(collectionView)
         collectionView.adyen.anchor(inside: self, with: UIEdgeInsets(top: 4, left: 16, bottom: -8, right: -16))
@@ -36,7 +36,7 @@ internal final class FormCardLogoItemView: FormItemView<FormCardLogoItem> {
     
 }
 
-extension FormCardLogoItemView: UICollectionViewDataSource {
+extension FormCardLogosItemView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         item.cardLogos.count
     }
@@ -51,7 +51,7 @@ extension FormCardLogoItemView: UICollectionViewDataSource {
     }
 }
 
-extension FormCardLogoItemView {
+extension FormCardLogosItemView {
     
     /// A collectionview that updates its intrinsicContentSize to make all rows visible.
     internal class CardLogoCollectionView: UICollectionView {
@@ -77,7 +77,7 @@ extension FormCardLogoItemView {
     }
 }
 
-extension FormCardLogoItemView {
+extension FormCardLogosItemView {
     
     private class CardLogoCell: UICollectionViewCell {
         

@@ -33,6 +33,10 @@ class CardBrandSorterTests: XCTestCase {
         XCTAssertEqual(CardBrandSorter.sortBrands([carteBancaire, plcc]), [plcc, carteBancaire])
         XCTAssertEqual(CardBrandSorter.sortBrands([masterCard, visa]), [masterCard, visa])
         XCTAssertEqual(CardBrandSorter.sortBrands([carteBancaire, masterCard]), [carteBancaire, masterCard])
+        
+        XCTAssertTrue(cbcc.isPrivateLabeled)
+        XCTAssertTrue(plcc.isPrivateLabeled)
+        XCTAssertFalse(carteBancaire.isPrivateLabeled)
     }
     
     func testMoreThanTwoBrands() {

@@ -18,7 +18,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     /// - Parameter item: The item represented by the view.
     internal required init(item: FormCardNumberItem) {
         super.init(item: item)
-        accessory = .customView(cardTypeLogosView)
+        accessory = .customView(detectedBrandsView)
         textField.textContentType = .creditCardNumber
         textField.returnKeyType = .default
         
@@ -28,7 +28,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         
         observe(item.$detectedBrandLogos) { [weak self] newValue in
             guard let self = self else { return }
-            self.cardTypeLogosView.updateCurrentLogos(newValue)
+            self.detectedBrandsView.updateCurrentLogos(newValue)
         }
     }
     
@@ -36,7 +36,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         super.textFieldDidBeginEditing(text)
         // change accessory back only if brand is supported or empty
         if item.currentBrand?.isSupported ?? true {
-            accessory = .customView(cardTypeLogosView)
+            accessory = .customView(detectedBrandsView)
         }
         item.isActive = true
     }
@@ -44,7 +44,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     override internal func textFieldDidEndEditing(_ text: UITextField) {
         super.textFieldDidEndEditing(text)
         if accessory == .valid {
-            accessory = .customView(cardTypeLogosView)
+            accessory = .customView(detectedBrandsView)
         }
         item.isActive = false
     }
@@ -52,8 +52,8 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     // MARK: - Card Type Logos View
     
     /// Logo view for the brand(s) icons and selection for dual-branded cards.
-    internal lazy var cardTypeLogosView: CardLogoView = {
-        let cardTypeLogosView = CardLogoView(style: item.style.icon)
+    internal lazy var detectedBrandsView: CardLogosView = {
+        let cardTypeLogosView = CardLogosView(style: item.style.icon)
         cardTypeLogosView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cardTypeLogos")
         cardTypeLogosView.backgroundColor = item.style.backgroundColor
         cardTypeLogosView.onBrandSelection = { [weak self] index in
@@ -66,7 +66,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
 extension FormCardNumberItemView {
     
     /// Custom view housing up to 2 sub views for brand logos.
-    internal class CardLogoView: UIView {
+    internal class CardLogosView: UIView {
         
         private enum Constant {
             static let iconSize = CGSize(width: 24, height: 16)
@@ -126,7 +126,7 @@ extension FormCardNumberItemView {
             primaryLogoView.image = Constant.placeholderImage
         }
         
-        fileprivate func updateCurrentLogos(_ logos: [FormCardLogoItem.CardTypeLogo]) {
+        fileprivate func updateCurrentLogos(_ logos: [FormCardLogosItem.CardTypeLogo]) {
             resetLogos()
             guard !logos.isEmpty else {
                 setPlaceholderView()
@@ -135,7 +135,7 @@ extension FormCardNumberItemView {
             setupLogoViews(from: logos)
         }
         
-        private func setupLogoViews(from logos: [FormCardLogoItem.CardTypeLogo]) {
+        private func setupLogoViews(from logos: [FormCardLogosItem.CardTypeLogo]) {
             guard let firstLogo = logos.first else { return }
             
             primaryLogoView.imageURL = firstLogo.url

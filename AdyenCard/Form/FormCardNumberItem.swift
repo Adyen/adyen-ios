@@ -18,7 +18,7 @@ internal final class FormCardNumberItem: FormTextItem, Observer {
     private let supportedCardTypes: [CardType]
     
     /// Supported card type logos.
-    internal let cardTypeLogos: [FormCardLogoItem.CardTypeLogo]
+    internal let cardTypeLogos: [FormCardLogosItem.CardTypeLogo]
     
     /// The observable of the card's BIN value.
     /// The value contains up to 6 first digits of card' PAN.
@@ -28,7 +28,7 @@ internal final class FormCardNumberItem: FormTextItem, Observer {
     @Observable(nil) internal private(set) var currentBrand: CardBrand?
     
     /// Detected brand logo(s) for the entered bin.
-    @Observable([]) internal private(set) var detectedBrandLogos: [FormCardLogoItem.CardTypeLogo]
+    @Observable([]) internal private(set) var detectedBrandLogos: [FormCardLogosItem.CardTypeLogo]
     
     /// Determines whether the item is currently the focused one (first responder).
     @Observable(false) internal var isActive
@@ -40,7 +40,7 @@ internal final class FormCardNumberItem: FormTextItem, Observer {
     private let localizationParameters: LocalizationParameters?
     
     /// Initializes the form card number item.
-    internal init(cardTypeLogos: [FormCardLogoItem.CardTypeLogo],
+    internal init(cardTypeLogos: [FormCardLogosItem.CardTypeLogo],
                   style: FormTextItemStyle = FormTextItemStyle(),
                   localizationParameters: LocalizationParameters? = nil) {
         self.cardTypeLogos = cardTypeLogos
