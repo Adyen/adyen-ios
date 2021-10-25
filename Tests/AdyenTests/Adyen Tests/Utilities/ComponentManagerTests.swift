@@ -240,6 +240,26 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertNotNil(boletoComponent.shopperInformation)
     }
 
+    func testShopperInformationInjectionShouldSetShopperInformationOnCardComponent() throws {
+        // Given
+        let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
+        let configuration = DropInComponent.Configuration(apiContext: Dummy.context)
+        configuration.card = .init(shopperInformation: shopperInformation)
+        let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   configuration: configuration,
+                                   style: DropInComponent.Style(),
+                                   order: nil)
+        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["any_test_brand_name"])
+
+        // When
+        let paymentComponent = sut.build(paymentMethod: cardPaymentMethod)
+
+        // Then
+        let cardComponent = try XCTUnwrap(paymentComponent as? CardComponent)
+        XCTAssertNotNil(cardComponent.configuration.shopperInformation)
+    }
+
+
     // MARK: - Private
 
     private var shopperInformation: PrefilledShopperInformation {
