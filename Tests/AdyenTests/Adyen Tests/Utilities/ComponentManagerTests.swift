@@ -222,6 +222,24 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertNotNil(basicPersonalInfoFormComponent.shopperInformation)
     }
 
+    func testShopperInformationInjectionShouldSetShopperInformationOnBoletoComponent() throws {
+        // Given
+        let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
+        let configuration = DropInComponent.Configuration(apiContext: Dummy.context)
+        configuration.shopper = shopperInformation
+        let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   configuration: configuration,
+                                   style: DropInComponent.Style(),
+                                   order: nil)
+
+        // When
+        let paymentComponent = sut.build(paymentMethod: BoletoPaymentMethod(type: "boletobancario", name: "Boleto"))
+
+        // Then
+        let boletoComponent = try XCTUnwrap(paymentComponent as? BoletoComponent)
+        XCTAssertNotNil(boletoComponent.shopperInformation)
+    }
+
     // MARK: - Private
 
     private var shopperInformation: PrefilledShopperInformation {

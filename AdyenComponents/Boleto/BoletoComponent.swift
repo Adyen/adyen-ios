@@ -30,7 +30,7 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     private let configuration: Configuration
 
     /// :nodoc:
-    private var shopperInformation: PrefilledShopperInformation {
+    internal var shopperInformation: PrefilledShopperInformation {
         configuration.shopperInformation
     }
     
