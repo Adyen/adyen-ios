@@ -148,5 +148,92 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.storedComponents.filter { $0.order == order }.count, 4)
         XCTAssertEqual(sut.regularComponents.filter { $0.order == order }.count, numebrOfExpectedRegularComponents)
     }
-    
+
+    func testShopperInformationInjectionShouldSetShopperInformationOnAffirmComponent() throws {
+        // Given
+        let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
+        let configuration = DropInComponent.Configuration(apiContext: Dummy.context)
+        configuration.shopper = shopperInformation
+        let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   configuration: configuration,
+                                   style: DropInComponent.Style(),
+                                   order: nil)
+
+
+        // When
+        let paymentComponent = sut.build(paymentMethod: AffirmPaymentMethod(type: "affirm", name: "Affirm"))
+
+        // Then
+        let affirmComponent = try XCTUnwrap(paymentComponent as? AffirmComponent)
+        XCTAssertNotNil(affirmComponent.shopperInformation)
+    }
+
+    func testShopperInformationInjectionShouldSetShopperInformationOnDokuComponent() throws {
+        // Given
+        let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
+        let configuration = DropInComponent.Configuration(apiContext: Dummy.context)
+        configuration.shopper = shopperInformation
+        let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   configuration: configuration,
+                                   style: DropInComponent.Style(),
+                                   order: nil)
+
+        // When
+        let paymentComponent = sut.build(paymentMethod: DokuPaymentMethod(type: "doku", name: "DOKU"))
+
+        // Then
+        let dokuComponent = try XCTUnwrap(paymentComponent as? DokuComponent)
+        XCTAssertNotNil(dokuComponent.shopperInformation)
+    }
+
+    func testShopperInformationInjectionShouldSetShopperInformationOnMBWayComponent() throws {
+        // Given
+        let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
+        let configuration = DropInComponent.Configuration(apiContext: Dummy.context)
+        configuration.shopper = shopperInformation
+        let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   configuration: configuration,
+                                   style: DropInComponent.Style(),
+                                   order: nil)
+
+        // When
+        let paymentComponent = sut.build(paymentMethod: MBWayPaymentMethod(type: "mbway", name: "MBWay"))
+
+        // Then
+        let mbwayComponent = try XCTUnwrap(paymentComponent as? MBWayComponent)
+        XCTAssertNotNil(mbwayComponent.shopperInformation)
+    }
+
+    func testShopperInformationInjectionShouldSetShopperInformationOnBasicPersonalInfoFormComponent() throws {
+        // Given
+        let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
+        let configuration = DropInComponent.Configuration(apiContext: Dummy.context)
+        configuration.shopper = shopperInformation
+        let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   configuration: configuration,
+                                   style: DropInComponent.Style(),
+                                   order: nil)
+
+        // When
+        let paymentComponent = sut.build(paymentMethod: EContextPaymentMethod(type: "test_type", name: "Test name"))
+
+        // Then
+        let basicPersonalInfoFormComponent = try XCTUnwrap(paymentComponent as? BasicPersonalInfoFormComponent)
+        XCTAssertNotNil(basicPersonalInfoFormComponent.shopperInformation)
+    }
+
+    // MARK: - Private
+
+    private var shopperInformation: PrefilledShopperInformation {
+        let billingAddress = PostalAddressMocks.newYorkPostalAddress
+        let deliveryAddress = PostalAddressMocks.losAngelesPostalAddress
+        let shopperInformation = PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
+                                                             emailAddress: "katrina@mail.com",
+                                                             telephoneNumber: "1234567890",
+                                                             billingAddress: billingAddress,
+                                                             deliveryAddress: deliveryAddress,
+                                                             socialSecurityNumber: "78542134370")
+        return shopperInformation
+    }
+
 }
