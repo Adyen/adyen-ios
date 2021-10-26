@@ -22,10 +22,12 @@ internal final class ComponentManager {
     private var style: DropInComponent.Style
 
     private let partialPaymentEnabled: Bool
+    
+    private let supportsDeletingStoredPaymentMethods: Bool
 
-    private let remainingAmount: Amount?
+    internal let remainingAmount: Amount?
 
-    private let order: PartialPaymentOrder?
+    internal let order: PartialPaymentOrder?
     
     internal let apiContext: APIContext
     
@@ -34,7 +36,8 @@ internal final class ComponentManager {
                   style: DropInComponent.Style,
                   partialPaymentEnabled: Bool = true,
                   remainingAmount: Amount? = nil,
-                  order: PartialPaymentOrder?) {
+                  order: PartialPaymentOrder?,
+                  supportsDeletingStoredPaymentMethods: Bool) {
         self.paymentMethods = paymentMethods
         self.configuration = configuration
         self.apiContext = configuration.apiContext
@@ -42,6 +45,7 @@ internal final class ComponentManager {
         self.partialPaymentEnabled = partialPaymentEnabled
         self.remainingAmount = remainingAmount
         self.order = order
+        self.supportsDeletingStoredPaymentMethods = supportsDeletingStoredPaymentMethods
     }
     
     // MARK: - Internal
@@ -61,8 +65,19 @@ internal final class ComponentManager {
                                             footer: paidFooter)
 
         // Stored section
-        let storedSection = ComponentsSection(components: storedComponents)
-
+        let storedSection: ComponentsSection
+        
+        if supportsDeletingStoredPaymentMethods {
+            storedSection = ComponentsSection(editingStyle: .delete,
+                                              header: .init(title: localizedString(.paymentMethodsStoredMethods,
+                                                                                   configuration.localizationParameters),
+                                                            style: ListSectionHeaderStyle()),
+                                              components: storedComponents,
+                                              footer: nil)
+        } else {
+            storedSection = ComponentsSection(components: storedComponents)
+        }
+        
         // Regular section
         let localizedTitle = localizedString(.paymentMethodsOtherMethods, configuration.localizationParameters)
         let regularSectionTitle = storedSection.components.isEmpty ? nil : localizedTitle

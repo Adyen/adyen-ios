@@ -6,6 +6,7 @@
 "adyen.error.unknown" = "Er is een onbekende fout opgetreden";
 "adyen.validationAlert.title" = "Ongeldige invoer";
 "adyen.paymentMethods.otherMethods" = "Alle betaalmethodes";
+"adyen.paymentMethods.storedMethods" = "Opgeslagen betaalmethodes";
 "adyen.paymentMethods.title" = "Betaalmethodes";
 "adyen.sepa.ibanItem.title" = "Rekeningnummer (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Ongeldig rekeningnummer";

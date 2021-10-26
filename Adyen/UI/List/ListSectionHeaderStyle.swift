@@ -15,6 +15,14 @@ public struct ListSectionHeaderStyle: ViewStyle {
                                  color: UIColor.Adyen.componentSecondaryLabel,
                                  textAlignment: .natural)
     
+    /// The trailing button style.
+    public var trailingButton = ButtonStyle(
+        title: TextStyle(font: .preferredFont(forTextStyle: .headline),
+                         color: UIColor.Adyen.defaultBlue),
+        cornerRadius: 8,
+        background: .clear
+    )
+    
     /// :nodoc:
     public var backgroundColor = UIColor.Adyen.componentBackground
     

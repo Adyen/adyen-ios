@@ -30,6 +30,7 @@ extension IntegrationExample {
                                         title: ConfigurationConstants.appName)
         component.delegate = self
         component.partialPaymentDelegate = self
+        component.storedPaymentMethodsDelegate = self
         currentComponent = component
 
         presenter?.present(viewController: component.viewController, completion: nil)
@@ -103,4 +104,13 @@ extension IntegrationExample: DropInComponentDelegate {
         print("User did close: \(component.paymentMethod.name)")
     }
 
+}
+
+extension IntegrationExample: StoredPaymentMethodsDelegate {
+    func delete(storedPaymentMethod: StoredPaymentMethod, completion: @escaping (Bool) -> Void) {
+        print("delete \(storedPaymentMethod)")
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
+            completion(true)
+        }
+    }
 }

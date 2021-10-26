@@ -6,6 +6,7 @@
 "adyen.error.unknown" = "An unknown error occurred";
 "adyen.validationAlert.title" = "Invalid Input";
 "adyen.paymentMethods.otherMethods" = "Select other method";
+"adyen.paymentMethods.storedMethods" = "Your payment methods";
 "adyen.paymentMethods.title" = "Payment Methods";
 "adyen.sepa.ibanItem.title" = "Account Number (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Invalid account number";

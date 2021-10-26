@@ -6,15 +6,23 @@
 
 import Foundation
 
+public enum EditinStyle {
+    case delete
+    case none
+}
+
 /// A section of items in a ListViewController.
 /// :nodoc:
 public struct ListSection {
+    
+    /// Section allowed editing.
+    public let editingStyle: EditinStyle
     
     /// The title of the section.
     public let header: ListSectionHeader?
 
     /// The items inside the section.
-    public let items: [ListItem]
+    public private(set) var items: [ListItem]
 
     /// The footer title of the section.
     public let footer: ListSectionFooter?
@@ -25,10 +33,20 @@ public struct ListSection {
     ///   - header: The section header.
     ///   - items: The items inside the section.
     ///   - footer: The section footer.
-    public init(header: ListSectionHeader? = nil, items: [ListItem], footer: ListSectionFooter? = nil) {
+    ///   - editingStyle: The section editing style.
+    public init(header: ListSectionHeader? = nil,
+                items: [ListItem],
+                footer: ListSectionFooter? = nil,
+                editingStyle: EditinStyle = .none) {
         self.header = header
         self.items = items
         self.footer = footer
+        self.editingStyle = editingStyle
+    }
+    
+    internal mutating func deleteItem(index: Int) {
+        guard items.indices.contains(index) else { return }
+        items.remove(at: index)
     }
     
 }

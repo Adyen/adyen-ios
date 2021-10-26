@@ -50,10 +50,9 @@ public final class ListViewController: UITableViewController {
         didSet {
             // Filter out empty sections.
             let filteredSections = sections.filter { $0.items.count > 0 }
-            if filteredSections.count != sections.count {
-                sections = filteredSections
-            } else if isViewLoaded {
-                tableView.reloadData()
+            sections = filteredSections
+            if isViewLoaded {
+//                tableView.reloadData()
             }
         }
     }
@@ -124,17 +123,29 @@ public final class ListViewController: UITableViewController {
         sections[section].items.count
     }
     
+    private var isEditingModeOn: Bool = false
+    
     /// :nodoc:
     override public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let header = sections[section].header else {
             return nil
         }
 
-        let headerView = ListHeaderView(title: header.title, style: header.style)
+        let headerView = ListHeaderView(title: header.title,
+                                        trailingButtonTitle: sections[section].editingStyle == .delete ? "Edit" : nil,
+                                        style: header.style)
         headerView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "Adyen.ListViewController",
                                                                          postfix: "headerView.\(section)")
+        headerView.onTrailingButtonTap = { [weak self] in
+            self?.toggleEditingMode()
+        }
 
         return headerView
+    }
+    
+    private func toggleEditingMode() {
+        isEditingModeOn.toggle()
+        tableView.setEditing(isEditingModeOn, animated: true)
     }
 
     override public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -175,6 +186,30 @@ public final class ListViewController: UITableViewController {
         item.selectionHandler?()
     }
     
+    override public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        sections[indexPath.section].editingStyle.tableViewEditingStyle
+    }
+    
+    override public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        sections[indexPath.section].editingStyle != .none
+    }
+    
+    override public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let item = sections[indexPath.section].items[indexPath.item]
+        guard let deletionHandler = item.deletionHandler else { return }
+        
+        startLoading(for: item)
+        
+        let completion: Completion<Bool> = { [weak self] success in
+            self?.stopLoading()
+            if success {
+                tableView.reloadRows(at: [indexPath], with: .left)
+            }
+        }
+        
+        deletionHandler(completion)
+    }
+    
     // MARK: Private
     
     private func cell(for item: ListItem) -> ListCell? {
@@ -183,5 +218,16 @@ public final class ListViewController: UITableViewController {
         }
         
         return nil
+    }
+}
+
+extension EditinStyle {
+    var tableViewEditingStyle: UITableViewCell.EditingStyle {
+        switch self {
+        case .delete:
+            return .delete
+        case .none:
+            return .none
+        }
     }
 }

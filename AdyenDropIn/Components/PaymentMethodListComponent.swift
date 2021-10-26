@@ -15,7 +15,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     internal let apiContext: APIContext
     
     /// The components that are displayed in the list.
-    internal let componentSections: [ComponentsSection]
+    internal private(set) var componentSections: [ComponentsSection]
     
     /// The delegate of the payment method list component.
     internal weak var delegate: PaymentMethodListComponentDelegate?
@@ -38,6 +38,11 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
         self.style = style
     }
     
+    internal func reload(with components: [ComponentsSection]) {
+        componentSections = components
+        listViewController.sections = createListSections()
+    }
+    
     // MARK: - View Controller
     
     /// :nodoc:
@@ -45,7 +50,17 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
 
     private let brandProtectedComponents: Set = ["applepay"]
     
-    internal lazy var listViewController: ListViewController = {
+    internal lazy var listViewController: ListViewController = createListViewController()
+    
+    private func createListViewController() -> ListViewController {
+        let listViewController = ListViewController(style: style)
+        listViewController.title = localizedString(.paymentMethodsTitle, localizationParameters)
+        listViewController.sections = createListSections()
+        
+        return listViewController
+    }
+    
+    private func createListSections() -> [ListSection] {
         func item(for component: PaymentComponent) -> ListItem {
             let displayInformation = component.paymentMethod.localizedDisplayInformation(using: localizationParameters)
             let isProtected = brandProtectedComponents.contains(component.paymentMethod.type)
@@ -56,26 +71,28 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
             listItem.imageURL = LogoURLProvider.logoURL(for: component.paymentMethod, environment: apiContext.environment)
             listItem.trailingText = displayInformation.disclosureText
             listItem.subtitle = displayInformation.subtitle
-            listItem.selectionHandler = { [unowned self, unowned component] in
+            listItem.selectionHandler = { [weak self, weak component] in
+                guard let self = self, let component = component else { return }
                 guard !(component is AlreadyPaidPaymentComponent) else { return }
                 self.delegate?.didSelect(component, in: self)
+            }
+            
+            listItem.deletionHandler = { [weak self, weak component] completion in
+                guard let self = self, let component = component else { return }
+                guard let paymentMethod = component.paymentMethod as? StoredPaymentMethod else { return }
+                self.delegate?.didDelete(paymentMethod, in: self, completion: completion)
             }
             
             return listItem
         }
 
-        let sections: [ListSection] = componentSections.map {
+        return componentSections.map {
             ListSection(header: $0.header,
                         items: $0.components.map(item(for:)),
-                        footer: $0.footer)
+                        footer: $0.footer,
+                        editingStyle: $0.editingStyle)
         }
-        
-        let listViewController = ListViewController(style: style)
-        listViewController.title = localizedString(.paymentMethodsTitle, localizationParameters)
-        listViewController.sections = sections
-        
-        return listViewController
-    }()
+    }
 
     // MARK: - Cancellable
 
@@ -120,5 +137,12 @@ internal protocol PaymentMethodListComponentDelegate: AnyObject {
     ///   - component: The component that has been selected.
     ///   - paymentMethodListComponent: The payment method list component in which the component was selected.
     func didSelect(_ component: PaymentComponent, in paymentMethodListComponent: PaymentMethodListComponent)
+    
+    /// Invoked when a component was deleted in the payment method list.
+    ///
+    /// - Parameters:
+    ///   - paymentMethod: The payment method that has been deleted.
+    ///   - paymentMethodListComponent: The payment method list component in which the component was selected.
+    func didDelete(_ paymentMethod: StoredPaymentMethod, in paymentMethodListComponent: PaymentMethodListComponent, completion: @escaping Completion<Bool>)
     
 }

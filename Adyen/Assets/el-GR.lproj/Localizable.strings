@@ -6,6 +6,7 @@
 "adyen.error.unknown" = "Προέκυψε άγνωστο σφάλμα";
 "adyen.validationAlert.title" = "Μη έγκυρη είσοδος";
 "adyen.paymentMethods.otherMethods" = "Επιλέξτε άλλον τρόπο";
+"adyen.paymentMethods.storedMethods" = "Οι τρόποι πληρωμής σας";
 "adyen.paymentMethods.title" = "Τρόποι πληρωμής";
 "adyen.sepa.ibanItem.title" = "Αριθμός λογαριασμού (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Μη έγκυρος αριθμός λογαριασμού";

@@ -7,6 +7,8 @@
 import Adyen
 
 internal struct ComponentsSection {
+    
+    internal var editingStyle: EditinStyle = .none
 
     internal var header: ListSectionHeader?
 

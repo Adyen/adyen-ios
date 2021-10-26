@@ -31,6 +31,9 @@ public class ListItem: FormItem {
     /// The handler to invoke when the item is selected.
     public var selectionHandler: (() -> Void)?
     
+    /// The handler to invoke when the item is deleted.
+    public var deletionHandler: ((@escaping Completion<Bool>) -> Void)?
+    
     /// An identifier for the `ListItem`,
     /// that is set to the `ListItemView.accessibilityIdentifier`.
     public var identifier: String?

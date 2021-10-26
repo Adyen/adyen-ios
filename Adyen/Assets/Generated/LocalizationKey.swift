@@ -23,6 +23,8 @@ public struct LocalizationKey {
     public static let validationAlertTitle = LocalizationKey(key: "adyen.validationAlert.title")
     /// Select other method
     public static let paymentMethodsOtherMethods = LocalizationKey(key: "adyen.paymentMethods.otherMethods")
+    /// Your payment methods
+    public static let paymentMethodsStoredMethods = LocalizationKey(key: "adyen.paymentMethods.storedMethods")
     /// Payment Methods
     public static let paymentMethodsTitle = LocalizationKey(key: "adyen.paymentMethods.title")
     /// Account Number (IBAN)

@@ -6,6 +6,7 @@
 "adyen.error.unknown" = "En ukjent feil oppstod";
 "adyen.validationAlert.title" = "Ugyldige inndata";
 "adyen.paymentMethods.otherMethods" = "Velg annen metode";
+"adyen.paymentMethods.storedMethods" = "Dine betalingsmetoder";
 "adyen.paymentMethods.title" = "Betalingsmetoder";
 "adyen.sepa.ibanItem.title" = "Kontonummer (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Ugyldig kontonummer";

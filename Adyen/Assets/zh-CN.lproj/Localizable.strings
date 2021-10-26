@@ -6,6 +6,7 @@
 "adyen.error.unknown" = "发生未知错误";
 "adyen.validationAlert.title" = "无效的输入";
 "adyen.paymentMethods.otherMethods" = "选择其他方式";
+"adyen.paymentMethods.storedMethods" = "您的支付方式";
 "adyen.paymentMethods.title" = "支付方式";
 "adyen.sepa.ibanItem.title" = "账号 (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "无效的账号";

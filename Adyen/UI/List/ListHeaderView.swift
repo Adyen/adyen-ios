@@ -11,14 +11,21 @@ internal final class ListHeaderView: UIView {
     /// The list section header style.
     internal let style: ListSectionHeaderStyle
     
-    internal init(title: String, style: ListSectionHeaderStyle) {
+    internal let trailingButtonTitle: String?
+    
+    internal var onTrailingButtonTap: (() -> Void)?
+    
+    internal init(title: String,
+                  trailingButtonTitle: String? = nil,
+                  style: ListSectionHeaderStyle) {
         self.title = title
+        self.trailingButtonTitle = trailingButtonTitle
         self.style = style
         
         super.init(frame: .zero)
         
         backgroundColor = style.backgroundColor
-        addSubview(titleLabel)
+        addSubview(stackView)
         
         configureConstraints()
     }
@@ -32,7 +39,34 @@ internal final class ListHeaderView: UIView {
     
     private func configureConstraints() {
         layoutMargins = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 6.0, right: 16.0)
-        titleLabel.adyen.anchor(inside: self.layoutMarginsGuide)
+        stackView.adyen.anchor(inside: self.layoutMarginsGuide)
+    }
+    
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, trailingButton].compactMap { $0 })
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.distribution = .fill
+        stackView.spacing = 8.0
+
+        return stackView
+    }()
+    
+    // MARK: - Trailing Button
+    
+    private lazy var trailingButton: UIButton? = {
+        guard let title = trailingButtonTitle else { return nil }
+        let button = UIButton(style: style.trailingButton)
+        button.setTitle(title, for: .normal)
+        button.addTarget(self, action: #selector(didTapTrailingButton), for: .touchUpInside)
+        button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "trailingButton")
+        button.preservesSuperviewLayoutMargins = true
+        
+        return button
+    }()
+    
+    @objc private func didTapTrailingButton() {
+        onTrailingButtonTap?()
     }
     
     // MARK: - Title Label

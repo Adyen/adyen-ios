@@ -6,6 +6,7 @@
 "adyen.error.unknown" = "Ocorreu um erro desconhecido";
 "adyen.validationAlert.title" = "Entrada inválida";
 "adyen.paymentMethods.otherMethods" = "Todos os métodos de pagamento";
+"adyen.paymentMethods.storedMethods" = "Meus métodos de pagamento";
 "adyen.paymentMethods.title" = "Meios de pagamento";
 "adyen.sepa.ibanItem.title" = "Número de conta (NIB)";
 "adyen.sepa.ibanItem.invalid" = "Número de conta inválido";

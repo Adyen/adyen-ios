@@ -6,6 +6,7 @@
 "adyen.error.unknown" = "S-a produs o eroare necunoscută";
 "adyen.validationAlert.title" = "Informațiile sunt incorecte";
 "adyen.paymentMethods.otherMethods" = "Selectați o altă metodă";
+"adyen.paymentMethods.storedMethods" = "Metodele dvs. de plată";
 "adyen.paymentMethods.title" = "Metode de plată";
 "adyen.sepa.ibanItem.title" = "Număr cont (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Numărul de cont este incorect";

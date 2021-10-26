@@ -6,6 +6,7 @@
 "adyen.error.unknown" = "Ett okänt fel uppstod";
 "adyen.validationAlert.title" = "Ogiltig inmatning";
 "adyen.paymentMethods.otherMethods" = "Välj annan betalningsmetod";
+"adyen.paymentMethods.storedMethods" = "Dina sparade betalningsmetoder";
 "adyen.paymentMethods.title" = "Betalningsmetoder";
 "adyen.sepa.ibanItem.title" = "Kontonummer (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Ogiltigt kontonummer";

@@ -6,6 +6,7 @@
 "adyen.error.unknown" = "Une erreur inconnue s'est produite";
 "adyen.validationAlert.title" = "Saisie incorrecte";
 "adyen.paymentMethods.otherMethods" = "Autre méthode de paiement";
+"adyen.paymentMethods.storedMethods" = "Vos modes de paiement";
 "adyen.paymentMethods.title" = "Méthodes de paiement";
 "adyen.sepa.ibanItem.title" = "Numéro de compte (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Numéro de compte non valide";

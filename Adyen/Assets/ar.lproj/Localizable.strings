@@ -6,6 +6,7 @@
 "adyen.error.unknown" = "حدث خطأ غير معروف";
 "adyen.validationAlert.title" = "إدخال غير صحيح";
 "adyen.paymentMethods.otherMethods" = "تحديد طريقة أخرى";
+"adyen.paymentMethods.storedMethods" = "طرق الدفع الخاصة بك";
 "adyen.paymentMethods.title" = "طرق الدفع";
 "adyen.sepa.ibanItem.title" = "رقم الحساب (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "رقم حساب غير صحيح";
