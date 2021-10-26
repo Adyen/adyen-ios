@@ -1635,13 +1635,14 @@ class CardComponentTests: XCTestCase {
                                        name: "Test name",
                                        fundingSource: .credit,
                                        brands: ["visa", "amex", "mc"])
-        var configuration = CardComponent.Configuration(shopperInformation: shopperInformation)
+        var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
         configuration.billingAddressMode = .full
 
         let prefilledSut = CardComponent(paymentMethod: method,
                                          apiContext: Dummy.context,
-                                         configuration: configuration)
+                                         configuration: configuration,
+                                         shopperInformation: shopperInformation)
 
         // When
         UIApplication.shared.keyWindow?.rootViewController = prefilledSut.cardViewController
@@ -1673,13 +1674,14 @@ class CardComponentTests: XCTestCase {
                                        name: "Test name",
                                        fundingSource: .credit,
                                        brands: ["visa", "amex", "mc"])
-        var configuration = CardComponent.Configuration(shopperInformation: shopperInformation)
+        var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
         configuration.billingAddressMode = .postalCode
 
         let prefilledSut = CardComponent(paymentMethod: method,
                                          apiContext: Dummy.context,
-                                         configuration: configuration)
+                                         configuration: configuration,
+                                         shopperInformation: shopperInformation)
 
         // When
         UIApplication.shared.keyWindow?.rootViewController = prefilledSut.cardViewController

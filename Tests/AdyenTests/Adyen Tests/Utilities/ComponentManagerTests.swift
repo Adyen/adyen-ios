@@ -244,7 +244,7 @@ class ComponentManagerTests: XCTestCase {
         // Given
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
         let configuration = DropInComponent.Configuration(apiContext: Dummy.context)
-        configuration.card = .init(shopperInformation: shopperInformation)
+        configuration.shopper = shopperInformation
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: configuration,
                                    style: DropInComponent.Style(),
@@ -256,7 +256,7 @@ class ComponentManagerTests: XCTestCase {
 
         // Then
         let cardComponent = try XCTUnwrap(paymentComponent as? CardComponent)
-        XCTAssertNotNil(cardComponent.configuration.shopperInformation)
+        XCTAssertNotNil(cardComponent.shopperInformation)
     }
 
 
