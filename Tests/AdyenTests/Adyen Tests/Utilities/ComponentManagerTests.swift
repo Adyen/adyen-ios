@@ -48,7 +48,7 @@ class ComponentManagerTests: XCTestCase {
         ]
     ]
     
-    let numebrOfExpectedRegularComponents = 17
+    let numberOfExpectedRegularComponents = 19
 
     func testClientKeyInjectionAndProtocolConfromance() throws {
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
@@ -64,14 +64,14 @@ class ComponentManagerTests: XCTestCase {
                                    order: nil)
 
         XCTAssertEqual(sut.storedComponents.count, 4)
-        XCTAssertEqual(sut.regularComponents.count, numebrOfExpectedRegularComponents)
+        XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
 
         XCTAssertEqual(sut.storedComponents.filter { $0.apiContext.clientKey == Dummy.context.clientKey }.count, 4)
-        XCTAssertEqual(sut.regularComponents.filter { $0.apiContext.clientKey == Dummy.context.clientKey }.count, numebrOfExpectedRegularComponents)
+        XCTAssertEqual(sut.regularComponents.filter { $0.apiContext.clientKey == Dummy.context.clientKey }.count, numberOfExpectedRegularComponents)
 
-        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 12)
-        XCTAssertEqual(sut.regularComponents.filter { $0 is Localizable }.count, 11)
-        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 13)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 14)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is Localizable }.count, 13)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 15)
     }
     
     func testLocalizationWithCustomTableName() throws {
@@ -89,10 +89,10 @@ class ComponentManagerTests: XCTestCase {
                                    order: nil)
         
         XCTAssertEqual(sut.storedComponents.count, 4)
-        XCTAssertEqual(sut.regularComponents.count, numebrOfExpectedRegularComponents)
+        XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
         
         XCTAssertEqual(sut.storedComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 4)
-        XCTAssertEqual(sut.regularComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 11)
+        XCTAssertEqual(sut.regularComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 13)
     }
     
     func testLocalizationWithCustomKeySeparator() throws {
@@ -110,10 +110,10 @@ class ComponentManagerTests: XCTestCase {
                                    order: nil)
         
         XCTAssertEqual(sut.storedComponents.count, 4)
-        XCTAssertEqual(sut.regularComponents.count, numebrOfExpectedRegularComponents)
+        XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
         
         XCTAssertEqual(sut.storedComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 4)
-        XCTAssertEqual(sut.regularComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 11)
+        XCTAssertEqual(sut.regularComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 13)
     }
 
     func testOrderInjection() throws {
@@ -144,11 +144,11 @@ class ComponentManagerTests: XCTestCase {
 
         XCTAssertEqual(sut.paidComponents.count, 2)
         XCTAssertEqual(sut.storedComponents.count, 4)
-        XCTAssertEqual(sut.regularComponents.count, numebrOfExpectedRegularComponents)
+        XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
 
         XCTAssertEqual(sut.paidComponents.filter { $0.order == order }.count, 2)
         XCTAssertEqual(sut.storedComponents.filter { $0.order == order }.count, 4)
-        XCTAssertEqual(sut.regularComponents.filter { $0.order == order }.count, numebrOfExpectedRegularComponents)
+        XCTAssertEqual(sut.regularComponents.filter { $0.order == order }.count, numberOfExpectedRegularComponents)
     }
 
     func testShopperInformationInjectionShouldSetShopperInformationOnAffirmComponent() throws {
