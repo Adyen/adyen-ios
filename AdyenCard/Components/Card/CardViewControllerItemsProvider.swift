@@ -12,12 +12,19 @@ extension CardViewController {
     internal struct ItemsProvider {
 
         private let formStyle: FormComponentStyle
+
         private let payment: Payment?
+
         private var localizationParameters: LocalizationParameters?
+
         private let configuration: CardComponent.Configuration
+
         private let shopperInformation: PrefilledShopperInformation?
+
         private let cardLogos: [FormCardLogosItem.CardTypeLogo]
+
         private let scope: String
+
         private let defaultCountryCode: String
 
         internal init(formStyle: FormComponentStyle,

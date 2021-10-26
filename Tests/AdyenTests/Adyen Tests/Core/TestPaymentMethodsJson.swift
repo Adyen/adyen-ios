@@ -469,3 +469,8 @@ let achDirectDebit = [
     "name": "ACH Direct Debit",
     "type": "ach"
 ]
+
+let affirm = [
+    "name": "Affirm",
+    "type": "affirm"
+]

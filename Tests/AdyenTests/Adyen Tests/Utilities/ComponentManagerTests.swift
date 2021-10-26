@@ -42,7 +42,9 @@ class ComponentManagerTests: XCTestCase {
             econtextATM,
             econtextOnline,
             oxxo,
-            multibanco
+            multibanco,
+            boleto,
+            affirm
         ]
     ]
     
@@ -161,7 +163,7 @@ class ComponentManagerTests: XCTestCase {
 
 
         // When
-        let paymentComponent = sut.build(paymentMethod: AffirmPaymentMethod(type: "affirm", name: "Affirm"))
+        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == "affirm" })
 
         // Then
         let affirmComponent = try XCTUnwrap(paymentComponent as? AffirmComponent)
@@ -179,7 +181,7 @@ class ComponentManagerTests: XCTestCase {
                                    order: nil)
 
         // When
-        let paymentComponent = sut.build(paymentMethod: DokuPaymentMethod(type: "doku", name: "DOKU"))
+        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == "doku_wallet" })
 
         // Then
         let dokuComponent = try XCTUnwrap(paymentComponent as? DokuComponent)
@@ -197,7 +199,7 @@ class ComponentManagerTests: XCTestCase {
                                    order: nil)
 
         // When
-        let paymentComponent = sut.build(paymentMethod: MBWayPaymentMethod(type: "mbway", name: "MBWay"))
+        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == "mbway" })
 
         // Then
         let mbwayComponent = try XCTUnwrap(paymentComponent as? MBWayComponent)
@@ -215,7 +217,7 @@ class ComponentManagerTests: XCTestCase {
                                    order: nil)
 
         // When
-        let paymentComponent = sut.build(paymentMethod: EContextPaymentMethod(type: "test_type", name: "Test name"))
+        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == "econtext_online"})
 
         // Then
         let basicPersonalInfoFormComponent = try XCTUnwrap(paymentComponent as? BasicPersonalInfoFormComponent)
@@ -233,7 +235,7 @@ class ComponentManagerTests: XCTestCase {
                                    order: nil)
 
         // When
-        let paymentComponent = sut.build(paymentMethod: BoletoPaymentMethod(type: "boletobancario", name: "Boleto"))
+        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == "boletobancario_santander" })
 
         // Then
         let boletoComponent = try XCTUnwrap(paymentComponent as? BoletoComponent)
@@ -249,10 +251,9 @@ class ComponentManagerTests: XCTestCase {
                                    configuration: configuration,
                                    style: DropInComponent.Style(),
                                    order: nil)
-        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["any_test_brand_name"])
 
         // When
-        let paymentComponent = sut.build(paymentMethod: cardPaymentMethod)
+        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == "scheme" })
 
         // Then
         let cardComponent = try XCTUnwrap(paymentComponent as? CardComponent)
