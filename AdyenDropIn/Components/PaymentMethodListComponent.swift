@@ -40,7 +40,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     
     internal func reload(with components: [ComponentsSection]) {
         componentSections = components
-        listViewController.sections = createListSections()
+        listViewController.reload(newSections: createListSections())
     }
     
     // MARK: - View Controller
@@ -55,7 +55,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     private func createListViewController() -> ListViewController {
         let listViewController = ListViewController(style: style)
         listViewController.title = localizedString(.paymentMethodsTitle, localizationParameters)
-        listViewController.sections = createListSections()
+        listViewController.reload(newSections: createListSections())
         
         return listViewController
     }

@@ -79,10 +79,11 @@ extension ListItem: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(title)
         hasher.combine(imageURL)
+        hasher.combine(trailingText)
     }
     
     public static func == (lhs: ListItem, rhs: ListItem) -> Bool {
-        lhs.title == rhs.title && lhs.imageURL == rhs.imageURL
+        lhs.title == rhs.title && lhs.imageURL == rhs.imageURL && lhs.trailingText == rhs.trailingText
     }
     
 }

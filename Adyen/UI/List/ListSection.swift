@@ -13,7 +13,7 @@ public enum EditinStyle {
 
 /// A section of items in a ListViewController.
 /// :nodoc:
-public struct ListSection {
+public struct ListSection: Hashable {
     
     /// Section allowed editing.
     public let editingStyle: EditinStyle
@@ -49,11 +49,21 @@ public struct ListSection {
         items.remove(at: index)
     }
     
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(editingStyle)
+        hasher.combine(header)
+        hasher.combine(footer)
+    }
+    
+    public static func == (lhs: ListSection, rhs: ListSection) -> Bool {
+        lhs.editingStyle == rhs.editingStyle && lhs.header == rhs.header && lhs.footer == rhs.footer
+    }
+    
 }
 
 /// A list section header.
 /// :nodoc:
-public struct ListSectionHeader {
+public struct ListSectionHeader: Hashable {
 
     /// The header title.
     /// :nodoc:
@@ -71,11 +81,19 @@ public struct ListSectionHeader {
         self.title = title
         self.style = style
     }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(title)
+    }
+    
+    public static func == (lhs: ListSectionHeader, rhs: ListSectionHeader) -> Bool {
+        lhs.title == rhs.title
+    }
 }
 
 /// A list section footer.
 /// :nodoc:
-public struct ListSectionFooter {
+public struct ListSectionFooter: Hashable {
 
     /// The footer title.
     /// :nodoc:
@@ -92,5 +110,13 @@ public struct ListSectionFooter {
     public init(title: String, style: ListSectionFooterStyle) {
         self.title = title
         self.style = style
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(title)
+    }
+    
+    public static func == (lhs: ListSectionFooter, rhs: ListSectionFooter) -> Bool {
+        lhs.title == rhs.title
     }
 }

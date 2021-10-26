@@ -78,7 +78,7 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
         }
         
         listViewController.title = paymentMethod.name
-        listViewController.sections = [ListSection(items: items)]
+        listViewController.reload(newSections: [ListSection(items: items)])
         
         return listViewController
     }()

@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import SwiftUI
 import UIKit
 
 /// Displays a list from which items can be selected.
@@ -43,45 +44,25 @@ public final class ListViewController: UITableViewController {
         """) }
     }
     
-    // MARK: - Items
+    // MARK: - Data Source
     
-    /// The items displayed in the list.
-    public var sections: [ListSection] = [] {
-        didSet {
-            // Filter out empty sections.
-            let filteredSections = sections.filter { $0.items.count > 0 }
-            sections = filteredSections
-            if isViewLoaded {
-//                tableView.reloadData()
-            }
-        }
-    }
+    /// :nodoc:
+    public var sections: [ListSection] { dataSource.sections }
     
-    // MARK: - Item Loading state
+    /// :nodoc:
+    private lazy var dataSource: ListViewControllerDataSource = {
+        if #available(iOS 13, *) {
+            return DiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, _ in
+                self?.dataSource.cell(for: tableView, at: indexPath)
+            })
+        } else {
+            return CoreDataSource()
+        }
+    }()
     
-    /// Starts a loading animation for a given ListItem.
-    ///
-    /// - Parameter item: The item to be shown as loading.
-    public func startLoading(for item: ListItem) {
-        if let cell = cell(for: item) {
-            cell.showsActivityIndicator = true
-        }
-        
-        tableView.isUserInteractionEnabled = false
-        
-        for case let visibleCell as ListCell in tableView.visibleCells where visibleCell.item != item {
-            visibleCell.isEnabled = false
-        }
-    }
-    
-    /// Stops all loading animations.
-    public func stopLoading() {
-        tableView.isUserInteractionEnabled = true
-        
-        for case let visibleCell as ListCell in tableView.visibleCells {
-            visibleCell.isEnabled = true
-            visibleCell.showsActivityIndicator = false
-        }
+    /// :nodoc:
+    public func reload(newSections: [ListSection]) {
+        dataSource.reload(newSections: newSections, tableView: tableView)
     }
     
     // MARK: - View
@@ -99,31 +80,19 @@ public final class ListViewController: UITableViewController {
         tableView.sectionHeaderHeight = UITableView.automaticDimension
         tableView.sectionFooterHeight = 0.0
         tableView.estimatedRowHeight = 56.0
-        tableView.register(ListCell.self, forCellReuseIdentifier: cellReuseIdentifier)
+        tableView.register(ListCell.self, forCellReuseIdentifier: dataSource.cellReuseIdentifier)
+        tableView.dataSource = dataSource
 
         delegate?.viewDidLoad(viewController: self)
     }
 
+    /// :nodoc:
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         delegate?.viewDidAppear(viewController: self)
     }
     
-    // MARK: - UITableView
-    
-    private let cellReuseIdentifier = "Cell"
-    
-    /// :nodoc:
-    override public func numberOfSections(in tableView: UITableView) -> Int {
-        sections.count
-    }
-    
-    /// :nodoc:
-    override public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        sections[section].items.count
-    }
-    
-    private var isEditingModeOn: Bool = false
+    // MARK: - UITableViewDelegate
     
     /// :nodoc:
     override public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -144,6 +113,7 @@ public final class ListViewController: UITableViewController {
     }
     
     private func toggleEditingMode() {
+        var isEditingModeOn = tableView.isEditing
         isEditingModeOn.toggle()
         tableView.setEditing(isEditingModeOn, animated: true)
     }
@@ -168,17 +138,6 @@ public final class ListViewController: UITableViewController {
     }
     
     /// :nodoc:
-    override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as? ListCell else {
-            fatalError("Failed to dequeue cell.")
-        }
-        
-        cell.item = sections[indexPath.section].items[indexPath.row]
-        
-        return cell
-    }
-    
-    /// :nodoc:
     override public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
@@ -186,39 +145,25 @@ public final class ListViewController: UITableViewController {
         item.selectionHandler?()
     }
     
+    /// :nodoc:
     override public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         sections[indexPath.section].editingStyle.tableViewEditingStyle
     }
     
-    override public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        sections[indexPath.section].editingStyle != .none
+    // MARK: - Item Loading state
+    
+    /// Starts a loading animation for a given ListItem.
+    ///
+    /// - Parameter item: The item to be shown as loading.
+    public func startLoading(for item: ListItem) {
+        dataSource.startLoading(for: item, tableView)
     }
     
-    override public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        let item = sections[indexPath.section].items[indexPath.item]
-        guard let deletionHandler = item.deletionHandler else { return }
-        
-        startLoading(for: item)
-        
-        let completion: Completion<Bool> = { [weak self] success in
-            self?.stopLoading()
-            if success {
-                tableView.reloadRows(at: [indexPath], with: .left)
-            }
-        }
-        
-        deletionHandler(completion)
+    /// Stops all loading animations.
+    public func stopLoading() {
+        dataSource.stopLoading(tableView)
     }
     
-    // MARK: Private
-    
-    private func cell(for item: ListItem) -> ListCell? {
-        for case let cell as ListCell in tableView.visibleCells where cell.item == item {
-            return cell
-        }
-        
-        return nil
-    }
 }
 
 extension EditinStyle {
