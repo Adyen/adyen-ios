@@ -51,6 +51,9 @@ public class CardComponent: CardPublicKeyConsumer,
 
     /// Card component configuration.
     public let configuration: Configuration
+
+    /// The shopper's information to be prefilled.
+    public let shopperInformation: PrefilledShopperInformation?
     
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate? {
@@ -72,10 +75,12 @@ public class CardComponent: CardPublicKeyConsumer,
     ///   - paymentMethod: The card payment method.
     ///   - apiContext: The API context.
     ///   - configuration: The configuration of the component.
+    ///   - shopperInformation: The shopper's information, optional.
     ///   - style: The Component's UI style.
     public convenience init(paymentMethod: AnyCardPaymentMethod,
                             apiContext: APIContext,
                             configuration: Configuration = Configuration(),
+                            shopperInformation: PrefilledShopperInformation? = nil,
                             style: FormComponentStyle = FormComponentStyle()) {
         let cardPublicKeyProvider = CardPublicKeyProvider(apiContext: apiContext)
         let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: apiContext),
@@ -84,6 +89,7 @@ public class CardComponent: CardPublicKeyConsumer,
         self.init(paymentMethod: paymentMethod,
                   apiContext: apiContext,
                   configuration: configuration,
+                  shopperInformation: shopperInformation,
                   style: style,
                   cardPublicKeyProvider: cardPublicKeyProvider,
                   binProvider: binInfoProvider)
@@ -95,26 +101,30 @@ public class CardComponent: CardPublicKeyConsumer,
     /// - Parameters:
     ///   - paymentMethod: The card payment method.
     ///   - apiContext: The API context.
-    ///   - cardPublicKeyProvider: The card public key provider
-    ///   - style: The Component's UI style.
     ///   - configuration: The Card component configuration.
-    ///   - binProvider:Any object capable to provide a BinInfo.
+    ///   - shopperInformation: The shopper's information.
+    ///   - style: The Component's UI style.
+    ///   - cardPublicKeyProvider: The card public key provider
+    ///   - binProvider: Any object capable to provide a BinInfo.
     internal init(paymentMethod: AnyCardPaymentMethod,
                   apiContext: APIContext,
                   configuration: Configuration,
+                  shopperInformation: PrefilledShopperInformation? = nil,
                   style: FormComponentStyle,
                   cardPublicKeyProvider: AnyCardPublicKeyProvider,
                   binProvider: AnyBinInfoProvider) {
-        self.apiContext = apiContext
         self.cardPaymentMethod = paymentMethod
+        self.apiContext = apiContext
         self.configuration = configuration
+        self.shopperInformation = shopperInformation
+        self.style = style
         self.cardPublicKeyProvider = cardPublicKeyProvider
+        self.binInfoProvider = binProvider
+
         let paymentMethodCardTypes = paymentMethod.brands.compactMap(CardType.init)
         let excludedCardTypes = configuration.excludedCardTypes
         let allowedCardTypes = configuration.allowedCardTypes ?? paymentMethodCardTypes
         self.supportedCardTypes = allowedCardTypes.minus(excludedCardTypes)
-        self.style = style
-        self.binInfoProvider = binProvider
     }
     
     // MARK: - Presentable Component Protocol
@@ -159,15 +169,14 @@ public class CardComponent: CardPublicKeyConsumer,
     private lazy var securedViewController = SecuredViewController(child: cardViewController, style: style)
     
     internal lazy var cardViewController: CardViewController = {
-        let formViewController = CardViewController(
-            configuration: configuration,
-            formStyle: style,
-            payment: payment,
-            logoProvider: LogoURLProvider(environment: apiContext.environment),
-            supportedCardTypes: supportedCardTypes,
-            scope: String(describing: self),
-            localizationParameters: localizationParameters
-        )
+        let formViewController = CardViewController(configuration: configuration,
+                                                    shopperInformation: shopperInformation,
+                                                    formStyle: style,
+                                                    payment: payment,
+                                                    logoProvider: LogoURLProvider(environment: apiContext.environment),
+                                                    supportedCardTypes: supportedCardTypes,
+                                                    scope: String(describing: self),
+                                                    localizationParameters: localizationParameters)
         formViewController.delegate = self
         formViewController.cardDelegate = self
         formViewController.title = paymentMethod.name

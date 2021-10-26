@@ -14,6 +14,8 @@ internal class CardViewController: FormViewController {
 
     private let configuration: CardComponent.Configuration
 
+    private let shopperInformation: PrefilledShopperInformation?
+
     private let supportedCardTypes: [CardType]
 
     private let throttler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
@@ -29,11 +31,15 @@ internal class CardViewController: FormViewController {
     /// Create new instance of CardViewController
     /// - Parameters:
     ///   - configuration: The configurations of the `CardComponent`.
+    ///   - shopperInformation: The shopper's information.
     ///   - formStyle: The style of form view controller.
     ///   - payment: The payment object to visialise payment amount.
     ///   - logoProvider: The provider for logo image URLs.
     ///   - supportedCardTypes: The list of supported cards.
+    ///   - scope: The view's scope.
+    ///   - localizationParameters: Localization parameters.
     internal init(configuration: CardComponent.Configuration,
+                  shopperInformation: PrefilledShopperInformation?,
                   formStyle: FormComponentStyle,
                   payment: Payment?,
                   logoProvider: LogoURLProvider,
@@ -41,6 +47,7 @@ internal class CardViewController: FormViewController {
                   scope: String,
                   localizationParameters: LocalizationParameters?) {
         self.configuration = configuration
+        self.shopperInformation = shopperInformation
         self.supportedCardTypes = supportedCardTypes
         self.formStyle = formStyle
 
@@ -51,6 +58,7 @@ internal class CardViewController: FormViewController {
         self.items = ItemsProvider(formStyle: formStyle,
                                    payment: payment,
                                    configuration: configuration,
+                                   shopperInformation: shopperInformation,
                                    cardLogos: cardLogos,
                                    scope: scope,
                                    defaultCountryCode: countryCode,
@@ -216,7 +224,7 @@ internal class CardViewController: FormViewController {
     }
 
     private func prefill() {
-        guard let shopperInformation = configuration.shopperInformation else { return }
+        guard let shopperInformation = shopperInformation else { return }
 
         shopperInformation.billingAddress.map { billingAddress in
             items.billingAddressItem.value = billingAddress

@@ -71,9 +71,6 @@ extension CardComponent {
         /// Installments options to present to the user.
         public var installmentConfiguration: InstallmentConfiguration?
 
-        /// The shopper's information to be prefilled.
-        public var shopperInformation: PrefilledShopperInformation?
-
         /// Configuration of Card component.
         /// - Parameters:
         ///   - showsHolderNameField: Indicates if the field for entering the holder name should be displayed in the form.
@@ -97,8 +94,7 @@ extension CardComponent {
                     billingAddressMode: AddressFormType = .none,
                     storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
                     allowedCardTypes: [CardType]? = nil,
-                    installmentConfigration: InstallmentConfiguration? = nil,
-                    shopperInformation: PrefilledShopperInformation? = nil) {
+                    installmentConfigration: InstallmentConfiguration? = nil) {
             self.showsHolderNameField = showsHolderNameField
             self.showsSecurityCodeField = showsSecurityCodeField
             self.showsStorePaymentMethodField = showsStorePaymentMethodField
@@ -108,7 +104,6 @@ extension CardComponent {
             self.koreanAuthenticationMode = koreanAuthenticationMode
             self.socialSecurityNumberMode = socialSecurityNumberMode
             self.installmentConfiguration = installmentConfigration
-            self.shopperInformation = shopperInformation
         }
 
         internal func bcmcConfiguration() -> Configuration {

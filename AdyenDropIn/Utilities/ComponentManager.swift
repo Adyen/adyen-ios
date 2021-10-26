@@ -121,6 +121,7 @@ internal final class ComponentManager {
         CardComponent(paymentMethod: paymentMethod,
                       apiContext: apiContext,
                       configuration: configuration.card,
+                      shopperInformation: configuration.shopper,
                       style: style.formComponent)
     }
     
