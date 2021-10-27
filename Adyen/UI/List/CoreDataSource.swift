@@ -14,6 +14,8 @@ internal protocol ListViewControllerDataSource: NSObject, UITableViewDataSource 
     
     func reload(newSections: [ListSection], tableView: UITableView)
     
+    func deleteItem(at indexPath: IndexPath, tableView: UITableView)
+    
     func cell(for tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell
     
     func startLoading(for item: ListItem, _ tableView: UITableView)
@@ -62,7 +64,7 @@ internal final class CoreDataSource: NSObject, ListViewControllerDataSource {
             self?.stopLoading(tableView)
         }
         
-        deletionHandler(completion)
+        deletionHandler(indexPath, completion)
     }
     
     // MARK: - ListViewControllerDataSource
@@ -79,6 +81,11 @@ internal final class CoreDataSource: NSObject, ListViewControllerDataSource {
     
     public func reload(newSections: [ListSection], tableView: UITableView) {
         sections = newSections.filter { $0.items.count > 0 }
+        tableView.reloadData()
+    }
+    
+    public func deleteItem(at indexPath: IndexPath, tableView: UITableView) {
+        sections[indexPath.section].deleteItem(index: indexPath.item)
         tableView.reloadData()
     }
     

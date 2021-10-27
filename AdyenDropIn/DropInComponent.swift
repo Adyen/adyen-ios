@@ -101,12 +101,9 @@ public final class DropInComponent: NSObject, PresentableComponent {
             .retryOnErrorAPIClient()
     }()
     
-    internal func reload() {
+    internal func reloadComponentManager() {
         componentManager = createComponentManager(componentManager.order,
                                                   componentManager.remainingAmount)
-        if let listComponent = rootComponent as? PaymentMethodListComponent {
-            listComponent.reload(with: componentManager.sections)
-        }
     }
 
     /// Reloads the DropIn with a partial payment order and a new `PaymentMethods` object.

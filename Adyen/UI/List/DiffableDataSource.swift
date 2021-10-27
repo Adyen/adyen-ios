@@ -11,6 +11,8 @@ import SwiftUI
 internal final class DiffableDataSource: UITableViewDiffableDataSource<ListSection, ListItem>, ListViewControllerDataSource {
     internal var cellReuseIdentifier: String { coreDataSource.cellReuseIdentifier }
     
+    private typealias DataSnapshot = NSDiffableDataSourceSnapshot<ListSection, ListItem>
+    
     internal var sections: [ListSection] {
         get { coreDataSource.sections }
         set { coreDataSource.sections = newValue }
@@ -56,6 +58,40 @@ internal final class DiffableDataSource: UITableViewDiffableDataSource<ListSecti
         if sections.isEditable == false {
             tableView.setEditing(false, animated: true)
         }
+    }
+    
+    internal func deleteItem(at indexPath: IndexPath, tableView: UITableView) {
+        var snapshot = snapshot()
+        
+        deleteItem(at: indexPath, &snapshot)
+        
+        deleteEmptySections(&snapshot)
+        
+        apply(snapshot, animatingDifferences: true)
+        
+        // Disable editing state if no sections are editable any more.
+        disableEditingIfNeeded(tableView)
+    }
+    
+    private func deleteItem(at indexPath: IndexPath, _ snapshot: inout DataSnapshot) {
+        // Delete the item in sections array.
+        let deletedItem = sections[indexPath.section].items[indexPath.item]
+        sections[indexPath.section].deleteItem(index: indexPath.item)
+        
+        // Delete the item in the current NSDiffableDataSourceSnapshot.
+        snapshot.deleteItems([deletedItem])
+    }
+    
+    private func deleteEmptySections(_ snapshot: inout DataSnapshot) {
+        let sectionsToDelete = sections.filter(\.items.isEmpty)
+        sections = sections.filter { $0.items.isEmpty == false }
+        snapshot.deleteSections(sectionsToDelete)
+    }
+    
+    private func disableEditingIfNeeded(_ tableView: UITableView) {
+        // Disable editing state if no sections are editable any more.
+        guard sections.isEditable == false else { return }
+        tableView.setEditing(false, animated: true)
     }
     
     // MARK: - Item Loading state

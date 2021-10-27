@@ -43,6 +43,11 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
         listViewController.reload(newSections: createListSections())
     }
     
+    internal func deleteComponent(at indexPath: IndexPath) {
+        componentSections[indexPath.section].components.remove(at: indexPath.item)
+        listViewController.deleteItem(at: indexPath)
+    }
+    
     // MARK: - View Controller
     
     /// :nodoc:
@@ -77,20 +82,27 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
                 self.delegate?.didSelect(component, in: self)
             }
             
-            listItem.deletionHandler = { [weak self, weak component] completion in
+            listItem.deletionHandler = { [weak self, weak component] indexPath, completion in
                 guard let self = self, let component = component else { return }
                 guard let paymentMethod = component.paymentMethod as? StoredPaymentMethod else { return }
+                let completion: (Bool) -> Void = { success in
+                    defer {
+                        completion(success)
+                    }
+                    guard success else { return }
+                    self.deleteComponent(at: indexPath)
+                }
                 self.delegate?.didDelete(paymentMethod, in: self, completion: completion)
             }
             
             return listItem
         }
 
-        return componentSections.map {
-            ListSection(header: $0.header,
-                        items: $0.components.map(item(for:)),
-                        footer: $0.footer,
-                        editingStyle: $0.editingStyle)
+        return componentSections.map { section in
+            ListSection(header: section.header,
+                        items: section.components.map(item(for:)),
+                        footer: section.footer,
+                        editingStyle: section.editingStyle)
         }
     }
 

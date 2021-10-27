@@ -65,6 +65,11 @@ public final class ListViewController: UITableViewController {
         dataSource.reload(newSections: newSections, tableView: tableView)
     }
     
+    /// :nodoc:
+    public func deleteItem(at indexPath: IndexPath) {
+        dataSource.deleteItem(at: indexPath, tableView: tableView)
+    }
+    
     // MARK: - View
     
     /// :nodoc:

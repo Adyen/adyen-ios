@@ -86,7 +86,9 @@ internal final class ComponentManager {
         }
         let regularSection = ComponentsSection(header: regularHeader, components: regularComponents, footer: nil)
         
-        return [paidSection, storedSection, regularSection]
+        return [paidSection, storedSection, regularSection].filter {
+            $0.components.isEmpty == false
+        }
     }()
 
     // Filter out payment methods without the Ecommerce shopper interaction.
