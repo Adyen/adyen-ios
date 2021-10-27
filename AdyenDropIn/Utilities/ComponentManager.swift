@@ -121,6 +121,7 @@ internal final class ComponentManager {
         CardComponent(paymentMethod: paymentMethod,
                       apiContext: apiContext,
                       configuration: configuration.card,
+                      shopperInformation: configuration.shopper,
                       style: style.formComponent)
     }
     
@@ -174,6 +175,7 @@ internal final class ComponentManager {
     private func createMBWayComponent(_ paymentMethod: MBWayPaymentMethod) -> MBWayComponent? {
         MBWayComponent(paymentMethod: paymentMethod,
                        apiContext: apiContext,
+                       shopperInformation: configuration.shopper,
                        style: style.formComponent)
     }
 
@@ -266,6 +268,7 @@ extension ComponentManager: PaymentComponentBuilder {
     internal func build(paymentMethod: EContextPaymentMethod) -> PaymentComponent? {
         BasicPersonalInfoFormComponent(paymentMethod: paymentMethod,
                                        apiContext: apiContext,
+                                       shopperInformation: configuration.shopper,
                                        style: style.formComponent)
     }
 
@@ -273,6 +276,7 @@ extension ComponentManager: PaymentComponentBuilder {
     internal func build(paymentMethod: DokuPaymentMethod) -> PaymentComponent? {
         DokuComponent(paymentMethod: paymentMethod,
                       apiContext: apiContext,
+                      shopperInformation: configuration.shopper,
                       style: style.formComponent)
     }
     
@@ -307,6 +311,7 @@ extension ComponentManager: PaymentComponentBuilder {
     internal func build(paymentMethod: AffirmPaymentMethod) -> PaymentComponent? {
         AffirmComponent(paymentMethod: paymentMethod,
                         apiContext: apiContext,
+                        shopperInformation: configuration.shopper,
                         style: style.formComponent)
     }
     

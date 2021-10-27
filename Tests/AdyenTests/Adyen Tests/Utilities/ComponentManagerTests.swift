@@ -42,11 +42,13 @@ class ComponentManagerTests: XCTestCase {
             econtextATM,
             econtextOnline,
             oxxo,
-            multibanco
+            multibanco,
+            boleto,
+            affirm
         ]
     ]
     
-    let numebrOfExpectedRegularComponents = 17
+    let numberOfExpectedRegularComponents = 19
 
     func testClientKeyInjectionAndProtocolConfromance() throws {
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
@@ -62,14 +64,14 @@ class ComponentManagerTests: XCTestCase {
                                    order: nil)
 
         XCTAssertEqual(sut.storedComponents.count, 4)
-        XCTAssertEqual(sut.regularComponents.count, numebrOfExpectedRegularComponents)
+        XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
 
         XCTAssertEqual(sut.storedComponents.filter { $0.apiContext.clientKey == Dummy.context.clientKey }.count, 4)
-        XCTAssertEqual(sut.regularComponents.filter { $0.apiContext.clientKey == Dummy.context.clientKey }.count, numebrOfExpectedRegularComponents)
+        XCTAssertEqual(sut.regularComponents.filter { $0.apiContext.clientKey == Dummy.context.clientKey }.count, numberOfExpectedRegularComponents)
 
-        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 12)
-        XCTAssertEqual(sut.regularComponents.filter { $0 is Localizable }.count, 11)
-        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 13)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 14)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is Localizable }.count, 13)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 15)
     }
     
     func testLocalizationWithCustomTableName() throws {
@@ -87,10 +89,10 @@ class ComponentManagerTests: XCTestCase {
                                    order: nil)
         
         XCTAssertEqual(sut.storedComponents.count, 4)
-        XCTAssertEqual(sut.regularComponents.count, numebrOfExpectedRegularComponents)
+        XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
         
         XCTAssertEqual(sut.storedComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 4)
-        XCTAssertEqual(sut.regularComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 11)
+        XCTAssertEqual(sut.regularComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 13)
     }
     
     func testLocalizationWithCustomKeySeparator() throws {
@@ -108,10 +110,10 @@ class ComponentManagerTests: XCTestCase {
                                    order: nil)
         
         XCTAssertEqual(sut.storedComponents.count, 4)
-        XCTAssertEqual(sut.regularComponents.count, numebrOfExpectedRegularComponents)
+        XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
         
         XCTAssertEqual(sut.storedComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 4)
-        XCTAssertEqual(sut.regularComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 11)
+        XCTAssertEqual(sut.regularComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 13)
     }
 
     func testOrderInjection() throws {
@@ -142,11 +144,135 @@ class ComponentManagerTests: XCTestCase {
 
         XCTAssertEqual(sut.paidComponents.count, 2)
         XCTAssertEqual(sut.storedComponents.count, 4)
-        XCTAssertEqual(sut.regularComponents.count, numebrOfExpectedRegularComponents)
+        XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
 
         XCTAssertEqual(sut.paidComponents.filter { $0.order == order }.count, 2)
         XCTAssertEqual(sut.storedComponents.filter { $0.order == order }.count, 4)
-        XCTAssertEqual(sut.regularComponents.filter { $0.order == order }.count, numebrOfExpectedRegularComponents)
+        XCTAssertEqual(sut.regularComponents.filter { $0.order == order }.count, numberOfExpectedRegularComponents)
     }
-    
+
+    func testShopperInformationInjectionShouldSetShopperInformationOnAffirmComponent() throws {
+        // Given
+        let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
+        let configuration = DropInComponent.Configuration(apiContext: Dummy.context)
+        configuration.shopper = shopperInformation
+        let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   configuration: configuration,
+                                   style: DropInComponent.Style(),
+                                   order: nil)
+
+
+        // When
+        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == "affirm" })
+
+        // Then
+        let affirmComponent = try XCTUnwrap(paymentComponent as? AffirmComponent)
+        XCTAssertNotNil(affirmComponent.shopperInformation)
+    }
+
+    func testShopperInformationInjectionShouldSetShopperInformationOnDokuComponent() throws {
+        // Given
+        let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
+        let configuration = DropInComponent.Configuration(apiContext: Dummy.context)
+        configuration.shopper = shopperInformation
+        let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   configuration: configuration,
+                                   style: DropInComponent.Style(),
+                                   order: nil)
+
+        // When
+        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == "doku_wallet" })
+
+        // Then
+        let dokuComponent = try XCTUnwrap(paymentComponent as? DokuComponent)
+        XCTAssertNotNil(dokuComponent.shopperInformation)
+    }
+
+    func testShopperInformationInjectionShouldSetShopperInformationOnMBWayComponent() throws {
+        // Given
+        let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
+        let configuration = DropInComponent.Configuration(apiContext: Dummy.context)
+        configuration.shopper = shopperInformation
+        let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   configuration: configuration,
+                                   style: DropInComponent.Style(),
+                                   order: nil)
+
+        // When
+        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == "mbway" })
+
+        // Then
+        let mbwayComponent = try XCTUnwrap(paymentComponent as? MBWayComponent)
+        XCTAssertNotNil(mbwayComponent.shopperInformation)
+    }
+
+    func testShopperInformationInjectionShouldSetShopperInformationOnBasicPersonalInfoFormComponent() throws {
+        // Given
+        let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
+        let configuration = DropInComponent.Configuration(apiContext: Dummy.context)
+        configuration.shopper = shopperInformation
+        let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   configuration: configuration,
+                                   style: DropInComponent.Style(),
+                                   order: nil)
+
+        // When
+        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == "econtext_online"})
+
+        // Then
+        let basicPersonalInfoFormComponent = try XCTUnwrap(paymentComponent as? BasicPersonalInfoFormComponent)
+        XCTAssertNotNil(basicPersonalInfoFormComponent.shopperInformation)
+    }
+
+    func testShopperInformationInjectionShouldSetShopperInformationOnBoletoComponent() throws {
+        // Given
+        let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
+        let configuration = DropInComponent.Configuration(apiContext: Dummy.context)
+        configuration.shopper = shopperInformation
+        let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   configuration: configuration,
+                                   style: DropInComponent.Style(),
+                                   order: nil)
+
+        // When
+        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == "boletobancario_santander" })
+
+        // Then
+        let boletoComponent = try XCTUnwrap(paymentComponent as? BoletoComponent)
+        XCTAssertNotNil(boletoComponent.shopperInformation)
+    }
+
+    func testShopperInformationInjectionShouldSetShopperInformationOnCardComponent() throws {
+        // Given
+        let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
+        let configuration = DropInComponent.Configuration(apiContext: Dummy.context)
+        configuration.shopper = shopperInformation
+        let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   configuration: configuration,
+                                   style: DropInComponent.Style(),
+                                   order: nil)
+
+        // When
+        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == "scheme" })
+
+        // Then
+        let cardComponent = try XCTUnwrap(paymentComponent as? CardComponent)
+        XCTAssertNotNil(cardComponent.shopperInformation)
+    }
+
+
+    // MARK: - Private
+
+    private var shopperInformation: PrefilledShopperInformation {
+        let billingAddress = PostalAddressMocks.newYorkPostalAddress
+        let deliveryAddress = PostalAddressMocks.losAngelesPostalAddress
+        let shopperInformation = PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
+                                                             emailAddress: "katrina@mail.com",
+                                                             telephoneNumber: "1234567890",
+                                                             billingAddress: billingAddress,
+                                                             deliveryAddress: deliveryAddress,
+                                                             socialSecurityNumber: "78542134370")
+        return shopperInformation
+    }
+
 }

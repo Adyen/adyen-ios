@@ -19,19 +19,18 @@ extension CardViewController {
 
         private let configuration: CardComponent.Configuration
 
+        private let shopperInformation: PrefilledShopperInformation?
+
         private let cardLogos: [FormCardLogosItem.CardTypeLogo]
 
         private let scope: String
 
         private let defaultCountryCode: String
 
-        private var shopperInformation: PrefilledShopperInformation? {
-            configuration.shopperInformation
-        }
-
         internal init(formStyle: FormComponentStyle,
                       payment: Payment?,
                       configuration: CardComponent.Configuration,
+                      shopperInformation: PrefilledShopperInformation?,
                       cardLogos: [FormCardLogosItem.CardTypeLogo],
                       scope: String,
                       defaultCountryCode: String,
@@ -39,6 +38,7 @@ extension CardViewController {
             self.formStyle = formStyle
             self.payment = payment
             self.configuration = configuration
+            self.shopperInformation = shopperInformation
             self.cardLogos = cardLogos
             self.scope = scope
             self.defaultCountryCode = defaultCountryCode
