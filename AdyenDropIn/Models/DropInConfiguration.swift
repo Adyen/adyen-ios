@@ -25,6 +25,9 @@ public extension DropInComponent {
         /// The Apple Pay configuration.
         public var applePay: ApplePayComponent.Configuration?
         
+        /// Payment methods list related configurations.
+        public var paymentMethodsList = PaymentMethodListConfiguration()
+        
         /// Shopper related information
         public var shopper: PrefilledShopperInformation?
         

@@ -23,22 +23,22 @@ internal final class DiffableDataSource: UITableViewDiffableDataSource<ListSecti
     // MARK: - UITableViewDataSource
     
     /// :nodoc:
-    override public func numberOfSections(in tableView: UITableView) -> Int {
+    override internal func numberOfSections(in tableView: UITableView) -> Int {
         coreDataSource.numberOfSections(in: tableView)
     }
     
     /// :nodoc:
-    override public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override internal func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         coreDataSource.tableView(tableView, numberOfRowsInSection: section)
     }
     
     /// :nodoc:
-    override public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    override internal func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         coreDataSource.tableView(tableView, canEditRowAt: indexPath)
     }
     
     /// :nodoc:
-    override public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    override internal func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         coreDataSource.tableView(tableView, commit: editingStyle, forRowAt: indexPath)
     }
     
@@ -99,19 +99,24 @@ internal final class DiffableDataSource: UITableViewDiffableDataSource<ListSecti
     /// Starts a loading animation for a given ListItem.
     ///
     /// - Parameter item: The item to be shown as loading.
-    public func startLoading(for item: ListItem, _ tableView: UITableView) {
+    internal func startLoading(for item: ListItem, _ tableView: UITableView) {
         coreDataSource.startLoading(for: item, tableView)
     }
     
     /// Stops all loading animations.
-    public func stopLoading(_ tableView: UITableView) {
+    internal func stopLoading(_ tableView: UITableView) {
         coreDataSource.stopLoading(tableView)
     }
     
 }
 
-private extension Array where Element == ListSection {
-    var isEditable: Bool {
-        first(where: { $0.editingStyle != .none }) != nil
+extension Array where Element == ListSection {
+    internal var isEditable: Bool {
+        first(where: { $0.header?.editingStyle != EditinStyle.none }) != nil
+    }
+    
+    internal mutating func deleteItem(at indexPath: IndexPath) {
+        self[indexPath.section].deleteItem(index: indexPath.item)
+        self = self.filter { !$0.items.isEmpty }
     }
 }

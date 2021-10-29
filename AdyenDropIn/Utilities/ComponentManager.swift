@@ -23,7 +23,7 @@ internal final class ComponentManager {
 
     private let partialPaymentEnabled: Bool
     
-    private let supportsDeletingStoredPaymentMethods: Bool
+    private let supportsEditingStoredPaymentMethods: Bool
 
     internal let remainingAmount: Amount?
 
@@ -37,7 +37,7 @@ internal final class ComponentManager {
                   partialPaymentEnabled: Bool = true,
                   remainingAmount: Amount? = nil,
                   order: PartialPaymentOrder?,
-                  supportsDeletingStoredPaymentMethods: Bool) {
+                  supportsEditingStoredPaymentMethods: Bool = false) {
         self.paymentMethods = paymentMethods
         self.configuration = configuration
         self.apiContext = configuration.apiContext
@@ -45,7 +45,7 @@ internal final class ComponentManager {
         self.partialPaymentEnabled = partialPaymentEnabled
         self.remainingAmount = remainingAmount
         self.order = order
-        self.supportsDeletingStoredPaymentMethods = supportsDeletingStoredPaymentMethods
+        self.supportsEditingStoredPaymentMethods = supportsEditingStoredPaymentMethods
     }
     
     // MARK: - Internal
@@ -67,10 +67,12 @@ internal final class ComponentManager {
         // Stored section
         let storedSection: ComponentsSection
         
-        if supportsDeletingStoredPaymentMethods {
-            storedSection = ComponentsSection(editingStyle: .delete,
-                                              header: .init(title: localizedString(.paymentMethodsStoredMethods,
+        if supportsEditingStoredPaymentMethods {
+            let allowDeleting = configuration.paymentMethodsList.allowDisablingStorePaymentMethods
+            let editingStyle: EditinStyle = allowDeleting ? .delete : .none
+            storedSection = ComponentsSection(header: .init(title: localizedString(.paymentMethodsStoredMethods,
                                                                                    configuration.localizationParameters),
+                                                            editingStyle: editingStyle,
                                                             style: ListSectionHeaderStyle()),
                                               components: storedComponents,
                                               footer: nil)

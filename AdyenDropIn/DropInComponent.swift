@@ -32,7 +32,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
     internal var selectedPaymentComponent: PaymentComponent?
 
     /// The payment methods to display.
-    internal var paymentMethods: PaymentMethods
+    public internal(set) var paymentMethods: PaymentMethods
     
     /// Indicates the UI configuration of the drop in component.
     public let style: Style
@@ -154,7 +154,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
                          partialPaymentEnabled: partialPaymentDelegate != nil,
                          remainingAmount: remainingAmount,
                          order: order,
-                         supportsDeletingStoredPaymentMethods: storedPaymentMethodsDelegate != nil)
+                         supportsEditingStoredPaymentMethods: storedPaymentMethodsDelegate != nil)
     }
     
     internal lazy var rootComponent: PresentableComponent & ComponentLoader = {

@@ -8,7 +8,7 @@ import Foundation
 
 internal protocol ListViewControllerDataSource: NSObject, UITableViewDataSource {
     
-    var sections: [ListSection] { get set }
+    var sections: [ListSection] { get }
     
     var cellReuseIdentifier: String { get }
     
@@ -48,7 +48,8 @@ internal final class CoreDataSource: NSObject, ListViewControllerDataSource {
     
     /// :nodoc:
     internal func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        sections[indexPath.section].editingStyle != .none
+        guard let header = sections[indexPath.section].header else { return false }
+        return header.editingStyle != .none
     }
     
     /// :nodoc:
@@ -79,13 +80,13 @@ internal final class CoreDataSource: NSObject, ListViewControllerDataSource {
         return cell
     }
     
-    public func reload(newSections: [ListSection], tableView: UITableView) {
+    internal func reload(newSections: [ListSection], tableView: UITableView) {
         sections = newSections.filter { $0.items.count > 0 }
         tableView.reloadData()
     }
     
-    public func deleteItem(at indexPath: IndexPath, tableView: UITableView) {
-        sections[indexPath.section].deleteItem(index: indexPath.item)
+    internal func deleteItem(at indexPath: IndexPath, tableView: UITableView) {
+        sections.deleteItem(at: indexPath)
         tableView.reloadData()
     }
     
@@ -94,7 +95,7 @@ internal final class CoreDataSource: NSObject, ListViewControllerDataSource {
     /// Starts a loading animation for a given ListItem.
     ///
     /// - Parameter item: The item to be shown as loading.
-    public func startLoading(for item: ListItem, _ tableView: UITableView) {
+    internal func startLoading(for item: ListItem, _ tableView: UITableView) {
         if let cell = cell(for: item, tableView: tableView) {
             cell.showsActivityIndicator = true
         }
@@ -115,7 +116,7 @@ internal final class CoreDataSource: NSObject, ListViewControllerDataSource {
     }
     
     /// Stops all loading animations.
-    public func stopLoading(_ tableView: UITableView) {
+    internal func stopLoading(_ tableView: UITableView) {
         tableView.isUserInteractionEnabled = true
         
         for case let visibleCell as ListCell in tableView.visibleCells {

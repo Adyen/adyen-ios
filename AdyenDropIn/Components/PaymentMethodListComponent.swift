@@ -8,6 +8,13 @@ import Adyen
 import Foundation
 import UIKit
 
+/// Payment methods list related configurations.
+public struct PaymentMethodListConfiguration {
+    
+    /// Indicates whether to allow shoppers to disable/delete stored payment methods
+    public var allowDisablingStorePaymentMethods: Bool = false
+}
+
 /// A component that presents a list of items for each payment method with a component.
 internal final class PaymentMethodListComponent: ComponentLoader, PresentableComponent, Localizable, Cancellable {
     
@@ -44,7 +51,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     }
     
     internal func deleteComponent(at indexPath: IndexPath) {
-        componentSections[indexPath.section].components.remove(at: indexPath.item)
+        componentSections.deleteItem(at: indexPath)
         listViewController.deleteItem(at: indexPath)
     }
     
@@ -101,8 +108,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
         return componentSections.map { section in
             ListSection(header: section.header,
                         items: section.components.map(item(for:)),
-                        footer: section.footer,
-                        editingStyle: section.editingStyle)
+                        footer: section.footer)
         }
     }
 
@@ -150,11 +156,22 @@ internal protocol PaymentMethodListComponentDelegate: AnyObject {
     ///   - paymentMethodListComponent: The payment method list component in which the component was selected.
     func didSelect(_ component: PaymentComponent, in paymentMethodListComponent: PaymentMethodListComponent)
     
-    /// Invoked when a component was deleted in the payment method list.
+    /// Invoked when the shopper wants to delete a stored payment method from the payment method list.
     ///
     /// - Parameters:
     ///   - paymentMethod: The payment method that has been deleted.
     ///   - paymentMethodListComponent: The payment method list component in which the component was selected.
-    func didDelete(_ paymentMethod: StoredPaymentMethod, in paymentMethodListComponent: PaymentMethodListComponent, completion: @escaping Completion<Bool>)
+    ///   - completion: The completion block,
+    ///   it must be invoked by the delegate when the stored payment method is successfully deleted.
+    func didDelete(_ paymentMethod: StoredPaymentMethod,
+                   in paymentMethodListComponent: PaymentMethodListComponent,
+                   completion: @escaping Completion<Bool>)
     
+}
+
+private extension Array where Element == ComponentsSection {
+    mutating func deleteItem(at indexPath: IndexPath) {
+        self[indexPath.section].components.remove(at: indexPath.item)
+        self = self.filter { !$0.components.isEmpty }
+    }
 }

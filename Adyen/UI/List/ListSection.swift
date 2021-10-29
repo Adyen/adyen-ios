@@ -15,9 +15,6 @@ public enum EditinStyle {
 /// :nodoc:
 public struct ListSection: Hashable {
     
-    /// Section allowed editing.
-    public let editingStyle: EditinStyle
-    
     /// The title of the section.
     public let header: ListSectionHeader?
 
@@ -33,16 +30,16 @@ public struct ListSection: Hashable {
     ///   - header: The section header.
     ///   - items: The items inside the section.
     ///   - footer: The section footer.
-    ///   - editingStyle: The section editing style.
     public init(header: ListSectionHeader? = nil,
                 items: [ListItem],
-                footer: ListSectionFooter? = nil,
-                editingStyle: EditinStyle = .none) {
+                footer: ListSectionFooter? = nil) {
         self.header = header
         self.items = items
         self.footer = footer
-        self.editingStyle = editingStyle
+        self.identifier = UUID().uuidString
     }
+    
+    private let identifier: String
     
     internal mutating func deleteItem(index: Int) {
         guard items.indices.contains(index) else { return }
@@ -50,13 +47,15 @@ public struct ListSection: Hashable {
     }
     
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(editingStyle)
+        hasher.combine(identifier)
         hasher.combine(header)
         hasher.combine(footer)
     }
     
     public static func == (lhs: ListSection, rhs: ListSection) -> Bool {
-        lhs.editingStyle == rhs.editingStyle && lhs.header == rhs.header && lhs.footer == rhs.footer
+        lhs.header == rhs.header &&
+            lhs.footer == rhs.footer &&
+            lhs.identifier == rhs.identifier
     }
     
 }
@@ -72,22 +71,28 @@ public struct ListSectionHeader: Hashable {
     /// The header style.
     /// :nodoc:
     public var style: ListSectionHeaderStyle
+    
+    /// The editing style.
+    /// :nodoc:
+    public var editingStyle: EditinStyle = .none
 
     /// :nodoc:
     /// - Parameters:
     ///   - title: The header title
     ///   - style: The UI style.
-    public init(title: String, style: ListSectionHeaderStyle) {
+    public init(title: String, editingStyle: EditinStyle = .none, style: ListSectionHeaderStyle) {
         self.title = title
+        self.editingStyle = editingStyle
         self.style = style
     }
     
     public func hash(into hasher: inout Hasher) {
         hasher.combine(title)
+        hasher.combine(editingStyle)
     }
     
     public static func == (lhs: ListSectionHeader, rhs: ListSectionHeader) -> Bool {
-        lhs.title == rhs.title
+        lhs.title == rhs.title && lhs.editingStyle == rhs.editingStyle
     }
 }
 

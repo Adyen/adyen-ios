@@ -63,10 +63,10 @@ public protocol StoredPaymentMethodsDelegate: AnyObject {
     /// Invoked when shopper want to delete a stored payment method.
     ///
     /// - Parameters:
-    ///   - storedPaymentMethod: The stored payment method that the user want to delete.
-    ///   - completion: The delegate need to call back this closure when deletion is done,
+    ///   - storedPaymentMethod: The stored payment method that the user want to disable.
+    ///   - completion: The delegate need to call back this closure when the disabling is done,
     ///    with a boolean parameter that indicates success or failure.
-    func delete(storedPaymentMethod: StoredPaymentMethod, completion: @escaping Completion<Bool>)
+    func disable(storedPaymentMethod: StoredPaymentMethod, completion: @escaping Completion<Bool>)
 }
 
 /// :nodoc:

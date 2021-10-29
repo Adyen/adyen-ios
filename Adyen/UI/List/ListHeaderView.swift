@@ -6,26 +6,16 @@
 
 import UIKit
 
-internal final class ListHeaderView: UIView {
+internal final class ListHeaderView: UITableViewHeaderFooterView {
     
-    /// The list section header style.
-    internal let style: ListSectionHeaderStyle
-    
-    internal let trailingButtonTitle: String?
+    internal static let reuseIdentifier = String(describing: self)
     
     internal var onTrailingButtonTap: (() -> Void)?
     
-    internal init(title: String,
-                  trailingButtonTitle: String? = nil,
-                  style: ListSectionHeaderStyle) {
-        self.title = title
-        self.trailingButtonTitle = trailingButtonTitle
-        self.style = style
-        
-        super.init(frame: .zero)
-        
-        backgroundColor = style.backgroundColor
-        addSubview(stackView)
+    override internal init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
+
+        contentView.addSubview(stackView)
         
         configureConstraints()
     }
@@ -33,6 +23,27 @@ internal final class ListHeaderView: UIView {
     @available(*, unavailable)
     internal required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    internal var headerItem: ListSectionHeader? {
+        didSet {
+            guard let item = headerItem else { return }
+            backgroundColor = item.style.backgroundColor
+            contentView.backgroundColor = item.style.backgroundColor
+            titleLabel.adyen.apply(item.style.title)
+            titleLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "Adyen.ListHeaderView.\(item.title)",
+                                                                             postfix: "titleLabel")
+            titleLabel.text = item.title.uppercased()
+            
+            trailingButton.adyen.apply(item.style.trailingButton)
+            switch item.editingStyle {
+            case .delete:
+                trailingButton.setTitle("Edit", for: .normal)
+                trailingButton.isHidden = false
+            case .none:
+                trailingButton.isHidden = true
+            }
+        }
     }
     
     // MARK: - Layout
@@ -43,7 +54,7 @@ internal final class ListHeaderView: UIView {
     }
     
     private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, trailingButton].compactMap { $0 })
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, trailingButton])
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.distribution = .fill
@@ -54,10 +65,8 @@ internal final class ListHeaderView: UIView {
     
     // MARK: - Trailing Button
     
-    private lazy var trailingButton: UIButton? = {
-        guard let title = trailingButtonTitle else { return nil }
-        let button = UIButton(style: style.trailingButton)
-        button.setTitle(title, for: .normal)
+    internal lazy var trailingButton: UIButton = {
+        let button = UIButton()
         button.addTarget(self, action: #selector(didTapTrailingButton), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "trailingButton")
         button.preservesSuperviewLayoutMargins = true
@@ -71,14 +80,9 @@ internal final class ListHeaderView: UIView {
     
     // MARK: - Title Label
     
-    private let title: String
-    
     private lazy var titleLabel: UILabel = {
-        let titleLabel = UILabel(style: style.title)
-        titleLabel.text = title.uppercased()
+        let titleLabel = UILabel()
         titleLabel.accessibilityTraits = .header
-        titleLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "Adyen.ListHeaderView.\(title)",
-                                                                         postfix: "titleLabel")
         
         return titleLabel
     }()

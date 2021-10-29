@@ -86,6 +86,7 @@ public final class ListViewController: UITableViewController {
         tableView.sectionFooterHeight = 0.0
         tableView.estimatedRowHeight = 56.0
         tableView.register(ListCell.self, forCellReuseIdentifier: dataSource.cellReuseIdentifier)
+        tableView.register(ListHeaderView.self, forHeaderFooterViewReuseIdentifier: ListHeaderView.reuseIdentifier)
         tableView.dataSource = dataSource
 
         delegate?.viewDidLoad(viewController: self)
@@ -101,13 +102,20 @@ public final class ListViewController: UITableViewController {
     
     /// :nodoc:
     override public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let header = sections[section].header else {
-            return nil
+        guard let headerItem = sections[section].header else { return nil }
+        
+        let headerView: ListHeaderView
+        
+        let reuseIdentifier = ListHeaderView.reuseIdentifier
+        
+        if let dequeuedView = tableView.dequeueReusableHeaderFooterView(withIdentifier: reuseIdentifier) as? ListHeaderView {
+            headerView = dequeuedView
+        } else {
+            headerView = ListHeaderView(reuseIdentifier: reuseIdentifier)
         }
+        
+        headerView.headerItem = headerItem
 
-        let headerView = ListHeaderView(title: header.title,
-                                        trailingButtonTitle: sections[section].editingStyle == .delete ? "Edit" : nil,
-                                        style: header.style)
         headerView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "Adyen.ListViewController",
                                                                          postfix: "headerView.\(section)")
         headerView.onTrailingButtonTap = { [weak self] in
@@ -152,7 +160,7 @@ public final class ListViewController: UITableViewController {
     
     /// :nodoc:
     override public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        sections[indexPath.section].editingStyle.tableViewEditingStyle
+        sections[indexPath.section].header?.editingStyle.tableViewEditingStyle ?? .none
     }
     
     // MARK: - Item Loading state

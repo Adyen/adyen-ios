@@ -37,7 +37,7 @@ extension DropInComponent: PaymentMethodListComponentDelegate {
             self?.paymentMethods.stored.removeAll(where: { $0 == paymentMethod })
             self?.reloadComponentManager()
         }
-        storedPaymentMethodsDelegate?.delete(storedPaymentMethod: paymentMethod, completion: deletionCompletion)
+        storedPaymentMethodsDelegate?.disable(storedPaymentMethod: paymentMethod, completion: deletionCompletion)
     }
     
 }

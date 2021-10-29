@@ -9,6 +9,7 @@ import AdyenActions
 import AdyenCard
 import AdyenComponents
 import AdyenDropIn
+import AdyenNetworking
 import UIKit
 
 internal protocol Presenter: AnyObject {
@@ -30,6 +31,11 @@ internal final class IntegrationExample: APIClientAware {
     internal var currentComponent: PresentableComponent?
 
     internal weak var presenter: Presenter?
+    
+    internal lazy var palApiClient: APIClientProtocol = {
+        let context = DemoAPIContext(environment: ConfigurationConstants.classicAPIEnvironment)
+        return DefaultAPIClient(apiContext: context)
+    }()
 
     internal var clientKey: String {
         if CommandLine.arguments.contains("-UITests") {
