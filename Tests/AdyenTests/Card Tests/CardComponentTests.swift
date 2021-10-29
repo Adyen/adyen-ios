@@ -1426,6 +1426,31 @@ class CardComponentTests: XCTestCase {
         wait(for: .seconds(1))
         XCTAssertFalse(logoItemView!.isHidden)
     }
+    
+    func testSupportedCardLogoAlpha() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "elo"])
+        let config = CardComponent.Configuration(socialSecurityNumberMode: .show)
+
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: config,
+                                style: .init())
+        
+        let logoItem = sut.cardViewController.items.numberContainerItem.supportedCardLogosItem
+        XCTAssertEqual(logoItem.alpha, 1)
+        
+        var binResponse = BinLookupResponse(brands: [CardBrand(type: .americanExpress)])
+        sut.cardViewController.update(binInfo: binResponse)
+        XCTAssertEqual(logoItem.alpha, 0.3)
+        
+        binResponse = BinLookupResponse(brands: [])
+        sut.cardViewController.update(binInfo: binResponse)
+        XCTAssertEqual(logoItem.alpha, 1)
+        
+        binResponse = BinLookupResponse(brands: [CardBrand(type: .americanExpress, isSupported: false)])
+        sut.cardViewController.update(binInfo: binResponse)
+        XCTAssertEqual(logoItem.alpha, 1)
+    }
 
     func testClearShouldResetPostalCodeItemToEmptyValue() throws {
         // Given

@@ -152,7 +152,7 @@ internal class CardViewController: FormViewController {
     internal func update(binInfo: BinLookupResponse) {
         let brands = binInfo.brands ?? []
         issuingCountryCode = binInfo.issuingCountryCode
-        items.numberContainerItem.numberItem.update(brands: brands)
+        items.numberContainerItem.update(brands: brands)
     }
     
     /// Observe the current brand changes to update all other fields.

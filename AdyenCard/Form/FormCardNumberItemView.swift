@@ -99,13 +99,7 @@ extension FormCardNumberItemView {
         
         private let selectedViewAlpha: CGFloat = 1
         
-        private var unselectedViewAlpha: CGFloat {
-            if #available(iOS 12.0, *), traitCollection.userInterfaceStyle == .dark {
-                return 0.5
-            } else {
-                return 0.2
-            }
-        }
+        private let unselectedViewAlpha: CGFloat = 0.3
         
         internal init(style: ImageStyle, onBrandSelection: @escaping ((Int) -> Void)) {
             self.style = style
