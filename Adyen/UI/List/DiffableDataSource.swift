@@ -4,8 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
-import SwiftUI
+import UIKit
 
 @available(iOS 13.0, *)
 internal final class DiffableDataSource: UITableViewDiffableDataSource<ListSection, ListItem>, ListViewControllerDataSource {
@@ -61,13 +60,13 @@ internal final class DiffableDataSource: UITableViewDiffableDataSource<ListSecti
     }
     
     internal func deleteItem(at indexPath: IndexPath, tableView: UITableView) {
-        var snapshot = snapshot()
+        var currentSnapshot = snapshot()
         
-        deleteItem(at: indexPath, &snapshot)
+        deleteItem(at: indexPath, &currentSnapshot)
         
-        deleteEmptySections(&snapshot)
+        deleteEmptySections(&currentSnapshot)
         
-        apply(snapshot, animatingDifferences: true)
+        apply(currentSnapshot, animatingDifferences: true)
         
         // Disable editing state if no sections are editable any more.
         disableEditingIfNeeded(tableView)
