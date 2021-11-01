@@ -5,8 +5,8 @@
 "adyen.error.title" = "エラー";
 "adyen.error.unknown" = "不明なエラーが発生しました";
 "adyen.validationAlert.title" = "無効な入力";
-"adyen.paymentMethods.otherMethods" = "その他のお支払いオプション";
-"adyen.paymentMethods.storedMethods" = "選択済みのお支払い方法";
+"adyen.paymentMethods.otherMethods" = "その他";
+"adyen.paymentMethods.storedMethods" = "保存済み";
 "adyen.paymentMethods.title" = "お支払い方法";
 "adyen.sepa.ibanItem.title" = "口座番号 (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "口座番号の入力間違い";

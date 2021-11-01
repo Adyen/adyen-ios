@@ -5,8 +5,8 @@
 "adyen.error.title" = "Errore";
 "adyen.error.unknown" = "Si è verificato un errore sconosciuto";
 "adyen.validationAlert.title" = "Dati inseriti non validi";
-"adyen.paymentMethods.otherMethods" = "Scegli altro metodo di pagamento";
-"adyen.paymentMethods.storedMethods" = "Metodi di pagamento";
+"adyen.paymentMethods.otherMethods" = "altri";
+"adyen.paymentMethods.storedMethods" = "Salvato";
 "adyen.paymentMethods.title" = "Metodo di Pagamento";
 "adyen.sepa.ibanItem.title" = "Numero di conto (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Numero di conto non valido";

@@ -5,8 +5,8 @@
 "adyen.error.title" = "Virhe";
 "adyen.error.unknown" = "Tapahtui tuntematon virhe";
 "adyen.validationAlert.title" = "Ei-kelvollinen syöte";
-"adyen.paymentMethods.otherMethods" = "Valitse muu maksutapa";
-"adyen.paymentMethods.storedMethods" = "Maksutapasi";
+"adyen.paymentMethods.otherMethods" = "muut";
+"adyen.paymentMethods.storedMethods" = "Tallennettu";
 "adyen.paymentMethods.title" = "Maksutavat";
 "adyen.sepa.ibanItem.title" = "Tilinumero (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Väärä tilin numero";

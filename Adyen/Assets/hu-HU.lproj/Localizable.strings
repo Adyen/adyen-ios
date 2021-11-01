@@ -5,8 +5,8 @@
 "adyen.error.title" = "Hiba";
 "adyen.error.unknown" = "Ismeretlen hiba történt";
 "adyen.validationAlert.title" = "Érvénytelen bevitel";
-"adyen.paymentMethods.otherMethods" = "Másik mód választása";
-"adyen.paymentMethods.storedMethods" = "Fizetési módjai";
+"adyen.paymentMethods.otherMethods" = "egyéb";
+"adyen.paymentMethods.storedMethods" = "Tárolt";
 "adyen.paymentMethods.title" = "Fizetési módok";
 "adyen.sepa.ibanItem.title" = "Számlaszám (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Érvénytelen számlaszám";

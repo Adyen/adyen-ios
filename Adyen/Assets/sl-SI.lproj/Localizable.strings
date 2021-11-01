@@ -5,8 +5,8 @@
 "adyen.error.title" = "Napaka";
 "adyen.error.unknown" = "Prišlo je do neznane napake";
 "adyen.validationAlert.title" = "Neveljaven vnos";
-"adyen.paymentMethods.otherMethods" = "Izberite drug način";
-"adyen.paymentMethods.storedMethods" = "Vaši načini plačila";
+"adyen.paymentMethods.otherMethods" = "drugo";
+"adyen.paymentMethods.storedMethods" = "Shranjeno";
 "adyen.paymentMethods.title" = "Načini plačila";
 "adyen.sepa.ibanItem.title" = "Številka računa (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Neveljavna številka računa";

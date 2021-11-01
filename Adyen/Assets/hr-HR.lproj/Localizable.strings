@@ -5,8 +5,8 @@
 "adyen.error.title" = "Greška";
 "adyen.error.unknown" = "Dogodila se nepoznata greška";
 "adyen.validationAlert.title" = "Pogrešan unos";
-"adyen.paymentMethods.otherMethods" = "Odaberite drugi način";
-"adyen.paymentMethods.storedMethods" = "Vaš način plaćanja";
+"adyen.paymentMethods.otherMethods" = "drugi";
+"adyen.paymentMethods.storedMethods" = "Pohranjeno";
 "adyen.paymentMethods.title" = "Način plaćanja";
 "adyen.sepa.ibanItem.title" = "Broj računa (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Nevažeći broj računa";
