@@ -21,22 +21,18 @@ internal final class DiffableDataSource: UITableViewDiffableDataSource<ListSecti
     
     // MARK: - UITableViewDataSource
     
-    /// :nodoc:
     override internal func numberOfSections(in tableView: UITableView) -> Int {
         coreDataSource.numberOfSections(in: tableView)
     }
     
-    /// :nodoc:
     override internal func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         coreDataSource.tableView(tableView, numberOfRowsInSection: section)
     }
     
-    /// :nodoc:
     override internal func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         coreDataSource.tableView(tableView, canEditRowAt: indexPath)
     }
     
-    /// :nodoc:
     override internal func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         coreDataSource.tableView(tableView, commit: editingStyle, forRowAt: indexPath)
     }
@@ -95,14 +91,10 @@ internal final class DiffableDataSource: UITableViewDiffableDataSource<ListSecti
     
     // MARK: - Item Loading state
     
-    /// Starts a loading animation for a given ListItem.
-    ///
-    /// - Parameter item: The item to be shown as loading.
     internal func startLoading(for item: ListItem, _ tableView: UITableView) {
         coreDataSource.startLoading(for: item, tableView)
     }
     
-    /// Stops all loading animations.
     internal func stopLoading(_ tableView: UITableView) {
         coreDataSource.stopLoading(tableView)
     }

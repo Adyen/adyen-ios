@@ -6,20 +6,36 @@
 
 import UIKit
 
+/// :nodoc:
+/// A `ListViewController` data source.
 internal protocol ListViewControllerDataSource: NSObject, UITableViewDataSource {
     
+    /// :nodoc:
+    /// All sections data.
     var sections: [ListSection] { get }
     
+    /// :nodoc:
+    /// Cell reuse idenitifier.
     var cellReuseIdentifier: String { get }
     
+    /// :nodoc:
+    /// Reloads all data.
     func reload(newSections: [ListSection], tableView: UITableView)
     
+    /// :nodoc:
+    /// Deletes an item at a certain `IndexPath`.
     func deleteItem(at indexPath: IndexPath, tableView: UITableView)
     
+    /// :nodoc:
+    /// Creates a new `UITableViewCell` at a certain `IndexPath`.
     func cell(for tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell
     
+    /// :nodoc:
+    /// Starts a loading animation for a given ListItem.
     func startLoading(for item: ListItem, _ tableView: UITableView)
     
+    /// :nodoc:
+    /// Stops all loading animations.
     func stopLoading(_ tableView: UITableView)
 }
 
@@ -92,9 +108,6 @@ internal final class CoreDataSource: NSObject, ListViewControllerDataSource {
     
     // MARK: - Item Loading state
     
-    /// Starts a loading animation for a given ListItem.
-    ///
-    /// - Parameter item: The item to be shown as loading.
     internal func startLoading(for item: ListItem, _ tableView: UITableView) {
         if let cell = cell(for: item, tableView: tableView) {
             cell.showsActivityIndicator = true
@@ -115,7 +128,6 @@ internal final class CoreDataSource: NSObject, ListViewControllerDataSource {
         return nil
     }
     
-    /// Stops all loading animations.
     internal func stopLoading(_ tableView: UITableView) {
         tableView.isUserInteractionEnabled = true
         
