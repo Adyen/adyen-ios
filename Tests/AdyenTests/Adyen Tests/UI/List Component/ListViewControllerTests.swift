@@ -135,8 +135,8 @@ class ListViewControllerTests: XCTestCase {
         XCTAssertEqual(listView22SubtitleLabel?.font, .systemFont(ofSize: 30))
         
         /// list section header
-        XCTAssertEqual(headerView1.backgroundColor, .brown)
-        XCTAssertEqual(headerView2.backgroundColor, .brown)
+        XCTAssertEqual(headerView1.contentView.backgroundColor, .brown)
+        XCTAssertEqual(headerView2.contentView.backgroundColor, .brown)
         
         XCTAssertEqual(headerView1TitleLabel?.textColor, .white)
         XCTAssertEqual(headerView1TitleLabel?.textAlignment, .center)
