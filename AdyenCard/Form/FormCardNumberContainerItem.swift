@@ -53,6 +53,13 @@ internal final class FormCardNumberContainerItem: FormItem, Observer {
     internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
+    
+    internal func update(brands: [CardBrand]) {
+        // reduce alpha of supported card icons if brand is detected
+        let supportedBrands = brands.filter(\.isSupported)
+        supportedCardLogosItem.alpha = supportedBrands.isEmpty ? 1 : 0.3
+        numberItem.update(brands: brands)
+    }
 }
 
 /// Form item to display multiple card logos.
@@ -67,6 +74,9 @@ internal final class FormCardLogosItem: FormItem, Hidable {
     internal let cardLogos: [CardTypeLogo]
     
     internal let style: FormTextItemStyle
+    
+    /// Observable property to update the owner view's alpha.
+    @Observable(1) internal var alpha: CGFloat
     
     internal init(cardLogos: [CardTypeLogo], style: FormTextItemStyle) {
         self.cardLogos = cardLogos
