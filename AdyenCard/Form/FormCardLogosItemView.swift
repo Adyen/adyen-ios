@@ -32,6 +32,10 @@ internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem> {
         collectionView.adyen.anchor(inside: self, with: UIEdgeInsets(top: 4, left: 16, bottom: -8, right: -16))
         collectionView.register(CardLogoCell.self, forCellWithReuseIdentifier: CardLogoCell.reuseIdentifier)
         collectionView.dataSource = self
+        
+        observe(item.$alpha) { [weak self] alpha in
+            self?.collectionView.alpha = alpha
+        }
     }
     
 }
