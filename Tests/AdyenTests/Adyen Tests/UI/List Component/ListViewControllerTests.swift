@@ -137,6 +137,12 @@ class ListViewControllerTests: XCTestCase {
         /// list section header
         XCTAssertEqual(headerView1.contentView.backgroundColor, .brown)
         XCTAssertEqual(headerView2.contentView.backgroundColor, .brown)
+        XCTAssertNotNil(headerView1.backgroundView)
+        XCTAssertNotNil(headerView2.backgroundView)
+        XCTAssertEqual(headerView1.bounds, headerView1.backgroundView?.frame)
+        XCTAssertEqual(headerView2.bounds, headerView2.backgroundView?.frame)
+        XCTAssertEqual(headerView1.backgroundView?.backgroundColor, .brown)
+        XCTAssertEqual(headerView2.backgroundView?.backgroundColor, .brown)
         
         XCTAssertEqual(headerView1TitleLabel?.textColor, .white)
         XCTAssertEqual(headerView1TitleLabel?.textAlignment, .center)

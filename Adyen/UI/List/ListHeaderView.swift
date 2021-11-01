@@ -16,6 +16,9 @@ internal final class ListHeaderView: UITableViewHeaderFooterView {
         super.init(reuseIdentifier: reuseIdentifier)
 
         contentView.addSubview(stackView)
+        let backgroundView = UIView()
+        backgroundView.translatesAutoresizingMaskIntoConstraints = false
+        self.backgroundView = backgroundView
         
         configureConstraints()
     }
@@ -28,7 +31,7 @@ internal final class ListHeaderView: UITableViewHeaderFooterView {
     internal var headerItem: ListSectionHeader? {
         didSet {
             guard let item = headerItem else { return }
-            backgroundColor = item.style.backgroundColor
+            backgroundView?.backgroundColor = item.style.backgroundColor
             contentView.backgroundColor = item.style.backgroundColor
             titleLabel.adyen.apply(item.style.title)
             titleLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "Adyen.ListHeaderView.\(item.title)",
@@ -51,6 +54,7 @@ internal final class ListHeaderView: UITableViewHeaderFooterView {
     private func configureConstraints() {
         layoutMargins = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 6.0, right: 16.0)
         stackView.adyen.anchor(inside: self.layoutMarginsGuide)
+        backgroundView?.adyen.anchor(inside: self)
     }
     
     private lazy var stackView: UIStackView = {
