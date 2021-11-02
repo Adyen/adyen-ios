@@ -7,6 +7,30 @@
 import Foundation
 
 extension CardEncryptor.Card {
+    /// Encrypts the card as a token.
+    ///
+    /// - Parameters:
+    ///   - publicKey: The public key to use for encryption (format "Exponent|Modulus").
+    ///   - holderName: The card holder name.
+    /// - Returns: A string token containig encrypted card data.
+    /// - Throws: `CardEncryptor.Error.encryptionFailed` if the encryption failed,
+    ///  maybe because the card public key is an invalid one, or for any other reason.
+    /// - Throws: `CardEncryptor.Error.invalidEncryptionArguments` when trying to encrypt a card with  card number, securityCode,
+    /// expiryMonth, and expiryYear, all of them are nil.
+    public func encryptedToToken(publicKey: String, holderName: String?) throws -> String {
+        guard !isEmpty else {
+            throw CardEncryptor.Error.invalidEncryptionArguments
+        }
+        var card = CardEncryptor.Card(number: number,
+                                      securityCode: securityCode,
+                                      expiryMonth: expiryMonth,
+                                      expiryYear: expiryYear)
+        card.holder = holderName
+        return try encryptCard(publicKey: publicKey, card: card)
+    }
+}
+
+extension CardEncryptor.Card {
     func encryptedNumber(publicKey: String, date: Date) throws -> String? {
         guard let number = number else { return nil }
         var card = CardEncryptor.Card(number: number)
@@ -32,18 +56,6 @@ extension CardEncryptor.Card {
         guard let expiryYear = expiryYear else { return nil }
         var card = CardEncryptor.Card(expiryYear: expiryYear)
         card.generationDate = date
-        return try encryptCard(publicKey: publicKey, card: card)
-    }
-
-    func encryptedToToken(publicKey: String, holderName: String?) throws -> String {
-        guard !isEmpty else {
-            throw CardEncryptor.Error.invalidEncryptionArguments
-        }
-        var card = CardEncryptor.Card(number: number,
-                                      securityCode: securityCode,
-                                      expiryMonth: expiryMonth,
-                                      expiryYear: expiryYear)
-        card.holder = holderName
         return try encryptCard(publicKey: publicKey, card: card)
     }
 
