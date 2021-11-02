@@ -17,7 +17,7 @@ public struct ListSectionHeaderStyle: ViewStyle {
     
     /// The trailing button style.
     public var trailingButton = ButtonStyle(
-        title: TextStyle(font: .preferredFont(forTextStyle: .subheadline),
+        title: TextStyle(font: .preferredFont(forTextStyle: .body),
                          color: UIColor.Adyen.defaultBlue),
         cornerRounding: .none,
         background: UIColor.clear
