@@ -8,7 +8,7 @@ import UIKit
 
 /// :nodoc:
 /// A `ListViewController` data source.
-internal protocol ListViewControllerDataSource: NSObject, UITableViewDataSource {
+internal protocol ListViewControllerDataSource: UITableViewDataSource {
     
     /// :nodoc:
     /// All sections data.
@@ -20,11 +20,11 @@ internal protocol ListViewControllerDataSource: NSObject, UITableViewDataSource 
     
     /// :nodoc:
     /// Reloads all data.
-    func reload(newSections: [ListSection], tableView: UITableView)
+    func reload(newSections: [ListSection], tableView: UITableView, animated: Bool)
     
     /// :nodoc:
     /// Deletes an item at a certain `IndexPath`.
-    func deleteItem(at indexPath: IndexPath, tableView: UITableView)
+    func deleteItem(at indexPath: IndexPath, tableView: UITableView, animated: Bool)
     
     /// :nodoc:
     /// Creates a new `UITableViewCell` at a certain `IndexPath`.
@@ -96,12 +96,16 @@ internal final class CoreDataSource: NSObject, ListViewControllerDataSource {
         return cell
     }
     
-    internal func reload(newSections: [ListSection], tableView: UITableView) {
+    internal func reload(newSections: [ListSection],
+                         tableView: UITableView,
+                         animated: Bool = false) {
         sections = newSections.filter { $0.items.count > 0 }
         tableView.reloadData()
     }
     
-    internal func deleteItem(at indexPath: IndexPath, tableView: UITableView) {
+    internal func deleteItem(at indexPath: IndexPath,
+                             tableView: UITableView,
+                             animated: Bool = true) {
         sections.deleteItem(at: indexPath)
         tableView.reloadData()
     }

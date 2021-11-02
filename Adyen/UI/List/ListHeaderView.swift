@@ -30,22 +30,42 @@ internal final class ListHeaderView: UITableViewHeaderFooterView {
     
     internal var headerItem: ListSectionHeader? {
         didSet {
-            guard let item = headerItem else { return }
-            backgroundView?.backgroundColor = item.style.backgroundColor
-            contentView.backgroundColor = item.style.backgroundColor
-            titleLabel.adyen.apply(item.style.title)
-            titleLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "Adyen.ListHeaderView.\(item.title)",
-                                                                             postfix: "titleLabel")
-            titleLabel.text = item.title.uppercased()
-            
-            trailingButton.adyen.apply(item.style.trailingButton)
-            switch item.editingStyle {
-            case .delete:
-                trailingButton.setTitle("Edit", for: .normal)
-                trailingButton.isHidden = false
-            case .none:
-                trailingButton.isHidden = true
-            }
+            updateItem()
+        }
+    }
+    
+    private func updateItem() {
+        guard let item = headerItem else { return }
+        backgroundView?.backgroundColor = item.style.backgroundColor
+        contentView.backgroundColor = item.style.backgroundColor
+        titleLabel.adyen.apply(item.style.title)
+        titleLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "Adyen.ListHeaderView.\(item.title)",
+                                                                         postfix: "titleLabel")
+        titleLabel.text = item.title.uppercased()
+        
+        trailingButton.adyen.apply(item.style.trailingButton)
+        
+        updateTrailingButtonTitle(with: item)
+    }
+    
+    internal var isEditing: Bool = false {
+        didSet {
+            updateTrailingButtonTitle(with: headerItem)
+        }
+    }
+    
+    private func updateTrailingButtonTitle(with item: ListSectionHeader?) {
+        guard let item = headerItem else { return }
+        let bundle = Bundle(for: UIBarButtonItem.self)
+        let localizedEdit = bundle.localizedString(forKey: "Edit", value: "Edit", table: nil)
+        let localizedDone = bundle.localizedString(forKey: "Done", value: "Done", table: nil)
+        let localizedTitle = isEditing ? localizedDone : localizedEdit
+        switch item.editingStyle {
+        case .delete:
+            trailingButton.setTitle(localizedTitle, for: .normal)
+            trailingButton.isHidden = false
+        case .none:
+            trailingButton.isHidden = true
         }
     }
     

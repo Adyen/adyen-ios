@@ -61,13 +61,13 @@ public final class ListViewController: UITableViewController {
     }()
     
     /// :nodoc:
-    public func reload(newSections: [ListSection]) {
-        dataSource.reload(newSections: newSections, tableView: tableView)
+    public func reload(newSections: [ListSection], animated: Bool = false) {
+        dataSource.reload(newSections: newSections, tableView: tableView, animated: animated)
     }
     
     /// :nodoc:
-    public func deleteItem(at indexPath: IndexPath) {
-        dataSource.deleteItem(at: indexPath, tableView: tableView)
+    public func deleteItem(at indexPath: IndexPath, animated: Bool = true) {
+        dataSource.deleteItem(at: indexPath, tableView: tableView, animated: animated)
     }
     
     // MARK: - View
@@ -118,16 +118,17 @@ public final class ListViewController: UITableViewController {
 
         headerView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "Adyen.ListViewController",
                                                                          postfix: "headerView.\(section)")
-        headerView.onTrailingButtonTap = { [weak self] in
-            self?.toggleEditingMode()
+        headerView.onTrailingButtonTap = { [weak self, weak headerView] in
+            self?.toggleEditingMode(headerView)
         }
 
         return headerView
     }
     
-    private func toggleEditingMode() {
+    private func toggleEditingMode(_ headerView: ListHeaderView?) {
         var isEditingModeOn = tableView.isEditing
         isEditingModeOn.toggle()
+        headerView?.isEditing = isEditingModeOn
         tableView.setEditing(isEditingModeOn, animated: true)
     }
 
