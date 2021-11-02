@@ -32,6 +32,9 @@ public struct CardDetails: PaymentMethodDetails {
 
     /// The card funding source.
     public let fundingSource: CardFundingSource?
+    
+    /// The 3DS2 SDK version.
+    public let threeDS2SDKVersion: String = threeDS2SdkVersion
 
     /// Initializes the card payment details.
     ///
@@ -81,5 +84,6 @@ public struct CardDetails: PaymentMethodDetails {
         case encryptedSecurityCode
         case holderName
         case fundingSource
+        case threeDS2SDKVersion = "threeDS2SdkVersion"
     }
 }
