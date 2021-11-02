@@ -97,6 +97,10 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
                         completion(success)
                     }
                     guard success else { return }
+                    // This is to prevent the merchant calling completion closure multiple times
+                    guard self.componentSections[indexPath.section]
+                        .components[indexPath.item]
+                        .paymentMethod == paymentMethod else { return }
                     self.deleteComponent(at: indexPath)
                 }
                 self.delegate?.didDelete(paymentMethod, in: self, completion: completion)

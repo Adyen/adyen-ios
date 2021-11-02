@@ -109,13 +109,10 @@ extension IntegrationExample: DropInComponentDelegate {
 
 extension IntegrationExample: StoredPaymentMethodsDelegate {
     func disable(storedPaymentMethod: StoredPaymentMethod, completion: @escaping (Bool) -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)) {
-            completion(true)
+        let request = DisableStoredPaymentMethodRequest(recurringDetailReference: storedPaymentMethod.identifier)
+        palApiClient.perform(request) { [weak self] result in
+            self?.handleDisableResult(result, completion: completion)
         }
-//        let request = DisableStoredPaymentMethodRequest(recurringDetailReference: storedPaymentMethod.identifier)
-//        palApiClient.perform(request) { [weak self] result in
-//            self?.handleDisableResult(result, completion: completion)
-//        }
     }
     
     private func handleDisableResult(_ result: Result<DisableStoredPaymentMethodRequest.ResponseType, Error>, completion: (Bool) -> Void) {
@@ -124,7 +121,7 @@ extension IntegrationExample: StoredPaymentMethodsDelegate {
             presentAlert(with: error, retryHandler: nil)
             completion(false)
         case let .success(response):
-            completion(response.response == .success)
+            completion(response.response == .detailsDisabled)
         }
     }
 }

@@ -44,8 +44,8 @@ internal struct DisableStoredPaymentMethodRequest: APIRequest {
 internal struct DisableStoredPaymentMethodResponse: Response {
 
     internal enum ResultCode: String, Decodable {
-        case failed = "Failed"
-        case success = "detail-successfully-disabled"
+        case detailsDisabled = "[detail-successfully-disabled]"
+        case allDetailsDisabled = "[all-details-successfully-disabled]"
     }
 
     internal let response: ResultCode
