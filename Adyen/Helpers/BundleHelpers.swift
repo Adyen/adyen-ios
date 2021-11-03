@@ -5,7 +5,7 @@
 //
 
 import AdyenNetworking
-import Foundation
+import UIKit
 
 /// So that any `Bundle` instance will inherit the `adyen` scope.
 /// :nodoc:
