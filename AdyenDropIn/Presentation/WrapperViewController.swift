@@ -54,6 +54,7 @@ internal final class WrapperViewController: UIViewController {
     }
     
     private func update(finalFrame: CGRect) {
+        guard let view = child.viewIfLoaded else { return }
         leftConstraint?.constant = finalFrame.origin.x
         rightConstraint?.constant = -finalFrame.origin.x
         topConstraint?.constant = finalFrame.origin.y
