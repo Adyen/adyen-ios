@@ -6,6 +6,7 @@
 
 @testable import Adyen
 import XCTest
+import AdyenCard
 
 class FormTextItemViewTests: XCTestCase {
     
@@ -167,7 +168,22 @@ class FormTextItemViewTests: XCTestCase {
         XCTAssertEqual(sut.separatorView.backgroundColor?.toHexString(), sut.tintColor.toHexString())
         XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.tintColor.toHexString())
     }
-    
+
+    func testSanitization() throws {
+        // Given
+        let cardValidator = CardNumberValidator(isLuhnCheckEnabled: false, isEnteredBrandSupported: false)
+        let cardFormatter = CardNumberFormatter()
+        item.validator = cardValidator
+        item.formatter =  cardFormatter
+
+        sut = FormTextItemView(item: item)
+
+        sut.textField.text = "541asdfasdf"
+        sut.textField.sendActions(for: .editingChanged)
+        wait(for: .seconds(1))
+
+        XCTAssertEqual(sut.textField.text, "541")
+    }
 }
 
 extension UIColor {

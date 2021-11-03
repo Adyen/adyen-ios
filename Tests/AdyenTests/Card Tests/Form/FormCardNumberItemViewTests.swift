@@ -80,4 +80,50 @@ class FormCardNumberItemViewTests: XCTestCase {
             XCTFail()
         }
     }
+
+    func testTextFieldSanitizationGivenNonAllowedCharactersShouldSanitizeAndFormatInput() throws {
+        // Given
+        let cardNumberFormatter = CardNumberFormatter()
+        let cardNumberValidator = CardNumberValidator(isLuhnCheckEnabled: true,
+                                                      isEnteredBrandSupported: true)
+        item.formatter = cardNumberFormatter
+        item.validator = cardNumberValidator
+
+        // When
+        sut.textField.text = "4111kdhr456"
+        sut.textField.sendActions(for: .editingChanged)
+
+        // Then
+        let expectedItemValue = "4111456"
+        XCTAssertEqual(expectedItemValue, sut.item.value)
+
+        let expectedItemFormattedValue = "4111 456"
+        XCTAssertEqual(expectedItemFormattedValue, sut.item.formattedValue)
+
+        let expectedTextFieldText = sut.item.formattedValue
+        XCTAssertEqual(expectedTextFieldText, sut.textField.text)
+    }
+
+    func testTextFieldSanitizationGivenCorrectCardNumberShouldSanitizeAndFormatInput() throws {
+        // Given
+        let cardNumberFormatter = CardNumberFormatter()
+        let cardNumberValidator = CardNumberValidator(isLuhnCheckEnabled: true,
+                                                      isEnteredBrandSupported: true)
+        item.formatter = cardNumberFormatter
+        item.validator = cardNumberValidator
+
+        // When
+        sut.textField.text = "5555341244441115"
+        sut.textField.sendActions(for: .editingChanged)
+
+        // Then
+        let expectedItemValue = "5555341244441115"
+        XCTAssertEqual(expectedItemValue, sut.item.value)
+
+        let expectedItemFormattedValue = "5555 3412 4444 1115"
+        XCTAssertEqual(expectedItemFormattedValue, sut.item.formattedValue)
+
+        let expectedTextFieldText = sut.item.formattedValue
+        XCTAssertEqual(expectedTextFieldText, sut.textField.text)
+    }
 }
