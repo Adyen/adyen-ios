@@ -23,21 +23,6 @@ extension IntegrationExample {
         configuration.payment = payment
         configuration.card.billingAddressMode = .postalCode
 
-        let billingAddress = PostalAddress(city: "Amsterdam",
-                                           country: "NL",
-                                           houseNumberOrName: "4A",
-                                           postalCode: "1501NH",
-                                           stateOrProvince: "North Holland",
-                                           street: "Lohmanstraat",
-                                           apartment: "2")
-        configuration.shopper = .init(shopperName: .init(firstName: "Naufal", lastName: "Aros"),
-                                      emailAddress: "nau@mail.com",
-                                      telephoneNumber: "1234567890",
-                                      billingAddress: billingAddress,
-                                      deliveryAddress: billingAddress,
-                                      socialSecurityNumber: "22131487401",
-                                      card: nil)
-
         let dropInComponentStyle = DropInComponent.Style()
         let component = DropInComponent(paymentMethods: paymentMethods,
                                         configuration: configuration,
