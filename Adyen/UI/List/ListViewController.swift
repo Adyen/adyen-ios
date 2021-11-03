@@ -62,11 +62,13 @@ public final class ListViewController: UITableViewController {
     /// :nodoc:
     public func reload(newSections: [ListSection], animated: Bool = false) {
         dataSource.reload(newSections: newSections, tableView: tableView, animated: animated)
+        adyen.updatePreferredContentSize()
     }
     
     /// :nodoc:
     public func deleteItem(at indexPath: IndexPath, animated: Bool = true) {
         dataSource.deleteItem(at: indexPath, tableView: tableView, animated: animated)
+        adyen.updatePreferredContentSize()
     }
     
     // MARK: - View
