@@ -28,3 +28,21 @@ extension AdyenScope where Base: Bundle {
     }
     
 }
+
+/// :nodoc:
+extension Bundle {
+    
+    /// :nodoc:
+    public enum Adyen {
+        
+        /// :nodoc:
+        public static var localizedEditCopy: String {
+            Bundle(for: UIBarButtonItem.self).localizedString(forKey: "Edit", value: "Edit", table: nil)
+        }
+        
+        /// :nodoc:
+        public static var localizedDoneCopy: String {
+            Bundle(for: UIBarButtonItem.self).localizedString(forKey: "Done", value: "Done", table: nil)
+        }
+    }
+}

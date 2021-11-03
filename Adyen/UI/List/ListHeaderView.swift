@@ -56,9 +56,8 @@ internal final class ListHeaderView: UITableViewHeaderFooterView {
     
     private func updateTrailingButtonTitle(with item: ListSectionHeader?) {
         guard let item = headerItem else { return }
-        let bundle = Bundle(for: UIBarButtonItem.self)
-        let localizedEdit = bundle.localizedString(forKey: "Edit", value: "Edit", table: nil)
-        let localizedDone = bundle.localizedString(forKey: "Done", value: "Done", table: nil)
+        let localizedEdit = Bundle.Adyen.localizedEditCopy
+        let localizedDone = Bundle.Adyen.localizedDoneCopy
         let localizedTitle = isEditing ? localizedDone : localizedEdit
         switch item.editingStyle {
         case .delete:
