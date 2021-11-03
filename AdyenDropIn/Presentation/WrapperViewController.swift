@@ -42,19 +42,15 @@ internal final class WrapperViewController: UIViewController {
         guard let view = child.viewIfLoaded else { return }
         let finalFrame = child.finalPresentationFrame(with: keyboardRect)
 
-        if animated {
-            view.adyen.animate(context: SpringAnimationContext(animationKey: "Update frame",
-                                                               duration: 0.3,
-                                                               delay: 0,
-                                                               dampingRatio: 0.8,
-                                                               velocity: 0.2,
-                                                               options: [.beginFromCurrentState, .curveEaseInOut],
-                                                               animations: { [weak self] in
-                                                                   self?.update(finalFrame: finalFrame)
-                                                               }))
-        } else {
-            update(finalFrame: finalFrame)
-        }
+        view.adyen.animate(context: SpringAnimationContext(animationKey: "Update frame",
+                                                           duration: animated ? 0.3 : 0.0,
+                                                           delay: 0,
+                                                           dampingRatio: 0.8,
+                                                           velocity: 0.2,
+                                                           options: [.beginFromCurrentState, .curveEaseInOut],
+                                                           animations: { [weak self] in
+                                                               self?.update(finalFrame: finalFrame)
+                                                           }))
     }
     
     private func update(finalFrame: CGRect) {
