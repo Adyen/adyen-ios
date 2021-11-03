@@ -71,11 +71,11 @@ internal final class DropInNavigationController: UINavigationController, Keyboar
     
     // MARK: - Private
 
-    internal func updateTopViewControllerIfNeeded() {
+    internal func updateTopViewControllerIfNeeded(animated: Bool = true) {
         guard let topViewController = topViewController as? WrapperViewController else { return }
 
         let frame = topViewController.requiresKeyboardInput ? self.keyboardRect : .zero
-        topViewController.updateFrame(keyboardRect: frame)
+        topViewController.updateFrame(keyboardRect: frame, animated: animated)
     }
     
     private func wrapInModalController(component: PresentableComponent, isRoot: Bool) -> WrapperViewController {
@@ -121,7 +121,7 @@ extension DropInNavigationController: UIViewControllerTransitioningDelegate {
         DimmingPresentationController(presented: presented,
                                       presenting: presenting,
                                       layoutDidChanged: { [weak self] in
-                                          self?.updateTopViewControllerIfNeeded()
+                                          self?.updateTopViewControllerIfNeeded(animated: false)
                                       })
     }
     

@@ -38,22 +38,30 @@ internal final class WrapperViewController: UIViewController {
         return viewController?.children.contains(where: { heirarchyRequiresKeyboardInput(viewController: $0) }) ?? false
     }
     
-    internal func updateFrame(keyboardRect: CGRect) {
+    internal func updateFrame(keyboardRect: CGRect, animated: Bool = true) {
         guard let view = child.viewIfLoaded else { return }
         let finalFrame = child.finalPresentationFrame(with: keyboardRect)
 
-        view.adyen.animate(context: SpringAnimationContext(animationKey: "Update frame",
-                                                           duration: 0.3,
-                                                           delay: 0,
-                                                           dampingRatio: 0.8,
-                                                           velocity: 0.2,
-                                                           options: [.beginFromCurrentState, .curveEaseInOut],
-                                                           animations: { [weak self] in
-                                                               self?.leftConstraint?.constant = finalFrame.origin.x
-                                                               self?.rightConstraint?.constant = -finalFrame.origin.x
-                                                               self?.topConstraint?.constant = finalFrame.origin.y
-                                                               self?.view.layoutIfNeeded()
-                                                           }))
+        if animated {
+            view.adyen.animate(context: SpringAnimationContext(animationKey: "Update frame",
+                                                               duration: 0.3,
+                                                               delay: 0,
+                                                               dampingRatio: 0.8,
+                                                               velocity: 0.2,
+                                                               options: [.beginFromCurrentState, .curveEaseInOut],
+                                                               animations: { [weak self] in
+                                                                   self?.update(finalFrame: finalFrame)
+                                                               }))
+        } else {
+            update(finalFrame: finalFrame)
+        }
+    }
+    
+    private func update(finalFrame: CGRect) {
+        leftConstraint?.constant = finalFrame.origin.x
+        rightConstraint?.constant = -finalFrame.origin.x
+        topConstraint?.constant = finalFrame.origin.y
+        view.layoutIfNeeded()
     }
 
     fileprivate func positionContent(_ child: ModalViewController) {
