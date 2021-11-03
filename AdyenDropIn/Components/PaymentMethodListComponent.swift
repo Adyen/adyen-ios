@@ -90,20 +90,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
             }
             
             listItem.deletionHandler = { [weak self, weak component] indexPath, completion in
-                guard let self = self, let component = component else { return }
-                guard let paymentMethod = component.paymentMethod as? StoredPaymentMethod else { return }
-                let completion: (Bool) -> Void = { success in
-                    defer {
-                        completion(success)
-                    }
-                    guard success else { return }
-                    // This is to prevent the merchant calling completion closure multiple times
-                    guard self.componentSections[indexPath.section]
-                        .components[indexPath.item]
-                        .paymentMethod == paymentMethod else { return }
-                    self.deleteComponent(at: indexPath)
-                }
-                self.delegate?.didDelete(paymentMethod, in: self, completion: completion)
+                self?.delete(component: component, at: indexPath, completion: completion)
             }
             
             return listItem
@@ -114,6 +101,24 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
                         items: section.components.map(item(for:)),
                         footer: section.footer)
         }
+    }
+    
+    private func delete(component: PaymentComponent?, at indexPath: IndexPath, completion: @escaping Completion<Bool>) {
+        guard let component = component else { return }
+        guard let paymentMethod = component.paymentMethod as? StoredPaymentMethod else { return }
+        let completion: (Bool) -> Void = { [weak self] success in
+            defer {
+                completion(success)
+            }
+            guard success else { return }
+            // This is to prevent the merchant calling completion closure multiple times
+            guard let self = self else { return }
+            guard self.componentSections[indexPath.section]
+                .components[indexPath.item]
+                .paymentMethod == paymentMethod else { return }
+            self.deleteComponent(at: indexPath)
+        }
+        delegate?.didDelete(paymentMethod, in: self, completion: completion)
     }
 
     // MARK: - Cancellable
