@@ -173,7 +173,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     // MARK: - Private
     
     @objc private func textDidChange(textField: UITextField) {
-        textField.text.map { item.value = $0 }
+        textField.text = item.textDidChange(value: textField.text ?? "")
         
         let maximumLength = item.validator?.maximumLength(for: item.value) ?? .max
         if item.value.count == maximumLength {
