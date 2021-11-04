@@ -6,7 +6,7 @@
 
 import Foundation
 
-public enum EditinStyle {
+public enum EditingStyle {
     case delete
     case none
 }
@@ -23,6 +23,11 @@ public struct ListSection: Hashable {
 
     /// The footer title of the section.
     public let footer: ListSectionFooter?
+    
+    /// :nodoc:
+    public var isEditable: Bool {
+        header?.editingStyle != EditingStyle.none
+    }
     
     /// Initializes the picker section.
     ///
@@ -74,13 +79,13 @@ public struct ListSectionHeader: Hashable {
     
     /// The editing style.
     /// :nodoc:
-    public var editingStyle: EditinStyle = .none
+    public var editingStyle: EditingStyle = .none
 
     /// :nodoc:
     /// - Parameters:
     ///   - title: The header title
     ///   - style: The UI style.
-    public init(title: String, editingStyle: EditinStyle = .none, style: ListSectionHeaderStyle) {
+    public init(title: String, editingStyle: EditingStyle = .none, style: ListSectionHeaderStyle) {
         self.title = title
         self.editingStyle = editingStyle
         self.style = style

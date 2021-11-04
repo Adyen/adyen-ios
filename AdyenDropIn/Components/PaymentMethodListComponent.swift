@@ -12,7 +12,7 @@ import UIKit
 public struct PaymentMethodListConfiguration {
     
     /// Indicates whether to allow shoppers to disable/delete stored payment methods
-    public var allowDisablingStorePaymentMethods: Bool = false
+    public var allowDisablingStoredPaymentMethods: Bool = false
 }
 
 /// A component that presents a list of items for each payment method with a component.
@@ -73,34 +73,34 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     }
     
     private func createListSections() -> [ListSection] {
-        func item(for component: PaymentComponent) -> ListItem {
-            let displayInformation = component.paymentMethod.localizedDisplayInformation(using: localizationParameters)
-            let isProtected = brandProtectedComponents.contains(component.paymentMethod.type)
-            let listItem = ListItem(title: displayInformation.title,
-                                    style: style.listItem,
-                                    canModifyIcon: !isProtected)
-            listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
-            listItem.imageURL = LogoURLProvider.logoURL(for: component.paymentMethod, environment: apiContext.environment)
-            listItem.trailingText = displayInformation.disclosureText
-            listItem.subtitle = displayInformation.subtitle
-            listItem.selectionHandler = { [weak self, weak component] in
-                guard let self = self, let component = component else { return }
-                guard !(component is AlreadyPaidPaymentComponent) else { return }
-                self.delegate?.didSelect(component, in: self)
-            }
-            
-            listItem.deletionHandler = { [weak self, weak component] indexPath, completion in
-                self?.delete(component: component, at: indexPath, completion: completion)
-            }
-            
-            return listItem
-        }
-
-        return componentSections.map { section in
+        componentSections.map { section in
             ListSection(header: section.header,
                         items: section.components.map(item(for:)),
                         footer: section.footer)
         }
+    }
+    
+    func item(for component: PaymentComponent) -> ListItem {
+        let displayInformation = component.paymentMethod.localizedDisplayInformation(using: localizationParameters)
+        let isProtected = brandProtectedComponents.contains(component.paymentMethod.type)
+        let listItem = ListItem(title: displayInformation.title,
+                                style: style.listItem,
+                                canModifyIcon: !isProtected)
+        listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
+        listItem.imageURL = LogoURLProvider.logoURL(for: component.paymentMethod, environment: apiContext.environment)
+        listItem.trailingText = displayInformation.disclosureText
+        listItem.subtitle = displayInformation.subtitle
+        listItem.selectionHandler = { [weak self, weak component] in
+            guard let self = self, let component = component else { return }
+            guard !(component is AlreadyPaidPaymentComponent) else { return }
+            self.delegate?.didSelect(component, in: self)
+        }
+        
+        listItem.deletionHandler = { [weak self, weak component] indexPath, completion in
+            self?.delete(component: component, at: indexPath, completion: completion)
+        }
+        
+        return listItem
     }
     
     private func delete(component: PaymentComponent?, at indexPath: IndexPath, completion: @escaping Completion<Bool>) {
@@ -181,6 +181,6 @@ internal protocol PaymentMethodListComponentDelegate: AnyObject {
 private extension Array where Element == ComponentsSection {
     mutating func deleteItem(at indexPath: IndexPath) {
         self[indexPath.section].components.remove(at: indexPath.item)
-        self = self.filter { !$0.components.isEmpty }
+        self = self.filter { $0.components.isEmpty == false }
     }
 }

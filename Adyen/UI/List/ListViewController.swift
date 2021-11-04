@@ -51,11 +51,11 @@ public final class ListViewController: UITableViewController {
     /// :nodoc:
     private lazy var dataSource: ListViewControllerDataSource = {
         if #available(iOS 13, *) {
-            return DiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, _ in
+            return DiffableListDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, _ in
                 self?.dataSource.cell(for: tableView, at: indexPath)
             })
         } else {
-            return CoreDataSource()
+            return CoreListDataSource()
         }
     }()
     
@@ -181,7 +181,7 @@ public final class ListViewController: UITableViewController {
     
 }
 
-extension EditinStyle {
+extension EditingStyle {
     var tableViewEditingStyle: UITableViewCell.EditingStyle {
         switch self {
         case .delete:

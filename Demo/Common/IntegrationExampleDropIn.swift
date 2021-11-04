@@ -22,7 +22,7 @@ extension IntegrationExample {
                                        merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
         configuration.payment = payment
         configuration.card.billingAddressMode = .postalCode
-        configuration.paymentMethodsList.allowDisablingStorePaymentMethods = true
+        configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = true
 
         let dropInComponentStyle = DropInComponent.Style()
         let component = DropInComponent(paymentMethods: paymentMethods,

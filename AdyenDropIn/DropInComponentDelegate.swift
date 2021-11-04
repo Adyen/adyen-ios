@@ -60,10 +60,10 @@ public protocol DropInComponentDelegate: AnyObject {
 }
 
 public protocol StoredPaymentMethodsDelegate: AnyObject {
-    /// Invoked when shopper want to delete a stored payment method.
+    /// Invoked when shopper wants to delete a stored payment method.
     ///
     /// - Parameters:
-    ///   - storedPaymentMethod: The stored payment method that the user want to disable.
+    ///   - storedPaymentMethod: The stored payment method that the user wants to disable.
     ///   - completion: The delegate need to call back this closure when the disabling is done,
     ///    with a boolean parameter that indicates success or failure.
     func disable(storedPaymentMethod: StoredPaymentMethod, completion: @escaping Completion<Bool>)
