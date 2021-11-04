@@ -265,6 +265,15 @@ class PaymentMethodTests: XCTestCase {
                                                  name: "payPal",
                                                  supportedShopperInteractions: [.shopperNotPresent],
                                                  emailAddress: "email"))
+        XCTAssertFalse(StoredPayPalPaymentMethod(type: "payPal",
+                                                 identifier: "payPal_id",
+                                                 name: "payPal",
+                                                 supportedShopperInteractions: [.shopperPresent],
+                                                 emailAddress: "email") ==
+                       StoredBLIKPaymentMethod(type: "payPal",
+                                               name: "payPal",
+                                               identifier: "payPal_id",
+                                               supportedShopperInteractions: [.shopperPresent]))
     }
     
     // MARK: - Card
