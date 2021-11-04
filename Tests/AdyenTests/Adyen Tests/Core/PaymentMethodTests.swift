@@ -213,6 +213,56 @@ class PaymentMethodTests: XCTestCase {
 
     }
     
+    func testEquality() {
+        XCTAssertFalse(BLIKPaymentMethod(type: "blik", name: "blik") == StoredBLIKPaymentMethod(type: "blik", name: "blik", identifier: "efefew", supportedShopperInteractions: [.shopperNotPresent]))
+        XCTAssertFalse(StoredPayPalPaymentMethod(type: "payPal",
+                                                 identifier: "12334",
+                                                 name: "payPal",
+                                                 supportedShopperInteractions: [.shopperPresent],
+                                                 emailAddress: "email") ==
+                       RedirectPaymentMethod(type: "payPal", name: "payPal"))
+        XCTAssertTrue(StoredPayPalPaymentMethod(type: "payPal",
+                                                identifier: "12334",
+                                                name: "payPal",
+                                                supportedShopperInteractions: [.shopperPresent],
+                                                emailAddress: "email") ==
+                      StoredPayPalPaymentMethod(type: "payPal",
+                                                                                                    identifier: "12334",
+                                                                                                    name: "payPal",
+                                                                                                    supportedShopperInteractions: [.shopperPresent],
+                                                                                                    emailAddress: "email"))
+        XCTAssertFalse(StoredPayPalPaymentMethod(type: "payPal",
+                                                identifier: "XXX",
+                                                name: "payPal",
+                                                supportedShopperInteractions: [.shopperPresent],
+                                                emailAddress: "email") ==
+                      StoredPayPalPaymentMethod(type: "payPal",
+                                                                                                    identifier: "12334",
+                                                                                                    name: "payPal",
+                                                                                                    supportedShopperInteractions: [.shopperPresent],
+                                                                                                    emailAddress: "email"))
+        XCTAssertFalse(StoredPayPalPaymentMethod(type: "payPalx",
+                                                identifier: "XXX",
+                                                name: "payPal",
+                                                supportedShopperInteractions: [.shopperPresent],
+                                                emailAddress: "email") ==
+                      StoredPayPalPaymentMethod(type: "payPal",
+                                                                                                    identifier: "12334",
+                                                                                                    name: "payPal",
+                                                                                                    supportedShopperInteractions: [.shopperPresent],
+                                                                                                    emailAddress: "email"))
+        XCTAssertFalse(StoredPayPalPaymentMethod(type: "payPal",
+                                                identifier: "XXX",
+                                                name: "payPal",
+                                                supportedShopperInteractions: [.shopperPresent],
+                                                emailAddress: "email") ==
+                      StoredPayPalPaymentMethod(type: "payPal",
+                                                                                                    identifier: "12334",
+                                                                                                    name: "payPal",
+                                                                                                    supportedShopperInteractions: [.shopperNotPresent],
+                                                                                                    emailAddress: "email"))
+    }
+    
     // MARK: - Card
     
     func testDecodingCreditCardPaymentMethod() throws {
