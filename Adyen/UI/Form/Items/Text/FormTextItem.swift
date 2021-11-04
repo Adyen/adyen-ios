@@ -70,7 +70,7 @@ open class FormTextItem: FormValueItem<String, FormTextItemStyle>, ValidatableFo
         sanitizedValue = sanitizedValue.adyen.truncate(to: maxLength)
 
         publisher.wrappedValue = sanitizedValue
-        formattedValue = formatter?.formattedValue(for: sanitizedValue) ?? sanitizedValue
+        formattedValue = formatter?.formattedValue(for: value) ?? value
         return formattedValue
     }
 
