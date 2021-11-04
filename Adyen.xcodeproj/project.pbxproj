@@ -82,6 +82,7 @@
 		C92F6DC126B04B63004BD516 /* XCTestCase+FormAddressItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F6DC026B04B63004BD516 /* XCTestCase+FormAddressItem.swift */; };
 		C930FB6E269D79E0006A26D2 /* AffirmDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = C930FB6D269D79E0006A26D2 /* AffirmDetails.swift */; };
 		C96688BF26A6FC1C00DC7297 /* AffirmComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */; };
+		C978F5EF2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C978F5EE2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift */; };
 		C982FFD826946F0800AED849 /* AffirmComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFD726946F0800AED849 /* AffirmComponent.swift */; };
 		C982FFDC2694792F00AED849 /* AffirmPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */; };
 		E2028F5C2227F1930007FF8B /* Details.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2028F5B2227F1930007FF8B /* Details.swift */; };
@@ -966,6 +967,7 @@
 		C92F6DC026B04B63004BD516 /* XCTestCase+FormAddressItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+FormAddressItem.swift"; sourceTree = "<group>"; };
 		C930FB6D269D79E0006A26D2 /* AffirmDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmDetails.swift; sourceTree = "<group>"; };
 		C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponentTests.swift; sourceTree = "<group>"; };
+		C978F5EE2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardSecurityCodeItemViewTests.swift; sourceTree = "<group>"; };
 		C982FFD726946F0800AED849 /* AffirmComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponent.swift; sourceTree = "<group>"; };
 		C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmPaymentMethod.swift; sourceTree = "<group>"; };
 		E2028F5B2227F1930007FF8B /* Details.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Details.swift; sourceTree = "<group>"; };
@@ -1792,6 +1794,24 @@
 			path = Affirm;
 			sourceTree = "<group>";
 		};
+		C978F5EC2732CD0800F59B3C /* CardNumberItem */ = {
+			isa = PBXGroup;
+			children = (
+				E7D3ED83243B667500E73F59 /* FormCardNumberItemViewTests.swift */,
+				E2B317AB22660FB600C1BB30 /* FormCardNumberItemTests.swift */,
+				F9A781AD2403BD1600E12487 /* FormItemViewBuilderTests.swift */,
+			);
+			path = CardNumberItem;
+			sourceTree = "<group>";
+		};
+		C978F5ED2732CD4700F59B3C /* CardSecurityCodeItem */ = {
+			isa = PBXGroup;
+			children = (
+				C978F5EE2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift */,
+			);
+			path = CardSecurityCodeItem;
+			sourceTree = "<group>";
+		};
 		C982FFD626945FCE00AED849 /* Affirm */ = {
 			isa = PBXGroup;
 			children = (
@@ -2041,14 +2061,13 @@
 			path = Form;
 			sourceTree = "<group>";
 		};
-		E2B317AA22660FAA00C1BB30 /* Form */ = {
+		E2B317AA22660FAA00C1BB30 /* Items */ = {
 			isa = PBXGroup;
 			children = (
-				E7D3ED83243B667500E73F59 /* FormCardNumberItemViewTests.swift */,
-				E2B317AB22660FB600C1BB30 /* FormCardNumberItemTests.swift */,
-				F9A781AD2403BD1600E12487 /* FormItemViewBuilderTests.swift */,
+				C978F5EC2732CD0800F59B3C /* CardNumberItem */,
+				C978F5ED2732CD4700F59B3C /* CardSecurityCodeItem */,
 			);
-			path = Form;
+			path = Items;
 			sourceTree = "<group>";
 		};
 		E2C0E02922097916008616F6 = {
@@ -2749,7 +2768,7 @@
 			children = (
 				F957AA432552C3A90099AD73 /* 3DS2 Component */,
 				E7E8343A24F3C7ED00EC3844 /* Mocks */,
-				E2B317AA22660FAA00C1BB30 /* Form */,
+				E2B317AA22660FAA00C1BB30 /* Items */,
 				E9E3DAC9221EDDD900697074 /* Utilities */,
 				E9E3DAC4221ECF5300697074 /* Validators */,
 				E9E3DAC3221ECF4800697074 /* Formatters */,
@@ -3443,18 +3462,18 @@
 		F99F08602383F28800EBB948 /* Form */ = {
 			isa = PBXGroup;
 			children = (
-				F99F08612383F29000EBB948 /* Items */,
+				F99F08612383F29000EBB948 /* FormItems */,
 			);
 			path = Form;
 			sourceTree = "<group>";
 		};
-		F99F08612383F29000EBB948 /* Items */ = {
+		F99F08612383F29000EBB948 /* FormItems */ = {
 			isa = PBXGroup;
 			children = (
 				F99D4601262D643400880D72 /* Error Item */,
 				F99F08622383F29700EBB948 /* Text */,
 			);
-			path = Items;
+			path = FormItems;
 			sourceTree = "<group>";
 		};
 		F99F08622383F29700EBB948 /* Text */ = {
@@ -4809,6 +4828,7 @@
 				E773EA3A25221C4600119499 /* ThrottlerTests.swift in Sources */,
 				F97842D926C3D55200677458 /* OXXOShareableVoucherViewProviderTests.swift in Sources */,
 				F9838CCC26315E6E00963483 /* PartialPaymentDelegateMock.swift in Sources */,
+				C978F5EF2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift in Sources */,
 				F96AE5052603814C009F82BD /* BasicPersonalInfoFormComponentTests.swift in Sources */,
 				F9EDB78F23964FC000CFB3C9 /* StoredCardAlertManagerTests.swift in Sources */,
 				E7768BDC26B416C3000851B3 /* DateValidationTests.swift in Sources */,

@@ -59,13 +59,19 @@ open class FormTextItem: FormValueItem<String, FormTextItemStyle>, ValidatableFo
     // MARK: - Private
 
     private func publishTransformed(value: String) {
+        textDidChange(value: value)
+    }
+
+    /// :nodoc:
+    @discardableResult
+    internal func textDidChange(value: String) -> String {
         var sanitizedValue = formatter?.sanitizedValue(for: value) ?? value
-        let maximumLength = validator?.maximumLength(for: sanitizedValue) ?? .max
-        sanitizedValue = sanitizedValue.adyen.truncate(to: maximumLength)
-        
+        let maxLength = validator?.maximumLength(for: sanitizedValue) ?? .max
+        sanitizedValue = sanitizedValue.adyen.truncate(to: maxLength)
+
         publisher.wrappedValue = sanitizedValue
-        
         formattedValue = formatter?.formattedValue(for: value) ?? value
+        return formattedValue
     }
 
 }
