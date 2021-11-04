@@ -182,7 +182,7 @@ public final class ListViewController: UITableViewController {
 }
 
 extension EditingStyle {
-    var tableViewEditingStyle: UITableViewCell.EditingStyle {
+    internal var tableViewEditingStyle: UITableViewCell.EditingStyle {
         switch self {
         case .delete:
             return .delete
