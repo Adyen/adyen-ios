@@ -2051,8 +2051,8 @@
 		E2B317AA22660FAA00C1BB30 /* Items */ = {
 			isa = PBXGroup;
 			children = (
-				C978F5ED2732CD4700F59B3C /* CardSecurityCodeItem */,
 				C978F5EC2732CD0800F59B3C /* CardNumberItem */,
+				C978F5ED2732CD4700F59B3C /* CardSecurityCodeItem */,
 			);
 			path = Items;
 			sourceTree = "<group>";

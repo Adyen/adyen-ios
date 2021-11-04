@@ -169,20 +169,25 @@ class FormTextItemViewTests: XCTestCase {
         XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.tintColor.toHexString())
     }
 
-    func testSanitization() throws {
+    func testTextFieldSanitizationGivenNonAllowedCharactersShouldSanitizeAndFormatInput() throws {
         // Given
-        let cardValidator = CardNumberValidator(isLuhnCheckEnabled: false, isEnteredBrandSupported: false)
-        let cardFormatter = CardNumberFormatter()
-        item.validator = cardValidator
-        item.formatter =  cardFormatter
-
+        let validator = CardNumberValidator(isLuhnCheckEnabled: false, isEnteredBrandSupported: false)
+        let formatter = CardNumberFormatter()
+        item.validator = validator
+        item.formatter =  formatter
         sut = FormTextItemView(item: item)
 
-        sut.textField.text = "541asdfasdf"
-        sut.textField.sendActions(for: .editingChanged)
-        wait(for: .seconds(1))
+        let expectedItemValue = "22224000"
+        let expectedFormattedValue = formatter.formattedValue(for: expectedItemValue)
 
-        XCTAssertEqual(sut.textField.text, "541")
+        // When
+        sut.textField.text = "2222XF%4000"
+        sut.textField.sendActions(for: .editingChanged)
+
+        // Then
+        XCTAssertEqual(expectedItemValue, item.value)
+        XCTAssertEqual(expectedFormattedValue, item.formattedValue)
+        XCTAssertEqual(expectedFormattedValue, sut.textField.text)
     }
 }
 
