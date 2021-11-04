@@ -38,22 +38,27 @@ internal final class WrapperViewController: UIViewController {
         return viewController?.children.contains(where: { heirarchyRequiresKeyboardInput(viewController: $0) }) ?? false
     }
     
-    internal func updateFrame(keyboardRect: CGRect) {
+    internal func updateFrame(keyboardRect: CGRect, animated: Bool = true) {
         guard let view = child.viewIfLoaded else { return }
         let finalFrame = child.finalPresentationFrame(with: keyboardRect)
 
         view.adyen.animate(context: SpringAnimationContext(animationKey: "Update frame",
-                                                           duration: 0.3,
+                                                           duration: animated ? 0.3 : 0.0,
                                                            delay: 0,
                                                            dampingRatio: 0.8,
                                                            velocity: 0.2,
                                                            options: [.beginFromCurrentState, .curveEaseInOut],
                                                            animations: { [weak self] in
-                                                               self?.leftConstraint?.constant = finalFrame.origin.x
-                                                               self?.rightConstraint?.constant = -finalFrame.origin.x
-                                                               self?.topConstraint?.constant = finalFrame.origin.y
-                                                               self?.view.layoutIfNeeded()
+                                                               self?.update(finalFrame: finalFrame)
                                                            }))
+    }
+    
+    private func update(finalFrame: CGRect) {
+        guard let view = child.viewIfLoaded else { return }
+        leftConstraint?.constant = finalFrame.origin.x
+        rightConstraint?.constant = -finalFrame.origin.x
+        topConstraint?.constant = finalFrame.origin.y
+        view.layoutIfNeeded()
     }
 
     fileprivate func positionContent(_ child: ModalViewController) {

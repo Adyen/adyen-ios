@@ -96,14 +96,14 @@ internal final class ComponentsViewController: UIViewController, Presenter {
             }))
         }
 
-        present(alertController, animated: true)
+        present(viewController: alertController, completion: nil)
     }
 
     internal func presentAlert(withTitle title: String) {
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default))
 
-        present(alertController, animated: true)
+        present(viewController: alertController, completion: nil)
     }
 
     internal func present(viewController: UIViewController, completion: (() -> Void)?) {

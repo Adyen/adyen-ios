@@ -52,16 +52,47 @@ public final class ListCell: UITableViewCell {
     
     // MARK: - Activity Indicator
     
+    private lazy var editingActivityIndicatorView: UIActivityIndicatorView = {
+        let indicatorView = UIActivityIndicatorView(style: activityIndicatorViewStyle)
+        indicatorView.translatesAutoresizingMaskIntoConstraints = false
+        return indicatorView
+    }()
+    
+    private lazy var editingActivityIndicatorViewConstraints = [
+        editingActivityIndicatorView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
+        editingActivityIndicatorView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+    ]
+    
     /// Indicates whether an activity indicator should be shown as an accessory.
     internal var showsActivityIndicator: Bool = false {
         didSet {
             if showsActivityIndicator {
-                let activityIndicatorView = UIActivityIndicatorView(style: activityIndicatorViewStyle)
-                activityIndicatorView.startAnimating()
-                accessoryView = activityIndicatorView
+                showActivityIndicatorView()
             } else {
-                resetAccessoryView()
+                hideActivityIndicatorView()
             }
+        }
+    }
+    
+    private func showActivityIndicatorView() {
+        if isEditing {
+            contentView.addSubview(editingActivityIndicatorView)
+            NSLayoutConstraint.activate(editingActivityIndicatorViewConstraints)
+            editingActivityIndicatorView.startAnimating()
+        } else {
+            let activityIndicatorView = UIActivityIndicatorView(style: activityIndicatorViewStyle)
+            activityIndicatorView.startAnimating()
+            accessoryView = activityIndicatorView
+        }
+    }
+    
+    private func hideActivityIndicatorView() {
+        if isEditing {
+            editingActivityIndicatorView.removeFromSuperview()
+            NSLayoutConstraint.deactivate(editingActivityIndicatorViewConstraints)
+            editingActivityIndicatorView.stopAnimating()
+        } else {
+            resetAccessoryView()
         }
     }
     

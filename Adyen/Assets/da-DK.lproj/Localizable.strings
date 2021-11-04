@@ -5,7 +5,8 @@
 "adyen.error.title" = "Fejl";
 "adyen.error.unknown" = "Der opstod en ukendt fejl";
 "adyen.validationAlert.title" = "Ugyldig indtastning";
-"adyen.paymentMethods.otherMethods" = "Vælg anden måde";
+"adyen.paymentMethods.otherMethods" = "andre";
+"adyen.paymentMethods.storedMethods" = "Gemt";
 "adyen.paymentMethods.title" = "Betalingsmåder";
 "adyen.sepa.ibanItem.title" = "Kontonummer (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Ugyldigt kontonummer";

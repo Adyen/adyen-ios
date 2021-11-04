@@ -22,10 +22,12 @@ internal final class ComponentManager {
     private var style: DropInComponent.Style
 
     private let partialPaymentEnabled: Bool
+    
+    private let supportsEditingStoredPaymentMethods: Bool
 
-    private let remainingAmount: Amount?
+    internal let remainingAmount: Amount?
 
-    private let order: PartialPaymentOrder?
+    internal let order: PartialPaymentOrder?
     
     internal let apiContext: APIContext
     
@@ -34,7 +36,8 @@ internal final class ComponentManager {
                   style: DropInComponent.Style,
                   partialPaymentEnabled: Bool = true,
                   remainingAmount: Amount? = nil,
-                  order: PartialPaymentOrder?) {
+                  order: PartialPaymentOrder?,
+                  supportsEditingStoredPaymentMethods: Bool = false) {
         self.paymentMethods = paymentMethods
         self.configuration = configuration
         self.apiContext = configuration.apiContext
@@ -42,6 +45,7 @@ internal final class ComponentManager {
         self.partialPaymentEnabled = partialPaymentEnabled
         self.remainingAmount = remainingAmount
         self.order = order
+        self.supportsEditingStoredPaymentMethods = supportsEditingStoredPaymentMethods
     }
     
     // MARK: - Internal
@@ -61,8 +65,21 @@ internal final class ComponentManager {
                                             footer: paidFooter)
 
         // Stored section
-        let storedSection = ComponentsSection(components: storedComponents)
-
+        let storedSection: ComponentsSection
+        
+        if supportsEditingStoredPaymentMethods {
+            let allowDeleting = configuration.paymentMethodsList.allowDisablingStorePaymentMethods
+            let editingStyle: EditinStyle = allowDeleting ? .delete : .none
+            storedSection = ComponentsSection(header: .init(title: localizedString(.paymentMethodsStoredMethods,
+                                                                                   configuration.localizationParameters),
+                                                            editingStyle: editingStyle,
+                                                            style: ListSectionHeaderStyle()),
+                                              components: storedComponents,
+                                              footer: nil)
+        } else {
+            storedSection = ComponentsSection(components: storedComponents)
+        }
+        
         // Regular section
         let localizedTitle = localizedString(.paymentMethodsOtherMethods, configuration.localizationParameters)
         let regularSectionTitle = storedSection.components.isEmpty ? nil : localizedTitle
@@ -71,7 +88,9 @@ internal final class ComponentManager {
         }
         let regularSection = ComponentsSection(header: regularHeader, components: regularComponents, footer: nil)
         
-        return [paidSection, storedSection, regularSection]
+        return [paidSection, storedSection, regularSection].filter {
+            $0.components.isEmpty == false
+        }
     }()
 
     // Filter out payment methods without the Ecommerce shopper interaction.

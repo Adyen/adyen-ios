@@ -10,7 +10,11 @@ import Foundation
 
 internal struct DemoAPIContext: AnyAPIContext {
     
-    internal let environment: AnyAPIEnvironment = ConfigurationConstants.demoServerEnvironment
+    internal init(environment: AnyAPIEnvironment = ConfigurationConstants.demoServerEnvironment) {
+        self.environment = environment
+    }
+    
+    internal let environment: AnyAPIEnvironment
     
     internal let headers: [String: String] = [
         "Content-Type": "application/json",
@@ -21,7 +25,7 @@ internal struct DemoAPIContext: AnyAPIContext {
     
 }
 
-internal enum DemoServerEnvironment: String, AnyAPIEnvironment, CaseIterable {
+internal enum DemoCheckoutAPIEnvironment: String, AnyAPIEnvironment, CaseIterable {
     
     case beta, test, local
     
@@ -37,5 +41,22 @@ internal enum DemoServerEnvironment: String, AnyAPIEnvironment, CaseIterable {
     }
 
     internal var version: Int { ConfigurationConstants.current.apiVersion }
+    
+}
+
+internal enum DemoClassicAPIEnvironment: String, AnyAPIEnvironment, CaseIterable {
+    
+    case beta, test, local
+    
+    internal var baseURL: URL {
+        switch self {
+        case .beta:
+            return URL(string: "https://pal-beta.adyen.com/pal/servlet/")!
+        case .test:
+            return URL(string: "https://pal-test.adyen.com/pal/servlet/")!
+        case .local:
+            return URL(string: "http://localhost:8080/pal/servlet/")!
+        }
+    }
     
 }

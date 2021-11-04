@@ -141,9 +141,8 @@ public final class VoucherComponent: AnyVoucherActionHandler {
     }
         
     private func getNavBarType() -> NavigationBarType {
-        let bundle = Bundle(for: UIBarButtonItem.self)
-        let localizedEdit = bundle.localizedString(forKey: "Edit", value: "Edit", table: nil)
-        let localizedDone = bundle.localizedString(forKey: "Done", value: "Done", table: nil)
+        let localizedEdit = Bundle.Adyen.localizedEditCopy
+        let localizedDone = Bundle.Adyen.localizedDoneCopy
         let model = VoucherNavBar.Model(
             editButtonTitle: localizedEdit,
             doneButtonTitle: localizedDone,
