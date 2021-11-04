@@ -5,7 +5,8 @@
 "adyen.error.title" = "Błąd";
 "adyen.error.unknown" = "Wystąpił nieoczekiwany błąd";
 "adyen.validationAlert.title" = "Nieprawidłowe dane wejściowe";
-"adyen.paymentMethods.otherMethods" = "Wybierz inną metodę";
+"adyen.paymentMethods.otherMethods" = "Inne";
+"adyen.paymentMethods.storedMethods" = "Przechowywane";
 "adyen.paymentMethods.title" = "Metody płatności";
 "adyen.sepa.ibanItem.title" = "Numer rachunku (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Nieprawidłowy numer rachunku";

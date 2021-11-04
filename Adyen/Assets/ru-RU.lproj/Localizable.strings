@@ -5,7 +5,8 @@
 "adyen.error.title" = "Ошибка";
 "adyen.error.unknown" = "Возникла неизвестная ошибка";
 "adyen.validationAlert.title" = "Неверные данные";
-"adyen.paymentMethods.otherMethods" = "Выбрать другой способ";
+"adyen.paymentMethods.otherMethods" = "Прочие";
+"adyen.paymentMethods.storedMethods" = "Сохраненные";
 "adyen.paymentMethods.title" = "Способы оплаты";
 "adyen.sepa.ibanItem.title" = "Номер счета (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Недействительный номер счета";

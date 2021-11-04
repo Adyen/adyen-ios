@@ -31,6 +31,9 @@ public class ListItem: FormItem {
     /// The handler to invoke when the item is selected.
     public var selectionHandler: (() -> Void)?
     
+    /// The handler to invoke when the item is deleted.
+    public var deletionHandler: ((IndexPath, @escaping Completion<Bool>) -> Void)?
+    
     /// An identifier for the `ListItem`,
     /// that is set to the `ListItemView.accessibilityIdentifier`.
     public var identifier: String?
@@ -76,10 +79,11 @@ extension ListItem: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(title)
         hasher.combine(imageURL)
+        hasher.combine(trailingText)
     }
     
     public static func == (lhs: ListItem, rhs: ListItem) -> Bool {
-        lhs.title == rhs.title && lhs.imageURL == rhs.imageURL
+        lhs.title == rhs.title && lhs.imageURL == rhs.imageURL && lhs.trailingText == rhs.trailingText
     }
     
 }

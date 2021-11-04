@@ -5,7 +5,8 @@
 "adyen.error.title" = "오류";
 "adyen.error.unknown" = "알 수 없는 오류 발생";
 "adyen.validationAlert.title" = "유효하지 않은 입력";
-"adyen.paymentMethods.otherMethods" = "다른 수단 선택";
+"adyen.paymentMethods.otherMethods" = "기타";
+"adyen.paymentMethods.storedMethods" = "저장됨";
 "adyen.paymentMethods.title" = "결제 수단";
 "adyen.sepa.ibanItem.title" = "계좌 번호(IBAN)";
 "adyen.sepa.ibanItem.invalid" = "유효하지 않은 계좌 번호";

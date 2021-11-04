@@ -43,46 +43,32 @@ public final class ListViewController: UITableViewController {
         """) }
     }
     
-    // MARK: - Items
+    // MARK: - Data Source
     
-    /// The items displayed in the list.
-    public var sections: [ListSection] = [] {
-        didSet {
-            // Filter out empty sections.
-            let filteredSections = sections.filter { $0.items.count > 0 }
-            if filteredSections.count != sections.count {
-                sections = filteredSections
-            } else if isViewLoaded {
-                tableView.reloadData()
-            }
+    /// :nodoc:
+    public var sections: [ListSection] { dataSource.sections }
+    
+    /// :nodoc:
+    private lazy var dataSource: ListViewControllerDataSource = {
+        if #available(iOS 13, *) {
+            return DiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, _ in
+                self?.dataSource.cell(for: tableView, at: indexPath)
+            })
+        } else {
+            return CoreDataSource()
         }
+    }()
+    
+    /// :nodoc:
+    public func reload(newSections: [ListSection], animated: Bool = false) {
+        dataSource.reload(newSections: newSections, tableView: tableView, animated: animated)
+        adyen.updatePreferredContentSize()
     }
     
-    // MARK: - Item Loading state
-    
-    /// Starts a loading animation for a given ListItem.
-    ///
-    /// - Parameter item: The item to be shown as loading.
-    public func startLoading(for item: ListItem) {
-        if let cell = cell(for: item) {
-            cell.showsActivityIndicator = true
-        }
-        
-        tableView.isUserInteractionEnabled = false
-        
-        for case let visibleCell as ListCell in tableView.visibleCells where visibleCell.item != item {
-            visibleCell.isEnabled = false
-        }
-    }
-    
-    /// Stops all loading animations.
-    public func stopLoading() {
-        tableView.isUserInteractionEnabled = true
-        
-        for case let visibleCell as ListCell in tableView.visibleCells {
-            visibleCell.isEnabled = true
-            visibleCell.showsActivityIndicator = false
-        }
+    /// :nodoc:
+    public func deleteItem(at indexPath: IndexPath, animated: Bool = true) {
+        dataSource.deleteItem(at: indexPath, tableView: tableView, animated: animated)
+        adyen.updatePreferredContentSize()
     }
     
     // MARK: - View
@@ -100,41 +86,51 @@ public final class ListViewController: UITableViewController {
         tableView.sectionHeaderHeight = UITableView.automaticDimension
         tableView.sectionFooterHeight = 0.0
         tableView.estimatedRowHeight = 56.0
-        tableView.register(ListCell.self, forCellReuseIdentifier: cellReuseIdentifier)
+        tableView.register(ListCell.self, forCellReuseIdentifier: dataSource.cellReuseIdentifier)
+        tableView.register(ListHeaderView.self, forHeaderFooterViewReuseIdentifier: ListHeaderView.reuseIdentifier)
+        tableView.dataSource = dataSource
 
         delegate?.viewDidLoad(viewController: self)
     }
 
+    /// :nodoc:
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         delegate?.viewDidAppear(viewController: self)
     }
     
-    // MARK: - UITableView
-    
-    private let cellReuseIdentifier = "Cell"
-    
-    /// :nodoc:
-    override public func numberOfSections(in tableView: UITableView) -> Int {
-        sections.count
-    }
-    
-    /// :nodoc:
-    override public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        sections[section].items.count
-    }
+    // MARK: - UITableViewDelegate
     
     /// :nodoc:
     override public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let header = sections[section].header else {
-            return nil
+        guard let headerItem = sections[section].header else { return nil }
+        
+        let headerView: ListHeaderView
+        
+        let reuseIdentifier = ListHeaderView.reuseIdentifier
+        
+        if let dequeuedView = tableView.dequeueReusableHeaderFooterView(withIdentifier: reuseIdentifier) as? ListHeaderView {
+            headerView = dequeuedView
+        } else {
+            headerView = ListHeaderView(reuseIdentifier: reuseIdentifier)
         }
+        
+        headerView.headerItem = headerItem
 
-        let headerView = ListHeaderView(title: header.title, style: header.style)
         headerView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "Adyen.ListViewController",
                                                                          postfix: "headerView.\(section)")
+        headerView.onTrailingButtonTap = { [weak self, weak headerView] in
+            self?.toggleEditingMode(headerView)
+        }
 
         return headerView
+    }
+    
+    private func toggleEditingMode(_ headerView: ListHeaderView?) {
+        var isEditingModeOn = tableView.isEditing
+        isEditingModeOn.toggle()
+        headerView?.isEditing = isEditingModeOn
+        tableView.setEditing(isEditingModeOn, animated: true)
     }
 
     override public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -157,17 +153,6 @@ public final class ListViewController: UITableViewController {
     }
     
     /// :nodoc:
-    override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as? ListCell else {
-            fatalError("Failed to dequeue cell.")
-        }
-        
-        cell.item = sections[indexPath.section].items[indexPath.row]
-        
-        return cell
-    }
-    
-    /// :nodoc:
     override public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
@@ -175,13 +160,34 @@ public final class ListViewController: UITableViewController {
         item.selectionHandler?()
     }
     
-    // MARK: Private
+    /// :nodoc:
+    override public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        sections[indexPath.section].header?.editingStyle.tableViewEditingStyle ?? .none
+    }
     
-    private func cell(for item: ListItem) -> ListCell? {
-        for case let cell as ListCell in tableView.visibleCells where cell.item == item {
-            return cell
+    // MARK: - Item Loading state
+    
+    /// Starts a loading animation for a given ListItem.
+    ///
+    /// - Parameter item: The item to be shown as loading.
+    public func startLoading(for item: ListItem) {
+        dataSource.startLoading(for: item, tableView)
+    }
+    
+    /// Stops all loading animations.
+    public func stopLoading() {
+        dataSource.stopLoading(tableView)
+    }
+    
+}
+
+extension EditinStyle {
+    var tableViewEditingStyle: UITableViewCell.EditingStyle {
+        switch self {
+        case .delete:
+            return .delete
+        case .none:
+            return .none
         }
-        
-        return nil
     }
 }

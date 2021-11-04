@@ -5,7 +5,8 @@
 "adyen.error.title" = "錯誤";
 "adyen.error.unknown" = "發生未知錯誤";
 "adyen.validationAlert.title" = "輸入無效";
-"adyen.paymentMethods.otherMethods" = "選取其他方式";
+"adyen.paymentMethods.otherMethods" = "其他";
+"adyen.paymentMethods.storedMethods" = "已儲存";
 "adyen.paymentMethods.title" = "付款方式";
 "adyen.sepa.ibanItem.title" = "帳戶號碼 (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "帳戶號碼無效";

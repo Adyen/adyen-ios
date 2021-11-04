@@ -5,7 +5,8 @@
 "adyen.error.title" = "Chyba";
 "adyen.error.unknown" = "Vyskytla sa neznáma chyba";
 "adyen.validationAlert.title" = "Neplatný vstup";
-"adyen.paymentMethods.otherMethods" = "Vyberte iný spôsob";
+"adyen.paymentMethods.otherMethods" = "ďalšie";
+"adyen.paymentMethods.storedMethods" = "Uložené";
 "adyen.paymentMethods.title" = "Spôsob platby";
 "adyen.sepa.ibanItem.title" = "Číslo účtu (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Neplatné číslo účtu";

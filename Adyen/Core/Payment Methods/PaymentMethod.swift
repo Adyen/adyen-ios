@@ -53,3 +53,16 @@ public protocol StoredPaymentMethod: PaymentMethod {
     var supportedShopperInteractions: [ShopperInteraction] { get }
     
 }
+
+/// :nodoc:
+public func == (lhs: StoredPaymentMethod, rhs: StoredPaymentMethod) -> Bool {
+    lhs.type == rhs.type &&
+        lhs.name == rhs.name &&
+        lhs.identifier == rhs.identifier &&
+        lhs.supportedShopperInteractions == rhs.supportedShopperInteractions
+}
+
+/// :nodoc:
+public func == (lhs: PaymentMethod, rhs: PaymentMethod) -> Bool {
+    lhs.type == rhs.type && lhs.name == rhs.name
+}

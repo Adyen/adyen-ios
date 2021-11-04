@@ -22,6 +22,7 @@ extension IntegrationExample {
                                        merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
         configuration.payment = payment
         configuration.card.billingAddressMode = .postalCode
+        configuration.paymentMethodsList.allowDisablingStorePaymentMethods = true
 
         let dropInComponentStyle = DropInComponent.Style()
         let component = DropInComponent(paymentMethods: paymentMethods,
@@ -30,6 +31,7 @@ extension IntegrationExample {
                                         title: ConfigurationConstants.appName)
         component.delegate = self
         component.partialPaymentDelegate = self
+        component.storedPaymentMethodsDelegate = self
         currentComponent = component
 
         presenter?.present(viewController: component.viewController, completion: nil)
@@ -103,4 +105,23 @@ extension IntegrationExample: DropInComponentDelegate {
         print("User did close: \(component.paymentMethod.name)")
     }
 
+}
+
+extension IntegrationExample: StoredPaymentMethodsDelegate {
+    func disable(storedPaymentMethod: StoredPaymentMethod, completion: @escaping (Bool) -> Void) {
+        let request = DisableStoredPaymentMethodRequest(recurringDetailReference: storedPaymentMethod.identifier)
+        palApiClient.perform(request) { [weak self] result in
+            self?.handleDisableResult(result, completion: completion)
+        }
+    }
+    
+    private func handleDisableResult(_ result: Result<DisableStoredPaymentMethodRequest.ResponseType, Error>, completion: (Bool) -> Void) {
+        switch result {
+        case let .failure(error):
+            presentAlert(with: error, retryHandler: nil)
+            completion(false)
+        case let .success(response):
+            completion(response.response == .detailsDisabled)
+        }
+    }
 }
