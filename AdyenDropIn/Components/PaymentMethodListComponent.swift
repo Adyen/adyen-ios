@@ -80,7 +80,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
         }
     }
     
-    func item(for component: PaymentComponent) -> ListItem {
+    private func item(for component: PaymentComponent) -> ListItem {
         let displayInformation = component.paymentMethod.localizedDisplayInformation(using: localizationParameters)
         let isProtected = brandProtectedComponents.contains(component.paymentMethod.type)
         let listItem = ListItem(title: displayInformation.title,
