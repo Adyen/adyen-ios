@@ -33,13 +33,13 @@ internal enum ConfigurationConstants {
     
     static let apiContext = APIContext(environment: componentsEnvironment, clientKey: clientKey)
     
-    static let clientKey = "{YOUR_CLIENT_KEY}"
+    static let clientKey = "test_L6HTEOAXQBCZJHKNU4NLN6EI7IE6VRRW"
 
-    static let demoServerAPIKey = "{YOUR_DEMO_SERVER_API_KEY}"
+    static let demoServerAPIKey = "AQEthmfxKo7MbhFLw0m/n3Q5qf3VfI5eGbBFVXVXyGHNhisxSHQZLQhnJZKhUXeVEMFdWw2+5HzctViMSCJMYAc=-DkpScjUfQkHwxuVJkpWo8OZdyxdR0KwSlIX9U3FFNIw=-PAmL^xdD6.EKT38N"
 
     static let applePayMerchantIdentifier = "{YOUR_APPLE_PAY_MERCHANT_IDENTIFIER}"
 
-    static let merchantAccount = "{YOUR_MERCHANT_ACCOUNT}"
+    static let merchantAccount = "TestMerchantCheckout"
     
     static var applePaySummaryItems: [PKPaymentSummaryItem] {
         [
