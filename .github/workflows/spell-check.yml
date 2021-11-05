@@ -20,12 +20,17 @@ on:
 jobs:
 
   pods:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
     - uses: n1hility/cancel-previous-runs@v2
       with:
         token: ${{ secrets.MANUAL_ACTION_TOKEN }}
 
-    - name: Spellcheck
-      uses: igsekor/pyspelling-any@v0.0.2
+    - name: Install typokana
+      run: |
+        git clone git@github.com:ezura/spell-checker-for-swift.git
+        cd spell-checker-for-swift
+        chmod +x spell-checker-for-swift/typokana
+        ./spell-checker-for-swift/typokana init
+        ./spell-checker-for-swift/typokana
