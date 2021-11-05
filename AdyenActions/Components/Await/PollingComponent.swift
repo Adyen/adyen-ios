@@ -12,6 +12,12 @@ import Foundation
 /// A specific await component thats keeps polling the `/status` endpoint to check the payment status.
 internal final class PollingComponent: AnyPollingHandler {
     
+    private let maxErrorNumber = 3
+
+    private let apiClient: AnyRetryAPIClient
+
+    private var errorCount = 0
+
     /// :nodoc:
     internal let apiContext: APIContext
     
@@ -23,9 +29,6 @@ internal final class PollingComponent: AnyPollingHandler {
     
     /// :nodoc:
     internal let componentName = "mbWayAwait"
-    
-    /// :nodoc:
-    private let apiClient: AnyRetryAPIClient
     
     /// :nodoc:
     /// Initializes the Polling Await component.
@@ -82,7 +85,8 @@ internal final class PollingComponent: AnyPollingHandler {
         case let .success(response):
             return shouldRetry(response, paymentData: paymentData)
         case .failure:
-            return false
+            errorCount += 1
+            return errorCount < maxErrorNumber
         }
     }
     
