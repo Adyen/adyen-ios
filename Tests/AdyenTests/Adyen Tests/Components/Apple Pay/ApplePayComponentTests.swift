@@ -90,7 +90,7 @@ class ApplePayComponentTest: XCTestCase {
         UIApplication.shared.keyWindow!.rootViewController?.dismiss(animated: false)
     }
 
-    func testApplePayViewControllerShouldCallDelgateDidFail() {
+    func testApplePayViewControllerShouldCallDelegateDidFail() {
         guard Available.iOS12 else { return }
         let viewController = sut!.viewController
         let onDidFailExpectation = expectation(description: "Wait for delegate call")

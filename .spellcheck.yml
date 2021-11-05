@@ -1,7 +1,7 @@
 matrix:
 - name: Swift Source
   sources:
-  - ./**/*.swift
+  - Adyen*/**/*.swift
   aspell:
     lang: en
     d: en_US

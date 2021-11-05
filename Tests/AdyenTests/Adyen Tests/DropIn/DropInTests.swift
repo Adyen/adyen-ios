@@ -100,8 +100,8 @@ class DropInTests: XCTestCase {
         let config = DropInComponent.Configuration(apiContext: Dummy.context)
         config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
 
-        let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
-        sut = DropInComponent(paymentMethods: paymenMethods, configuration: config)
+        let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
+        sut = DropInComponent(paymentMethods: paymentMethods, configuration: config)
 
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root
@@ -143,8 +143,8 @@ class DropInTests: XCTestCase {
         config.applePay = .init(summaryItems: [.init(label: "Item", amount: 100)], merchantIdentifier: "")
         config.payment = .init(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
 
-        let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
-        sut = DropInComponent(paymentMethods: paymenMethods, configuration: config)
+        let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
+        sut = DropInComponent(paymentMethods: paymentMethods, configuration: config)
 
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root

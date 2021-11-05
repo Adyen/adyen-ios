@@ -43,8 +43,8 @@ class MultibancoShareableVoucherViewProviderTests: XCTestCase {
         let shopperReferenceKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.shopperReferenceKeyLabel")
         XCTAssertEqual(shopperReferenceKeyLabel.text, "Shopper Reference")
 
-        let shopperReferenceValueLable: UILabel! = sut.findView(by: "adyen.voucher.shopperReferenceValueLabel")
-        XCTAssertEqual(shopperReferenceValueLable.text, "Test Order Reference - iOS UIHost")
+        let shopperReferenceValueLabel: UILabel! = sut.findView(by: "adyen.voucher.shopperReferenceValueLabel")
+        XCTAssertEqual(shopperReferenceValueLabel.text, "Test Order Reference - iOS UIHost")
         
         let entityKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.entityKeyLabel")
         XCTAssertEqual(entityKeyLabel.text, "Entity")
