@@ -39,7 +39,7 @@ internal protocol ListViewControllerDataSource: UITableViewDataSource {
     func stopLoading(_ tableView: UITableView)
 }
 
-internal final class CoreDataSource: NSObject, ListViewControllerDataSource {
+internal final class CoreListDataSource: NSObject, ListViewControllerDataSource {
     
     internal var sections: [ListSection] = []
     
@@ -88,7 +88,7 @@ internal final class CoreDataSource: NSObject, ListViewControllerDataSource {
     
     internal func cell(for tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as? ListCell else {
-            fatalError("Failed to dequeue cell.")
+            return UITableViewCell()
         }
         
         cell.item = sections[indexPath.section].items[indexPath.row]
@@ -99,7 +99,7 @@ internal final class CoreDataSource: NSObject, ListViewControllerDataSource {
     internal func reload(newSections: [ListSection],
                          tableView: UITableView,
                          animated: Bool = false) {
-        sections = newSections.filter { $0.items.count > 0 }
+        sections = newSections.filter { $0.items.isEmpty == false }
         tableView.reloadData()
     }
     

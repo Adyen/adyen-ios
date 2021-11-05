@@ -59,10 +59,13 @@ public func == (lhs: StoredPaymentMethod, rhs: StoredPaymentMethod) -> Bool {
     lhs.type == rhs.type &&
         lhs.name == rhs.name &&
         lhs.identifier == rhs.identifier &&
-        lhs.supportedShopperInteractions == rhs.supportedShopperInteractions
+        lhs.supportedShopperInteractions == rhs.supportedShopperInteractions &&
+        String(describing: type(of: lhs)) == String(describing: type(of: rhs))
 }
 
 /// :nodoc:
 public func == (lhs: PaymentMethod, rhs: PaymentMethod) -> Bool {
-    lhs.type == rhs.type && lhs.name == rhs.name
+    lhs.type == rhs.type &&
+        lhs.name == rhs.name &&
+        String(describing: type(of: lhs)) == String(describing: type(of: rhs))
 }
