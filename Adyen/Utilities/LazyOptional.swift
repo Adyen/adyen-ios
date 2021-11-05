@@ -6,7 +6,7 @@
 
 import Foundation
 
-/// A property wapper to enable a property to be lazily initialized when its first called,
+/// A property wrapper to enable a property to be lazily initialized when its first called,
 /// with the added ability to nullify it and gets reinitialized when called again.
 @propertyWrapper
 internal final class LazyOptional<ValueType> {

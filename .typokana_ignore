@@ -58,6 +58,7 @@ Multibanco
 giropay
 Palx
 klarna
+ebanking
 elodebit
 swiftlint
 Hashable
@@ -101,6 +102,7 @@ Btn
 btn
 adyen
 Adyen
+Ady
 enc
 Cryptor
 hmac
@@ -124,3 +126,13 @@ exp
 rgb
 autoreleasepool
 Prefilling
+yy
+utsname
+uiactivityviewcontroller
+appid
+partnerid
+prepayid
+Taxno
+Heimdall.swift
+Shopperi
+fpx

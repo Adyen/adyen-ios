@@ -28,7 +28,7 @@ extension AdyenScope where Base: UIView {
     }
 
     /// Attach top, bottom, left and right anchors of this view to corresponding anchors inside specified view.
-    /// IMPORTANT: both views should be in the same hierarcy.
+    /// IMPORTANT: both views should be in the same hierarchy.
     /// - Parameter margins: The layout guide to constraint to.
     @discardableResult
     public func anchor(inside margins: UILayoutGuide, with padding: UIEdgeInsets = .zero) -> [NSLayoutConstraint] {

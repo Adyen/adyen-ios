@@ -23,4 +23,4 @@ jobs:
     - name: Install and run typokana
       run: |
         brew install mint
-        mint run ezura/spell-checker-for-swift@5.3.0
+        Scripts/spell_check.sh

@@ -81,7 +81,7 @@ extension CardComponent {
         ///   Defaults to true.
         ///   - koreanAuthenticationMode: Indicates whether to show the security fields for South Korea issued cards.
         ///   Defaults to .auto.
-        ///   - billingAddressMode: Indicates mode of how to dispaly the billing address form.
+        ///   - billingAddressMode: Indicates mode of how to display the billing address form.
         ///   Defaults to none.
         ///   - storedCardConfiguration: Stored card configuration.
         ///   - allowedCardTypes: The enforced list of allowed card types.
