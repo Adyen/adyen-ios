@@ -20,7 +20,7 @@ internal struct JSONWebEncryptionGenerator: AnyJSONWebEncryptionGenerator {
         let contentEncryptionAlgorithm = header.contentEncryptionAlgorithm.algorithm
         
         let contentEncryptionKey = try generateRandomData(length: contentEncryptionAlgorithm.keyLength)
-        let enctyptedKey = try keyEncryptionAlgorithm.encrypt(contentEncryptionKey, withKey: publicRSAKey)
+        let encryptedKey = try keyEncryptionAlgorithm.encrypt(contentEncryptionKey, withKey: publicRSAKey)
         
         let encodedHeader = try JSONEncoder().encode(header)
         
@@ -36,7 +36,7 @@ internal struct JSONWebEncryptionGenerator: AnyJSONWebEncryptionGenerator {
         let contentEncryptionOutput = try contentEncryptionAlgorithm.encrypt(input: contentEncryptionInput)
         
         return try JSONWebEncryption(header: header,
-                                     encryptedKey: enctyptedKey,
+                                     encryptedKey: encryptedKey,
                                      encryptedPayload: contentEncryptionOutput.encryptedPayload,
                                      initializationVector: initializationVector,
                                      authenticationTag: contentEncryptionOutput.authenticationTag)

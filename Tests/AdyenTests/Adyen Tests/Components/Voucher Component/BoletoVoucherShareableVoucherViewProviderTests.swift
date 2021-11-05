@@ -32,10 +32,10 @@ class BoletoVoucherShareableVoucherViewProviderTests: XCTestCase {
             currencyCode: boletoDecoded.totalAmount.currencyCode
         ))
 
-        let expireyKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationKeyLabel")
-        XCTAssertEqual(expireyKeyLabel.text, "Expiration Date")
+        let expiryKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationKeyLabel")
+        XCTAssertEqual(expiryKeyLabel.text, "Expiration Date")
 
-        let expireyValueLable: UILabel! = sut.findView(by: "adyen.voucher.expirationValueLabel")
-        XCTAssertEqual(expireyValueLable.text, "30/05/2021")
+        let expiryValueLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationValueLabel")
+        XCTAssertEqual(expiryValueLabel.text, "30/05/2021")
     }
 }

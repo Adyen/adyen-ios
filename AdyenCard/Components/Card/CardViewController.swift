@@ -33,7 +33,7 @@ internal class CardViewController: FormViewController {
     ///   - configuration: The configurations of the `CardComponent`.
     ///   - shopperInformation: The shopper's information.
     ///   - formStyle: The style of form view controller.
-    ///   - payment: The payment object to visialise payment amount.
+    ///   - payment: The payment object to visualize payment amount.
     ///   - logoProvider: The provider for logo image URLs.
     ///   - supportedCardTypes: The list of supported cards.
     ///   - scope: The view's scope.

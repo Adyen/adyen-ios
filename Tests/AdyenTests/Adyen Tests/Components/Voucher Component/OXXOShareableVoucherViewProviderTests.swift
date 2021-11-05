@@ -34,17 +34,17 @@ class OXXOShareableVoucherViewProviderTests: XCTestCase {
             currencyCode: oxxoDecoded.totalAmount.currencyCode
         ))
 
-        let expireyKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationKeyLabel")
-        XCTAssertEqual(expireyKeyLabel.text, "Expiration Date")
+        let expiryKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationKeyLabel")
+        XCTAssertEqual(expiryKeyLabel.text, "Expiration Date")
 
-        let expireyValueLable: UILabel! = sut.findView(by: "adyen.voucher.expirationValueLabel")
-        XCTAssertEqual(expireyValueLable.text, "15/08/2021")
+        let expiryValueLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationValueLabel")
+        XCTAssertEqual(expiryValueLabel.text, "15/08/2021")
         
         let shopperReferenceKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.shopperReferenceKeyLabel")
         XCTAssertEqual(shopperReferenceKeyLabel.text, "Shopper Reference")
 
-        let shopperReferenceValueLable: UILabel! = sut.findView(by: "adyen.voucher.shopperReferenceValueLabel")
-        XCTAssertEqual(shopperReferenceValueLable.text, "Test Order Reference - iOS UIHost")
+        let shopperReferenceValueLabel: UILabel! = sut.findView(by: "adyen.voucher.shopperReferenceValueLabel")
+        XCTAssertEqual(shopperReferenceValueLabel.text, "Test Order Reference - iOS UIHost")
         
         let alternativeReferenceKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.alternativeReferenceKeyLabel")
         XCTAssertEqual(alternativeReferenceKeyLabel.text, "Alternative Reference")

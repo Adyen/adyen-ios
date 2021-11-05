@@ -24,7 +24,7 @@ internal final class FormCardExpiryDateItem: FormTextItem, Hidable {
     
     private let expiryDateValidator = CardExpiryDateValidator()
     
-    /// Inititate new instance of `FormTextInputItem`
+    /// Initiate new instance of `FormTextInputItem`
     /// - Parameter style: The `FormTextItemStyle` UI style.
     internal init(style: FormTextItemStyle = FormTextItemStyle(),
                   localizationParameters: LocalizationParameters? = nil) {

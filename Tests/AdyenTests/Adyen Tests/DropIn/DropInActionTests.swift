@@ -18,7 +18,7 @@ class DropInActionsTests: XCTestCase {
         sut = nil
     }
 
-    func testOpenRedirectAcitionOnDropIn() {
+    func testOpenRedirectActionOnDropIn() {
         let config = DropInComponent.Configuration(apiContext: Dummy.context)
         config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
 

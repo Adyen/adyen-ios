@@ -24,7 +24,7 @@ public protocol Cancellable: AnyObject {
 }
 
 /// :nodoc:
-/// Pepresents navigation bar on top of presentable components.
+/// Represents navigation bar on top of presentable components.
 public protocol AnyNavigationBar: UIView {
     
     var onCancelHandler: (() -> Void)? { get set }

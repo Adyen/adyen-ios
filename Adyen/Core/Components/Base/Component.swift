@@ -12,7 +12,7 @@ public protocol Component: APIContextAware {}
 /// :nodoc:
 extension Component {
 
-    /// Finalizes the payment if there is any, after being proccessed by payment provider.
+    /// Finalizes the payment if there is any, after being processed by payment provider.
     /// - Parameter success: The status of the payment.
     /// :nodoc:
     public func finalizeIfNeeded(with success: Bool) {
@@ -35,7 +35,7 @@ extension Component {
 /// A component that needs to be aware of the result of the payment.
 public protocol FinalizableComponent: Component {
 
-    /// Finalizes payment after being proccessed by payment provider.
+    /// Finalizes payment after being processed by payment provider.
     /// - Parameter success: The status of the payment.
     func didFinalize(with success: Bool)
 }

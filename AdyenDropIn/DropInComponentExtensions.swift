@@ -120,8 +120,8 @@ extension DropInComponent: PresentationDelegate {
 
 extension DropInComponent: FinalizableComponent {
 
-    /// Stops loading and finalise DropIn's selected payment if nececery.
-    /// This method must be called after certan payment methods (e.x. ApplePay)
+    /// Stops loading and finalize DropIn's selected payment if necessary.
+    /// This method must be called after certain payment methods (e.x. ApplePay)
     /// - Parameter success: Status of the payment.
     public func didFinalize(with success: Bool) {
         stopLoading()

@@ -21,9 +21,9 @@ public final class IBANValidator: Validator {
         }
         
         let rearrangedValue = rearrange(value)
-        let numerifiedValue = numerify(rearrangedValue)
+        let numberValue = convertToNumber(rearrangedValue)
         
-        guard let modulus = mod97(numerifiedValue) else {
+        guard let modulus = mod97(numberValue) else {
             return false
         }
         
@@ -78,7 +78,7 @@ public final class IBANValidator: Validator {
     
     /// Converts every letter in a string to a number, where A is 10, B is 11, Z is 35.
     /// All letters should be uppercased.
-    private func numerify(_ string: String) -> String {
+    private func convertToNumber(_ string: String) -> String {
         let startIndex = ("A" as UnicodeScalar).value
         let endIndex = ("Z" as UnicodeScalar).value
         let range = startIndex...endIndex

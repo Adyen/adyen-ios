@@ -46,7 +46,7 @@ extension CombinedValidator {
     }
 }
 
-/// A validator that is the logical `OR` combination of two `Validator`s.
+/// A validator that is the logical `OR` combination of two `Validator` instances.
 internal final class ORValidator: CombinedValidator {
     internal let lhs: Validator
     internal let rhs: Validator
@@ -61,7 +61,7 @@ internal final class ORValidator: CombinedValidator {
     }
 }
 
-/// A validator that is the logical `AND` combination of two `Validator`s.
+/// A validator that is the logical `AND` combination of two `Validator` instances.
 internal final class ANDValidator: CombinedValidator {
     internal let lhs: Validator
     internal let rhs: Validator

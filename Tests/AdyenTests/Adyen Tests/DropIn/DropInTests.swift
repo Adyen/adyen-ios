@@ -17,7 +17,7 @@ class DropInTests: XCTestCase {
             {
               "configuration" : {
                 "merchantDisplayName" : "TheMerchant",
-                "merchantIdentifier" : "merchant.com.mycompany.test"
+                "merchantIdentifier" : "merchant.com.myCompany.test"
               },
               "details" : [
                 {
@@ -58,7 +58,7 @@ class DropInTests: XCTestCase {
         }
         """
 
-    static let paymentMethodsOneclick =
+    static let paymentMethodsOneClick =
         """
         {
           "paymentMethods" : [
@@ -119,11 +119,11 @@ class DropInTests: XCTestCase {
         waitForExpectations(timeout: 15, handler: nil)
     }
 
-    func testOpenDropInAsOneclickPayment() {
+    func testOpenDropInAsOneClickPayment() {
         let config = DropInComponent.Configuration(apiContext: Dummy.context)
 
-        let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneclick.data(using: .utf8)!)
-        sut = DropInComponent(paymentMethods: paymenMethods, configuration: config)
+        let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneClick.data(using: .utf8)!)
+        sut = DropInComponent(paymentMethods: paymentMethods, configuration: config)
 
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root

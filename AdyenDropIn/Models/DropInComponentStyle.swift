@@ -29,7 +29,7 @@ public extension DropInComponent {
         public var actionComponent = ActionComponentStyle()
         
         /// The color for separator element.
-        /// When set, updates separator colors for all undelying styles unless the value were set previously.
+        /// When set, updates separator colors for all underlying styles unless the value were set previously.
         /// If value is nil, the default color would be used.
         public var separatorColor: UIColor? {
             didSet {

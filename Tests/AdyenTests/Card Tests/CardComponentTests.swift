@@ -359,7 +359,7 @@ class CardComponentTests: XCTestCase {
         wait(for: [expectation], timeout: 10)
     }
 
-    func testTintColorCustomisation() {
+    func testTintColorCustomization() {
         var style = FormComponentStyle(tintColor: .systemYellow)
         style.textField.title.color = .gray
 
@@ -387,7 +387,7 @@ class CardComponentTests: XCTestCase {
         wait(for: [expectation], timeout: 10)
     }
 
-    func testSuccessTintColorCustomisation() throws {
+    func testSuccessTintColorCustomization() throws {
         // Given
         var style = FormComponentStyle(tintColor: .systemYellow)
         style.textField.title.color = .gray
@@ -1260,7 +1260,7 @@ class CardComponentTests: XCTestCase {
         let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [.visa:
             InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
         let defaultInstallmentOptions = InstallmentOptions(monthValues: [3, 6, 9, 12], includesRevolving: false)
-        let config = CardComponent.Configuration(installmentConfigration: InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions, defaultOptions: defaultInstallmentOptions))
+        let config = CardComponent.Configuration(installmentConfiguration: InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions, defaultOptions: defaultInstallmentOptions))
         let cardTypeProviderMock = BinInfoProviderMock()
 
         let sut = CardComponent(paymentMethod: method,
@@ -1304,7 +1304,7 @@ class CardComponentTests: XCTestCase {
     func testInstallmentsWithDefaultOptions() {
         let method = CardPaymentMethod(type: "visa", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         let defaultInstallmentOptions = InstallmentOptions(monthValues: [3, 6, 9, 12], includesRevolving: false)
-        let config = CardComponent.Configuration(installmentConfigration: InstallmentConfiguration(defaultOptions: defaultInstallmentOptions))
+        let config = CardComponent.Configuration(installmentConfiguration: InstallmentConfiguration(defaultOptions: defaultInstallmentOptions))
         let cardTypeProviderMock = BinInfoProviderMock()
 
         let sut = CardComponent(paymentMethod: method,

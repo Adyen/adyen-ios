@@ -77,7 +77,7 @@ internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvid
                 totalAmount: boletoAction.totalAmount,
                 paymentMethodName: boletoAction.paymentMethodType.rawValue,
                 reference: boletoAction.reference,
-                fields: createBoletoVoucherfields(for: boletoAction)
+                fields: createBoletoVoucherFields(for: boletoAction)
             )
         )
     }
@@ -135,7 +135,7 @@ internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvid
          createMerchantField(with: action.merchantName)]
     }
     
-    private func createBoletoVoucherfields(for action: BoletoVoucherAction) -> [ShareableVoucherView.VoucherField] {
+    private func createBoletoVoucherFields(for action: BoletoVoucherAction) -> [ShareableVoucherView.VoucherField] {
         [createExpirationField(with: action.expiresAt)]
     }
 

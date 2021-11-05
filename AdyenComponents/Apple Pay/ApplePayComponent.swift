@@ -101,7 +101,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// :nodoc:
     public var localizationParameters: LocalizationParameters?
 
-    /// Finalizes ApplePay payment after being proccessed by payment provider.
+    /// Finalizes ApplePay payment after being processed by payment provider.
     /// - Parameter success: The status of the payment.
     public func didFinalize(with success: Bool) {
         paymentAuthorizationCompletion?(success ? .success : .failure)

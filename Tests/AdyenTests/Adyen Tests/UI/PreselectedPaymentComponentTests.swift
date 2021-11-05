@@ -108,7 +108,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
         wait(for: [expectation], timeout: 5)
     }
     
-    func testUICustomisation() {
+    func testUICustomization() {
         var formStyle = sut.style
         formStyle.backgroundColor = .green
         formStyle.separatorColor = .red

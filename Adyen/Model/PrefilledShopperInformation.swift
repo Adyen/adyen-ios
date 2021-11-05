@@ -24,7 +24,7 @@ public struct PrefilledShopperInformation: ShopperInformation {
     /// The delivery address information.
     public var deliveryAddress: PostalAddress?
     
-    /// The social secuity number
+    /// The social security number
     public var socialSecurityNumber: String?
 
     /// The card information

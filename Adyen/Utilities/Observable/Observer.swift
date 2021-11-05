@@ -86,7 +86,7 @@ public extension Observer {
         })
     }
 
-    /// Binds the subvalue of an observable to a key path.
+    /// Binds the sub-value of an observable to a key path.
     /// It will also set the current value of the observable to the key path.
     ///
     /// - Parameters:
@@ -108,7 +108,7 @@ public extension Observer {
         })
     }
 
-    /// Binds the subvalue of an observable to an optional  key path.
+    /// Binds the sub-value of an observable to an optional  key path.
     /// It will also set the current value of the observable to the key path.
     ///
     /// - Parameters:

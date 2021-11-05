@@ -11,8 +11,8 @@ import UIKit
 /// :nodoc:
 extension AdyenScope where Base: UIView {
 
-    /// Attach top, bottom, left and right anchores of this view to corespondent anchores inside specified view.
-    /// IMPORTANT: both view should be in the same hierarcy.
+    /// Attach top, bottom, left and right anchors of this view to corespondent anchors inside specified view.
+    /// IMPORTANT: both view should be in the same hierarchy.
     /// - Parameter view: Container view
     @discardableResult
     public func anchor(inside view: UIView, with padding: UIEdgeInsets = .zero) -> [NSLayoutConstraint] {

@@ -35,9 +35,9 @@ class CardDetailsTests: XCTestCase {
         XCTAssertNil(dictionary["billingAddress"])
     }
     
-    func testSerializeDeditCard() throws {
-        let paymenthMethod = CardPaymentMethodMock(fundingSource: .debit, type: "test_type", name: "test name", brands: ["barnd_1", "barnd_2"])
-        let sut = CardDetails(paymentMethod: paymenthMethod,
+    func testSerializeDebitCard() throws {
+        let paymentMethod = CardPaymentMethodMock(fundingSource: .debit, type: "test_type", name: "test name", brands: ["barnd_1", "barnd_2"])
+        let sut = CardDetails(paymentMethod: paymentMethod,
                               encryptedCard: EncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year"),
                               billingAddress: PostalAddress(postalCode: "postal"))
         let data = try JSONEncoder().encode(sut)

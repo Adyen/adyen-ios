@@ -17,7 +17,7 @@ public protocol DropInComponentDelegate: AnyObject {
     ///
     /// - Parameters:
     ///   - data: The data supplied by the drop in component, containing the filled payment method details.
-    ///   - paymentMethod: The paymen method of selected paymen component.
+    ///   - paymentMethod: The payment method of selected payment component.
     ///   - component: The drop in component in which the payment method was selected and filled.
     func didSubmit(_ data: PaymentComponentData, for paymentMethod: PaymentMethod, from component: DropInComponent)
     

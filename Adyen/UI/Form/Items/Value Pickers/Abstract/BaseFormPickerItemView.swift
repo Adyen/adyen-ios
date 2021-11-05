@@ -23,7 +23,7 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
         return pickerView
     }()
     
-    /// Toolbar above the pickerview with buttons to dismiss it.
+    /// Toolbar above the picker view with buttons to dismiss it.
     internal lazy var pickerViewToolbar: UIToolbar = {
         let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: pickerView.frame.width, height: 44))
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(handleDoneButtonTap))
@@ -83,7 +83,7 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
     }
 
     /// The main control of the picker element that
-    /// handles displaying the selected value and triggering the pickerview.
+    /// handles displaying the selected value and triggering the picker view.
     /// :nodoc:
     public lazy var inputControl: PickerTextInputControl = {
         let view = createInputControl()
