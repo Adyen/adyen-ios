@@ -1,0 +1,7 @@
+matrix:
+- name: Swift Source
+  sources:
+  - ./**/*.swift
+  aspell:
+    lang: en
+    d: en_US
