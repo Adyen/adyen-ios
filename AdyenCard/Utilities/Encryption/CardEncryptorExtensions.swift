@@ -6,7 +6,7 @@
 
 import Foundation
 
-extension CardEncryptor.Card {
+public extension CardEncryptor.Card {
     /// Encrypts the card as a token.
     ///
     /// - Parameters:
@@ -17,7 +17,7 @@ extension CardEncryptor.Card {
     ///  maybe because the card public key is an invalid one, or for any other reason.
     /// - Throws: `CardEncryptor.Error.invalidEncryptionArguments` when trying to encrypt a card with  card number, securityCode,
     /// expiryMonth, and expiryYear, all of them are nil.
-    public func encryptedToToken(publicKey: String, holderName: String?) throws -> String {
+    func encryptedToToken(publicKey: String, holderName: String?) throws -> String {
         guard !isEmpty else {
             throw CardEncryptor.Error.invalidEncryptionArguments
         }
