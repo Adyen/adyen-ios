@@ -129,7 +129,7 @@ class PollingComponentTests: XCTestCase {
 
     func testFailsWhenTwoRequestsFails() {
         let apiClient = APIClientMock()
-        let retryApiClient = RetryAPIClient(apiClient: apiClient, scheduler: SimpleScheduler(maximumCount: 3))
+        let retryApiClient = RetryAPIClient(apiClient: apiClient, scheduler: SimpleScheduler(maximumCount: 4))
         let sut = PollingComponent(apiContext: Dummy.context, apiClient: retryApiClient)
 
         let delegate = ActionComponentDelegateMock()
@@ -149,15 +149,16 @@ class PollingComponentTests: XCTestCase {
 
         sut.delegate = delegate
 
-        let result = MockedResult.failure(Dummy.error)
+        let resultPending = MockedResult.success(PaymentStatusResponse(payload: "pay load", resultCode: .pending))
+        let resultError = MockedResult.failure(Dummy.error)
 
-        apiClient.mockedResults = [result, result]
+        apiClient.mockedResults = [resultPending, resultError, resultError, resultPending]
 
         sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbway))
 
         waitForExpectations(timeout: 5, handler: nil)
 
-        XCTAssertEqual(apiClient.counter, 2)
+        XCTAssertEqual(apiClient.counter, 3)
     }
 
     func testNotRetryWhenResultIsRefused() {
