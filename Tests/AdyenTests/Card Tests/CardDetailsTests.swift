@@ -11,8 +11,8 @@ import XCTest
 class CardDetailsTests: XCTestCase {
     
     func testSerializeCreditCard() throws {
-        let paymenthMethod = CardPaymentMethodMock(fundingSource: .credit, type: "test_type", name: "test name", brands: ["barnd_1", "barnd_2"])
-        let sut = CardDetails(paymentMethod: paymenthMethod,
+        let paymentMethod = CardPaymentMethodMock(fundingSource: .credit, type: "test_type", name: "test name", brands: ["brand_1", "brand_2"])
+        let sut = CardDetails(paymentMethod: paymentMethod,
                               encryptedCard: EncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year"),
                               holderName: "holder",
                               billingAddress: PostalAddress(city: "city",
@@ -36,7 +36,7 @@ class CardDetailsTests: XCTestCase {
     }
     
     func testSerializeDebitCard() throws {
-        let paymentMethod = CardPaymentMethodMock(fundingSource: .debit, type: "test_type", name: "test name", brands: ["barnd_1", "barnd_2"])
+        let paymentMethod = CardPaymentMethodMock(fundingSource: .debit, type: "test_type", name: "test name", brands: ["brand_1", "brand_2"])
         let sut = CardDetails(paymentMethod: paymentMethod,
                               encryptedCard: EncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year"),
                               billingAddress: PostalAddress(postalCode: "postal"))

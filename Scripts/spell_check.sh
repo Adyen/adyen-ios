@@ -1,25 +1,39 @@
 #!/bin/sh
 
-IS_THERE_OUTPUT=false
-function check() {
-  touch temp_output
-  mint run ezura/spell-checker-for-swift@5.3.0 "$1" > temp_output
-  cat temp_output
-  OUTPUT=$(grep 'warning' temp_output)
-  if [[ ! -z "$OUTPUT" ]]; then
-    IS_THERE_OUTPUT=true
-  fi
-}
-check "Adyen"
-check "AdyenActions"
-check "AdyenCard"
-check "AdyenComponents"
-check "AdyenDropIn"
-check "AdyenEncryption"
-check "AdyenSwiftUI"
-check "AdyenWeChatPay"
-check "Demo"
+YELLOW='\033[1;33m'
+NOCOLOR='\033[0m'
+RED='\033[0;31m'
 
-if [[ "$IS_THERE_OUTPUT" = true ]]; then
+OUT_PUT_FILE_NAME=temp_file
+
+rm $OUT_PUT_FILE_NAME
+
+touch $OUT_PUT_FILE_NAME
+
+echo "false" > $OUT_PUT_FILE_NAME
+
+function processOutPut() {
+  while read -r line
+   do
+     if [[ $line = *"Tests.swift"* ]]; then
+       echo "${YELLOW}$line${NOCOLOR}"
+     elif [[ $line == *"warning"* ]]; then
+       echo "${RED}$line${NOCOLOR}"
+       echo "true" > $1
+     else
+       echo "$line"
+     fi
+  done
+}
+
+mint run ezura/spell-checker-for-swift@5.3.0 "--diff-only" | processOutPut $OUT_PUT_FILE_NAME
+
+SHOULD_FAIL=$(cat $OUT_PUT_FILE_NAME)
+
+rm $OUT_PUT_FILE_NAME
+
+echo $SHOULD_FAIL
+
+if [ "$SHOULD_FAIL" = true ]; then
   exit 1
 fi

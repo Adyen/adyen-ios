@@ -20,7 +20,7 @@ jobs:
         token: ${{ secrets.MANUAL_ACTION_TOKEN }}
 
 
-    - name: Install and run typokana
+    - name: Spell check
       run: |
         brew install mint
         Scripts/spell_check.sh
