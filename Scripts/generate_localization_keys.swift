@@ -40,7 +40,7 @@ func extractKeyAndTranslation(_ line: String) -> (key: String, translation: Stri
         .trimmingCharacters(in: quotationMarks)
     let translation = String(line.components(separatedBy: " = ")[1]
         .dropLast())
-            .trimmingCharacters(in: quotationMarks)
+        .trimmingCharacters(in: quotationMarks)
     return (key, translation)
 }
 
