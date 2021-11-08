@@ -22,6 +22,34 @@
       "warning": "undocumented"
     },
     {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/Adyen/UI/List/ListSection.swift",
+      "line": 9,
+      "symbol": "EditingStyle",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/Adyen/UI/List/ListSection.swift",
+      "line": 10,
+      "symbol": "EditingStyle.delete",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/Adyen/UI/List/ListSection.swift",
+      "line": 11,
+      "symbol": "EditingStyle.none",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/AdyenDropIn/DropInComponentDelegate.swift",
+      "line": 62,
+      "symbol": "StoredPaymentMethodsDelegate",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
       "file": "/Users/runner/work/adyen-ios/adyen-ios/AdyenEncryption/JOSE/Encryption Algorithms/Content Encryption Algorithms/JWAEncryptionAlgorithm.swift",
       "line": 38,
       "symbol": "EncryptionError",

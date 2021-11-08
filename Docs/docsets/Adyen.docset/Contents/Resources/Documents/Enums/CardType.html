@@ -693,6 +693,9 @@
                 <a class="nav-group-task-link" href="../Structs/PrefilledShopperInformation.html">PrefilledShopperInformation</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PrefilledShopperInformation/CardInformation.html">– CardInformation</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/PartialPaymentOrder.html">PartialPaymentOrder</a>
               </li>
               <li class="nav-group-task">
@@ -773,6 +776,30 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other%20Enums.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/EditingStyle.html">EditingStyle</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other%20Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/StoredPaymentMethodsDelegate.html">StoredPaymentMethodsDelegate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other%20Structs.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PaymentMethodListConfiguration.html">PaymentMethodListConfiguration</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -783,7 +810,7 @@
               <div class="declaration">
                 <div class="language">
                   
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">CardType</span> <span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="kt">CaseIterable</span><span class="p">,</span> <span class="kt">Codable</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">CardType</span> <span class="p">:</span> <span class="kt">RawRepresentable</span><span class="p">,</span> <span class="kt">Codable</span><span class="p">,</span> <span class="kt">Equatable</span><span class="p">,</span> <span class="kt">Hashable</span></code></pre>
 
                 </div>
               </div>
@@ -843,7 +870,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">alphaBankBonusMasterCard</span> <span class="o">=</span> <span class="s">"mcalphabankbonus"</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">alphaBankBonusMasterCard</span></code></pre>
 
                         </div>
                       </div>
@@ -870,7 +897,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">alphaBankBonusVISA</span> <span class="o">=</span> <span class="s">"visaalphabankbonus"</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">alphaBankBonusVISA</span></code></pre>
 
                         </div>
                       </div>
@@ -924,7 +951,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">americanExpress</span> <span class="o">=</span> <span class="s">"amex"</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">americanExpress</span></code></pre>
 
                         </div>
                       </div>
@@ -978,7 +1005,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">bijenkorfCard</span> <span class="o">=</span> <span class="s">"bijcard"</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">bijenkorfCard</span></code></pre>
 
                         </div>
                       </div>
@@ -1032,7 +1059,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">carteBancaire</span> <span class="o">=</span> <span class="s">"cartebancaire"</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">carteBancaire</span></code></pre>
 
                         </div>
                       </div>
@@ -1113,7 +1140,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">chinaUnionPay</span> <span class="o">=</span> <span class="s">"cup"</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">chinaUnionPay</span></code></pre>
 
                         </div>
                       </div>
@@ -1167,7 +1194,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">creditUnion24</span> <span class="o">=</span> <span class="s">"cu24"</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">creditUnion24</span></code></pre>
 
                         </div>
                       </div>
@@ -1221,7 +1248,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">dankortVISA</span> <span class="o">=</span> <span class="s">"visadankort"</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">dankortVISA</span></code></pre>
 
                         </div>
                       </div>
@@ -1437,7 +1464,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">karenMillen</span> <span class="o">=</span> <span class="s">"karenmillen"</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">karenMillen</span></code></pre>
 
                         </div>
                       </div>
@@ -1464,7 +1491,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">kcp</span> <span class="o">=</span> <span class="s">"kcp_creditcard"</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">kcp</span></code></pre>
 
                         </div>
                       </div>
@@ -1491,7 +1518,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">koreanLocalCard</span> <span class="o">=</span> <span class="s">"korean_local_card"</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">koreanLocalCard</span></code></pre>
 
                         </div>
                       </div>
@@ -1572,7 +1599,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">maestroUK</span> <span class="o">=</span> <span class="s">"maestrouk"</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">maestroUK</span></code></pre>
 
                         </div>
                       </div>
@@ -1599,7 +1626,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">masterCard</span> <span class="o">=</span> <span class="s">"mc"</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">masterCard</span></code></pre>
 
                         </div>
                       </div>
@@ -1957,6 +1984,85 @@
                     </section>
                   </div>
                 </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen8CardTypeO5otheryACSS_tcACmF"></a>
+                    <a name="//apple_ref/swift/Element/other(named:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen8CardTypeO5otheryACSS_tcACmF">other(named:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Fallback option for any other scheme name</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">other</span><span class="p">(</span><span class="nv">named</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:SY8rawValuexSg03RawB0Qz_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(rawValue:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:SY8rawValuexSg03RawB0Qz_tcfc">init(rawValue:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">rawValue</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:SY8rawValue03RawB0Qzvp"></a>
+                    <a name="//apple_ref/swift/Property/rawValue" class="dashAnchor"></a>
+                    <a class="token" href="#/s:SY8rawValue03RawB0Qzvp">rawValue</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">rawValue</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
               </ul>
             </div>
           </div>
@@ -1965,7 +2071,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2021 <a class="link" href="https://adyen.com" target="_blank" rel="external noopener">Adyen</a>. All rights reserved. (Last updated: 2021-10-13)</p>
+      <p>&copy; 2021 <a class="link" href="https://adyen.com" target="_blank" rel="external noopener">Adyen</a>. All rights reserved. (Last updated: 2021-11-08)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>
