@@ -34,13 +34,6 @@ internal final class WrapperViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - View lifecycle
-
-    override internal func viewDidLoad() {
-        super.viewDidLoad()
-        addSubviews()
-    }
-
     internal func updateFrame(keyboardRect: CGRect, animated: Bool = true) {
         guard let view = child.viewIfLoaded else { return }
         let finalFrame = child.finalPresentationFrame(with: keyboardRect)
@@ -61,14 +54,11 @@ internal final class WrapperViewController: UIViewController {
     private func setupChildViewController() {
         addChild(child)
         child.didMove(toParent: self)
-    }
-
-    private func addSubviews() {
         view.addSubview(child.view)
-        setupLayout()
+        setupChildLayout()
     }
 
-    private func setupLayout() {
+    private func setupChildLayout() {
         let childView: UIView = child.view
         childView.translatesAutoresizingMaskIntoConstraints = false
 
