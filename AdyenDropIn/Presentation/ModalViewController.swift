@@ -151,19 +151,10 @@ internal final class ModalViewController: UIViewController {
         let separatorHeight: CGFloat = 1.0 / UIScreen.main.scale
         let toolbarHeight = navigationBarHeight - separatorHeight
 
-//        stackView.adyen.anchor(inside: view)
+        stackView.adyen.anchor(inside: view)
         NSLayoutConstraint.activate([
             navBar.heightAnchor.constraint(equalToConstant: toolbarHeight),
             separator.heightAnchor.constraint(equalToConstant: separatorHeight)
-        ])
-//        stackView.adyen.anchor(inside: view.safeAreaLayoutGuide)
-
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
 }

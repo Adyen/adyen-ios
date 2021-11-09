@@ -101,7 +101,7 @@ internal final class WrapperViewController: UIViewController {
         leftConstraint?.constant = finalFrame.origin.x
         rightConstraint?.constant = -finalFrame.origin.x
         topConstraint?.constant = finalFrame.origin.y
-        view.layer.layoutIfNeeded()
+        view.layoutIfNeeded()
     }
 }
 
@@ -111,6 +111,7 @@ extension ModalViewController {
     /// e.g `viewController.adyen.finalPresentationFrame(in:keyboardRect:)`.
     /// :nodoc:
     internal func finalPresentationFrame(with keyboardRect: CGRect = .zero) -> CGRect {
+        view.layer.layoutIfNeeded()
         let expectedWidth = Dimensions.greatestPresentableWidth
         var frame = UIScreen.main.bounds
         frame.origin.x = (frame.width - expectedWidth) / 2
