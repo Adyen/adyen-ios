@@ -88,9 +88,48 @@ class PollingComponentTests: XCTestCase {
         XCTAssertEqual(apiClient.counter, 3)
     }
 
-    func testNotRetryWhenRequestFails() {
+    func testRetryWhenResultFails() {
         let apiClient = APIClientMock()
-        let retryApiClient = RetryAPIClient(apiClient: apiClient, scheduler: SimpleScheduler(maximumCount: 3))
+        let retryApiClient = RetryAPIClient(apiClient: apiClient, scheduler: SimpleScheduler(maximumCount: 5))
+        let sut = PollingComponent(apiContext: Dummy.context, apiClient: retryApiClient)
+
+        let delegate = ActionComponentDelegateMock()
+        delegate.onDidFail = { _, _ in
+            XCTFail()
+        }
+
+        let onDidProvideExpectation = expectation(description: "ActionComponentDelegate.didProvide must be called.")
+        onDidProvideExpectation.assertForOverFulfill = true
+        delegate.onDidProvide = { data, component in
+            XCTAssertTrue(component === sut)
+
+            XCTAssertEqual(data.paymentData, "data")
+            XCTAssertNotNil(data.details as? AwaitActionDetails)
+
+            let details = data.details as! AwaitActionDetails
+
+            XCTAssertEqual(details.payload, "pay load")
+
+            onDidProvideExpectation.fulfill()
+        }
+
+        sut.delegate = delegate
+
+        let resultPending = MockedResult.success(PaymentStatusResponse(payload: "pay load", resultCode: .pending))
+        let resultError = MockedResult.failure(Dummy.error)
+
+        apiClient.mockedResults = [resultPending, resultError, resultPending, resultError, resultPending]
+
+        sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbway))
+
+        waitForExpectations(timeout: 10, handler: nil)
+
+        XCTAssertEqual(apiClient.counter, 5)
+    }
+
+    func testFailsWhenTwoRequestsFails() {
+        let apiClient = APIClientMock()
+        let retryApiClient = RetryAPIClient(apiClient: apiClient, scheduler: SimpleScheduler(maximumCount: 4))
         let sut = PollingComponent(apiContext: Dummy.context, apiClient: retryApiClient)
 
         let delegate = ActionComponentDelegateMock()
@@ -110,15 +149,16 @@ class PollingComponentTests: XCTestCase {
 
         sut.delegate = delegate
 
-        let result = MockedResult.failure(Dummy.error)
+        let resultPending = MockedResult.success(PaymentStatusResponse(payload: "pay load", resultCode: .pending))
+        let resultError = MockedResult.failure(Dummy.error)
 
-        apiClient.mockedResults = [result]
+        apiClient.mockedResults = [resultPending, resultError, resultError, resultPending]
 
         sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbway))
 
         waitForExpectations(timeout: 5, handler: nil)
 
-        XCTAssertEqual(apiClient.counter, 1)
+        XCTAssertEqual(apiClient.counter, 3)
     }
 
     func testNotRetryWhenResultIsRefused() {
