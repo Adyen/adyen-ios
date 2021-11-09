@@ -112,7 +112,6 @@ extension ModalViewController {
         guard preferredContentSize != .zero else { return frame }
 
         let bottomPadding = max(abs(keyboardRect.height), view.safeAreaInsets.bottom)
-        print("Bottom padding: \(view.safeAreaInsets)")
         let expectedHeight = preferredContentSize.height + bottomPadding
 
         func calculateFrame(for expectedHeight: CGFloat) {
