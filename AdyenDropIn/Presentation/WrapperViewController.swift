@@ -53,8 +53,8 @@ internal final class WrapperViewController: UIViewController {
 
     private func setupChildViewController() {
         addChild(child)
-        child.didMove(toParent: self)
         view.addSubview(child.view)
+        child.didMove(toParent: self)
         setupChildLayout()
     }
 
