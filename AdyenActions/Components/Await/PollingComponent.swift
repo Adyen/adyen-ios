@@ -12,6 +12,12 @@ import Foundation
 /// A specific await component thats keeps polling the `/status` endpoint to check the payment status.
 internal final class PollingComponent: AnyPollingHandler {
     
+    private let maxErrorNumber = 1
+
+    private let apiClient: AnyRetryAPIClient
+
+    private var errorCount = 0
+
     /// :nodoc:
     internal let apiContext: APIContext
     
@@ -23,9 +29,6 @@ internal final class PollingComponent: AnyPollingHandler {
     
     /// :nodoc:
     internal let componentName = "mbWayAwait"
-    
-    /// :nodoc:
-    private let apiClient: AnyRetryAPIClient
     
     /// :nodoc:
     /// Initializes the Polling Await component.
@@ -61,6 +64,7 @@ internal final class PollingComponent: AnyPollingHandler {
     /// - Parameter action: The action object.
     private func startPolling(_ action: PaymentDataAware) {
         isCancelled = false
+        errorCount = 0
         let request = PaymentStatusRequest(paymentData: action.paymentData)
         
         apiClient.perform(request, shouldRetry: { [weak self] result in
@@ -80,9 +84,11 @@ internal final class PollingComponent: AnyPollingHandler {
         guard !isCancelled else { return false }
         switch result {
         case let .success(response):
+            errorCount = 0
             return shouldRetry(response, paymentData: paymentData)
         case .failure:
-            return false
+            errorCount += 1
+            return errorCount <= maxErrorNumber
         }
     }
     
