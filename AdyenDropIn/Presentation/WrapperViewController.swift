@@ -68,9 +68,8 @@ internal final class WrapperViewController: UIViewController {
         setupLayout()
     }
 
-    fileprivate func setupLayout() {
+    private func setupLayout() {
         let childView: UIView = child.view
-
         childView.translatesAutoresizingMaskIntoConstraints = false
 
         let topConstraint = childView.topAnchor.constraint(equalTo: view.topAnchor)
@@ -102,7 +101,6 @@ internal final class WrapperViewController: UIViewController {
         leftConstraint?.constant = finalFrame.origin.x
         rightConstraint?.constant = -finalFrame.origin.x
         topConstraint?.constant = finalFrame.origin.y
-//        view.layoutIfNeeded()
         view.layer.layoutIfNeeded()
     }
 }
