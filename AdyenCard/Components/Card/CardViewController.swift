@@ -230,7 +230,7 @@ internal class CardViewController: FormViewController {
             items.billingAddressItem.value = billingAddress
             billingAddress.postalCode.map { items.postalCodeItem.value = $0 }
         }
-        shopperInformation.card.map { items.holderNameItem.value = $0.holdername }
+        shopperInformation.card.map { items.holderNameItem.value = $0.holderName }
         shopperInformation.socialSecurityNumber.map { items.socialSecurityNumberItem.value = $0 }
     }
 

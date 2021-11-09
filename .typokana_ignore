@@ -8,6 +8,13 @@ prefill
 docs.adyen.com
 Cartebancaire
 cartebancaire
+<<<<<<< HEAD
+=======
+americanExpress
+Forbrugsforeningen
+visadankort
+dankort
+>>>>>>> df6ae40b (chore: Adds exception to typokana_ignore file)
 Sdk
 sdk
 bcmc
