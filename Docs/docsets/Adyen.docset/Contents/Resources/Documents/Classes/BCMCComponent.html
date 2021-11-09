@@ -26,15 +26,15 @@
         
       </p>
     
-      <p class="header-col--secondary">
+      <div class="header-col--secondary">
         <form role="search" action="../search.json">
           <input type="text" placeholder="Search documentation" data-typeahead>
         </form>
-      </p>
+      </div>
     
         <p class="header-col header-col--secondary">
           <a class="header-link" href="https://github.com/Adyen/adyen-ios">
-            <img class="header-icon" src="../img/gh.png"/>
+            <img class="header-icon" src="../img/gh.png" alt="GitHub"/>
             View on GitHub
           </a>
         </p>
@@ -43,7 +43,7 @@
 
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html">Adyen Reference</a>
-      <img class="carat" src="../img/carat.png" />
+      <img class="carat" src="../img/carat.png" alt=""/>
       BCMCComponent Class Reference
     </p>
 
@@ -540,6 +540,14 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other%20Global%20Variables.html">Other Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Global%20Variables.html#/s:5Adyen18threeDS2SdkVersionSSvp">threeDS2SdkVersion</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -665,7 +673,7 @@ Defaults to true.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@available</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">deprecated</span><span class="p">,</span> <span class="nv">message</span><span class="p">:</span> <span class="s">" The `showsLargeTitle` property is deprecated.</span><span class="se">\n</span><span class="s"> For Component title, please, introduce your own lable implementation.</span><span class="se">\n</span><span class="s"> You can access componet's title from `viewController.title`."</span><span class="p">)</span>
+                          <pre class="highlight swift"><code><span class="kd">@available(*, deprecated, message: " The `showsLargeTitle` property is deprecated.\n For Component title, please, introduce your own lable implementation.\n You can access componet's title from `viewController.title`.")</span>
 <span class="kd">public</span> <span class="k">var</span> <span class="nv">showsLargeTitle</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
@@ -774,7 +782,7 @@ Defaults to true.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="nv">paymentMethod</span><span class="p">:</span> <span class="kt"><a href="../Structs/BCMCPaymentMethod.html">BCMCPaymentMethod</a></span><span class="p">,</span>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="n">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="nv">paymentMethod</span><span class="p">:</span> <span class="kt"><a href="../Structs/BCMCPaymentMethod.html">BCMCPaymentMethod</a></span><span class="p">,</span>
                         <span class="nv">clientKey</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
                         <span class="nv">style</span><span class="p">:</span> <span class="kt"><a href="../Structs/FormComponentStyle.html">FormComponentStyle</a></span> <span class="o">=</span> <span class="kt"><a href="../Structs/FormComponentStyle.html">FormComponentStyle</a></span><span class="p">())</span></code></pre>
 
@@ -835,7 +843,7 @@ See <a href="https://docs.adyen.com/user-management/client-side-authentication">
                 <a name="//apple_ref/swift/Section/Presentable Component Protocol" class="dashAnchor"></a>
                 <div class="section-name-container">
                   <a class="section-name-link" href="#/Presentable%20Component%20Protocol"></a>
-                  <h3 class="section-name"><p>Presentable Component Protocol</p>
+                  <h3 class="section-name"><span>Presentable Component Protocol</span>
 </h3>
                 </div>
               </div>
@@ -960,9 +968,8 @@ See <a href="https://docs.adyen.com/user-management/client-side-authentication">
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2021 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2021-10-13)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.5</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+      <p>&copy; 2021 <a class="link" href="https://adyen.com" target="_blank" rel="external noopener">Adyen</a>. All rights reserved. (Last updated: 2021-11-08)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>
-</div>
 </html>
