@@ -89,11 +89,11 @@ public extension ApplePayComponent {
             if #available(iOS 14.0, *) {
                 networks.append(.girocard)
             }
-            
+
             if #available(iOS 12.1.1, *) {
                 networks.append(.elo)
             }
-          
+
             if #available(iOS 12.0, *) {
                 networks.append(.maestro)
                 networks.append(.electron)
