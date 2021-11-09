@@ -6,6 +6,8 @@
 
 import Foundation
 
+/// The editing style.
+/// :nodoc:
 public enum EditingStyle {
     case delete
     case none
