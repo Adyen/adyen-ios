@@ -16,6 +16,8 @@ custom_categories:
     children:
       - DropInComponent
       - DropInComponentDelegate
+      - PaymentMethodListConfiguration
+      - StoredPaymentMethodsDelegate
       
   - name: Styling
     children:
@@ -257,6 +259,7 @@ custom_categories:
       - PaymentComponentDelegate
       - PresentationDelegate
       - PartialPaymentDelegate
+      - StoredPaymentMethodsDelegate
       
   - name: Models
     children:
