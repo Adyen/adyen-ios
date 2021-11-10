@@ -68,6 +68,12 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/DropInComponentDelegate.html">DropInComponentDelegate</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PaymentMethodListConfiguration.html">PaymentMethodListConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/StoredPaymentMethodsDelegate.html">StoredPaymentMethodsDelegate</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -693,6 +699,9 @@
                 <a class="nav-group-task-link" href="../Structs/PrefilledShopperInformation.html">PrefilledShopperInformation</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PrefilledShopperInformation/CardInformation.html">– CardInformation</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/PartialPaymentOrder.html">PartialPaymentOrder</a>
               </li>
               <li class="nav-group-task">
@@ -942,6 +951,33 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:5Adyen13CardComponentC18shopperInformationAA016PrefilledShopperE0VSgvp"></a>
+                    <a name="//apple_ref/swift/Property/shopperInformation" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen13CardComponentC18shopperInformationAA016PrefilledShopperE0VSgvp">shopperInformation</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The shopper&rsquo;s information to be prefilled.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">shopperInformation</span><span class="p">:</span> <span class="kt"><a href="../Structs/PrefilledShopperInformation.html">PrefilledShopperInformation</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:5Adyen13CardComponentC8delegateAA07PaymentC8Delegate_pSgvp"></a>
                     <a name="//apple_ref/swift/Property/delegate" class="dashAnchor"></a>
                     <a class="token" href="#/s:5Adyen13CardComponentC8delegateAA07PaymentC8Delegate_pSgvp">delegate</a>
@@ -996,9 +1032,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:5Adyen13CardComponentC13paymentMethod10apiContext13configuration5styleAcA03Anyb7PaymentE0_p_AA10APIContextVAC13ConfigurationVAA04FormC5StyleVtcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(paymentMethod:apiContext:configuration:style:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen13CardComponentC13paymentMethod10apiContext13configuration5styleAcA03Anyb7PaymentE0_p_AA10APIContextVAC13ConfigurationVAA04FormC5StyleVtcfc">init(paymentMethod:<wbr>apiContext:<wbr>configuration:<wbr>style:<wbr>)</a>
+                    <a name="/s:5Adyen13CardComponentC13paymentMethod10apiContext13configuration18shopperInformation5styleAcA03Anyb7PaymentE0_p_AA10APIContextVAC13ConfigurationVAA016PrefilledShopperJ0VSgAA04FormC5StyleVtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(paymentMethod:apiContext:configuration:shopperInformation:style:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen13CardComponentC13paymentMethod10apiContext13configuration18shopperInformation5styleAcA03Anyb7PaymentE0_p_AA10APIContextVAC13ConfigurationVAA016PrefilledShopperJ0VSgAA04FormC5StyleVtcfc">init(paymentMethod:<wbr>apiContext:<wbr>configuration:<wbr>shopperInformation:<wbr>style:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1016,6 +1052,7 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="n">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="nv">paymentMethod</span><span class="p">:</span> <span class="kt"><a href="../Protocols/AnyCardPaymentMethod.html">AnyCardPaymentMethod</a></span><span class="p">,</span>
                         <span class="nv">apiContext</span><span class="p">:</span> <span class="kt"><a href="../Structs/APIContext.html">APIContext</a></span><span class="p">,</span>
                         <span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Classes/CardComponent/Configuration.html">Configuration</a></span> <span class="o">=</span> <span class="kt"><a href="../Classes/CardComponent/Configuration.html">Configuration</a></span><span class="p">(),</span>
+                        <span class="nv">shopperInformation</span><span class="p">:</span> <span class="kt"><a href="../Structs/PrefilledShopperInformation.html">PrefilledShopperInformation</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
                         <span class="nv">style</span><span class="p">:</span> <span class="kt"><a href="../Structs/FormComponentStyle.html">FormComponentStyle</a></span> <span class="o">=</span> <span class="kt"><a href="../Structs/FormComponentStyle.html">FormComponentStyle</a></span><span class="p">())</span></code></pre>
 
                         </div>
@@ -1057,6 +1094,18 @@
                               <td>
                                 <div>
                                   <p>The configuration of the component.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>shopperInformation</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The shopper&rsquo;s information, optional.</p>
                                 </div>
                               </td>
                             </tr>
@@ -1170,7 +1219,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2021 <a class="link" href="https://adyen.com" target="_blank" rel="external noopener">Adyen</a>. All rights reserved. (Last updated: 2021-10-13)</p>
+      <p>&copy; 2021 <a class="link" href="https://adyen.com" target="_blank" rel="external noopener">Adyen</a>. All rights reserved. (Last updated: 2021-11-10)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>
