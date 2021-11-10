@@ -15,7 +15,7 @@ echo "false" > $OUT_PUT_FILE_NAME
 function processOutPut() {
   while read -r line
    do
-     if [[ $line = *"Tests.swift"* ]]; then
+     if [[ $line = *"Test"* ]]; then
        echo "${YELLOW}$line${NOCOLOR}"
      elif [[ $line == *"warning"* ]]; then
        echo "${RED}$line${NOCOLOR}"
@@ -26,7 +26,19 @@ function processOutPut() {
   done
 }
 
-mint run ezura/spell-checker-for-swift@5.3.0 "--diff-only" | processOutPut $OUT_PUT_FILE_NAME
+export PATH=~/.mint/bin:$PATH
+
+mint install ezura/spell-checker-for-swift@5.3.0
+
+typokana "Adyen" | processOutPut $OUT_PUT_FILE_NAME
+typokana "AdyenActions" | processOutPut $OUT_PUT_FILE_NAME
+typokana "AdyenCard" | processOutPut $OUT_PUT_FILE_NAME
+typokana "AdyenComponents" | processOutPut $OUT_PUT_FILE_NAME
+typokana "AdyenDropIn" | processOutPut $OUT_PUT_FILE_NAME
+typokana "AdyenEncryption" | processOutPut $OUT_PUT_FILE_NAME
+typokana "AdyenSwiftUI" | processOutPut $OUT_PUT_FILE_NAME
+typokana "AdyenWeChatPay" | processOutPut $OUT_PUT_FILE_NAME
+typokana "Demo" | processOutPut $OUT_PUT_FILE_NAME
 
 SHOULD_FAIL=$(cat $OUT_PUT_FILE_NAME)
 
