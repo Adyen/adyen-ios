@@ -161,7 +161,6 @@ class ComponentManagerTests: XCTestCase {
                                    style: DropInComponent.Style(),
                                    order: nil)
 
-
         // When
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == "affirm" })
 
@@ -217,7 +216,7 @@ class ComponentManagerTests: XCTestCase {
                                    order: nil)
 
         // When
-        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == "econtext_online"})
+        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == "econtext_online" })
 
         // Then
         let basicPersonalInfoFormComponent = try XCTUnwrap(paymentComponent as? BasicPersonalInfoFormComponent)
@@ -259,7 +258,6 @@ class ComponentManagerTests: XCTestCase {
         let cardComponent = try XCTUnwrap(paymentComponent as? CardComponent)
         XCTAssertNotNil(cardComponent.shopperInformation)
     }
-
 
     // MARK: - Private
 
