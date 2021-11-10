@@ -9,20 +9,24 @@ import UIKit
 
 internal final class WrapperViewController: UIViewController {
 
+    // MARK: - Properties
+
     private var topConstraint: NSLayoutConstraint?
     private var bottomConstraint: NSLayoutConstraint?
     private var rightConstraint: NSLayoutConstraint?
     private var leftConstraint: NSLayoutConstraint?
 
-    internal lazy var requiresKeyboardInput: Bool = heirarchyRequiresKeyboardInput(viewController: child)
+    internal lazy var requiresKeyboardInput: Bool = hierarchyRequiresKeyboardInput(viewController: child)
 
     internal let child: ModalViewController
+
+    // MARK: - Initializers
 
     internal init(child: ModalViewController) {
         self.child = child
         super.init(nibName: nil, bundle: nil)
 
-        positionContent(child)
+        setupChildViewController()
     }
 
     @available(*, unavailable)
@@ -30,14 +34,6 @@ internal final class WrapperViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func heirarchyRequiresKeyboardInput(viewController: UIViewController?) -> Bool {
-        if let viewController = viewController as? FormViewController {
-            return viewController.requiresKeyboardInput
-        }
-
-        return viewController?.children.contains(where: { heirarchyRequiresKeyboardInput(viewController: $0) }) ?? false
-    }
-    
     internal func updateFrame(keyboardRect: CGRect, animated: Bool = true) {
         guard let view = child.viewIfLoaded else { return }
         let finalFrame = child.finalPresentationFrame(with: keyboardRect)
@@ -52,6 +48,43 @@ internal final class WrapperViewController: UIViewController {
                                                                self?.update(finalFrame: finalFrame)
                                                            }))
     }
+
+    // MARK: - Private
+
+    private func setupChildViewController() {
+        addChild(child)
+        view.addSubview(child.view)
+        child.didMove(toParent: self)
+        setupChildLayout()
+    }
+
+    private func setupChildLayout() {
+        let childView: UIView = child.view
+        childView.translatesAutoresizingMaskIntoConstraints = false
+
+        let topConstraint = childView.topAnchor.constraint(equalTo: view.topAnchor)
+        let bottomConstraint = childView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        let leftConstraint = childView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+        let rightConstraint = childView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+
+        NSLayoutConstraint.activate([leftConstraint,
+                                     rightConstraint,
+                                     bottomConstraint,
+                                     topConstraint])
+
+        self.topConstraint = topConstraint
+        self.bottomConstraint = bottomConstraint
+        self.leftConstraint = leftConstraint
+        self.rightConstraint = rightConstraint
+    }
+
+    private func hierarchyRequiresKeyboardInput(viewController: UIViewController?) -> Bool {
+        if let viewController = viewController as? FormViewController {
+            return viewController.requiresKeyboardInput
+        }
+
+        return viewController?.children.contains(where: { hierarchyRequiresKeyboardInput(viewController: $0) }) ?? false
+    }
     
     private func update(finalFrame: CGRect) {
         guard let view = child.viewIfLoaded else { return }
@@ -60,28 +93,6 @@ internal final class WrapperViewController: UIViewController {
         topConstraint?.constant = finalFrame.origin.y
         view.layoutIfNeeded()
     }
-
-    fileprivate func positionContent(_ child: ModalViewController) {
-        addChild(child)
-        view.addSubview(child.view)
-        child.didMove(toParent: self)
-        child.view.translatesAutoresizingMaskIntoConstraints = false
-        let topConstraint = child.view.topAnchor.constraint(equalTo: view.topAnchor, constant: 0)
-        let bottomConstraint = child.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        let leftConstraint = child.view.leadingAnchor.constraint(equalTo: view.leadingAnchor)
-        let rightConstraint = child.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        NSLayoutConstraint.activate([
-            leftConstraint,
-            rightConstraint,
-            bottomConstraint,
-            topConstraint
-        ])
-        self.topConstraint = topConstraint
-        self.bottomConstraint = bottomConstraint
-        self.leftConstraint = leftConstraint
-        self.rightConstraint = rightConstraint
-    }
-
 }
 
 extension ModalViewController {
@@ -90,6 +101,7 @@ extension ModalViewController {
     /// e.g `viewController.adyen.finalPresentationFrame(in:keyboardRect:)`.
     /// :nodoc:
     internal func finalPresentationFrame(with keyboardRect: CGRect = .zero) -> CGRect {
+        view.layer.layoutIfNeeded()
         let expectedWidth = Dimensions.greatestPresentableWidth
         var frame = UIScreen.main.bounds
         frame.origin.x = (frame.width - expectedWidth) / 2
