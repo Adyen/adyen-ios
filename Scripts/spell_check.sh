@@ -32,8 +32,6 @@ SHOULD_FAIL=$(cat $OUT_PUT_FILE_NAME)
 
 rm $OUT_PUT_FILE_NAME
 
-echo $SHOULD_FAIL
-
 if [ "$SHOULD_FAIL" = true ]; then
   exit 1
 fi
