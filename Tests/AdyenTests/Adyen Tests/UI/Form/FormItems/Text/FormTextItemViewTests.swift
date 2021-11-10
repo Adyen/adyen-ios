@@ -5,8 +5,8 @@
 //
 
 @testable import Adyen
-import XCTest
 import AdyenCard
+import XCTest
 
 class FormTextItemViewTests: XCTestCase {
     
@@ -174,7 +174,7 @@ class FormTextItemViewTests: XCTestCase {
         let validator = CardNumberValidator(isLuhnCheckEnabled: false, isEnteredBrandSupported: false)
         let formatter = CardNumberFormatter()
         item.validator = validator
-        item.formatter =  formatter
+        item.formatter = formatter
         sut = FormTextItemView(item: item)
 
         let expectedItemValue = "22224000"
