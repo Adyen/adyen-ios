@@ -1,6 +1,13 @@
 {
   "warnings": [
     {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/Adyen/Formatters/Formatter.swift",
+      "line": 20,
+      "symbol": "Sanitizer",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
       "file": "/Users/runner/work/adyen-ios/adyen-ios/Adyen/Model/Installments.swift",
       "line": 12,
       "symbol": "Installments.Plan",
