@@ -6,8 +6,8 @@
 //  Copyright © 2021 Adyen. All rights reserved.
 //
 
-import Foundation
 @testable import AdyenDropIn
+import Foundation
 
 internal final class PaymentMethodListComponentDelegateMock: PaymentMethodListComponentDelegate {
     
@@ -22,6 +22,5 @@ internal final class PaymentMethodListComponentDelegateMock: PaymentMethodListCo
     func didDelete(_ paymentMethod: StoredPaymentMethod, in paymentMethodListComponent: PaymentMethodListComponent, completion: @escaping Completion<Bool>) {
         onDidDelete?(paymentMethod, paymentMethodListComponent, completion)
     }
-    
     
 }

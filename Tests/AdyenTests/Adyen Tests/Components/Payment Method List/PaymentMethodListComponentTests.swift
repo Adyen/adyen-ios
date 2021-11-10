@@ -104,7 +104,7 @@ class PaymentMethodListComponentTests: XCTestCase {
         
         XCTAssertEqual(sut.listViewController.tableView.visibleCells.count, 1)
         XCTAssertEqual(sut.componentSections.count, 1)
-        XCTAssertEqual(sut.componentSections.flatMap(\.components).map(\.paymentMethod.name).reduce("", { result, element in result + element }), regularComponent.paymentMethod.name)
+        XCTAssertEqual(sut.componentSections.flatMap(\.components).map(\.paymentMethod.name).reduce("") { result, element in result + element }, regularComponent.paymentMethod.name)
 
     }
     
@@ -145,7 +145,7 @@ class PaymentMethodListComponentTests: XCTestCase {
         
         XCTAssertEqual(sut.listViewController.tableView.visibleCells.count, 2)
         XCTAssertEqual(sut.componentSections.count, 2)
-        XCTAssertEqual(sut.componentSections.flatMap(\.components).map(\.paymentMethod.name).reduce("", { result, element in result + element }), storedComponent.paymentMethod.name + regularComponent.paymentMethod.name)
+        XCTAssertEqual(sut.componentSections.flatMap(\.components).map(\.paymentMethod.name).reduce("") { result, element in result + element }, storedComponent.paymentMethod.name + regularComponent.paymentMethod.name)
 
     }
     
