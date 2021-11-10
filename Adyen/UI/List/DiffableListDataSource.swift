@@ -7,7 +7,7 @@
 import UIKit
 
 @available(iOS 13.0, *)
-internal final class DiffableDataSource: UITableViewDiffableDataSource<ListSection, ListItem>, ListViewControllerDataSource {
+internal final class DiffableListDataSource: UITableViewDiffableDataSource<ListSection, ListItem>, ListViewControllerDataSource {
     internal var cellReuseIdentifier: String { coreDataSource.cellReuseIdentifier }
     
     private typealias DataSnapshot = NSDiffableDataSourceSnapshot<ListSection, ListItem>
@@ -17,7 +17,7 @@ internal final class DiffableDataSource: UITableViewDiffableDataSource<ListSecti
         set { coreDataSource.sections = newValue }
     }
     
-    private let coreDataSource = CoreDataSource()
+    private let coreDataSource = CoreListDataSource()
     
     // MARK: - UITableViewDataSource
     
@@ -108,11 +108,11 @@ internal final class DiffableDataSource: UITableViewDiffableDataSource<ListSecti
 
 extension Array where Element == ListSection {
     internal var isEditable: Bool {
-        first(where: { $0.header?.editingStyle != EditinStyle.none }) != nil
+        contains(where: \.isEditable)
     }
     
     internal mutating func deleteItem(at indexPath: IndexPath) {
         self[indexPath.section].deleteItem(index: indexPath.item)
-        self = self.filter { !$0.items.isEmpty }
+        self = self.filter { $0.items.isEmpty == false }
     }
 }

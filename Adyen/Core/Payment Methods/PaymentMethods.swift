@@ -18,7 +18,7 @@ public struct PaymentMethods: Decodable {
     public var paid: [PaymentMethod] = []
     
     /// The regular payment methods.
-    public var regular: [PaymentMethod]
+    public let regular: [PaymentMethod]
     
     /// The stored payment methods.
     public var stored: [StoredPaymentMethod]
