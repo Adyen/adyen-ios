@@ -415,7 +415,7 @@
 		F924C072246BEEF0006DDAB8 /* CardDetailsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F924C071246BEEF0006DDAB8 /* CardDetailsTests.swift */; };
 		F924C074246C2E0B006DDAB8 /* LazyOptional.swift in Sources */ = {isa = PBXBuildFile; fileRef = F924C073246C2E0B006DDAB8 /* LazyOptional.swift */; };
 		F924C079246C38E0006DDAB8 /* SecuredViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F924C078246C38E0006DDAB8 /* SecuredViewController.swift */; };
-		F926D52023F4217A00D058D3 /* DeviceDependant.swift in Sources */ = {isa = PBXBuildFile; fileRef = F926D51F23F4217A00D058D3 /* DeviceDependant.swift */; };
+		F926D52023F4217A00D058D3 /* DeviceDependent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F926D51F23F4217A00D058D3 /* DeviceDependent.swift */; };
 		F926D52323F5555A00D058D3 /* AdyenWeChatPay.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F926D52423F555A900D058D3 /* AdyenWeChatPay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */; };
 		F926D52C23F59ABE00D058D3 /* QiwiWalletPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F926D52B23F59ABE00D058D3 /* QiwiWalletPaymentMethod.swift */; };
@@ -1281,7 +1281,7 @@
 		F924C071246BEEF0006DDAB8 /* CardDetailsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailsTests.swift; sourceTree = "<group>"; };
 		F924C073246C2E0B006DDAB8 /* LazyOptional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyOptional.swift; sourceTree = "<group>"; };
 		F924C078246C38E0006DDAB8 /* SecuredViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuredViewController.swift; sourceTree = "<group>"; };
-		F926D51F23F4217A00D058D3 /* DeviceDependant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDependant.swift; sourceTree = "<group>"; };
+		F926D51F23F4217A00D058D3 /* DeviceDependent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDependent.swift; sourceTree = "<group>"; };
 		F926D52B23F59ABE00D058D3 /* QiwiWalletPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QiwiWalletPaymentMethod.swift; sourceTree = "<group>"; };
 		F926D52E23F5A31200D058D3 /* QiwiWalletComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QiwiWalletComponent.swift; sourceTree = "<group>"; };
 		F926D53223F5A5D000D058D3 /* NumericStringValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumericStringValidator.swift; sourceTree = "<group>"; };
@@ -3057,7 +3057,7 @@
 				F9620DB123C75886005209FC /* PaymentComponentBuilder.swift */,
 				F9FE25D52626CD49001874BB /* ReadyToSubmitPaymentComponentDelegate.swift */,
 				F9639B2324DC38460073F38A /* PresentationDelegate.swift */,
-				F926D51F23F4217A00D058D3 /* DeviceDependant.swift */,
+				F926D51F23F4217A00D058D3 /* DeviceDependent.swift */,
 				F9FE252E2625AE8C001874BB /* PartialPaymentDelegate.swift */,
 			);
 			path = "Core Protocols";
@@ -4637,7 +4637,7 @@
 				F9E441522382A0DD00D3CD48 /* ViewIdentifierBuilder.swift in Sources */,
 				E28098B3220DA7980087928F /* Component.swift in Sources */,
 				F95B6D8E25231715002C9062 /* RegularExpressionValidator.swift in Sources */,
-				F926D52023F4217A00D058D3 /* DeviceDependant.swift in Sources */,
+				F926D52023F4217A00D058D3 /* DeviceDependent.swift in Sources */,
 				F9A6C4BB2657AFF600D8CD3E /* FormSpacerItem.swift in Sources */,
 				F9D5753123828EBB009C18B5 /* AnyCardPaymentMethod.swift in Sources */,
 				E2B317A92265EBD200C1BB30 /* EventPublisher.swift in Sources */,
