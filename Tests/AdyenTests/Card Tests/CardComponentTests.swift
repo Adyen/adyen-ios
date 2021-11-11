@@ -359,7 +359,7 @@ class CardComponentTests: XCTestCase {
         wait(for: [expectation], timeout: 10)
     }
 
-    func testTintColorCustomisation() {
+    func testTintColorCustomization() {
         var style = FormComponentStyle(tintColor: .systemYellow)
         style.textField.title.color = .gray
 
@@ -387,7 +387,7 @@ class CardComponentTests: XCTestCase {
         wait(for: [expectation], timeout: 10)
     }
 
-    func testSuccessTintColorCustomisation() throws {
+    func testSuccessTintColorCustomization() throws {
         // Given
         var style = FormComponentStyle(tintColor: .systemYellow)
         style.textField.title.color = .gray
@@ -1260,7 +1260,7 @@ class CardComponentTests: XCTestCase {
         let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [.visa:
             InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
         let defaultInstallmentOptions = InstallmentOptions(monthValues: [3, 6, 9, 12], includesRevolving: false)
-        let config = CardComponent.Configuration(installmentConfigration: InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions, defaultOptions: defaultInstallmentOptions))
+        let config = CardComponent.Configuration(installmentConfiguration: InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions, defaultOptions: defaultInstallmentOptions))
         let cardTypeProviderMock = BinInfoProviderMock()
 
         let sut = CardComponent(paymentMethod: method,
@@ -1304,7 +1304,7 @@ class CardComponentTests: XCTestCase {
     func testInstallmentsWithDefaultOptions() {
         let method = CardPaymentMethod(type: "visa", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         let defaultInstallmentOptions = InstallmentOptions(monthValues: [3, 6, 9, 12], includesRevolving: false)
-        let config = CardComponent.Configuration(installmentConfigration: InstallmentConfiguration(defaultOptions: defaultInstallmentOptions))
+        let config = CardComponent.Configuration(installmentConfiguration: InstallmentConfiguration(defaultOptions: defaultInstallmentOptions))
         let cardTypeProviderMock = BinInfoProviderMock()
 
         let sut = CardComponent(paymentMethod: method,
@@ -1342,7 +1342,7 @@ class CardComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: "visa", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [.visa:
             InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
-        let config = CardComponent.Configuration(installmentConfigration: InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions))
+        let config = CardComponent.Configuration(installmentConfiguration: InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions))
         let cardTypeProviderMock = BinInfoProviderMock()
 
         let sut = CardComponent(paymentMethod: method,
@@ -1678,7 +1678,7 @@ class CardComponentTests: XCTestCase {
         let view: UIView = prefilledSut.cardViewController.view
 
         let holdernameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.holdername))
-        let expectedHoldername = try XCTUnwrap(shopperInformation.card?.holdername)
+        let expectedHoldername = try XCTUnwrap(shopperInformation.card?.holderName)
         let holdername = holdernameView.item.value
         XCTAssertEqual(expectedHoldername, holdername)
 
@@ -1717,7 +1717,7 @@ class CardComponentTests: XCTestCase {
         let view: UIView = prefilledSut.cardViewController.view
 
         let holdernameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.holdername))
-        let expectedHoldername = try XCTUnwrap(shopperInformation.card?.holdername)
+        let expectedHoldername = try XCTUnwrap(shopperInformation.card?.holderName)
         let holdername = holdernameView.item.value
         XCTAssertEqual(expectedHoldername, holdername)
 
@@ -1825,7 +1825,7 @@ class CardComponentTests: XCTestCase {
                                                              billingAddress: billingAddress,
                                                              deliveryAddress: deliveryAddress,
                                                              socialSecurityNumber: "78542134370",
-                                                             card: .init(holdername: "Katrina del Mar"))
+                                                             card: .init(holderName: "Katrina del Mar"))
         return shopperInformation
     }
 }

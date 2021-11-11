@@ -53,9 +53,9 @@ public final class CardExpiryDateValidator: Validator {
         expiryDateComponents.month = month
         expiryDateComponents.year = year
         expiryDateComponents.day = 1
-        guard let beginingOfMonthDate = calendar.date(from: expiryDateComponents) else { return nil }
-        guard let beginingNextMonthDate = calendar.date(byAdding: .month, value: 1, to: beginingOfMonthDate) else { return nil }
-        guard let endOfMonthDate = calendar.date(byAdding: .day, value: -1, to: beginingNextMonthDate) else { return nil }
+        guard let beginningOfMonthDate = calendar.date(from: expiryDateComponents) else { return nil }
+        guard let beginningNextMonthDate = calendar.date(byAdding: .month, value: 1, to: beginningOfMonthDate) else { return nil }
+        guard let endOfMonthDate = calendar.date(byAdding: .day, value: -1, to: beginningNextMonthDate) else { return nil }
         
         return endOfMonthDate
     }

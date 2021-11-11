@@ -13,7 +13,7 @@ public final class ADYViewController: UIViewController {
     /// :nodoc:
     private let contentView: UIView
     
-    /// Initializes the `ADYViewController` instance with given view and an optinal title
+    /// Initializes the `ADYViewController` instance with given view and an optional title
     /// - Parameters:
     ///   - view: The instance of UIView to be displayed
     ///   - title: The title of the `ADYViewController`

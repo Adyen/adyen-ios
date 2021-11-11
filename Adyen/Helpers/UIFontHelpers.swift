@@ -15,7 +15,7 @@ extension UIFont: AdyenCompatible {}
 /// :nodoc:
 public extension AdyenScope where Base: UIFont {
     
-    /// Get new instance of `UIFont`with the same familiName and pointSize, but specified weight.
+    /// Get new instance of `UIFont` with the same familyName and pointSize, but specified weight.
     /// - Parameter weight: The desired font's weight.
     func font(with weight: UIFont.Weight) -> UIFont {
         var descriptor = base.fontDescriptor

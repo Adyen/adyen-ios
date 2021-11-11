@@ -141,7 +141,7 @@ internal enum AnyPaymentMethodDecoder {
             // payment method, even though Bancontact is just another
             // scheme of a card payment method,
             // Since Bancontact doesn't need CVC.
-            // Please consider using a composit matching hashable struct,
+            // Please consider using a composite matching hashable struct,
             // That includes brand, type, isStored, and requiresDetails,
             // This matching struct will be used as the key to the decoders
             // dictionary.

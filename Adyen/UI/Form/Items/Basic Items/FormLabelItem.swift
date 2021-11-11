@@ -7,7 +7,7 @@
 import Foundation
 import UIKit
 
-/// Simple form item that represent a single UILable element.
+/// Simple form item that represent a single UILabel element.
 /// :nodoc:
 public class FormLabelItem: FormItem {
 
@@ -24,10 +24,10 @@ public class FormLabelItem: FormItem {
     /// :nodoc:
     public var identifier: String?
 
-    /// The style of the lable.
+    /// The style of the label.
     public var style: TextStyle
 
-    /// The text of the lable.
+    /// The text of the label.
     public var text: String
 
     /// :nodoc:

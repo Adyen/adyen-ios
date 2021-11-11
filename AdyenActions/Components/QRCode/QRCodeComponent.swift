@@ -7,7 +7,7 @@
 import Adyen
 import UIKit
 
-/// An error that occured during the use of QRCodeComponent
+/// An error that occurred during the use of QRCodeComponent
 internal enum QRCodeComponentError: LocalizedError {
     /// Indicates the QR code is not longer valid
     case qrCodeExpired

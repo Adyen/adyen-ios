@@ -57,7 +57,7 @@ extension FormCardLogosItemView: UICollectionViewDataSource {
 
 extension FormCardLogosItemView {
     
-    /// A collectionview that updates its intrinsicContentSize to make all rows visible.
+    /// A `UICollectionView` that updates its `intrinsicContentSize` to make all rows visible.
     internal class CardLogoCollectionView: UICollectionView {
         private var shouldInvalidateLayout = false
         

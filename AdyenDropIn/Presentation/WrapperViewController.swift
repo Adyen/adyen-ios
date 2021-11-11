@@ -97,7 +97,7 @@ internal final class WrapperViewController: UIViewController {
 
 extension ModalViewController {
 
-    /// Enables any `UIViewController` to recalculate it's conten's size form modal presentation ,
+    /// Enables any `UIViewController` to recalculate it's content's size form modal presentation ,
     /// e.g `viewController.adyen.finalPresentationFrame(in:keyboardRect:)`.
     /// :nodoc:
     internal func finalPresentationFrame(with keyboardRect: CGRect = .zero) -> CGRect {

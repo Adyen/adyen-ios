@@ -43,7 +43,7 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
         self.minBinLength = minBinLength
     }
     
-    /// Request card types based on enterd BIN.
+    /// Request card types based on entered BIN.
     /// - Parameters:
     ///   - bin: Card's BIN number. If longer than `minBinLength` - calls API, otherwise check local Regex.
     ///   - supportedTypes: Card brands supported by the merchant.

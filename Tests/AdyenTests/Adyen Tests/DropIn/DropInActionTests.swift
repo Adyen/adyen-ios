@@ -18,12 +18,12 @@ class DropInActionsTests: XCTestCase {
         sut = nil
     }
 
-    func testOpenRedirectAcitionOnDropIn() {
+    func testOpenRedirectActionOnDropIn() {
         let config = DropInComponent.Configuration(apiContext: Dummy.context)
         config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
 
-        let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
-        sut = DropInComponent(paymentMethods: paymenMethods, configuration: config)
+        let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
+        sut = DropInComponent(paymentMethods: paymentMethods, configuration: config)
 
         let waitExpectation = expectation(description: "Expect SafariViewController to open")
         let root = UIViewController()

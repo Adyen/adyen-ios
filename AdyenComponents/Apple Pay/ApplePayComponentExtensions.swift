@@ -61,7 +61,7 @@ extension ApplePayComponent {
         /// Ignored on iOS 10.*.
         public var requiredShippingContactFields: Set<PKContactField> = []
 
-        /// A prepopulated billing address.
+        /// A pre-populated billing address.
         public var billingContact: PKContact?
 
         /// The flag to toggle onboarding.
@@ -78,7 +78,7 @@ extension ApplePayComponent {
         /// - Parameter requiredShippingContactFields:
         /// A list of fields that you need for a shipping contact in order to process the transaction. Ignored on iOS 10.*.
         /// - Parameter requiredShippingContactFields: The excluded card brands.
-        /// - Parameter billingContact: A prepopulated billing address.
+        /// - Parameter billingContact: A pre-populated billing address.
         /// - Parameter allowOnboarding: The flag to toggle onboarding.
         /// If true, allow the shopper to add cards to Apple Pay if non exists yet.
         /// If false, then Apple Pay is disabled if the shopper doesn't have supported cards on Apple Pay wallet.

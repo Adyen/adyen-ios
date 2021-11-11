@@ -24,7 +24,7 @@ public struct PrefilledShopperInformation: ShopperInformation {
     /// The delivery address information.
     public var deliveryAddress: PostalAddress?
     
-    /// The social secuity number
+    /// The social security number
     public var socialSecurityNumber: String?
 
     /// The card information
@@ -61,13 +61,13 @@ extension PrefilledShopperInformation {
     /// A structure that defines the basic properties for the shopper's card.
     public struct CardInformation {
 
-        /// The card's holdername.
-        public let holdername: String
+        /// The card's holder name.
+        public let holderName: String
 
         /// Initializes and returns the card information structure.
-        /// - Parameter holdername: The card's holdername.
-        public init(holdername: String) {
-            self.holdername = holdername
+        /// - Parameter holderName: The card's holdername.
+        public init(holderName: String) {
+            self.holderName = holderName
         }
     }
 }

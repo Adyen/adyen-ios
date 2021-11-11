@@ -26,7 +26,7 @@ class PaymentMethodTests: XCTestCase {
                     "name": "Invalid Stored Payment Method"
                 ],
                 storedBcmcDictionary,
-                storedDeditCardDictionary,
+                storedDebitCardDictionary,
                 storedBlik
             ],
             "paymentMethods": [
@@ -124,7 +124,7 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertTrue(paymentMethods.regular[2] is SEPADirectDebitPaymentMethod)
         XCTAssertTrue(paymentMethods.regular[3] is RedirectPaymentMethod)
         
-        // Uknown redirect
+        // Unknown redirect
         XCTAssertEqual(paymentMethods.regular[3].type, "unknown")
         XCTAssertEqual(paymentMethods.regular[3].name, "Redirect Payment Method")
         
@@ -286,7 +286,7 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.brands, ["mc", "visa", "amex"])
     }
     
-    func testDecodingDeditCardPaymentMethod() throws {
+    func testDecodingDebitCardPaymentMethod() throws {
         let paymentMethod = try Coder.decode(debitCardDictionary) as CardPaymentMethod
         XCTAssertEqual(paymentMethod.type, "scheme")
         XCTAssertEqual(paymentMethod.name, "Credit Card")
@@ -327,8 +327,8 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.localizedDisplayInformation(using: expectedLocalizationParameters), expectedStoredCardPaymentMethodDisplayInfo(method: paymentMethod, localizationParameters: expectedLocalizationParameters))
     }
     
-    func testDecodingStoredDeditCardPaymentMethod() throws {
-        let paymentMethod = try Coder.decode(storedDeditCardDictionary) as StoredCardPaymentMethod
+    func testDecodingStoredDebitCardPaymentMethod() throws {
+        let paymentMethod = try Coder.decode(storedDebitCardDictionary) as StoredCardPaymentMethod
         let expectedLocalizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         XCTAssertEqual(paymentMethod.type, "scheme")
         XCTAssertEqual(paymentMethod.name, "VISA")

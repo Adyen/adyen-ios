@@ -36,7 +36,7 @@ let storedCreditCardDictionary = [
     ]
 ] as [String: Any]
 
-let storedDeditCardDictionary = [
+let storedDebitCardDictionary = [
     "type": "scheme",
     "id": "9314881977134903",
     "name": "VISA",
@@ -330,7 +330,7 @@ let boletoAction: [String: Any] = [
 let oxxoAction: [String: Any] = [
     "instructionsUrl": "https://checkoutshopper-test.adyen.com/checkoutshopper/voucherInstructions.shtml?txVariant=oxxo&shopperLocale=en_US",
     "passCreationToken": "token",
-    "shopperEmail": "checkoutshopperios@example.org",
+    "shopperEmail": "checkoutShopperiOS@example.org",
     "paymentMethodType": "oxxo",
     "totalAmount": [
         "currency": "MXN",

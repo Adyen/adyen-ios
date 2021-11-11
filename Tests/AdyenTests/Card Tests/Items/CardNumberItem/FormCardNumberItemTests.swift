@@ -110,7 +110,7 @@ class FormCardNumberItemTests: XCTestCase {
         }
     }
 
-    func testExternalBinLookupHappyflow() {
+    func testExternalBinLookupHappyFlow() {
         publicKeyProvider.onFetch = { $0(.success("SOME_PUBLIC_KEY")) }
         let mockedBrands = [CardBrand(type: .masterCard)]
         apiClient.mockedResults = [.success(BinLookupResponse(brands: mockedBrands)),

@@ -6,7 +6,7 @@
 
 import Foundation
 
-/// A full address form, sutable for all countries.
+/// A full address form, suitable for all countries.
 /// :nodoc:
 public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, Observer, CompoundFormItem, Hidable {
     

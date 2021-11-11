@@ -6,7 +6,7 @@
 
 import Foundation
 
-/// A Qiwi Wallet paymeny method.
+/// A Qiwi Wallet payment method.
 public struct QiwiWalletPaymentMethod: PaymentMethod {
     
     /// :nodoc:

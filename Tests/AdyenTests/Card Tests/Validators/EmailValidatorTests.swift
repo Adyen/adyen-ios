@@ -46,13 +46,13 @@ class EmailValidatorTests: XCTestCase {
     func testValidationOfLocalPart() {
         let sut = EmailValidator()
 
-        // Quoted local part can contain any character except for line termincators
+        // Quoted local part can contain any character except for line terminators
         XCTAssertTrue(sut.isValid("\"UYFG)O^R&|.:;(%&*]T*T*[&GIU\"@gmail.com"))
 
         // Local part contains a "\n"
         XCTAssertFalse(sut.isValid("\"UYFG)O^R&|\n.:;(%&*]T*T*[&GIU\"@gmail.com"))
 
-        // Unquoted local part should't contian any of those characters "("   ")"   "["   "]"   "\"   ","   ";"   ":"   "\s"   "@"
+        // Unquoted local part should't contain any of those characters "("   ")"   "["   "]"   "\"   ","   ";"   ":"   "\s"   "@"
         XCTAssertTrue(sut.isValid("UYFGO^R&%&*T.*T*&GIU@gmail.com"))
 
         // Local part contains ";"

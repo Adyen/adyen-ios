@@ -129,7 +129,7 @@ if fm.fileExists(atPath: outputURL.relativePath) {
 } else {
     print("Output file does not exist at \(outputURL.absoluteString). Proceeding with creation...")
     if fm.createFile(atPath: outputURL.relativePath, contents: data, attributes: nil) {
-        print("Output file successfuly created")
+        print("Output file successfully created")
     } else {
         print("Output file creation failed")
     }

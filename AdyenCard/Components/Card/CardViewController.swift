@@ -33,7 +33,7 @@ internal class CardViewController: FormViewController {
     ///   - configuration: The configurations of the `CardComponent`.
     ///   - shopperInformation: The shopper's information.
     ///   - formStyle: The style of form view controller.
-    ///   - payment: The payment object to visialise payment amount.
+    ///   - payment: The payment object to visualize payment amount.
     ///   - logoProvider: The provider for logo image URLs.
     ///   - supportedCardTypes: The list of supported cards.
     ///   - scope: The view's scope.
@@ -230,7 +230,7 @@ internal class CardViewController: FormViewController {
             items.billingAddressItem.value = billingAddress
             billingAddress.postalCode.map { items.postalCodeItem.value = $0 }
         }
-        shopperInformation.card.map { items.holderNameItem.value = $0.holdername }
+        shopperInformation.card.map { items.holderNameItem.value = $0.holderName }
         shopperInformation.socialSecurityNumber.map { items.socialSecurityNumberItem.value = $0 }
     }
 

@@ -1,9 +1,7 @@
 //
-//  VoucherViewTests.swift
-//  AdyenUIKitTests
+// Copyright (c) 2021 Adyen N.V.
 //
-//  Created by Yurii Zadoianchuk on 01/08/2021.
-//  Copyright © 2021 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Adyen
@@ -26,7 +24,7 @@ class VoucherViewTests: XCTestCase {
             check(layer: sut.findView(by: "logo")!.layer, forCornerRounding: style.logoCornerRounding)
             check(label: sut.findView(by: "amountLabel")!, forStyle: style.amountLabel)
             check(label: sut.findView(by: "currencyLabel")!, forStyle: style.currencyLabel)
-            check(submitButtton: sut.findView(by: "mainButton")! as! SubmitButton, forStyle: style.mainButton)
+            check(submitButton: sut.findView(by: "mainButton")! as! SubmitButton, forStyle: style.mainButton)
             check(button: sut.findView(by: "secondaryButton")!, forStyle: style.secondaryButton)
             
             dummyExpectation.fulfill()

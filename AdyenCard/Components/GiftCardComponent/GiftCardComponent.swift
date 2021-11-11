@@ -46,7 +46,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
     ///
     /// - Parameters:
     ///   - paymentMethod: The gift card payment method.
-    ///   -  clientKey: The client key that corresponds to the webservice user you will use for initiating the payment.
+    ///   -  clientKey: The client key that corresponds to the web service user you will use for initiating the payment.
     /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
     ///   -  style: The Component's UI style.
     public init(paymentMethod: GiftCardPaymentMethod,

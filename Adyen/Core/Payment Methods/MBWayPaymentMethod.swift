@@ -6,7 +6,7 @@
 
 import Foundation
 
-/// A MB Way paymeny method.
+/// A MB Way payment method.
 public struct MBWayPaymentMethod: PaymentMethod {
     
     /// :nodoc:

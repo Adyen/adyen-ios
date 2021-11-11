@@ -82,12 +82,12 @@ public enum CardEncryptor {
         return try encrypt(payload, with: publicKey)
     }
 
-    /// Encrypts enspiration month.
+    /// Encrypts expiration month.
     ///
     /// - Parameters:
     ///   - expiryMonth: The expiration month.
     ///   - publicKey: The public key to use for encryption (format "Exponent|Modulus").
-    /// - Returns: An encrypted token enspiration month data.
+    /// - Returns: An encrypted token expiration month data.
     /// - Throws: `CardEncryptor.Error.encryptionFailed` if the encryption failed,
     ///  maybe because the card public key is an invalid one, or for any other reason.
     /// - Throws: `CardEncryptor.Error.invalidExpiryMonth` when trying to encrypt an empty or invalid expiryMonth.
@@ -99,12 +99,12 @@ public enum CardEncryptor {
         return try encrypt(payload, with: publicKey)
     }
 
-    /// Encrypts enspiration year.
+    /// Encrypts expiration year.
     ///
     /// - Parameters:
     ///   - expiryMonth: The expiration year.
     ///   - publicKey: The public key to use for encryption (format "Exponent|Modulus").
-    /// - Returns: An encrypted token containing enspiration year data.
+    /// - Returns: An encrypted token containing expiration year data.
     /// - Throws: `CardEncryptor.Error.encryptionFailed` if the encryption failed,
     ///  maybe because the card public key is an invalid one, or for any other reason.
     /// - Throws: `CardEncryptor.Error.invalidExpiryYear` when trying to encrypt an empty or invalid expiryYear.
@@ -137,7 +137,7 @@ public enum CardEncryptor {
     /// - Parameters:
     ///   - password: The non-empty value.
     ///   - publicKey: The public key to use for encryption (format "Exponent|Modulus").
-    /// - Returns: An encrypted token containing enspiration year data.
+    /// - Returns: An encrypted token containing expiration year data.
     /// - Throws: `CardEncryptor.Error.encryptionFailed` if the encryption failed,
     ///  maybe because the card public key is an invalid one, or for any other reason.
     /// - Throws: `CardEncryptor.Error.emptyValue` when trying to encrypt an empty value.
@@ -153,7 +153,7 @@ public enum CardEncryptor {
     /// - Parameters:
     ///   - card: Card containing the data to be encrypted.
     ///   - publicKey: The public key to use for encryption (format "Exponent|Modulus").
-    /// - Returns: A string token containig encrypted card data.
+    /// - Returns: A string token containing encrypted card data.
     /// - Throws: `CardEncryptor.Error.encryptionFailed` if the encryption failed,
     ///  maybe because the card public key is an invalid one, or for any other reason.
     /// - Throws: `CardEncryptor.Error.invalidEncryptionArguments` when trying to encrypt a card with  card number, securityCode,
