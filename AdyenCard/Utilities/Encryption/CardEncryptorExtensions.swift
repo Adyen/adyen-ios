@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -24,7 +24,8 @@ public extension CardEncryptor.Card {
         var card = CardEncryptor.Card(number: number,
                                       securityCode: securityCode,
                                       expiryMonth: expiryMonth,
-                                      expiryYear: expiryYear)
+                                      expiryYear: expiryYear,
+                                      generationDate: generationDate)
         card.holder = holderName
         return try encryptCard(publicKey: publicKey, card: card)
     }

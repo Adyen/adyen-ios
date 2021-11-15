@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -144,11 +144,16 @@ public extension CardEncryptor {
         internal var generationDate: Date?
 
         /// :nodoc:
-        public init(number: String? = nil, securityCode: String? = nil, expiryMonth: String? = nil, expiryYear: String? = nil) {
+        public init(number: String? = nil,
+                    securityCode: String? = nil,
+                    expiryMonth: String? = nil,
+                    expiryYear: String? = nil,
+                    generationDate: Date? = nil) {
             self.number = number
             self.securityCode = securityCode
             self.expiryMonth = expiryMonth
             self.expiryYear = expiryYear
+            self.generationDate = generationDate
         }
 
         internal var isEmpty: Bool {
