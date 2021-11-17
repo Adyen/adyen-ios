@@ -7,23 +7,28 @@
 import Adyen
 import Foundation
 
-public final class BACSDirectDebitComponent {
+// TODO: - Complete documentation
+
+public final class BACSDirectDebitComponent: PaymentComponent, PresentableComponent {
+
+    // TODO: - Set up view controller
+    public var viewController: UIViewController
+
+    // TODO: - Set up delegate
+    public weak var delegate: PaymentComponentDelegate?
 
     public let paymentMethod: PaymentMethod
     public let apiContext: APIContext
     public let style: FormComponentStyle
-    public let localizationParameters: LocalizationParameters
 
     // MARK: - Initializers
 
-    public init(paymentMethod: PaymentMethod,
+    public init(paymentMethod: BACSDirectDebitPaymentMethod,
                 apiContext: APIContext,
-                style: FormComponentStyle = .init(),
-                localizationParameters: LocalizationParameters) {
+                style: FormComponentStyle = .init()) {
         self.paymentMethod = paymentMethod
         self.apiContext = apiContext
         self.style = style
-        self.localizationParameters = localizationParameters
 
         let view = BACSDirectDebitInputFormView(title: paymentMethod.name,
                                                 styleProvider: style)
@@ -32,14 +37,7 @@ public final class BACSDirectDebitComponent {
                                                  itemsFactory: itemsFactory,
                                                  localizationParameters: localizationParameters)
         view.presenter = presenter
+
+        viewController = view as FormViewController
     }
-
-    // MARK: - View Controller
-
-    private lazy var formViewController: FormViewController = {
-        let formViewController = FormViewController(style: style)
-        formViewController.localizationParameters = localizationParameters
-
-        return formViewController
-    }()
 }

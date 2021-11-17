@@ -36,6 +36,13 @@ extension IntegrationExample {
         present(component)
     }
 
+    internal func presentBACSDirectDebitComponent() {
+        guard let paymentMethod = paymentMethods?.paymentMethod(ofType: BACSDirectDebitPaymentMethod.self) else { return }
+        let component = BACSDirectDebitComponent(paymentMethod: paymentMethod,
+                                                 apiContext: apiContext)
+        present(component)
+    }
+
     internal func presentMBWayComponent() {
         let style = FormComponentStyle()
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: MBWayPaymentMethod.self) else { return }

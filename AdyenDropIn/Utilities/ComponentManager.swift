@@ -6,13 +6,13 @@
 
 import Adyen
 #if canImport(AdyenCard)
-    import AdyenCard
+import AdyenCard
 #endif
 #if canImport(AdyenComponents)
-    import AdyenComponents
+import AdyenComponents
 #endif
 #if canImport(AdyenActions)
-    import AdyenActions
+import AdyenActions
 #endif
 import Foundation
 
@@ -54,7 +54,7 @@ internal final class ComponentManager {
 
         // Paid section
         let amountString: String = remainingAmount.map(\.formatted) ??
-            localizedString(.amount, configuration.localizationParameters).lowercased()
+        localizedString(.amount, configuration.localizationParameters).lowercased()
         let footerTitle = localizedString(.partialPaymentPayRemainingAmount,
                                           configuration.localizationParameters,
                                           amountString)
@@ -184,6 +184,12 @@ internal final class ComponentManager {
                                  apiContext: apiContext,
                                  style: style.formComponent)
     }
+
+    private func createBACSDirectDebit(_ paymentMethod: BACSDirectDebitPaymentMethod) -> BACSDirectDebitComponent {
+        BACSDirectDebitComponent(paymentMethod: paymentMethod,
+                                 apiContext: apiContext,
+                                 localizationParameters: configuration.localizationParameters)
+    }
     
     private func createQiwiWalletComponent(_ paymentMethod: QiwiWalletPaymentMethod) -> QiwiWalletComponent {
         QiwiWalletComponent(paymentMethod: paymentMethod,
@@ -252,6 +258,11 @@ extension ComponentManager: PaymentComponentBuilder {
     /// :nodoc:
     internal func build(paymentMethod: SEPADirectDebitPaymentMethod) -> PaymentComponent? {
         createSEPAComponent(paymentMethod)
+    }
+
+    /// :nodoc:
+    internal func build(paymentMethod: BACSDirectDebitPaymentMethod) -> PaymentComponent? {
+        createBACSDirectDebit(paymentMethod)
     }
     
     /// :nodoc:

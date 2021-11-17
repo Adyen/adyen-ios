@@ -89,6 +89,8 @@
 		C9D8EB9927452355006D8CA1 /* BACSDirectDebitInputFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9827452355006D8CA1 /* BACSDirectDebitInputFormView.swift */; };
 		C9D8EB9B2745282E006D8CA1 /* BACSDirectDebitInputPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9A2745282E006D8CA1 /* BACSDirectDebitInputPresenter.swift */; };
 		C9D8EB9E27452D3B006D8CA1 /* BACSDirectDebitItemsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9D27452D3B006D8CA1 /* BACSDirectDebitItemsFactory.swift */; };
+		C9D8EBA02745556B006D8CA1 /* BACSDirectDebitDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9F2745556B006D8CA1 /* BACSDirectDebitDetails.swift */; };
+		C9D8EBA2274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EBA1274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift */; };
 		E2028F5C2227F1930007FF8B /* Details.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2028F5B2227F1930007FF8B /* Details.swift */; };
 		E2028F5E222805E20007FF8B /* CardDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2028F5D222805E20007FF8B /* CardDetails.swift */; };
 		E216D3BC221AAB240013CBCF /* FormItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E216D3BB221AAB240013CBCF /* FormItem.swift */; };
@@ -978,6 +980,8 @@
 		C9D8EB9827452355006D8CA1 /* BACSDirectDebitInputFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitInputFormView.swift; sourceTree = "<group>"; };
 		C9D8EB9A2745282E006D8CA1 /* BACSDirectDebitInputPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitInputPresenter.swift; sourceTree = "<group>"; };
 		C9D8EB9D27452D3B006D8CA1 /* BACSDirectDebitItemsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitItemsFactory.swift; sourceTree = "<group>"; };
+		C9D8EB9F2745556B006D8CA1 /* BACSDirectDebitDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitDetails.swift; sourceTree = "<group>"; };
+		C9D8EBA1274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitPaymentMethod.swift; sourceTree = "<group>"; };
 		E2028F5B2227F1930007FF8B /* Details.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Details.swift; sourceTree = "<group>"; };
 		E2028F5D222805E20007FF8B /* CardDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetails.swift; sourceTree = "<group>"; };
 		E216D3BB221AAB240013CBCF /* FormItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormItem.swift; sourceTree = "<group>"; };
@@ -1834,6 +1838,7 @@
 			children = (
 				C9D8EB97274402B9006D8CA1 /* Scenes */,
 				C9BF0DB227353A2600DCAA1E /* BACSDirectDebitComponent.swift */,
+				C9D8EB9F2745556B006D8CA1 /* BACSDirectDebitDetails.swift */,
 			);
 			path = "BACS Direct Debit";
 			sourceTree = "<group>";
@@ -1993,6 +1998,7 @@
 				F926D52B23F59ABE00D058D3 /* QiwiWalletPaymentMethod.swift */,
 				E224088622AFA3A80058923E /* RedirectPaymentMethod.swift */,
 				E278EB4422AA5ED600497FD5 /* SEPADirectDebitPaymentMethod.swift */,
+				C9D8EBA1274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift */,
 				E27BFD8F22B114DC00692E0D /* ShopperInteraction.swift */,
 				F9D57529237C6084009C18B5 /* StoredBCMCPaymentMethod.swift */,
 				E71E8F3D257921D10054B03D /* StoredBLIKPaymentMethod.swift */,
@@ -4624,6 +4630,7 @@
 				F9B8C49423FC32FB00C4D0FB /* FormItemViewBuilder.swift in Sources */,
 				F97FA024264AD5FE004AFD0C /* ListFooterView.swift in Sources */,
 				F96F44D723BDED6B00871C1F /* FormToggleItemStyle.swift in Sources */,
+				C9D8EBA2274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift in Sources */,
 				F9FE25B42625ECE7001874BB /* CustomDisplayablePaymentMethod.swift in Sources */,
 				E216D3CF221AFC3A0013CBCF /* IBANSpecification.swift in Sources */,
 				E224088722AFA3A80058923E /* RedirectPaymentMethod.swift in Sources */,
@@ -5054,6 +5061,7 @@
 				F9175ED32593951900D653BE /* MBWayDetails.swift in Sources */,
 				F9175EAB259394FF00D653BE /* ApplePayDetails.swift in Sources */,
 				F9175EE22593952600D653BE /* BLIKComponent.swift in Sources */,
+				C9D8EBA02745556B006D8CA1 /* BACSDirectDebitDetails.swift in Sources */,
 				F9175E8B259394E100D653BE /* SEPADirectDebitComponent.swift in Sources */,
 				5A15D589264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift in Sources */,
 				F9175E8A259394E100D653BE /* SEPADirectDebitDetails.swift in Sources */,
