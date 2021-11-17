@@ -86,6 +86,9 @@
 		C982FFD826946F0800AED849 /* AffirmComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFD726946F0800AED849 /* AffirmComponent.swift */; };
 		C982FFDC2694792F00AED849 /* AffirmPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */; };
 		C9BF0DB327353A2600DCAA1E /* BACSDirectDebitComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BF0DB227353A2600DCAA1E /* BACSDirectDebitComponent.swift */; };
+		C9D8EB9927452355006D8CA1 /* BACSDirectDebitInputFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9827452355006D8CA1 /* BACSDirectDebitInputFormView.swift */; };
+		C9D8EB9B2745282E006D8CA1 /* BACSDirectDebitInputPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9A2745282E006D8CA1 /* BACSDirectDebitInputPresenter.swift */; };
+		C9D8EB9E27452D3B006D8CA1 /* BACSDirectDebitItemsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9D27452D3B006D8CA1 /* BACSDirectDebitItemsFactory.swift */; };
 		E2028F5C2227F1930007FF8B /* Details.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2028F5B2227F1930007FF8B /* Details.swift */; };
 		E2028F5E222805E20007FF8B /* CardDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2028F5D222805E20007FF8B /* CardDetails.swift */; };
 		E216D3BC221AAB240013CBCF /* FormItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E216D3BB221AAB240013CBCF /* FormItem.swift */; };
@@ -972,6 +975,9 @@
 		C982FFD726946F0800AED849 /* AffirmComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponent.swift; sourceTree = "<group>"; };
 		C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmPaymentMethod.swift; sourceTree = "<group>"; };
 		C9BF0DB227353A2600DCAA1E /* BACSDirectDebitComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitComponent.swift; sourceTree = "<group>"; };
+		C9D8EB9827452355006D8CA1 /* BACSDirectDebitInputFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitInputFormView.swift; sourceTree = "<group>"; };
+		C9D8EB9A2745282E006D8CA1 /* BACSDirectDebitInputPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitInputPresenter.swift; sourceTree = "<group>"; };
+		C9D8EB9D27452D3B006D8CA1 /* BACSDirectDebitItemsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitItemsFactory.swift; sourceTree = "<group>"; };
 		E2028F5B2227F1930007FF8B /* Details.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Details.swift; sourceTree = "<group>"; };
 		E2028F5D222805E20007FF8B /* CardDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetails.swift; sourceTree = "<group>"; };
 		E216D3BB221AAB240013CBCF /* FormItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormItem.swift; sourceTree = "<group>"; };
@@ -1826,9 +1832,36 @@
 		C9BF0DB1273539EB00DCAA1E /* BACS Direct Debit */ = {
 			isa = PBXGroup;
 			children = (
+				C9D8EB97274402B9006D8CA1 /* Scenes */,
 				C9BF0DB227353A2600DCAA1E /* BACSDirectDebitComponent.swift */,
 			);
 			path = "BACS Direct Debit";
+			sourceTree = "<group>";
+		};
+		C9D8EB9527440297006D8CA1 /* Input */ = {
+			isa = PBXGroup;
+			children = (
+				C9D8EB9827452355006D8CA1 /* BACSDirectDebitInputFormView.swift */,
+				C9D8EB9A2745282E006D8CA1 /* BACSDirectDebitInputPresenter.swift */,
+				C9D8EB9D27452D3B006D8CA1 /* BACSDirectDebitItemsFactory.swift */,
+			);
+			path = Input;
+			sourceTree = "<group>";
+		};
+		C9D8EB96274402A0006D8CA1 /* Confirmation */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Confirmation;
+			sourceTree = "<group>";
+		};
+		C9D8EB97274402B9006D8CA1 /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				C9D8EB96274402A0006D8CA1 /* Confirmation */,
+				C9D8EB9527440297006D8CA1 /* Input */,
+			);
+			path = Scenes;
 			sourceTree = "<group>";
 		};
 		E216D3B42217096E0013CBCF /* Items */ = {
@@ -5017,6 +5050,7 @@
 				F9175EC22593950D00D653BE /* QiwiWalletComponent.swift in Sources */,
 				F9175EAC259394FF00D653BE /* ApplePayComponent.swift in Sources */,
 				F97C838425BF053F00D7F85C /* DokuComponent.swift in Sources */,
+				C9D8EB9E27452D3B006D8CA1 /* BACSDirectDebitItemsFactory.swift in Sources */,
 				F9175ED32593951900D653BE /* MBWayDetails.swift in Sources */,
 				F9175EAB259394FF00D653BE /* ApplePayDetails.swift in Sources */,
 				F9175EE22593952600D653BE /* BLIKComponent.swift in Sources */,
@@ -5032,9 +5066,11 @@
 				F9175E9A259394F200D653BE /* IssuerListDetails.swift in Sources */,
 				C930FB6E269D79E0006A26D2 /* AffirmDetails.swift in Sources */,
 				5A54603F264A5CEC00724A87 /* BoletoComponent.swift in Sources */,
+				C9D8EB9927452355006D8CA1 /* BACSDirectDebitInputFormView.swift in Sources */,
 				C9BF0DB327353A2600DCAA1E /* BACSDirectDebitComponent.swift in Sources */,
 				F9175EE32593952600D653BE /* BLIKDetails.swift in Sources */,
 				F9B016F92604F3FF001F23FC /* BasicPersonalInfoFormComponent.swift in Sources */,
+				C9D8EB9B2745282E006D8CA1 /* BACSDirectDebitInputPresenter.swift in Sources */,
 				F9175EC32593950D00D653BE /* QiwiWalletDetails.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
