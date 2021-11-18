@@ -20,10 +20,12 @@ internal class BACSDirectDebitInputFormView: FormViewController, BACSDirectDebit
     // MARK: - Intializers
 
     internal init(title: String,
-                  styleProvider: FormComponentStyle) {
+                  styleProvider: FormComponentStyle,
+                  localizationParameters: LocalizationParameters? = nil) {
         super.init(style: styleProvider)
         self.title = title
         self.delegate = self
+        self.localizationParameters = localizationParameters
     }
 
     // MARK: - BACSDirectDebitInputFormViewProtocol

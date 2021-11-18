@@ -87,7 +87,6 @@ internal enum AnyPaymentMethodDecoder {
         .afterpay: UnsupportedPaymentMethodDecoder(),
         .androidPay: UnsupportedPaymentMethodDecoder(),
         .amazonPay: UnsupportedPaymentMethodDecoder(),
-        .bacsDirectDebit: UnsupportedPaymentMethodDecoder(),
         .achDirectDebit: UnsupportedPaymentMethodDecoder(),
         
         // Supported payment methods
@@ -102,6 +101,7 @@ internal enum AnyPaymentMethodDecoder {
         .molPayEBankingTH: IssuerListPaymentMethodDecoder(),
         .molPayEBankingVN: IssuerListPaymentMethodDecoder(),
         .sepaDirectDebit: SEPADirectDebitPaymentMethodDecoder(),
+        .bacsDirectDebit: BACSDirectDebitPaymentMethodDecoder(),
         .applePay: ApplePayPaymentMethodDecoder(),
         .payPal: PayPalPaymentMethodDecoder(),
         .bcmc: BCMCCardPaymentMethodDecoder(),
@@ -191,6 +191,12 @@ private struct IssuerListPaymentMethodDecoder: PaymentMethodDecoder {
 private struct SEPADirectDebitPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         .sepaDirectDebit(try SEPADirectDebitPaymentMethod(from: decoder))
+    }
+}
+
+private struct BACSDirectDebitPaymentMethodDecoder: PaymentMethodDecoder {
+    func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
+        .bacsDirectDebit(try BACSDirectDebitPaymentMethod(from: decoder))
     }
 }
 

@@ -9,6 +9,10 @@ import Foundation
 
 // TODO: - Complete documentation
 
+internal protocol BACSDirectDebitRouterProtocol {
+    func continuePayment(data: BACSDirectDebitData)
+}
+
 public final class BACSDirectDebitComponent: PaymentComponent, PresentableComponent {
 
     // TODO: - Set up view controller
@@ -32,12 +36,22 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
 
         let view = BACSDirectDebitInputFormView(title: paymentMethod.name,
                                                 styleProvider: style)
+
+        // TODO: - Set navigation controller
+        let navigationController = UINavigationController(rootViewController: view as UIViewController)
+        viewController = navigationController
+
         let itemsFactory = BACSDirectDebitItemsFactory(styleProvider: style)
         let presenter = BACSDirectDebitPresenter(view: view,
-                                                 itemsFactory: itemsFactory,
-                                                 localizationParameters: localizationParameters)
+                                                 router: self,
+                                                 itemsFactory: itemsFactory)
         view.presenter = presenter
+    }
+}
 
-        viewController = view as FormViewController
+extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
+
+    func continuePayment(data: BACSDirectDebitData) {
+        // TODO: - Continue payment
     }
 }

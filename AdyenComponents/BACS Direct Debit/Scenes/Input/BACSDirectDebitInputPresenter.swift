@@ -16,8 +16,8 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
     // MARK: - Properties
 
     private let view: BACSDirectDebitInputFormViewProtocol
+    private let router: BACSDirectDebitRouterProtocol
     private let itemsFactory: BACSDirectDebitItemsFactory
-    private let localizationParameters: LocalizationParameters
 
     // MARK: - Items
 
@@ -30,11 +30,11 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
     // MARK: - Initializers
 
     internal init(view: BACSDirectDebitInputFormViewProtocol,
-                  itemsFactory: BACSDirectDebitItemsFactory,
-                  localizationParameters: LocalizationParameters) {
+                  router: BACSDirectDebitRouterProtocol,
+                  itemsFactory: BACSDirectDebitItemsFactory) {
         self.view = view
+        self.router = router
         self.itemsFactory = itemsFactory
-        self.localizationParameters = localizationParameters
         setupItems()
     }
 
@@ -51,7 +51,9 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
         numberItem = itemsFactory.createNumberItem()
         sortCodeItem = itemsFactory.createSortCodeItem()
         emailItem = itemsFactory.createEmailItem()
+
         continueButton = itemsFactory.createContinueButton()
+        continueButton?.buttonSelectionHandler = continuePayment
     }
 
     private func setupView() {
@@ -61,5 +63,28 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
         view.append(item: sortCodeItem!)
         view.append(item: emailItem!)
         view.append(item: continueButton!)
+    }
+
+    private func continuePayment() {
+        // TODO: - Continue logic
+        // 1. Build payment details
+
+        guard let holderName = holderNameItem?.value,
+              let bankAccountNumber = numberItem?.value,
+              let sortCode = sortCodeItem?.value,
+              let shopperEmail = emailItem?.value else {
+            return
+        }
+
+        // 2. Check requirements
+        
+        let bacsDirectDebitData = BACSDirectDebitData(holderName: holderName,
+                                                      bankAccountNumber: bankAccountNumber,
+                                                      bacnkLocationId: sortCode,
+                                                      shopperEmail: shopperEmail)
+        // 3. Send payment details to router
+
+        router.continuePayment(data: bacsDirectDebitData)
+        print("BUTTON TAPPED")
     }
 }
