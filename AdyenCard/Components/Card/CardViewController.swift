@@ -150,7 +150,13 @@ internal class CardViewController: FormViewController {
     }
 
     internal func update(binInfo: BinLookupResponse) {
-        let brands = binInfo.brands ?? []
+        var brands: [CardBrand] = []
+        // no dual branding if response is from regex (fallback)
+        if binInfo.isCreatedLocally, let firstBrand = binInfo.brands?.first {
+            brands = [firstBrand]
+        } else {
+            brands = binInfo.brands ?? []
+        }
         issuingCountryCode = binInfo.issuingCountryCode
         items.numberContainerItem.update(brands: brands)
     }

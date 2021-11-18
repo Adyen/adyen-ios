@@ -1170,6 +1170,7 @@ class CardComponentTests: XCTestCase {
         sut.cardViewController.update(binInfo: binResponse)
         XCTAssertFalse(cardNumberItem.allowsValidationWhileEditing)
         XCTAssertTrue(cardNumberItem.isValid())
+        XCTAssertTrue(binResponse.isCreatedLocally)
         
         fillCard(on: sut.viewController.view, with: Dummy.amexCard)
         binResponse = BinLookupResponse(brands: [CardBrand(type: .americanExpress, isSupported: false)])
@@ -1177,9 +1178,10 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(cardNumberItem.allowsValidationWhileEditing)
         XCTAssertFalse(cardNumberItem.isValid())
         
-        binResponse = BinLookupResponse(brands: [])
+        binResponse = BinLookupResponse(brands: [], isCreatedLocally: false)
         sut.cardViewController.update(binInfo: binResponse)
         XCTAssertFalse(cardNumberItem.allowsValidationWhileEditing)
+        XCTAssertFalse(binResponse.isCreatedLocally)
     }
 
     func testCVCOptionality() {
