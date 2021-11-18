@@ -16,8 +16,13 @@ internal protocol BACSDirectDebitRouterProtocol {
 public final class BACSDirectDebitComponent: PaymentComponent, PresentableComponent {
 
     // TODO: - Set up view controller
+
+    // MARK: - PresentableComponent
+
     public var viewController: UIViewController
 
+    public var requiresModalPresentation: Bool = true
+    
     // TODO: - Set up delegate
     public weak var delegate: PaymentComponentDelegate?
 

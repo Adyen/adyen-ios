@@ -36,6 +36,7 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
         self.router = router
         self.itemsFactory = itemsFactory
         setupItems()
+        setupView()
     }
 
     // MARK: - BACSDirectDebitPresenterProtocol
@@ -58,16 +59,29 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
 
     private func setupView() {
         // TODO: - Remove force unwrapping
-        view.append(item: holderNameItem!)
-        view.append(item: numberItem!)
-        view.append(item: sortCodeItem!)
-        view.append(item: emailItem!)
-        view.append(item: continueButton!)
+        view.add(item: holderNameItem!)
+        view.add(item: numberItem!)
+        view.add(item: sortCodeItem!)
+        view.add(item: emailItem!)
+        view.add(item: continueButton!)
+    }
+
+    private var isFormValid: Bool {
+        [holderNameItem,
+         numberItem,
+         sortCodeItem,
+         emailItem].compactMap { $0 }.allSatisfy { $0.isValid() }
     }
 
     private func continuePayment() {
         // TODO: - Continue logic
-        // 1. Build payment details
+
+        view.displayValidation()
+        // 1. Validate.
+
+        guard isFormValid else { return }
+
+        // 2. Build payment data.
 
         guard let holderName = holderNameItem?.value,
               let bankAccountNumber = numberItem?.value,
@@ -76,8 +90,6 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
             return
         }
 
-        // 2. Check requirements
-        
         let bacsDirectDebitData = BACSDirectDebitData(holderName: holderName,
                                                       bankAccountNumber: bankAccountNumber,
                                                       bacnkLocationId: sortCode,
