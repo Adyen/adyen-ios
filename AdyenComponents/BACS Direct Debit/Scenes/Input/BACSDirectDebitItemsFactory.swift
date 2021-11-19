@@ -85,6 +85,7 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         // textItem.validationFailureMessage = ...
 
         textItem.autocapitalizationType = .none
+        textItem.keyboardType = .numberPad
 
         let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
                                                      postfix: ViewIdentifier.bankAccountNumberItem)
@@ -104,6 +105,7 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         // textItem.validationFailureMessage = ...
 
         textItem.autocapitalizationType = .none
+        textItem.keyboardType = .numberPad
 
         let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
                                                      postfix: ViewIdentifier.sortCodeItem)
@@ -123,6 +125,7 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         // textItem.validationFailureMessage = ...
 
         textItem.autocapitalizationType = .none
+        textItem.keyboardType = .emailAddress
 
         let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
                                                      postfix: ViewIdentifier.emailItem)
