@@ -26,11 +26,13 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
     // MARK: - Properties
 
     private let styleProvider: FormComponentStyle
+    private let scope: Any
 
     // MARK: - Initializers
 
-    internal init(styleProvider: FormComponentStyle) {
+    internal init(styleProvider: FormComponentStyle, scope: Any) {
         self.styleProvider = styleProvider
+        self.scope = scope
     }
 
     // MARK: - BACSDirectDebitItemsFactoryProtocol
@@ -48,7 +50,7 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
 
         textItem.autocapitalizationType = .words
 
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "holderNameItem")
+        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "holderNameItem")
         textItem.identifier = identifier
         return textItem
     }
@@ -66,7 +68,7 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
 
         textItem.autocapitalizationType = .none
 
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "accountNumberItem")
+        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "accountNumberItem")
         textItem.identifier = identifier
         return textItem
     }
@@ -84,7 +86,7 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
 
         textItem.autocapitalizationType = .none
 
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "sortCodeItem")
+        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "sortCodeItem")
         textItem.identifier = identifier
         return textItem
     }
@@ -102,7 +104,7 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
 
         textItem.autocapitalizationType = .none
 
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "emailItem")
+        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "emailItem")
         textItem.identifier = identifier
         return textItem
     }
@@ -113,7 +115,7 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         // TODO: - Replace with localized version
         buttonItem.title = "Continue"
 
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "continueButtonItem")
+        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "continueButtonItem")
         buttonItem.identifier = identifier
         return buttonItem
     }
@@ -126,7 +128,7 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         toggleItem.title = "I agree that 20 will be deducted from my bank account"
 
         // TODO: - Set up identifier
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "amountTermsToggleItem")
+        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "amountTermsToggleItem")
         toggleItem.identifier = identifier
         return toggleItem
     }
@@ -138,7 +140,7 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         // TODO: - Replace with localized version
         toggleItem.title = "I confirm the account is in my name and I am the only signatory required  to authorize the Direct Debit on this account."
 
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "legalTermsToggleItem")
+        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "legalTermsToggleItem")
         toggleItem.identifier = identifier
         return toggleItem
     }

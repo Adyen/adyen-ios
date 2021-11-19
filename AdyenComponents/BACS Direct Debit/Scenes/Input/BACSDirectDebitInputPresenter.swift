@@ -27,7 +27,7 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
     private var emailItem: FormTextInputItem?
     private var amountTermsToggleItem: FormToggleItem?
     private var legalTermsToggleItem: FormToggleItem?
-    private var continueButton: FormButtonItem?
+    private var continueButtonItem: FormButtonItem?
 
     // MARK: - Initializers
 
@@ -57,31 +57,35 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
         amountTermsToggleItem = itemsFactory.createAmountTermsToggle()
         legalTermsToggleItem = itemsFactory.createLegalTermsToggle()
 
-        continueButton = itemsFactory.createContinueButton()
-        continueButton?.buttonSelectionHandler = continuePayment
+        continueButtonItem = itemsFactory.createContinueButton()
+        continueButtonItem?.buttonSelectionHandler = continuePayment
     }
 
     private func setupView() {
-        // TODO: - Remove force unwrapping
-        view.add(item: holderNameItem!)
-        view.add(item: numberItem!)
-        view.add(item: sortCodeItem!)
-        view.add(item: emailItem!)
-        view.add(item: amountTermsToggleItem!)
-        view.add(item: legalTermsToggleItem!)
-        view.add(item: continueButton!)
+        view.add(item: holderNameItem)
+        view.add(item: numberItem)
+        view.add(item: sortCodeItem)
+        view.add(item: emailItem)
+        view.add(item: amountTermsToggleItem)
+        view.add(item: legalTermsToggleItem)
+        view.add(item: continueButtonItem)
     }
 
     private var isFormValid: Bool {
-        [holderNameItem,
-         numberItem,
-         sortCodeItem,
-         emailItem].compactMap { $0 }.allSatisfy { $0.isValid() }
+        guard let amountTermsAccepted = amountTermsToggleItem?.value,
+              let legalTermsAccepted = legalTermsToggleItem?.value,
+              amountTermsAccepted, legalTermsAccepted else {
+            return false
+        }
+
+        return [holderNameItem,
+                numberItem,
+                sortCodeItem,
+                emailItem].compactMap { $0 }.allSatisfy { $0.isValid() }
     }
 
     private func continuePayment() {
         // TODO: - Continue logic
-
         view.displayValidation()
         // 1. Validate.
 

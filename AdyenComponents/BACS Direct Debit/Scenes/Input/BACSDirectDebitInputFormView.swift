@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 
 internal protocol BACSDirectDebitInputFormViewProtocol {
-    func add<T: FormItem>(item: T)
+    func add<T: FormItem>(item: T?)
     func displayValidation()
 }
 
@@ -31,7 +31,8 @@ internal class BACSDirectDebitInputFormView: FormViewController, BACSDirectDebit
 
     // MARK: - BACSDirectDebitInputFormViewProtocol
 
-    internal func add<T: FormItem>(item: T) {
+    internal func add<T: FormItem>(item: T?) {
+        guard let item = item else { return }
         append(item)
     }
 

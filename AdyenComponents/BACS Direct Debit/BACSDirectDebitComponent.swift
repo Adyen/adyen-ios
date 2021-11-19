@@ -46,7 +46,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
         let navigationController = UINavigationController(rootViewController: view as UIViewController)
         viewController = navigationController
 
-        let itemsFactory = BACSDirectDebitItemsFactory(styleProvider: style)
+        let itemsFactory = BACSDirectDebitItemsFactory(styleProvider: style, scope: self)
         let presenter = BACSDirectDebitPresenter(view: view,
                                                  router: self,
                                                  itemsFactory: itemsFactory)
