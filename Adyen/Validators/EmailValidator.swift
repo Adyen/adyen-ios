@@ -8,9 +8,9 @@ import Foundation
 
 /// Validates email addresses.
 /// :nodoc:
-internal class EmailValidator: RegularExpressionValidator {
+public class EmailValidator: RegularExpressionValidator {
     
-    internal init() {
+    public init() {
         // Regex constructed according to the definition of an email address
         // https://en.wikipedia.org/wiki/Email_address
         // swiftlint:disable:next line_length
