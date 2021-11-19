@@ -25,6 +25,8 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
     private var numberItem: FormTextInputItem?
     private var sortCodeItem: FormTextInputItem?
     private var emailItem: FormTextInputItem?
+    private var amountTermsToggleItem: FormToggleItem?
+    private var legalTermsToggleItem: FormToggleItem?
     private var continueButton: FormButtonItem?
 
     // MARK: - Initializers
@@ -52,6 +54,8 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
         numberItem = itemsFactory.createNumberItem()
         sortCodeItem = itemsFactory.createSortCodeItem()
         emailItem = itemsFactory.createEmailItem()
+        amountTermsToggleItem = itemsFactory.createAmountTermsToggle()
+        legalTermsToggleItem = itemsFactory.createLegalTermsToggle()
 
         continueButton = itemsFactory.createContinueButton()
         continueButton?.buttonSelectionHandler = continuePayment
@@ -63,6 +67,8 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
         view.add(item: numberItem!)
         view.add(item: sortCodeItem!)
         view.add(item: emailItem!)
+        view.add(item: amountTermsToggleItem!)
+        view.add(item: legalTermsToggleItem!)
         view.add(item: continueButton!)
     }
 

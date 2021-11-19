@@ -13,6 +13,8 @@ internal protocol BACSDirectDebitItemsFactoryProtocol {
     func createSortCodeItem() -> FormTextInputItem
     func createEmailItem() -> FormTextInputItem
     func createContinueButton() -> FormButtonItem
+    func createAmountTermsToggle() -> FormToggleItem
+    func createLegalTermsToggle() -> FormToggleItem
 }
 
 internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol {
@@ -111,11 +113,33 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         // TODO: - Replace with localized version
         buttonItem.title = "Continue"
 
-        // TODO: - Handle button action
-        buttonItem.buttonSelectionHandler = {}
-
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "continueButtonItem")
         buttonItem.identifier = identifier
         return buttonItem
+    }
+
+    internal func createAmountTermsToggle() -> FormToggleItem {
+        let toggleItem = FormToggleItem(style: styleProvider.toggle)
+        toggleItem.value = false
+
+        // TODO: - Replace with localized version
+        toggleItem.title = "I agree that 20 will be deducted from my bank account"
+
+        // TODO: - Set up identifier
+        let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "amountTermsToggleItem")
+        toggleItem.identifier = identifier
+        return toggleItem
+    }
+
+    internal func createLegalTermsToggle() -> FormToggleItem {
+        let toggleItem = FormToggleItem(style: styleProvider.toggle)
+        toggleItem.value = false
+
+        // TODO: - Replace with localized version
+        toggleItem.title = "I confirm the account is in my name and I am the only signatory required  to authorize the Direct Debit on this account."
+
+        let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "legalTermsToggleItem")
+        toggleItem.identifier = identifier
+        return toggleItem
     }
 }
