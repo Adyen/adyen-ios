@@ -119,7 +119,7 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         textItem.placeholder = Content.emailItemTitle
 
         // TODO: - Set up validator
-        // textItem.validator = ...
+        textItem.validator = EmailValidator()
         // textItem.validationFailureMessage = ...
 
         textItem.autocapitalizationType = .none
