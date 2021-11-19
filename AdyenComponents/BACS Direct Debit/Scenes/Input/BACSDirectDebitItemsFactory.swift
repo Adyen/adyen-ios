@@ -9,7 +9,7 @@ import Foundation
 
 internal protocol BACSDirectDebitItemsFactoryProtocol {
     func createHolderNameItem() -> FormTextInputItem
-    func createNumberItem() -> FormTextInputItem
+    func createBankAccountNumberItem() -> FormTextInputItem
     func createSortCodeItem() -> FormTextInputItem
     func createEmailItem() -> FormTextInputItem
     func createContinueButton() -> FormButtonItem
@@ -21,6 +21,23 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
 
     private enum Content {
         // TODO: - Fill with content
+        static let holderNameItemTitle = "Bank account holder name"
+        static let bankAccountNumberItemTitle = "Bank account number"
+        static let sortCodeItemTitle = "Sort code"
+        static let emailItemTitle = "Email"
+        static let continueButtonItemTitle = "Continue"
+        static let amountTermsToggleItemTitle = "I agree that 20 will be deducted from my bank account"
+        static let legalTermsToggleItemTitle = "I confirm the account is in my name and I am the only signatory required  to authorize the Direct Debit on this account."
+    }
+
+    private enum ViewIdentifier {
+        static let holderNameItem = "holderNameItem"
+        static let bankAccountNumberItem = "bankAccountNumberItem"
+        static let sortCodeItem = "sortCodeItem"
+        static let emailItem = "emailItem"
+        static let continueButtonItem = "continueButtonItem"
+        static let amountTermsToggleItem = "amountTermsToggleItem"
+        static let legalTermsToggleItem = "legalTermsToggleItem"
     }
 
     // MARK: - Properties
@@ -41,8 +58,8 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         let textItem = FormTextInputItem(style: styleProvider.textField)
 
         // TODO: - Replace with localized version
-        textItem.title = "Bank account holder name"
-        textItem.placeholder = "Bank account placeholder"
+        textItem.title = Content.holderNameItemTitle
+        textItem.placeholder = Content.holderNameItemTitle
 
         // TODO: - Set up validator
         // textItem.validator = ...
@@ -50,17 +67,18 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
 
         textItem.autocapitalizationType = .words
 
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "holderNameItem")
+        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
+                                                     postfix: ViewIdentifier.holderNameItem)
         textItem.identifier = identifier
         return textItem
     }
 
-    internal func createNumberItem() -> FormTextInputItem {
+    internal func createBankAccountNumberItem() -> FormTextInputItem {
         let textItem = FormTextInputItem(style: styleProvider.textField)
 
         // TODO: - Replace with localized version
-        textItem.title = "Bank account number"
-        textItem.placeholder = "Bank account number"
+        textItem.title = Content.bankAccountNumberItemTitle
+        textItem.placeholder = Content.bankAccountNumberItemTitle
 
         // TODO: - Set up validator
         // textItem.validator = ...
@@ -68,7 +86,8 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
 
         textItem.autocapitalizationType = .none
 
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "accountNumberItem")
+        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
+                                                     postfix: ViewIdentifier.bankAccountNumberItem)
         textItem.identifier = identifier
         return textItem
     }
@@ -77,8 +96,8 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         let textItem = FormTextInputItem(style: styleProvider.textField)
 
         // TODO: - Replace with localized version
-        textItem.title = "Sort code"
-        textItem.placeholder = "Sort code"
+        textItem.title = Content.sortCodeItemTitle
+        textItem.placeholder = Content.sortCodeItemTitle
 
         // TODO: - Set up validator
         // textItem.validator = ...
@@ -86,7 +105,8 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
 
         textItem.autocapitalizationType = .none
 
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "sortCodeItem")
+        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
+                                                     postfix: ViewIdentifier.sortCodeItem)
         textItem.identifier = identifier
         return textItem
     }
@@ -95,8 +115,8 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         let textItem = FormTextInputItem(style: styleProvider.textField)
 
         // TODO: - Replace with localized version
-        textItem.title = "Email"
-        textItem.placeholder = "Email"
+        textItem.title = Content.emailItemTitle
+        textItem.placeholder = Content.emailItemTitle
 
         // TODO: - Set up validator
         // textItem.validator = ...
@@ -104,7 +124,8 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
 
         textItem.autocapitalizationType = .none
 
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "emailItem")
+        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
+                                                     postfix: ViewIdentifier.emailItem)
         textItem.identifier = identifier
         return textItem
     }
@@ -113,9 +134,10 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         let buttonItem = FormButtonItem(style: styleProvider.mainButtonItem)
 
         // TODO: - Replace with localized version
-        buttonItem.title = "Continue"
+        buttonItem.title = Content.continueButtonItemTitle
 
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "continueButtonItem")
+        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
+                                                     postfix: ViewIdentifier.continueButtonItem)
         buttonItem.identifier = identifier
         return buttonItem
     }
@@ -125,10 +147,11 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         toggleItem.value = false
 
         // TODO: - Replace with localized version
-        toggleItem.title = "I agree that 20 will be deducted from my bank account"
+        toggleItem.title = Content.amountTermsToggleItemTitle
 
         // TODO: - Set up identifier
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "amountTermsToggleItem")
+        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
+                                                     postfix: ViewIdentifier.amountTermsToggleItem)
         toggleItem.identifier = identifier
         return toggleItem
     }
@@ -138,9 +161,10 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         toggleItem.value = false
 
         // TODO: - Replace with localized version
-        toggleItem.title = "I confirm the account is in my name and I am the only signatory required  to authorize the Direct Debit on this account."
+        toggleItem.title = Content.legalTermsToggleItemTitle
 
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "legalTermsToggleItem")
+        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
+                                                     postfix: ViewIdentifier.legalTermsToggleItem)
         toggleItem.identifier = identifier
         return toggleItem
     }

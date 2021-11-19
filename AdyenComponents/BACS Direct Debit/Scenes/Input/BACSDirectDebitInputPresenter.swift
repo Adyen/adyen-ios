@@ -5,7 +5,6 @@
 //
 
 import Adyen
-import Foundation
 
 internal protocol BACSDirectDebitPresenterProtocol: AnyObject {
     func viewDidLoad()
@@ -22,7 +21,7 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
     // MARK: - Items
 
     private var holderNameItem: FormTextInputItem?
-    private var numberItem: FormTextInputItem?
+    private var bankAccountNumberItem: FormTextInputItem?
     private var sortCodeItem: FormTextInputItem?
     private var emailItem: FormTextInputItem?
     private var amountTermsToggleItem: FormToggleItem?
@@ -51,7 +50,7 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
 
     private func setupItems() {
         holderNameItem = itemsFactory.createHolderNameItem()
-        numberItem = itemsFactory.createNumberItem()
+        bankAccountNumberItem = itemsFactory.createBankAccountNumberItem()
         sortCodeItem = itemsFactory.createSortCodeItem()
         emailItem = itemsFactory.createEmailItem()
         amountTermsToggleItem = itemsFactory.createAmountTermsToggle()
@@ -63,7 +62,7 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
 
     private func setupView() {
         view.add(item: holderNameItem)
-        view.add(item: numberItem)
+        view.add(item: bankAccountNumberItem)
         view.add(item: sortCodeItem)
         view.add(item: emailItem)
         view.add(item: amountTermsToggleItem)
@@ -79,7 +78,7 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
         }
 
         return [holderNameItem,
-                numberItem,
+                bankAccountNumberItem,
                 sortCodeItem,
                 emailItem].compactMap { $0 }.allSatisfy { $0.isValid() }
     }
@@ -94,7 +93,7 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
         // 2. Build payment data.
 
         guard let holderName = holderNameItem?.value,
-              let bankAccountNumber = numberItem?.value,
+              let bankAccountNumber = bankAccountNumberItem?.value,
               let sortCode = sortCodeItem?.value,
               let shopperEmail = emailItem?.value else {
             return
