@@ -100,7 +100,7 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         textItem.placeholder = Content.sortCodeItemTitle
 
         // TODO: - Set up validator
-        // textItem.validator = ...
+        textItem.validator = NumericStringValidator(minimumLength: 1, maximumLength: 6)
         // textItem.validationFailureMessage = ...
 
         textItem.autocapitalizationType = .none
