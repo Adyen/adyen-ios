@@ -9,6 +9,6 @@ import Foundation
 internal struct BACSDirectDebitData {
     internal let holderName: String
     internal let bankAccountNumber: String
-    internal let bacnkLocationId: String
+    internal let bankLocationId: String
     internal let shopperEmail: String
 }

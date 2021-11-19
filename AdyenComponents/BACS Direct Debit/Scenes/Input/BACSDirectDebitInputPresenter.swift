@@ -88,13 +88,9 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
     }
 
     private func continuePayment() {
-        // TODO: - Continue logic
         view.displayValidation()
-        // 1. Validate.
 
         guard isFormValid else { return }
-
-        // 2. Build payment data.
 
         guard let holderName = holderNameItem?.value,
               let bankAccountNumber = bankAccountNumberItem?.value,
@@ -105,11 +101,8 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
 
         let bacsDirectDebitData = BACSDirectDebitData(holderName: holderName,
                                                       bankAccountNumber: bankAccountNumber,
-                                                      bacnkLocationId: sortCode,
+                                                      bankLocationId: sortCode,
                                                       shopperEmail: shopperEmail)
-        // 3. Send payment details to router
-
         router.continuePayment(data: bacsDirectDebitData)
-        print("BUTTON TAPPED")
     }
 }

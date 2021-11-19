@@ -1840,7 +1840,7 @@
 		C9BF0DB1273539EB00DCAA1E /* BACS Direct Debit */ = {
 			isa = PBXGroup;
 			children = (
-				C9F468E027465FB400500FF5 /* Model */,
+				C9F468E027465FB400500FF5 /* Models */,
 				C9D8EB97274402B9006D8CA1 /* Scenes */,
 				C9BF0DB227353A2600DCAA1E /* BACSDirectDebitComponent.swift */,
 				C9D8EB9F2745556B006D8CA1 /* BACSDirectDebitDetails.swift */,
@@ -1874,12 +1874,12 @@
 			path = Scenes;
 			sourceTree = "<group>";
 		};
-		C9F468E027465FB400500FF5 /* Model */ = {
+		C9F468E027465FB400500FF5 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				C9F468E127465FCF00500FF5 /* BACSDirectDebitData.swift */,
 			);
-			path = Model;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		E216D3B42217096E0013CBCF /* Items */ = {

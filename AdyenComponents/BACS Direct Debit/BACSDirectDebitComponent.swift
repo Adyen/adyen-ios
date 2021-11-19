@@ -63,5 +63,6 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
 
     func continuePayment(data: BACSDirectDebitData) {
         // TODO: - Continue payment
+        print("PAYMENT: \(data)")
     }
 }
