@@ -62,7 +62,7 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         textItem.placeholder = Content.holderNameItemTitle
 
         // TODO: - Set up validator
-        // textItem.validator = ...
+        textItem.validator = LengthValidator(minimumLength: 1, maximumLength: 70)
         // textItem.validationFailureMessage = ...
 
         textItem.autocapitalizationType = .words
