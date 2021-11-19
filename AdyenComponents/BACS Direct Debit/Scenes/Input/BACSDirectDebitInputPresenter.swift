@@ -65,9 +65,13 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
         view.add(item: bankAccountNumberItem)
         view.add(item: sortCodeItem)
         view.add(item: emailItem)
+        view.add(item: FormSpacerItem(numberOfSpaces: 2))
         view.add(item: amountTermsToggleItem)
+        view.add(item: FormSpacerItem(numberOfSpaces: 1))
         view.add(item: legalTermsToggleItem)
+        view.add(item: FormSpacerItem(numberOfSpaces: 2))
         view.add(item: continueButtonItem)
+        view.add(item: FormSpacerItem(numberOfSpaces: 1))
     }
 
     private var isFormValid: Bool {
