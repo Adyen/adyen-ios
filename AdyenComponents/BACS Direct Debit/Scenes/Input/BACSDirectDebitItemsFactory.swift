@@ -81,7 +81,7 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         textItem.placeholder = Content.bankAccountNumberItemTitle
 
         // TODO: - Set up validator
-        // textItem.validator = ...
+        textItem.validator = NumericStringValidator(minimumLength: 1, maximumLength: 8)
         // textItem.validationFailureMessage = ...
 
         textItem.autocapitalizationType = .none

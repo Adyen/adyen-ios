@@ -37,6 +37,7 @@ internal class BACSDirectDebitInputFormView: FormViewController, BACSDirectDebit
     }
 
     internal func displayValidation() {
+        resignFirstResponder()
         showValidation()
     }
 }

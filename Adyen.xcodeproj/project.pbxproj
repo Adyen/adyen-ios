@@ -92,6 +92,7 @@
 		C9D8EBA02745556B006D8CA1 /* BACSDirectDebitDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9F2745556B006D8CA1 /* BACSDirectDebitDetails.swift */; };
 		C9D8EBA2274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EBA1274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift */; };
 		C9F468E227465FCF00500FF5 /* BACSDirectDebitData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F468E127465FCF00500FF5 /* BACSDirectDebitData.swift */; };
+		C9F468E52747EB1D00500FF5 /* BACSAccountNumberValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F468E42747EB1D00500FF5 /* BACSAccountNumberValidator.swift */; };
 		E2028F5C2227F1930007FF8B /* Details.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2028F5B2227F1930007FF8B /* Details.swift */; };
 		E2028F5E222805E20007FF8B /* CardDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2028F5D222805E20007FF8B /* CardDetails.swift */; };
 		E216D3BC221AAB240013CBCF /* FormItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E216D3BB221AAB240013CBCF /* FormItem.swift */; };
@@ -984,6 +985,7 @@
 		C9D8EB9F2745556B006D8CA1 /* BACSDirectDebitDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitDetails.swift; sourceTree = "<group>"; };
 		C9D8EBA1274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitPaymentMethod.swift; sourceTree = "<group>"; };
 		C9F468E127465FCF00500FF5 /* BACSDirectDebitData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitData.swift; sourceTree = "<group>"; };
+		C9F468E42747EB1D00500FF5 /* BACSAccountNumberValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSAccountNumberValidator.swift; sourceTree = "<group>"; };
 		E2028F5B2227F1930007FF8B /* Details.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Details.swift; sourceTree = "<group>"; };
 		E2028F5D222805E20007FF8B /* CardDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetails.swift; sourceTree = "<group>"; };
 		E216D3BB221AAB240013CBCF /* FormItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormItem.swift; sourceTree = "<group>"; };
@@ -3148,6 +3150,7 @@
 				E702BDA4260108A700280682 /* ClientKeyValidator.swift */,
 				F9838D442631AD3700963483 /* BalanceChecker.swift */,
 				E755BF7126B40C90007AAB25 /* DateValidator.swift */,
+				C9F468E42747EB1D00500FF5 /* BACSAccountNumberValidator.swift */,
 			);
 			path = Validators;
 			sourceTree = "<group>";
@@ -4650,6 +4653,7 @@
 				F919DF8F24E682250027976E /* ClientKeyRequest.swift in Sources */,
 				F9639B2424DC38460073F38A /* PresentationDelegate.swift in Sources */,
 				E2028F5C2227F1930007FF8B /* Details.swift in Sources */,
+				C9F468E52747EB1D00500FF5 /* BACSAccountNumberValidator.swift in Sources */,
 				E7085C8D262DD4F800D0153B /* FormRegionPickerItem.swift in Sources */,
 				5A988BF6265675ED0007F4C0 /* BoletoPaymentMethod.swift in Sources */,
 				F97FA030264B1367004AFD0C /* ListSectionFooterStyle.swift in Sources */,
