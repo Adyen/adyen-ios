@@ -29,15 +29,18 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     public let paymentMethod: PaymentMethod
     public let apiContext: APIContext
     public let style: FormComponentStyle
+    public var localizationParameters: LocalizationParameters?
 
     // MARK: - Initializers
 
     public init(paymentMethod: BACSDirectDebitPaymentMethod,
                 apiContext: APIContext,
-                style: FormComponentStyle = .init()) {
+                style: FormComponentStyle = .init(),
+                localizationParameters: LocalizationParameters? = nil) {
         self.paymentMethod = paymentMethod
         self.apiContext = apiContext
         self.style = style
+        self.localizationParameters = localizationParameters
 
         let view = BACSDirectDebitInputFormView(title: paymentMethod.name,
                                                 styleProvider: style)
@@ -46,7 +49,9 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
         let navigationController = UINavigationController(rootViewController: view as UIViewController)
         viewController = navigationController
 
-        let itemsFactory = BACSDirectDebitItemsFactory(styleProvider: style, scope: self)
+        let itemsFactory = BACSDirectDebitItemsFactory(styleProvider: style,
+                                                       localizationParameters: localizationParameters,
+                                                       scope: self)
         let presenter = BACSDirectDebitPresenter(view: view,
                                                  router: self,
                                                  itemsFactory: itemsFactory)

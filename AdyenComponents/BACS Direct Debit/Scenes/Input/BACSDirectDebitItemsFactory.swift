@@ -43,12 +43,16 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
     // MARK: - Properties
 
     private let styleProvider: FormComponentStyle
+    private let localizationParameters: LocalizationParameters?
     private let scope: Any
 
     // MARK: - Initializers
 
-    internal init(styleProvider: FormComponentStyle, scope: Any) {
+    internal init(styleProvider: FormComponentStyle,
+                  localizationParameters: LocalizationParameters?,
+                  scope: Any) {
         self.styleProvider = styleProvider
+        self.localizationParameters = localizationParameters
         self.scope = scope
     }
 
