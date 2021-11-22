@@ -28,6 +28,7 @@ public final class FormToggleItemView: FormValueItemView<Bool, FormToggleItemSty
         switchControl.isOn = item.value
         switchControl.onTintColor = item.style.tintColor
         switchControl.isAccessibilityElement = false
+        switchControl.setContentHuggingPriority(.required, for: .horizontal)
         switchControl.setContentCompressionResistancePriority(.required, for: .horizontal)
         switchControl.addTarget(self, action: #selector(switchControlValueChanged), for: .valueChanged)
         switchControl.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "switch") }
