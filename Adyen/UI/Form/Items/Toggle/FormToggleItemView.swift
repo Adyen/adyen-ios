@@ -10,10 +10,6 @@ import UIKit
 /// :nodoc:
 public final class FormToggleItemView: FormValueItemView<Bool, FormToggleItemStyle, FormToggleItem> {
 
-    private enum Layout {
-        static let switchWidth: CGFloat = 40.0
-    }
-
     // MARK: - UI elements
 
     private lazy var stackView: UIStackView = {
@@ -32,6 +28,7 @@ public final class FormToggleItemView: FormValueItemView<Bool, FormToggleItemSty
         switchControl.isOn = item.value
         switchControl.onTintColor = item.style.tintColor
         switchControl.isAccessibilityElement = false
+        switchControl.setContentCompressionResistancePriority(.required, for: .horizontal)
         switchControl.addTarget(self, action: #selector(switchControlValueChanged), for: .valueChanged)
         switchControl.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "switch") }
 
@@ -68,10 +65,6 @@ public final class FormToggleItemView: FormValueItemView<Bool, FormToggleItemSty
     }
 
     private func setupLayout() {
-        NSLayoutConstraint.activate([
-            switchControl.widthAnchor.constraint(equalToConstant: Layout.switchWidth)
-        ])
-
         stackView.adyen.anchor(inside: layoutMarginsGuide)
     }
 
