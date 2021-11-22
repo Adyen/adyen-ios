@@ -9,7 +9,33 @@ import UIKit
 /// A view representing a switch item.
 /// :nodoc:
 public final class FormToggleItemView: FormValueItemView<Bool, FormToggleItemStyle, FormToggleItem> {
-    
+
+    // MARK: - UI elements
+
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.distribution = .fill
+        stackView.spacing = 8.0
+
+        return stackView
+    }()
+
+    internal lazy var switchControl: UISwitch = {
+        let switchControl = UISwitch()
+        switchControl.translatesAutoresizingMaskIntoConstraints = false
+        switchControl.isOn = item.value
+        switchControl.onTintColor = item.style.tintColor
+        switchControl.isAccessibilityElement = false
+        switchControl.setContentHuggingPriority(.required, for: .horizontal)
+        switchControl.setContentCompressionResistancePriority(.required, for: .horizontal)
+        switchControl.addTarget(self, action: #selector(switchControlValueChanged), for: .valueChanged)
+        switchControl.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "switch") }
+
+        return switchControl
+    }()
+
     /// Initializes the switch item view.
     ///
     /// - Parameter item: The item represented by the view.
@@ -26,34 +52,29 @@ public final class FormToggleItemView: FormValueItemView<Bool, FormToggleItemSty
         observe(item.publisher) { [weak self] value in
             self?.switchControl.isOn = value
         }
-        
+
+        addSubviews()
+    }
+
+    // MARK: - Private
+
+    private func addSubviews() {
         addSubview(stackView)
-        stackView.adyen.anchor(inside: self.layoutMarginsGuide)
+        [titleLabel, switchControl].forEach(stackView.addArrangedSubview)
+
+        setupLayout()
     }
-    
-    /// :nodoc:
-    override public func reset() {
-        item.value = false
+
+    private func setupLayout() {
+        stackView.adyen.anchor(inside: layoutMarginsGuide)
     }
-    
-    // MARK: - Switch Control
-    
-    internal lazy var switchControl: UISwitch = {
-        let switchControl = UISwitch()
-        switchControl.isOn = item.value
-        switchControl.onTintColor = item.style.tintColor
-        switchControl.isAccessibilityElement = false
-        switchControl.addTarget(self, action: #selector(switchControlValueChanged), for: .valueChanged)
-        switchControl.setContentHuggingPriority(.required, for: .horizontal)
-        switchControl.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "switch") }
-        
-        return switchControl
-    }()
-    
+
     @objc private func switchControlValueChanged() {
         accessibilityValue = switchControl.accessibilityValue
         item.value = switchControl.isOn
     }
+
+    // MARK: - Public
     
     /// :nodoc:
     @discardableResult
@@ -63,17 +84,9 @@ public final class FormToggleItemView: FormValueItemView<Bool, FormToggleItemSty
         
         return true
     }
-    
-    // MARK: - Stack View
-    
-    private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, switchControl])
-        stackView.axis = .horizontal
-        stackView.alignment = .center
-        stackView.distribution = .fill
-        stackView.spacing = 8.0
 
-        return stackView
-    }()
-
+    /// :nodoc:
+    override public func reset() {
+        item.value = false
+    }
 }
