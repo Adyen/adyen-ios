@@ -108,13 +108,8 @@ internal final class ComponentManager {
         guard storedComponents.isEmpty,
               paidComponents.isEmpty,
               regularComponents.count == 1,
-              let regularComponent = regularComponents.first else { return nil }
-        let cannotSkipPaymentList = regularComponent is InstantPaymentComponent
-        if cannotSkipPaymentList {
-            return nil
-        } else {
-            return regularComponent as? (PaymentComponent & PresentableComponent)
-        }
+              let regularComponent = regularComponents.first as? (PaymentComponent & PresentableComponent) else { return nil }
+        return regularComponent
     }
     
     // MARK: - Private
