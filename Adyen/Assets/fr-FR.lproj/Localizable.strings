@@ -138,3 +138,4 @@
 "adyen.bacs.bankAccountNumberField.title" = "Numéro du compte bancaire";
 "adyen.bacs.bankLocationIdField.title" = "Code de tri (sort code)";
 "adyen.bacs.legalTermsToggle.title" = "Je confirme être le titulaire du compte et qu'aucune autre signature que la mienne n'est requise pour autoriser un prélèvement sur ce compte.";
+"adyen.bacs.amountTermsToggle.title" = "J'accepte que le montant ci-dessus soit déduit de mon compte bancaire.";

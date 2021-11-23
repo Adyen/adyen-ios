@@ -138,3 +138,4 @@
 "adyen.bacs.bankAccountNumberField.title" = "Bank account number";
 "adyen.bacs.bankLocationIdField.title" = "Sort code";
 "adyen.bacs.legalTermsToggle.title" = "I confirm the account is in my name and I am the only signatory required to authorise the Direct Debit on this account.";
+"adyen.bacs.amountTermsToggle.title" = "I agree that the above amount will be deducted from my bank account.";

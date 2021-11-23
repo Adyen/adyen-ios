@@ -19,11 +19,6 @@ internal protocol BACSDirectDebitItemsFactoryProtocol {
 
 internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol {
 
-    // TODO: - Remove
-    private enum Content {
-        static let amountTermsToggleItemTitle = "I agree that 20 will be deducted from my bank account"
-    }
-
     private enum ViewIdentifier {
         static let holderNameItem = "holderNameItem"
         static let bankAccountNumberItem = "bankAccountNumberItem"
@@ -153,7 +148,8 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         toggleItem.value = false
 
         // TODO: - Replace with localized version
-        toggleItem.title = Content.amountTermsToggleItemTitle
+        let localizedText = localizedString(.bacsAmountTermsToggleTitle, localizationParameters)
+        toggleItem.title = localizedText
 
         // TODO: - Set up identifier
         let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,

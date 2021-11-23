@@ -138,3 +138,4 @@
 "adyen.bacs.bankAccountNumberField.title" = "Bankszámlaszám";
 "adyen.bacs.bankLocationIdField.title" = "Banki azonosító";
 "adyen.bacs.legalTermsToggle.title" = "Megerősítem, hogy a bankszámla az én nevemen van, és én vagyok a bankszámlát érintő beszedési megbízás jóváhagyásához szükséges egyetlen aláíró.";
+"adyen.bacs.amountTermsToggle.title" = "Elfogadom, hogy a fenti összeget levonják a bankszámlámról.";

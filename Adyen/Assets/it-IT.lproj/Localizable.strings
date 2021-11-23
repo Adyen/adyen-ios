@@ -138,3 +138,4 @@
 "adyen.bacs.bankAccountNumberField.title" = "Numero di conto bancario";
 "adyen.bacs.bankLocationIdField.title" = "Sort code";
 "adyen.bacs.legalTermsToggle.title" = "Confermo che il conto è intestato al sottoscritto e che sono l'unico firmatario a dover autorizzare l'addebito diretto su questo conto.";
+"adyen.bacs.amountTermsToggle.title" = "Accetto che l'importo sopra indicato venga detratto dal mio conto bancario.";

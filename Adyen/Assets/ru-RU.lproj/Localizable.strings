@@ -138,3 +138,4 @@
 "adyen.bacs.bankAccountNumberField.title" = "Номер банковского счета";
 "adyen.bacs.bankLocationIdField.title" = "Код банка";
 "adyen.bacs.legalTermsToggle.title" = "Подтверждаю, что счет оформлен на мое имя и что я – единственное лицо, имеющее право подписи, разрешающей прямое дебетование средств со счета.";
+"adyen.bacs.amountTermsToggle.title" = "Выражаю согласие на списание вышеуказанной суммы с моего банковского счета.";

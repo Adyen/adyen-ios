@@ -138,3 +138,4 @@
 "adyen.bacs.bankAccountNumberField.title" = "Bankkontonummer";
 "adyen.bacs.bankLocationIdField.title" = "Clearingnummer";
 "adyen.bacs.legalTermsToggle.title" = "Jag bekräftar att jag är kontoinnehavare och att jag är den enda person vars godkännande krävs för att auktorisera autogiro från detta konto.";
+"adyen.bacs.amountTermsToggle.title" = "Jag godkänner att ovanstående belopp dras från mitt bankkonto.";

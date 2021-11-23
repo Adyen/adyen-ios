@@ -138,3 +138,4 @@
 "adyen.bacs.bankAccountNumberField.title" = "Pankkitilinumero";
 "adyen.bacs.bankLocationIdField.title" = "Lajittelukoodi";
 "adyen.bacs.legalTermsToggle.title" = "Vahvistan, että tili on nimessäni ja olen ainoa allekirjoittaja, joka vaaditaan valtuuttamaan suoraveloitus tällä tilillä.";
+"adyen.bacs.amountTermsToggle.title" = "Hyväksyn, että alla oleva summa veloitetaan pankkitililtäni.";

@@ -138,3 +138,4 @@
 "adyen.bacs.bankAccountNumberField.title" = "Bankkontonummer";
 "adyen.bacs.bankLocationIdField.title" = "Sorteringskode";
 "adyen.bacs.legalTermsToggle.title" = "Jeg bekrefter at kontoen står i mitt navn, og at jeg er den eneste signataren som kreves for å autorisere direktebelastningen på denne kontoen.";
+"adyen.bacs.amountTermsToggle.title" = "Jeg samtykker til at beløpet ovenfor blir trukket fra bankkontoen min.";
