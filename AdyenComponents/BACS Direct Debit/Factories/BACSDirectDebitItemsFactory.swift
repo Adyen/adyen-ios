@@ -13,8 +13,8 @@ internal protocol BACSDirectDebitItemsFactoryProtocol {
     func createSortCodeItem() -> FormTextInputItem
     func createEmailItem() -> FormTextInputItem
     func createContinueButton() -> FormButtonItem
-    func createAmountTermsToggle() -> FormToggleItem
-    func createLegalTermsToggle() -> FormToggleItem
+    func createAmountConsentToggle() -> FormToggleItem
+    func createLegalConsentToggle() -> FormToggleItem
 }
 
 internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol {
@@ -50,14 +50,14 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
     internal func createHolderNameItem() -> FormTextInputItem {
         let textItem = FormTextInputItem(style: styleProvider.textField)
 
-        // TODO: - Replace with localized version
         let localizedTitle = localizedString(.bacsHolderNameFieldTitle, localizationParameters)
         textItem.title = localizedTitle
         textItem.placeholder = localizedTitle
 
-        // TODO: - Set up validator
         textItem.validator = LengthValidator(minimumLength: 1, maximumLength: 70)
-        // textItem.validationFailureMessage = ...
+
+        // TODO: - Set up failure message
+        // textItem.validationFailureMessage = "ERROR"
 
         textItem.autocapitalizationType = .words
 
@@ -70,13 +70,13 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
     internal func createBankAccountNumberItem() -> FormTextInputItem {
         let textItem = FormTextInputItem(style: styleProvider.textField)
 
-        // TODO: - Replace with localized version
         let localizedTitle = localizedString(.bacsBankAccountNumberFieldTitle, localizationParameters)
         textItem.title = localizedTitle
         textItem.placeholder = localizedTitle
 
-        // TODO: - Set up validator
         textItem.validator = NumericStringValidator(minimumLength: 1, maximumLength: 8)
+
+        // TODO: - Set up failure message
         // textItem.validationFailureMessage = ...
 
         textItem.autocapitalizationType = .none
@@ -91,13 +91,13 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
     internal func createSortCodeItem() -> FormTextInputItem {
         let textItem = FormTextInputItem(style: styleProvider.textField)
 
-        // TODO: - Replace with localized version
         let localizedTitle = localizedString(.bacsBankLocationIdFieldTitle, localizationParameters)
         textItem.title = localizedTitle
         textItem.placeholder = localizedTitle
 
-        // TODO: - Set up validator
         textItem.validator = NumericStringValidator(minimumLength: 1, maximumLength: 6)
+
+        // TODO: - Set up failure message
         // textItem.validationFailureMessage = ...
 
         textItem.autocapitalizationType = .none
@@ -112,13 +112,13 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
     internal func createEmailItem() -> FormTextInputItem {
         let textItem = FormTextInputItem(style: styleProvider.textField)
 
-        // TODO: - Replace with localized version
-        let localizedText = localizedString(.emailItemTitle, localizationParameters)
-        textItem.title = localizedText
-        textItem.placeholder = localizedText
+        let localizedTitle = localizedString(.emailItemTitle, localizationParameters)
+        textItem.title = localizedTitle
+        textItem.placeholder = localizedTitle
 
-        // TODO: - Set up validator
         textItem.validator = EmailValidator()
+
+        // TODO: - Set up failure message
         // textItem.validationFailureMessage = ...
 
         textItem.autocapitalizationType = .none
@@ -133,9 +133,8 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
     internal func createContinueButton() -> FormButtonItem {
         let buttonItem = FormButtonItem(style: styleProvider.mainButtonItem)
 
-        // TODO: - Replace with localized version
-        let localizedText = localizedString(.continueTitle, localizationParameters)
-        buttonItem.title = localizedText
+        let localizedTitle = localizedString(.continueTitle, localizationParameters)
+        buttonItem.title = localizedTitle
 
         let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
                                                      postfix: ViewIdentifier.continueButtonItem)
@@ -143,13 +142,12 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         return buttonItem
     }
 
-    internal func createAmountTermsToggle() -> FormToggleItem {
+    internal func createAmountConsentToggle() -> FormToggleItem {
         let toggleItem = FormToggleItem(style: styleProvider.toggle)
         toggleItem.value = false
 
-        // TODO: - Replace with localized version
-        let localizedText = localizedString(.bacsAmountTermsToggleTitle, localizationParameters)
-        toggleItem.title = localizedText
+        let localizedTitle = localizedString(.bacsAmountTermsToggleTitle, localizationParameters)
+        toggleItem.title = localizedTitle
 
         // TODO: - Set up identifier
         let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
@@ -158,13 +156,12 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         return toggleItem
     }
 
-    internal func createLegalTermsToggle() -> FormToggleItem {
+    internal func createLegalConsentToggle() -> FormToggleItem {
         let toggleItem = FormToggleItem(style: styleProvider.toggle)
         toggleItem.value = false
 
-        // TODO: - Replace with localized version
-        let localizedText = localizedString(.bacsLegalTermsToggleTitle, localizationParameters)
-        toggleItem.title = localizedText
+        let localizedTitle = localizedString(.bacsLegalTermsToggleTitle, localizationParameters)
+        toggleItem.title = localizedTitle
 
         let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
                                                      postfix: ViewIdentifier.legalTermsToggleItem)

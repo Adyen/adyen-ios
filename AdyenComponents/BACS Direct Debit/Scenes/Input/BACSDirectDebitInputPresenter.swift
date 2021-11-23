@@ -24,8 +24,8 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
     private var bankAccountNumberItem: FormTextInputItem?
     private var sortCodeItem: FormTextInputItem?
     private var emailItem: FormTextInputItem?
-    private var amountTermsToggleItem: FormToggleItem?
-    private var legalTermsToggleItem: FormToggleItem?
+    private var amountConsentToggleItem: FormToggleItem?
+    private var legalConsentToggleItem: FormToggleItem?
     private var continueButtonItem: FormButtonItem?
 
     // MARK: - Initializers
@@ -53,8 +53,8 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
         bankAccountNumberItem = itemsFactory.createBankAccountNumberItem()
         sortCodeItem = itemsFactory.createSortCodeItem()
         emailItem = itemsFactory.createEmailItem()
-        amountTermsToggleItem = itemsFactory.createAmountTermsToggle()
-        legalTermsToggleItem = itemsFactory.createLegalTermsToggle()
+        amountConsentToggleItem = itemsFactory.createAmountConsentToggle()
+        legalConsentToggleItem = itemsFactory.createLegalConsentToggle()
 
         continueButtonItem = itemsFactory.createContinueButton()
         continueButtonItem?.buttonSelectionHandler = continuePayment
@@ -66,17 +66,17 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
         view.add(item: sortCodeItem)
         view.add(item: emailItem)
         view.add(item: FormSpacerItem(numberOfSpaces: 2))
-        view.add(item: amountTermsToggleItem)
+        view.add(item: amountConsentToggleItem)
         view.add(item: FormSpacerItem(numberOfSpaces: 1))
-        view.add(item: legalTermsToggleItem)
+        view.add(item: legalConsentToggleItem)
         view.add(item: FormSpacerItem(numberOfSpaces: 2))
         view.add(item: continueButtonItem)
         view.add(item: FormSpacerItem(numberOfSpaces: 1))
     }
 
     private var isFormValid: Bool {
-        guard let amountTermsAccepted = amountTermsToggleItem?.value,
-              let legalTermsAccepted = legalTermsToggleItem?.value,
+        guard let amountTermsAccepted = amountConsentToggleItem?.value,
+              let legalTermsAccepted = legalConsentToggleItem?.value,
               amountTermsAccepted, legalTermsAccepted else {
             return false
         }
