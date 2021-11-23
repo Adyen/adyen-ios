@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "Bevestig %@ betaling";
 "adyen.dropIn.preselected.openAll.title" = "Betalingsmethode wijzigen";
 "adyen.continueTo" = "Doorgaan naar %@";
+"adyen.continueTitle" = "Doorgaan";
 "adyen.phoneNumber.title" = "Telefoonnummer";
 "adyen.phoneNumber.invalid" = "Ongeldig telefoonnummer";
 "adyen.phoneNumber.placeholder" = "123–456–789";

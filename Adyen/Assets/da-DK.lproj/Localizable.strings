@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "Bekræft %@-betaling";
 "adyen.dropIn.preselected.openAll.title" = "Skift betalingsmåde";
 "adyen.continueTo" = "Fortsæt til %@";
+"adyen.continueTitle" = "Fortsæt";
 "adyen.phoneNumber.title" = "Telefonnummer";
 "adyen.phoneNumber.invalid" = "Ugyldigt telefonnummer";
 "adyen.phoneNumber.placeholder" = "123–456–789";

@@ -19,10 +19,8 @@ internal protocol BACSDirectDebitItemsFactoryProtocol {
 
 internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol {
 
+    // TODO: - Remove
     private enum Content {
-        // TODO: - Fill with content
-        static let emailItemTitle = "Email"
-        static let continueButtonItemTitle = "Continue"
         static let amountTermsToggleItemTitle = "I agree that 20 will be deducted from my bank account"
         static let legalTermsToggleItemTitle = "I confirm the account is in my name and I am the only signatory required  to authorize the Direct Debit on this account."
     }
@@ -59,7 +57,7 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         let textItem = FormTextInputItem(style: styleProvider.textField)
 
         // TODO: - Replace with localized version
-        let localizedTitle = localizedString(.bacsAccountHolderNameField, localizationParameters)
+        let localizedTitle = localizedString(.bacsHolderNameFieldTitle, localizationParameters)
         textItem.title = localizedTitle
         textItem.placeholder = localizedTitle
 
@@ -79,7 +77,7 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         let textItem = FormTextInputItem(style: styleProvider.textField)
 
         // TODO: - Replace with localized version
-        let localizedTitle = localizedString(.bacsBankAccountNumberField, localizationParameters)
+        let localizedTitle = localizedString(.bacsBankAccountNumberFieldTitle, localizationParameters)
         textItem.title = localizedTitle
         textItem.placeholder = localizedTitle
 
@@ -100,7 +98,7 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         let textItem = FormTextInputItem(style: styleProvider.textField)
 
         // TODO: - Replace with localized version
-        let localizedTitle = localizedString(.bacsBankLocationIdField, localizationParameters)
+        let localizedTitle = localizedString(.bacsBankLocationIdFieldTitle, localizationParameters)
         textItem.title = localizedTitle
         textItem.placeholder = localizedTitle
 
@@ -121,8 +119,9 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         let textItem = FormTextInputItem(style: styleProvider.textField)
 
         // TODO: - Replace with localized version
-        textItem.title = Content.emailItemTitle
-        textItem.placeholder = Content.emailItemTitle
+        let localizedText = localizedString(.emailItemTitle, localizationParameters)
+        textItem.title = localizedText
+        textItem.placeholder = localizedText
 
         // TODO: - Set up validator
         textItem.validator = EmailValidator()
@@ -141,7 +140,8 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         let buttonItem = FormButtonItem(style: styleProvider.mainButtonItem)
 
         // TODO: - Replace with localized version
-        buttonItem.title = Content.continueButtonItemTitle
+        let localizedText = localizedString(.continueTitle, localizationParameters)
+        buttonItem.title = localizedText
 
         let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
                                                      postfix: ViewIdentifier.continueButtonItem)

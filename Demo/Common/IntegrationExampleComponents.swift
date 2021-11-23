@@ -40,6 +40,7 @@ extension IntegrationExample {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: BACSDirectDebitPaymentMethod.self) else { return }
         let component = BACSDirectDebitComponent(paymentMethod: paymentMethod,
                                                  apiContext: apiContext)
+        component.requiresModalPresentation = false
         present(component)
     }
 

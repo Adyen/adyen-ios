@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "Подтвердить оплату %@";
 "adyen.dropIn.preselected.openAll.title" = "Изменить способ оплаты";
 "adyen.continueTo" = "Перейти к %@";
+"adyen.continueTitle" = "Продолжить";
 "adyen.phoneNumber.title" = "Номер телефона";
 "adyen.phoneNumber.invalid" = "Недействительный номер телефона";
 "adyen.phoneNumber.placeholder" = "123–456–789";

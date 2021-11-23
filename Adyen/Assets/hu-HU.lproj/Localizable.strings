@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "%@ használatával történő fizetés jóváhagyása";
 "adyen.dropIn.preselected.openAll.title" = "Fizetési mód módosítása";
 "adyen.continueTo" = "Folytatás a következővel: %@";
+"adyen.continueTitle" = "Folytatás";
 "adyen.phoneNumber.title" = "Telefonszám";
 "adyen.phoneNumber.invalid" = "Érvénytelen telefonszám";
 "adyen.phoneNumber.placeholder" = "12–345–6789";

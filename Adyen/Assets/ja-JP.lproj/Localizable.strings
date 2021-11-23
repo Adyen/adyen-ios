@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "%@のお支払いをご確認下さい";
 "adyen.dropIn.preselected.openAll.title" = "お支払方法を変更する";
 "adyen.continueTo" = "次へ進む：%@";
+"adyen.continueTitle" = "続ける";
 "adyen.phoneNumber.title" = "電話番号";
 "adyen.phoneNumber.invalid" = "無効な電話番号";
 "adyen.phoneNumber.placeholder" = "123–456–789";

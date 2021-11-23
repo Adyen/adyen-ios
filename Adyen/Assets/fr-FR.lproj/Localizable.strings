@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "Confirmer paiement de %@";
 "adyen.dropIn.preselected.openAll.title" = "Changer de moyen de paiement";
 "adyen.continueTo" = "Poursuivre vers %@";
+"adyen.continueTitle" = "Continuer";
 "adyen.phoneNumber.title" = "Numéro de téléphone";
 "adyen.phoneNumber.invalid" = "Numéro de téléphone incorrect";
 "adyen.phoneNumber.placeholder" = "01 23 45 67 89";

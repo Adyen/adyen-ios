@@ -83,6 +83,8 @@ public struct LocalizationKey {
     public static let dropInPreselectedOpenAllTitle = LocalizationKey(key: "adyen.dropIn.preselected.openAll.title")
     /// Continue to %@
     public static let continueTo = LocalizationKey(key: "adyen.continueTo")
+    /// Continue
+    public static let continueTitle = LocalizationKey(key: "adyen.continueTitle")
     /// Telephone number
     public static let phoneNumberTitle = LocalizationKey(key: "adyen.phoneNumber.title")
     /// Invalid telephone number
@@ -277,12 +279,12 @@ public struct LocalizationKey {
     public static let cardInstallmentsMonths = LocalizationKey(key: "adyen.card.installments.months")
     /// Method of payment
     public static let cardInstallmentsPlan = LocalizationKey(key: "adyen.card.installments.plan")
-    /// BACS Account holder name
-    public static let bacsAccountHolderNameField = LocalizationKey(key: "adyen.bacs.holderNameField.title")
-    /// BACS Bank account Number
-    public static let bacsBankAccountNumberField = LocalizationKey(key: "adyen.bacs.bankAccountNumberField.title")
-    /// BACS Bank location ID
-    public static let bacsBankLocationIdField = LocalizationKey(key: "adyen.bacs.bankLocationIdField.title")
+    /// Bank account holder name
+    public static let bacsHolderNameFieldTitle = LocalizationKey(key: "adyen.bacs.holderNameField.title")
+    /// Bank account number
+    public static let bacsBankAccountNumberFieldTitle = LocalizationKey(key: "adyen.bacs.bankAccountNumberField.title")
+    /// Sort code
+    public static let bacsBankLocationIdFieldTitle = LocalizationKey(key: "adyen.bacs.bankLocationIdField.title")
     
     internal let key: String
     

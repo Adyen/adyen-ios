@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "Potvrďte platbu pomocou %@";
 "adyen.dropIn.preselected.openAll.title" = "Zmeniť spôsob platby";
 "adyen.continueTo" = "Pokračovať do %@";
+"adyen.continueTitle" = "Pokračovať";
 "adyen.phoneNumber.title" = "Telefónne číslo";
 "adyen.phoneNumber.invalid" = "Neplatné telefónne číslo";
 "adyen.phoneNumber.placeholder" = "123–456–789";

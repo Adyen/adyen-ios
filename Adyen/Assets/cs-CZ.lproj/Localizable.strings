@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "Potvrdit platbu";
 "adyen.dropIn.preselected.openAll.title" = "Změnit způsob platby";
 "adyen.continueTo" = "Pokračovat k %@";
+"adyen.continueTitle" = "Pokračovat";
 "adyen.phoneNumber.title" = "Telefonní číslo";
 "adyen.phoneNumber.invalid" = "Neplatné telefonní číslo";
 "adyen.phoneNumber.placeholder" = "123 456 789";

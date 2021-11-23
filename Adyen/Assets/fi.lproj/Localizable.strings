@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "Vahvista %@ maksu";
 "adyen.dropIn.preselected.openAll.title" = "Muuta maksutapaa";
 "adyen.continueTo" = "Jatka kohteeseen %@";
+"adyen.continueTitle" = "Jatka";
 "adyen.phoneNumber.title" = "Puhelinnumero";
 "adyen.phoneNumber.invalid" = "Ei-kelvollinen puhelinnumero";
 "adyen.phoneNumber.placeholder" = "123–456–789";

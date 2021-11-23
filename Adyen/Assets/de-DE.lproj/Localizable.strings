@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "Bestätige %@ Zahlung";
 "adyen.dropIn.preselected.openAll.title" = "Zahlungsmethode wechseln";
 "adyen.continueTo" = "Weiter zu %@";
+"adyen.continueTitle" = "Weiter";
 "adyen.phoneNumber.title" = "Telefonnummer";
 "adyen.phoneNumber.invalid" = "Ungültige Telefonnummer";
 "adyen.phoneNumber.placeholder" = "123–456–789";

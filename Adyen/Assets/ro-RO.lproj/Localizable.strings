@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "Confirmați plata %@";
 "adyen.dropIn.preselected.openAll.title" = "Schimbare metodă de plată";
 "adyen.continueTo" = "Continuați către %@";
+"adyen.continueTitle" = "Continuare";
 "adyen.phoneNumber.title" = "Număr de telefon";
 "adyen.phoneNumber.invalid" = "Număr de telefon incorect";
 "adyen.phoneNumber.placeholder" = "123–456–789";

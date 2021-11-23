@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "Potvrdite plaćanje: % @";
 "adyen.dropIn.preselected.openAll.title" = "Promijeni način plaćanja";
 "adyen.continueTo" = "Nastavi na %@";
+"adyen.continueTitle" = "Nastavi";
 "adyen.phoneNumber.title" = "Telefonski broj";
 "adyen.phoneNumber.invalid" = "Nevažeći telefonski broj";
 "adyen.phoneNumber.placeholder" = "123–456–789";
