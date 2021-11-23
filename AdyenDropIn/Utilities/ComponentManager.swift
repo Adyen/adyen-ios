@@ -102,6 +102,21 @@ internal final class ComponentManager {
 
     internal lazy var paidComponents = paymentMethods.paid.compactMap(component(for:))
     
+    /// Returns the only regular component that is not an instant payment,
+    /// when no other payment method exists.
+    internal var singleRegularComponent: (PaymentComponent & PresentableComponent)? {
+        guard storedComponents.isEmpty,
+              paidComponents.isEmpty,
+              regularComponents.count == 1,
+              let regularComponent = regularComponents.first else { return nil }
+        let cannotSkipPaymentList = regularComponent is InstantPaymentComponent
+        if cannotSkipPaymentList {
+            return nil
+        } else {
+            return regularComponent as? (PaymentComponent & PresentableComponent)
+        }
+    }
+    
     // MARK: - Private
     
     private func component(for paymentMethod: PaymentMethod) -> PaymentComponent? {

@@ -157,9 +157,13 @@ public final class DropInComponent: NSObject, PresentableComponent {
                          supportsEditingStoredPaymentMethods: storedPaymentMethodsDelegate != nil)
     }
     
-    internal lazy var rootComponent: PresentableComponent & ComponentLoader = {
+    internal lazy var rootComponent: PresentableComponent = {
         if let preselectedComponents = componentManager.storedComponents.first {
             return preselectedPaymentMethodComponent(for: preselectedComponents, onCancel: nil)
+        } else if configuration.allowsSkippingPaymentList,
+                  let singleRegularComponent = componentManager.singleRegularComponent {
+            setNecessaryDelegates(on: singleRegularComponent)
+            return singleRegularComponent
         } else {
             return paymentMethodListComponent(onCancel: nil)
         }
@@ -209,17 +213,10 @@ public final class DropInComponent: NSObject, PresentableComponent {
     }
     
     internal func didSelect(_ component: PaymentComponent) {
-        selectedPaymentComponent = component
-        component.delegate = self
-        (component as? CardComponent)?.cardComponentDelegate = cardComponentDelegate
-        (component as? PartialPaymentComponent)?.partialPaymentDelegate = partialPaymentDelegate
-        (component as? PartialPaymentComponent)?.readyToSubmitComponentDelegate = self
-        component._isDropIn = true
-        component.payment = configuration.payment
+        setNecessaryDelegates(on: component)
         
         switch component {
         case let component as PreApplePayComponent:
-            component.presentationDelegate = self
             navigationController.present(asModal: component)
         case let component as PresentableComponent where component.requiresModalPresentation:
             navigationController.present(asModal: component)
@@ -258,8 +255,20 @@ public final class DropInComponent: NSObject, PresentableComponent {
     }
 
     internal func stopLoading() {
-        rootComponent.stopLoading()
+        (rootComponent as? ComponentLoader)?.stopLoading()
         selectedPaymentComponent?.stopLoadingIfNeeded()
+    }
+    
+    private func setNecessaryDelegates(on component: PaymentComponent) {
+        selectedPaymentComponent = component
+        component.delegate = self
+        (component as? CardComponent)?.cardComponentDelegate = cardComponentDelegate
+        (component as? PartialPaymentComponent)?.partialPaymentDelegate = partialPaymentDelegate
+        (component as? PartialPaymentComponent)?.readyToSubmitComponentDelegate = self
+        (component as? PreApplePayComponent)?.presentationDelegate = self
+        
+        component._isDropIn = true
+        component.payment = configuration.payment
     }
 }
 
