@@ -133,3 +133,6 @@
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "%@ mois";
 "adyen.card.installments.plan" = "Méthode de paiement";
+"adyen.bacs.holderNameField.title" = "Nom du titulaire du compte bancaire";
+"adyen.bacs.bankAccountNumberField.title" = "Numéro du compte bancaire";
+"adyen.bacs.bankLocationIdField.title" = "Code de tri (sort code)";

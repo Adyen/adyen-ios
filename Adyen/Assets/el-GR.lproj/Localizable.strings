@@ -133,3 +133,6 @@
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "%@ μήνες";
 "adyen.card.installments.plan" = "Τρόπος πληρωμής";
+"adyen.bacs.holderNameField.title" = "Όνομα δικαιούχου τραπεζικού λογαριασμού";
+"adyen.bacs.bankAccountNumberField.title" = "Αριθμός τραπεζικού λογαριασμού";
+"adyen.bacs.bankLocationIdField.title" = "Κωδικός τράπεζας";

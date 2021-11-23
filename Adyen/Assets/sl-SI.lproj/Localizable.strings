@@ -133,3 +133,6 @@
 "adyen.card.installments.monthsAndPrice" = "%@ × %@";
 "adyen.card.installments.months" = "Št. mesecev: %@";
 "adyen.card.installments.plan" = "Način plačila";
+"adyen.bacs.holderNameField.title" = "Ime imetnika bančnega računa";
+"adyen.bacs.bankAccountNumberField.title" = "Številka bančnega računa";
+"adyen.bacs.bankLocationIdField.title" = "Številka banke";

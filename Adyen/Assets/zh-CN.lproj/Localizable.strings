@@ -133,3 +133,6 @@
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "%@ 个月";
 "adyen.card.installments.plan" = "付款方式";
+"adyen.bacs.holderNameField.title" = "银行账户持有人姓名";
+"adyen.bacs.bankAccountNumberField.title" = "银行账号";
+"adyen.bacs.bankLocationIdField.title" = "分类代码";

@@ -133,3 +133,6 @@
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "%@か月";
 "adyen.card.installments.plan" = "支払方法";
+"adyen.bacs.holderNameField.title" = "銀行口座名義";
+"adyen.bacs.bankAccountNumberField.title" = "銀行口座番号";
+"adyen.bacs.bankLocationIdField.title" = "ソートコード";

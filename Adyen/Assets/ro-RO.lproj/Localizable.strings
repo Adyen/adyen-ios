@@ -133,3 +133,6 @@
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "%@ luni";
 "adyen.card.installments.plan" = "Metodă de plată";
+"adyen.bacs.holderNameField.title" = "Numele titularului contului bancar";
+"adyen.bacs.bankAccountNumberField.title" = "Numărul contului bancar";
+"adyen.bacs.bankLocationIdField.title" = "Cod de identificare bancară";

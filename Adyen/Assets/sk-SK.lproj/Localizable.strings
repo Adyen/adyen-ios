@@ -133,3 +133,6 @@
 "adyen.card.installments.monthsAndPrice" = "%@ x %@";
 "adyen.card.installments.months" = "%@ mesiace/-ov";
 "adyen.card.installments.plan" = "Spôsob platby";
+"adyen.bacs.holderNameField.title" = "Meno majiteľa bankového účtu";
+"adyen.bacs.bankAccountNumberField.title" = "Číslo bankového účtu";
+"adyen.bacs.bankLocationIdField.title" = "Variabilný symbol";

@@ -133,3 +133,6 @@
 "adyen.card.installments.monthsAndPrice" = "%@ x%@";
 "adyen.card.installments.months" = "%@ kuukautta";
 "adyen.card.installments.plan" = "Maksutapa";
+"adyen.bacs.holderNameField.title" = "Tilinhaltijan nimi";
+"adyen.bacs.bankAccountNumberField.title" = "Pankkitilinumero";
+"adyen.bacs.bankLocationIdField.title" = "Lajittelukoodi";

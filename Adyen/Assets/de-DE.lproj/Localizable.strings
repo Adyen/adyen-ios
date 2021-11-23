@@ -133,3 +133,6 @@
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "%@ Monate";
 "adyen.card.installments.plan" = "Zahlungsmethode";
+"adyen.bacs.holderNameField.title" = "Name des Bankkontoinhabers";
+"adyen.bacs.bankAccountNumberField.title" = "Bankkontonummer";
+"adyen.bacs.bankLocationIdField.title" = "Bankleitzahl";

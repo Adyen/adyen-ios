@@ -133,3 +133,6 @@
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "%@개월";
 "adyen.card.installments.plan" = "결제 수단";
+"adyen.bacs.holderNameField.title" = "예금주 이름";
+"adyen.bacs.bankAccountNumberField.title" = "계좌 번호";
+"adyen.bacs.bankLocationIdField.title" = "은행 식별 코드";

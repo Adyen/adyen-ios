@@ -133,3 +133,6 @@
 "adyen.card.installments.monthsAndPrice" = "%@× %@";
 "adyen.card.installments.months" = "%@ мес.";
 "adyen.card.installments.plan" = "Способ оплаты";
+"adyen.bacs.holderNameField.title" = "Имя владельца банковского счета";
+"adyen.bacs.bankAccountNumberField.title" = "Номер банковского счета";
+"adyen.bacs.bankLocationIdField.title" = "Код банка";

@@ -133,3 +133,6 @@
 "adyen.card.installments.monthsAndPrice" = "%@ x %@";
 "adyen.card.installments.months" = "%@ hónap";
 "adyen.card.installments.plan" = "Fizetési mód";
+"adyen.bacs.holderNameField.title" = "Bankszámla-tulajdonos neve";
+"adyen.bacs.bankAccountNumberField.title" = "Bankszámlaszám";
+"adyen.bacs.bankLocationIdField.title" = "Banki azonosító";

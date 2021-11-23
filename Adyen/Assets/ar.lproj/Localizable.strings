@@ -133,3 +133,6 @@
 "adyen.card.installments.monthsAndPrice" = "%@ x %@";
 "adyen.card.installments.months" = "%@ أشهر";
 "adyen.card.installments.plan" = "طريقة الدفع";
+"adyen.bacs.holderNameField.title" = "اسم صاحب الحساب البنكي";
+"adyen.bacs.bankAccountNumberField.title" = "رقم الحساب البنكي";
+"adyen.bacs.bankLocationIdField.title" = "رمز تعريف البنك";

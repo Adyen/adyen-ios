@@ -133,3 +133,6 @@
 "adyen.card.installments.monthsAndPrice" = "%@ x %@";
 "adyen.card.installments.months" = "%@ månader";
 "adyen.card.installments.plan" = "Betalningssätt";
+"adyen.bacs.holderNameField.title" = "Bankkontoinnehavarens namn";
+"adyen.bacs.bankAccountNumberField.title" = "Bankkontonummer";
+"adyen.bacs.bankLocationIdField.title" = "Clearingnummer";
