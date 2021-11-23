@@ -137,3 +137,4 @@
 "adyen.bacs.holderNameField.title" = "Naam bankrekeninghouder";
 "adyen.bacs.bankAccountNumberField.title" = "Bankrekeningnummer";
 "adyen.bacs.bankLocationIdField.title" = "Bankcode";
+"adyen.bacs.legalTermsToggle.title" = "Ik bevestig dat de rekening op mijn naam staat en dat ik de enige ondertekenaar ben die toestemming kan geven voor automatische incasso's vanaf deze rekening.";

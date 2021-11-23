@@ -137,3 +137,4 @@
 "adyen.bacs.holderNameField.title" = "Όνομα δικαιούχου τραπεζικού λογαριασμού";
 "adyen.bacs.bankAccountNumberField.title" = "Αριθμός τραπεζικού λογαριασμού";
 "adyen.bacs.bankLocationIdField.title" = "Κωδικός τράπεζας";
+"adyen.bacs.legalTermsToggle.title" = "Επιβεβαιώνω ότι ο λογαριασμός είναι στο όνομά μου και πως είμαι ο/η μοναδικός/μοναδική υπογράφων/υπογράφουσα που απαιτείται για εξουσιοδότηση της Άμεσης Χρέωσης σε αυτόν τον λογαριασμό.";

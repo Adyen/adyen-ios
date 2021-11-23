@@ -137,3 +137,4 @@
 "adyen.bacs.holderNameField.title" = "Ime imetnika bančnega računa";
 "adyen.bacs.bankAccountNumberField.title" = "Številka bančnega računa";
 "adyen.bacs.bankLocationIdField.title" = "Številka banke";
+"adyen.bacs.legalTermsToggle.title" = "Potrjujem, da je račun ustvarjen v mojem imenu in sem edini podpisnik za odobritev neposredne bremenitve za ta račun.";

@@ -137,3 +137,4 @@
 "adyen.bacs.holderNameField.title" = "銀行口座名義";
 "adyen.bacs.bankAccountNumberField.title" = "銀行口座番号";
 "adyen.bacs.bankLocationIdField.title" = "ソートコード";
+"adyen.bacs.legalTermsToggle.title" = "口座が私の名義であることを確認し、この口座からの自動引き落としを承認するために必要な唯一の署名者であることを確認します。";

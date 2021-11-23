@@ -134,3 +134,4 @@
 "adyen.bacs.holderNameField.title" = "銀行帳戶持有人姓名";
 "adyen.bacs.bankAccountNumberField.title" = "銀行帳戶號碼";
 "adyen.bacs.bankLocationIdField.title" = "銀行代碼";
+"adyen.bacs.legalTermsToggle.title" = "我確認該帳戶以我的名義開設，並且我是授權從該帳戶直接扣款的唯一簽署人。";

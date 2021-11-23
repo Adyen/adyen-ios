@@ -22,7 +22,6 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
     // TODO: - Remove
     private enum Content {
         static let amountTermsToggleItemTitle = "I agree that 20 will be deducted from my bank account"
-        static let legalTermsToggleItemTitle = "I confirm the account is in my name and I am the only signatory required  to authorize the Direct Debit on this account."
     }
 
     private enum ViewIdentifier {
@@ -168,7 +167,8 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         toggleItem.value = false
 
         // TODO: - Replace with localized version
-        toggleItem.title = Content.legalTermsToggleItemTitle
+        let localizedText = localizedString(.bacsLegalTermsToggleTitle, localizationParameters)
+        toggleItem.title = localizedText
 
         let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
                                                      postfix: ViewIdentifier.legalTermsToggleItem)

@@ -137,3 +137,4 @@
 "adyen.bacs.holderNameField.title" = "Name des Bankkontoinhabers";
 "adyen.bacs.bankAccountNumberField.title" = "Bankkontonummer";
 "adyen.bacs.bankLocationIdField.title" = "Bankleitzahl";
+"adyen.bacs.legalTermsToggle.title" = "Ich bestätige, dass das Konto unter meinem Namen läuft und ich der einzige erforderliche Unterzeichner bin, um die Lastschrift für dieses Konto zu autorisieren.";

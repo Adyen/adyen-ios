@@ -137,3 +137,4 @@
 "adyen.bacs.holderNameField.title" = "Kontoholders navn";
 "adyen.bacs.bankAccountNumberField.title" = "Bankkontonummer";
 "adyen.bacs.bankLocationIdField.title" = "Sorteringskode";
+"adyen.bacs.legalTermsToggle.title" = "Jeg bekrefter at kontoen står i mitt navn, og at jeg er den eneste signataren som kreves for å autorisere direktebelastningen på denne kontoen.";

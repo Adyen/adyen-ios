@@ -137,3 +137,4 @@
 "adyen.bacs.holderNameField.title" = "Nombre del titular de la cuenta bancaria";
 "adyen.bacs.bankAccountNumberField.title" = "Número de cuenta bancaria";
 "adyen.bacs.bankLocationIdField.title" = "Código de sucursal";
+"adyen.bacs.legalTermsToggle.title" = "Confirmo que la cuenta está a mi nombre y soy el único firmante necesario para autorizar débitos directos en esta cuenta.";

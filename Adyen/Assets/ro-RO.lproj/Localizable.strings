@@ -137,3 +137,4 @@
 "adyen.bacs.holderNameField.title" = "Numele titularului contului bancar";
 "adyen.bacs.bankAccountNumberField.title" = "Numărul contului bancar";
 "adyen.bacs.bankLocationIdField.title" = "Cod de identificare bancară";
+"adyen.bacs.legalTermsToggle.title" = "Confirm că sunt titularul acestui cont și că sunt singurul semnatar necesar pentru autorizarea debitului direct pentru acest cont.";

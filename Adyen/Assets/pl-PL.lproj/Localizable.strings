@@ -137,3 +137,4 @@
 "adyen.bacs.holderNameField.title" = "Imię i nazwisko posiadacza rachunku";
 "adyen.bacs.bankAccountNumberField.title" = "Numer rachunku";
 "adyen.bacs.bankLocationIdField.title" = "Numer rozliczeniowy SORT";
+"adyen.bacs.legalTermsToggle.title" = "Potwierdzam, że konto jest zarejestrowane na moje nazwisko i jestem jedynym sygnatariuszem wymaganym do autoryzacji polecenia zapłaty na tym koncie.";

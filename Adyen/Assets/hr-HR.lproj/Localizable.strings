@@ -137,3 +137,4 @@
 "adyen.bacs.holderNameField.title" = "Ime vlasnika bankovnog računa";
 "adyen.bacs.bankAccountNumberField.title" = "Broj bankovnog računa";
 "adyen.bacs.bankLocationIdField.title" = "Identifikacijski kôd banke (UK)";
+"adyen.bacs.legalTermsToggle.title" = "Potvrđujem da je račun na moje ime i da sam jedini potpisnik potreban za autorizaciju izravnog terećenja na ovom računu.";

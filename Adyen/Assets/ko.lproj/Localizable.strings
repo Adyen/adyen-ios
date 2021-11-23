@@ -137,3 +137,4 @@
 "adyen.bacs.holderNameField.title" = "예금주 이름";
 "adyen.bacs.bankAccountNumberField.title" = "계좌 번호";
 "adyen.bacs.bankLocationIdField.title" = "은행 식별 코드";
+"adyen.bacs.legalTermsToggle.title" = "본인이 이 계좌의 예금주이며, 이 계좌에서의 자동 이체를 승인하기 위해 필요한 유일한 서명인입니다.";

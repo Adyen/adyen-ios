@@ -137,3 +137,4 @@
 "adyen.bacs.holderNameField.title" = "Meno majiteľa bankového účtu";
 "adyen.bacs.bankAccountNumberField.title" = "Číslo bankového účtu";
 "adyen.bacs.bankLocationIdField.title" = "Variabilný symbol";
+"adyen.bacs.legalTermsToggle.title" = "Potvrdzujem, že účet je na moje meno a som jediný podpisovateľ, ktorý je povinný autorizovať inkaso v tomto účte.";
