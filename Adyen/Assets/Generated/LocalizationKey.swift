@@ -277,6 +277,12 @@ public struct LocalizationKey {
     public static let cardInstallmentsMonths = LocalizationKey(key: "adyen.card.installments.months")
     /// Method of payment
     public static let cardInstallmentsPlan = LocalizationKey(key: "adyen.card.installments.plan")
+    /// BACS Account holder name
+    public static let bacsAccountHolderNameField = LocalizationKey(key: "adyen.bacs.holderNameField.title")
+    /// BACS Bank account Number
+    public static let bacsBankAccountNumberField = LocalizationKey(key: "adyen.bacs.bankAccountNumberField.title")
+    /// BACS Bank location ID
+    public static let bacsBankLocationIdField = LocalizationKey(key: "adyen.bacs.bankLocationIdField.title")
     
     internal let key: String
     

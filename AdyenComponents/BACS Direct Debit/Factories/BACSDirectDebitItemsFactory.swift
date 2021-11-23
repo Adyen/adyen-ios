@@ -21,9 +21,6 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
 
     private enum Content {
         // TODO: - Fill with content
-        static let holderNameItemTitle = "Bank account holder name"
-        static let bankAccountNumberItemTitle = "Bank account number"
-        static let sortCodeItemTitle = "Sort code"
         static let emailItemTitle = "Email"
         static let continueButtonItemTitle = "Continue"
         static let amountTermsToggleItemTitle = "I agree that 20 will be deducted from my bank account"
@@ -62,8 +59,9 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         let textItem = FormTextInputItem(style: styleProvider.textField)
 
         // TODO: - Replace with localized version
-        textItem.title = Content.holderNameItemTitle
-        textItem.placeholder = Content.holderNameItemTitle
+        let localizedTitle = localizedString(.bacsAccountHolderNameField, localizationParameters)
+        textItem.title = localizedTitle
+        textItem.placeholder = localizedTitle
 
         // TODO: - Set up validator
         textItem.validator = LengthValidator(minimumLength: 1, maximumLength: 70)
@@ -81,8 +79,9 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         let textItem = FormTextInputItem(style: styleProvider.textField)
 
         // TODO: - Replace with localized version
-        textItem.title = Content.bankAccountNumberItemTitle
-        textItem.placeholder = Content.bankAccountNumberItemTitle
+        let localizedTitle = localizedString(.bacsBankAccountNumberField, localizationParameters)
+        textItem.title = localizedTitle
+        textItem.placeholder = localizedTitle
 
         // TODO: - Set up validator
         textItem.validator = NumericStringValidator(minimumLength: 1, maximumLength: 8)
@@ -101,8 +100,9 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         let textItem = FormTextInputItem(style: styleProvider.textField)
 
         // TODO: - Replace with localized version
-        textItem.title = Content.sortCodeItemTitle
-        textItem.placeholder = Content.sortCodeItemTitle
+        let localizedTitle = localizedString(.bacsBankLocationIdField, localizationParameters)
+        textItem.title = localizedTitle
+        textItem.placeholder = localizedTitle
 
         // TODO: - Set up validator
         textItem.validator = NumericStringValidator(minimumLength: 1, maximumLength: 6)

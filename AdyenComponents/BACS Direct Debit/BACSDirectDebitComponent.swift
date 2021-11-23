@@ -15,11 +15,14 @@ internal protocol BACSDirectDebitRouterProtocol {
 
 public final class BACSDirectDebitComponent: PaymentComponent, PresentableComponent {
 
-    // TODO: - Set up view controller
-
     // MARK: - PresentableComponent
 
-    public var viewController: UIViewController
+    // TODO: - Set up view controller
+    public var viewController: UIViewController {
+        navigationController
+    }
+
+    private let navigationController: UINavigationController
 
     public var requiresModalPresentation: Bool = true
     
@@ -46,8 +49,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
                                                 styleProvider: style)
 
         // TODO: - Set navigation controller
-        let navigationController = UINavigationController(rootViewController: view as UIViewController)
-        viewController = navigationController
+        self.navigationController = UINavigationController(rootViewController: view as UIViewController)
 
         let itemsFactory = BACSDirectDebitItemsFactory(styleProvider: style,
                                                        localizationParameters: localizationParameters,
@@ -64,5 +66,10 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
     func continuePayment(data: BACSDirectDebitData) {
         // TODO: - Continue payment
         print("PAYMENT: \(data)")
+
+        let confirmationView = UIViewController()
+        confirmationView.title = "Confirmation View"
+        confirmationView.view.backgroundColor = UIColor(red: 0.19, green: 0.84, blue: 0.78, alpha: 1.00)
+        navigationController.pushViewController(confirmationView, animated: true)
     }
 }

@@ -1840,10 +1840,11 @@
 		C9BF0DB1273539EB00DCAA1E /* BACS Direct Debit */ = {
 			isa = PBXGroup;
 			children = (
-				C9F468E027465FB400500FF5 /* Models */,
-				C9D8EB97274402B9006D8CA1 /* Scenes */,
 				C9BF0DB227353A2600DCAA1E /* BACSDirectDebitComponent.swift */,
 				C9D8EB9F2745556B006D8CA1 /* BACSDirectDebitDetails.swift */,
+				C9F468E6274CF2E400500FF5 /* Factories */,
+				C9F468E027465FB400500FF5 /* Models */,
+				C9D8EB97274402B9006D8CA1 /* Scenes */,
 			);
 			path = "BACS Direct Debit";
 			sourceTree = "<group>";
@@ -1853,7 +1854,6 @@
 			children = (
 				C9D8EB9827452355006D8CA1 /* BACSDirectDebitInputFormView.swift */,
 				C9D8EB9A2745282E006D8CA1 /* BACSDirectDebitInputPresenter.swift */,
-				C9D8EB9D27452D3B006D8CA1 /* BACSDirectDebitItemsFactory.swift */,
 			);
 			path = Input;
 			sourceTree = "<group>";
@@ -1880,6 +1880,14 @@
 				C9F468E127465FCF00500FF5 /* BACSDirectDebitData.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		C9F468E6274CF2E400500FF5 /* Factories */ = {
+			isa = PBXGroup;
+			children = (
+				C9D8EB9D27452D3B006D8CA1 /* BACSDirectDebitItemsFactory.swift */,
+			);
+			path = Factories;
 			sourceTree = "<group>";
 		};
 		E216D3B42217096E0013CBCF /* Items */ = {
