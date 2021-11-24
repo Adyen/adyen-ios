@@ -8,16 +8,27 @@ import Adyen
 
 // TODO: - Complete documentation
 
+/// Contains the details supplied by the BACS Direct Debit component.
 public struct BACSDirectDebitDetails: PaymentMethodDetails {
-
+    
+    /// The payment method type.
     public let type: String
 
+    /// The BACS account's holder name.
     public let holderName: String
 
+    /// The BACS account's number.
     public let bankAccountNumber: String
 
+    /// The BACS location's ID.
     public let bankLocationId: String
 
+    /// Creates and returns a BACS Direct Debit details instance.
+    /// - Parameters:
+    ///   - paymentMethod: The BACS Direct Debit payment method.
+    ///   - holderName: The BACS account's holder name.
+    ///   - bankAccountNumber: The BACS account's number.
+    ///   - bankLocationId: The BACS location's ID.
     public init(paymentMethod: BACSDirectDebitPaymentMethod,
                 holderName: String,
                 bankAccountNumber: String,
