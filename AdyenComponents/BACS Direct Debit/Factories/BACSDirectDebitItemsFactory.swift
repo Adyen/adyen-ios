@@ -146,7 +146,7 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         let toggleItem = FormToggleItem(style: styleProvider.toggle)
         toggleItem.value = false
 
-        let localizedTitle = localizedString(.bacsAmountTermsToggleTitle, localizationParameters)
+        let localizedTitle = localizedString(.bacsAmountConsentToggleTitle, localizationParameters)
         toggleItem.title = localizedTitle
 
         // TODO: - Set up identifier
@@ -160,7 +160,7 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         let toggleItem = FormToggleItem(style: styleProvider.toggle)
         toggleItem.value = false
 
-        let localizedTitle = localizedString(.bacsLegalTermsToggleTitle, localizationParameters)
+        let localizedTitle = localizedString(.bacsLegalConsentToggleTitle, localizationParameters)
         toggleItem.title = localizedTitle
 
         let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,

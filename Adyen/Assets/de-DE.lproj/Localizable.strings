@@ -137,5 +137,5 @@
 "adyen.bacs.holderNameField.title" = "Name des Bankkontoinhabers";
 "adyen.bacs.bankAccountNumberField.title" = "Bankkontonummer";
 "adyen.bacs.bankLocationIdField.title" = "Bankleitzahl";
-"adyen.bacs.legalTermsToggle.title" = "Ich bestätige, dass das Konto unter meinem Namen läuft und ich der einzige erforderliche Unterzeichner bin, um die Lastschrift für dieses Konto zu autorisieren.";
-"adyen.bacs.amountTermsToggle.title" = "Ich bin damit einverstanden, dass der oben genannte Betrag von meinem Bankkonto abgebucht wird.";
+"adyen.bacs.legalConsentToggle.title" = "Ich bestätige, dass das Konto unter meinem Namen läuft und ich der einzige erforderliche Unterzeichner bin, um die Lastschrift für dieses Konto zu autorisieren.";
+"adyen.bacs.amountConsentToggle.title" = "Ich bin damit einverstanden, dass der oben genannte Betrag von meinem Bankkonto abgebucht wird.";

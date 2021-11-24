@@ -137,5 +137,5 @@
 "adyen.bacs.holderNameField.title" = "Ime vlasnika bankovnog računa";
 "adyen.bacs.bankAccountNumberField.title" = "Broj bankovnog računa";
 "adyen.bacs.bankLocationIdField.title" = "Identifikacijski kôd banke (UK)";
-"adyen.bacs.legalTermsToggle.title" = "Potvrđujem da je račun na moje ime i da sam jedini potpisnik potreban za autorizaciju izravnog terećenja na ovom računu.";
-"adyen.bacs.amountTermsToggle.title" = "Slažem se da se gore navedeni iznos oduzme s mog bankovnog računa.";
+"adyen.bacs.legalConsentToggle.title" = "Potvrđujem da je račun na moje ime i da sam jedini potpisnik potreban za autorizaciju izravnog terećenja na ovom računu.";
+"adyen.bacs.amountConsentToggle.title" = "Slažem se da se gore navedeni iznos oduzme s mog bankovnog računa.";

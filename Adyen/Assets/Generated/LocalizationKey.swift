@@ -286,9 +286,9 @@ public struct LocalizationKey {
     /// Sort code
     public static let bacsBankLocationIdFieldTitle = LocalizationKey(key: "adyen.bacs.bankLocationIdField.title")
     /// I confirm the account is in my name and I am the only signatory required to authorise the Direct Debit on this account.
-    public static let bacsLegalTermsToggleTitle = LocalizationKey(key: "adyen.bacs.legalTermsToggle.title")
+    public static let bacsLegalConsentToggleTitle = LocalizationKey(key: "adyen.bacs.legalConsentToggle.title")
     /// I agree that the above amount will be deducted from my bank account.
-    public static let bacsAmountTermsToggleTitle = LocalizationKey(key: "adyen.bacs.amountTermsToggle.title")
+    public static let bacsAmountConsentToggleTitle = LocalizationKey(key: "adyen.bacs.amountConsentToggle.title")
     
     internal let key: String
     

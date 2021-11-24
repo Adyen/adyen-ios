@@ -137,5 +137,5 @@
 "adyen.bacs.holderNameField.title" = "Jméno držitele bankovního účtu";
 "adyen.bacs.bankAccountNumberField.title" = "Číslo bankovního účtu";
 "adyen.bacs.bankLocationIdField.title" = "Kód Sort";
-"adyen.bacs.legalTermsToggle.title" = "Potvrzuji, že účet je veden na moje jméno a jsem jediným disponentem, jehož podpis je nutný ke schválení přímého inkasa.";
-"adyen.bacs.amountTermsToggle.title" = "Souhlasím s tím, že mi bude následující částka odečtena z bankovního účtu.";
+"adyen.bacs.legalConsentToggle.title" = "Potvrzuji, že účet je veden na moje jméno a jsem jediným disponentem, jehož podpis je nutný ke schválení přímého inkasa.";
+"adyen.bacs.amountConsentToggle.title" = "Souhlasím s tím, že mi bude následující částka odečtena z bankovního účtu.";

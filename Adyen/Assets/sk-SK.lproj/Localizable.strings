@@ -137,5 +137,5 @@
 "adyen.bacs.holderNameField.title" = "Meno majiteľa bankového účtu";
 "adyen.bacs.bankAccountNumberField.title" = "Číslo bankového účtu";
 "adyen.bacs.bankLocationIdField.title" = "Variabilný symbol";
-"adyen.bacs.legalTermsToggle.title" = "Potvrdzujem, že účet je na moje meno a som jediný podpisovateľ, ktorý je povinný autorizovať inkaso v tomto účte.";
-"adyen.bacs.amountTermsToggle.title" = "Súhlasím s tým, že nižšie uvedená čiastka bude odpísaná z môjho bankového účtu.";
+"adyen.bacs.legalConsentToggle.title" = "Potvrdzujem, že účet je na moje meno a som jediný podpisovateľ, ktorý je povinný autorizovať inkaso v tomto účte.";
+"adyen.bacs.amountConsentToggle.title" = "Súhlasím s tým, že nižšie uvedená čiastka bude odpísaná z môjho bankového účtu.";
