@@ -289,7 +289,13 @@ public struct LocalizationKey {
     public static let bacsLegalConsentToggleTitle = LocalizationKey(key: "adyen.bacs.legalConsentToggle.title")
     /// I agree that the above amount will be deducted from my bank account.
     public static let bacsAmountConsentToggleTitle = LocalizationKey(key: "adyen.bacs.amountConsentToggle.title")
-    
+    /// Invalid bank account holder name
+    public static let bacsHolderNameFieldInvalidMessage = LocalizationKey(key: "adyen.bacs.holderNameField.invalidMessage")
+    /// Invalid bank account number
+    public static let bacsBankAccountNumberFieldInvalidMessage = LocalizationKey(key: "adyen.bacs.bankAccountNumberField.invalidMessage")
+    /// Invalid sort code
+    public static let bacsBankLocationIdFieldInvalidMessage = LocalizationKey(key: "adyen.bacs.bankLocationIdField.invalidMessage")
+
     internal let key: String
     
     public init(key: String) {

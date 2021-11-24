@@ -56,8 +56,8 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
 
         textItem.validator = LengthValidator(minimumLength: 1, maximumLength: 70)
 
-        // TODO: - Set up failure message
-        // textItem.validationFailureMessage = "ERROR"
+        let localizedFailureMessage = localizedString(.bacsHolderNameFieldInvalidMessage, localizationParameters)
+        textItem.validationFailureMessage = localizedFailureMessage
 
         textItem.autocapitalizationType = .words
 
@@ -76,8 +76,8 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
 
         textItem.validator = NumericStringValidator(minimumLength: 1, maximumLength: 8)
 
-        // TODO: - Set up failure message
-        // textItem.validationFailureMessage = ...
+        let localizedFailureMessage = localizedString(.bacsBankAccountNumberFieldInvalidMessage, localizationParameters)
+        textItem.validationFailureMessage = localizedFailureMessage
 
         textItem.autocapitalizationType = .none
         textItem.keyboardType = .numberPad
@@ -97,8 +97,8 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
 
         textItem.validator = NumericStringValidator(minimumLength: 1, maximumLength: 6)
 
-        // TODO: - Set up failure message
-        // textItem.validationFailureMessage = ...
+        let localizedFailureMessage = localizedString(.bacsBankLocationIdFieldInvalidMessage, localizationParameters)
+        textItem.validationFailureMessage = localizedFailureMessage
 
         textItem.autocapitalizationType = .none
         textItem.keyboardType = .numberPad
@@ -118,8 +118,8 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
 
         textItem.validator = EmailValidator()
 
-        // TODO: - Set up failure message
-        // textItem.validationFailureMessage = ...
+        let localizedFailureMessage = localizedString(.emailItemInvalid, localizationParameters)
+        textItem.validationFailureMessage = localizedFailureMessage
 
         textItem.autocapitalizationType = .none
         textItem.keyboardType = .emailAddress
