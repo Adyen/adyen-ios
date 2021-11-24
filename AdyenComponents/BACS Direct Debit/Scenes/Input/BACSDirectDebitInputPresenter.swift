@@ -103,6 +103,6 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
                                                       bankAccountNumber: bankAccountNumber,
                                                       bankLocationId: sortCode,
                                                       shopperEmail: shopperEmail)
-        router.continuePayment(data: bacsDirectDebitData)
+        router.presentConfirmation(with: bacsDirectDebitData)
     }
 }

@@ -10,7 +10,8 @@ import Foundation
 // TODO: - Complete documentation
 
 internal protocol BACSDirectDebitRouterProtocol {
-    func continuePayment(data: BACSDirectDebitData)
+    func presentConfirmation(with data: BACSDirectDebitData)
+    func confirmPayment(with data: BACSDirectDebitData)
 }
 
 public final class BACSDirectDebitComponent: PaymentComponent, PresentableComponent {
@@ -25,8 +26,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     private let navigationController: UINavigationController
 
     public var requiresModalPresentation: Bool = true
-    
-    // TODO: - Set up delegate
+
     public weak var delegate: PaymentComponentDelegate?
 
     public let paymentMethod: PaymentMethod
@@ -61,15 +61,28 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     }
 }
 
+// MARK: - BACSDirectDebitRouterProtocol
+
 extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
 
-    func continuePayment(data: BACSDirectDebitData) {
-        // TODO: - Continue payment
+    func presentConfirmation(with data: BACSDirectDebitData) {
+        // TODO: - Continue payment logic
         print("PAYMENT: \(data)")
 
         let confirmationView = UIViewController()
         confirmationView.title = "Confirmation View"
         confirmationView.view.backgroundColor = UIColor(red: 0.19, green: 0.84, blue: 0.78, alpha: 1.00)
         navigationController.pushViewController(confirmationView, animated: true)
+    }
+
+    func confirmPayment(with data: BACSDirectDebitData) {
+        // TODO: - Payment processing logic
+        guard let bacsDirectDebitPaymentMethod = paymentMethod as? BACSDirectDebitPaymentMethod else {
+            return
+        }
+        let bacsDirectDebitDetails = BACSDirectDebitDetails(paymentMethod: bacsDirectDebitPaymentMethod,
+                                                            holderName: data.holderName,
+                                                            bankAccountNumber: data.bankAccountNumber,
+                                                            bankLocationId: data.bankLocationId)
     }
 }
