@@ -14,6 +14,7 @@ internal protocol BACSDirectDebitRouterProtocol {
     func confirmPayment(with data: BACSDirectDebitData)
 }
 
+/// A component that provides a form for BACS Direct Debit payments.
 public final class BACSDirectDebitComponent: PaymentComponent, PresentableComponent {
 
     // MARK: - PresentableComponent
@@ -27,15 +28,29 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
 
     public var requiresModalPresentation: Bool = true
 
+    /// The object that acts as the delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
 
+    /// The BACS Direct Debit payment method.
     public let paymentMethod: PaymentMethod
+
+    /// :nodoc:
     public let apiContext: APIContext
+
+    /// :nodoc:
     public let style: FormComponentStyle
+
+    /// :nodoc:
     public var localizationParameters: LocalizationParameters?
 
     // MARK: - Initializers
 
+    /// Creates and returns a BACS Direct Debit component.
+    /// - Parameters:
+    ///   - paymentMethod: The BACS Direct Debit payment method.
+    ///   - apiContext: The API context.
+    ///   - style: The component's UI style.
+    ///   - localizationParameters: The localization parameters.
     public init(paymentMethod: BACSDirectDebitPaymentMethod,
                 apiContext: APIContext,
                 style: FormComponentStyle = .init(),
