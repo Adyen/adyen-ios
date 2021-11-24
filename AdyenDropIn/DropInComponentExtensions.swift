@@ -22,7 +22,7 @@ extension DropInComponent: PaymentMethodListComponentDelegate {
     
     internal func didSelect(_ component: PaymentComponent,
                             in paymentMethodListComponent: PaymentMethodListComponent) {
-        rootComponent.startLoading(for: component)
+        (rootComponent as? ComponentLoader)?.startLoading(for: component)
         didSelect(component)
     }
     
@@ -95,7 +95,7 @@ extension DropInComponent: ActionComponentDelegate {
 extension DropInComponent: PreselectedPaymentMethodComponentDelegate {
 
     internal func didProceed(with component: PaymentComponent) {
-        rootComponent.startLoading(for: component)
+        (rootComponent as? ComponentLoader)?.startLoading(for: component)
         didSelect(component)
     }
     

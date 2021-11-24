@@ -89,6 +89,36 @@ class DropInTests: XCTestCase {
           "groups" : []
         }
         """
+    
+    static let paymentMethodsWithSingleInstant =
+        """
+        {
+          "paymentMethods" : [
+            {
+              "name" : "Paysafecard",
+              "type" : "paysafecard"
+            }
+          ],
+          "oneClickPaymentMethods" : [],
+          "storedPaymentMethods" : [],
+          "groups" : []
+        }
+        """
+    
+    static let paymentMethodsWithSingleNonInstant =
+        """
+        {
+          "paymentMethods" : [
+            {
+              "name" : "SEPA Direct Debit",
+              "type" : "sepadirectdebit"
+            }
+          ],
+          "oneClickPaymentMethods" : [],
+          "storedPaymentMethods" : [],
+          "groups" : []
+        }
+        """
 
     var sut: DropInComponent!
 
@@ -199,6 +229,44 @@ class DropInTests: XCTestCase {
         waitForExpectations(timeout: 15, handler: nil)
     }
 
+    func testSinglePaymentMethodSkippingPaymentList() {
+        let config = DropInComponent.Configuration(apiContext: Dummy.context, allowsSkippingPaymentList: true)
+        config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
+
+        let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleNonInstant.data(using: .utf8)!)
+        sut = DropInComponent(paymentMethods: paymentMethods, configuration: config)
+        
+        let root = UIViewController()
+        UIApplication.shared.keyWindow?.rootViewController = root
+        root.present(sut.viewController, animated: true, completion: nil)
+        
+        wait(for: .seconds(2))
+        
+        // presented screen is SEPA (payment list is skipped)
+        let topVC = sut.viewController.findChild(of: SecuredViewController.self)
+        XCTAssertNotNil(topVC)
+        XCTAssertEqual(topVC?.title, "SEPA Direct Debit")
+    }
+    
+    func testSinglePaymentMethodNotSkippingPaymentList() {
+        let config = DropInComponent.Configuration(apiContext: Dummy.context, allowsSkippingPaymentList: true)
+        config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
+
+        let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8)!)
+        sut = DropInComponent(paymentMethods: paymentMethods, configuration: config)
+        
+        let root = UIViewController()
+        UIApplication.shared.keyWindow?.rootViewController = root
+        root.present(sut.viewController, animated: true, completion: nil)
+        
+        wait(for: .seconds(2))
+        
+        // presented screen should be payment list with 1 instant payment element
+        let topVC = sut.viewController.findChild(of: ListViewController.self)
+        XCTAssertNotNil(topVC)
+        XCTAssertEqual(topVC!.sections.count, 1)
+        XCTAssertEqual(topVC!.sections[0].items.count, 1)
+    }
 }
 
 extension UIViewController {

@@ -40,11 +40,17 @@ public extension DropInComponent {
         /// The payment information.
         public var payment: Adyen.Payment?
         
+        /// Determines whether to enable skipping payment list step
+        /// when there is only one non-instant payment method.
+        public let allowsSkippingPaymentList: Bool
+        
         /// Initializes the drop in configuration.
         /// - Parameters:
         ///   - apiContext: The API context used to retrieve internal resources.
-        public init(apiContext: APIContext) {
+        ///   - allowsSkippingPaymentList: Boolean to enable skipping payment list when there is only one one non-instant payment method.
+        public init(apiContext: APIContext, allowsSkippingPaymentList: Bool = false) {
             self.apiContext = apiContext
+            self.allowsSkippingPaymentList = allowsSkippingPaymentList
         }
 
     }
