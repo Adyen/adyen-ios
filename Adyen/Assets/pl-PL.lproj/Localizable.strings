@@ -139,3 +139,6 @@
 "adyen.bacs.bankLocationIdField.title" = "Numer rozliczeniowy SORT";
 "adyen.bacs.legalConsentToggle.title" = "Potwierdzam, że konto jest zarejestrowane na moje nazwisko i jestem jedynym sygnatariuszem wymaganym do autoryzacji polecenia zapłaty na tym koncie.";
 "adyen.bacs.amountConsentToggle.title" = "Wyrażam zgodę na pobranie powyższej kwoty z mojego rachunku bankowego.";
+"adyen.bacs.holderNameField.invalidMessage" = "Nieprawidłowe imię i nazwisko posiadacza rachunku";
+"adyen.bacs.bankAccountNumberField.invalidMessage" = "Nieprawidłowy numer rachunku";
+"adyen.bacs.bankLocationIdField.invalidMessage" = "Nieprawidłowy numer rozliczeniowy SORT";

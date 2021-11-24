@@ -139,3 +139,6 @@
 "adyen.bacs.bankLocationIdField.title" = "Lajittelukoodi";
 "adyen.bacs.legalConsentToggle.title" = "Vahvistan, että tili on nimessäni ja olen ainoa allekirjoittaja, joka vaaditaan valtuuttamaan suoraveloitus tällä tilillä.";
 "adyen.bacs.amountConsentToggle.title" = "Hyväksyn, että alla oleva summa veloitetaan pankkitililtäni.";
+"adyen.bacs.holderNameField.invalidMessage" = "Ei-kelvollinen tilinhaltijan nimi";
+"adyen.bacs.bankAccountNumberField.invalidMessage" = "Väärä tilin numero";
+"adyen.bacs.bankLocationIdField.invalidMessage" = "Ei-kelvollinen lajittelukoodi";

@@ -139,3 +139,6 @@
 "adyen.bacs.bankLocationIdField.title" = "은행 식별 코드";
 "adyen.bacs.legalConsentToggle.title" = "본인이 이 계좌의 예금주이며, 이 계좌에서의 자동 이체를 승인하기 위해 필요한 유일한 서명인입니다.";
 "adyen.bacs.amountConsentToggle.title" = "계좌에서 위의 금액을 이체하는 것에 동의합니다.";
+"adyen.bacs.holderNameField.invalidMessage" = "예금주 이름이 유효하지 않습니다";
+"adyen.bacs.bankAccountNumberField.invalidMessage" = "계좌 번호가 유효하지 않습니다";
+"adyen.bacs.bankLocationIdField.invalidMessage" = "은행 식별 코드가 유효하지 않습니다";

@@ -139,3 +139,6 @@
 "adyen.bacs.bankLocationIdField.title" = "ソートコード";
 "adyen.bacs.legalConsentToggle.title" = "口座が私の名義であることを確認し、この口座からの自動引き落としを承認するために必要な唯一の署名者であることを確認します。";
 "adyen.bacs.amountConsentToggle.title" = "上記の金額が私の銀行口座から引き落とされることに同意します。";
+"adyen.bacs.holderNameField.invalidMessage" = "銀行口座名義が無効です";
+"adyen.bacs.bankAccountNumberField.invalidMessage" = "銀行口座番号が無効です";
+"adyen.bacs.bankLocationIdField.invalidMessage" = "ソートコードが無効です";

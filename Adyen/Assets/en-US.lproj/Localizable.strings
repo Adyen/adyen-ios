@@ -139,3 +139,6 @@
 "adyen.bacs.bankLocationIdField.title" = "Sort code";
 "adyen.bacs.legalConsentToggle.title" = "I confirm the account is in my name and I am the only signatory required to authorise the Direct Debit on this account.";
 "adyen.bacs.amountConsentToggle.title" = "I agree that the above amount will be deducted from my bank account.";
+"adyen.bacs.holderNameField.invalidMessage" = "Invalid bank account holder name";
+"adyen.bacs.bankAccountNumberField.invalidMessage" = "Invalid bank account number";
+"adyen.bacs.bankLocationIdField.invalidMessage" = "Invalid sort code";

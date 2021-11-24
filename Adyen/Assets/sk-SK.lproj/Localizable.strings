@@ -139,3 +139,6 @@
 "adyen.bacs.bankLocationIdField.title" = "Variabilný symbol";
 "adyen.bacs.legalConsentToggle.title" = "Potvrdzujem, že účet je na moje meno a som jediný podpisovateľ, ktorý je povinný autorizovať inkaso v tomto účte.";
 "adyen.bacs.amountConsentToggle.title" = "Súhlasím s tým, že nižšie uvedená čiastka bude odpísaná z môjho bankového účtu.";
+"adyen.bacs.holderNameField.invalidMessage" = "Neplatné meno majiteľa bankového účtu";
+"adyen.bacs.bankAccountNumberField.invalidMessage" = "Neplatné číslo bankového účtu";
+"adyen.bacs.bankLocationIdField.invalidMessage" = "Neplatný variabilný symbol";
