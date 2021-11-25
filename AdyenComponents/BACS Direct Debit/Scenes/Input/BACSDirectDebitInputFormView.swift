@@ -43,15 +43,15 @@ internal class BACSDirectDebitInputFormView: FormViewController, BACSDirectDebit
 
 extension BACSDirectDebitInputFormView: ViewControllerDelegate {
     func viewDidLoad(viewController: UIViewController) {
-        // TODO: - Complete logic
         presenter?.viewDidLoad()
     }
 
     func viewDidAppear(viewController: UIViewController) {
-        // TODO: - Complete logic
+        // TODO: - Complete with logic
     }
 
     func viewWillAppear(viewController: UIViewController) {
-        // TODO: - Complete logic
+        // TODO: - Complete with logic
+        // 1. Fill form fields (reset when view disappears)
     }
 }

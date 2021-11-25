@@ -6,8 +6,6 @@
 
 import Adyen
 
-// TODO: - Complete documentation
-
 /// Contains the details supplied by the BACS Direct Debit component.
 public struct BACSDirectDebitDetails: PaymentMethodDetails {
     

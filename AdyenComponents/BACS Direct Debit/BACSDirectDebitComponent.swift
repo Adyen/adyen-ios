@@ -79,6 +79,8 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
 
     func presentConfirmation(with data: BACSDirectDebitData) {
         // TODO: - Continue payment logic
+        // 1. Assamble confirmation scene
+        // 2. Present confirmation scene
         print("PAYMENT: \(data)")
 
         let confirmationView = UIViewController()
