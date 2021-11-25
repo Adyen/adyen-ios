@@ -149,7 +149,6 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         let localizedTitle = localizedString(.bacsAmountConsentToggleTitle, localizationParameters)
         toggleItem.title = localizedTitle
 
-        // TODO: - Set up identifier
         let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
                                                      postfix: ViewIdentifier.amountTermsToggleItem)
         toggleItem.identifier = identifier
