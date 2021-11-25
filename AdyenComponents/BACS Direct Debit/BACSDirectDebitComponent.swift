@@ -5,9 +5,6 @@
 //
 
 import Adyen
-import Foundation
-
-// TODO: - Complete documentation
 
 internal protocol BACSDirectDebitRouterProtocol {
     func presentConfirmation(with data: BACSDirectDebitData)

@@ -18,7 +18,7 @@ internal class BACSDirectDebitInputFormView: FormViewController, BACSDirectDebit
 
     internal weak var presenter: BACSDirectDebitPresenterProtocol?
 
-    // MARK: - Intializers
+    // MARK: - Initializers
 
     internal init(title: String,
                   styleProvider: FormComponentStyle,
