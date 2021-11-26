@@ -5,7 +5,7 @@
 //
 
 import Adyen
-import Foundation
+import UIKit
 
 internal protocol BACSDirectDebitInputFormViewProtocol {
     func add<T: FormItem>(item: T?)

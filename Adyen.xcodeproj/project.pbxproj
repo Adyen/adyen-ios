@@ -1858,17 +1858,9 @@
 			path = Input;
 			sourceTree = "<group>";
 		};
-		C9D8EB96274402A0006D8CA1 /* Confirmation */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Confirmation;
-			sourceTree = "<group>";
-		};
 		C9D8EB97274402B9006D8CA1 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				C9D8EB96274402A0006D8CA1 /* Confirmation */,
 				C9D8EB9527440297006D8CA1 /* Input */,
 			);
 			path = Scenes;
