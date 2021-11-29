@@ -58,7 +58,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
         self.style = style
         self.localizationParameters = localizationParameters
 
-        let view = BACSDirectDebitInputFormView(title: paymentMethod.name,
+        let view = BACSDirectDebitInputFormViewController(title: paymentMethod.name,
                                                 styleProvider: style)
 
         // TODO: - Set navigation controller

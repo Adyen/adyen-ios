@@ -12,7 +12,7 @@ internal protocol BACSDirectDebitInputFormViewProtocol {
     func displayValidation()
 }
 
-internal class BACSDirectDebitInputFormView: FormViewController, BACSDirectDebitInputFormViewProtocol {
+internal class BACSDirectDebitInputFormViewController: FormViewController, BACSDirectDebitInputFormViewProtocol {
 
     // MARK: - Properties
 
@@ -41,7 +41,7 @@ internal class BACSDirectDebitInputFormView: FormViewController, BACSDirectDebit
     }
 }
 
-extension BACSDirectDebitInputFormView: ViewControllerDelegate {
+extension BACSDirectDebitInputFormViewController: ViewControllerDelegate {
     func viewDidLoad(viewController: UIViewController) {
         presenter?.viewDidLoad()
     }

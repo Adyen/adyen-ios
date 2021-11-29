@@ -86,7 +86,7 @@
 		C982FFD826946F0800AED849 /* AffirmComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFD726946F0800AED849 /* AffirmComponent.swift */; };
 		C982FFDC2694792F00AED849 /* AffirmPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */; };
 		C9BF0DB327353A2600DCAA1E /* BACSDirectDebitComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BF0DB227353A2600DCAA1E /* BACSDirectDebitComponent.swift */; };
-		C9D8EB9927452355006D8CA1 /* BACSDirectDebitInputFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9827452355006D8CA1 /* BACSDirectDebitInputFormView.swift */; };
+		C9D8EB9927452355006D8CA1 /* BACSDirectDebitInputFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9827452355006D8CA1 /* BACSDirectDebitInputFormViewController.swift */; };
 		C9D8EB9B2745282E006D8CA1 /* BACSDirectDebitInputPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9A2745282E006D8CA1 /* BACSDirectDebitInputPresenter.swift */; };
 		C9D8EB9E27452D3B006D8CA1 /* BACSDirectDebitItemsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9D27452D3B006D8CA1 /* BACSDirectDebitItemsFactory.swift */; };
 		C9D8EBA02745556B006D8CA1 /* BACSDirectDebitDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9F2745556B006D8CA1 /* BACSDirectDebitDetails.swift */; };
@@ -979,7 +979,7 @@
 		C982FFD726946F0800AED849 /* AffirmComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponent.swift; sourceTree = "<group>"; };
 		C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmPaymentMethod.swift; sourceTree = "<group>"; };
 		C9BF0DB227353A2600DCAA1E /* BACSDirectDebitComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitComponent.swift; sourceTree = "<group>"; };
-		C9D8EB9827452355006D8CA1 /* BACSDirectDebitInputFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitInputFormView.swift; sourceTree = "<group>"; };
+		C9D8EB9827452355006D8CA1 /* BACSDirectDebitInputFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitInputFormViewController.swift; sourceTree = "<group>"; };
 		C9D8EB9A2745282E006D8CA1 /* BACSDirectDebitInputPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitInputPresenter.swift; sourceTree = "<group>"; };
 		C9D8EB9D27452D3B006D8CA1 /* BACSDirectDebitItemsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitItemsFactory.swift; sourceTree = "<group>"; };
 		C9D8EB9F2745556B006D8CA1 /* BACSDirectDebitDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitDetails.swift; sourceTree = "<group>"; };
@@ -1852,7 +1852,7 @@
 		C9D8EB9527440297006D8CA1 /* Input */ = {
 			isa = PBXGroup;
 			children = (
-				C9D8EB9827452355006D8CA1 /* BACSDirectDebitInputFormView.swift */,
+				C9D8EB9827452355006D8CA1 /* BACSDirectDebitInputFormViewController.swift */,
 				C9D8EB9A2745282E006D8CA1 /* BACSDirectDebitInputPresenter.swift */,
 			);
 			path = Input;
@@ -5090,7 +5090,7 @@
 				F9175E9A259394F200D653BE /* IssuerListDetails.swift in Sources */,
 				C930FB6E269D79E0006A26D2 /* AffirmDetails.swift in Sources */,
 				5A54603F264A5CEC00724A87 /* BoletoComponent.swift in Sources */,
-				C9D8EB9927452355006D8CA1 /* BACSDirectDebitInputFormView.swift in Sources */,
+				C9D8EB9927452355006D8CA1 /* BACSDirectDebitInputFormViewController.swift in Sources */,
 				C9BF0DB327353A2600DCAA1E /* BACSDirectDebitComponent.swift in Sources */,
 				F9175EE32593952600D653BE /* BLIKDetails.swift in Sources */,
 				F9B016F92604F3FF001F23FC /* BasicPersonalInfoFormComponent.swift in Sources */,
