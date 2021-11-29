@@ -19,13 +19,26 @@ internal protocol PreApplePayViewDelegate: AnyObject {
 internal final class PreApplePayView: UIView, Localizable {
     
     /// :nodoc:
-    private let model: Model
+    internal let model: Model
     
     /// The delegate of the view
     internal weak var delegate: PreApplePayViewDelegate?
     
     /// :nodoc:
     internal var localizationParameters: LocalizationParameters?
+    
+    /// Creates PKPaymentButtonStyle based on Dark or Light Mode.
+    private var paymentButtonStyleAuto: PKPaymentButtonStyle {
+        let buttonStyle: PKPaymentButtonStyle
+        if #available(iOS 14.0, *) {
+            buttonStyle = .automatic
+        } else if #available(iOS 12.0, *), traitCollection.userInterfaceStyle == .dark {
+            buttonStyle = .white
+        } else {
+            buttonStyle = .black
+        }
+        return buttonStyle
+    }
     
     /// :nodoc:
     internal init(model: Model) {
@@ -74,16 +87,8 @@ internal final class PreApplePayView: UIView, Localizable {
     
     /// :nodoc:
     private lazy var payButton: PKPaymentButton = {
-        let style: PKPaymentButtonStyle
-        if #available(iOS 14.0, *) {
-            style = .automatic
-        } else if #available(iOS 12.0, *), traitCollection.userInterfaceStyle == .dark {
-            style = .white
-        } else {
-            style = .black
-        }
-        
-        let payButton = PKPaymentButton(paymentButtonType: .plain, paymentButtonStyle: style)
+        let payButton = PKPaymentButton(paymentButtonType: model.style.paymentButtonType,
+                                        paymentButtonStyle: model.style.paymentButtonStyle ?? paymentButtonStyleAuto)
         
         payButton.addTarget(self, action: #selector(onPayButtonTap), for: .touchUpInside)
         
@@ -92,7 +97,7 @@ internal final class PreApplePayView: UIView, Localizable {
     
     /// :nodoc:
     private lazy var hintLabel: UILabel = {
-        let hintLabel = UILabel(style: model.style.hintLabel)
+        let hintLabel = UILabel(style: model.style.hintLabelStyle)
         hintLabel.text = model.hint
         return hintLabel
     }()
@@ -109,14 +114,6 @@ extension PreApplePayView {
         
         internal let hint: String
         
-        internal let style: Style
-        
-        internal struct Style {
-            
-            internal let hintLabel: TextStyle
-            
-            internal let backgroundColor: UIColor
-            
-        }
+        internal let style: ApplePayStyle
     }
 }
