@@ -97,7 +97,7 @@ internal final class PreApplePayView: UIView, Localizable {
     
     /// :nodoc:
     private lazy var hintLabel: UILabel = {
-        let hintLabel = UILabel(style: model.style.hintLabelStyle)
+        let hintLabel = UILabel(style: model.style.hintLabel)
         hintLabel.text = model.hint
         return hintLabel
     }()

@@ -20,18 +20,29 @@ public struct ApplePayStyle {
     /// Corner radius for the payment button. iOS 12 or above. Defaults to 4 points.
     public var cornerRadius: CGFloat
     
-    /// Stying for the label that contains the formatted amount text.
-    public var hintLabelStyle: TextStyle
-    
     /// Background color for the Apple Pay component.
     public var backgroundColor: UIColor
+    
+    /// Stying for the label that contains the formatted amount text.
+    public var hintLabel: TextStyle
 
     /// Initializes an Apple Pay style instance with default values.
-    public init() {
-        paymentButtonType = .plain
-        cornerRadius = 4
-        backgroundColor = UIColor.Adyen.componentBackground
-        hintLabelStyle = TextStyle(font: .preferredFont(forTextStyle: .footnote),
-                                   color: UIColor.Adyen.componentSecondaryLabel)
+    /// - Parameters:
+    ///   - paymentButtonStyle: Style of the payment button.
+    ///   - paymentButtonType: Type of the Apple Pay payment button. Default is `.plain`
+    ///   - cornerRadius: Corner radius for the payment button. iOS 12 or above. Defaults to 4 points.
+    ///   - backgroundColor: Background color for the Apple Pay component.
+    ///   - hintLabel: Stying for the label that contains the formatted amount text.
+    public init(paymentButtonStyle: PKPaymentButtonStyle? = nil,
+                paymentButtonType: PKPaymentButtonType = .plain,
+                cornerRadius: CGFloat = 4,
+                backgroundColor: UIColor = .Adyen.componentSecondaryLabel,
+                hintLabel: TextStyle = TextStyle(font: .preferredFont(forTextStyle: .footnote),
+                                                 color: UIColor.Adyen.componentSecondaryLabel)) {
+        self.paymentButtonStyle = paymentButtonStyle
+        self.paymentButtonType = paymentButtonType
+        self.cornerRadius = cornerRadius
+        self.hintLabel = hintLabel
+        self.backgroundColor = backgroundColor
     }
 }

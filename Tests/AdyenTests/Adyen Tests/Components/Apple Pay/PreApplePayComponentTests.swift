@@ -40,9 +40,9 @@ class PreApplePayComponentTests: XCTestCase {
         
         let hintLabel: UILabel? = viewController.view.findView(by: "hintLabel")
         XCTAssertEqual(hintLabel?.text, model.hint)
-        XCTAssertEqual(hintLabel?.font, model.style.hintLabelStyle.font)
-        XCTAssertEqual(hintLabel?.textColor, model.style.hintLabelStyle.color)
-        XCTAssertEqual(hintLabel?.textAlignment, model.style.hintLabelStyle.textAlignment)
+        XCTAssertEqual(hintLabel?.font, model.style.hintLabel.font)
+        XCTAssertEqual(hintLabel?.textColor, model.style.hintLabel.color)
+        XCTAssertEqual(hintLabel?.textAlignment, model.style.hintLabel.textAlignment)
         
         XCTAssertEqual(viewController.view.backgroundColor, model.style.backgroundColor)
         
