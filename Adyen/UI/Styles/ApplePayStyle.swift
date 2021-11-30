@@ -36,7 +36,7 @@ public struct ApplePayStyle {
     public init(paymentButtonStyle: PKPaymentButtonStyle? = nil,
                 paymentButtonType: PKPaymentButtonType = .plain,
                 cornerRadius: CGFloat = 4,
-                backgroundColor: UIColor = .Adyen.componentSecondaryLabel,
+                backgroundColor: UIColor = UIColor.Adyen.componentBackground,
                 hintLabel: TextStyle = TextStyle(font: .preferredFont(forTextStyle: .footnote),
                                                  color: UIColor.Adyen.componentSecondaryLabel)) {
         self.paymentButtonStyle = paymentButtonStyle
