@@ -218,6 +218,8 @@ public final class DropInComponent: NSObject, PresentableComponent {
         component.payment = configuration.payment
         
         switch component {
+        case let component as BACSDirectDebitComponent:
+            navigationController.present(component.viewController, customPresentation: false)
         case let component as PreApplePayComponent:
             component.presentationDelegate = self
             navigationController.present(asModal: component)

@@ -78,6 +78,7 @@
 		A0F41EAC26CD4AA50089AD6C /* FormCardInstallmentsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F41EAB26CD4AA50089AD6C /* FormCardInstallmentsItem.swift */; };
 		A0FA143F26D65A5300627127 /* InstallmentPickerElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA143E26D65A5300627127 /* InstallmentPickerElement.swift */; };
 		A0FA145726D65B6200627127 /* FormCardInstallmentsItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA145626D65B6200627127 /* FormCardInstallmentsItemView.swift */; };
+		C90D26A727565750001A488F /* FormViewController+ViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D26A627565750001A488F /* FormViewController+ViewProtocol.swift */; };
 		C92F6DBE26AFF336004BD516 /* PostalAddressMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F6DBD26AFF336004BD516 /* PostalAddressMocks.swift */; };
 		C92F6DC126B04B63004BD516 /* XCTestCase+FormAddressItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F6DC026B04B63004BD516 /* XCTestCase+FormAddressItem.swift */; };
 		C930FB6E269D79E0006A26D2 /* AffirmDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = C930FB6D269D79E0006A26D2 /* AffirmDetails.swift */; };
@@ -971,6 +972,7 @@
 		A0F41EAB26CD4AA50089AD6C /* FormCardInstallmentsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardInstallmentsItem.swift; sourceTree = "<group>"; };
 		A0FA143E26D65A5300627127 /* InstallmentPickerElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallmentPickerElement.swift; sourceTree = "<group>"; };
 		A0FA145626D65B6200627127 /* FormCardInstallmentsItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardInstallmentsItemView.swift; sourceTree = "<group>"; };
+		C90D26A627565750001A488F /* FormViewController+ViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormViewController+ViewProtocol.swift"; sourceTree = "<group>"; };
 		C92F6DBD26AFF336004BD516 /* PostalAddressMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostalAddressMocks.swift; sourceTree = "<group>"; };
 		C92F6DC026B04B63004BD516 /* XCTestCase+FormAddressItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+FormAddressItem.swift"; sourceTree = "<group>"; };
 		C930FB6D269D79E0006A26D2 /* AffirmDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmDetails.swift; sourceTree = "<group>"; };
@@ -1885,20 +1887,20 @@
 		E216D3B42217096E0013CBCF /* Items */ = {
 			isa = PBXGroup;
 			children = (
+				E708591D261F1C9F00D0153B /* Address */,
+				E7275BF7255012D400907CF9 /* Basic Items */,
+				E7D5310F24462D87000046B4 /* Button */,
+				F99D453C2627162300880D72 /* Error */,
 				E216D3BB221AAB240013CBCF /* FormItem.swift */,
 				E2C0E0BB220B2976008616F6 /* FormItemView.swift */,
-				F9A6C4B92657AFD900D8CD3E /* Spacer */,
-				F99D453C2627162300880D72 /* Error */,
-				E7085B062628B29600D0153B /* Value Pickers */,
-				E7D531162446F525000046B4 /* Separator */,
-				E7D5310F24462D87000046B4 /* Button */,
 				F9B8C50A23FE960E00C4D0FB /* Phone Number */,
-				E2D12BED221D55F800EF682F /* Value */,
+				E7D531162446F525000046B4 /* Separator */,
+				F9A6C4B92657AFD900D8CD3E /* Spacer */,
+				E21895E222A7CC3B001B6EE0 /* Split */,
 				E216D3B822170B360013CBCF /* Text */,
 				E2D12C05221ED15300EF682F /* Toggle */,
-				E21895E222A7CC3B001B6EE0 /* Split */,
-				E7275BF7255012D400907CF9 /* Basic Items */,
-				E708591D261F1C9F00D0153B /* Address */,
+				E2D12BED221D55F800EF682F /* Value */,
+				E7085B062628B29600D0153B /* Value Pickers */,
 			);
 			path = Items;
 			sourceTree = "<group>";
@@ -2248,6 +2250,7 @@
 			children = (
 				E216D3B42217096E0013CBCF /* Items */,
 				E2C0E095220B04F0008616F6 /* FormViewController.swift */,
+				C90D26A627565750001A488F /* FormViewController+ViewProtocol.swift */,
 				E2C0E0B5220B08ED008616F6 /* FormView.swift */,
 				E216D3BF221AD0620013CBCF /* FormViewItemManager.swift */,
 				F9B8C49323FC32FB00C4D0FB /* FormItemViewBuilder.swift */,
@@ -4611,6 +4614,7 @@
 				F9FE25232625ADD0001874BB /* PartialPaymentOrder.swift in Sources */,
 				E7085C80262DD44E00D0153B /* PhoneExtensionsRepository.swift in Sources */,
 				F97CCD3A2435E35E00BC560A /* UIViewControllerHelpers.swift in Sources */,
+				C90D26A727565750001A488F /* FormViewController+ViewProtocol.swift in Sources */,
 				A0D48FB827109B0200C0B82C /* ArrayHelpers.swift in Sources */,
 				F99D2EFE2661363D00BB5B2F /* AppleWalletPassRequest.swift in Sources */,
 				E216D3BE221AAB710013CBCF /* FormTextItem.swift in Sources */,

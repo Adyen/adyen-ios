@@ -8,6 +8,7 @@ import Adyen
 
 internal protocol BACSDirectDebitPresenterProtocol: AnyObject {
     func viewDidLoad()
+    func didCancel()
 }
 
 internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
@@ -43,7 +44,12 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
     // MARK: - BACSDirectDebitPresenterProtocol
 
     internal func viewDidLoad() {
-        // TODO: - Complete logic
+        view.setupNavigationBar()
+    }
+
+    @objc
+    internal func didCancel() {
+        router.didCancel()
     }
 
     // MARK: - Private
@@ -74,7 +80,9 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
         view.add(item: FormSpacerItem(numberOfSpaces: 1))
     }
 
-    private var isFormValid: Bool {
+    private func validateForm() -> Bool {
+        view.displayValidation()
+
         guard let amountTermsAccepted = amountConsentToggleItem?.value,
               let legalTermsAccepted = legalConsentToggleItem?.value,
               amountTermsAccepted, legalTermsAccepted else {
@@ -84,13 +92,12 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
         return [holderNameItem,
                 bankAccountNumberItem,
                 sortCodeItem,
-                emailItem].compactMap { $0 }.allSatisfy { $0.isValid() }
+                emailItem].compactMap { $0 }
+            .allSatisfy { $0.isValid() }
     }
 
     private func continuePayment() {
-        view.displayValidation()
-
-        guard isFormValid else { return }
+        guard validateForm() else { return }
 
         guard let holderName = holderNameItem?.value,
               let bankAccountNumber = bankAccountNumberItem?.value,

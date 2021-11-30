@@ -10,6 +10,7 @@ import UIKit
 internal protocol BACSDirectDebitRouterProtocol {
     func presentConfirmation(with data: BACSDirectDebitData)
     func confirmPayment(with data: BACSDirectDebitData)
+    func didCancel()
 }
 
 /// A component that provides a form for BACS Direct Debit payments.
@@ -24,7 +25,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
 
     private let navigationController: UINavigationController
 
-    public var requiresModalPresentation: Bool = true
+    public var requiresModalPresentation: Bool = false
 
     /// The object that acts as the delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
@@ -59,7 +60,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
         self.localizationParameters = localizationParameters
 
         let view = BACSDirectDebitInputFormViewController(title: paymentMethod.name,
-                                                styleProvider: style)
+                                                          styleProvider: style)
 
         // TODO: - Set navigation controller
         self.navigationController = UINavigationController(rootViewController: view as UIViewController)
@@ -99,5 +100,9 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
                                                             holderName: data.holderName,
                                                             bankAccountNumber: data.bankAccountNumber,
                                                             bankLocationId: data.bankLocationId)
+    }
+
+    func didCancel() {
+        print("DID CANCEL")
     }
 }

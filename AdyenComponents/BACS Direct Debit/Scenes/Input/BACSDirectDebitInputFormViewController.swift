@@ -7,9 +7,8 @@
 import Adyen
 import UIKit
 
-internal protocol BACSDirectDebitInputFormViewProtocol {
-    func add<T: FormItem>(item: T?)
-    func displayValidation()
+internal protocol BACSDirectDebitInputFormViewProtocol: FormViewProtocol {
+    func setupNavigationBar()
 }
 
 internal class BACSDirectDebitInputFormViewController: FormViewController, BACSDirectDebitInputFormViewProtocol {
@@ -31,13 +30,16 @@ internal class BACSDirectDebitInputFormViewController: FormViewController, BACSD
 
     // MARK: - BACSDirectDebitInputFormViewProtocol
 
-    internal func add<T: FormItem>(item: T?) {
-        guard let item = item else { return }
-        append(item)
+    internal func setupNavigationBar() {
+        navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .cancel, target: self, action: #selector(didTapCancelButton))
     }
 
-    internal func displayValidation() {
-        _ = validate()
+    // MARK: - Private
+
+    @objc
+    private func didTapCancelButton() {
+        resignFirstResponder()
+        presenter?.didCancel()
     }
 }
 
