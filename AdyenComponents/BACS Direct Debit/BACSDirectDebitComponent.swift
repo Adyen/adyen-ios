@@ -10,7 +10,7 @@ import UIKit
 internal protocol BACSDirectDebitRouterProtocol {
     func presentConfirmation(with data: BACSDirectDebitData)
     func confirmPayment(with data: BACSDirectDebitData)
-    func didCancel()
+    func cancelPayment()
 }
 
 /// A component that provides a form for BACS Direct Debit payments.
@@ -18,12 +18,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
 
     // MARK: - PresentableComponent
 
-    // TODO: - Set up view controller
-    public var viewController: UIViewController {
-        navigationController
-    }
-
-    private let navigationController: UINavigationController
+    public var viewController: UIViewController
 
     public var requiresModalPresentation: Bool = false
 
@@ -63,7 +58,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
                                                           styleProvider: style)
 
         // TODO: - Set navigation controller
-        self.navigationController = UINavigationController(rootViewController: view as UIViewController)
+        self.viewController = view as UIViewController
 
         let itemsFactory = BACSDirectDebitItemsFactory(styleProvider: style,
                                                        localizationParameters: localizationParameters,
@@ -88,7 +83,7 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
         let confirmationView = UIViewController()
         confirmationView.title = "Confirmation View"
         confirmationView.view.backgroundColor = UIColor(red: 0.19, green: 0.84, blue: 0.78, alpha: 1.00)
-        navigationController.pushViewController(confirmationView, animated: true)
+        viewController.navigationController?.pushViewController(confirmationView, animated: true)
     }
 
     func confirmPayment(with data: BACSDirectDebitData) {
@@ -102,7 +97,7 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
                                                             bankLocationId: data.bankLocationId)
     }
 
-    func didCancel() {
-        print("DID CANCEL")
+    func cancelPayment() {
+        viewController.navigationController?.dismiss(animated: true)
     }
 }

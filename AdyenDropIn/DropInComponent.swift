@@ -219,7 +219,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
         
         switch component {
         case let component as BACSDirectDebitComponent:
-            navigationController.present(component.viewController, customPresentation: false)
+            navigationController.presentInNavigationController(component: component)
         case let component as PreApplePayComponent:
             component.presentationDelegate = self
             navigationController.present(asModal: component)
@@ -243,7 +243,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
         
         if isRoot {
             self.delegate?.didFail(with: ComponentError.cancelled, from: self)
-        } else {
+        } else if component.requiresModalPresentation {
             navigationController.popViewController(animated: true)
         }
     }

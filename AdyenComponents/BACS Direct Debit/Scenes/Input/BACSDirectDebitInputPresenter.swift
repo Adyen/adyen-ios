@@ -49,7 +49,7 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
 
     @objc
     internal func didCancel() {
-        router.didCancel()
+        router.cancelPayment()
     }
 
     // MARK: - Private

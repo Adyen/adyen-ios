@@ -40,7 +40,7 @@ internal final class ModalToolbar: UIView, AnyNavigationBar {
         let button = createCancelButton()
         button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(didCancel), for: .touchUpInside)
+        button.addTarget(self, action: #selector(cancelPayment), for: .touchUpInside)
         return button
     }()
 
