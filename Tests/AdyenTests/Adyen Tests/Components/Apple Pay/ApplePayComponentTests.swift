@@ -67,7 +67,6 @@ class ApplePayComponentTest: XCTestCase {
 
     func testApplePayViewControllerIsDismissedFromOutside() {
         guard Available.iOS12 else { return }
-        let dummyExpectation = expectation(description: "Wait stop dismissing")
 
         mockDelegate.onDidFail = { error, component in
             XCTFail("should not call didFail")
@@ -76,13 +75,15 @@ class ApplePayComponentTest: XCTestCase {
         let viewController = sut.viewController
         UIApplication.shared.keyWindow!.rootViewController = emptyVC
         UIApplication.shared.keyWindow!.rootViewController!.present(viewController, animated: false)
+        
+        wait(for: .seconds(1))
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            XCTAssertTrue(viewController === self.sut.viewController)
-            UIApplication.shared.keyWindow!.rootViewController!.dismiss(animated: true) {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    dummyExpectation.fulfill()
-                }
+        XCTAssertTrue(viewController === self.sut.viewController)
+        
+        let dummyExpectation = expectation(description: "Wait stop dismissing")
+        UIApplication.shared.keyWindow!.rootViewController!.dismiss(animated: true) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                dummyExpectation.fulfill()
             }
         }
 
@@ -101,10 +102,10 @@ class ApplePayComponentTest: XCTestCase {
 
         UIApplication.shared.keyWindow!.rootViewController = emptyVC
         UIApplication.shared.keyWindow!.rootViewController!.present(viewController, animated: false)
+        
+        wait(for: .seconds(1))
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.sut.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
-        }
+        self.sut.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
 
         waitForExpectations(timeout: 10)
 
