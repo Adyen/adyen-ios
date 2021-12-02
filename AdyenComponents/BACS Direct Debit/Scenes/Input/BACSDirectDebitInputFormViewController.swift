@@ -34,10 +34,8 @@ internal class BACSDirectDebitInputFormViewController: FormViewController, BACSD
         navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .cancel, target: self, action: #selector(didTapCancelButton))
     }
 
-    // MARK: - Private
-
     @objc
-    private func didTapCancelButton() {
+    internal func didTapCancelButton() {
         resignFirstResponder()
         presenter?.didCancel()
     }
@@ -48,10 +46,8 @@ extension BACSDirectDebitInputFormViewController: ViewControllerDelegate {
         presenter?.viewDidLoad()
     }
 
-    func viewDidAppear(viewController: UIViewController) {
-        // TODO: - Complete with logic
-    }
-
+    func viewDidAppear(viewController: UIViewController) {}
+    
     func viewWillAppear(viewController: UIViewController) {
         // TODO: - Complete with logic
         // 1. Fill form fields (reset when view disappears)
