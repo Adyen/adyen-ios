@@ -200,20 +200,18 @@ class RedirectComponentTests: XCTestCase {
 
         let action = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "test_data")
         sut.handle(action)
+        
+        wait(for: .seconds(2))
+        
+        let topPresentedViewController = UIViewController.findTopPresenter() as? SFSafariViewController
+        XCTAssertNotNil(topPresentedViewController)
+        topPresentedViewController!.delegate?.safariViewControllerDidFinish?(topPresentedViewController!)
 
         let waitExpectation = expectation(description: "Expect in app browser to be presented and then dismissed")
 
         delegate.onDidFail = { error, component in
             XCTAssertEqual(error as! ComponentError, ComponentError.cancelled)
             waitExpectation.fulfill()
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
-
-            let topPresentedViewController = UIViewController.findTopPresenter() as? SFSafariViewController
-            XCTAssertNotNil(topPresentedViewController)
-
-            topPresentedViewController!.delegate?.safariViewControllerDidFinish?(topPresentedViewController!)
         }
 
         waitForExpectations(timeout: 10, handler: nil)

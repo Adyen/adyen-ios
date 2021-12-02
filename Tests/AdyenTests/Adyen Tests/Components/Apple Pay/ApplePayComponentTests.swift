@@ -37,6 +37,8 @@ class ApplePayComponentTest: XCTestCase {
     override func tearDown() {
         sut = nil
         mockDelegate = nil
+        UIApplication.shared.keyWindow!.rootViewController?.dismiss(animated: false)
+        UIApplication.shared.keyWindow!.rootViewController = emptyVC
     }
 
     func testApplePayViewControllerIsDismissedFromInside() {
@@ -50,45 +52,42 @@ class ApplePayComponentTest: XCTestCase {
         let viewController = sut.viewController
         UIApplication.shared.keyWindow!.rootViewController = emptyVC
         UIApplication.shared.keyWindow!.rootViewController!.present(self.sut.viewController, animated: false)
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            XCTAssertTrue(viewController === self.sut.viewController)
-            self.sut.dismiss {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    dummyExpectation.fulfill()
-                }
-            }
-        }
-
-        waitForExpectations(timeout: 10)
-        XCTAssertTrue(viewController !== self.sut.viewController)
-        UIApplication.shared.keyWindow!.rootViewController!.dismiss(animated: false)
-    }
-
-    func testApplePayViewControllerIsDismissedFromOutside() {
-        guard Available.iOS12 else { return }
-
-        mockDelegate.onDidFail = { error, component in
-            XCTFail("should not call didFail")
-        }
-
-        let viewController = sut.viewController
-        UIApplication.shared.keyWindow!.rootViewController = emptyVC
-        UIApplication.shared.keyWindow!.rootViewController!.present(viewController, animated: false)
         
         wait(for: .seconds(1))
-
-        XCTAssertTrue(viewController === self.sut.viewController)
         
-        let dummyExpectation = expectation(description: "Wait stop dismissing")
-        UIApplication.shared.keyWindow!.rootViewController!.dismiss(animated: true) {
+        self.sut.dismiss {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 dummyExpectation.fulfill()
             }
         }
 
         waitForExpectations(timeout: 10)
-        UIApplication.shared.keyWindow!.rootViewController?.dismiss(animated: false)
+        XCTAssertTrue(viewController !== self.sut.viewController)
+    }
+
+    func testApplePayViewControllerIsDismissedFromOutside() {
+        guard Available.iOS12 else { return }
+
+        mockDelegate.onDidFail = { error, component in
+            XCTFail("should not call didFail, with error: \(error.localizedDescription)")
+        }
+
+        let viewController = sut.viewController
+        let presentationExpectation = expectation(description: "Expect sut.viewController to be presented")
+        UIApplication.shared.keyWindow!.rootViewController = emptyVC
+        UIApplication.shared.keyWindow!.rootViewController!.present(viewController, animated: false) {
+            presentationExpectation.fulfill()
+            XCTAssertTrue(viewController === self.sut.viewController)
+        }
+        
+        wait(for: .seconds(1))
+        
+        let dismissExpectation = expectation(description: "expect sut.viewController to be dismissed")
+        UIApplication.shared.keyWindow!.rootViewController!.dismiss(animated: true) {
+            dismissExpectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 10)
     }
 
     func testApplePayViewControllerShouldCallDelegateDidFail() {
@@ -110,7 +109,6 @@ class ApplePayComponentTest: XCTestCase {
         waitForExpectations(timeout: 10)
 
         XCTAssertTrue(viewController !== self.sut.viewController)
-        UIApplication.shared.keyWindow!.rootViewController!.dismiss(animated: false) {}
     }
 
     func testInvalidCurrencyCode() {
