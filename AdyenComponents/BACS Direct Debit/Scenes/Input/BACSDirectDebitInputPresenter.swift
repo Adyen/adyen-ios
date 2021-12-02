@@ -17,7 +17,7 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
 
     private let view: BACSDirectDebitInputFormViewProtocol
     private let router: BACSDirectDebitRouterProtocol
-    private let itemsFactory: BACSDirectDebitItemsFactory
+    private let itemsFactory: BACSDirectDebitItemsFactoryProtocol
 
     // MARK: - Items
 
@@ -33,7 +33,7 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
 
     internal init(view: BACSDirectDebitInputFormViewProtocol,
                   router: BACSDirectDebitRouterProtocol,
-                  itemsFactory: BACSDirectDebitItemsFactory) {
+                  itemsFactory: BACSDirectDebitItemsFactoryProtocol) {
         self.view = view
         self.router = router
         self.itemsFactory = itemsFactory

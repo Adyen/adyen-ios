@@ -84,6 +84,8 @@
 		C927083927590B7900D15EA0 /* BACSDirectDebitPresenterProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D26B32759048C001A488F /* BACSDirectDebitPresenterProtocolMock.swift */; };
 		C927083A27590B7D00D15EA0 /* BACSDirectDebitItemsFactoryProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D26B5275905B8001A488F /* BACSDirectDebitItemsFactoryProtocolMock.swift */; };
 		C927083E27590BDB00D15EA0 /* BACSDirectDebitInputFormViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C927083D27590BDB00D15EA0 /* BACSDirectDebitInputFormViewControllerTests.swift */; };
+		C927084027590FE800D15EA0 /* BACSDirectDebitPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C927083F27590FE800D15EA0 /* BACSDirectDebitPresenterTests.swift */; };
+		C92708422759106500D15EA0 /* BACSDirectDebitRouterProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92708412759106500D15EA0 /* BACSDirectDebitRouterProtocolMock.swift */; };
 		C92F6DBE26AFF336004BD516 /* PostalAddressMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F6DBD26AFF336004BD516 /* PostalAddressMocks.swift */; };
 		C92F6DC126B04B63004BD516 /* XCTestCase+FormAddressItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F6DC026B04B63004BD516 /* XCTestCase+FormAddressItem.swift */; };
 		C930FB6E269D79E0006A26D2 /* AffirmDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = C930FB6D269D79E0006A26D2 /* AffirmDetails.swift */; };
@@ -983,6 +985,8 @@
 		C90D26B32759048C001A488F /* BACSDirectDebitPresenterProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitPresenterProtocolMock.swift; sourceTree = "<group>"; };
 		C90D26B5275905B8001A488F /* BACSDirectDebitItemsFactoryProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitItemsFactoryProtocolMock.swift; sourceTree = "<group>"; };
 		C927083D27590BDB00D15EA0 /* BACSDirectDebitInputFormViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitInputFormViewControllerTests.swift; sourceTree = "<group>"; };
+		C927083F27590FE800D15EA0 /* BACSDirectDebitPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitPresenterTests.swift; sourceTree = "<group>"; };
+		C92708412759106500D15EA0 /* BACSDirectDebitRouterProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitRouterProtocolMock.swift; sourceTree = "<group>"; };
 		C92F6DBD26AFF336004BD516 /* PostalAddressMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostalAddressMocks.swift; sourceTree = "<group>"; };
 		C92F6DC026B04B63004BD516 /* XCTestCase+FormAddressItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+FormAddressItem.swift"; sourceTree = "<group>"; };
 		C930FB6D269D79E0006A26D2 /* AffirmDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmDetails.swift; sourceTree = "<group>"; };
@@ -1811,6 +1815,7 @@
 				C90D26B1275900B9001A488F /* BACSDirectDebitInputFormViewProtocolMock.swift */,
 				C90D26B32759048C001A488F /* BACSDirectDebitPresenterProtocolMock.swift */,
 				C90D26B5275905B8001A488F /* BACSDirectDebitItemsFactoryProtocolMock.swift */,
+				C92708412759106500D15EA0 /* BACSDirectDebitRouterProtocolMock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -1827,6 +1832,7 @@
 			isa = PBXGroup;
 			children = (
 				C927083D27590BDB00D15EA0 /* BACSDirectDebitInputFormViewControllerTests.swift */,
+				C927083F27590FE800D15EA0 /* BACSDirectDebitPresenterTests.swift */,
 			);
 			path = Input;
 			sourceTree = "<group>";
@@ -4873,6 +4879,7 @@
 				F957AA722552DBC80099AD73 /* AnyRedirectComponentMock.swift in Sources */,
 				F9EDB79A239664B500CFB3C9 /* StoredPaymentMethodComponentTests.swift in Sources */,
 				F9EDB7982396643A00CFB3C9 /* CardPaymentMethodMock.swift in Sources */,
+				C927084027590FE800D15EA0 /* BACSDirectDebitPresenterTests.swift in Sources */,
 				F9838D23263193E000963483 /* BalanceCheckerTests.swift in Sources */,
 				E72521EE25517EB100533E35 /* BLIKComponentTests.swift in Sources */,
 				E2B317A22265BC9400C1BB30 /* LengthValidatorTests.swift in Sources */,
@@ -4989,6 +4996,7 @@
 				E757EFFE25D2ECDB007C813D /* APIClientMock.swift in Sources */,
 				C92F6DC126B04B63004BD516 /* XCTestCase+FormAddressItem.swift in Sources */,
 				C927083827590B7500D15EA0 /* BACSDirectDebitInputFormViewProtocolMock.swift in Sources */,
+				C92708422759106500D15EA0 /* BACSDirectDebitRouterProtocolMock.swift in Sources */,
 				F9DC6BA623AA293500863F3A /* ListViewControllerTests.swift in Sources */,
 				F90FB7BE2446EBB9005BFE0E /* BrowserInfoTests.swift in Sources */,
 				E73C567F25EFCC4200B57758 /* IssuerListComponentTests.swift in Sources */,
