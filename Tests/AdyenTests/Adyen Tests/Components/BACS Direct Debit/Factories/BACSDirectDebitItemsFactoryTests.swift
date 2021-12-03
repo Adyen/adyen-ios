@@ -41,7 +41,11 @@ class BACSDirectDebitItemsFactoryTests: XCTestCase {
         // Then
         XCTAssertEqual(expectedTitle, holderNameItem.title)
         XCTAssertEqual(expectedPlaceholder, holderNameItem.placeholder)
-        XCTAssertNotNil(holderNameItem.validator)
+
+        let validator = try XCTUnwrap(holderNameItem.validator as? LengthValidator)
+        XCTAssertEqual(validator.minimumLength, 1)
+        XCTAssertEqual(validator.maximumLength, 70)
+
         XCTAssertEqual(expectedValidationFailureMessage, holderNameItem.validationFailureMessage)
         XCTAssertTrue(holderNameItem.autocapitalizationType == .words)
 
@@ -62,7 +66,11 @@ class BACSDirectDebitItemsFactoryTests: XCTestCase {
         // Then
         XCTAssertEqual(expectedTitle, bankAccountItem.title)
         XCTAssertEqual(expectedPlaceholder, bankAccountItem.placeholder)
-        XCTAssertNotNil(bankAccountItem.validator)
+
+        let validator = try XCTUnwrap(bankAccountItem.validator as? NumericStringValidator)
+        XCTAssertEqual(validator.minimumLength, 1)
+        XCTAssertEqual(validator.maximumLength, 8)
+
         XCTAssertEqual(expectedValidationFailureMessage, bankAccountItem.validationFailureMessage)
         XCTAssertTrue(bankAccountItem.autocapitalizationType == .none)
         XCTAssertTrue(bankAccountItem.keyboardType == .numberPad)
@@ -84,7 +92,11 @@ class BACSDirectDebitItemsFactoryTests: XCTestCase {
         // Then
         XCTAssertEqual(expectedTitle, sortCodeItem.title)
         XCTAssertEqual(expectedPlaceholder, sortCodeItem.placeholder)
-        XCTAssertNotNil(sortCodeItem.validator)
+
+        let validator = try XCTUnwrap(sortCodeItem.validator as? NumericStringValidator)
+        XCTAssertEqual(validator.minimumLength, 1)
+        XCTAssertEqual(validator.maximumLength, 6)
+
         XCTAssertEqual(expectedValidationFailureMessage, sortCodeItem.validationFailureMessage)
         XCTAssertTrue(sortCodeItem.autocapitalizationType == .none)
         XCTAssertTrue(sortCodeItem.keyboardType == .numberPad)
@@ -106,7 +118,7 @@ class BACSDirectDebitItemsFactoryTests: XCTestCase {
         // Then
         XCTAssertEqual(expectedTitle, emailItem.title)
         XCTAssertEqual(expectedPlaceholder, emailItem.placeholder)
-        XCTAssertNotNil(emailItem.validator)
+        XCTAssertNotNil(emailItem.validator as? EmailValidator)
         XCTAssertEqual(expectedValidationFailureMessage, emailItem.validationFailureMessage)
         XCTAssertTrue(emailItem.autocapitalizationType == .none)
         XCTAssertTrue(emailItem.keyboardType == .emailAddress)
