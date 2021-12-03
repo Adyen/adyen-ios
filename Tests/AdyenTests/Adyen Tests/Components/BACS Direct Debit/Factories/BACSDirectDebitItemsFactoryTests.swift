@@ -35,7 +35,6 @@ class BACSDirectDebitItemsFactoryTests: XCTestCase {
         let expectedValidationFailureMessage = "Invalid bank account holder name"
         let expectedIdentifier = ".holderNameItem"
 
-
         // When
         let holderNameItem = sut.createHolderNameItem()
 
@@ -56,7 +55,6 @@ class BACSDirectDebitItemsFactoryTests: XCTestCase {
         let expectedPlaceholder = "Bank account number"
         let expectedValidationFailureMessage = "Invalid bank account number"
         let expectedIdentifier = ".bankAccountNumberItem"
-
 
         // When
         let bankAccountItem = sut.createBankAccountNumberItem()
@@ -80,7 +78,6 @@ class BACSDirectDebitItemsFactoryTests: XCTestCase {
         let expectedValidationFailureMessage = "Invalid sort code"
         let expectedIdentifier = ".sortCodeItem"
 
-
         // When
         let sortCodeItem = sut.createSortCodeItem()
 
@@ -103,7 +100,6 @@ class BACSDirectDebitItemsFactoryTests: XCTestCase {
         let expectedValidationFailureMessage = "Invalid email address"
         let expectedIdentifier = ".emailItem"
 
-
         // When
         let emailItem = sut.createEmailItem()
 
@@ -119,4 +115,18 @@ class BACSDirectDebitItemsFactoryTests: XCTestCase {
         XCTAssertEqual(expectedIdentifier, identifier)
     }
 
+    func testCreateContinueButtonShouldReturnItemWithCorrectProperties() throws {
+        // Given
+        let expectedTitle = "Continue"
+        let expectedIdentifier = ".continueButtonItem"
+
+        // When
+        let continueButtonItem = sut.createContinueButton()
+
+        // Then
+        XCTAssertEqual(expectedTitle, continueButtonItem.title)
+
+        let identifier = try XCTUnwrap(continueButtonItem.identifier)
+        XCTAssertEqual(expectedIdentifier, identifier)
+    }
 }
