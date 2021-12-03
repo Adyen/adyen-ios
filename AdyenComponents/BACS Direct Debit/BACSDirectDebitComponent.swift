@@ -56,8 +56,6 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
 
         let view = BACSDirectDebitInputFormViewController(title: paymentMethod.name,
                                                           styleProvider: style)
-
-        // TODO: - Set navigation controller
         self.viewController = view as UIViewController
 
         let itemsFactory = BACSDirectDebitItemsFactory(styleProvider: style,
