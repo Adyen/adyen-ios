@@ -25,6 +25,17 @@ class BACSDirectDebitInputFormViewControllerTests: XCTestCase {
         try super.tearDownWithError()
     }
 
+    func testTitleIsSetOnCreation() throws {
+        // When
+        let title = try XCTUnwrap(sut.title)
+        XCTAssertFalse(title.isEmpty)
+    }
+
+    func testDelegateIsSetOnCreation() throws {
+        // When
+        XCTAssertNotNil(sut.delegate)
+    }
+
     func testDidTapCancelButtonShouldCallPresenterDidCancel() throws {
         // When
         sut.didTapCancelButton()
@@ -39,5 +50,21 @@ class BACSDirectDebitInputFormViewControllerTests: XCTestCase {
 
         // Then
         XCTAssertTrue(presenter.viewDidLoadCalled)
+    }
+
+    func testSetupNavigationBarShouldSetRightBarButtonOnNavigationItem() throws {
+        // When
+        sut.setupNavigationBar()
+
+        // Then
+        XCTAssertNotNil(sut.navigationItem.rightBarButtonItem)
+    }
+
+    func testDidTapCancelButtonShouldResignFirstResponder() throws {
+        // When
+        sut.didTapCancelButton()
+
+        // Then
+        XCTAssertFalse(sut.isFirstResponder)
     }
 }
