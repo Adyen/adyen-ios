@@ -96,4 +96,27 @@ class BACSDirectDebitItemsFactoryTests: XCTestCase {
         XCTAssertEqual(expectedIdentifier, identifier)
     }
 
+    func testCreateEmailItemShouldReturnItemWithCorrectProperties() throws {
+        // Given
+        let expectedTitle = "Email address"
+        let expectedPlaceholder = "Email address"
+        let expectedValidationFailureMessage = "Invalid email address"
+        let expectedIdentifier = ".emailItem"
+
+
+        // When
+        let emailItem = sut.createEmailItem()
+
+        // Then
+        XCTAssertEqual(expectedTitle, emailItem.title)
+        XCTAssertEqual(expectedPlaceholder, emailItem.placeholder)
+        XCTAssertNotNil(emailItem.validator)
+        XCTAssertEqual(expectedValidationFailureMessage, emailItem.validationFailureMessage)
+        XCTAssertTrue(emailItem.autocapitalizationType == .none)
+        XCTAssertTrue(emailItem.keyboardType == .emailAddress)
+
+        let identifier = try XCTUnwrap(emailItem.identifier)
+        XCTAssertEqual(expectedIdentifier, identifier)
+    }
+
 }
