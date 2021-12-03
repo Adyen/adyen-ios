@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import Foundation
 
 internal protocol BACSDirectDebitPresenterProtocol: AnyObject {
     func viewDidLoad()
