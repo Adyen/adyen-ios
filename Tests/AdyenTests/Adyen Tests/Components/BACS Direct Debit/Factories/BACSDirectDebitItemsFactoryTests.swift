@@ -129,4 +129,20 @@ class BACSDirectDebitItemsFactoryTests: XCTestCase {
         let identifier = try XCTUnwrap(continueButtonItem.identifier)
         XCTAssertEqual(expectedIdentifier, identifier)
     }
+
+    func testCreateAmountConsentToggleShouldReturnItemWithCorrectProperties() throws {
+        // Given
+        let expectedTitle = "I agree that the above amount will be deducted from my bank account."
+        let expectedIdentifier = ".amountConsentToggleItem"
+
+        // When
+        let amountConsentToggleItem = sut.createAmountConsentToggle()
+
+        // Then
+        XCTAssertFalse(amountConsentToggleItem.value)
+        XCTAssertEqual(expectedTitle, amountConsentToggleItem.title)
+
+        let identifier = try XCTUnwrap(amountConsentToggleItem.identifier)
+        XCTAssertEqual(expectedIdentifier, identifier)
+    }
 }

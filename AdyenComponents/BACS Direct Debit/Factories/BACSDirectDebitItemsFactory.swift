@@ -25,8 +25,8 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         static let sortCodeItem = "sortCodeItem"
         static let emailItem = "emailItem"
         static let continueButtonItem = "continueButtonItem"
-        static let amountTermsToggleItem = "amountTermsToggleItem"
-        static let legalTermsToggleItem = "legalTermsToggleItem"
+        static let amountTermsToggleItem = "amountConsentToggleItem"
+        static let legalTermsToggleItem = "legalConsentToggleItem"
     }
 
     // MARK: - Properties
