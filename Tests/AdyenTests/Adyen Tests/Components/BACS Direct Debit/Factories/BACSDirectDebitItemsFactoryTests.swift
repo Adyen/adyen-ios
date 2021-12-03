@@ -1,15 +1,8 @@
 //
-//  BACSDirectDebitItemsFactoryTests.swift
-//  AdyenUIKitTests
-//
-//  Created by Naufal Aros on 12/3/21.
-//  Copyright © 2021 Adyen. All rights reserved.
-//
 
 @testable import Adyen
 @testable import AdyenComponents
 import XCTest
-
 
 class BACSDirectDebitItemsFactoryTests: XCTestCase {
 
