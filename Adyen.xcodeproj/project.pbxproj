@@ -69,6 +69,9 @@
 		A013F98126AFF72D00602633 /* BrazilSocialSecurityNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B2CE526A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift */; };
 		A018094826FDD345003A8DE3 /* FormCardNumberContainerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A018094726FDD345003A8DE3 /* FormCardNumberContainerItem.swift */; };
 		A01DCF0B26BD67BB00BC35B3 /* FormCardExpiryDateItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01DCF0A26BD67BB00BC35B3 /* FormCardExpiryDateItem.swift */; };
+		A02AF3E8275A0D0900E1636C /* BACSActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02AF3E7275A0D0900E1636C /* BACSActionComponent.swift */; };
+		A02AF3EA275A3A5100E1636C /* BACSAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02AF3E9275A3A5100E1636C /* BACSAction.swift */; };
+		A02AF3ED275A3CAD00E1636C /* BACSActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02AF3EC275A3CAD00E1636C /* BACSActionViewController.swift */; };
 		A07B2CF226A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B2CF126A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift */; };
 		A09C704327032870004C01AA /* FormCardLogosItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09C704227032870004C01AA /* FormCardLogosItemView.swift */; };
 		A0BFC8082720259500E36516 /* CardBrandSorterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BFC8072720259500E36516 /* CardBrandSorterTests.swift */; };
@@ -969,6 +972,9 @@
 		5AF8CD4C26691D3A00102339 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 		A018094726FDD345003A8DE3 /* FormCardNumberContainerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardNumberContainerItem.swift; sourceTree = "<group>"; };
 		A01DCF0A26BD67BB00BC35B3 /* FormCardExpiryDateItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardExpiryDateItem.swift; sourceTree = "<group>"; };
+		A02AF3E7275A0D0900E1636C /* BACSActionComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSActionComponent.swift; sourceTree = "<group>"; };
+		A02AF3E9275A3A5100E1636C /* BACSAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSAction.swift; sourceTree = "<group>"; };
+		A02AF3EC275A3CAD00E1636C /* BACSActionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSActionViewController.swift; sourceTree = "<group>"; };
 		A07B2CE526A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberFormatter.swift; sourceTree = "<group>"; };
 		A07B2CF126A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberFormatterTests.swift; sourceTree = "<group>"; };
 		A09C704227032870004C01AA /* FormCardLogosItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardLogosItemView.swift; sourceTree = "<group>"; };
@@ -1782,6 +1788,22 @@
 			path = Boleto;
 			sourceTree = "<group>";
 		};
+		A02AF3E4275A09C100E1636C /* BACS */ = {
+			isa = PBXGroup;
+			children = (
+				A02AF3E7275A0D0900E1636C /* BACSActionComponent.swift */,
+			);
+			path = BACS;
+			sourceTree = "<group>";
+		};
+		A02AF3EB275A3C6F00E1636C /* BACS */ = {
+			isa = PBXGroup;
+			children = (
+				A02AF3EC275A3CAD00E1636C /* BACSActionViewController.swift */,
+			);
+			path = BACS;
+			sourceTree = "<group>";
+		};
 		A04BD78126D510E1008E270F /* Installments */ = {
 			isa = PBXGroup;
 			children = (
@@ -2095,6 +2117,7 @@
 				5A6456D5262592B2001824F0 /* QRCodeAction.swift */,
 				5A988B7A2653F1750007F4C0 /* BoletoVoucherAction.swift */,
 				F99D2F6F2664EDC900BB5B2F /* AnyVoucherAction.swift */,
+				A02AF3E9275A3A5100E1636C /* BACSAction.swift */,
 			);
 			path = Actions;
 			sourceTree = "<group>";
@@ -3026,6 +3049,7 @@
 		F9175FC52594997F00D653BE /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				A02AF3E4275A09C100E1636C /* BACS */,
 				5A6456E12625A1C3001824F0 /* QRCode */,
 				F97C84D725C178C400D7F85C /* Voucher */,
 				F917601125949A4700D653BE /* Base */,
@@ -3048,6 +3072,7 @@
 		F9175FF0259499C900D653BE /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				A02AF3EB275A3C6F00E1636C /* BACS */,
 				5A64570D2625CB02001824F0 /* QR Code */,
 				F97C851425C1928500D7F85C /* Voucher */,
 				F9639B1A24DAD3150073F38A /* Await */,
@@ -5174,6 +5199,7 @@
 				5A93438326779D3900F8CCD1 /* QRCodeViewController.swift in Sources */,
 				F9175FBC2594996000D653BE /* WeChatPaySDKData.swift in Sources */,
 				F9175FB62594996000D653BE /* WeChatPaySDKAction.swift in Sources */,
+				A02AF3E8275A0D0900E1636C /* BACSActionComponent.swift in Sources */,
 				F917613725A30B5700D653BE /* ThreeDSResult.swift in Sources */,
 				F9175FFB259499D500D653BE /* AwaitView.swift in Sources */,
 				F9175FB52594996000D653BE /* SDKAction.swift in Sources */,
@@ -5225,12 +5251,14 @@
 				F9B997CA25C949AC00891084 /* VoucherCardLayer.swift in Sources */,
 				F97C84D925C178E900D7F85C /* VoucherComponent.swift in Sources */,
 				F97BC22C2667768B00F1D242 /* AppleWalletPassProvider.swift in Sources */,
+				A02AF3ED275A3CAD00E1636C /* BACSActionViewController.swift in Sources */,
 				F917618525A30B8500D653BE /* Submit3DS2FingerprintRequest.swift in Sources */,
 				F9175FE52594999C00D653BE /* PollingHandlerProvider.swift in Sources */,
 				F917613425A30B5700D653BE /* ThreeDS2Component.swift in Sources */,
 				F917617025A30B6A00D653BE /* ThreeDS2CoreActionHandler.swift in Sources */,
 				F917615B25A30B6400D653BE /* AnyAuthenticationRequestParameters.swift in Sources */,
 				5A6457DD26271434001824F0 /* QRCodeComponent.swift in Sources */,
+				A02AF3EA275A3A5100E1636C /* BACSAction.swift in Sources */,
 				F91760632594A0E300D653BE /* ActionsBundleExtension.swift in Sources */,
 				F917614A25A30B5E00D653BE /* ThreeDS2FingerprintSubmitter.swift in Sources */,
 				5A988B7B2653F1750007F4C0 /* BoletoVoucherAction.swift in Sources */,
