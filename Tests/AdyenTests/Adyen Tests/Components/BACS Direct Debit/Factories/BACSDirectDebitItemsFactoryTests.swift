@@ -145,4 +145,20 @@ class BACSDirectDebitItemsFactoryTests: XCTestCase {
         let identifier = try XCTUnwrap(amountConsentToggleItem.identifier)
         XCTAssertEqual(expectedIdentifier, identifier)
     }
+
+    func testCreateLegalConsentToggleShouldReturnItemWithCorrectProperties() throws {
+        // Given
+        let expectedTitle = "I confirm the account is in my name and I am the only signatory required to authorise the Direct Debit on this account."
+        let expectedIdentifier = ".legalConsentToggleItem"
+
+        // When
+        let legalConsentToggleItem = sut.createLegalConsentToggle()
+
+        // Then
+        XCTAssertFalse(legalConsentToggleItem.value)
+        XCTAssertEqual(expectedTitle, legalConsentToggleItem.title)
+
+        let identifier = try XCTUnwrap(legalConsentToggleItem.identifier)
+        XCTAssertEqual(expectedIdentifier, identifier)
+    }
 }
