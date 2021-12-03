@@ -156,6 +156,30 @@ class BACSDirectDebitPresenterTests: XCTestCase {
         XCTAssertEqual(router.presentConfirmationWithDataCallsCount, 1)
     }
 
+    func testContinuePaymentShouldCreateBacsDataWithCorrectValues() throws {
+        // Given
+        let expectedBacsData = BACSDirectDebitData(holderName: "Katrina del Mar",
+                                                   bankAccountNumber: "90583742",
+                                                   bankLocationId: "743082",
+                                                   shopperEmail: "katrina.mar@mail.com")
+        sut.amountConsentToggleItem?.value = true
+        sut.legalConsentToggleItem?.value = true
+
+        sut.holderNameItem?.value = expectedBacsData.holderName
+        sut.bankAccountNumberItem?.value = expectedBacsData.bankAccountNumber
+        sut.sortCodeItem?.value = expectedBacsData.bankLocationId
+        sut.emailItem?.value = expectedBacsData.shopperEmail
+
+        // When
+        sut.continueButtonItem?.buttonSelectionHandler?()
+
+        // Then
+        let receivedBacsData = router.presentConfirmationWithDataReceivedData
+        XCTAssertNotNil(receivedBacsData)
+        XCTAssertEqual(expectedBacsData, receivedBacsData)
+
+    }
+
     // MARK: - Private
 
     private var itemsFactoryMock: BACSDirectDebitItemsFactoryProtocolMock {
