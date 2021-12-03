@@ -72,4 +72,28 @@ class BACSDirectDebitItemsFactoryTests: XCTestCase {
         let identifier = try XCTUnwrap(bankAccountItem.identifier)
         XCTAssertEqual(expectedIdentifier, identifier)
     }
+
+    func testCreateSortCodeItemShouldReturnItemWithCorrectProperties() throws {
+        // Given
+        let expectedTitle = "Sort code"
+        let expectedPlaceholder = "Sort code"
+        let expectedValidationFailureMessage = "Invalid sort code"
+        let expectedIdentifier = ".sortCodeItem"
+
+
+        // When
+        let sortCodeItem = sut.createSortCodeItem()
+
+        // Then
+        XCTAssertEqual(expectedTitle, sortCodeItem.title)
+        XCTAssertEqual(expectedPlaceholder, sortCodeItem.placeholder)
+        XCTAssertNotNil(sortCodeItem.validator)
+        XCTAssertEqual(expectedValidationFailureMessage, sortCodeItem.validationFailureMessage)
+        XCTAssertTrue(sortCodeItem.autocapitalizationType == .none)
+        XCTAssertTrue(sortCodeItem.keyboardType == .numberPad)
+
+        let identifier = try XCTUnwrap(sortCodeItem.identifier)
+        XCTAssertEqual(expectedIdentifier, identifier)
+    }
+
 }
