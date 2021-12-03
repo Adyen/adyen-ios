@@ -50,6 +50,6 @@ extension BACSDirectDebitInputFormViewController: ViewControllerDelegate {
     
     func viewWillAppear(viewController: UIViewController) {
         // TODO: - Complete with logic
-        // 1. Fill form fields (reset when view disappears)
+        // 1. Fill form fields (being resetted when view disappears)
     }
 }
