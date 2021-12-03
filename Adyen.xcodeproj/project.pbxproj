@@ -80,6 +80,7 @@
 		A0FA145726D65B6200627127 /* FormCardInstallmentsItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA145626D65B6200627127 /* FormCardInstallmentsItemView.swift */; };
 		C90D26A727565750001A488F /* FormViewController+ViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D26A627565750001A488F /* FormViewController+ViewProtocol.swift */; };
 		C90D26AB275782E8001A488F /* ComponentNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D26AA275782E8001A488F /* ComponentNavigationController.swift */; };
+		C9126051275A3A2800C03DC4 /* BACSDirectDebitItemsFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9126050275A3A2800C03DC4 /* BACSDirectDebitItemsFactoryTests.swift */; };
 		C927083827590B7500D15EA0 /* BACSDirectDebitInputFormViewProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D26B1275900B9001A488F /* BACSDirectDebitInputFormViewProtocolMock.swift */; };
 		C927083927590B7900D15EA0 /* BACSDirectDebitPresenterProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D26B32759048C001A488F /* BACSDirectDebitPresenterProtocolMock.swift */; };
 		C927083A27590B7D00D15EA0 /* BACSDirectDebitItemsFactoryProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D26B5275905B8001A488F /* BACSDirectDebitItemsFactoryProtocolMock.swift */; };
@@ -984,6 +985,7 @@
 		C90D26B1275900B9001A488F /* BACSDirectDebitInputFormViewProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitInputFormViewProtocolMock.swift; sourceTree = "<group>"; };
 		C90D26B32759048C001A488F /* BACSDirectDebitPresenterProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitPresenterProtocolMock.swift; sourceTree = "<group>"; };
 		C90D26B5275905B8001A488F /* BACSDirectDebitItemsFactoryProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitItemsFactoryProtocolMock.swift; sourceTree = "<group>"; };
+		C9126050275A3A2800C03DC4 /* BACSDirectDebitItemsFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitItemsFactoryTests.swift; sourceTree = "<group>"; };
 		C927083D27590BDB00D15EA0 /* BACSDirectDebitInputFormViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitInputFormViewControllerTests.swift; sourceTree = "<group>"; };
 		C927083F27590FE800D15EA0 /* BACSDirectDebitPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitPresenterTests.swift; sourceTree = "<group>"; };
 		C92708412759106500D15EA0 /* BACSDirectDebitRouterProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitRouterProtocolMock.swift; sourceTree = "<group>"; };
@@ -1803,6 +1805,7 @@
 		C90D26AF2757C270001A488F /* BACS Direct Debit */ = {
 			isa = PBXGroup;
 			children = (
+				C912604F275A3A0600C03DC4 /* Factories */,
 				C90D26B02757C284001A488F /* Mocks */,
 				C927083B27590B9100D15EA0 /* Scenes */,
 			);
@@ -1818,6 +1821,14 @@
 				C92708412759106500D15EA0 /* BACSDirectDebitRouterProtocolMock.swift */,
 			);
 			path = Mocks;
+			sourceTree = "<group>";
+		};
+		C912604F275A3A0600C03DC4 /* Factories */ = {
+			isa = PBXGroup;
+			children = (
+				C9126050275A3A2800C03DC4 /* BACSDirectDebitItemsFactoryTests.swift */,
+			);
+			path = Factories;
 			sourceTree = "<group>";
 		};
 		C927083B27590B9100D15EA0 /* Scenes */ = {
@@ -4927,6 +4938,7 @@
 				F9D57528237C3EE3009C18B5 /* UIView+Search.swift in Sources */,
 				E9E3DAC2221ECE1000697074 /* CardSecurityCodeFormatterTests.swift in Sources */,
 				F9A6C453265640E000D8CD3E /* InstantPaymentComponentTests.swift in Sources */,
+				C9126051275A3A2800C03DC4 /* BACSDirectDebitItemsFactoryTests.swift in Sources */,
 				F9D5751423757013009C18B5 /* CardPublicKeyValidatorTests.swift in Sources */,
 				F957AAAE2552FDD70099AD73 /* AnyADYServiceMock.swift in Sources */,
 				F957AA622552D8D20099AD73 /* AnyThreeDS2ActionHandlerMock.swift in Sources */,
