@@ -49,4 +49,27 @@ class BACSDirectDebitItemsFactoryTests: XCTestCase {
         let identifier = try XCTUnwrap(holderNameItem.identifier)
         XCTAssertEqual(expectedIdentifier, identifier)
     }
+
+    func testCreateBankAccountNumberItemShouldReturnItemWithCorrectProperties() throws {
+        // Given
+        let expectedTitle = "Bank account number"
+        let expectedPlaceholder = "Bank account number"
+        let expectedValidationFailureMessage = "Invalid bank account number"
+        let expectedIdentifier = ".bankAccountNumberItem"
+
+
+        // When
+        let bankAccountItem = sut.createBankAccountNumberItem()
+
+        // Then
+        XCTAssertEqual(expectedTitle, bankAccountItem.title)
+        XCTAssertEqual(expectedPlaceholder, bankAccountItem.placeholder)
+        XCTAssertNotNil(bankAccountItem.validator)
+        XCTAssertEqual(expectedValidationFailureMessage, bankAccountItem.validationFailureMessage)
+        XCTAssertTrue(bankAccountItem.autocapitalizationType == .none)
+        XCTAssertTrue(bankAccountItem.keyboardType == .numberPad)
+
+        let identifier = try XCTUnwrap(bankAccountItem.identifier)
+        XCTAssertEqual(expectedIdentifier, identifier)
+    }
 }
