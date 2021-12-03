@@ -21,13 +21,13 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
 
     // MARK: - Items
 
-    private var holderNameItem: FormTextInputItem?
-    private var bankAccountNumberItem: FormTextInputItem?
-    private var sortCodeItem: FormTextInputItem?
-    private var emailItem: FormTextInputItem?
-    private var amountConsentToggleItem: FormToggleItem?
-    private var legalConsentToggleItem: FormToggleItem?
-    private var continueButtonItem: FormButtonItem?
+    internal var holderNameItem: FormTextInputItem?
+    internal var bankAccountNumberItem: FormTextInputItem?
+    internal var sortCodeItem: FormTextInputItem?
+    internal var emailItem: FormTextInputItem?
+    internal var amountConsentToggleItem: FormToggleItem?
+    internal var legalConsentToggleItem: FormToggleItem?
+    internal var continueButtonItem: FormButtonItem?
 
     // MARK: - Initializers
 

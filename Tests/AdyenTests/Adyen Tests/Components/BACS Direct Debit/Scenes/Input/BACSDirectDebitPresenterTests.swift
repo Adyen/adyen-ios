@@ -63,6 +63,99 @@ class BACSDirectDebitPresenterTests: XCTestCase {
         XCTAssertEqual(view.addItemCallsCount, 11)
     }
 
+    func testContinuePaymentWhenButtonTappedShouldDisplayValidationOnView() throws {
+        // When
+        sut.continueButtonItem?.buttonSelectionHandler?()
+
+        // The
+        XCTAssertEqual(view.displayValidationCallsCount, 1)
+    }
+
+    func testContinuePaymentWhenAnyTextItemIsNotValidShouldNotCallRouterPresentConfirmation() throws {
+        // Given
+        sut.amountConsentToggleItem?.value = true
+        sut.legalConsentToggleItem?.value = true
+
+        sut.holderNameItem?.value = "Katrina del Mar"
+        sut.bankAccountNumberItem?.value = "9058374292"
+        sut.sortCodeItem?.value = "743082"
+        sut.emailItem?.value = "katrina.mar@mail.com"
+
+        // When
+        sut.continueButtonItem?.buttonSelectionHandler?()
+
+        // Then
+        XCTAssertEqual(router.presentConfirmationWithDataCallsCount, 1)
+    }
+
+    func testContinuePaymentWhenAmountConsentItemIsDisabledShouldNotCallRouterPresentConfirmation() throws {
+        // Given
+        sut.amountConsentToggleItem?.value = false
+        sut.legalConsentToggleItem?.value = true
+
+        sut.holderNameItem?.value = "Katrina del Mar"
+        sut.bankAccountNumberItem?.value = "90583742"
+        sut.sortCodeItem?.value = "743082"
+        sut.emailItem?.value = "katrina.mar@mail.com"
+
+        // When
+        sut.continueButtonItem?.buttonSelectionHandler?()
+
+        // Then
+        XCTAssertEqual(router.presentConfirmationWithDataCallsCount, 0)
+    }
+
+    func testContinuePaymentWhenLegalConsentItemIsDisabledShouldNotCallRouterPresentConfirmation() throws {
+        // Given
+        sut.amountConsentToggleItem?.value = true
+        sut.legalConsentToggleItem?.value = false
+
+        sut.holderNameItem?.value = "Katrina del Mar"
+        sut.bankAccountNumberItem?.value = "90583742"
+        sut.sortCodeItem?.value = "743082"
+        sut.emailItem?.value = "katrina.mar@mail.com"
+
+        // When
+        sut.continueButtonItem?.buttonSelectionHandler?()
+
+        // Then
+        XCTAssertEqual(router.presentConfirmationWithDataCallsCount, 0)
+    }
+
+    func testContinuePaymentWhenAnyItemValueIsNilShouldNotCallRouterPresentConfirmation() throws {
+        // Given
+        sut.amountConsentToggleItem?.value = true
+        sut.legalConsentToggleItem?.value = false
+
+        // Missing bank holder name value
+        sut.bankAccountNumberItem?.value = "90583742"
+        sut.sortCodeItem?.value = "743082"
+        sut.emailItem?.value = "katrina.mar@mail.com"
+
+        // When
+        sut.continueButtonItem?.buttonSelectionHandler?()
+
+        // Then
+        XCTAssertEqual(router.presentConfirmationWithDataCallsCount, 0)
+    }
+
+    func testContinuePaymentWhenItemsAreValidShouldCallRouterPresentConfirmation() throws {
+        // Given
+        sut.amountConsentToggleItem?.value = true
+        sut.legalConsentToggleItem?.value = true
+
+        sut.holderNameItem?.value = "Katrina del Mar"
+        sut.bankAccountNumberItem?.value = "90583742"
+        sut.sortCodeItem?.value = "743082"
+        sut.emailItem?.value = "katrina.mar@mail.com"
+
+        // When
+        sut.continueButtonItem?.buttonSelectionHandler?()
+
+        // Then
+        XCTAssertEqual(router.presentConfirmationWithDataCallsCount, 1)
+    }
+
     // MARK: - Private
 
     private var itemsFactoryMock: BACSDirectDebitItemsFactoryProtocolMock {
