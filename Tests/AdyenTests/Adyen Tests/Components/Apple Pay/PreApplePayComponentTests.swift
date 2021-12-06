@@ -28,8 +28,15 @@ class PreApplePayComponentTests: XCTestCase {
     }
     
     func testUIConfiguration() {
+        let applePayStyle = ApplePayStyle(paymentButtonStyle: .whiteOutline,
+                                          paymentButtonType: .donate,
+                                          cornerRadius: 10,
+                                          backgroundColor: .orange,
+                                          hintLabel: .init(font: .boldSystemFont(ofSize: 16),
+                                                           color: .red,
+                                                           textAlignment: .center))
         let model = PreApplePayView.Model(hint: amount.formatted,
-                                          style: sut.style)
+                                          style: applePayStyle)
         
         let view = PreApplePayView(model: model)
         let viewController = UIViewController()
@@ -48,14 +55,10 @@ class PreApplePayComponentTests: XCTestCase {
         
         let style = view.model.style
         if #available(iOS 12.0, *) {
-            XCTAssertEqual(style.cornerRadius, 4)
+            XCTAssertEqual(style.cornerRadius, 10)
         }
-        if #available(iOS 14.0, *) {
-            XCTAssertEqual(style.paymentButtonStyle, nil)
-        } else {
-            XCTAssertEqual(style.paymentButtonStyle, .black)
-        }
-        XCTAssertEqual(style.paymentButtonType, .inStore)
+        XCTAssertEqual(style.paymentButtonStyle, .whiteOutline)
+        XCTAssertEqual(style.paymentButtonType, .donate)
     }
     
     func testApplePayPresented() {
