@@ -116,7 +116,18 @@ extension ApplePayComponent {
     // Adyen supports: interac, visa, mc, electron, maestro, amex, jcb, discover, elodebit, elo.
     // Will support girocard in future versions
     internal static var defaultNetworks: [PKPaymentNetwork] {
-        var networks: [PKPaymentNetwork] = [.visa, .masterCard, .amex, .discover, .interac, .JCB, .suica, .quicPay, .idCredit, .chinaUnionPay]
+        var networks: [PKPaymentNetwork] = [
+            .visa,
+            .masterCard,
+            .amex,
+            .discover,
+            .interac,
+            .JCB,
+            .suica,
+            .quicPay,
+            .idCredit,
+            .chinaUnionPay
+        ]
 
         if #available(iOS 11.2, *) {
             networks.append(.cartesBancaires)
@@ -136,16 +147,10 @@ extension ApplePayComponent {
 
         if #available(iOS 14.0, *) {
             networks.append(.girocard)
-            networks.append(.barcode)
         }
 
         if #available(iOS 14.5, *) {
             networks.append(.mir)
-        }
-
-        if #available(iOS 15.0, *) {
-            networks.append(.nanaco)
-            networks.append(.waon)
         }
 
         return networks
