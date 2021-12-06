@@ -238,21 +238,43 @@ class ApplePayComponentTest: XCTestCase {
     }
     
     private var supportedNetworks: [PKPaymentNetwork] {
-        var networks: [PKPaymentNetwork] = [.visa, .masterCard, .amex, .discover, .interac, .JCB]
-        
-        if #available(iOS 14.0, *) {
-            networks.append(.girocard)
+        var networks: [PKPaymentNetwork] = [
+            .visa,
+            .masterCard,
+            .amex,
+            .discover,
+            .interac,
+            .JCB,
+            .suica,
+            .quicPay,
+            .idCredit,
+            .chinaUnionPay
+        ]
+
+        if #available(iOS 11.2, *) {
+            networks.append(.cartesBancaires)
         }
 
         if #available(iOS 12.1.1, *) {
             networks.append(.elo)
+            networks.append(.mada)
         }
 
         if #available(iOS 12.0, *) {
             networks.append(.maestro)
             networks.append(.electron)
+            networks.append(.vPay)
+            networks.append(.eftpos)
         }
-        
+
+        if #available(iOS 14.0, *) {
+            networks.append(.girocard)
+        }
+
+        if #available(iOS 14.5, *) {
+            networks.append(.mir)
+        }
+
         return networks
     }
 }
