@@ -28,6 +28,9 @@ public extension DropInComponent {
         /// Indicates the UI configuration of Action Components
         public var actionComponent = ActionComponentStyle()
         
+        /// Indicates the UI configuration for the Apple Pay component.
+        public var applePay = ApplePayStyle()
+        
         /// The color for separator element.
         /// When set, updates separator colors for all underlying styles unless the value were set previously.
         /// If value is nil, the default color would be used.

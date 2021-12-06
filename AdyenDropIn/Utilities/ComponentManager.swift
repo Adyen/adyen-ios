@@ -182,7 +182,8 @@ internal final class ComponentManager {
             return try PreApplePayComponent(paymentMethod: paymentMethod,
                                             apiContext: apiContext,
                                             payment: payment,
-                                            configuration: applePay)
+                                            configuration: applePay,
+                                            style: style.applePay)
         } catch {
             adyenPrint("Failed to instantiate ApplePayComponent because of error: \(error.localizedDescription)")
             return nil

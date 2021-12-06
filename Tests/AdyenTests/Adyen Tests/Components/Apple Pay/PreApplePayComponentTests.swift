@@ -18,42 +18,44 @@ class PreApplePayComponentTests: XCTestCase {
     
     override func setUp() {
         let configuration = ApplePayComponent.Configuration(summaryItems: createTestSummaryItems(), merchantIdentifier: "test_id")
+        var applePayStyle = ApplePayStyle()
+        applePayStyle.paymentButtonType = .inStore
         sut = try! PreApplePayComponent(paymentMethod: ApplePayPaymentMethod(type: "test_type", name: "test_name", brands: nil),
                                         apiContext: Dummy.context,
                                         payment: payment,
-                                        configuration: configuration)
+                                        configuration: configuration,
+                                        style: applePayStyle)
     }
     
     func testUIConfiguration() {
-        let dummyExpectation = expectation(description: "Dummy Expectation")
+        let model = PreApplePayView.Model(hint: amount.formatted,
+                                          style: sut.style)
         
-        let hintStyle = TextStyle(font: .systemFont(ofSize: 25, weight: .heavy), color: .brown, textAlignment: .justified)
-        
-        let model = PreApplePayView.Model(
-            hint: amount.formatted,
-            style: PreApplePayView.Model.Style(
-                hintLabel: hintStyle, backgroundColor: .cyan
-            )
-        )
-        
-        let sut = PreApplePayView(model: model)
+        let view = PreApplePayView(model: model)
         let viewController = UIViewController()
-        viewController.view = sut
+        viewController.view = view
         UIApplication.shared.keyWindow?.rootViewController = viewController
         
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let hintLabel: UILabel? = viewController.view.findView(by: "hintLabel")
-            XCTAssertEqual(hintLabel?.text, model.hint)
-            XCTAssertEqual(hintLabel?.font, model.style.hintLabel.font)
-            XCTAssertEqual(hintLabel?.textColor, model.style.hintLabel.color)
-            XCTAssertEqual(hintLabel?.textAlignment, model.style.hintLabel.textAlignment)
-            
-            XCTAssertEqual(viewController.view.backgroundColor, model.style.backgroundColor)
-            
-            dummyExpectation.fulfill()
-        }
+        wait(for: .seconds(1))
         
-        waitForExpectations(timeout: 10, handler: nil)
+        let hintLabel: UILabel? = viewController.view.findView(by: "hintLabel")
+        XCTAssertEqual(hintLabel?.text, model.hint)
+        XCTAssertEqual(hintLabel?.font, model.style.hintLabel.font)
+        XCTAssertEqual(hintLabel?.textColor, model.style.hintLabel.color)
+        XCTAssertEqual(hintLabel?.textAlignment, model.style.hintLabel.textAlignment)
+        
+        XCTAssertEqual(viewController.view.backgroundColor, model.style.backgroundColor)
+        
+        let style = view.model.style
+        if #available(iOS 12.0, *) {
+            XCTAssertEqual(style.cornerRadius, 4)
+        }
+        if #available(iOS 14.0, *) {
+            XCTAssertEqual(style.paymentButtonStyle, nil)
+        } else {
+            XCTAssertEqual(style.paymentButtonStyle, .black)
+        }
+        XCTAssertEqual(style.paymentButtonType, .inStore)
     }
     
     func testApplePayPresented() {
