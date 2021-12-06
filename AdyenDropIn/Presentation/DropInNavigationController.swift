@@ -59,7 +59,9 @@ internal final class DropInNavigationController: UINavigationController, Keyboar
     
     internal func present(asModal component: PresentableComponent) {
         if component.requiresModalPresentation {
-            pushViewController(wrapInModalController(component: component, isRoot: false), animated: true)
+            pushViewController(wrapInModalController(component: component,
+                                                     isRoot: false),
+                               animated: true)
         } else {
             present(component.viewController, animated: true, completion: nil)
         }
