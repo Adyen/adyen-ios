@@ -18,8 +18,10 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
 
     // MARK: - PresentableComponent
 
+    /// :nodoc:
     public var viewController: UIViewController
 
+    /// :nodoc:
     public var requiresModalPresentation: Bool = false
 
     /// The object that acts as the delegate of the component.
@@ -76,7 +78,7 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
         // TODO: - Continue payment logic
         // 1. Assamble confirmation scene
         // 2. Present confirmation scene
-        print("PAYMENT: \(data)")
+        adyenPrint("PAYMENT: \(data)")
 
         let confirmationView = UIViewController()
         confirmationView.title = "Confirmation View"
