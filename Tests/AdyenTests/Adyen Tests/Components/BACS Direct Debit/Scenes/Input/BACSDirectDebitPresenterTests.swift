@@ -76,10 +76,10 @@ class BACSDirectDebitPresenterTests: XCTestCase {
         sut.amountConsentToggleItem?.value = true
         sut.legalConsentToggleItem?.value = true
 
-        sut.holderNameItem?.value = "Katrina del Mar"
-        sut.bankAccountNumberItem?.value = "9058374292"
-        sut.sortCodeItem?.value = "743082"
-        sut.emailItem?.value = "katrina.mar@mail.com"
+        sut.holderNameItem?.value = bacsDataMock.holderName
+        sut.bankAccountNumberItem?.value = bacsDataMock.bankAccountNumber
+        sut.sortCodeItem?.value = bacsDataMock.bankLocationId
+        sut.emailItem?.value = bacsDataMock.shopperEmail
 
         // When
         sut.continueButtonItem?.buttonSelectionHandler?()
@@ -93,10 +93,10 @@ class BACSDirectDebitPresenterTests: XCTestCase {
         sut.amountConsentToggleItem?.value = false
         sut.legalConsentToggleItem?.value = true
 
-        sut.holderNameItem?.value = "Katrina del Mar"
-        sut.bankAccountNumberItem?.value = "90583742"
-        sut.sortCodeItem?.value = "743082"
-        sut.emailItem?.value = "katrina.mar@mail.com"
+        sut.holderNameItem?.value = bacsDataMock.holderName
+        sut.bankAccountNumberItem?.value = bacsDataMock.bankAccountNumber
+        sut.sortCodeItem?.value = bacsDataMock.bankLocationId
+        sut.emailItem?.value = bacsDataMock.shopperEmail
 
         // When
         sut.continueButtonItem?.buttonSelectionHandler?()
@@ -110,10 +110,10 @@ class BACSDirectDebitPresenterTests: XCTestCase {
         sut.amountConsentToggleItem?.value = true
         sut.legalConsentToggleItem?.value = false
 
-        sut.holderNameItem?.value = "Katrina del Mar"
-        sut.bankAccountNumberItem?.value = "90583742"
-        sut.sortCodeItem?.value = "743082"
-        sut.emailItem?.value = "katrina.mar@mail.com"
+        sut.holderNameItem?.value = bacsDataMock.holderName
+        sut.bankAccountNumberItem?.value = bacsDataMock.bankAccountNumber
+        sut.sortCodeItem?.value = bacsDataMock.bankLocationId
+        sut.emailItem?.value = bacsDataMock.shopperEmail
 
         // When
         sut.continueButtonItem?.buttonSelectionHandler?()
@@ -128,9 +128,9 @@ class BACSDirectDebitPresenterTests: XCTestCase {
         sut.legalConsentToggleItem?.value = false
 
         // Missing bank holder name value
-        sut.bankAccountNumberItem?.value = "90583742"
-        sut.sortCodeItem?.value = "743082"
-        sut.emailItem?.value = "katrina.mar@mail.com"
+        sut.bankAccountNumberItem?.value = bacsDataMock.bankAccountNumber
+        sut.sortCodeItem?.value = bacsDataMock.bankLocationId
+        sut.emailItem?.value = bacsDataMock.shopperEmail
 
         // When
         sut.continueButtonItem?.buttonSelectionHandler?()
@@ -144,10 +144,10 @@ class BACSDirectDebitPresenterTests: XCTestCase {
         sut.amountConsentToggleItem?.value = true
         sut.legalConsentToggleItem?.value = true
 
-        sut.holderNameItem?.value = "Katrina del Mar"
-        sut.bankAccountNumberItem?.value = "90583742"
-        sut.sortCodeItem?.value = "743082"
-        sut.emailItem?.value = "katrina.mar@mail.com"
+        sut.holderNameItem?.value = bacsDataMock.holderName
+        sut.bankAccountNumberItem?.value = bacsDataMock.bankAccountNumber
+        sut.sortCodeItem?.value = bacsDataMock.bankLocationId
+        sut.emailItem?.value = bacsDataMock.shopperEmail
 
         // When
         sut.continueButtonItem?.buttonSelectionHandler?()
@@ -158,10 +158,8 @@ class BACSDirectDebitPresenterTests: XCTestCase {
 
     func testContinuePaymentShouldCreateBacsDataWithCorrectValues() throws {
         // Given
-        let expectedBacsData = BACSDirectDebitData(holderName: "Katrina del Mar",
-                                                   bankAccountNumber: "90583742",
-                                                   bankLocationId: "743082",
-                                                   shopperEmail: "katrina.mar@mail.com")
+        let expectedBacsData = bacsDataMock
+
         sut.amountConsentToggleItem?.value = true
         sut.legalConsentToggleItem?.value = true
 
@@ -195,6 +193,13 @@ class BACSDirectDebitPresenterTests: XCTestCase {
         itemsFactory.createLegalConsentToggleReturnValue = FormToggleItem()
 
         return itemsFactory
+    }
+
+    private var bacsDataMock: BACSDirectDebitData {
+        BACSDirectDebitData(holderName: "Katrina del Mar",
+                            bankAccountNumber: "90583742",
+                            bankLocationId: "743082",
+                            shopperEmail: "katrina.mar@mail.com")
     }
 
 }
