@@ -74,7 +74,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
 
 extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
 
-    func presentConfirmation(with data: BACSDirectDebitData) {
+    internal func presentConfirmation(with data: BACSDirectDebitData) {
         // TODO: - Continue payment logic
         // 1. Assamble confirmation scene
         // 2. Present confirmation scene
@@ -86,7 +86,7 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
         viewController.navigationController?.pushViewController(confirmationView, animated: true)
     }
 
-    func confirmPayment(with data: BACSDirectDebitData) {
+    internal func confirmPayment(with data: BACSDirectDebitData) {
         // TODO: - Payment processing logic
         guard let bacsDirectDebitPaymentMethod = paymentMethod as? BACSDirectDebitPaymentMethod else {
             return
@@ -97,7 +97,7 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
                                                             bankLocationId: data.bankLocationId)
     }
 
-    func cancelPayment() {
+    internal func cancelPayment() {
         viewController.navigationController?.dismiss(animated: true)
     }
 }
