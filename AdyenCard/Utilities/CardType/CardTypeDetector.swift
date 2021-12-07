@@ -17,7 +17,7 @@ public extension AdyenScope where Base == [CardType] {
     
     /// Detects the type for a given card number.
     /// The card type detections are always estimations, as a card type
-    /// can never be detected with 100% accuraccy on the client side.
+    /// can never be detected with 100% accuracy on the client side.
     ///
     /// - Parameter cardNumber: The card number to retrieve the type of. The number is expected to be sanitized (digits only).
     /// - Returns: The type for the given card number, or `nil` if it could not be found.
@@ -27,7 +27,7 @@ public extension AdyenScope where Base == [CardType] {
     
     /// Detects all possible types for a given card number.
     /// The card type detections are always estimations, as a card type
-    /// can never be detected with 100% accuraccy on the client side.
+    /// can never be detected with 100% accuracy on the client side.
     ///
     /// - Parameter cardNumber: The card number to retrieve the types for. The number is expected to be sanitized (digits only).
     /// - Returns: The possible types for the given card number.

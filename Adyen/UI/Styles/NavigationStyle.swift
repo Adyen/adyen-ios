@@ -23,10 +23,10 @@ public enum CancelButtonStyle {
 /// Modes for toolbar layout.
 public enum ToolbarMode {
 
-    /// Cancel button visially left aligned.
+    /// Cancel button visually left aligned.
     case leftCancel
 
-    /// Cancel button visially right aligned.
+    /// Cancel button visually right aligned.
     case rightCancel
 
     /// Cancel button left aligned for RTL locales and right aligned for LTR.

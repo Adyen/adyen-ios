@@ -205,7 +205,7 @@ public final class VoucherComponent: AnyVoucherActionHandler {
     private func fetchAndCacheAppleWalletPassIfNeeded(with action: AnyVoucherAction) {
         guard let passToken = action.passCreationToken else { return }
         passProvider.provide(with: passToken) { _ in
-            /* Do nothting, this is just to cache the response */
+            /* Do nothing, this is just to cache the response */
         }
     }
 

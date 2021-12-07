@@ -54,14 +54,14 @@ public final class BasicPersonalInfoFormComponent: AbstractPersonalInformationCo
     }
 }
 
-/// Provides an form for personal information, requred for E-context ATM  payments.
+/// Provides an form for personal information, required for E-context ATM  payments.
 public typealias EContextATMComponent = BasicPersonalInfoFormComponent
 
-/// Provides an form for personal information, requred for E-context Store payments.
+/// Provides an form for personal information, required for E-context Store payments.
 public typealias EContextStoreComponent = BasicPersonalInfoFormComponent
 
-/// Provides an form for personal information, requred for E-context Online  payments.
+/// Provides an form for personal information, required for E-context Online  payments.
 public typealias EContextOnlineComponent = BasicPersonalInfoFormComponent
 
-/// Provides an form for personal information, requred for 7eleven  payments.
+/// Provides an form for personal information, required for 7eleven  payments.
 public typealias SevenElevenComponent = BasicPersonalInfoFormComponent

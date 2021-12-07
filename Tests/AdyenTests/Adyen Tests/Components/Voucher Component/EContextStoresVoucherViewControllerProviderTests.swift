@@ -34,11 +34,11 @@ class EContextStoresVoucherViewControllerProviderTests: XCTestCase {
             currencyCode: econtextAction.totalAmount.currencyCode
         ))
 
-        let expireyKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationKeyLabel")
-        XCTAssertEqual(expireyKeyLabel.text, "Expiration Date -- Test")
+        let expiryKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationKeyLabel")
+        XCTAssertEqual(expiryKeyLabel.text, "Expiration Date -- Test")
 
-        let expireyValueLable: UILabel! = sut.findView(by: "adyen.voucher.expirationValueLabel")
-        XCTAssertEqual(expireyValueLable.text, "02/04/2021")
+        let expiryValueLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationValueLabel")
+        XCTAssertEqual(expiryValueLabel.text, "02/04/2021")
 
         let maskedPhoneKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.maskedTelephoneNumberKeyLabel")
         XCTAssertEqual(maskedPhoneKeyLabel.text, "Test-Phone Number")

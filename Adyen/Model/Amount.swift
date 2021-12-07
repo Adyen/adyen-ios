@@ -110,7 +110,7 @@ extension Amount: Comparable {
     }
 
     internal static func - (lhs: Amount, rhs: Amount) -> Amount {
-        assert(lhs.currencyCode == rhs.currencyCode, "Currencies should match to substract")
+        assert(lhs.currencyCode == rhs.currencyCode, "Currencies should match to subtract")
         return Amount(value: lhs.value - rhs.value, currencyCode: lhs.currencyCode, localeIdentifier: lhs.localeIdentifier)
     }
 

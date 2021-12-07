@@ -102,6 +102,16 @@ internal final class ComponentManager {
 
     internal lazy var paidComponents = paymentMethods.paid.compactMap(component(for:))
     
+    /// Returns the only regular component that is not an instant payment,
+    /// when no other payment method exists.
+    internal var singleRegularComponent: (PaymentComponent & PresentableComponent)? {
+        guard storedComponents.isEmpty,
+              paidComponents.isEmpty,
+              regularComponents.count == 1,
+              let regularComponent = regularComponents.first as? (PaymentComponent & PresentableComponent) else { return nil }
+        return regularComponent
+    }
+    
     // MARK: - Private
     
     private func component(for paymentMethod: PaymentMethod) -> PaymentComponent? {
@@ -172,7 +182,8 @@ internal final class ComponentManager {
             return try PreApplePayComponent(paymentMethod: paymentMethod,
                                             apiContext: apiContext,
                                             payment: payment,
-                                            configuration: applePay)
+                                            configuration: applePay,
+                                            style: style.applePay)
         } catch {
             adyenPrint("Failed to instantiate ApplePayComponent because of error: \(error.localizedDescription)")
             return nil

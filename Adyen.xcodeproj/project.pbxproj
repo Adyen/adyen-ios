@@ -69,6 +69,7 @@
 		A013F98126AFF72D00602633 /* BrazilSocialSecurityNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B2CE526A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift */; };
 		A018094826FDD345003A8DE3 /* FormCardNumberContainerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A018094726FDD345003A8DE3 /* FormCardNumberContainerItem.swift */; };
 		A01DCF0B26BD67BB00BC35B3 /* FormCardExpiryDateItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01DCF0A26BD67BB00BC35B3 /* FormCardExpiryDateItem.swift */; };
+		A02AF3DF274FB30200E1636C /* ApplePayStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02AF3DE274FB30200E1636C /* ApplePayStyle.swift */; };
 		A07B2CF226A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B2CF126A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift */; };
 		A09C704327032870004C01AA /* FormCardLogosItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09C704227032870004C01AA /* FormCardLogosItemView.swift */; };
 		A0BFC8082720259500E36516 /* CardBrandSorterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BFC8072720259500E36516 /* CardBrandSorterTests.swift */; };
@@ -429,10 +430,11 @@
 		F923283A25A49559002C5BC4 /* PhoneExtensionsRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F923283925A49559002C5BC4 /* PhoneExtensionsRepositoryTests.swift */; };
 		F92329D225AD0240002C5BC4 /* CardBrand.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92329D125AD0240002C5BC4 /* CardBrand.swift */; };
 		F92329DD25AD049E002C5BC4 /* FallbackCardBrandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92329DC25AD049E002C5BC4 /* FallbackCardBrandProvider.swift */; };
+		F92385B72757AE8B0082F7B7 /* XCTestCaseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92385B62757AE8B0082F7B7 /* XCTestCaseExtensions.swift */; };
 		F924C072246BEEF0006DDAB8 /* CardDetailsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F924C071246BEEF0006DDAB8 /* CardDetailsTests.swift */; };
 		F924C074246C2E0B006DDAB8 /* LazyOptional.swift in Sources */ = {isa = PBXBuildFile; fileRef = F924C073246C2E0B006DDAB8 /* LazyOptional.swift */; };
 		F924C079246C38E0006DDAB8 /* SecuredViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F924C078246C38E0006DDAB8 /* SecuredViewController.swift */; };
-		F926D52023F4217A00D058D3 /* DeviceDependant.swift in Sources */ = {isa = PBXBuildFile; fileRef = F926D51F23F4217A00D058D3 /* DeviceDependant.swift */; };
+		F926D52023F4217A00D058D3 /* DeviceDependent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F926D51F23F4217A00D058D3 /* DeviceDependent.swift */; };
 		F926D52323F5555A00D058D3 /* AdyenWeChatPay.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F926D52423F555A900D058D3 /* AdyenWeChatPay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */; };
 		F926D52C23F59ABE00D058D3 /* QiwiWalletPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F926D52B23F59ABE00D058D3 /* QiwiWalletPaymentMethod.swift */; };
@@ -970,6 +972,7 @@
 		5AF8CD4C26691D3A00102339 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 		A018094726FDD345003A8DE3 /* FormCardNumberContainerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardNumberContainerItem.swift; sourceTree = "<group>"; };
 		A01DCF0A26BD67BB00BC35B3 /* FormCardExpiryDateItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardExpiryDateItem.swift; sourceTree = "<group>"; };
+		A02AF3DE274FB30200E1636C /* ApplePayStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayStyle.swift; sourceTree = "<group>"; };
 		A07B2CE526A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberFormatter.swift; sourceTree = "<group>"; };
 		A07B2CF126A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberFormatterTests.swift; sourceTree = "<group>"; };
 		A09C704227032870004C01AA /* FormCardLogosItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardLogosItemView.swift; sourceTree = "<group>"; };
@@ -1312,10 +1315,11 @@
 		F923283925A49559002C5BC4 /* PhoneExtensionsRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneExtensionsRepositoryTests.swift; sourceTree = "<group>"; };
 		F92329D125AD0240002C5BC4 /* CardBrand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardBrand.swift; sourceTree = "<group>"; };
 		F92329DC25AD049E002C5BC4 /* FallbackCardBrandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallbackCardBrandProvider.swift; sourceTree = "<group>"; };
+		F92385B62757AE8B0082F7B7 /* XCTestCaseExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestCaseExtensions.swift; sourceTree = "<group>"; };
 		F924C071246BEEF0006DDAB8 /* CardDetailsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailsTests.swift; sourceTree = "<group>"; };
 		F924C073246C2E0B006DDAB8 /* LazyOptional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyOptional.swift; sourceTree = "<group>"; };
 		F924C078246C38E0006DDAB8 /* SecuredViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuredViewController.swift; sourceTree = "<group>"; };
-		F926D51F23F4217A00D058D3 /* DeviceDependant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDependant.swift; sourceTree = "<group>"; };
+		F926D51F23F4217A00D058D3 /* DeviceDependent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDependent.swift; sourceTree = "<group>"; };
 		F926D52B23F59ABE00D058D3 /* QiwiWalletPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QiwiWalletPaymentMethod.swift; sourceTree = "<group>"; };
 		F926D52E23F5A31200D058D3 /* QiwiWalletComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QiwiWalletComponent.swift; sourceTree = "<group>"; };
 		F926D53223F5A5D000D058D3 /* NumericStringValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumericStringValidator.swift; sourceTree = "<group>"; };
@@ -2555,6 +2559,7 @@
 			isa = PBXGroup;
 			children = (
 				E759E1F425CB373F00B1F8DC /* DropInTests.swift */,
+				F92385B62757AE8B0082F7B7 /* XCTestCaseExtensions.swift */,
 				E7D189AF25D31936006AD3B7 /* DropInActionTests.swift */,
 				E74CE3DE26727EB1008231D2 /* DropInDelegateMock.swift */,
 			);
@@ -3188,7 +3193,7 @@
 				F9620DB123C75886005209FC /* PaymentComponentBuilder.swift */,
 				F9FE25D52626CD49001874BB /* ReadyToSubmitPaymentComponentDelegate.swift */,
 				F9639B2324DC38460073F38A /* PresentationDelegate.swift */,
-				F926D51F23F4217A00D058D3 /* DeviceDependant.swift */,
+				F926D51F23F4217A00D058D3 /* DeviceDependent.swift */,
 				F9FE252E2625AE8C001874BB /* PartialPaymentDelegate.swift */,
 			);
 			path = "Core Protocols";
@@ -3256,6 +3261,7 @@
 				E749FD1D23CF4998000D18BA /* NavigationStyle.swift */,
 				E787C9AB24696A8900B401E0 /* CornerRadiusStyle.swift */,
 				5A1315C826296B100092366D /* ProgressViewStyle.swift */,
+				A02AF3DE274FB30200E1636C /* ApplePayStyle.swift */,
 			);
 			path = Styles;
 			sourceTree = "<group>";
@@ -4670,6 +4676,7 @@
 				E216D3C0221AD0620013CBCF /* FormViewItemManager.swift in Sources */,
 				F9589D0F2601EF8100E4113F /* NameFormItemInjector.swift in Sources */,
 				F9FE252F2625AE8C001874BB /* PartialPaymentDelegate.swift in Sources */,
+				A02AF3DF274FB30200E1636C /* ApplePayStyle.swift in Sources */,
 				E9AFF887224E5872005A0D8D /* PresentableComponent.swift in Sources */,
 				E90933FF228AFC6600C9F04B /* Environment.swift in Sources */,
 				E2D12C09221ED16600EF682F /* FormToggleItemView.swift in Sources */,
@@ -4770,7 +4777,7 @@
 				F9E441522382A0DD00D3CD48 /* ViewIdentifierBuilder.swift in Sources */,
 				E28098B3220DA7980087928F /* Component.swift in Sources */,
 				F95B6D8E25231715002C9062 /* RegularExpressionValidator.swift in Sources */,
-				F926D52023F4217A00D058D3 /* DeviceDependant.swift in Sources */,
+				F926D52023F4217A00D058D3 /* DeviceDependent.swift in Sources */,
 				F9A6C4BB2657AFF600D8CD3E /* FormSpacerItem.swift in Sources */,
 				F9D5753123828EBB009C18B5 /* AnyCardPaymentMethod.swift in Sources */,
 				E2B317A92265EBD200C1BB30 /* EventPublisher.swift in Sources */,
@@ -4955,6 +4962,7 @@
 				E9021E042264C55E009CF7F4 /* KeyedDecodingContainerExtensionsTests.swift in Sources */,
 				F9EDB79E2397AEF400CFB3C9 /* ComponentManagerTests.swift in Sources */,
 				F9EDB7922396603F00CFB3C9 /* PaymentMethodListComponentTests.swift in Sources */,
+				F92385B72757AE8B0082F7B7 /* XCTestCaseExtensions.swift in Sources */,
 				F919DFA224ED599D0027976E /* AdyenActionComponentTests.swift in Sources */,
 				C927083927590B7900D15EA0 /* BACSDirectDebitPresenterProtocolMock.swift in Sources */,
 				E702BE192602525E00280682 /* AssertsTests.swift in Sources */,
@@ -5685,7 +5693,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.4.0;
+				MARKETING_VERSION = 4.5.0;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.Adyen;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -5717,7 +5725,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.4.0;
+				MARKETING_VERSION = 4.5.0;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.Adyen;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -5783,7 +5791,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.4.0;
+				MARKETING_VERSION = 4.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenCard;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -5810,7 +5818,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.4.0;
+				MARKETING_VERSION = 4.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenCard;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -5837,7 +5845,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.4.0;
+				MARKETING_VERSION = 4.5.0;
 				OTHER_SWIFT_FLAGS = "-Xfrontend -warn-long-expression-type-checking=100";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenUIHost;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5863,7 +5871,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.4.0;
+				MARKETING_VERSION = 4.5.0;
 				OTHER_SWIFT_FLAGS = "-Xfrontend -warn-long-expression-type-checking=100";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenUIHost;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5891,7 +5899,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.4.0;
+				MARKETING_VERSION = 4.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenDropIn;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -5920,7 +5928,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.4.0;
+				MARKETING_VERSION = 4.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenDropIn;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -5949,7 +5957,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.4.0;
+				MARKETING_VERSION = 4.5.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenComponents;
@@ -5981,7 +5989,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.4.0;
+				MARKETING_VERSION = 4.5.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenComponents;
@@ -6013,7 +6021,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.4.0;
+				MARKETING_VERSION = 4.5.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenActions;
@@ -6045,7 +6053,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.4.0;
+				MARKETING_VERSION = 4.5.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenActions;
@@ -6077,7 +6085,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.4.0;
+				MARKETING_VERSION = 4.5.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenEncryption;
@@ -6109,7 +6117,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.4.0;
+				MARKETING_VERSION = 4.5.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenEncryption;
@@ -6141,7 +6149,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.4.0;
+				MARKETING_VERSION = 4.5.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenSwiftUI;
@@ -6172,7 +6180,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.4.0;
+				MARKETING_VERSION = 4.5.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenSwiftUI;
@@ -6202,7 +6210,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.4.0;
+				MARKETING_VERSION = 4.5.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenSwiftUIHost;
@@ -6231,7 +6239,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.4.0;
+				MARKETING_VERSION = 4.5.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenSwiftUIHost;
@@ -6313,7 +6321,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/AdyenWeChatPay/WeChatSDK/",
 				);
-				MARKETING_VERSION = 4.4.0;
+				MARKETING_VERSION = 4.5.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				OTHER_LDFLAGS = (
@@ -6359,7 +6367,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/AdyenWeChatPay/WeChatSDK/",
 				);
-				MARKETING_VERSION = 4.4.0;
+				MARKETING_VERSION = 4.5.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_LDFLAGS = (

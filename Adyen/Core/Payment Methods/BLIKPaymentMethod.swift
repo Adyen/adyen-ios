@@ -6,7 +6,7 @@
 
 import Foundation
 
-/// A BLIK paymeny method.
+/// A BLIK payment method.
 public struct BLIKPaymentMethod: PaymentMethod {
 
     /// :nodoc:

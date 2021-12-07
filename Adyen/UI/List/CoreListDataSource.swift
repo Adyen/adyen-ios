@@ -15,7 +15,7 @@ internal protocol ListViewControllerDataSource: UITableViewDataSource {
     var sections: [ListSection] { get }
     
     /// :nodoc:
-    /// Cell reuse idenitifier.
+    /// Cell reuse identifier.
     var cellReuseIdentifier: String { get }
     
     /// :nodoc:

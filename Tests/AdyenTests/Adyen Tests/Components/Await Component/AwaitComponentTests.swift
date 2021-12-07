@@ -113,27 +113,27 @@ class AwaitComponentTests: XCTestCase {
 
         let presentationDelegate = PresentationDelegateMock()
         let waitExpectation = expectation(description: "Wait for the presentationDelegate to be called.")
-        presentationDelegate.doPresent = { component in
+        presentationDelegate.doPresent = { [weak self] component in
             XCTAssertNotNil(component.viewController as? AwaitViewController)
             let viewController = component.viewController as! AwaitViewController
 
             UIApplication.shared.keyWindow?.rootViewController = viewController
 
             let view = viewController.awaitView
+            
+            self?.wait(for: .seconds(1))
 
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-                XCTAssertEqual(view.messageLabel.textColor, UIColor.red)
-                XCTAssertEqual(view.messageLabel.textAlignment, .center)
-                XCTAssertEqual(view.messageLabel.font, UIFont.systemFont(ofSize: 15))
+            XCTAssertEqual(view.messageLabel.textColor, UIColor.red)
+            XCTAssertEqual(view.messageLabel.textAlignment, .center)
+            XCTAssertEqual(view.messageLabel.font, UIFont.systemFont(ofSize: 15))
 
-                XCTAssertEqual(view.spinnerTitleLabel.textColor, UIColor.blue)
-                XCTAssertEqual(view.spinnerTitleLabel.textAlignment, .left)
-                XCTAssertEqual(view.spinnerTitleLabel.font, UIFont.systemFont(ofSize: 21))
-                XCTAssertEqual(view.activityIndicatorView.color, UIColor.blue)
-                XCTAssertEqual(view.backgroundColor, .green)
+            XCTAssertEqual(view.spinnerTitleLabel.textColor, UIColor.blue)
+            XCTAssertEqual(view.spinnerTitleLabel.textAlignment, .left)
+            XCTAssertEqual(view.spinnerTitleLabel.font, UIFont.systemFont(ofSize: 21))
+            XCTAssertEqual(view.activityIndicatorView.color, UIColor.blue)
+            XCTAssertEqual(view.backgroundColor, .green)
 
-                waitExpectation.fulfill()
-            }
+            waitExpectation.fulfill()
         }
 
         sut.presentationDelegate = presentationDelegate

@@ -81,11 +81,11 @@ extension CardComponent {
         ///   Defaults to true.
         ///   - koreanAuthenticationMode: Indicates whether to show the security fields for South Korea issued cards.
         ///   Defaults to .auto.
-        ///   - billingAddressMode: Indicates mode of how to dispaly the billing address form.
+        ///   - billingAddressMode: Indicates mode of how to display the billing address form.
         ///   Defaults to none.
         ///   - storedCardConfiguration: Stored card configuration.
         ///   - allowedCardTypes: The enforced list of allowed card types.
-        ///   - installmentConfigration: Configration for installments. Defaults to `nil`.
+        ///   - installmentConfiguration: Configuration for installments. Defaults to `nil`.
         public init(showsHolderNameField: Bool = false,
                     showsStorePaymentMethodField: Bool = true,
                     showsSecurityCodeField: Bool = true,
@@ -94,7 +94,7 @@ extension CardComponent {
                     billingAddressMode: AddressFormType = .none,
                     storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
                     allowedCardTypes: [CardType]? = nil,
-                    installmentConfigration: InstallmentConfiguration? = nil) {
+                    installmentConfiguration: InstallmentConfiguration? = nil) {
             self.showsHolderNameField = showsHolderNameField
             self.showsSecurityCodeField = showsSecurityCodeField
             self.showsStorePaymentMethodField = showsStorePaymentMethodField
@@ -103,7 +103,7 @@ extension CardComponent {
             self.billingAddressMode = billingAddressMode
             self.koreanAuthenticationMode = koreanAuthenticationMode
             self.socialSecurityNumberMode = socialSecurityNumberMode
-            self.installmentConfiguration = installmentConfigration
+            self.installmentConfiguration = installmentConfiguration
         }
 
         internal func bcmcConfiguration() -> Configuration {

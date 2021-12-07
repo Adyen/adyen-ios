@@ -56,7 +56,7 @@ public protocol ValidatableFormItem: FormItem {
 /// :nodoc:
 public protocol InputViewRequiringFormItem: FormItem {}
 
-/// Delegate to the view all events that requireschange in corespondent FormView changes.
+/// Delegate to the view all events that requires change in corespondent FormView changes.
 /// :nodoc:
 internal protocol SelfRenderingFormItemDelegate: AnyObject {
 

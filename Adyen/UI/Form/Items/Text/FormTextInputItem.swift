@@ -18,7 +18,7 @@ public final class FormTextInputItem: FormTextItem, Hidable {
         builder.build(with: self)
     }
     
-    /// Inititate new instance of `FormTextInputItem`
+    /// Initiate new instance of `FormTextInputItem`
     /// - Parameter style: The `FormTextItemStyle` UI style.
     override public init(style: FormTextItemStyle = FormTextItemStyle()) {
         super.init(style: style)

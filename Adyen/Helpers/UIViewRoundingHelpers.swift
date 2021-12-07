@@ -26,22 +26,22 @@ public extension AdyenScope where Base: UIView {
     /// Apply a BezierPath mask in shape of a rounded rectangular path.
     /// - Parameters:
     ///   - corners: The corners of a rectangle to round.
-    ///   - radius: The persent of a length of a smallest dimention.
-    func round(corners: UIRectCorner, precentage: CGFloat) {
-        let radius = precentage * min(base.bounds.height, base.bounds.width)
+    ///   - percentage: The percentage of a length of a smallest dimension.
+    func round(corners: UIRectCorner, percentage: CGFloat) {
+        let radius = percentage * min(base.bounds.height, base.bounds.width)
         base.adyen.round(corners: corners, radius: radius)
     }
     
     /// Apply a BezierPath mask in shape of a rounded rectangular path.
     /// - Parameters:
     ///   - corners: The corners of a rectangle to round.
-    ///   - radius: The rounding style.
+    ///   - rounding: The rounding style.
     func round(corners: UIRectCorner, rounding: CornerRounding) {
         switch rounding {
         case let .fixed(value):
             base.adyen.round(corners: corners, radius: value)
         case let .percent(value):
-            base.adyen.round(corners: corners, precentage: value)
+            base.adyen.round(corners: corners, percentage: value)
         case .none:
             break
         }

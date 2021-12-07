@@ -27,7 +27,7 @@ internal enum ConfigurationConstants {
     
     static let shopperReference = "iOS Checkout Shopper"
 
-    static let shopperEmail = "checkoutshopperios@example.org"
+    static let shopperEmail = "checkoutShopperiOS@example.org"
     
     static let additionalData = ["allow3DS2": true]
     

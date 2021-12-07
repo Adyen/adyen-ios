@@ -17,7 +17,7 @@ public protocol ViewStyle {
 }
 
 /// :nodoc:
-/// Contains the styling customization options for views with acent color.
+/// Contains the styling customization options for views with accent color.
 public protocol TintableStyle: ViewStyle {
     
     /// The tint color of the view.

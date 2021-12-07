@@ -11,7 +11,7 @@ import XCTest
 
 class BalanceCheckerTests: XCTestCase {
 
-    func testHappeyScenarios() throws {
+    func testHappyScenarios() throws {
         let sut = BalanceChecker()
 
         // amount < balance < transaction limit

@@ -23,7 +23,7 @@ class CardEncryptorCardTests: XCTestCase {
         }
     }
 
-    func testEncryptCardWIthOneFIeldShouldSucceed() {
+    func testEncryptCardWithOneFieldShouldSucceed() {
         var card = Card()
         card.number = "1233467890"
         let key = Dummy.publicKey
@@ -152,7 +152,7 @@ class CardEncryptorCardTests: XCTestCase {
         }
     }
 
-    func testEncryptToTokenWIthOneFIeldShouldSucceed() {
+    func testEncryptToTokenWithOneFieldShouldSucceed() {
         var card = Card()
         card.number = "1233467890"
         let key = Dummy.publicKey
@@ -170,7 +170,7 @@ class CardEncryptorCardTests: XCTestCase {
     }
 
     func testEncryptExpiryBINShouldReturnNilWithInvalidBIN() {
-        XCTAssertThrowsError(try CardEncryptor.encrypt(bin: "asdwed", with: "key")) { error in
+        XCTAssertThrowsError(try CardEncryptor.encrypt(bin: "invalid_BIN", with: "key")) { error in
             XCTAssertTrue(error is CardEncryptor.Error, "Thrown Error is not CardEncryptor.Error")
             XCTAssertEqual(error as! CardEncryptor.Error, CardEncryptor.Error.invalidBin, "Thrown Error is not CardEncryptor.Error.invalidBi")
             XCTAssertEqual(error.localizedDescription, CardEncryptor.Error.invalidBin.errorDescription)
@@ -186,8 +186,8 @@ class CardEncryptorCardTests: XCTestCase {
     }
 
     func testEncryptBIN() {
-        let ecrypted = try! CardEncryptor.encrypt(bin: "55000000", with: Dummy.publicKey)
-        XCTAssertNotNil(ecrypted)
-        XCTAssertTrue(ecrypted.hasPrefix("eyJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiYWxnIjoiUlNBLU9BRVAtMjU2IiwidmVyc2lvbiI6IjEifQ"))
+        let encrypted = try! CardEncryptor.encrypt(bin: "55000000", with: Dummy.publicKey)
+        XCTAssertNotNil(encrypted)
+        XCTAssertTrue(encrypted.hasPrefix("eyJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiYWxnIjoiUlNBLU9BRVAtMjU2IiwidmVyc2lvbiI6IjEifQ"))
     }
 }

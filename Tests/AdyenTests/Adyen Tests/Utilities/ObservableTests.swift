@@ -82,7 +82,7 @@ class ObservableTests: XCTestCase, Observer {
             XCTAssertEqual(count, 1)
         }
         
-        // Autoreleasepool should have been executed.
+        // Auto release pool should have been executed.
         XCTAssertEqual(observable.wrappedValue, "Test 1")
         
         // Owner should have been released.
@@ -114,38 +114,38 @@ class ObservableTests: XCTestCase, Observer {
     }
 
     func testBindingProperty() {
-        let emmiter = TestObserver()
+        let emitter = TestObserver()
         let receiver = TestObserver()
-        bind(emmiter.$observableString, to: receiver, at: \.stringValue)
-        bind(emmiter.$observableString, to: receiver, at: \.optionalStringValue)
-        bind(emmiter.$observableString, to: receiver, at: \.observableObject.stringValue)
+        bind(emitter.$observableString, to: receiver, at: \.stringValue)
+        bind(emitter.$observableString, to: receiver, at: \.optionalStringValue)
+        bind(emitter.$observableString, to: receiver, at: \.observableObject.stringValue)
 
-        emmiter.observableString = "Hello World"
-        XCTAssertEqual(emmiter.observableString, receiver.stringValue)
-        XCTAssertEqual(emmiter.observableString, receiver.optionalStringValue)
-        XCTAssertEqual(emmiter.observableString, receiver.observableObject.stringValue)
+        emitter.observableString = "Hello World"
+        XCTAssertEqual(emitter.observableString, receiver.stringValue)
+        XCTAssertEqual(emitter.observableString, receiver.optionalStringValue)
+        XCTAssertEqual(emitter.observableString, receiver.observableObject.stringValue)
     }
 
     func testBindingObject() {
-        let emmiter = TestObserver()
+        let emitter = TestObserver()
         let receiver = TestObserver()
-        bind(emmiter.$observableObject, at: \.stringValue, to: receiver, at: \.stringValue)
-        bind(emmiter.$observableObject, at: \.stringValue, to: receiver, at: \.optionalStringValue)
-        bind(emmiter.$observableObject, at: \.stringValue, to: receiver, at: \.observableObject.stringValue)
+        bind(emitter.$observableObject, at: \.stringValue, to: receiver, at: \.stringValue)
+        bind(emitter.$observableObject, at: \.stringValue, to: receiver, at: \.optionalStringValue)
+        bind(emitter.$observableObject, at: \.stringValue, to: receiver, at: \.observableObject.stringValue)
 
-        emmiter.observableObject.stringValue = "Hello World"
-        XCTAssertEqual(emmiter.observableObject.stringValue, receiver.stringValue)
-        XCTAssertEqual(emmiter.observableObject.stringValue, receiver.optionalStringValue)
-        XCTAssertEqual(emmiter.observableObject.stringValue, receiver.observableObject.stringValue)
+        emitter.observableObject.stringValue = "Hello World"
+        XCTAssertEqual(emitter.observableObject.stringValue, receiver.stringValue)
+        XCTAssertEqual(emitter.observableObject.stringValue, receiver.optionalStringValue)
+        XCTAssertEqual(emitter.observableObject.stringValue, receiver.observableObject.stringValue)
     }
 
     func testBindingTransformation() {
-        let emmiter = TestObserver()
+        let emitter = TestObserver()
         let receiver = TestObserver()
         XCTAssertFalse(receiver.observableObject.boolValue)
-        bind(emmiter.$observableString, to: receiver, at: \.observableObject.boolValue, with: { $0.contains("Hello") })
+        bind(emitter.$observableString, to: receiver, at: \.observableObject.boolValue, with: { $0.contains("Hello") })
 
-        emmiter.observableString = "Hello World"
+        emitter.observableString = "Hello World"
         XCTAssertTrue(receiver.observableObject.boolValue)
     }
 

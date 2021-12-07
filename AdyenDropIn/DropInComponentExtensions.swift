@@ -22,7 +22,7 @@ extension DropInComponent: PaymentMethodListComponentDelegate {
     
     internal func didSelect(_ component: PaymentComponent,
                             in paymentMethodListComponent: PaymentMethodListComponent) {
-        rootComponent.startLoading(for: component)
+        (rootComponent as? ComponentLoader)?.startLoading(for: component)
         didSelect(component)
     }
     
@@ -95,7 +95,7 @@ extension DropInComponent: ActionComponentDelegate {
 extension DropInComponent: PreselectedPaymentMethodComponentDelegate {
 
     internal func didProceed(with component: PaymentComponent) {
-        rootComponent.startLoading(for: component)
+        (rootComponent as? ComponentLoader)?.startLoading(for: component)
         didSelect(component)
     }
     
@@ -120,8 +120,8 @@ extension DropInComponent: PresentationDelegate {
 
 extension DropInComponent: FinalizableComponent {
 
-    /// Stops loading and finalise DropIn's selected payment if nececery.
-    /// This method must be called after certan payment methods (e.x. ApplePay)
+    /// Stops loading and finalize DropIn's selected payment if necessary.
+    /// This method must be called after certain payment methods (e.x. ApplePay)
     /// - Parameter success: Status of the payment.
     public func didFinalize(with success: Bool) {
         stopLoading()

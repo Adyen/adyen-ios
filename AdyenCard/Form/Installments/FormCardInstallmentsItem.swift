@@ -57,7 +57,7 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
     }
 
     /// Initializes the installments element.
-    /// There will be one element in the picker at initilazation.
+    /// There will be one element in the picker at initialization.
     internal init(installmentConfiguration: InstallmentConfiguration,
                   style: FormTextItemStyle,
                   amount: Amount?,
