@@ -62,7 +62,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
 
         let itemsFactory = BACSDirectDebitItemsFactory(styleProvider: style,
                                                        localizationParameters: localizationParameters,
-                                                       scope: self)
+                                                       scope: String(describing: self))
         let presenter = BACSDirectDebitPresenter(view: view,
                                                  router: self,
                                                  itemsFactory: itemsFactory)
