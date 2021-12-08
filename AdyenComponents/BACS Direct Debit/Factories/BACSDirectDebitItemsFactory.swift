@@ -13,6 +13,7 @@ internal protocol BACSDirectDebitItemsFactoryProtocol {
     func createSortCodeItem() -> FormTextInputItem
     func createEmailItem() -> FormTextInputItem
     func createContinueButton() -> FormButtonItem
+    func createPaymentButton() -> FormButtonItem
     func createAmountConsentToggle() -> FormToggleItem
     func createLegalConsentToggle() -> FormToggleItem
 }
@@ -25,6 +26,7 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         static let sortCodeItem = "sortCodeItem"
         static let emailItem = "emailItem"
         static let continueButtonItem = "continueButtonItem"
+        static let paymentButtonItem = "paymentButtonItem"
         static let amountTermsToggleItem = "amountConsentToggleItem"
         static let legalTermsToggleItem = "legalConsentToggleItem"
     }
@@ -138,6 +140,18 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
 
         let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
                                                      postfix: ViewIdentifier.continueButtonItem)
+        buttonItem.identifier = identifier
+        return buttonItem
+    }
+
+    internal func createPaymentButton() -> FormButtonItem {
+        let buttonItem = FormButtonItem(style: styleProvider.mainButtonItem)
+
+        let localizedTitle = "Confirm & Pay"
+        buttonItem.title = localizedTitle
+
+        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
+                                                     postfix: ViewIdentifier.paymentButtonItem)
         buttonItem.identifier = identifier
         return buttonItem
     }
