@@ -15,7 +15,7 @@ internal class BACSDirectDebitInputFormViewController: FormViewController, BACSD
 
     // MARK: - Properties
 
-    internal weak var presenter: BACSDirectDebitPresenterProtocol?
+    internal weak var presenter: BACSDirectDebitInputPresenterProtocol?
 
     // MARK: - Initializers
 
@@ -42,13 +42,13 @@ internal class BACSDirectDebitInputFormViewController: FormViewController, BACSD
 }
 
 extension BACSDirectDebitInputFormViewController: ViewControllerDelegate {
-    func viewDidLoad(viewController: UIViewController) {
+    internal func viewDidLoad(viewController: UIViewController) {
         presenter?.viewDidLoad()
     }
 
-    func viewDidAppear(viewController: UIViewController) {}
+    internal func viewDidAppear(viewController: UIViewController) {}
     
-    func viewWillAppear(viewController: UIViewController) {
+    internal func viewWillAppear(viewController: UIViewController) {
         // TODO: - Complete with logic
         // 1. Fill form fields (being resetted when view disappears)
     }

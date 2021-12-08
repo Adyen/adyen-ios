@@ -7,7 +7,9 @@
 import Adyen
 import Foundation
 
-internal protocol BACSConfirmationViewProtocol: FormViewProtocol {}
+internal protocol BACSConfirmationViewProtocol: FormViewProtocol {
+    func setUserInteraction(enabled: Bool)
+}
 
 internal class BACSConfirmationViewController: FormViewController,
     BACSConfirmationViewProtocol {
@@ -25,6 +27,12 @@ internal class BACSConfirmationViewController: FormViewController,
         self.title = title
         self.delegate = self
         self.localizationParameters = localizationParameters
+    }
+
+    // MARK: - BACSConfirmationViewProtocol
+
+    internal func setUserInteraction(enabled: Bool) {
+        view.isUserInteractionEnabled = enabled
     }
 }
 

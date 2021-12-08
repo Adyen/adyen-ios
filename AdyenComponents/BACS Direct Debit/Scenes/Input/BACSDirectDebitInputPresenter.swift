@@ -7,12 +7,12 @@
 import Adyen
 import Foundation
 
-internal protocol BACSDirectDebitPresenterProtocol: AnyObject {
+internal protocol BACSDirectDebitInputPresenterProtocol: AnyObject {
     func viewDidLoad()
     func didCancel()
 }
 
-internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
+internal class BACSDirectDebitPresenter: BACSDirectDebitInputPresenterProtocol {
 
     // MARK: - Properties
 

@@ -9,6 +9,8 @@ import Foundation
 
 internal protocol BACSConfirmationPresenterProtocol: AnyObject {
     func viewDidLoad()
+    func startLoading()
+    func stopLoading()
 }
 
 internal class BACSConfirmationPresenter: BACSConfirmationPresenterProtocol {
@@ -44,8 +46,18 @@ internal class BACSConfirmationPresenter: BACSConfirmationPresenterProtocol {
 
     // MARK: - BACSDirectDebitConfirmationPresenterProtocol
 
-    func viewDidLoad() {
+    internal func viewDidLoad() {
         // TODO: - Add logic
+    }
+
+    internal func startLoading() {
+        paymentButtonItem?.showsActivityIndicator = true
+        view.setUserInteraction(enabled: false)
+    }
+
+    internal func stopLoading() {
+        paymentButtonItem?.showsActivityIndicator = false
+        view.setUserInteraction(enabled: true)
     }
 
     // MARK: - Private

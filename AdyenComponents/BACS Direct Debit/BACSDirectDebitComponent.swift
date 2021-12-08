@@ -22,7 +22,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     public var viewController: UIViewController
 
     /// :nodoc:
-    public var requiresModalPresentation: Bool = false
+    public var requiresModalPresentation: Bool = true
 
     /// The object that acts as the delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
@@ -38,6 +38,13 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
 
     /// :nodoc:
     public var localizationParameters: LocalizationParameters?
+
+    public weak var presentationDelegate: PresentationDelegate?
+
+    // MARK: - Properties
+
+    private weak var inputPresenter: BACSDirectDebitInputPresenterProtocol?
+    private weak var confirmationPresenter: BACSConfirmationPresenterProtocol?
 
     // MARK: - Initializers
 
@@ -63,10 +70,10 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
         let itemsFactory = BACSDirectDebitItemsFactory(styleProvider: style,
                                                        localizationParameters: localizationParameters,
                                                        scope: String(describing: self))
-        let presenter = BACSDirectDebitPresenter(view: view,
-                                                 router: self,
-                                                 itemsFactory: itemsFactory)
-        view.presenter = presenter
+        self.inputPresenter = BACSDirectDebitPresenter(view: view,
+                                                       router: self,
+                                                       itemsFactory: itemsFactory)
+        view.presenter = inputPresenter
     }
 }
 
@@ -88,12 +95,18 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
         guard let bacsDirectDebitPaymentMethod = paymentMethod as? BACSDirectDebitPaymentMethod else {
             return
         }
-        let bacsDirectDebitDetails = BACSDirectDebitDetails(paymentMethod: bacsDirectDebitPaymentMethod,
-                                                            holderName: data.holderName,
-                                                            bankAccountNumber: data.bankAccountNumber,
-                                                            bankLocationId: data.bankLocationId)
+        let details = BACSDirectDebitDetails(paymentMethod: bacsDirectDebitPaymentMethod,
+                                             holderName: data.holderName,
+                                             bankAccountNumber: data.bankAccountNumber,
+                                             bankLocationId: data.bankLocationId)
+        adyenPrint("PAYMENT HANDLE WITH DETAILS: \(details)")
 
-        adyenPrint("PAYMENT HANDLE WITH DETAILS: \(bacsDirectDebitDetails)")
+        confirmationPresenter?.startLoading()
+        let data = PaymentComponentData(paymentMethodDetails: details,
+                                        amount: amountToPay,
+                                        order: order)
+        submit(data: data)
+
     }
 
     internal func cancelPayment() {
@@ -109,11 +122,11 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
         let itemsFactory = BACSDirectDebitItemsFactory(styleProvider: style,
                                                        localizationParameters: localizationParameters,
                                                        scope: String(describing: self))
-        let presenter = BACSConfirmationPresenter(data: data,
-                                                  view: view,
-                                                  router: self,
-                                                  itemsFactory: itemsFactory)
-        view.presenter = presenter
+        confirmationPresenter = BACSConfirmationPresenter(data: data,
+                                                          view: view,
+                                                          router: self,
+                                                          itemsFactory: itemsFactory)
+        view.presenter = confirmationPresenter
         return view
 
     }
