@@ -142,3 +142,5 @@
 "adyen.bacs.holderNameField.invalidMessage" = "銀行口座名義が無効です";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "銀行口座番号が無効です";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "ソートコードが無効です";
+"adyen.bacs.paymentButton.title" = "確認して支払う";
+"adyen.bacs.downloadMandate" = "自動引き落としの説明 (DDI/委任状) をダウンロードする";

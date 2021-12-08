@@ -142,3 +142,5 @@
 "adyen.bacs.holderNameField.invalidMessage" = "예금주 이름이 유효하지 않습니다";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "계좌 번호가 유효하지 않습니다";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "은행 식별 코드가 유효하지 않습니다";
+"adyen.bacs.paymentButton.title" = "확인 및 결제";
+"adyen.bacs.downloadMandate" = "자동 이체 안내(DDI/필수) 다운로드";

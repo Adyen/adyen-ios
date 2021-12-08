@@ -142,3 +142,5 @@
 "adyen.bacs.holderNameField.invalidMessage" = "Nieprawidłowe imię i nazwisko posiadacza rachunku";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Nieprawidłowy numer rachunku";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Nieprawidłowy numer rozliczeniowy SORT";
+"adyen.bacs.paymentButton.title" = "Potwierdź i zapłać";
+"adyen.bacs.downloadMandate" = "Pobierz dyspozycję polecenia zapłaty (DDI/upoważnienie)";

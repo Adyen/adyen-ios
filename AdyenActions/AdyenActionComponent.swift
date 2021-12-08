@@ -170,7 +170,7 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
     }
     
     private func handle(_ action: BACSAction) {
-        let component = BACSActionComponent(apiContext: apiContext)
+        let component = BACSActionComponent(apiContext: apiContext, style: style.bacsActionComponentStyle)
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.localizationParameters = localizationParameters

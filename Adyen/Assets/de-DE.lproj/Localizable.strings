@@ -142,3 +142,5 @@
 "adyen.bacs.holderNameField.invalidMessage" = "Ungültiger Bankkontoinhabername";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Ungültige Bankkontonummer";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Ungültige Bankleitzahl";
+"adyen.bacs.paymentButton.title" = "Bestätigen und bezahlen";
+"adyen.bacs.downloadMandate" = "Laden Sie Ihre Lastschriftanweisung (DDI/Einzugsermächtigung) herunter";

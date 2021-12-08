@@ -142,3 +142,5 @@
 "adyen.bacs.holderNameField.invalidMessage" = "Ongeldige naam bankrekeninghouder";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Ongeldig bankrekeningnummer";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Ongeldige bankcode";
+"adyen.bacs.paymentButton.title" = "Bevestigen en betalen";
+"adyen.bacs.downloadMandate" = "Download uw machtiging automatische incasso";

@@ -142,3 +142,5 @@
 "adyen.bacs.holderNameField.invalidMessage" = "Неверное имя владельца банковского счета";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Неверный номер банковского счета";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Неверный код банка";
+"adyen.bacs.paymentButton.title" = "Подтвердить и оплатить";
+"adyen.bacs.downloadMandate" = "Загрузить распоряжение прямого дебетования (DDI / поручение)";

@@ -142,3 +142,5 @@
 "adyen.bacs.holderNameField.invalidMessage" = "Neplatné meno majiteľa bankového účtu";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Neplatné číslo bankového účtu";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Neplatný variabilný symbol";
+"adyen.bacs.paymentButton.title" = "Potvrdiť a zaplatiť";
+"adyen.bacs.downloadMandate" = "Stiahnite si pokyny k inkasu (DDI/Mandát)";

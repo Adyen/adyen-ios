@@ -142,3 +142,5 @@
 "adyen.bacs.holderNameField.invalidMessage" = "Numele titularului contului bancar este incorect";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Numărul contului bancar este incorect";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Cod de identificare bancară incorect";
+"adyen.bacs.paymentButton.title" = "Confirmați și plătiți";
+"adyen.bacs.downloadMandate" = "Descărcați instrucțiunile de debitare directă (DDI/mandat)";

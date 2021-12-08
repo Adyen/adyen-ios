@@ -142,3 +142,5 @@
 "adyen.bacs.holderNameField.invalidMessage" = "Neplatné jméno držitele bankovního účtu";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Neplatné číslo bankovního účtu";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Neplatný kód Sort";
+"adyen.bacs.paymentButton.title" = "Potvrdit a zaplatit";
+"adyen.bacs.downloadMandate" = "Stáhněte si pokyny k přímému inkasu (DDI / podpisové právo)";

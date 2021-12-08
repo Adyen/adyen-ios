@@ -155,18 +155,6 @@ extension VoucherComponent: VoucherViewDelegate {
         }
     }
     
-    private func presentSharePopover(
-        with item: Any,
-        sourceView: UIView
-    ) {
-        let activityViewController = UIActivityViewController(
-            activityItems: [item],
-            applicationActivities: nil
-        )
-        activityViewController.popoverPresentationController?.sourceView = sourceView
-        presenterViewController.present(activityViewController, animated: true, completion: nil)
-    }
-    
     private func showAppleWallet(passData: Data?, completion: @escaping () -> Void) {
         do {
             guard let data = passData else { throw AppleWalletError.failedToAddToAppleWallet }

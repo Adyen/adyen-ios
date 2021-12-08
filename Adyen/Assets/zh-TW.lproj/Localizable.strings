@@ -139,3 +139,5 @@
 "adyen.bacs.holderNameField.invalidMessage" = "銀行帳戶持有人姓名無效";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "銀行帳戶號碼無效";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "銀行代碼無效";
+"adyen.bacs.paymentButton.title" = "確認並支付";
+"adyen.bacs.downloadMandate" = "下載您的直接扣款指示（DDI／授權）";

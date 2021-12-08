@@ -15,7 +15,7 @@ internal protocol AnyVoucherActionHandler: ActionComponent, Cancellable {
 }
 
 /// A component that handles voucher action's.
-public final class VoucherComponent: AnyVoucherActionHandler {
+public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent {
 
     /// :nodoc:
     public let apiContext: APIContext
@@ -118,7 +118,7 @@ public final class VoucherComponent: AnyVoucherActionHandler {
             let presentableComponent = PresentableComponentWrapper(
                 component: self,
                 viewController: viewController,
-                navBarType: getNavBarType()
+                navBarType: navBarType()
             )
             presentationDelegate.present(component: presentableComponent)
         } else {
@@ -129,18 +129,8 @@ public final class VoucherComponent: AnyVoucherActionHandler {
     }
     
     internal let presenterViewController = UIViewController()
-    
-    private func setUpPresenterViewController(parentViewController: UIViewController) {
-        // Ugly hack to work around the following bug
-        // https://stackoverflow.com/questions/59413850/uiactivityviewcontroller-dismissing-current-view-controller-after-sharing-file
         
-        parentViewController.addChild(presenterViewController)
-        parentViewController.view.insertSubview(presenterViewController.view, at: 0)
-        presenterViewController.view.frame = .zero
-        presenterViewController.didMove(toParent: parentViewController)
-    }
-        
-    private func getNavBarType() -> NavigationBarType {
+    private func navBarType() -> NavigationBarType {
         let localizedEdit = Bundle.Adyen.localizedEditCopy
         let localizedDone = Bundle.Adyen.localizedDoneCopy
         let model = VoucherNavBar.Model(

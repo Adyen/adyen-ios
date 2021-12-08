@@ -142,3 +142,5 @@
 "adyen.bacs.holderNameField.invalidMessage" = "Nom du titulaire du compte bancaire incorrect";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Numéro du compte bancaire incorrect";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Code de tri (sort code) non valide";
+"adyen.bacs.paymentButton.title" = "Confirmer et payer";
+"adyen.bacs.downloadMandate" = "Téléchargez votre mandat de prélèvement (DDI)";

@@ -142,3 +142,5 @@
 "adyen.bacs.holderNameField.invalidMessage" = "Ogiltigt namn på bankkontoinnehavare";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Ogiltigt bankkontonummer";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Ogiltigt clearingnummer";
+"adyen.bacs.paymentButton.title" = "Bekräfta och betala";
+"adyen.bacs.downloadMandate" = "Ladda ner din instruktion för autogiro/direktdebitering (DDI / Mandate)";

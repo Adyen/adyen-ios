@@ -142,3 +142,5 @@
 "adyen.bacs.holderNameField.invalidMessage" = "Ugyldig kontoholdernavn";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Ugyldig bankkontonummer";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Ugyldig sorteringskode";
+"adyen.bacs.paymentButton.title" = "Bekreft og betal";
+"adyen.bacs.downloadMandate" = "Last ned instruksjoner for direktebelastning (DDI/ mandat)";
