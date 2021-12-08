@@ -7,17 +7,14 @@
 import Adyen
 import Foundation
 
-internal protocol BACSDirectDebitInputPresenterProtocol: AnyObject {
-    func viewDidLoad()
-    func didCancel()
-}
+internal protocol BACSDirectDebitInputPresenterProtocol: AnyObject {}
 
 internal class BACSDirectDebitPresenter: BACSDirectDebitInputPresenterProtocol {
 
     // MARK: - Properties
 
     private let view: BACSDirectDebitInputFormViewProtocol
-    private let router: BACSDirectDebitRouterProtocol
+    private weak var router: BACSDirectDebitRouterProtocol?
     private let itemsFactory: BACSDirectDebitItemsFactoryProtocol
     private var data: BACSDirectDebitData?
 
@@ -41,17 +38,6 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitInputPresenterProtocol {
         self.itemsFactory = itemsFactory
         setupItems()
         setupView()
-    }
-
-    // MARK: - BACSDirectDebitPresenterProtocol
-
-    internal func viewDidLoad() {
-        view.setupNavigationBar()
-    }
-
-    @objc
-    internal func didCancel() {
-        router.cancelPayment()
     }
 
     // MARK: - Private
@@ -113,6 +99,6 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitInputPresenterProtocol {
                                                       bankLocationId: sortCode,
                                                       shopperEmail: shopperEmail)
         self.data = bacsDirectDebitData
-        router.presentConfirmation(with: bacsDirectDebitData)
+        router?.presentConfirmation(with: bacsDirectDebitData)
     }
 }

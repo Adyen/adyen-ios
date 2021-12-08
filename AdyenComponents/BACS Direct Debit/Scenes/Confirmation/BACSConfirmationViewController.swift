@@ -37,10 +37,7 @@ internal class BACSConfirmationViewController: FormViewController,
 }
 
 extension BACSConfirmationViewController: ViewControllerDelegate {
-    internal func viewDidLoad(viewController: UIViewController) {
-        // TODO: - Logic
-        presenter?.viewDidLoad()
-    }
+    internal func viewDidLoad(viewController: UIViewController) {}
 
     internal func viewDidAppear(viewController: UIViewController) {
         // TODO: - Logic

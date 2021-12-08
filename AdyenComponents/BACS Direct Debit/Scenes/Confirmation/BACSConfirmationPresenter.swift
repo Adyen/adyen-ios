@@ -8,7 +8,6 @@ import Adyen
 import Foundation
 
 internal protocol BACSConfirmationPresenterProtocol: AnyObject {
-    func viewDidLoad()
     func startLoading()
     func stopLoading()
 }
@@ -19,7 +18,7 @@ internal class BACSConfirmationPresenter: BACSConfirmationPresenterProtocol {
 
     private let data: BACSDirectDebitData
     private let view: BACSConfirmationViewProtocol
-    private let router: BACSDirectDebitRouterProtocol
+    private weak var router: BACSDirectDebitRouterProtocol?
     private let itemsFactory: BACSDirectDebitItemsFactoryProtocol
 
     // MARK: - Items
@@ -45,10 +44,6 @@ internal class BACSConfirmationPresenter: BACSConfirmationPresenterProtocol {
     }
 
     // MARK: - BACSDirectDebitConfirmationPresenterProtocol
-
-    internal func viewDidLoad() {
-        // TODO: - Add logic
-    }
 
     internal func startLoading() {
         paymentButtonItem?.showsActivityIndicator = true
@@ -99,7 +94,6 @@ internal class BACSConfirmationPresenter: BACSConfirmationPresenterProtocol {
     }
 
     private func handlePayment() {
-        // TODO: - Logic to handle payment
-        router.confirmPayment(with: data)
+        router?.confirmPayment(with: data)
     }
 }

@@ -7,10 +7,9 @@
 import Adyen
 import UIKit
 
-internal protocol BACSDirectDebitRouterProtocol {
+internal protocol BACSDirectDebitRouterProtocol: AnyObject {
     func presentConfirmation(with data: BACSDirectDebitData)
     func confirmPayment(with data: BACSDirectDebitData)
-    func cancelPayment()
 }
 
 /// A component that provides a form for BACS Direct Debit payments.
@@ -43,8 +42,8 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
 
     // MARK: - Properties
 
-    private weak var inputPresenter: BACSDirectDebitInputPresenterProtocol?
-    private weak var confirmationPresenter: BACSConfirmationPresenterProtocol?
+    private var inputPresenter: BACSDirectDebitInputPresenterProtocol?
+    private var confirmationPresenter: BACSConfirmationPresenterProtocol?
 
     // MARK: - Initializers
 
@@ -84,18 +83,12 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
     internal func presentConfirmation(with data: BACSDirectDebitData) {
         let confirmationView = assembleConfirmationView(with: data)
 
-        // TODO: - Continue payment logic
-        // 2. Present confirmation scene
-
-//        viewController.navigationController?.pushViewController(confirmationView, animated: true)
-        
         let wrappedComponent = PresentableComponentWrapper(component: self,
                                                            viewController: confirmationView)
         presentationDelegate?.present(component: wrappedComponent)
     }
 
     internal func confirmPayment(with data: BACSDirectDebitData) {
-        // TODO: - Payment processing logic
         guard let bacsDirectDebitPaymentMethod = paymentMethod as? BACSDirectDebitPaymentMethod else {
             return
         }
@@ -103,8 +96,6 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
                                              holderName: data.holderName,
                                              bankAccountNumber: data.bankAccountNumber,
                                              bankLocationId: data.bankLocationId)
-        adyenPrint("PAYMENT HANDLE WITH DETAILS: \(details)")
-
         confirmationPresenter?.startLoading()
         let data = PaymentComponentData(paymentMethodDetails: details,
                                         amount: amountToPay,
@@ -131,7 +122,6 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
                                                           itemsFactory: itemsFactory)
         view.presenter = confirmationPresenter
         return view
-
     }
 }
 
