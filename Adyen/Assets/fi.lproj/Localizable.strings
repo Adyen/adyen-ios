@@ -142,3 +142,4 @@
 "adyen.bacs.holderNameField.invalidMessage" = "Ei-kelvollinen tilinhaltijan nimi";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Väärä tilin numero";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Ei-kelvollinen lajittelukoodi";
+"adyen.bacs.paymentButton.title" = "Vahvista ja maksa";

@@ -142,3 +142,4 @@
 "adyen.bacs.holderNameField.invalidMessage" = "Μη έγκυρο όνομα δικαιούχου τραπεζικού λογαριασμού";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Μη έγκυρος αριθμός τραπεζικού λογαριασμού";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Μη έγκυρος κωδικός τράπεζας";
+"adyen.bacs.paymentButton.title" = "Επιβεβαίωση και πληρωμή";

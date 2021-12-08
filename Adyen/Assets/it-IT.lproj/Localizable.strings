@@ -142,3 +142,4 @@
 "adyen.bacs.holderNameField.invalidMessage" = "Nome del titolare del conto bancario non valido";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Numero di conto bancario non valido";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Sort code non valido";
+"adyen.bacs.paymentButton.title" = "Conferma e paga";

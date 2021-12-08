@@ -142,3 +142,4 @@
 "adyen.bacs.holderNameField.invalidMessage" = "اسم صاحب حساب بنكي غير صحيح";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "رقم حساب بنكي غير صحيح";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "رمز تعريف بنك غير صحيح";
+"adyen.bacs.paymentButton.title" = "تأكيد ودفع";

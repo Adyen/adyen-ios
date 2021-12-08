@@ -142,3 +142,4 @@
 "adyen.bacs.holderNameField.invalidMessage" = "El nombre del titular de la cuenta bancaria no es válido";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "El número de cuenta bancaria no es válido";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "El código de sucursal no es válido";
+"adyen.bacs.paymentButton.title" = "Confirmar y pagar";

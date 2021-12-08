@@ -142,3 +142,4 @@
 "adyen.bacs.holderNameField.invalidMessage" = "Ogiltigt namn på bankkontoinnehavare";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Ogiltigt bankkontonummer";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Ogiltigt clearingnummer";
+"adyen.bacs.paymentButton.title" = "Bekräfta och betala";

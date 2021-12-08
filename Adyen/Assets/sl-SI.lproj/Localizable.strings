@@ -142,3 +142,4 @@
 "adyen.bacs.holderNameField.invalidMessage" = "Neveljavno ime imetnika računa";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Neveljavna številka bančnega računa";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Neveljavna številka banke";
+"adyen.bacs.paymentButton.title" = "Potrdi in plačaj";

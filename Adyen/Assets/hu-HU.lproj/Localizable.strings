@@ -142,3 +142,4 @@
 "adyen.bacs.holderNameField.invalidMessage" = "A bankszámla-tulajdonos neve érvénytelen";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Érvénytelen bankszámlaszám";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Érvénytelen banki azonosító";
+"adyen.bacs.paymentButton.title" = "Megerősítés és fizetés";

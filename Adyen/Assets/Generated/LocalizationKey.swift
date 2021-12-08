@@ -295,7 +295,9 @@ public struct LocalizationKey {
     public static let bacsBankAccountNumberFieldInvalidMessage = LocalizationKey(key: "adyen.bacs.bankAccountNumberField.invalidMessage")
     /// Invalid sort code
     public static let bacsBankLocationIdFieldInvalidMessage = LocalizationKey(key: "adyen.bacs.bankLocationIdField.invalidMessage")
-
+    /// Confirm and pay
+    public static let bacsPaymentButtonTitle = LocalizationKey(key: "adyen.bacs.paymentButton.title")
+    
     internal let key: String
     
     public init(key: String) {

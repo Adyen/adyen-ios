@@ -142,3 +142,4 @@
 "adyen.bacs.holderNameField.invalidMessage" = "无效的银行账户持有人姓名";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "无效的银行账号";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "无效的分类代码";
+"adyen.bacs.paymentButton.title" = "确认并支付";

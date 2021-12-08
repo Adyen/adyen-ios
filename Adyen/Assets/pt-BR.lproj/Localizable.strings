@@ -142,3 +142,4 @@
 "adyen.bacs.holderNameField.invalidMessage" = "Nome do titular da conta bancária inválido";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Número da conta bancária inválido";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Código de classificação inválido";
+"adyen.bacs.paymentButton.title" = "Confirmar e pagar";

@@ -142,3 +142,4 @@
 "adyen.bacs.holderNameField.invalidMessage" = "Invalid bank account holder name";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Invalid bank account number";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Invalid sort code";
+"adyen.bacs.paymentButton.title" = "Confirm and pay";
