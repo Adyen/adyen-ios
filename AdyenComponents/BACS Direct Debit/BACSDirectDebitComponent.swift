@@ -78,11 +78,8 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
         // TODO: - Continue payment logic
         // 1. Assamble confirmation scene
         // 2. Present confirmation scene
-        adyenPrint("PAYMENT: \(data)")
 
-        let confirmationView = UIViewController()
-        confirmationView.title = "Confirmation View"
-        confirmationView.view.backgroundColor = UIColor(red: 0.19, green: 0.84, blue: 0.78, alpha: 1.00)
+        let confirmationView = assembleConfirmationView(with: data)
         viewController.navigationController?.pushViewController(confirmationView, animated: true)
     }
 
@@ -95,9 +92,29 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
                                                             holderName: data.holderName,
                                                             bankAccountNumber: data.bankAccountNumber,
                                                             bankLocationId: data.bankLocationId)
+
+        adyenPrint("PAYMENT HANDLE WITH DETAILS: \(bacsDirectDebitDetails)")
     }
 
     internal func cancelPayment() {
         viewController.navigationController?.dismiss(animated: true)
+    }
+
+    // MARK: - Private
+
+    private func assembleConfirmationView(with data: BACSDirectDebitData) -> UIViewController {
+        let view = BACSConfirmationViewController(title: paymentMethod.name,
+                                                  styleProvider: style,
+                                                  localizationParameters: localizationParameters)
+        let itemsFactory = BACSDirectDebitItemsFactory(styleProvider: style,
+                                                       localizationParameters: localizationParameters,
+                                                       scope: String(describing: self))
+        let presenter = BACSConfirmationPresenter(data: data,
+                                                  view: view,
+                                                  router: self,
+                                                  itemsFactory: itemsFactory)
+        view.presenter = presenter
+        return view
+
     }
 }

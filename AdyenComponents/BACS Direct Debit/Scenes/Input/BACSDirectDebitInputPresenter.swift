@@ -19,6 +19,7 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
     private let view: BACSDirectDebitInputFormViewProtocol
     private let router: BACSDirectDebitRouterProtocol
     private let itemsFactory: BACSDirectDebitItemsFactoryProtocol
+    private var data: BACSDirectDebitData?
 
     // MARK: - Items
 
@@ -111,6 +112,7 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
                                                       bankAccountNumber: bankAccountNumber,
                                                       bankLocationId: sortCode,
                                                       shopperEmail: shopperEmail)
+        self.data = bacsDirectDebitData
         router.presentConfirmation(with: bacsDirectDebitData)
     }
 }
