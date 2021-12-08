@@ -82,12 +82,16 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
 extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
 
     internal func presentConfirmation(with data: BACSDirectDebitData) {
+        let confirmationView = assembleConfirmationView(with: data)
+
         // TODO: - Continue payment logic
-        // 1. Assamble confirmation scene
         // 2. Present confirmation scene
 
-        let confirmationView = assembleConfirmationView(with: data)
-        viewController.navigationController?.pushViewController(confirmationView, animated: true)
+//        viewController.navigationController?.pushViewController(confirmationView, animated: true)
+        
+        let wrappedComponent = PresentableComponentWrapper(component: self,
+                                                           viewController: confirmationView)
+        presentationDelegate?.present(component: wrappedComponent)
     }
 
     internal func confirmPayment(with data: BACSDirectDebitData) {
@@ -106,7 +110,6 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
                                         amount: amountToPay,
                                         order: order)
         submit(data: data)
-
     }
 
     internal func cancelPayment() {
@@ -129,5 +132,14 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
         view.presenter = confirmationPresenter
         return view
 
+    }
+}
+
+// MARK: - LoadingComponent
+
+extension BACSDirectDebitComponent: LoadingComponent {
+    
+    public func stopLoading() {
+        confirmationPresenter?.stopLoading()
     }
 }

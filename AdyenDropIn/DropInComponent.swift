@@ -217,7 +217,9 @@ public final class DropInComponent: NSObject, PresentableComponent {
         
         switch component {
         case let component as BACSDirectDebitComponent:
-            navigationController.presentInNavigationController(component: component)
+            component.presentationDelegate = self
+            navigationController.present(asModal: component)
+//            navigationController.presentInNavigationController(component: component)
         case let component as PreApplePayComponent:
             navigationController.present(asModal: component)
         case let component as PresentableComponent where component.requiresModalPresentation:
