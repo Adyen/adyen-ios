@@ -64,9 +64,17 @@ internal class BACSConfirmationPresenter: BACSConfirmationPresenterProtocol {
 
     private func setupItems() {
         holderNameItem = itemsFactory.createHolderNameItem()
+        holderNameItem?.isEnabled = false
+
         bankAccountNumberItem = itemsFactory.createBankAccountNumberItem()
+        bankAccountNumberItem?.isEnabled = false
+
         sortCodeItem = itemsFactory.createSortCodeItem()
+        sortCodeItem?.isEnabled = false
+
         emailItem = itemsFactory.createEmailItem()
+        emailItem?.isEnabled = false
+
         paymentButtonItem = itemsFactory.createPaymentButton()
         paymentButtonItem?.buttonSelectionHandler = handlePayment
 

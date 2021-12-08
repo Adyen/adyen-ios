@@ -8,4 +8,12 @@ import Foundation
 
 /// A form view representing a plain text input.
 /// :nodoc:
-public final class FormTextInputItemView: FormTextItemView<FormTextInputItem> {}
+public final class FormTextInputItemView: FormTextItemView<FormTextInputItem> {
+
+    // MARK: - Initializers
+
+    public required init(item: FormTextInputItem) {
+        super.init(item: item)
+        bind(item.$isEnabled, to: textField, at: \.isEnabled)
+    }
+}

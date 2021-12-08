@@ -295,7 +295,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
         }
     }
     
-    private func resetValidationStatus() {
+    open func resetValidationStatus() {
         removeAccessoryIfNeeded()
         hideAlertLabel(true, animated: false)
         unhighlightSeparatorView()
