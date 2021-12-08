@@ -103,10 +103,6 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
         submit(data: data)
     }
 
-    internal func cancelPayment() {
-        viewController.navigationController?.dismiss(animated: true)
-    }
-
     // MARK: - Private
 
     private func assembleConfirmationView(with data: BACSDirectDebitData) -> UIViewController {

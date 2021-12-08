@@ -7,12 +7,15 @@
 import Adyen
 import Foundation
 
-internal protocol BACSDirectDebitInputPresenterProtocol: AnyObject {}
+internal protocol BACSDirectDebitInputPresenterProtocol: AnyObject {
+    func viewWillAppear()
+}
 
 internal class BACSDirectDebitPresenter: BACSDirectDebitInputPresenterProtocol {
 
     // MARK: - Properties
 
+    internal var paymentCancelled = false
     private let view: BACSDirectDebitInputFormViewProtocol
     private weak var router: BACSDirectDebitRouterProtocol?
     private let itemsFactory: BACSDirectDebitItemsFactoryProtocol
@@ -38,6 +41,16 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitInputPresenterProtocol {
         self.itemsFactory = itemsFactory
         setupItems()
         setupView()
+    }
+
+    // MARK: - BACSDirectDebitInputPresenterProtocol
+
+    internal func viewWillAppear() {
+        if paymentCancelled {
+            resetForm()
+            paymentCancelled = false
+        }
+        restoreFields()
     }
 
     // MARK: - Private
@@ -82,6 +95,27 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitInputPresenterProtocol {
                 sortCodeItem,
                 emailItem].compactMap { $0 }
             .allSatisfy { $0.isValid() }
+    }
+
+    private func restoreFields() {
+        guard let data = data else { return }
+        holderNameItem?.value = data.holderName
+        bankAccountNumberItem?.value = data.bankAccountNumber
+        sortCodeItem?.value = data.bankLocationId
+        emailItem?.value = data.shopperEmail
+
+        amountConsentToggleItem?.value = false
+        legalConsentToggleItem?.value = false
+    }
+
+    private func resetForm() {
+        holderNameItem?.value = ""
+        bankAccountNumberItem?.value = ""
+        sortCodeItem?.value = ""
+        emailItem?.value = ""
+
+        amountConsentToggleItem?.value = false
+        legalConsentToggleItem?.value = false
     }
 
     private func continuePayment() {
