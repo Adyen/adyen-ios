@@ -30,6 +30,8 @@ internal final class ComponentManager {
     internal let order: PartialPaymentOrder?
     
     internal let apiContext: APIContext
+
+    internal let presentationDelegate: PresentationDelegate
     
     internal init(paymentMethods: PaymentMethods,
                   configuration: DropInComponent.Configuration,
@@ -37,7 +39,8 @@ internal final class ComponentManager {
                   partialPaymentEnabled: Bool = true,
                   remainingAmount: Amount? = nil,
                   order: PartialPaymentOrder?,
-                  supportsEditingStoredPaymentMethods: Bool = false) {
+                  supportsEditingStoredPaymentMethods: Bool = false,
+                  presentationDelegate: PresentationDelegate) {
         self.paymentMethods = paymentMethods
         self.configuration = configuration
         self.apiContext = configuration.apiContext
@@ -46,6 +49,7 @@ internal final class ComponentManager {
         self.remainingAmount = remainingAmount
         self.order = order
         self.supportsEditingStoredPaymentMethods = supportsEditingStoredPaymentMethods
+        self.presentationDelegate = presentationDelegate
     }
     
     // MARK: - Internal
@@ -197,8 +201,9 @@ internal final class ComponentManager {
     }
 
     private func createBACSDirectDebit(_ paymentMethod: BACSDirectDebitPaymentMethod) -> BACSDirectDebitComponent {
-        BACSDirectDebitComponent(paymentMethod: paymentMethod,
-                                 apiContext: apiContext)
+        let bacsDirectDebitComponent = BACSDirectDebitComponent(paymentMethod: paymentMethod, apiContext: apiContext)
+        bacsDirectDebitComponent.presentationDelegate = presentationDelegate
+        return bacsDirectDebitComponent
     }
     
     private func createQiwiWalletComponent(_ paymentMethod: QiwiWalletPaymentMethod) -> QiwiWalletComponent {
