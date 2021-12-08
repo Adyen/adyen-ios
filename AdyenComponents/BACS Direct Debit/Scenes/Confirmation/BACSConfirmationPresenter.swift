@@ -55,7 +55,7 @@ internal class BACSConfirmationPresenter: BACSConfirmationPresenterProtocol {
         bankAccountNumberItem = itemsFactory.createBankAccountNumberItem()
         sortCodeItem = itemsFactory.createSortCodeItem()
         emailItem = itemsFactory.createEmailItem()
-        paymentButtonItem = itemsFactory.createContinueButton()
+        paymentButtonItem = itemsFactory.createPaymentButton()
         paymentButtonItem?.buttonSelectionHandler = handlePayment
 
         fillItems()

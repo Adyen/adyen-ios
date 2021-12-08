@@ -147,7 +147,7 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
     internal func createPaymentButton() -> FormButtonItem {
         let buttonItem = FormButtonItem(style: styleProvider.mainButtonItem)
 
-        let localizedTitle = "Confirm & Pay"
+        let localizedTitle = localizedString(.bacsPaymentButtonTitle, localizationParameters)
         buttonItem.title = localizedTitle
 
         let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
