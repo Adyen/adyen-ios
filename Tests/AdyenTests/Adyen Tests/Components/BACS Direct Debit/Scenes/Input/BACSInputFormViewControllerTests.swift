@@ -36,11 +36,11 @@ class BACSInputFormViewControllerTests: XCTestCase {
         XCTAssertNotNil(sut.delegate)
     }
 
-    func testViewDidLoadShouldCallPresenterViewDidLoad() throws {
+    func testViewWillAppearShouldCallPresenterViewWillAppear() throws {
         // When
-        sut.viewDidLoad()
+        sut.viewWillAppear(viewController: sut)
 
         // Then
-        XCTAssertTrue(presenter.viewDidLoadCalled)
+        XCTAssertTrue(presenter.viewWillAppearCalled)
     }
 }

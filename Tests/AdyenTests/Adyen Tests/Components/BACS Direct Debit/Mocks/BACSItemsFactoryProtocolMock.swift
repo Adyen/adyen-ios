@@ -70,6 +70,19 @@ class BACSItemsFactoryProtocolMock: BACSItemsFactoryProtocol {
         return createContinueButtonReturnValue
     }
 
+    // MARK: - createPaymentButton
+
+    var createPaymentButtonCallsCount = 0
+    var createPaymentButtonCalled: Bool {
+        return createPaymentButtonCallsCount > 0
+    }
+    var createPaymentButtonReturnValue: FormButtonItem!
+
+    func createPaymentButton() -> FormButtonItem {
+        createPaymentButtonCallsCount += 1
+        return createPaymentButtonReturnValue
+    }
+
     // MARK: - createAmountConsentToggle
 
     var createAmountConsentToggleCallsCount = 0
