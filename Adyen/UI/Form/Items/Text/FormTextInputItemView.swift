@@ -15,13 +15,12 @@ public final class FormTextInputItemView: FormTextItemView<FormTextInputItem> {
     public required init(item: FormTextInputItem) {
         super.init(item: item)
 
-//        bind(item.$is;Enabled, to: textField, at: \.isEnabled)
-
-        textField.isEnabled = item.isEnabled
-        print("ITEM IS ENABLED: \(item.isEnabled)")
-        observe(item.$isEnabled) { [weak self] newValue in
-            self?.textField.isEnabled = newValue
-            print("HERE ITEMS")
+        // TODO: - Refactor with right logic
+        observe(item.$isEnabled) { [weak self] isEnabled in
+            self?.textField.isEnabled = isEnabled
+            if !isEnabled {
+                self?.resetValidationStatus()
+            }
         }
     }
 }

@@ -28,7 +28,9 @@ internal class BACSInputFormViewController: FormViewController, BACSInputFormVie
 }
 
 extension BACSInputFormViewController: ViewControllerDelegate {
-    internal func viewDidLoad(viewController: UIViewController) {}
+    internal func viewDidLoad(viewController: UIViewController) {
+        presenter?.viewDidLoad()
+    }
 
     internal func viewDidAppear(viewController: UIViewController) {}
     

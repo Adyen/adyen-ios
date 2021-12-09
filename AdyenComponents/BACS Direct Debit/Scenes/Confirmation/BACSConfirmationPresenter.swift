@@ -8,6 +8,7 @@ import Adyen
 import Foundation
 
 internal protocol BACSConfirmationPresenterProtocol: AnyObject {
+    func viewDidLoad()
     func startLoading()
     func stopLoading()
 }
@@ -39,11 +40,14 @@ internal class BACSConfirmationPresenter: BACSConfirmationPresenterProtocol {
         self.router = router
         self.view = view
         self.itemsFactory = itemsFactory
-        setupItems()
-        setupView()
     }
 
     // MARK: - BACSDirectDebitConfirmationPresenterProtocol
+
+    internal func viewDidLoad() {
+        createItems()
+        setupView()
+    }
 
     internal func startLoading() {
         paymentButtonItem?.showsActivityIndicator = true
@@ -57,19 +61,11 @@ internal class BACSConfirmationPresenter: BACSConfirmationPresenterProtocol {
 
     // MARK: - Private
 
-    private func setupItems() {
+    private func createItems() {
         holderNameItem = itemsFactory.createHolderNameItem()
-        holderNameItem?.isEnabled = false
-
         bankAccountNumberItem = itemsFactory.createBankAccountNumberItem()
-        bankAccountNumberItem?.isEnabled = false
-
         sortCodeItem = itemsFactory.createSortCodeItem()
-        sortCodeItem?.isEnabled = false
-
         emailItem = itemsFactory.createEmailItem()
-        emailItem?.isEnabled = false
-
         paymentButtonItem = itemsFactory.createPaymentButton()
         paymentButtonItem?.buttonSelectionHandler = handlePayment
 
@@ -84,6 +80,15 @@ internal class BACSConfirmationPresenter: BACSConfirmationPresenterProtocol {
         view.add(item: FormSpacerItem(numberOfSpaces: 2))
         view.add(item: paymentButtonItem)
         view.add(item: FormSpacerItem(numberOfSpaces: 1))
+
+        setupItems()
+    }
+
+    private func setupItems() {
+        holderNameItem?.isEnabled = false
+        bankAccountNumberItem?.isEnabled = false
+        sortCodeItem?.isEnabled = false
+        emailItem?.isEnabled = false
     }
 
     private func fillItems() {

@@ -8,6 +8,7 @@ import Adyen
 import Foundation
 
 internal protocol BACSInputPresenterProtocol: AnyObject {
+    func viewDidLoad()
     func viewWillAppear()
 }
 
@@ -39,11 +40,14 @@ internal class BACSDirectDebitPresenter: BACSInputPresenterProtocol {
         self.view = view
         self.router = router
         self.itemsFactory = itemsFactory
-        setupItems()
-        setupView()
     }
 
     // MARK: - BACSDirectDebitInputPresenterProtocol
+
+    internal func viewDidLoad() {
+        createItems()
+        setupView()
+    }
 
     internal func viewWillAppear() {
         if paymentCancelled {
@@ -56,7 +60,7 @@ internal class BACSDirectDebitPresenter: BACSInputPresenterProtocol {
 
     // MARK: - Private
 
-    private func setupItems() {
+    private func createItems() {
         holderNameItem = itemsFactory.createHolderNameItem()
         bankAccountNumberItem = itemsFactory.createBankAccountNumberItem()
         sortCodeItem = itemsFactory.createSortCodeItem()
