@@ -386,7 +386,7 @@ class GiftCardComponentTests: XCTestCase {
             onCheckBalanceExpectation.fulfill()
         }
 
-        let expectedOrder = PartialPaymentOrder(pspReference: "referenc", orderData: "orderData")
+        let expectedOrder = PartialPaymentOrder(pspReference: "reference", orderData: "orderData")
         let onRequestOrderExpectation = expectation(description: "Expect partialPaymentDelegate.onRequestOrder to be called.")
         partialPaymentDelegate.onRequestOrder = { completion in
             completion(.success(expectedOrder))

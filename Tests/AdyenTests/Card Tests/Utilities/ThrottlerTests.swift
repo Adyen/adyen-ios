@@ -12,7 +12,7 @@ class ThrottlerTests: XCTestCase {
     func test() {
         let sut = Throttler(minimumDelay: 1)
         
-        let xctExpectation = expectation(description: "wait for last block execution")
+        let lastBlockExpectation = expectation(description: "wait for last block execution")
         
         let triesCount = 25
 
@@ -24,7 +24,7 @@ class ThrottlerTests: XCTestCase {
                 counter += 1
                 
                 if index == triesCount - 1 {
-                    xctExpectation.fulfill()
+                    lastBlockExpectation.fulfill()
                 }
             }
             

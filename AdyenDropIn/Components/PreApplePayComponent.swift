@@ -38,6 +38,9 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
     fileprivate let applePayComponent: ApplePayComponent
     
     /// :nodoc:
+    internal let style: ApplePayStyle
+    
+    /// :nodoc:
     internal lazy var viewController: UIViewController = {
         let view = PreApplePayView(model: createModel(with: _payment.amount))
         let viewController = ADYViewController(view: view, title: "Apple Pay")
@@ -53,10 +56,12 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
     internal init(paymentMethod: ApplePayPaymentMethod,
                   apiContext: APIContext,
                   payment: Payment,
-                  configuration: ApplePayComponent.Configuration) throws {
+                  configuration: ApplePayComponent.Configuration,
+                  style: ApplePayStyle) throws {
         self.apiContext = apiContext
         self._payment = payment
         self.paymentMethod = paymentMethod
+        self.style = style
 
         self.applePayComponent = try ApplePayComponent(paymentMethod: paymentMethod,
                                                        apiContext: apiContext,
@@ -72,13 +77,7 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
     
     /// :nodoc:
     private func createModel(with amount: Amount) -> PreApplePayView.Model {
-        PreApplePayView.Model(
-            hint: amount.formatted,
-            style: PreApplePayView.Model.Style(
-                hintLabel: TextStyle(font: .preferredFont(forTextStyle: .footnote), color: UIColor.Adyen.componentSecondaryLabel),
-                backgroundColor: UIColor.Adyen.componentBackground
-            )
-        )
+        PreApplePayView.Model(hint: amount.formatted, style: style)
     }
     
 }

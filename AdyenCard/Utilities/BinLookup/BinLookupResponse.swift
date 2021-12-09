@@ -21,12 +21,17 @@ internal struct BinLookupResponse: Response {
     internal let issuingCountryCode: String?
 
     /// :nodoc:
+    internal var isCreatedLocally: Bool = false
+    
+    /// :nodoc:
     internal init(brands: [CardBrand]? = nil,
                   requestId: String = UUID().uuidString,
-                  issuingCountryCode: String? = "NL") {
+                  issuingCountryCode: String? = "NL",
+                  isCreatedLocally: Bool = true) {
         self.brands = brands
         self.requestId = requestId
         self.issuingCountryCode = issuingCountryCode
+        self.isCreatedLocally = isCreatedLocally
     }
     
     private enum CodingKeys: String, CodingKey {

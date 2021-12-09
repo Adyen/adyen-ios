@@ -20,7 +20,7 @@ internal extension KeyedDecodingContainer {
         guard let intValue = Int(stringValue) else {
             throw DecodingError.dataCorruptedError(forKey: key,
                                                    in: self,
-                                                   debugDescription: "String was not convertable to an integer.")
+                                                   debugDescription: "String was not convertible to an integer.")
         }
         
         return intValue

@@ -7,10 +7,9 @@
 import Adyen
 import UIKit
 
-internal protocol BACSDirectDebitRouterProtocol {
+internal protocol BACSDirectDebitRouterProtocol: AnyObject {
     func presentConfirmation(with data: BACSDirectDebitData)
     func confirmPayment(with data: BACSDirectDebitData)
-    func cancelPayment()
 }
 
 /// A component that provides a form for BACS Direct Debit payments.
@@ -18,9 +17,11 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
 
     // MARK: - PresentableComponent
 
+    /// :nodoc:
     public var viewController: UIViewController
 
-    public var requiresModalPresentation: Bool = false
+    /// :nodoc:
+    public var requiresModalPresentation: Bool = true
 
     /// The object that acts as the delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
@@ -36,6 +37,13 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
 
     /// :nodoc:
     public var localizationParameters: LocalizationParameters?
+
+    public weak var presentationDelegate: PresentationDelegate?
+
+    // MARK: - Properties
+
+    private var inputPresenter: BACSInputPresenterProtocol?
+    private var confirmationPresenter: BACSConfirmationPresenterProtocol?
 
     // MARK: - Initializers
 
@@ -54,19 +62,17 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
         self.style = style
         self.localizationParameters = localizationParameters
 
-        let view = BACSDirectDebitInputFormViewController(title: paymentMethod.name,
-                                                          styleProvider: style)
-
-        // TODO: - Set navigation controller
+        let view = BACSInputFormViewController(title: paymentMethod.name,
+                                               styleProvider: style)
         self.viewController = view as UIViewController
 
-        let itemsFactory = BACSDirectDebitItemsFactory(styleProvider: style,
-                                                       localizationParameters: localizationParameters,
-                                                       scope: self)
-        let presenter = BACSDirectDebitPresenter(view: view,
-                                                 router: self,
-                                                 itemsFactory: itemsFactory)
-        view.presenter = presenter
+        let itemsFactory = BACSItemsFactory(styleProvider: style,
+                                            localizationParameters: localizationParameters,
+                                            scope: String(describing: self))
+        self.inputPresenter = BACSDirectDebitPresenter(view: view,
+                                                       router: self,
+                                                       itemsFactory: itemsFactory)
+        view.presenter = inputPresenter
     }
 }
 
@@ -74,30 +80,52 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
 
 extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
 
-    func presentConfirmation(with data: BACSDirectDebitData) {
-        // TODO: - Continue payment logic
-        // 1. Assamble confirmation scene
-        // 2. Present confirmation scene
-        print("PAYMENT: \(data)")
+    internal func presentConfirmation(with data: BACSDirectDebitData) {
+        let confirmationView = assembleConfirmationView(with: data)
 
-        let confirmationView = UIViewController()
-        confirmationView.title = "Confirmation View"
-        confirmationView.view.backgroundColor = UIColor(red: 0.19, green: 0.84, blue: 0.78, alpha: 1.00)
-        viewController.navigationController?.pushViewController(confirmationView, animated: true)
+        let wrappedComponent = PresentableComponentWrapper(component: self,
+                                                           viewController: confirmationView)
+        presentationDelegate?.present(component: wrappedComponent)
     }
 
-    func confirmPayment(with data: BACSDirectDebitData) {
-        // TODO: - Payment processing logic
+    internal func confirmPayment(with data: BACSDirectDebitData) {
         guard let bacsDirectDebitPaymentMethod = paymentMethod as? BACSDirectDebitPaymentMethod else {
             return
         }
-        let bacsDirectDebitDetails = BACSDirectDebitDetails(paymentMethod: bacsDirectDebitPaymentMethod,
-                                                            holderName: data.holderName,
-                                                            bankAccountNumber: data.bankAccountNumber,
-                                                            bankLocationId: data.bankLocationId)
+        let details = BACSDirectDebitDetails(paymentMethod: bacsDirectDebitPaymentMethod,
+                                             holderName: data.holderName,
+                                             bankAccountNumber: data.bankAccountNumber,
+                                             bankLocationId: data.bankLocationId)
+        confirmationPresenter?.startLoading()
+        let data = PaymentComponentData(paymentMethodDetails: details,
+                                        amount: amountToPay,
+                                        order: order)
+        submit(data: data)
     }
 
-    func cancelPayment() {
-        viewController.navigationController?.dismiss(animated: true)
+    // MARK: - Private
+
+    private func assembleConfirmationView(with data: BACSDirectDebitData) -> UIViewController {
+        let view = BACSConfirmationViewController(title: paymentMethod.name,
+                                                  styleProvider: style,
+                                                  localizationParameters: localizationParameters)
+        let itemsFactory = BACSItemsFactory(styleProvider: style,
+                                            localizationParameters: localizationParameters,
+                                            scope: String(describing: self))
+        confirmationPresenter = BACSConfirmationPresenter(data: data,
+                                                          view: view,
+                                                          router: self,
+                                                          itemsFactory: itemsFactory)
+        view.presenter = confirmationPresenter
+        return view
+    }
+}
+
+// MARK: - LoadingComponent
+
+extension BACSDirectDebitComponent: LoadingComponent {
+    
+    public func stopLoading() {
+        confirmationPresenter?.stopLoading()
     }
 }

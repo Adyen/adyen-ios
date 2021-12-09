@@ -10,7 +10,7 @@ on:
 jobs:
 
   tests:
-    runs-on: macos-latest
+    runs-on: macos-11
     continue-on-error: true
     strategy:
       fail-fast: false
@@ -33,7 +33,7 @@ jobs:
     - name: Prepare custom devices
       run: |
         sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
-        
+
     - name: Prepare iOS 11.4 simulator
       if: contains(matrix.destination, 'OS=11.4')
       run: |
@@ -47,7 +47,7 @@ jobs:
         xcversion simulators --install='iOS 12.4'
         xcrun simctl create iPhone-X "iPhone X" "com.apple.CoreSimulator.SimRuntime.iOS-12-4"
         xcrun simctl list devices 12.4
-        
+
     - name: Prepare iOS 13.7 simulator
       if: contains(matrix.destination, 'OS=13.7')
       run: |
@@ -65,18 +65,18 @@ jobs:
         destination: ${{ matrix.destination }}
 
   sonar:
-    runs-on: macos-latest
+    runs-on: macos-11
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-java@v1
       with:
         java-version: '11'
-        
+
     - name: Install Dependencies
       run: |
         brew install sonar-scanner
         gem install slather
-         
+
     - name: Build and test
       run: |
         xcodebuild build test -project ${project} -scheme "${scheme}" -destination "${destination}" ${params} | xcpretty && exit ${PIPESTATUS[0]}
@@ -104,7 +104,7 @@ jobs:
         --binary-basename AdyenEncryption
         --binary-basename AdyenActions
         --binary-basename AdyenSwiftUI'
-        
+
     - name: SwiftLint
       run: |
         fastlane run swiftlint output_file:"./reports/swiftlint.json" reporter:"json" ignore_exit_status:"true"

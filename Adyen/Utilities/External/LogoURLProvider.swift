@@ -50,7 +50,7 @@ public final class LogoURLProvider {
     /// Build the logo URL for a given Payment Method.
     ///
     /// - Parameter paymentMethod: The payment method that needs the logo.
-    /// - Parameter environment: The environemnt to be used.
+    /// - Parameter environment: The environment to be used.
     /// - Returns: The URL for the payment method logo.
     public static func logoURL(for paymentMethod: PaymentMethod,
                                environment: AnyAPIEnvironment,
@@ -64,7 +64,7 @@ public final class LogoURLProvider {
     ///
     /// - Parameter issuer: The issuer that needs the logo.
     /// - Parameter paymentMethod: The issuer payment method.
-    /// - Parameter environment: The environemnt to be used.
+    /// - Parameter environment: The environment to be used.
     /// - Returns: The URL for the issuer logo.
     public static func logoURL(for issuer: IssuerListPaymentMethod.Issuer, paymentMethod: IssuerListPaymentMethod, environment: AnyAPIEnvironment) -> URL {
         LogoURLProvider(environment: environment).url(for: [paymentMethod.displayInformation.logoName, issuer.identifier])
@@ -73,7 +73,7 @@ public final class LogoURLProvider {
     /// Build the logo URL for a specific named resource.
     ///
     /// - Parameter name: The name of the resource.
-    /// - Parameter environment: The environemnt to be used.
+    /// - Parameter environment: The environment to be used.
     /// - Returns: The URL for the named resource logo.
     public static func logoURL(withName name: String,
                                environment: AnyAPIEnvironment,

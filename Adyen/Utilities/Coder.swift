@@ -6,7 +6,7 @@
 
 import Foundation
 
-/// An object that provides helper functions for conding and deconding responses.
+/// An object that provides helper functions for coding and decoding responses.
 /// :nodoc:
 public enum Coder {
     

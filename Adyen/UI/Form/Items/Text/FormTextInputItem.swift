@@ -12,13 +12,16 @@ public final class FormTextInputItem: FormTextItem, Hidable {
 
     /// :nodoc:
     public var isHidden: Observable<Bool> = Observable(false)
-        
+
+    /// :nodoc:
+    @Observable(true) public var isEnabled: Bool
+    
     /// :nodoc:
     override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
     
-    /// Inititate new instance of `FormTextInputItem`
+    /// Initiate new instance of `FormTextInputItem`
     /// - Parameter style: The `FormTextItemStyle` UI style.
     override public init(style: FormTextItemStyle = FormTextItemStyle()) {
         super.init(style: style)

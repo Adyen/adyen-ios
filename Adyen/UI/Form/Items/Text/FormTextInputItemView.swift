@@ -8,4 +8,19 @@ import Foundation
 
 /// A form view representing a plain text input.
 /// :nodoc:
-public final class FormTextInputItemView: FormTextItemView<FormTextInputItem> {}
+public final class FormTextInputItemView: FormTextItemView<FormTextInputItem> {
+
+    // MARK: - Initializers
+
+    public required init(item: FormTextInputItem) {
+        super.init(item: item)
+
+        // TODO: - Refactor with right logic
+        observe(item.$isEnabled) { [weak self] isEnabled in
+            self?.textField.isEnabled = isEnabled
+            if !isEnabled {
+                self?.resetValidationStatus()
+            }
+        }
+    }
+}

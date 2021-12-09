@@ -192,33 +192,6 @@ class RedirectComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
 
-    func testOpenHttpWebLinkAndClose() {
-        let sut = RedirectComponent(apiContext: Dummy.context)
-        sut.presentationDelegate = UIViewController.findTopPresenter()
-        let delegate = ActionComponentDelegateMock()
-        sut.delegate = delegate
-
-        let action = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "test_data")
-        sut.handle(action)
-
-        let waitExpectation = expectation(description: "Expect in app browser to be presented and then dismissed")
-
-        delegate.onDidFail = { error, component in
-            XCTAssertEqual(error as! ComponentError, ComponentError.cancelled)
-            waitExpectation.fulfill()
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
-
-            let topPresentedViewController = UIViewController.findTopPresenter() as? SFSafariViewController
-            XCTAssertNotNil(topPresentedViewController)
-
-            topPresentedViewController!.delegate?.safariViewControllerDidFinish?(topPresentedViewController!)
-        }
-
-        waitForExpectations(timeout: 10, handler: nil)
-    }
-
     @available(iOS 13.0, *)
     func testOpenHttpWebLinkAndDragedDown() {
         let sut = RedirectComponent(apiContext: Dummy.context)

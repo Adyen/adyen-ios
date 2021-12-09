@@ -171,7 +171,7 @@ public protocol AnyFormValueItemView: AnyFormItemView {
     /// Indicates if the item is currently being edited.
     var isEditing: Bool { get set }
     
-    /// Invoc validation check. Performe all nececery UI transformations based on a validation result.
+    /// Invoke validation check. Performs all necessary UI transformations based on a validation result.
     func validate()
     
 }

@@ -12,7 +12,7 @@ import Foundation
 public final class BrazilSocialSecurityNumberFormatter: NumericFormatter {
     
     private enum Constants {
-        static let cpfMaxDigits = 11
+        static let maxDigits = 11
     }
     
     override public func formattedValue(for value: String) -> String {
@@ -38,7 +38,7 @@ public final class BrazilSocialSecurityNumberFormatter: NumericFormatter {
     
     private func formatGrouping(for length: Int) -> [Int] {
         switch length {
-        case ...Constants.cpfMaxDigits:
+        case ...Constants.maxDigits:
             return [3, 3, 3, 2]
         default:
             return [2, 3, 3, 4, 2]
@@ -47,7 +47,7 @@ public final class BrazilSocialSecurityNumberFormatter: NumericFormatter {
     
     private func specialCharacters(for length: Int) -> [String] {
         switch length {
-        case ...Constants.cpfMaxDigits:
+        case ...Constants.maxDigits:
             return [".", ".", "-"]
         default:
             return [".", ".", "/", "-"]

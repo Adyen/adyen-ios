@@ -16,7 +16,7 @@ public enum AdyenAssertion {
     internal static var listener: AssertionListener?
 
     /// :nodoc:
-    /// Calls `assertionFailure` when not runing Tests.
+    /// Calls `assertionFailure` when not running Tests.
     public static func assertionFailure(message: @autoclosure () -> String) {
         if CommandLine.arguments.contains("-UITests") {
             listener?(message())

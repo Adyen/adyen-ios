@@ -3,7 +3,7 @@ on: [workflow_dispatch]
 jobs:
 
   Generate:
-    runs-on: macos-latest
+    runs-on: macos-11
     steps:
     - uses: actions/checkout@v2
       with:

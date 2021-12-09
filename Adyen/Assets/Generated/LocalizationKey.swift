@@ -299,9 +299,9 @@ public struct LocalizationKey {
     public static let bacsPaymentButtonTitle = LocalizationKey(key: "adyen.bacs.paymentButton.title")
     /// Download your Direct Debit Instruction (DDI / Mandate)
     public static let bacsDownloadMandate = LocalizationKey(key: "adyen.bacs.downloadMandate")
-    
+
     internal let key: String
-    
+
     public init(key: String) {
         self.key = key
     }

@@ -121,99 +121,95 @@ class CardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
-            let cardNumberItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem.titleLabel")
-            let cardNumberItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem.textField")
+        wait(for: .seconds(1))
+        
+        let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
+        let cardNumberItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem.titleLabel")
+        let cardNumberItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem.textField")
 
-            let holderNameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.holderNameItem")
-            let holderNameItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.holderNameItem.titleLabel")
-            let holderNameItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.holderNameItem.textField")
+        let holderNameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.holderNameItem")
+        let holderNameItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.holderNameItem.titleLabel")
+        let holderNameItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.holderNameItem.textField")
 
-            let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
-            let expiryDateItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem.titleLabel")
-            let expiryDateItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem.textField")
+        let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
+        let expiryDateItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem.titleLabel")
+        let expiryDateItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem.textField")
 
-            let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
-            let securityCodeItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem.titleLabel")
-            let securityCodeItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem.textField")
-            let securityCodeCvvHint: UIView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem.cvvHintIcon")
+        let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
+        let securityCodeItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem.titleLabel")
+        let securityCodeItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem.textField")
+        let securityCodeCvvHint: UIView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem.cvvHintIcon")
 
-            let storeDetailsItemView: FormToggleItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem")
-            let storeDetailsItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem.titleLabel")
+        let storeDetailsItemView: FormToggleItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem")
+        let storeDetailsItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem.titleLabel")
 
-            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
-            let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button.titleLabel")
+        let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
+        let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button.titleLabel")
 
-            /// Test card number field
-            XCTAssertEqual(cardNumberItemView?.backgroundColor, .blue)
-            XCTAssertEqual(cardNumberItemTitleLabel?.textColor, sut.viewController.view.tintColor)
-            XCTAssertEqual(cardNumberItemTitleLabel?.backgroundColor, .blue)
-            XCTAssertEqual(cardNumberItemTitleLabel?.textAlignment, .left)
-            XCTAssertEqual(cardNumberItemTitleLabel?.font, .systemFont(ofSize: 18))
-            XCTAssertEqual(cardNumberItemTextField?.backgroundColor, .blue)
-            XCTAssertEqual(cardNumberItemTextField?.textAlignment, .center)
-            XCTAssertEqual(cardNumberItemTextField?.textColor, .yellow)
-            XCTAssertEqual(cardNumberItemTextField?.font, .systemFont(ofSize: 5))
-            XCTAssertEqual(cardNumberItemTextField?.attributedPlaceholder?.foregroundColor, .systemOrange)
+        /// Test card number field
+        XCTAssertEqual(cardNumberItemView?.backgroundColor, .blue)
+        XCTAssertEqual(cardNumberItemTitleLabel?.textColor, sut.viewController.view.tintColor)
+        XCTAssertEqual(cardNumberItemTitleLabel?.backgroundColor, .blue)
+        XCTAssertEqual(cardNumberItemTitleLabel?.textAlignment, .left)
+        XCTAssertEqual(cardNumberItemTitleLabel?.font, .systemFont(ofSize: 18))
+        XCTAssertEqual(cardNumberItemTextField?.backgroundColor, .blue)
+        XCTAssertEqual(cardNumberItemTextField?.textAlignment, .center)
+        XCTAssertEqual(cardNumberItemTextField?.textColor, .yellow)
+        XCTAssertEqual(cardNumberItemTextField?.font, .systemFont(ofSize: 5))
+        XCTAssertEqual(cardNumberItemTextField?.attributedPlaceholder?.foregroundColor, .systemOrange)
 
-            /// Test card holer name field
-            XCTAssertEqual(holderNameItemView?.backgroundColor, .blue)
-            XCTAssertEqual(holderNameItemTitleLabel?.backgroundColor, .blue)
-            XCTAssertEqual(holderNameItemTitleLabel?.textAlignment, .left)
-            XCTAssertEqual(holderNameItemTitleLabel?.font, .systemFont(ofSize: 18))
-            XCTAssertEqual(holderNameItemTitleLabel?.textColor, .green)
-            XCTAssertEqual(holderNameItemTextField?.backgroundColor, .blue)
-            XCTAssertEqual(holderNameItemTextField?.textAlignment, .center)
-            XCTAssertEqual(holderNameItemTextField?.textColor, .yellow)
-            XCTAssertEqual(holderNameItemTextField?.font, .systemFont(ofSize: 5))
-            XCTAssertEqual(holderNameItemTextField?.attributedPlaceholder?.foregroundColor, .systemOrange)
+        /// Test card holer name field
+        XCTAssertEqual(holderNameItemView?.backgroundColor, .blue)
+        XCTAssertEqual(holderNameItemTitleLabel?.backgroundColor, .blue)
+        XCTAssertEqual(holderNameItemTitleLabel?.textAlignment, .left)
+        XCTAssertEqual(holderNameItemTitleLabel?.font, .systemFont(ofSize: 18))
+        XCTAssertEqual(holderNameItemTitleLabel?.textColor, .green)
+        XCTAssertEqual(holderNameItemTextField?.backgroundColor, .blue)
+        XCTAssertEqual(holderNameItemTextField?.textAlignment, .center)
+        XCTAssertEqual(holderNameItemTextField?.textColor, .yellow)
+        XCTAssertEqual(holderNameItemTextField?.font, .systemFont(ofSize: 5))
+        XCTAssertEqual(holderNameItemTextField?.attributedPlaceholder?.foregroundColor, .systemOrange)
 
-            /// Test expiry date field
-            XCTAssertEqual(expiryDateItemView?.backgroundColor, .blue)
-            XCTAssertEqual(expiryDateItemTitleLabel?.backgroundColor, .blue)
-            XCTAssertEqual(expiryDateItemTitleLabel?.textAlignment, .left)
-            XCTAssertEqual(expiryDateItemTitleLabel?.font, .systemFont(ofSize: 18))
-            XCTAssertEqual(expiryDateItemTitleLabel?.textColor, .green)
-            XCTAssertEqual(expiryDateItemTextField?.backgroundColor, .blue)
-            XCTAssertEqual(expiryDateItemTextField?.textAlignment, .center)
-            XCTAssertEqual(expiryDateItemTextField?.textColor, .yellow)
-            XCTAssertEqual(expiryDateItemTextField?.font, .systemFont(ofSize: 5))
-            XCTAssertEqual(expiryDateItemTextField?.attributedPlaceholder?.foregroundColor, .systemOrange)
+        /// Test expiry date field
+        XCTAssertEqual(expiryDateItemView?.backgroundColor, .blue)
+        XCTAssertEqual(expiryDateItemTitleLabel?.backgroundColor, .blue)
+        XCTAssertEqual(expiryDateItemTitleLabel?.textAlignment, .left)
+        XCTAssertEqual(expiryDateItemTitleLabel?.font, .systemFont(ofSize: 18))
+        XCTAssertEqual(expiryDateItemTitleLabel?.textColor, .green)
+        XCTAssertEqual(expiryDateItemTextField?.backgroundColor, .blue)
+        XCTAssertEqual(expiryDateItemTextField?.textAlignment, .center)
+        XCTAssertEqual(expiryDateItemTextField?.textColor, .yellow)
+        XCTAssertEqual(expiryDateItemTextField?.font, .systemFont(ofSize: 5))
+        XCTAssertEqual(expiryDateItemTextField?.attributedPlaceholder?.foregroundColor, .systemOrange)
 
-            /// Test security code field
-            XCTAssertEqual(securityCodeItemView?.backgroundColor, .blue)
-            XCTAssertEqual(securityCodeItemTitleLabel?.backgroundColor, .blue)
-            XCTAssertEqual(securityCodeItemTitleLabel?.textAlignment, .left)
-            XCTAssertEqual(securityCodeItemTitleLabel?.font, .systemFont(ofSize: 18))
-            XCTAssertEqual(securityCodeItemTitleLabel?.textColor, .green)
-            XCTAssertEqual(securityCodeItemTextField?.backgroundColor, .blue)
-            XCTAssertEqual(securityCodeItemTextField?.textAlignment, .center)
-            XCTAssertEqual(securityCodeItemTextField?.textColor, .yellow)
-            XCTAssertEqual(securityCodeItemTextField?.font, .systemFont(ofSize: 5))
-            XCTAssertNotNil(securityCodeCvvHint)
-            XCTAssertEqual(securityCodeItemTextField?.attributedPlaceholder?.foregroundColor, .systemOrange)
+        /// Test security code field
+        XCTAssertEqual(securityCodeItemView?.backgroundColor, .blue)
+        XCTAssertEqual(securityCodeItemTitleLabel?.backgroundColor, .blue)
+        XCTAssertEqual(securityCodeItemTitleLabel?.textAlignment, .left)
+        XCTAssertEqual(securityCodeItemTitleLabel?.font, .systemFont(ofSize: 18))
+        XCTAssertEqual(securityCodeItemTitleLabel?.textColor, .green)
+        XCTAssertEqual(securityCodeItemTextField?.backgroundColor, .blue)
+        XCTAssertEqual(securityCodeItemTextField?.textAlignment, .center)
+        XCTAssertEqual(securityCodeItemTextField?.textColor, .yellow)
+        XCTAssertEqual(securityCodeItemTextField?.font, .systemFont(ofSize: 5))
+        XCTAssertNotNil(securityCodeCvvHint)
+        XCTAssertEqual(securityCodeItemTextField?.attributedPlaceholder?.foregroundColor, .systemOrange)
 
-            /// Test store card details switch
-            XCTAssertEqual(storeDetailsItemView?.backgroundColor, .magenta)
-            XCTAssertEqual(storeDetailsItemTitleLabel?.backgroundColor, .green)
-            XCTAssertEqual(storeDetailsItemTitleLabel?.textAlignment, .left)
-            XCTAssertEqual(storeDetailsItemTitleLabel?.textColor, .yellow)
-            XCTAssertEqual(storeDetailsItemTitleLabel?.font, .systemFont(ofSize: 5))
+        /// Test store card details switch
+        XCTAssertEqual(storeDetailsItemView?.backgroundColor, .magenta)
+        XCTAssertEqual(storeDetailsItemTitleLabel?.backgroundColor, .green)
+        XCTAssertEqual(storeDetailsItemTitleLabel?.textAlignment, .left)
+        XCTAssertEqual(storeDetailsItemTitleLabel?.textColor, .yellow)
+        XCTAssertEqual(storeDetailsItemTitleLabel?.font, .systemFont(ofSize: 5))
 
-            /// Test footer
-            XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
-            XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
-            XCTAssertEqual(payButtonItemViewButtonTitle?.textAlignment, .center)
-            XCTAssertEqual(payButtonItemViewButtonTitle?.textColor, .white)
-            XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
+        /// Test footer
+        XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
+        XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
+        XCTAssertEqual(payButtonItemViewButtonTitle?.textAlignment, .center)
+        XCTAssertEqual(payButtonItemViewButtonTitle?.textColor, .white)
+        XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
 
-            XCTAssertEqual(sut.viewController.view.backgroundColor, .green)
-
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 5)
+        XCTAssertEqual(sut.viewController.view.backgroundColor, .green)
     }
 
     func testBigTitle() {
@@ -359,7 +355,7 @@ class CardComponentTests: XCTestCase {
         wait(for: [expectation], timeout: 10)
     }
 
-    func testTintColorCustomisation() {
+    func testTintColorCustomization() {
         var style = FormComponentStyle(tintColor: .systemYellow)
         style.textField.title.color = .gray
 
@@ -373,21 +369,19 @@ class CardComponentTests: XCTestCase {
         let switchView: UISwitch! = sut.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem.switch")
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
         XCTAssertEqual(securityCodeItemView!.titleLabel.textColor!, .gray)
-
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            self.focus(textItemView: securityCodeItemView!)
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-                XCTAssertEqual(switchView.onTintColor, .systemYellow)
-                XCTAssertEqual(securityCodeItemView!.titleLabel.textColor!, .systemYellow)
-                XCTAssertEqual(securityCodeItemView!.separatorView.backgroundColor?.cgColor, UIColor.systemYellow.cgColor)
-                expectation.fulfill()
-            }
-        }
-        wait(for: [expectation], timeout: 10)
+        
+        wait(for: .seconds(1))
+        
+        self.focus(textItemView: securityCodeItemView!)
+        
+        wait(for: .seconds(1))
+        
+        XCTAssertEqual(switchView.onTintColor, .systemYellow)
+        XCTAssertEqual(securityCodeItemView!.titleLabel.textColor!, .systemYellow)
+        XCTAssertEqual(securityCodeItemView!.separatorView.backgroundColor?.cgColor, UIColor.systemYellow.cgColor)
     }
 
-    func testSuccessTintColorCustomisation() throws {
+    func testSuccessTintColorCustomization() throws {
         // Given
         var style = FormComponentStyle(tintColor: .systemYellow)
         style.textField.title.color = .gray
@@ -705,24 +699,21 @@ class CardComponentTests: XCTestCase {
         let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
 
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            expiryDateItemView?.becomeFirstResponder()
-            self.append(textItemView: expiryDateItemView!, with: "3")
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
-                XCTAssertTrue(expiryDateItemView!.textField.isFirstResponder)
-                self.append(textItemView: expiryDateItemView!, with: "3")
-                self.append(textItemView: expiryDateItemView!, with: "0")
-
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-                    XCTAssertTrue(securityCodeItemView!.textField.isFirstResponder)
-                    XCTAssertFalse(expiryDateItemView!.textField.isFirstResponder)
-
-                    expectation.fulfill()
-                }
-            }
-        }
-        wait(for: [expectation], timeout: 10)
+        wait(for: .seconds(1))
+        
+        expiryDateItemView?.becomeFirstResponder()
+        self.append(textItemView: expiryDateItemView!, with: "3")
+        
+        wait(for: .seconds(2))
+        
+        XCTAssertTrue(expiryDateItemView!.textField.isFirstResponder)
+        self.append(textItemView: expiryDateItemView!, with: "3")
+        self.append(textItemView: expiryDateItemView!, with: "0")
+        
+        wait(for: .seconds(1))
+        
+        XCTAssertTrue(securityCodeItemView!.textField.isFirstResponder)
+        XCTAssertFalse(expiryDateItemView!.textField.isFirstResponder)
     }
 
     func testAddressNL() throws {
@@ -1170,6 +1161,7 @@ class CardComponentTests: XCTestCase {
         sut.cardViewController.update(binInfo: binResponse)
         XCTAssertFalse(cardNumberItem.allowsValidationWhileEditing)
         XCTAssertTrue(cardNumberItem.isValid())
+        XCTAssertTrue(binResponse.isCreatedLocally)
         
         fillCard(on: sut.viewController.view, with: Dummy.amexCard)
         binResponse = BinLookupResponse(brands: [CardBrand(type: .americanExpress, isSupported: false)])
@@ -1177,9 +1169,10 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(cardNumberItem.allowsValidationWhileEditing)
         XCTAssertFalse(cardNumberItem.isValid())
         
-        binResponse = BinLookupResponse(brands: [])
+        binResponse = BinLookupResponse(brands: [], isCreatedLocally: false)
         sut.cardViewController.update(binInfo: binResponse)
         XCTAssertFalse(cardNumberItem.allowsValidationWhileEditing)
+        XCTAssertFalse(binResponse.isCreatedLocally)
     }
 
     func testCVCOptionality() {
@@ -1260,7 +1253,7 @@ class CardComponentTests: XCTestCase {
         let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [.visa:
             InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
         let defaultInstallmentOptions = InstallmentOptions(monthValues: [3, 6, 9, 12], includesRevolving: false)
-        let config = CardComponent.Configuration(installmentConfigration: InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions, defaultOptions: defaultInstallmentOptions))
+        let config = CardComponent.Configuration(installmentConfiguration: InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions, defaultOptions: defaultInstallmentOptions))
         let cardTypeProviderMock = BinInfoProviderMock()
 
         let sut = CardComponent(paymentMethod: method,
@@ -1304,7 +1297,7 @@ class CardComponentTests: XCTestCase {
     func testInstallmentsWithDefaultOptions() {
         let method = CardPaymentMethod(type: "visa", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         let defaultInstallmentOptions = InstallmentOptions(monthValues: [3, 6, 9, 12], includesRevolving: false)
-        let config = CardComponent.Configuration(installmentConfigration: InstallmentConfiguration(defaultOptions: defaultInstallmentOptions))
+        let config = CardComponent.Configuration(installmentConfiguration: InstallmentConfiguration(defaultOptions: defaultInstallmentOptions))
         let cardTypeProviderMock = BinInfoProviderMock()
 
         let sut = CardComponent(paymentMethod: method,
@@ -1342,7 +1335,7 @@ class CardComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: "visa", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [.visa:
             InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
-        let config = CardComponent.Configuration(installmentConfigration: InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions))
+        let config = CardComponent.Configuration(installmentConfiguration: InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions))
         let cardTypeProviderMock = BinInfoProviderMock()
 
         let sut = CardComponent(paymentMethod: method,
@@ -1678,7 +1671,7 @@ class CardComponentTests: XCTestCase {
         let view: UIView = prefilledSut.cardViewController.view
 
         let holdernameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.holdername))
-        let expectedHoldername = try XCTUnwrap(shopperInformation.card?.holdername)
+        let expectedHoldername = try XCTUnwrap(shopperInformation.card?.holderName)
         let holdername = holdernameView.item.value
         XCTAssertEqual(expectedHoldername, holdername)
 
@@ -1717,7 +1710,7 @@ class CardComponentTests: XCTestCase {
         let view: UIView = prefilledSut.cardViewController.view
 
         let holdernameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.holdername))
-        let expectedHoldername = try XCTUnwrap(shopperInformation.card?.holdername)
+        let expectedHoldername = try XCTUnwrap(shopperInformation.card?.holderName)
         let holdername = holdernameView.item.value
         XCTAssertEqual(expectedHoldername, holdername)
 
@@ -1825,7 +1818,7 @@ class CardComponentTests: XCTestCase {
                                                              billingAddress: billingAddress,
                                                              deliveryAddress: deliveryAddress,
                                                              socialSecurityNumber: "78542134370",
-                                                             card: .init(holdername: "Katrina del Mar"))
+                                                             card: .init(holderName: "Katrina del Mar"))
         return shopperInformation
     }
 }

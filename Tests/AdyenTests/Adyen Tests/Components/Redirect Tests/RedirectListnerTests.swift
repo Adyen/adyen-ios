@@ -7,9 +7,9 @@
 @testable import AdyenActions
 import XCTest
 
-class RedirectListnerTests: XCTestCase {
+class RedirectListenerTests: XCTestCase {
 
-    func testRedirectListner() {
+    func testRedirectListener() {
         let dummyExpectation = expectation(description: "Dummy Expectation")
         let sampleUrl = URL(string: "www.google.com")!
         RedirectListener.registerForURL { url in
@@ -22,7 +22,7 @@ class RedirectListnerTests: XCTestCase {
         waitForExpectations(timeout: 5, handler: nil)
     }
 
-    func testUnregisteredRedirectListner() {
+    func testUnregisteredRedirectListener() {
         let sampleUrl = URL(string: "www.google.com")!
         XCTAssertFalse(RedirectListener.applicationDidOpen(from: sampleUrl))
     }

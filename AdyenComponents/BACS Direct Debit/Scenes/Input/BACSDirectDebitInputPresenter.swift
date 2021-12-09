@@ -5,19 +5,22 @@
 //
 
 import Adyen
+import Foundation
 
-internal protocol BACSDirectDebitPresenterProtocol: AnyObject {
+internal protocol BACSInputPresenterProtocol: AnyObject {
     func viewDidLoad()
-    func didCancel()
+    func viewWillAppear()
 }
 
-internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
+internal class BACSDirectDebitPresenter: BACSInputPresenterProtocol {
 
     // MARK: - Properties
 
-    private let view: BACSDirectDebitInputFormViewProtocol
-    private let router: BACSDirectDebitRouterProtocol
-    private let itemsFactory: BACSDirectDebitItemsFactoryProtocol
+    internal var paymentCancelled = false
+    private let view: BACSInputFormViewProtocol
+    private weak var router: BACSDirectDebitRouterProtocol?
+    private let itemsFactory: BACSItemsFactoryProtocol
+    private var data: BACSDirectDebitData?
 
     // MARK: - Items
 
@@ -31,30 +34,33 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
 
     // MARK: - Initializers
 
-    internal init(view: BACSDirectDebitInputFormViewProtocol,
+    internal init(view: BACSInputFormViewProtocol,
                   router: BACSDirectDebitRouterProtocol,
-                  itemsFactory: BACSDirectDebitItemsFactoryProtocol) {
+                  itemsFactory: BACSItemsFactoryProtocol) {
         self.view = view
         self.router = router
         self.itemsFactory = itemsFactory
-        setupItems()
+    }
+
+    // MARK: - BACSDirectDebitInputPresenterProtocol
+
+    internal func viewDidLoad() {
+        createItems()
         setupView()
     }
 
-    // MARK: - BACSDirectDebitPresenterProtocol
-
-    internal func viewDidLoad() {
-        view.setupNavigationBar()
-    }
-
-    @objc
-    internal func didCancel() {
-        router.cancelPayment()
+    internal func viewWillAppear() {
+        if paymentCancelled {
+            resetForm()
+            paymentCancelled = false
+            data = nil
+        }
+        restoreFields()
     }
 
     // MARK: - Private
 
-    private func setupItems() {
+    private func createItems() {
         holderNameItem = itemsFactory.createHolderNameItem()
         bankAccountNumberItem = itemsFactory.createBankAccountNumberItem()
         sortCodeItem = itemsFactory.createSortCodeItem()
@@ -96,6 +102,27 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
             .allSatisfy { $0.isValid() }
     }
 
+    private func restoreFields() {
+        guard let data = data else { return }
+        holderNameItem?.value = data.holderName
+        bankAccountNumberItem?.value = data.bankAccountNumber
+        sortCodeItem?.value = data.bankLocationId
+        emailItem?.value = data.shopperEmail
+
+        amountConsentToggleItem?.value = false
+        legalConsentToggleItem?.value = false
+    }
+
+    private func resetForm() {
+        holderNameItem?.value = ""
+        bankAccountNumberItem?.value = ""
+        sortCodeItem?.value = ""
+        emailItem?.value = ""
+
+        amountConsentToggleItem?.value = false
+        legalConsentToggleItem?.value = false
+    }
+
     private func continuePayment() {
         guard validateForm() else { return }
 
@@ -110,6 +137,7 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
                                                       bankAccountNumber: bankAccountNumber,
                                                       bankLocationId: sortCode,
                                                       shopperEmail: shopperEmail)
-        router.presentConfirmation(with: bacsDirectDebitData)
+        self.data = bacsDirectDebitData
+        router?.presentConfirmation(with: bacsDirectDebitData)
     }
 }

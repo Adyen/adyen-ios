@@ -30,11 +30,11 @@ class DokuVoucherUITests: XCTestCase {
             currencyCode: dokuAction.totalAmount.currencyCode
         ))
 
-        let expireyKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationKeyLabel")
-        XCTAssertEqual(expireyKeyLabel.text, "Expiration Date -- Test")
+        let expiryKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationKeyLabel")
+        XCTAssertEqual(expiryKeyLabel.text, "Expiration Date -- Test")
 
-        let expireyValueLable: UILabel! = sut.findView(by: "adyen.voucher.expirationValueLabel")
-        XCTAssertEqual(expireyValueLable.text, "02/02/2021")
+        let expiryValueLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationValueLabel")
+        XCTAssertEqual(expiryValueLabel.text, "02/02/2021")
 
         let shopperNameKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.shopperNameKeyLabel")
         XCTAssertEqual(shopperNameKeyLabel.text, "Shopper Name -- Test")
@@ -68,11 +68,11 @@ class DokuVoucherUITests: XCTestCase {
             currencyCode: dokuAction.totalAmount.currencyCode
         ))
 
-        let expireyKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationKeyLabel")
-        XCTAssertEqual(expireyKeyLabel.text, "Expiration Date")
+        let expiryKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationKeyLabel")
+        XCTAssertEqual(expiryKeyLabel.text, "Expiration Date")
 
-        let expireyValueLable: UILabel! = sut.findView(by: "adyen.voucher.expirationValueLabel")
-        XCTAssertEqual(expireyValueLable.text, "02/02/2021")
+        let expiryValueLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationValueLabel")
+        XCTAssertEqual(expiryValueLabel.text, "02/02/2021")
 
         let shopperNameKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.shopperNameKeyLabel")
         XCTAssertEqual(shopperNameKeyLabel.text, "Shopper Name")
@@ -106,11 +106,11 @@ class DokuVoucherUITests: XCTestCase {
             currencyCode: dokuAction.totalAmount.currencyCode
         ))
 
-        let expireyKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationKeyLabel")
-        XCTAssertEqual(expireyKeyLabel.text, "Expiration Date")
+        let expiryKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationKeyLabel")
+        XCTAssertEqual(expiryKeyLabel.text, "Expiration Date")
 
-        let expireyValueLable: UILabel! = sut.findView(by: "adyen.voucher.expirationValueLabel")
-        XCTAssertEqual(expireyValueLable.text, "02/02/2021")
+        let expiryValueLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationValueLabel")
+        XCTAssertEqual(expiryValueLabel.text, "02/02/2021")
 
         let shopperNameKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.shopperNameKeyLabel")
         XCTAssertEqual(shopperNameKeyLabel.text, "Shopper Name")

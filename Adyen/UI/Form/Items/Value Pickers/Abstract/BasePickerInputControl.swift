@@ -22,7 +22,7 @@ public protocol PickerTextInputControl: UIView {
     /// Controls visibility of chevron view.
     var showChevron: Bool { get set }
 
-    /// Selection value lebel text
+    /// Selection value label text
     var label: String? { get set }
     
 }

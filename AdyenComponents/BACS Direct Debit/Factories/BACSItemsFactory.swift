@@ -7,17 +7,18 @@
 import Adyen
 import Foundation
 
-internal protocol BACSDirectDebitItemsFactoryProtocol {
+internal protocol BACSItemsFactoryProtocol {
     func createHolderNameItem() -> FormTextInputItem
     func createBankAccountNumberItem() -> FormTextInputItem
     func createSortCodeItem() -> FormTextInputItem
     func createEmailItem() -> FormTextInputItem
     func createContinueButton() -> FormButtonItem
+    func createPaymentButton() -> FormButtonItem
     func createAmountConsentToggle() -> FormToggleItem
     func createLegalConsentToggle() -> FormToggleItem
 }
 
-internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol {
+internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
 
     private enum ViewIdentifier {
         static let holderNameItem = "holderNameItem"
@@ -25,21 +26,22 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         static let sortCodeItem = "sortCodeItem"
         static let emailItem = "emailItem"
         static let continueButtonItem = "continueButtonItem"
-        static let amountTermsToggleItem = "amountTermsToggleItem"
-        static let legalTermsToggleItem = "legalTermsToggleItem"
+        static let paymentButtonItem = "paymentButtonItem"
+        static let amountTermsToggleItem = "amountConsentToggleItem"
+        static let legalTermsToggleItem = "legalConsentToggleItem"
     }
 
     // MARK: - Properties
 
     private let styleProvider: FormComponentStyle
     private let localizationParameters: LocalizationParameters?
-    private let scope: Any
+    private let scope: String
 
     // MARK: - Initializers
 
     internal init(styleProvider: FormComponentStyle,
                   localizationParameters: LocalizationParameters?,
-                  scope: Any) {
+                  scope: String) {
         self.styleProvider = styleProvider
         self.localizationParameters = localizationParameters
         self.scope = scope
@@ -138,6 +140,18 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
 
         let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
                                                      postfix: ViewIdentifier.continueButtonItem)
+        buttonItem.identifier = identifier
+        return buttonItem
+    }
+
+    internal func createPaymentButton() -> FormButtonItem {
+        let buttonItem = FormButtonItem(style: styleProvider.mainButtonItem)
+
+        let localizedTitle = localizedString(.bacsPaymentButtonTitle, localizationParameters)
+        buttonItem.title = localizedTitle
+
+        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
+                                                     postfix: ViewIdentifier.paymentButtonItem)
         buttonItem.identifier = identifier
         return buttonItem
     }

@@ -35,7 +35,7 @@ internal class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This occurs shortly after the scene enters the background, or when its session is discarded.
         // Release any resources associated with this scene that can be re-created the next time the scene connects.
         // The scene may re-connect later,
-        // as its session was not neccessarily discarded (see `application:didDiscardSceneSessions` instead).
+        // as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
     }
 
     internal func sceneDidBecomeActive(_ scene: UIScene) {

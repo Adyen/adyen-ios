@@ -24,7 +24,7 @@ public protocol APIContextInitializable {
 
 /// Describes the expected interface from any ActionComponent that handles WeChat Pay sdk action.
 /// :nodoc:
-public protocol AnyWeChatPaySDKActionComponent: ActionComponent, DeviceDependant, APIContextInitializable {
+public protocol AnyWeChatPaySDKActionComponent: ActionComponent, DeviceDependent, APIContextInitializable {
     
     /// Handles the action.
     ///

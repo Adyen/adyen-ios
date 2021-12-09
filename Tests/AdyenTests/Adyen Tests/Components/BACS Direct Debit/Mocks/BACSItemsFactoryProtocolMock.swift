@@ -3,7 +3,7 @@
 @testable import Adyen
 @testable import AdyenComponents
 
-class BACSDirectDebitItemsFactoryProtocolMock: BACSDirectDebitItemsFactoryProtocol {
+class BACSItemsFactoryProtocolMock: BACSItemsFactoryProtocol {
 
     // MARK: - createHolderNameItem
 
@@ -68,6 +68,19 @@ class BACSDirectDebitItemsFactoryProtocolMock: BACSDirectDebitItemsFactoryProtoc
     func createContinueButton() -> FormButtonItem {
         createContinueButtonCallsCount += 1
         return createContinueButtonReturnValue
+    }
+
+    // MARK: - createPaymentButton
+
+    var createPaymentButtonCallsCount = 0
+    var createPaymentButtonCalled: Bool {
+        return createPaymentButtonCallsCount > 0
+    }
+    var createPaymentButtonReturnValue: FormButtonItem!
+
+    func createPaymentButton() -> FormButtonItem {
+        createPaymentButtonCallsCount += 1
+        return createPaymentButtonReturnValue
     }
 
     // MARK: - createAmountConsentToggle

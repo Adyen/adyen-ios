@@ -37,14 +37,14 @@ class EContextATMShareableVoucherViewProviderTests: XCTestCase {
         let collectionInstitutionKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.CollectionInstitutionNumberKeyLabel")
         XCTAssertEqual(collectionInstitutionKeyLabel.text, "Collection Institution Number -- Test")
 
-        let collectionInstitutionValueLable: UILabel! = sut.findView(by: "adyen.voucher.CollectionInstitutionNumberValueLabel")
-        XCTAssertEqual(collectionInstitutionValueLable.text, "58091")
+        let collectionInstitutionValueLabel: UILabel! = sut.findView(by: "adyen.voucher.CollectionInstitutionNumberValueLabel")
+        XCTAssertEqual(collectionInstitutionValueLabel.text, "58091")
 
-        let expireyKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationKeyLabel")
-        XCTAssertEqual(expireyKeyLabel.text, "Expiration Date -- Test")
+        let expiryKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationKeyLabel")
+        XCTAssertEqual(expiryKeyLabel.text, "Expiration Date -- Test")
 
-        let expireyValueLable: UILabel! = sut.findView(by: "adyen.voucher.expirationValueLabel")
-        XCTAssertEqual(expireyValueLable.text, "02/04/2021")
+        let expiryValueLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationValueLabel")
+        XCTAssertEqual(expiryValueLabel.text, "02/04/2021")
 
         let maskedPhoneKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.maskedTelephoneNumberKeyLabel")
         XCTAssertEqual(maskedPhoneKeyLabel.text, "Test-Phone Number")

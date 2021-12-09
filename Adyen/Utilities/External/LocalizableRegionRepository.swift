@@ -13,7 +13,7 @@ public struct Region: Decodable, CustomStringConvertible, Equatable {
     /// Unique identifier.
     public let identifier: String
 
-    /// Localised human-friendly name.
+    /// Localized human-friendly name.
     public let name: String
 
     /// :nodoc:
@@ -55,7 +55,7 @@ public class RegionRepository {
             return callback(cachedValue)
         }
         let locale = NSLocale(localeIdentifier: locale)
-        loadResourse(from: url, fallbackOption: RegionRepository.localCountryFallback(for: locale), callback: callback)
+        loadResource(from: url, fallbackOption: RegionRepository.localCountryFallback(for: locale), callback: callback)
     }
 
     /// Request list of states or provinces for selected country, translated to a selected language.
@@ -69,7 +69,7 @@ public class RegionRepository {
             return callback(cachedValue)
         }
 
-        loadResourse(from: url, fallbackOption: allRegions[countryCode] ?? [], callback: callback)
+        loadResource(from: url, fallbackOption: allRegions[countryCode] ?? [], callback: callback)
     }
 
     /// https://checkoutshopper-test.adyen.com/checkoutshopper/datasets/countries/en-US.json
@@ -81,7 +81,7 @@ public class RegionRepository {
         return environment.baseURL.appendingPathComponent(components)
     }
 
-    private func loadResourse(from url: URL, fallbackOption: [Region] = [], callback: @escaping (([Region]) -> Void)) {
+    private func loadResource(from url: URL, fallbackOption: [Region] = [], callback: @escaping (([Region]) -> Void)) {
         let session = URLSession.shared
         let task = session.dataTask(with: url) { data, _, _ in
             guard

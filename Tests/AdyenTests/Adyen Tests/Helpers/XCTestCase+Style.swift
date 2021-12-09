@@ -38,15 +38,15 @@ extension XCTestCase {
     
     /// Checks whether the given style was applied properly to the given `SubmitButton`
     /// - Parameters:
-    ///   - submitButtton: `SubmitButton` to check
+    ///   - submitButton: `SubmitButton` to check
     ///   - style: `ButtonStyle` that should be applied
-    func check(submitButtton: SubmitButton, forStyle style: ButtonStyle) {
-        check(label: submitButtton.titleLabel, forStyle: style.title)
-        XCTAssertEqual(submitButtton.backgroundView.layer.borderColor, style.borderColor?.cgColor)
-        XCTAssertEqual(submitButtton.backgroundView.layer.borderWidth, style.borderWidth)
-        XCTAssertEqual(submitButtton.backgroundView.backgroundColor, style.backgroundColor)
+    func check(submitButton: SubmitButton, forStyle style: ButtonStyle) {
+        check(label: submitButton.titleLabel, forStyle: style.title)
+        XCTAssertEqual(submitButton.backgroundView.layer.borderColor, style.borderColor?.cgColor)
+        XCTAssertEqual(submitButton.backgroundView.layer.borderWidth, style.borderWidth)
+        XCTAssertEqual(submitButton.backgroundView.backgroundColor, style.backgroundColor)
         
-        check(layer: submitButtton.layer, forCornerRounding: style.cornerRounding)
+        check(layer: submitButton.layer, forCornerRounding: style.cornerRounding)
     }
     
     /// Checks whether the given corner rounding was applied properly to the given layer

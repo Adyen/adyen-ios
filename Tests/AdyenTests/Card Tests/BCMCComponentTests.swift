@@ -195,8 +195,8 @@ class BCMCComponentTests: XCTestCase {
             let date = Date(timeIntervalSinceNow: 60 * 60 * 24 * 30 * 2)
             let calendar = Calendar(identifier: .gregorian)
             let components = calendar.dateComponents([.month, .year], from: date)
-            let expireyDate = "\(String(format: "%02d/%02d", components.month!, components.year! % 100))"
-            self.populate(textItemView: expiryDateItemView!, with: expireyDate)
+            let expiryDate = "\(String(format: "%02d/%02d", components.month!, components.year! % 100))"
+            self.populate(textItemView: expiryDateItemView!, with: expiryDate)
             
             // Tap submit button
             let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.payButtonItem.button")

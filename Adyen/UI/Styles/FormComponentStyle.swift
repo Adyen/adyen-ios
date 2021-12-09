@@ -53,7 +53,7 @@ public struct FormComponentStyle: TintableStyle {
     public var errorStyle = FormErrorItemStyle()
 
     /// Set tint color of form.
-    /// When set, updates tint colors for all undelying styles.
+    /// When set, updates tint colors for all underlying styles.
     /// If value is nil, the default color would be used.
     public var tintColor: UIColor? {
         didSet {
@@ -62,7 +62,7 @@ public struct FormComponentStyle: TintableStyle {
     }
     
     /// The color for separator element.
-    /// When set, updates separator colors for all undelying styles unless the value were set previously.
+    /// When set, updates separator colors for all underlying styles unless the value were set previously.
     /// If value is nil, the default color would be used.
     public var separatorColor: UIColor? {
         didSet {

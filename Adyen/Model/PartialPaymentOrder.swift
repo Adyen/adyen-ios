@@ -37,7 +37,7 @@ public struct PartialPaymentOrder: Codable, Equatable {
     /// The remaining amount to be paid.
     public let remainingAmount: Amount?
 
-    /// The expirey date.
+    /// The expiry date.
     public let expiresAt: Date?
 
     /// Initializes a payment order.
@@ -47,7 +47,7 @@ public struct PartialPaymentOrder: Codable, Equatable {
     /// - Parameter reference: A unique reference to the payment.
     /// - Parameter amount: The initial amount of the order.
     /// - Parameter remainingAmount: The remaining amount to be paid.
-    /// - Parameter expiresAt: The expirey date.
+    /// - Parameter expiresAt: The expiry date.
     public init(pspReference: String,
                 orderData: String?,
                 reference: String? = nil,

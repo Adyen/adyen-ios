@@ -145,11 +145,11 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     public var accessory: AccessoryType = .none {
         didSet {
             guard accessory != oldValue else { return }
-            self.changeAssessories()
+            self.changeAccessories()
         }
     }
     
-    private func changeAssessories() {
+    private func changeAccessories() {
         accessoryStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
         let accessoryView: UIView
@@ -295,7 +295,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
         }
     }
     
-    private func resetValidationStatus() {
+    open func resetValidationStatus() {
         removeAccessoryIfNeeded()
         hideAlertLabel(true, animated: false)
         unhighlightSeparatorView()

@@ -31,14 +31,14 @@ public struct APIContext: AnyAPIContext {
     /// Environment to retrieve internal resources from.
     public let environment: AnyAPIEnvironment
     
-    /// The client key that corresponds to the webservice user you will use for initiating the payment.
+    /// The client key that corresponds to the web service user you will use for initiating the payment.
     /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
     public let clientKey: String
     
     /// Initializes the APIContext
     /// - Parameters:
     ///   - environment: The environment to retrieve internal resources from.
-    ///   - clientKey: The client key that corresponds to the webservice user you will use for initiating the payment.
+    ///   - clientKey: The client key that corresponds to the web service user you will use for initiating the payment.
     public init(environment: AnyAPIEnvironment, clientKey: String) {
         if ClientKeyValidator().isValid(clientKey) == false {
             AdyenAssertion.assertionFailure(message: "ClientKey is invalid.")

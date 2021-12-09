@@ -10,7 +10,7 @@
 @testable import AdyenComponents
 import Foundation
 
-class BACSDirectDebitRouterProtocolMock: BACSDirectDebitRouterProtocol {
+class BACSRouterProtocolMock: BACSDirectDebitRouterProtocol {
 
     // MARK: - presentConfirmationWithData
 

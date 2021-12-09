@@ -1,0 +1,26 @@
+name: Spell check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+  push:
+    branches:
+    - master
+    - develop
+
+jobs:
+
+  setup:
+    runs-on: macos-11
+    steps:
+    - uses: actions/checkout@v2
+    - uses: n1hility/cancel-previous-runs@v2
+      with:
+        token: ${{ secrets.MANUAL_ACTION_TOKEN }}
+
+
+    - name: Spell check
+      run: |
+        brew install mint
+        Scripts/spell_check.sh

@@ -4,18 +4,18 @@
 @testable import AdyenComponents
 import XCTest
 
-class BACSDirectDebitPresenterTests: XCTestCase {
+class BACSInputPresenterTests: XCTestCase {
 
-    var view: BACSDirectDebitInputFormViewProtocolMock!
-    var router: BACSDirectDebitRouterProtocolMock!
-    var itemsFactory: BACSDirectDebitItemsFactoryProtocolMock!
+    var view: BACSInputFormViewProtocolMock!
+    var router: BACSRouterProtocolMock!
+    var itemsFactory: BACSItemsFactoryProtocolMock!
     var sut: BACSDirectDebitPresenter!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        view = BACSDirectDebitInputFormViewProtocolMock()
-        router = BACSDirectDebitRouterProtocolMock()
+        view = BACSInputFormViewProtocolMock()
+        router = BACSRouterProtocolMock()
         itemsFactory = itemsFactoryMock
 
         sut = BACSDirectDebitPresenter(view: view,
@@ -42,22 +42,6 @@ class BACSDirectDebitPresenterTests: XCTestCase {
         XCTAssertEqual(itemsFactory.createLegalConsentToggleCallsCount, 1)
     }
 
-    func testViewDidLoadShouldCallViewSetupNavigationBar() throws {
-        // When
-        sut.viewDidLoad()
-
-        // Then
-        XCTAssertEqual(view.setupNavigationBarCallsCount, 1)
-    }
-
-    func testDidCancelShouldCallRouterCancelPayment() throws {
-        // When
-        sut.didCancel()
-
-        // Then
-        XCTAssertEqual(router.cancelPaymentCallsCount, 1)
-    }
-
     func testSetupViewShouldAddItemsToFormViewOnInitialization() throws {
         // When
         XCTAssertEqual(view.addItemCallsCount, 11)
@@ -76,10 +60,10 @@ class BACSDirectDebitPresenterTests: XCTestCase {
         sut.amountConsentToggleItem?.value = true
         sut.legalConsentToggleItem?.value = true
 
-        sut.holderNameItem?.value = "Katrina del Mar"
-        sut.bankAccountNumberItem?.value = "9058374292"
-        sut.sortCodeItem?.value = "743082"
-        sut.emailItem?.value = "katrina.mar@mail.com"
+        sut.holderNameItem?.value = bacsDataMock.holderName
+        sut.bankAccountNumberItem?.value = bacsDataMock.bankAccountNumber
+        sut.sortCodeItem?.value = bacsDataMock.bankLocationId
+        sut.emailItem?.value = bacsDataMock.shopperEmail
 
         // When
         sut.continueButtonItem?.buttonSelectionHandler?()
@@ -93,10 +77,10 @@ class BACSDirectDebitPresenterTests: XCTestCase {
         sut.amountConsentToggleItem?.value = false
         sut.legalConsentToggleItem?.value = true
 
-        sut.holderNameItem?.value = "Katrina del Mar"
-        sut.bankAccountNumberItem?.value = "90583742"
-        sut.sortCodeItem?.value = "743082"
-        sut.emailItem?.value = "katrina.mar@mail.com"
+        sut.holderNameItem?.value = bacsDataMock.holderName
+        sut.bankAccountNumberItem?.value = bacsDataMock.bankAccountNumber
+        sut.sortCodeItem?.value = bacsDataMock.bankLocationId
+        sut.emailItem?.value = bacsDataMock.shopperEmail
 
         // When
         sut.continueButtonItem?.buttonSelectionHandler?()
@@ -110,10 +94,10 @@ class BACSDirectDebitPresenterTests: XCTestCase {
         sut.amountConsentToggleItem?.value = true
         sut.legalConsentToggleItem?.value = false
 
-        sut.holderNameItem?.value = "Katrina del Mar"
-        sut.bankAccountNumberItem?.value = "90583742"
-        sut.sortCodeItem?.value = "743082"
-        sut.emailItem?.value = "katrina.mar@mail.com"
+        sut.holderNameItem?.value = bacsDataMock.holderName
+        sut.bankAccountNumberItem?.value = bacsDataMock.bankAccountNumber
+        sut.sortCodeItem?.value = bacsDataMock.bankLocationId
+        sut.emailItem?.value = bacsDataMock.shopperEmail
 
         // When
         sut.continueButtonItem?.buttonSelectionHandler?()
@@ -128,9 +112,9 @@ class BACSDirectDebitPresenterTests: XCTestCase {
         sut.legalConsentToggleItem?.value = false
 
         // Missing bank holder name value
-        sut.bankAccountNumberItem?.value = "90583742"
-        sut.sortCodeItem?.value = "743082"
-        sut.emailItem?.value = "katrina.mar@mail.com"
+        sut.bankAccountNumberItem?.value = bacsDataMock.bankAccountNumber
+        sut.sortCodeItem?.value = bacsDataMock.bankLocationId
+        sut.emailItem?.value = bacsDataMock.shopperEmail
 
         // When
         sut.continueButtonItem?.buttonSelectionHandler?()
@@ -144,10 +128,10 @@ class BACSDirectDebitPresenterTests: XCTestCase {
         sut.amountConsentToggleItem?.value = true
         sut.legalConsentToggleItem?.value = true
 
-        sut.holderNameItem?.value = "Katrina del Mar"
-        sut.bankAccountNumberItem?.value = "90583742"
-        sut.sortCodeItem?.value = "743082"
-        sut.emailItem?.value = "katrina.mar@mail.com"
+        sut.holderNameItem?.value = bacsDataMock.holderName
+        sut.bankAccountNumberItem?.value = bacsDataMock.bankAccountNumber
+        sut.sortCodeItem?.value = bacsDataMock.bankLocationId
+        sut.emailItem?.value = bacsDataMock.shopperEmail
 
         // When
         sut.continueButtonItem?.buttonSelectionHandler?()
@@ -158,10 +142,8 @@ class BACSDirectDebitPresenterTests: XCTestCase {
 
     func testContinuePaymentShouldCreateBacsDataWithCorrectValues() throws {
         // Given
-        let expectedBacsData = BACSDirectDebitData(holderName: "Katrina del Mar",
-                                                   bankAccountNumber: "90583742",
-                                                   bankLocationId: "743082",
-                                                   shopperEmail: "katrina.mar@mail.com")
+        let expectedBacsData = bacsDataMock
+
         sut.amountConsentToggleItem?.value = true
         sut.legalConsentToggleItem?.value = true
 
@@ -177,15 +159,41 @@ class BACSDirectDebitPresenterTests: XCTestCase {
         let receivedBacsData = router.presentConfirmationWithDataReceivedData
         XCTAssertNotNil(receivedBacsData)
         XCTAssertEqual(expectedBacsData, receivedBacsData)
+    }
 
+    func testViewWillAppearWhenThereIsDataInputShouldRestoreFields() throws {
+        // Given
+        let expectedBacsData = bacsDataMock
+
+        sut.amountConsentToggleItem?.value = true
+        sut.legalConsentToggleItem?.value = true
+
+        sut.holderNameItem?.value = expectedBacsData.holderName
+        sut.bankAccountNumberItem?.value = expectedBacsData.bankAccountNumber
+        sut.sortCodeItem?.value = expectedBacsData.bankLocationId
+        sut.emailItem?.value = expectedBacsData.shopperEmail
+
+        // Then
+        sut.continueButtonItem?.buttonSelectionHandler?()
+        sut.viewWillAppear()
+
+        // Then
+        let amountConsentValue = try XCTUnwrap(sut.amountConsentToggleItem?.value)
+        let legalConsentValue = try XCTUnwrap(sut.legalConsentToggleItem?.value)
+        XCTAssertFalse(amountConsentValue)
+        XCTAssertFalse(legalConsentValue)
+        XCTAssertEqual(expectedBacsData.holderName, sut.holderNameItem?.value)
+        XCTAssertEqual(expectedBacsData.bankAccountNumber, sut.bankAccountNumberItem?.value)
+        XCTAssertEqual(expectedBacsData.bankLocationId, sut.sortCodeItem?.value)
+        XCTAssertEqual(expectedBacsData.shopperEmail, sut.emailItem?.value)
     }
 
     // MARK: - Private
 
-    private var itemsFactoryMock: BACSDirectDebitItemsFactoryProtocolMock {
+    private var itemsFactoryMock: BACSItemsFactoryProtocolMock {
         let styleProvider = FormComponentStyle()
 
-        let itemsFactory = BACSDirectDebitItemsFactoryProtocolMock()
+        let itemsFactory = BACSItemsFactoryProtocolMock()
         itemsFactory.createHolderNameItemReturnValue = FormTextInputItem()
         itemsFactory.createBankAccountNumberItemReturnValue = FormTextInputItem()
         itemsFactory.createSortCodeItemReturnValue = FormTextInputItem()
@@ -195,6 +203,13 @@ class BACSDirectDebitPresenterTests: XCTestCase {
         itemsFactory.createLegalConsentToggleReturnValue = FormToggleItem()
 
         return itemsFactory
+    }
+
+    private var bacsDataMock: BACSDirectDebitData {
+        BACSDirectDebitData(holderName: "Katrina del Mar",
+                            bankAccountNumber: "90583742",
+                            bankLocationId: "743082",
+                            shopperEmail: "katrina.mar@mail.com")
     }
 
 }

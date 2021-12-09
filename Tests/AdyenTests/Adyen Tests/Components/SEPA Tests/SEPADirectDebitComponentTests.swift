@@ -210,7 +210,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         wait(for: [expectation], timeout: 5)
     }
 
-    func testSubmition() {
+    func testSubmission() {
         let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: "bcmc", name: "Test name")
         let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod, apiContext: Dummy.context)
 

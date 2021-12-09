@@ -79,8 +79,8 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         }
         sut.delegate = delegate
 
-        let payemt = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
-        sut.payment = payemt
+        let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
+        sut.payment = payment
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
 
@@ -89,9 +89,9 @@ class StoredPaymentMethodComponentTests: XCTestCase {
             let alertController = sut.viewController as! UIAlertController
 
             XCTAssertTrue(alertController.actions.contains { $0.title == localizedString(.cancelButton, nil) })
-            XCTAssertTrue(alertController.actions.contains { $0.title == localizedSubmitButtonTitle(with: payemt.amount, style: .immediate, nil) })
+            XCTAssertTrue(alertController.actions.contains { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) })
 
-            let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payemt.amount, style: .immediate, nil) }!
+            let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) }!
 
             payAction.tap()
 
