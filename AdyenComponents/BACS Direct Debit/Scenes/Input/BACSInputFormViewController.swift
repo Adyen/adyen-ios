@@ -7,13 +7,13 @@
 import Adyen
 import UIKit
 
-internal protocol BACSDirectDebitInputFormViewProtocol: FormViewProtocol {}
+internal protocol BACSInputFormViewProtocol: FormViewProtocol {}
 
-internal class BACSDirectDebitInputFormViewController: FormViewController, BACSDirectDebitInputFormViewProtocol {
+internal class BACSInputFormViewController: FormViewController, BACSInputFormViewProtocol {
 
     // MARK: - Properties
 
-    internal weak var presenter: BACSDirectDebitInputPresenterProtocol?
+    internal weak var presenter: BACSInputPresenterProtocol?
 
     // MARK: - Initializers
 
@@ -27,7 +27,7 @@ internal class BACSDirectDebitInputFormViewController: FormViewController, BACSD
     }
 }
 
-extension BACSDirectDebitInputFormViewController: ViewControllerDelegate {
+extension BACSInputFormViewController: ViewControllerDelegate {
     internal func viewDidLoad(viewController: UIViewController) {}
 
     internal func viewDidAppear(viewController: UIViewController) {}

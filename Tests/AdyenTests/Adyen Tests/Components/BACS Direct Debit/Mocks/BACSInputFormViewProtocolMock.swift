@@ -3,7 +3,7 @@
 @testable import Adyen
 @testable import AdyenComponents
 
-class BACSDirectDebitInputFormViewProtocolMock: BACSDirectDebitInputFormViewProtocol {
+class BACSInputFormViewProtocolMock: BACSInputFormViewProtocol {
 
     // MARK: - setupNavigationBar
 

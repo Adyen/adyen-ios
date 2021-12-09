@@ -42,7 +42,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
 
     // MARK: - Properties
 
-    private var inputPresenter: BACSDirectDebitInputPresenterProtocol?
+    private var inputPresenter: BACSInputPresenterProtocol?
     private var confirmationPresenter: BACSConfirmationPresenterProtocol?
 
     // MARK: - Initializers
@@ -62,13 +62,13 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
         self.style = style
         self.localizationParameters = localizationParameters
 
-        let view = BACSDirectDebitInputFormViewController(title: paymentMethod.name,
-                                                          styleProvider: style)
+        let view = BACSInputFormViewController(title: paymentMethod.name,
+                                               styleProvider: style)
         self.viewController = view as UIViewController
 
-        let itemsFactory = BACSDirectDebitItemsFactory(styleProvider: style,
-                                                       localizationParameters: localizationParameters,
-                                                       scope: String(describing: self))
+        let itemsFactory = BACSItemsFactory(styleProvider: style,
+                                            localizationParameters: localizationParameters,
+                                            scope: String(describing: self))
         self.inputPresenter = BACSDirectDebitPresenter(view: view,
                                                        router: self,
                                                        itemsFactory: itemsFactory)
@@ -109,9 +109,9 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
         let view = BACSConfirmationViewController(title: paymentMethod.name,
                                                   styleProvider: style,
                                                   localizationParameters: localizationParameters)
-        let itemsFactory = BACSDirectDebitItemsFactory(styleProvider: style,
-                                                       localizationParameters: localizationParameters,
-                                                       scope: String(describing: self))
+        let itemsFactory = BACSItemsFactory(styleProvider: style,
+                                            localizationParameters: localizationParameters,
+                                            scope: String(describing: self))
         confirmationPresenter = BACSConfirmationPresenter(data: data,
                                                           view: view,
                                                           router: self,

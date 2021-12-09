@@ -24,7 +24,7 @@ class BACSDirectDebitComponentTests: XCTestCase {
 
     func testInitShouldSetViewControllerPresenter() throws {
         // Then
-        let viewController = try XCTUnwrap(sut.viewController as? BACSDirectDebitInputFormViewController)
+        let viewController = try XCTUnwrap(sut.viewController as? BACSInputFormViewController)
         XCTAssertNotNil(viewController.presenter)
     }
 }

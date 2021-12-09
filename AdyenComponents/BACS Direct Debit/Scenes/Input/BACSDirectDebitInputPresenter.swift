@@ -7,18 +7,18 @@
 import Adyen
 import Foundation
 
-internal protocol BACSDirectDebitInputPresenterProtocol: AnyObject {
+internal protocol BACSInputPresenterProtocol: AnyObject {
     func viewWillAppear()
 }
 
-internal class BACSDirectDebitPresenter: BACSDirectDebitInputPresenterProtocol {
+internal class BACSDirectDebitPresenter: BACSInputPresenterProtocol {
 
     // MARK: - Properties
 
     internal var paymentCancelled = false
-    private let view: BACSDirectDebitInputFormViewProtocol
+    private let view: BACSInputFormViewProtocol
     private weak var router: BACSDirectDebitRouterProtocol?
-    private let itemsFactory: BACSDirectDebitItemsFactoryProtocol
+    private let itemsFactory: BACSItemsFactoryProtocol
     private var data: BACSDirectDebitData?
 
     // MARK: - Items
@@ -33,9 +33,9 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitInputPresenterProtocol {
 
     // MARK: - Initializers
 
-    internal init(view: BACSDirectDebitInputFormViewProtocol,
+    internal init(view: BACSInputFormViewProtocol,
                   router: BACSDirectDebitRouterProtocol,
-                  itemsFactory: BACSDirectDebitItemsFactoryProtocol) {
+                  itemsFactory: BACSItemsFactoryProtocol) {
         self.view = view
         self.router = router
         self.itemsFactory = itemsFactory

@@ -19,7 +19,7 @@ internal class BACSConfirmationPresenter: BACSConfirmationPresenterProtocol {
     private let data: BACSDirectDebitData
     private let view: BACSConfirmationViewProtocol
     private weak var router: BACSDirectDebitRouterProtocol?
-    private let itemsFactory: BACSDirectDebitItemsFactoryProtocol
+    private let itemsFactory: BACSItemsFactoryProtocol
 
     // MARK: - Items
 
@@ -34,7 +34,7 @@ internal class BACSConfirmationPresenter: BACSConfirmationPresenterProtocol {
     internal init(data: BACSDirectDebitData,
                   view: BACSConfirmationViewProtocol,
                   router: BACSDirectDebitRouterProtocol,
-                  itemsFactory: BACSDirectDebitItemsFactoryProtocol) {
+                  itemsFactory: BACSItemsFactoryProtocol) {
         self.data = data
         self.router = router
         self.view = view

@@ -3,7 +3,7 @@
 @testable import Adyen
 @testable import AdyenComponents
 
-class BACSDirectDebitItemsFactoryProtocolMock: BACSDirectDebitItemsFactoryProtocol {
+class BACSItemsFactoryProtocolMock: BACSItemsFactoryProtocol {
 
     // MARK: - createHolderNameItem
 

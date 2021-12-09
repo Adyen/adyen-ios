@@ -3,7 +3,7 @@
 @testable import Adyen
 @testable import AdyenComponents
 
-class BACSDirectDebitPresenterProtocolMock: BACSDirectDebitInputPresenterProtocol {
+class BACSPresenterProtocolMock: BACSInputPresenterProtocol {
 
     // MARK: - viewDidLoad
 

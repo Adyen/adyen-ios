@@ -4,18 +4,18 @@
 @testable import AdyenComponents
 import XCTest
 
-class BACSDirectDebitPresenterTests: XCTestCase {
+class BACSInputPresenterTests: XCTestCase {
 
-    var view: BACSDirectDebitInputFormViewProtocolMock!
-    var router: BACSDirectDebitRouterProtocolMock!
-    var itemsFactory: BACSDirectDebitItemsFactoryProtocolMock!
+    var view: BACSInputFormViewProtocolMock!
+    var router: BACSRouterProtocolMock!
+    var itemsFactory: BACSItemsFactoryProtocolMock!
     var sut: BACSDirectDebitPresenter!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        view = BACSDirectDebitInputFormViewProtocolMock()
-        router = BACSDirectDebitRouterProtocolMock()
+        view = BACSInputFormViewProtocolMock()
+        router = BACSRouterProtocolMock()
         itemsFactory = itemsFactoryMock
 
         sut = BACSDirectDebitPresenter(view: view,
@@ -40,22 +40,6 @@ class BACSDirectDebitPresenterTests: XCTestCase {
         XCTAssertEqual(itemsFactory.createContinueButtonCallsCount, 1)
         XCTAssertEqual(itemsFactory.createAmountConsentToggleCallsCount, 1)
         XCTAssertEqual(itemsFactory.createLegalConsentToggleCallsCount, 1)
-    }
-
-    func testViewDidLoadShouldCallViewSetupNavigationBar() throws {
-        // When
-        sut.viewDidLoad()
-
-        // Then
-        XCTAssertEqual(view.setupNavigationBarCallsCount, 1)
-    }
-
-    func testDidCancelShouldCallRouterCancelPayment() throws {
-        // When
-        sut.didCancel()
-
-        // Then
-        XCTAssertEqual(router.cancelPaymentCallsCount, 1)
     }
 
     func testSetupViewShouldAddItemsToFormViewOnInitialization() throws {
@@ -180,10 +164,10 @@ class BACSDirectDebitPresenterTests: XCTestCase {
 
     // MARK: - Private
 
-    private var itemsFactoryMock: BACSDirectDebitItemsFactoryProtocolMock {
+    private var itemsFactoryMock: BACSItemsFactoryProtocolMock {
         let styleProvider = FormComponentStyle()
 
-        let itemsFactory = BACSDirectDebitItemsFactoryProtocolMock()
+        let itemsFactory = BACSItemsFactoryProtocolMock()
         itemsFactory.createHolderNameItemReturnValue = FormTextInputItem()
         itemsFactory.createBankAccountNumberItemReturnValue = FormTextInputItem()
         itemsFactory.createSortCodeItemReturnValue = FormTextInputItem()

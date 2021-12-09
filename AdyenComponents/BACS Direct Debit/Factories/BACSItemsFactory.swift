@@ -7,7 +7,7 @@
 import Adyen
 import Foundation
 
-internal protocol BACSDirectDebitItemsFactoryProtocol {
+internal protocol BACSItemsFactoryProtocol {
     func createHolderNameItem() -> FormTextInputItem
     func createBankAccountNumberItem() -> FormTextInputItem
     func createSortCodeItem() -> FormTextInputItem
@@ -18,7 +18,7 @@ internal protocol BACSDirectDebitItemsFactoryProtocol {
     func createLegalConsentToggle() -> FormToggleItem
 }
 
-internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol {
+internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
 
     private enum ViewIdentifier {
         static let holderNameItem = "holderNameItem"

@@ -4,14 +4,14 @@
 @testable import AdyenComponents
 import XCTest
 
-class BACSDirectDebitItemsFactoryTests: XCTestCase {
+class BACSItemsFactoryTests: XCTestCase {
 
-    var sut: BACSDirectDebitItemsFactory!
+    var sut: BACSItemsFactory!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         let styleProvider = FormComponentStyle()
-        sut = BACSDirectDebitItemsFactory(styleProvider: styleProvider,
+        sut = BACSItemsFactory(styleProvider: styleProvider,
                                           localizationParameters: LocalizationParameters(),
                                           scope: "")
     }
