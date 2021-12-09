@@ -71,13 +71,6 @@ internal final class DropInNavigationController: UINavigationController, Keyboar
         pushViewController(wrapInModalController(component: component, isRoot: true), animated: true)
     }
 
-    internal func presentInNavigationController(component: PresentableComponent) {
-        let componentNavigationController = ComponentNavigationController(rootViewController: component.viewController) { [weak self] in
-            self?.cancelHandler?($0, component)
-        }
-        present(componentNavigationController, animated: true)
-    }
-    
     // MARK: - Private
 
     internal func updateTopViewControllerIfNeeded(animated: Bool = true) {

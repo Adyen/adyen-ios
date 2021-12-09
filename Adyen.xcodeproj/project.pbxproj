@@ -80,7 +80,6 @@
 		A0FA143F26D65A5300627127 /* InstallmentPickerElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA143E26D65A5300627127 /* InstallmentPickerElement.swift */; };
 		A0FA145726D65B6200627127 /* FormCardInstallmentsItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA145626D65B6200627127 /* FormCardInstallmentsItemView.swift */; };
 		C90D26A727565750001A488F /* FormViewController+ViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D26A627565750001A488F /* FormViewController+ViewProtocol.swift */; };
-		C90D26AB275782E8001A488F /* ComponentNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D26AA275782E8001A488F /* ComponentNavigationController.swift */; };
 		C9126051275A3A2800C03DC4 /* BACSItemsFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9126050275A3A2800C03DC4 /* BACSItemsFactoryTests.swift */; };
 		C927083827590B7500D15EA0 /* BACSInputFormViewProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D26B1275900B9001A488F /* BACSInputFormViewProtocolMock.swift */; };
 		C927083927590B7900D15EA0 /* BACSPresenterProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D26B32759048C001A488F /* BACSPresenterProtocolMock.swift */; };
@@ -989,7 +988,6 @@
 		A0FA143E26D65A5300627127 /* InstallmentPickerElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallmentPickerElement.swift; sourceTree = "<group>"; };
 		A0FA145626D65B6200627127 /* FormCardInstallmentsItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardInstallmentsItemView.swift; sourceTree = "<group>"; };
 		C90D26A627565750001A488F /* FormViewController+ViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormViewController+ViewProtocol.swift"; sourceTree = "<group>"; };
-		C90D26AA275782E8001A488F /* ComponentNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentNavigationController.swift; sourceTree = "<group>"; };
 		C90D26B1275900B9001A488F /* BACSInputFormViewProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputFormViewProtocolMock.swift; sourceTree = "<group>"; };
 		C90D26B32759048C001A488F /* BACSPresenterProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSPresenterProtocolMock.swift; sourceTree = "<group>"; };
 		C90D26B5275905B8001A488F /* BACSItemsFactoryProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSItemsFactoryProtocolMock.swift; sourceTree = "<group>"; };
@@ -2573,7 +2571,6 @@
 				E90139CA22846AD5004C74DA /* ModalViewController.swift */,
 				E7484C2623B9FDF000CCF74F /* SlideInPresentationAnimator.swift */,
 				E7388D8423DB1F9A008E62B8 /* DimmingPresentationController.swift */,
-				C90D26AA275782E8001A488F /* ComponentNavigationController.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -5178,7 +5175,6 @@
 				E767F3F525A4CFAF0077029E /* WrapperViewController.swift in Sources */,
 				E9B36CC522451C7100EAA368 /* ComponentManager.swift in Sources */,
 				E226F54B229803130013A463 /* DropInComponentDelegate.swift in Sources */,
-				C90D26AB275782E8001A488F /* ComponentNavigationController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
