@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "تأكيد الدفع باستخدام %@";
 "adyen.dropIn.preselected.openAll.title" = "تغيير طريقة الدفع";
 "adyen.continueTo" = "متابعة إلى %@";
+"adyen.continueTitle" = "متابعة";
 "adyen.phoneNumber.title" = "رقم الهاتف";
 "adyen.phoneNumber.invalid" = "رقم هاتف غير صحيح";
 "adyen.phoneNumber.placeholder" = "789–456–123";
@@ -133,3 +134,11 @@
 "adyen.card.installments.monthsAndPrice" = "%@ x %@";
 "adyen.card.installments.months" = "%@ أشهر";
 "adyen.card.installments.plan" = "طريقة الدفع";
+"adyen.bacs.holderNameField.title" = "اسم صاحب الحساب البنكي";
+"adyen.bacs.bankAccountNumberField.title" = "رقم الحساب البنكي";
+"adyen.bacs.bankLocationIdField.title" = "رمز تعريف البنك";
+"adyen.bacs.legalConsentToggle.title" = "أؤكد أن الحساب باسمي وأنا وحدي صاحب التوقيع المطالب بالإذن بالخصم المباشر في هذا الحساب.";
+"adyen.bacs.amountConsentToggle.title" = "أوافق على خصم المبلغ أعلاه من حسابي البنكي.";
+"adyen.bacs.holderNameField.invalidMessage" = "اسم صاحب حساب بنكي غير صحيح";
+"adyen.bacs.bankAccountNumberField.invalidMessage" = "رقم حساب بنكي غير صحيح";
+"adyen.bacs.bankLocationIdField.invalidMessage" = "رمز تعريف بنك غير صحيح";

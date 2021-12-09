@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "Confirmar pagamento %@";
 "adyen.dropIn.preselected.openAll.title" = "Alterar método de pagamento";
 "adyen.continueTo" = "Continuar para %@";
+"adyen.continueTitle" = "Continuar";
 "adyen.phoneNumber.title" = "Número de telefone";
 "adyen.phoneNumber.invalid" = "Número de telefone inválido";
 "adyen.phoneNumber.placeholder" = "123–456–789";
@@ -133,3 +134,11 @@
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "%@ meses";
 "adyen.card.installments.plan" = "Método de pagamento";
+"adyen.bacs.holderNameField.title" = "Nome do titular da conta bancária";
+"adyen.bacs.bankAccountNumberField.title" = "Número da conta bancária";
+"adyen.bacs.bankLocationIdField.title" = "Código de classificação";
+"adyen.bacs.legalConsentToggle.title" = "Confirmo que a conta está em meu nome e que sou o único signatário que deve autorizar o débito direto nessa conta.";
+"adyen.bacs.amountConsentToggle.title" = "Concordo que o valor acima seja deduzido da minha conta bancária.";
+"adyen.bacs.holderNameField.invalidMessage" = "Nome do titular da conta bancária inválido";
+"adyen.bacs.bankAccountNumberField.invalidMessage" = "Número da conta bancária inválido";
+"adyen.bacs.bankLocationIdField.invalidMessage" = "Código de classificação inválido";

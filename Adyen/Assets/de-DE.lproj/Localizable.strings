@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "Bestätige %@ Zahlung";
 "adyen.dropIn.preselected.openAll.title" = "Zahlungsmethode wechseln";
 "adyen.continueTo" = "Weiter zu %@";
+"adyen.continueTitle" = "Weiter";
 "adyen.phoneNumber.title" = "Telefonnummer";
 "adyen.phoneNumber.invalid" = "Ungültige Telefonnummer";
 "adyen.phoneNumber.placeholder" = "123–456–789";
@@ -133,3 +134,11 @@
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "%@ Monate";
 "adyen.card.installments.plan" = "Zahlungsmethode";
+"adyen.bacs.holderNameField.title" = "Name des Bankkontoinhabers";
+"adyen.bacs.bankAccountNumberField.title" = "Bankkontonummer";
+"adyen.bacs.bankLocationIdField.title" = "Bankleitzahl";
+"adyen.bacs.legalConsentToggle.title" = "Ich bestätige, dass das Konto unter meinem Namen läuft und ich der einzige erforderliche Unterzeichner bin, um die Lastschrift für dieses Konto zu autorisieren.";
+"adyen.bacs.amountConsentToggle.title" = "Ich bin damit einverstanden, dass der oben genannte Betrag von meinem Bankkonto abgebucht wird.";
+"adyen.bacs.holderNameField.invalidMessage" = "Ungültiger Bankkontoinhabername";
+"adyen.bacs.bankAccountNumberField.invalidMessage" = "Ungültige Bankkontonummer";
+"adyen.bacs.bankLocationIdField.invalidMessage" = "Ungültige Bankleitzahl";

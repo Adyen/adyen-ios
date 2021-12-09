@@ -195,6 +195,11 @@ internal final class ComponentManager {
                                  apiContext: apiContext,
                                  style: style.formComponent)
     }
+
+    private func createBACSDirectDebit(_ paymentMethod: BACSDirectDebitPaymentMethod) -> BACSDirectDebitComponent {
+        BACSDirectDebitComponent(paymentMethod: paymentMethod,
+                                 apiContext: apiContext)
+    }
     
     private func createQiwiWalletComponent(_ paymentMethod: QiwiWalletPaymentMethod) -> QiwiWalletComponent {
         QiwiWalletComponent(paymentMethod: paymentMethod,
@@ -263,6 +268,11 @@ extension ComponentManager: PaymentComponentBuilder {
     /// :nodoc:
     internal func build(paymentMethod: SEPADirectDebitPaymentMethod) -> PaymentComponent? {
         createSEPAComponent(paymentMethod)
+    }
+
+    /// :nodoc:
+    internal func build(paymentMethod: BACSDirectDebitPaymentMethod) -> PaymentComponent? {
+        createBACSDirectDebit(paymentMethod)
     }
     
     /// :nodoc:

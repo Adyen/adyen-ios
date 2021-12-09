@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "Potvrďte platbu pomocou %@";
 "adyen.dropIn.preselected.openAll.title" = "Zmeniť spôsob platby";
 "adyen.continueTo" = "Pokračovať do %@";
+"adyen.continueTitle" = "Pokračovať";
 "adyen.phoneNumber.title" = "Telefónne číslo";
 "adyen.phoneNumber.invalid" = "Neplatné telefónne číslo";
 "adyen.phoneNumber.placeholder" = "123–456–789";
@@ -133,3 +134,11 @@
 "adyen.card.installments.monthsAndPrice" = "%@ x %@";
 "adyen.card.installments.months" = "%@ mesiace/-ov";
 "adyen.card.installments.plan" = "Spôsob platby";
+"adyen.bacs.holderNameField.title" = "Meno majiteľa bankového účtu";
+"adyen.bacs.bankAccountNumberField.title" = "Číslo bankového účtu";
+"adyen.bacs.bankLocationIdField.title" = "Variabilný symbol";
+"adyen.bacs.legalConsentToggle.title" = "Potvrdzujem, že účet je na moje meno a som jediný podpisovateľ, ktorý je povinný autorizovať inkaso v tomto účte.";
+"adyen.bacs.amountConsentToggle.title" = "Súhlasím s tým, že nižšie uvedená čiastka bude odpísaná z môjho bankového účtu.";
+"adyen.bacs.holderNameField.invalidMessage" = "Neplatné meno majiteľa bankového účtu";
+"adyen.bacs.bankAccountNumberField.invalidMessage" = "Neplatné číslo bankového účtu";
+"adyen.bacs.bankLocationIdField.invalidMessage" = "Neplatný variabilný symbol";

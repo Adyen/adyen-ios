@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "Potvrdite plaćanje: % @";
 "adyen.dropIn.preselected.openAll.title" = "Promijeni način plaćanja";
 "adyen.continueTo" = "Nastavi na %@";
+"adyen.continueTitle" = "Nastavi";
 "adyen.phoneNumber.title" = "Telefonski broj";
 "adyen.phoneNumber.invalid" = "Nevažeći telefonski broj";
 "adyen.phoneNumber.placeholder" = "123–456–789";
@@ -133,3 +134,11 @@
 "adyen.card.installments.monthsAndPrice" = "%@ x %@";
 "adyen.card.installments.months" = "Mjeseci: %@";
 "adyen.card.installments.plan" = "Način plaćanja";
+"adyen.bacs.holderNameField.title" = "Ime vlasnika bankovnog računa";
+"adyen.bacs.bankAccountNumberField.title" = "Broj bankovnog računa";
+"adyen.bacs.bankLocationIdField.title" = "Identifikacijski kôd banke (UK)";
+"adyen.bacs.legalConsentToggle.title" = "Potvrđujem da je račun na moje ime i da sam jedini potpisnik potreban za autorizaciju izravnog terećenja na ovom računu.";
+"adyen.bacs.amountConsentToggle.title" = "Slažem se da se gore navedeni iznos oduzme s mog bankovnog računa.";
+"adyen.bacs.holderNameField.invalidMessage" = "Nevažeće ime vlasnika bankovnog računa";
+"adyen.bacs.bankAccountNumberField.invalidMessage" = "Nevažeći broj bankovnog računa";
+"adyen.bacs.bankLocationIdField.invalidMessage" = "Nevažeći identifikacijski kôd banke (UK)";

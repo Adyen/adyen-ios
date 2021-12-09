@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "Bevestig %@ betaling";
 "adyen.dropIn.preselected.openAll.title" = "Betalingsmethode wijzigen";
 "adyen.continueTo" = "Doorgaan naar %@";
+"adyen.continueTitle" = "Doorgaan";
 "adyen.phoneNumber.title" = "Telefoonnummer";
 "adyen.phoneNumber.invalid" = "Ongeldig telefoonnummer";
 "adyen.phoneNumber.placeholder" = "123–456–789";
@@ -133,3 +134,11 @@
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "%@ maanden";
 "adyen.card.installments.plan" = "Betaalmethode";
+"adyen.bacs.holderNameField.title" = "Naam bankrekeninghouder";
+"adyen.bacs.bankAccountNumberField.title" = "Bankrekeningnummer";
+"adyen.bacs.bankLocationIdField.title" = "Bankcode";
+"adyen.bacs.legalConsentToggle.title" = "Ik bevestig dat de rekening op mijn naam staat en dat ik de enige ondertekenaar ben die toestemming kan geven voor automatische incasso's vanaf deze rekening.";
+"adyen.bacs.amountConsentToggle.title" = "Ik ga ermee akkoord dat het bovengenoemde bedrag van mijn bankrekening wordt afgeschreven.";
+"adyen.bacs.holderNameField.invalidMessage" = "Ongeldige naam bankrekeninghouder";
+"adyen.bacs.bankAccountNumberField.invalidMessage" = "Ongeldig bankrekeningnummer";
+"adyen.bacs.bankLocationIdField.invalidMessage" = "Ongeldige bankcode";

@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "Confirmer paiement de %@";
 "adyen.dropIn.preselected.openAll.title" = "Changer de moyen de paiement";
 "adyen.continueTo" = "Poursuivre vers %@";
+"adyen.continueTitle" = "Continuer";
 "adyen.phoneNumber.title" = "Numéro de téléphone";
 "adyen.phoneNumber.invalid" = "Numéro de téléphone incorrect";
 "adyen.phoneNumber.placeholder" = "01 23 45 67 89";
@@ -133,3 +134,11 @@
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "%@ mois";
 "adyen.card.installments.plan" = "Méthode de paiement";
+"adyen.bacs.holderNameField.title" = "Nom du titulaire du compte bancaire";
+"adyen.bacs.bankAccountNumberField.title" = "Numéro du compte bancaire";
+"adyen.bacs.bankLocationIdField.title" = "Code de tri (sort code)";
+"adyen.bacs.legalConsentToggle.title" = "Je confirme être le titulaire du compte et qu'aucune autre signature que la mienne n'est requise pour autoriser un prélèvement sur ce compte.";
+"adyen.bacs.amountConsentToggle.title" = "J'accepte que le montant ci-dessus soit déduit de mon compte bancaire.";
+"adyen.bacs.holderNameField.invalidMessage" = "Nom du titulaire du compte bancaire incorrect";
+"adyen.bacs.bankAccountNumberField.invalidMessage" = "Numéro du compte bancaire incorrect";
+"adyen.bacs.bankLocationIdField.invalidMessage" = "Code de tri (sort code) non valide";

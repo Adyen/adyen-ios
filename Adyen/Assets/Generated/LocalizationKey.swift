@@ -83,6 +83,8 @@ public struct LocalizationKey {
     public static let dropInPreselectedOpenAllTitle = LocalizationKey(key: "adyen.dropIn.preselected.openAll.title")
     /// Continue to %@
     public static let continueTo = LocalizationKey(key: "adyen.continueTo")
+    /// Continue
+    public static let continueTitle = LocalizationKey(key: "adyen.continueTitle")
     /// Telephone number
     public static let phoneNumberTitle = LocalizationKey(key: "adyen.phoneNumber.title")
     /// Invalid telephone number
@@ -277,7 +279,23 @@ public struct LocalizationKey {
     public static let cardInstallmentsMonths = LocalizationKey(key: "adyen.card.installments.months")
     /// Method of payment
     public static let cardInstallmentsPlan = LocalizationKey(key: "adyen.card.installments.plan")
-    
+    /// Bank account holder name
+    public static let bacsHolderNameFieldTitle = LocalizationKey(key: "adyen.bacs.holderNameField.title")
+    /// Bank account number
+    public static let bacsBankAccountNumberFieldTitle = LocalizationKey(key: "adyen.bacs.bankAccountNumberField.title")
+    /// Sort code
+    public static let bacsBankLocationIdFieldTitle = LocalizationKey(key: "adyen.bacs.bankLocationIdField.title")
+    /// I confirm the account is in my name and I am the only signatory required to authorise the Direct Debit on this account.
+    public static let bacsLegalConsentToggleTitle = LocalizationKey(key: "adyen.bacs.legalConsentToggle.title")
+    /// I agree that the above amount will be deducted from my bank account.
+    public static let bacsAmountConsentToggleTitle = LocalizationKey(key: "adyen.bacs.amountConsentToggle.title")
+    /// Invalid bank account holder name
+    public static let bacsHolderNameFieldInvalidMessage = LocalizationKey(key: "adyen.bacs.holderNameField.invalidMessage")
+    /// Invalid bank account number
+    public static let bacsBankAccountNumberFieldInvalidMessage = LocalizationKey(key: "adyen.bacs.bankAccountNumberField.invalidMessage")
+    /// Invalid sort code
+    public static let bacsBankLocationIdFieldInvalidMessage = LocalizationKey(key: "adyen.bacs.bankLocationIdField.invalidMessage")
+
     internal let key: String
     
     public init(key: String) {

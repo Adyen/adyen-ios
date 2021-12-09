@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "確認 %@ 付款";
 "adyen.dropIn.preselected.openAll.title" = "變更付款方式";
 "adyen.continueTo" = "繼續前往 %@";
+"adyen.continueTitle" = "繼續";
 "adyen.phoneNumber.title" = "電話號碼";
 "adyen.phoneNumber.invalid" = "電話號碼無效";
 "adyen.phoneNumber.placeholder" = "123–456–789";
@@ -130,3 +131,11 @@
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "％{times} 個月";
 "adyen.card.installments.plan" = "付款方式";
+"adyen.bacs.holderNameField.title" = "銀行帳戶持有人姓名";
+"adyen.bacs.bankAccountNumberField.title" = "銀行帳戶號碼";
+"adyen.bacs.bankLocationIdField.title" = "銀行代碼";
+"adyen.bacs.legalConsentToggle.title" = "我確認該帳戶以我的名義開設，並且我是授權從該帳戶直接扣款的唯一簽署人。";
+"adyen.bacs.amountConsentToggle.title" = "我同意從我的銀行帳戶扣除上述金額。";
+"adyen.bacs.holderNameField.invalidMessage" = "銀行帳戶持有人姓名無效";
+"adyen.bacs.bankAccountNumberField.invalidMessage" = "銀行帳戶號碼無效";
+"adyen.bacs.bankLocationIdField.invalidMessage" = "銀行代碼無效";

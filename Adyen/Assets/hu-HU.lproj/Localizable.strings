@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "%@ használatával történő fizetés jóváhagyása";
 "adyen.dropIn.preselected.openAll.title" = "Fizetési mód módosítása";
 "adyen.continueTo" = "Folytatás a következővel: %@";
+"adyen.continueTitle" = "Folytatás";
 "adyen.phoneNumber.title" = "Telefonszám";
 "adyen.phoneNumber.invalid" = "Érvénytelen telefonszám";
 "adyen.phoneNumber.placeholder" = "12–345–6789";
@@ -133,3 +134,11 @@
 "adyen.card.installments.monthsAndPrice" = "%@ x %@";
 "adyen.card.installments.months" = "%@ hónap";
 "adyen.card.installments.plan" = "Fizetési mód";
+"adyen.bacs.holderNameField.title" = "Bankszámla-tulajdonos neve";
+"adyen.bacs.bankAccountNumberField.title" = "Bankszámlaszám";
+"adyen.bacs.bankLocationIdField.title" = "Banki azonosító";
+"adyen.bacs.legalConsentToggle.title" = "Megerősítem, hogy a bankszámla az én nevemen van, és én vagyok a bankszámlát érintő beszedési megbízás jóváhagyásához szükséges egyetlen aláíró.";
+"adyen.bacs.amountConsentToggle.title" = "Elfogadom, hogy a fenti összeget levonják a bankszámlámról.";
+"adyen.bacs.holderNameField.invalidMessage" = "A bankszámla-tulajdonos neve érvénytelen";
+"adyen.bacs.bankAccountNumberField.invalidMessage" = "Érvénytelen bankszámlaszám";
+"adyen.bacs.bankLocationIdField.invalidMessage" = "Érvénytelen banki azonosító";

@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "Vahvista %@ maksu";
 "adyen.dropIn.preselected.openAll.title" = "Muuta maksutapaa";
 "adyen.continueTo" = "Jatka kohteeseen %@";
+"adyen.continueTitle" = "Jatka";
 "adyen.phoneNumber.title" = "Puhelinnumero";
 "adyen.phoneNumber.invalid" = "Ei-kelvollinen puhelinnumero";
 "adyen.phoneNumber.placeholder" = "123–456–789";
@@ -133,3 +134,11 @@
 "adyen.card.installments.monthsAndPrice" = "%@ x%@";
 "adyen.card.installments.months" = "%@ kuukautta";
 "adyen.card.installments.plan" = "Maksutapa";
+"adyen.bacs.holderNameField.title" = "Tilinhaltijan nimi";
+"adyen.bacs.bankAccountNumberField.title" = "Pankkitilinumero";
+"adyen.bacs.bankLocationIdField.title" = "Lajittelukoodi";
+"adyen.bacs.legalConsentToggle.title" = "Vahvistan, että tili on nimessäni ja olen ainoa allekirjoittaja, joka vaaditaan valtuuttamaan suoraveloitus tällä tilillä.";
+"adyen.bacs.amountConsentToggle.title" = "Hyväksyn, että alla oleva summa veloitetaan pankkitililtäni.";
+"adyen.bacs.holderNameField.invalidMessage" = "Ei-kelvollinen tilinhaltijan nimi";
+"adyen.bacs.bankAccountNumberField.invalidMessage" = "Väärä tilin numero";
+"adyen.bacs.bankLocationIdField.invalidMessage" = "Ei-kelvollinen lajittelukoodi";

@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "确认 %@ 支付";
 "adyen.dropIn.preselected.openAll.title" = "更改支付方式";
 "adyen.continueTo" = "继续至 %@";
+"adyen.continueTitle" = "继续";
 "adyen.phoneNumber.title" = "电话号码";
 "adyen.phoneNumber.invalid" = "无效的电话号码";
 "adyen.phoneNumber.placeholder" = "123–456–789";
@@ -133,3 +134,11 @@
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "%@ 个月";
 "adyen.card.installments.plan" = "付款方式";
+"adyen.bacs.holderNameField.title" = "银行账户持有人姓名";
+"adyen.bacs.bankAccountNumberField.title" = "银行账号";
+"adyen.bacs.bankLocationIdField.title" = "分类代码";
+"adyen.bacs.legalConsentToggle.title" = "我确认该账户为我名下的账户，并且我是授权该账户直接借记的唯一签署人。";
+"adyen.bacs.amountConsentToggle.title" = "我同意从银行账户中扣除上述金额。";
+"adyen.bacs.holderNameField.invalidMessage" = "无效的银行账户持有人姓名";
+"adyen.bacs.bankAccountNumberField.invalidMessage" = "无效的银行账号";
+"adyen.bacs.bankLocationIdField.invalidMessage" = "无效的分类代码";
