@@ -49,6 +49,7 @@ internal class BACSDirectDebitPresenter: BACSInputPresenterProtocol {
         if paymentCancelled {
             resetForm()
             paymentCancelled = false
+            data = nil
         }
         restoreFields()
     }

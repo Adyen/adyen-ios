@@ -159,7 +159,33 @@ class BACSInputPresenterTests: XCTestCase {
         let receivedBacsData = router.presentConfirmationWithDataReceivedData
         XCTAssertNotNil(receivedBacsData)
         XCTAssertEqual(expectedBacsData, receivedBacsData)
+    }
 
+    func testViewWillAppearWhenThereIsDataInputShouldRestoreFields() throws {
+        // Given
+        let expectedBacsData = bacsDataMock
+
+        sut.amountConsentToggleItem?.value = true
+        sut.legalConsentToggleItem?.value = true
+
+        sut.holderNameItem?.value = expectedBacsData.holderName
+        sut.bankAccountNumberItem?.value = expectedBacsData.bankAccountNumber
+        sut.sortCodeItem?.value = expectedBacsData.bankLocationId
+        sut.emailItem?.value = expectedBacsData.shopperEmail
+
+        // Then
+        sut.continueButtonItem?.buttonSelectionHandler?()
+        sut.viewWillAppear()
+
+        // Then
+        let amountConsentValue = try XCTUnwrap(sut.amountConsentToggleItem?.value)
+        let legalConsentValue = try XCTUnwrap(sut.legalConsentToggleItem?.value)
+        XCTAssertFalse(amountConsentValue)
+        XCTAssertFalse(legalConsentValue)
+        XCTAssertEqual(expectedBacsData.holderName, sut.holderNameItem?.value)
+        XCTAssertEqual(expectedBacsData.bankAccountNumber, sut.bankAccountNumberItem?.value)
+        XCTAssertEqual(expectedBacsData.bankLocationId, sut.sortCodeItem?.value)
+        XCTAssertEqual(expectedBacsData.shopperEmail, sut.emailItem?.value)
     }
 
     // MARK: - Private
