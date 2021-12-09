@@ -239,7 +239,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
         
         if isRoot {
             self.delegate?.didFail(with: ComponentError.cancelled, from: self)
-        } else if component.requiresModalPresentation {
+        } else {
             navigationController.popViewController(animated: true)
         }
     }
