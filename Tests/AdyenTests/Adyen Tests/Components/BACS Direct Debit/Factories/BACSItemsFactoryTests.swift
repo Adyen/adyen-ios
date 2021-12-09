@@ -135,6 +135,21 @@ class BACSItemsFactoryTests: XCTestCase {
         XCTAssertEqual(expectedIdentifier, identifier)
     }
 
+    func testCreatePaymentButtonShouldReturnItemWithCorrectProperties() throws {
+        // Given
+        let expectedTitle = "Confirm and pay"
+        let expectedIdentifier = ".paymentButtonItem"
+
+        // When
+        let paymentButtonItem = sut.createPaymentButton()
+
+        // Then
+        XCTAssertEqual(expectedTitle, paymentButtonItem.title)
+
+        let identifier = try XCTUnwrap(paymentButtonItem.identifier)
+        XCTAssertEqual(expectedIdentifier, identifier)
+    }
+
     func testCreateAmountConsentToggleShouldReturnItemWithCorrectProperties() throws {
         // Given
         let expectedTitle = "I agree that the above amount will be deducted from my bank account."
