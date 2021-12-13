@@ -56,7 +56,8 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     public init(paymentMethod: BACSDirectDebitPaymentMethod,
                 apiContext: APIContext,
                 style: FormComponentStyle = .init(),
-                localizationParameters: LocalizationParameters? = nil) {
+                localizationParameters: LocalizationParameters? = nil,
+                configuration: Configuration? = nil) {
         self.paymentMethod = paymentMethod
         self.apiContext = apiContext
         self.style = style
@@ -69,9 +70,10 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
         let itemsFactory = BACSItemsFactory(styleProvider: style,
                                             localizationParameters: localizationParameters,
                                             scope: String(describing: self))
-        self.inputPresenter = BACSDirectDebitPresenter(view: view,
-                                                       router: self,
-                                                       itemsFactory: itemsFactory)
+        self.inputPresenter = BACSInputDirectDebitPresenter(view: view,
+                                                            router: self,
+                                                            itemsFactory: itemsFactory,
+                                                            amount: configuration?.amount)
         view.presenter = inputPresenter
     }
 }
@@ -127,5 +129,22 @@ extension BACSDirectDebitComponent: LoadingComponent {
     
     public func stopLoading() {
         confirmationPresenter?.stopLoading()
+    }
+}
+
+extension BACSDirectDebitComponent {
+
+    // TODO: - Add documentation
+    public struct Configuration {
+
+        // MARK: - Properties
+
+        internal let amount: Amount
+
+        // MARK: - Initializers
+
+        public init(amount: Amount) {
+            self.amount = amount
+        }
     }
 }

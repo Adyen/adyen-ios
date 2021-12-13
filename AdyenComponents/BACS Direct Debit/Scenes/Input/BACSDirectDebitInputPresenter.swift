@@ -12,7 +12,7 @@ internal protocol BACSInputPresenterProtocol: AnyObject {
     func viewWillAppear()
 }
 
-internal class BACSDirectDebitPresenter: BACSInputPresenterProtocol {
+internal class BACSInputDirectDebitPresenter: BACSInputPresenterProtocol {
 
     // MARK: - Properties
 
@@ -21,6 +21,7 @@ internal class BACSDirectDebitPresenter: BACSInputPresenterProtocol {
     private weak var router: BACSDirectDebitRouterProtocol?
     private let itemsFactory: BACSItemsFactoryProtocol
     private var data: BACSDirectDebitData?
+    private let amount: Amount?
 
     // MARK: - Items
 
@@ -36,10 +37,12 @@ internal class BACSDirectDebitPresenter: BACSInputPresenterProtocol {
 
     internal init(view: BACSInputFormViewProtocol,
                   router: BACSDirectDebitRouterProtocol,
-                  itemsFactory: BACSItemsFactoryProtocol) {
+                  itemsFactory: BACSItemsFactoryProtocol,
+                  amount: Amount?) {
         self.view = view
         self.router = router
         self.itemsFactory = itemsFactory
+        self.amount = amount
     }
 
     // MARK: - BACSDirectDebitInputPresenterProtocol
@@ -65,7 +68,7 @@ internal class BACSDirectDebitPresenter: BACSInputPresenterProtocol {
         bankAccountNumberItem = itemsFactory.createBankAccountNumberItem()
         sortCodeItem = itemsFactory.createSortCodeItem()
         emailItem = itemsFactory.createEmailItem()
-        amountConsentToggleItem = itemsFactory.createAmountConsentToggle()
+        amountConsentToggleItem = itemsFactory.createAmountConsentToggle(amount: amount?.formatted)
         legalConsentToggleItem = itemsFactory.createLegalConsentToggle()
 
         continueButtonItem = itemsFactory.createContinueButton()

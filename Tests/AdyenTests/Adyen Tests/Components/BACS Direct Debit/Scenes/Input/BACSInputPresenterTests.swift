@@ -9,7 +9,7 @@ class BACSInputPresenterTests: XCTestCase {
     var view: BACSInputFormViewProtocolMock!
     var router: BACSRouterProtocolMock!
     var itemsFactory: BACSItemsFactoryProtocolMock!
-    var sut: BACSDirectDebitPresenter!
+    var sut: BACSInputDirectDebitPresenter!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -17,10 +17,12 @@ class BACSInputPresenterTests: XCTestCase {
         view = BACSInputFormViewProtocolMock()
         router = BACSRouterProtocolMock()
         itemsFactory = itemsFactoryMock
+        let amount = Amount(value: 105.7, currencyCode: "US", localeIdentifier: nil)
 
-        sut = BACSDirectDebitPresenter(view: view,
-                                       router: router,
-                                       itemsFactory: itemsFactory)
+        sut = BACSInputDirectDebitPresenter(view: view,
+                                            router: router,
+                                            itemsFactory: itemsFactory,
+                                            amount: amount)
     }
 
     override func tearDownWithError() throws {
@@ -41,7 +43,7 @@ class BACSInputPresenterTests: XCTestCase {
         XCTAssertEqual(itemsFactory.createSortCodeItemCallsCount, 1)
         XCTAssertEqual(itemsFactory.createEmailItemCallsCount, 1)
         XCTAssertEqual(itemsFactory.createContinueButtonCallsCount, 1)
-        XCTAssertEqual(itemsFactory.createAmountConsentToggleCallsCount, 1)
+        XCTAssertEqual(itemsFactory.createAmountConsentToggleAmountCallsCount, 1)
         XCTAssertEqual(itemsFactory.createLegalConsentToggleCallsCount, 1)
     }
 
@@ -226,7 +228,7 @@ class BACSInputPresenterTests: XCTestCase {
         itemsFactory.createEmailItemReturnValue = emailItem
 
         itemsFactory.createContinueButtonReturnValue = FormButtonItem(style: styleProvider.mainButtonItem)
-        itemsFactory.createAmountConsentToggleReturnValue = FormToggleItem()
+        itemsFactory.createAmountConsentToggleAmountReturnValue = FormToggleItem()
         itemsFactory.createLegalConsentToggleReturnValue = FormToggleItem()
 
         return itemsFactory

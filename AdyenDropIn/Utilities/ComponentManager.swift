@@ -201,7 +201,14 @@ internal final class ComponentManager {
     }
 
     private func createBACSDirectDebit(_ paymentMethod: BACSDirectDebitPaymentMethod) -> BACSDirectDebitComponent {
-        let bacsDirectDebitComponent = BACSDirectDebitComponent(paymentMethod: paymentMethod, apiContext: apiContext)
+        var bacsConfiguration: BACSDirectDebitComponent.Configuration?
+        if let amount = configuration.payment?.amount {
+            bacsConfiguration = .init(amount: amount)
+        }
+
+        let bacsDirectDebitComponent = BACSDirectDebitComponent(paymentMethod: paymentMethod,
+                                                                apiContext: apiContext,
+                                                                configuration: bacsConfiguration)
         bacsDirectDebitComponent.presentationDelegate = presentationDelegate
         return bacsDirectDebitComponent
     }

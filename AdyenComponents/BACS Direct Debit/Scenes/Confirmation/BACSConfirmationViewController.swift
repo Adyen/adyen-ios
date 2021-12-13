@@ -11,8 +11,7 @@ internal protocol BACSConfirmationViewProtocol: FormViewProtocol {
     func setUserInteraction(enabled: Bool)
 }
 
-internal class BACSConfirmationViewController: FormViewController,
-    BACSConfirmationViewProtocol {
+internal class BACSConfirmationViewController: FormViewController, BACSConfirmationViewProtocol {
 
     // MARK: - Properties
 
