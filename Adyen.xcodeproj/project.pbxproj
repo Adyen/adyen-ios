@@ -82,7 +82,7 @@
 		C90D26A727565750001A488F /* FormViewController+ViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D26A627565750001A488F /* FormViewController+ViewProtocol.swift */; };
 		C9126051275A3A2800C03DC4 /* BACSItemsFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9126050275A3A2800C03DC4 /* BACSItemsFactoryTests.swift */; };
 		C927083827590B7500D15EA0 /* BACSInputFormViewProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D26B1275900B9001A488F /* BACSInputFormViewProtocolMock.swift */; };
-		C927083927590B7900D15EA0 /* BACSPresenterProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D26B32759048C001A488F /* BACSPresenterProtocolMock.swift */; };
+		C927083927590B7900D15EA0 /* BACSInputPresenterProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D26B32759048C001A488F /* BACSInputPresenterProtocolMock.swift */; };
 		C927083A27590B7D00D15EA0 /* BACSItemsFactoryProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D26B5275905B8001A488F /* BACSItemsFactoryProtocolMock.swift */; };
 		C927083E27590BDB00D15EA0 /* BACSInputFormViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C927083D27590BDB00D15EA0 /* BACSInputFormViewControllerTests.swift */; };
 		C927084027590FE800D15EA0 /* BACSInputPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C927083F27590FE800D15EA0 /* BACSInputPresenterTests.swift */; };
@@ -990,7 +990,7 @@
 		A0FA145626D65B6200627127 /* FormCardInstallmentsItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardInstallmentsItemView.swift; sourceTree = "<group>"; };
 		C90D26A627565750001A488F /* FormViewController+ViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormViewController+ViewProtocol.swift"; sourceTree = "<group>"; };
 		C90D26B1275900B9001A488F /* BACSInputFormViewProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputFormViewProtocolMock.swift; sourceTree = "<group>"; };
-		C90D26B32759048C001A488F /* BACSPresenterProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSPresenterProtocolMock.swift; sourceTree = "<group>"; };
+		C90D26B32759048C001A488F /* BACSInputPresenterProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputPresenterProtocolMock.swift; sourceTree = "<group>"; };
 		C90D26B5275905B8001A488F /* BACSItemsFactoryProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSItemsFactoryProtocolMock.swift; sourceTree = "<group>"; };
 		C9126050275A3A2800C03DC4 /* BACSItemsFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSItemsFactoryTests.swift; sourceTree = "<group>"; };
 		C927083D27590BDB00D15EA0 /* BACSInputFormViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputFormViewControllerTests.swift; sourceTree = "<group>"; };
@@ -1834,7 +1834,7 @@
 				C9BB460327622D9B00E6730B /* BACSConfirmationViewProtocolMock.swift */,
 				C90D26B1275900B9001A488F /* BACSInputFormViewProtocolMock.swift */,
 				C90D26B5275905B8001A488F /* BACSItemsFactoryProtocolMock.swift */,
-				C90D26B32759048C001A488F /* BACSPresenterProtocolMock.swift */,
+				C90D26B32759048C001A488F /* BACSInputPresenterProtocolMock.swift */,
 				C92708412759106500D15EA0 /* BACSRouterProtocolMock.swift */,
 			);
 			path = Mocks;
@@ -4996,7 +4996,7 @@
 				F9EDB7922396603F00CFB3C9 /* PaymentMethodListComponentTests.swift in Sources */,
 				F92385B72757AE8B0082F7B7 /* XCTestCaseExtensions.swift in Sources */,
 				F919DFA224ED599D0027976E /* AdyenActionComponentTests.swift in Sources */,
-				C927083927590B7900D15EA0 /* BACSPresenterProtocolMock.swift in Sources */,
+				C927083927590B7900D15EA0 /* BACSInputPresenterProtocolMock.swift in Sources */,
 				E702BE192602525E00280682 /* AssertsTests.swift in Sources */,
 				F9639B4924E28DC80073F38A /* IntervalCalculatorMock.swift in Sources */,
 				C92F6DBE26AFF336004BD516 /* PostalAddressMocks.swift in Sources */,

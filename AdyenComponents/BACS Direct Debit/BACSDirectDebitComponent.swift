@@ -42,8 +42,8 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
 
     // MARK: - Properties
 
-    private var inputPresenter: BACSInputPresenterProtocol?
-    private var confirmationPresenter: BACSConfirmationPresenterProtocol?
+    internal var inputPresenter: BACSInputPresenterProtocol?
+    internal var confirmationPresenter: BACSConfirmationPresenterProtocol?
 
     // MARK: - Initializers
 
