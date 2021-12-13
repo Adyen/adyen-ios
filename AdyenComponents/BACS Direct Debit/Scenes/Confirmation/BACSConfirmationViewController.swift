@@ -5,7 +5,7 @@
 //
 
 import Adyen
-import Foundation
+import UIKit
 
 internal protocol BACSConfirmationViewProtocol: FormViewProtocol {
     func setUserInteraction(enabled: Bool)
