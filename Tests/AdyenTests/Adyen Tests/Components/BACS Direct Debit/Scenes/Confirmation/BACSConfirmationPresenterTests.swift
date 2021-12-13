@@ -25,6 +25,10 @@ class BACSConfirmationPresenterTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
+        view = nil
+        router = nil
+        itemsFactory = nil
+        sut = nil
         try super.tearDownWithError()
     }
 
