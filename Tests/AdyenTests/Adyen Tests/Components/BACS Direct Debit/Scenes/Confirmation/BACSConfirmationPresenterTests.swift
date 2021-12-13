@@ -28,15 +28,42 @@ class BACSConfirmationPresenterTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testStartLoadingShouldShowActivityIndicatorInPaymentButto () throws {
+    func testViewDidLoadShouldCreateItems() throws {
+        // When
+        sut.viewDidLoad()
+
+        // Then
+        XCTAssertEqual(itemsFactory.createHolderNameItemCallsCount, 1)
+        XCTAssertEqual(itemsFactory.createBankAccountNumberItemCallsCount, 1)
+        XCTAssertEqual(itemsFactory.createSortCodeItemCallsCount, 1)
+        XCTAssertEqual(itemsFactory.createEmailItemCallsCount, 1)
+        XCTAssertEqual(itemsFactory.createPaymentButtonCallsCount, 1)
+    }
+
+    func testViewDidLoadShouldAddItemsToFormView() throws {
+        // When
+        sut.viewDidLoad()
+
+        // Then
+        XCTAssertEqual(view.addItemCallsCount, 7)
+    }
+
+    func testStartLoadingShouldShowActivityIndicatorInPaymentButton() throws {
+        // Given
+        sut.viewDidLoad()
+
         // When
         sut.startLoading()
 
         // Then
-        XCTAssertTrue(sut.paymentButtonItem?.showsActivityIndicator ?? false)
+        let showsActivityIndicator = try XCTUnwrap(sut.paymentButtonItem?.showsActivityIndicator)
+        XCTAssertTrue(showsActivityIndicator)
     }
 
     func testStartLoadingShouldDisableUsesrInteractionOnView() throws {
+        // Given
+        sut.viewDidLoad()
+
         // When
         sut.startLoading()
 
@@ -45,6 +72,32 @@ class BACSConfirmationPresenterTests: XCTestCase {
 
         let receivedUserInteractionValue = try XCTUnwrap(view.setUserInteractionEnabledReceivedValue)
         XCTAssertFalse(receivedUserInteractionValue)
+    }
+
+    func testStopLoadingShouldHideActivityIndicatorInPaymentButton() throws {
+        // Given
+        sut.viewDidLoad()
+
+        // When
+        sut.stopLoading()
+
+        // Then
+        let showsActivityIndicator = try XCTUnwrap(sut.paymentButtonItem?.showsActivityIndicator)
+        XCTAssertFalse(showsActivityIndicator)
+    }
+
+    func testStopLoadingShouldDisableUsesrInteractionOnView() throws {
+        // Given
+        sut.viewDidLoad()
+
+        // When
+        sut.stopLoading()
+
+        // Then
+        XCTAssertEqual(view.setUserInteractionEnabledCallsCount, 1)
+
+        let receivedUserInteractionValue = try XCTUnwrap(view.setUserInteractionEnabledReceivedValue)
+        XCTAssertTrue(receivedUserInteractionValue)
     }
 
     // MARK: - Private
