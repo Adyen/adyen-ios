@@ -100,6 +100,20 @@ class BACSConfirmationPresenterTests: XCTestCase {
         XCTAssertTrue(receivedUserInteractionValue)
     }
 
+    func testPaymentButtonShouldHandlePayment() throws {
+        // Given
+        let expectedBacsData = bacsDataMock
+        sut.viewDidLoad()
+
+        // When
+        sut.paymentButtonItem?.buttonSelectionHandler?()
+
+        // Then
+        let bacsData = try XCTUnwrap(router.confirmPaymentWithDataReceivedData)
+        XCTAssertEqual(router.confirmPaymentWithDataCallsCount, 1)
+        XCTAssertEqual(expectedBacsData, bacsData)
+    }
+
     // MARK: - Private
 
     private var bacsDataMock: BACSDirectDebitData {
