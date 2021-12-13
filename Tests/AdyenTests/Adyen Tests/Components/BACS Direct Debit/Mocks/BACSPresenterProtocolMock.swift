@@ -5,6 +5,17 @@
 
 class BACSPresenterProtocolMock: BACSInputPresenterProtocol {
 
+    // MARK: - viewDidLoad
+
+    var viewDidLoadCallsCount = 0
+    var viewDidLoadCalled: Bool {
+        viewDidLoadCallsCount > 0
+    }
+
+    func viewDidLoad() {
+        viewDidLoadCallsCount += 1
+    }
+
     // MARK: - viewWillAppear
 
     var viewWillAppearCallsCount = 0

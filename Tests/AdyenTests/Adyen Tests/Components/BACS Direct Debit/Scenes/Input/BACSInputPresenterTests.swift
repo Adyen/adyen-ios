@@ -31,7 +31,10 @@ class BACSInputPresenterTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testItemsShouldBeSetupOnInitialization() throws {
+    func testViewDidLoadShouldCreateItems() throws {
+        // When
+        sut.viewDidLoad()
+
         // Then
         XCTAssertEqual(itemsFactory.createHolderNameItemCallsCount, 1)
         XCTAssertEqual(itemsFactory.createBankAccountNumberItemCallsCount, 1)
@@ -42,38 +45,44 @@ class BACSInputPresenterTests: XCTestCase {
         XCTAssertEqual(itemsFactory.createLegalConsentToggleCallsCount, 1)
     }
 
-    func testSetupViewShouldAddItemsToFormViewOnInitialization() throws {
+    func testViewDidLoadShouldAddItemsToFormView() throws {
         // When
+        sut.viewDidLoad()
+
+        // Then
         XCTAssertEqual(view.addItemCallsCount, 11)
     }
 
     func testContinuePaymentWhenButtonTappedShouldDisplayValidationOnView() throws {
         // When
+        sut.viewDidLoad()
         sut.continueButtonItem?.buttonSelectionHandler?()
 
-        // The
+        // Then
         XCTAssertEqual(view.displayValidationCallsCount, 1)
     }
 
     func testContinuePaymentWhenAnyTextItemIsNotValidShouldNotCallRouterPresentConfirmation() throws {
         // Given
+        sut.viewDidLoad()
         sut.amountConsentToggleItem?.value = true
         sut.legalConsentToggleItem?.value = true
 
         sut.holderNameItem?.value = bacsDataMock.holderName
         sut.bankAccountNumberItem?.value = bacsDataMock.bankAccountNumber
         sut.sortCodeItem?.value = bacsDataMock.bankLocationId
-        sut.emailItem?.value = bacsDataMock.shopperEmail
+        sut.emailItem?.value = "mail"
 
         // When
         sut.continueButtonItem?.buttonSelectionHandler?()
 
         // Then
-        XCTAssertEqual(router.presentConfirmationWithDataCallsCount, 1)
+        XCTAssertEqual(router.presentConfirmationWithDataCallsCount, 0)
     }
 
     func testContinuePaymentWhenAmountConsentItemIsDisabledShouldNotCallRouterPresentConfirmation() throws {
         // Given
+        sut.viewDidLoad()
         sut.amountConsentToggleItem?.value = false
         sut.legalConsentToggleItem?.value = true
 
@@ -91,6 +100,7 @@ class BACSInputPresenterTests: XCTestCase {
 
     func testContinuePaymentWhenLegalConsentItemIsDisabledShouldNotCallRouterPresentConfirmation() throws {
         // Given
+        sut.viewDidLoad()
         sut.amountConsentToggleItem?.value = true
         sut.legalConsentToggleItem?.value = false
 
@@ -108,6 +118,7 @@ class BACSInputPresenterTests: XCTestCase {
 
     func testContinuePaymentWhenAnyItemValueIsNilShouldNotCallRouterPresentConfirmation() throws {
         // Given
+        sut.viewDidLoad()
         sut.amountConsentToggleItem?.value = true
         sut.legalConsentToggleItem?.value = false
 
@@ -123,8 +134,9 @@ class BACSInputPresenterTests: XCTestCase {
         XCTAssertEqual(router.presentConfirmationWithDataCallsCount, 0)
     }
 
-    func testContinuePaymentWhenItemsAreValidShouldCallRouterPresentConfirmation() throws {
+    func testContinuePaymentWhenAllItemsAreValidShouldCallRouterPresentConfirmation() throws {
         // Given
+        sut.viewDidLoad()
         sut.amountConsentToggleItem?.value = true
         sut.legalConsentToggleItem?.value = true
 
@@ -142,6 +154,7 @@ class BACSInputPresenterTests: XCTestCase {
 
     func testContinuePaymentShouldCreateBacsDataWithCorrectValues() throws {
         // Given
+        sut.viewDidLoad()
         let expectedBacsData = bacsDataMock
 
         sut.amountConsentToggleItem?.value = true
@@ -163,6 +176,7 @@ class BACSInputPresenterTests: XCTestCase {
 
     func testViewWillAppearWhenThereIsDataInputShouldRestoreFields() throws {
         // Given
+        sut.viewDidLoad()
         let expectedBacsData = bacsDataMock
 
         sut.amountConsentToggleItem?.value = true
@@ -173,7 +187,7 @@ class BACSInputPresenterTests: XCTestCase {
         sut.sortCodeItem?.value = expectedBacsData.bankLocationId
         sut.emailItem?.value = expectedBacsData.shopperEmail
 
-        // Then
+        // When
         sut.continueButtonItem?.buttonSelectionHandler?()
         sut.viewWillAppear()
 
@@ -194,10 +208,23 @@ class BACSInputPresenterTests: XCTestCase {
         let styleProvider = FormComponentStyle()
 
         let itemsFactory = BACSItemsFactoryProtocolMock()
-        itemsFactory.createHolderNameItemReturnValue = FormTextInputItem()
-        itemsFactory.createBankAccountNumberItemReturnValue = FormTextInputItem()
-        itemsFactory.createSortCodeItemReturnValue = FormTextInputItem()
-        itemsFactory.createEmailItemReturnValue = FormTextInputItem()
+
+        let holderNameItem = FormTextInputItem()
+        holderNameItem.validator = LengthValidator(minimumLength: 1, maximumLength: 70)
+        itemsFactory.createHolderNameItemReturnValue = holderNameItem
+
+        let bankAccountNumberItem = FormTextInputItem()
+        bankAccountNumberItem.validator = NumericStringValidator(minimumLength: 1, maximumLength: 8)
+        itemsFactory.createBankAccountNumberItemReturnValue = bankAccountNumberItem
+
+        let sortCodeItem = FormTextInputItem()
+        sortCodeItem.validator = NumericStringValidator(minimumLength: 1, maximumLength: 6)
+        itemsFactory.createSortCodeItemReturnValue = sortCodeItem
+
+        let emailItem = FormTextInputItem()
+        emailItem.validator = EmailValidator()
+        itemsFactory.createEmailItemReturnValue = emailItem
+
         itemsFactory.createContinueButtonReturnValue = FormButtonItem(style: styleProvider.mainButtonItem)
         itemsFactory.createAmountConsentToggleReturnValue = FormToggleItem()
         itemsFactory.createLegalConsentToggleReturnValue = FormToggleItem()

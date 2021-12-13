@@ -1828,12 +1828,12 @@
 		C90D26B02757C284001A488F /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
+				C9BB460527622E9600E6730B /* BACSConfirmationPresenterProtocolMock.swift */,
+				C9BB460327622D9B00E6730B /* BACSConfirmationViewProtocolMock.swift */,
 				C90D26B1275900B9001A488F /* BACSInputFormViewProtocolMock.swift */,
 				C90D26B5275905B8001A488F /* BACSItemsFactoryProtocolMock.swift */,
 				C90D26B32759048C001A488F /* BACSPresenterProtocolMock.swift */,
 				C92708412759106500D15EA0 /* BACSRouterProtocolMock.swift */,
-				C9BB460327622D9B00E6730B /* BACSConfirmationViewProtocolMock.swift */,
-				C9BB460527622E9600E6730B /* BACSConfirmationPresenterProtocolMock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
