@@ -128,14 +128,13 @@ public final class ListCell: UITableViewCell {
             itemView.topAnchor.constraint(equalTo: topAnchor),
             itemView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
             itemView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
-            itemView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            itemView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            contentView.heightAnchor
+                .constraint(greaterThanOrEqualToConstant: 48.0)
+                .adyen.with(priority: .defaultHigh)
         ]
         
         NSLayoutConstraint.activate(constraints)
-        
-        let heightConstraint = contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 48.0)
-        heightConstraint.priority = .defaultHigh
-        heightConstraint.isActive = true
     }
     
 }
