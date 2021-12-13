@@ -48,6 +48,44 @@ class BACSConfirmationPresenterTests: XCTestCase {
         XCTAssertEqual(view.addItemCallsCount, 7)
     }
 
+    func testViewDidLoadShouldDisableAllFields() throws {
+        // When
+        sut.viewDidLoad()
+
+        // Then
+        let holderNameItem = try XCTUnwrap(sut.holderNameItem)
+        let bankAccountNumberItem = try XCTUnwrap(sut.bankAccountNumberItem)
+        let sortCodeItem = try XCTUnwrap(sut.sortCodeItem)
+        let emailItem = try XCTUnwrap(sut.emailItem)
+
+        XCTAssertFalse(holderNameItem.isEnabled)
+        XCTAssertFalse(bankAccountNumberItem.isEnabled)
+        XCTAssertFalse(sortCodeItem.isEnabled)
+        XCTAssertFalse(emailItem.isEnabled)
+    }
+
+    func testViewDidLoadShouldFillItemsWithProperData() throws {
+        // Given
+        let expectedHolderName = bacsDataMock.holderName
+        let expectedBankAccountNumber = bacsDataMock.bankAccountNumber
+        let expectedSortCode = bacsDataMock.bankLocationId
+        let expectedEmail = bacsDataMock.shopperEmail
+
+        // When
+        sut.viewDidLoad()
+
+        // Then
+        let holderName = try XCTUnwrap(sut.holderNameItem?.value)
+        let bankAccountNumber = try XCTUnwrap(sut.bankAccountNumberItem?.value)
+        let sortCode = try XCTUnwrap(sut.sortCodeItem?.value)
+        let email = try XCTUnwrap(sut.emailItem?.value)
+
+        XCTAssertEqual(expectedHolderName, holderName)
+        XCTAssertEqual(expectedBankAccountNumber, bankAccountNumber)
+        XCTAssertEqual(expectedSortCode, sortCode)
+        XCTAssertEqual(expectedEmail, email)
+    }
+
     func testStartLoadingShouldShowActivityIndicatorInPaymentButton() throws {
         // Given
         sut.viewDidLoad()
