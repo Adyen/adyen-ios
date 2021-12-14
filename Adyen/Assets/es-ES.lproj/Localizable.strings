@@ -139,6 +139,7 @@
 "adyen.bacs.bankLocationIdField.title" = "Código de sucursal";
 "adyen.bacs.legalConsentToggle.title" = "Confirmo que la cuenta está a mi nombre y soy el único firmante necesario para autorizar débitos directos en esta cuenta.";
 "adyen.bacs.amountConsentToggle.title" = "Estoy de acuerdo con que la cantidad anterior se deduzca de mi cuenta bancaria.";
+"adyen.bacs.specifiedAmountConsentToggle.title" = "Estoy de acuerdo en que se deduzca la siguiente cantidad de mi cuenta bancaria: %@.";
 "adyen.bacs.holderNameField.invalidMessage" = "El nombre del titular de la cuenta bancaria no es válido";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "El número de cuenta bancaria no es válido";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "El código de sucursal no es válido";

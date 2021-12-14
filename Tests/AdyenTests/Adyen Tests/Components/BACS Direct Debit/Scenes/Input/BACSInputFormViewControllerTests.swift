@@ -7,15 +7,15 @@ import XCTest
 class BACSInputFormViewControllerTests: XCTestCase {
 
     var sut: BACSInputFormViewController!
-    var presenter: BACSPresenterProtocolMock!
+    var presenter: BACSInputPresenterProtocolMock!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        presenter = BACSPresenterProtocolMock()
+        presenter = BACSInputPresenterProtocolMock()
 
         let styleProvider = FormComponentStyle()
         sut = BACSInputFormViewController(title: "BACS Direct Debit",
-                                                     styleProvider: styleProvider)
+                                          styleProvider: styleProvider)
         sut.presenter = presenter
     }
 
@@ -34,6 +34,14 @@ class BACSInputFormViewControllerTests: XCTestCase {
     func testDelegateIsSetOnCreation() throws {
         // When
         XCTAssertNotNil(sut.delegate)
+    }
+
+    func testViewDidLoadShouldCallPresenterViewDidLoad() throws {
+        // When
+        sut.viewDidLoad()
+
+        // Then
+        XCTAssertTrue(presenter.viewDidLoadCalled)
     }
 
     func testViewWillAppearShouldCallPresenterViewWillAppear() throws {

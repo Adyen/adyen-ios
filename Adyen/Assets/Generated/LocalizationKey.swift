@@ -289,6 +289,8 @@ public struct LocalizationKey {
     public static let bacsLegalConsentToggleTitle = LocalizationKey(key: "adyen.bacs.legalConsentToggle.title")
     /// I agree that the above amount will be deducted from my bank account.
     public static let bacsAmountConsentToggleTitle = LocalizationKey(key: "adyen.bacs.amountConsentToggle.title")
+    /// I agree that %@ will be deducted from my bank account.
+    public static let bacsSpecifiedAmountConsentToggleTitle = LocalizationKey(key: "adyen.bacs.specifiedAmountConsentToggle.title")
     /// Invalid bank account holder name
     public static let bacsHolderNameFieldInvalidMessage = LocalizationKey(key: "adyen.bacs.holderNameField.invalidMessage")
     /// Invalid bank account number
@@ -299,9 +301,9 @@ public struct LocalizationKey {
     public static let bacsPaymentButtonTitle = LocalizationKey(key: "adyen.bacs.paymentButton.title")
     /// Download your Direct Debit Instruction (DDI / Mandate)
     public static let bacsDownloadMandate = LocalizationKey(key: "adyen.bacs.downloadMandate")
-
+    
     internal let key: String
-
+    
     public init(key: String) {
         self.key = key
     }

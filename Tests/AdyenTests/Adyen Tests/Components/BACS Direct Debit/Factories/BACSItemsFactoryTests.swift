@@ -12,8 +12,8 @@ class BACSItemsFactoryTests: XCTestCase {
         try super.setUpWithError()
         let styleProvider = FormComponentStyle()
         sut = BACSItemsFactory(styleProvider: styleProvider,
-                                          localizationParameters: LocalizationParameters(),
-                                          scope: "")
+                               localizationParameters: LocalizationParameters(),
+                               scope: "")
     }
 
     override func tearDownWithError() throws {
@@ -150,13 +150,30 @@ class BACSItemsFactoryTests: XCTestCase {
         XCTAssertEqual(expectedIdentifier, identifier)
     }
 
-    func testCreateAmountConsentToggleShouldReturnItemWithCorrectProperties() throws {
+    func testCreateAmountConsentToggleWhenAmountIsNotNilShouldReturnItemWithCorrectProperties() throws {
+        // Given
+        let expectedAmount = "$105.6"
+        let expectedTitle = "I agree that \(expectedAmount) will be deducted from my bank account."
+        let expectedIdentifier = ".amountConsentToggleItem"
+
+        // When
+        let amountConsentToggleItem = sut.createAmountConsentToggle(amount: expectedAmount)
+
+        // Then
+        XCTAssertFalse(amountConsentToggleItem.value)
+        XCTAssertEqual(expectedTitle, amountConsentToggleItem.title)
+
+        let identifier = try XCTUnwrap(amountConsentToggleItem.identifier)
+        XCTAssertEqual(expectedIdentifier, identifier)
+    }
+
+    func testCreateAmountConsentToggleWhenAmountIsNilShouldReturnItemWithCorrectProperties() throws {
         // Given
         let expectedTitle = "I agree that the above amount will be deducted from my bank account."
         let expectedIdentifier = ".amountConsentToggleItem"
 
         // When
-        let amountConsentToggleItem = sut.createAmountConsentToggle()
+        let amountConsentToggleItem = sut.createAmountConsentToggle(amount: nil)
 
         // Then
         XCTAssertFalse(amountConsentToggleItem.value)

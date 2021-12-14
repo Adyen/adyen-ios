@@ -62,6 +62,7 @@ custom_categories:
       - IssuerListPaymentMethod
       - ApplePayPaymentMethod
       - SEPADirectDebitPaymentMethod
+      - BACSDirectDebitPaymentMethod
       - QiwiWalletPaymentMethod
       - AffirmPaymentMethod
       - AwaitPaymentMethod
@@ -164,7 +165,13 @@ custom_categories:
       - SEPADirectDebitDetails
       - IBANFormatter
       - IBANValidator
-      
+
+  - name: BACS Direct Debit Component
+    children:
+      - BACSDirectDebitPaymentMethod
+      - BACSDirectDebitComponent
+      - BACSDirectDebitDetails
+
   - name: Qiwi Wallet Component
     children:
       - QiwiWalletPaymentMethod
@@ -253,7 +260,7 @@ custom_categories:
       - AdditionalDetails
       - PaymentMethodDetails
       - AnyVoucherAction
-      
+
   - name: Public delegates
     children:
       - ActionComponentDelegate

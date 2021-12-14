@@ -38,12 +38,13 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     /// :nodoc:
     public var localizationParameters: LocalizationParameters?
 
+    /// The object that acts as the presentation delegate of the component.
     public weak var presentationDelegate: PresentationDelegate?
 
     // MARK: - Properties
 
-    private var inputPresenter: BACSInputPresenterProtocol?
-    private var confirmationPresenter: BACSConfirmationPresenterProtocol?
+    internal var inputPresenter: BACSInputPresenterProtocol?
+    internal var confirmationPresenter: BACSConfirmationPresenterProtocol?
 
     // MARK: - Initializers
 
@@ -56,7 +57,8 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     public init(paymentMethod: BACSDirectDebitPaymentMethod,
                 apiContext: APIContext,
                 style: FormComponentStyle = .init(),
-                localizationParameters: LocalizationParameters? = nil) {
+                localizationParameters: LocalizationParameters? = nil,
+                configuration: Configuration? = nil) {
         self.paymentMethod = paymentMethod
         self.apiContext = apiContext
         self.style = style
@@ -69,9 +71,10 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
         let itemsFactory = BACSItemsFactory(styleProvider: style,
                                             localizationParameters: localizationParameters,
                                             scope: String(describing: self))
-        self.inputPresenter = BACSDirectDebitPresenter(view: view,
-                                                       router: self,
-                                                       itemsFactory: itemsFactory)
+        self.inputPresenter = BACSInputDirectDebitPresenter(view: view,
+                                                            router: self,
+                                                            itemsFactory: itemsFactory,
+                                                            amount: configuration?.payment.amount)
         view.presenter = inputPresenter
     }
 }
@@ -127,5 +130,25 @@ extension BACSDirectDebitComponent: LoadingComponent {
     
     public func stopLoading() {
         confirmationPresenter?.stopLoading()
+    }
+}
+
+extension BACSDirectDebitComponent {
+
+    /// BACS Direct Debit configuration object.
+    public struct Configuration {
+
+        // MARK: - Properties
+
+        /// :nodoc:
+        internal let payment: Payment
+
+        // MARK: - Initializers
+
+        /// Creates a BACS Direct Debit configuration with the specified payment.
+        /// - Parameter payment: The payment to be made.
+        public init(payment: Payment) {
+            self.payment = payment
+        }
     }
 }

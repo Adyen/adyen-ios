@@ -139,6 +139,7 @@
 "adyen.bacs.bankLocationIdField.title" = "Bankcode";
 "adyen.bacs.legalConsentToggle.title" = "Ik bevestig dat de rekening op mijn naam staat en dat ik de enige ondertekenaar ben die toestemming kan geven voor automatische incasso's vanaf deze rekening.";
 "adyen.bacs.amountConsentToggle.title" = "Ik ga ermee akkoord dat het bovengenoemde bedrag van mijn bankrekening wordt afgeschreven.";
+"adyen.bacs.specifiedAmountConsentToggle.title" = "Ik ga ermee akkoord dat er %@ van mijn bankrekening wordt afgeschreven.";
 "adyen.bacs.holderNameField.invalidMessage" = "Ongeldige naam bankrekeninghouder";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Ongeldig bankrekeningnummer";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Ongeldige bankcode";

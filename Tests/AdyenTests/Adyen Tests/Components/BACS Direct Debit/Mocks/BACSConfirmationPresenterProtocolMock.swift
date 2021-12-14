@@ -5,6 +5,17 @@
 
 class BACSConfirmationPresenterProtocolMock: BACSConfirmationPresenterProtocol {
 
+    // MARK: - viewDidLoad
+
+    var viewDidLoadCallsCount = 0
+    var viewDidLoadCalled: Bool {
+        viewDidLoadCallsCount > 0
+    }
+
+    func viewDidLoad() {
+        viewDidLoadCallsCount += 1
+    }
+
     // MARK: - startLoading
 
     var startLoadingCallsCount = 0

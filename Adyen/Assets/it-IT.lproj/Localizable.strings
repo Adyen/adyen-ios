@@ -139,6 +139,7 @@
 "adyen.bacs.bankLocationIdField.title" = "Sort code";
 "adyen.bacs.legalConsentToggle.title" = "Confermo che il conto è intestato al sottoscritto e che sono l'unico firmatario a dover autorizzare l'addebito diretto su questo conto.";
 "adyen.bacs.amountConsentToggle.title" = "Accetto che l'importo sopra indicato venga detratto dal mio conto bancario.";
+"adyen.bacs.specifiedAmountConsentToggle.title" = "Accetto che l'importo di %@ venga detratto dal mio conto bancario.";
 "adyen.bacs.holderNameField.invalidMessage" = "Nome del titolare del conto bancario non valido";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Numero di conto bancario non valido";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Sort code non valido";

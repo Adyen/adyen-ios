@@ -139,6 +139,7 @@
 "adyen.bacs.bankLocationIdField.title" = "Številka banke";
 "adyen.bacs.legalConsentToggle.title" = "Potrjujem, da je račun ustvarjen v mojem imenu in sem edini podpisnik za odobritev neposredne bremenitve za ta račun.";
 "adyen.bacs.amountConsentToggle.title" = "Soglašam s tem, da bo zgornji znesek odtegnjen z mojega bančnega računa.";
+"adyen.bacs.specifiedAmountConsentToggle.title" = "Soglašam, da bo znesek %@ odtegnjen z mojega bančnega računa.";
 "adyen.bacs.holderNameField.invalidMessage" = "Neveljavno ime imetnika računa";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Neveljavna številka bančnega računa";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Neveljavna številka banke";

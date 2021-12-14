@@ -85,15 +85,18 @@ class BACSItemsFactoryProtocolMock: BACSItemsFactoryProtocol {
 
     // MARK: - createAmountConsentToggle
 
-    var createAmountConsentToggleCallsCount = 0
-    var createAmountConsentToggleCalled: Bool {
-        return createAmountConsentToggleCallsCount > 0
+    var createAmountConsentToggleAmountCallsCount = 0
+    var createAmountConsentToggleAmountCalled: Bool {
+        return createAmountConsentToggleAmountCallsCount > 0
     }
-    var createAmountConsentToggleReturnValue: FormToggleItem!
 
-    func createAmountConsentToggle() -> FormToggleItem {
-        createAmountConsentToggleCallsCount += 1
-        return createAmountConsentToggleReturnValue
+    var createAmountConsentToggleAmountReturnValue: FormToggleItem!
+    var createAmountConsentToggleReceivedAmount: String?
+
+    func createAmountConsentToggle(amount: String?) -> FormToggleItem {
+        createAmountConsentToggleAmountCallsCount += 1
+        createAmountConsentToggleReceivedAmount = amount
+        return createAmountConsentToggleAmountReturnValue
     }
 
     // MARK: - createLegalConsentToggle

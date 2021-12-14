@@ -14,7 +14,7 @@ internal protocol BACSItemsFactoryProtocol {
     func createEmailItem() -> FormTextInputItem
     func createContinueButton() -> FormButtonItem
     func createPaymentButton() -> FormButtonItem
-    func createAmountConsentToggle() -> FormToggleItem
+    func createAmountConsentToggle(amount: String?) -> FormToggleItem
     func createLegalConsentToggle() -> FormToggleItem
 }
 
@@ -156,11 +156,16 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
         return buttonItem
     }
 
-    internal func createAmountConsentToggle() -> FormToggleItem {
+    internal func createAmountConsentToggle(amount: String?) -> FormToggleItem {
         let toggleItem = FormToggleItem(style: styleProvider.toggle)
         toggleItem.value = false
 
-        let localizedTitle = localizedString(.bacsAmountConsentToggleTitle, localizationParameters)
+        var localizedTitle: String?
+        if let amount = amount {
+            localizedTitle = localizedString(.bacsSpecifiedAmountConsentToggleTitle, localizationParameters, amount)
+        } else {
+            localizedTitle = localizedString(.bacsAmountConsentToggleTitle, localizationParameters)
+        }
         toggleItem.title = localizedTitle
 
         let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,

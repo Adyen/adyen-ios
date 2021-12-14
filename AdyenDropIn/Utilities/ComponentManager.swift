@@ -31,7 +31,7 @@ internal final class ComponentManager {
     
     internal let apiContext: APIContext
 
-    internal let presentationDelegate: PresentationDelegate
+    internal weak var presentationDelegate: PresentationDelegate?
     
     internal init(paymentMethods: PaymentMethods,
                   configuration: DropInComponent.Configuration,
@@ -201,7 +201,14 @@ internal final class ComponentManager {
     }
 
     private func createBACSDirectDebit(_ paymentMethod: BACSDirectDebitPaymentMethod) -> BACSDirectDebitComponent {
-        let bacsDirectDebitComponent = BACSDirectDebitComponent(paymentMethod: paymentMethod, apiContext: apiContext)
+        var bacsConfiguration: BACSDirectDebitComponent.Configuration?
+        if let payment = configuration.payment {
+            bacsConfiguration = .init(payment: payment)
+        }
+
+        let bacsDirectDebitComponent = BACSDirectDebitComponent(paymentMethod: paymentMethod,
+                                                                apiContext: apiContext,
+                                                                configuration: bacsConfiguration)
         bacsDirectDebitComponent.presentationDelegate = presentationDelegate
         return bacsDirectDebitComponent
     }
