@@ -72,7 +72,6 @@
 		A02AF3DF274FB30200E1636C /* ApplePayStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02AF3DE274FB30200E1636C /* ApplePayStyle.swift */; };
 		A02AF3E8275A0D0900E1636C /* BACSActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02AF3E7275A0D0900E1636C /* BACSActionComponent.swift */; };
 		A02AF3EA275A3A5100E1636C /* BACSAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02AF3E9275A3A5100E1636C /* BACSAction.swift */; };
-		A02AF3ED275A3CAD00E1636C /* BACSActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02AF3EC275A3CAD00E1636C /* BACSActionViewController.swift */; };
 		A03EE72F2760A2E300470561 /* BACSActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EE72E2760A2E300470561 /* BACSActionViewModel.swift */; };
 		A03EE7312761297800470561 /* BACSActionComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EE7302761297800470561 /* BACSActionComponentStyle.swift */; };
 		A03EE73327612BF300470561 /* BACSActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EE73227612BF300470561 /* BACSActionView.swift */; };
@@ -987,7 +986,6 @@
 		A02AF3DE274FB30200E1636C /* ApplePayStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayStyle.swift; sourceTree = "<group>"; };
 		A02AF3E7275A0D0900E1636C /* BACSActionComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSActionComponent.swift; sourceTree = "<group>"; };
 		A02AF3E9275A3A5100E1636C /* BACSAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSAction.swift; sourceTree = "<group>"; };
-		A02AF3EC275A3CAD00E1636C /* BACSActionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSActionViewController.swift; sourceTree = "<group>"; };
 		A03EE72E2760A2E300470561 /* BACSActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSActionViewModel.swift; sourceTree = "<group>"; };
 		A03EE7302761297800470561 /* BACSActionComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSActionComponentStyle.swift; sourceTree = "<group>"; };
 		A03EE73227612BF300470561 /* BACSActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSActionView.swift; sourceTree = "<group>"; };
@@ -1824,7 +1822,6 @@
 		A02AF3EB275A3C6F00E1636C /* BACS */ = {
 			isa = PBXGroup;
 			children = (
-				A02AF3EC275A3CAD00E1636C /* BACSActionViewController.swift */,
 				A03EE72E2760A2E300470561 /* BACSActionViewModel.swift */,
 				A03EE73227612BF300470561 /* BACSActionView.swift */,
 			);
@@ -5321,7 +5318,6 @@
 				A03EE73327612BF300470561 /* BACSActionView.swift in Sources */,
 				F97C84D925C178E900D7F85C /* VoucherComponent.swift in Sources */,
 				F97BC22C2667768B00F1D242 /* AppleWalletPassProvider.swift in Sources */,
-				A02AF3ED275A3CAD00E1636C /* BACSActionViewController.swift in Sources */,
 				F917618525A30B8500D653BE /* Submit3DS2FingerprintRequest.swift in Sources */,
 				F9175FE52594999C00D653BE /* PollingHandlerProvider.swift in Sources */,
 				F917613425A30B5700D653BE /* ThreeDS2Component.swift in Sources */,
