@@ -287,19 +287,20 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
         }
     }
 
+    /// :nodoc:
+    open func resetValidationStatus() {
+        removeAccessoryIfNeeded()
+        hideAlertLabel(true, animated: false)
+        unhighlightSeparatorView()
+        titleLabel.textColor = defaultTitleColor
+    }
+
     private func removeAccessoryIfNeeded() {
         if case .customView = accessory {
             /* Do nothing */
         } else {
             accessory = .none
         }
-    }
-    
-    open func resetValidationStatus() {
-        removeAccessoryIfNeeded()
-        hideAlertLabel(true, animated: false)
-        unhighlightSeparatorView()
-        titleLabel.textColor = defaultTitleColor
     }
     
     private func hideAlertLabel(_ hidden: Bool, animated: Bool = true) {

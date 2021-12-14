@@ -17,10 +17,13 @@ public final class FormTextInputItemView: FormTextItemView<FormTextInputItem> {
 
         // TODO: - Refactor with right logic
         observe(item.$isEnabled) { [weak self] isEnabled in
-            self?.textField.isEnabled = isEnabled
+            guard let self = self else { return }
+            self.textField.isEnabled = isEnabled
             if !isEnabled {
-                self?.resetValidationStatus()
+                self.resetValidationStatus()
             }
+
+            self.textField.textColor = isEnabled ? item.style.text.color : item.style.text.disabledColor
         }
     }
 }
