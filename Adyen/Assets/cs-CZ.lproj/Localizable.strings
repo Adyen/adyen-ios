@@ -139,7 +139,9 @@
 "adyen.bacs.bankLocationIdField.title" = "Kód Sort";
 "adyen.bacs.legalConsentToggle.title" = "Potvrzuji, že účet je veden na moje jméno a jsem jediným disponentem, jehož podpis je nutný ke schválení přímého inkasa.";
 "adyen.bacs.amountConsentToggle.title" = "Souhlasím s tím, že mi bude následující částka odečtena z bankovního účtu.";
+"adyen.bacs.specifiedAmountConsentToggle.title" = "Souhlasím, aby mi částka %@ byla odečtena z bankovního účtu.";
 "adyen.bacs.holderNameField.invalidMessage" = "Neplatné jméno držitele bankovního účtu";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Neplatné číslo bankovního účtu";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Neplatný kód Sort";
 "adyen.bacs.paymentButton.title" = "Potvrdit a zaplatit";
+"adyen.bacs.downloadMandate" = "Stáhněte si pokyny k přímému inkasu (DDI / podpisové právo)";

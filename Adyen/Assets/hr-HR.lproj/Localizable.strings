@@ -139,7 +139,9 @@
 "adyen.bacs.bankLocationIdField.title" = "Identifikacijski kôd banke (UK)";
 "adyen.bacs.legalConsentToggle.title" = "Potvrđujem da je račun na moje ime i da sam jedini potpisnik potreban za autorizaciju izravnog terećenja na ovom računu.";
 "adyen.bacs.amountConsentToggle.title" = "Slažem se da se gore navedeni iznos oduzme s mog bankovnog računa.";
+"adyen.bacs.specifiedAmountConsentToggle.title" = "Slažem se da će moj bankovni račun biti terećen za %@.";
 "adyen.bacs.holderNameField.invalidMessage" = "Nevažeće ime vlasnika bankovnog računa";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Nevažeći broj bankovnog računa";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Nevažeći identifikacijski kôd banke (UK)";
 "adyen.bacs.paymentButton.title" = "Potvrdi i plati";
+"adyen.bacs.downloadMandate" = "Preuzmite upute za izravno terećenje (DDI / mandat)";

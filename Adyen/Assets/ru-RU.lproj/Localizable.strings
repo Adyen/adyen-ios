@@ -139,7 +139,9 @@
 "adyen.bacs.bankLocationIdField.title" = "Код банка";
 "adyen.bacs.legalConsentToggle.title" = "Подтверждаю, что счет оформлен на мое имя и что я – единственное лицо, имеющее право подписи, разрешающей прямое дебетование средств со счета.";
 "adyen.bacs.amountConsentToggle.title" = "Выражаю согласие на списание вышеуказанной суммы с моего банковского счета.";
+"adyen.bacs.specifiedAmountConsentToggle.title" = "Выражаю согласие на списание %@ с моего банковского счета.";
 "adyen.bacs.holderNameField.invalidMessage" = "Неверное имя владельца банковского счета";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Неверный номер банковского счета";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Неверный код банка";
 "adyen.bacs.paymentButton.title" = "Подтвердить и оплатить";
+"adyen.bacs.downloadMandate" = "Загрузить распоряжение прямого дебетования (DDI / поручение)";

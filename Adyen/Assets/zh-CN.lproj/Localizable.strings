@@ -139,7 +139,9 @@
 "adyen.bacs.bankLocationIdField.title" = "分类代码";
 "adyen.bacs.legalConsentToggle.title" = "我确认该账户为我名下的账户，并且我是授权该账户直接借记的唯一签署人。";
 "adyen.bacs.amountConsentToggle.title" = "我同意从银行账户中扣除上述金额。";
+"adyen.bacs.specifiedAmountConsentToggle.title" = "我同意从我的银行账户中扣除以下金额：%@。";
 "adyen.bacs.holderNameField.invalidMessage" = "无效的银行账户持有人姓名";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "无效的银行账号";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "无效的分类代码";
 "adyen.bacs.paymentButton.title" = "确认并支付";
+"adyen.bacs.downloadMandate" = "下载您的直接借记指示（DDI/委托）";

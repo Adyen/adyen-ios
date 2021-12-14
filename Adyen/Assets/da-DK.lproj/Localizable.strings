@@ -139,7 +139,9 @@
 "adyen.bacs.bankLocationIdField.title" = "Registreringsnummer";
 "adyen.bacs.legalConsentToggle.title" = "Jeg bekræfter, at kontoen er i mit navn, og at jeg er den eneste underskriver, der kræves for at godkende direkte debitering af kontoen.";
 "adyen.bacs.amountConsentToggle.title" = "Jeg accepterer, at beløbet ovenfor trækkes på min bankkonto.";
+"adyen.bacs.specifiedAmountConsentToggle.title" = "Jeg accepterer, at %@ hæves på min bankkonto.";
 "adyen.bacs.holderNameField.invalidMessage" = "Ugyldigt navn på bankkontohaver";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Ugyldigt bankkontonummer";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Ugyldigt registreringsnummer";
 "adyen.bacs.paymentButton.title" = "Bekræft, og betal";
+"adyen.bacs.downloadMandate" = "Download vejledningen til direkte debitering (fuldmagt til direkte debitering)";

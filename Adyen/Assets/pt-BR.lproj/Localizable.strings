@@ -139,7 +139,9 @@
 "adyen.bacs.bankLocationIdField.title" = "Código de classificação";
 "adyen.bacs.legalConsentToggle.title" = "Confirmo que a conta está em meu nome e que sou o único signatário que deve autorizar o débito direto nessa conta.";
 "adyen.bacs.amountConsentToggle.title" = "Concordo que o valor acima seja deduzido da minha conta bancária.";
+"adyen.bacs.specifiedAmountConsentToggle.title" = "Concordo que o valor de %@ seja deduzido da minha conta bancária.";
 "adyen.bacs.holderNameField.invalidMessage" = "Nome do titular da conta bancária inválido";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Número da conta bancária inválido";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Código de classificação inválido";
 "adyen.bacs.paymentButton.title" = "Confirmar e pagar";
+"adyen.bacs.downloadMandate" = "Baixar instrução de débito direto (DDI)";
