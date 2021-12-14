@@ -21,31 +21,34 @@ internal final class BACSActionView: UIView {
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [imageView, messageLabel, mainButton])
         stackView.axis = .vertical
-        stackView.spacing = 30
+        stackView.spacing = 10
         stackView.alignment = .center
         return stackView
     }()
     
-    // :nodoc:
-    internal lazy var imageView: UIImageView = {
-        var image = UIImage(named: viewModel.imageName)
-        if image == nil {
-            image = UIImage(named: viewModel.imageName, in: Bundle.actionsInternalResources, compatibleWith: nil)
-        }
-        let imageView = UIImageView(image: image)
-        imageView.contentMode = .center
+    internal lazy var imageView: NetworkImageView = {
+        let imageView = NetworkImageView()
+        imageView.imageURL = viewModel.imageURL
         imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "icon")
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 52).isActive = true
+        imageView.adyen.round(using: style.image.cornerRounding)
+        imageView.contentMode = style.image.contentMode
+        imageView.layer.masksToBounds = style.image.clipsToBounds
+        imageView.layer.borderColor = style.image.borderColor?.cgColor
+        imageView.layer.borderWidth = style.image.borderWidth
+        imageView.backgroundColor = style.image.backgroundColor
         
         return imageView
     }()
     
-    /// :nodoc:
     internal lazy var messageLabel: UILabel = {
         let label = UILabel(style: style.messageLabel)
         label.text = viewModel.message
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
+        label.setContentHuggingPriority(.required, for: .vertical)
         label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "messageLabel")
         
         return label
@@ -75,6 +78,7 @@ internal final class BACSActionView: UIView {
         self.viewModel = viewModel
         self.style = style
         super.init(frame: .zero)
+        configureViews()
     }
     
     @available(*, unavailable)
@@ -83,8 +87,9 @@ internal final class BACSActionView: UIView {
     }
     
     private func configureViews() {
-        stackView.adyen.anchor(inside: self)
-        
+        backgroundColor = style.backgroundColor
+        addSubview(stackView)
+        stackView.adyen.anchor(inside: self, with: UIEdgeInsets(top: 10, left: 20, bottom: -30, right: -20))
     }
     
     @objc private func onMainButtonTap() {

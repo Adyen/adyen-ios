@@ -43,23 +43,41 @@ public final class BACSActionComponent: ActionComponent, ShareableComponent {
         
         Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: apiContext)
         
+        let imageURL = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue,
+                                               environment: apiContext.environment,
+                                               size: .medium)
         let viewModel = BACSActionViewModel(message: localizedString(.bacsDownloadMandate, localizationParameters),
-                                            imageName: "",
+                                            imageURL: imageURL,
                                             buttonTitle: localizedString(.boletoDownloadPdf, localizationParameters))
         let view = BACSActionView(viewModel: viewModel, style: style)
+        view.delegate = self
         let viewController = ADYViewController(view: view)
         
         setUpPresenterViewController(parentViewController: viewController)
 
         if let presentationDelegate = presentationDelegate {
             let presentableComponent = PresentableComponentWrapper(component: self,
-                                                                   viewController: viewController)
+                                                                   viewController: viewController, navBarType: navBarType())
             presentationDelegate.present(component: presentableComponent)
         } else {
             AdyenAssertion.assertionFailure(
                 message: "PresentationDelegate is nil. Provide a presentation delegate to VoucherComponent."
             )
         }
+    }
+    
+    private func navBarType() -> NavigationBarType {
+        let model = ActionNavigationBar.Model(leadingButtonTitle: nil,
+                                              trailingButtonTitle: Bundle.Adyen.localizedDoneCopy)
+        let style = ActionNavigationBar.Style(leadingButton: nil,
+                                              trailingButton: style.doneButton,
+                                              backgroundColor: style.backgroundColor)
+        
+        let navBar = ActionNavigationBar(model: model, style: style)
+        navBar.trailingButtonHandler = { [weak self] in
+            self.map { $0.delegate?.didComplete(from: $0) }
+        }
+        return .custom(navBar)
     }
 }
 

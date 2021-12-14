@@ -131,20 +131,18 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     internal let presenterViewController = UIViewController()
         
     private func navBarType() -> NavigationBarType {
-        let localizedEdit = Bundle.Adyen.localizedEditCopy
-        let localizedDone = Bundle.Adyen.localizedDoneCopy
-        let model = VoucherNavBar.Model(
-            editButtonTitle: localizedEdit,
-            doneButtonTitle: localizedDone,
-            style: VoucherNavBar.Model.Style(
-                editButton: style.editButton,
-                doneButton: style.doneButton,
-                backgroundColor: style.backgroundColor
-            )
-        )
-        let navBar = VoucherNavBar(
-            model: model
-        )
+        let model = ActionNavigationBar.Model(leadingButtonTitle: Bundle.Adyen.localizedEditCopy,
+                                              trailingButtonTitle: Bundle.Adyen.localizedDoneCopy)
+        let style = ActionNavigationBar.Style(leadingButton: style.editButton,
+                                              trailingButton: style.doneButton,
+                                              backgroundColor: style.backgroundColor)
+        
+        let navBar = ActionNavigationBar(model: model, style: style)
+        
+        navBar.leadingButtonHandler = {
+            navBar.onCancelHandler?()
+        }
+        
         navBar.trailingButtonHandler = { [weak self] in
             self.map { $0.delegate?.didComplete(from: $0) }
         }

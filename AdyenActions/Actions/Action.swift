@@ -35,7 +35,7 @@ public enum Action: Decodable {
     case qrCode(QRCodeAction)
     
     /// Indicates a BACS action is presented to the shopper.
-    case bacsDirectDebit(BACSAction)
+    case bacs(BACSAction)
     
     // MARK: - Coding
     
@@ -78,7 +78,7 @@ public enum Action: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         // extract bacs from others since it is not fully a voucher
         if (try? container.decode(String.self, forKey: .paymentMethodType)) == Constant.bacsDirectDebitName {
-            return .bacsDirectDebit(try BACSAction(from: decoder))
+            return .bacs(try BACSAction(from: decoder))
         } else {
             return .voucher(try VoucherAction(from: decoder))
         }

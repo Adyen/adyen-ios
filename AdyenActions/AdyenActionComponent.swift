@@ -64,7 +64,7 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
             handle(voucher)
         case let .qrCode(qrCode):
             handle(qrCode)
-        case let .bacsDirectDebit(bacsAction):
+        case let .bacs(bacsAction):
             handle(bacsAction)
         }
     }
@@ -174,7 +174,7 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.localizationParameters = localizationParameters
-        // component.presentationDelegate = presentationDelegate
+        component.presentationDelegate = presentationDelegate
         
         component.handle(action)
         currentActionComponent = component

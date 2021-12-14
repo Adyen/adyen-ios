@@ -7,15 +7,11 @@
 import Adyen
 import Foundation
 
-// :nodoc:
 internal struct BACSActionViewModel {
     
-    // :nodoc:
     internal let message: String
     
-    // :nodoc:
-    internal let imageName: String
+    internal let imageURL: URL
     
-    // :nodoc:
     internal let buttonTitle: String
 }

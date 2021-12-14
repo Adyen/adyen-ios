@@ -31,7 +31,7 @@ public struct VoucherComponentStyle: ViewStyle {
         background: UIColor.clear
     )
     
-    /// The edit button style.
+    /// The done button style.
     public var doneButton = ButtonStyle(
         title: TextStyle(font: .preferredFont(forTextStyle: .headline),
                          color: UIColor.Adyen.defaultBlue),

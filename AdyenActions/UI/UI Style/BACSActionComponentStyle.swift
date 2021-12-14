@@ -13,21 +13,32 @@ public struct BACSActionComponentStyle {
     /// The image style.
     public var image = ImageStyle(borderColor: nil,
                                   borderWidth: 0,
-                                  cornerRadius: 0,
-                                  clipsToBounds: false,
-                                  contentMode: .center)
+                                  cornerRadius: 8,
+                                  clipsToBounds: true,
+                                  contentMode: .scaleAspectFit)
+    
+    /// The done button style.
+    public var doneButton = ButtonStyle(
+        title: TextStyle(font: .preferredFont(forTextStyle: .headline),
+                         color: UIColor.Adyen.defaultBlue),
+        cornerRounding: .none,
+        background: UIColor.clear
+    )
     
     /// The main button style.
     public var mainButton = ButtonStyle(
         title: TextStyle(font: .preferredFont(forTextStyle: .headline),
-                         color: .white),
-        cornerRadius: 8,
-        background: UIColor.Adyen.defaultBlue
+                         color: UIColor.Adyen.defaultBlue),
+        cornerRounding: .none,
+        background: .clear
     )
     
     /// The message label style.
     public var messageLabel = TextStyle(font: .preferredFont(forTextStyle: .callout),
                                         color: UIColor.Adyen.componentLabel)
+    
+    /// The background color of the bacs action view.
+    public var backgroundColor = UIColor.clear
     
     /// Initializes the BACS action component style with the default style.
     public init() {}
