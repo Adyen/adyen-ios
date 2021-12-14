@@ -31,7 +31,7 @@ internal final class ComponentManager {
     
     internal let apiContext: APIContext
 
-    internal let presentationDelegate: PresentationDelegate
+    internal weak var presentationDelegate: PresentationDelegate?
     
     internal init(paymentMethods: PaymentMethods,
                   configuration: DropInComponent.Configuration,
