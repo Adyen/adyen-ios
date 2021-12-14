@@ -38,6 +38,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     /// :nodoc:
     public var localizationParameters: LocalizationParameters?
 
+    /// The object that acts as the presentation delegate of the component.
     public weak var presentationDelegate: PresentationDelegate?
 
     // MARK: - Properties
@@ -73,7 +74,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
         self.inputPresenter = BACSInputDirectDebitPresenter(view: view,
                                                             router: self,
                                                             itemsFactory: itemsFactory,
-                                                            amount: configuration?.amount)
+                                                            amount: configuration?.payment.amount)
         view.presenter = inputPresenter
     }
 }
@@ -134,17 +135,20 @@ extension BACSDirectDebitComponent: LoadingComponent {
 
 extension BACSDirectDebitComponent {
 
-    // TODO: - Add documentation
+    /// BACS Direct Debit configuration object.
     public struct Configuration {
 
         // MARK: - Properties
 
-        internal let amount: Amount
+        /// :nodoc:
+        internal let payment: Payment
 
         // MARK: - Initializers
 
-        public init(amount: Amount) {
-            self.amount = amount
+        /// Creates a BACS Direct Debit configuration with the specified payment.
+        /// - Parameter payment: The payment to be made.
+        public init(payment: Payment) {
+            self.payment = payment
         }
     }
 }
