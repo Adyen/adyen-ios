@@ -12,8 +12,8 @@ class BACSItemsFactoryTests: XCTestCase {
         try super.setUpWithError()
         let styleProvider = FormComponentStyle()
         sut = BACSItemsFactory(styleProvider: styleProvider,
-                                          localizationParameters: LocalizationParameters(),
-                                          scope: "")
+                               localizationParameters: LocalizationParameters(),
+                               scope: "")
     }
 
     override func tearDownWithError() throws {
@@ -150,10 +150,10 @@ class BACSItemsFactoryTests: XCTestCase {
         XCTAssertEqual(expectedIdentifier, identifier)
     }
 
-    func testCreateAmountConsentToggleWhenIsNotNilShouldReturnItemWithCorrectProperties() throws {
+    func testCreateAmountConsentToggleWhenAmountIsNotNilShouldReturnItemWithCorrectProperties() throws {
         // Given
         let expectedAmount = "$105.6"
-        let expectedTitle = "I agree that the above amount will be deducted from my bank account."
+        let expectedTitle = "I agree that \(expectedAmount) will be deducted from my bank account."
         let expectedIdentifier = ".amountConsentToggleItem"
 
         // When
@@ -167,7 +167,7 @@ class BACSItemsFactoryTests: XCTestCase {
         XCTAssertEqual(expectedIdentifier, identifier)
     }
 
-    func testCreateAmountConsentToggleWhenIsNilShouldReturnItemWithCorrectProperties() throws {
+    func testCreateAmountConsentToggleWhenAmountIsNilShouldReturnItemWithCorrectProperties() throws {
         // Given
         let expectedTitle = "I agree that the above amount will be deducted from my bank account."
         let expectedIdentifier = ".amountConsentToggleItem"

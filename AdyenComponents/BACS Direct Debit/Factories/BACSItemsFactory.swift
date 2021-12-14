@@ -163,7 +163,7 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
         var localizedTitle: String?
         if let amount = amount {
             // TODO: - Handle amount scenario
-//            localizedTitle = localizedString(.bacsAmountConsentToggleTitle, localizationParameters, amount)
+            localizedTitle = localizedString(.bacsSpecifiedAmountConsentToggleTitle, localizationParameters, amount)
         } else {
             localizedTitle = localizedString(.bacsAmountConsentToggleTitle, localizationParameters)
         }
