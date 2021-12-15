@@ -8,6 +8,7 @@ class BACSInputPresenterTests: XCTestCase {
 
     var view: BACSInputFormViewProtocolMock!
     var router: BACSRouterProtocolMock!
+    var tracker: BACSDirectDebitComponentTrackerProtocolMock!
     var itemsFactory: BACSItemsFactoryProtocolMock!
     var sut: BACSInputDirectDebitPresenter!
 
@@ -16,11 +17,13 @@ class BACSInputPresenterTests: XCTestCase {
 
         view = BACSInputFormViewProtocolMock()
         router = BACSRouterProtocolMock()
+        tracker = BACSDirectDebitComponentTrackerProtocolMock()
         itemsFactory = itemsFactoryMock
-        let amount = Amount(value: 105.7, currencyCode: "US", localeIdentifier: nil)
+        let amount = Amount(value: 105.7, currencyCode: "USD", localeIdentifier: nil)
 
         sut = BACSInputDirectDebitPresenter(view: view,
                                             router: router,
+                                            tracker: tracker,
                                             itemsFactory: itemsFactory,
                                             amount: amount)
     }
@@ -28,6 +31,7 @@ class BACSInputPresenterTests: XCTestCase {
     override func tearDownWithError() throws {
         view = nil
         router = nil
+        tracker = nil
         itemsFactory = nil
         sut = nil
         try super.tearDownWithError()
@@ -53,6 +57,14 @@ class BACSInputPresenterTests: XCTestCase {
 
         // Then
         XCTAssertEqual(view.addItemCallsCount, 11)
+    }
+
+    func testViewDidLoadShouldCallTrackerSendEvent() throws {
+        // When
+        sut.viewDidLoad()
+
+        // Then
+        XCTAssertEqual(tracker.sendEventCallsCount, 1)
     }
 
     func testContinuePaymentWhenButtonTappedShouldDisplayValidationOnView() throws {

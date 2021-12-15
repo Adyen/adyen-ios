@@ -18,6 +18,7 @@ internal class BACSInputDirectDebitPresenter: BACSInputPresenterProtocol {
 
     internal var paymentCancelled = false
     private let view: BACSInputFormViewProtocol
+    private let tracker: BACSDirectDebitComponentTrackerProtocol
     private weak var router: BACSDirectDebitRouterProtocol?
     private let itemsFactory: BACSItemsFactoryProtocol
     private var data: BACSDirectDebitData?
@@ -37,10 +38,12 @@ internal class BACSInputDirectDebitPresenter: BACSInputPresenterProtocol {
 
     internal init(view: BACSInputFormViewProtocol,
                   router: BACSDirectDebitRouterProtocol,
+                  tracker: BACSDirectDebitComponentTrackerProtocol,
                   itemsFactory: BACSItemsFactoryProtocol,
                   amount: Amount?) {
         self.view = view
         self.router = router
+        self.tracker = tracker
         self.itemsFactory = itemsFactory
         self.amount = amount
     }
@@ -48,6 +51,7 @@ internal class BACSInputDirectDebitPresenter: BACSInputPresenterProtocol {
     // MARK: - BACSDirectDebitInputPresenterProtocol
 
     internal func viewDidLoad() {
+        tracker.sendEvent()
         createItems()
         setupView()
     }

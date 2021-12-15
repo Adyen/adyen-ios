@@ -20,8 +20,13 @@ public final class FormTextInputItemView: FormTextItemView<FormTextInputItem> {
         observe(item.$isEnabled) { [weak self] isEnabled in
             guard let self = self else { return }
             self.textField.isEnabled = isEnabled
-            isEnabled ? self.updateValidationStatus() : self.resetValidationStatus()
-            self.textField.textColor = isEnabled ? item.style.text.color : item.style.text.disabledColor
+            if isEnabled {
+                self.updateValidationStatus()
+                self.textField.textColor = item.style.text.color
+            } else {
+                self.resetValidationStatus()
+                self.textField.textColor = item.style.text.disabledColor
+            }
         }
     }
 }

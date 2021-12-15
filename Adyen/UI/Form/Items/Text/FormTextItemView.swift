@@ -288,7 +288,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     }
 
     /// :nodoc:
-    open func resetValidationStatus() {
+    internal func resetValidationStatus() {
         removeAccessoryIfNeeded()
         hideAlertLabel(true, animated: false)
         unhighlightSeparatorView()

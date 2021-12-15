@@ -7,13 +7,14 @@
 import Adyen
 import UIKit
 
+/// :nodoc:
 internal protocol BACSDirectDebitRouterProtocol: AnyObject {
     func presentConfirmation(with data: BACSDirectDebitData)
     func confirmPayment(with data: BACSDirectDebitData)
 }
 
 /// A component that provides a form for BACS Direct Debit payments.
-public final class BACSDirectDebitComponent: PaymentComponent, PresentableComponent {
+public final class BACSDirectDebitComponent: PaymentComponent, PresentableComponent, TrackableComponent {
 
     // MARK: - PresentableComponent
 
@@ -68,11 +69,15 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
                                                styleProvider: style)
         self.viewController = view as UIViewController
 
+        let tracker = BACSDirectDebitComponentTracker(paymentMethod: paymentMethod,
+                                                      apiContext: apiContext,
+                                                      isDropIn: _isDropIn)
         let itemsFactory = BACSItemsFactory(styleProvider: style,
                                             localizationParameters: localizationParameters,
                                             scope: String(describing: self))
         self.inputPresenter = BACSInputDirectDebitPresenter(view: view,
                                                             router: self,
+                                                            tracker: tracker,
                                                             itemsFactory: itemsFactory,
                                                             amount: configuration?.payment.amount)
         view.presenter = inputPresenter
