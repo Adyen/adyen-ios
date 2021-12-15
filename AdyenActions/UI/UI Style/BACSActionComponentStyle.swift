@@ -38,7 +38,7 @@ public struct BACSActionComponentStyle {
                                         color: UIColor.Adyen.componentLabel)
     
     /// The background color of the bacs action view.
-    public var backgroundColor = UIColor.clear
+    public var backgroundColor = UIColor.Adyen.componentBackground
     
     /// Initializes the BACS action component style with the default style.
     public init() {}

@@ -21,7 +21,7 @@ internal final class BACSActionView: UIView {
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [imageView, messageLabel, mainButton])
         stackView.axis = .vertical
-        stackView.spacing = 10
+        stackView.spacing = 30
         stackView.alignment = .center
         return stackView
     }()
@@ -89,7 +89,11 @@ internal final class BACSActionView: UIView {
     private func configureViews() {
         backgroundColor = style.backgroundColor
         addSubview(stackView)
-        stackView.adyen.anchor(inside: self, with: UIEdgeInsets(top: 10, left: 20, bottom: -30, right: -20))
+        stackView.adyen.anchor(inside: .view(self), onEdges: [.left(20), .right(-20)])
+        NSLayoutConstraint.activate([stackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+                                     stackView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
+                                     stackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -30)])
+        
     }
     
     @objc private func onMainButtonTap() {
