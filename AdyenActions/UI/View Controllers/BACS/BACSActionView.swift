@@ -54,10 +54,10 @@ internal final class BACSActionView: UIView {
         return label
     }()
     
-    private lazy var mainButton: SubmitButton = {
-        let button = SubmitButton(style: style.mainButton)
+    private lazy var mainButton: UIButton = {
+        let button = UIButton(style: style.mainButton)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.title = viewModel.buttonTitle
+        button.setTitle(viewModel.buttonTitle, for: .normal)
         button.addTarget(self, action: #selector(onMainButtonTap), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "mainButton")
         button.preservesSuperviewLayoutMargins = true
