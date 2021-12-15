@@ -10,36 +10,6 @@ import AdyenCard
 import AdyenComponents
 import UIKit
 
-internal class BACSDirectDebitPresentationManager: PresentationDelegate {
-
-    // MARK: - Properties
-
-    private let bacsComponent: BACSDirectDebitComponent
-
-    private var navigationController: UINavigationController? {
-        bacsComponent.viewController.navigationController
-    }
-
-    // MARK: - Initializers
-
-    internal init(bacsComponent: BACSDirectDebitComponent) {
-        self.bacsComponent = bacsComponent
-    }
-
-    internal func present(component: PresentableComponent) {
-        let navigationItem = component.viewController.navigationItem
-        navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .cancel, target: self, action: #selector(dismiss))
-        navigationController?.pushViewController(component.viewController, animated: true)
-    }
-
-    // MARK: - Private
-
-    @objc
-    private func dismiss() {
-        navigationController?.dismiss(animated: true)
-    }
-}
-
 extension IntegrationExample {
 
     // MARK: - Standalone Components
@@ -70,8 +40,8 @@ extension IntegrationExample {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: BACSDirectDebitPaymentMethod.self) else { return }
         let component = BACSDirectDebitComponent(paymentMethod: paymentMethod,
                                                  apiContext: apiContext)
-        let presentationManager = BACSDirectDebitPresentationManager(bacsComponent: component)
-        component.presentationDelegate = presentationManager
+        bacsDirectDebitPresenter = BACSDirectDebitPresentationDelegate(bacsComponent: component)
+        component.presentationDelegate = bacsDirectDebitPresenter
         present(component)
     }
 
