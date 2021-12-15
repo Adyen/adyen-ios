@@ -94,6 +94,8 @@
 		C9338020276A09E7005B66CD /* BACSDirectDebitComponentTrackerProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C933801F276A09E7005B66CD /* BACSDirectDebitComponentTrackerProtocolMock.swift */; };
 		C93B01B72760B03400D311A1 /* BACSConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93B01B62760B03400D311A1 /* BACSConfirmationViewController.swift */; };
 		C93B01B92760B06300D311A1 /* BACSConfirmationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93B01B82760B06300D311A1 /* BACSConfirmationPresenter.swift */; };
+		C9454C37276A340B0086C218 /* BACSDirectDebitPresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9454C35276A33A00086C218 /* BACSDirectDebitPresentationDelegate.swift */; };
+		C9454C38276A34150086C218 /* BACSDirectDebitPresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9454C35276A33A00086C218 /* BACSDirectDebitPresentationDelegate.swift */; };
 		C95903DE275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95903DD275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift */; };
 		C96688BF26A6FC1C00DC7297 /* AffirmComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */; };
 		C978F5EF2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C978F5EE2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift */; };
@@ -1005,6 +1007,7 @@
 		C933801F276A09E7005B66CD /* BACSDirectDebitComponentTrackerProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitComponentTrackerProtocolMock.swift; sourceTree = "<group>"; };
 		C93B01B62760B03400D311A1 /* BACSConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSConfirmationViewController.swift; sourceTree = "<group>"; };
 		C93B01B82760B06300D311A1 /* BACSConfirmationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSConfirmationPresenter.swift; sourceTree = "<group>"; };
+		C9454C35276A33A00086C218 /* BACSDirectDebitPresentationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitPresentationDelegate.swift; sourceTree = "<group>"; };
 		C95903DD275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitComponentTests.swift; sourceTree = "<group>"; };
 		C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponentTests.swift; sourceTree = "<group>"; };
 		C978F5EE2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardSecurityCodeItemViewTests.swift; sourceTree = "<group>"; };
@@ -1904,6 +1907,14 @@
 				C93B01B82760B06300D311A1 /* BACSConfirmationPresenter.swift */,
 			);
 			path = Confirmation;
+			sourceTree = "<group>";
+		};
+		C9454C34276A33820086C218 /* PresentationDelegates */ = {
+			isa = PBXGroup;
+			children = (
+				C9454C35276A33A00086C218 /* BACSDirectDebitPresentationDelegate.swift */,
+			);
+			path = PresentationDelegates;
 			sourceTree = "<group>";
 		};
 		C96688BD26A6F72900DC7297 /* Affirm */ = {
@@ -3425,6 +3436,7 @@
 		F9615FC5252F49A400FA8EDD /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				C9454C34276A33820086C218 /* PresentationDelegates */,
 				E7D189F925D4425F006AD3B7 /* Models */,
 				E757F02425D2ED41007C813D /* Utils */,
 				F9EDB78723955A8400CFB3C9 /* Assets */,
@@ -5157,6 +5169,7 @@
 				E24FECFC226EFD3C00A65122 /* ComponentsItem.swift in Sources */,
 				F9A53C442549887F009000A7 /* DefaultAPIClient.swift in Sources */,
 				E24FED0D2270915A00A65122 /* CodingHelpers.swift in Sources */,
+				C9454C37276A340B0086C218 /* BACSDirectDebitPresentationDelegate.swift in Sources */,
 				E757F03925D2ED57007C813D /* APIClientMock.swift in Sources */,
 				E73C560625EE8C8D00B57758 /* APIClientHelper.swift in Sources */,
 				F9A53C4A2549887F009000A7 /* Environment.swift in Sources */,
@@ -5370,6 +5383,7 @@
 				F95B6DB525274DFF002C9062 /* CodingHelpers.swift in Sources */,
 				F9FE24EF2625A0D6001874BB /* IntegrationExamplePartialPayment.swift in Sources */,
 				F9A53C452549887F009000A7 /* DefaultAPIClient.swift in Sources */,
+				C9454C38276A34150086C218 /* BACSDirectDebitPresentationDelegate.swift in Sources */,
 				5A545FE72643CF2700724A87 /* ConfigurationView.swift in Sources */,
 				5A546010264433CE00724A87 /* SearchBar.swift in Sources */,
 				F95B6D9C2527454E002C9062 /* ComponentsView.swift in Sources */,

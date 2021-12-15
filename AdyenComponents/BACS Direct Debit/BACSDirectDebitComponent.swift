@@ -138,6 +138,15 @@ extension BACSDirectDebitComponent: LoadingComponent {
     }
 }
 
+// MARK: - Cancellable
+
+extension BACSDirectDebitComponent: Cancellable {
+
+    public func didCancel() {
+        // TODO: - Handle cancellation
+    }
+}
+
 extension BACSDirectDebitComponent {
 
     /// BACS Direct Debit configuration object.
