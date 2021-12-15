@@ -15,6 +15,9 @@ public struct TextStyle: ViewStyle {
     
     /// The color of the text.
     public var color: UIColor
+
+    /// The color of the text when the element is disabled.
+    public var disabledColor = UIColor.Adyen.secondaryComponentBackground
     
     /// The technique to use for aligning the text.
     public var textAlignment: NSTextAlignment = .center
@@ -29,16 +32,19 @@ public struct TextStyle: ViewStyle {
     ///
     /// - Parameter font: The font used to display the text.
     /// - Parameter color: The color of the text.
+    /// - Parameter disabledColor: The color of the text when the element is disabled.
     /// - Parameter textAlignment: The technique to use for aligning the text.
     /// - Parameter cornerRounding: The corners style of the text item.
     /// - Parameter backgroundColor: The background color.
     public init(font: UIFont,
                 color: UIColor,
+                disabledColor: UIColor = UIColor.Adyen.componentSecondaryLabel,
                 textAlignment: NSTextAlignment,
                 cornerRounding: CornerRounding = .none,
                 backgroundColor: UIColor = .clear) {
         self.font = font
         self.color = color
+        self.disabledColor = disabledColor
         self.textAlignment = textAlignment
         self.cornerRounding = cornerRounding
         self.backgroundColor = backgroundColor

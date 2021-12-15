@@ -12,15 +12,16 @@ public final class FormTextInputItemView: FormTextItemView<FormTextInputItem> {
 
     // MARK: - Initializers
 
+    /// Initializes the text item view.
+    /// - Parameter item: The item represented by the view.
     public required init(item: FormTextInputItem) {
         super.init(item: item)
 
-        // TODO: - Refactor with right logic
         observe(item.$isEnabled) { [weak self] isEnabled in
-            self?.textField.isEnabled = isEnabled
-            if !isEnabled {
-                self?.resetValidationStatus()
-            }
+            guard let self = self else { return }
+            self.textField.isEnabled = isEnabled
+            isEnabled ? self.updateValidationStatus() : self.resetValidationStatus()
+            self.textField.textColor = isEnabled ? item.style.text.color : item.style.text.disabledColor
         }
     }
 }
