@@ -8,11 +8,6 @@ import Adyen
 import UIKit
 
 /// :nodoc:
-internal protocol BACSDirectDebitComponentTrackerProtocol: AnyObject {
-    func sendEvent()
-}
-
-/// :nodoc:
 internal protocol BACSDirectDebitRouterProtocol: AnyObject {
     func presentConfirmation(with data: BACSDirectDebitData)
     func confirmPayment(with data: BACSDirectDebitData)
@@ -74,12 +69,15 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
                                                styleProvider: style)
         self.viewController = view as UIViewController
 
+        let tracker = BACSDirectDebitComponentTracker(paymentMethod: paymentMethod,
+                                                      apiContext: apiContext,
+                                                      isDropIn: _isDropIn)
         let itemsFactory = BACSItemsFactory(styleProvider: style,
                                             localizationParameters: localizationParameters,
                                             scope: String(describing: self))
         self.inputPresenter = BACSInputDirectDebitPresenter(view: view,
                                                             router: self,
-                                                            tracker: self,
+                                                            tracker: tracker,
                                                             itemsFactory: itemsFactory,
                                                             amount: configuration?.payment.amount)
         view.presenter = inputPresenter
@@ -137,15 +135,6 @@ extension BACSDirectDebitComponent: LoadingComponent {
     
     public func stopLoading() {
         confirmationPresenter?.stopLoading()
-    }
-}
-
-// MARK: - BACSDirectDebitComponentTrackerProtocol
-
-extension BACSDirectDebitComponent: BACSDirectDebitComponentTrackerProtocol {
-
-    internal func sendEvent() {
-        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, context: apiContext)
     }
 }
 
