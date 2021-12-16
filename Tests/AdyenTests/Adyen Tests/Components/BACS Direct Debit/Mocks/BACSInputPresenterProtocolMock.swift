@@ -26,4 +26,14 @@ class BACSInputPresenterProtocolMock: BACSInputPresenterProtocol {
     func viewWillAppear() {
         viewWillAppearCallsCount += 1
     }
+
+    // MARK: - resetForm
+
+    var resetFormCallsCount = 0
+    var restFormCalled: Bool {
+        return resetFormCallsCount > 0
+    }
+    func resetForm() {
+        resetFormCallsCount += 1
+    }
 }
