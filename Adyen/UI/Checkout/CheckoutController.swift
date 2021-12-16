@@ -190,7 +190,7 @@ extension CheckoutController: PaymentControllerDelegate {
         }
     }
     
-    private func finish(with result: Result<PaymentResult>) {
+    fileprivate func finishAndDismiss(_ result: Result<PaymentResult>) {
         presenter.allowUserInteraction = false
         // Dismiss any of the topmost screens that have been presented, i.e. safari view controller.
         presenter.dismiss(topOnly: true, completion: {
@@ -198,7 +198,7 @@ extension CheckoutController: PaymentControllerDelegate {
                 guard let strongSelf = self else {
                     return
                 }
-                
+
                 strongSelf.presenter.allowUserInteraction = true
                 strongSelf.presenter.showPaymentProcessing(false)
                 // Now dismiss the entire flow.
@@ -208,6 +208,12 @@ extension CheckoutController: PaymentControllerDelegate {
                 })
             })
         })
+    }
+
+    private func finish(with result: Result<PaymentResult>) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.finishAndDismiss(result)
+        }
     }
 }
 
