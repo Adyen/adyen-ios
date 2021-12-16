@@ -48,5 +48,33 @@ class BACSActionComponentTests: XCTestCase {
         sut.handle(BACSAction(downloadUrl: URL(string: "www.adyen.com")!, paymentMethodType: .bacs))
         
     }
+    
+    func testMainSecondaryButtons() {
+        let mainButtonExpectation = expectation(description: "Main button tapped")
+        
+        let delegateMock = ActionViewDelegateMock()
+        delegateMock.onMainButtonTap = { _ in
+            mainButtonExpectation.fulfill()
+        }
+        
+        let viewModel = BACSActionViewModel(message: "test", imageURL: URL(string: "www.adyen.com")!, buttonTitle: "pdf")
+        let style = BACSActionComponentStyle()
+        
+        let sut = BACSActionView(viewModel: viewModel, style: style)
+        sut.delegate = delegateMock
+        
+        asyncAfterDelay {
+            let mainButton: UIButton? = sut.findView(by: "mainButton")
+            let messageLabel: UILabel? = sut.findView(by: "messageLabel")
+            XCTAssertNotNil(mainButton)
+            
+            XCTAssertEqual(mainButton?.titleLabel?.text, viewModel.buttonTitle)
+            XCTAssertEqual(messageLabel?.text, viewModel.message)
+            
+            mainButton?.sendActions(for: .touchUpInside)
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+    }
 
 }

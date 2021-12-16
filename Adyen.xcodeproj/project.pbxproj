@@ -77,6 +77,7 @@
 		A03EE73327612BF300470561 /* BACSActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EE73227612BF300470561 /* BACSActionView.swift */; };
 		A03EE735276133A500470561 /* ShareableComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EE734276133A500470561 /* ShareableComponent.swift */; };
 		A05D7212276A28EE0087F3E9 /* BACSActionComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05D7211276A28EE0087F3E9 /* BACSActionComponentTests.swift */; };
+		A07355D7276B350F00530562 /* ActionViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07355D6276B350F00530562 /* ActionViewDelegateMock.swift */; };
 		A07B2CF226A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B2CF126A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift */; };
 		A09C704327032870004C01AA /* FormCardLogosItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09C704227032870004C01AA /* FormCardLogosItemView.swift */; };
 		A0BFC8082720259500E36516 /* CardBrandSorterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BFC8072720259500E36516 /* CardBrandSorterTests.swift */; };
@@ -996,6 +997,7 @@
 		A03EE73227612BF300470561 /* BACSActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSActionView.swift; sourceTree = "<group>"; };
 		A03EE734276133A500470561 /* ShareableComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareableComponent.swift; sourceTree = "<group>"; };
 		A05D7211276A28EE0087F3E9 /* BACSActionComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSActionComponentTests.swift; sourceTree = "<group>"; };
+		A07355D6276B350F00530562 /* ActionViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionViewDelegateMock.swift; sourceTree = "<group>"; };
 		A07B2CE526A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberFormatter.swift; sourceTree = "<group>"; };
 		A07B2CF126A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberFormatterTests.swift; sourceTree = "<group>"; };
 		A09C704227032870004C01AA /* FormCardLogosItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardLogosItemView.swift; sourceTree = "<group>"; };
@@ -1877,6 +1879,7 @@
 				C90D26B32759048C001A488F /* BACSInputPresenterProtocolMock.swift */,
 				C92708412759106500D15EA0 /* BACSRouterProtocolMock.swift */,
 				C933801F276A09E7005B66CD /* BACSDirectDebitComponentTrackerProtocolMock.swift */,
+				A07355D6276B350F00530562 /* ActionViewDelegateMock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -5019,6 +5022,7 @@
 				F97BC2AD2668C63200F1D242 /* AppleWalletPassProviderTests.swift in Sources */,
 				E270FDE6225CB40A006C2CD0 /* ObservableTests.swift in Sources */,
 				F957AA6A2552D98E0099AD73 /* AnyThreeDS2FingerprintSubmitterMock.swift in Sources */,
+				A07355D7276B350F00530562 /* ActionViewDelegateMock.swift in Sources */,
 				F99F085A2383EAC800EBB948 /* FormatterMock.swift in Sources */,
 				F91760A72594C5DF00D653BE /* AssetsAccessTests.swift in Sources */,
 				5A22C279262D688600F12D97 /* QRCodeComponentTests.swift in Sources */,
