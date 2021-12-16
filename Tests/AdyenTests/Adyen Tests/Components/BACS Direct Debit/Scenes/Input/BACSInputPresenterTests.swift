@@ -10,7 +10,7 @@ class BACSInputPresenterTests: XCTestCase {
     var router: BACSRouterProtocolMock!
     var tracker: BACSDirectDebitComponentTrackerProtocolMock!
     var itemsFactory: BACSItemsFactoryProtocolMock!
-    var sut: BACSInputDirectDebitPresenter!
+    var sut: BACSInputPresenter!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -21,7 +21,7 @@ class BACSInputPresenterTests: XCTestCase {
         itemsFactory = itemsFactoryMock
         let amount = Amount(value: 105.7, currencyCode: "USD", localeIdentifier: nil)
 
-        sut = BACSInputDirectDebitPresenter(view: view,
+        sut = BACSInputPresenter(view: view,
                                             router: router,
                                             tracker: tracker,
                                             itemsFactory: itemsFactory,
@@ -214,6 +214,40 @@ class BACSInputPresenterTests: XCTestCase {
         XCTAssertEqual(expectedBacsData.bankAccountNumber, sut.bankAccountNumberItem?.value)
         XCTAssertEqual(expectedBacsData.bankLocationId, sut.sortCodeItem?.value)
         XCTAssertEqual(expectedBacsData.shopperEmail, sut.emailItem?.value)
+    }
+
+    func testResetFormShouldResetFormItems() throws {
+        // Given
+        sut.viewDidLoad()
+        sut.amountConsentToggleItem?.value = true
+        sut.legalConsentToggleItem?.value = true
+
+        sut.holderNameItem?.value = bacsDataMock.holderName
+        sut.bankAccountNumberItem?.value = bacsDataMock.bankAccountNumber
+        sut.sortCodeItem?.value = bacsDataMock.bankLocationId
+        sut.emailItem?.value = bacsDataMock.shopperEmail
+
+        // When
+        sut.resetForm()
+
+        // Then
+        let holderName = try XCTUnwrap(sut.holderNameItem?.value)
+        XCTAssertTrue(holderName.isEmpty)
+
+        let bankAccountNumber = try XCTUnwrap(sut.bankAccountNumberItem?.value)
+        XCTAssertTrue(bankAccountNumber.isEmpty)
+
+        let sortCode = try XCTUnwrap(sut.sortCodeItem?.value)
+        XCTAssertTrue(sortCode.isEmpty)
+
+        let email = try XCTUnwrap(sut.emailItem?.value)
+        XCTAssertTrue(email.isEmpty)
+
+        let amountConsentValue = try XCTUnwrap(sut.amountConsentToggleItem?.value)
+        XCTAssertFalse(amountConsentValue)
+
+        let legalConsentValue = try XCTUnwrap(sut.legalConsentToggleItem?.value)
+        XCTAssertFalse(legalConsentValue)
     }
 
     // MARK: - Private

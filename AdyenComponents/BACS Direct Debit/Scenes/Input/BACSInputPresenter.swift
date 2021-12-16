@@ -10,13 +10,13 @@ import Foundation
 internal protocol BACSInputPresenterProtocol: AnyObject {
     func viewDidLoad()
     func viewWillAppear()
+    func resetForm()
 }
 
-internal class BACSInputDirectDebitPresenter: BACSInputPresenterProtocol {
+internal class BACSInputPresenter: BACSInputPresenterProtocol {
 
     // MARK: - Properties
 
-    internal var paymentCancelled = false
     private let view: BACSInputFormViewProtocol
     private let tracker: BACSDirectDebitComponentTrackerProtocol
     private weak var router: BACSDirectDebitRouterProtocol?
@@ -57,12 +57,18 @@ internal class BACSInputDirectDebitPresenter: BACSInputPresenterProtocol {
     }
 
     internal func viewWillAppear() {
-        if paymentCancelled {
-            resetForm()
-            paymentCancelled = false
-            data = nil
-        }
         restoreFields()
+    }
+
+    internal func resetForm() {
+        holderNameItem?.value = ""
+        bankAccountNumberItem?.value = ""
+        sortCodeItem?.value = ""
+        emailItem?.value = ""
+
+        amountConsentToggleItem?.value = false
+        legalConsentToggleItem?.value = false
+        data = nil
     }
 
     // MARK: - Private
@@ -115,16 +121,6 @@ internal class BACSInputDirectDebitPresenter: BACSInputPresenterProtocol {
         bankAccountNumberItem?.value = data.bankAccountNumber
         sortCodeItem?.value = data.bankLocationId
         emailItem?.value = data.shopperEmail
-
-        amountConsentToggleItem?.value = false
-        legalConsentToggleItem?.value = false
-    }
-
-    private func resetForm() {
-        holderNameItem?.value = ""
-        bankAccountNumberItem?.value = ""
-        sortCodeItem?.value = ""
-        emailItem?.value = ""
 
         amountConsentToggleItem?.value = false
         legalConsentToggleItem?.value = false

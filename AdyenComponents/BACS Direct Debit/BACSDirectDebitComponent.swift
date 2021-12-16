@@ -46,6 +46,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
 
     internal var inputPresenter: BACSInputPresenterProtocol?
     internal var confirmationPresenter: BACSConfirmationPresenterProtocol?
+    private var confirmationViewPresented = false
 
     // MARK: - Initializers
 
@@ -75,11 +76,11 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
         let itemsFactory = BACSItemsFactory(styleProvider: style,
                                             localizationParameters: localizationParameters,
                                             scope: String(describing: self))
-        self.inputPresenter = BACSInputDirectDebitPresenter(view: view,
-                                                            router: self,
-                                                            tracker: tracker,
-                                                            itemsFactory: itemsFactory,
-                                                            amount: configuration?.payment.amount)
+        self.inputPresenter = BACSInputPresenter(view: view,
+                                                 router: self,
+                                                 tracker: tracker,
+                                                 itemsFactory: itemsFactory,
+                                                 amount: configuration?.payment.amount)
         view.presenter = inputPresenter
     }
 }
@@ -89,6 +90,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
 extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
 
     internal func presentConfirmation(with data: BACSDirectDebitData) {
+        confirmationViewPresented = true
         let confirmationView = assembleConfirmationView(with: data)
 
         let wrappedComponent = PresentableComponentWrapper(component: self,
@@ -143,7 +145,11 @@ extension BACSDirectDebitComponent: LoadingComponent {
 extension BACSDirectDebitComponent: Cancellable {
 
     public func didCancel() {
-        // TODO: - Handle cancellation
+        if !confirmationViewPresented {
+            inputPresenter?.resetForm()
+        } else {
+            confirmationViewPresented = false
+        }
     }
 }
 
