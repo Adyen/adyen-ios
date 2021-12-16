@@ -211,7 +211,7 @@ extension CheckoutController: PaymentControllerDelegate {
     }
 
     private func finish(with result: Result<PaymentResult>) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.finishAndDismiss(result)
         }
     }
