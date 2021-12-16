@@ -14,7 +14,7 @@ internal protocol BACSDirectDebitRouterProtocol: AnyObject {
 }
 
 /// A component that provides a form for BACS Direct Debit payments.
-public final class BACSDirectDebitComponent: PaymentComponent, PresentableComponent, TrackableComponent {
+public final class BACSDirectDebitComponent: PaymentComponent, PresentableComponent {
 
     // MARK: - PresentableComponent
 
