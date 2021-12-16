@@ -44,7 +44,10 @@ public final class FormSpacerItemView: FormItemView<FormSpacerItem> {
 
         func createView(_: Int) -> UIView {
             let view = UIView()
-            view.heightAnchor.constraint(equalToConstant: 0).isActive = true
+            view.heightAnchor
+                .constraint(equalToConstant: 0)
+                .adyen.with(priority: .defaultHigh)
+                .isActive = true
 
             let containerView = UIView()
             containerView.addSubview(view)

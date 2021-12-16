@@ -36,9 +36,9 @@ public final class TextField: UITextField {
     /// :nodoc:
     override public var font: UIFont? {
         didSet {
-            heightConstraint = heightConstraint ?? heightAnchor.constraint(equalToConstant: 0)
             let sizeToFit = sizeThatFits(CGSize(width: bounds.width,
                                                 height: UIView.layoutFittingExpandedSize.height))
+            heightConstraint = heightConstraint ?? heightAnchor.constraint(equalToConstant: 0)
             heightConstraint?.constant = sizeToFit.height + 1
             heightConstraint?.priority = .defaultHigh
             heightConstraint?.isActive = true

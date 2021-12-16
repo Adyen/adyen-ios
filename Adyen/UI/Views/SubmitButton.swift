@@ -125,17 +125,13 @@ public final class SubmitButton: UIControl {
         backgroundView.adyen.anchor(inside: self)
         
         let heightConstraint = heightAnchor.constraint(equalToConstant: 50.0)
-        heightConstraint.priority = .required
         
         let labelConstraints = [
             titleLabel.topAnchor.constraint(equalTo: topAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
             titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ].map { (const: NSLayoutConstraint) -> NSLayoutConstraint in
-            const.priority = .defaultHigh
-            return const
-        }
+        ].map { $0.adyen.with(priority: .defaultHigh) }
         
         let spinnerConstraints = [
             activityIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor),
