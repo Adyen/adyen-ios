@@ -66,9 +66,9 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
         self.style = style
         self.localizationParameters = localizationParameters
 
-        let view = BACSInputFormViewController(title: paymentMethod.name,
-                                               styleProvider: style)
-        self.viewController = view as UIViewController
+        let inputFormViewController = BACSInputFormViewController(title: paymentMethod.name,
+                                                                  styleProvider: style)
+        self.viewController = SecuredViewController(child: inputFormViewController, style: style)
 
         let tracker = BACSDirectDebitComponentTracker(paymentMethod: paymentMethod,
                                                       apiContext: apiContext,
@@ -76,12 +76,12 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
         let itemsFactory = BACSItemsFactory(styleProvider: style,
                                             localizationParameters: localizationParameters,
                                             scope: String(describing: self))
-        self.inputPresenter = BACSInputPresenter(view: view,
+        self.inputPresenter = BACSInputPresenter(view: inputFormViewController,
                                                  router: self,
                                                  tracker: tracker,
                                                  itemsFactory: itemsFactory,
                                                  amount: configuration?.payment.amount)
-        view.presenter = inputPresenter
+        inputFormViewController.presenter = inputPresenter
     }
 }
 
@@ -116,18 +116,18 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
     // MARK: - Private
 
     private func assembleConfirmationView(with data: BACSDirectDebitData) -> UIViewController {
-        let view = BACSConfirmationViewController(title: paymentMethod.name,
-                                                  styleProvider: style,
-                                                  localizationParameters: localizationParameters)
+        let confirmationViewController = BACSConfirmationViewController(title: paymentMethod.name,
+                                                                        styleProvider: style,
+                                                                        localizationParameters: localizationParameters)
         let itemsFactory = BACSItemsFactory(styleProvider: style,
                                             localizationParameters: localizationParameters,
                                             scope: String(describing: self))
         confirmationPresenter = BACSConfirmationPresenter(data: data,
-                                                          view: view,
+                                                          view: confirmationViewController,
                                                           router: self,
                                                           itemsFactory: itemsFactory)
-        view.presenter = confirmationPresenter
-        return view
+        confirmationViewController.presenter = confirmationPresenter
+        return SecuredViewController(child: confirmationViewController, style: style)
     }
 }
 

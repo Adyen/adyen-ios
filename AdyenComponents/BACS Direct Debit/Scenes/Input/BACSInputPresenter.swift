@@ -48,7 +48,7 @@ internal class BACSInputPresenter: BACSInputPresenterProtocol {
         self.amount = amount
     }
 
-    // MARK: - BACSDirectDebitInputPresenterProtocol
+    // MARK: - BACSInputPresenterProtocol
 
     internal func viewDidLoad() {
         tracker.sendEvent()
