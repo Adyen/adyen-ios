@@ -6,7 +6,7 @@
 
 import Foundation
 
-/// Indicates BAC action payment methods.
+/// Indicates BACS action payment methods.
 public enum BACSActionPaymentMethod: String, Codable, CaseIterable {
     case bacs = "directdebit_GB"
 }
