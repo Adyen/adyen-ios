@@ -7,18 +7,22 @@
 import Adyen
 import Foundation
 
-internal protocol BACSDirectDebitPresenterProtocol: AnyObject {
+internal protocol BACSInputPresenterProtocol: AnyObject {
     func viewDidLoad()
-    func didCancel()
+    func viewWillAppear()
+    func resetForm()
 }
 
-internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
+internal class BACSInputPresenter: BACSInputPresenterProtocol {
 
     // MARK: - Properties
 
-    private let view: BACSDirectDebitInputFormViewProtocol
-    private let router: BACSDirectDebitRouterProtocol
-    private let itemsFactory: BACSDirectDebitItemsFactoryProtocol
+    private let view: BACSInputFormViewProtocol
+    private let tracker: BACSDirectDebitComponentTrackerProtocol
+    private weak var router: BACSDirectDebitRouterProtocol?
+    private let itemsFactory: BACSItemsFactoryProtocol
+    private var data: BACSDirectDebitData?
+    private let amount: Amount?
 
     // MARK: - Items
 
@@ -32,35 +36,49 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
 
     // MARK: - Initializers
 
-    internal init(view: BACSDirectDebitInputFormViewProtocol,
+    internal init(view: BACSInputFormViewProtocol,
                   router: BACSDirectDebitRouterProtocol,
-                  itemsFactory: BACSDirectDebitItemsFactoryProtocol) {
+                  tracker: BACSDirectDebitComponentTrackerProtocol,
+                  itemsFactory: BACSItemsFactoryProtocol,
+                  amount: Amount?) {
         self.view = view
         self.router = router
+        self.tracker = tracker
         self.itemsFactory = itemsFactory
-        setupItems()
+        self.amount = amount
+    }
+
+    // MARK: - BACSInputPresenterProtocol
+
+    internal func viewDidLoad() {
+        tracker.sendEvent()
+        createItems()
         setupView()
     }
 
-    // MARK: - BACSDirectDebitPresenterProtocol
-
-    internal func viewDidLoad() {
-        view.setupNavigationBar()
+    internal func viewWillAppear() {
+        restoreFields()
     }
 
-    @objc
-    internal func didCancel() {
-        router.cancelPayment()
+    internal func resetForm() {
+        holderNameItem?.value = ""
+        bankAccountNumberItem?.value = ""
+        sortCodeItem?.value = ""
+        emailItem?.value = ""
+
+        amountConsentToggleItem?.value = false
+        legalConsentToggleItem?.value = false
+        data = nil
     }
 
     // MARK: - Private
 
-    private func setupItems() {
+    private func createItems() {
         holderNameItem = itemsFactory.createHolderNameItem()
         bankAccountNumberItem = itemsFactory.createBankAccountNumberItem()
         sortCodeItem = itemsFactory.createSortCodeItem()
         emailItem = itemsFactory.createEmailItem()
-        amountConsentToggleItem = itemsFactory.createAmountConsentToggle()
+        amountConsentToggleItem = itemsFactory.createAmountConsentToggle(amount: amount?.formatted)
         legalConsentToggleItem = itemsFactory.createLegalConsentToggle()
 
         continueButtonItem = itemsFactory.createContinueButton()
@@ -97,6 +115,17 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
             .allSatisfy { $0.isValid() }
     }
 
+    private func restoreFields() {
+        guard let data = data else { return }
+        holderNameItem?.value = data.holderName
+        bankAccountNumberItem?.value = data.bankAccountNumber
+        sortCodeItem?.value = data.bankLocationId
+        emailItem?.value = data.shopperEmail
+
+        amountConsentToggleItem?.value = false
+        legalConsentToggleItem?.value = false
+    }
+
     private func continuePayment() {
         guard validateForm() else { return }
 
@@ -111,6 +140,7 @@ internal class BACSDirectDebitPresenter: BACSDirectDebitPresenterProtocol {
                                                       bankAccountNumber: bankAccountNumber,
                                                       bankLocationId: sortCode,
                                                       shopperEmail: shopperEmail)
-        router.presentConfirmation(with: bacsDirectDebitData)
+        self.data = bacsDirectDebitData
+        router?.presentConfirmation(with: bacsDirectDebitData)
     }
 }

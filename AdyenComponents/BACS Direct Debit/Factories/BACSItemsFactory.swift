@@ -7,17 +7,18 @@
 import Adyen
 import Foundation
 
-internal protocol BACSDirectDebitItemsFactoryProtocol {
+internal protocol BACSItemsFactoryProtocol {
     func createHolderNameItem() -> FormTextInputItem
     func createBankAccountNumberItem() -> FormTextInputItem
     func createSortCodeItem() -> FormTextInputItem
     func createEmailItem() -> FormTextInputItem
     func createContinueButton() -> FormButtonItem
-    func createAmountConsentToggle() -> FormToggleItem
+    func createPaymentButton() -> FormButtonItem
+    func createAmountConsentToggle(amount: String?) -> FormToggleItem
     func createLegalConsentToggle() -> FormToggleItem
 }
 
-internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol {
+internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
 
     private enum ViewIdentifier {
         static let holderNameItem = "holderNameItem"
@@ -25,6 +26,7 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         static let sortCodeItem = "sortCodeItem"
         static let emailItem = "emailItem"
         static let continueButtonItem = "continueButtonItem"
+        static let paymentButtonItem = "paymentButtonItem"
         static let amountTermsToggleItem = "amountConsentToggleItem"
         static let legalTermsToggleItem = "legalConsentToggleItem"
     }
@@ -142,11 +144,28 @@ internal struct BACSDirectDebitItemsFactory: BACSDirectDebitItemsFactoryProtocol
         return buttonItem
     }
 
-    internal func createAmountConsentToggle() -> FormToggleItem {
+    internal func createPaymentButton() -> FormButtonItem {
+        let buttonItem = FormButtonItem(style: styleProvider.mainButtonItem)
+
+        let localizedTitle = localizedString(.bacsPaymentButtonTitle, localizationParameters)
+        buttonItem.title = localizedTitle
+
+        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
+                                                     postfix: ViewIdentifier.paymentButtonItem)
+        buttonItem.identifier = identifier
+        return buttonItem
+    }
+
+    internal func createAmountConsentToggle(amount: String?) -> FormToggleItem {
         let toggleItem = FormToggleItem(style: styleProvider.toggle)
         toggleItem.value = false
 
-        let localizedTitle = localizedString(.bacsAmountConsentToggleTitle, localizationParameters)
+        let localizedTitle: String?
+        if let amount = amount {
+            localizedTitle = localizedString(.bacsSpecifiedAmountConsentToggleTitle, localizationParameters, amount)
+        } else {
+            localizedTitle = localizedString(.bacsAmountConsentToggleTitle, localizationParameters)
+        }
         toggleItem.title = localizedTitle
 
         let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,

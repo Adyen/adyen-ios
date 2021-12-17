@@ -7,10 +7,10 @@
 import Adyen
 import UIKit
 
-internal protocol BACSDirectDebitRouterProtocol {
+/// :nodoc:
+internal protocol BACSDirectDebitRouterProtocol: AnyObject {
     func presentConfirmation(with data: BACSDirectDebitData)
     func confirmPayment(with data: BACSDirectDebitData)
-    func cancelPayment()
 }
 
 /// A component that provides a form for BACS Direct Debit payments.
@@ -22,7 +22,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     public var viewController: UIViewController
 
     /// :nodoc:
-    public var requiresModalPresentation: Bool = false
+    public var requiresModalPresentation: Bool = true
 
     /// The object that acts as the delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
@@ -39,6 +39,15 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     /// :nodoc:
     public var localizationParameters: LocalizationParameters?
 
+    /// The object that acts as the presentation delegate of the component.
+    public weak var presentationDelegate: PresentationDelegate?
+
+    // MARK: - Properties
+
+    internal var inputPresenter: BACSInputPresenterProtocol?
+    internal var confirmationPresenter: BACSConfirmationPresenterProtocol?
+    private var confirmationViewPresented = false
+
     // MARK: - Initializers
 
     /// Creates and returns a BACS Direct Debit component.
@@ -50,23 +59,29 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     public init(paymentMethod: BACSDirectDebitPaymentMethod,
                 apiContext: APIContext,
                 style: FormComponentStyle = .init(),
-                localizationParameters: LocalizationParameters? = nil) {
+                localizationParameters: LocalizationParameters? = nil,
+                configuration: Configuration? = nil) {
         self.paymentMethod = paymentMethod
         self.apiContext = apiContext
         self.style = style
         self.localizationParameters = localizationParameters
 
-        let view = BACSDirectDebitInputFormViewController(title: paymentMethod.name,
-                                                          styleProvider: style)
-        self.viewController = view as UIViewController
+        let inputFormViewController = BACSInputFormViewController(title: paymentMethod.name,
+                                                                  styleProvider: style)
+        self.viewController = SecuredViewController(child: inputFormViewController, style: style)
 
-        let itemsFactory = BACSDirectDebitItemsFactory(styleProvider: style,
-                                                       localizationParameters: localizationParameters,
-                                                       scope: String(describing: self))
-        let presenter = BACSDirectDebitPresenter(view: view,
+        let tracker = BACSDirectDebitComponentTracker(paymentMethod: paymentMethod,
+                                                      apiContext: apiContext,
+                                                      isDropIn: _isDropIn)
+        let itemsFactory = BACSItemsFactory(styleProvider: style,
+                                            localizationParameters: localizationParameters,
+                                            scope: String(describing: self))
+        self.inputPresenter = BACSInputPresenter(view: inputFormViewController,
                                                  router: self,
-                                                 itemsFactory: itemsFactory)
-        view.presenter = presenter
+                                                 tracker: tracker,
+                                                 itemsFactory: itemsFactory,
+                                                 amount: configuration?.payment.amount)
+        inputFormViewController.presenter = inputPresenter
     }
 }
 
@@ -75,29 +90,85 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
 extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
 
     internal func presentConfirmation(with data: BACSDirectDebitData) {
-        // TODO: - Continue payment logic
-        // 1. Assamble confirmation scene
-        // 2. Present confirmation scene
-        adyenPrint("PAYMENT: \(data)")
+        confirmationViewPresented = true
+        let confirmationView = assembleConfirmationView(with: data)
 
-        let confirmationView = UIViewController()
-        confirmationView.title = "Confirmation View"
-        confirmationView.view.backgroundColor = UIColor(red: 0.19, green: 0.84, blue: 0.78, alpha: 1.00)
-        viewController.navigationController?.pushViewController(confirmationView, animated: true)
+        let wrappedComponent = PresentableComponentWrapper(component: self,
+                                                           viewController: confirmationView)
+        presentationDelegate?.present(component: wrappedComponent)
     }
 
     internal func confirmPayment(with data: BACSDirectDebitData) {
-        // TODO: - Payment processing logic
         guard let bacsDirectDebitPaymentMethod = paymentMethod as? BACSDirectDebitPaymentMethod else {
             return
         }
-        let bacsDirectDebitDetails = BACSDirectDebitDetails(paymentMethod: bacsDirectDebitPaymentMethod,
-                                                            holderName: data.holderName,
-                                                            bankAccountNumber: data.bankAccountNumber,
-                                                            bankLocationId: data.bankLocationId)
+        let details = BACSDirectDebitDetails(paymentMethod: bacsDirectDebitPaymentMethod,
+                                             holderName: data.holderName,
+                                             bankAccountNumber: data.bankAccountNumber,
+                                             bankLocationId: data.bankLocationId)
+        confirmationPresenter?.startLoading()
+        let data = PaymentComponentData(paymentMethodDetails: details,
+                                        amount: amountToPay,
+                                        order: order)
+        submit(data: data)
     }
 
-    internal func cancelPayment() {
-        viewController.navigationController?.dismiss(animated: true)
+    // MARK: - Private
+
+    private func assembleConfirmationView(with data: BACSDirectDebitData) -> UIViewController {
+        let confirmationViewController = BACSConfirmationViewController(title: paymentMethod.name,
+                                                                        styleProvider: style,
+                                                                        localizationParameters: localizationParameters)
+        let itemsFactory = BACSItemsFactory(styleProvider: style,
+                                            localizationParameters: localizationParameters,
+                                            scope: String(describing: self))
+        confirmationPresenter = BACSConfirmationPresenter(data: data,
+                                                          view: confirmationViewController,
+                                                          router: self,
+                                                          itemsFactory: itemsFactory)
+        confirmationViewController.presenter = confirmationPresenter
+        return SecuredViewController(child: confirmationViewController, style: style)
+    }
+}
+
+// MARK: - LoadingComponent
+
+extension BACSDirectDebitComponent: LoadingComponent {
+    
+    public func stopLoading() {
+        confirmationPresenter?.stopLoading()
+    }
+}
+
+// MARK: - Cancellable
+
+extension BACSDirectDebitComponent: Cancellable {
+
+    public func didCancel() {
+        if !confirmationViewPresented {
+            inputPresenter?.resetForm()
+        } else {
+            confirmationViewPresented = false
+        }
+    }
+}
+
+extension BACSDirectDebitComponent {
+
+    /// BACS Direct Debit configuration object.
+    public struct Configuration {
+
+        // MARK: - Properties
+
+        /// :nodoc:
+        internal let payment: Payment
+
+        // MARK: - Initializers
+
+        /// Creates a BACS Direct Debit configuration with the specified payment.
+        /// - Parameter payment: The payment to be made.
+        public init(payment: Payment) {
+            self.payment = payment
+        }
     }
 }

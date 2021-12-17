@@ -139,6 +139,9 @@
 "adyen.bacs.bankLocationIdField.title" = "Banki azonosító";
 "adyen.bacs.legalConsentToggle.title" = "Megerősítem, hogy a bankszámla az én nevemen van, és én vagyok a bankszámlát érintő beszedési megbízás jóváhagyásához szükséges egyetlen aláíró.";
 "adyen.bacs.amountConsentToggle.title" = "Elfogadom, hogy a fenti összeget levonják a bankszámlámról.";
+"adyen.bacs.specifiedAmountConsentToggle.title" = "Elfogadom, hogy %@ levonásra kerüljön a bankszámlámról.";
 "adyen.bacs.holderNameField.invalidMessage" = "A bankszámla-tulajdonos neve érvénytelen";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Érvénytelen bankszámlaszám";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Érvénytelen banki azonosító";
+"adyen.bacs.paymentButton.title" = "Megerősítés és fizetés";
+"adyen.bacs.downloadMandate" = "Beszedési megbízási utasítás (meghatalmazás) letöltése";

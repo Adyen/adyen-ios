@@ -4,16 +4,16 @@
 @testable import AdyenComponents
 import XCTest
 
-class BACSDirectDebitItemsFactoryTests: XCTestCase {
+class BACSItemsFactoryTests: XCTestCase {
 
-    var sut: BACSDirectDebitItemsFactory!
+    var sut: BACSItemsFactory!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         let styleProvider = FormComponentStyle()
-        sut = BACSDirectDebitItemsFactory(styleProvider: styleProvider,
-                                          localizationParameters: LocalizationParameters(),
-                                          scope: "")
+        sut = BACSItemsFactory(styleProvider: styleProvider,
+                               localizationParameters: LocalizationParameters(),
+                               scope: "")
     }
 
     override func tearDownWithError() throws {
@@ -135,13 +135,45 @@ class BACSDirectDebitItemsFactoryTests: XCTestCase {
         XCTAssertEqual(expectedIdentifier, identifier)
     }
 
-    func testCreateAmountConsentToggleShouldReturnItemWithCorrectProperties() throws {
+    func testCreatePaymentButtonShouldReturnItemWithCorrectProperties() throws {
+        // Given
+        let expectedTitle = "Confirm and pay"
+        let expectedIdentifier = ".paymentButtonItem"
+
+        // When
+        let paymentButtonItem = sut.createPaymentButton()
+
+        // Then
+        XCTAssertEqual(expectedTitle, paymentButtonItem.title)
+
+        let identifier = try XCTUnwrap(paymentButtonItem.identifier)
+        XCTAssertEqual(expectedIdentifier, identifier)
+    }
+
+    func testCreateAmountConsentToggleWhenAmountIsNotNilShouldReturnItemWithCorrectProperties() throws {
+        // Given
+        let expectedAmount = "$105.6"
+        let expectedTitle = "I agree that \(expectedAmount) will be deducted from my bank account."
+        let expectedIdentifier = ".amountConsentToggleItem"
+
+        // When
+        let amountConsentToggleItem = sut.createAmountConsentToggle(amount: expectedAmount)
+
+        // Then
+        XCTAssertFalse(amountConsentToggleItem.value)
+        XCTAssertEqual(expectedTitle, amountConsentToggleItem.title)
+
+        let identifier = try XCTUnwrap(amountConsentToggleItem.identifier)
+        XCTAssertEqual(expectedIdentifier, identifier)
+    }
+
+    func testCreateAmountConsentToggleWhenAmountIsNilShouldReturnItemWithCorrectProperties() throws {
         // Given
         let expectedTitle = "I agree that the above amount will be deducted from my bank account."
         let expectedIdentifier = ".amountConsentToggleItem"
 
         // When
-        let amountConsentToggleItem = sut.createAmountConsentToggle()
+        let amountConsentToggleItem = sut.createAmountConsentToggle(amount: nil)
 
         // Then
         XCTAssertFalse(amountConsentToggleItem.value)

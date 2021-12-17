@@ -139,6 +139,9 @@
 "adyen.bacs.bankLocationIdField.title" = "Sorteringskode";
 "adyen.bacs.legalConsentToggle.title" = "Jeg bekrefter at kontoen står i mitt navn, og at jeg er den eneste signataren som kreves for å autorisere direktebelastningen på denne kontoen.";
 "adyen.bacs.amountConsentToggle.title" = "Jeg samtykker til at beløpet ovenfor blir trukket fra bankkontoen min.";
+"adyen.bacs.specifiedAmountConsentToggle.title" = "Jeg godtar at %@ blir trukket fra kontoen min.";
 "adyen.bacs.holderNameField.invalidMessage" = "Ugyldig kontoholdernavn";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Ugyldig bankkontonummer";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Ugyldig sorteringskode";
+"adyen.bacs.paymentButton.title" = "Bekreft og betal";
+"adyen.bacs.downloadMandate" = "Last ned instruksjoner for direktebelastning (DDI/ mandat)";
