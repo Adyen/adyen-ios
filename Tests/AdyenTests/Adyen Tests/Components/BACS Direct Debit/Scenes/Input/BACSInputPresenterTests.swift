@@ -208,8 +208,8 @@ class BACSInputPresenterTests: XCTestCase {
         // Then
         let amountConsentValue = try XCTUnwrap(sut.amountConsentToggleItem?.value)
         let legalConsentValue = try XCTUnwrap(sut.legalConsentToggleItem?.value)
-        XCTAssertFalse(amountConsentValue)
-        XCTAssertFalse(legalConsentValue)
+        XCTAssertTrue(amountConsentValue)
+        XCTAssertTrue(legalConsentValue)
         XCTAssertEqual(expectedBacsData.holderName, sut.holderNameItem?.value)
         XCTAssertEqual(expectedBacsData.bankAccountNumber, sut.bankAccountNumberItem?.value)
         XCTAssertEqual(expectedBacsData.bankLocationId, sut.sortCodeItem?.value)

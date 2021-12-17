@@ -122,8 +122,8 @@ internal class BACSInputPresenter: BACSInputPresenterProtocol {
         sortCodeItem?.value = data.bankLocationId
         emailItem?.value = data.shopperEmail
 
-        amountConsentToggleItem?.value = false
-        legalConsentToggleItem?.value = false
+        amountConsentToggleItem?.value = true
+        legalConsentToggleItem?.value = true
     }
 
     private func continuePayment() {

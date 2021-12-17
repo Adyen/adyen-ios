@@ -77,6 +77,7 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
         textItem.placeholder = localizedTitle
 
         textItem.validator = NumericStringValidator(minimumLength: 1, maximumLength: 8)
+        textItem.formatter = NumericFormatter()
 
         let localizedFailureMessage = localizedString(.bacsBankAccountNumberFieldInvalidMessage, localizationParameters)
         textItem.validationFailureMessage = localizedFailureMessage
@@ -98,6 +99,7 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
         textItem.placeholder = localizedTitle
 
         textItem.validator = NumericStringValidator(minimumLength: 1, maximumLength: 6)
+        textItem.formatter = NumericFormatter()
 
         let localizedFailureMessage = localizedString(.bacsBankLocationIdFieldInvalidMessage, localizationParameters)
         textItem.validationFailureMessage = localizedFailureMessage

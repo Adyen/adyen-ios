@@ -64,6 +64,8 @@ class BACSItemsFactoryTests: XCTestCase {
         XCTAssertEqual(validator.minimumLength, 1)
         XCTAssertEqual(validator.maximumLength, 8)
 
+        XCTAssertNotNil(bankAccountItem.formatter as? NumericFormatter)
+
         XCTAssertEqual(expectedValidationFailureMessage, bankAccountItem.validationFailureMessage)
         XCTAssertTrue(bankAccountItem.autocapitalizationType == .none)
         XCTAssertTrue(bankAccountItem.keyboardType == .numberPad)
@@ -89,6 +91,8 @@ class BACSItemsFactoryTests: XCTestCase {
         let validator = try XCTUnwrap(sortCodeItem.validator as? NumericStringValidator)
         XCTAssertEqual(validator.minimumLength, 1)
         XCTAssertEqual(validator.maximumLength, 6)
+
+        XCTAssertNotNil(sortCodeItem.formatter as? NumericFormatter)
 
         XCTAssertEqual(expectedValidationFailureMessage, sortCodeItem.validationFailureMessage)
         XCTAssertTrue(sortCodeItem.autocapitalizationType == .none)
