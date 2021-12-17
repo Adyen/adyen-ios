@@ -39,12 +39,6 @@ class BACSDirectDebitComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testInitShouldSetViewControllerPresenter() throws {
-        // Then
-        let viewController = try XCTUnwrap(sut.viewController as? BACSInputFormViewController)
-        XCTAssertNotNil(viewController.presenter)
-    }
-
     func testPresentConfirmationShouldAssembleConfirmationScene() throws {
         // When
         sut.presentConfirmation(with: bacsDataMock)

@@ -24,8 +24,14 @@ internal class BACSConfirmationViewController: FormViewController, BACSConfirmat
                   localizationParameters: LocalizationParameters? = nil) {
         super.init(style: styleProvider)
         self.title = title
-        self.delegate = self
         self.localizationParameters = localizationParameters
+    }
+
+    // MARK: - View life cycle
+
+    override internal func viewDidLoad() {
+        super.viewDidLoad()
+        presenter?.viewDidLoad()
     }
 
     // MARK: - BACSConfirmationViewProtocol
@@ -33,14 +39,4 @@ internal class BACSConfirmationViewController: FormViewController, BACSConfirmat
     internal func setUserInteraction(enabled: Bool) {
         view.isUserInteractionEnabled = enabled
     }
-}
-
-extension BACSConfirmationViewController: ViewControllerDelegate {
-    internal func viewDidLoad(viewController: UIViewController) {
-        presenter?.viewDidLoad()
-    }
-
-    internal func viewDidAppear(viewController: UIViewController) {}
-
-    internal func viewWillAppear(viewController: UIViewController) {}
 }

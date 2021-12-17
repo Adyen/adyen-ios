@@ -25,11 +25,6 @@ class BACSConfirmationViewControllerTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testInitShouldSetDelegate() throws {
-        // Then
-        XCTAssertNotNil(sut.delegate)
-    }
-
     func testViewDidLoadShouldCallPresenterViewDidLoad() throws {
         // When
         sut.viewDidLoad()

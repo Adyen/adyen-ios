@@ -22,19 +22,18 @@ internal class BACSInputFormViewController: FormViewController, BACSInputFormVie
                   localizationParameters: LocalizationParameters? = nil) {
         super.init(style: styleProvider)
         self.title = title
-        self.delegate = self
         self.localizationParameters = localizationParameters
     }
-}
 
-extension BACSInputFormViewController: ViewControllerDelegate {
-    internal func viewDidLoad(viewController: UIViewController) {
+    // MARK: - View life cycle
+
+    override internal func viewDidLoad() {
+        super.viewDidLoad()
         presenter?.viewDidLoad()
     }
 
-    internal func viewDidAppear(viewController: UIViewController) {}
-    
-    internal func viewWillAppear(viewController: UIViewController) {
+    override internal func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         presenter?.viewWillAppear()
     }
 }
