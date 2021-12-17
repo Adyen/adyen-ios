@@ -168,6 +168,25 @@ class DropInTests: XCTestCase {
         waitForExpectations(timeout: 15, handler: nil)
     }
 
+    func testOpenDropInWithNoOneClickPayment() {
+        let config = DropInComponent.Configuration(apiContext: Dummy.context, allowPreselectedPaymentView: false)
+
+        let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneClick.data(using: .utf8)!)
+        sut = DropInComponent(paymentMethods: paymentMethods, configuration: config)
+
+        let root = UIViewController()
+        UIApplication.shared.keyWindow?.rootViewController = root
+        root.present(sut.viewController, animated: true, completion: nil)
+
+        let waitExpectation = expectation(description: "Expect DropIn to open")
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
+            XCTAssertNotNil(self.sut.viewController.findChild(of: ListViewController.self))
+            waitExpectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 15, handler: nil)
+    }
+
     func testOpenApplePay() {
         let config = DropInComponent.Configuration(apiContext: Dummy.context)
         config.applePay = .init(summaryItems: [.init(label: "Item", amount: 100)], merchantIdentifier: "")
