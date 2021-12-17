@@ -137,16 +137,11 @@ class DropInTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = root
         root.present(sut.viewController, animated: true, completion: nil)
 
-        let waitExpectation = expectation(description: "Expect DropIn to open")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
-            let topVC = self.sut.viewController.findChild(of: ListViewController.self)
-            XCTAssertNotNil(topVC)
-            XCTAssertEqual(topVC!.sections.count, 1)
-            XCTAssertEqual(topVC!.sections[0].items.count, 2)
-            waitExpectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 15, handler: nil)
+        wait(for: .seconds(2))
+        let topVC = self.sut.viewController.findChild(of: ListViewController.self)
+        XCTAssertNotNil(topVC)
+        XCTAssertEqual(topVC!.sections.count, 1)
+        XCTAssertEqual(topVC!.sections[0].items.count, 2)
     }
 
     func testOpenDropInAsOneClickPayment() {
@@ -159,13 +154,22 @@ class DropInTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = root
         root.present(sut.viewController, animated: true, completion: nil)
 
-        let waitExpectation = expectation(description: "Expect DropIn to open")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
-            XCTAssertNil(self.sut.viewController.findChild(of: ListViewController.self))
-            waitExpectation.fulfill()
-        }
+        wait(for: .seconds(2))
+        XCTAssertNil(self.sut.viewController.findChild(of: ListViewController.self))
+    }
 
-        waitForExpectations(timeout: 15, handler: nil)
+    func testOpenDropInWithNoOneClickPayment() {
+        let config = DropInComponent.Configuration(apiContext: Dummy.context, allowPreselectedPaymentView: false)
+
+        let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneClick.data(using: .utf8)!)
+        sut = DropInComponent(paymentMethods: paymentMethods, configuration: config)
+
+        let root = UIViewController()
+        UIApplication.shared.keyWindow?.rootViewController = root
+        root.present(sut.viewController, animated: true, completion: nil)
+
+        wait(for: .seconds(2))
+        XCTAssertNotNil(self.sut.viewController.findChild(of: ListViewController.self))
     }
 
     func testOpenApplePay() {
@@ -180,19 +184,13 @@ class DropInTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = root
         root.present(sut.viewController, animated: true, completion: nil)
 
-        let waitExpectation = expectation(description: "Expect DropIn to open")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
-            let topVC = self.sut.viewController.findChild(of: ListViewController.self)
-            topVC?.tableView(topVC!.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
+        wait(for: .seconds(2))
+        var topVC = self.sut.viewController.findChild(of: ListViewController.self)
+        topVC?.tableView(topVC!.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
 
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
-                let topVC = self.sut.viewController.findChild(of: ADYViewController.self)
-                XCTAssertEqual(topVC?.title, "Apple Pay")
-                waitExpectation.fulfill()
-            }
-        }
-
-        waitForExpectations(timeout: 15, handler: nil)
+        wait(for: .seconds(2))
+        let newtopVC = self.sut.viewController.findChild(of: ADYViewController.self)
+        XCTAssertEqual(newtopVC?.title, "Apple Pay")
     }
 
     func testGiftCard() {
@@ -216,17 +214,13 @@ class DropInTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = root
         root.present(sut.viewController, animated: true, completion: nil)
 
-        let waitExpectation = expectation(description: "Expect DropIn to open")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
-            let topVC = self.sut.viewController.findChild(of: ListViewController.self)
-            XCTAssertNotNil(topVC)
-            XCTAssertEqual(topVC!.sections.count, 2)
-            XCTAssertEqual(topVC!.sections[0].items.count, 2)
-            XCTAssertTrue(topVC!.sections[0].footer!.title.contains("Select payment method for the remaining"))
-            waitExpectation.fulfill()
-        }
+        wait(for: .seconds(2))
 
-        waitForExpectations(timeout: 15, handler: nil)
+        let topVC = self.sut.viewController.findChild(of: ListViewController.self)
+        XCTAssertNotNil(topVC)
+        XCTAssertEqual(topVC!.sections.count, 2)
+        XCTAssertEqual(topVC!.sections[0].items.count, 2)
+        XCTAssertTrue(topVC!.sections[0].footer!.title.contains("Select payment method for the remaining"))
     }
 
     func testSinglePaymentMethodSkippingPaymentList() {
