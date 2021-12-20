@@ -63,7 +63,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     /// :nodoc:
     internal var view: VoucherView?
 
-    /// Initializes the `AwaitComponent`.
+    /// Initializes the `VoucherComponent`.
     ///
     /// - Parameter apiContext: The API context.
     /// - Parameter style: The Component UI style.
