@@ -9,12 +9,12 @@ import AdyenNetworking
 import PassKit
 import UIKit
 
-/// A component that handles voucher action's.
+/// A component that handles voucher action.
 internal protocol AnyVoucherActionHandler: ActionComponent, Cancellable {
     func handle(_ action: VoucherAction)
 }
 
-/// A component that handles voucher action's.
+/// A component that handles voucher action.
 public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent {
 
     /// :nodoc:

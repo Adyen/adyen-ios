@@ -8,7 +8,7 @@ import Adyen
 import AdyenNetworking
 import UIKit
 
-/// A component that handles actions after paying with BACS direct debit.
+/// A component that handles document actions.
 public final class DocumentComponent: ActionComponent, ShareableComponent {
     /// :nodoc:
     public let apiContext: APIContext
