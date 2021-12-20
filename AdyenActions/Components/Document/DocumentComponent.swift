@@ -34,11 +34,18 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     /// :nodoc:
     private let componentName = "documentAction"
     
+    /// Initializes the `DocumentComponent`.
+    ///
+    /// - Parameter apiContext: The API context.
+    /// - Parameter style: The Component UI style.
     public init(apiContext: APIContext, style: DocumentComponentStyle) {
         self.apiContext = apiContext
         self.style = style
     }
     
+    /// Handles document action.
+    ///
+    /// - Parameter action: The document action object.
     public func handle(_ action: DocumentAction) {
         self.action = action
         
@@ -62,7 +69,7 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
             presentationDelegate.present(component: presentableComponent)
         } else {
             AdyenAssertion.assertionFailure(
-                message: "PresentationDelegate is nil. Provide a presentation delegate to VoucherComponent."
+                message: "PresentationDelegate is nil. Provide a presentation delegate to DocumentComponent."
             )
         }
     }
