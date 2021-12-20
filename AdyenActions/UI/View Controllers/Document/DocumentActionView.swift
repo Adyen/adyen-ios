@@ -16,7 +16,7 @@ internal protocol ActionViewDelegate: AnyObject {
     func mainButtonTap(sourceView: UIView)
 }
 
-internal final class BACSActionView: UIView {
+internal final class DocumentActionView: UIView {
 
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [imageView, messageLabel, mainButton])
@@ -28,7 +28,7 @@ internal final class BACSActionView: UIView {
     
     internal lazy var imageView: NetworkImageView = {
         let imageView = NetworkImageView()
-        imageView.imageURL = viewModel.imageURL
+        imageView.imageURL = viewModel.logoURL
         imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "icon")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.widthAnchor.constraint(equalToConstant: 80).isActive = true
@@ -69,12 +69,12 @@ internal final class BACSActionView: UIView {
     internal weak var delegate: ActionViewDelegate?
     
     /// The view model.
-    private let viewModel: BACSActionViewModel
+    private let viewModel: DocumentActionViewModel
     
     /// The UI style.
-    private let style: BACSActionComponentStyle
+    private let style: DocumentComponentStyle
     
-    internal init(viewModel: BACSActionViewModel, style: BACSActionComponentStyle) {
+    internal init(viewModel: DocumentActionViewModel, style: DocumentComponentStyle) {
         self.viewModel = viewModel
         self.style = style
         super.init(frame: .zero)

@@ -8,7 +8,7 @@ import Adyen
 import AdyenNetworking
 
 /// A component that handles actions after paying with BACS direct debit.
-public final class BACSActionComponent: ActionComponent, ShareableComponent {
+public final class DocumentComponent: ActionComponent, ShareableComponent {
     /// :nodoc:
     public let apiContext: APIContext
     
@@ -19,7 +19,7 @@ public final class BACSActionComponent: ActionComponent, ShareableComponent {
     public weak var presentationDelegate: PresentationDelegate?
     
     /// The Component UI style.
-    public let style: BACSActionComponentStyle
+    public let style: DocumentComponentStyle
     
     /// :nodoc:
     public var localizationParameters: LocalizationParameters?
@@ -28,17 +28,17 @@ public final class BACSActionComponent: ActionComponent, ShareableComponent {
     internal let presenterViewController = UIViewController()
     
     /// :nodoc:
-    internal var action: BACSAction?
+    internal var action: DocumentAction?
     
     /// :nodoc:
-    private let componentName = "bacsAction"
+    private let componentName = "documentAction"
     
-    public init(apiContext: APIContext, style: BACSActionComponentStyle) {
+    public init(apiContext: APIContext, style: DocumentComponentStyle) {
         self.apiContext = apiContext
         self.style = style
     }
     
-    public func handle(_ action: BACSAction) {
+    public func handle(_ action: DocumentAction) {
         self.action = action
         
         Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: apiContext)
@@ -46,10 +46,10 @@ public final class BACSActionComponent: ActionComponent, ShareableComponent {
         let imageURL = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue,
                                                environment: apiContext.environment,
                                                size: .medium)
-        let viewModel = BACSActionViewModel(message: localizedString(.bacsDownloadMandate, localizationParameters),
-                                            imageURL: imageURL,
-                                            buttonTitle: localizedString(.boletoDownloadPdf, localizationParameters))
-        let view = BACSActionView(viewModel: viewModel, style: style)
+        let viewModel = DocumentActionViewModel(message: localizedString(.bacsDownloadMandate, localizationParameters),
+                                                logoURL: imageURL,
+                                                buttonTitle: localizedString(.boletoDownloadPdf, localizationParameters))
+        let view = DocumentActionView(viewModel: viewModel, style: style)
         view.delegate = self
         let viewController = ADYViewController(view: view)
         
@@ -81,7 +81,7 @@ public final class BACSActionComponent: ActionComponent, ShareableComponent {
     }
 }
 
-extension BACSActionComponent: ActionViewDelegate {
+extension DocumentComponent: ActionViewDelegate {
     
     internal func didComplete() {
         delegate?.didComplete(from: self)

@@ -1,5 +1,5 @@
 //
-//  BACSActionComponentTests.swift
+//  DocumentComponentTests.swift
 //  AdyenUIKitTests
 //
 //  Created by Eren Besel on 12/15/21.
@@ -11,11 +11,11 @@
 @testable import AdyenDropIn
 import XCTest
 
-class BACSActionComponentTests: XCTestCase {
+class DocumentComponentTests: XCTestCase {
     
     func testUI() {
-        let style = BACSActionComponentStyle()
-        let sut = BACSActionComponent(apiContext: Dummy.context, style: BACSActionComponentStyle())
+        let style = DocumentComponentStyle()
+        let sut = DocumentComponent(apiContext: Dummy.context, style: DocumentComponentStyle())
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
         sut.localizationParameters = LocalizationParameters(tableName: "test_table")
@@ -45,7 +45,7 @@ class BACSActionComponentTests: XCTestCase {
             XCTAssertEqual(logo?.layer.cornerRadius, 8)
         }
         
-        sut.handle(BACSAction(downloadUrl: URL(string: "www.adyen.com")!, paymentMethodType: .bacs))
+        sut.handle(DocumentAction(downloadUrl: URL(string: "www.adyen.com")!, paymentMethodType: .bacs))
         
     }
     
@@ -57,10 +57,10 @@ class BACSActionComponentTests: XCTestCase {
             mainButtonExpectation.fulfill()
         }
         
-        let viewModel = BACSActionViewModel(message: "test", imageURL: URL(string: "www.adyen.com")!, buttonTitle: "pdf")
-        let style = BACSActionComponentStyle()
+        let viewModel = DocumentActionViewModel(message: "test", logoURL: URL(string: "www.adyen.com")!, buttonTitle: "pdf")
+        let style = DocumentComponentStyle()
         
-        let sut = BACSActionView(viewModel: viewModel, style: style)
+        let sut = DocumentActionView(viewModel: viewModel, style: style)
         sut.delegate = delegateMock
         
         asyncAfterDelay {

@@ -7,11 +7,11 @@
 import Adyen
 import Foundation
 
-internal struct BACSActionViewModel {
+internal struct DocumentActionViewModel {
     
     internal let message: String
     
-    internal let imageURL: URL
+    internal let logoURL: URL
     
     internal let buttonTitle: String
 }

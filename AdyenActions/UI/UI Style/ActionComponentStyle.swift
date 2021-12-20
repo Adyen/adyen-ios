@@ -22,8 +22,8 @@ public struct ActionComponentStyle {
     /// Indicates the UI configuration of the QR code component.
     public var qrCodeComponentStyle: QRCodeComponentStyle
     
-    /// Indicates the UI configuration of the BACS action component.
-    public var bacsActionComponentStyle: BACSActionComponentStyle
+    /// Indicates the UI configuration of the document action component.
+    public var documentActionComponentStyle: DocumentComponentStyle
     
     /// Initializes the
     /// - Parameters:
@@ -31,17 +31,18 @@ public struct ActionComponentStyle {
     ///   - awaitComponentStyle: The UI configuration of the await component.
     ///   - voucherComponentStyle: The UI configuration of the voucher component.
     ///   - qrCodeComponentStyle: The UI configuration of the QR code component.
+    ///   - documentActionComponentStyle: The UI configuration of the document action component.
     public init(
         redirectComponentStyle: RedirectComponentStyle = RedirectComponentStyle(),
         awaitComponentStyle: AwaitComponentStyle = AwaitComponentStyle(),
         voucherComponentStyle: VoucherComponentStyle = VoucherComponentStyle(),
         qrCodeComponentStyle: QRCodeComponentStyle = QRCodeComponentStyle(),
-        bacsActionComponentStyle: BACSActionComponentStyle = BACSActionComponentStyle()
+        documentActionComponentStyle: DocumentComponentStyle = DocumentComponentStyle()
     ) {
         self.redirectComponentStyle = redirectComponentStyle
         self.awaitComponentStyle = awaitComponentStyle
         self.voucherComponentStyle = voucherComponentStyle
         self.qrCodeComponentStyle = qrCodeComponentStyle
-        self.bacsActionComponentStyle = bacsActionComponentStyle
+        self.documentActionComponentStyle = documentActionComponentStyle
     }
 }

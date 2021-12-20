@@ -7,8 +7,8 @@
 import Adyen
 import UIKit
 
-/// Contains the styling customization options for the BACS Action component.
-public struct BACSActionComponentStyle {
+/// Contains the styling customization options for the document action component.
+public struct DocumentComponentStyle {
     
     /// The image style.
     public var image = ImageStyle(borderColor: nil,
@@ -37,9 +37,9 @@ public struct BACSActionComponentStyle {
     public var messageLabel = TextStyle(font: .preferredFont(forTextStyle: .callout),
                                         color: UIColor.Adyen.componentLabel)
     
-    /// The background color of the bacs action view.
+    /// The background color of the document action view.
     public var backgroundColor = UIColor.Adyen.componentBackground
     
-    /// Initializes the BACS action component style with the default style.
+    /// Initializes the document component style with the default style.
     public init() {}
 }
