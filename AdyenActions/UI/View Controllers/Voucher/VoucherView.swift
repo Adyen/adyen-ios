@@ -8,11 +8,7 @@ import Adyen
 import PassKit
 import UIKit
 
-internal protocol VoucherViewDelegate: AnyObject {
-    
-    func didComplete()
-    
-    func mainButtonTap(sourceView: UIView)
+internal protocol VoucherViewDelegate: ActionViewDelegate {
     
     func addToAppleWallet(completion: @escaping () -> Void)
     

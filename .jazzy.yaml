@@ -41,6 +41,7 @@ custom_categories:
       - RedirectComponentStyle
       - VoucherComponentStyle
       - QRCodeComponentStyle
+      - DocumentComponentStyle
       - NavigationStyle
       - CancelButtonStyle
       - ProgressViewStyle
@@ -76,6 +77,7 @@ custom_categories:
       - QRCodePaymentMethod
       - WeChatPayPaymentMethod
       - MultibancoPaymentMethod
+      - DocumentActionPaymentMethod
       
   - name: Actions
     children:
@@ -99,6 +101,7 @@ custom_categories:
       - EContextATMVoucherAction
       - EContextStoresVoucherAction
       - OXXOVoucherAction
+      - DocumentAction
       - AppleWalletError
       
   - name: Action-handling components
@@ -111,6 +114,7 @@ custom_categories:
       - RedirectComponent
       - RedirectDetails
       - WeChatPaySDKActionComponent
+      - DocumentActionComponent
       
   - name: Card Component
     children:
