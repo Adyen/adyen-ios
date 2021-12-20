@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import UIKit
 
 /// Defines an interface for components to support share activity controller.
 internal protocol ShareableComponent: AnyObject {
