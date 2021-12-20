@@ -134,7 +134,9 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
 // MARK: - LoadingComponent
 
 extension BACSDirectDebitComponent: LoadingComponent {
-    
+
+    /// :nodoc:
+    /// Stops any processing animation that the component is running.
     public func stopLoading() {
         confirmationPresenter?.stopLoading()
     }
@@ -144,6 +146,8 @@ extension BACSDirectDebitComponent: LoadingComponent {
 
 extension BACSDirectDebitComponent: Cancellable {
 
+    /// :nodoc:
+    /// Called when the user cancels the component.
     public func didCancel() {
         if !confirmationViewPresented {
             inputPresenter?.resetForm()
