@@ -22,10 +22,10 @@ class BACSInputPresenterTests: XCTestCase {
         let amount = Amount(value: 105.7, currencyCode: "USD", localeIdentifier: nil)
 
         sut = BACSInputPresenter(view: view,
-                                            router: router,
-                                            tracker: tracker,
-                                            itemsFactory: itemsFactory,
-                                            amount: amount)
+                                 router: router,
+                                 tracker: tracker,
+                                 itemsFactory: itemsFactory,
+                                 amount: amount)
     }
 
     override func tearDownWithError() throws {

@@ -61,9 +61,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
     // MARK: - Presentable Component Protocol
 
     /// :nodoc:
-    public lazy var viewController: UIViewController = {
-        SecuredViewController(child: formViewController, style: style)
-    }()
+    public lazy var viewController: UIViewController = SecuredViewController(child: formViewController, style: style)
 
     /// :nodoc:
     public var requiresModalPresentation: Bool { true }

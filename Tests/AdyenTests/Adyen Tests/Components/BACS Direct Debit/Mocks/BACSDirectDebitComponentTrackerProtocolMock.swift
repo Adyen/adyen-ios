@@ -16,7 +16,7 @@ class BACSDirectDebitComponentTrackerProtocolMock: BACSDirectDebitComponentTrack
 
     var sendEventCallsCount = 0
     var sendEventCalled: Bool {
-        return sendEventCallsCount > 0
+        sendEventCallsCount > 0
     }
 
     func sendEvent() {

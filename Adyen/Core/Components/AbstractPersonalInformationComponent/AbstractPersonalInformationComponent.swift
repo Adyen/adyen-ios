@@ -190,11 +190,9 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     /// :nodoc:
     public var phoneItem: FormPhoneNumberItem? { phoneItemInjector?.item }
 
-    private lazy var selectableValues: [PhoneExtensionPickerItem] = {
-        getPhoneExtensions().map {
-            PhoneExtensionPickerItem(identifier: $0.countryCode, element: $0)
-        }
-    }()
+    private lazy var selectableValues: [PhoneExtensionPickerItem] = getPhoneExtensions().map {
+        PhoneExtensionPickerItem(identifier: $0.countryCode, element: $0)
+    }
 
     /// The button item.
     internal lazy var button: FormButtonItem = {

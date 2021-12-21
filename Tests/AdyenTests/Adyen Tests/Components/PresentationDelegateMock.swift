@@ -9,8 +9,9 @@ final class PresentationDelegateMock: PresentationDelegate {
 
     var presentComponentCallsCount = 0
     var presentComponentCalled: Bool {
-        return presentComponentCallsCount > 0
+        presentComponentCallsCount > 0
     }
+
     var presentComponentReceivedComponent: PresentableComponent?
     var doPresent: ((_ component: PresentableComponent) -> Void)?
 

@@ -4,7 +4,6 @@
 @testable import AdyenComponents
 import XCTest
 
-
 class BACSConfirmationPresenterTests: XCTestCase {
 
     var view: BACSConfirmationViewProtocolMock!
