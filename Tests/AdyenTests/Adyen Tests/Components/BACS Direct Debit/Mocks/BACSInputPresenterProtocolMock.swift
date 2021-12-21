@@ -31,8 +31,9 @@ class BACSInputPresenterProtocolMock: BACSInputPresenterProtocol {
 
     var resetFormCallsCount = 0
     var restFormCalled: Bool {
-        return resetFormCallsCount > 0
+        resetFormCallsCount > 0
     }
+
     func resetForm() {
         resetFormCallsCount += 1
     }

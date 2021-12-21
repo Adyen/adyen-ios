@@ -16,8 +16,9 @@ class BACSRouterProtocolMock: BACSDirectDebitRouterProtocol {
 
     var presentConfirmationWithDataCallsCount = 0
     var presentConfirmationWithDataCalled: Bool {
-        return presentConfirmationWithDataCallsCount > 0
+        presentConfirmationWithDataCallsCount > 0
     }
+
     var presentConfirmationWithDataReceivedData: BACSDirectDebitData?
 
     func presentConfirmation(with data: BACSDirectDebitData) {
@@ -29,8 +30,9 @@ class BACSRouterProtocolMock: BACSDirectDebitRouterProtocol {
 
     var confirmPaymentWithDataCallsCount = 0
     var confirmPaymentWithDataCalled: Bool {
-        return confirmPaymentWithDataCallsCount > 0
+        confirmPaymentWithDataCallsCount > 0
     }
+
     var confirmPaymentWithDataReceivedData: BACSDirectDebitData?
 
     func confirmPayment(with data: BACSDirectDebitData) {
@@ -42,7 +44,7 @@ class BACSRouterProtocolMock: BACSDirectDebitRouterProtocol {
 
     var cancelPaymentCallsCount = 0
     var cancelPaymentCalled: Bool {
-        return cancelPaymentCallsCount > 0
+        cancelPaymentCallsCount > 0
     }
 
     func cancelPayment() {

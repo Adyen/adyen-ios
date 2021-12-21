@@ -9,7 +9,7 @@ class BACSInputFormViewProtocolMock: BACSInputFormViewProtocol {
 
     var setupNavigationBarCallsCount = 0
     var setupNavigationBarCalled: Bool {
-        return setupNavigationBarCallsCount > 0
+        setupNavigationBarCallsCount > 0
     }
 
     func setupNavigationBar() {
@@ -20,10 +20,10 @@ class BACSInputFormViewProtocolMock: BACSInputFormViewProtocol {
 
     var addItemCallsCount = 0
     var addItemCalled: Bool {
-        return addItemCallsCount > 0
+        addItemCallsCount > 0
     }
 
-    func add<T>(item: T?) where T : FormItem {
+    func add<T>(item: T?) where T: FormItem {
         addItemCallsCount += 1
     }
 
@@ -31,7 +31,7 @@ class BACSInputFormViewProtocolMock: BACSInputFormViewProtocol {
 
     var displayValidationCallsCount = 0
     var displayValidationCalled: Bool {
-        return displayValidationCallsCount > 0
+        displayValidationCallsCount > 0
     }
 
     func displayValidation() {

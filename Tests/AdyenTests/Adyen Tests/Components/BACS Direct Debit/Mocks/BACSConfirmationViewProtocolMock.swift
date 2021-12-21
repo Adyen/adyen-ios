@@ -9,8 +9,9 @@ class BACSConfirmationViewProtocolMock: BACSConfirmationViewProtocol {
 
     var setUserInteractionEnabledCallsCount = 0
     var setUserInteractionEnabledCalled: Bool {
-        return setUserInteractionEnabledCallsCount > 0
+        setUserInteractionEnabledCallsCount > 0
     }
+
     var setUserInteractionEnabledReceivedValue: Bool?
 
     func setUserInteraction(enabled: Bool) {
@@ -22,10 +23,10 @@ class BACSConfirmationViewProtocolMock: BACSConfirmationViewProtocol {
 
     var addItemCallsCount = 0
     var addItemCalled: Bool {
-        return addItemCallsCount > 0
+        addItemCallsCount > 0
     }
 
-    func add<T>(item: T?) where T : FormItem {
+    func add<T>(item: T?) where T: FormItem {
         addItemCallsCount += 1
     }
 
@@ -33,7 +34,7 @@ class BACSConfirmationViewProtocolMock: BACSConfirmationViewProtocol {
 
     var displayValidationCallsCount = 0
     var displayValidationCalled: Bool {
-        return displayValidationCallsCount > 0
+        displayValidationCallsCount > 0
     }
 
     func displayValidation() {

@@ -47,9 +47,7 @@ internal final class ListFooterView: UIView {
         return stackView
     }()
 
-    private lazy var titleContainerView: UIView = {
-        titleBackgroundView.adyen.wrapped(with: UIEdgeInsets(top: 12, left: 16, bottom: -12, right: -16))
-    }()
+    private lazy var titleContainerView: UIView = titleBackgroundView.adyen.wrapped(with: UIEdgeInsets(top: 12, left: 16, bottom: -12, right: -16))
 
     private lazy var separatorView: UIView = {
         let view = UIView()

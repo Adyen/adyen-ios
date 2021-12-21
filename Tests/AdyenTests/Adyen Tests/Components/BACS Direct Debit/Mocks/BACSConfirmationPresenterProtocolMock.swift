@@ -20,7 +20,7 @@ class BACSConfirmationPresenterProtocolMock: BACSConfirmationPresenterProtocol {
 
     var startLoadingCallsCount = 0
     var startLoadingCalled: Bool {
-        return startLoadingCallsCount > 0
+        startLoadingCallsCount > 0
     }
 
     func startLoading() {
@@ -31,7 +31,7 @@ class BACSConfirmationPresenterProtocolMock: BACSConfirmationPresenterProtocol {
 
     var stopLoadingCallsCount = 0
     var stopLoadingCalled: Bool {
-        return stopLoadingCallsCount > 0
+        stopLoadingCallsCount > 0
     }
 
     func stopLoading() {

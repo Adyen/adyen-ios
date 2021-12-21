@@ -12,9 +12,7 @@ import Foundation
 extension Bundle {
 
     /// The main bundle of the framework.
-    internal static let actions: Bundle = {
-        Bundle(for: RedirectComponent.self)
-    }()
+    internal static let actions: Bundle = .init(for: RedirectComponent.self)
 
     /// The bundle in which the framework's resources are located.
     internal static let actionsInternalResources: Bundle = {

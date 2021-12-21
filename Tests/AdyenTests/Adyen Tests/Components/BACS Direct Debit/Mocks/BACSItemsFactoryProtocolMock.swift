@@ -9,8 +9,9 @@ class BACSItemsFactoryProtocolMock: BACSItemsFactoryProtocol {
 
     var createHolderNameItemCallsCount = 0
     var createHolderNameItemCalled: Bool {
-        return createHolderNameItemCallsCount > 0
+        createHolderNameItemCallsCount > 0
     }
+
     var createHolderNameItemReturnValue: FormTextInputItem!
 
     func createHolderNameItem() -> FormTextInputItem {
@@ -22,8 +23,9 @@ class BACSItemsFactoryProtocolMock: BACSItemsFactoryProtocol {
 
     var createBankAccountNumberItemCallsCount = 0
     var createBankAccountNumberItemCalled: Bool {
-        return createBankAccountNumberItemCallsCount > 0
+        createBankAccountNumberItemCallsCount > 0
     }
+
     var createBankAccountNumberItemReturnValue: FormTextInputItem!
 
     func createBankAccountNumberItem() -> FormTextInputItem {
@@ -35,8 +37,9 @@ class BACSItemsFactoryProtocolMock: BACSItemsFactoryProtocol {
 
     var createSortCodeItemCallsCount = 0
     var createSortCodeItemCalled: Bool {
-        return createSortCodeItemCallsCount > 0
+        createSortCodeItemCallsCount > 0
     }
+
     var createSortCodeItemReturnValue: FormTextInputItem!
 
     func createSortCodeItem() -> FormTextInputItem {
@@ -48,8 +51,9 @@ class BACSItemsFactoryProtocolMock: BACSItemsFactoryProtocol {
 
     var createEmailItemCallsCount = 0
     var createEmailItemCalled: Bool {
-        return createEmailItemCallsCount > 0
+        createEmailItemCallsCount > 0
     }
+
     var createEmailItemReturnValue: FormTextInputItem!
 
     func createEmailItem() -> FormTextInputItem {
@@ -61,8 +65,9 @@ class BACSItemsFactoryProtocolMock: BACSItemsFactoryProtocol {
 
     var createContinueButtonCallsCount = 0
     var createContinueButtonCalled: Bool {
-        return createContinueButtonCallsCount > 0
+        createContinueButtonCallsCount > 0
     }
+
     var createContinueButtonReturnValue: FormButtonItem!
 
     func createContinueButton() -> FormButtonItem {
@@ -74,8 +79,9 @@ class BACSItemsFactoryProtocolMock: BACSItemsFactoryProtocol {
 
     var createPaymentButtonCallsCount = 0
     var createPaymentButtonCalled: Bool {
-        return createPaymentButtonCallsCount > 0
+        createPaymentButtonCallsCount > 0
     }
+
     var createPaymentButtonReturnValue: FormButtonItem!
 
     func createPaymentButton() -> FormButtonItem {
@@ -87,7 +93,7 @@ class BACSItemsFactoryProtocolMock: BACSItemsFactoryProtocol {
 
     var createAmountConsentToggleAmountCallsCount = 0
     var createAmountConsentToggleAmountCalled: Bool {
-        return createAmountConsentToggleAmountCallsCount > 0
+        createAmountConsentToggleAmountCallsCount > 0
     }
 
     var createAmountConsentToggleAmountReturnValue: FormToggleItem!
@@ -103,8 +109,9 @@ class BACSItemsFactoryProtocolMock: BACSItemsFactoryProtocol {
 
     var createLegalConsentToggleCallsCount = 0
     var createLegalConsentToggleCalled: Bool {
-        return createLegalConsentToggleCallsCount > 0
+        createLegalConsentToggleCallsCount > 0
     }
+
     var createLegalConsentToggleReturnValue: FormToggleItem!
     func createLegalConsentToggle() -> FormToggleItem {
         createLegalConsentToggleCallsCount += 1

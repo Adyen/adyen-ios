@@ -15,14 +15,10 @@ internal extension Bundle {
     // swiftlint:disable explicit_acl
 
     /// The main bundle of the framework.
-    static let core: Bundle = {
-        Bundle(for: RedirectComponent.self)
-    }()
+    static let core: Bundle = .init(for: RedirectComponent.self)
 
     /// The bundle in which the framework's resources are located.
-    static let actionsInternalResources: Bundle = {
-        Bundle.module
-    }()
+    static let actionsInternalResources: Bundle = .module
 
     // swiftlint:enable explicit_acl
 }

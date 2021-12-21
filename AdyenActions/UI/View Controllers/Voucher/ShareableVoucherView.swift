@@ -52,9 +52,7 @@ internal class ShareableVoucherView: UIView, Localizable {
         return label
     }()
     
-    private lazy var amountLabel: UILabel = {
-        createLabel(with: model.style.amount, text: model.amount, identifier: "amountLabel")
-    }()
+    private lazy var amountLabel: UILabel = createLabel(with: model.style.amount, text: model.amount, identifier: "amountLabel")
     
     private lazy var logoView: UIImageView = {
         let imageView = UIImageView()

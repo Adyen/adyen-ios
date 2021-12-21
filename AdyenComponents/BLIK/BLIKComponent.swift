@@ -73,11 +73,9 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
     }()
 
     /// The helper message item.
-    internal lazy var hintLabelItem: FormLabelItem = {
-        FormLabelItem(text: localizedString(.blikHelp, localizationParameters),
-                      style: style.hintLabel,
-                      identifier: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "blikCodeHintLabel"))
-    }()
+    internal lazy var hintLabelItem: FormLabelItem = .init(text: localizedString(.blikHelp, localizationParameters),
+                                                           style: style.hintLabel,
+                                                           identifier: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "blikCodeHintLabel"))
 
     /// The BLIK code item.
     internal lazy var codeItem: FormTextInputItem = {

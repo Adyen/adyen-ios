@@ -21,7 +21,7 @@ extension ADYTransaction: AnyADYTransaction {
     internal func performChallenge(with parameters: ADYChallengeParameters,
                                    completionHandler: @escaping (AnyChallengeResult?, Error?) -> Void) {
         performChallenge(with: parameters,
-                         completionHandler: { (result: ADYChallengeResult?, error: Error?) -> Void in
+                         completionHandler: { (result: ADYChallengeResult?, error: Error?) in
                              completionHandler(result, error)
                          })
     }

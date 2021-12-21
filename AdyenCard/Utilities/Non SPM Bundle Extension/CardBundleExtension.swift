@@ -13,9 +13,7 @@ import Foundation
 extension Bundle {
 
     /// The main bundle of the framework.
-    private static let cardBundle: Bundle = {
-        Bundle(for: CardComponent.self)
-    }()
+    private static let cardBundle: Bundle = .init(for: CardComponent.self)
 
     /// The bundle in which the framework's resources are located.
     internal static var cardInternalResources: Bundle {
