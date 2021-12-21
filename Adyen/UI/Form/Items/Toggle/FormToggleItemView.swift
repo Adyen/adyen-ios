@@ -15,7 +15,7 @@ public final class FormToggleItemView: FormValueItemView<Bool, FormToggleItemSty
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.alignment = .top
+        stackView.alignment = .center
         stackView.distribution = .fill
         stackView.spacing = 8.0
 
