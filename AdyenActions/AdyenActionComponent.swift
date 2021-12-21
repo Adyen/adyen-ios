@@ -64,6 +64,8 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
             handle(voucher)
         case let .qrCode(qrCode):
             handle(qrCode)
+        case let .document(documentAction):
+            handle(documentAction)
         }
     }
     
@@ -162,6 +164,17 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
         component.localizationParameters = localizationParameters
+        
+        component.handle(action)
+        currentActionComponent = component
+    }
+    
+    private func handle(_ action: DocumentAction) {
+        let component = DocumentComponent(apiContext: apiContext, style: style.documentActionComponentStyle)
+        component._isDropIn = _isDropIn
+        component.delegate = delegate
+        component.localizationParameters = localizationParameters
+        component.presentationDelegate = presentationDelegate
         
         component.handle(action)
         currentActionComponent = component

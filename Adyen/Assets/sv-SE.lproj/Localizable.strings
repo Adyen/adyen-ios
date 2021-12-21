@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "Bekräfta %@-betalning";
 "adyen.dropIn.preselected.openAll.title" = "Ändra betalningssätt";
 "adyen.continueTo" = "Fortsätt till %@";
+"adyen.continueTitle" = "Fortsätt";
 "adyen.phoneNumber.title" = "Telefonnummer";
 "adyen.phoneNumber.invalid" = "Ogiltigt telefonnummer";
 "adyen.phoneNumber.placeholder" = "123–456–789";
@@ -133,3 +134,14 @@
 "adyen.card.installments.monthsAndPrice" = "%@ x %@";
 "adyen.card.installments.months" = "%@ månader";
 "adyen.card.installments.plan" = "Betalningssätt";
+"adyen.bacs.holderNameField.title" = "Bankkontoinnehavarens namn";
+"adyen.bacs.bankAccountNumberField.title" = "Bankkontonummer";
+"adyen.bacs.bankLocationIdField.title" = "Clearingnummer";
+"adyen.bacs.legalConsentToggle.title" = "Jag bekräftar att jag är kontoinnehavare och att jag är den enda person vars godkännande krävs för att auktorisera autogiro från detta konto.";
+"adyen.bacs.amountConsentToggle.title" = "Jag godkänner att ovanstående belopp dras från mitt bankkonto.";
+"adyen.bacs.specifiedAmountConsentToggle.title" = "Jag godkänner att %@ kommer att dras från mitt bankkonto.";
+"adyen.bacs.holderNameField.invalidMessage" = "Ogiltigt namn på bankkontoinnehavare";
+"adyen.bacs.bankAccountNumberField.invalidMessage" = "Ogiltigt bankkontonummer";
+"adyen.bacs.bankLocationIdField.invalidMessage" = "Ogiltigt clearingnummer";
+"adyen.bacs.paymentButton.title" = "Bekräfta och betala";
+"adyen.bacs.downloadMandate" = "Ladda ner din instruktion för autogiro/direktdebitering (DDI / Mandate)";

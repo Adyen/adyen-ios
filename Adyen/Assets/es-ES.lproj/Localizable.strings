@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "Confirmar pago de %@";
 "adyen.dropIn.preselected.openAll.title" = "Cambiar método de pago";
 "adyen.continueTo" = "Continuar a %@";
+"adyen.continueTitle" = "Continuar";
 "adyen.phoneNumber.title" = "Número de teléfono";
 "adyen.phoneNumber.invalid" = "El número de teléfono no es válido";
 "adyen.phoneNumber.placeholder" = "123–456–789";
@@ -133,3 +134,14 @@
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "%@ meses";
 "adyen.card.installments.plan" = "Método de pago";
+"adyen.bacs.holderNameField.title" = "Nombre del titular de la cuenta bancaria";
+"adyen.bacs.bankAccountNumberField.title" = "Número de cuenta bancaria";
+"adyen.bacs.bankLocationIdField.title" = "Código de sucursal";
+"adyen.bacs.legalConsentToggle.title" = "Confirmo que la cuenta está a mi nombre y soy el único firmante necesario para autorizar débitos directos en esta cuenta.";
+"adyen.bacs.amountConsentToggle.title" = "Estoy de acuerdo con que la cantidad anterior se deduzca de mi cuenta bancaria.";
+"adyen.bacs.specifiedAmountConsentToggle.title" = "Estoy de acuerdo en que se deduzca la siguiente cantidad de mi cuenta bancaria: %@.";
+"adyen.bacs.holderNameField.invalidMessage" = "El nombre del titular de la cuenta bancaria no es válido";
+"adyen.bacs.bankAccountNumberField.invalidMessage" = "El número de cuenta bancaria no es válido";
+"adyen.bacs.bankLocationIdField.invalidMessage" = "El código de sucursal no es válido";
+"adyen.bacs.paymentButton.title" = "Confirmar y pagar";
+"adyen.bacs.downloadMandate" = "Descargue su instrucción de débito directo (IDD/mandato)";

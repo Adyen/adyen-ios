@@ -103,4 +103,8 @@ internal final class IntegrationExample: APIClientAware {
     internal func presentAlert(withTitle title: String) {
         presenter?.presentAlert(withTitle: title)
     }
+
+    // MARK: - BACS Direct Debit Component
+
+    internal var bacsDirectDebitPresenter: BACSDirectDebitPresentationDelegate?
 }

@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "Bekræft %@-betaling";
 "adyen.dropIn.preselected.openAll.title" = "Skift betalingsmåde";
 "adyen.continueTo" = "Fortsæt til %@";
+"adyen.continueTitle" = "Fortsæt";
 "adyen.phoneNumber.title" = "Telefonnummer";
 "adyen.phoneNumber.invalid" = "Ugyldigt telefonnummer";
 "adyen.phoneNumber.placeholder" = "123–456–789";
@@ -133,3 +134,14 @@
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "%@ måneder";
 "adyen.card.installments.plan" = "Betalingsmetode";
+"adyen.bacs.holderNameField.title" = "Bankkontohavers navn";
+"adyen.bacs.bankAccountNumberField.title" = "Bankkontonummer";
+"adyen.bacs.bankLocationIdField.title" = "Registreringsnummer";
+"adyen.bacs.legalConsentToggle.title" = "Jeg bekræfter, at kontoen er i mit navn, og at jeg er den eneste underskriver, der kræves for at godkende direkte debitering af kontoen.";
+"adyen.bacs.amountConsentToggle.title" = "Jeg accepterer, at beløbet ovenfor trækkes på min bankkonto.";
+"adyen.bacs.specifiedAmountConsentToggle.title" = "Jeg accepterer, at %@ hæves på min bankkonto.";
+"adyen.bacs.holderNameField.invalidMessage" = "Ugyldigt navn på bankkontohaver";
+"adyen.bacs.bankAccountNumberField.invalidMessage" = "Ugyldigt bankkontonummer";
+"adyen.bacs.bankLocationIdField.invalidMessage" = "Ugyldigt registreringsnummer";
+"adyen.bacs.paymentButton.title" = "Bekræft, og betal";
+"adyen.bacs.downloadMandate" = "Download vejledningen til direkte debitering (fuldmagt til direkte debitering)";

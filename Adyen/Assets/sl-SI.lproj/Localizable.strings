@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "Potrdite plačilo: %@";
 "adyen.dropIn.preselected.openAll.title" = "Spremeni način plačila";
 "adyen.continueTo" = "Nadaljujte na %@";
+"adyen.continueTitle" = "Nadaljuj";
 "adyen.phoneNumber.title" = "Telefonska številka";
 "adyen.phoneNumber.invalid" = "Neveljavna telefonska številka";
 "adyen.phoneNumber.placeholder" = "123–456–789";
@@ -133,3 +134,14 @@
 "adyen.card.installments.monthsAndPrice" = "%@ × %@";
 "adyen.card.installments.months" = "Št. mesecev: %@";
 "adyen.card.installments.plan" = "Način plačila";
+"adyen.bacs.holderNameField.title" = "Ime imetnika bančnega računa";
+"adyen.bacs.bankAccountNumberField.title" = "Številka bančnega računa";
+"adyen.bacs.bankLocationIdField.title" = "Številka banke";
+"adyen.bacs.legalConsentToggle.title" = "Potrjujem, da je račun ustvarjen v mojem imenu in sem edini podpisnik za odobritev neposredne bremenitve za ta račun.";
+"adyen.bacs.amountConsentToggle.title" = "Soglašam s tem, da bo zgornji znesek odtegnjen z mojega bančnega računa.";
+"adyen.bacs.specifiedAmountConsentToggle.title" = "Soglašam, da bo znesek %@ odtegnjen z mojega bančnega računa.";
+"adyen.bacs.holderNameField.invalidMessage" = "Neveljavno ime imetnika računa";
+"adyen.bacs.bankAccountNumberField.invalidMessage" = "Neveljavna številka bančnega računa";
+"adyen.bacs.bankLocationIdField.invalidMessage" = "Neveljavna številka banke";
+"adyen.bacs.paymentButton.title" = "Potrdi in plačaj";
+"adyen.bacs.downloadMandate" = "Prenesite navodila za neposredno bremenitev (DDI/mandat)";

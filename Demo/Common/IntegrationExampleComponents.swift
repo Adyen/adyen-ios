@@ -36,6 +36,15 @@ extension IntegrationExample {
         present(component)
     }
 
+    internal func presentBACSDirectDebitComponent() {
+        guard let paymentMethod = paymentMethods?.paymentMethod(ofType: BACSDirectDebitPaymentMethod.self) else { return }
+        let component = BACSDirectDebitComponent(paymentMethod: paymentMethod,
+                                                 apiContext: apiContext)
+        bacsDirectDebitPresenter = BACSDirectDebitPresentationDelegate(bacsComponent: component)
+        component.presentationDelegate = bacsDirectDebitPresenter
+        present(component)
+    }
+
     internal func presentMBWayComponent() {
         let style = FormComponentStyle()
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: MBWayPaymentMethod.self) else { return }
@@ -86,9 +95,9 @@ extension IntegrationExample {
         }
 
         let navigation = UINavigationController(rootViewController: component.viewController)
-        component.viewController.navigationItem.leftBarButtonItem = .init(barButtonSystemItem: .cancel,
-                                                                          target: self,
-                                                                          action: #selector(cancelDidPress))
+        component.viewController.navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .cancel,
+                                                                           target: self,
+                                                                           action: #selector(cancelDidPress))
         presenter?.present(viewController: navigation, completion: nil)
     }
 

@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "Confirmați plata %@";
 "adyen.dropIn.preselected.openAll.title" = "Schimbare metodă de plată";
 "adyen.continueTo" = "Continuați către %@";
+"adyen.continueTitle" = "Continuare";
 "adyen.phoneNumber.title" = "Număr de telefon";
 "adyen.phoneNumber.invalid" = "Număr de telefon incorect";
 "adyen.phoneNumber.placeholder" = "123–456–789";
@@ -133,3 +134,14 @@
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "%@ luni";
 "adyen.card.installments.plan" = "Metodă de plată";
+"adyen.bacs.holderNameField.title" = "Numele titularului contului bancar";
+"adyen.bacs.bankAccountNumberField.title" = "Numărul contului bancar";
+"adyen.bacs.bankLocationIdField.title" = "Cod de identificare bancară";
+"adyen.bacs.legalConsentToggle.title" = "Confirm că sunt titularul acestui cont și că sunt singurul semnatar necesar pentru autorizarea debitului direct pentru acest cont.";
+"adyen.bacs.amountConsentToggle.title" = "Sunt de acord ca suma menționată mai sus să fie dedusă din contul meu bancar.";
+"adyen.bacs.specifiedAmountConsentToggle.title" = "Sunt de acord să se deducă %@ din contul meu bancar.";
+"adyen.bacs.holderNameField.invalidMessage" = "Numele titularului contului bancar este incorect";
+"adyen.bacs.bankAccountNumberField.invalidMessage" = "Numărul contului bancar este incorect";
+"adyen.bacs.bankLocationIdField.invalidMessage" = "Cod de identificare bancară incorect";
+"adyen.bacs.paymentButton.title" = "Confirmați și plătiți";
+"adyen.bacs.downloadMandate" = "Descărcați instrucțiunile de debitare directă (DDI/mandat)";

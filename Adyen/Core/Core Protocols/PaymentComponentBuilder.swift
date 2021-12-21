@@ -30,6 +30,9 @@ public protocol PaymentComponentBuilder: APIContextAware {
     
     /// Builds a certain `PaymentComponent` based on a `SEPADirectDebitPaymentMethod`.
     func build(paymentMethod: SEPADirectDebitPaymentMethod) -> PaymentComponent?
+
+    /// Builds a certain `PaymentComponent` based on a `BACSDirectDebitPaymentMethod`.
+    func build(paymentMethod: BACSDirectDebitPaymentMethod) -> PaymentComponent?
     
     /// Builds a certain `PaymentComponent` based on a `ApplePayPaymentMethod`.
     func build(paymentMethod: ApplePayPaymentMethod) -> PaymentComponent?

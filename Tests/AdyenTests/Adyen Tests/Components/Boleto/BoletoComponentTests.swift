@@ -14,7 +14,6 @@ class BoletoComponentTests: XCTestCase {
     private var sut: BoletoComponent!
 
     func testUIConfiguration() {
-        let dummyExpectation = expectation(description: "Dummy Expectation")
         var style = FormComponentStyle()
         
         let textStyle = TextStyle(
@@ -75,60 +74,55 @@ class BoletoComponentTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = sutVC
         
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let firstNameField: UITextField? = sutVC.view.findView(by: "firstNameItem.textField") as? UITextField
-            let lastNameField: UITextField? = sutVC.view.findView(by: "lastNameItem.textField") as? UITextField
-            let socialSecurityNumberField: UITextField? = sutVC.view.findView(by: "socialSecurityNumberItem.textField") as? UITextField
-            let emailSwitch: UISwitch? = sutVC.view.findView(by: "sendCopyToEmailItem.switch") as? UISwitch
-            let emailSwitchTitleLabel: UILabel? = sutVC.view.findView(by: "sendCopyToEmailItem.titleLabel") as? UILabel
-            let emailField: UITextField? = sutVC.view.findView(by: "emailItem.textField") as? UITextField
-            let submitButton: SubmitButton? = sutVC.view.findView(by: "payButtonItem.button") as? SubmitButton
-            
-            // Test first name field
-            XCTAssertNotNil(firstNameField)
-            XCTAssertEqual(firstNameField?.textColor, style.textField.text.color)
-            XCTAssertEqual(firstNameField?.textAlignment, textStyle.textAlignment)
-            XCTAssertEqual(firstNameField?.font, textStyle.font)
-            
-            // Test last name field
-            XCTAssertNotNil(lastNameField)
-            XCTAssertEqual(lastNameField?.textColor, style.textField.text.color)
-            XCTAssertEqual(lastNameField?.textAlignment, textStyle.textAlignment)
-            XCTAssertEqual(lastNameField?.font, textStyle.font)
-            
-            // Test social security number field
-            XCTAssertNotNil(socialSecurityNumberField)
-            XCTAssertEqual(socialSecurityNumberField?.textColor, style.textField.text.color)
-            XCTAssertEqual(socialSecurityNumberField?.textAlignment, textStyle.textAlignment)
-            XCTAssertEqual(socialSecurityNumberField?.font, textStyle.font)
-            
-            // Test send copy by email item
-            XCTAssertNotNil(emailSwitch)
-            XCTAssertFalse(emailSwitch!.isOn)
-            XCTAssertEqual(emailSwitch?.onTintColor, switchStyle.tintColor)
-            XCTAssertNotNil(emailSwitchTitleLabel)
-            XCTAssertEqual(emailSwitchTitleLabel?.textColor, switchStyle.title.color)
-            XCTAssertEqual(emailSwitchTitleLabel?.textAlignment, switchStyle.title.textAlignment)
-            XCTAssertEqual(emailSwitchTitleLabel?.font, switchStyle.title.font)
-
-            // Test email field
-            XCTAssertNotNil(emailField)
-            XCTAssertEqual(emailField?.textColor, style.textField.text.color)
-            XCTAssertEqual(emailField?.textAlignment, textStyle.textAlignment)
-            XCTAssertEqual(emailField?.font, textStyle.font)
-            
-            // Test submit button
-            XCTAssertNotNil(submitButton)
-            
-            dummyExpectation.fulfill()
-        }
+        wait(for: .seconds(1))
         
-        waitForExpectations(timeout: 10, handler: nil)
+        let firstNameField: UITextField? = sutVC.view.findView(by: "firstNameItem.textField") as? UITextField
+        let lastNameField: UITextField? = sutVC.view.findView(by: "lastNameItem.textField") as? UITextField
+        let socialSecurityNumberField: UITextField? = sutVC.view.findView(by: "socialSecurityNumberItem.textField") as? UITextField
+        let emailSwitch: UISwitch? = sutVC.view.findView(by: "sendCopyToEmailItem.switch") as? UISwitch
+        let emailSwitchTitleLabel: UILabel? = sutVC.view.findView(by: "sendCopyToEmailItem.titleLabel") as? UILabel
+        let emailField: UITextField? = sutVC.view.findView(by: "emailItem.textField") as? UITextField
+        let submitButton: SubmitButton? = sutVC.view.findView(by: "payButtonItem.button") as? SubmitButton
+        
+        // Test first name field
+        XCTAssertNotNil(firstNameField)
+        XCTAssertEqual(firstNameField?.textColor, style.textField.text.color)
+        XCTAssertEqual(firstNameField?.textAlignment, textStyle.textAlignment)
+        XCTAssertEqual(firstNameField?.font, textStyle.font)
+        
+        // Test last name field
+        XCTAssertNotNil(lastNameField)
+        XCTAssertEqual(lastNameField?.textColor, style.textField.text.color)
+        XCTAssertEqual(lastNameField?.textAlignment, textStyle.textAlignment)
+        XCTAssertEqual(lastNameField?.font, textStyle.font)
+        
+        // Test social security number field
+        XCTAssertNotNil(socialSecurityNumberField)
+        XCTAssertEqual(socialSecurityNumberField?.textColor, style.textField.text.color)
+        XCTAssertEqual(socialSecurityNumberField?.textAlignment, textStyle.textAlignment)
+        XCTAssertEqual(socialSecurityNumberField?.font, textStyle.font)
+        
+        // Test send copy by email item
+        XCTAssertNotNil(emailSwitch)
+        XCTAssertFalse(emailSwitch!.isOn)
+        XCTAssertEqual(emailSwitch?.onTintColor, switchStyle.tintColor)
+        XCTAssertNotNil(emailSwitchTitleLabel)
+        XCTAssertEqual(emailSwitchTitleLabel?.textColor, switchStyle.title.color)
+        XCTAssertEqual(emailSwitchTitleLabel?.textAlignment, switchStyle.title.textAlignment)
+        XCTAssertEqual(emailSwitchTitleLabel?.font, switchStyle.title.font)
+
+        // Test email field
+        XCTAssertNotNil(emailField)
+        XCTAssertEqual(emailField?.textColor, style.textField.text.color)
+        XCTAssertEqual(emailField?.textAlignment, textStyle.textAlignment)
+        XCTAssertEqual(emailField?.font, textStyle.font)
+        
+        // Test submit button
+        XCTAssertNotNil(submitButton)
     }
     
     func testFullPrefilledInfo() throws {
         // Given
-        let dummyExpectation = expectation(description: "Dummy Expectation")
         let prefilledInformation = dummyFullPrefilledInformation
         let brazilSocialSecurityNumberFormatter = BrazilSocialSecurityNumberFormatter()
         
@@ -141,52 +135,45 @@ class BoletoComponentTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = sutVC
         
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            
-            let firstNameField: UITextField? = sutVC.view.findView(by: "firstNameItem.textField") as? UITextField
-            let lastNameField: UITextField? = sutVC.view.findView(by: "lastNameItem.textField") as? UITextField
-            let socialSecurityNumberField: UITextField? = sutVC.view.findView(by: "socialSecurityNumberItem.textField") as? UITextField
-            let emailField: UITextField? = sutVC.view.findView(by: "emailItem.textField") as? UITextField
-
-            let streetField = sutVC.view.findView(by: "addressItem.street.textField") as? UITextField
-            let houseNumberField = sutVC.view.findView(by: "addressItem.houseNumberOrName.textField") as? UITextField
-            let cityField = sutVC.view.findView(by: "addressItem.city.textField") as? UITextField
-            let postalCodeField = sutVC.view.findView(by: "addressItem.postalCode.textField") as? UITextField
-
-            XCTAssertNotNil(firstNameField)
-            XCTAssertEqual(firstNameField?.text, prefilledInformation.shopperName?.firstName)
-            
-            XCTAssertNotNil(lastNameField)
-            XCTAssertEqual(lastNameField?.text, prefilledInformation.shopperName?.lastName)
-
-            XCTAssertNotNil(socialSecurityNumberField)
-            let formattedSocialSecurityNumber = brazilSocialSecurityNumberFormatter.formattedValue(for: prefilledInformation.socialSecurityNumber!)
-            XCTAssertEqual(formattedSocialSecurityNumber, socialSecurityNumberField?.text)
-            
-            XCTAssertNotNil(emailField)
-            XCTAssertEqual(emailField?.text, prefilledInformation.emailAddress)
-
-            XCTAssertNotNil(streetField)
-            XCTAssertEqual(streetField?.text, self.dummyAddress.street)
-
-            XCTAssertNotNil(houseNumberField)
-            XCTAssertEqual(houseNumberField?.text, self.dummyAddress.houseNumberOrName)
-
-            XCTAssertNotNil(cityField)
-            XCTAssertEqual(cityField?.text, self.dummyAddress.city)
-
-            XCTAssertNotNil(postalCodeField)
-            XCTAssertEqual(postalCodeField?.text, self.dummyAddress.postalCode)
-
-            dummyExpectation.fulfill()
-        }
+        wait(for: .seconds(1))
         
-        waitForExpectations(timeout: 15, handler: nil)
+        let firstNameField: UITextField? = sutVC.view.findView(by: "firstNameItem.textField") as? UITextField
+        let lastNameField: UITextField? = sutVC.view.findView(by: "lastNameItem.textField") as? UITextField
+        let socialSecurityNumberField: UITextField? = sutVC.view.findView(by: "socialSecurityNumberItem.textField") as? UITextField
+        let emailField: UITextField? = sutVC.view.findView(by: "emailItem.textField") as? UITextField
+
+        let streetField = sutVC.view.findView(by: "addressItem.street.textField") as? UITextField
+        let houseNumberField = sutVC.view.findView(by: "addressItem.houseNumberOrName.textField") as? UITextField
+        let cityField = sutVC.view.findView(by: "addressItem.city.textField") as? UITextField
+        let postalCodeField = sutVC.view.findView(by: "addressItem.postalCode.textField") as? UITextField
+
+        XCTAssertNotNil(firstNameField)
+        XCTAssertEqual(firstNameField?.text, prefilledInformation.shopperName?.firstName)
+        
+        XCTAssertNotNil(lastNameField)
+        XCTAssertEqual(lastNameField?.text, prefilledInformation.shopperName?.lastName)
+
+        XCTAssertNotNil(socialSecurityNumberField)
+        let formattedSocialSecurityNumber = brazilSocialSecurityNumberFormatter.formattedValue(for: prefilledInformation.socialSecurityNumber!)
+        XCTAssertEqual(formattedSocialSecurityNumber, socialSecurityNumberField?.text)
+        
+        XCTAssertNotNil(emailField)
+        XCTAssertEqual(emailField?.text, prefilledInformation.emailAddress)
+
+        XCTAssertNotNil(streetField)
+        XCTAssertEqual(streetField?.text, self.dummyAddress.street)
+
+        XCTAssertNotNil(houseNumberField)
+        XCTAssertEqual(houseNumberField?.text, self.dummyAddress.houseNumberOrName)
+
+        XCTAssertNotNil(cityField)
+        XCTAssertEqual(cityField?.text, self.dummyAddress.city)
+
+        XCTAssertNotNil(postalCodeField)
+        XCTAssertEqual(postalCodeField?.text, self.dummyAddress.postalCode)
     }
     
     func testNoPrefilledInformation() {
-        let dummyExpectation = expectation(description: "Dummy Expectation")
-        
         sut = BoletoComponent(
             configuration: getConfiguration(with: nil, showEmailAddress: true),
             apiContext: Dummy.context
@@ -196,51 +183,44 @@ class BoletoComponentTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = sutVC
         
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            
-            let firstNameField: UITextField? = sutVC.view.findView(by: "firstNameItem.textField") as? UITextField
-            let lastNameField: UITextField? = sutVC.view.findView(by: "lastNameItem.textField") as? UITextField
-            let socialSecurityNumberField: UITextField? = sutVC.view.findView(by: "socialSecurityNumberItem.textField") as? UITextField
-            let emailField: UITextField? = sutVC.view.findView(by: "emailItem.textField") as? UITextField
-
-            let streetField = sutVC.view.findView(by: "addressItem.street.textField") as? UITextField
-            let houseNumberField = sutVC.view.findView(by: "addressItem.houseNumberOrName.textField") as? UITextField
-            let cityField = sutVC.view.findView(by: "addressItem.city.textField") as? UITextField
-            let postalCodeField = sutVC.view.findView(by: "addressItem.postalCode.textField") as? UITextField
-
-            XCTAssertNotNil(firstNameField)
-            XCTAssertNil(firstNameField?.text?.adyen.nilIfEmpty)
-            
-            XCTAssertNotNil(lastNameField)
-            XCTAssertNil(lastNameField?.text?.adyen.nilIfEmpty)
-            
-            XCTAssertNotNil(socialSecurityNumberField)
-            XCTAssertNil(socialSecurityNumberField?.text?.adyen.nilIfEmpty)
-            
-            XCTAssertNotNil(emailField)
-            XCTAssertNil(emailField?.text?.adyen.nilIfEmpty)
-
-            XCTAssertNotNil(streetField)
-            XCTAssertTrue(streetField?.text?.isEmpty ?? true)
-
-            XCTAssertNotNil(houseNumberField)
-            XCTAssertTrue(houseNumberField?.text?.isEmpty ?? true)
-
-            XCTAssertNotNil(cityField)
-            XCTAssertTrue(cityField?.text?.isEmpty ?? true)
-
-            XCTAssertNotNil(postalCodeField)
-            XCTAssertTrue(postalCodeField?.text?.isEmpty ?? true)
-
-            dummyExpectation.fulfill()
-        }
+        wait(for: .seconds(1))
         
-        waitForExpectations(timeout: 15, handler: nil)
+        let firstNameField: UITextField? = sutVC.view.findView(by: "firstNameItem.textField") as? UITextField
+        let lastNameField: UITextField? = sutVC.view.findView(by: "lastNameItem.textField") as? UITextField
+        let socialSecurityNumberField: UITextField? = sutVC.view.findView(by: "socialSecurityNumberItem.textField") as? UITextField
+        let emailField: UITextField? = sutVC.view.findView(by: "emailItem.textField") as? UITextField
+
+        let streetField = sutVC.view.findView(by: "addressItem.street.textField") as? UITextField
+        let houseNumberField = sutVC.view.findView(by: "addressItem.houseNumberOrName.textField") as? UITextField
+        let cityField = sutVC.view.findView(by: "addressItem.city.textField") as? UITextField
+        let postalCodeField = sutVC.view.findView(by: "addressItem.postalCode.textField") as? UITextField
+
+        XCTAssertNotNil(firstNameField)
+        XCTAssertNil(firstNameField?.text?.adyen.nilIfEmpty)
+        
+        XCTAssertNotNil(lastNameField)
+        XCTAssertNil(lastNameField?.text?.adyen.nilIfEmpty)
+        
+        XCTAssertNotNil(socialSecurityNumberField)
+        XCTAssertNil(socialSecurityNumberField?.text?.adyen.nilIfEmpty)
+        
+        XCTAssertNotNil(emailField)
+        XCTAssertNil(emailField?.text?.adyen.nilIfEmpty)
+
+        XCTAssertNotNil(streetField)
+        XCTAssertTrue(streetField?.text?.isEmpty ?? true)
+
+        XCTAssertNotNil(houseNumberField)
+        XCTAssertTrue(houseNumberField?.text?.isEmpty ?? true)
+
+        XCTAssertNotNil(cityField)
+        XCTAssertTrue(cityField?.text?.isEmpty ?? true)
+
+        XCTAssertNotNil(postalCodeField)
+        XCTAssertTrue(postalCodeField?.text?.isEmpty ?? true)
     }
     
     func testNoEmailSection() {
-        let dummyExpectation = expectation(description: "Dummy Expectation")
-        
         sut = BoletoComponent(
             configuration: getConfiguration(with: nil, showEmailAddress: false),
             apiContext: Dummy.context
@@ -250,25 +230,19 @@ class BoletoComponentTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = sutVC
         
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let emailSwitch: UISwitch? = sutVC.view.findView(by: "sendCopyToEmailItem.switch") as? UISwitch
-            let emailField: UITextField? = sutVC.view.findView(by: "emailItem.textField") as? UITextField
-            
-            // Test that email switch does not exist
-            XCTAssertNil(emailSwitch)
-
-            // Test that email field does not exist
-            XCTAssertNil(emailField)
-
-            dummyExpectation.fulfill()
-        }
+        wait(for: .seconds(1))
         
-        waitForExpectations(timeout: 10, handler: nil)
+        let emailSwitch: UISwitch? = sutVC.view.findView(by: "sendCopyToEmailItem.switch") as? UISwitch
+        let emailField: UITextField? = sutVC.view.findView(by: "emailItem.textField") as? UITextField
+        
+        // Test that email switch does not exist
+        XCTAssertNil(emailSwitch)
+
+        // Test that email field does not exist
+        XCTAssertNil(emailField)
     }
     
     func testEmailFieldHiding() {
-        let dummyExpectation = expectation(description: "Dummy Expectation")
-        
         sut = BoletoComponent(
             configuration: getConfiguration(with: dummyFullPrefilledInformation, showEmailAddress: true),
             apiContext: Dummy.context
@@ -278,33 +252,27 @@ class BoletoComponentTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = sutVC
         
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            
-            let emailSwitchItem: FormToggleItemView? = sutVC.view.findView(by: "sendCopyToEmailItem") as? FormToggleItemView
-            
-            XCTAssertNotNil(emailSwitchItem)
-            
-            let emailSwitch: UISwitch? = emailSwitchItem!.findView(by: "sendCopyToEmailItem.switch") as? UISwitch
-            let emailItem: FormItemView? = sutVC.view.findView(by: "emailItem") as? FormTextItemView<FormTextInputItem>
-            
-            // Test that email switch has false by default
-            XCTAssertNotNil(emailSwitch)
-            XCTAssertFalse(emailSwitch!.isOn)
-            
-            // Test that email field is hidden
-            XCTAssertNotNil(emailItem)
-            XCTAssertTrue(emailItem!.isHidden)
-            
-            emailSwitchItem?.accessibilityActivate()
-
-            // Test that email field is visible
-            XCTAssertFalse(emailItem!.isHidden)
-                
-            dummyExpectation.fulfill()
-    
-        }
+        wait(for: .seconds(1))
         
-        waitForExpectations(timeout: 15, handler: nil)
+        let emailSwitchItem: FormToggleItemView? = sutVC.view.findView(by: "sendCopyToEmailItem") as? FormToggleItemView
+        
+        XCTAssertNotNil(emailSwitchItem)
+        
+        let emailSwitch: UISwitch? = emailSwitchItem!.findView(by: "sendCopyToEmailItem.switch") as? UISwitch
+        let emailItem: FormItemView? = sutVC.view.findView(by: "emailItem") as? FormTextItemView<FormTextInputItem>
+        
+        // Test that email switch has false by default
+        XCTAssertNotNil(emailSwitch)
+        XCTAssertFalse(emailSwitch!.isOn)
+        
+        // Test that email field is hidden
+        XCTAssertNotNil(emailItem)
+        XCTAssertTrue(emailItem!.isHidden)
+        
+        emailSwitchItem?.accessibilityActivate()
+
+        // Test that email field is visible
+        XCTAssertFalse(emailItem!.isHidden)
     }
     
     func testPaymentDataProvided() {

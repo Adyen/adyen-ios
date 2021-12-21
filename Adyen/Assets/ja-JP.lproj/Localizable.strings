@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "%@のお支払いをご確認下さい";
 "adyen.dropIn.preselected.openAll.title" = "お支払方法を変更する";
 "adyen.continueTo" = "次へ進む：%@";
+"adyen.continueTitle" = "続ける";
 "adyen.phoneNumber.title" = "電話番号";
 "adyen.phoneNumber.invalid" = "無効な電話番号";
 "adyen.phoneNumber.placeholder" = "123–456–789";
@@ -133,3 +134,14 @@
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "%@か月";
 "adyen.card.installments.plan" = "支払方法";
+"adyen.bacs.holderNameField.title" = "銀行口座名義";
+"adyen.bacs.bankAccountNumberField.title" = "銀行口座番号";
+"adyen.bacs.bankLocationIdField.title" = "ソートコード";
+"adyen.bacs.legalConsentToggle.title" = "口座が私の名義であることを確認し、この口座からの自動引き落としを承認するために必要な唯一の署名者であることを確認します。";
+"adyen.bacs.amountConsentToggle.title" = "上記の金額が私の銀行口座から引き落とされることに同意します。";
+"adyen.bacs.specifiedAmountConsentToggle.title" = "%@が私の銀行口座から引き落とされることに同意します。";
+"adyen.bacs.holderNameField.invalidMessage" = "銀行口座名義が無効です";
+"adyen.bacs.bankAccountNumberField.invalidMessage" = "銀行口座番号が無効です";
+"adyen.bacs.bankLocationIdField.invalidMessage" = "ソートコードが無効です";
+"adyen.bacs.paymentButton.title" = "確認して支払う";
+"adyen.bacs.downloadMandate" = "自動引き落としの説明 (DDI/委任状) をダウンロードする";

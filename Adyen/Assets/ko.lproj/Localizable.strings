@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "%@ 결제 확인";
 "adyen.dropIn.preselected.openAll.title" = "결제 수단 변경";
 "adyen.continueTo" = "다음으로 계속: %@";
+"adyen.continueTitle" = "계속";
 "adyen.phoneNumber.title" = "전화번호";
 "adyen.phoneNumber.invalid" = "유효하지 않은 전화번호";
 "adyen.phoneNumber.placeholder" = "123–456–789";
@@ -133,3 +134,14 @@
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "%@개월";
 "adyen.card.installments.plan" = "결제 수단";
+"adyen.bacs.holderNameField.title" = "예금주 이름";
+"adyen.bacs.bankAccountNumberField.title" = "계좌 번호";
+"adyen.bacs.bankLocationIdField.title" = "은행 식별 코드";
+"adyen.bacs.legalConsentToggle.title" = "본인이 이 계좌의 예금주이며, 이 계좌에서의 자동 이체를 승인하기 위해 필요한 유일한 서명인입니다.";
+"adyen.bacs.amountConsentToggle.title" = "계좌에서 위의 금액을 이체하는 것에 동의합니다.";
+"adyen.bacs.specifiedAmountConsentToggle.title" = "은행 계좌에서 %@이(가) 출금되는 것에 동의합니다.";
+"adyen.bacs.holderNameField.invalidMessage" = "예금주 이름이 유효하지 않습니다";
+"adyen.bacs.bankAccountNumberField.invalidMessage" = "계좌 번호가 유효하지 않습니다";
+"adyen.bacs.bankLocationIdField.invalidMessage" = "은행 식별 코드가 유효하지 않습니다";
+"adyen.bacs.paymentButton.title" = "확인 및 결제";
+"adyen.bacs.downloadMandate" = "자동 이체 안내(DDI/필수) 다운로드";
