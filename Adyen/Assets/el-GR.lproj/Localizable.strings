@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "Επιβεβαίωση πληρωμής μέσω %@";
 "adyen.dropIn.preselected.openAll.title" = "Αλλαγή τρόπου πληρωμής";
 "adyen.continueTo" = "Μετάβαση στην %@";
+"adyen.continueTitle" = "Συνέχεια";
 "adyen.phoneNumber.title" = "Αριθμός τηλεφώνου";
 "adyen.phoneNumber.invalid" = "Μη έγκυρος αριθμός τηλεφώνου";
 "adyen.phoneNumber.placeholder" = "123–456–789";
@@ -133,3 +134,14 @@
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "%@ μήνες";
 "adyen.card.installments.plan" = "Τρόπος πληρωμής";
+"adyen.bacs.holderNameField.title" = "Όνομα δικαιούχου τραπεζικού λογαριασμού";
+"adyen.bacs.bankAccountNumberField.title" = "Αριθμός τραπεζικού λογαριασμού";
+"adyen.bacs.bankLocationIdField.title" = "Κωδικός τράπεζας";
+"adyen.bacs.legalConsentToggle.title" = "Επιβεβαιώνω ότι ο λογαριασμός είναι στο όνομά μου και πως είμαι ο/η μοναδικός/μοναδική υπογράφων/υπογράφουσα που απαιτείται για εξουσιοδότηση της Άμεσης Χρέωσης σε αυτόν τον λογαριασμό.";
+"adyen.bacs.amountConsentToggle.title" = "Αποδέχομαι ότι το πιο πάνω ποσό θα αφαιρεθεί από τον τραπεζικό λογαριασμό μου.";
+"adyen.bacs.specifiedAmountConsentToggle.title" = "Αποδέχομαι ότι το ποσό %@ θα αφαιρεθεί από τον τραπεζικό λογαριασμό μου.";
+"adyen.bacs.holderNameField.invalidMessage" = "Μη έγκυρο όνομα δικαιούχου τραπεζικού λογαριασμού";
+"adyen.bacs.bankAccountNumberField.invalidMessage" = "Μη έγκυρος αριθμός τραπεζικού λογαριασμού";
+"adyen.bacs.bankLocationIdField.invalidMessage" = "Μη έγκυρος κωδικός τράπεζας";
+"adyen.bacs.paymentButton.title" = "Επιβεβαίωση και πληρωμή";
+"adyen.bacs.downloadMandate" = "Κατεβάστε την Εντολή Άμεσης Χρέωσης (DDI/Εντολή)";

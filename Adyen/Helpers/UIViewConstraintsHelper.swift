@@ -11,34 +11,51 @@ import UIKit
 /// :nodoc:
 extension AdyenScope where Base: UIView {
 
-    /// Attach top, bottom, left and right anchors of this view to corespondent anchors inside specified view.
-    /// IMPORTANT: both view should be in the same hierarchy.
+    /// Attaches top, bottom, left and right anchors of this view to the corresponding anchors inside the specified view.
+    /// - IMPORTANT: Both views should be in the same hierarchy.
     /// - Parameter view: Container view
+    /// - Parameter padding: Padding values for each edge. Default is 0 on all edges.
     @discardableResult
     public func anchor(inside view: UIView, with padding: UIEdgeInsets = .zero) -> [NSLayoutConstraint] {
-        base.translatesAutoresizingMaskIntoConstraints = false
-        let constraints = [
-            base.topAnchor.constraint(equalTo: view.topAnchor, constant: padding.top),
-            base.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: padding.bottom),
-            base.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding.left),
-            base.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: padding.right)
-        ]
-        NSLayoutConstraint.activate(constraints)
-        return constraints
+        anchor(inside: .view(view), edgeInsets: EdgeInsets(edgeInsets: padding))
     }
 
-    /// Attach top, bottom, left and right anchors of this view to corresponding anchors inside specified view.
-    /// IMPORTANT: both views should be in the same hierarchy.
+    /// Attaches top, bottom, left and right anchors of this view to the corresponding anchors inside the specified layout guide.
+    /// - IMPORTANT: Both views should be in the same hierarchy.
     /// - Parameter margins: The layout guide to constraint to.
+    /// - Parameter padding: Padding values for each edge. Default is 0 on all edges.
     @discardableResult
     public func anchor(inside margins: UILayoutGuide, with padding: UIEdgeInsets = .zero) -> [NSLayoutConstraint] {
+        anchor(inside: .layoutGuide(margins), edgeInsets: EdgeInsets(edgeInsets: padding))
+    }
+    
+    /// Attaches the given edges of this view to coresponding anchors inside the specified anchor source.
+    /// - Parameters:
+    ///   - anchorSource: The anchor source to contain this view.
+    ///   - edgeInsets: Edges with inset values on which the views should be anchored. Defaults to all 4 edges with 0 inset each.
+    @discardableResult
+    public func anchor(inside anchorSource: LayoutAnchorSource,
+                       edgeInsets: EdgeInsets = .zero) -> [NSLayoutConstraint] {
         base.translatesAutoresizingMaskIntoConstraints = false
-        let constraints = [
-            base.topAnchor.constraint(equalTo: margins.topAnchor, constant: padding.top),
-            base.bottomAnchor.constraint(equalTo: margins.bottomAnchor, constant: padding.bottom),
-            base.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: padding.left),
-            base.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: padding.right)
-        ]
+        
+        var constraints: [NSLayoutConstraint] = []
+        if let top = edgeInsets.top {
+            constraints.append(base.topAnchor.constraint(equalTo: anchorSource.anchorSet.topAnchor,
+                                                         constant: top))
+        }
+        if let left = edgeInsets.left {
+            constraints.append(base.leadingAnchor.constraint(equalTo: anchorSource.anchorSet.leadingAnchor,
+                                                             constant: left))
+        }
+        if let bottom = edgeInsets.bottom {
+            constraints.append(base.bottomAnchor.constraint(equalTo: anchorSource.anchorSet.bottomAnchor,
+                                                            constant: bottom))
+        }
+        if let right = edgeInsets.right {
+            constraints.append(base.trailingAnchor.constraint(equalTo: anchorSource.anchorSet.trailingAnchor,
+                                                              constant: right))
+        }
+        
         NSLayoutConstraint.activate(constraints)
         return constraints
     }
@@ -55,4 +72,71 @@ extension AdyenScope where Base: UIView {
         return containerView
     }
 
+    /// An enum to specify an anchor source
+    /// :nodoc:
+    public enum LayoutAnchorSource {
+        
+        /// Regular `UIView` object
+        case view(UIView)
+        
+        /// Specified layout guide such as Layout Margins or Safe Area.
+        case layoutGuide(UILayoutGuide)
+        
+        fileprivate var anchorSet: AnyAnchorSet {
+            switch self {
+            case let .view(view as AnyAnchorSet):
+                return view
+            case let .layoutGuide(layoutGuide):
+                return layoutGuide
+            }
+        }
+    }
+    
+    /// Inset distances for views that can be nil.
+    /// :nodoc:
+    public struct EdgeInsets {
+        
+        /// :nodoc:
+        public var top: CGFloat?
+
+        /// :nodoc:
+        public var left: CGFloat?
+
+        /// :nodoc:
+        public var bottom: CGFloat?
+
+        /// :nodoc:
+        public var right: CGFloat?
+        
+        /// Creates insets with 0 on all 4 values.
+        /// :nodoc:
+        public static var zero: EdgeInsets {
+            .init(top: 0, left: 0, bottom: 0, right: 0)
+        }
+        
+        internal init(edgeInsets: UIEdgeInsets) {
+            top = edgeInsets.top
+            left = edgeInsets.left
+            bottom = edgeInsets.bottom
+            right = edgeInsets.right
+        }
+        
+        /// :nodoc:
+        public init(top: CGFloat? = nil, left: CGFloat? = nil, bottom: CGFloat? = nil, right: CGFloat? = nil) {
+            self.top = top
+            self.left = left
+            self.bottom = bottom
+            self.right = right
+        }
+    }
 }
+
+private protocol AnyAnchorSet {
+    var topAnchor: NSLayoutYAxisAnchor { get }
+    var leadingAnchor: NSLayoutXAxisAnchor { get }
+    var bottomAnchor: NSLayoutYAxisAnchor { get }
+    var trailingAnchor: NSLayoutXAxisAnchor { get }
+}
+
+extension UIView: AnyAnchorSet {}
+extension UILayoutGuide: AnyAnchorSet {}

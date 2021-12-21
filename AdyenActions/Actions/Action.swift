@@ -34,6 +34,9 @@ public enum Action: Decodable {
     /// Indicates that a QR code is presented to the shopper.
     case qrCode(QRCodeAction)
     
+    /// Indicates a document action is presented to the shopper.
+    case document(DocumentAction)
+    
     // MARK: - Coding
     
     /// :nodoc:
@@ -55,7 +58,7 @@ public enum Action: Decodable {
         case .await:
             self = .await(try AwaitAction(from: decoder))
         case .voucher:
-            self = .voucher(try VoucherAction(from: decoder))
+            self = try Self.handleVoucherType(from: decoder)
         case .qrCode:
             self = try Self.handleQRCodeType(from: decoder)
         }
@@ -68,6 +71,16 @@ public enum Action: Decodable {
             return .qrCode(try QRCodeAction(from: decoder))
         } else {
             return .redirect(try RedirectAction(from: decoder))
+        }
+    }
+    
+    private static func handleVoucherType(from decoder: Decoder) throws -> Action {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        // extract bacs from others since it is not fully a voucher
+        if (try? container.decode(String.self, forKey: .paymentMethodType)) == Constant.bacsDirectDebitName {
+            return .document(try DocumentAction(from: decoder))
+        } else {
+            return .voucher(try VoucherAction(from: decoder))
         }
     }
     
@@ -85,6 +98,10 @@ public enum Action: Decodable {
     private enum CodingKeys: String, CodingKey {
         case type
         case paymentMethodType
+    }
+    
+    private enum Constant {
+        static let bacsDirectDebitName = "directdebit_GB"
     }
     
 }

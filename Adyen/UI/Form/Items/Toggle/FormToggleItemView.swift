@@ -41,14 +41,14 @@ public final class FormToggleItemView: FormValueItemView<Bool, FormToggleItemSty
     /// - Parameter item: The item represented by the view.
     public required init(item: FormToggleItem) {
         super.init(item: item)
-        
+
         showsSeparator = false
-        
+
         isAccessibilityElement = true
         accessibilityLabel = item.title
         accessibilityTraits = switchControl.accessibilityTraits
         accessibilityValue = switchControl.accessibilityValue
-        
+
         observe(item.publisher) { [weak self] value in
             self?.switchControl.isOn = value
         }
@@ -75,13 +75,13 @@ public final class FormToggleItemView: FormValueItemView<Bool, FormToggleItemSty
     }
 
     // MARK: - Public
-    
+
     /// :nodoc:
     @discardableResult
     override public func accessibilityActivate() -> Bool {
         switchControl.isOn = !switchControl.isOn
         switchControlValueChanged()
-        
+
         return true
     }
 

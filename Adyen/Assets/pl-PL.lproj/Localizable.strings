@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "Potwierdź płatność %@";
 "adyen.dropIn.preselected.openAll.title" = "Zmień metodę płatności";
 "adyen.continueTo" = "Przejdź do %@";
+"adyen.continueTitle" = "Kontynuuj";
 "adyen.phoneNumber.title" = "Numer telefonu";
 "adyen.phoneNumber.invalid" = "Nieprawidłowy numer telefonu";
 "adyen.phoneNumber.placeholder" = "123–456–789";
@@ -133,3 +134,14 @@
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "%@ miesięcy";
 "adyen.card.installments.plan" = "Metoda płatności";
+"adyen.bacs.holderNameField.title" = "Imię i nazwisko posiadacza rachunku";
+"adyen.bacs.bankAccountNumberField.title" = "Numer rachunku";
+"adyen.bacs.bankLocationIdField.title" = "Numer rozliczeniowy SORT";
+"adyen.bacs.legalConsentToggle.title" = "Potwierdzam, że konto jest zarejestrowane na moje nazwisko i jestem jedynym sygnatariuszem wymaganym do autoryzacji polecenia zapłaty na tym koncie.";
+"adyen.bacs.amountConsentToggle.title" = "Wyrażam zgodę na pobranie powyższej kwoty z mojego rachunku bankowego.";
+"adyen.bacs.specifiedAmountConsentToggle.title" = "Wyrażam zgodę na pobranie kwoty %@ z mojego rachunku bankowego.";
+"adyen.bacs.holderNameField.invalidMessage" = "Nieprawidłowe imię i nazwisko posiadacza rachunku";
+"adyen.bacs.bankAccountNumberField.invalidMessage" = "Nieprawidłowy numer rachunku";
+"adyen.bacs.bankLocationIdField.invalidMessage" = "Nieprawidłowy numer rozliczeniowy SORT";
+"adyen.bacs.paymentButton.title" = "Potwierdź i zapłać";
+"adyen.bacs.downloadMandate" = "Pobierz dyspozycję polecenia zapłaty (DDI/upoważnienie)";

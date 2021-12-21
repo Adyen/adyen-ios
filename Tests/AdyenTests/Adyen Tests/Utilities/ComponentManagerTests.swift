@@ -50,6 +50,18 @@ class ComponentManagerTests: XCTestCase {
     
     let numberOfExpectedRegularComponents = 19
 
+    var presentationDelegate: PresentationDelegateMock!
+
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        presentationDelegate = PresentationDelegateMock()
+    }
+
+    override func tearDownWithError() throws {
+        presentationDelegate = nil
+        try super.tearDownWithError()
+    }
+
     func testClientKeyInjectionAndProtocolConfromance() throws {
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
         let config = DropInComponent.Configuration(apiContext: Dummy.context)
@@ -61,7 +73,8 @@ class ComponentManagerTests: XCTestCase {
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: config,
                                    style: DropInComponent.Style(),
-                                   order: nil)
+                                   order: nil,
+                                   presentationDelegate: presentationDelegate)
 
         XCTAssertEqual(sut.storedComponents.count, 4)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
@@ -86,7 +99,8 @@ class ComponentManagerTests: XCTestCase {
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: config,
                                    style: DropInComponent.Style(),
-                                   order: nil)
+                                   order: nil,
+                                   presentationDelegate: presentationDelegate)
         
         XCTAssertEqual(sut.storedComponents.count, 4)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
@@ -107,7 +121,8 @@ class ComponentManagerTests: XCTestCase {
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: config,
                                    style: DropInComponent.Style(),
-                                   order: nil)
+                                   order: nil,
+                                   presentationDelegate: presentationDelegate)
         
         XCTAssertEqual(sut.storedComponents.count, 4)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
@@ -140,7 +155,8 @@ class ComponentManagerTests: XCTestCase {
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: config,
                                    style: DropInComponent.Style(),
-                                   order: order)
+                                   order: order,
+                                   presentationDelegate: presentationDelegate)
 
         XCTAssertEqual(sut.paidComponents.count, 2)
         XCTAssertEqual(sut.storedComponents.count, 4)
@@ -159,7 +175,8 @@ class ComponentManagerTests: XCTestCase {
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: configuration,
                                    style: DropInComponent.Style(),
-                                   order: nil)
+                                   order: nil,
+                                   presentationDelegate: presentationDelegate)
 
         // When
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == "affirm" })
@@ -177,7 +194,8 @@ class ComponentManagerTests: XCTestCase {
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: configuration,
                                    style: DropInComponent.Style(),
-                                   order: nil)
+                                   order: nil,
+                                   presentationDelegate: presentationDelegate)
 
         // When
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == "doku_wallet" })
@@ -195,7 +213,8 @@ class ComponentManagerTests: XCTestCase {
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: configuration,
                                    style: DropInComponent.Style(),
-                                   order: nil)
+                                   order: nil,
+                                   presentationDelegate: presentationDelegate)
 
         // When
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == "mbway" })
@@ -213,7 +232,8 @@ class ComponentManagerTests: XCTestCase {
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: configuration,
                                    style: DropInComponent.Style(),
-                                   order: nil)
+                                   order: nil,
+                                   presentationDelegate: presentationDelegate)
 
         // When
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == "econtext_online" })
@@ -231,7 +251,8 @@ class ComponentManagerTests: XCTestCase {
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: configuration,
                                    style: DropInComponent.Style(),
-                                   order: nil)
+                                   order: nil,
+                                   presentationDelegate: presentationDelegate)
 
         // When
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == "boletobancario_santander" })
@@ -249,7 +270,8 @@ class ComponentManagerTests: XCTestCase {
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: configuration,
                                    style: DropInComponent.Style(),
-                                   order: nil)
+                                   order: nil,
+                                   presentationDelegate: presentationDelegate)
 
         // When
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == "scheme" })

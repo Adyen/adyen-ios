@@ -35,6 +35,7 @@ internal final class ComponentsViewController: UIViewController, Presenter {
                 ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
                 ComponentsItem(title: "iDEAL", selectionHandler: presentIdealComponent),
                 ComponentsItem(title: "SEPA Direct Debit", selectionHandler: presentSEPADirectDebitComponent),
+                ComponentsItem(title: "BACS Direct Debit", selectionHandler: presentBACSDirectDebitComponent),
                 ComponentsItem(title: "MB WAY", selectionHandler: presentMBWayComponent),
                 ComponentsItem(title: "Convenience Stores", selectionHandler: presentConvenienceStore)
             ],
@@ -66,6 +67,10 @@ internal final class ComponentsViewController: UIViewController, Presenter {
 
     internal func presentSEPADirectDebitComponent() {
         integrationExample.presentSEPADirectDebitComponent()
+    }
+
+    internal func presentBACSDirectDebitComponent() {
+        integrationExample.presentBACSDirectDebitComponent()
     }
 
     internal func presentMBWayComponent() {

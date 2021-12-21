@@ -154,7 +154,8 @@ public final class DropInComponent: NSObject, PresentableComponent {
                          partialPaymentEnabled: partialPaymentDelegate != nil,
                          remainingAmount: remainingAmount,
                          order: order,
-                         supportsEditingStoredPaymentMethods: storedPaymentMethodsDelegate != nil)
+                         supportsEditingStoredPaymentMethods: storedPaymentMethodsDelegate != nil,
+                         presentationDelegate: self)
     }
     
     internal lazy var rootComponent: PresentableComponent = {

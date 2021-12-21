@@ -70,7 +70,7 @@ internal final class DropInNavigationController: UINavigationController, Keyboar
     internal func present(root component: PresentableComponent) {
         pushViewController(wrapInModalController(component: component, isRoot: true), animated: true)
     }
-    
+
     // MARK: - Private
 
     internal func updateTopViewControllerIfNeeded(animated: Bool = true) {

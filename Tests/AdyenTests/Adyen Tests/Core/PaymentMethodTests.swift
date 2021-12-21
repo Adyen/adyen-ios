@@ -536,8 +536,9 @@ class PaymentMethodTests: XCTestCase {
     // MARK: - BACS Direct Debit
 
     func testDecodingBACSDirectDebitPaymentMethod() throws {
-        let paymentMethod = try Coder.decode(bacsDirectDebit) as AnyPaymentMethod
-        XCTAssertNil(paymentMethod.value)
+        let paymentMethod = try Coder.decode(bacsDirectDebit) as BACSDirectDebitPaymentMethod
+        XCTAssertEqual(paymentMethod.type, "directdebit_GB")
+        XCTAssertEqual(paymentMethod.name, "BACS Direct Debit")
     }
 
     // MARK: - ACH Direct Debit

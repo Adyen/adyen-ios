@@ -9,13 +9,13 @@ import AdyenNetworking
 import PassKit
 import UIKit
 
-/// A component that handles voucher action's.
+/// A component that handles voucher action.
 internal protocol AnyVoucherActionHandler: ActionComponent, Cancellable {
     func handle(_ action: VoucherAction)
 }
 
-/// A component that handles voucher action's.
-public final class VoucherComponent: AnyVoucherActionHandler {
+/// A component that handles voucher action.
+public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent {
 
     /// :nodoc:
     public let apiContext: APIContext
@@ -63,7 +63,7 @@ public final class VoucherComponent: AnyVoucherActionHandler {
     /// :nodoc:
     internal var view: VoucherView?
 
-    /// Initializes the `AwaitComponent`.
+    /// Initializes the `VoucherComponent`.
     ///
     /// - Parameter apiContext: The API context.
     /// - Parameter style: The Component UI style.
@@ -118,7 +118,7 @@ public final class VoucherComponent: AnyVoucherActionHandler {
             let presentableComponent = PresentableComponentWrapper(
                 component: self,
                 viewController: viewController,
-                navBarType: getNavBarType()
+                navBarType: navBarType()
             )
             presentationDelegate.present(component: presentableComponent)
         } else {
@@ -129,32 +129,20 @@ public final class VoucherComponent: AnyVoucherActionHandler {
     }
     
     internal let presenterViewController = UIViewController()
-    
-    private func setUpPresenterViewController(parentViewController: UIViewController) {
-        // Ugly hack to work around the following bug
-        // https://stackoverflow.com/questions/59413850/uiactivityviewcontroller-dismissing-current-view-controller-after-sharing-file
         
-        parentViewController.addChild(presenterViewController)
-        parentViewController.view.insertSubview(presenterViewController.view, at: 0)
-        presenterViewController.view.frame = .zero
-        presenterViewController.didMove(toParent: parentViewController)
-    }
+    private func navBarType() -> NavigationBarType {
+        let model = ActionNavigationBar.Model(leadingButtonTitle: Bundle.Adyen.localizedEditCopy,
+                                              trailingButtonTitle: Bundle.Adyen.localizedDoneCopy)
+        let style = ActionNavigationBar.Style(leadingButton: style.editButton,
+                                              trailingButton: style.doneButton,
+                                              backgroundColor: style.backgroundColor)
         
-    private func getNavBarType() -> NavigationBarType {
-        let localizedEdit = Bundle.Adyen.localizedEditCopy
-        let localizedDone = Bundle.Adyen.localizedDoneCopy
-        let model = VoucherNavBar.Model(
-            editButtonTitle: localizedEdit,
-            doneButtonTitle: localizedDone,
-            style: VoucherNavBar.Model.Style(
-                editButton: style.editButton,
-                doneButton: style.doneButton,
-                backgroundColor: style.backgroundColor
-            )
-        )
-        let navBar = VoucherNavBar(
-            model: model
-        )
+        let navBar = ActionNavigationBar(model: model, style: style)
+        
+        navBar.leadingButtonHandler = {
+            navBar.onCancelHandler?()
+        }
+        
         navBar.trailingButtonHandler = { [weak self] in
             self.map { $0.delegate?.didComplete(from: $0) }
         }

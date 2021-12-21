@@ -36,6 +36,7 @@
 "adyen.dropIn.stored.title" = "Подтвердить оплату %@";
 "adyen.dropIn.preselected.openAll.title" = "Изменить способ оплаты";
 "adyen.continueTo" = "Перейти к %@";
+"adyen.continueTitle" = "Продолжить";
 "adyen.phoneNumber.title" = "Номер телефона";
 "adyen.phoneNumber.invalid" = "Недействительный номер телефона";
 "adyen.phoneNumber.placeholder" = "123–456–789";
@@ -133,3 +134,14 @@
 "adyen.card.installments.monthsAndPrice" = "%@× %@";
 "adyen.card.installments.months" = "%@ мес.";
 "adyen.card.installments.plan" = "Способ оплаты";
+"adyen.bacs.holderNameField.title" = "Имя владельца банковского счета";
+"adyen.bacs.bankAccountNumberField.title" = "Номер банковского счета";
+"adyen.bacs.bankLocationIdField.title" = "Код банка";
+"adyen.bacs.legalConsentToggle.title" = "Подтверждаю, что счет оформлен на мое имя и что я – единственное лицо, имеющее право подписи, разрешающей прямое дебетование средств со счета.";
+"adyen.bacs.amountConsentToggle.title" = "Выражаю согласие на списание вышеуказанной суммы с моего банковского счета.";
+"adyen.bacs.specifiedAmountConsentToggle.title" = "Выражаю согласие на списание %@ с моего банковского счета.";
+"adyen.bacs.holderNameField.invalidMessage" = "Неверное имя владельца банковского счета";
+"adyen.bacs.bankAccountNumberField.invalidMessage" = "Неверный номер банковского счета";
+"adyen.bacs.bankLocationIdField.invalidMessage" = "Неверный код банка";
+"adyen.bacs.paymentButton.title" = "Подтвердить и оплатить";
+"adyen.bacs.downloadMandate" = "Загрузить распоряжение прямого дебетования (DDI / поручение)";

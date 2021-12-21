@@ -41,6 +41,7 @@ custom_categories:
       - RedirectComponentStyle
       - VoucherComponentStyle
       - QRCodeComponentStyle
+      - DocumentComponentStyle
       - NavigationStyle
       - CancelButtonStyle
       - ProgressViewStyle
@@ -62,6 +63,7 @@ custom_categories:
       - IssuerListPaymentMethod
       - ApplePayPaymentMethod
       - SEPADirectDebitPaymentMethod
+      - BACSDirectDebitPaymentMethod
       - QiwiWalletPaymentMethod
       - AffirmPaymentMethod
       - AwaitPaymentMethod
@@ -75,6 +77,7 @@ custom_categories:
       - QRCodePaymentMethod
       - WeChatPayPaymentMethod
       - MultibancoPaymentMethod
+      - DocumentActionPaymentMethod
       
   - name: Actions
     children:
@@ -98,6 +101,7 @@ custom_categories:
       - EContextATMVoucherAction
       - EContextStoresVoucherAction
       - OXXOVoucherAction
+      - DocumentAction
       - AppleWalletError
       
   - name: Action-handling components
@@ -110,6 +114,7 @@ custom_categories:
       - RedirectComponent
       - RedirectDetails
       - WeChatPaySDKActionComponent
+      - DocumentActionComponent
       
   - name: Card Component
     children:
@@ -164,7 +169,13 @@ custom_categories:
       - SEPADirectDebitDetails
       - IBANFormatter
       - IBANValidator
-      
+
+  - name: BACS Direct Debit Component
+    children:
+      - BACSDirectDebitPaymentMethod
+      - BACSDirectDebitComponent
+      - BACSDirectDebitDetails
+
   - name: Qiwi Wallet Component
     children:
       - QiwiWalletPaymentMethod
@@ -253,7 +264,7 @@ custom_categories:
       - AdditionalDetails
       - PaymentMethodDetails
       - AnyVoucherAction
-      
+
   - name: Public delegates
     children:
       - ActionComponentDelegate
