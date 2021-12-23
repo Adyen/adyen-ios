@@ -20,7 +20,7 @@ public final class TextField: UITextField {
     internal var disablePlaceHolderAccessibility: Bool = true
     
     /// A boolean value to determine whether editing actions such as
-    /// cut, copy, paste, share are allowed for the text field. Default is `true`
+    /// cut, copy, share are allowed for the text field. Default is `true`
     public var allowsEditingActions: Bool = true
 
     /// :nodoc:
@@ -50,14 +50,12 @@ public final class TextField: UITextField {
     }
     
     override public func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
-        allowsEditingActions && super.canPerformAction(action, withSender: sender)
-//        switch action {
-//        case #selector(UIResponderStandardEditActions.copy(_:)),
-//             #selector(UIResponderStandardEditActions.cut(_:)):
-//            return false
-//        default:
-//            return super.canPerformAction(action, withSender: sender)
-//        }
+        switch action {
+        case #selector(UIResponderStandardEditActions.paste(_:)):
+            return true
+        default:
+            return allowsEditingActions
+        }
     }
 }
 
