@@ -91,6 +91,8 @@ class FormTextItemViewTests: XCTestCase {
             return 6
         }
         
+        XCTAssertEqual(sut.textField.allowsEditingActions, true)
+        
         sut.textField.text = "123456"
         sut.textField.sendActions(for: .editingChanged)
         
