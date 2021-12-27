@@ -88,6 +88,8 @@ class FormCardNumberItemViewTests: XCTestCase {
                                                       isEnteredBrandSupported: true)
         item.formatter = cardNumberFormatter
         item.validator = cardNumberValidator
+        
+        XCTAssertEqual(sut.textField.allowsEditingActions, false)
 
         // When
         sut.textField.text = "4111kdhr456"

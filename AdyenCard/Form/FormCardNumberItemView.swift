@@ -21,6 +21,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         accessory = .customView(detectedBrandsView)
         textField.textContentType = .creditCardNumber
         textField.returnKeyType = .default
+        textField.allowsEditingActions = false
         
         observe(item.$currentBrand) { [weak self] _ in
             self?.updateValidationStatus(forced: true)

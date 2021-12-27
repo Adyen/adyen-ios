@@ -18,6 +18,10 @@ public final class TextField: UITextField {
     private var heightConstraint: NSLayoutConstraint?
     
     internal var disablePlaceHolderAccessibility: Bool = true
+    
+    /// A boolean value to determine whether editing actions such as
+    /// cut, copy, share are allowed for the text field. Default is `true`
+    public var allowsEditingActions: Bool = true
 
     /// :nodoc:
     override public var accessibilityValue: String? {
@@ -42,6 +46,15 @@ public final class TextField: UITextField {
             heightConstraint?.constant = sizeToFit.height + 1
             heightConstraint?.priority = .defaultHigh
             heightConstraint?.isActive = true
+        }
+    }
+    
+    override public func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+        switch action {
+        case #selector(UIResponderStandardEditActions.paste(_:)):
+            return true
+        default:
+            return allowsEditingActions
         }
     }
 }

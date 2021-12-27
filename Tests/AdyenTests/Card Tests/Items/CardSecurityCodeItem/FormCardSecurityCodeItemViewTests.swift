@@ -47,6 +47,7 @@ class FormCardSecurityCodeItemViewTests: XCTestCase {
         XCTAssertEqual(expectedCVV, item.value)
         XCTAssertEqual(expectedFormattedCVV, item.formattedValue)
         XCTAssertEqual(expectedFormattedCVV, sut.textField.text)
+        XCTAssertEqual(sut.textField.allowsEditingActions, false)
     }
 
     func testTextFieldSanitizationGivenCorrectSecurityCodeShouldSanitizeAndFormatInput() throws {
