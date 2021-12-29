@@ -211,7 +211,11 @@ extension CheckoutController: PaymentControllerDelegate {
     }
 
     private func finish(with result: Result<PaymentResult>) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        var delay = 0.0
+        if #available(iOS 15.0, *) {
+            delay = 0.3
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
             self.finishAndDismiss(result)
         }
     }
