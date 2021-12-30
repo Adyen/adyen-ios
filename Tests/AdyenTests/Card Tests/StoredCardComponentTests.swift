@@ -30,20 +30,16 @@ class StoredCardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
 
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let alertController = sut.viewController as! UIAlertController
-            let textField: UITextField? = sut.viewController.view.findView(by: "AdyenCard.StoredCardAlertManager.textField")
-            XCTAssertNotNil(textField)
+        wait(for: .seconds(1))
+        
+        let alertController = sut.viewController as! UIAlertController
+        let textField: UITextField! = alertController.textFields!.first
+        XCTAssertNotNil(textField)
 
-            XCTAssertTrue(alertController.actions.contains { $0.title == localizedString(.cancelButton, nil) })
-            XCTAssertTrue(alertController.actions.contains { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) })
+        XCTAssertTrue(alertController.actions.contains { $0.title == localizedString(.cancelButton, nil) })
+        XCTAssertTrue(alertController.actions.contains { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) })
 
-            expectation.fulfill()
-
-            alertController.dismiss(animated: false, completion: nil)
-        }
-        wait(for: [expectation], timeout: 10)
+        alertController.dismiss(animated: false, completion: nil)
     }
 
     func testUIWithPublicKey() {
@@ -65,20 +61,15 @@ class StoredCardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
 
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let alertController = sut.viewController as! UIAlertController
-            let textField: UITextField? = sut.viewController.view.findView(by: "AdyenCard.StoredCardAlertManager.textField")
-            XCTAssertNotNil(textField)
+        wait(for: .seconds(1))
+        let alertController = sut.viewController as! UIAlertController
+        let textField: UITextField! = alertController.textFields!.first
+        XCTAssertNotNil(textField)
 
-            XCTAssertTrue(alertController.actions.contains { $0.title == localizedString(.cancelButton, nil) })
-            XCTAssertTrue(alertController.actions.contains { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) })
+        XCTAssertTrue(alertController.actions.contains { $0.title == localizedString(.cancelButton, nil) })
+        XCTAssertTrue(alertController.actions.contains { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) })
 
-            expectation.fulfill()
-
-            alertController.dismiss(animated: false, completion: nil)
-        }
-        wait(for: [expectation], timeout: 10)
+        alertController.dismiss(animated: false, completion: nil)
     }
 
     func testPaymentSubmitWithSuccessfulCardPublicKeyFetching() {
@@ -126,26 +117,24 @@ class StoredCardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
 
-        let dummyExpectation = expectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let alertController = sut.viewController as! UIAlertController
-            let textField: UITextField? = sut.viewController.view.findView(by: "AdyenCard.StoredCardAlertManager.textField")
-            XCTAssertNotNil(textField)
+        wait(for: .seconds(1))
+        
+        let alertController = sut.viewController as! UIAlertController
+        let textField: UITextField! = alertController.textFields!.first
+        XCTAssertNotNil(textField)
 
-            textField?.text = "737"
-            textField?.sendActions(for: .editingChanged)
+        textField!.text = "737"
+        textField!.sendActions(for: .editingChanged)
 
-            let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) }!
+        let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) }!
 
-            payAction.tap()
-            
-            XCTAssertTrue(textField!.text!.isEmpty)
-            XCTAssertFalse(payAction.isEnabled)
+        payAction.tap()
+        
+        XCTAssertTrue(textField!.text!.isEmpty)
+        XCTAssertFalse(payAction.isEnabled)
 
-            dummyExpectation.fulfill()
-
-            alertController.dismiss(animated: false, completion: nil)
-        }
+        alertController.dismiss(animated: false, completion: nil)
+        
         waitForExpectations(timeout: 10, handler: nil)
     }
 
@@ -187,23 +176,20 @@ class StoredCardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
 
-        let dummyExpectation = expectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let alertController = sut.viewController as! UIAlertController
-            let textField: UITextField? = sut.viewController.view.findView(by: "AdyenCard.StoredCardAlertManager.textField")
-            XCTAssertNotNil(textField)
+        wait(for: .seconds(1))
+        
+        let alertController = sut.viewController as! UIAlertController
+        let textField: UITextField! = alertController.textFields!.first
+        XCTAssertNotNil(textField)
 
-            textField?.text = "737"
-            textField?.sendActions(for: .editingChanged)
+        textField.text = "737"
+        textField.sendActions(for: .editingChanged)
 
-            let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) }!
+        let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) }!
 
-            payAction.tap()
+        payAction.tap()
 
-            dummyExpectation.fulfill()
-
-            alertController.dismiss(animated: false, completion: nil)
-        }
+        alertController.dismiss(animated: false, completion: nil)
         waitForExpectations(timeout: 10, handler: nil)
     }
 
@@ -225,42 +211,39 @@ class StoredCardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
 
-        let dummyExpectation = expectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let alertController = sut.viewController as! UIAlertController
-            let textField: UITextField! = sut.viewController.view.findView(by: "AdyenCard.StoredCardAlertManager.textField")
-            let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) }!
+        wait(for: .seconds(1))
+        
+        let alertController = sut.viewController as! UIAlertController
+        let textField: UITextField! = alertController.textFields!.first
+        let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) }!
 
-            textField.insertText("a")
-            textField?.sendActions(for: .editingChanged)
-            XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 0, length: 1), replacementString: "a"), false)
+        textField.insertText("a")
+        textField?.sendActions(for: .editingChanged)
+        XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 0, length: 1), replacementString: "a"), false)
 
-            textField.text = "1"
-            textField?.sendActions(for: .editingChanged)
-            XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 0, length: 1), replacementString: "1"), true)
+        textField.text = "1"
+        textField?.sendActions(for: .editingChanged)
+        XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 0, length: 1), replacementString: "1"), true)
 
-            textField.text = "11"
-            textField?.sendActions(for: .editingChanged)
-            XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 1, length: 1), replacementString: "1"), true)
+        textField.text = "11"
+        textField?.sendActions(for: .editingChanged)
+        XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 1, length: 1), replacementString: "1"), true)
 
-            textField.text = "111"
-            textField?.sendActions(for: .editingChanged)
-            XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 2, length: 1), replacementString: "1"), true)
-            XCTAssertEqual(payAction.isEnabled, false)
+        textField.text = "111"
+        textField?.sendActions(for: .editingChanged)
+        XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 2, length: 1), replacementString: "1"), true)
+        XCTAssertEqual(payAction.isEnabled, false)
 
-            textField.text = "1111"
-            textField?.sendActions(for: .editingChanged)
-            XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 3, length: 1), replacementString: "1"), true)
-            XCTAssertEqual(payAction.isEnabled, true)
+        textField.text = "1111"
+        textField?.sendActions(for: .editingChanged)
+        XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 3, length: 1), replacementString: "1"), true)
+        XCTAssertEqual(payAction.isEnabled, true)
 
-            textField.text = "11111"
-            textField?.sendActions(for: .editingChanged)
-            XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 4, length: 1), replacementString: "1"), false)
+        textField.text = "11111"
+        textField?.sendActions(for: .editingChanged)
+        XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 4, length: 1), replacementString: "1"), false)
 
-            dummyExpectation.fulfill()
-            alertController.dismiss(animated: false, completion: nil)
-        }
-        waitForExpectations(timeout: 10, handler: nil)
+        alertController.dismiss(animated: false, completion: nil)
     }
 
     func testCVCLimitForNonAMEX() {
@@ -281,35 +264,32 @@ class StoredCardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
 
-        let dummyExpectation = expectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let alertController = sut.viewController as! UIAlertController
-            let textField: UITextField! = sut.viewController.view.findView(by: "AdyenCard.StoredCardAlertManager.textField")
-            let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) }!
+        wait(for: .seconds(1))
+        
+        let alertController = sut.viewController as! UIAlertController
+        let textField: UITextField! = alertController.textFields!.first
+        let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) }!
 
-            textField.text = "11"
-            textField?.sendActions(for: .editingChanged)
-            XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 1, length: 1), replacementString: "1"), true)
-            XCTAssertEqual(payAction.isEnabled, false)
+        textField.text = "11"
+        textField?.sendActions(for: .editingChanged)
+        XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 1, length: 1), replacementString: "1"), true)
+        XCTAssertEqual(payAction.isEnabled, false)
 
-            textField.text = "111"
-            textField?.sendActions(for: .editingChanged)
-            XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 2, length: 1), replacementString: "1"), true)
-            XCTAssertEqual(payAction.isEnabled, true)
+        textField.text = "111"
+        textField?.sendActions(for: .editingChanged)
+        XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 2, length: 1), replacementString: "1"), true)
+        XCTAssertEqual(payAction.isEnabled, true)
 
-            textField.text = "1111"
-            textField?.sendActions(for: .editingChanged)
-            XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 3, length: 1), replacementString: "1"), true)
-            XCTAssertEqual(payAction.isEnabled, true)
+        textField.text = "1111"
+        textField?.sendActions(for: .editingChanged)
+        XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 3, length: 1), replacementString: "1"), true)
+        XCTAssertEqual(payAction.isEnabled, true)
 
-            textField.text = "11111"
-            textField?.sendActions(for: .editingChanged)
-            XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 4, length: 1), replacementString: "1"), false)
+        textField.text = "11111"
+        textField?.sendActions(for: .editingChanged)
+        XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 4, length: 1), replacementString: "1"), false)
 
-            dummyExpectation.fulfill()
-            alertController.dismiss(animated: false, completion: nil)
-        }
-        waitForExpectations(timeout: 10, handler: nil)
+        alertController.dismiss(animated: false, completion: nil)
     }
 
     func testCVCLimitForUnknownCardType() {
@@ -333,7 +313,7 @@ class StoredCardComponentTests: XCTestCase {
         wait(for: .seconds(1))
         
         let alertController = sut.viewController as! UIAlertController
-        let textField: UITextField! = sut.viewController.view.findView(by: "AdyenCard.StoredCardAlertManager.textField")
+        let textField: UITextField! = alertController.textFields!.first
         let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) }!
 
         textField.text = "11"
