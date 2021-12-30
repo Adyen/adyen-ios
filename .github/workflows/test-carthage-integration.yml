@@ -1,13 +1,14 @@
 name: Test Carthage Integration
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
-
-  push:
-    branches:
-    - master
-    - develop
+  push
+  # pull_request:
+  #   types: [opened, synchronize, reopened]
+  #
+  # push:
+  #   branches:
+  #   - master
+  #   - develop
 
 jobs:
 
@@ -31,6 +32,8 @@ jobs:
         brew upgrade carthage
 
     - name: Test Carthage Integration
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         carthage version
         Scripts/test-carthage-integration.sh
