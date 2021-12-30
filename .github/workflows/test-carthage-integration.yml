@@ -1,14 +1,13 @@
 name: Test Carthage Integration
 
 on:
-  push
-  # pull_request:
-  #   types: [opened, synchronize, reopened]
-  #
-  # push:
-  #   branches:
-  #   - master
-  #   - develop
+  pull_request:
+    types: [opened, synchronize, reopened]
+  
+  push:
+    branches:
+    - master
+    - develop
 
 jobs:
 
