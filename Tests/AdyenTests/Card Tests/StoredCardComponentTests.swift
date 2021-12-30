@@ -138,6 +138,9 @@ class StoredCardComponentTests: XCTestCase {
             let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) }!
 
             payAction.tap()
+            
+            XCTAssertTrue(textField!.text!.isEmpty)
+            XCTAssertFalse(payAction.isEnabled)
 
             dummyExpectation.fulfill()
 

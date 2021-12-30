@@ -69,4 +69,30 @@ class StoredCardAlertManagerTests: XCTestCase {
         XCTAssertEqual(alertController.actions[1].title, localizedSubmitButtonTitle(with: amount, style: .immediate, sut.localizationParameters))
     }
     
+    func testResetFieldsAfterCancel() {
+        let method = try! Coder.decode(storedCardDictionary) as StoredCardPaymentMethod
+        let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
+        let sut = StoredCardAlertManager(paymentMethod: method, apiContext: Dummy.context, amount: payment.amount)
+        sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
+        
+        
+        let alertController = sut.alertController
+        let textField = alertController.textFields!.first!
+        
+        UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: false, completion: nil)
+        
+        wait(for: .seconds(1))
+        
+        let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters) }!
+        let cancelAction = alertController.actions.first { $0.title == localizedString(.cancelButton, sut.localizationParameters) }!
+        
+        textField.text = "111"
+        textField.sendActions(for: .editingChanged)
+        
+        cancelAction.tap()
+        
+        XCTAssertTrue(textField.text!.isEmpty)
+        XCTAssertFalse(payAction.isEnabled)
+    }
+    
 }
