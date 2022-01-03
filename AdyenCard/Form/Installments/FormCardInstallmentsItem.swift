@@ -31,7 +31,8 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
     }
     
     /// Default picker option.
-    private lazy var oneTimePaymentElement: InstallmentElement = .init(kind: .plan(.oneTime), localizationParameters: localizationParameters)
+    private lazy var oneTimePaymentElement: InstallmentElement =
+        .init(kind: .plan(.oneTime), localizationParameters: localizationParameters)
 
     /// Creates the picker values to display in addition to `oneTimePaymentElement`
     private var additionalPickerElements: [InstallmentElement] {
