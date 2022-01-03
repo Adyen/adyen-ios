@@ -75,7 +75,6 @@ class StoredCardAlertManagerTests: XCTestCase {
         let sut = StoredCardAlertManager(paymentMethod: method, apiContext: Dummy.context, amount: payment.amount)
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         
-        
         let alertController = sut.alertController
         let textField = alertController.textFields!.first!
         
