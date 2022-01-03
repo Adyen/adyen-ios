@@ -185,7 +185,7 @@ class DropInTests: XCTestCase {
         root.present(sut.viewController, animated: true, completion: nil)
 
         wait(for: .seconds(2))
-        let topVC = self.sut.viewController.findChild(of: ListViewController.self)
+        var topVC = self.sut.viewController.findChild(of: ListViewController.self)
         topVC?.tableView(topVC!.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
 
         wait(for: .seconds(2))

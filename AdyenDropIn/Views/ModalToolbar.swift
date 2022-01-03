@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -115,11 +115,9 @@ internal final class ModalToolbar: UIView, AnyNavigationBar {
         ])
     }
 
-    private lazy var safeAreaLeadingAnchor: NSLayoutXAxisAnchor =
-        style.toolbarMode == .natural ? safeAreaLayoutGuide.leadingAnchor : safeAreaLayoutGuide.leftAnchor
+    private lazy var safeAreaLeadingAnchor: NSLayoutXAxisAnchor = style.toolbarMode == .natural ? safeAreaLayoutGuide.leadingAnchor : safeAreaLayoutGuide.leftAnchor
 
-    private lazy var safeAreaTrailingAnchor: NSLayoutXAxisAnchor =
-        style.toolbarMode == .natural ? safeAreaLayoutGuide.trailingAnchor : safeAreaLayoutGuide.rightAnchor
+    private lazy var safeAreaTrailingAnchor: NSLayoutXAxisAnchor = style.toolbarMode == .natural ? safeAreaLayoutGuide.trailingAnchor : safeAreaLayoutGuide.rightAnchor
 
     private lazy var cancelPositionConstraint: NSLayoutConstraint = {
         let cancelPositionConstraint: NSLayoutConstraint
