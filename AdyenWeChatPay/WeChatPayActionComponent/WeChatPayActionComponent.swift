@@ -7,8 +7,12 @@
 #if canImport(AdyenActions)
     import AdyenActions
 #endif
+
+#if !targetEnvironment(simulator) && canImport(AdyenWeChatPayInternal)
+    import AdyenWeChatPayInternal
+#endif
+
 import Adyen
-import AdyenWeChatPayInternal
 import Foundation
 
 /// Action component to handle WeChat Pay SDK action.
@@ -34,6 +38,8 @@ public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionC
             delegate?.didFail(with: ComponentError.paymentMethodNotSupported, from: self)
             return
         }
+
+        #if !targetEnvironment(simulator)
         assert(Thread.isMainThread, "present(actionData:) must be called on the main thread.")
         assert(currentlyHandledAction == nil, """
           Warning: There was a WeChatPaySDKAction already in progress.
@@ -52,13 +58,18 @@ public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionC
         WXApi.send(PayReq(actionData: action.sdkData))
         
         delegate?.didOpenExternalApplication(self)
+        #endif
     }
     
     /// Checks if the current device supports WeChat Pay.
     public static func isDeviceSupported() -> Bool {
+        #if targetEnvironment(simulator)
+            return false
+        #else
         assertWeChatPayAppSchemeConfigured()
         WXApi.registerApp("")
         return WXApi.isWXAppInstalled() && WXApi.isWXAppSupport()
+        #endif
     }
     
     private static func assertWeChatPayAppSchemeConfigured() {
@@ -69,6 +80,8 @@ public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionC
     }
     
 }
+
+#if !targetEnvironment(simulator)
 
 /// :nodoc:
 extension WeChatPaySDKActionComponent: WXApiDelegate {
@@ -101,3 +114,5 @@ private extension PayReq {
         sign = actionData.signature
     }
 }
+
+#endif
