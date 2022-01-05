@@ -115,9 +115,13 @@ internal final class ModalToolbar: UIView, AnyNavigationBar {
         ])
     }
 
-    private lazy var safeAreaLeadingAnchor: NSLayoutXAxisAnchor = style.toolbarMode == .natural ? safeAreaLayoutGuide.leadingAnchor : safeAreaLayoutGuide.leftAnchor
+    private lazy var safeAreaLeadingAnchor: NSLayoutXAxisAnchor = {
+        style.toolbarMode == .natural ? safeAreaLayoutGuide.leadingAnchor : safeAreaLayoutGuide.leftAnchor
+    }()
 
-    private lazy var safeAreaTrailingAnchor: NSLayoutXAxisAnchor = style.toolbarMode == .natural ? safeAreaLayoutGuide.trailingAnchor : safeAreaLayoutGuide.rightAnchor
+    private lazy var safeAreaTrailingAnchor: NSLayoutXAxisAnchor = {
+        style.toolbarMode == .natural ? safeAreaLayoutGuide.trailingAnchor : safeAreaLayoutGuide.rightAnchor
+    }()
 
     private lazy var cancelPositionConstraint: NSLayoutConstraint = {
         let cancelPositionConstraint: NSLayoutConstraint
