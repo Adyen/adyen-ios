@@ -11,7 +11,7 @@
 import Adyen
 import Foundation
 
-#if !targetEnvironment(simulator) && canImport(AdyenWeChatPayInternal)
+#if !(targetEnvironment(simulator) && arch(arm64)) && canImport(AdyenWeChatPayInternal)
 
 import AdyenWeChatPayInternal
 
@@ -105,31 +105,6 @@ private extension PayReq {
         nonceStr = actionData.nonce
         sign = actionData.signature
     }
-}
-
-#else
-
-/// Action component to handle WeChat Pay SDK action.
-/// Mock for iOS Simulator.
-public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionComponent {
-
-    public func handle(_ action: WeChatPaySDKAction) {
-        adyenPrint("WeChat SDK not executable on iOS simulator")
-    }
-
-    public weak var delegate: ActionComponentDelegate?
-
-    public static func isDeviceSupported() -> Bool {
-        return false
-    }
-
-    public init(apiContext: APIContext) {
-        self.apiContext = apiContext
-        super.init()
-    }
-
-    public var apiContext: APIContext
-
 }
 
 #endif
