@@ -61,9 +61,9 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, APIC
         })
         
         let cancelActionTitle = localizedString(.cancelButton, localizationParameters)
-        let cancelAction = UIAlertAction(title: cancelActionTitle, style: .cancel) { _ in
-            self.completionHandler?(.failure(ComponentError.cancelled))
-            self.resetAlertFields()
+        let cancelAction = UIAlertAction(title: cancelActionTitle, style: .cancel) { [weak self] _ in
+            self?.completionHandler?(.failure(ComponentError.cancelled))
+            self?.resetAlertFields()
         }
         alertController.addAction(cancelAction)
         
