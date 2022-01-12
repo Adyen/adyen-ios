@@ -145,3 +145,10 @@
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Nevažeći identifikacijski kôd banke (UK)";
 "adyen.bacs.paymentButton.title" = "Potvrdi i plati";
 "adyen.bacs.downloadMandate" = "Preuzmite upute za izravno terećenje (DDI / mandat)";
+"adyen.ach.bankAccount.title" = "Bankovni račun";
+"adyen.ach.accountHolderNameField.title" = "Ime vlasnika računa";
+"adyen.ach.accountHolderNameField.invalid" = "Nevažeće ime vlasnika računa";
+"adyen.ach.accountNumberField.title" = "Broj računa";
+"adyen.ach.accountNumberField.invalid" = "Nevažeći broj računa";
+"adyen.ach.accountLocationField.title" = "ABA identifikacijski broj";
+"adyen.ach.accountLocationField.invalid" = "Nevažeći ABA identifikacijski broj";

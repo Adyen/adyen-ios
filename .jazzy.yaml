@@ -64,6 +64,7 @@ custom_categories:
       - ApplePayPaymentMethod
       - SEPADirectDebitPaymentMethod
       - BACSDirectDebitPaymentMethod
+      - ACHDirectDebitPaymentMethod
       - QiwiWalletPaymentMethod
       - AffirmPaymentMethod
       - AwaitPaymentMethod
@@ -175,6 +176,12 @@ custom_categories:
       - BACSDirectDebitPaymentMethod
       - BACSDirectDebitComponent
       - BACSDirectDebitDetails
+      
+  - name: ACH Direct Debit Component
+    children:
+      - ACHDirectDebitPaymentMethod
+      - ACHDirectDebitComponent
+      - ACHDirectDebitDetails
 
   - name: Qiwi Wallet Component
     children:

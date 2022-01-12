@@ -54,6 +54,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'Components' do |plugin|
     plugin.dependency 'Adyen/Core'
+    plugin.dependency 'Adyen/Encryption'
     plugin.source_files = 'AdyenComponents/**/*.swift'
   end
 

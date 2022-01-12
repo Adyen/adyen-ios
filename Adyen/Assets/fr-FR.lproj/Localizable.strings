@@ -145,3 +145,10 @@
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Code de tri (sort code) non valide";
 "adyen.bacs.paymentButton.title" = "Confirmer et payer";
 "adyen.bacs.downloadMandate" = "Téléchargez votre mandat de prélèvement (DDI)";
+"adyen.ach.bankAccount.title" = "Compte bancaire";
+"adyen.ach.accountHolderNameField.title" = "Nom du titulaire du compte";
+"adyen.ach.accountHolderNameField.invalid" = "Nom du titulaire du compte incorrect";
+"adyen.ach.accountNumberField.title" = "Numéro du compte";
+"adyen.ach.accountNumberField.invalid" = "Numéro du compte incorrect";
+"adyen.ach.accountLocationField.title" = "Code ABA";
+"adyen.ach.accountLocationField.invalid" = "Code ABA incorrect";

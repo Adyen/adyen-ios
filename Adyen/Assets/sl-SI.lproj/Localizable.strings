@@ -145,3 +145,10 @@
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Neveljavna številka banke";
 "adyen.bacs.paymentButton.title" = "Potrdi in plačaj";
 "adyen.bacs.downloadMandate" = "Prenesite navodila za neposredno bremenitev (DDI/mandat)";
+"adyen.ach.bankAccount.title" = "Bančni račun";
+"adyen.ach.accountHolderNameField.title" = "Ime imetnika računa";
+"adyen.ach.accountHolderNameField.invalid" = "Neveljavno ime imetnika računa";
+"adyen.ach.accountNumberField.title" = "Številka računa";
+"adyen.ach.accountNumberField.invalid" = "Neveljavna številka računa";
+"adyen.ach.accountLocationField.title" = "Koda banke ABA";
+"adyen.ach.accountLocationField.invalid" = "Neveljavna koda banke ABA";

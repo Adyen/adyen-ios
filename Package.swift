@@ -115,7 +115,8 @@ let package = Package(
         .target(
             name: "AdyenComponents",
             dependencies: [
-                .target(name: "Adyen")
+                .target(name: "Adyen"),
+                .target(name: "AdyenEncryption")
             ],
             path: "AdyenComponents",
             exclude: ["Info.plist"]

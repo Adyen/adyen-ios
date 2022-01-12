@@ -145,3 +145,10 @@
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Ungültige Bankleitzahl";
 "adyen.bacs.paymentButton.title" = "Bestätigen und bezahlen";
 "adyen.bacs.downloadMandate" = "Laden Sie Ihre Lastschriftanweisung (DDI/Einzugsermächtigung) herunter";
+"adyen.ach.bankAccount.title" = "Bankkonto";
+"adyen.ach.accountHolderNameField.title" = "Name des Kontoinhabers";
+"adyen.ach.accountHolderNameField.invalid" = "Ungültiger Kontoinhabername";
+"adyen.ach.accountNumberField.title" = "Kontonummer";
+"adyen.ach.accountNumberField.invalid" = "Ungültige Kontonummer";
+"adyen.ach.accountLocationField.title" = "ABA-Nummer";
+"adyen.ach.accountLocationField.invalid" = "Ungültige ABA-Nummer";

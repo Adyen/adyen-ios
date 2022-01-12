@@ -145,3 +145,10 @@
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Ugyldigt registreringsnummer";
 "adyen.bacs.paymentButton.title" = "Bekræft, og betal";
 "adyen.bacs.downloadMandate" = "Download vejledningen til direkte debitering (fuldmagt til direkte debitering)";
+"adyen.ach.bankAccount.title" = "Bankkonto";
+"adyen.ach.accountHolderNameField.title" = "Kontohavers navn";
+"adyen.ach.accountHolderNameField.invalid" = "Ugyldigt kontohavernavn";
+"adyen.ach.accountNumberField.title" = "Kontonummer";
+"adyen.ach.accountNumberField.invalid" = "Ugyldigt kontonummer";
+"adyen.ach.accountLocationField.title" = "ABA-registreringsnummer";
+"adyen.ach.accountLocationField.invalid" = "Ugyldigt ABA-registreringsnummer";

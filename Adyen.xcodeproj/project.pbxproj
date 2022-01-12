@@ -76,6 +76,9 @@
 		A03EE7312761297800470561 /* DocumentComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EE7302761297800470561 /* DocumentComponentStyle.swift */; };
 		A03EE73327612BF300470561 /* DocumentActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EE73227612BF300470561 /* DocumentActionView.swift */; };
 		A03EE735276133A500470561 /* ShareableComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EE734276133A500470561 /* ShareableComponent.swift */; };
+		A0414C1D278C275C00DF3FE9 /* ACHDirectDebitComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C1C278C275C00DF3FE9 /* ACHDirectDebitComponent.swift */; };
+		A0414C1F278C27CF00DF3FE9 /* ACHDirectDebitPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C1E278C27CF00DF3FE9 /* ACHDirectDebitPaymentMethod.swift */; };
+		A0414C21278C2AE400DF3FE9 /* ACHDirectDebitDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C20278C2AE400DF3FE9 /* ACHDirectDebitDetails.swift */; };
 		A05D7212276A28EE0087F3E9 /* DocumentComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05D7211276A28EE0087F3E9 /* DocumentComponentTests.swift */; };
 		A07355D7276B350F00530562 /* ActionViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07355D6276B350F00530562 /* ActionViewDelegateMock.swift */; };
 		A07B2CF226A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B2CF126A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift */; };
@@ -723,6 +726,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		A0414C22278D9B6F00DF3FE9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F92326AB25A3669E002C5BC4;
+			remoteInfo = AdyenEncryption;
+		};
 		E2C0E03E22097917008616F6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
@@ -997,6 +1007,9 @@
 		A03EE7302761297800470561 /* DocumentComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentComponentStyle.swift; sourceTree = "<group>"; };
 		A03EE73227612BF300470561 /* DocumentActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentActionView.swift; sourceTree = "<group>"; };
 		A03EE734276133A500470561 /* ShareableComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareableComponent.swift; sourceTree = "<group>"; };
+		A0414C1C278C275C00DF3FE9 /* ACHDirectDebitComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACHDirectDebitComponent.swift; sourceTree = "<group>"; };
+		A0414C1E278C27CF00DF3FE9 /* ACHDirectDebitPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACHDirectDebitPaymentMethod.swift; sourceTree = "<group>"; };
+		A0414C20278C2AE400DF3FE9 /* ACHDirectDebitDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACHDirectDebitDetails.swift; sourceTree = "<group>"; };
 		A05D7211276A28EE0087F3E9 /* DocumentComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentComponentTests.swift; sourceTree = "<group>"; };
 		A07355D6276B350F00530562 /* ActionViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionViewDelegateMock.swift; sourceTree = "<group>"; };
 		A07B2CE526A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberFormatter.swift; sourceTree = "<group>"; };
@@ -1841,6 +1854,15 @@
 			path = Document;
 			sourceTree = "<group>";
 		};
+		A0414C1B27888BF300DF3FE9 /* ACH Direct Debit */ = {
+			isa = PBXGroup;
+			children = (
+				A0414C1C278C275C00DF3FE9 /* ACHDirectDebitComponent.swift */,
+				A0414C20278C2AE400DF3FE9 /* ACHDirectDebitDetails.swift */,
+			);
+			path = "ACH Direct Debit";
+			sourceTree = "<group>";
+		};
 		A04BD78126D510E1008E270F /* Installments */ = {
 			isa = PBXGroup;
 			children = (
@@ -2176,6 +2198,7 @@
 				E224088622AFA3A80058923E /* RedirectPaymentMethod.swift */,
 				E278EB4422AA5ED600497FD5 /* SEPADirectDebitPaymentMethod.swift */,
 				C9D8EBA1274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift */,
+				A0414C1E278C27CF00DF3FE9 /* ACHDirectDebitPaymentMethod.swift */,
 				E27BFD8F22B114DC00692E0D /* ShopperInteraction.swift */,
 				F9D57529237C6084009C18B5 /* StoredBCMCPaymentMethod.swift */,
 				E71E8F3D257921D10054B03D /* StoredBLIKPaymentMethod.swift */,
@@ -3095,6 +3118,7 @@
 			isa = PBXGroup;
 			children = (
 				F9175E57259393E800D653BE /* AdyenComponents.h */,
+				A0414C1B27888BF300DF3FE9 /* ACH Direct Debit */,
 				C982FFD626945FCE00AED849 /* Affirm */,
 				E97B971B229E83E300505476 /* Apple Pay */,
 				C9BF0DB1273539EB00DCAA1E /* BACS Direct Debit */,
@@ -4145,6 +4169,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				A0414C23278D9B6F00DF3FE9 /* PBXTargetDependency */,
 				F9175E652593941500D653BE /* PBXTargetDependency */,
 			);
 			name = AdyenComponents;
@@ -4887,6 +4912,7 @@
 				E26EAD92233A1A340060BBA7 /* CoreColors.swift in Sources */,
 				E278EB4322AA5EC800497FD5 /* IssuerListPaymentMethod.swift in Sources */,
 				F90FB7BC2446E8C8005BFE0E /* BrowserInfo.swift in Sources */,
+				A0414C1F278C27CF00DF3FE9 /* ACHDirectDebitPaymentMethod.swift in Sources */,
 				E787C9D1246E948F00B401E0 /* CoreFonts.swift in Sources */,
 				F9589D032601EE7800E4113F /* FormItemInjector.swift in Sources */,
 				5A15D5A1264BE1E500A8E3C7 /* PrefilledShopperInformation.swift in Sources */,
@@ -5276,6 +5302,7 @@
 				C982FFD826946F0800AED849 /* AffirmComponent.swift in Sources */,
 				F9175ED22593951800D653BE /* MBWayComponent.swift in Sources */,
 				F9175E9B259394F200D653BE /* IssuerListComponent.swift in Sources */,
+				A0414C21278C2AE400DF3FE9 /* ACHDirectDebitDetails.swift in Sources */,
 				C933801E276A06E1005B66CD /* BACSDirectDebitComponentTracker.swift in Sources */,
 				5A9889C8264E71210007F4C0 /* BoletoDetails.swift in Sources */,
 				C9F468E227465FCF00500FF5 /* BACSDirectDebitData.swift in Sources */,
@@ -5286,6 +5313,7 @@
 				C93B01B72760B03400D311A1 /* BACSConfirmationViewController.swift in Sources */,
 				C9D8EB9927452355006D8CA1 /* BACSInputFormViewController.swift in Sources */,
 				C93B01B92760B06300D311A1 /* BACSConfirmationPresenter.swift in Sources */,
+				A0414C1D278C275C00DF3FE9 /* ACHDirectDebitComponent.swift in Sources */,
 				C9BF0DB327353A2600DCAA1E /* BACSDirectDebitComponent.swift in Sources */,
 				F9175EE32593952600D653BE /* BLIKDetails.swift in Sources */,
 				F9B016F92604F3FF001F23FC /* BasicPersonalInfoFormComponent.swift in Sources */,
@@ -5464,6 +5492,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		A0414C23278D9B6F00DF3FE9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F92326AB25A3669E002C5BC4 /* AdyenEncryption */;
+			targetProxy = A0414C22278D9B6F00DF3FE9 /* PBXContainerItemProxy */;
+		};
 		E2C0E03F22097917008616F6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = E2C0E03222097917008616F6 /* Adyen */;

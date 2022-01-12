@@ -116,7 +116,7 @@
 "adyen.giftcard.currencyError" = "Gift cards are only valid in the currency they were issued in";
 "adyen.giftcard.noBalance" = "Lahjakortin saldo on nolla";
 "adyen.partialPayment.remainingBalance" = "Jäljellä oleva saldo on %@";
-"adyen.partialPayment.payRemainingAmount" = "Valitse maksutapa jäljelle jääneelle prosentille {amount}";
+"adyen.partialPayment.payRemainingAmount" = "Valitse maksutapa jäljelle jääneelle prosentille %@";
 "adyen.card.taxNumber.label" = "Kortinhaltijan syntymäpäivä (VVKKPP) tai yrityksen rekisterinumero (10 lukua)";
 "adyen.card.taxNumber.placeholder" = "VVKKPP / 0123456789";
 "adyen.card.taxNumber.invalid" = "Kelpaamaton kortinhaltijan syntymäpäivä (VVKKPP) tai yrityksen rekisterinumero";
@@ -145,3 +145,10 @@
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Ei-kelvollinen lajittelukoodi";
 "adyen.bacs.paymentButton.title" = "Vahvista ja maksa";
 "adyen.bacs.downloadMandate" = "Lataa suoraveloitusohjeet (DDI / Mandate)";
+"adyen.ach.bankAccount.title" = "Pankkitili";
+"adyen.ach.accountHolderNameField.title" = "Tilinhaltijan nimi";
+"adyen.ach.accountHolderNameField.invalid" = "Ei-kelvollinen tilinhaltijan nimi";
+"adyen.ach.accountNumberField.title" = "Tilinumero";
+"adyen.ach.accountNumberField.invalid" = "Väärä tilin numero";
+"adyen.ach.accountLocationField.title" = "ABA-reititysnumero";
+"adyen.ach.accountLocationField.invalid" = "Ei-kelvollinen ABA-reititysnumero";

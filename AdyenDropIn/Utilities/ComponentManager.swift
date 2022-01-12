@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -285,6 +285,11 @@ extension ComponentManager: PaymentComponentBuilder {
     /// :nodoc:
     internal func build(paymentMethod: BACSDirectDebitPaymentMethod) -> PaymentComponent? {
         createBACSDirectDebit(paymentMethod)
+    }
+    
+    /// :nodoc:
+    internal func build(paymentMethod: ACHDirectDebitPaymentMethod) -> PaymentComponent? {
+        nil
     }
     
     /// :nodoc:
