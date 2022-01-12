@@ -79,6 +79,7 @@
 		A0414C1D278C275C00DF3FE9 /* ACHDirectDebitComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C1C278C275C00DF3FE9 /* ACHDirectDebitComponent.swift */; };
 		A0414C1F278C27CF00DF3FE9 /* ACHDirectDebitPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C1E278C27CF00DF3FE9 /* ACHDirectDebitPaymentMethod.swift */; };
 		A0414C21278C2AE400DF3FE9 /* ACHDirectDebitDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C20278C2AE400DF3FE9 /* ACHDirectDebitDetails.swift */; };
+		A0414C29278F2D2900DF3FE9 /* Encryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C28278F2D2900DF3FE9 /* Encryptor.swift */; };
 		A05D7212276A28EE0087F3E9 /* DocumentComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05D7211276A28EE0087F3E9 /* DocumentComponentTests.swift */; };
 		A07355D7276B350F00530562 /* ActionViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07355D6276B350F00530562 /* ActionViewDelegateMock.swift */; };
 		A07B2CF226A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B2CF126A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift */; };
@@ -1010,6 +1011,7 @@
 		A0414C1C278C275C00DF3FE9 /* ACHDirectDebitComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACHDirectDebitComponent.swift; sourceTree = "<group>"; };
 		A0414C1E278C27CF00DF3FE9 /* ACHDirectDebitPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACHDirectDebitPaymentMethod.swift; sourceTree = "<group>"; };
 		A0414C20278C2AE400DF3FE9 /* ACHDirectDebitDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACHDirectDebitDetails.swift; sourceTree = "<group>"; };
+		A0414C28278F2D2900DF3FE9 /* Encryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encryptor.swift; sourceTree = "<group>"; };
 		A05D7211276A28EE0087F3E9 /* DocumentComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentComponentTests.swift; sourceTree = "<group>"; };
 		A07355D6276B350F00530562 /* ActionViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionViewDelegateMock.swift; sourceTree = "<group>"; };
 		A07B2CE526A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberFormatter.swift; sourceTree = "<group>"; };
@@ -3303,6 +3305,7 @@
 				E74517C025FBA275000BDCCF /* Payload */,
 				E745178325FB82F3000BDCCF /* Model */,
 				E736498025277B7500AB76AE /* Extensions */,
+				A0414C28278F2D2900DF3FE9 /* Encryptor.swift */,
 				E9E3DAF922241D6000697074 /* CardEncryptor.swift */,
 				F92326AE25A3669E002C5BC4 /* AdyenEncryption.h */,
 				F92326AF25A3669E002C5BC4 /* Info.plist */,
@@ -5412,6 +5415,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0414C29278F2D2900DF3FE9 /* Encryptor.swift in Sources */,
 				F92326BE25A366D9002C5BC4 /* CardEncryptor.swift in Sources */,
 				F92326E625A366EC002C5BC4 /* StringExtension.swift in Sources */,
 				F92326E825A366EC002C5BC4 /* IntegerExtension.swift in Sources */,

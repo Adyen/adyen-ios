@@ -213,6 +213,14 @@ internal final class ComponentManager {
         return bacsDirectDebitComponent
     }
     
+    private func createACHDirectDebitComponent(_ paymentMethod: ACHDirectDebitPaymentMethod) -> ACHDirectDebitComponent {
+        ACHDirectDebitComponent(paymentMethod: paymentMethod,
+                                apiContext: apiContext,
+                                shopperInformation: configuration.shopper,
+                                localizationParameters: configuration.localizationParameters,
+                                style: style.formComponent)
+    }
+    
     private func createQiwiWalletComponent(_ paymentMethod: QiwiWalletPaymentMethod) -> QiwiWalletComponent {
         QiwiWalletComponent(paymentMethod: paymentMethod,
                             apiContext: apiContext,
@@ -289,7 +297,7 @@ extension ComponentManager: PaymentComponentBuilder {
     
     /// :nodoc:
     internal func build(paymentMethod: ACHDirectDebitPaymentMethod) -> PaymentComponent? {
-        nil
+        createACHDirectDebitComponent(paymentMethod)
     }
     
     /// :nodoc:

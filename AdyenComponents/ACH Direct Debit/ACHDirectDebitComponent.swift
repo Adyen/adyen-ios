@@ -5,10 +5,11 @@
 //
 
 import Adyen
+import AdyenEncryption
 import UIKit
 
 /// A component that provides a form for ACH Direct Debit payment.
-public final class ACHDirectDebitComponent: PaymentComponent, PresentableComponent, Localizable, TrackableComponent {
+public final class ACHDirectDebitComponent: PaymentComponent, PresentableComponent, Localizable, TrackableComponent, LoadingComponent {
     
     private enum ViewIdentifier {
         static let headerItem = "headerItem"
@@ -74,10 +75,37 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
         
     }
     
+    /// :nodoc:
+    public func stopLoading() {
+        payButton.showsActivityIndicator = false
+        formViewController.view.isUserInteractionEnabled = true
+    }
+    
+    private func startLoading() {
+        payButton.showsActivityIndicator = true
+        formViewController.view.isUserInteractionEnabled = false
+    }
+    
+    private func didSelectSubmitButton() {
+        guard formViewController.validate() else {
+            return
+        }
+        
+//        cardViewController.startLoading()
+//
+//        fetchCardPublicKey(discardError: false) { [weak self] in
+//            self?.submitEncryptedCardData(cardPublicKey: $0)
+//        }
+//        payButton.showsActivityIndicator = true
+//        formViewController.view.isUserInteractionEnabled = false
+//
+//        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: amountToPay, order: order))
+    }
+    
     // MARK: - Form Items
     
     private lazy var headerItem: FormLabelItem = {
-        let item = FormLabelItem(text: localizedString(.billingAddressSectionTitle, localizationParameters),
+        let item = FormLabelItem(text: localizedString(.achBankAccountTitle, localizationParameters),
                                  style: style.sectionHeader)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                       postfix: ViewIdentifier.headerItem)
@@ -160,11 +188,9 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
         let item = FormButtonItem(style: style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                       postfix: ViewIdentifier.payButtonItem)
-        item.title = localizedSubmitButtonTitle(with: payment?.amount,
-                                                style: .immediate,
-                                                localizationParameters)
+        item.title = localizedString(.confirmPurchase, localizationParameters)
         item.buttonSelectionHandler = { [weak self] in
-//            self?.didSelectSubmitButton()
+            self?.didSelectSubmitButton()
         }
         return item
     }()
@@ -177,7 +203,7 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
         formViewController.title = paymentMethod.name.uppercased()
 
         formViewController.append(FormSpacerItem())
-        formViewController.append(headerItem)
+        formViewController.append(headerItem.addingDefaultMargins())
         formViewController.append(FormSpacerItem())
         formViewController.append(holderNameItem)
         formViewController.append(bankAccountNumberItem)
