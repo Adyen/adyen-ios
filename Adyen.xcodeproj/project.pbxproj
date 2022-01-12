@@ -5958,9 +5958,9 @@
 				);
 				MARKETING_VERSION = 4.6.1;
 				OTHER_SWIFT_FLAGS = "-Xfrontend -warn-long-expression-type-checking=100";
-				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenUIHost;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.CheckoutDemoUIKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Checkout Demo Distribution";
+				PROVISIONING_PROFILE_SPECIFIER = "Checkout Demo UIKit Distribution";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -5984,9 +5984,9 @@
 				);
 				MARKETING_VERSION = 4.6.1;
 				OTHER_SWIFT_FLAGS = "-Xfrontend -warn-long-expression-type-checking=100";
-				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenUIHost;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.CheckoutDemoUIKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Checkout Demo Distribution";
+				PROVISIONING_PROFILE_SPECIFIER = "Checkout Demo UIKit Distribution";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
